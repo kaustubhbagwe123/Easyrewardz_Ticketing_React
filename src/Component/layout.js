@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Header from "./Header";
-import Aux from "./Aux";
+import Aux from "./child";
 
 export default class layout extends Component {
   render() {
