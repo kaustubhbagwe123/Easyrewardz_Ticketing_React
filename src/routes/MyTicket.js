@@ -1,29 +1,21 @@
 import React, { Component } from 'react';
-// import Modal from 'react-bootstrap/Modal';
+import Modal from "react-responsive-modal";
 
 class MyTicket extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            // showModel:false             
+        state = {
+            open:false             
         };
-        // this.handleShowModel=this.handleShowModel.bind(this);
-        // this.handleCloseModel=this.handleCloseModel.bind(this);
-    }
-    // handleShowModel(){
-    //     debugger
-    //     this.setState({
-    //         showModel:true
-    //     });
-    // }
-    // handleCloseModel(){
-    //     debugger
-    //     this.setState({
-    //         showModel:false
-    //     });
-    // }
+      
+    onOpenModal = () => {
+        this.setState({ open: true });
+      };
+      onCloseModal = () => {
+        this.setState({ open: false });
+      };
+    
     
     render() {
+        const {open} = this.state;
         return (
             <div>
                 <div className="head-header">
@@ -34,42 +26,30 @@ class MyTicket extends Component {
                             </div>
                             <div className="col-xs-9">
                                 <label className="id-abc-1234">ID - ABC1234
-                                    <img src="Images/loading.png" alt="Loading" className="loading-rectangle" onClick={this.handleShowModel}/>
+                                    
                                     <span className="updated-2-d-ago">Updated 2d ago</span>
+                                    {/* <button onClick={this.onOpenModal}>Open modal</button> */}
                                 </label>
                             </div>
+                            
                             <div className="col-xs-9 oval-head">
                                 <img src="Images/headphone2.png" alt="headphone" className="oval-55" />
                                 <label className="naman-r">Naman.R</label>
                                 <img src="Images/down.png" alt="down" className="down-header" />
-                                <button type="button" className="btn btn-primary1">Submit As Solved
+                                <button type="button" className="btn btn-primary2">Submit As Solved
                                 <img src="Images/down-white.png" alt="headphone" className="down-white" />
                                 </button>
                             </div>
                         </div>
+                        <img src="Images/loading.png" alt="Loading" className="loading-rectangle" onClick={this.onOpenModal}/>
                     </div>
                 </div>
-                {/* <Modal show={this.state.showModel} onHide={this.handleCloseModel} size="md">
-                    <Modal.Header closeButton>
-                        <Modal.Title><b>Historical Ticket</b></Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <div className="row col-md-12">
-                            <div className="col-md-4 form-group">
-                                <label>Employee Name:</label>
-                            </div>
-                            <div className="col-md-4 form-group">
-                                <label>Extension No:</label>
-                            </div>
-                            <div className="col-md-3 form-group">
-                                <label>Department:</label>
-                            </div>
-                        </div>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <button className="btn btn-secondary" onClick={this.handleCloseModel}>Close</button>
-                    </Modal.Footer>
-                </Modal> */}
+                <Modal open={open} onClose={this.onCloseModal} size="sm">
+                    <h3>Historical Ticket</h3>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    </p>
+                </Modal>
                 <div className="card-rectangle">
                     <div className="rectangle-box">
                         <div className="row">

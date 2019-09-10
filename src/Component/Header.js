@@ -27,38 +27,42 @@ export class Header extends Component {
     return (
       <div className="card-Nav">
         <div className="card-header1">
-          <div className="container-fluid">
-            <div className="row card-row">
-              <div className="col-md-8 p-0">
-                <div className="er">
-                  <label className="er-label">ER</label>
-                </div>
-                <div className="col-md-2">
-                  <img src="Images/dashboard.png" alt="logo" className="dashboardImg1" />
-                  <label className="dashboards-label">Dashboard</label>
-                </div>
-                <div className="col-md-2 nav-tab1">
-                  <img src="Images/ticket.png" alt="logo" className="myTicket" />
-                  <label>My Tickets</label>
-                </div>
-                <div className="col-md-4 nav-tab2">
-                  <img src="Images/knowledge.png" alt="logo" className="knowledgeNav" />
-                  <label className="knowledge-label">Knowledge Base</label>
-                </div>
+          <div className="row card-row">
+            <div className="col-md-8">
+              <div className="er">
+                <label className="er-label">ER</label>
               </div>
-              <div className="main-nav">
-                <div className="bitmap1">
-                  <img src="Images/calender.png" alt="logo" className="calImg" />
-                </div>
-                <div className="bitmap2">
-                  <img src="Images/chat.png" alt="logo" className="chatImg" />
-                </div>
-                <div className="bitmap3">
-                  <img src="Images/Notification.png" alt="logo" className="notifi" onClick={this.openModal} />
-                </div>
-                <div className="bitmap4">
-                  <img src="Images/setting.png" alt="logo" className="setting" />
-                </div>
+              <div className="col-md-2">
+                <img src="Images/dashboard.png" alt="logo" className="dashboardImg1" />
+                <label className="dashboards-label1">Dashboard</label>
+                {/* <a href="Dashboard" className="dashboards-label">Dashboard</a> */}
+              </div>
+              <div className="col-md-2 nav-tab1">
+                <img src="Images/ticket.png" alt="logo" className="myTicket" />
+                {/* <label>My Tickets</label> */}
+                <a href="MyTicket">My Tickets</a>
+              </div>
+              <div className="col-md-2 claim-space">
+                {/* <label className="claim-label">Claim</label> */}
+                <a href="Claim" className="claim-label">Claim</a>
+              </div>
+              <div className="col-md-4 nav-tab2">
+                <img src="Images/knowledge.png" alt="logo" className="knowledgeNav" />
+                <label className="knowledge-label">Knowledge Base</label>
+              </div>
+            </div>
+            <div className="main-nav">
+              <div className="bitmap1">
+                <img src="Images/calender.png" alt="logo" className="calImg" />
+              </div>
+              <div className="bitmap2">
+                <img src="Images/chat.png" alt="logo" className="chatImg" />
+              </div>
+              <div className="bitmap3">
+                <img src="Images/Notification.png" alt="logo" className="notifi" onClick={this.openModal} />
+              </div>
+              <div className="bitmap4">
+                <img src="Images/setting.png" alt="logo" className="setting" />
               </div>
             </div>
           </div>

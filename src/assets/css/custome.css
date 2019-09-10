@@ -28,6 +28,12 @@
     line-height: 19px;
     text-align: left;
   }
+  .claim-space{
+    margin-top: -2.7%;
+  }
+  .claim-label{
+    margin-left: 333%;
+  }
   .knowledge-base{
     color: #4A4A4A;
     font-family: Lato;
@@ -174,6 +180,7 @@
   width: 18px;
   height: 18px;
   margin-right: 6px;
+  margin-top: 5px;
 }
 .calImg{
   width: 26px;
@@ -191,10 +198,10 @@
   width: 26px;
   height: 26px;
 }
-.dashboards-label{
+.dashboards-label1{
   font-size: 17px;
   vertical-align: middle;
-  margin-top: -110%;
+  margin-top: -117%;
   margin-left: 100px;
 }
 .nav-tab1{
@@ -202,8 +209,8 @@
   margin-left: 28%;
 }
 .nav-tab2{
-  margin-top: -4%;
-  margin-left: 377px;
+  margin-top: -3.5%;
+  margin-left: 455px;
 }
 .ticket-label{
   font-size: 18px;
@@ -214,6 +221,7 @@
 .knowledge-label{
   font-size: 18px;
   vertical-align: -webkit-baseline-middle;
+  margin-top: -5px;
 }
  /***** For Model *****/
 .Model{
@@ -289,7 +297,8 @@ padding-top: 5px;
   width: 22px;
   height: 22px;
   padding: 3px;
-  margin-left: 5px;
+  margin-left: 115px;
+  margin-top: -85px;
 }
 .oval-55{
   background-color: #F8E71C;
@@ -300,7 +309,7 @@ padding-top: 5px;
 }
 .oval-head{
   padding-left: 73%;
-  margin-top: -44px;
+  margin-top: -49px;
 }
 .naman-r{
   color: #000000;
@@ -365,7 +374,8 @@ padding-top: 5px;
   border-radius: 4px;
   width: auto;
   height: auto;
-  margin: 32px;
+  /* margin: 32px; */
+  padding: 30px;
 }
 .card-rectangle{
   background: #F5F8F9;
@@ -491,7 +501,7 @@ padding-top: 5px;
   width: 22px;
   height: 16px;
   margin: 7px;
-  margin-left: 13%;
+  margin-left: 11%;
 }
 .comment{
   color: #2561A8;
@@ -521,6 +531,7 @@ padding-top: 5px;
   color: #fff;
   background-color:#2561A8;
   border-color: #2561A8;
+  margin-left: 3.7px
 }
 .dropdown-menu.show{
   display: block;
@@ -559,8 +570,8 @@ padding-top: 5px;
   padding: 4px;
 }
 .bill-1{
-  margin-top: -30px;
-  padding-left: 146px;
+  margin-top: -25px;
+  padding-left: 147px;
 }
 .target-closure-date{
   color: #4A4A4A;
@@ -757,7 +768,7 @@ padding-top: 5px;
   border: 1px solid #CAD4D7;
   height: 34px;
   width: 0px;
-  margin-top: -39%;
+  margin-top: -37%;
   margin-left: 778%;
 }
 .label-4{
@@ -861,10 +872,10 @@ padding-top: 5px;
   text-align: left;
   padding-left: 72px;
 }
-.btn-primary1{
+.btn-primary2{
   background-color: #2561A8;
-  margin-left: 15px;
-  margin-top: -9px;
+  margin-left: 119px;
+  margin-top: -48px;
 }
 .down-white{
    width: 22px;
@@ -882,7 +893,6 @@ padding-top: 5px;
 }
 
 .tablepadding{
-
   margin-top: 15px;
 }
 
@@ -892,8 +902,7 @@ padding-top: 5px;
   width: auto;
   height: 769px;
 }
-.bitmapback{
-     
+.bitmapback{ 
     width: 15px;
     height: 15px;
 }
@@ -930,7 +939,6 @@ padding-top: 5px;
   font-weight: 700;
   line-height: 19px;
   text-align: left;
-   
 }
 
 .save-as-a-draft{
@@ -963,8 +971,7 @@ padding-top: 5px;
   padding-top: 15px;
   padding-left: 10px;
 }
-.tdicon
-{
+.tdicon{
   padding-top: 8px;
   padding-left: 10px;
   
@@ -1208,9 +1215,7 @@ width: auto;
   height: 792px;
 }
 
-
 .customer-icon{
-  
   width: 32px;
   height: 32px;
   margin-left: 9px;
@@ -1880,3 +1885,199 @@ button {
 /* chatbot ends */
 
 /* chetan css ends */
+/******************************************************/
+
+/*Shlok css start*/
+
+/*******************Claim start *********************/
+.claim-header-card{
+  background: #ECF2F4;
+}
+.claim-ticket{
+  padding: 14px;
+  padding-left: 15px;
+  margin-bottom: 0px;
+  color: #5e6061;
+}
+.claim-A22345{
+  color: #4A4A4A;
+  margin-left: -8px;
+}
+.btn-claim{
+  background-color: #2561A8;
+  border-radius: 4px;
+  border-color: #2561A8;
+  width: 134px;
+  height: 43px;
+  color: white;
+}
+.btn-margin{
+  padding-top: 5px;
+  margin-left: 50px;
+}
+.submit-claim{
+  color: #FFFFFF;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  text-align: left;
+}
+.btn-btn-claim{
+  color: #2561A8;
+  background-color: transparent;
+  background-image: none;
+  border-color: #2561A8;
+  border-radius: .25rem;
+  height: 43px;
+  margin-right: 6px;
+}
+.col-md-9-card{
+  margin-left: -13px;
+  flex: 0 0 75%;
+  max-width: 75%;
+}
+.oderDetails-table{
+  margin-left: 5px;
+  padding-top: 9px;
+}
+.span-color{
+  color: red;
+}
+.search-customer-padding{
+  padding: 23px;
+  padding-left: 8%;
+}
+.back-color{
+  background-color: #F5F8F9;
+  padding-top: 20px;
+  margin-left: -13px;
+}
+.card-radius{
+  border-radius: 6px;
+  padding-top: 15px;
+  padding-left: 7px;
+}
+.label-color{
+  color: #6b6767;
+}
+.add-customer-color{
+  margin-left: 235px;
+  color: #4275b1;
+}
+.search-mobile-textbox{
+  background-color: #ECF2F4;
+  border-radius: 4px;
+  width: 880px;
+  height: 43px;
+  margin-left: -15px;
+  padding-left: 6px;
+}
+.searchImg{
+  width: 20px;
+  height: 20px;
+  margin-top: -70px;
+  margin-left: 833px;
+}
+.claim-status-card{
+  background-color: #ECF2F4;
+  width: auto;
+  height: 54px;
+  border-radius: 10px;
+  padding: 15px;
+  padding-left: 18px;
+}
+.line-2{
+  border: 1px solid #CAD4D7;
+  height: 53px;
+  width: 0px;
+  margin-top: -38.5px;
+  margin-left: 753px;
+}
+.line-3{
+  border: 1px solid #CAD4D7;
+  height: 53px;
+  width: 0px;
+  margin-top: -77.6px;
+  margin-left: 810px;
+}
+.arrow-img-1{
+  width: 18px;
+  height: 18px;
+  margin-left: 772px;
+  margin-top: -10%;
+}
+.plush-img-1{
+  width: 18px;
+  height: 18px;
+  margin-left: 830px;
+  margin-top: -80px;
+}
+.first-margin{
+  margin-left: -13px;
+}
+.search-order{
+  border-radius: 4px;
+  width: 300px;
+  height: 43px;
+  margin-left: 27px;
+  padding-left: 6px;
+}
+.searchImg-1{
+  width: 20px;
+  height: 20px;
+  margin-top: -70px;
+  margin-left: 833px;
+}
+.batashoes{
+  width: 156px;
+  margin-left: -11px;
+}
+.label-6{
+    color: #4A4A4A;
+    font-family: unset;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 19px;
+    opacity: 0.5;
+    text-align: left;
+}
+.ticket-comments-textarea{
+  background-color: #ECF2F4;
+  border-radius: 4px;
+  width: 860px;
+  height: 123px;
+}
+.hr-ago{
+  color: #9B9B9B;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 16px;
+  text-align: left;
+}
+.naman-R{
+  color: #000000;
+    font-family: Lato;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 17px;
+    text-align: left;
+    margin-left: -6px;
+}
+.hr-ago-margin{
+  margin-left: 43px;
+  padding-left: 70px;
+}
+.margin-claim{
+  margin-left: -28px;
+}
+.comment-02-margin{
+  margin-bottom: 9px;
+}
+.card-radius2{
+  border-radius: 6px;
+  padding-top: 35px;
+  padding-left: 25px;
+}
+/**************************************/
