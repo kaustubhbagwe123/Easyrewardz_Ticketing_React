@@ -35,17 +35,17 @@ export class Header extends Component {
               <div className="col-md-2 nav-tab3">
                 <img src="Images/dashboard.png" alt="logo" className="dashboardImg1" />
                 {/* <label className="dashboards-label1">Dashboard</label> */}
-                <a href="dashboard" className="dashboards-label1">Dashboard</a>
+                <a href="dashboard"><label className="dashboards-label1">Dashboard</label></a>
               </div>
               
               <div className="col-md-2 nav-tab1">
                 <img src="Images/ticket.png" alt="logo" className="myTicket" />
                 {/* <label>My Tickets</label> */}
-                <a href="myTicket">My Tickets</a>
+                <a href="myTicket"><label>My Tickets</label></a>
               </div>
               <div className="col-md-2 claim-space">
                 {/* <label className="claim-label">Claim</label> */}
-                <a href="claim" className="claim-label">Claim</a>
+                <a href="claim"><label className="claim-label">Claim</label></a>
               </div>
               <div className="col-md-4 nav-tab2">
                 <img src="Images/knowledge.png" alt="logo" className="knowledgeNav" />
