@@ -71,7 +71,7 @@ class MyTicket extends Component {
                                     <div className="col-md-4">
                                         <div className="form-group">
                                             <label className="label-4">Status</label>
-                                            <select className="rectangle-9" style={{ backgroundColor: '#ECF2F4' }}>
+                                            <select className="rectangle-9">
                                                 <option>Select</option>
                                             </select>
                                         </div>
@@ -79,7 +79,7 @@ class MyTicket extends Component {
                                     <div className="col-md-4 dropdrown">
                                         <div className="form-group">
                                             <label className="label-4">Priority</label>
-                                            <select className="rectangle-9" style={{ backgroundColor: '#ECF2F4' }}>
+                                            <select className="rectangle-9">
                                                 <option>Select</option>
                                             </select>
                                         </div>
@@ -87,7 +87,7 @@ class MyTicket extends Component {
                                     <div className="col-md-4 dropdrown">
                                         <div className="form-group">
                                             <label className="label-4">Brand</label>
-                                            <select className="rectangle-9" style={{ backgroundColor: '#ECF2F4' }}>
+                                            <select className="rectangle-9">
                                                 <option>Select</option>
                                             </select>
                                         </div>
@@ -97,7 +97,7 @@ class MyTicket extends Component {
                                     <div className="col-md-4">
                                         <div className="form-group">
                                             <label className="label-4">Category</label>
-                                            <select className="rectangle-9" style={{ backgroundColor: '#ECF2F4' }}>
+                                            <select className="rectangle-9">
                                                 <option>Select</option>
                                             </select>
                                         </div>
@@ -105,7 +105,7 @@ class MyTicket extends Component {
                                     <div className="col-md-4 dropdrown">
                                         <div className="form-group">
                                             <label className="label-4">Sub Category</label>
-                                            <select className="rectangle-9" style={{ backgroundColor: '#ECF2F4' }}>
+                                            <select className="rectangle-9" >
                                                 <option>Select</option>
                                             </select>
                                         </div>
@@ -113,7 +113,7 @@ class MyTicket extends Component {
                                     <div className="col-md-4 dropdrown">
                                         <div className="form-group">
                                             <label className="label-4">Issue Type</label>
-                                            <select className="rectangle-9" style={{ backgroundColor: '#ECF2F4' }}>
+                                            <select className="rectangle-9">
                                                 <option>Select</option>
                                             </select>
                                         </div>
