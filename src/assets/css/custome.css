@@ -897,10 +897,8 @@ padding-top: 5px;
 /*****************Ticket System (Deepak)************************/
 .rectanglesystem{
   background-color: #ECF2F4;
-  width: 1280px;
-  height: 57px;
-  
-   
+  width: auto;
+  height: 57px;  
 }
 
 .tablepadding{
