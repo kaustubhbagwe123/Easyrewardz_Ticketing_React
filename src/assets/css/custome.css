@@ -899,7 +899,7 @@ padding-top: 5px;
   background-color: #ECF2F4;
   width: 1280px;
   height: 57px;
-  margin-top: 20px;
+  
    
 }
 
@@ -912,6 +912,7 @@ padding-top: 5px;
   border-radius: 4.5px;
   width: auto;
   height: 769px;
+  margin: 20px;
 }
 .bitmapback{ 
     width: 15px;
@@ -935,20 +936,19 @@ padding-top: 5px;
 }
 
 .a91-9873470074{
-  color: #000000;
+  color: #4A4A4A;
   font-family: Lato;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
-  line-height: 19px;
+  line-height: 17px;
   text-align: left;
-  padding-left: 10px;
 }
 .b91-9873470074{
-  color: #000000;
+  color: #4A4A4A;
   font-family: Lato;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
-  line-height: 19px;
+  line-height: 17px;
   text-align: left;
 }
 
@@ -1058,19 +1058,24 @@ width: auto;
   font-weight: 700;
   line-height: 17px;
   text-align: left;
+  padding-left: 20px;
 }
 
 .category-select{
   background-color: #ECF2F4;
   border-radius: 4px;
-  width: 220px;
+  width: 256px;
   height: 43px;
+  padding-left: 10px;
+
 }
 .sub-category-select{
   background-color: #ECF2F4;
   border-radius: 4px;
-  width: 220px;
+  width: 256px;
   height: 43px;
+  padding-left: 10px;
+
 }
 
 .select-category-placeholder{
@@ -1091,13 +1096,7 @@ width: auto;
   text-align: left;
 }
 
-.high-button{
-  background-color: #FFFFFF;
-  border: 1px solid #D02139;
-  border-radius: 4px;
-  width: 58px;
-  height: 43px;
-}
+
 
 .high-button-text{
   color: #BA505D;
@@ -1108,13 +1107,7 @@ width: auto;
   text-align: left;
 }
 
-.medium-button{
-  background-color: #F5A623;
-  border: 1px solid #F5A623;
-  border-radius: 4px;
-  width: 78px;
-  height: 43px;
-}
+ 
 
 .medium-button-text{
   color: #FFFFFF;
@@ -1125,14 +1118,7 @@ width: auto;
   text-align: left;
 }
 
-
-.low-button{
-  background-color: #FFFFFF;
-  border: 1px solid #5AA805;
-  border-radius: 4px;
-  width: 58px;
-  height: 43px;
-}
+ 
 
 .low-button-text{
   color: #61AD0F;
@@ -1207,7 +1193,7 @@ width: auto;
   border: 1px solid #2561A8;
   border-radius: 4px;
   width: 93px;
-  height: 31.32px;
+  height: 41.32px;
   margin-left: 13px;
   margin-top: 10px;
 }
@@ -2090,6 +2076,47 @@ button {
   border-radius: 6px;
   padding-top: 35px;
   padding-left: 25px;
+}
+/**************************************/
+
+/* -------------Deepka Savani-------------- */
+
+.High button{
+  background-color: #FFFFFF;
+  border: 1px solid #D02139;
+  border-radius: 4px;   
+  height: 43px;
+  min-width: 67px;
+}
+
+.Low button{
+  background-color: #FFFFFF;
+  border: 1px solid #5AA805;
+  border-radius: 4px;
+  min-width: 48px;
+  height: 43px;
+}
+.Medium button{
+  background-color: #F5A623;
+  border: 1px solid #F5A623;
+  border-radius: 4px;
+  min-width: 68px;
+  height: 43px;
+}
+
+/* ----------------------------------- */
+
+/* .mask table {
+  border: none !important;
+} */
+
+.addNote-textarea::placeholder{
+  color: #9B9B9B;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19px;
+  text-align: left;
 }
 .card-header1 .row{
   display: flex;

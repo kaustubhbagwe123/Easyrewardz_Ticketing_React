@@ -8,7 +8,7 @@ export default class layout extends Component {
     return (
       <Aux>
         <Header />
-        <div className="main-content">{children}</div>
+        <div className="main-content" style={{backgroundColor:"#f5f8f9"}}>{children}</div>
       </Aux>
     );
   }
