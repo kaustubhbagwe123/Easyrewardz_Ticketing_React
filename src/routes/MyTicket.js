@@ -44,8 +44,8 @@ class MyTicket extends Component {
                         <img src="Images/loading.png" alt="Loading" className="loading-rectangle" onClick={this.onOpenModal}/>
                     </div>
                 </div>
-                <Modal open={open} onClose={this.onCloseModal} size="sm">
-                    <h3>Historical Ticket</h3>
+                <Modal open={open} onClose={this.onCloseModal} size="sm" >
+                    <h4>Historical Ticket</h4>
                     <p>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                     </p>
