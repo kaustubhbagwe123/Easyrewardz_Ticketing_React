@@ -34,6 +34,7 @@
   }
   .claim-label{
     margin-left: 333%;
+    color: black;
   }
   .knowledge-base{
     color: #4A4A4A;
@@ -202,13 +203,15 @@
 .dashboards-label1{
   font-size: 17px;
   vertical-align: middle;
-  padding-left: 26px;
+  padding-left: 3px;
   /* margin-top: -117%;
   margin-left: 100px; */
 }
 .nav-tab1{
-  margin-top: -6%;
+  margin-top: -3%;
   margin-left: 28%;
+  position: relative;
+  z-index: 1;
 }
 .nav-tab2{
   margin-top: -3.5%;
@@ -217,6 +220,8 @@
 .nav-tab3{
   margin-top: -41px;
   margin-left: 68px;
+  position: relative;
+  z-index: 1;
 }
 .ticket-label{
   font-size: 18px;
@@ -681,6 +686,7 @@ padding-top: 5px;
 }
 .card-space-1{
   padding-top: 10px;
+  padding-bottom: 8px;
 }
 .hi-naman-please-hel{
   color: #4A4A4A;
@@ -2188,4 +2194,52 @@ button {
 
 /**************************************/
 
+ 
+/********Shlok css for Historical task popup********/
+/**Historical popup css start**/
+.historical-model{
+  border-radius: 10px;
+}
+.table-scrolling{
+  min-height: 300px;
+  overflow: auto;
+  max-height: 350px;
+}
+/**Historical popup css edn**/
 
+/*Progress bar in my tickeyt page*/
+progress {
+  /* RESETS */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+
+  width: 300px;
+  height: 15px;
+  border-radius: 20px;
+  background-color: #777;
+  color: rgb(20, 240, 221);
+}
+
+progress::-webkit-progress-bar {
+  background-color: #777;
+  border-radius: 20px;
+}
+
+progress::-webkit-progress-value {
+  background-color: #F9B54B;
+  border-radius: 20px;
+}
+
+progress::-moz-progress-bar {
+  background-color: #F9B54B;
+  border-radius: 20px;
+}
+.prog-indi-1 {
+  text-align: right;
+  width: 60%;
+  position: relative;
+  left: 2px;
+}
+ 

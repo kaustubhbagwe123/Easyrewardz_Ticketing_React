@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Modal from "react-responsive-modal";
+import HistoricalTable from './HistoricalTable';
 
 class MyTicket extends Component {
         state = {
@@ -44,12 +45,14 @@ class MyTicket extends Component {
                         <img src="Images/loading.png" alt="Loading" className="loading-rectangle" onClick={this.onOpenModal}/>
                     </div>
                 </div>
-                <Modal open={open} onClose={this.onCloseModal} size="sm">
-                    <h3>Historical Ticket</h3>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    </p>
+                <div className="historical-model">
+
+                
+                <Modal open={open} onClose={this.onCloseModal} className="historical-model">
+                    <h4>Historical Ticket</h4>
+                        <HistoricalTable/>
                 </Modal>
+                </div>
                 <div className="card-rectangle">
                     <div className="rectangle-box">
                         <div className="row">
@@ -64,6 +67,8 @@ class MyTicket extends Component {
                                     <label className="target-closure-date">Target Closure Date &nbsp;</label>
                                     <label className="Date-target">28 March 19</label>
                                 </div>
+                                <progress value="50" max="100"></progress>
+                                <p className="logout-label font-weight-bold prog-indi-1">2 day</p>
                             </div>
                             <div className="vl"></div>
                             <div className="col-md-6">
