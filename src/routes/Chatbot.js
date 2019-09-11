@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Demo from '../store/Hashtag'
 
 class Chatbot extends Component {
     render() {
@@ -122,7 +123,7 @@ class Chatbot extends Component {
                                                 <div>
                                                     <div className="d-flex">
                                                         <p className="chat-user-name">Mohit Verma</p>
-                                                        <a href="#" className="ml-2">
+                                                        <a href={Demo.BLANK_LINK} className="ml-2">
                                                             <img src="Images/user-info.png" alt="icon missing" />
                                                         </a>
                                                     </div>

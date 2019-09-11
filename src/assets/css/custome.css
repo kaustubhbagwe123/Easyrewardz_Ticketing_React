@@ -6,6 +6,7 @@
   /* margin-bottom: 30px; */
   -webkit-transition: all 0.5s ease-in-out;
   transition: all 0.5s ease-in-out;
+  background-color: white;
 }
 .rectangle-nav-header {
   background-color: #ffffff;
@@ -27,6 +28,13 @@
   font-weight: 400;
   line-height: 19px;
   text-align: left;
+}
+.claim-space {
+  margin-top: -2.7%;
+}
+.claim-label {
+  margin-left: 333%;
+  color: black;
 }
 .knowledge-base {
   color: #4a4a4a;
@@ -177,8 +185,8 @@
 .dashboardImg1 {
   width: 21px;
   height: 21px;
-  margin-left: 68%;
-  margin-top: -78%;
+  /* margin-left: 68%;
+  margin-top: -78%; */
 }
 .myTicket {
   width: 18px;
@@ -189,6 +197,7 @@
   width: 18px;
   height: 18px;
   margin-right: 6px;
+  margin-top: 5px;
 }
 .calImg {
   width: 26px;
@@ -206,19 +215,28 @@
   width: 26px;
   height: 26px;
 }
-.dashboards-label {
+.dashboards-label1 {
   font-size: 17px;
   vertical-align: middle;
-  margin-top: -110%;
-  margin-left: 100px;
+  padding-left: 3px;
+  /* margin-top: -117%;
+  margin-left: 100px; */
 }
 .nav-tab1 {
-  margin-top: -10.6%;
+  margin-top: -3%;
   margin-left: 28%;
+  position: relative;
+  z-index: 1;
 }
 .nav-tab2 {
-  margin-top: -4%;
-  margin-left: 377px;
+  margin-top: -3.5%;
+  margin-left: 455px;
+}
+.nav-tab3 {
+  margin-top: -41px;
+  margin-left: 68px;
+  position: relative;
+  z-index: 1;
 }
 .ticket-label {
   font-size: 18px;
@@ -229,6 +247,7 @@
 .knowledge-label {
   font-size: 18px;
   vertical-align: -webkit-baseline-middle;
+  margin-top: -5px;
 }
 /***** For Model *****/
 .Model {
@@ -304,7 +323,8 @@
   width: 22px;
   height: 22px;
   padding: 3px;
-  margin-left: 5px;
+  margin-left: 115px;
+  margin-top: -104px;
 }
 .oval-55 {
   background-color: #f8e71c;
@@ -315,7 +335,7 @@
 }
 .oval-head {
   padding-left: 73%;
-  margin-top: -44px;
+  margin-top: -39px;
 }
 .naman-r {
   color: #000000;
@@ -380,7 +400,8 @@
   border-radius: 4px;
   width: auto;
   height: auto;
-  margin: 32px;
+  /* margin: 32px; */
+  padding: 30px;
 }
 .card-rectangle {
   background: #f5f8f9;
@@ -393,6 +414,7 @@
   font-weight: 700;
   line-height: 17px;
   text-align: left;
+  padding-left: 3px;
 }
 .ticket-details-wher {
   color: #000000;
@@ -505,7 +527,7 @@
   width: 22px;
   height: 16px;
   margin: 7px;
-  margin-left: 13%;
+  margin-left: 11%;
 }
 .comment {
   color: #2561a8;
@@ -535,6 +557,7 @@
   color: #fff;
   background-color: #2561a8;
   border-color: #2561a8;
+  margin-left: 3.7px;
 }
 .dropdown-menu.show {
   display: block;
@@ -573,8 +596,8 @@
   padding: 4px;
 }
 .bill-1 {
-  margin-top: -30px;
-  padding-left: 146px;
+  margin-top: -25px;
+  padding-left: 147px;
 }
 .target-closure-date {
   color: #4a4a4a;
@@ -677,6 +700,7 @@
 }
 .card-space-1 {
   padding-top: 10px;
+  padding-bottom: 8px;
 }
 .hi-naman-please-hel {
   color: #4a4a4a;
@@ -714,13 +738,16 @@
   padding-left: 68px;
 }
 .label-2 {
-  margin-top: -9px;
+  margin-top: -3px;
   font-size: 18px;
-  margin-bottom: 11px;
+  margin-bottom: 8px;
+  padding-left: 3px;
 }
 .label-3 {
-  margin-top: -9px;
+  margin-top: -2px;
   font-size: 14px;
+  padding-left: 3px;
+  padding-bottom: 10px;
 }
 .mail-card {
   background-color: #ecf2f4;
@@ -771,7 +798,7 @@
   border: 1px solid #cad4d7;
   height: 34px;
   width: 0px;
-  margin-top: -39%;
+  margin-top: -37%;
   margin-left: 778%;
 }
 .label-4 {
@@ -787,6 +814,7 @@
   border-radius: 4px;
   width: 158px;
   height: 31px;
+  padding-left: 8px;
 }
 .drop-card {
   margin-top: -15px;
@@ -880,6 +908,12 @@
   margin-left: 15px;
   margin-top: -9px;
 }
+.btn-primary2 {
+  background-color: #2561a8;
+  margin-left: 119px;
+  margin-top: -48px;
+  color: white;
+}
 .down-white {
   width: 22px;
   height: 22px;
@@ -889,9 +923,8 @@
 /*****************Ticket System (Deepak)************************/
 .rectanglesystem {
   background-color: #ecf2f4;
-  width: 1280px;
+  width: auto;
   height: 57px;
-  margin-top: 20px;
 }
 
 .tablepadding {
@@ -903,6 +936,7 @@
   border-radius: 4.5px;
   width: auto;
   height: 769px;
+  margin: 20px;
 }
 .bitmapback {
   width: 15px;
@@ -926,20 +960,19 @@
 }
 
 .a91-9873470074 {
-  color: #000000;
+  color: #4a4a4a;
   font-family: Lato;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
-  line-height: 19px;
+  line-height: 17px;
   text-align: left;
-  padding-left: 10px;
 }
 .b91-9873470074 {
-  color: #000000;
+  color: #4a4a4a;
   font-family: Lato;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
-  line-height: 19px;
+  line-height: 17px;
   text-align: left;
 }
 
@@ -1047,19 +1080,22 @@ table {
   font-weight: 700;
   line-height: 17px;
   text-align: left;
+  padding-left: 20px;
 }
 
 .category-select {
   background-color: #ecf2f4;
   border-radius: 4px;
-  width: 220px;
+  width: 256px;
   height: 43px;
+  padding-left: 10px;
 }
 .sub-category-select {
   background-color: #ecf2f4;
   border-radius: 4px;
-  width: 220px;
+  width: 256px;
   height: 43px;
+  padding-left: 10px;
 }
 
 .select-category-placeholder {
@@ -1195,7 +1231,7 @@ table {
   border: 1px solid #2561a8;
   border-radius: 4px;
   width: 93px;
-  height: 31.32px;
+  height: 41.32px;
   margin-left: 13px;
   margin-top: 10px;
 }
@@ -1999,3 +2035,350 @@ table tr th:last-child {
 /* login and password extra css ends */
 
 /* chetan css ends */
+/* chetan css ends */
+/******************************************************/
+
+/*Shlok css start*/
+
+/*******************Claim start *********************/
+.claim-header-card {
+  background: #ecf2f4;
+}
+.claim-ticket {
+  padding: 14px;
+  padding-left: 15px;
+  margin-bottom: 0px;
+  color: #5e6061;
+}
+.claim-A22345 {
+  color: #4a4a4a;
+  margin-left: -8px;
+}
+.btn-claim {
+  background-color: #2561a8;
+  border-radius: 4px;
+  border-color: #2561a8;
+  width: 134px;
+  height: 43px;
+  color: white;
+}
+.btn-margin {
+  padding-top: 5px;
+  margin-left: 50px;
+}
+.submit-claim {
+  color: #ffffff;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  text-align: left;
+}
+.btn-btn-claim {
+  color: #2561a8;
+  background-color: transparent;
+  background-image: none;
+  border-color: #2561a8;
+  border-radius: 0.25rem;
+  height: 43px;
+  margin-right: 6px;
+}
+.col-md-9-card {
+  margin-left: -13px;
+  flex: 0 0 75%;
+  max-width: 75%;
+}
+.oderDetails-table {
+  margin-left: 5px;
+  padding-top: 9px;
+}
+.span-color {
+  color: red;
+}
+.search-customer-padding {
+  padding: 23px;
+  padding-left: 8%;
+}
+.back-color {
+  background-color: #f5f8f9;
+  padding-top: 20px;
+  margin-left: -13px;
+}
+.card-radius {
+  border-radius: 6px;
+  padding-top: 15px;
+  padding-left: 7px;
+}
+.label-color {
+  color: #6b6767;
+}
+.add-customer-color {
+  margin-left: 235px;
+  color: #4275b1;
+}
+.search-mobile-textbox {
+  background-color: #ecf2f4;
+  border-radius: 4px;
+  width: 880px;
+  height: 43px;
+  margin-left: -15px;
+  padding-left: 6px;
+}
+.searchImg {
+  width: 20px;
+  height: 20px;
+  margin-top: -70px;
+  margin-left: 833px;
+}
+.claim-status-card {
+  background-color: #ecf2f4;
+  width: auto;
+  height: 54px;
+  border-radius: 10px;
+  padding: 15px;
+  padding-left: 18px;
+}
+.line-2 {
+  border: 1px solid #cad4d7;
+  height: 53px;
+  width: 0px;
+  margin-top: -38.5px;
+  margin-left: 753px;
+}
+.line-3 {
+  border: 1px solid #cad4d7;
+  height: 53px;
+  width: 0px;
+  margin-top: -77.6px;
+  margin-left: 810px;
+}
+.arrow-img-1 {
+  width: 18px;
+  height: 18px;
+  margin-left: 772px;
+  margin-top: -10%;
+}
+.plush-img-1 {
+  width: 18px;
+  height: 18px;
+  margin-left: 830px;
+  margin-top: -80px;
+}
+.first-margin {
+  margin-left: -13px;
+}
+.search-order {
+  border-radius: 4px;
+  width: 300px;
+  height: 43px;
+  margin-left: 27px;
+  padding-left: 6px;
+}
+.searchImg-1 {
+  width: 20px;
+  height: 20px;
+  margin-top: -70px;
+  margin-left: 833px;
+}
+.batashoes {
+  width: 156px;
+  margin-left: -11px;
+}
+.label-6 {
+  color: #4a4a4a;
+  font-family: unset;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19px;
+  opacity: 0.5;
+  text-align: left;
+}
+.ticket-comments-textarea {
+  background-color: #ecf2f4;
+  border-radius: 4px;
+  width: 860px;
+  height: 123px;
+}
+.hr-ago {
+  color: #9b9b9b;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 16px;
+  text-align: left;
+}
+.naman-R {
+  color: #000000;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: left;
+  margin-left: -6px;
+}
+.hr-ago-margin {
+  margin-left: 43px;
+  padding-left: 70px;
+}
+.margin-claim {
+  margin-left: -28px;
+}
+.comment-02-margin {
+  margin-bottom: 9px;
+}
+.card-radius2 {
+  border-radius: 6px;
+  padding-top: 35px;
+  padding-left: 25px;
+}
+/**************************************/
+
+/* -------------Deepka Savani-------------- */
+
+.High button {
+  background-color: #ffffff;
+  border: 1px solid #d02139;
+  border-radius: 4px;
+  height: 43px;
+  min-width: 67px;
+}
+
+.Low button {
+  background-color: #ffffff;
+  border: 1px solid #5aa805;
+  border-radius: 4px;
+  min-width: 48px;
+  height: 43px;
+}
+.Medium button {
+  background-color: #f5a623;
+  border: 1px solid #f5a623;
+  border-radius: 4px;
+  min-width: 68px;
+  height: 43px;
+}
+
+/* ----------------------------------- */
+
+/* .mask table {
+  border: none !important;
+} */
+
+.addNote-textarea::placeholder {
+  color: #9b9b9b;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19px;
+  text-align: left;
+}
+.card-header1 .row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: 0px !important;
+}
+
+/* ----------------My Ticket List Page--------------------- */
+
+.myticketlist-header {
+  background-color: #ecf2f4;
+  width: auto;
+  height: auto;
+}
+
+.escalation-04-new {
+  color: #2561a8;
+  font-family: Lato;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: left;
+}
+
+.Escalation04-box1 {
+  background-color: #e3ebed;
+  color: #2561a8;
+  border-radius: 4px;
+  width: 137px;
+  height: 43px;
+  text-align: center;
+  padding-top: 5px;
+}
+
+.Add-ticket-button {
+  background-color: #2561a8;
+  border-radius: 4px;
+  width: 185px;
+  height: 43px;
+}
+
+.myticketlist-header table td {
+  padding: 25px 15px 0px 15px;
+  color: #727474;
+}
+.add-tickets {
+  color: #ffffff;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  text-align: left;
+}
+.oval04 {
+  background-color: #2561a8;
+  border-radius: 100%;
+  width: 30px;
+  height: 30px;
+}
+
+/* ---------------------------------------------------------- */
+
+/**************************************/
+
+/********Shlok css for Historical task popup********/
+/**Historical popup css start**/
+.historical-model {
+  border-radius: 10px;
+}
+.table-scrolling {
+  min-height: 300px;
+  overflow: auto;
+  max-height: 350px;
+}
+/**Historical popup css edn**/
+
+/*Progress bar in my tickeyt page*/
+progress {
+  /* RESETS */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+
+  width: 300px;
+  height: 15px;
+  border-radius: 20px;
+  background-color: #777;
+  color: rgb(20, 240, 221);
+}
+
+progress::-webkit-progress-bar {
+  background-color: #777;
+  border-radius: 20px;
+}
+
+progress::-webkit-progress-value {
+  background-color: #f9b54b;
+  border-radius: 20px;
+}
+
+progress::-moz-progress-bar {
+  background-color: #f9b54b;
+  border-radius: 20px;
+}
+.prog-indi-1 {
+  text-align: right;
+  width: 60%;
+  position: relative;
+  left: 2px;
+}

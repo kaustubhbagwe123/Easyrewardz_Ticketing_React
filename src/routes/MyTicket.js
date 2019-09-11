@@ -1,29 +1,22 @@
 import React, { Component } from 'react';
-// import Modal from 'react-bootstrap/Modal';
+import Modal from "react-responsive-modal";
+import HistoricalTable from './HistoricalTable';
 
 class MyTicket extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            // showModel:false             
+        state = {
+            open:false             
         };
-        // this.handleShowModel=this.handleShowModel.bind(this);
-        // this.handleCloseModel=this.handleCloseModel.bind(this);
-    }
-    // handleShowModel(){
-    //     debugger
-    //     this.setState({
-    //         showModel:true
-    //     });
-    // }
-    // handleCloseModel(){
-    //     debugger
-    //     this.setState({
-    //         showModel:false
-    //     });
-    // }
+      
+    onOpenModal = () => {
+        this.setState({ open: true });
+      };
+      onCloseModal = () => {
+        this.setState({ open: false });
+      };
+    
     
     render() {
+        const {open} = this.state;
         return (
             <div>
                 <div className="head-header">
@@ -34,42 +27,32 @@ class MyTicket extends Component {
                             </div>
                             <div className="col-xs-9">
                                 <label className="id-abc-1234">ID - ABC1234
-                                    <img src="Images/loading.png" alt="Loading" className="loading-rectangle" onClick={this.handleShowModel}/>
+                                    
                                     <span className="updated-2-d-ago">Updated 2d ago</span>
+                                    {/* <button onClick={this.onOpenModal}>Open modal</button> */}
                                 </label>
                             </div>
+                            
                             <div className="col-xs-9 oval-head">
                                 <img src="Images/headphone2.png" alt="headphone" className="oval-55" />
                                 <label className="naman-r">Naman.R</label>
                                 <img src="Images/down.png" alt="down" className="down-header" />
-                                <button type="button" className="btn btn-primary1">Submit As Solved
+                                <button type="button" className="btn btn-primary2">Submit As Solved
                                 <img src="Images/down-white.png" alt="headphone" className="down-white" />
                                 </button>
                             </div>
                         </div>
+                        <img src="Images/loading.png" alt="Loading" className="loading-rectangle" onClick={this.onOpenModal}/>
                     </div>
                 </div>
-                {/* <Modal show={this.state.showModel} onHide={this.handleCloseModel} size="md">
-                    <Modal.Header closeButton>
-                        <Modal.Title><b>Historical Ticket</b></Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <div className="row col-md-12">
-                            <div className="col-md-4 form-group">
-                                <label>Employee Name:</label>
-                            </div>
-                            <div className="col-md-4 form-group">
-                                <label>Extension No:</label>
-                            </div>
-                            <div className="col-md-3 form-group">
-                                <label>Department:</label>
-                            </div>
-                        </div>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <button className="btn btn-secondary" onClick={this.handleCloseModel}>Close</button>
-                    </Modal.Footer>
-                </Modal> */}
+                <div className="historical-model">
+
+                
+                <Modal open={open} onClose={this.onCloseModal} className="historical-model">
+                    <h4>Historical Ticket</h4>
+                        <HistoricalTable/>
+                </Modal>
+                </div>
                 <div className="card-rectangle">
                     <div className="rectangle-box">
                         <div className="row">
@@ -84,6 +67,8 @@ class MyTicket extends Component {
                                     <label className="target-closure-date">Target Closure Date &nbsp;</label>
                                     <label className="Date-target">28 March 19</label>
                                 </div>
+                                <progress value="50" max="100"></progress>
+                                <p className="logout-label font-weight-bold prog-indi-1">2 day</p>
                             </div>
                             <div className="vl"></div>
                             <div className="col-md-6">
@@ -91,7 +76,7 @@ class MyTicket extends Component {
                                     <div className="col-md-4">
                                         <div className="form-group">
                                             <label className="label-4">Status</label>
-                                            <select className="rectangle-9" style={{ backgroundColor: '#ECF2F4' }}>
+                                            <select className="rectangle-9">
                                                 <option>Select</option>
                                             </select>
                                         </div>
@@ -99,7 +84,7 @@ class MyTicket extends Component {
                                     <div className="col-md-4 dropdrown">
                                         <div className="form-group">
                                             <label className="label-4">Priority</label>
-                                            <select className="rectangle-9" style={{ backgroundColor: '#ECF2F4' }}>
+                                            <select className="rectangle-9">
                                                 <option>Select</option>
                                             </select>
                                         </div>
@@ -107,7 +92,7 @@ class MyTicket extends Component {
                                     <div className="col-md-4 dropdrown">
                                         <div className="form-group">
                                             <label className="label-4">Brand</label>
-                                            <select className="rectangle-9" style={{ backgroundColor: '#ECF2F4' }}>
+                                            <select className="rectangle-9">
                                                 <option>Select</option>
                                             </select>
                                         </div>
@@ -117,7 +102,7 @@ class MyTicket extends Component {
                                     <div className="col-md-4">
                                         <div className="form-group">
                                             <label className="label-4">Category</label>
-                                            <select className="rectangle-9" style={{ backgroundColor: '#ECF2F4' }}>
+                                            <select className="rectangle-9">
                                                 <option>Select</option>
                                             </select>
                                         </div>
@@ -125,7 +110,7 @@ class MyTicket extends Component {
                                     <div className="col-md-4 dropdrown">
                                         <div className="form-group">
                                             <label className="label-4">Sub Category</label>
-                                            <select className="rectangle-9" style={{ backgroundColor: '#ECF2F4' }}>
+                                            <select className="rectangle-9" >
                                                 <option>Select</option>
                                             </select>
                                         </div>
@@ -133,7 +118,7 @@ class MyTicket extends Component {
                                     <div className="col-md-4 dropdrown">
                                         <div className="form-group">
                                             <label className="label-4">Issue Type</label>
-                                            <select className="rectangle-9" style={{ backgroundColor: '#ECF2F4' }}>
+                                            <select className="rectangle-9">
                                                 <option>Select</option>
                                             </select>
                                         </div>
