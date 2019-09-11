@@ -168,8 +168,8 @@
 .dashboardImg1{
   width: 21px;
   height: 21px;
-  margin-left: 68%;
-  margin-top: -78%;
+  /* margin-left: 68%;
+  margin-top: -78%; */
 }
 .myTicket{
   width: 18px;
@@ -201,16 +201,21 @@
 .dashboards-label1{
   font-size: 17px;
   vertical-align: middle;
-  margin-top: -117%;
-  margin-left: 100px;
+  padding-left: 26px;
+  /* margin-top: -117%;
+  margin-left: 100px; */
 }
 .nav-tab1{
-  margin-top: -10.6%;
+  margin-top: -6%;
   margin-left: 28%;
 }
 .nav-tab2{
   margin-top: -3.5%;
   margin-left: 455px;
+}
+.nav-tab3{
+  margin-top: -41px;
+  margin-left: 68px;
 }
 .ticket-label{
   font-size: 18px;
@@ -298,7 +303,7 @@ padding-top: 5px;
   height: 22px;
   padding: 3px;
   margin-left: 115px;
-  margin-top: -85px;
+  margin-top: -104px;
 }
 .oval-55{
   background-color: #F8E71C;
@@ -309,7 +314,7 @@ padding-top: 5px;
 }
 .oval-head{
   padding-left: 73%;
-  margin-top: -49px;
+  margin-top: -39px;
 }
 .naman-r{
   color: #000000;
@@ -388,6 +393,7 @@ padding-top: 5px;
   font-weight: 700;
   line-height: 17px;
   text-align: left;
+  padding-left: 3px;
 }
 .ticket-details-wher{
   color: #000000;
@@ -711,13 +717,16 @@ padding-top: 5px;
   padding-left:68px;
 }
 .label-2{
-  margin-top: -9px;
+  margin-top: -3px;
   font-size: 18px;
-  margin-bottom: 11px;
+  margin-bottom: 8px;
+  padding-left: 3px;
 }
 .label-3{
-  margin-top: -9px;
+  margin-top: -2px;
   font-size: 14px;
+  padding-left: 3px;
+  padding-bottom: 10px;
 }
 .mail-card{
   background-color: #ECF2F4;
@@ -784,6 +793,7 @@ padding-top: 5px;
   border-radius: 4px;
   width: 158px;
   height: 31px;
+  padding-left: 8px;
 }
 .drop-card{
   margin-top: -15px;
@@ -876,6 +886,7 @@ padding-top: 5px;
   background-color: #2561A8;
   margin-left: 119px;
   margin-top: -48px;
+  color: white;
 }
 .down-white{
    width: 22px;
@@ -2107,3 +2118,10 @@ button {
   line-height: 19px;
   text-align: left;
 }
+.card-header1 .row{
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: 0px !important;
+
+} 
+/**************************************/

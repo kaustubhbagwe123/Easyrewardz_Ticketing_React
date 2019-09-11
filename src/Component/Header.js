@@ -32,19 +32,20 @@ export class Header extends Component {
               <div className="er">
                 <label className="er-label">ER</label>
               </div>
-              <div className="col-md-2">
+              <div className="col-md-2 nav-tab3">
                 <img src="Images/dashboard.png" alt="logo" className="dashboardImg1" />
-                <label className="dashboards-label1">Dashboard</label>
-                {/* <a href="Dashboard" className="dashboards-label">Dashboard</a> */}
+                {/* <label className="dashboards-label1">Dashboard</label> */}
+                <a href="dashboard" className="dashboards-label1">Dashboard</a>
               </div>
+              
               <div className="col-md-2 nav-tab1">
                 <img src="Images/ticket.png" alt="logo" className="myTicket" />
                 {/* <label>My Tickets</label> */}
-                <a href="MyTicket">My Tickets</a>
+                <a href="myTicket">My Tickets</a>
               </div>
               <div className="col-md-2 claim-space">
                 {/* <label className="claim-label">Claim</label> */}
-                <a href="Claim" className="claim-label">Claim</a>
+                <a href="claim" className="claim-label">Claim</a>
               </div>
               <div className="col-md-4 nav-tab2">
                 <img src="Images/knowledge.png" alt="logo" className="knowledgeNav" />
