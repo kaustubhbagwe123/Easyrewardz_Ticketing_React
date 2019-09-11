@@ -6,6 +6,7 @@
   /* margin-bottom: 30px; */
   -webkit-transition: all 0.5s ease-in-out;
   transition: all 0.5s ease-in-out;
+  background-color: white;
 }
 .rectangle-nav-header{
     background-color: #FFFFFF;
@@ -2121,5 +2122,70 @@ button {
   flex-wrap: wrap;
   margin-right: 0px !important;
 
+}
+
+
+/* ----------------My Ticket List Page--------------------- */
+
+.myticketlist-header{
+  background-color: #ECF2F4;
+  width: auto;
+  height: auto;
+}
+
+
+.escalation-04-new{
+  color: #2561A8;
+  font-family: Lato;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 18px;  
+  text-align: left;
+}
+
+
+.Escalation04-box1{
+  background-color: #E3EBED;
+  color: #2561A8;
+  border-radius: 4px;
+  width: 137px;
+  height: 43px;
+  text-align: center;
+    padding-top: 5px;
+}
+
+.Add-ticket-button{
+  background-color: #2561A8;
+  border-radius: 4px;
+  width: 185px;
+  height: 43px;
+}
+
+.myticketlist-header table td{
+  padding: 25px 15px 0px 15px;
+  color: #727474;
+
+}
+.add-tickets{
+  color: #FFFFFF;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  text-align: left;
 } 
+.oval04{
+  background-color: #2561A8;
+  border-radius: 100%;
+  width: 30px;
+  height: 30px;
+}
+
+
+
+/* ---------------------------------------------------------- */
+
+
 /**************************************/
+
+

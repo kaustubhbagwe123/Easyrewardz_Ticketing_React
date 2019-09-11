@@ -17,7 +17,7 @@ class ProgramCodeSignIn extends Component {
               </div>
               <h3 className="mb-4" style={{ textAlign: "left" }}>SIGN IN</h3>
               <div className="input-group mb-3">
-                <input type="email" className="form-control" placeholder="ProgramCode*" />
+                <input type="email" className="form-control" placeholder="Program Code*" />
               </div>
               <button type="button" 
               className="btn btn-primary form-control" 

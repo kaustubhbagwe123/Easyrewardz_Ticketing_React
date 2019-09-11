@@ -6,6 +6,7 @@ import MyTicket from "./MyTicket";
 import TicketSystem from "./TicketSystem";
 import Chatbot from './Chatbot'
 import Claim from "./Claim";
+import MyTicketList from './MyTicketList'; 
 // import Aux from "./../Component/Aux";
 
 export class App extends Component {
@@ -18,6 +19,8 @@ export class App extends Component {
         <Route exact path={`/ticketSystem`} component={TicketSystem} />
         <Route exact path={`/chatbot`} component={Chatbot} />
         <Route exact path={`/claim`} component={Claim} />
+        <Route exact path={`/myTicketList`} component={MyTicketList} />
+        
       </Layout>
     );
   }
