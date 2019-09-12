@@ -4,7 +4,7 @@ import Modal from "react-modal";
 
 class ClaimTabTicketView extends Component {
   constructor(props) {
-    Modal.setAppElement("body");
+    Modal.setAppElement("");
     super(props);
 
     this.state = {
