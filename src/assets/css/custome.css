@@ -2423,6 +2423,15 @@ progress::-moz-progress-bar {
 .pieChart-Margin {
   margin-left: -35px;
 }
+#Historical-popup {
+  border-radius: 8px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+  padding: 10;
+  margin-right: 360px;
+  margin-top: 0;
+  margin-bottom: 0;
+  display: inline-block;
+}
 /* ---------------------------Deepak Savani Task:Claim Tab Ticket View-----------------------------   */
 
 .claim-00-1 {
@@ -2443,6 +2452,10 @@ progress::-moz-progress-bar {
   font-weight: 700;
   line-height: 19px;
   text-align: left;
+}
+.mask task tr{
+  height: 0px;
+    border-bottom: none;
 }
 /* ------------------------------------------------------------------------------------------------- */
 /* model close button css */
