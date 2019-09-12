@@ -61,7 +61,10 @@ class MyTicket extends Component {
                 <div className="historical-model">
 
                 
-                <Modal open={open} onClose={this.onCloseModal} className="historical-model">
+                <Modal open={open} onClose={this.onCloseModal} 
+                    closeIconId="sdsg"
+                    modalId="Historical-popup"
+                    overlayId="logout-ovrly">
                     <h4>Historical Ticket</h4>
                         <HistoricalTable/>
                 </Modal>

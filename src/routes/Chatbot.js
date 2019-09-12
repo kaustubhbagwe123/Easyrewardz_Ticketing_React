@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import Demo from '../store/Hashtag'
-
+import Demo from '../store/Hashtag';
+import UserImg from './../assets/Images/user-info.png'
 class Chatbot extends Component {
     render() {
         return (
@@ -124,7 +124,7 @@ class Chatbot extends Component {
                                                     <div className="d-flex">
                                                         <p className="chat-user-name">Mohit Verma</p>
                                                         <a href={Demo.BLANK_LINK} className="ml-2">
-                                                            <img src="Images/user-info.png" alt="icon missing" />
+                                                            <img src={UserImg} alt="user" />
                                                         </a>
                                                     </div>
                                                     <div className="chat-user-num">
