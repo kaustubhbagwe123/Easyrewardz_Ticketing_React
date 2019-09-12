@@ -60,14 +60,14 @@ class Header extends Component {
                     className="myTicket"
                   />
                   {/* <label>My Tickets</label> */}
-                  <a href="myTicket">
+                  <a href="myTicketlist">
                     <label>My Tickets</label>
                   </a>
                 </div>
                 <div className="col-md-2 claim-space">
                   {/* <label className="claim-label">Claim</label> */}
                   <a href="claim">
-                    <label className="claim-label">Claim</label>
+                    <label>Claim</label>
                   </a>
                 </div>
                 <div className="col-md-4 nav-tab2">
