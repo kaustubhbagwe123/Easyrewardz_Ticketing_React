@@ -103,10 +103,8 @@ class Header extends Component {
           </div>
         </div>
 
-        <Modal onClose={this.closeModal} open={this.state.modalIsOpen} 
-         modalId="notification-popup"
-            overlayId="logout-ovrly">
-
+        <Modal onClose={this.closeModal} open={this.state.modalIsOpen} >
+              
           <div className="row rowpadding">
             <div className="md-2 rectangle-2 lable05">
               <label className="labledata">05</label>
@@ -117,7 +115,7 @@ class Header extends Component {
             <div className="viewticketspeadding">
               <a href="{#}">
                 {" "}
-                <label className="md-4 view-tickets" >VIEW TICKETS</label>
+                <label className="md-4 view-tickets">VIEW TICKETS</label>
               </a>
             </div>
           </div>
@@ -161,9 +159,7 @@ class Header extends Component {
             <div className="logout-block">
               <div>
                 <div className="user-img">
-                  
                   <img src={UserLogo} alt="User" />
- 
                 </div>
                 <div>
                   <p>Naman Rampal</p>
