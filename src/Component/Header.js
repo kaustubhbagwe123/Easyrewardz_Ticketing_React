@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 import { ProgressBar } from "react-bootstrap";
 import Modal from "react-responsive-modal";
-import DashboardLogo from './../assets/Images/dashboard.png';
-import TicketLogo from './../assets/Images/ticket.png';
-import KnowledgeLogo from './../assets/Images/knowledge.png';
-import CalenderLogo from './../assets/Images/calender.png'; 
-import ChatLogo from './../assets/Images/chat.png'; 
-import NotificationLogo from './../assets/Images/Notification.png'; 
-import SettingLogo from './../assets/Images/setting.png'; 
+import DashboardLogo from "./../assets/Images/dashboard.png";
+import TicketLogo from "./../assets/Images/ticket.png";
+import KnowledgeLogo from "./../assets/Images/knowledge.png";
+import CalenderLogo from "./../assets/Images/calender.png";
+import ChatLogo from "./../assets/Images/chat.png";
+import NotificationLogo from "./../assets/Images/Notification.png";
+import SettingLogo from "./../assets/Images/setting.png";
+import UserLogo from "./../assets/Images/user-img.jpg";
+import StatusLogo from "./../assets/Images/status.png";
 
 class Header extends Component {
   state = {
@@ -54,11 +56,7 @@ class Header extends Component {
                 </div>
 
                 <div className="col-md-2 nav-tab1">
-                  <img
-                    src={TicketLogo}
-                    alt="logo"
-                    className="myTicket"
-                  />
+                  <img src={TicketLogo} alt="logo" className="myTicket" />
                   {/* <label>My Tickets</label> */}
                   <a href="myTicketlist">
                     <label>My Tickets</label>
@@ -81,11 +79,7 @@ class Header extends Component {
               </div>
               <div className="main-nav">
                 <div className="bitmap1">
-                  <img
-                    src={CalenderLogo}
-                    alt="logo"
-                    className="calImg"
-                  />
+                  <img src={CalenderLogo} alt="logo" className="calImg" />
                 </div>
                 <div className="bitmap2">
                   <img src={ChatLogo} alt="logo" className="chatImg" />
@@ -99,11 +93,7 @@ class Header extends Component {
                   />
                 </div>
                 <div className="bitmap4">
-                  <img
-                    src={SettingLogo}
-                    alt="logo"
-                    className="setting"
-                  />
+                  <img src={SettingLogo} alt="logo" className="setting" />
                 </div>
                 <div className="bitmap5">
                   <label onClick={this.onOpenModal}>NR</label>
@@ -164,12 +154,15 @@ class Header extends Component {
             center
             modalId="logout-popup"
             overlayId="logout-ovrly"
-             
           >
             <div className="logout-block">
               <div>
                 <div className="user-img">
+<<<<<<< HEAD
                   <img src="Images/user-img.jpg" alt="user-img" />
+=======
+                  <img src={UserLogo} alt="User" />
+>>>>>>> 02c69aa8fd0afa356ed188190bca356007e64aec
                 </div>
                 <div>
                   <p>Naman Rampal</p>
@@ -180,7 +173,7 @@ class Header extends Component {
               <div className="status-sctn">
                 <div className="d-flex align-items-center">
                   <div className="logout-status">
-                    <img src="Images/status.png" alt="icon missing" />
+                    <img src={StatusLogo} alt="status" />
                   </div>
                   <p className="logout-label chat-status">Chat Status :</p>
                 </div>

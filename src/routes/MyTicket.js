@@ -10,6 +10,13 @@ import EyeImg from './../assets/Images/eye.png';
 import BillInvoiceImg from './../assets/Images/bill-Invoice.png';
 import MsgImg from './../assets/Images/msg.png';
 import Down1Img from './../assets/Images/down-1.png';
+import ArrowImg from './../assets/Images/arrow.png';
+import PlusImg from './../assets/Images/plus.png';
+import RightImg from './../assets/Images/right.png';
+import Up1Img from './../assets/Images/up-1.png';
+import Loading1Img from './../assets/Images/loading1.png';
+import FacebookImg from './../assets/Images/facebook.png';
+import ClipImg from './../assets/Images/clip.png';
 
 class MyTicket extends Component {
         state = {
@@ -22,8 +29,6 @@ class MyTicket extends Component {
       onCloseModal = () => {
         this.setState({ open: false });
       };
-    
-    
     render() {
         const {open} = this.state;
         return (
@@ -56,7 +61,10 @@ class MyTicket extends Component {
                 <div className="historical-model">
 
                 
-                <Modal open={open} onClose={this.onCloseModal} className="historical-model">
+                <Modal open={open} onClose={this.onCloseModal} 
+                    closeIconId="sdsg"
+                    modalId="Historical-popup"
+                    overlayId="logout-ovrly">
                     <h4>Historical Ticket</h4>
                         <HistoricalTable/>
                 </Modal>
@@ -170,9 +178,9 @@ class MyTicket extends Component {
                                     <img src={MsgImg} alt="msg" className="smg-Img" />
                                     <label className="email">Email</label>
                                     <img src={Down1Img} alt="down" className="down-1" />
-                                    <img src="Images/arrow.png" alt="Arrow" className="arrow-img" />
+                                    <img src={ArrowImg} alt="Arrow" className="arrow-img" />
                                     <div className="line-1"></div>
-                                    <img src="Images/plus.png" alt="Plush" className="plush-img" />
+                                    <img src={PlusImg} alt="Plush" className="plush-img" />
                                 </div>
                             </div>
                         </div>
@@ -214,15 +222,15 @@ class MyTicket extends Component {
                         </div>
                         <div className="row">
                             <div className="col-md-4">
-                                <img src="Images/right.png" alt="right" className="oval-5" />
+                                <img src={RightImg} alt="right" className="oval-5" />
                                 <label className="solved-by-naman-r">Solved by NamanR</label>
-                                <img src="Images/msg.png" alt="right" className="smg-Img" />
+                                <img src={MsgImg} alt="right" className="smg-Img" />
                             </div>
                             <div className="col-md-6">
                                 <label className="i-have-solved-this-i">I Have solved this issue</label>
                             </div>
                             <div className="col-md-2">
-                                <img src="Images/up-1.png" alt="up" className="up-1" />
+                                <img src={Up1Img} alt="up" className="up-1" />
                                 <label className="comment">Comment</label>
                             </div>
                         </div>
@@ -255,7 +263,7 @@ class MyTicket extends Component {
                         </div>
                         <div className="row" style={{ marginLeft: "20px" }}>
                             <div className="col-xs-3">
-                                <img src="Images/loading1.png" alt="right" className="oval-loading" />
+                                <img src={Loading1Img} alt="right" className="oval-loading" />
                             </div>
                             <div className="col-xs-9">
                                 <label className="rashmi-c">Rashmi.C
@@ -271,15 +279,15 @@ class MyTicket extends Component {
                         </div>
                         <div className="row row-spacing">
                             <div className="col-xs-3">
-                                <img src="Images/headphone2.png" alt="headphone" className="oval-56" />
+                                <img src={Headphone2Img} alt="headphone" className="oval-56" />
                             </div>
                             <div className="col-xs-9">
                                 <label className="rashmi-c">Rashmi.C</label>
-                                <img src="Images/facebook.png" alt="facebook" className="facebook" />
+                                <img src={FacebookImg} alt="facebook" className="facebook" />
                             </div>
                             <div className="col-md-8">
                                 <label className="hi-diwakar-i-really">
-                                    <img src="Images/clip.png" alt="clip" className="clip" />&nbsp;
+                                    <img src={ClipImg} alt="clip" className="clip" />&nbsp;
                                     Hi Diwakar, I really appreciate you joining us at Voucherify!
                                     My top priority is that you have a great experience.</label>
                             </div>
@@ -290,11 +298,11 @@ class MyTicket extends Component {
                         </div>
                         <div className="row row-spacing">
                             <div className="col-xs-3">
-                                <img src="Images/avatar.png" alt="Avatar" className="oval-6" />
+                                <img src={FacebookImg} alt="Avatar" className="oval-6" />
                             </div>
                             <div className="col-xs-9">
                                 <label className="rashmi-c">Diwakar</label>
-                                <img src="Images/headphone2.png" alt="headphone" className="headphone1" />
+                                <img src={Headphone2Img} alt="headphone" className="headphone1" />
                             </div>
                             <div className="col-md-8">
                                 <label className="need-to-change-my-sh">

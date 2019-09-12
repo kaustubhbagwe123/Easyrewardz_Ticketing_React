@@ -3,23 +3,44 @@ import "../../node_modules/jquery/dist/jquery.js";
 import "../../node_modules/popper.js/dist/popper.js";
 import "../../node_modules/bootstrap/dist/js/bootstrap.js";
 import PieChart from "../Component/PieChart/PieChart";
-import SearchIcon from './../assets/Images/search-icon.png'
-import TableArr from './../assets/Images/table-arr.png' 
-import InfoIcon from './../assets/Images/info-icon.png';
-import TaskIconBlue from './../assets/Images/task-icon-blue.png';
-import TaskIconGray from './../assets/Images/task-icon-gray.png'; 
-import CliamIconBlue from './../assets/Images/cliam-icon-blue.png';
-import Demo from '../store/Hashtag.js'
-
+import SearchIcon from "./../assets/Images/search-icon.png";
+import TableArr from "./../assets/Images/table-arr.png";
+import InfoIcon from "./../assets/Images/info-icon.png";
+import TaskIconBlue from "./../assets/Images/task-icon-blue.png";
+import TaskIconGray from "./../assets/Images/task-icon-gray.png";
+import CliamIconBlue from "./../assets/Images/cliam-icon-blue.png";
+import Demo from "../store/Hashtag.js";
 
 import BarChart from "../Component/PieChart/BarChart.js";
 import MultiBarChart from "../Component/PieChart/MultiBarChart.js";
 class Dashboard extends Component {
-
-  
   render() {
     return (
       <div>
+        <div className="container-fluid dash-dropdowns">
+          <div className="d-flex">
+            <div>
+              <span>Brand : </span>
+              <select>
+                <option>All</option>
+              </select>
+            </div>
+            <div>
+              <span>Agent : </span>
+              <select>
+                <option>All</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <div>
+              <span>Date Range : </span>
+              <select>
+                <option>Last 7 days</option>
+              </select>
+            </div>
+          </div>
+        </div>
         <section className="dash-cntr">
           <div className="container-fluid btm-mar">
             <div className="row">
@@ -62,7 +83,7 @@ class Dashboard extends Component {
                 <div className="dash-top-cards">
                   <p className="card-head">Open By Priority</p>
                   <div className="pieChart-Margin">
-                  <PieChart />
+                    <PieChart />
                   </div>
                 </div>
               </div>
@@ -101,7 +122,7 @@ class Dashboard extends Component {
                       role="tabpanel"
                       aria-labelledby="bill-graph-tab"
                     >
-                       <BarChart/>
+                      <BarChart />
                     </div>
                     <div
                       className="tab-pane fade"
@@ -109,7 +130,7 @@ class Dashboard extends Component {
                       role="tabpanel"
                       aria-labelledby="source-tab"
                     >
-                       <BarChart/>
+                      <BarChart />
                     </div>
                   </div>
                 </div>
@@ -179,7 +200,7 @@ class Dashboard extends Component {
                       role="tabpanel"
                       aria-labelledby="task-tab"
                     >
-                     <MultiBarChart/>
+                      <MultiBarChart />
                     </div>
                     <div
                       className="tab-pane fade"
@@ -187,7 +208,7 @@ class Dashboard extends Component {
                       role="tabpanel"
                       aria-labelledby="claim-tab"
                     >
-                       <BarChart/>
+                      <BarChart />
                     </div>
                   </div>
                 </div>
