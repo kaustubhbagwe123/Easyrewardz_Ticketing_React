@@ -34,7 +34,6 @@
 }
 .claim-label {
   margin-left: 333%;
-  color: black;
 }
 .knowledge-base {
   color: #4a4a4a;
@@ -815,6 +814,7 @@
   width: 158px;
   height: 31px;
   padding-left: 8px;
+  border-color: #ecf2f4;
 }
 .drop-card {
   margin-top: -15px;
@@ -2382,3 +2382,26 @@ progress::-moz-progress-bar {
   position: relative;
   left: 2px;
 }
+
+/* ---------------------------Deepak Savani Task:Claim Tab Tocket View-----------------------------   */
+
+.claim-00-1 {
+  color: #2561a8;  
+  font-family: sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19px;
+  text-align: left;
+  padding-right: 5%;
+  margin-left: -202px;
+}
+
+.messages-04-1{
+  color: #4a4a4a;
+  font-family: unset;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19px;
+  text-align: left;
+}
+/* ------------------------------------------------------------------------------------------------- */

@@ -4,9 +4,9 @@ import "./../assets/css/custome.css";
 import Logo from "./../assets/Images/logo.jpg";
 
 class SingIn extends Component {
-  componentDidMount() {
-    document.querySelectorAll(".card-Nav")[0].style.display = "none";
-  }
+    hanleChange = () => {
+        this.props.history.push("/admin/dashboard");
+      };
 
   render() {
     return (
@@ -40,6 +40,7 @@ class SingIn extends Component {
                   borderColor: "#2561A8",
                   letterSpacing: "0.5px"
                 }}
+                onClick={this.hanleChange}
               >
                 LOGIN
               </button>
