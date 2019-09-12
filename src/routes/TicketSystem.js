@@ -1,4 +1,11 @@
 import React, { Component } from 'react';
+import ArrowLeftCircleBlue from './../assets/Images/arrow-circle-left.png'
+import RedHeadPhoneIcon from './../assets/Images/headphone.png';
+import CopyIcon from './../assets/Images/copy.png';
+import CustomreIcon from './../assets/Images/customer.png'
+import OrderIcon from './../assets/Images/order.png';
+import StoreIcon from './../assets/Images/store.png';
+import TaskIcon from './../assets/Images/ticket.png'; 
 class TicketSystem extends Component {
 
     constructor() {
@@ -25,20 +32,20 @@ class TicketSystem extends Component {
                   <tr>
                     <td className="tdicon">
                       <img
-                        src="Images/arrow-circle-left.png"
-                        alt="logo"
+                        src={ArrowLeftCircleBlue}
+                        alt="arrow-circle-left"
                         className="bitmapback"
                       />
                       <label className="source">Source</label>
                       <img
-                        src="Images/headphone.png"
-                        alt="logo"
+                        src={RedHeadPhoneIcon}
+                        alt="headphone"
                         className="bitmapheadpone"
                       />
                       <label className="a91-9873470074">+91-9873470074</label>
                       <img
-                        src="Images/copy.png"
-                        alt="logo"
+                        src={CopyIcon}
+                        alt="Copy-Icon"
                         className="bitmapheadpone"
                       />
                     </td>
@@ -255,8 +262,8 @@ class TicketSystem extends Component {
                       <div className="btn-group-vertical">
                         <div>
                           <img
-                            src="Images/customer.png"
-                            alt="customer"
+                            src={CustomreIcon}
+                            alt="customer-icon"
                             className="customer-icon"
                           />
                         </div>
@@ -264,8 +271,8 @@ class TicketSystem extends Component {
                         <br />
                         <div>
                           <img
-                            src="Images/order.png"
-                            alt="customer"
+                            src={OrderIcon}
+                            alt="order-icon"
                             className="order-icon"
                           />
                         </div>
@@ -273,8 +280,8 @@ class TicketSystem extends Component {
                         <br />
                         <div>
                           <img
-                            src="Images/store.png"
-                            alt="customer"
+                            src={StoreIcon}
+                            alt="store-icon"
                             className="store-icon"
                           />
                         </div>
@@ -282,8 +289,8 @@ class TicketSystem extends Component {
                         <br />
                         <div>
                           <img
-                            src="Images/ticket.png"
-                            alt="customer"
+                            src={TaskIcon}
+                            alt="task-icon"
                             className="task-icon"
                           />
                         </div>

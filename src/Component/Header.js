@@ -113,7 +113,7 @@ class Header extends Component {
           </div>
         </div>
 
-        <Modal onClose={this.closeModal} open={this.state.modalIsOpen}>
+        <Modal onClose={this.closeModal} open={this.state.modalIsOpen} positionID="" >
           <div className="row rowpadding">
             <div className="md-2 rectangle-2 lable05">
               <label className="labledata">05</label>
@@ -169,7 +169,7 @@ class Header extends Component {
             <div className="logout-block">
               <div>
                 <div className="user-img">
-                  <img src="Images/user-img.jpg" alt="image missing" />
+                  <img src="Images/user-img.jpg" alt="user-img" />
                 </div>
                 <div>
                   <p>Naman Rampal</p>

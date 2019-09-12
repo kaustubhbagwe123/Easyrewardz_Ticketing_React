@@ -1,5 +1,21 @@
 import React,{Component} from 'react';
 import Modal from "react-modal";
+import RedHeadPhoneIcon from './../assets/Images/headphone.png';
+import HeadPhoneIcon from './../assets/Images/headphone2.png';
+import DownIcon from './../assets/Images/down.png';
+import DownWhite from "./../assets/Images/down-white.png";
+import LoadingIcon from './../assets/Images/loading.png';
+import EyeIcon from "./../assets/Images/eye.png";
+import BillInvoiceIcon from './../assets/Images/bill-Invoice.png';
+import MessageIcon from './../assets/Images/msg.png';
+import DownBlackIcon from './../assets/Images/down-1.png';
+import ArrowIcon from  './../assets/Images/arrow.png';
+import PlusIcon from './../assets/Images/plus.png';
+import TableArrowIcon from './../assets/Images/table-arr.png';
+import InfoIcon from './../assets/Images/info-icon.png';
+// import BlackLeftArrow from './../assets/Images/black-left-arrow.png';
+// import BataShoesIcon from './../assets/Images/bata.png';
+// import StoreIcon from './../assets/Images/store.png';
  
 
 class ClaimTabTicketView extends Component {
@@ -40,8 +56,8 @@ class ClaimTabTicketView extends Component {
             <div className="row">
               <div className="col-xs-3">
                 <img
-                  src="Images/headphone.png"
-                  alt="headphone"
+                  src={RedHeadPhoneIcon}
+                  alt="Red-headphone-Icon"
                   className="headphone"
                 />
               </div>
@@ -54,26 +70,22 @@ class ClaimTabTicketView extends Component {
               </div>
 
               <div className="col-xs-9 oval-head">
-                <img
-                  src="Images/headphone2.png"
-                  alt="headphone"
-                  className="oval-55"
-                />
+                <img src={HeadPhoneIcon} alt="headphone" className="oval-55" />
                 <label className="naman-r">Naman.R</label>
-                <img src="Images/down.png" alt="down" className="down-header" />
+                <img src={DownIcon} alt="down-icon" className="down-header" />
                 <button type="button" className="btn btn-primary2">
                   Submit As Solved
                   <img
-                    src="Images/down-white.png"
-                    alt="headphone"
+                    src={DownWhite}
+                    alt="down-white"
                     className="down-white"
                   />
                 </button>
               </div>
             </div>
             <img
-              src="Images/loading.png"
-              alt="Loading"
+              src={LoadingIcon}
+              alt="Loading-icon"
               className="loading-rectangle"
             />
             {/* <img src="Images/loading.png" alt="Loading" className="loading-rectangle" onClick={this.onOpenModal}/> */}
@@ -94,11 +106,11 @@ class ClaimTabTicketView extends Component {
                 <label className="mobile-number">Mobile Number</label>
                 <br />
                 <label className="mobile-no">+91 9873470074</label>
-                <img src="Images/eye.png" alt="eye" className="eyeImg" />
+                <img src={EyeIcon} alt="eye-icon" className="eyeImg" />
                 <div className="bill-1">
                   <img
-                    src="Images/bill-Invoice.png"
-                    alt="eye"
+                    src={BillInvoiceIcon}
+                    alt="bill-Invoice-icon"
                     className="billImg"
                   />
                 </div>
@@ -208,20 +220,12 @@ class ClaimTabTicketView extends Component {
             <div className="row">
               <div className="mask1">
                 <div className="mail-mask">
-                  <img src="Images/msg.png" alt="msg" className="smg-Img" />
+                  <img src={MessageIcon} alt="msg-icon" className="smg-Img" />
                   <label className="email">Email</label>
-                  <img src="Images/down-1.png" alt="down" className="down-1" />
-                  <img
-                    src="Images/arrow.png"
-                    alt="Arrow"
-                    className="arrow-img"
-                  />
+                  <img src={DownBlackIcon} alt="down-icon" className="down-1" />
+                  <img src={ArrowIcon} alt="Arrow-icon" className="arrow-img" />
                   <div className="line-1"></div>
-                  <img
-                    src="Images/plus.png"
-                    alt="Plush"
-                    className="plush-img"
-                  />
+                  <img src={PlusIcon} alt="Plush-icon" className="plush-img" />
                 </div>
               </div>
             </div>
@@ -250,21 +254,21 @@ class ClaimTabTicketView extends Component {
                       {/* Status <img src="Images/table-arr.png" alt="missing" /> */}
                     </th>
                     <th className="table-img-cntr"></th>
+                    <th>Claim Issue Type</th>
                     <th>
-                      Subject<span>/Lastest Message</span>
+                      Category <img src={TableArrowIcon} alt="table-arr-icon" />
                     </th>
                     <th>
-                      Category <img src="Images/table-arr.png" alt="missing" />
-                    </th>
-                    <th>
-                      Raised by <img src="Images/table-arr.png" alt="missing" />
+                      Raised by{" "}
+                      <img src={TableArrowIcon} alt="table-arr-icon" />
                     </th>
                     <th>
                       Creation on{" "}
-                      <img src="Images/table-arr.png" alt="missing" />
+                      <img src={TableArrowIcon} alt="table-arr-icon" />
                     </th>
                     <th>
-                      Assign to <img src="Images/table-arr.png" alt="missing" />
+                      Assign to{" "}
+                      <img src={TableArrowIcon} alt="table-arr-icon" />
                     </th>
                   </tr>
                 </thead>
@@ -283,8 +287,8 @@ class ClaimTabTicketView extends Component {
                       Defective article{" "}
                       <img
                         className="info-icon"
-                        src="Images/info-icon.png"
-                        alt="issing"
+                        src={InfoIcon}
+                        alt="info-icon"
                       />
                     </td>
                     <td>N Rampal</td>
@@ -292,8 +296,8 @@ class ClaimTabTicketView extends Component {
                       12 March 2018{" "}
                       <img
                         className="info-icon"
-                        src="Images/info-icon.png"
-                        alt="missing"
+                        src={InfoIcon}
+                        alt="info-icon"
                       />
                     </td>
                     <td>A. Bansal</td>
@@ -321,8 +325,8 @@ class ClaimTabTicketView extends Component {
                       Defective article{" "}
                       <img
                         className="info-icon"
-                        src="Images/info-icon.png"
-                        alt="imissing"
+                        src={InfoIcon}
+                        alt="info-icon"
                       />
                     </td>
                     <td>N Rampal</td>
@@ -330,8 +334,8 @@ class ClaimTabTicketView extends Component {
                       12 March 2018{" "}
                       <img
                         className="info-icon"
-                        src="Images/info-icon.png"
-                        alt="missing"
+                        src={InfoIcon}
+                        alt="info-icon"
                       />
                     </td>
                     <td>G. Bansal</td>
@@ -357,8 +361,8 @@ class ClaimTabTicketView extends Component {
                       Defective article{" "}
                       <img
                         className="info-icon"
-                        src="Images/info-icon.png"
-                        alt=" missing"
+                        src={InfoIcon}
+                        alt="info-icon"
                       />
                     </td>
                     <td>N Rampal</td>
@@ -366,8 +370,8 @@ class ClaimTabTicketView extends Component {
                       12 March 2018{" "}
                       <img
                         className="info-icon"
-                        src="Images/info-icon.png"
-                        alt="missing"
+                        src={InfoIcon}
+                        alt="info-icon"
                       />
                     </td>
                     <td>G. Bansal</td>
@@ -377,7 +381,7 @@ class ClaimTabTicketView extends Component {
             </div>
           </div>
         </div>
-        <Modal
+        {/* <Modal
           className="CliamDetailsModal"
           onRequestClose={this.closeModal}
           isOpen={this.state.modalIsOpen}
@@ -386,8 +390,8 @@ class ClaimTabTicketView extends Component {
           <div className="row">
             <div style={{ marginLeft: "40px" }}>
               <img
-                src="Images/black-left-arrow.png"
-                alt="back"
+                src={BlackLeftArrow}
+                alt="black-left-arrow-icon"
                 className="black-left-arrow"
               />
             </div>
@@ -463,8 +467,8 @@ class ClaimTabTicketView extends Component {
               <div>
                 <label className="attached-image">ATTACHED IMAGES</label>
               </div>
-              <div>
-                <img src="Images/bata.png" alt="bata"></img>
+              <div className="batashoes-icon">
+                <img src={BataShoesIcon} alt="bata-icon" ></img>
               </div>
             </div>
           </div>
@@ -479,8 +483,8 @@ class ClaimTabTicketView extends Component {
             </div>
 
             <hr />
-            <div className="table-responsive" style={{ marginLeft: "10px" }}>
-              <table className="table borderless">
+            <div className="borderless" style={{ marginLeft: "10px" }}>
+              <table className="table">
                 <tbody>
                   <tr>
                     <td>
@@ -538,7 +542,7 @@ class ClaimTabTicketView extends Component {
                 <table className="table borderless">
                   <tbody>
                     {/* ----------------------Header Start------------------------- */}
-                    <tr>
+                    {/* <tr>
                       <td>
                         <label className="invoice-number">SKU</label>
                       </td>
@@ -557,9 +561,9 @@ class ClaimTabTicketView extends Component {
                       <td>
                         <label className="invoice-number">MOP</label>
                       </td>
-                    </tr>
+                    </tr> */}
                     {/* -------------------------Header End---------------------------- */}
-                    <tr>
+                    {/* <tr>
                       <td>
                         <label className="bb-332398">BB332398</label>
                       </td>
@@ -618,9 +622,9 @@ class ClaimTabTicketView extends Component {
                 <div className="col-md-2">
                   <div className="oval-5">
                     <img
-                      src="Images/store.png"
+                      src={StoreIcon}
                       style={{ padding: "2px" }}
-                      alt="store"
+                      alt="store-icon"
                     />
                   </div>
                 </div>
@@ -640,9 +644,9 @@ class ClaimTabTicketView extends Component {
                 <div className="col-md-2">
                   <div className="oval-5">
                     <img
-                      src="Images/store.png"
+                      src={StoreIcon}
                       style={{ padding: "2px" }}
-                      alt="store"
+                      alt="store-icon"
                     />
                   </div>
                 </div>
@@ -667,7 +671,7 @@ class ClaimTabTicketView extends Component {
               </button>
             </div>
           </div>
-        </Modal>
+        </Modal> */} 
       </>
     );
   }
