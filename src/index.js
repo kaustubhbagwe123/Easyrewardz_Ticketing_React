@@ -25,7 +25,6 @@ ReactDOM.render(
     <Route exact path="/SignIn" component={SignIn} />
     <Route exact path="/Forgotpassword" component={ForgotPassword} />
     <Route exact path="/PieChart" component={PieChart} />
-    {/* <Route exact path="/MyTicket" component={MyTicket}/> */}
   </Router>,
   document.getElementById("root")
 );

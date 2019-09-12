@@ -2,6 +2,10 @@ import React, { Component } from 'react'
 import { Collapse, CardBody, Card } from 'reactstrap';
 import TableDemo from './TableDemo';
 import BataShoes from './../assets/Images/Bata-shoes.jpg';
+import SearchBlueImg from './../assets/Images/search-blue.png'
+import ArrowImg from './../assets/Images/arrow.png'
+import PlusImg from './../assets/Images/plus.png'
+import Headphone2Img from './../assets/Images/headphone2.png'
 
 class Claim extends Component {
     constructor(props) {
@@ -46,16 +50,16 @@ class Claim extends Component {
                                     <div className="row">
                                         <div className="col-md-9">
                                             <input type="text" className="search-mobile-textbox" placeholder="Enter Phone Number" />
-                                            <img src="Images/search-blue.png" alt="Search" className="searchImg" />
+                                            <img src={SearchBlueImg} alt="Search" className="searchImg" />
                                         </div>
                                     </div>
                                     <div className="row">
                                         <div className="claim-status-card">
                                             <label><b>Claim Status: Open</b></label>
                                             <div className="line-2"></div>
-                                            <img src="Images/arrow.png" alt="Arrow" className="arrow-img-1" />
+                                            <img src={ArrowImg} alt="Arrow" className="arrow-img-1" />
                                             <div className="line-3"></div>
-                                            <img src="Images/plus.png" alt="Plush" className="plush-img-1" onClick={this.toggle} />
+                                            <img src={PlusImg} alt="Plush" className="plush-img-1" onClick={this.toggle} />
                                         </div>
 
                                         <Collapse isOpen={this.state.collapse}>
@@ -78,19 +82,19 @@ class Claim extends Component {
                                     <div className="row margin-claim">
                                         <div className="form-group col-md-4">
                                             <label className="label-6">Claim Category</label>
-                                            <select id="inputState" className="form-control">
+                                            <select id="inputState" className="form-control dropdown-label">
                                                 <option>select</option>
                                             </select>
                                         </div>
                                         <div className="form-group col-md-4">
                                             <label className="label-6">Sub Category</label>
-                                            <select id="inputState" className="form-control">
+                                            <select id="inputState" className="form-control dropdown-label">
                                                 <option>select</option>
                                             </select>
                                         </div>
                                         <div className="form-group col-md-4">
                                             <label className="label-6">Claim Type</label>
-                                            <select id="inputState" className="form-control">
+                                            <select id="inputState" className="form-control dropdown-label">
                                                 <option>select</option>
                                             </select>
                                         </div>
@@ -126,7 +130,7 @@ class Claim extends Component {
                                     </div>
                                     <div className="row comment-02-margin">
                                         <div className="col-xs-3">
-                                        <img src="Images/headphone2.png" alt="headphone" className="oval-55"/>
+                                        <img src={Headphone2Img} alt="headphone" className="oval-55"/>
                                         </div>
                                         <div className="col-md-9">
                                             <label className="naman-R">Naman.R</label>

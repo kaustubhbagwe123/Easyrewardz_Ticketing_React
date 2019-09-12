@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Route, Redirect } from "react-router-dom";
+import { Route } from "react-router-dom";
 import Dashboard from "./Dashboard";
 import Layout from "./../Component/layout";
 import MyTicket from "./MyTicket";

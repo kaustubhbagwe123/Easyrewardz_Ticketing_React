@@ -2223,6 +2223,7 @@ table tr th:last-child {
 }
 .margin-claim {
   margin-left: -28px;
+  padding-top: 10px;
 }
 .comment-02-margin {
   margin-bottom: 9px;
@@ -2383,7 +2384,17 @@ progress::-moz-progress-bar {
   position: relative;
   left: 2px;
 }
-
+.dropdown-label{
+  color: #9B9B9B;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: left;
+}
+.pieChart-Margin{
+  margin-left: -35px;
+}
 /* ---------------------------Deepak Savani Task:Claim Tab Ticket View-----------------------------   */
 
 .claim-00-1 {
