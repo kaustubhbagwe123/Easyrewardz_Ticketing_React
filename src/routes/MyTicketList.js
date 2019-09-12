@@ -1,6 +1,12 @@
 import React,{Component} from 'react';
 import Demo from '../store/Hashtag.js'
-import { Duplex } from 'stream';
+import SearchIcon from './../assets/Images/search-icon.png'
+import TableArr from './../assets/Images/table-arr.png' 
+import InfoIcon from './../assets/Images/info-icon.png';
+import TaskIconBlue from './../assets/Images/task-icon-blue.png';
+import TaskIconGray from './../assets/Images/task-icon-gray.png'; 
+import CliamIconBlue from './../assets/Images/cliam-icon-blue.png';
+ 
 
  class MyTicketList extends Component
  {
@@ -53,7 +59,7 @@ import { Duplex } from 'stream';
                     <tr>
                       <th>ID</th>
                       <th>
-                        Status <img src="Images/table-arr.png" alt="missing" />
+                        Status <img src={TableArr} alt="table-arr" />
                       </th>
                       <th className="table-img-cntr"></th>
                       <th>
@@ -61,19 +67,19 @@ import { Duplex } from 'stream';
                       </th>
                       <th>
                         Category{" "}
-                        <img src="Images/table-arr.png" alt="missing" />
+                        <img src={TableArr} alt="table-arr" />
                       </th>
                       <th>
                         Priority{" "}
-                        <img src="Images/table-arr.png" alt="missing" />
+                        <img src={TableArr} alt="table-arr" />
                       </th>
                       <th>
                         Assignee{" "}
-                        <img src="Images/table-arr.png" alt="missing" />
+                        <img src={TableArr} alt="table-arr" />
                       </th>
                       <th>
                         Creation on{" "}
-                        <img src="Images/table-arr.png" alt="missing" />
+                        <img src={TableArr} alt="table-arr" />
                       </th>
                     </tr>
                   </thead>
@@ -92,8 +98,8 @@ import { Duplex } from 'stream';
                         Defective article{" "}
                         <img
                           className="info-icon"
-                          src="Images/info-icon.png"
-                          alt="issing"
+                          src={InfoIcon}
+                          alt="info-icon"
                         />
                       </td>
                       <td>High</td>
@@ -102,8 +108,8 @@ import { Duplex } from 'stream';
                         12 March 2018{" "}
                         <img
                           className="info-icon"
-                          src="Images/info-icon.png"
-                          alt="missing"
+                          src={InfoIcon}
+                          alt="info-icon"
                         />
                       </td>
                     </tr>
@@ -129,8 +135,8 @@ import { Duplex } from 'stream';
                         Defective article{" "}
                         <img
                           className="info-icon"
-                          src="Images/info-icon.png"
-                          alt="imissing"
+                          src={InfoIcon}
+                          alt="info-icon"
                         />
                       </td>
                       <td>High</td>
@@ -139,8 +145,8 @@ import { Duplex } from 'stream';
                         12 March 2018{" "}
                         <img
                           className="info-icon"
-                          src="Images/info-icon.png"
-                          alt="missing"
+                          src={InfoIcon}
+                          alt="info-icon"
                         />
                       </td>
                     </tr>
@@ -155,8 +161,8 @@ import { Duplex } from 'stream';
                       <td className="table-img-cntr">
                         <img
                           className="task-icon-1"
-                          src="Images/task-icon-blue.png"
-                          alt="missing"
+                          src={TaskIconBlue}
+                          alt="task-icon-blue"
                         />
                       </td>
                       <td>
@@ -167,8 +173,8 @@ import { Duplex } from 'stream';
                         Defective article{" "}
                         <img
                           className="info-icon"
-                          src="Images/info-icon.png"
-                          alt=" missing"
+                          src={InfoIcon}
+                          alt="info-icon"
                         />
                       </td>
                       <td>High</td>
@@ -177,8 +183,8 @@ import { Duplex } from 'stream';
                         12 March 2018{" "}
                         <img
                           className="info-icon"
-                          src="Images/info-icon.png"
-                          alt="missing"
+                          src={InfoIcon}
+                          alt="info-icon"
                         />
                       </td>
                     </tr>
@@ -191,8 +197,8 @@ import { Duplex } from 'stream';
                       <td className="table-img-cntr">
                         <img
                           className="task-icon-1"
-                          src="Images/task-icon-gray.png"
-                          alt="missing"
+                          src={TaskIconGray}
+                          alt="task-icon-gray"
                         />
                       </td>
                       <td>
@@ -203,8 +209,8 @@ import { Duplex } from 'stream';
                         Defective article{" "}
                         <img
                           className="info-icon"
-                          src="Images/info-icon.png"
-                          alt=" missing"
+                          src={InfoIcon}
+                          alt="info-icon"
                         />
                       </td>
                       <td>High</td>
@@ -213,8 +219,8 @@ import { Duplex } from 'stream';
                         12 March 2018{" "}
                         <img
                           className="info-icon"
-                          src="Images/info-icon.png"
-                          alt="missing"
+                          src={InfoIcon}
+                          alt="info-icon"
                         />
                       </td>
                     </tr>
@@ -227,13 +233,13 @@ import { Duplex } from 'stream';
                       <td className="table-img-cntr">
                         <img
                           className="claim-icon"
-                          src="Images/cliam-icon-blue.png"
-                          alt="missing"
+                          src={CliamIconBlue}
+                          alt="cliam-icon-blue"
                         />
                         <img
                           className="task-icon-1"
-                          src="Images/task-icon-gray.png"
-                          alt="missing"
+                          src={TaskIconGray}
+                          alt="task-icon-gray"
                         />
                       </td>
                       <td>
@@ -244,8 +250,8 @@ import { Duplex } from 'stream';
                         Defective article{" "}
                         <img
                           className="info-icon"
-                          src="Images/info-icon.png"
-                          alt="missing"
+                          src={InfoIcon}
+                          alt="info-icon"
                         />
                       </td>
                       <td>High</td>
@@ -254,8 +260,8 @@ import { Duplex } from 'stream';
                         12 March 2018{" "}
                         <img
                           className="info-icon"
-                          src="Images/info-icon.png"
-                          alt="missing"
+                          src={InfoIcon}
+                          alt="info-icon"
                         />
                       </td>
                     </tr>
@@ -282,8 +288,8 @@ import { Duplex } from 'stream';
                         Defective article{" "}
                         <img
                           className="info-icon"
-                          src="Images/info-icon.png"
-                          alt="imissing"
+                          src={InfoIcon}
+                          alt="info-icon"
                         />
                       </td>
                       <td>High</td>
@@ -292,8 +298,8 @@ import { Duplex } from 'stream';
                         12 March 2018{" "}
                         <img
                           className="info-icon"
-                          src="Images/info-icon.png"
-                          alt="missing"
+                          src={InfoIcon}
+                          alt="info-icon"
                         />
                       </td>
                     </tr>
@@ -320,8 +326,8 @@ import { Duplex } from 'stream';
                         Defective article{" "}
                         <img
                           className="info-icon"
-                          src="Images/info-icon.png"
-                          alt=" missing"
+                          src={InfoIcon}
+                          alt="info-icon"
                         />
                       </td>
                       <td>High</td>
@@ -330,8 +336,8 @@ import { Duplex } from 'stream';
                         12 March 2018{" "}
                         <img
                           className="info-icon"
-                          src="Images/info-icon.png"
-                          alt="missing"
+                          src={InfoIcon}
+                          alt="info-icon"
                         />
                       </td>
                     </tr>
@@ -349,8 +355,8 @@ import { Duplex } from 'stream';
                         Defective article{" "}
                         <img
                           className="info-icon"
-                          src="Images/info-icon.png"
-                          alt="issing"
+                          src={InfoIcon}
+                          alt="info-icon"
                         />
                       </td>
                       <td>High</td>
@@ -359,8 +365,8 @@ import { Duplex } from 'stream';
                         12 March 2018{" "}
                         <img
                           className="info-icon"
-                          src="Images/info-icon.png"
-                          alt="missing"
+                          src={InfoIcon}
+                          alt="info-icon"
                         />
                       </td>
                     </tr>
@@ -378,8 +384,8 @@ import { Duplex } from 'stream';
                         Defective article{" "}
                         <img
                           className="info-icon"
-                          src="Images/info-icon.png"
-                          alt="issing"
+                          src={InfoIcon}
+                          alt="info-icon"
                         />
                       </td>
                       <td>High</td>
@@ -388,8 +394,8 @@ import { Duplex } from 'stream';
                         12 March 2018{" "}
                         <img
                           className="info-icon"
-                          src="Images/info-icon.png"
-                          alt="missing"
+                          src={InfoIcon}
+                          alt="info-icon"
                         />
                       </td>
                     </tr>
@@ -416,8 +422,8 @@ import { Duplex } from 'stream';
                         Defective article{" "}
                         <img
                           className="info-icon"
-                          src="Images/info-icon.png"
-                          alt="imissing"
+                          src={InfoIcon}
+                          alt="info-icon"
                         />
                       </td>
                       <td>High</td>
@@ -426,8 +432,8 @@ import { Duplex } from 'stream';
                         12 March 2018{" "}
                         <img
                           className="info-icon"
-                          src="Images/info-icon.png"
-                          alt="missing"
+                          src={InfoIcon}
+                          alt="info-icon"
                         />
                       </td>
                     </tr>
@@ -468,8 +474,8 @@ import { Duplex } from 'stream';
                   <small>Search Tickets</small>
                   <img
                     className="search-icon"
-                    src="Images/search-icon.png"
-                    alt="icon missing"
+                    src={SearchIcon}
+                    alt="search-icon"
                   />
                 </div>
               </div>

@@ -2406,3 +2406,9 @@ progress::-moz-progress-bar {
   text-align: left;
 }
 /* ------------------------------------------------------------------------------------------------- */
+/* model close button css */
+.styles_closeButton__20ID4 {
+  display: none;
+}
+/* ------------------------------- */
+

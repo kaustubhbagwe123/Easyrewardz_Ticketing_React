@@ -3,6 +3,14 @@ import "../../node_modules/jquery/dist/jquery.js";
 import "../../node_modules/popper.js/dist/popper.js";
 import "../../node_modules/bootstrap/dist/js/bootstrap.js";
 import PieChart from "../Component/PieChart/PieChart";
+import SearchIcon from './../assets/Images/search-icon.png'
+import TableArr from './../assets/Images/table-arr.png' 
+import InfoIcon from './../assets/Images/info-icon.png';
+import TaskIconBlue from './../assets/Images/task-icon-blue.png';
+import TaskIconGray from './../assets/Images/task-icon-gray.png'; 
+import CliamIconBlue from './../assets/Images/cliam-icon-blue.png';
+import Demo from '../store/Hashtag.js'
+
 
 class Dashboard extends Component {
 
@@ -204,28 +212,23 @@ class Dashboard extends Component {
                   <tr>
                     <th>ID</th>
                     <th>
-                      Status{" "}
-                      <img src="Images/table-arr.png" alt="image missing" />
+                      Status <img src={TableArr} alt="table-arr" />
                     </th>
                     <th className="table-img-cntr"></th>
                     <th>
                       Subject<span>/Lastest Message</span>
                     </th>
                     <th>
-                      Category{" "}
-                      <img src="Images/table-arr.png" alt="image missing" />
+                      Category <img src={TableArr} alt="table-arr" />
                     </th>
                     <th>
-                      Priority{" "}
-                      <img src="Images/table-arr.png" alt="image missing" />
+                      Priority <img src={TableArr} alt="table-arr" />
                     </th>
                     <th>
-                      Assignee{" "}
-                      <img src="Images/table-arr.png" alt="image missing" />
+                      Assignee <img src={TableArr} alt="table-arr" />
                     </th>
                     <th>
-                      Creation on{" "}
-                      <img src="Images/table-arr.png" alt="image missing" />
+                      Creation on <img src={TableArr} alt="table-arr" />
                     </th>
                   </tr>
                 </thead>
@@ -244,8 +247,8 @@ class Dashboard extends Component {
                       Defective article{" "}
                       <img
                         className="info-icon"
-                        src="Images/info-icon.png"
-                        alt="image missing"
+                        src={InfoIcon}
+                        alt="info-icon"
                       />
                     </td>
                     <td>High</td>
@@ -254,8 +257,8 @@ class Dashboard extends Component {
                       2 Hour Ago{" "}
                       <img
                         className="info-icon"
-                        src="Images/info-icon.png"
-                        alt="image missing"
+                        src={InfoIcon}
+                        alt="info-icon"
                       />
                     </td>
                   </tr>
@@ -273,8 +276,8 @@ class Dashboard extends Component {
                       Defective article{" "}
                       <img
                         className="info-icon"
-                        src="Images/info-icon.png"
-                        alt="image missing"
+                        src={InfoIcon}
+                        alt="info-icon"
                       />
                     </td>
                     <td>High</td>
@@ -283,8 +286,8 @@ class Dashboard extends Component {
                       12 March 2018{" "}
                       <img
                         className="info-icon"
-                        src="Images/info-icon.png"
-                        alt="image missing"
+                        src={InfoIcon}
+                        alt="info-icon"
                       />
                     </td>
                   </tr>
@@ -296,8 +299,8 @@ class Dashboard extends Component {
                     <td className="table-img-cntr">
                       <img
                         className="task-icon-1"
-                        src="Images/task-icon-blue.png"
-                        alt="image missing"
+                        src={TaskIconBlue}
+                        alt="task-icon-blue"
                       />
                     </td>
                     <td className="black-clr">
@@ -310,8 +313,8 @@ class Dashboard extends Component {
                       Defective article{" "}
                       <img
                         className="info-icon"
-                        src="Images/info-icon.png"
-                        alt="image missing"
+                        src={InfoIcon}
+                        alt="info-icon"
                       />
                     </td>
                     <td>High</td>
@@ -320,8 +323,8 @@ class Dashboard extends Component {
                       12 March 2018{" "}
                       <img
                         className="info-icon"
-                        src="Images/info-icon.png"
-                        alt="image missing"
+                        src={InfoIcon}
+                        alt="info-icon"
                       />
                     </td>
                   </tr>
@@ -333,8 +336,8 @@ class Dashboard extends Component {
                     <td className="table-img-cntr">
                       <img
                         className="task-icon-1"
-                        src="Images/task-icon-gray.png"
-                        alt="image missing"
+                        src={TaskIconGray}
+                        alt="task-icon-gray"
                       />
                     </td>
                     <td>
@@ -345,8 +348,8 @@ class Dashboard extends Component {
                       Defective article{" "}
                       <img
                         className="info-icon"
-                        src="Images/info-icon.png"
-                        alt="image missing"
+                        src={InfoIcon}
+                        alt="info-icon"
                       />
                     </td>
                     <td>High</td>
@@ -355,8 +358,8 @@ class Dashboard extends Component {
                       12 March 2018{" "}
                       <img
                         className="info-icon"
-                        src="Images/info-icon.png"
-                        alt="image missing"
+                        src={InfoIcon}
+                        alt="info-icon"
                       />
                     </td>
                   </tr>
@@ -368,13 +371,13 @@ class Dashboard extends Component {
                     <td className="table-img-cntr">
                       <img
                         className="claim-icon"
-                        src="Images/cliam-icon-blue.png"
-                        alt="image missing"
+                        src={CliamIconBlue}
+                        alt="cliam-icon-blue"
                       />
                       <img
                         className="task-icon-1"
-                        src="Images/task-icon-gray.png"
-                        alt="image missing"
+                        src={TaskIconGray}
+                        alt="task-icon-gray"
                       />
                     </td>
                     <td>
@@ -385,8 +388,8 @@ class Dashboard extends Component {
                       Defective article{" "}
                       <img
                         className="info-icon"
-                        src="Images/info-icon.png"
-                        alt="image missing"
+                        src={InfoIcon}
+                        alt="info-icon"
                       />
                     </td>
                     <td>High</td>
@@ -395,8 +398,8 @@ class Dashboard extends Component {
                       12 March 2018{" "}
                       <img
                         className="info-icon"
-                        src="Images/info-icon.png"
-                        alt="image missing"
+                        src={InfoIcon}
+                        alt="info-icon"
                       />
                     </td>
                   </tr>
@@ -414,8 +417,8 @@ class Dashboard extends Component {
                       Defective article{" "}
                       <img
                         className="info-icon"
-                        src="Images/info-icon.png"
-                        alt="image missing"
+                        src={InfoIcon}
+                        alt="info-icon"
                       />
                     </td>
                     <td>High</td>
@@ -424,8 +427,8 @@ class Dashboard extends Component {
                       12 March 2018{" "}
                       <img
                         className="info-icon"
-                        src="Images/info-icon.png"
-                        alt="image missing"
+                        src={InfoIcon}
+                        alt="info-icon"
                       />
                     </td>
                   </tr>
@@ -443,8 +446,8 @@ class Dashboard extends Component {
                       Defective article{" "}
                       <img
                         className="info-icon"
-                        src="Images/info-icon.png"
-                        alt="image missing"
+                        src={InfoIcon}
+                        alt="info-icon"
                       />
                     </td>
                     <td>High</td>
@@ -453,8 +456,8 @@ class Dashboard extends Component {
                       12 March 2018{" "}
                       <img
                         className="info-icon"
-                        src="Images/info-icon.png"
-                        alt="image missing"
+                        src={InfoIcon}
+                        alt="info-icon"
                       />
                     </td>
                   </tr>
@@ -463,31 +466,31 @@ class Dashboard extends Component {
               <div className="pagi">
                 <ul>
                   <li>
-                    <a href="#">&lt;</a>
+                    <a href={Demo.BLANK_LINK}>&lt;</a>
                   </li>
                   <li>
-                    <a href="#">1</a>
+                    <a href={Demo.BLANK_LINK}>1</a>
                   </li>
                   <li className="active">
-                    <a href="#">2</a>
+                    <a href={Demo.BLANK_LINK}>2</a>
                   </li>
                   <li>
-                    <a href="#">3</a>
+                    <a href={Demo.BLANK_LINK}>3</a>
                   </li>
                   <li>
-                    <a href="#">4</a>
+                    <a href={Demo.BLANK_LINK}>4</a>
                   </li>
                   <li>
-                    <a href="#">5</a>
+                    <a href={Demo.BLANK_LINK}>5</a>
                   </li>
                   <li>
-                    <a href="#">6</a>
+                    <a href={Demo.BLANK_LINK}>6</a>
                   </li>
                   <li>
-                    <a href="#">7</a>
+                    <a href={Demo.BLANK_LINK}>7</a>
                   </li>
                   <li>
-                    <a href="#">&gt;</a>
+                    <a href={Demo.BLANK_LINK}>&gt;</a>
                   </li>
                 </ul>
               </div>
@@ -495,8 +498,8 @@ class Dashboard extends Component {
                 <small>Search Tickets</small>
                 <img
                   className="search-icon"
-                  src="Images/search-icon.png"
-                  alt="icon missing"
+                  src={SearchIcon}
+                  alt="search-icon"
                 />
               </div>
             </div>

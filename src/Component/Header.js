@@ -164,6 +164,7 @@ class Header extends Component {
             center
             modalId="logout-popup"
             overlayId="logout-ovrly"
+             
           >
             <div className="logout-block">
               <div>

@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import "../../node_modules/jquery/dist/jquery.js";
 import "../../node_modules/popper.js/dist/popper.js";
 import "../../node_modules/bootstrap/dist/js/bootstrap.js";
-import PieChart from "../Component/PieChart/PieChart";
+import Demo from '../store/Hashtag.js'
+import SearchIcon from './../assets/Images/search-icon.png'
+ 
 
 class StoreDashboard extends Component {
   render() {
@@ -109,12 +111,12 @@ class StoreDashboard extends Component {
             <div className="table-cntr mt-3">
               <ul className="store-dash-tabs">
                 <li>
-                  <a href="#" className="active">
+                  <a href={Demo.BLANK_LINK} className="active">
                     Task: <span>06</span>
                   </a>
                 </li>
                 <li>
-                  <a href="#">
+                  <a href={Demo.BLANK_LINK}>
                     Claim: <span>05</span>
                   </a>
                 </li>
@@ -131,19 +133,19 @@ class StoreDashboard extends Component {
                       <th>Task Title</th>
                       <th>
                         Department
-                        <img src="Images/table-arr.png" alt="image missing" />
+                        <img src="Images/table-arr.png" alt="table-arr" />
                       </th>
                       <th>
                         Store Name
-                        <img src="Images/table-arr.png" alt="image missing" />
+                        <img src="Images/table-arr.png" alt="table-arr" />
                       </th>
                       <th>
                         Creation on
-                        <img src="Images/table-arr.png" alt="image missing" />
+                        <img src="Images/table-arr.png" alt="table-arr" />
                       </th>
                       <th>
                         Assign to
-                        <img src="Images/table-arr.png" alt="image missing" />
+                        <img src="Images/table-arr.png" alt="table-arr" />
                       </th>
                     </tr>
                   </thead>
@@ -159,7 +161,7 @@ class StoreDashboard extends Component {
                         <img
                           className="info-icon"
                           src="Images/info-icon.png"
-                          alt="image missing"
+                          alt="info-icon"
                         />
                       </td>
                       <td>BATA1</td>
@@ -168,7 +170,7 @@ class StoreDashboard extends Component {
                         <img
                           className="info-icon"
                           src="Images/info-icon.png"
-                          alt="image missing"
+                          alt="info-icon"
                         />
                       </td>
                       <td>A. Bansal</td>
@@ -184,7 +186,7 @@ class StoreDashboard extends Component {
                         <img
                           className="info-icon"
                           src="Images/info-icon.png"
-                          alt="image missing"
+                          alt="info-icon"
                         />
                       </td>
                       <td>BATA2</td>
@@ -193,7 +195,7 @@ class StoreDashboard extends Component {
                         <img
                           className="info-icon"
                           src="Images/info-icon.png"
-                          alt="image missing"
+                          alt="info-icon"
                         />
                       </td>
                       <td>G. Bansal</td>
@@ -211,7 +213,7 @@ class StoreDashboard extends Component {
                         <img
                           className="info-icon"
                           src="Images/info-icon.png"
-                          alt="image missing"
+                          alt="info-icon"
                         />
                       </td>
                       <td>BATA3</td>
@@ -220,7 +222,7 @@ class StoreDashboard extends Component {
                         <img
                           className="info-icon"
                           src="Images/info-icon.png"
-                          alt="image missing"
+                          alt="info-icon"
                         />
                       </td>
                       <td>G. Bansal</td>
@@ -236,7 +238,7 @@ class StoreDashboard extends Component {
                         <img
                           className="info-icon"
                           src="Images/info-icon.png"
-                          alt="image missing"
+                          alt="info-icon"
                         />
                       </td>
                       <td>BATA1</td>
@@ -245,7 +247,7 @@ class StoreDashboard extends Component {
                         <img
                           className="info-icon"
                           src="Images/info-icon.png"
-                          alt="image missing"
+                          alt="info-icon"
                         />
                       </td>
                       <td>A. Bansal</td>
@@ -261,7 +263,7 @@ class StoreDashboard extends Component {
                         <img
                           className="info-icon"
                           src="Images/info-icon.png"
-                          alt="image missing"
+                          alt="info-icon"
                         />
                       </td>
                       <td>BATA2</td>
@@ -270,7 +272,7 @@ class StoreDashboard extends Component {
                         <img
                           className="info-icon"
                           src="Images/info-icon.png"
-                          alt="image missing"
+                          alt="info-icon"
                         />
                       </td>
                       <td>G. Bansal</td>
@@ -288,7 +290,7 @@ class StoreDashboard extends Component {
                         <img
                           className="info-icon"
                           src="Images/info-icon.png"
-                          alt="image missing"
+                          alt="info-icon"
                         />
                       </td>
                       <td>BATA3</td>
@@ -297,7 +299,7 @@ class StoreDashboard extends Component {
                         <img
                           className="info-icon"
                           src="Images/info-icon.png"
-                          alt="image missing"
+                          alt="info-icon"
                         />
                       </td>
                       <td>G. Bansal</td>
@@ -313,7 +315,7 @@ class StoreDashboard extends Component {
                         <img
                           className="info-icon"
                           src="Images/info-icon.png"
-                          alt="image missing"
+                          alt="info-icon"
                         />
                       </td>
                       <td>BATA2</td>
@@ -322,7 +324,7 @@ class StoreDashboard extends Component {
                         <img
                           className="info-icon"
                           src="Images/info-icon.png"
-                          alt="image missing"
+                          alt="info-icon"
                         />
                       </td>
                       <td>G. Bansal</td>
@@ -332,31 +334,31 @@ class StoreDashboard extends Component {
                 <div className="pagi">
                   <ul>
                     <li>
-                      <a href="#">&lt;</a>
+                      <a href={Demo.BLANK_LINK}>&lt;</a>
                     </li>
                     <li>
-                      <a href="#">1</a>
+                      <a href={Demo.BLANK_LINK}>1</a>
                     </li>
                     <li className="active">
-                      <a href="#">2</a>
+                      <a href={Demo.BLANK_LINK}>2</a>
                     </li>
                     <li>
-                      <a href="#">3</a>
+                      <a href={Demo.BLANK_LINK}>3</a>
                     </li>
                     <li>
-                      <a href="#">4</a>
+                      <a href={Demo.BLANK_LINK}>4</a>
                     </li>
                     <li>
-                      <a href="#">5</a>
+                      <a href={Demo.BLANK_LINK}>5</a>
                     </li>
                     <li>
-                      <a href="#">6</a>
+                      <a href={Demo.BLANK_LINK}>6</a>
                     </li>
                     <li>
-                      <a href="#">7</a>
+                      <a href={Demo.BLANK_LINK}>7</a>
                     </li>
                     <li>
-                      <a href="#">&gt;</a>
+                      <a href={Demo.BLANK_LINK}>&gt;</a>
                     </li>
                   </ul>
                 </div>
@@ -364,8 +366,8 @@ class StoreDashboard extends Component {
                   <small>Search</small>
                   <img
                     className="search-icon"
-                    src="Images/search-icon.png"
-                    alt="icon missing"
+                    src={SearchIcon}
+                    alt="search-icon"
                   />
                 </div>
               </div>
