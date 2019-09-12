@@ -8,6 +8,9 @@ import CalenderLogo from './../assets/Images/calender.png';
 import ChatLogo from './../assets/Images/chat.png'; 
 import NotificationLogo from './../assets/Images/Notification.png'; 
 import SettingLogo from './../assets/Images/setting.png'; 
+import UserLogo from './../assets/Images/user-img.jpg'; 
+import StatusLogo from './../assets/Images/status.png'; 
+
 
 class Header extends Component {
   state = {
@@ -164,12 +167,11 @@ class Header extends Component {
             center
             modalId="logout-popup"
             overlayId="logout-ovrly"
-             
           >
             <div className="logout-block">
               <div>
                 <div className="user-img">
-                  <img src="Images/user-img.jpg" alt="image missing" />
+                  <img src={UserLogo} alt="User" />
                 </div>
                 <div>
                   <p>Naman Rampal</p>
@@ -180,7 +182,7 @@ class Header extends Component {
               <div className="status-sctn">
                 <div className="d-flex align-items-center">
                   <div className="logout-status">
-                    <img src="Images/status.png" alt="icon missing" />
+                    <img src={StatusLogo} alt="status" />
                   </div>
                   <p className="logout-label chat-status">Chat Status :</p>
                 </div>
