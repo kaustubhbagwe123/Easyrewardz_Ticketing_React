@@ -161,7 +161,9 @@ class Header extends Component {
             <div className="logout-block">
               <div>
                 <div className="user-img">
+                  
                   <img src={UserLogo} alt="User" />
+ 
                 </div>
                 <div>
                   <p>Naman Rampal</p>

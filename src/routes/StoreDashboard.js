@@ -4,6 +4,8 @@ import "../../node_modules/popper.js/dist/popper.js";
 import "../../node_modules/bootstrap/dist/js/bootstrap.js";
 import Demo from '../store/Hashtag.js'
 import SearchIcon from './../assets/Images/search-icon.png'
+import InfoIcon from './../assets/Images/info-icon.png';
+import TableArr from './../assets/Images/table-arr.png'
  
 
 class StoreDashboard extends Component {
@@ -133,19 +135,19 @@ class StoreDashboard extends Component {
                       <th>Task Title</th>
                       <th>
                         Department
-                        <img src="Images/table-arr.png" alt="table-arr" />
+                        <img src={TableArr} alt="table-arr-icon" />
                       </th>
                       <th>
                         Store Name
-                        <img src="Images/table-arr.png" alt="table-arr" />
+                        <img src={TableArr} alt="table-arr-icon" />
                       </th>
                       <th>
                         Creation on
-                        <img src="Images/table-arr.png" alt="table-arr" />
+                        <img src={TableArr} alt="table-arr-icon" />
                       </th>
                       <th>
                         Assign to
-                        <img src="Images/table-arr.png" alt="table-arr" />
+                        <img src={TableArr} alt="table-arr-icon" />
                       </th>
                     </tr>
                   </thead>
@@ -160,7 +162,7 @@ class StoreDashboard extends Component {
                         Internet
                         <img
                           className="info-icon"
-                          src="Images/info-icon.png"
+                          src={InfoIcon}
                           alt="info-icon"
                         />
                       </td>
@@ -169,7 +171,7 @@ class StoreDashboard extends Component {
                         2 Hour Ago
                         <img
                           className="info-icon"
-                          src="Images/info-icon.png"
+                          src={InfoIcon}
                           alt="info-icon"
                         />
                       </td>
@@ -185,7 +187,7 @@ class StoreDashboard extends Component {
                         Hardware
                         <img
                           className="info-icon"
-                          src="Images/info-icon.png"
+                          src={InfoIcon}
                           alt="info-icon"
                         />
                       </td>
@@ -194,7 +196,7 @@ class StoreDashboard extends Component {
                         12 March 2018
                         <img
                           className="info-icon"
-                          src="Images/info-icon.png"
+                          src={InfoIcon}
                           alt="info-icon"
                         />
                       </td>
@@ -212,7 +214,7 @@ class StoreDashboard extends Component {
                         Supply
                         <img
                           className="info-icon"
-                          src="Images/info-icon.png"
+                          src={InfoIcon}
                           alt="info-icon"
                         />
                       </td>
@@ -221,7 +223,7 @@ class StoreDashboard extends Component {
                         12 March 2018
                         <img
                           className="info-icon"
-                          src="Images/info-icon.png"
+                          src={InfoIcon}
                           alt="info-icon"
                         />
                       </td>
@@ -237,7 +239,7 @@ class StoreDashboard extends Component {
                         Internet
                         <img
                           className="info-icon"
-                          src="Images/info-icon.png"
+                          src={InfoIcon}
                           alt="info-icon"
                         />
                       </td>
@@ -246,7 +248,7 @@ class StoreDashboard extends Component {
                         2 Hour Ago
                         <img
                           className="info-icon"
-                          src="Images/info-icon.png"
+                          src={InfoIcon}
                           alt="info-icon"
                         />
                       </td>
@@ -262,7 +264,7 @@ class StoreDashboard extends Component {
                         Hardware
                         <img
                           className="info-icon"
-                          src="Images/info-icon.png"
+                          src={InfoIcon}
                           alt="info-icon"
                         />
                       </td>
@@ -271,7 +273,7 @@ class StoreDashboard extends Component {
                         12 March 2018
                         <img
                           className="info-icon"
-                          src="Images/info-icon.png"
+                          src={InfoIcon}
                           alt="info-icon"
                         />
                       </td>
@@ -289,7 +291,7 @@ class StoreDashboard extends Component {
                         Supply
                         <img
                           className="info-icon"
-                          src="Images/info-icon.png"
+                          src={InfoIcon}
                           alt="info-icon"
                         />
                       </td>
@@ -298,7 +300,7 @@ class StoreDashboard extends Component {
                         12 March 2018
                         <img
                           className="info-icon"
-                          src="Images/info-icon.png"
+                          src={InfoIcon}
                           alt="info-icon"
                         />
                       </td>
@@ -314,7 +316,7 @@ class StoreDashboard extends Component {
                         Hardware
                         <img
                           className="info-icon"
-                          src="Images/info-icon.png"
+                          src={InfoIcon}
                           alt="info-icon"
                         />
                       </td>
@@ -323,7 +325,7 @@ class StoreDashboard extends Component {
                         12 March 2018
                         <img
                           className="info-icon"
-                          src="Images/info-icon.png"
+                          src={InfoIcon}
                           alt="info-icon"
                         />
                       </td>
