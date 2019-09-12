@@ -3,7 +3,8 @@ import "../../node_modules/jquery/dist/jquery.js";
 import "../../node_modules/popper.js/dist/popper.js";
 import "../../node_modules/bootstrap/dist/js/bootstrap.js";
 import PieChart from "../Component/PieChart/PieChart";
-
+import BarChart from "../Component/PieChart/BarChart.js";
+import MultiBarChart from "../Component/PieChart/MultiBarChart.js";
 class Dashboard extends Component {
 
   
@@ -51,7 +52,9 @@ class Dashboard extends Component {
               <div className="col-lg-3">
                 <div className="dash-top-cards">
                   <p className="card-head">Open By Priority</p>
+                  <div className="pieChart-Margin">
                   <PieChart />
+                  </div>
                 </div>
               </div>
               <div className="col-lg-6">
@@ -89,7 +92,7 @@ class Dashboard extends Component {
                       role="tabpanel"
                       aria-labelledby="bill-graph-tab"
                     >
-                      1
+                       <BarChart/>
                     </div>
                     <div
                       className="tab-pane fade"
@@ -97,7 +100,7 @@ class Dashboard extends Component {
                       role="tabpanel"
                       aria-labelledby="source-tab"
                     >
-                      2
+                       <BarChart/>
                     </div>
                   </div>
                 </div>
@@ -167,7 +170,7 @@ class Dashboard extends Component {
                       role="tabpanel"
                       aria-labelledby="task-tab"
                     >
-                      1
+                     <MultiBarChart/>
                     </div>
                     <div
                       className="tab-pane fade"
@@ -175,7 +178,7 @@ class Dashboard extends Component {
                       role="tabpanel"
                       aria-labelledby="claim-tab"
                     >
-                      2
+                       <BarChart/>
                     </div>
                   </div>
                 </div>
