@@ -2259,6 +2259,15 @@ table tr th:last-child {
   padding-top: 35px;
   padding-left: 25px;
 }
+#notification-popup {
+  border-radius: 8px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+  padding: 0;
+  margin-right: 186px;
+  margin-top: -8px;
+  margin-bottom: 0;
+  display: inline-block;
+}
 /**************************************/
 
 /* -------------Deepka Savani-------------- */
@@ -2453,10 +2462,13 @@ progress::-moz-progress-bar {
   line-height: 19px;
   text-align: left;
 }
-.mask task tr{
-  height: 0px;
-    border-bottom: none;
+.rectanglesystem table tr {
+  border-bottom: none !important;
 }
+.custom-select:focus, .form-control:focus {
+  background-color: #ecf2f4 !important;
+  box-shadow: none !important;
+  }
 /* ------------------------------------------------------------------------------------------------- */
 /* model close button css */
 .styles_closeButton__20ID4 {

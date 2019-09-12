@@ -1,4 +1,11 @@
 import React, { Component } from 'react';
+import ArrowCircleImg from './../assets/Images/arrow-circle-left.png'; 
+import HeadphoneImg from './../assets/Images/headphone.png'; 
+import CopyImg from './../assets/Images/copy.png';
+import CustomerImg from './../assets/Images/customer.png'; 
+import OrderImg from './../assets/Images/order.png'; 
+import StoreImg from './../assets/Images/store.png'; 
+import TicketImg from './../assets/Images/ticket.png'; 
 class TicketSystem extends Component {
 
     constructor() {
@@ -25,19 +32,19 @@ class TicketSystem extends Component {
                   <tr>
                     <td className="tdicon">
                       <img
-                        src="Images/arrow-circle-left.png"
+                        src={ArrowCircleImg}
                         alt="logo"
                         className="bitmapback"
                       />
                       <label className="source">Source</label>
                       <img
-                        src="Images/headphone.png"
+                        src={HeadphoneImg}
                         alt="logo"
                         className="bitmapheadpone"
                       />
                       <label className="a91-9873470074">+91-9873470074</label>
                       <img
-                        src="Images/copy.png"
+                        src={CopyImg}
                         alt="logo"
                         className="bitmapheadpone"
                       />
@@ -96,10 +103,9 @@ class TicketSystem extends Component {
                       </div>
                       <div className="row rowmargin">
                         <div className="col-md-5">
-                          <select className="category-select">
+                          <select className="category-select dropdown-label">
                             <option
-                              className="select-category-placeholder"
-                              selected
+                              className="select-category-placeholder dropdown-label"
                             >
                               Select Category
                             </option>
@@ -109,7 +115,7 @@ class TicketSystem extends Component {
                           className="col-md-6"
                           style={{ marginLeft: "30px" }}
                         >
-                          <select className="sub-category-select">
+                          <select className="sub-category-select dropdown-label">
                             <option className="select-sub-category-placeholder">
                               Select Sub Category
                             </option>
@@ -133,7 +139,7 @@ class TicketSystem extends Component {
 
                       <div className="row rowmargin">
                         <div className="col-md-5">
-                          <select className="category-select">
+                          <select className="category-select dropdown-label">
                             <option className="select-category-placeholder">
                               Select Type
                             </option>
@@ -255,7 +261,7 @@ class TicketSystem extends Component {
                       <div className="btn-group-vertical">
                         <div>
                           <img
-                            src="Images/customer.png"
+                            src={CustomerImg}
                             alt="customer"
                             className="customer-icon"
                           />
@@ -264,7 +270,7 @@ class TicketSystem extends Component {
                         <br />
                         <div>
                           <img
-                            src="Images/order.png"
+                            src={OrderImg}
                             alt="customer"
                             className="order-icon"
                           />
@@ -273,7 +279,7 @@ class TicketSystem extends Component {
                         <br />
                         <div>
                           <img
-                            src="Images/store.png"
+                            src={StoreImg}
                             alt="customer"
                             className="store-icon"
                           />
@@ -282,7 +288,7 @@ class TicketSystem extends Component {
                         <br />
                         <div>
                           <img
-                            src="Images/ticket.png"
+                            src={TicketImg}
                             alt="customer"
                             className="task-icon"
                           />
