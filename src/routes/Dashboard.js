@@ -5,6 +5,8 @@ import "../../node_modules/bootstrap/dist/js/bootstrap.js";
 import PieChart from "../Component/PieChart/PieChart";
 
 class Dashboard extends Component {
+
+  
   render() {
     return (
       <div>
