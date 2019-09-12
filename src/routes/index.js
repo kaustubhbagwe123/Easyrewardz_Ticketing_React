@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Route } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import Dashboard from "./Dashboard";
 import Layout from "./../Component/layout";
 import MyTicket from "./MyTicket";
@@ -13,17 +13,17 @@ import ClaimTabTicketView from './ClaimTabTicketView';
 
 export class App extends Component {
   render() {
-    // const {match} = this.props;
+    const {match} = this.props;
     return (
-      <Layout>
-        <Route exact path={`/dashboard`} component={Dashboard} />
-        <Route exact path={`/myticket`} component={MyTicket} />
-        <Route exact path={`/ticketSystem`} component={TicketSystem} />
-        <Route exact path={`/chatbot`} component={Chatbot} />
-        <Route exact path={`/store-dashboard`} component={StoreDashboard} />
-        <Route exact path={`/claim`} component={Claim} />
-        <Route exact path={`/myTicketList`} component={MyTicketList} />
-        <Route exact path={`/ClaimTabTicketView`} component={ClaimTabTicketView } />
+      <Layout> 
+        <Route exact path={`${match.url}/dashboard`} component={Dashboard} />
+        <Route exact path={`${match.url}/myticket`} component={MyTicket} />
+        <Route exact path={`${match.url}/ticketSystem`} component={TicketSystem} />
+        <Route exact path={`${match.url}/chatbot`} component={Chatbot} />
+        <Route exact path={`${match.url}/store-dashboard`} component={StoreDashboard} />
+        <Route exact path={`${match.url}/claim`} component={Claim} />
+        <Route exact path={`${match.url}/myTicketList`} component={MyTicketList} />
+        <Route exact path={`${match.url}/claimTabTicketView`} component={ClaimTabTicketView } />
 
       </Layout>
     );

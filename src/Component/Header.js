@@ -1,6 +1,13 @@
 import React, { Component } from "react";
 import { ProgressBar } from "react-bootstrap";
 import Modal from "react-responsive-modal";
+import DashboardLogo from './../assets/Images/dashboard.png';
+import TicketLogo from './../assets/Images/ticket.png';
+import KnowledgeLogo from './../assets/Images/knowledge.png';
+import CalenderLogo from './../assets/Images/calender.png'; 
+import ChatLogo from './../assets/Images/chat.png'; 
+import NotificationLogo from './../assets/Images/Notification.png'; 
+import SettingLogo from './../assets/Images/setting.png'; 
 
 class Header extends Component {
   state = {
@@ -36,19 +43,19 @@ class Header extends Component {
                 </div>
                 <div className="col-md-2 nav-tab3">
                   <img
-                    src="Images/dashboard.png"
+                    src={DashboardLogo}
                     alt="logo"
                     className="dashboardImg1"
                   />
                   {/* <label className="dashboards-label1">Dashboard</label> */}
-                  <a href="dashboard">
+                  <a href="/admin/dashboard">
                     <label className="dashboards-label1">Dashboard</label>
                   </a>
                 </div>
 
                 <div className="col-md-2 nav-tab1">
                   <img
-                    src="Images/ticket.png"
+                    src={TicketLogo}
                     alt="logo"
                     className="myTicket"
                   />
@@ -65,7 +72,7 @@ class Header extends Component {
                 </div>
                 <div className="col-md-4 nav-tab2">
                   <img
-                    src="Images/knowledge.png"
+                    src={KnowledgeLogo}
                     alt="logo"
                     className="knowledgeNav"
                   />
@@ -75,17 +82,17 @@ class Header extends Component {
               <div className="main-nav">
                 <div className="bitmap1">
                   <img
-                    src="Images/calender.png"
+                    src={CalenderLogo}
                     alt="logo"
                     className="calImg"
                   />
                 </div>
                 <div className="bitmap2">
-                  <img src="Images/chat.png" alt="logo" className="chatImg" />
+                  <img src={ChatLogo} alt="logo" className="chatImg" />
                 </div>
                 <div className="bitmap3">
                   <img
-                    src="Images/Notification.png"
+                    src={NotificationLogo}
                     alt="logo"
                     className="notifi"
                     onClick={this.openModal}
@@ -93,7 +100,7 @@ class Header extends Component {
                 </div>
                 <div className="bitmap4">
                   <img
-                    src="Images/setting.png"
+                    src={SettingLogo}
                     alt="logo"
                     className="setting"
                   />

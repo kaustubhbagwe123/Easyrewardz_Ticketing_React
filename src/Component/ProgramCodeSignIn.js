@@ -4,11 +4,11 @@ import logo from "../assets/Images/logo.jpg";
 
 class ProgramCodeSignIn extends Component {
   hanleChange = () => {
-    this.props.history.push("SingIn");
+    this.props.history.push("SignIn");
   };
-  componentDidMount() {
-    document.querySelectorAll(".card-Nav")[0].style.display = "none";
-  }
+  // componentDidMount() {
+  //   document.querySelectorAll(".card-Nav")[0].style.display = "none";
+  // }
   render() {
     return (
       <div className="auth-wrapper">

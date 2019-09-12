@@ -1,6 +1,15 @@
 import React, { Component } from 'react';
 import Modal from "react-responsive-modal";
 import HistoricalTable from './HistoricalTable';
+import HeadphoneImg from './../assets/Images/headphone.png';
+import Headphone2Img from './../assets/Images/headphone2.png';
+import DownImg from './../assets/Images/down.png';
+import DownWhiteImg from './../assets/Images/down-white.png';
+import LoadingImg from './../assets/Images/loading.png';
+import EyeImg from './../assets/Images/eye.png';
+import BillInvoiceImg from './../assets/Images/bill-Invoice.png';
+import MsgImg from './../assets/Images/msg.png';
+import Down1Img from './../assets/Images/down-1.png';
 
 class MyTicket extends Component {
         state = {
@@ -23,26 +32,25 @@ class MyTicket extends Component {
                     <div className="head-header-1">
                         <div className="row">
                             <div className="col-xs-3">
-                                <img src="Images/headphone.png" alt="headphone" className="headphone" />
+                                <img src={HeadphoneImg} alt="headphone" className="headphone" />
                             </div>
                             <div className="col-xs-9">
                                 <label className="id-abc-1234">ID - ABC1234
-                                    
                                     <span className="updated-2-d-ago">Updated 2d ago</span>
                                     {/* <button onClick={this.onOpenModal}>Open modal</button> */}
                                 </label>
                             </div>
                             
                             <div className="col-xs-9 oval-head">
-                                <img src="Images/headphone2.png" alt="headphone" className="oval-55" />
+                                <img src={Headphone2Img} alt="headphone" className="oval-55" />
                                 <label className="naman-r">Naman.R</label>
-                                <img src="Images/down.png" alt="down" className="down-header" />
+                                <img src={DownImg} alt="down" className="down-header" />
                                 <button type="button" className="btn btn-primary2">Submit As Solved
-                                <img src="Images/down-white.png" alt="headphone" className="down-white" />
+                                <img src={DownWhiteImg} alt="headphone" className="down-white" />
                                 </button>
                             </div>
                         </div>
-                        <img src="Images/loading.png" alt="Loading" className="loading-rectangle" onClick={this.onOpenModal}/>
+                        <img src={LoadingImg} alt="Loading" className="loading-rectangle" onClick={this.onOpenModal}/>
                     </div>
                 </div>
                 <div className="historical-model">
@@ -59,9 +67,9 @@ class MyTicket extends Component {
                             <div className="col-md-3">
                                 <label className="mobile-number">Mobile Number</label><br />
                                 <label className="mobile-no">+91 9873470074</label>
-                                <img src="Images/eye.png" alt="eye" className="eyeImg" />
+                                <img src={EyeImg} alt="eye" className="eyeImg" />
                                 <div className="bill-1">
-                                    <img src="Images/bill-Invoice.png" alt="eye" className="billImg" />
+                                    <img src={BillInvoiceImg} alt="eye" className="billImg" />
                                 </div>
                                 <div className="card-space-1">
                                     <label className="target-closure-date">Target Closure Date &nbsp;</label>
@@ -159,9 +167,9 @@ class MyTicket extends Component {
                         <div className="row">
                             <div className="mask1">
                                 <div className="mail-mask">
-                                    <img src="Images/msg.png" alt="msg" className="smg-Img" />
+                                    <img src={MsgImg} alt="msg" className="smg-Img" />
                                     <label className="email">Email</label>
-                                    <img src="Images/down-1.png" alt="down" className="down-1" />
+                                    <img src={Down1Img} alt="down" className="down-1" />
                                     <img src="Images/arrow.png" alt="Arrow" className="arrow-img" />
                                     <div className="line-1"></div>
                                     <img src="Images/plus.png" alt="Plush" className="plush-img" />

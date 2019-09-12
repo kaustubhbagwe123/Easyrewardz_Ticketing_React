@@ -8,7 +8,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import "./assets/css/style.css";
 import "./assets/css/custome.css";
 ///Component
-import SingIn from "./Component/SingIn";
+import SignIn from "./Component/SignIn";
 import ForgotPassword from "./Component/ForgotPassword";
 import ProgramCodeSignIn from "./Component/ProgramCodeSignIn";
 import App from "./routes/index";
@@ -20,9 +20,9 @@ import PieChart from "./Component/PieChart/PieChart";
 
 ReactDOM.render(
   <Router>
-    <Route path="/" component={App} />
+    <Route path="/admin" component={App} />
     <Route exact path="/" component={ProgramCodeSignIn} />
-    <Route exact path="/SingIn" component={SingIn} />
+    <Route exact path="/SignIn" component={SignIn} />
     <Route exact path="/Forgotpassword" component={ForgotPassword} />
     <Route exact path="/PieChart" component={PieChart} />
     {/* <Route exact path="/MyTicket" component={MyTicket}/> */}

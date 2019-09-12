@@ -3,9 +3,9 @@ import React, { Component } from "react";
 import logo from "../assets/Images/logo.jpg";
 
 class ForgotPassword extends Component {
-  componentDidMount() {
-    document.querySelectorAll(".card-Nav")[0].style.display = "none";
-  }
+  // componentDidMount() {
+  //   document.querySelectorAll(".card-Nav")[0].style.display = "none";
+  // }
 
   render() {
     return (
@@ -62,7 +62,7 @@ class ForgotPassword extends Component {
               <div style={{ paddingTop: "10px" }}>
                 <p className="mb-0 text-muted">
                   <a
-                    href="SingIn"
+                    href="SignIn"
                     style={{ color: "#246ec3", letterSpacing: "0.5px" }}
                   >
                     TRY LOGIN AGAIN

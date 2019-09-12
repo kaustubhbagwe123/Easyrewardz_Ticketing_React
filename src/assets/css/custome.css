@@ -34,7 +34,6 @@
 }
 .claim-label {
   margin-left: 333%;
-  color: black;
 }
 .knowledge-base {
   color: #4a4a4a;
@@ -2384,7 +2383,11 @@ progress::-moz-progress-bar {
   left: 2px;
 }
 
+<<<<<<< HEAD
 /* ---------------------------Deepak Savani Task:Claim Tab Ticket View-----------------------------   */
+=======
+/* ---------------------------Deepak Savani Task:Claim Tab Tocket View-----------------------------   */
+>>>>>>> 402091ddb1fd437940f5d932934c676c4fe0a912
 
 .claim-00-1 {
   color: #2561a8;  
