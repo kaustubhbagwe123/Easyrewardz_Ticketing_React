@@ -304,7 +304,7 @@
   padding-left: 30px;
 }
 .viewticketspeadding {
-  padding-left: 50px;
+  padding-left: 30px;
 }
 .labledata {
   padding-left: 9px;
@@ -2462,14 +2462,14 @@ progress::-moz-progress-bar {
 .styles_closeButton__20ID4 {
   display: none;
 }
-.styles_modal__gNwvD
+/* .styles_modal__gNwvD
 {
 
   top: 7%;
   left: 14%;
   border-radius: 8px;
   width: 500px;
-}
+} */
 /* ------------------------------- */
 
 
@@ -2780,10 +2780,10 @@ margin-left: 25px;
 }
  
  
-
+/* 
 .ReactModal__Overlay{
   overflow-y: auto;
-}
+} */
 
 .add-comment-button{
   background-color: #2561A8;
@@ -2838,11 +2838,42 @@ margin-left: 25px;
   height: 76px;
 }
 
-/* .borderless table tr {
+.borderless table tr{
   border-bottom: none !important;
   border: none !important;
   height: 0px;
-} */
+  padding:1px;
+}
+
+
+.borderless table td{
+ 
+  border: none !important;
+ 
+}
+
+.borderless table tr td:last-child{
+  text-align: left;
+}
+
+ 
+.claim-SKU-details-table table tbody tr
+{
+  height: 28px;
+  border: none !important;
+}
+.claim-SKU-details-table table tbody tr td{
+  border: none !important;
+
+}
+
+#Notification-popup{
+  border-radius: 8px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+  left: 15%;
+  
+}
+
 
 /* #endregion */
  
