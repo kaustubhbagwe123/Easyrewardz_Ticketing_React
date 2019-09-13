@@ -2475,7 +2475,6 @@ progress::-moz-progress-bar {
 } */
 /* ------------------------------- */
 
-
 .CliamDetailsModal{
   background-color: #FFFFFF;
   width: 945px;
@@ -2509,9 +2508,7 @@ progress::-moz-progress-bar {
 }
 
 .claimrowmargin{
-
-margin-left: 25px;
-  
+margin-left: 25px; 
 }
 
 .claim-category{
@@ -2665,7 +2662,6 @@ margin-left: 25px;
   padding-top:20px;
 }
 
-
 .invoice-number{
   color: #4A4A4A;
   font-family: Lato;
@@ -2750,10 +2746,6 @@ margin-left: 25px;
   border: none !important;
 } */
 
- 
-
-
-
 /* ------ */
 .oval-5{
   background-color: #F8E71C;
@@ -2782,7 +2774,6 @@ margin-left: 25px;
   text-align: left;
 }
  
- 
 /* 
 .ReactModal__Overlay{
   overflow-y: auto;
@@ -2806,7 +2797,6 @@ margin-left: 25px;
 
 .claim-status-table .table td {
   padding: 0 15px;
- 
 }
 
 .claim-status-row{
@@ -2848,17 +2838,13 @@ margin-left: 25px;
   padding:1px;
 }
 
-
 .borderless table td{
- 
   border: none !important;
- 
 }
 
 .borderless table tr td:last-child{
   text-align: left;
 }
-
  
 .claim-SKU-details-table table tbody tr
 {
@@ -2874,9 +2860,7 @@ margin-left: 25px;
   border-radius: 8px;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
   left: 15%;
-  
 }
-
 
 /* #endregion */
  

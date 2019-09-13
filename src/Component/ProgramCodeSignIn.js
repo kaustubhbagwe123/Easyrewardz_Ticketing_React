@@ -42,7 +42,7 @@ class ProgramCodeSignIn extends Component {
                 }}
                 onClick={this.hanleChange}
               >
-                SUBIMT
+                SUBMIT
               </button>
             </div>
           </div>

@@ -8,9 +8,10 @@ import TaskIconGray from './../assets/Images/task-icon-gray.png';
 import CliamIconBlue from './../assets/Images/cliam-icon-blue.png';
  
 
- class MyTicketList extends Component
- {
-
+ class MyTicketList extends Component{
+  hanleChange = () => {
+    this.props.history.push("/admin/ticketsystem");
+  };
     render(){
 
         return (
@@ -42,7 +43,7 @@ import CliamIconBlue from './../assets/Images/cliam-icon-blue.png';
                       <td></td>
                       <td style={{ padding: "13px" }}>
                         <div>
-                          <button className="Add-ticket-button">
+                          <button className="Add-ticket-button" type="button" onClick={this.hanleChange}>
                             <label className="add-tickets">Add Tickets</label>
                           </button>
                         </div>
