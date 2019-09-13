@@ -304,7 +304,7 @@
   padding-left: 25px;
 }
 .viewticketspeadding {
-  padding-left: 50px;
+  padding-left: 30px;
 }
 .labledata {
   padding-left: 9px;
@@ -2521,4 +2521,408 @@ progress::-moz-progress-bar {
 .styles_closeButton__20ID4 {
   display: none;
 }
+/* .styles_modal__gNwvD
+{
+
+  top: 7%;
+  left: 14%;
+  border-radius: 8px;
+  width: 500px;
+} */
 /* ------------------------------- */
+
+.CliamDetailsModal{
+  background-color: #FFFFFF;
+  width: 945px;
+  height: 929px;
+  float: right;
+  position: relative;
+ 
+}
+
+.black-left-arrow{
+  width: 24px;
+  height: 24px;
+}
+
+.claim-details{
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19px;
+  text-align: left;
+}
+
+.id-a-22134{
+  color: #000000;
+  font-family: Lato;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 22px;
+  text-align: left;
+}
+
+.claimrowmargin{
+margin-left: 25px; 
+}
+
+.claim-category{
+  color: #9B9B9B;
+  font-family: Lato;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 12px;
+  text-align: left;
+}
+
+.sub-category{
+  color: #9B9B9B;
+  font-family: Lato;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 12px;
+  text-align: left;
+}
+
+.claim-type{
+  color: #9B9B9B;
+  font-family: Lato;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 12px;
+  text-align: left;
+}
+
+.claim-asked-for{
+  color: #9B9B9B;
+  font-family: Lato;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 12px;
+  text-align: left;
+}
+
+.attached-image{
+  color: #9B9B9B;
+  font-family: Lato;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 12px;
+  text-align: left;
+}
+
+.refund{
+  color: #000000;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: left;
+}
+
+.recent-orders{
+  color: #000000;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: left;
+}
+
+.customer-name{
+  color: #9B9B9B;
+  font-family: Lato;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 12px;
+  text-align: left;
+}
+
+.email-id{
+  color: #9B9B9B;
+  font-family: Lato;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 12px;
+  text-align: left;
+}
+.phone-number{
+  color: #9B9B9B;
+  font-family: Lato;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 12px;
+  text-align: left;
+}
+
+.gender{
+  color: #9B9B9B;
+  font-family: Lato;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 12px;
+  text-align: left;
+}
+
+.Add-Comments-textarea{
+  background-color: #ECF2F4;
+  border-radius: 4px;
+  width: 359px;
+  height: 198px;
+}
+
+/* ----- */
+
+.table-header{
+
+  background-color: white;
+
+}
+.claim-status-table{
+  background-color: #FFFFFF;
+  border: 1px solid #EBEBEB;
+  border-radius: 8px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.03);
+  width: 876px;
+  height: 350px;
+}
+
+.claim-status-table-header{
+  background-color: #ECF2F4;
+  width: 876px;
+  height: 57px;
+  border: 1px solid #ECF2F4;
+  border-radius: 8px;
+   
+}
+
+.claim-status-open{
+  color: #000000;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: left;
+  padding: 20px;
+}
+
+.order-details{
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19px;
+  text-align: left;  
+  padding-left: 34px;
+  padding-top:20px;
+}
+
+.invoice-number{
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: left;
+}
+.invoice-date{
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: left;
+}
+.item-count{
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: left;
+}
+.item-price{
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: left;
+}
+.price-paid{
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: left;
+}
+.store-code{
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: left;
+}
+.store-address{
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: left;
+}
+
+.claim-SKU-details-table{
+  background-color: #F8F8F8;
+  width: 802px;
+  height: 105px;
+  margin-left: 10px;
+}
+.bb-332398{
+  color: #9B9B9B;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: left;
+}
+.sku{
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: left;
+}
+
+/* table.borderless td,table.borderless th{
+  border: none !important;
+} */
+
+/* ------ */
+.oval-5{
+  background-color: #F8E71C;
+  border-radius: 100%;
+  width: 30px;
+  height: 30px;
+  margin-left: 15px;
+}
+
+.varun-nagpal{
+  color: #000000;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: left;
+}
+
+.hi-diwakar-i-really{
+  color: #505050;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 23px;
+  width: 343px;
+  text-align: left;
+}
+ 
+/* 
+.ReactModal__Overlay{
+  overflow-y: auto;
+} */
+
+.add-comment-button{
+  background-color: #2561A8;
+  border-radius: 4px;
+  width: 359px;
+  height: 43px;
+}
+
+.add-comment-text{
+  color: #FFFFFF;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  text-align: left;
+}
+
+.claim-status-table .table td {
+  padding: 0 15px;
+}
+
+.claim-status-row{
+  background-color: #F3F0F0;
+  border-radius: 4.5px;
+  width: 851px;
+  height: 10px;
+  margin: 10px;
+}
+
+.ticket-details-textarea::placeholder{
+  color: #9B9B9B;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: left;
+}
+
+.ticket-tittle-textbox::placeholder{
+
+  color: #9B9B9B;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19px;
+  text-align: left;
+}
+.batashoes-icon
+{
+  width: 135px;
+  height: 76px;
+}
+
+.borderless table tr{
+  border-bottom: none !important;
+  border: none !important;
+  height: 0px;
+  padding:1px;
+}
+
+.borderless table td{
+  border: none !important;
+}
+
+.borderless table tr td:last-child{
+  text-align: left;
+}
+ 
+.claim-SKU-details-table table tbody tr
+{
+  height: 28px;
+  border: none !important;
+}
+.claim-SKU-details-table table tbody tr td{
+  border: none !important;
+
+}
+
+#Notification-popup{
+  border-radius: 8px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+  left: 15%;
+}
+
+/* #endregion */
+
+
+
+
+
+
+  

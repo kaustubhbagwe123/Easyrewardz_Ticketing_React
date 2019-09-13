@@ -13,9 +13,9 @@ import ArrowIcon from  './../assets/Images/arrow.png';
 import PlusIcon from './../assets/Images/plus.png';
 import TableArrowIcon from './../assets/Images/table-arr.png';
 import InfoIcon from './../assets/Images/info-icon.png';
-// import BlackLeftArrow from './../assets/Images/black-left-arrow.png';
-// import BataShoesIcon from './../assets/Images/bata.png';
-// import StoreIcon from './../assets/Images/store.png';
+import BlackLeftArrow from './../assets/Images/black-left-arrow.png';
+import BataShoesIcon from './../assets/Images/bata.png';
+import StoreIcon from './../assets/Images/store.png';
  
 
 class ClaimTabTicketView extends Component {
@@ -30,6 +30,10 @@ class ClaimTabTicketView extends Component {
 
     this.closeModal = this.closeModal.bind(this);
   }
+
+  hanleChange = () => {
+    this.props.history.push("/admin/myticket");
+  };
 
   afterOpenModal() {
     // references are now sync'd and can be accessed.
@@ -231,7 +235,7 @@ class ClaimTabTicketView extends Component {
             </div>
             <div className="row msg-row">
               <div className="col-md-2">
-                <label className="messages-04-1">Messages: 04</label>
+                <label className="messages-04-1" onClick={this.hanleChange}>Messages: 04</label>
               </div>
               <div className="col-md-2">
                 <label className="notes-00">Notes: 00</label>
@@ -381,7 +385,7 @@ class ClaimTabTicketView extends Component {
             </div>
           </div>
         </div>
-        {/* <Modal
+        <Modal
           className="CliamDetailsModal"
           onRequestClose={this.closeModal}
           isOpen={this.state.modalIsOpen}
@@ -393,6 +397,7 @@ class ClaimTabTicketView extends Component {
                 src={BlackLeftArrow}
                 alt="black-left-arrow-icon"
                 className="black-left-arrow"
+                onClick={this.closeModal}
               />
             </div>
             <div className="col-md-8">
@@ -468,7 +473,7 @@ class ClaimTabTicketView extends Component {
                 <label className="attached-image">ATTACHED IMAGES</label>
               </div>
               <div className="batashoes-icon">
-                <img src={BataShoesIcon} alt="bata-icon" ></img>
+                <img src={BataShoesIcon} alt="bata-icon"></img>
               </div>
             </div>
           </div>
@@ -541,8 +546,9 @@ class ClaimTabTicketView extends Component {
               <div className="claim-SKU-details-table">
                 <table className="table borderless">
                   <tbody>
+                                    
                     {/* ----------------------Header Start------------------------- */}
-                    {/* <tr>
+                    <tr>
                       <td>
                         <label className="invoice-number">SKU</label>
                       </td>
@@ -561,9 +567,9 @@ class ClaimTabTicketView extends Component {
                       <td>
                         <label className="invoice-number">MOP</label>
                       </td>
-                    </tr> */}
+                    </tr>
                     {/* -------------------------Header End---------------------------- */}
-                    {/* <tr>
+                    <tr>
                       <td>
                         <label className="bb-332398">BB332398</label>
                       </td>
@@ -671,7 +677,7 @@ class ClaimTabTicketView extends Component {
               </button>
             </div>
           </div>
-        </Modal> */} 
+        </Modal>
       </>
     );
   }
