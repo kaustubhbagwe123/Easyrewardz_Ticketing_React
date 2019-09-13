@@ -103,10 +103,9 @@ class TicketSystem extends Component {
                       </div>
                       <div className="row rowmargin">
                         <div className="col-md-5">
-                          <select className="category-select">
+                          <select className="category-select dropdown-label">
                             <option
-                              className="select-category-placeholder"
-                              selected
+                              className="select-category-placeholder dropdown-label"
                             >
                               Select Category
                             </option>
@@ -116,7 +115,7 @@ class TicketSystem extends Component {
                           className="col-md-6"
                           style={{ marginLeft: "30px" }}
                         >
-                          <select className="sub-category-select">
+                          <select className="sub-category-select dropdown-label">
                             <option className="select-sub-category-placeholder">
                               Select Sub Category
                             </option>
@@ -140,7 +139,7 @@ class TicketSystem extends Component {
 
                       <div className="row rowmargin">
                         <div className="col-md-5">
-                          <select className="category-select">
+                          <select className="category-select dropdown-label">
                             <option className="select-category-placeholder">
                               Select Type
                             </option>

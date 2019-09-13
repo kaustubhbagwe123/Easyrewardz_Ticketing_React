@@ -3314,10 +3314,10 @@ pre[class*=language-]:after, pre[class*=language-]:before {
   font-size: 14px;
   height: auto;
 }
-.custom-select:focus,
+/* .custom-select:focus,
 .form-control:focus {
   background: #f4f7fa;
-}
+} */
 .custom-select::-moz-placeholder,
 .form-control::-moz-placeholder {
   color: #aaaeb3;

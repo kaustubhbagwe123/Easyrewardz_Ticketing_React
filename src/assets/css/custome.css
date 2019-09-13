@@ -301,7 +301,7 @@
   margin-top: 12px;
 }
 .rowpadding {
-  padding-left: 30px;
+  padding-left: 25px;
 }
 .viewticketspeadding {
   padding-left: 30px;
@@ -624,7 +624,7 @@
 .v2 {
   border-left: 2px solid #f1f1f1;
   height: 158px;
-  margin-top: -24%;
+  margin-top: -26%;
   margin-left: 556px;
 }
 .v3 {
@@ -2453,10 +2453,13 @@ progress::-moz-progress-bar {
   line-height: 19px;
   text-align: left;
 }
-.mask task tr{
-  height: 0px;
-    border-bottom: none;
+.rectanglesystem table tr {
+  border-bottom: none !important;
 }
+.custom-select:focus, .form-control:focus {
+  background-color: #ecf2f4 !important;
+  box-shadow: none !important;
+  }
 /* ------------------------------------------------------------------------------------------------- */
 /* model close button css */
 .styles_closeButton__20ID4 {
