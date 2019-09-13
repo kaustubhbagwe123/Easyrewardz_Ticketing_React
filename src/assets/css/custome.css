@@ -2066,7 +2066,62 @@ table tr th:last-child {
 }
 /* login and password extra css ends */
 
-/* chetan css ends */
+/* settings starts */
+.setting-title {
+  background-color: #ecf2f4;
+  padding: 18px 35px;
+  font-size: 18px;
+}
+.setting-tabs {
+  padding: 15px 20px;
+}
+.setting-tabs ul {
+  border: none;
+}
+.setting-tabs .nav-tabs .nav-link {
+  font-weight: 400;
+  padding: 7px 30px;
+  border-radius: 3px;
+}
+.setting-tabs .nav-tabs .nav-link.active {
+  border: none;
+  background-color: #2561a8;
+  color: #fff;
+  font-weight: 700;
+}
+.setting-tabs .tab-content {
+  padding: 20px 0;
+}
+.setting-tabs .tab-content .tab-pane .row {
+  margin-bottom: 30px;
+}
+.setting-tabs .tab-content .tab-pane .row:last-child {
+  margin-bottom: 0px;
+}
+.setting-cntr {
+  background-color: #fff;
+  border-radius: 6px;
+  padding: 30px;
+}
+.setting-cntr p {
+  font-size: 12px;
+  margin-top: 2px;
+}
+.setting-cntr strong {
+  color: #2561a8;
+}
+.setting-box {
+  display: flex;
+  margin-bottom: 35px;
+}
+.setting-cntr .setting-box:last-child {
+  margin-bottom: 0px;
+}
+.setting-desc {
+  padding-left: 20px;
+}
+/* settings ends */
+
 /* chetan css ends */
 /******************************************************/
 
@@ -2461,10 +2516,11 @@ progress::-moz-progress-bar {
 .rectanglesystem table tr {
   border-bottom: none !important;
 }
-.custom-select:focus, .form-control:focus {
+.custom-select:focus,
+.form-control:focus {
   background-color: #ecf2f4 !important;
   box-shadow: none !important;
-  }
+}
 /* ------------------------------------------------------------------------------------------------- */
 /* model close button css */
 .styles_closeButton__20ID4 {
