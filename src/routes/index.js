@@ -9,6 +9,7 @@ import Chatbot from "./Chatbot";
 import Claim from "./Claim";
 import MyTicketList from "./MyTicketList";
 import ClaimTabTicketView from './ClaimTabTicketView';
+import StoreMaster from './../Component/Settings/StoreMaster';
 // import Aux from "./../Component/Aux";
 
 export class App extends Component {
@@ -24,6 +25,7 @@ export class App extends Component {
         <Route exact path={`${match.url}/claim`} component={Claim} />
         <Route exact path={`${match.url}/myTicketList`} component={MyTicketList} />
         <Route exact path={`${match.url}/claimTabTicketView`} component={ClaimTabTicketView } />
+        <Route exact path={`${match.url}/storemaster`} component={StoreMaster } />
 
       </Layout>
     );

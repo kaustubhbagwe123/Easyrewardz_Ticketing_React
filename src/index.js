@@ -7,6 +7,8 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 //Css
 import "./assets/css/style.css";
 import "./assets/css/custome.css";
+import "./assets/css/settings.css";
+
 ///Component
 import SignIn from "./Component/SignIn";
 import ForgotPassword from "./Component/ForgotPassword";
