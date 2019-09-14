@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import ArrowLeftCircleBlue from './../assets/Images/arrow-circle-left.png'
 import RedHeadPhoneIcon from './../assets/Images/headphone.png';
-import CopyIcon from './../assets/Images/copy.png';
+import CopyIcon from './../assets/Images/past.png';
 import CustomreIcon from './../assets/Images/customer.png'
 import OrderIcon from './../assets/Images/order.png';
-import StoreIcon from './../assets/Images/store.png';
+import StoreIcon from './../assets/Images/store-tikcet-system.png';
 import TaskIcon from './../assets/Images/ticket.png'; 
 class TicketSystem extends Component {
 
@@ -99,7 +99,7 @@ class TicketSystem extends Component {
                           </div>
                           <div
                             className="col-md-6"
-                            style={{ marginLeft: "10px" }}
+                            style={{ marginLeft: "20px" }}
                           >
                             <label className="sub-category">Sub Category</label>
                           </div>
@@ -130,7 +130,7 @@ class TicketSystem extends Component {
                           </div>
                           <div
                             className="col-md-6"
-                            style={{ marginLeft: "10px" }}
+                            style={{ marginLeft: "20px" }}
                           >
                             <label className="sub-category">
                               Ticket Priority
@@ -160,7 +160,7 @@ class TicketSystem extends Component {
                               </div>
                               <div
                                 className="col-md-4 Medium"
-                                style={{paddingLeft:'27px' }}
+                                style={{paddingLeft:'31px' }}
                               >
                                 <button className="">
                                   <label className="medium-button-text">
@@ -274,7 +274,7 @@ class TicketSystem extends Component {
                             </button>
                           </div>
                         </div>
-                        <hr />
+                        <div className="ticketsystem-line"></div>
                       </div>
                     </td>
 
@@ -290,7 +290,7 @@ class TicketSystem extends Component {
                           </div>
                           <span className="customer-text">CUSTOMER</span>
                           <br />
-                          <div>
+                          <div style={{marginTop:"15px"}}>
                             <img
                               src={OrderIcon}
                               alt="order-icon"
@@ -299,16 +299,16 @@ class TicketSystem extends Component {
                           </div>
                           <span className="order-text">ORDER</span>
                           <br />
-                          <div>
+                          <div style={{marginTop:"15px"}}>
                             <img
                               src={StoreIcon}
                               alt="store-icon"
                               className="store-icon"
-                            />
+                            /> 
                           </div>
                           <span className="store-text">STORE</span>
                           <br />
-                          <div>
+                          <div style={{marginTop:"15px"}}>
                             <img
                               src={TaskIcon}
                               alt="task-icon"
