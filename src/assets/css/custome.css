@@ -1,4 +1,4 @@
-.card-Nav {
+.card-Nav{
   border-radius: 0;
   -webkit-box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
   box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
@@ -629,7 +629,7 @@
 .v2 {
   border-left: 2px solid #f1f1f1;
   height: 158px;
-  margin-top: -26%;
+  margin-top: -24.8%;
   margin-left: 556px;
 }
 .v3 {
@@ -716,12 +716,13 @@
   text-align: left;
   padding-left: 173px;
 }
-.hi-diwakar-i-really {
-  color: #4a4a4a;
+.hi-diwakar-i-really1 {
+  color: #4A4A4A;
   font-family: Lato;
   font-size: 13px;
   font-weight: 700;
   line-height: 16px;
+  width: 749px;
   text-align: left;
 }
 .comment-text {
@@ -744,9 +745,10 @@
 }
 .label-2 {
   margin-top: -3px;
-  font-size: 18px;
+  font-size: 20px;
   margin-bottom: 8px;
   padding-left: 3px;
+  color: #5C5C5C;
 }
 .label-3 {
   margin-top: -2px;
@@ -788,7 +790,7 @@
   width: 18px;
   height: 18px;
   margin-left: 758%;
-  margin-top: -43%;
+  margin-top: -38%;
 }
 .dropdrown {
   margin-left: -21px;
@@ -796,8 +798,8 @@
 .plush-img {
   width: 18px;
   height: 18px;
-  margin-left: 789%;
-  margin-top: -43%;
+  margin-left: 785%;
+  margin-top: -40%;
 }
 .line-1 {
   border: 1px solid #cad4d7;
@@ -830,13 +832,19 @@
   margin-top: -24.4%;
   margin-left: 97%;
 }
-.bata-rajouri-garden {
+.bata-rajouri-garden{
   color: #4a4a4a;
   font-family: inherit;
   font-size: 14px;
   font-weight: 700;
   line-height: 17px;
   text-align: left;
+  white-space: nowrap;
+}
+.pencilImg{
+  width: 16px;
+  height: 16px;
+  margin-top: -10px;
 }
 .card-details {
   background-color: #fafafa;
@@ -938,7 +946,7 @@
   margin-top: 15px;
 }
 
-.mask {
+.mask{
   background-color: #ffffff;
   border-radius: 4.5px;
   width: auto;
@@ -1031,7 +1039,7 @@ table {
   width: 591px;
   height: 792px;
 }
-.ticket-tittle {
+.ticket-tittle{
   color: #9b9b9b;
   font-family: Lato;
   font-size: 14px;
@@ -1041,14 +1049,15 @@ table {
   padding-left: 15px;
 }
 
-.ticket-tittle-textbox {
+.ticket-tittle-textbox{
   background-color: #ecf2f4;
   border-radius: 4px;
   width: 520px;
   height: 43px;
+  border: none;
 }
 
-.rowmargin {
+.rowmargin{
   margin-left: 10px;
 }
 
@@ -2164,7 +2173,7 @@ table tr th:last-child {
 }
 .btn-margin {
   padding-top: 5px;
-  margin-left: 50px;
+  margin-left: 35px;
 }
 .submit-claim {
   color: #ffffff;
@@ -2184,7 +2193,7 @@ table tr th:last-child {
   margin-right: 6px;
 }
 .col-md-9-card {
-  margin-left: -13px;
+  margin-left: -5px;
   flex: 0 0 75%;
   max-width: 75%;
 }
@@ -2197,7 +2206,8 @@ table tr th:last-child {
 }
 .search-customer-padding {
   padding: 23px;
-  padding-left: 8%;
+  padding-left: 7%;
+  padding-top: 5px;
 }
 .back-color {
   background-color: #f5f8f9;
@@ -2207,28 +2217,29 @@ table tr th:last-child {
 .card-radius {
   border-radius: 6px;
   padding-top: 15px;
-  padding-left: 7px;
+  padding-left: 15px;
 }
 .label-color {
   color: #6b6767;
 }
 .add-customer-color {
-  margin-left: 235px;
+  margin-left: 230px;
   color: #4275b1;
 }
 .search-mobile-textbox {
   background-color: #ecf2f4;
   border-radius: 4px;
-  width: 880px;
+  width: 875px;
   height: 43px;
   margin-left: -15px;
   padding-left: 6px;
+  border:none;
 }
 .searchImg {
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   margin-top: -70px;
-  margin-left: 833px;
+  margin-left: 825px;
 }
 .claim-status-card {
   background-color: #ecf2f4;
@@ -2236,7 +2247,7 @@ table tr th:last-child {
   height: 54px;
   border-radius: 10px;
   padding: 15px;
-  padding-left: 18px;
+  padding-left: 10px;
 }
 .line-2 {
   border: 1px solid #cad4d7;
@@ -2292,12 +2303,14 @@ table tr th:last-child {
   line-height: 19px;
   opacity: 0.5;
   text-align: left;
+  padding-bottom: 10px;
 }
 .ticket-comments-textarea {
   background-color: #ecf2f4;
   border-radius: 4px;
-  width: 860px;
+  width: 870px;
   height: 123px;
+  border: none;
 }
 .hr-ago {
   color: #9b9b9b;
@@ -2449,14 +2462,14 @@ table tr th:last-child {
 /**Historical popup css edn**/
 
 /*Progress bar in my tickeyt page*/
-progress {
+progress{
   /* RESETS */
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
   border: none;
 
-  width: 300px;
+  width: 290px;
   height: 15px;
   border-radius: 20px;
   background-color: #777;
@@ -2481,7 +2494,7 @@ progress::-moz-progress-bar {
   text-align: right;
   width: 60%;
   position: relative;
-  left: 2px;
+  left: -3px;
 }
 .dropdown-label {
   color: #9b9b9b;
@@ -2492,6 +2505,7 @@ progress::-moz-progress-bar {
   text-align: left;
   padding-right: 40px;
   background: #ecf2f4 url("../Images/down-1.png") no-repeat right 12px center;
+  border:none;
 }
 .pieChart-Margin {
   margin-left: -35px;
@@ -2928,4 +2942,7 @@ progress::-moz-progress-bar {
   left: 15%;
 }
 
+.textBox{
+  border: none;
+}
 /* #endregion */

@@ -8,6 +8,7 @@ import StoreDashboard from "./StoreDashboard";
 import Chatbot from "./Chatbot";
 import Claim from "./Claim";
 import MyTicketList from "./MyTicketList";
+import TicketHierarchy from "./Settings/TicketHierarchy";
 import ClaimTabTicketView from "./ClaimTabTicketView";
 import TicketHierarchy from "./Settings/TicketHierarchy";
 import StoreMaster from "./Settings/StoreMaster";
@@ -55,26 +56,11 @@ export class App extends Component {
           component={StoreMaster}
         />
 
-        <Route
-          exact
-          path={`${match.url}/myTicketList`}
-          component={MyTicketList}
-        />
-        <Route
-          exact
-          path={`${match.url}/claimTabTicketView`}
-          component={ClaimTabTicketView}
-        />
         <Route exact path={`${match.url}/settings`} component={Settings} />
         <Route
           exact
           path={`${match.url}/priority-settings`}
           component={PrioritySettings}
-        />
-        <Route
-          exact
-          path={`${match.url}/storemaster`}
-          component={StoreMaster}
         />
       </Layout>
     );

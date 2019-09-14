@@ -4075,7 +4075,7 @@ a.btn-theme.active {
   border-radius: 0.25rem;
   font-size: 14px;
   margin-bottom: 5px;
-  margin-right: 10px;
+  margin-right: -25px;
   -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }

@@ -155,14 +155,14 @@ class TicketSystem extends Component {
                                 <label className="high-button-text">High</label>
                               </button>
                             </div>
-                            <div className="col-md-4 Medium" style={{marginLeft:"10px"}}>
+                            <div className="col-md-4 Medium" style={{paddingLeft:'28px'}}>
                               <button className="">
                                 <label className="medium-button-text">
                                   Medium
                                 </label>
                               </button>
                             </div>
-                            <div className="col-md-4 Low" style={{marginLeft:"10px"}}>
+                            <div className="col-md-4 Low" style={{paddingLeft:'45px'}}>
                               <button className="low-button">
                                 <label className="low-button-text">Low</label>
                               </button>
