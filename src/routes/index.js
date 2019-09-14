@@ -8,7 +8,6 @@ import StoreDashboard from "./StoreDashboard";
 import Chatbot from "./Chatbot";
 import Claim from "./Claim";
 import MyTicketList from "./MyTicketList";
-import TicketHierarchy from "./Settings/TicketHierarchy";
 import ClaimTabTicketView from "./ClaimTabTicketView";
 import TicketHierarchy from "./Settings/TicketHierarchy";
 import StoreMaster from "./Settings/StoreMaster";

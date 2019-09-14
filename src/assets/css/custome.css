@@ -3000,3 +3000,44 @@ progress::-moz-progress-bar {
   border: none;
 }
 /* #endregion */
+
+
+/* Deepak Savani for Program Code Page add CSS  */
+
+.program-code-button
+{
+  background-color: #2561A8;
+  border-radius: 4px;
+  width: 282px;
+  height: 43px;
+  margin-right: 10px;
+}
+
+.program-code-button-text
+{
+  color: #FFFFFF;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  text-align: left;
+}
+
+.program-code-textbox
+{
+
+  background-color: #ECF2F4;
+  border-radius: 4px;
+  width: 282px;
+  height: 43px;
+}
+
+.card{
+
+  border: none !important;
+}
+
+
+
+
+/* ---------------------------------------- */

@@ -24,25 +24,21 @@ class ProgramCodeSignIn extends Component {
               >
                 SIGN IN
               </h3>
-              <div className="input-group mb-3">
+              <div style={{marginRight:"10px"}}>
                 <input
                   type="email"
-                  className="form-control"
+                  className="program-code-textbox"
                   placeholder="Program Code*"
                   style={{ border: 0 }}
                 />
               </div>
+              <br />
               <button
                 type="button"
-                className="btn btn-primary form-control"
-                style={{
-                  backgroundColor: "#2561A8",
-                  borderColor: "#2561A8",
-                  letterSpacing: "0.5px"
-                }}
+                className="program-code-button"                 
                 onClick={this.hanleChange}
               >
-                SUBMIT
+                <label className="program-code-button-text">SUBMIT</label>
               </button>
             </div>
           </div>
