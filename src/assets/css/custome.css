@@ -329,7 +329,7 @@
   height: 22px;
   padding: 3px;
   margin-left: 115px;
-  margin-top: -104px;
+  margin-top: -75px;
 }
 .oval-55 {
   background-color: #f8e71c;
@@ -339,8 +339,8 @@
   padding: 6px;
 }
 .oval-head {
-  padding-left: 73%;
-  margin-top: -39px;
+  padding-left: 70%;
+  margin-top: -45px;
 }
 .naman-r {
   color: #000000;
@@ -374,7 +374,7 @@
 }
 .updated-2-d-ago {
   color: #9b9b9b;
-  font-family: inherit;
+  font-family: Lato;
   font-size: 12px;
   font-weight: 700;
   line-height: 14px;
@@ -382,6 +382,55 @@
   display: block;
 }
 /****************My Ticket********************/
+
+.right-icon
+{
+  width: 19px;
+  height: 19px; 
+  margin-left: 5px;
+  margin-top: 3px;
+
+}
+.new-top-bottom-margin{
+  margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.myticket-submit-solve-button
+{
+
+  background-color: #2561A8;
+  border-radius: 4px;
+  width: 214px;
+  height: 43px;
+  margin-left: 35px;
+
+}
+
+.myticket-submit-solve-button-text
+{
+  color: #FFFFFF;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  text-align: left;
+  margin-left: 12px;
+}
+.rectangle-3 .top-margin{
+  margin-top: 13px;
+}
+
+.rectangle-3 .message-header
+{
+  margin-top: 15px;
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: left;
+}
 .main-content1 {
   padding: 0px 20px;
 }
@@ -505,9 +554,9 @@
   font-weight: 700;
   line-height: 17px;
   text-align: left;
-  padding-right: 8%;
-  padding-left: 1%;
-  margin-top: 6px;
+ 
+  margin-top: 5px;
+   
 }
 .i-have-solved-this-i {
   color: #4a4a4a;
@@ -522,7 +571,7 @@
   width: 22px;
   height: 16px;
   margin: 7px;
-  margin-left: 13%;
+   
 }
 .up {
   width: 18px;
@@ -634,14 +683,15 @@
 }
 .v3 {
   border: 1px solid #dfdfdf;
-  width: 104%;
+  width: 118%;
   margin-top: 2.6%;
 }
 .v4 {
   border: 1px solid #dfdfdf;
-  width: 129%;
+  width: 113%;
   margin-top: 2.6%;
-  margin-left: -28.5%;
+  margin-left: -13.5%;
+
 }
 .v5 {
   border: 1px solid #dfdfdf;
@@ -650,9 +700,9 @@
 }
 .v6 {
   border: 1px solid #dfdfdf;
-  width: 123%;
+  width: 110%;
   margin-top: 2.6%;
-  margin-left: -22.5%;
+  margin-left: -8.5%;
 }
 .oval-loading {
   background-color: #f5a623;
@@ -677,6 +727,7 @@
   font-weight: 700;
   line-height: 14px;
   text-align: left;
+  padding-left: 70px;
 }
 .yesterday-02 {
   color: #9b9b9b;
@@ -685,6 +736,8 @@
   font-weight: 700;
   line-height: 14px;
   text-align: left;
+  padding-left: 67px;
+
 }
 .rashmi-c {
   color: #000000;
@@ -745,7 +798,7 @@
 }
 .label-2 {
   margin-top: -3px;
-  font-size: 20px;
+  font-size: 21px;
   margin-bottom: 8px;
   padding-left: 3px;
   color: #5c5c5c;
@@ -915,7 +968,7 @@
   font-size: 13px;
   font-weight: 700;
   line-height: 16px;
-  text-align: left;
+  text-align: right;
   padding-left: 72px;
 }
 .btn-primary1 {
@@ -1055,6 +1108,7 @@ table {
   width: 520px;
   height: 43px;
   border: none;
+  padding-left: 10px;
 }
 
 .rowmargin {
@@ -1080,6 +1134,7 @@ table {
   height: 123px;
   border: none;
   resize: none;
+  padding:10px;
 }
 
 .category {
@@ -1104,7 +1159,7 @@ table {
 .category-select {
   background-color: #ecf2f4;
   border-radius: 4px;
-  width: 256px;
+  width: 245px;
   height: 43px;
   padding-left: 10px;
   border: none;
@@ -1112,10 +1167,11 @@ table {
 .sub-category-select {
   background-color: #ecf2f4;
   border-radius: 4px;
-  width: 256px;
+  width: 245px;
   height: 43px;
   padding-left: 10px;
   border: none;
+  margin-left: 10px;
 
 }
 
@@ -1152,6 +1208,8 @@ table {
   font-weight: 700;
   line-height: 17px;
   text-align: left;
+  text-transform: capitalize;
+
 }
 
 .medium-button {
@@ -1169,6 +1227,8 @@ table {
   font-weight: 700;
   line-height: 17px;
   text-align: left;
+  text-transform: capitalize;
+
 }
 
 .low-button {
@@ -1186,6 +1246,8 @@ table {
   font-weight: 700;
   line-height: 17px;
   text-align: left;
+  text-transform: capitalize;
+
 }
 
 .screen-shot-2018-04-17-at-4-39-16-pm {
@@ -1285,6 +1347,11 @@ table {
   line-height: 12px;
   width: 23.07px;
   text-align: left;
+  padding-bottom: 5px;
+}
+.ticketsystem-line{
+  margin-top: 30px;
+  border: 1px solid #EDEDED;
 }
 .right-rectangle {
   background-color: #ecf2f4;
@@ -1375,7 +1442,15 @@ table {
   text-align: left;
   padding: 5px;
 }
-
+ticket-details-textarea ::placeholder{
+  color: #9b9b9b;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 19px;
+  text-align: left;
+ 
+}
 ::placeholder {
   color: #9b9b9b;
   font-family: Lato;
@@ -2461,6 +2536,7 @@ table tr th:last-child {
   border-radius: 4px;
   height: 43px;
   min-width: 67px;
+  margin-left: 10px;
 }
 
 .Low button {
@@ -2469,6 +2545,7 @@ table tr th:last-child {
   border-radius: 4px;
   min-width: 48px;
   height: 43px;
+  margin-left: 10px;
 }
 .Medium button {
   background-color: #f5a623;
@@ -2476,6 +2553,7 @@ table tr th:last-child {
   border-radius: 4px;
   min-width: 68px;
   height: 43px;
+  margin-left: 10px;
 }
 
 /* ----------------------------------- */
@@ -2937,12 +3015,12 @@ progress::-moz-progress-bar {
 } */
 
 /* ------ */
-.oval-5 {
-  background-color: #f8e71c;
+.oval-5-1 {
+  background-color: #7ED321;
   border-radius: 100%;
   width: 30px;
   height: 30px;
-  margin-left: 15px;
+  /* margin-left: 15px; */
 }
 
 .varun-nagpal {
