@@ -1042,10 +1042,12 @@ table {
   border-radius: 4px;
   width: 520px;
   height: 43px;
+  border: none;
 }
 
 .rowmargin {
   margin-left: 10px;
+  margin-bottom: 10px;
 }
 
 .ticket-details {
@@ -1064,6 +1066,8 @@ table {
   border-radius: 4px;
   width: 520px;
   height: 123px;
+  border: none;
+  resize: none;
 }
 
 .category {
@@ -1091,6 +1095,7 @@ table {
   width: 256px;
   height: 43px;
   padding-left: 10px;
+  border: none;
 }
 .sub-category-select {
   background-color: #ecf2f4;
@@ -1098,6 +1103,8 @@ table {
   width: 256px;
   height: 43px;
   padding-left: 10px;
+  border: none;
+
 }
 
 .select-category-placeholder {
@@ -1184,10 +1191,10 @@ table {
   padding-top: 2px;
 }
 
-.email-id {
+.email-id{
   color: #9b9b9b;
   font-family: Lato;
-  font-size: 13px;
+  font-size: 13px !important;
   font-weight: 700;
   line-height: 16px;
   text-align: left;
@@ -1233,15 +1240,36 @@ table {
   border: 1px solid #2561a8;
   border-radius: 4px;
   width: 93px;
-  height: 41.32px;
+  height: 31.32px;
   margin-left: 13px;
   margin-top: 10px;
+
+}
+
+.rectangletd .row button{
+  padding: 0px;
+}
+
+.mask-ticket-system{
+  background-color: #ffffff;
+  border-radius: 4.5px;
+  width: auto;
+  height: auto;
+  margin: 20px;
+}
+
+.mask-ticket-system .table td{
+  border: none;
+}
+
+.margin-ticket-system-td{
+  margin-top: 15px;
 }
 .edit-button-text {
   color: #2561a8;
   font-family: Lato;
   font-size: 10px;
-  font-weight: 700;
+  font-weight: bold;
   line-height: 12px;
   width: 23.07px;
   text-align: left;
@@ -1264,11 +1292,13 @@ table {
   font-weight: 700;
   line-height: 11px;
   text-align: left;
+  padding-top: 10px;
 }
 .order-icon {
   width: 32px;
   height: 32px;
   margin-left: 7px;
+
 }
 .order-text {
   color: #4a4a4a;
@@ -1278,6 +1308,7 @@ table {
   line-height: 11px;
   text-align: left;
   margin-left: 8px;
+  padding-top: 10px;
 }
 .store-icon {
   width: 32px;
@@ -1293,6 +1324,7 @@ table {
   line-height: 11px;
   text-align: left;
   margin-left: 8px;
+  padding-top: 10px;
 }
 
 .task-icon {
@@ -1309,6 +1341,7 @@ table {
   line-height: 11px;
   text-align: left;
   margin-left: 8px;
+  padding-top: 10px;
 }
 
 ::-webkit-input-placeholder {
@@ -1334,7 +1367,7 @@ table {
 ::placeholder {
   color: #9b9b9b;
   font-family: Lato;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
   line-height: 19px;
   text-align: left;
@@ -1345,6 +1378,25 @@ table {
   border-radius: 4px;
   width: 520px;
   height: 123px;
+  border: none;
+  resize: none;
+}
+ 
+.addNote-textarea::placeholder{
+  color: #9B9B9B;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 19px;
+  text-align: left;
+}
+
+.colmarigin-tab{
+  margin-left: 20px;
+  margin-right: 40px;
+}
+.colmarigin-tab .row{
+  margin-bottom: 5px;
 }
 
 /********************************************/
@@ -2413,7 +2465,7 @@ progress::-moz-progress-bar {
 .dropdown-label {
   color: #9b9b9b;
   font-family: Lato;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
   line-height: 17px;
   text-align: left;
@@ -2475,6 +2527,34 @@ progress::-moz-progress-bar {
 } */
 /* ------------------------------- */
 
+
+/* .claim-modal-scroll{  
+  padding: 20px;
+  width: auto;
+  height: auto;  
+  overflow: auto;
+  color: rgba(0, 0, 0, 0);
+  text-shadow: 0 0 black;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+  transition: color .3s ease;
+} */
+/* 
+.CliamDetailsModal::-webkit-scrollbar,
+.CliamDetailsModal::-webkit-scrollbar-thumb {
+  width: auto;
+  border-radius: 13px;
+  background-clip: padding-box;
+  border: 10px solid transparent;
+}
+
+.CliamDetailsModal::-webkit-scrollbar-thumb {        
+  box-shadow: inset 0 0 0 10px;
+}
+
+.CliamDetailsModal:hover {
+  color: rgba(0, 0, 0, 0.3);
+} */
+
 .CliamDetailsModal{
   background-color: #FFFFFF;
   width: 945px;
@@ -2523,7 +2603,7 @@ margin-left: 25px;
 .sub-category{
   color: #9B9B9B;
   font-family: Lato;
-  font-size: 10px;
+  font-size: 14px;
   font-weight: 700;
   line-height: 12px;
   text-align: left;
@@ -2577,7 +2657,7 @@ margin-left: 25px;
 .customer-name{
   color: #9B9B9B;
   font-family: Lato;
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 700;
   line-height: 12px;
   text-align: left;
@@ -2594,7 +2674,7 @@ margin-left: 25px;
 .phone-number{
   color: #9B9B9B;
   font-family: Lato;
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 700;
   line-height: 12px;
   text-align: left;
@@ -2820,11 +2900,13 @@ margin-left: 25px;
 
   color: #9B9B9B;
   font-family: Lato;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
   line-height: 19px;
   text-align: left;
 }
+
+
 .batashoes-icon
 {
   width: 135px;
@@ -2861,6 +2943,8 @@ margin-left: 25px;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
   left: 15%;
 }
+
+
 
 /* #endregion */
 

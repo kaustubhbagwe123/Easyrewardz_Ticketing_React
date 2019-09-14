@@ -12,6 +12,9 @@ import CliamIconBlue from './../assets/Images/cliam-icon-blue.png';
   hanleChange = () => {
     this.props.history.push("/admin/ticketsystem");
   };
+  hanleChange_MyTicket = () => {
+    this.props.history.push("/admin/myticket");
+  };
     render(){
 
         return (
@@ -152,7 +155,7 @@ import CliamIconBlue from './../assets/Images/cliam-icon-blue.png';
                       </td>
                     </tr>
 
-                    <tr>
+                    <tr onClick={this.hanleChange_MyTicket}>
                       <td>ABC1234</td>
                       <td>
                         <span className="table-btn table-green-btn">

@@ -235,7 +235,9 @@ class ClaimTabTicketView extends Component {
             </div>
             <div className="row msg-row">
               <div className="col-md-2">
-                <label className="messages-04-1" onClick={this.hanleChange}>Messages: 04</label>
+                <label className="messages-04-1" onClick={this.hanleChange}>
+                  Messages: 04
+                </label>
               </div>
               <div className="col-md-2">
                 <label className="notes-00">Notes: 00</label>
@@ -385,196 +387,146 @@ class ClaimTabTicketView extends Component {
             </div>
           </div>
         </div>
+
         <Modal
           className="CliamDetailsModal"
           onRequestClose={this.closeModal}
           isOpen={this.state.modalIsOpen}
         >
-          <br />
-          <div className="row">
-            <div style={{ marginLeft: "40px" }}>
-              <img
-                src={BlackLeftArrow}
-                alt="black-left-arrow-icon"
-                className="black-left-arrow"
-                onClick={this.closeModal}
-              />
-            </div>
-            <div className="col-md-8">
-              <label className="claim-details">Claim Details</label>
-            </div>
-          </div>
-          <hr />
-          <div className="claimrowmargin">
-            <label className="id-a-22134">ID - A22134</label>
-          </div>
-
-          <div className="row">
-            <div className=" col-md-8" style={{ marginLeft: "25px" }}>
-              <div className="row">
-                <div className="col-md-3">
-                  <label className="claim-category">CLAIM CATEGORY</label>
-                </div>
-                <div className="col-md-3">
-                  <label className="sub-category">SUB CATEGORY</label>
-                </div>
-                <div className="col-md-3">
-                  <label className="claim-type">CLAIM TYPE</label>
-                </div>
-                <div className="col-md-3">
-                  <label className="claim-asked-for">CLAIM ASKED FOR</label>
-                </div>
+          <div className="claim-modal-scroll">
+            <br />
+            <div className="row">
+              <div style={{ marginLeft: "40px" }}>
+                <img
+                  src={BlackLeftArrow}
+                  alt="black-left-arrow-icon"
+                  className="black-left-arrow"
+                  onClick={this.closeModal}
+                />
               </div>
-              <div className="row">
-                <div className="col-md-3">
-                  <label className="recent-orders">RECENT ORDERS</label>
-                </div>
-                <div className="col-md-3">
-                  <label className="refund">REFUND</label>
-                </div>
-                <div className="col-md-3">
-                  <label className="refund">REFUND</label>
-                </div>
-                <div className="col-md-3">
-                  <label className="refund">10</label>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-md-3">
-                  <label className="customer-name">CUSTOMER NAME</label>
-                </div>
-                <div className="col-md-3">
-                  <label className="phone-number">PHONE NUMBER</label>
-                </div>
-                <div className="col-md-3">
-                  <label className="email-id">EMAIL</label>
-                </div>
-                <div className="col-md-3">
-                  <label className="gender">GENDER</label>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-md-3">
-                  <label className="refund">REFUND</label>
-                </div>
-                <div className="col-md-3">
-                  <label className="recent-orders">RECENT ORDERS</label>
-                </div>
-                <div className="col-md-3">
-                  <label className="refund">REFUND</label>
-                </div>
-                <div className="col-md-3">
-                  <label className="refund">10</label>
-                </div>
+              <div className="col-md-8">
+                <label className="claim-details">Claim Details</label>
               </div>
             </div>
-            <div className="col-md-3">
-              <div>
-                <label className="attached-image">ATTACHED IMAGES</label>
-              </div>
-              <div className="batashoes-icon">
-                <img src={BataShoesIcon} alt="bata-icon"></img>
-              </div>
-            </div>
-          </div>
-          <br />
-          <div className="claim-status-table" style={{ marginLeft: "20px" }}>
-            <div className="claim-status-table-header">
-              <label className="claim-status-open">Claim Status : Open</label>
+            <hr />
+            <div className="claimrowmargin">
+              <label className="id-a-22134">ID - A22134</label>
             </div>
 
             <div className="row">
-              <label className="order-details">Order details</label>
+              <div className=" col-md-8" style={{ marginLeft: "25px" }}>
+                <div className="row">
+                  <div className="col-md-3">
+                    <label className="claim-category">CLAIM CATEGORY</label>
+                  </div>
+                  <div className="col-md-3">
+                    <label className="sub-category">SUB CATEGORY</label>
+                  </div>
+                  <div className="col-md-3">
+                    <label className="claim-type">CLAIM TYPE</label>
+                  </div>
+                  <div className="col-md-3">
+                    <label className="claim-asked-for">CLAIM ASKED FOR</label>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-3">
+                    <label className="recent-orders">RECENT ORDERS</label>
+                  </div>
+                  <div className="col-md-3">
+                    <label className="refund">REFUND</label>
+                  </div>
+                  <div className="col-md-3">
+                    <label className="refund">REFUND</label>
+                  </div>
+                  <div className="col-md-3">
+                    <label className="refund">10</label>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-3">
+                    <label className="customer-name">CUSTOMER NAME</label>
+                  </div>
+                  <div className="col-md-3">
+                    <label className="phone-number">PHONE NUMBER</label>
+                  </div>
+                  <div className="col-md-3">
+                    <label className="email-id">EMAIL</label>
+                  </div>
+                  <div className="col-md-3">
+                    <label className="gender">GENDER</label>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-3">
+                    <label className="refund">REFUND</label>
+                  </div>
+                  <div className="col-md-3">
+                    <label className="recent-orders">RECENT ORDERS</label>
+                  </div>
+                  <div className="col-md-3">
+                    <label className="refund">REFUND</label>
+                  </div>
+                  <div className="col-md-3">
+                    <label className="refund">10</label>
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-3">
+                <div>
+                  <label className="attached-image">ATTACHED IMAGES</label>
+                </div>
+                <div className="batashoes-icon">
+                  <img src={BataShoesIcon} alt="bata-icon"></img>
+                </div>
+              </div>
             </div>
+            <br />
+            <div className="claim-status-table" style={{ marginLeft: "20px" }}>
+              <div className="claim-status-table-header">
+                <label className="claim-status-open">Claim Status : Open</label>
+              </div>
 
-            <hr />
-            <div className="borderless" style={{ marginLeft: "10px" }}>
-              <table className="table">
-                <tbody>
-                  <tr>
-                    <td>
-                      <label className="invoice-number">Invoice number</label>
-                    </td>
-                    <td>
-                      <label className="invoice-date">Invoice Date</label>
-                    </td>
-                    <td>
-                      <label className="item-count">Item Count</label>
-                    </td>
-                    <td>
-                      <label className="item-price">Item Price</label>
-                    </td>
-                    <td>
-                      <label className="price-paid">Price Paid</label>
-                    </td>
-                    <td>
-                      <label className="store-code">Store Code</label>
-                    </td>
-                    <td>
-                      <label className="store-address">Store Address</label>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <label className="bb-332398">BB332398</label>
-                    </td>
-                    <td>
-                      <label className="bb-332398">12 Jan 2019</label>
-                    </td>
-                    <td>
-                      <label className="bb-332398">02</label>
-                    </td>
-                    <td>
-                      <label className="bb-332398">2999</label>
-                    </td>
-                    <td>
-                      <label className="bb-332398">2999</label>
-                    </td>
-                    <td>
-                      <label className="bb-332398">SB221</label>
-                    </td>
-                    <td>
-                      <label className="bb-332398">
-                        UNIT D-338, | SECOND FLO
-                      </label>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div className="row" style={{ marginLeft: "15px" }}>
-              <div className="claim-SKU-details-table">
-                <table className="table borderless">
+              <div className="row">
+                <label className="order-details">Order details</label>
+              </div>
+
+              <hr />
+              <div className="borderless" style={{ marginLeft: "10px" }}>
+                <table className="table">
                   <tbody>
-                                    
-                    {/* ----------------------Header Start------------------------- */}
                     <tr>
                       <td>
-                        <label className="invoice-number">SKU</label>
+                        <label className="invoice-number">Invoice number</label>
                       </td>
                       <td>
-                        <label className="invoice-number">Product Name</label>
+                        <label className="invoice-date">Invoice Date</label>
                       </td>
                       <td>
-                        <label className="invoice-number">Price</label>
+                        <label className="item-count">Item Count</label>
                       </td>
                       <td>
-                        <label className="invoice-number">Price Paid</label>
+                        <label className="item-price">Item Price</label>
                       </td>
                       <td>
-                        <label className="invoice-number">Discount</label>
+                        <label className="price-paid">Price Paid</label>
                       </td>
                       <td>
-                        <label className="invoice-number">MOP</label>
+                        <label className="store-code">Store Code</label>
+                      </td>
+                      <td>
+                        <label className="store-address">Store Address</label>
                       </td>
                     </tr>
-                    {/* -------------------------Header End---------------------------- */}
                     <tr>
                       <td>
                         <label className="bb-332398">BB332398</label>
                       </td>
                       <td>
-                        <label className="bb-332398">Paper Bag Big</label>
+                        <label className="bb-332398">12 Jan 2019</label>
+                      </td>
+                      <td>
+                        <label className="bb-332398">02</label>
                       </td>
                       <td>
                         <label className="bb-332398">2999</label>
@@ -583,98 +535,150 @@ class ClaimTabTicketView extends Component {
                         <label className="bb-332398">2999</label>
                       </td>
                       <td>
-                        <label className="bb-332398">0.00</label>
+                        <label className="bb-332398">SB221</label>
                       </td>
                       <td>
-                        <label className="bb-332398">Cash</label>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <label className="bb-332398">BB332398</label>
-                      </td>
-                      <td>
-                        <label className="bb-332398">Paper Bag Big</label>
-                      </td>
-                      <td>
-                        <label className="bb-332398">03</label>
-                      </td>
-                      <td>
-                        <label className="bb-332398">03</label>
-                      </td>
-                      <td>
-                        <label className="bb-332398">0.00</label>
-                      </td>
-                      <td>
-                        <label className="bb-332398">Cash</label>
+                        <label className="bb-332398">
+                          UNIT D-338, | SECOND FLO
+                        </label>
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-              <div className="claim-status-row"></div>
+              <div className="row" style={{ marginLeft: "15px" }}>
+                <div className="claim-SKU-details-table">
+                  <table className="table borderless">
+                    <tbody>
+                      {/* ----------------------Header Start------------------------- */}
+                      <tr>
+                        <td>
+                          <label className="invoice-number">SKU</label>
+                        </td>
+                        <td>
+                          <label className="invoice-number">Product Name</label>
+                        </td>
+                        <td>
+                          <label className="invoice-number">Price</label>
+                        </td>
+                        <td>
+                          <label className="invoice-number">Price Paid</label>
+                        </td>
+                        <td>
+                          <label className="invoice-number">Discount</label>
+                        </td>
+                        <td>
+                          <label className="invoice-number">MOP</label>
+                        </td>
+                      </tr>
+                      {/* -------------------------Header End---------------------------- */}
+                      <tr>
+                        <td>
+                          <label className="bb-332398">BB332398</label>
+                        </td>
+                        <td>
+                          <label className="bb-332398">Paper Bag Big</label>
+                        </td>
+                        <td>
+                          <label className="bb-332398">2999</label>
+                        </td>
+                        <td>
+                          <label className="bb-332398">2999</label>
+                        </td>
+                        <td>
+                          <label className="bb-332398">0.00</label>
+                        </td>
+                        <td>
+                          <label className="bb-332398">Cash</label>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <label className="bb-332398">BB332398</label>
+                        </td>
+                        <td>
+                          <label className="bb-332398">Paper Bag Big</label>
+                        </td>
+                        <td>
+                          <label className="bb-332398">03</label>
+                        </td>
+                        <td>
+                          <label className="bb-332398">03</label>
+                        </td>
+                        <td>
+                          <label className="bb-332398">0.00</label>
+                        </td>
+                        <td>
+                          <label className="bb-332398">Cash</label>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div className="claim-status-row"></div>
+              </div>
             </div>
-          </div>
-          <br />
-          <div className="row" style={{ marginLeft: "5px" }}>
-            <div className="col-md-5">
-              <textarea
-                className="Add-Comments-textarea"
-                placeholder="Add Comments"
-              ></textarea>
-            </div>
-            <div className="col-md-7">
-              <div className="row">
-                <div className="col-md-2">
-                  <div className="oval-5">
-                    <img
-                      src={StoreIcon}
-                      style={{ padding: "2px" }}
-                      alt="store-icon"
-                    />
+            <br />
+            <div className="row" style={{ marginLeft: "5px" }}>
+              <div className="col-md-5">
+                <textarea
+                  className="Add-Comments-textarea"
+                  placeholder="Add Comments"
+                ></textarea>
+              </div>
+              <div className="col-md-7">
+                <div className="row">
+                  <div className="col-md-2">
+                    <div className="oval-5">
+                      <img
+                        src={StoreIcon}
+                        style={{ padding: "2px" }}
+                        alt="store-icon"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-10">
+                    <div className="row">
+                      <label className="varun-nagpal">Varun Nagpal</label>
+                    </div>
+                    <div className="row">
+                      <label className="hi-diwakar-i-really">
+                        Hi Diwakar, I really appreciate you joining us at
+                        Voucherify! My top priority{" "}
+                      </label>
+                    </div>
                   </div>
                 </div>
-                <div className="col-md-10">
-                  <div className="row">
-                    <label className="varun-nagpal">Varun Nagpal</label>
+                <div className="row">
+                  <div className="col-md-2">
+                    <div className="oval-5">
+                      <img
+                        src={StoreIcon}
+                        style={{ padding: "2px" }}
+                        alt="store-icon"
+                      />
+                    </div>
                   </div>
-                  <div className="row">
-                    <label className="hi-diwakar-i-really">
-                      Hi Diwakar, I really appreciate you joining us at
-                      Voucherify! My top priority{" "}
-                    </label>
+                  <div className="col-md-10">
+                    <div className="row">
+                      <label className="varun-nagpal">Varun Nagpal</label>
+                    </div>
+                    <div className="row">
+                      <label className="hi-diwakar-i-really">
+                        Hi Diwakar, I really appreciate you joining us at
+                        Voucherify! My top priority{" "}
+                      </label>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div className="row">
-                <div className="col-md-2">
-                  <div className="oval-5">
-                    <img
-                      src={StoreIcon}
-                      style={{ padding: "2px" }}
-                      alt="store-icon"
-                    />
-                  </div>
-                </div>
-                <div className="col-md-10">
-                  <div className="row">
-                    <label className="varun-nagpal">Varun Nagpal</label>
-                  </div>
-                  <div className="row">
-                    <label className="hi-diwakar-i-really">
-                      Hi Diwakar, I really appreciate you joining us at
-                      Voucherify! My top priority{" "}
-                    </label>
-                  </div>
-                </div>
-              </div>
             </div>
-          </div>
-          <div className="row" style={{ marginLeft: "5px" }}>
-            <div className="col-md-5">
-              <button className="add-comment-button">
-                <label className="add-comment-text">ADD COMMENT</label>
-              </button>
+            <div className="row" style={{ marginLeft: "5px" }}>
+              <div className="col-md-5">
+                <button className="add-comment-button">
+                  <label className="add-comment-text">ADD COMMENT</label>
+                </button>
+              </div>
             </div>
           </div>
         </Modal>
