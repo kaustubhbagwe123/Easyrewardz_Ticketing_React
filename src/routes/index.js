@@ -9,8 +9,9 @@ import Chatbot from "./Chatbot";
 import Claim from "./Claim";
 import MyTicketList from "./MyTicketList";
 import ClaimTabTicketView from "./ClaimTabTicketView";
-import Settings from "./Settings";
-import StoreMaster from "./../Component/Settings/StoreMaster";
+import StoreMaster from "./Settings/StoreMaster";
+import Settings from "./Settings/Settings";
+import PrioritySettings from "./Settings/PrioritySetting";
 // import Aux from "./../Component/Aux";
 
 export class App extends Component {
@@ -43,6 +44,11 @@ export class App extends Component {
           component={ClaimTabTicketView}
         />
         <Route exact path={`${match.url}/settings`} component={Settings} />
+        <Route
+          exact
+          path={`${match.url}/priority-settings`}
+          component={PrioritySettings}
+        />
         <Route
           exact
           path={`${match.url}/storemaster`}

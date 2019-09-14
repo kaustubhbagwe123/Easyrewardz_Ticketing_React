@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import "../../node_modules/jquery/dist/jquery.js";
-import "../../node_modules/popper.js/dist/popper.js";
-import "../../node_modules/bootstrap/dist/js/bootstrap.js";
+import "jquery";
+import "popper.js/dist/popper";
+import "bootstrap";
 
 class Settings extends Component {
   render() {
