@@ -2362,6 +2362,7 @@ table tr th:last-child {
   width: 870px;
   height: 123px;
   border: none;
+  resize: none;
 }
 .hr-ago {
   color: #9b9b9b;

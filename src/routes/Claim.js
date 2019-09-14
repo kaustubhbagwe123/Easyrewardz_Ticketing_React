@@ -166,6 +166,7 @@ class Claim extends Component {
                                 <label>alankrit@easyrewardz.com</label><br />
                                 <label><b>GENDER</b></label>
                                 <label>Male</label>
+                                <br/>
                             </div>
                         </div>
                     </div>
