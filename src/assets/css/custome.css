@@ -2449,7 +2449,7 @@ table tr th:last-child {
 .myticketlist-header {
   background-color: #ecf2f4;
   width: auto;
-  height: auto;
+  height: 57px;
 }
 
 .escalation-04-new {
@@ -3024,21 +3024,16 @@ progress::-moz-progress-bar {
   text-align: left;
 }
 
-.program-code-textbox
-{
-
+.program-code-textbox{
   background-color: #ECF2F4;
   border-radius: 4px;
   width: 282px;
   height: 43px;
+  padding-left: 15px;
 }
 
 .card{
-
   border: none !important;
 }
-
-
-
 
 /* ---------------------------------------- */

@@ -22,7 +22,7 @@ class MyTicketList extends Component {
           <table className="table">
             <tbody>
               <tr>
-                <td style={{ paddingLeft: "20px", paddingTop: "15px" }}>
+                <td style={{ paddingLeft: "6px", paddingTop: "6px" }}>
                   <div className="Escalation04-box1">
                     Escalation:{" "}
                     <label className="oval04">
@@ -33,16 +33,16 @@ class MyTicketList extends Component {
                   </div>
                 </td>
 
-                <td>New: 09 </td>
-                <td>Open: 10</td>
-                <td>Resolved: 15 </td>
-                <td>Reassigned by me: 03</td>
-                <td>Closed: 12</td>
-                <td>All: 56</td>
-                <td>Follow Up: 03</td>
-                <td>Draft: 05</td>
+                <td style={{paddingTop:'19px'}}>New: 09 </td>
+                <td style={{paddingTop:'19px'}}>Open: 10</td>
+                <td style={{paddingTop:'19px'}}>Resolved: 15 </td>
+                <td style={{paddingTop:'19px'}}>Reassigned by me: 03</td>
+                <td style={{paddingTop:'19px'}}>Closed: 12</td>
+                <td style={{paddingTop:'19px'}}>All: 56</td>
+                <td style={{paddingTop:'19px'}}>Follow Up: 03</td>
+                <td style={{paddingTop:'19px'}}>Draft: 05</td>
                 <td></td>
-                <td style={{ padding: "13px" }}>
+                <td style={{ paddingTop:'6px' }}>
                   <div>
                     <button
                       className="Add-ticket-button"
