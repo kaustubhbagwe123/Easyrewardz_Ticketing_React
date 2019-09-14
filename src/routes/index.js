@@ -10,10 +10,10 @@ import Claim from "./Claim";
 import MyTicketList from "./MyTicketList";
 import ClaimTabTicketView from './ClaimTabTicketView';
 import TicketHierarchy from "./Settings/TicketHierarchy";
-import StoreMaster from "./Settings/StoreMaster";
-import ClaimTabTicketView from "./ClaimTabTicketView";
+// import ClaimTabTicketView from "./ClaimTabTicketView";
 import Settings from "./Settings";
-import StoreMaster from "./../Component/Settings/StoreMaster";
+import StoreMaster from "./Settings/StoreMaster";
+
 // import Aux from "./../Component/Aux";
 
 export class App extends Component {
@@ -40,22 +40,8 @@ export class App extends Component {
         <Route exact path={`${match.url}/ticketHierarchy`} component={TicketHierarchy } />
         <Route exact path={`${match.url}/storemaster`} component={StoreMaster} />
 
-        <Route
-          exact
-          path={`${match.url}/myTicketList`}
-          component={MyTicketList}
-        />
-        <Route
-          exact
-          path={`${match.url}/claimTabTicketView`}
-          component={ClaimTabTicketView}
-        />
         <Route exact path={`${match.url}/settings`} component={Settings} />
-        <Route
-          exact
-          path={`${match.url}/storemaster`}
-          component={StoreMaster}
-        />
+      
       </Layout>
     );
   }

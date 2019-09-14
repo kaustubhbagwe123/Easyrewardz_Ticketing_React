@@ -22,7 +22,7 @@ class PieChart extends Component {
         datum={datum}
         x="key"
         y="y"
-        donut
+        
         labelType="percent"
       />
     );
