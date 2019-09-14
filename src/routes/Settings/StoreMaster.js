@@ -8,8 +8,6 @@ import CrossIcon from './../../assets/Images/cross-icon.png';
 
 class StoreMaster extends Component
 {
-
-
     render(){
 
         return (
@@ -525,6 +523,5 @@ class StoreMaster extends Component
     }
 
 }
-
 
 export default StoreMaster;
