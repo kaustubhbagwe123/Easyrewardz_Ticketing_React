@@ -36,7 +36,7 @@
 .claim-label {
   margin-left: 333%;
 }
-.claim-logo{
+.claim-logo {
   width: 20px;
   height: 20px;
   margin-right: 5px;
@@ -1460,6 +1460,75 @@ button {
 
 /* dashboard starts */
 
+.dash-cntr .card {
+  position: static;
+  display: initial;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: transparent;
+  background-clip: border-box;
+  border: 0;
+  border-radius: 0;
+}
+.dash-cntr .card .card-block,
+.dash-cntr .card .card-body {
+  padding: 0;
+}
+.dashboard-collapse-icon {
+  width: 36px;
+  height: 36px;
+  background-color: #c8d8dd;
+  border-radius: 50%;
+  line-height: 34px;
+  text-align: center;
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  top: 2px;
+  z-index: 1;
+}
+.dash-creation-popup {
+  position: absolute;
+  width: 370px;
+  background-color: #fff;
+  right: -12px;
+  top: 28px;
+  padding: 25px 30px 35px;
+  color: #4a4a4a;
+  z-index: 1;
+  display: none;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+}
+.dash-creation-popup-cntr {
+  position: relative;
+  display: inline-block;
+}
+.dash-creation-popup-cntr:hover .dash-creation-popup {
+  display: block;
+}
+.dash-creation-popup li {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+.dash-creation-popup li.title {
+  font-size: 12px;
+  text-transform: uppercase;
+  margin-top: 0;
+  padding-bottom: 5px;
+}
+.dash-creation-popup li p:first-child {
+  flex: 0 0 70%;
+}
+.dash-creation-popup li p:last-child {
+  flex: 0 0 30%;
+}
+.dash-creation-popup li p {
+  font-size: 16px;
+  font-weight: 700;
+  text-align: left;
+}
 .dash-top-cards {
   padding: 12px 20px 15px;
   background-color: #ffffff;
@@ -1492,6 +1561,7 @@ big {
 }
 .dash-cntr {
   padding: 15px 0;
+  position: relative;
 }
 .resp-success .card-head {
   text-align: center;
@@ -2047,8 +2117,8 @@ table tr th:last-child {
   background-color: #ecf2f4;
   padding: 12px;
 }
-.card .card-block,
-.card .card-body {
+.auth-content .card .card-block,
+.auth-content .card .card-body {
   padding: 25px 65px 60px;
 }
 .auth-wrapper .auth-content {

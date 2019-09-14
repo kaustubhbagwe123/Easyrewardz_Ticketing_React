@@ -5,15 +5,27 @@ import "../../node_modules/bootstrap/dist/js/bootstrap.js";
 import PieChart from "../Component/PieChart/PieChart";
 import SearchIcon from "./../assets/Images/search-icon.png";
 import TableArr from "./../assets/Images/table-arr.png";
+import Dash from "./../assets/Images/dash.png";
 import InfoIcon from "./../assets/Images/info-icon.png";
 import TaskIconBlue from "./../assets/Images/task-icon-blue.png";
 import TaskIconGray from "./../assets/Images/task-icon-gray.png";
 import CliamIconBlue from "./../assets/Images/cliam-icon-blue.png";
+import { Collapse, CardBody, Card } from "reactstrap";
 import Demo from "../store/Hashtag.js";
 
 import BarChart from "../Component/PieChart/BarChart.js";
 import MultiBarChart from "../Component/PieChart/MultiBarChart.js";
 class Dashboard extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      collapse: true
+    };
+    this.toggle = this.toggle.bind(this);
+  }
+  toggle() {
+    this.setState(state => ({ collapse: !state.collapse }));
+  }
   render() {
     return (
       <div>
@@ -42,194 +54,203 @@ class Dashboard extends Component {
           </div>
         </div>
         <section className="dash-cntr">
-          <div className="container-fluid btm-mar">
-            <div className="row">
-              <div className="col">
-                <div className="dash-top-cards">
-                  <p className="card-head">All</p>
-                  <span className="card-value">16</span>
-                </div>
-              </div>
-              <div className="col">
-                <div className="dash-top-cards">
-                  <p className="card-head">Open</p>
-                  <span className="card-value">06</span>
-                </div>
-              </div>
-              <div className="col">
-                <div className="dash-top-cards">
-                  <p className="card-head">Due Today</p>
-                  <span className="card-value">11</span>
-                </div>
-              </div>
-              <div className="col">
-                <div className="dash-top-cards">
-                  <p className="card-head">Over Due</p>
-                  <span className="card-value red-clr">07</span>
-                </div>
-              </div>
-              <div className="col">
-                <div className="dash-top-cards">
-                  <p className="card-head">Total no of chat</p>
-                  <span className="card-value">102</span>
-                  <small className="blue-clr">View More Insights</small>
-                </div>
-              </div>
-            </div>
+          <div className="dashboard-collapse-icon" onClick={this.toggle}>
+            <img src={Dash} alt="dash-icon" />
           </div>
-          <div className="container-fluid btm-mar">
-            <div className="row">
-              <div className="col-lg-3">
-                <div className="dash-top-cards">
-                  <p className="card-head">Open By Priority</p>
-                  <div className="pieChart-Margin">
-                    <PieChart />
-                  </div>
-                </div>
-              </div>
-              <div className="col-lg-6">
-                <div className="dash-top-cards p-0">
-                  <ul className="nav nav-tabs" role="tablist">
-                    <li className="nav-item">
-                      <a
-                        className="nav-link active"
-                        data-toggle="tab"
-                        href="#bill-graph-tab"
-                        role="tab"
-                        aria-controls="bill-graph-tab"
-                        aria-selected="true"
-                      >
-                        Tickets to bill graph
-                      </a>
-                    </li>
-                    <li className="nav-item">
-                      <a
-                        className="nav-link"
-                        data-toggle="tab"
-                        href="#source-tab"
-                        role="tab"
-                        aria-controls="source-tab"
-                        aria-selected="false"
-                      >
-                        Tickets generation source tab
-                      </a>
-                    </li>
-                  </ul>
-                  <div className="tab-content">
-                    <div
-                      className="tab-pane fade show active"
-                      id="bill-graph-tab"
-                      role="tabpanel"
-                      aria-labelledby="bill-graph-tab"
-                    >
-                      <BarChart />
+          <Collapse isOpen={this.state.collapse}>
+            <Card>
+              <CardBody>
+                <div className="container-fluid btm-mar">
+                  <div className="row">
+                    <div className="col">
+                      <div className="dash-top-cards">
+                        <p className="card-head">All</p>
+                        <span className="card-value">16</span>
+                      </div>
                     </div>
-                    <div
-                      className="tab-pane fade"
-                      id="source-tab"
-                      role="tabpanel"
-                      aria-labelledby="source-tab"
-                    >
-                      <BarChart />
+                    <div className="col">
+                      <div className="dash-top-cards">
+                        <p className="card-head">Open</p>
+                        <span className="card-value">06</span>
+                      </div>
+                    </div>
+                    <div className="col">
+                      <div className="dash-top-cards">
+                        <p className="card-head">Due Today</p>
+                        <span className="card-value">11</span>
+                      </div>
+                    </div>
+                    <div className="col">
+                      <div className="dash-top-cards">
+                        <p className="card-head">Over Due</p>
+                        <span className="card-value red-clr">07</span>
+                      </div>
+                    </div>
+                    <div className="col">
+                      <div className="dash-top-cards">
+                        <p className="card-head">Total no of chat</p>
+                        <span className="card-value">102</span>
+                        <small className="blue-clr">View More Insights</small>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="col-lg-3">
-                <div className="dash-top-cards">
-                  <p className="card-head">SLA</p>
-                  <div className="resp-success">
-                    <p className="card-head">Response Success</p>
-                    <span className="card-value">
-                      <big>60%</big>
-                    </span>
-                    <p className="card-head mt-4">
-                      Resolution Success :{" "}
-                      <span className="font-weight-bold">57.23%</span>
-                    </p>
+                <div className="container-fluid btm-mar">
+                  <div className="row">
+                    <div className="col-lg-3">
+                      <div className="dash-top-cards">
+                        <p className="card-head">Open By Priority</p>
+                        <div className="pieChart-Margin">
+                          <PieChart />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-lg-6">
+                      <div className="dash-top-cards p-0">
+                        <ul className="nav nav-tabs" role="tablist">
+                          <li className="nav-item">
+                            <a
+                              className="nav-link active"
+                              data-toggle="tab"
+                              href="#bill-graph-tab"
+                              role="tab"
+                              aria-controls="bill-graph-tab"
+                              aria-selected="true"
+                            >
+                              Tickets to bill graph
+                            </a>
+                          </li>
+                          <li className="nav-item">
+                            <a
+                              className="nav-link"
+                              data-toggle="tab"
+                              href="#source-tab"
+                              role="tab"
+                              aria-controls="source-tab"
+                              aria-selected="false"
+                            >
+                              Tickets generation source tab
+                            </a>
+                          </li>
+                        </ul>
+                        <div className="tab-content">
+                          <div
+                            className="tab-pane fade show active"
+                            id="bill-graph-tab"
+                            role="tabpanel"
+                            aria-labelledby="bill-graph-tab"
+                          >
+                            <BarChart />
+                          </div>
+                          <div
+                            className="tab-pane fade"
+                            id="source-tab"
+                            role="tabpanel"
+                            aria-labelledby="source-tab"
+                          >
+                            <BarChart />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-lg-3">
+                      <div className="dash-top-cards">
+                        <p className="card-head">SLA</p>
+                        <div className="resp-success">
+                          <p className="card-head">Response Success</p>
+                          <span className="card-value">
+                            <big>60%</big>
+                          </span>
+                          <p className="card-head mt-4">
+                            Resolution Success :{" "}
+                            <span className="font-weight-bold">57.23%</span>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-lg-3">
+                      <div className="dash-top-cards">
+                        <p className="card-head">Task</p>
+                        <div className="aside-cont">
+                          <div>
+                            <span className="card-value">16</span>
+                            <small>Open</small>
+                          </div>
+                          <div>
+                            <span className="card-value">06</span>
+                            <small>Pending</small>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-lg-6">
+                      <div className="dash-top-cards p-0">
+                        <ul className="nav nav-tabs" role="tablist">
+                          <li className="nav-item">
+                            <a
+                              className="nav-link active"
+                              data-toggle="tab"
+                              href="#task-tab"
+                              role="tab"
+                              aria-controls="task-tab"
+                              aria-selected="true"
+                            >
+                              Ticket to Task
+                            </a>
+                          </li>
+                          <li className="nav-item">
+                            <a
+                              className="nav-link"
+                              data-toggle="tab"
+                              href="#claim-tab"
+                              role="tab"
+                              aria-controls="claim-tab"
+                              aria-selected="false"
+                            >
+                              Ticket to claim
+                            </a>
+                          </li>
+                        </ul>
+                        <div className="tab-content">
+                          <div
+                            className="tab-pane fade show active"
+                            id="task-tab"
+                            role="tabpanel"
+                            aria-labelledby="task-tab"
+                          >
+                            <MultiBarChart />
+                          </div>
+                          <div
+                            className="tab-pane fade"
+                            id="claim-tab"
+                            role="tabpanel"
+                            aria-labelledby="claim-tab"
+                          >
+                            <BarChart />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-lg-3">
+                      <div className="dash-top-cards">
+                        <p className="card-head">Claim</p>
+                        <div className="aside-cont">
+                          <div>
+                            <span className="card-value">16</span>
+                            <small>Open</small>
+                          </div>
+                          <div>
+                            <span className="card-value">06</span>
+                            <small>Pending</small>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="col-lg-3">
-                <div className="dash-top-cards">
-                  <p className="card-head">Task</p>
-                  <div className="aside-cont">
-                    <div>
-                      <span className="card-value">16</span>
-                      <small>Open</small>
-                    </div>
-                    <div>
-                      <span className="card-value">06</span>
-                      <small>Pending</small>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-lg-6">
-                <div className="dash-top-cards p-0">
-                  <ul className="nav nav-tabs" role="tablist">
-                    <li className="nav-item">
-                      <a
-                        className="nav-link active"
-                        data-toggle="tab"
-                        href="#task-tab"
-                        role="tab"
-                        aria-controls="task-tab"
-                        aria-selected="true"
-                      >
-                        Ticket to Task
-                      </a>
-                    </li>
-                    <li className="nav-item">
-                      <a
-                        className="nav-link"
-                        data-toggle="tab"
-                        href="#claim-tab"
-                        role="tab"
-                        aria-controls="claim-tab"
-                        aria-selected="false"
-                      >
-                        Ticket to claim
-                      </a>
-                    </li>
-                  </ul>
-                  <div className="tab-content">
-                    <div
-                      className="tab-pane fade show active"
-                      id="task-tab"
-                      role="tabpanel"
-                      aria-labelledby="task-tab"
-                    >
-                      <MultiBarChart />
-                    </div>
-                    <div
-                      className="tab-pane fade"
-                      id="claim-tab"
-                      role="tabpanel"
-                      aria-labelledby="claim-tab"
-                    >
-                      <BarChart />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-lg-3">
-                <div className="dash-top-cards">
-                  <p className="card-head">Claim</p>
-                  <div className="aside-cont">
-                    <div>
-                      <span className="card-value">16</span>
-                      <small>Open</small>
-                    </div>
-                    <div>
-                      <span className="card-value">06</span>
-                      <small>Pending</small>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+              </CardBody>
+            </Card>
+          </Collapse>
           <div className="container-fluid">
             <div className="table-cntr mt-3">
               <table>
@@ -279,12 +300,41 @@ class Dashboard extends Component {
                     <td>High</td>
                     <td>N Rampal</td>
                     <td>
-                      2 Hour Ago{" "}
-                      <img
-                        className="info-icon"
-                        src={InfoIcon}
-                        alt="info-icon"
-                      />
+                      2 Hour Ago
+                      <div className="dash-creation-popup-cntr">
+                        <img
+                          className="info-icon"
+                          src={InfoIcon}
+                          alt="info-icon"
+                        />
+                        <ul className="dash-creation-popup">
+                          <li className="title">Creation details</li>
+                          <li>
+                            <p>Naman Created</p>
+                            <p>2 Hrs ago</p>
+                          </li>
+                          <li>
+                            <p>Assigned to Vikas</p>
+                            <p>1.5 Hrs ago</p>
+                          </li>
+                          <li>
+                            <p>Vikas updated</p>
+                            <p>1 Hr ago</p>
+                          </li>
+                          <li>
+                            <p>Response time remaining by</p>
+                            <p>30 mins</p>
+                          </li>
+                          <li>
+                            <p>Response overdue by</p>
+                            <p>1 Hr</p>
+                          </li>
+                          <li>
+                            <p>Resolution overdue by</p>
+                            <p>2 Hrs</p>
+                          </li>
+                        </ul>
+                      </div>
                     </td>
                   </tr>
                   <tr className="orange-bg">
@@ -309,11 +359,40 @@ class Dashboard extends Component {
                     <td>N Rampal</td>
                     <td>
                       12 March 2018{" "}
-                      <img
-                        className="info-icon"
-                        src={InfoIcon}
-                        alt="info-icon"
-                      />
+                      <div className="dash-creation-popup-cntr">
+                        <img
+                          className="info-icon"
+                          src={InfoIcon}
+                          alt="info-icon"
+                        />
+                        <ul className="dash-creation-popup">
+                          <li className="title">Creation details</li>
+                          <li>
+                            <p>Naman Created</p>
+                            <p>2 Hrs ago</p>
+                          </li>
+                          <li>
+                            <p>Assigned to Vikas</p>
+                            <p>1.5 Hrs ago</p>
+                          </li>
+                          <li>
+                            <p>Vikas updated</p>
+                            <p>1 Hr ago</p>
+                          </li>
+                          <li>
+                            <p>Response time remaining by</p>
+                            <p>30 mins</p>
+                          </li>
+                          <li>
+                            <p>Response overdue by</p>
+                            <p>1 Hr</p>
+                          </li>
+                          <li>
+                            <p>Resolution overdue by</p>
+                            <p>2 Hrs</p>
+                          </li>
+                        </ul>
+                      </div>
                     </td>
                   </tr>
                   <tr className="blue-bg">
@@ -346,11 +425,40 @@ class Dashboard extends Component {
                     <td>N Rampal</td>
                     <td>
                       12 March 2018{" "}
-                      <img
-                        className="info-icon"
-                        src={InfoIcon}
-                        alt="info-icon"
-                      />
+                      <div className="dash-creation-popup-cntr">
+                        <img
+                          className="info-icon"
+                          src={InfoIcon}
+                          alt="info-icon"
+                        />
+                        <ul className="dash-creation-popup">
+                          <li className="title">Creation details</li>
+                          <li>
+                            <p>Naman Created</p>
+                            <p>2 Hrs ago</p>
+                          </li>
+                          <li>
+                            <p>Assigned to Vikas</p>
+                            <p>1.5 Hrs ago</p>
+                          </li>
+                          <li>
+                            <p>Vikas updated</p>
+                            <p>1 Hr ago</p>
+                          </li>
+                          <li>
+                            <p>Response time remaining by</p>
+                            <p>30 mins</p>
+                          </li>
+                          <li>
+                            <p>Response overdue by</p>
+                            <p>1 Hr</p>
+                          </li>
+                          <li>
+                            <p>Resolution overdue by</p>
+                            <p>2 Hrs</p>
+                          </li>
+                        </ul>
+                      </div>
                     </td>
                   </tr>
                   <tr>
@@ -381,11 +489,40 @@ class Dashboard extends Component {
                     <td>N Rampal</td>
                     <td>
                       12 March 2018{" "}
-                      <img
-                        className="info-icon"
-                        src={InfoIcon}
-                        alt="info-icon"
-                      />
+                      <div className="dash-creation-popup-cntr">
+                        <img
+                          className="info-icon"
+                          src={InfoIcon}
+                          alt="info-icon"
+                        />
+                        <ul className="dash-creation-popup">
+                          <li className="title">Creation details</li>
+                          <li>
+                            <p>Naman Created</p>
+                            <p>2 Hrs ago</p>
+                          </li>
+                          <li>
+                            <p>Assigned to Vikas</p>
+                            <p>1.5 Hrs ago</p>
+                          </li>
+                          <li>
+                            <p>Vikas updated</p>
+                            <p>1 Hr ago</p>
+                          </li>
+                          <li>
+                            <p>Response time remaining by</p>
+                            <p>30 mins</p>
+                          </li>
+                          <li>
+                            <p>Response overdue by</p>
+                            <p>1 Hr</p>
+                          </li>
+                          <li>
+                            <p>Resolution overdue by</p>
+                            <p>2 Hrs</p>
+                          </li>
+                        </ul>
+                      </div>
                     </td>
                   </tr>
                   <tr>
@@ -421,11 +558,40 @@ class Dashboard extends Component {
                     <td>N Rampal</td>
                     <td>
                       12 March 2018{" "}
-                      <img
-                        className="info-icon"
-                        src={InfoIcon}
-                        alt="info-icon"
-                      />
+                      <div className="dash-creation-popup-cntr">
+                        <img
+                          className="info-icon"
+                          src={InfoIcon}
+                          alt="info-icon"
+                        />
+                        <ul className="dash-creation-popup">
+                          <li className="title">Creation details</li>
+                          <li>
+                            <p>Naman Created</p>
+                            <p>2 Hrs ago</p>
+                          </li>
+                          <li>
+                            <p>Assigned to Vikas</p>
+                            <p>1.5 Hrs ago</p>
+                          </li>
+                          <li>
+                            <p>Vikas updated</p>
+                            <p>1 Hr ago</p>
+                          </li>
+                          <li>
+                            <p>Response time remaining by</p>
+                            <p>30 mins</p>
+                          </li>
+                          <li>
+                            <p>Response overdue by</p>
+                            <p>1 Hr</p>
+                          </li>
+                          <li>
+                            <p>Resolution overdue by</p>
+                            <p>2 Hrs</p>
+                          </li>
+                        </ul>
+                      </div>
                     </td>
                   </tr>
                   <tr>
@@ -450,11 +616,40 @@ class Dashboard extends Component {
                     <td>N Rampal</td>
                     <td>
                       12 March 2018{" "}
-                      <img
-                        className="info-icon"
-                        src={InfoIcon}
-                        alt="info-icon"
-                      />
+                      <div className="dash-creation-popup-cntr">
+                        <img
+                          className="info-icon"
+                          src={InfoIcon}
+                          alt="info-icon"
+                        />
+                        <ul className="dash-creation-popup">
+                          <li className="title">Creation details</li>
+                          <li>
+                            <p>Naman Created</p>
+                            <p>2 Hrs ago</p>
+                          </li>
+                          <li>
+                            <p>Assigned to Vikas</p>
+                            <p>1.5 Hrs ago</p>
+                          </li>
+                          <li>
+                            <p>Vikas updated</p>
+                            <p>1 Hr ago</p>
+                          </li>
+                          <li>
+                            <p>Response time remaining by</p>
+                            <p>30 mins</p>
+                          </li>
+                          <li>
+                            <p>Response overdue by</p>
+                            <p>1 Hr</p>
+                          </li>
+                          <li>
+                            <p>Resolution overdue by</p>
+                            <p>2 Hrs</p>
+                          </li>
+                        </ul>
+                      </div>
                     </td>
                   </tr>
                   <tr>
@@ -479,11 +674,40 @@ class Dashboard extends Component {
                     <td>N Rampal</td>
                     <td>
                       12 March 2018{" "}
-                      <img
-                        className="info-icon"
-                        src={InfoIcon}
-                        alt="info-icon"
-                      />
+                      <div className="dash-creation-popup-cntr">
+                        <img
+                          className="info-icon"
+                          src={InfoIcon}
+                          alt="info-icon"
+                        />
+                        <ul className="dash-creation-popup">
+                          <li className="title">Creation details</li>
+                          <li>
+                            <p>Naman Created</p>
+                            <p>2 Hrs ago</p>
+                          </li>
+                          <li>
+                            <p>Assigned to Vikas</p>
+                            <p>1.5 Hrs ago</p>
+                          </li>
+                          <li>
+                            <p>Vikas updated</p>
+                            <p>1 Hr ago</p>
+                          </li>
+                          <li>
+                            <p>Response time remaining by</p>
+                            <p>30 mins</p>
+                          </li>
+                          <li>
+                            <p>Response overdue by</p>
+                            <p>1 Hr</p>
+                          </li>
+                          <li>
+                            <p>Resolution overdue by</p>
+                            <p>2 Hrs</p>
+                          </li>
+                        </ul>
+                      </div>
                     </td>
                   </tr>
                 </tbody>
