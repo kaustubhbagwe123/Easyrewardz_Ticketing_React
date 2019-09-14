@@ -629,7 +629,7 @@
 .v2 {
   border-left: 2px solid #f1f1f1;
   height: 158px;
-  margin-top: -26%;
+  margin-top: -24.8%;
   margin-left: 556px;
 }
 .v3 {
@@ -716,12 +716,13 @@
   text-align: left;
   padding-left: 173px;
 }
-.hi-diwakar-i-really {
-  color: #4a4a4a;
+.hi-diwakar-i-really1 {
+  color: #4A4A4A;
   font-family: Lato;
   font-size: 13px;
   font-weight: 700;
   line-height: 16px;
+  width: 749px;
   text-align: left;
 }
 .comment-text {
@@ -744,9 +745,10 @@
 }
 .label-2 {
   margin-top: -3px;
-  font-size: 18px;
+  font-size: 20px;
   margin-bottom: 8px;
   padding-left: 3px;
+  color: #5C5C5C;
 }
 .label-3 {
   margin-top: -2px;
@@ -788,7 +790,7 @@
   width: 18px;
   height: 18px;
   margin-left: 758%;
-  margin-top: -43%;
+  margin-top: -38%;
 }
 .dropdrown {
   margin-left: -21px;
@@ -796,8 +798,8 @@
 .plush-img {
   width: 18px;
   height: 18px;
-  margin-left: 789%;
-  margin-top: -43%;
+  margin-left: 785%;
+  margin-top: -40%;
 }
 .line-1 {
   border: 1px solid #cad4d7;
@@ -830,13 +832,19 @@
   margin-top: -24.4%;
   margin-left: 97%;
 }
-.bata-rajouri-garden {
+.bata-rajouri-garden{
   color: #4a4a4a;
   font-family: inherit;
   font-size: 14px;
   font-weight: 700;
   line-height: 17px;
   text-align: left;
+  white-space: nowrap;
+}
+.pencilImg{
+  width: 16px;
+  height: 16px;
+  margin-top: -10px;
 }
 .card-details {
   background-color: #fafafa;
@@ -938,7 +946,7 @@
   margin-top: 15px;
 }
 
-.mask {
+.mask{
   background-color: #ffffff;
   border-radius: 4.5px;
   width: auto;
@@ -2391,7 +2399,7 @@ progress{
   appearance: none;
   border: none;
 
-  width: 300px;
+  width: 290px;
   height: 15px;
   border-radius: 20px;
   background-color: #777;
@@ -2416,7 +2424,7 @@ progress::-moz-progress-bar {
   text-align: right;
   width: 60%;
   position: relative;
-  left: 2px;
+  left: -3px;
 }
 .dropdown-label {
   color: #9b9b9b;

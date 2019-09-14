@@ -17,6 +17,7 @@ import Up1Img from './../assets/Images/up-1.png';
 import Loading1Img from './../assets/Images/loading1.png';
 import FacebookImg from './../assets/Images/facebook.png';
 import ClipImg from './../assets/Images/clip.png';
+import PencilImg from './../assets/Images/pencil.png';
 
 class MyTicket extends Component {
         state = {
@@ -144,11 +145,15 @@ class MyTicket extends Component {
                                 <div className="row data-store">
                                     <div className="col-md-12">
                                         <label className="label-4">Store</label>
-                                        <label className="bata-rajouri-garden">BataRajouriGarden</label>
+                                        <label className="bata-rajouri-garden">Bata Raj ouri Garden &nbsp;
+                                        <img src={PencilImg} alt="Pencile" className="pencilImg" />
+                                        </label>
                                     </div>
                                     <div className="col-md-12">
                                         <label className="label-4">Product</label>
-                                        <label className="bata-rajouri-garden">RedTennisCocaColaWhiteMonogr…</label>
+                                        <label className="bata-rajouri-garden">Red Tennis Coca Cola White Monogr…&nbsp; 
+                                        <img src={PencilImg} alt="Pencile" className="pencilImg" />
+                                        </label>
                                     </div>
                                 </div>
                             </div>
@@ -286,14 +291,13 @@ class MyTicket extends Component {
                                 <img src={FacebookImg} alt="facebook" className="facebook" />
                             </div>
                             <div className="col-md-8">
-                                <label className="hi-diwakar-i-really">
+                                <label className="hi-diwakar-i-really1">
                                     <img src={ClipImg} alt="clip" className="clip" />&nbsp;
                                     Hi Diwakar, I really appreciate you joining us at Voucherify!
                                     My top priority is that you have a great experience.</label>
                             </div>
                             <label className="comment-text1">Comment</label>
                             <div className="col-md-2">
-
                             </div>
                         </div>
                         <div className="row row-spacing">
