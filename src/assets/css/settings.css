@@ -89,4 +89,309 @@
 }
 /* chetan priority settings ends */
 
+  .breadcrumbs-row-padding{
+    padding: 15px;
+    padding-left: 35px;
+}
+.row{
+  margin-right: 0px;
+}
 /* ----------------------------------------------------------------- */
+
+
+/* ------------------------Shlok Ticket Hierarchy css start------------------------------ */
+/* --------------------------Date : 13-09-2019 -------------------------------- */
+.mainDivPadding{
+  padding-bottom: 25px;
+}
+.lblHierarchy{
+  color: rgba(54, 54, 54, 0.85);
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  text-align: left;
+}
+.maskTableHierarchy{
+  background-color: #FFFFFF;
+  border-radius: 4px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.05);
+  width: 827px;
+  height: auto;
+  margin-left: 50px;
+}
+.createHierarchyMask{
+  background-color: #FFFFFF;
+  border-radius: 4px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.05);
+  width: 350px;
+  height: auto;
+  margin-left: 25px;
+}
+.rectangle-copy-3{
+  background-color: #FFFFFF;
+  border-radius: 4px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.05);
+  width: 350px;
+  height: auto;
+  margin-left: 25px;
+}
+.hod-manager-team-lea{
+  color: #9B9B9B;
+  font-family: Lato;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 66px;
+  text-align: left;
+}
+.root-hod-manager-tea{
+  color: #9B9B9B;
+  font-family: Lato;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 66px;
+  text-align: left;
+}
+.admin-admin-admin-ad{
+  color: #9B9B9B;
+  font-family: Lato;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 66px;
+  text-align: left;
+}
+.enabled-enabled-enab{
+  color: #9B9B9B;
+  font-family: Lato;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 66px;
+  text-align: left !important;
+}
+.pagination{
+  margin-left: 214px;
+    padding: 25px;
+    margin-top: 350px;
+}
+.pagination ul {
+  border: 1px solid #eceff0;
+  display: inline-block;
+}
+.pagination ul li {
+  font-size: 16px;
+  width: 37px;
+  height: 37px;
+  line-height: 35px;
+  border: 1px solid #eceff0;
+  text-align: center;
+}
+.pagination ul li a {
+  color: #747779;
+}
+.pagination ul li.active {
+  border-color: #d3d3d3;
+  box-shadow: inset 0px 0px 5px 0px #d3d3d3;
+}
+.deleteImg{
+  opacity: 0.8718843005952381;
+  width: 20px;
+  height: 20px;
+  margin-right: 15px;
+}
+.btnEditAction{
+  background-color: #2561A8;
+  border-radius: 4px;
+  width: 57px;
+  height: 27px;
+}
+.edit{
+  color: #FFFFFF;
+  font-family: Lato;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 12px;
+  text-align: left;
+}
+.maskTableHierarchy button{
+  min-width: 0;
+  padding: 0;
+  font-size: 0;
+}
+.create-department{
+  color: #2561A8;
+  font-family: Lato;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 22px;
+  text-align: left;
+  /* margin-left: -15px; */
+  padding-top: 20px;
+  padding-bottom: 15px;
+}
+.designation-name{
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19px;
+  text-align: left;
+}
+.reports-to{
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19px;
+  text-align: left;
+}
+.txt-1{
+  background-color: #ECF2F4;
+  border-radius: 4px;
+  width: 265px;
+  height: 43px;
+}
+.createSpace{
+  padding-left: 40px;
+  padding-bottom: 20px;
+}
+.divSpace{
+  padding-bottom: 10px;
+}
+.dropDrownSpace{
+  padding-right: 45px;
+}
+.dropdown-setting{
+  color: #9b9b9b;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: left;
+  padding-right: 40px;
+  background: #ecf2f4 url("../Images/dropDown.png") no-repeat right 12px center;
+}
+.CreateADDBtn{
+  background-color: #2561A8;
+  border-radius: 4px;
+  width: 265px;
+  height: 43px;
+}
+.addLable{
+  color: #FFFFFF;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  text-align: left;
+}
+.btnSpace{
+  margin-top: 20px;
+}
+.bulk-upload{
+  color: #2561A8;
+  font-family: Lato;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 22px;
+  text-align: left;
+  padding-top: 20px;
+  padding-bottom: 15px;
+}
+.rectangleBox-1{
+  background-color: #FFFFFF;
+  border: 1px solid #99AFC9;
+  border-radius: 8px;
+  width: 266px;
+  height: 150px;
+}
+.clipImgMargin{
+  margin-top: 40px;
+  margin-left: 108px;
+}
+.add-file-or-drop-fil{
+  color: #2561A8;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19px;
+  text-align: left;
+  margin-left: 40px;
+}
+.span-DropFile{
+  color: #575a5d;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19px;
+  text-align: left;
+}
+.blackDot{
+  background-color: #4A4A4A;
+  border-radius: 100%;
+  width: 8px;
+  height: 8px;
+  margin-top: 5px;
+}
+.chat-agent-user-type{
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  text-align: left;
+  margin-left: 8px;
+}
+.rectangle-copy-3 .row{
+  margin-top: 15px;
+  margin-left: 0px;
+}
+.lbl122-6-kb{
+  color: #9B9B9B;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  text-align: left;
+  margin-left: 15px;
+}
+.icons-8-delete{
+  width: 18px;
+  height: 18px;
+  margin-left: 55px;  
+}
+.failed{
+  color: #FA6400;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  text-align: left;
+  margin-left: 15px;
+}
+.retry{
+  color: #2561A8;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: left;
+  margin-left: 70px;
+}
+.ProgressBar{
+  background-color: #2561A8;
+  border-radius: 3.5px;
+  width: 100px;
+  height: 7px;
+}
+.mainProgress{
+  background-color: #F5F8F9;
+    width: 70%;
+    border-radius: 6px;
+    margin-top: 10px;
+    margin-left: 15px;
+}
+.cancelIcon{
+  margin-left: 250px;
+  margin-top: -35px;
+}
+/* --------------Css end-------------------------- */

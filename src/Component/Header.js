@@ -10,6 +10,7 @@ import NotificationLogo from "./../assets/Images/Notification.png";
 import SettingLogo from "./../assets/Images/setting.png";
 import UserLogo from "./../assets/Images/user-img.jpg";
 import StatusLogo from "./../assets/Images/status.png";
+import ClaimLogo from "./../assets/Images/icon9.svg";
 
 class Header extends Component {
   state = {
@@ -63,7 +64,7 @@ class Header extends Component {
                   </a>
                 </div>
                 <div className="col-md-2 claim-space">
-                  {/* <label className="claim-label">Claim</label> */}
+                  <img src={ClaimLogo} alt="logo" className="claim-logo" />
                   <a href="claim">
                     <label>Claim</label>
                   </a>

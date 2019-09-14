@@ -30,11 +30,16 @@
   text-align: left;
 }
 .claim-space {
-  margin-top: -2.7%;
-  margin-left: 44%;
+  margin-top: -2.9%;
+  margin-left: 41%;
 }
 .claim-label {
   margin-left: 333%;
+}
+.claim-logo{
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
 }
 .knowledge-base {
   color: #4a4a4a;
@@ -194,8 +199,8 @@
   margin-right: 6px;
 }
 .knowledgeNav {
-  width: 18px;
-  height: 18px;
+  width: 19px;
+  height: 19px;
   margin-right: 6px;
   margin-top: 5px;
 }
@@ -224,7 +229,7 @@
 }
 .nav-tab1 {
   margin-top: -3%;
-  margin-left: 28%;
+  margin-left: 25%;
   position: relative;
   z-index: 1;
 }
