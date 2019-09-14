@@ -89,11 +89,11 @@ class MyTicket extends Component {
                             </div>
                             <div className="vl"></div>
                             <div className="col-md-6">
-                                <div className="row">
+                                <div className="row" style={{paddingLeft:'20px'}}>
                                     <div className="col-md-4">
                                         <div className="form-group">
                                             <label className="label-4">Status</label>
-                                            <select className="rectangle-9">
+                                            <select className="rectangle-9 select-category-placeholder">
                                                 <option>Select</option>
                                             </select>
                                         </div>
@@ -101,7 +101,7 @@ class MyTicket extends Component {
                                     <div className="col-md-4 dropdrown">
                                         <div className="form-group">
                                             <label className="label-4">Priority</label>
-                                            <select className="rectangle-9">
+                                            <select className="rectangle-9 select-category-placeholder">
                                                 <option>Select</option>
                                             </select>
                                         </div>
@@ -109,7 +109,7 @@ class MyTicket extends Component {
                                     <div className="col-md-4 dropdrown">
                                         <div className="form-group">
                                             <label className="label-4">Brand</label>
-                                            <select className="rectangle-9">
+                                            <select className="rectangle-9 select-category-placeholder">
                                                 <option>Select</option>
                                             </select>
                                         </div>
@@ -119,7 +119,7 @@ class MyTicket extends Component {
                                     <div className="col-md-4">
                                         <div className="form-group">
                                             <label className="label-4">Category</label>
-                                            <select className="rectangle-9">
+                                            <select className="rectangle-9 select-category-placeholder">
                                                 <option>Select</option>
                                             </select>
                                         </div>
@@ -127,7 +127,7 @@ class MyTicket extends Component {
                                     <div className="col-md-4 dropdrown">
                                         <div className="form-group">
                                             <label className="label-4">Sub Category</label>
-                                            <select className="rectangle-9" >
+                                            <select className="rectangle-9 select-category-placeholder">
                                                 <option>Select</option>
                                             </select>
                                         </div>
@@ -135,7 +135,7 @@ class MyTicket extends Component {
                                     <div className="col-md-4 dropdrown">
                                         <div className="form-group">
                                             <label className="label-4">Issue Type</label>
-                                            <select className="rectangle-9">
+                                            <select className="rectangle-9 select-category-placeholder">
                                                 <option>Select</option>
                                             </select>
                                         </div>
@@ -144,13 +144,13 @@ class MyTicket extends Component {
                                 <div className="v2"></div>
                                 <div className="row data-store">
                                     <div className="col-md-12">
-                                        <label className="label-4">Store</label>
+                                        <label className="label-4 storeSpacing">Store</label>
                                         <label className="bata-rajouri-garden">Bata Raj ouri Garden &nbsp;
                                         <img src={PencilImg} alt="Pencile" className="pencilImg" />
                                         </label>
                                     </div>
                                     <div className="col-md-12">
-                                        <label className="label-4">Product</label>
+                                        <label className="label-4 storeSpacing">Product</label>
                                         <label className="bata-rajouri-garden">Red Tennis Coca Cola White Monogr…&nbsp; 
                                         <img src={PencilImg} alt="Pencile" className="pencilImg" />
                                         </label>

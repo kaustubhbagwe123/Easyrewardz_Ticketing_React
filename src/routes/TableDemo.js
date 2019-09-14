@@ -16,6 +16,7 @@ class TableDemo extends Component {
                             <th>Store Code</th>
                             <th>Store Address</th>
                             <th>Product Name</th>
+                            <th>No of Item</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -28,6 +29,7 @@ class TableDemo extends Component {
                             <td>SB221</td>
                             <td>SB221</td>
                             <td>Paper Bag</td>
+                            <td>01</td>
                         </tr>
                         <tr>
                             <td>BB33476</td>
@@ -38,6 +40,7 @@ class TableDemo extends Component {
                             <td>SB221</td>
                             <td>SB221</td>
                             <td>Paper Bag</td>
+                            <td>02</td>
                         </tr>
                         <tr>
                             <td>BB33476</td>
@@ -48,6 +51,7 @@ class TableDemo extends Component {
                             <td>SB221</td>
                             <td>SB221</td>
                             <td>Paper Bag</td>
+                            <td>03</td>
                         </tr>
                     </tbody>
                 </Table>

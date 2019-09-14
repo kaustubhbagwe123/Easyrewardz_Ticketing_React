@@ -6,6 +6,7 @@ import SearchBlueImg from './../assets/Images/search-blue.png'
 import ArrowImg from './../assets/Images/arrow.png'
 import PlusImg from './../assets/Images/plus.png'
 import Headphone2Img from './../assets/Images/headphone2.png'
+import SearchBlackImg from './../assets/Images/searchBlack.png'
 
 class Claim extends Component {
     constructor(props) {
@@ -71,7 +72,7 @@ class Claim extends Component {
                                                         </div>
                                                         <div className="col-md-6">
                                                             <input type="text" className="search-order" placeholder="Search Order" />
-                                                            {/* <img src="Images/search-blue.png" alt="Search" className="searchImg-1" /> */}
+                                                            <img src={SearchBlackImg} alt="Search" className="searchImg-2"/>
                                                         </div>
                                                         <TableDemo />
                                                     </div>
