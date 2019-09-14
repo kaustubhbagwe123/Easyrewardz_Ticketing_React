@@ -22,19 +22,19 @@ class SingIn extends Component {
                 <input
                   type="text"
                   placeholder="Email ID*"
-                  className="form-control"
+                  className="program-code-textbox"
                 />
               </div>
               <div className="input-group mb-3">
                 <input
                   type="password"
                   placeholder="Password*"
-                  className="form-control"
+                  className="program-code-textbox"
                 />
               </div>
               <button
                 type="button"
-                className="btn btn-primary form-control mb-4"
+                className="program-code-button"
                 style={{
                   backgroundColor: "#2561A8",
                   borderColor: "#2561A8",
@@ -42,9 +42,11 @@ class SingIn extends Component {
                 }}
                 onClick={this.hanleChange}
               >
-                LOGIN
+                <label className="program-code-button-text"> LOGIN</label>
               </button>
+
               <div>
+                <br />
                 <p className="mb-0 text-muted">
                   <a
                     href="Forgotpassword"
