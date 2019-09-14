@@ -11,6 +11,10 @@ class MyTicketList extends Component {
   hanleChange = () => {
     this.props.history.push("/admin/ticketsystem");
   };
+  hanleChange_MyTicket = () => {
+    this.props.history.push("/admin/myticket");
+  };
+ 
   render() {
     return (
       <>
@@ -131,33 +135,43 @@ class MyTicketList extends Component {
                   </td>
                 </tr>
 
-                <tr>
-                  <td>ABC1234</td>
-                  <td>
-                    <span className="table-btn table-green-btn">Solved</span>
-                  </td>
-                  <td className="table-img-cntr">
-                    <img
-                      className="task-icon-1"
-                      src={TaskIconBlue}
-                      alt="task-icon-blue"
-                    />
-                  </td>
-                  <td>
-                    Need to change my shipping address{" "}
-                    <span>Hope this help, Please rate us</span>
-                  </td>
-                  <td>
-                    Defective article{" "}
-                    <img className="info-icon" src={InfoIcon} alt="info-icon" />
-                  </td>
-                  <td>High</td>
-                  <td>Shalini</td>
-                  <td>
-                    12 March 2018{" "}
-                    <img className="info-icon" src={InfoIcon} alt="info-icon" />
-                  </td>
-                </tr>
+                    <tr onClick={this.hanleChange_MyTicket}>
+                      <td>ABC1234</td>
+                      <td>
+                        <span className="table-btn table-green-btn">
+                          Solved
+                        </span>
+                      </td>
+                      <td className="table-img-cntr">
+                        <img
+                          className="task-icon-1"
+                          src={TaskIconBlue}
+                          alt="task-icon-blue"
+                        />
+                      </td>
+                      <td>
+                        Need to change my shipping address{" "}
+                        <span>Hope this help, Please rate us</span>
+                      </td>
+                      <td>
+                        Defective article{" "}
+                        <img
+                          className="info-icon"
+                          src={InfoIcon}
+                          alt="info-icon"
+                        />
+                      </td>
+                      <td>High</td>
+                      <td>Shalini</td>
+                      <td>
+                        12 March 2018{" "}
+                        <img
+                          className="info-icon"
+                          src={InfoIcon}
+                          alt="info-icon"
+                        />
+                      </td>
+                    </tr>
 
                 <tr>
                   <td>ABC1234</td>

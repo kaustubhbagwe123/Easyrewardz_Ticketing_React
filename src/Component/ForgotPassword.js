@@ -40,22 +40,17 @@ class ForgotPassword extends Component {
                 </label>
               </div>
               <div className="input-group mb-3">
-                <input type="email" className="form-control" />
+                <input type="email" className="program-code-textbox" />
               </div>
               <div className="input-group mb-3">
                 <button
                   type="button"
-                  className="btn btn-primary form-control"
-                  style={{
-                    backgroundColor: "#2561A8",
-                    borderColor: "#2561A8",
-                    letterSpacing: "0.5px"
-                  }}
+                  className="program-code-button"
                   title=""
                   data-toggle="tooltip"
                   data-original-title="btn btn-primary"
                 >
-                  RECOVER PASSWORD
+                <label className="program-code-button-text">RECOVER PASSWORD</label>  
                 </button>
               </div>
 
