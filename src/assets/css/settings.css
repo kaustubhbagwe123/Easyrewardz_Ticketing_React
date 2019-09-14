@@ -1,21 +1,93 @@
-
 /* ----------------------------Store Master page-------------------  */
 /* ---------------------------Date : 13-10-2019-------------------- */
 
-.breadcrumbs-row{
-    background-color: #ECF2F4;
-    width: auto;
-    height: 57px;
-  }
+.breadcrumbs-row {
+  background-color: #ecf2f4;
+  width: auto;
+  height: 57px;
+}
 
-.settings-ticketing{
-    color: #2561A8;
-    font-family: Lato;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 19px;
-    text-align: left;
-  }
+.settings-ticketing {
+  color: #2561a8;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  text-align: left;
+}
+
+/* chetan settings starts */
+.setting-title {
+  background-color: #ecf2f4;
+  padding: 18px 35px;
+}
+.setting-title p {
+  font-size: 18px;
+}
+.setting-tabs {
+  padding: 15px 20px;
+}
+.setting-tabs ul {
+  border: none;
+}
+.setting-tabs .nav-tabs .nav-link {
+  font-weight: 400;
+  padding: 7px 30px;
+  border-radius: 3px;
+}
+.setting-tabs .nav-tabs .nav-link.active {
+  border: none;
+  background-color: #2561a8;
+  color: #fff;
+  font-weight: 700;
+}
+.setting-tabs .tab-content {
+  padding: 20px 0;
+}
+.setting-tabs .tab-content .tab-pane .row {
+  margin-bottom: 30px;
+}
+.setting-tabs .tab-content .tab-pane .row:last-child {
+  margin-bottom: 0px;
+}
+.setting-cntr {
+  background-color: #fff;
+  border-radius: 6px;
+  padding: 30px;
+}
+.setting-cntr p {
+  font-size: 12px;
+  margin-top: 2px;
+}
+.setting-cntr strong {
+  color: #2561a8;
+}
+.setting-box {
+  display: flex;
+  margin-bottom: 35px;
+}
+.setting-cntr .setting-box:last-child {
+  margin-bottom: 0px;
+}
+.setting-desc {
+  padding-left: 20px;
+}
+/* chetan settings ends */
+
+/* chetan priority settings starts */
+.setting-breadcrumb a,
+.setting-breadcrumb {
+  color: #2561a8;
+}
+.setting-breadcrumb a.active {
+  color: rgba(54, 54, 54, 0.85);
+  cursor: context-menu;
+}
+.setting-breadcrumb span {
+  display: inline-block;
+  margin: 0 7px;
+}
+/* chetan priority settings ends */
 
   .breadcrumbs-row-padding{
     padding: 15px;

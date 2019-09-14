@@ -519,6 +519,7 @@ class Dashboard extends Component {
                   </li>
                 </ul>
               </div>
+
               <div className="float-search">
                 <small>Search Tickets</small>
                 <img

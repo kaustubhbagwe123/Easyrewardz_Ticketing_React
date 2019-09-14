@@ -942,7 +942,6 @@
   background-color: #ffffff;
   border-radius: 4.5px;
   width: auto;
-  height: 769px;
   margin: 20px;
 }
 .bitmapback {
@@ -2067,62 +2066,6 @@ table tr th:last-child {
 }
 /* login and password extra css ends */
 
-/* settings starts */
-.setting-title {
-  background-color: #ecf2f4;
-  padding: 18px 35px;
-  font-size: 18px;
-}
-.setting-tabs {
-  padding: 15px 20px;
-}
-.setting-tabs ul {
-  border: none;
-}
-.setting-tabs .nav-tabs .nav-link {
-  font-weight: 400;
-  padding: 7px 30px;
-  border-radius: 3px;
-}
-.setting-tabs .nav-tabs .nav-link.active {
-  border: none;
-  background-color: #2561a8;
-  color: #fff;
-  font-weight: 700;
-}
-.setting-tabs .tab-content {
-  padding: 20px 0;
-}
-.setting-tabs .tab-content .tab-pane .row {
-  margin-bottom: 30px;
-}
-.setting-tabs .tab-content .tab-pane .row:last-child {
-  margin-bottom: 0px;
-}
-.setting-cntr {
-  background-color: #fff;
-  border-radius: 6px;
-  padding: 30px;
-}
-.setting-cntr p {
-  font-size: 12px;
-  margin-top: 2px;
-}
-.setting-cntr strong {
-  color: #2561a8;
-}
-.setting-box {
-  display: flex;
-  margin-bottom: 35px;
-}
-.setting-cntr .setting-box:last-child {
-  margin-bottom: 0px;
-}
-.setting-desc {
-  padding-left: 20px;
-}
-/* settings ends */
-
 /* chetan css ends */
 /******************************************************/
 
@@ -2542,22 +2485,21 @@ progress::-moz-progress-bar {
 } */
 /* ------------------------------- */
 
-.CliamDetailsModal{
-  background-color: #FFFFFF;
+.CliamDetailsModal {
+  background-color: #ffffff;
   width: 945px;
   height: 929px;
   float: right;
   position: relative;
- 
 }
 
-.black-left-arrow{
+.black-left-arrow {
   width: 24px;
   height: 24px;
 }
 
-.claim-details{
-  color: #4A4A4A;
+.claim-details {
+  color: #4a4a4a;
   font-family: Lato;
   font-size: 16px;
   font-weight: 700;
@@ -2565,7 +2507,7 @@ progress::-moz-progress-bar {
   text-align: left;
 }
 
-.id-a-22134{
+.id-a-22134 {
   color: #000000;
   font-family: Lato;
   font-size: 18px;
@@ -2574,12 +2516,12 @@ progress::-moz-progress-bar {
   text-align: left;
 }
 
-.claimrowmargin{
-margin-left: 25px; 
+.claimrowmargin {
+  margin-left: 25px;
 }
 
-.claim-category{
-  color: #9B9B9B;
+.claim-category {
+  color: #9b9b9b;
   font-family: Lato;
   font-size: 10px;
   font-weight: 700;
@@ -2587,8 +2529,8 @@ margin-left: 25px;
   text-align: left;
 }
 
-.sub-category{
-  color: #9B9B9B;
+.sub-category {
+  color: #9b9b9b;
   font-family: Lato;
   font-size: 10px;
   font-weight: 700;
@@ -2596,8 +2538,8 @@ margin-left: 25px;
   text-align: left;
 }
 
-.claim-type{
-  color: #9B9B9B;
+.claim-type {
+  color: #9b9b9b;
   font-family: Lato;
   font-size: 10px;
   font-weight: 700;
@@ -2605,8 +2547,8 @@ margin-left: 25px;
   text-align: left;
 }
 
-.claim-asked-for{
-  color: #9B9B9B;
+.claim-asked-for {
+  color: #9b9b9b;
   font-family: Lato;
   font-size: 10px;
   font-weight: 700;
@@ -2614,8 +2556,8 @@ margin-left: 25px;
   text-align: left;
 }
 
-.attached-image{
-  color: #9B9B9B;
+.attached-image {
+  color: #9b9b9b;
   font-family: Lato;
   font-size: 10px;
   font-weight: 700;
@@ -2623,7 +2565,7 @@ margin-left: 25px;
   text-align: left;
 }
 
-.refund{
+.refund {
   color: #000000;
   font-family: Lato;
   font-size: 14px;
@@ -2632,7 +2574,7 @@ margin-left: 25px;
   text-align: left;
 }
 
-.recent-orders{
+.recent-orders {
   color: #000000;
   font-family: Lato;
   font-size: 14px;
@@ -2641,8 +2583,8 @@ margin-left: 25px;
   text-align: left;
 }
 
-.customer-name{
-  color: #9B9B9B;
+.customer-name {
+  color: #9b9b9b;
   font-family: Lato;
   font-size: 10px;
   font-weight: 700;
@@ -2650,25 +2592,16 @@ margin-left: 25px;
   text-align: left;
 }
 
-.email-id{
-  color: #9B9B9B;
+.email-id {
+  color: #9b9b9b;
   font-family: Lato;
   font-size: 10px;
   font-weight: 700;
   line-height: 12px;
   text-align: left;
 }
-.phone-number{
-  color: #9B9B9B;
-  font-family: Lato;
-  font-size: 10px;
-  font-weight: 700;
-  line-height: 12px;
-  text-align: left;
-}
-
-.gender{
-  color: #9B9B9B;
+.phone-number {
+  color: #9b9b9b;
   font-family: Lato;
   font-size: 10px;
   font-weight: 700;
@@ -2676,8 +2609,17 @@ margin-left: 25px;
   text-align: left;
 }
 
-.Add-Comments-textarea{
-  background-color: #ECF2F4;
+.gender {
+  color: #9b9b9b;
+  font-family: Lato;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 12px;
+  text-align: left;
+}
+
+.Add-Comments-textarea {
+  background-color: #ecf2f4;
   border-radius: 4px;
   width: 359px;
   height: 198px;
@@ -2685,30 +2627,27 @@ margin-left: 25px;
 
 /* ----- */
 
-.table-header{
-
+.table-header {
   background-color: white;
-
 }
-.claim-status-table{
-  background-color: #FFFFFF;
-  border: 1px solid #EBEBEB;
+.claim-status-table {
+  background-color: #ffffff;
+  border: 1px solid #ebebeb;
   border-radius: 8px;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.03);
   width: 876px;
   height: 350px;
 }
 
-.claim-status-table-header{
-  background-color: #ECF2F4;
+.claim-status-table-header {
+  background-color: #ecf2f4;
   width: 876px;
   height: 57px;
-  border: 1px solid #ECF2F4;
+  border: 1px solid #ecf2f4;
   border-radius: 8px;
-   
 }
 
-.claim-status-open{
+.claim-status-open {
   color: #000000;
   font-family: Lato;
   font-size: 14px;
@@ -2718,67 +2657,67 @@ margin-left: 25px;
   padding: 20px;
 }
 
-.order-details{
-  color: #4A4A4A;
+.order-details {
+  color: #4a4a4a;
   font-family: Lato;
   font-size: 16px;
   font-weight: 700;
   line-height: 19px;
-  text-align: left;  
+  text-align: left;
   padding-left: 34px;
-  padding-top:20px;
+  padding-top: 20px;
 }
 
-.invoice-number{
-  color: #4A4A4A;
+.invoice-number {
+  color: #4a4a4a;
   font-family: Lato;
   font-size: 12px;
   font-weight: 700;
   line-height: 14px;
   text-align: left;
 }
-.invoice-date{
-  color: #4A4A4A;
+.invoice-date {
+  color: #4a4a4a;
   font-family: Lato;
   font-size: 12px;
   font-weight: 700;
   line-height: 14px;
   text-align: left;
 }
-.item-count{
-  color: #4A4A4A;
+.item-count {
+  color: #4a4a4a;
   font-family: Lato;
   font-size: 12px;
   font-weight: 700;
   line-height: 14px;
   text-align: left;
 }
-.item-price{
-  color: #4A4A4A;
+.item-price {
+  color: #4a4a4a;
   font-family: Lato;
   font-size: 12px;
   font-weight: 700;
   line-height: 14px;
   text-align: left;
 }
-.price-paid{
-  color: #4A4A4A;
+.price-paid {
+  color: #4a4a4a;
   font-family: Lato;
   font-size: 12px;
   font-weight: 700;
   line-height: 14px;
   text-align: left;
 }
-.store-code{
-  color: #4A4A4A;
+.store-code {
+  color: #4a4a4a;
   font-family: Lato;
   font-size: 12px;
   font-weight: 700;
   line-height: 14px;
   text-align: left;
 }
-.store-address{
-  color: #4A4A4A;
+.store-address {
+  color: #4a4a4a;
   font-family: Lato;
   font-size: 12px;
   font-weight: 700;
@@ -2786,22 +2725,22 @@ margin-left: 25px;
   text-align: left;
 }
 
-.claim-SKU-details-table{
-  background-color: #F8F8F8;
+.claim-SKU-details-table {
+  background-color: #f8f8f8;
   width: 802px;
   height: 105px;
   margin-left: 10px;
 }
-.bb-332398{
-  color: #9B9B9B;
+.bb-332398 {
+  color: #9b9b9b;
   font-family: Lato;
   font-size: 14px;
   font-weight: 700;
   line-height: 17px;
   text-align: left;
 }
-.sku{
-  color: #4A4A4A;
+.sku {
+  color: #4a4a4a;
   font-family: Lato;
   font-size: 12px;
   font-weight: 700;
@@ -2814,15 +2753,15 @@ margin-left: 25px;
 } */
 
 /* ------ */
-.oval-5{
-  background-color: #F8E71C;
+.oval-5 {
+  background-color: #f8e71c;
   border-radius: 100%;
   width: 30px;
   height: 30px;
   margin-left: 15px;
 }
 
-.varun-nagpal{
+.varun-nagpal {
   color: #000000;
   font-family: Lato;
   font-size: 14px;
@@ -2831,7 +2770,7 @@ margin-left: 25px;
   text-align: left;
 }
 
-.hi-diwakar-i-really{
+.hi-diwakar-i-really {
   color: #505050;
   font-family: Lato;
   font-size: 14px;
@@ -2840,21 +2779,21 @@ margin-left: 25px;
   width: 343px;
   text-align: left;
 }
- 
+
 /* 
 .ReactModal__Overlay{
   overflow-y: auto;
 } */
 
-.add-comment-button{
-  background-color: #2561A8;
+.add-comment-button {
+  background-color: #2561a8;
   border-radius: 4px;
   width: 359px;
   height: 43px;
 }
 
-.add-comment-text{
-  color: #FFFFFF;
+.add-comment-text {
+  color: #ffffff;
   font-family: Lato;
   font-size: 14px;
   font-weight: 400;
@@ -2866,16 +2805,16 @@ margin-left: 25px;
   padding: 0 15px;
 }
 
-.claim-status-row{
-  background-color: #F3F0F0;
+.claim-status-row {
+  background-color: #f3f0f0;
   border-radius: 4.5px;
   width: 851px;
   height: 10px;
   margin: 10px;
 }
 
-.ticket-details-textarea::placeholder{
-  color: #9B9B9B;
+.ticket-details-textarea::placeholder {
+  color: #9b9b9b;
   font-family: Lato;
   font-size: 14px;
   font-weight: 700;
@@ -2883,46 +2822,43 @@ margin-left: 25px;
   text-align: left;
 }
 
-.ticket-tittle-textbox::placeholder{
-  color: #9B9B9B;
+.ticket-tittle-textbox::placeholder {
+  color: #9b9b9b;
   font-family: Lato;
   font-size: 16px;
   font-weight: 700;
   line-height: 19px;
   text-align: left;
 }
-.batashoes-icon
-{
+.batashoes-icon {
   width: 135px;
   height: 76px;
 }
 
-.borderless table tr{
+.borderless table tr {
   border-bottom: none !important;
   border: none !important;
   height: 0px;
-  padding:1px;
+  padding: 1px;
 }
 
-.borderless table td{
+.borderless table td {
   border: none !important;
 }
 
-.borderless table tr td:last-child{
+.borderless table tr td:last-child {
   text-align: left;
 }
- 
-.claim-SKU-details-table table tbody tr
-{
+
+.claim-SKU-details-table table tbody tr {
   height: 28px;
   border: none !important;
 }
-.claim-SKU-details-table table tbody tr td{
+.claim-SKU-details-table table tbody tr td {
   border: none !important;
-
 }
 
-#Notification-popup{
+#Notification-popup {
   border-radius: 8px;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
   left: 15%;
@@ -2932,10 +2868,3 @@ margin-left: 25px;
   border: none;
 }
 /* #endregion */
-
-
-
-
-
-
-  
