@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "../../node_modules/jquery/dist/jquery.js";
+import { ProgressBar } from "react-bootstrap";
 import "../../node_modules/popper.js/dist/popper.js";
 import "../../node_modules/bootstrap/dist/js/bootstrap.js";
 import PieChart from "../Component/PieChart/PieChart";
@@ -10,6 +11,7 @@ import InfoIcon from "./../assets/Images/info-icon.png";
 import TaskIconBlue from "./../assets/Images/task-icon-blue.png";
 import TaskIconGray from "./../assets/Images/task-icon-gray.png";
 import CliamIconBlue from "./../assets/Images/cliam-icon-blue.png";
+import Chat from "./../assets/Images/chat.png";
 import { Collapse, CardBody, Card } from "reactstrap";
 import Demo from "../store/Hashtag.js";
 
@@ -291,11 +293,27 @@ class Dashboard extends Component {
                     </td>
                     <td>
                       Defective article{" "}
-                      <img
-                        className="info-icon"
-                        src={InfoIcon}
-                        alt="info-icon"
-                      />
+                      <div className="dash-creation-popup-cntr">
+                        <img
+                          className="info-icon"
+                          src={InfoIcon}
+                          alt="info-icon"
+                        />
+                        <ul className="dash-category-popup dash-popup">
+                          <li>
+                            <p>Category</p>
+                            <p>Defective article</p>
+                          </li>
+                          <li>
+                            <p>Sub Category</p>
+                            <p>Customer wants refund</p>
+                          </li>
+                          <li>
+                            <p>Type</p>
+                            <p>Delivery</p>
+                          </li>
+                        </ul>
+                      </div>
                     </td>
                     <td>High</td>
                     <td>N Rampal</td>
@@ -307,7 +325,7 @@ class Dashboard extends Component {
                           src={InfoIcon}
                           alt="info-icon"
                         />
-                        <ul className="dash-creation-popup">
+                        <ul className="dash-creation-popup dash-popup">
                           <li className="title">Creation details</li>
                           <li>
                             <p>Naman Created</p>
@@ -349,11 +367,27 @@ class Dashboard extends Component {
                     </td>
                     <td>
                       Defective article{" "}
-                      <img
-                        className="info-icon"
-                        src={InfoIcon}
-                        alt="info-icon"
-                      />
+                      <div className="dash-creation-popup-cntr">
+                        <img
+                          className="info-icon"
+                          src={InfoIcon}
+                          alt="info-icon"
+                        />
+                        <ul className="dash-category-popup dash-popup">
+                          <li>
+                            <p>Category</p>
+                            <p>Defective article</p>
+                          </li>
+                          <li>
+                            <p>Sub Category</p>
+                            <p>Customer wants refund</p>
+                          </li>
+                          <li>
+                            <p>Type</p>
+                            <p>Delivery</p>
+                          </li>
+                        </ul>
+                      </div>
                     </td>
                     <td>High</td>
                     <td>N Rampal</td>
@@ -365,7 +399,7 @@ class Dashboard extends Component {
                           src={InfoIcon}
                           alt="info-icon"
                         />
-                        <ul className="dash-creation-popup">
+                        <ul className="dash-creation-popup dash-popup">
                           <li className="title">Creation details</li>
                           <li>
                             <p>Naman Created</p>
@@ -401,11 +435,28 @@ class Dashboard extends Component {
                       <span className="table-btn table-yellow-btn">New</span>
                     </td>
                     <td className="table-img-cntr">
-                      <img
-                        className="task-icon-1"
-                        src={TaskIconBlue}
-                        alt="task-icon-blue"
-                      />
+                      <div className="dash-creation-popup-cntr">
+                        <img
+                          className="task-icon-1"
+                          src={TaskIconBlue}
+                          alt="task-icon-blue"
+                        />
+                        <div className="dash-task-popup dash-popup">
+                          <div className="d-flex justify-content-between align-items-center">
+                            <p>
+                              TASK: <span className="green-clr">02</span>/
+                              <span className="task-red-clr">04</span>
+                            </p>
+                            <div className="d-flex align-items-center">
+                              2 NEW
+                              <div className="nw-chat">
+                                <img src={Chat} alt="chat" />
+                              </div>
+                            </div>
+                          </div>
+                          <ProgressBar className="task-progress" now={70} />
+                        </div>
+                      </div>
                     </td>
                     <td className="black-clr">
                       Need to change my shipping address{" "}
@@ -415,11 +466,27 @@ class Dashboard extends Component {
                     </td>
                     <td>
                       Defective article{" "}
-                      <img
-                        className="info-icon"
-                        src={InfoIcon}
-                        alt="info-icon"
-                      />
+                      <div className="dash-creation-popup-cntr">
+                        <img
+                          className="info-icon"
+                          src={InfoIcon}
+                          alt="info-icon"
+                        />
+                        <ul className="dash-category-popup dash-popup">
+                          <li>
+                            <p>Category</p>
+                            <p>Defective article</p>
+                          </li>
+                          <li>
+                            <p>Sub Category</p>
+                            <p>Customer wants refund</p>
+                          </li>
+                          <li>
+                            <p>Type</p>
+                            <p>Delivery</p>
+                          </li>
+                        </ul>
+                      </div>
                     </td>
                     <td>High</td>
                     <td>N Rampal</td>
@@ -431,7 +498,7 @@ class Dashboard extends Component {
                           src={InfoIcon}
                           alt="info-icon"
                         />
-                        <ul className="dash-creation-popup">
+                        <ul className="dash-creation-popup dash-popup">
                           <li className="title">Creation details</li>
                           <li>
                             <p>Naman Created</p>
@@ -489,40 +556,11 @@ class Dashboard extends Component {
                     <td>N Rampal</td>
                     <td>
                       12 March 2018{" "}
-                      <div className="dash-creation-popup-cntr">
-                        <img
-                          className="info-icon"
-                          src={InfoIcon}
-                          alt="info-icon"
-                        />
-                        <ul className="dash-creation-popup">
-                          <li className="title">Creation details</li>
-                          <li>
-                            <p>Naman Created</p>
-                            <p>2 Hrs ago</p>
-                          </li>
-                          <li>
-                            <p>Assigned to Vikas</p>
-                            <p>1.5 Hrs ago</p>
-                          </li>
-                          <li>
-                            <p>Vikas updated</p>
-                            <p>1 Hr ago</p>
-                          </li>
-                          <li>
-                            <p>Response time remaining by</p>
-                            <p>30 mins</p>
-                          </li>
-                          <li>
-                            <p>Response overdue by</p>
-                            <p>1 Hr</p>
-                          </li>
-                          <li>
-                            <p>Resolution overdue by</p>
-                            <p>2 Hrs</p>
-                          </li>
-                        </ul>
-                      </div>
+                      <img
+                        className="info-icon"
+                        src={InfoIcon}
+                        alt="info-icon"
+                      />
                     </td>
                   </tr>
                   <tr>
@@ -531,11 +569,22 @@ class Dashboard extends Component {
                       <span className="table-btn table-green-btn">Solved</span>
                     </td>
                     <td className="table-img-cntr">
-                      <img
-                        className="claim-icon"
-                        src={CliamIconBlue}
-                        alt="cliam-icon-blue"
-                      />
+                      <div className="dash-creation-popup-cntr">
+                        <img
+                          className="claim-icon"
+                          src={CliamIconBlue}
+                          alt="cliam-icon-blue"
+                        />
+                        <div className="dash-task-popup dash-popup">
+                          <div className="d-flex justify-content-between align-items-center">
+                            <p>
+                              CLAIM: <span className="green-clr">02</span>/
+                              <span className="task-red-clr">01</span>
+                            </p>
+                          </div>
+                          <ProgressBar className="task-progress" now={70} />
+                        </div>
+                      </div>
                       <img
                         className="task-icon-1"
                         src={TaskIconGray}
@@ -558,40 +607,11 @@ class Dashboard extends Component {
                     <td>N Rampal</td>
                     <td>
                       12 March 2018{" "}
-                      <div className="dash-creation-popup-cntr">
-                        <img
-                          className="info-icon"
-                          src={InfoIcon}
-                          alt="info-icon"
-                        />
-                        <ul className="dash-creation-popup">
-                          <li className="title">Creation details</li>
-                          <li>
-                            <p>Naman Created</p>
-                            <p>2 Hrs ago</p>
-                          </li>
-                          <li>
-                            <p>Assigned to Vikas</p>
-                            <p>1.5 Hrs ago</p>
-                          </li>
-                          <li>
-                            <p>Vikas updated</p>
-                            <p>1 Hr ago</p>
-                          </li>
-                          <li>
-                            <p>Response time remaining by</p>
-                            <p>30 mins</p>
-                          </li>
-                          <li>
-                            <p>Response overdue by</p>
-                            <p>1 Hr</p>
-                          </li>
-                          <li>
-                            <p>Resolution overdue by</p>
-                            <p>2 Hrs</p>
-                          </li>
-                        </ul>
-                      </div>
+                      <img
+                        className="info-icon"
+                        src={InfoIcon}
+                        alt="info-icon"
+                      />
                     </td>
                   </tr>
                   <tr>
@@ -616,40 +636,11 @@ class Dashboard extends Component {
                     <td>N Rampal</td>
                     <td>
                       12 March 2018{" "}
-                      <div className="dash-creation-popup-cntr">
-                        <img
-                          className="info-icon"
-                          src={InfoIcon}
-                          alt="info-icon"
-                        />
-                        <ul className="dash-creation-popup">
-                          <li className="title">Creation details</li>
-                          <li>
-                            <p>Naman Created</p>
-                            <p>2 Hrs ago</p>
-                          </li>
-                          <li>
-                            <p>Assigned to Vikas</p>
-                            <p>1.5 Hrs ago</p>
-                          </li>
-                          <li>
-                            <p>Vikas updated</p>
-                            <p>1 Hr ago</p>
-                          </li>
-                          <li>
-                            <p>Response time remaining by</p>
-                            <p>30 mins</p>
-                          </li>
-                          <li>
-                            <p>Response overdue by</p>
-                            <p>1 Hr</p>
-                          </li>
-                          <li>
-                            <p>Resolution overdue by</p>
-                            <p>2 Hrs</p>
-                          </li>
-                        </ul>
-                      </div>
+                      <img
+                        className="info-icon"
+                        src={InfoIcon}
+                        alt="info-icon"
+                      />
                     </td>
                   </tr>
                   <tr>
@@ -674,40 +665,11 @@ class Dashboard extends Component {
                     <td>N Rampal</td>
                     <td>
                       12 March 2018{" "}
-                      <div className="dash-creation-popup-cntr">
-                        <img
-                          className="info-icon"
-                          src={InfoIcon}
-                          alt="info-icon"
-                        />
-                        <ul className="dash-creation-popup">
-                          <li className="title">Creation details</li>
-                          <li>
-                            <p>Naman Created</p>
-                            <p>2 Hrs ago</p>
-                          </li>
-                          <li>
-                            <p>Assigned to Vikas</p>
-                            <p>1.5 Hrs ago</p>
-                          </li>
-                          <li>
-                            <p>Vikas updated</p>
-                            <p>1 Hr ago</p>
-                          </li>
-                          <li>
-                            <p>Response time remaining by</p>
-                            <p>30 mins</p>
-                          </li>
-                          <li>
-                            <p>Response overdue by</p>
-                            <p>1 Hr</p>
-                          </li>
-                          <li>
-                            <p>Resolution overdue by</p>
-                            <p>2 Hrs</p>
-                          </li>
-                        </ul>
-                      </div>
+                      <img
+                        className="info-icon"
+                        src={InfoIcon}
+                        alt="info-icon"
+                      />
                     </td>
                   </tr>
                 </tbody>

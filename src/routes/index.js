@@ -10,7 +10,6 @@ import Claim from "./Claim";
 import MyTicketList from "./MyTicketList";
 import TicketHierarchy from "./Settings/TicketHierarchy";
 import ClaimTabTicketView from "./ClaimTabTicketView";
-import TicketHierarchy from "./Settings/TicketHierarchy";
 import StoreMaster from "./Settings/StoreMaster";
 import Settings from "./Settings/Settings";
 import PrioritySettings from "./Settings/PrioritySetting";
