@@ -1,4 +1,4 @@
-.card-Nav{
+.card-Nav {
   border-radius: 0;
   -webkit-box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
   box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
@@ -717,7 +717,7 @@
   padding-left: 173px;
 }
 .hi-diwakar-i-really1 {
-  color: #4A4A4A;
+  color: #4a4a4a;
   font-family: Lato;
   font-size: 13px;
   font-weight: 700;
@@ -748,7 +748,7 @@
   font-size: 20px;
   margin-bottom: 8px;
   padding-left: 3px;
-  color: #5C5C5C;
+  color: #5c5c5c;
 }
 .label-3 {
   margin-top: -2px;
@@ -832,7 +832,7 @@
   margin-top: -24.4%;
   margin-left: 97%;
 }
-.bata-rajouri-garden{
+.bata-rajouri-garden {
   color: #4a4a4a;
   font-family: inherit;
   font-size: 14px;
@@ -841,7 +841,7 @@
   text-align: left;
   white-space: nowrap;
 }
-.pencilImg{
+.pencilImg {
   width: 16px;
   height: 16px;
   margin-top: -10px;
@@ -946,7 +946,7 @@
   margin-top: 15px;
 }
 
-.mask{
+.mask {
   background-color: #ffffff;
   border-radius: 4.5px;
   width: auto;
@@ -1039,7 +1039,7 @@ table {
   width: 591px;
   height: 792px;
 }
-.ticket-tittle{
+.ticket-tittle {
   color: #9b9b9b;
   font-family: Lato;
   font-size: 14px;
@@ -1049,7 +1049,7 @@ table {
   padding-left: 15px;
 }
 
-.ticket-tittle-textbox{
+.ticket-tittle-textbox {
   background-color: #ecf2f4;
   border-radius: 4px;
   width: 520px;
@@ -1057,7 +1057,7 @@ table {
   border: none;
 }
 
-.rowmargin{
+.rowmargin {
   margin-left: 10px;
   margin-bottom: 10px;
 }
@@ -1481,6 +1481,9 @@ body {
 .black-clr {
   color: #4a4a4a;
 }
+.green-clr {
+  color: #46780b;
+}
 .pink-bg {
   background-color: #ffdfdf;
 }
@@ -1548,9 +1551,8 @@ button {
   top: 2px;
   z-index: 1;
 }
-.dash-creation-popup {
+.dash-popup {
   position: absolute;
-  width: 370px;
   background-color: #fff;
   right: -12px;
   top: 28px;
@@ -1560,11 +1562,14 @@ button {
   display: none;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
 }
+.dash-creation-popup {
+  width: 370px;
+}
 .dash-creation-popup-cntr {
   position: relative;
   display: inline-block;
 }
-.dash-creation-popup-cntr:hover .dash-creation-popup {
+.dash-creation-popup-cntr:hover .dash-popup {
   display: block;
 }
 .dash-creation-popup li {
@@ -1588,6 +1593,55 @@ button {
   font-size: 16px;
   font-weight: 700;
   text-align: left;
+}
+.dash-category-popup {
+  padding: 20px 30px;
+  font-size: 14px;
+  border-radius: 8px;
+}
+.dash-category-popup li p:first-child {
+  color: #9b9b9b;
+}
+.dash-category-popup li p {
+  white-space: nowrap;
+}
+.dash-category-popup li {
+  margin-bottom: 15px;
+}
+.dash-category-popup li:last-child {
+  margin-bottom: 0px;
+}
+.dash-task-popup {
+  width: 220px;
+  padding: 20px 20px 25px;
+  transform: translateX(-50%);
+  left: 50%;
+  top: initial;
+  bottom: 34px;
+}
+.dash-task-popup span {
+  display: inline;
+  font-size: 14px;
+}
+.task-progress {
+  margin-top: 12px;
+  background-color: #e6e6e6;
+  border-radius: 5px;
+  height: 10px;
+  overflow: hidden;
+}
+.task-progress .progress-bar {
+  background-color: #b0d288;
+}
+.task-red-clr {
+  color: #d20c24;
+}
+.nw-chat {
+  width: 18px;
+  margin-left: 9px;
+}
+.nw-chat img {
+  width: 100%;
 }
 .dash-top-cards {
   padding: 12px 20px 15px;
@@ -2284,7 +2338,7 @@ table tr th:last-child {
   height: 43px;
   margin-left: -15px;
   padding-left: 6px;
-  border:none;
+  border: none;
 }
 .searchImg {
   width: 16px;
@@ -2514,7 +2568,7 @@ table tr th:last-child {
 /**Historical popup css edn**/
 
 /*Progress bar in my tickeyt page*/
-progress{
+progress {
   /* RESETS */
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -2557,7 +2611,7 @@ progress::-moz-progress-bar {
   text-align: left;
   padding-right: 40px;
   background: #ecf2f4 url("../Images/down-1.png") no-repeat right 12px center;
-  border:none;
+  border: none;
 }
 .pieChart-Margin {
   margin-left: -35px;
@@ -2997,7 +3051,7 @@ progress::-moz-progress-bar {
   left: 15%;
 }
 
-.textBox{
+.textBox {
   border: none;
 }
 /* #endregion */
