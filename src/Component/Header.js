@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { ProgressBar } from "react-bootstrap";
 import Modal from "react-responsive-modal";
-import DashboardLogo from "./../assets/Images/dashboard.png";
+import DashboardLogo from "./../assets/Images/dashboardBlack.png";
 import TicketLogo from "./../assets/Images/ticket.png";
 import KnowledgeLogo from "./../assets/Images/knowledge.png";
 import CalenderLogo from "./../assets/Images/calender.png";
@@ -60,7 +60,7 @@ class Header extends Component {
                   <img src={TicketLogo} alt="logo" className="myTicket" />
                   {/* <label>My Tickets</label> */}
                   <a href="myTicketlist">
-                    <label>My Tickets</label>
+                    <label className="myTiket-label">My Tickets</label>
                   </a>
                 </div>
                 <div className="col-md-2 claim-space">
