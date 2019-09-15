@@ -104,7 +104,12 @@ class Header extends Component {
           </div>
         </div>
 
-        <Modal onClose={this.closeModal} open={this.state.modalIsOpen} modalId="Notification-popup" overlayId="logout-ovrly" >
+        <Modal
+          onClose={this.closeModal}
+          open={this.state.modalIsOpen}
+          modalId="Notification-popup"
+          overlayId="logout-ovrly"
+        >
           <div className="row rowpadding">
             <div className="md-2 rectangle-2 lable05">
               <label className="labledata">05</label>

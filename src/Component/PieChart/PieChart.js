@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import NVD3Chart from "react-nvd3";
 
 const datum = [
-  { key: "One", y: 40, color: "#29C2BE" },
-  { key: "Three", y: 37, color: "#F2726F" },
-  { key: "Two", y: 22, color: "#5D62B4" }
+  { key: "One", y: 23, color: "#5d61b3" },
+  { key: "Three", y: 37, color: "#f2726f" },
+  { key: "Two", y: 40, color: "#29c2be" }
 
   // {key: "Four", y: 196, color: "#3ebfea"},
   // {key: "Five", y: 2, color: "#4F5467"},
@@ -16,14 +16,15 @@ class PieChart extends Component {
   render() {
     return (
       <NVD3Chart
+        tooltip={{ enabled: false }}
         id="chart"
-        height={200}
+        height={215}
+        width={215}
         type="pieChart"
         datum={datum}
-        x="key"
-        y="y"
-        
         labelType="percent"
+        donut="true"
+        donutRatio="0.45"
       />
     );
   }
