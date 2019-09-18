@@ -15,6 +15,12 @@ import "./assets/css/QA.css"
 import "./../node_modules/popper.js/dist/popper.js";
 import "./../node_modules/bootstrap/dist/js/bootstrap.js";
 import "./../node_modules/jquery/dist/jquery.js";
+import "./assets/css/chat.css";
+
+/////js
+import "./../node_modules/bootstrap/dist/js/bootstrap.min.js"
+// import "./assets/js/bootstrap.min.js";
+
 
 ///Component
 import SignIn from "./Component/SignIn";

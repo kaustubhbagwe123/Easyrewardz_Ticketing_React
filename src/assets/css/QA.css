@@ -46,40 +46,397 @@
     font-size: 16px;
     font-weight: 700;
     line-height: 19px;
-    width: 236px;
+    text-align: left;
+    padding-left: 10px;
+  }
+
+  .note-icon{
+    width: 22px;
+    height: 22px;
+  }
+  .audit-line-2{
+    border: 0.5px solid #F1F1F1;
+  }
+
+  .margin-audit-detials{
+    margin-left: 20px;
+    margin-top: 16px;
+  }
+
+  .audit-oval-5{
+    background-color: #50E3C2;
+    border-radius: 100%;
+    width: 30px;
+    height: 30px;
+  }
+
+  .ract-right-icon{
+    width: 18px;
+    height: 18px;
+    margin-left: 6px;
+    margin-top: 4px;
+  }
+
+  .qa-lead{
+    color: #9B9B9B;
+    font-family: Lato;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 14px;
+    text-align: left;
+    margin-left: 13px;
+    margin-bottom: 6px;
+    margin-top: 22px
+  }
+
+  .qa-detials-row{
+    display: flex;
+  
+     
+  }
+  .down-icon {
+     margin-left: 20px;
+    width: 21px;
+    height: 21px;
+
+  }
+
+  .name-text{
+    color: #4A4A4A;
+    font-family: Lato;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 17px;
+    text-align: left;
+    margin-left: 10px;
+    margin-top: 5px;
+  }
+  .newmargin .row{
+      margin-left:16px;
+      margin-bottom: 20px; 
+  }
+
+  
+  .percentage
+  {
+    color: #4A4A4A;
+    font-family: Lato;
+    font-size: 17px;
+    font-weight: 900;
+    line-height: 20px;
     text-align: left;
   }
-  .cardTextSpace{
-    padding-left: 15px;
-    padding-top: 25px;
-  }
-  .dropDwonWidth{
-    max-width: 20% !important; 
-  }
-  .rowMargin{
-    margin-left: -29px !important;
-    padding-top: 25px;
-  }
-  .txtQA{
-    padding-top: 8px !important;
-    background: #E5E9ED url(/static/media/calendar-black.d0d589e5.svg) no-repeat right 15px center;
-  }
-  .btnSearchQa{
+
+  .calculate-button{
     background-color: #2561A8;
     border-radius: 4px;
-    width: 144px;
+    width: 304px;
     height: 43px;
-    margin-top: 30px;
-    margin-left: 10px;
   }
-  .labelSearch{
+  .calculate-button-text{
     color: #FFFFFF;
     font-family: Lato;
-    font-size: 15px;
-    font-weight: 700;
-    line-height: 18px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 17px;
     text-align: left;
   }
-/* -----------Qa Dashboard Search End------------- */
+  .collap-head-text{
+    color: #4A4A4A;
+    font-family: Lato;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 17px;
+    text-align: left;
+  }
+.card .card-header{
+border: none !important;
 
-/* ----------------END Css------------------- */
+  }
+
+  #QALeadList{
+    border-radius: 8px;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+    left: 30%;
+    width: 250px;
+    
+
+  }
+  #QALeadList-logout-ovrly{
+    padding: 70px 10px 0 0;
+    background-color: rgba(77, 92, 116, 0.2);
+    position: fixed;
+  }
+  .QALeadListModal{
+    border-radius: 8px;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+    padding: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    display: inline-block;
+    /* border: 1px solid; */
+    margin-top: 6px;
+    width: 200px;
+  }
+  #QALeadListModal.styles_closeButton__20ID4{
+      display: none;
+  }
+
+  .QALeadList-Over-yellow{
+
+    background-color: #F8E71C;
+    
+    border-radius: 100%;
+    width: 30px;
+    height: 30px
+  }
+  .ticket-title-text{
+    color: #000000;
+    font-family: Lato;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 17px;
+    text-align: left;
+  }
+
+  .ticket-title-text-p{
+    color: #000000;
+    font-family: Lato;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 17px;
+    text-align: left;
+  }
+  .QA-card-2 .row{
+
+    margin-top: 8px;
+  }
+
+  .Black-headphone{
+     margin-left: 4px;
+     margin-top: 3px;
+    width: 22px;
+    height: 22px;
+  }
+  .bluedownarrow{
+    width: 21px;
+  height: 21px;
+  }
+
+  .QA-card-2 .row .col-md-3 .row{
+    float: right;
+  }
+  .message-content{
+    margin-left: -19% !important;
+    padding-top: 15px !important;
+  }
+
+.v3-new-1{
+    border: 1px solid #dfdfdf;
+    width: 118%;
+    margin-top: 3.6%;
+}
+
+.today-02-new-1{
+  color: #9b9b9b;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: left;
+  padding-left: 37px;
+}
+
+.v4-new-1{
+    border: 1px solid #dfdfdf;
+    width: 113%;
+    margin-top: 3.6%;
+    margin-left: -13.5%;
+}
+.up-1-1{
+  width: 22px;
+  height: 16px;
+  margin: 7px;
+  margin-left: 57%;
+}
+
+.card-details-QA{
+  background-color: #FAFAFA;
+  width: 527px;
+  height: 253px;
+  margin-left: 315px;
+}
+
+.screen-shot-2018-05-03-at-2-29-59-pm{
+  width: 433px;
+  height: 216px;
+  background: #fff;
+  margin: auto;
+  margin-top: 17px;
+  padding: 20px;
+}
+
+.yesterday-02-new{
+  color: #9b9b9b;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: left;
+  padding-left: 23px;
+}
+.v3-1-1{
+  border: 1px solid #dfdfdf;
+  width: 113%;
+  margin-top: 3.6%;
+}
+.v6-1-1{
+  border: 1px solid #dfdfdf;
+  width: 110%;
+  margin-top: 3.6%;
+  margin-left: -8.5%;
+}
+
+.messages-04-new-text{
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19px;
+  text-align: left;
+}
+
+
+.message-new-1{
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: left;
+}
+
+.toggle-button-blue{
+  /* background-color: #2561A8; */
+  width: 31.03px;
+  height: 21.98px;
+  padding: 6px;
+  padding-top: 8px;
+  border-radius: 0px !important;
+  
+}
+.toggle-button-gray{
+  background-color: #E6E6E6;
+  width: 31.03px;
+  height: 21.98px;
+  padding: 6px;
+  padding-top: 8px;
+  border-color: #E6E6E6; 
+  border-radius: 0px !important;
+}
+.collapsebutton .toggle-button-blue{
+   
+ min-width: 0;
+ 
+ 
+}
+.collapsebutton .toggle-button-gray{   
+ min-width: 0;
+ 
+}
+
+.yes-button-text{
+  color: #FFFFFF;
+  font-family: Lato;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 11px;
+  width: 17.07px;
+  text-align: left;
+}
+
+.no-button-text{
+  color: #9B9B9B;
+  font-family: Lato;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 11px;
+  width: 15.52px;
+  text-align: left;
+}
+
+.collapse-text-1{
+  color: #898989;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 17px;
+  width: auto;
+  text-align: left;
+}
+.message-details-new{
+width: 85%;
+display: inline-block;
+padding-left: 9px;
+}
+.clip-icon-new
+{
+  width: 22px;
+    height: 22px;
+    margin-left: 50px;
+    vertical-align: top;
+}
+/* .card .card-block, .card .card-body {
+  padding: 5px 40px;
+} */
+
+.hi-diwakar-i-really1-1{
+  color: #4a4a4a;
+  font-family: Lato;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 16px;
+   
+  text-align: left;
+}
+
+.message-content-new{
+  margin-left: -19% !important;
+  padding-top: 15px !important;
+}
+
+.hi-naman-please-hel-new{
+  color: #4a4a4a;
+  font-family: Lato;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 16px;
+  text-align: left;
+  padding-left: 139px;
+}
+ 
+.collapsebutton .btn {
+  padding: 3px 12px;
+  border-radius: 0;
+  font-size: 9px;
+  margin-bottom: 5px;   
+  transition: all 0.3s ease-in-out;
+}
+
+.collapdata .card-body {
+  padding: 25px 16px;
+}
+
+.collapdata .card .card-header {
+  background-color: transparent;
+  border-bottom: 1px solid #f1f1f1;
+  padding: 20px 0px;
+  position: relative;
+}
+.btn-default.btn-on.active{background-color: #2561A8;color:#FFFFFF;border-radius:"0px" }
+.btn-default.btn-on{background-color: #E6E6E6;color:#9B9B9B; border-radius:"0px"}
+
+.btn-default.btn-off.active{background-color: #2561A8;color: #FFFFFF; border-radius:"0px"}
+.btn-default.btn-off  {background-color: #E6E6E6;color: #9B9B9B; border-radius:"0px"}
+ 

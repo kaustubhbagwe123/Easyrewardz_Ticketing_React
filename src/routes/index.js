@@ -14,6 +14,8 @@ import PrioritySettings from "./Settings/PrioritySetting";
 import TicketHierarchy from "./Settings/TicketHierarchy";
 import StoreDashboard from "./StoreManager/StoreDashboard";
 import QADashboardSearch from "./QA/QADashboardSearch";
+import ChatDashboard from "./Chat/ChatDashboard";
+import QAAuditview from "./QA/QAAuditview";
 // import Aux from "./../Component/Aux";
 
 export class App extends Component {
@@ -63,6 +65,8 @@ export class App extends Component {
           component={PrioritySettings}
         />
         <Route exact path={`${match.url}/qaDashboardSearch`} component={QADashboardSearch} />
+        <Route exact path={`${match.url}/chatdashboard`} component={ChatDashboard} />
+        <Route exact path={`${match.url}/qaauditview`} component={QAAuditview} />
       </Layout>
     );
   }

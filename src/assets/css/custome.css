@@ -97,6 +97,15 @@
   color: white;
   padding-left: 1.5%;
 }
+.hamb-menu {
+  width: 20px;
+  margin-top: 13px;
+  float: right;
+  display: none;
+}
+.hamb-menu img {
+  width: 100%;
+}
 .er-label {
   font-size: 19px;
   font-family: sans-serif;
@@ -488,6 +497,7 @@
   font-weight: 700;
   line-height: 19px;
   text-align: left;
+  cursor: pointer;
 }
 .msg-row {
   padding-top: 23px;
@@ -501,6 +511,7 @@
   text-align: left;
   padding-right: 5%;
   margin-left: -46px;
+  cursor: pointer;
 }
 .task-03 {
   color: #4a4a4a;
@@ -511,6 +522,7 @@
   text-align: left;
   padding-right: 5%;
   margin-left: -122px;
+  cursor: pointer;
 }
 .claim-00 {
   color: #4a4a4a;
@@ -521,6 +533,7 @@
   text-align: left;
   padding-right: 5%;
   margin-left: -202px;
+  cursor: pointer;
 }
 .user-label {
   padding-right: 23%;
@@ -911,12 +924,22 @@
 .card-details-1 {
   background-color: #ffffff;
   width: 540px;
-  height: 200px;
+  height: 195px;
   margin: 29px;
   margin-left: 58px;
   padding: 23px;
   padding-left: 47px;
   padding-right: 39px;
+}
+.card-op-out .card .card-block,
+.card-op-out .card .card-body {
+  padding: 0;
+}
+.card-op-out .collapse {
+  width: 100%;
+}
+.card-op-out .card-details {
+  overflow: auto;
 }
 .label-5 {
   color: #a5a49b;
@@ -2654,6 +2677,19 @@ table tr th:last-child {
 }
 /* login and password extra css ends */
 
+/* extra css starts */
+.my-tic-email {
+  border: 0;
+  border-radius: 5px;
+  padding: 5px 10px;
+  padding-right: 35px;
+  width: 151px;
+  font-size: 14px;
+  background: #dbe4e7 url("../Images/down-1.png") no-repeat right 12px center;
+  background-size: 14px;
+}
+/* extra css ends */
+
 /* chetan css ends */
 /******************************************************/
 
@@ -3630,3 +3666,219 @@ progress::-moz-progress-bar {
   width: 100%;
 }
 /* ----------------------------------------------- */
+
+/* Responsive starts */
+@media only screen and (max-width: 480px) {
+  .vl {
+    border: 0;
+    height: auto;
+    margin: 15px 0 20px;
+    border-bottom: 2px solid #f1f1f1;
+    width: 100%;
+  }
+  .v2 {
+    border: 0;
+    height: auto;
+    margin: 5px 0 15px -15px;
+    border-bottom: 2px solid #f1f1f1;
+    width: 110%;
+  }
+  .data-store .col-md-12 {
+    padding: 0;
+  }
+  .rectangle-box {
+    height: auto;
+  }
+  .dropdrown {
+    margin-left: 0;
+  }
+  .mob-pad {
+    padding: 0 !important;
+  }
+  .drop-card {
+    padding: 0 !important;
+    margin-top: 0;
+  }
+  .label-4 {
+    width: 100px;
+  }
+  .data-store {
+    margin: 0;
+  }
+  .storeSpacing {
+    padding-left: 0;
+  }
+  .data-store .label-4 {
+    width: 45px;
+  }
+  .rectangle-box .select-category-placeholder {
+    width: calc(100% - 100px);
+  }
+  .notes-00,
+  .task-03,
+  .claim-00 {
+    margin-left: 0;
+  }
+  .arrow-img,
+  .plush-img,
+  .line-1 {
+    margin-left: 0;
+    margin-top: 0;
+  }
+  .mail-mask {
+    width: 100%;
+    background-color: transparent;
+  }
+  .mob-float {
+    float: right;
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+  }
+  .line-1 {
+    display: inline-block;
+    margin: 0 15px;
+  }
+  .label-2 {
+    margin-top: 0px;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  .label-3 {
+    margin-top: 2px;
+    padding-bottom: 20px;
+  }
+  .v3,
+  .v4 {
+    width: 100%;
+    margin-left: 0;
+  }
+  .v4 {
+    margin-top: 0;
+  }
+  .today-02 {
+    text-align: center;
+    display: block;
+    padding: 0;
+    margin: 10px 0;
+  }
+  .rectangle-3 .message-header {
+    display: none;
+  }
+  .i-have-solved-this-i {
+    margin-left: 0;
+  }
+  .mob-flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 5px;
+  }
+  .card-details {
+    width: auto;
+    height: auto;
+    margin: 0;
+  }
+  .card-details-1 {
+    width: auto;
+    height: auto;
+    margin: 20px;
+    padding: 20px 30px;
+  }
+  .v6 {
+    margin-left: 0;
+    margin-top: 0;
+    width: 100%;
+  }
+  .yesterday-02 {
+    display: block;
+    padding-left: 0;
+    text-align: center;
+    margin: 10px 0;
+  }
+  .hi-naman-please-hel {
+    padding-left: 0;
+  }
+  .comment {
+    margin-left: 0 !important;
+    padding-left: 0;
+    order: 1;
+  }
+  .up-1 {
+    margin: 0;
+    order: 2;
+  }
+  .card-op-out .card-details {
+    margin-top: 15px;
+  }
+  .comment-text {
+    padding-left: 0;
+  }
+  .hi-diwakar-i-really1 {
+    width: 80%;
+    display: inline-block;
+    padding-left: 10px;
+  }
+  .comment-text1 {
+    padding-left: 15px;
+    margin-top: 5px;
+  }
+  .clip {
+    margin-left: 30px;
+    vertical-align: top;
+    width: 17px;
+    height: 17px;
+  }
+  .reply-comment {
+    padding-left: 13px;
+    text-align: left;
+  }
+  .need-to-change-my-sh {
+    margin-left: 37px;
+  }
+  .head-header {
+    height: auto;
+  }
+  .oval-head {
+    margin: 0;
+    padding: 0;
+    margin-top: 10px;
+    width: 100%;
+  }
+  .myticket-submit-solve-button {
+    margin-left: 14px;
+    width: 200px;
+    float: right;
+  }
+  .myticket-submit-solve-button-text {
+    margin-left: 0;
+  }
+  .loading-rectangle {
+    margin-top: -183px;
+  }
+  .head-header-1 {
+    padding-bottom: 0;
+  }
+  .nav-tab3,
+  .nav-tab2,
+  .nav-tab1,
+  .claim-space,
+  .main-nav {
+    display: none;
+  }
+  .er {
+    padding-left: 0;
+    text-align: center;
+    width: 60px;
+    height: 55px;
+    display: inline-block;
+  }
+  .er-label {
+    font-size: 16px;
+    margin-top: 16px;
+  }
+  .hamb-menu {
+    display: block;
+  }
+}
+/* Responsive ends */
