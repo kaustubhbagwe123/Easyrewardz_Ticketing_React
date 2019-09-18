@@ -1,0 +1,262 @@
+/* ------------------- for chat-dashborad start ----------------------- */
+
+.Chat-main-header{
+    background-color: #ECF2F4;
+    width: auto;
+    height: 57px;
+  }
+
+  .lable-text{
+    color: #4A4A4A;
+    font-family: Lato;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 19px;
+    text-align: left;
+  }
+
+  .text-center-header{
+
+    padding: 15px;
+  
+
+  }
+.text-center-margin{
+    margin-left: 5px;
+}
+
+  .sort-down-arrow{
+    opacity: 0.2647758152173913;
+    width: 20px;
+    height: 15px;
+    margin-left: 5px;
+  }
+
+  .container-fluid {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+.Chat-main-header .row{
+    margin: 0px;
+}
+.team-mamber-card{
+    background-color: #FFFFFF;
+    border-radius: 4px;
+    width: 294px;
+    height: 191px;
+    margin-top: 15px;
+  }
+  .response-speed-card{
+    background-color: #FFFFFF;
+    border-radius: 4px;
+    width: 610px;
+    height: 194px;
+    margin-top: 15px;
+  }
+  .chat-status-card{
+    
+    background-color: #FFFFFF;
+    border-radius: 4px;
+    width: 289px;
+    height: 194px;
+    margin-top: 15px;
+  }
+
+  .chat-score-card{
+    background-color: #FFFFFF;
+    border-radius: 4px;
+    width: 605px;
+    height: 243px;
+  }
+
+  .chat-live-card{
+    background-color: #FFFFFF;
+    border-radius: 4px;
+    width: 608px;
+    height: 243px;
+  }
+
+  .total-chat-card{
+    background-color: #FFFFFF;
+    border-radius: 4px;
+    width: 929px;
+    height: 243px;
+  }
+
+  .missed-chat-card{
+    background-color: #FFFFFF;
+    border-radius: 4px;
+    width: 289px;
+    height: 243px;
+  }
+
+ .card-titel{
+   
+        color: #4A4A4A;
+        font-family: Lato;
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 19px;
+        width: 188px;
+        text-align: left;
+        padding: 15px;
+      }
+
+      .aside-cont {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: calc(100% - 35px);
+    }
+    .aside-cont-3{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: calc(100% - 35px);
+  }
+  
+    .card-content-number{
+        color: #4A4A4A;
+        font-family: Lato;
+        font-size: 28px;
+        font-weight: 300;
+        line-height: 34px;
+        width: 50px;
+        text-align: left;
+        /* padding-left: 18px; */
+
+    }
+    .card-content-text
+    {
+        color: #4A4A4A;
+  font-family: Lato;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 12px;
+  width: 78px;
+  text-align: left;
+  margin-top: 8px;
+    }
+    .response-speed-dropdown{
+        background-color: #ECF2F4 !important;
+        border-radius: 4px;
+        width: 147px;
+        height: 35px;
+        border: none;
+        float: right;
+        margin-right: 15px;
+    margin-top: 10px;
+    background: url("../Images//table-arr.png") no-repeat right 8px center;
+      }
+
+      .select-text{
+        color: #6E6E6E;
+        font-family: Lato;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 17px;
+        text-align: left;
+        padding-left: 10px;
+      }
+
+
+      .response-card-content-text {
+        color: #4A4A4A;
+    font-family: Lato;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 12px;
+    width: auto;
+    text-align: left;
+    margin-top: 8px;
+    }
+
+    .aside-cont-1{
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: calc(100% - 108px)
+    }
+
+    .missed-chat-30{
+        color: #4A4A4A;
+  font-family: Lato;
+  font-size: 36px;
+  font-weight: 300;
+  line-height: 43px;
+  width: 117px;
+  text-align: left;
+    }
+
+    .missed-chat-small-text{
+
+        color: #4A4A4A;
+        font-family: Lato;
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 14px;
+        text-align: left;
+        padding: 0px 5px;
+    }
+
+.card-content-number .response-small{
+    display: inline;
+    font-weight: 500;
+}
+
+.response-row{
+
+    margin: 0px 20px 0px 35px;
+}
+
+.team-member-center-text
+{
+    text-align: center;
+    }
+.team-member-30{
+    text-align: center;
+    padding-left: 125px;
+    padding-top: 28px;
+}
+
+.team-member-p{
+    display: flex;
+    padding: 10px 46px;
+}
+
+.float-search-chat{  
+  
+  border: 1px solid #F0F0F0; 
+  width: 204px;
+  height: 43px;
+  top: 97px;
+  z-index: 1;
+  border-radius: 21.5px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.04);
+  position: absolute; 
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #fff;
+  padding: 4px 17px 6px;
+  cursor: pointer;
+}
+
+.back-to-main-dashboa {
+  color: #2561A8;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 14px;
+  text-align: left;
+  padding-top: 10px;
+  padding-top: 15px;
+  padding-left: 5px;
+}
+.removeleft .row{
+  margin-left: 0px;
+}
+/* -------------------------------------------------------------------- */

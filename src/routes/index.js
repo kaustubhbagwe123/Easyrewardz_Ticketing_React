@@ -13,6 +13,8 @@ import StoreMaster from "./Settings/StoreMaster";
 import Settings from "./Settings/Settings";
 import PrioritySettings from "./Settings/PrioritySetting";
 import TicketHierarchy from "./Settings/TicketHierarchy";
+import ChatDashboard from "./Chat/ChatDashboard";
+import QAAuditview from "./QA/QAAuditview";
 // import Aux from "./../Component/Aux";
 
 export class App extends Component {
@@ -61,6 +63,8 @@ export class App extends Component {
           path={`${match.url}/priority-settings`}
           component={PrioritySettings}
         />
+        <Route exact path={`${match.url}/chatdashboard`} component={ChatDashboard} />
+        <Route exact path={`${match.url}/qaauditview`} component={QAAuditview} />
       </Layout>
     );
   }

@@ -8,6 +8,13 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import "./assets/css/style.css";
 import "./assets/css/custome.css";
 import "./assets/css/settings.css";
+import "./assets/css/chat.css";
+import "./assets/css/QA.css";
+
+/////js
+import "./../node_modules/bootstrap/dist/js/bootstrap.min.js"
+// import "./assets/js/bootstrap.min.js";
+
 
 ///Component
 import SignIn from "./Component/SignIn";
