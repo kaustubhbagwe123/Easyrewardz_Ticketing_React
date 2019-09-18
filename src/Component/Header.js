@@ -10,6 +10,7 @@ import NotificationLogo from "./../assets/Images/Notification.png";
 import SettingLogo from "./../assets/Images/setting.png";
 import UserLogo from "./../assets/Images/user-img.jpg";
 import StatusLogo from "./../assets/Images/status.png";
+import Hamb from "./../assets/Images/hamb.png";
 import ClaimLogo from "./../assets/Images/icon9.svg";
 
 class Header extends Component {
@@ -43,6 +44,9 @@ class Header extends Component {
               <div className="col-md-8 p-0">
                 <div className="er">
                   <label className="er-label">ER</label>
+                </div>
+                <div className="hamb-menu">
+                  <img src={Hamb} alt="hamburger icon" />
                 </div>
                 <div className="col-md-2 nav-tab3">
                   <img
