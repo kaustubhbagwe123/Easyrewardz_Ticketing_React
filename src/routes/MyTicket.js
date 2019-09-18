@@ -66,7 +66,6 @@ class MyTicket extends Component {
                       className="myticket-submit-solve-button"
                     >
                       <label className="myticket-submit-solve-button-text">
-                        {" "}
                         Submit As Solved
                       </label>
                       <img

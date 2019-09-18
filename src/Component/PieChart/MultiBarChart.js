@@ -54,6 +54,7 @@ class MultiBarChart extends Component {
         x="x"
         y="y"
         height={200}
+        weight={150}
         showValues
         groupSpacing={0.2}
       />

@@ -4,10 +4,17 @@ import "./index.css";
 // import App from './App';
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+
 //Css
 import "./assets/css/style.css";
 import "./assets/css/custome.css";
 import "./assets/css/settings.css";
+import "./assets/css/QA.css"
+
+//JS
+import "./../node_modules/popper.js/dist/popper.js";
+import "./../node_modules/bootstrap/dist/js/bootstrap.js";
+import "./../node_modules/jquery/dist/jquery.js";
 
 ///Component
 import SignIn from "./Component/SignIn";

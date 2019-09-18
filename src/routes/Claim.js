@@ -102,7 +102,7 @@ class Claim extends Component {
                                     </div>
                                     <div className="row margin-claim">
                                         <div className="form-group col-md-4">
-                                            <label className="label-6">Claim Type</label>
+                                            <label className="label-6"> Claim Asked for %</label>
                                             <input type="text" className="form-control textBox" placeholder="Claim Percentage" />
                                         </div>
                                         <div className="col-md-4" style={{ marginTop: '24px' }}>

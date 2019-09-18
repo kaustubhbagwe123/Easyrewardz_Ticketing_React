@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import "../../node_modules/jquery/dist/jquery.js";
+// import "../../node_modules/jquery/dist/jquery.js";
 import { ProgressBar } from "react-bootstrap";
-import "../../node_modules/popper.js/dist/popper.js";
-import "../../node_modules/bootstrap/dist/js/bootstrap.js";
+// import "../../node_modules/popper.js/dist/popper.js";
+// import "../../node_modules/bootstrap/dist/js/bootstrap.js";
 import Modal from "react-responsive-modal";
 import PieChart from "../Component/PieChart/PieChart";
 import SearchIcon from "./../assets/Images/search-icon.png";
@@ -17,9 +17,11 @@ import Chat from "./../assets/Images/chat.png";
 import csv from "./../assets/Images/csv.png";
 import Schedule from "./../assets/Images/schedule.png";
 import Assign from "./../assets/Images/assign.png";
+import CancalImg from "./../assets/Images/cancal blue.png";
 import DelSearch from "./../assets/Images/del-search.png";
 import { Collapse, CardBody, Card } from "reactstrap";
 import Demo from "../store/Hashtag.js";
+import ModernDatepicker from 'react-modern-datepicker';
 
 import BarChart from "../Component/PieChart/BarChart.js";
 import MultiBarChart from "../Component/PieChart/MultiBarChart.js";
@@ -30,13 +32,21 @@ class Dashboard extends Component {
       collapse: true,
       collapseSearch: false,
       modalIsOpen: false,
-      open: false
+      open: false,
+      StatusModel: false,
+      Schedule:false,
+      startDate: new Date()
     };
     this.toggle = this.toggle.bind(this);
     this.toggleSearch = this.toggleSearch.bind(this);
+    this.StatusOpenModel = this.StatusOpenModel.bind(this);
+    this.StatusCloseModel = this.StatusCloseModel.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
   toggle() {
-    this.setState(state => ({ collapse: !state.collapse }));
+    this.setState(
+      state => ({ collapse: !state.collapse })
+      );
   }
   toggleSearch() {
     this.setState(state => ({ collapseSearch: !state.collapseSearch }));
@@ -49,14 +59,46 @@ class Dashboard extends Component {
     this.setState({ open: false });
   };
 
+  ScheduleOpenModel =()=>{
+    this.setState({Schedule:true});
+  }
+
+  ScheduleCloseModel =()=>{
+    this.setState({Schedule:false});
+  }
+
   openModal = () => {
     this.setState({ modalIsOpen: true });
   };
+  handleChange(date) {
+    this.setState({
+        startDate: date,
+    });
+}
 
   closeModal = () => {
     this.setState({ modalIsOpen: false });
   };
+  StatusOpenModel() {
+    this.setState({ StatusModel: true });
+  }
+  StatusCloseModel() {
+    this.setState({ StatusModel: false });
+  }
   render() {
+    const TitleChange=this.state.collapseSearch
+    ? 'Close Search' : 'Search Tickets';
+
+    const ImgChange=this.state.collapseSearch 
+    ? <img
+    className="search-icon"
+    src={CancalImg}
+    alt="search-icon"
+  /> :  <img
+    className="search-icon"
+    src={SearchIcon}
+    alt="search-icon"
+  />
     return (
       <div>
         <div className="container-fluid dash-dropdowns">
@@ -163,14 +205,25 @@ class Dashboard extends Component {
                             </a>
                           </li>
                         </ul>
-                        <div className="tab-content">
+                        <div className="tab-content mt-4">
                           <div
                             className="tab-pane fade show active"
                             id="bill-graph-tab"
                             role="tabpanel"
                             aria-labelledby="bill-graph-tab"
                           >
-                            <BarChart />
+                            <div className="row">
+                              <div className="col-md-3">
+                                <ul className="bill-graph-list">
+                                  <li>Offline : <b>20/100</b></li>
+                                  <li>Web : <b>10/80</b></li>
+                                  <li>Mobile : <b>5/100</b></li>
+                                </ul>
+                              </div>
+                              <div className="col-md-9 tic-bill-graph">
+                                <BarChart />
+                              </div>
+                            </div>
                           </div>
                           <div
                             className="tab-pane fade"
@@ -371,15 +424,126 @@ class Dashboard extends Component {
                                 />
                               </div>
                               <div className="col-md-3">
-                                <input
+                                {/* <input
                                   type="text"
                                   placeholder="Last Updated Date"
+                                /> */}
+                                <ModernDatepicker
+                                  date={this.state.startDate}
+                                  format={"DD-MM-YYYY"}
+                                  className="cXcRo"
+                                  showBorder
+                                  onChange={date => this.handleChange(date)}
+                                  placeholder={"Select a date"}
                                 />
                               </div>
                               <div className="col-md-3">
                                 <select>
                                   <option>SLA Due</option>
                                 </select>
+                              </div>
+                              <div className="col-md-3">
+                                <select>
+                                  <option>Ticket Status</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div className="row">
+                              <div className="col-md-6 d-flex align-items-center">
+                                <p className="font-weight-bold mr-3">
+                                  <span className="blue-clr">04</span> Results
+                                </p>
+                                <p className="blue-clr fs-14">CLEAR SEARCH</p>
+                              </div>
+                              <div className="col-md-6 text-right">
+                                <button>
+                                  <img
+                                    className="position-relative"
+                                    src={csv}
+                                    alt="csv-icon"
+                                  />
+                                  CSV
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={this.ScheduleOpenModel}
+                                >
+                                  <img src={Schedule} alt="schedule-icon" />
+                                  Schedule
+                                </button>
+                                <Modal
+                                  onClose={this.ScheduleCloseModel}
+                                  open={this.state.Schedule}
+                                  modalId="ScheduleModel"
+                                  overlayId="logout-ovrly"
+                                >
+                                  <div>
+                                    <label>
+                                      <b>Schedule date to</b>
+                                    </label>
+                                    <div>
+                                      <select
+                                        id="inputState"
+                                        className="form-control dropdown-setting ScheduleDate-to"
+                                      >
+                                        <option>Team Member</option>
+                                      </select>
+                                      <select
+                                        id="inputState"
+                                        className="form-control dropdown-setting ScheduleDate-to"
+                                      >
+                                        <option>Monthly</option>
+                                      </select>
+                                      <select
+                                        id="inputState"
+                                        className="form-control dropdown-setting ScheduleDate-to"
+                                      >
+                                        <option>First day</option>
+                                        <option>Last day</option>
+                                      </select>
+                                      <input
+                                        type="text"
+                                        className="txt-1 txt1Place"
+                                        placeholder="Time"
+                                      />
+                                      <div>
+                                        <button className="scheduleBtn">
+                                          <label className="addLable">
+                                            SCHEDULE
+                                          </label>
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </Modal>
+                                <button className="btn-inv btn-dis">
+                                  <img src={Assign} alt="assign-icon" />
+                                  Assign
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          className="tab-pane fade"
+                          id="customer-tab"
+                          role="tabpanel"
+                          aria-labelledby="customer-tab"
+                        >
+                          <div className="container-fluid">
+                            <div className="row">
+                              <div className="col-md-3">
+                                <input
+                                  className="no-bg"
+                                  type="text"
+                                  placeholder="Customer Mobile No"
+                                />
+                              </div>
+                              <div className="col-md-3">
+                                <input type="text" className="no-bg" placeholder="Customer Email ID" />
+                              </div>
+                              <div className="col-md-3">
+                                <input type="text" className="no-bg" placeholder="Ticket ID" />
                               </div>
                               <div className="col-md-3">
                                 <select>
@@ -414,14 +578,6 @@ class Dashboard extends Component {
                               </div>
                             </div>
                           </div>
-                        </div>
-                        <div
-                          className="tab-pane fade"
-                          id="customer-tab"
-                          role="tabpanel"
-                          aria-labelledby="customer-tab"
-                        >
-                          2
                         </div>
                         <div
                           className="tab-pane fade"
@@ -743,111 +899,122 @@ class Dashboard extends Component {
                     <th>
                       Status
                       <div className="position-relative d-inline-block">
-                        <img src={TableArr} alt="table-arr" />
-                        <div className="status-drop-down">
-                          <div className="sort-sctn">
-                            <div className="d-flex">
-                              <a
-                                href={Demo.BLANK_LINK}
-                                className="sorting-icon"
-                              >
-                                <img src={Sorting} alt="sorting-icon" />
-                              </a>
-                              <p>SORT BY A TO Z</p>
+                        <img
+                          src={TableArr}
+                          alt="table-arr"
+                          onClick={this.StatusOpenModel}
+                        />
+                        <Modal
+                          onClose={this.StatusCloseModel}
+                          open={this.state.StatusModel}
+                          modalId="Status-popup"
+                          overlayId="logout-ovrly"
+                        >
+                          <div className="status-drop-down">
+                            <div className="sort-sctn">
+                              <div className="d-flex">
+                                <a
+                                  href={Demo.BLANK_LINK}
+                                  className="sorting-icon"
+                                >
+                                  <img src={Sorting} alt="sorting-icon" />
+                                </a>
+                                <p>SORT BY A TO Z</p>
+                              </div>
+                              <div className="d-flex">
+                                <a
+                                  href={Demo.BLANK_LINK}
+                                  className="sorting-icon"
+                                >
+                                  <img src={Sorting} alt="sorting-icon" />
+                                </a>
+                                <p>SORT BY Z TO A</p>
+                              </div>
                             </div>
-                            <div className="d-flex">
-                              <a
-                                href={Demo.BLANK_LINK}
-                                className="sorting-icon"
-                              >
-                                <img src={Sorting} alt="sorting-icon" />
-                              </a>
-                              <p>SORT BY Z TO A</p>
+                            <div className="filter-type">
+                              <p>FILTER BY TYPE</p>
+                              <div className="filter-checkbox">
+                                <input
+                                  type="checkbox"
+                                  id="fil-open"
+                                  name="filter-type"
+                                />
+                                <label htmlFor="fil-open">
+                                  <span className="table-btn table-blue-btn">
+                                    Open
+                                  </span>
+                                </label>
+                              </div>
+                              <div className="filter-checkbox">
+                                <input
+                                  type="checkbox"
+                                  id="fil-new"
+                                  name="filter-type"
+                                />
+                                <label htmlFor="fil-new">
+                                  <span className="table-btn table-yellow-btn">
+                                    New
+                                  </span>
+                                </label>
+                              </div>
+                              <div className="filter-checkbox">
+                                <input
+                                  type="checkbox"
+                                  id="fil-solved"
+                                  name="filter-type"
+                                />
+                                <label htmlFor="fil-solved">
+                                  <span className="table-btn table-green-btn">
+                                    Solved
+                                  </span>
+                                </label>
+                              </div>
+                            </div>
+                            <div className="filter-type filter-color">
+                              <p>FILTER BY COLOR</p>
+                              <div className="filter-checkbox">
+                                <input
+                                  type="checkbox"
+                                  id="fil-red"
+                                  name="filter-color"
+                                />
+                                <label htmlFor="fil-red">
+                                  <span className="fil-color-red fil-color-bg"></span>
+                                </label>
+                              </div>
+                              <div className="filter-checkbox">
+                                <input
+                                  type="checkbox"
+                                  id="fil-orange"
+                                  name="filter-color"
+                                />
+                                <label htmlFor="fil-orange">
+                                  <span className="fil-color-orange fil-color-bg"></span>
+                                </label>
+                              </div>
+                              <div className="filter-checkbox">
+                                <input
+                                  type="checkbox"
+                                  id="fil-white"
+                                  name="filter-color"
+                                />
+                                <label htmlFor="fil-white">
+                                  <span className="fil-color-white fil-color-bg"></span>
+                                </label>
+                              </div>
+                              <div className="filter-checkbox">
+                                <input
+                                  type="checkbox"
+                                  id="fil-green"
+                                  name="filter-color"
+                                />
+                                <label htmlFor="fil-green">
+                                  <span className="fil-color-green fil-color-bg"></span>
+                                </label>
+                              </div>
                             </div>
                           </div>
-                          <div className="filter-type">
-                            <p>FILTER BY TYPE</p>
-                            <div className="filter-checkbox">
-                              <input
-                                type="checkbox"
-                                id="fil-open"
-                                name="filter-type"
-                              />
-                              <label htmlFor="fil-open">
-                                <span className="table-btn table-blue-btn">
-                                  Open
-                                </span>
-                              </label>
-                            </div>
-                            <div className="filter-checkbox">
-                              <input
-                                type="checkbox"
-                                id="fil-new"
-                                name="filter-type"
-                              />
-                              <label htmlFor="fil-new">
-                                <span className="table-btn table-yellow-btn">
-                                  New
-                                </span>
-                              </label>
-                            </div>
-                            <div className="filter-checkbox">
-                              <input
-                                type="checkbox"
-                                id="fil-solved"
-                                name="filter-type"
-                              />
-                              <label htmlFor="fil-solved">
-                                <span className="table-btn table-green-btn">
-                                  Solved
-                                </span>
-                              </label>
-                            </div>
-                          </div>
-                          <div className="filter-type filter-color">
-                            <p>FILTER BY COLOR</p>
-                            <div className="filter-checkbox">
-                              <input
-                                type="checkbox"
-                                id="fil-red"
-                                name="filter-color"
-                              />
-                              <label htmlFor="fil-red">
-                                <span className="fil-color-red fil-color-bg"></span>
-                              </label>
-                            </div>
-                            <div className="filter-checkbox">
-                              <input
-                                type="checkbox"
-                                id="fil-orange"
-                                name="filter-color"
-                              />
-                              <label htmlFor="fil-orange">
-                                <span className="fil-color-orange fil-color-bg"></span>
-                              </label>
-                            </div>
-                            <div className="filter-checkbox">
-                              <input
-                                type="checkbox"
-                                id="fil-white"
-                                name="filter-color"
-                              />
-                              <label htmlFor="fil-white">
-                                <span className="fil-color-white fil-color-bg"></span>
-                              </label>
-                            </div>
-                            <div className="filter-checkbox">
-                              <input
-                                type="checkbox"
-                                id="fil-green"
-                                name="filter-color"
-                              />
-                              <label htmlFor="fil-green">
-                                <span className="fil-color-green fil-color-bg"></span>
-                              </label>
-                            </div>
-                          </div>
-                        </div>
+                        </Modal>
                       </div>
                     </th>
                     <th className="table-img-cntr"></th>
@@ -880,7 +1047,7 @@ class Dashboard extends Component {
                       <span>Hope this help, Please rate us</span>
                     </td>
                     <td>
-                      Defective article{" "}
+                      Defective article
                       <div className="dash-creation-popup-cntr">
                         <img
                           className="info-icon"
@@ -954,7 +1121,7 @@ class Dashboard extends Component {
                       <span>Hope this help, Please rate us</span>
                     </td>
                     <td>
-                      Defective article{" "}
+                      Defective article
                       <div className="dash-creation-popup-cntr">
                         <img
                           className="info-icon"
@@ -1242,7 +1409,7 @@ class Dashboard extends Component {
                       <span>Hope this help, Please rate us</span>
                     </td>
                     <td>
-                      Defective article{" "}
+                      Defective article
                       <img
                         className="info-icon"
                         src={InfoIcon}
@@ -1295,12 +1462,8 @@ class Dashboard extends Component {
               </div>
 
               <div className="float-search" onClick={this.toggleSearch}>
-                <small>Search Tickets</small>
-                <img
-                  className="search-icon"
-                  src={SearchIcon}
-                  alt="search-icon"
-                />
+                <small>{TitleChange}</small>
+                {ImgChange}
               </div>
             </div>
           </div>
@@ -1328,8 +1491,8 @@ class Dashboard extends Component {
               <li>
                 <p>Open tickets with high priority</p>
                 <div>
-                  <a href={Demo}>APPLY</a>
-                  <a href={Demo} className="m-0">
+                  <a href={Demo.BLANK_LINK}>APPLY</a>
+                  <a href={Demo.BLANK_LINK} className="m-0">
                     <img src={DelSearch} alt="del-search" />
                   </a>
                 </div>
@@ -1337,8 +1500,8 @@ class Dashboard extends Component {
               <li>
                 <p>Open tickets with high priority</p>
                 <div>
-                  <a href={Demo}>APPLY</a>
-                  <a href={Demo} className="m-0">
+                  <a href={Demo.BLANK_LINK}>APPLY</a>
+                  <a href={Demo.BLANK_LINK} className="m-0">
                     <img src={DelSearch} alt="del-search" />
                   </a>
                 </div>
@@ -1346,8 +1509,8 @@ class Dashboard extends Component {
               <li>
                 <p>Open tickets with high priority</p>
                 <div>
-                  <a href={Demo}>APPLY</a>
-                  <a href={Demo} className="m-0">
+                  <a href={Demo.BLANK_LINK}>APPLY</a>
+                  <a href={Demo.BLANK_LINK} className="m-0">
                     <img src={DelSearch} alt="del-search" />
                   </a>
                 </div>
@@ -1355,8 +1518,8 @@ class Dashboard extends Component {
               <li>
                 <p>Open tickets with high priority</p>
                 <div>
-                  <a href={Demo}>APPLY</a>
-                  <a href={Demo} className="m-0">
+                  <a href={Demo.BLANK_LINK}>APPLY</a>
+                  <a href={Demo.BLANK_LINK} className="m-0">
                     <img src={DelSearch} alt="del-search" />
                   </a>
                 </div>
@@ -1364,8 +1527,8 @@ class Dashboard extends Component {
               <li>
                 <p>Open tickets with high priority</p>
                 <div>
-                  <a href={Demo}>APPLY</a>
-                  <a href={Demo} className="m-0">
+                  <a href={Demo.BLANK_LINK}>APPLY</a>
+                  <a href={Demo.BLANK_LINK} className="m-0">
                     <img src={DelSearch} alt="del-search" />
                   </a>
                 </div>

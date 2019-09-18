@@ -1,0 +1,85 @@
+/* --------------QA Ticketing---------------- */
+/* --------Qa Dashboard Search (Shlok)------------- */
+.firstCard16{
+    color: #4A4A4A;
+    font-family: Lato;
+    font-size: 40px;
+    font-weight: 300;
+    line-height: 48px;
+    width: 67px;
+    text-align: left;
+    float: right;
+  }
+.LastCard86{
+    color: #000000;
+    font-family: Lato;
+    font-size: 40px;
+    font-weight: 300;
+    line-height: 48px;
+    width: 84px;
+    text-align: left;
+  }
+  .btnDownloadQuality{
+    background-color: #2561A8;
+    border-radius: 5.11px;
+    width: 40px;
+    height: 39px;
+    margin-left: -40px;
+    min-width: auto;
+  }
+  .downloadQualityCss{
+    width: 12px;
+    margin-left: -2px;
+    margin-top: -5px;
+  }
+  .maincardQA{
+    background-color: #FFFFFF;
+    border-radius: 4px;
+    width: auto;
+    height: 1747px;
+    margin-left: 14px;
+    margin-right: 16px;
+  }
+  .quality-score-by-age{
+    color: #4A4A4A;
+    font-family: Lato;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 19px;
+    width: 236px;
+    text-align: left;
+  }
+  .cardTextSpace{
+    padding-left: 15px;
+    padding-top: 25px;
+  }
+  .dropDwonWidth{
+    max-width: 20% !important; 
+  }
+  .rowMargin{
+    margin-left: -29px !important;
+    padding-top: 25px;
+  }
+  .txtQA{
+    padding-top: 8px !important;
+    background: #E5E9ED url(/static/media/calendar-black.d0d589e5.svg) no-repeat right 15px center;
+  }
+  .btnSearchQa{
+    background-color: #2561A8;
+    border-radius: 4px;
+    width: 144px;
+    height: 43px;
+    margin-top: 30px;
+    margin-left: 10px;
+  }
+  .labelSearch{
+    color: #FFFFFF;
+    font-family: Lato;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 18px;
+    text-align: left;
+  }
+/* -----------Qa Dashboard Search End------------- */
+
+/* ----------------END Css------------------- */

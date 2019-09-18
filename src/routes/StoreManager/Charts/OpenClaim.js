@@ -6,24 +6,24 @@ const datum = [
     key: "Cumulative Return",
     values: [
       {
-        label: "Offline",
-        value: 2500,
-        color: "#75A5DE"
+        label: "Total Claim",
+        value: 50,
+        color: "#F2726F"
       },
       {
-        label: "Web",
-        value: 1750,
-        color: "#2561A8"
+        label: "Exchange",
+        value: 126,
+        color: "#F2726F"
       },
       {
-        label: "Mobile",
-        value: 2500,
-        color: "#75A5DE"
+        label: "Refund",
+        value: 90,
+        color: "#F2726F"
       }
     ]
   }
 ];
-class BarChart extends Component {
+class OpenClaim extends Component {
   render() {
     return (
       <NVD3Chart
@@ -32,9 +32,11 @@ class BarChart extends Component {
         datum={datum}
         x="label"
         y="value"
+        height={240}
+        width={250}
       />
     );
   }
 }
 
-export default BarChart;
+export default OpenClaim;

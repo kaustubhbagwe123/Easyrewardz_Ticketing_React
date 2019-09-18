@@ -6,24 +6,24 @@ const datum = [
     key: "Cumulative Return",
     values: [
       {
-        label: "Offline",
-        value: 2500,
-        color: "#75A5DE"
+        label: "Agent 1",
+        value: 70,
+        color: "#4A90E2"
       },
       {
-        label: "Web",
-        value: 1750,
-        color: "#2561A8"
+        label: "Agent 2",
+        value: 135,
+        color: "#4A90E2"
       },
       {
-        label: "Mobile",
-        value: 2500,
-        color: "#75A5DE"
+        label: "Agent 3",
+        value: 70,
+        color: "#4A90E2"
       }
     ]
   }
 ];
-class BarChart extends Component {
+class BarTop3CSA extends Component {
   render() {
     return (
       <NVD3Chart
@@ -32,9 +32,11 @@ class BarChart extends Component {
         datum={datum}
         x="label"
         y="value"
+        height={220}
+        width={300}
       />
     );
   }
 }
 
-export default BarChart;
+export default BarTop3CSA;
