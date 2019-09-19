@@ -5,9 +5,7 @@ import TableArr from "./../../assets/Images/gray-down-icon.png";
 // import Chart from "react-apexcharts";
 
  
-class ChatDashboard extends Component 
-{
-
+class ChatDashboard extends Component{
   constructor(props) {
       super(props)
   
