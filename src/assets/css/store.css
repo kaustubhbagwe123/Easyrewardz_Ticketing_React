@@ -1,0 +1,110 @@
+/* chetan css starts */
+
+/* store task starts */
+.store-task-tabs ul {
+  border-bottom: 0;
+}
+.store-task-tabs {
+  background-color: #ecf2f4;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.store-task-tabs .nav-tabs .nav-link {
+  font-weight: 400;
+  padding: 17px 15px;
+}
+.store-task-tabs .nav-tabs .nav-link.active {
+  font-weight: 700;
+  border-bottom: 0;
+  background-color: transparent;
+}
+.store-task-tabs button {
+  font-size: 14px;
+  padding: 10px 40px;
+  margin-right: 15px;
+}
+.store-task-tab-cont {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+/* store task ends */
+
+/* store task view starts */
+.store-task-view-top {
+  padding: 10px 20px;
+  background-color: #ecf2f4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.str-img {
+  width: 30px;
+  height: 30px;
+  background-color: #f8e71c;
+  border-radius: 50%;
+  overflow: hidden;
+  line-height: 25px;
+  text-align: center;
+}
+.str-img img {
+  width: 18px;
+}
+.str-owner p {
+  font-size: 14px;
+  color: #000;
+  margin-left: 10px;
+  font-weight: 700;
+}
+.str-owner {
+  display: flex;
+  align-items: center;
+}
+.str-dtls select {
+  background: #2561a8 url("./../Images/down-white.png") no-repeat right 20px
+    center;
+  border-radius: 4px;
+  color: #fff;
+  border: 0;
+  font-size: 14px;
+  padding: 11px 45px 11px 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-left: 25px;
+  min-width: 205px;
+}
+.str-dtls select option {
+  color: #2561a8;
+  background-color: #fff;
+  text-transform: initial;
+  font-weight: 700;
+}
+.task-view-cntr {
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 25px 40px;
+}
+.task-view-cntr label {
+  color: #9b9b9b;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 5px;
+}
+.task-view-cntr input,
+.task-view-cntr select {
+  font-size: 14px;
+  font-weight: 700;
+  width: 100%;
+  border: 0;
+  padding: 12px 15px;
+  background-color: #ecf2f4;
+  border-radius: 4px;
+}
+.task-view-cntr select {
+  background: #ecf2f4 url("./../Images/down-1.png") no-repeat right 20px center;
+  background-size: 18px;
+  padding-right: 50px;
+}
+/* store task view ends */
+
+/* chetan css ends */

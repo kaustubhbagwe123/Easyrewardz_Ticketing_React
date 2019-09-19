@@ -21,7 +21,7 @@ import CancalImg from "./../assets/Images/cancal blue.png";
 import DelSearch from "./../assets/Images/del-search.png";
 import { Collapse, CardBody, Card } from "reactstrap";
 import Demo from "../store/Hashtag.js";
-import ModernDatepicker from 'react-modern-datepicker';
+import ModernDatepicker from "react-modern-datepicker";
 
 import BarChart from "../Component/PieChart/BarChart.js";
 import MultiBarChart from "../Component/PieChart/MultiBarChart.js";
@@ -34,7 +34,7 @@ class Dashboard extends Component {
       modalIsOpen: false,
       open: false,
       StatusModel: false,
-      Schedule:false,
+      Schedule: false,
       startDate: new Date()
     };
     this.toggle = this.toggle.bind(this);
@@ -44,9 +44,7 @@ class Dashboard extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
   toggle() {
-    this.setState(
-      state => ({ collapse: !state.collapse })
-      );
+    this.setState(state => ({ collapse: !state.collapse }));
   }
   toggleSearch() {
     this.setState(state => ({ collapseSearch: !state.collapseSearch }));
@@ -59,22 +57,22 @@ class Dashboard extends Component {
     this.setState({ open: false });
   };
 
-  ScheduleOpenModel =()=>{
-    this.setState({Schedule:true});
-  }
+  ScheduleOpenModel = () => {
+    this.setState({ Schedule: true });
+  };
 
-  ScheduleCloseModel =()=>{
-    this.setState({Schedule:false});
-  }
+  ScheduleCloseModel = () => {
+    this.setState({ Schedule: false });
+  };
 
   openModal = () => {
     this.setState({ modalIsOpen: true });
   };
   handleChange(date) {
     this.setState({
-        startDate: date,
+      startDate: date
     });
-}
+  }
 
   closeModal = () => {
     this.setState({ modalIsOpen: false });
@@ -86,19 +84,15 @@ class Dashboard extends Component {
     this.setState({ StatusModel: false });
   }
   render() {
-    const TitleChange=this.state.collapseSearch
-    ? 'Close Search' : 'Search Tickets';
+    const TitleChange = this.state.collapseSearch
+      ? "Close Search"
+      : "Search Tickets";
 
-    const ImgChange=this.state.collapseSearch 
-    ? <img
-    className="search-icon"
-    src={CancalImg}
-    alt="search-icon"
-  /> :  <img
-    className="search-icon"
-    src={SearchIcon}
-    alt="search-icon"
-  />
+    const ImgChange = this.state.collapseSearch ? (
+      <img className="search-icon" src={CancalImg} alt="search-icon" />
+    ) : (
+      <img className="search-icon" src={SearchIcon} alt="search-icon" />
+    );
     return (
       <div>
         <div className="container-fluid dash-dropdowns">
@@ -215,9 +209,15 @@ class Dashboard extends Component {
                             <div className="row">
                               <div className="col-md-3">
                                 <ul className="bill-graph-list">
-                                  <li>Offline : <b>20/100</b></li>
-                                  <li>Web : <b>10/80</b></li>
-                                  <li>Mobile : <b>5/100</b></li>
+                                  <li>
+                                    Offline : <b>20/100</b>
+                                  </li>
+                                  <li>
+                                    Web : <b>10/80</b>
+                                  </li>
+                                  <li>
+                                    Mobile : <b>5/100</b>
+                                  </li>
                                 </ul>
                               </div>
                               <div className="col-md-9 tic-bill-graph">
@@ -540,10 +540,18 @@ class Dashboard extends Component {
                                 />
                               </div>
                               <div className="col-md-3">
-                                <input type="text" className="no-bg" placeholder="Customer Email ID" />
+                                <input
+                                  type="text"
+                                  className="no-bg"
+                                  placeholder="Customer Email ID"
+                                />
                               </div>
                               <div className="col-md-3">
-                                <input type="text" className="no-bg" placeholder="Ticket ID" />
+                                <input
+                                  type="text"
+                                  className="no-bg"
+                                  placeholder="Ticket ID"
+                                />
                               </div>
                               <div className="col-md-3">
                                 <select>

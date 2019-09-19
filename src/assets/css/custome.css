@@ -2061,7 +2061,7 @@ table tr th:last-child {
 .sort-sctn div {
   padding: 7px 0;
 }
-.sort-sctn p{
+.sort-sctn p {
   margin: 0;
   font-size: 12px;
   font-weight: bold;
@@ -2079,7 +2079,7 @@ table tr th:last-child {
   padding: 20px 25px;
   border-bottom: 1px solid #eeeeee;
 }
-.filter-type p{
+.filter-type p {
   margin: 0;
   padding: -2px;
   font-size: 12px;
@@ -3497,13 +3497,13 @@ progress::-moz-progress-bar {
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
   left: 15%;
 }
-#Status-popup{
+#Status-popup {
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
   left: -31%;
   margin-top: -24px;
   padding: 0px;
 }
-#ScheduleModel{
+#ScheduleModel {
   border-radius: 10px;
 }
 .textBox {
@@ -3548,22 +3548,22 @@ progress::-moz-progress-bar {
   margin-top: -6px;
 }
 
-.ScheduleDate-to{
+.ScheduleDate-to {
   width: 245px;
   margin-bottom: 17px;
   margin-top: 20px;
 }
-.txt1Place{
+.txt1Place {
   padding-left: 10px;
-    width: 245px !important; 
-    border: none;
+  width: 245px !important;
+  border: none;
 }
-.scheduleBtn{
+.scheduleBtn {
   background-color: #2561a8;
-    border-radius: 4px;
-    width: 245px;
-    height: 43px;
-    margin-top: 25px;
+  border-radius: 4px;
+  width: 245px;
+  height: 43px;
+  margin-top: 25px;
 }
 /* ---------------------------------------- */
 /* ----------------Store Manager start by shlok--------------------- */
@@ -3662,7 +3662,8 @@ progress::-moz-progress-bar {
   font-size: 8px;
   color: #4e4e4e;
 }
-.tic-bill-graph .nv-chart, .tic-bill-graph .nvd3-svg {
+.tic-bill-graph .nv-chart,
+.tic-bill-graph .nvd3-svg {
   width: 100%;
 }
 /* ----------------------------------------------- */

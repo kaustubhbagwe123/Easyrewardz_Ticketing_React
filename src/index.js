@@ -9,7 +9,8 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import "./assets/css/style.css";
 import "./assets/css/custome.css";
 import "./assets/css/settings.css";
-import "./assets/css/QA.css"
+import "./assets/css/QA.css";
+import "./assets/css/store.css";
 
 //JS
 import "./../node_modules/popper.js/dist/popper.js";
@@ -18,9 +19,8 @@ import "./../node_modules/jquery/dist/jquery.js";
 import "./assets/css/chat.css";
 
 /////js
-import "./../node_modules/bootstrap/dist/js/bootstrap.min.js"
+import "./../node_modules/bootstrap/dist/js/bootstrap.min.js";
 // import "./assets/js/bootstrap.min.js";
-
 
 ///Component
 import SignIn from "./Component/SignIn";
