@@ -487,14 +487,14 @@ border: none !important;
       /* margin-right: 25px; */
 
 }
-.button-audit-done-text{
+/* .button-audit-done-text{
 
     background-color: #F8E71C;
 
     border-radius: 100%;
     width: 30px;
     height: 30px
-  }
+  } */
   .ticket-title-text{
     color: #000000;
     font-family: Lato;
@@ -608,10 +608,10 @@ margin-top: 10px;
 .message-header .col-md-3{
     padding: 0px;
 }
-.removerowmargin .row{
+/* .removerowmargin .row{
 
   margin: 0px;
-}
+} */
 
 
 .audit-score-box{

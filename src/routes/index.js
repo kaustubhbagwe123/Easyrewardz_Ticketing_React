@@ -53,8 +53,8 @@ export class App extends Component {
           component={PrioritySettings}
         />
         <Route exact path={`${match.url}/qaDashboardSearch`} component={QADashboardSearch} />
-        <Route exact path={`${match.url}/chatdashboard`} component={ChatDashboard} />
-        <Route exact path={`${match.url}/qaauditview`} component={QAAuditview} />
+         
+         
         <Route exact path={`${match.url}/knowledgebase`} component={KnowledgeBase} />
         <Route
           exact
@@ -71,7 +71,7 @@ export class App extends Component {
           path={`${match.url}/qaauditview`}
           component={QAAuditview}
         />
-        <Route exact path={`${match.url}/storetask`} component={StoreTask} />
+       
          
       </Layout>
     );

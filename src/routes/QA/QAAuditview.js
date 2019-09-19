@@ -46,11 +46,11 @@ class QAAuditview extends Component {
   };
   render() {
 
-    const HidecollapsUp = this.state.collapseUp ? (
-      <img src={Up1Img} alt="up" className="up-1" onClick={this.handleUpOpen} />
-    ) : (
-      ""
-    );
+    // const HidecollapsUp = this.state.collapseUp ? (
+    //   <img src={Up1Img} alt="up" className="up-1" onClick={this.handleUpOpen} />
+    // ) : (
+    //   ""
+    // );
     return (
       <>
         <div className="qa-header">
@@ -550,12 +550,12 @@ class QAAuditview extends Component {
                             </label>
 
                             <div
-                              class="btn-group"
+                              className="btn-group"
                               id="status"
                               data-toggle="buttons"
                               style={{ marginLeft: "101px" }}
                             >
-                              <label class="btn btn-default btn-on btn-xs active ">
+                              <label className="btn btn-default btn-on btn-xs active ">
                                 <input
                                   type="radio"
                                   value="1"
@@ -564,7 +564,7 @@ class QAAuditview extends Component {
                                 />
                                 YES
                               </label>
-                              <label class="btn btn-default btn-off btn-xs ">
+                              <label className="btn btn-default btn-off btn-xs ">
                                 <input
                                   type="radio"
                                   value="0"
@@ -583,12 +583,12 @@ class QAAuditview extends Component {
                             </label>
 
                             <div
-                              class="btn-group"
+                              className="btn-group"
                               id="status"
                               data-toggle="buttons"
                               style={{ marginLeft: "108px" }}
                             >
-                              <label class="btn btn-default btn-on btn-xs active ">
+                              <label className="btn btn-default btn-on btn-xs active ">
                                 <input
                                   type="radio"
                                   value="1"
@@ -597,7 +597,7 @@ class QAAuditview extends Component {
                                 />
                                 YES
                               </label>
-                              <label class="btn btn-default btn-off btn-xs ">
+                              <label className="btn btn-default btn-off btn-xs ">
                                 <input
                                   type="radio"
                                   value="0"
@@ -605,7 +605,7 @@ class QAAuditview extends Component {
                                 />
                                 NO
                               </label>
-                              <label class="btn btn-default btn-off btn-xs ">
+                              <label className="btn btn-default btn-off btn-xs ">
                                 <input
                                   type="radio"
                                   value="0"
@@ -624,12 +624,12 @@ class QAAuditview extends Component {
                             </label>
 
                             <div
-                              class="btn-group"
+                              className="btn-group"
                               id="status"
                               data-toggle="buttons"
                               style={{ marginLeft: "19px" }}
                             >
-                              <label class="btn btn-default btn-on btn-xs active ">
+                              <label className="btn btn-default btn-on btn-xs active ">
                                 <input
                                   type="radio"
                                   value="1"
@@ -638,7 +638,7 @@ class QAAuditview extends Component {
                                 />
                                 YES
                               </label>
-                              <label class="btn btn-default btn-off btn-xs ">
+                              <label className="btn btn-default btn-off btn-xs ">
                                 <input
                                   type="radio"
                                   value="0"
@@ -646,7 +646,7 @@ class QAAuditview extends Component {
                                 />
                                 NO
                               </label>
-                              <label class="btn btn-default btn-off btn-xs ">
+                              <label className="btn btn-default btn-off btn-xs ">
                                 <input
                                   type="radio"
                                   value="0"
@@ -665,12 +665,12 @@ class QAAuditview extends Component {
                             </label>
 
                             <div
-                              class="btn-group"
+                              className="btn-group"
                               id="status"
                               data-toggle="buttons"
                               style={{ marginLeft: "104px" }}
                             >
-                              <label class="btn btn-default btn-on btn-xs active ">
+                              <label className="btn btn-default btn-on btn-xs active ">
                                 <input
                                   type="radio"
                                   value="1"
@@ -679,7 +679,7 @@ class QAAuditview extends Component {
                                 />
                                 YES
                               </label>
-                              <label class="btn btn-default btn-off btn-xs ">
+                              <label className="btn btn-default btn-off btn-xs ">
                                 <input
                                   type="radio"
                                   value="0"
@@ -687,7 +687,7 @@ class QAAuditview extends Component {
                                 />
                                 NO
                               </label>
-                              <label class="btn btn-default btn-off btn-xs ">
+                              <label className="btn btn-default btn-off btn-xs ">
                                 <input
                                   type="radio"
                                   value="0"
@@ -729,12 +729,12 @@ class QAAuditview extends Component {
                             </label>
 
                             <div
-                              class="btn-group"
+                              className="btn-group"
                               id="status"
                               data-toggle="buttons"
                               style={{ marginLeft: "100px" }}
                             >
-                              <label class="btn btn-default btn-on btn-xs active ">
+                              <label className="btn btn-default btn-on btn-xs active ">
                                 <input
                                   type="radio"
                                   value="1"
@@ -743,7 +743,7 @@ class QAAuditview extends Component {
                                 />
                                 YES
                               </label>
-                              <label class="btn btn-default btn-off btn-xs ">
+                              <label className="btn btn-default btn-off btn-xs ">
                                 <input
                                   type="radio"
                                   value="0"
@@ -762,12 +762,12 @@ class QAAuditview extends Component {
                             </label>
 
                             <div
-                              class="btn-group"
+                              className="btn-group"
                               id="status"
                               data-toggle="buttons"
                               style={{ marginLeft: "145px" }}
                             >
-                              <label class="btn btn-default btn-on btn-xs active ">
+                              <label className="btn btn-default btn-on btn-xs active ">
                                 <input
                                   type="radio"
                                   value="1"
@@ -776,7 +776,7 @@ class QAAuditview extends Component {
                                 />
                                 YES
                               </label>
-                              <label class="btn btn-default btn-off btn-xs ">
+                              <label className="btn btn-default btn-off btn-xs ">
                                 <input
                                   type="radio"
                                   value="0"
@@ -795,12 +795,12 @@ class QAAuditview extends Component {
                             </label>
 
                             <div
-                              class="btn-group"
+                              className="btn-group"
                               id="status"
                               data-toggle="buttons"
                               style={{ marginLeft: "64px" }}
                             >
-                              <label class="btn btn-default btn-on btn-xs active ">
+                              <label className="btn btn-default btn-on btn-xs active ">
                                 <input
                                   type="radio"
                                   value="1"
@@ -809,7 +809,7 @@ class QAAuditview extends Component {
                                 />
                                 YES
                               </label>
-                              <label class="btn btn-default btn-off btn-xs ">
+                              <label className="btn btn-default btn-off btn-xs ">
                                 <input
                                   type="radio"
                                   value="0"
@@ -828,12 +828,12 @@ class QAAuditview extends Component {
                             </label>
 
                             <div
-                              class="btn-group"
+                              className="btn-group"
                               id="status"
                               data-toggle="buttons"
                               style={{ marginLeft: "107px" }}
                             >
-                              <label class="btn btn-default btn-on btn-xs active ">
+                              <label className="btn btn-default btn-on btn-xs active ">
                                 <input
                                   type="radio"
                                   value="1"
@@ -842,7 +842,7 @@ class QAAuditview extends Component {
                                 />
                                 YES
                               </label>
-                              <label class="btn btn-default btn-off btn-xs ">
+                              <label className="btn btn-default btn-off btn-xs ">
                                 <input
                                   type="radio"
                                   value="0"
@@ -861,12 +861,12 @@ class QAAuditview extends Component {
                             </label>
 
                             <div
-                              class="btn-group"
+                              className="btn-group"
                               id="status"
                               data-toggle="buttons"
                               style={{ marginLeft: "78px" }}
                             >
-                              <label class="btn btn-default btn-on btn-xs active ">
+                              <label className="btn btn-default btn-on btn-xs active ">
                                 <input
                                   type="radio"
                                   value="1"
@@ -875,7 +875,7 @@ class QAAuditview extends Component {
                                 />
                                 YES
                               </label>
-                              <label class="btn btn-default btn-off btn-xs ">
+                              <label className="btn btn-default btn-off btn-xs ">
                                 <input
                                   type="radio"
                                   value="0"
@@ -894,12 +894,12 @@ class QAAuditview extends Component {
                             </label>
 
                             <div
-                              class="btn-group"
+                              className="btn-group"
                               id="status"
                               data-toggle="buttons"
                               style={{ marginLeft: "104px" }}
                             >
-                              <label class="btn btn-default btn-on btn-xs active ">
+                              <label className="btn btn-default btn-on btn-xs active ">
                                 <input
                                   type="radio"
                                   value="1"
@@ -908,7 +908,7 @@ class QAAuditview extends Component {
                                 />
                                 YES
                               </label>
-                              <label class="btn btn-default btn-off btn-xs ">
+                              <label className="btn btn-default btn-off btn-xs ">
                                 <input
                                   type="radio"
                                   value="0"

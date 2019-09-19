@@ -89,7 +89,7 @@ class ChatDashboard extends Component{
                 <div className="col-lg-3">
                   <div className="team-mamber-card">
                     <p className="card-titel">Team member</p>
-                    <div className="aside-cont">
+                    <div className="aside-cont-new-1 addmargin">
                       <div className="row">
                         <div className="">
                           <span className="card-content-number">10</span>
@@ -98,8 +98,8 @@ class ChatDashboard extends Component{
                             TOTAL AGENTS
                           </small>
                         </div>
-                        <div className="col-md-4">
-                          <span className="card-content-number">08</span>
+                        <div className="col-md-4"> 
+                          <span className="card-content-number" style={{ paddingLeft: "11px" }}>08</span>
                           <br />
                           <small
                             className="card-content-text"
@@ -111,7 +111,7 @@ class ChatDashboard extends Component{
                         <div className="">
                           <span
                             className="card-content-number"
-                            style={{ paddingLeft: "32px" }}
+                            style={{ paddingLeft: "29px" }}
                           >
                             08
                           </span>
@@ -194,12 +194,12 @@ class ChatDashboard extends Component{
                     <p className="card-titel" style={{ paddingLeft: "30px" }}>
                       Chat Status
                     </p>
-                    <div className="aside-cont removeleft">
+                    <div className="aside-cont-new-1 removeleft-1">
                       {this.state.chatstatus ? (
                         <div className="row" id="today">
                           <div
                             className="col-md-4"
-                            style={{ marginLeft: "22px" }}
+                            style={{ marginLeft: "20px" }}
                           >
                             <span
                               className="card-content-number"
