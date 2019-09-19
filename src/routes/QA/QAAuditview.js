@@ -24,7 +24,6 @@ import Demo from "./../../store/Hashtag.js";
  
 import BlackHeadphone from "./../../assets/Images/headphone2.png";
 
- 
 
 class QAAuditview extends Component {
   state = {
@@ -32,12 +31,8 @@ class QAAuditview extends Component {
     QALeadModel: false
   }
   QALeadListModelOpen = () => {
-   debugger;
-     
     this.setState({ QALeadModel: !this.state.QALeadModel});
-    
   };
-
   
   QALeadListModelClose = () => {
     this.setState({ QALeadModel: false });
@@ -240,7 +235,6 @@ class QAAuditview extends Component {
                 </div>
                 <div className="col-md-2">
                   <a href={Demo.BLANK_LINK}>
-                    {" "}
                     <label className="messages-04-new-text">Notes: 00</label>
                   </a>
                 </div>
@@ -338,7 +332,6 @@ class QAAuditview extends Component {
                 <div className="col-md-8">
                   <label className="hi-diwakar-i-really1">
                     <p style={{ marginLeft: "141px" }}>
-                      {" "}
                       <img src={PageIcon} alt="clip" className="clip" /> &nbsp;
                       &nbsp; This is an note added by agent to team{" "}
                     </p>
@@ -371,12 +364,11 @@ class QAAuditview extends Component {
                     Rashmi.C
                     <span>
                       <label className="updated-2-d-ago">
-                        Reassign to{" "}
+                        Reassign to
                         <label style={{ fontWeight: "bold", color: "black" }}>
-                          {" "}
                           Naman.R
                         </label>
-                      </label>{" "}
+                      </label>
                     </span>
                   </label>
                 </div>

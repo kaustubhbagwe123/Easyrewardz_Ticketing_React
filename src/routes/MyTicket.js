@@ -10,7 +10,7 @@ import LoadingImg from "./../assets/Images/loading.png";
 import EyeImg from "./../assets/Images/eye.png";
 import BillInvoiceImg from "./../assets/Images/bill-Invoice.png";
 import MsgImg from "./../assets/Images/msg.png";
-import Down1Img from "./../assets/Images/down-1.png";
+// import Down1Img from "./../assets/Images/down-1.png";
 import ArrowImg from "./../assets/Images/arrow.png";
 import PlusImg from "./../assets/Images/plus.png";
 import RightImg from "./../assets/Images/right.png";

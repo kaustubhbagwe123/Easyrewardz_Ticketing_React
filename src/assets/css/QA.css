@@ -49,6 +49,144 @@
     text-align: left;
     padding-left: 10px;
   }
+  .qa-header{
+    background-color: #ECF2F4;
+    width: auto;
+    height: 57px;
+}
+.qa-header .row
+{
+
+    margin:0;
+}
+.button-audit-done
+{
+
+        background-color: #2561A8;
+        border-radius: 4px;
+        width: 154px;
+        height: 43px;
+        float: right;
+        margin: 0 0 0 0;
+        margin-top: 6px;
+        /* margin-right: 25px; */
+
+}
+.button-audit-done-text{
+
+    color: #FFFFFF;
+    font-family: Lato;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 17px;
+    text-align: left;
+}
+
+.qa-flex {
+    padding:13px;
+}
+.read-herdphone-icon{
+     margin-left: 10px;
+    width: 30px;
+    height: 30px;
+}
+
+.header-text{
+    color: #4A4A4A;
+    font-family: Lato;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19px;
+    text-align: left;
+    padding-left:5px; 
+  }
+
+.small-text-header{
+    color: #9B9B9B;
+    font-family: Lato;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 14px;
+    text-align: left;
+    padding-left: 10px;
+  }
+
+.QA-card-1{
+    background-color: #FFFFFF;
+    border: 1px solid #EBEBEB;
+    border-radius: 8px;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.03);
+    width: 1246px;
+    height: 159px;
+    margin-left:18px;
+    margin-top:15px;  
+  }
+
+  .QA-card-2{
+    background-color: #FFFFFF;
+    border-radius: 4px;
+    width: 872px;
+    height: 892px;
+  }
+  .QA-card-3{
+    background-color: #FFFFFF;
+    border-radius: 4px;
+    width: 367px;
+    height: auto;
+    margin-left:10px 
+  }
+
+  .rectangle-box .row .col-md-3 .row
+  {
+      margin: 0px;
+  }
+
+  .removelinespace{
+margin-top: 10px;
+    line-height: 100%;
+
+  }
+
+  .qa-textbox{
+
+        background-color: #ECF2F4;
+        border-radius: 4px;
+        width: 158px;
+        height: 31px;
+        border: none;
+
+  }
+  .msg-row .col-md-2{
+      padding: 0px;
+  }
+  .message-header .col-md-3{
+      padding: 0px;
+  }
+  .removerowmargin .row{
+
+    margin: 0px;
+  }
+
+
+  .audit-score-box{
+    background-color: #F3F3F3;
+    width: 106px;
+    height: 57px;
+    margin-left:115px; 
+    display: block;
+    text-align: right;
+    padding-right: 10px;
+    padding-top:5px; 
+  }
+  .audit-details{
+    color: #4A4A4A;
+    font-family: Lato;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 19px;
+    text-align: left;
+    padding-left: 10px;
+  }
 
   .note-icon{
     width: 22px;
@@ -91,8 +229,8 @@
 
   .qa-detials-row{
     display: flex;
-  
-     
+
+
   }
   .down-icon {
      margin-left: 20px;
@@ -116,7 +254,7 @@
       margin-bottom: 20px; 
   }
 
-  
+
   .percentage
   {
     color: #4A4A4A;
@@ -159,7 +297,7 @@ border: none !important;
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
     left: 30%;
     width: 250px;
-    
+
 
   }
   #QALeadList-logout-ovrly{
@@ -186,7 +324,7 @@ border: none !important;
   .QALeadList-Over-yellow{
 
     background-color: #F8E71C;
-    
+
     border-radius: 100%;
     width: 30px;
     height: 30px
@@ -324,7 +462,7 @@ border: none !important;
   padding: 6px;
   padding-top: 8px;
   border-radius: 0px !important;
-  
+
 }
 .toggle-button-gray{
   background-color: #E6E6E6;
@@ -336,14 +474,14 @@ border: none !important;
   border-radius: 0px !important;
 }
 .collapsebutton .toggle-button-blue{
-   
+
  min-width: 0;
- 
- 
+
+
 }
 .collapsebutton .toggle-button-gray{   
  min-width: 0;
- 
+
 }
 
 .yes-button-text{
@@ -397,7 +535,7 @@ padding-left: 9px;
   font-size: 13px;
   font-weight: 700;
   line-height: 16px;
-   
+
   text-align: left;
 }
 
@@ -415,7 +553,7 @@ padding-left: 9px;
   text-align: left;
   padding-left: 139px;
 }
- 
+
 .collapsebutton .btn {
   padding: 3px 12px;
   border-radius: 0;
@@ -439,4 +577,4 @@ padding-left: 9px;
 
 .btn-default.btn-off.active{background-color: #2561A8;color: #FFFFFF; border-radius:"0px"}
 .btn-default.btn-off  {background-color: #E6E6E6;color: #9B9B9B; border-radius:"0px"}
- 
+  
