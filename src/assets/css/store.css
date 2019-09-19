@@ -1,0 +1,214 @@
+/* chetan css starts */
+
+/* store task starts */
+.store-task-tabs ul {
+  border-bottom: 0;
+}
+.store-task-tabs {
+  background-color: #ecf2f4;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.store-task-tabs .nav-tabs .nav-link {
+  font-weight: 400;
+  padding: 17px 15px;
+}
+.store-task-tabs .nav-tabs .nav-link.active {
+  font-weight: 700;
+  border-bottom: 0;
+  background-color: transparent;
+}
+.store-task-tabs button {
+  font-size: 14px;
+  padding: 10px 40px;
+  margin-right: 15px;
+}
+.store-task-tab-cont {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+/* store task ends */
+
+/* store task view starts */
+.store-task-view-top {
+  padding: 10px 20px;
+  background-color: #ecf2f4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.str-img {
+  width: 30px;
+  height: 30px;
+  background-color: #f8e71c;
+  border-radius: 50%;
+  overflow: hidden;
+  line-height: 25px;
+  text-align: center;
+}
+.str-img img {
+  width: 18px;
+}
+.str-owner p {
+  font-size: 14px;
+  color: #000;
+  margin-left: 10px;
+  font-weight: 700;
+}
+.str-owner {
+  display: flex;
+  align-items: center;
+}
+.str-dtls select {
+  background: #2561a8 url("./../Images/down-white.png") no-repeat right 20px
+    center;
+  border-radius: 4px;
+  color: #fff;
+  border: 0;
+  font-size: 14px;
+  padding: 11px 45px 11px 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-left: 25px;
+  min-width: 205px;
+}
+.str-dtls select option {
+  color: #2561a8;
+  background-color: #fff;
+  text-transform: initial;
+  font-weight: 700;
+}
+.task-view-cntr {
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 25px 40px;
+}
+.task-view-cntr label {
+  color: #9b9b9b;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 5px;
+}
+.task-view-cntr input,
+.task-view-cntr select {
+  font-size: 14px;
+  font-weight: 700;
+  width: 100%;
+  border: 0;
+  padding: 12px 15px;
+  background-color: #ecf2f4;
+  border-radius: 4px;
+}
+.task-view-cntr select {
+  background: #ecf2f4 url("./../Images/down-1.png") no-repeat right 20px center;
+  background-size: 18px;
+  padding-right: 50px;
+}
+/* store task view ends */
+
+/* chetan css ends */
+
+/* ------------Shlok css---------------------------- */
+/* ----------------Store Manager css--------------------- */
+.table-expandable-sctn1 {
+  background: #ecf2f4;
+}
+.table-expandable-sctn1 button {
+  cursor: pointer;
+}
+.table-expandable-sctn1 .nav-tabs .nav-link {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background: transparent;
+}
+.table-expandable-sctn1 .nav-tabs {
+  border-color: #dae2e5;
+  position: relative;
+}
+.table-expandable-sctn1 input[type="text"] {
+  width: 100%;
+  border-radius: 4px;
+  padding: 10px 50px 10px 20px;
+  border: 0;
+  color: #4a4a4a;
+}
+.table-expandable-sctn1 input[type="text"].no-bg {
+  background: #fff none;
+  padding: 10px 20px;
+}
+.table-expandable-sctn1 input::placeholder {
+  font-size: 16px;
+  padding: 0;
+  color: #a7a7a7;
+  font-weight: 400;
+}
+.table-expandable-sctn1 select {
+  width: 100%;
+  border-radius: 4px;
+  padding: 10px 45px 10px 20px;
+  border: 0;
+  background: #fff url("./../Images//table-arr.png") no-repeat right 20px center;
+  background-size: 13px;
+  color: #a7a7a7;
+}
+.table-expandable-sctn1 .tab-content .row {
+  padding: 20px 0;
+  border-bottom: 1px solid #dae2e5;
+}
+.table-expandable-sctn1 .tab-content .row:last-child {
+  border-bottom: 0;
+}
+.table-expandable-sctn1 button {
+  background-color: #fff;
+  margin-right: 15px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+.table-expandable-sctn1 button.btn-inv {
+  color: #fff;
+  background-color: #2561a8;
+}
+.table-expandable-sctn1 button.btn-dis {
+  /* background-color: rgba(37, 97, 168, 0.4);
+  border-color: rgba(37, 97, 168, 0.4);
+  color: rgba(255, 255, 255, 0.4); */
+  opacity: 0.4;
+}
+.table-expandable-sctn1 .tab-content button img {
+  margin-right: 12px;
+  top: -3px;
+}
+.table-expandable-sctn1 .tab-content button:last-child {
+  margin-right: 0;
+}
+.table-expandable-sctn1 .tab-content .row.all-row {
+  padding: 0;
+  padding-top: 25px;
+}
+.table-expandable-sctn1 .tab-content .row.all-row div {
+  margin-bottom: 25px;
+}
+.bill-graph-list {
+  font-weight: 300;
+}
+.bill-graph-list li {
+  padding: 4px 0;
+}
+.bill-graph-list li b {
+  font-weight: 700;
+}
+.tic-bill-graph .nv-x {
+  font-size: 12px;
+  font-weight: 700;
+}
+.tic-bill-graph .nv-y {
+  font-size: 8px;
+  color: #4e4e4e;
+}
+.tic-bill-graph .nv-chart,
+.tic-bill-graph .nvd3-svg {
+  width: 100%;
+}
+/* ----------------------------------------------- */
+

@@ -8,11 +8,9 @@ import Chatbot from "./Chatbot";
 import Claim from "./Claim";
 import MyTicketList from "./MyTicketList";
 import ClaimTabTicketView from "./ClaimTabTicketView";
-import StoreMaster from "./StoreManager/StoreMaster";
 import Settings from "./Settings/Settings";
 import PrioritySettings from "./Settings/PrioritySetting";
 import TicketHierarchy from "./Settings/TicketHierarchy";
-import StoreDashboard from "./StoreManager/StoreDashboard";
 import QADashboardSearch from "./QA/QADashboardSearch";
 import ChatDashboard from "./Chat/ChatDashboard";
 import QAAuditview from "./QA/QAAuditview";
@@ -32,11 +30,6 @@ export class App extends Component {
           component={TicketSystem}
         />
         <Route exact path={`${match.url}/chatbot`} component={Chatbot} />
-        <Route
-          exact
-          path={`${match.url}/storeDashboard`}
-          component={StoreDashboard}
-        />
         <Route exact path={`${match.url}/claim`} component={Claim} />
         <Route
           exact
@@ -53,12 +46,6 @@ export class App extends Component {
           path={`${match.url}/ticketHierarchy`}
           component={TicketHierarchy}
         />
-        <Route
-          exact
-          path={`${match.url}/storemaster`}
-          component={StoreMaster}
-        />
-
         <Route exact path={`${match.url}/settings`} component={Settings} />
         <Route
           exact
@@ -69,6 +56,23 @@ export class App extends Component {
         <Route exact path={`${match.url}/chatdashboard`} component={ChatDashboard} />
         <Route exact path={`${match.url}/qaauditview`} component={QAAuditview} />
         <Route exact path={`${match.url}/knowledgebase`} component={KnowledgeBase} />
+        <Route
+          exact
+          path={`${match.url}/qaDashboardSearch`}
+          component={QADashboardSearch}
+        />
+        <Route
+          exact
+          path={`${match.url}/chatdashboard`}
+          component={ChatDashboard}
+        />
+        <Route
+          exact
+          path={`${match.url}/qaauditview`}
+          component={QAAuditview}
+        />
+        <Route exact path={`${match.url}/storetask`} component={StoreTask} />
+         
       </Layout>
     );
   }

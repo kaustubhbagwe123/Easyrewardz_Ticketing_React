@@ -7,9 +7,7 @@ import ChartStatusLive from './Charts/ChartStatusLive.js';
 // import Chart from "react-apexcharts";
 
  
-class ChatDashboard extends Component 
-{
-
+class ChatDashboard extends Component{
   constructor(props) {
       super(props)
   
