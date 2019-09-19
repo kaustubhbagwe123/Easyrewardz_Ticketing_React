@@ -23,13 +23,15 @@ import PageIcon from './../../assets/Images/page-icon.png';
 import Demo from "./../../store/Hashtag.js";
  
 import BlackHeadphone from "./../../assets/Images/headphone2.png";
+import { Collapse, CardBody } from "reactstrap";
 
  
 
 class QAAuditview extends Component {
   state = {
     open: false,
-    QALeadModel: false
+    QALeadModel: false,
+    collapseUp: true
   }
   QALeadListModelOpen = () => {
    debugger;
@@ -38,11 +40,21 @@ class QAAuditview extends Component {
     
   };
 
+  handleUpOpen = () => {
+    this.setState({ collapseUp: !this.state.collapseUp });
+  };
+   
   
   QALeadListModelClose = () => {
     this.setState({ QALeadModel: false });
   };
   render() {
+
+    const HidecollapsUp = this.state.collapseUp ? (
+      <img src={Up1Img} alt="up" className="up-1" onClick={this.handleUpOpen} />
+    ) : (
+      ""
+    );
     return (
       <>
         <div className="qa-header">
@@ -300,30 +312,43 @@ class QAAuditview extends Component {
                   </label>
                 </div>
                 <div className="col-md-2">
-                  <img src={Up1Img} alt="up" className="up-1-1" />
+                  <img
+                    src={Up1Img}
+                    alt="up"
+                    className="up-1-1"
+                    onClick={this.handleUpOpen}
+                  />
                 </div>
               </div>
-              <div className="row">
-                <div className="card-details-QA">
-                  <div className="screen-shot-2018-05-03-at-2-29-59-pm">
-                    <label className="label-5">Dear Matthew,</label>
-                    <label className="label-5">
-                      We're always working to make Shopify exactly what you need
-                      for your retails business. Your feedback helps us decide
-                      which features to build, and what improvements should be
-                      made to our platform.
-                      <br />
-                      <br />
-                      To help us make Shopify the best it can be, we want your
-                      feedback today, take a few minutes to fill out survays
-                      before Tuesday,July 7th.
-                    </label>
-                  </div>
-                </div>
-              </div>
+
+              <Collapse isOpen={this.state.collapseUp}>
+                <Card>
+                  <CardBody>
+                    <div className="row">
+                      <div className="card-details-QA">
+                        <div className="screen-shot-2018-05-03-at-2-29-59-pm">
+                          <label className="label-5">Dear Matthew,</label>
+                          <label className="label-5">
+                            We're always working to make Shopify exactly what
+                            you need for your retails business. Your feedback
+                            helps us decide which features to build, and what
+                            improvements should be made to our platform.
+                            <br />
+                            <br />
+                            To help us make Shopify the best it can be, we want
+                            your feedback today, take a few minutes to fill out
+                            survays before Tuesday,July 7th.
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </CardBody>
+                </Card>
+              </Collapse>
+
               <div
                 className="row row-spacing new-top-bottom-margin"
-                style={{ marginBottom: "23px", marginTop: "44px" }}
+                style={{ marginBottom: "18px", marginTop: "22px" }}
               >
                 <div className="col-xs-3">
                   <img
@@ -361,7 +386,7 @@ class QAAuditview extends Component {
               </div>
               <div
                 className="row new-top-bottom-margin"
-                style={{ marginLeft: "35px", marginBottom: "30px" }}
+                style={{ marginLeft: "35px", marginBottom: "18px" }}
               >
                 <div className="col-xs-3">
                   <img src={Loading1Img} alt="right" className="oval-loading" />
@@ -389,7 +414,7 @@ class QAAuditview extends Component {
 
               <div
                 className="row row-spacing new-top-bottom-margin"
-                style={{ marginBottom: "30px" }}
+                style={{ marginBottom: "18px" }}
               >
                 <div className="col-xs-3">
                   <img

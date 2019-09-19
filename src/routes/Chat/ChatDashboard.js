@@ -1,5 +1,7 @@
 import React,{Component} from 'react';
 import TableArr from "./../../assets/Images/gray-down-icon.png";
+import ChartStatusLive from './Charts/ChartStatusLive.js';
+
  
  
 // import Chart from "react-apexcharts";
@@ -14,7 +16,9 @@ class ChatDashboard extends Component
       this.state = {
         chatstatus: true,
         daterange:"Today",
-        daterangeszie:"870px"
+        daterangeszie:"870px",
+        good:"70%",
+        bad:"30%"
     
       };
   }
@@ -34,6 +38,8 @@ class ChatDashboard extends Component
  }
 
     render(){
+
+      
         return (
           <div>
             <div className="Chat-main-header">
@@ -261,24 +267,50 @@ class ChatDashboard extends Component
               <div className="row">
                 <div className="col-lg-6">
                   <div className="chat-live-card">
+                    <p className="card-titel">Chat Status Live</p>
                     <div className="row">
-                      <div className="col-md-3"></div>
-                      <div className="col-md-9">
-                        <div className="mixed-chart">
-                          {/* <Chart
-                            options={this.state.options}
-                            series={this.state.series}
-                            type="bar"
-                            width="300px"
-                            
-                          /> */}
-                        </div>
+                      <div className="chartstatuslive-details-div">
+                        <label className="chartstatuslive-details">
+                          Total : <b>200</b>
+                        </label>
+                        <label className="chartstatuslive-details">
+                          In Queue : <b>95</b>
+                        </label>
+                        <label className="chartstatuslive-details">
+                          Ongoing : <b>105</b>
+                        </label>
+                      </div>
+                      <div className="">
+                        <ChartStatusLive />
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className="col-lg-6">
-                  <div className="chat-score-card"></div>
+                  <div className="chat-score-card">
+                    <p className="card-titel" style={{ paddingLeft: "30px" }}>
+                      Chat Satisfaction Score
+                    </p>
+
+                    <div className="Chat-Satisfaction-chat">
+                      <div
+                        className="Chat-Satisfaction-chat-good"
+                        style={{ width: this.state.good }}
+                      >
+                        <label className="Chat-Satisfaction-chat-detail">{this.state.good}</label>
+                      </div>
+                      <div
+                        className="Chat-Satisfaction-chat-bad"
+                        style={{ width: this.state.bad }}
+                      >
+                        <label className="Chat-Satisfaction-chat-detail">{this.state.bad}</label>
+                      </div>
+                    </div>
+                    <div style={{marginTop:"10px"}}>
+                      <label className="good-bad-text" style={{float:"left",paddingLeft:"20px"}}>Good</label>
+                      <label className="good-bad-text" style={{float:"right"}}>Bad</label>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

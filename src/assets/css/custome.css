@@ -3882,3 +3882,236 @@ progress::-moz-progress-bar {
   }
 }
 /* Responsive ends */
+
+
+
+/*------------------------------Knowledge Base start-------------------------*/
+
+.kb-header{
+  background-color: #ECF2F4;
+  width: auto;
+  height: 57px;
+}
+
+.header-new-submissions{
+  color: #2561A8;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  text-align: left;
+  padding-left:20px;
+  padding-top: 17px;
+  cursor: pointer;
+}
+
+.header-new-submissions-1{
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  text-align: left;
+  padding-left:24px; 
+  padding-top: 17px;
+  cursor: pointer;
+}
+
+.kb-Header-button{
+  background-color: #2561A8;
+  border-radius: 4px;
+  width: 185px;
+  height: 43px;
+  float: right;
+  margin-right: 20px;
+  margin-top: 7px;
+}
+
+.add-new-kb{
+  color: #FFFFFF;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  text-align: left;
+  text-transform:uppercase;
+}
+
+.main-content-kb{
+  background-color: #FFFFFF;
+  border-radius: 4px;
+  width: 1216px;
+  height: 889px;
+  margin: 10px;
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-bottom: 20px;
+}
+
+.main-content-margin{
+
+  margin: 10px;
+}
+.main-conenet-point{
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19px;
+  text-align: left;
+}
+
+.clear-search {
+  color: #CD3245;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14px;
+  text-align: left;
+  padding: 9px;
+  padding-left: 35px;
+}
+
+.searchicon{
+  width: 20px;
+  height: 20px;
+  margin-left: 7px;
+  
+}
+
+.search-KB {
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19px;
+  text-align: left;
+  padding-left: 75%;
+}
+
+.table-id-data{
+  color: #9B9B9B;
+  font-family: Lato;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 16px;
+  text-align: left;
+}
+.table-details-data{
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 16px;
+  width: 383px;
+  text-align: left;
+  white-space: normal;  
+  display: inline-block;
+}
+.table-type-return{
+  color: #000000;
+  font-family: Lato;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 16px;
+  text-align: left;
+} 
+.table-category{
+  color: #000000;
+  font-family: Lato;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 16px;
+  text-align: left;
+}
+
+.table-subcategory{
+  color: #000000;
+  font-family: Lato;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 16px;
+  text-align: left;
+}
+
+.kb-table table thead th
+{
+
+  border: 0;
+  background-color: white;
+}
+
+.reject-button{
+  border: 1px solid #D0021B;
+  border-radius: 4px;
+  width: 74px;
+  height: 27px;
+  background-color: white;
+  padding: 0px;
+  margin-right: 10px;
+}
+
+.reject-button-1{
+  border: 1px solid #D0021B;
+  border-radius: 4px;
+  width: 74px;
+  height: 27px;
+  background-color: white;
+  padding: 0px;
+   
+}
+.reject-button-text {
+  color: #D0021B;
+  font-family: Lato;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 12px;
+  text-align: left;
+  padding-bottom: 5px;
+}
+
+.aprove-button{
+  background-color: #2561A8;
+  border-radius: 4px;
+  width: 74px;
+  height: 27px;
+  padding: 0px;
+}
+
+.approve-button-text{
+  color: #FFFFFF;
+  font-family: Lato;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 12px;
+  text-align: left;
+}
+
+
+
+.down-icon-kb{
+  width: 21px;
+  height: 21px;
+  vertical-align: top;
+}
+
+/* .kb-table table thead tr{
+  border: 0px !important;
+} */
+
+/* .kb-table table tbody td{
+
+  border: 0px;
+
+} */
+
+/* 
+.kb-table table{
+
+} */
+
+/* ------------------------------------end---------------------------------- */
+
+
+
+
