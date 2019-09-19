@@ -58,11 +58,6 @@ export class App extends Component {
         <Route exact path={`${match.url}/knowledgebase`} component={KnowledgeBase} />
         <Route
           exact
-          path={`${match.url}/qaDashboardSearch`}
-          component={QADashboardSearch}
-        />
-        <Route
-          exact
           path={`${match.url}/chatdashboard`}
           component={ChatDashboard}
         />
