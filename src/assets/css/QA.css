@@ -36,7 +36,7 @@
     background-color: #FFFFFF;
     border-radius: 4px;
     width: auto;
-    height: 1747px;
+    height: 1475px;
     margin-left: 14px;
     margin-right: 16px;
   }
@@ -49,6 +49,187 @@
     text-align: left;
     padding-left: 10px;
   }
+.cardTextSpace{
+  padding-left: 8px;
+    padding-top: 30px;
+}
+.txtQA{
+  padding-top: 8px !important;
+  background: #E5E9ED url(/static/media/calendar-black.d0d589e5.svg) no-repeat right 15px center;
+}
+.btnSearchQa{
+  background-color: #2561A8;
+  border-radius: 4px;
+  width: 144px;
+  height: 43px;
+    margin-left:16px;
+    margin-top: 31px;
+  }
+  .labelSearch{
+      color: #FFFFFF;
+      font-family: Lato;
+      font-size: 15px;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 17px;
+      text-align: left;
+      text-transform: initial;
+    }
+  .rowMargin{
+    margin-left: -27px !important;
+    padding-top: 25px;
+  }
+  .table-expandable-sctn2 {
+    background: #E5E9ED;
+  }
+  .table-expandable-sctn2 button {
+    cursor: pointer;
+  }
+  .table-expandable-sctn2 .nav-tabs .nav-link {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background: transparent;
+  }
+  .table-expandable-sctn2 .nav-tabs {
+    border-color: #dae2e5;
+    position: relative;
+  }
+  .table-expandable-sctn2 input[type="text"] {
+    width: 100%;
+    border-radius: 4px;
+    padding: 10px 50px 10px 20px;
+    border: 0;
+    color: #4a4a4a;
+  }
+  .table-expandable-sctn2 input[type="text"].no-bg {
+    background: #fff none;
+    padding: 10px 20px;
+  }
+  .table-expandable-sctn2 input::placeholder {
+    font-size: 16px;
+    padding: 0;
+    color: #a7a7a7;
+    font-weight: 400;
+  }
+  .table-expandable-sctn2 select {
+    width: 100%;
+    border-radius: 4px;
+    padding: 10px 45px 10px 20px;
+    border: 0;
+    background: #fff url("./../Images//table-arr.png") no-repeat right 20px center;
+    background-size: 13px;
+    color: #a7a7a7;
+  }
+  .table-expandable-sctn2 .tab-content .row {
+    padding: 20px 0;
+    border-bottom: 1px solid #dae2e5;
+  }
+  .table-expandable-sctn2 .tab-content .row:last-child {
+    border-bottom: 0;
+  }
+  .table-expandable-sctn2 button {
+    background-color: #fff;
+    margin-right: 15px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+  .table-expandable-sctn2 button.btn-inv {
+    color: #fff;
+    background-color: #2561a8;
+  }
+  .table-expandable-sctn2 button.btn-dis {
+    /* background-color: rgba(37, 97, 168, 0.4);
+    border-color: rgba(37, 97, 168, 0.4);
+    color: rgba(255, 255, 255, 0.4); */
+    opacity: 0.4;
+  }
+  .table-expandable-sctn2 .tab-content button img {
+    margin-right: 12px;
+    top: -3px;
+  }
+  .table-expandable-sctn2 .tab-content button:last-child {
+    margin-right: 0;
+  }
+  .table-expandable-sctn2 .tab-content .row.all-row {
+    padding: 0;
+    padding-top: 25px;
+  }
+  .table-expandable-sctn2 .tab-content .row.all-row div {
+    margin-bottom: 25px;
+  }
+  .QAtable table thead tr{
+    height: 60px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #eeeeee;
+  }
+  .btn-assignQa{
+    background-color: #2561A8 !important;
+    border: 1px solid #2561A8;
+    border-radius: 4px;
+    width: 121px;
+    height: 43px;
+  }
+  .assign-lbl{
+    color: #FFFFFF;
+    font-family: Lato;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 17px;
+    text-align: left;
+  }
+  .assignbtnImg{
+    width: 20px;
+    height: 20px;
+    margin-top: -5px;
+  }
+  .cSvBtn{
+    background-color: #FFFFFF;
+  border: 1px solid #2561A8;
+  border-radius: 4px;
+  width: 86px;
+  height: 43px;
+  }
+  .QAtable input {
+    display: none;
+  }
+  .searchlabel1{
+    color: #4A4A4A;
+    font-family: Lato;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 17px;
+    text-align: left;
+    padding-left: 10px;
+  }
+  .rowSearch{
+    border: none !important;
+  }
+  .rowSearch .viewSearch-btn{
+    background-color: #2561A8;
+    border-radius: 4px;
+    width: 185px;
+    height: 43px;
+    float: right;
+  }
+  .view-searchLabl{
+    color: #FFFFFF;
+    font-family: Lato;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 17px;
+    text-align: left;
+  }
+  .container-fluid .all-row{
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    padding-top:0px !important;
+  }
+  .txtQASearch{
+    padding-top: 8px !important;
+    background: #E5E9ED url(/static/media/calendar-black.d0d589e5.svg) no-repeat right 15px center;
+    background-color: white;
+  }
+  /* ----------------End shlok css------------------- */
   .qa-header{
     background-color: #ECF2F4;
     width: auto;
@@ -59,9 +240,7 @@
 
     margin:0;
 }
-.button-audit-done
-{
-
+.button-audit-done{
         background-color: #2561A8;
         border-radius: 4px;
         width: 154px;
@@ -73,7 +252,6 @@
 
 }
 .button-audit-done-text{
-
     color: #FFFFFF;
     font-family: Lato;
     font-size: 14px;

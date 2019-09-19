@@ -2,17 +2,40 @@ import React, { Component } from "react";
 import PieChart from "./../QA/Charts/PieChart";
 import BarQualityScore from "./Charts/BarQualityScore";
 import BarTop3CSA from "./Charts/BarTop3CSA";
-import Downloading from './../../assets/Images/downloading_updates.png'
+import Downloading from "./../../assets/Images/downloading_updates.png";
 import Demo from "../../store/Hashtag";
+import CancalImg from "./../../assets/Images/cancal blue.png";
+import SearchIcon from "./../../assets/Images/search-icon.png";
+import { Collapse, CardBody, Card } from "reactstrap";
+import csv from "./../../assets/Images/csv.png";
+import Assign from "./../../assets/Images/Assign1.png";
 
 class QADashboardSearch extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      QASearch: false
+    };
+    this.handleToggleSearch = this.handleToggleSearch.bind(this);
   }
-
+  handleToggleSearch() {
+    this.setState(state => ({ QASearch: !state.QASearch }));
+  }
   render() {
+    const TitleChange=this.state.QASearch
+    ? 'Close Search' : 'Search Tickets';
+
+    const ImgChange=this.state.QASearch 
+    ? <img
+    className="search-icon"
+    src={CancalImg}
+    alt="search-icon"
+  /> :  <img
+    className="search-icon"
+    src={SearchIcon}
+    alt="search-icon"
+  />
     return (
       <div>
         <div className="container-fluid dash-dropdowns">
@@ -112,44 +135,50 @@ class QADashboardSearch extends Component {
             </div>
             <div className="container-fluid">
               <div className="row rowMargin">
-                <div className="col-md-3 dropDwonWidth">
-                  <label className="label-6"> Select Agent/QA Lead</label>
-                  <select
-                    id="inputState"
-                    className="form-control dropdown-label"
-                  >
-                    <option>Agent</option>
-                  </select>
+                <div className="col-md-10">
+                  <div className="row">
+                    <div className="col-md-3 dropDwonWidth">
+                      <label className="label-6"> Select Agent/QA Lead</label>
+                      <select
+                        id="inputState"
+                        className="form-control dropdown-label"
+                      >
+                        <option>Agent</option>
+                      </select>
+                    </div>
+                    <div className="col-md-3 dropDwonWidth">
+                      <label className="label-6">Select Agent</label>
+                      <select
+                        id="inputState"
+                        className="form-control dropdown-label"
+                      >
+                        <option>Vikash</option>
+                      </select>
+                    </div>
+                    <div className="col-md-3 dropDwonWidth">
+                      <label className="label-6">QC from date</label>
+                      <input
+                        type="text"
+                        placeholder="From Date"
+                        className="form-control txtQA"
+                      />
+                    </div>
+                    <div className="col-md-3 dropDwonWidth">
+                      <label className="label-6">QC to date</label>
+                      <input
+                        type="text"
+                        placeholder="To Date"
+                        className="form-control txtQA"
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div className="col-md-3 dropDwonWidth">
-                  <label className="label-6">Select Agent</label>
-                  <select
-                    id="inputState"
-                    className="form-control dropdown-label"
-                  >
-                    <option>Vikash</option>
-                  </select>
-                </div>
-                <div className="col-md-3 dropDwonWidth">
-                  <label className="label-6">QC from date</label>
-                  <input
-                    type="text"
-                    placeholder="From Date"
-                    className="form-control txtQA"
-                  />
-                </div>
-                <div className="col-md-3 dropDwonWidth">
-                  <label className="label-6">QC to date</label>
-                  <input
-                    type="text"
-                    placeholder="To Date"
-                    className="form-control txtQA"
-                  />
-                </div>
-                <div className="col-md-2">
-                  <button className="btnSearchQa" type="button">
-                    <label className="labelSearch">Search</label>
-                  </button>
+                <div className="row">
+                  <div className="col-md-2">
+                    <button className="btnSearchQa" type="button">
+                      <label className="labelSearch">Search</label>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -277,7 +306,170 @@ class QADashboardSearch extends Component {
             </div>
             {/* --------------2nd table start---------------------- */}
             <div className="table-cntr mt-3">
-              <div className="store-table-cntr">
+              <div className="store-table-cntr QAtable">
+                <Collapse isOpen={this.state.QASearch}>
+                  <Card>
+                    <CardBody style={{ padding: "0px" }}>
+                      <div className="table-expandable-sctn2">
+                        <div className="tab-content p-0">
+                          <div
+                            className="tab-pane fade show active"
+                            id="date-tab"
+                            role="tabpanel"
+                            aria-labelledby="date-tab"
+                          >
+                            <div className="container-fluid">
+                              <div className="row rowSearch">
+                                <div className="col-md-9">
+                                  <label className="searchlabel1">SEARCH</label>
+                                </div>
+                                <div className="col-md-3">
+                                  <button
+                                    className="viewSearch-btn"
+                                    type="button"
+                                    style={{ marginRight: "10px" }}
+                                  >
+                                    <label className="view-searchLabl">
+                                      {" "}
+                                      VIEW SEARCH
+                                    </label>
+                                  </button>
+                                </div>
+                              </div>
+                              <div
+                                className="row all-row"
+                                style={{ border: "none" }}
+                              >
+                                <div className="col-md-3">
+                                  <select>
+                                    <option>Pending</option>
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <select>
+                                    <option>Assigen To</option>
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <select>
+                                    <option>Category</option>
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <select>
+                                    <option>Ticket Resolved By</option>
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <input
+                                    type="text"
+                                    className="txtQASearch"
+                                    placeholder="Ticket Resolution Date"
+                                  />
+                                </div>
+                              </div>
+                              <div className="row all-row">
+                                <div className="col-md-6 d-flex align-items-center">
+                                  <p className="font-weight-bold mr-3">
+                                    <span className="blue-clr">04</span> Results
+                                  </p>
+                                  <p className="blue-clr fs-14">CLEAR SEARCH</p>
+                                </div>
+                                <div className="col-md-6 text-right">
+                                  <button className="cSvBtn">
+                                    <img
+                                      className="position-relative"
+                                      src={csv}
+                                      alt="csv-icon"
+                                    />
+                                    CSV
+                                  </button>
+
+                                  <button className="btn-assignQa">
+                                    <img
+                                      src={Assign}
+                                      alt="assign-icon"
+                                      className="assignbtnImg"
+                                    />
+                                    <label className="assign-lbl">
+                                      {" "}
+                                      Assign{" "}
+                                    </label>
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            className="tab-pane fade"
+                            id="ticket-tab"
+                            role="tabpanel"
+                            aria-labelledby="ticket-tab"
+                          >
+                            <div className="container-fluid">
+                              <div className="row all-row">
+                                <div className="col-md-3">
+                                  <input type="text" placeholder="Claim ID" />
+                                </div>
+                                <div className="col-md-3">
+                                  <select>
+                                    <option>Ticket Mapped(Yes-No)</option>
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <select>
+                                    <option>Claim Category</option>
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <select>
+                                    <option>Claim Status</option>
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <input type="text" placeholder="Title ID" />
+                                </div>
+                                <div className="col-md-3">
+                                  <select>
+                                    <option>Claim Sub Category</option>
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <select>
+                                    <option>Claim Raised On</option>
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <select>
+                                    <option>Task Mapped(Yes-No)</option>
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <select>
+                                    <option>Claim Issue Type</option>
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <select>
+                                    <option>Assign To</option>
+                                  </select>
+                                </div>
+                                <div className="col-md-3">
+                                  <input type="text" placeholder="Task ID" />
+                                </div>
+                                <div className="col-md-3">
+                                  <select>
+                                    <option>Raised By</option>
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </CardBody>
+                  </Card>
+                </Collapse>
                 <table>
                   <thead>
                     <tr>
@@ -293,9 +485,20 @@ class QADashboardSearch extends Component {
                   </thead>
                   <tbody>
                     <tr>
-                      <td>1123</td>
                       <td>
-                        <span className="table-btn table-blue-btn">Pending</span>
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            id="fil-open"
+                            name="filter-type"
+                          />
+                          <label htmlFor="fil-open">1123</label>
+                        </div>
+                      </td>
+                      <td>
+                        <span className="table-btn table-blue-btn">
+                          Pending
+                        </span>
                       </td>
                       <td>Need to change m..</td>
                       <td>Operations</td>
@@ -305,9 +508,20 @@ class QADashboardSearch extends Component {
                       <td>23 March 2018</td>
                     </tr>
                     <tr>
-                    <td>1123</td>
                       <td>
-                        <span className="table-btn table-blue-btn">Pending</span>
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            id="fil-open"
+                            name="filter-type"
+                          />
+                          <label htmlFor="fil-open">1123</label>
+                        </div>
+                      </td>
+                      <td>
+                        <span className="table-btn table-blue-btn">
+                          Pending
+                        </span>
                       </td>
                       <td>Need to change m..</td>
                       <td>Sales</td>
@@ -317,9 +531,20 @@ class QADashboardSearch extends Component {
                       <td>25 March 2018</td>
                     </tr>
                     <tr>
-                    <td>1123</td>
                       <td>
-                        <span className="table-btn table-blue-btn">Pending</span>
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            id="fil-open"
+                            name="filter-type"
+                          />
+                          <label htmlFor="fil-open">1123</label>
+                        </div>
+                      </td>
+                      <td>
+                        <span className="table-btn table-blue-btn">
+                          Pending
+                        </span>
                       </td>
                       <td>Need to change m..</td>
                       <td>Support</td>
@@ -329,9 +554,20 @@ class QADashboardSearch extends Component {
                       <td>23 March 2018</td>
                     </tr>
                     <tr>
-                    <td>1123</td>
                       <td>
-                        <span className="table-btn table-blue-btn">Pending</span>
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            id="fil-open"
+                            name="filter-type"
+                          />
+                          <label htmlFor="fil-open">1123</label>
+                        </div>
+                      </td>
+                      <td>
+                        <span className="table-btn table-blue-btn">
+                          Pending
+                        </span>
                       </td>
                       <td>Need to change m..</td>
                       <td>Operations</td>
@@ -341,9 +577,20 @@ class QADashboardSearch extends Component {
                       <td>25 March 2018</td>
                     </tr>
                     <tr>
-                    <td>1123</td>
                       <td>
-                        <span className="table-btn table-blue-btn">Pending</span>
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            id="fil-open"
+                            name="filter-type"
+                          />
+                          <label htmlFor="fil-open">1123</label>
+                        </div>
+                      </td>
+                      <td>
+                        <span className="table-btn table-blue-btn">
+                          Pending
+                        </span>
                       </td>
                       <td>Need to change m..</td>
                       <td>Sales</td>
@@ -353,9 +600,20 @@ class QADashboardSearch extends Component {
                       <td>23 March 2018</td>
                     </tr>
                     <tr>
-                    <td>1123</td>
                       <td>
-                        <span className="table-btn table-blue-btn">Pending</span>
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            id="fil-open"
+                            name="filter-type"
+                          />
+                          <label htmlFor="fil-open">1123</label>
+                        </div>
+                      </td>
+                      <td>
+                        <span className="table-btn table-blue-btn">
+                          Pending
+                        </span>
                       </td>
                       <td>Need to change m..</td>
                       <td>Support</td>
@@ -365,9 +623,20 @@ class QADashboardSearch extends Component {
                       <td>25 March 2018</td>
                     </tr>
                     <tr>
-                    <td>1123</td>
                       <td>
-                        <span className="table-btn table-blue-btn">Pending</span>
+                        <div className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            id="fil-open"
+                            name="filter-type"
+                          />
+                          <label htmlFor="fil-open">1123</label>
+                        </div>
+                      </td>
+                      <td>
+                        <span className="table-btn table-blue-btn">
+                          Pending
+                        </span>
                       </td>
                       <td>Need to change m..</td>
                       <td>Operations</td>
@@ -408,6 +677,10 @@ class QADashboardSearch extends Component {
                       <a href={Demo.BLANK_LINK}>&gt;</a>
                     </li>
                   </ul>
+                </div>
+                <div className="float-search" onClick={this.handleToggleSearch}>
+                  <small>{TitleChange}</small>
+                  {ImgChange}
                 </div>
               </div>
             </div>
