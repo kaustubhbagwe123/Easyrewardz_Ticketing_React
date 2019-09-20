@@ -55,7 +55,7 @@ class Header extends Component {
 
                 <div className="col-md-2 store-nav-tab1">
                   <img src={TicketLogo} alt="logo" className="store-myTicket" />
-                  <a href="myTicketlist">
+                  <a href="StoreTask">
                     <label className="myTiket-label">Task</label>
                   </a>
                 </div>
