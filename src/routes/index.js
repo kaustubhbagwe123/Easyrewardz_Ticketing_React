@@ -14,8 +14,6 @@ import TicketHierarchy from "./Settings/TicketHierarchy";
 import QADashboardSearch from "./QA/QADashboardSearch";
 import ChatDashboard from "./Chat/ChatDashboard";
 import QAAuditview from "./QA/QAAuditview";
-import StoreTask from "./StoreManager/StoreTask";
-import StoreTaskView from "./StoreManager/StoreTaskView";
 // import Aux from "./../Component/Aux";
 
 export class App extends Component {
@@ -67,12 +65,6 @@ export class App extends Component {
           exact
           path={`${match.url}/qaauditview`}
           component={QAAuditview}
-        />
-        <Route exact path={`${match.url}/storetask`} component={StoreTask} />
-        <Route
-          exact
-          path={`${match.url}/storetaskview`}
-          component={StoreTaskView}
         />
       </Layout>
     );

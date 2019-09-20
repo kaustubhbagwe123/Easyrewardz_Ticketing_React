@@ -83,6 +83,7 @@
   background-color: #fff;
   border-radius: 4px;
   padding: 25px 40px;
+  height: 100%;
 }
 .task-view-cntr label {
   color: #9b9b9b;
@@ -91,7 +92,8 @@
   margin-bottom: 5px;
 }
 .task-view-cntr input,
-.task-view-cntr select {
+.task-view-cntr select,
+.task-view-cntr textarea {
   font-size: 14px;
   font-weight: 700;
   width: 100%;
@@ -104,6 +106,71 @@
   background: #ecf2f4 url("./../Images/down-1.png") no-repeat right 20px center;
   background-size: 18px;
   padding-right: 50px;
+}
+.task-view-cntr textarea {
+  height: 150px;
+  resize: none;
+}
+.task-view-cntr .row > div {
+  padding-right: 10px;
+  padding-left: 10px;
+}
+.task-view-cntr .row {
+  margin-right: -10px;
+  margin-left: -10px;
+}
+.store-cmnts {
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  padding: 15px 30px !important;
+}
+.store-cmnts::placeholder {
+  padding: 0;
+  font-weight: 400;
+  font-size: 16px;
+  color: #9b9b9b;
+}
+.add-cmnts p {
+  color: #9b9b9b;
+  font-weight: 700;
+}
+.add-cmnts a {
+  color: #fff;
+  background-color: #2561a8;
+  border-radius: 4px;
+  font-size: 14px;
+  text-transform: uppercase;
+  padding: 12px 25px;
+  display: inline-block;
+}
+.add-cmnts {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+.cmnts span {
+  color: #9b9b9b;
+  font-size: 12px;
+  font-weight: 700;
+}
+.cmnts p {
+  color: #505050;
+  font-size: 13px;
+  font-weight: 700;
+}
+.cmnts-sctn {
+  padding: 20px 0;
+  border-bottom: 1px solid #e4e4e4;
+  margin-top: 10px;
+}
+.outer-cmnts .cmnts-sctn:last-child {
+  border-bottom: 0;
+}
+.task-view-right p {
+  color: #4a4a4a;
+  font-weight: 700;
+  font-size: 16px;
 }
 /* store task view ends */
 
