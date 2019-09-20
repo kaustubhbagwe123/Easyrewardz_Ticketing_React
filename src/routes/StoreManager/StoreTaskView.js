@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import StrImg from "./../../assets/Images/store-black.png";
-import Demo from "./../../store/Hashtag.js";
 
 class StoreTaskView extends Component {
   render() {
@@ -11,7 +10,7 @@ class StoreTaskView extends Component {
           <div className="str-dtls d-flex">
             <div className="str-owner">
               <div className="str-img">
-                <img src={StrImg} alt="store image icon" />
+                <img src={StrImg} alt="store icon" />
               </div>
               <p>Naman.R</p>
             </div>

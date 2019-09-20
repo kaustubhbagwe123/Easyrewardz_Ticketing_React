@@ -14,6 +14,7 @@ import TicketHierarchy from "./Settings/TicketHierarchy";
 import QADashboardSearch from "./QA/QADashboardSearch";
 import ChatDashboard from "./Chat/ChatDashboard";
 import QAAuditview from "./QA/QAAuditview";
+import KnowledgeBase from "./KnowledgeBase";
 // import Aux from "./../Component/Aux";
 
 export class App extends Component {
@@ -55,6 +56,12 @@ export class App extends Component {
           exact
           path={`${match.url}/qaDashboardSearch`}
           component={QADashboardSearch}
+        />
+
+        <Route
+          exact
+          path={`${match.url}/knowledgebase`}
+          component={KnowledgeBase}
         />
         <Route
           exact

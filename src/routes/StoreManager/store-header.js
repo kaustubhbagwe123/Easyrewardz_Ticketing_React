@@ -1,14 +1,9 @@
 import React, { Component } from "react";
-import { ProgressBar } from "react-bootstrap";
-import Modal from "react-responsive-modal";
-import DashboardLogo from "./../../assets/Images/dashboardBlack.png";
+import DashboardLogo from "./../../assets/Images/storeBlue.png";
 import TicketLogo from "./../../assets/Images/ticket.png";
-import KnowledgeLogo from "./../../assets/Images/knowledge.png";
 import ChatLogo from "./../../assets/Images/chat.png";
 import NotificationLogo from "./../../assets/Images/Notification.png";
 import SettingLogo from "./../../assets/Images/setting.png";
-import UserLogo from "./../../assets/Images/user-img.jpg";
-import StatusLogo from "./../../assets/Images/status.png";
 import Hamb from "./../../assets/Images/hamb.png";
 import ClaimLogo from "./../../assets/Images/icon9.svg";
 
@@ -47,64 +42,54 @@ class Header extends Component {
                 <div className="hamb-menu">
                   <img src={Hamb} alt="hamburger icon" />
                 </div>
-                <div className="col-md-2 nav-tab3">
+                <div className="col-md-2 store-nav-tab3">
                   <img
                     src={DashboardLogo}
                     alt="logo"
-                    className="dashboardImg1"
+                    className="store-dashboardImg1"
                   />
-                  {/* <label className="dashboards-label1">Dashboard</label> */}
-                  <a href="/admin/dashboard">
+                  <a href="/store/storedashboard">
                     <label className="dashboards-label1">Dashboard</label>
                   </a>
                 </div>
 
-                <div className="col-md-2 nav-tab1">
-                  <img src={TicketLogo} alt="logo" className="myTicket" />
-                  {/* <label>My Tickets</label> */}
-                  <a href="myTicketlist">
-                    <label className="myTiket-label">My Tickets</label>
+                <div className="col-md-2 store-nav-tab1">
+                  <img src={TicketLogo} alt="logo" className="store-myTicket" />
+                  <a href="StoreTask">
+                    <label className="myTiket-label">Task</label>
                   </a>
                 </div>
-                <div className="col-md-2 claim-space">
-                  <img src={ClaimLogo} alt="logo" className="claim-logo" />
+                <div className="col-md-2 store-claim-space">
+                  <img src={ClaimLogo} alt="logo" className="store-claim-logo" />
                   <a href="claim">
                     <label>Claim</label>
                   </a>
                 </div>
-                <div className="col-md-4 nav-tab2">
-                  <img
-                    src={KnowledgeLogo}
-                    alt="logo"
-                    className="knowledgeNav"
-                  />
-                  <label className="knowledge-label">Knowledge Base</label>
-                </div>
+                
               </div>
-              <div className="main-nav">
-                <div className="bitmap2">
-                  <img src={ChatLogo} alt="logo" className="chatImg" />
+              <div className="store-main-nav">
+                <div className="storeHeader1">
+                  <img src={ChatLogo} alt="logo" className="store-chatImg" />
                 </div>
                 <div className="bitmap3">
                   <img
                     src={NotificationLogo}
                     alt="logo"
-                    className="notifi"
-                    onClick={this.openModal}
+                    className="store-notifi"
                   />
                 </div>
                 <div className="bitmap4">
-                  <img src={SettingLogo} alt="logo" className="setting" />
+                  <img src={SettingLogo} alt="logo" className="store-setting" />
                 </div>
-                <div className="bitmap5">
-                  <label onClick={this.onOpenModal}>NR</label>
+                <div className="store-bitmap5">
+                  <label>NR</label>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <Modal
+        {/* <Modal
           onClose={this.closeModal}
           open={this.state.modalIsOpen}
           modalId="Notification-popup"
@@ -152,9 +137,9 @@ class Header extends Component {
               </a>
             </div>
           </div>
-        </Modal>
+        </Modal> */}
         <div>
-          <Modal
+          {/* <Modal
             open={this.state.open}
             onClose={this.onCloseModal}
             center
@@ -229,7 +214,7 @@ class Header extends Component {
                 </div>
               </div>
             </div>
-          </Modal>
+          </Modal> */}
         </div>
       </div>
     );

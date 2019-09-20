@@ -231,7 +231,7 @@ class MyTicket extends Component {
             <div className="row">
               <div className="mask1">
                 <div className="mail-mask">
-                  <select class="my-tic-email">
+                  <select className="my-tic-email">
                     <option>Email</option>
                   </select>
                   {/* <img src={MsgImg} alt="msg" className="smg-Img" />

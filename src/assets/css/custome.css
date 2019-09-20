@@ -3569,108 +3569,6 @@ progress::-moz-progress-bar {
   height: 43px;
   margin-top: 25px;
 }
-/* ---------------------------------------- */
-/* ----------------Store Manager start by shlok--------------------- */
-.table-expandable-sctn1 {
-  background: #ecf2f4;
-}
-.table-expandable-sctn1 button {
-  cursor: pointer;
-}
-.table-expandable-sctn1 .nav-tabs .nav-link {
-  padding-top: 20px;
-  padding-bottom: 20px;
-  background: transparent;
-}
-.table-expandable-sctn1 .nav-tabs {
-  border-color: #dae2e5;
-  position: relative;
-}
-.table-expandable-sctn1 input[type="text"] {
-  width: 100%;
-  border-radius: 4px;
-  padding: 10px 50px 10px 20px;
-  border: 0;
-  color: #4a4a4a;
-}
-.table-expandable-sctn1 input[type="text"].no-bg {
-  background: #fff none;
-  padding: 10px 20px;
-}
-.table-expandable-sctn1 input::placeholder {
-  font-size: 16px;
-  padding: 0;
-  color: #a7a7a7;
-  font-weight: 400;
-}
-.table-expandable-sctn1 select {
-  width: 100%;
-  border-radius: 4px;
-  padding: 10px 45px 10px 20px;
-  border: 0;
-  background: #fff url("./../Images//table-arr.png") no-repeat right 20px center;
-  background-size: 13px;
-  color: #a7a7a7;
-}
-.table-expandable-sctn1 .tab-content .row {
-  padding: 20px 0;
-  border-bottom: 1px solid #dae2e5;
-}
-.table-expandable-sctn1 .tab-content .row:last-child {
-  border-bottom: 0;
-}
-.table-expandable-sctn1 button {
-  background-color: #fff;
-  margin-right: 15px;
-  padding-top: 12px;
-  padding-bottom: 12px;
-}
-.table-expandable-sctn1 button.btn-inv {
-  color: #fff;
-  background-color: #2561a8;
-}
-.table-expandable-sctn1 button.btn-dis {
-  /* background-color: rgba(37, 97, 168, 0.4);
-  border-color: rgba(37, 97, 168, 0.4);
-  color: rgba(255, 255, 255, 0.4); */
-  opacity: 0.4;
-}
-.table-expandable-sctn1 .tab-content button img {
-  margin-right: 12px;
-  top: -3px;
-}
-.table-expandable-sctn1 .tab-content button:last-child {
-  margin-right: 0;
-}
-.table-expandable-sctn1 .tab-content .row.all-row {
-  padding: 0;
-  padding-top: 25px;
-}
-.table-expandable-sctn1 .tab-content .row.all-row div {
-  margin-bottom: 25px;
-}
-.bill-graph-list {
-  font-weight: 300;
-}
-.bill-graph-list li {
-  padding: 4px 0;
-}
-.bill-graph-list li b {
-  font-weight: 700;
-}
-.tic-bill-graph .nv-x {
-  font-size: 12px;
-  font-weight: 700;
-}
-.tic-bill-graph .nv-y {
-  font-size: 8px;
-  color: #4e4e4e;
-}
-.tic-bill-graph .nv-chart,
-.tic-bill-graph .nvd3-svg {
-  width: 100%;
-}
-/* ----------------------------------------------- */
 
 /* Responsive starts */
 @media only screen and (max-width: 480px) {
@@ -3887,3 +3785,236 @@ progress::-moz-progress-bar {
   }
 }
 /* Responsive ends */
+
+
+
+/*------------------------------Knowledge Base start-------------------------*/
+
+.kb-header{
+  background-color: #ECF2F4;
+  width: auto;
+  height: 57px;
+}
+
+.header-new-submissions{
+  color: #2561A8;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  text-align: left;
+  padding-left:20px;
+  padding-top: 17px;
+  cursor: pointer;
+}
+
+.header-new-submissions-1{
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  text-align: left;
+  padding-left:24px; 
+  padding-top: 17px;
+  cursor: pointer;
+}
+
+.kb-Header-button{
+  background-color: #2561A8;
+  border-radius: 4px;
+  width: 185px;
+  height: 43px;
+  float: right;
+  margin-right: 20px;
+  margin-top: 7px;
+}
+
+.add-new-kb{
+  color: #FFFFFF;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  text-align: left;
+  text-transform:uppercase;
+}
+
+.main-content-kb{
+  background-color: #FFFFFF;
+  border-radius: 4px;
+  width: 1216px;
+  height: 889px;
+  margin: 10px;
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-bottom: 20px;
+}
+
+.main-content-margin{
+
+  margin: 10px;
+}
+.main-conenet-point{
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19px;
+  text-align: left;
+}
+
+.clear-search {
+  color: #CD3245;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14px;
+  text-align: left;
+  padding: 9px;
+  padding-left: 35px;
+}
+
+.searchicon{
+  width: 20px;
+  height: 20px;
+  margin-left: 7px;
+  
+}
+
+.search-KB {
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19px;
+  text-align: left;
+  padding-left: 75%;
+}
+
+.table-id-data{
+  color: #9B9B9B;
+  font-family: Lato;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 16px;
+  text-align: left;
+}
+.table-details-data{
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 16px;
+  width: 383px;
+  text-align: left;
+  white-space: normal;  
+  display: inline-block;
+}
+.table-type-return{
+  color: #000000;
+  font-family: Lato;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 16px;
+  text-align: left;
+} 
+.table-category{
+  color: #000000;
+  font-family: Lato;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 16px;
+  text-align: left;
+}
+
+.table-subcategory{
+  color: #000000;
+  font-family: Lato;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 16px;
+  text-align: left;
+}
+
+.kb-table table thead th
+{
+
+  border: 0;
+  background-color: white;
+}
+
+.reject-button{
+  border: 1px solid #D0021B;
+  border-radius: 4px;
+  width: 74px;
+  height: 27px;
+  background-color: white;
+  padding: 0px;
+  margin-right: 10px;
+}
+
+.reject-button-1{
+  border: 1px solid #D0021B;
+  border-radius: 4px;
+  width: 74px;
+  height: 27px;
+  background-color: white;
+  padding: 0px;
+   
+}
+.reject-button-text {
+  color: #D0021B;
+  font-family: Lato;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 12px;
+  text-align: left;
+  padding-bottom: 5px;
+}
+
+.aprove-button{
+  background-color: #2561A8;
+  border-radius: 4px;
+  width: 74px;
+  height: 27px;
+  padding: 0px;
+}
+
+.approve-button-text{
+  color: #FFFFFF;
+  font-family: Lato;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 12px;
+  text-align: left;
+}
+
+
+
+.down-icon-kb{
+  width: 21px;
+  height: 21px;
+  vertical-align: top;
+}
+
+/* .kb-table table thead tr{
+  border: 0px !important;
+} */
+
+/* .kb-table table tbody td{
+
+  border: 0px;
+
+} */
+
+/* 
+.kb-table table{
+
+} */
+
+/* ------------------------------------end---------------------------------- */
+
+
+
+

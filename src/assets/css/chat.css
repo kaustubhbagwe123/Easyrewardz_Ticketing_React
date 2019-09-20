@@ -105,11 +105,11 @@
         padding: 15px;
       }
 
-      .aside-cont {
+      .aside-cont-new-1 {
         display: flex;
         justify-content: center;
         align-items: center;
-        height: calc(100% - 35px);
+        height: calc(100% - 63px);
     }
     .aside-cont-3{
       display: flex;
@@ -205,12 +205,13 @@
 
 .card-content-number .response-small{
     display: inline;
-    font-weight: 500;
+    font-weight: 200;
+    font-size:18px; 
 }
 
 .response-row{
 
-    margin: 0px 20px 0px 35px;
+    margin: 35px 20px 0px 35px;
 }
 
 .team-member-center-text
@@ -256,7 +257,15 @@
   padding-top: 15px;
   padding-left: 5px;
 }
-.removeleft .row{
-  margin-left: 0px;
+.removeleft-1 .row{
+ 
+   
+  margin-right: -10px;
+  /* margin-right: -12px; */
+}
+
+.addmargin .row{
+
+  margin-left:10px; 
 }
 /* -------------------------------------------------------------------- */
