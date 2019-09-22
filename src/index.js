@@ -7,10 +7,10 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 
 //Css
 import "./assets/css/style.css";
-import "./assets/css/custome.css";
 import "./assets/css/settings.css";
 import "./assets/css/QA.css";
 import "./assets/css/store.css";
+import "./assets/css/custome.css";
 
 //JS
 import "./../node_modules/popper.js/dist/popper.js";
@@ -37,7 +37,7 @@ import StoreApp from "./routes/StoreManager/index";
 ReactDOM.render(
   <Router>
     <Route path="/admin" component={App} />
-    <Route path="/store" component={StoreApp}/>
+    <Route path="/store" component={StoreApp} />
     <Route exact path="/" component={ProgramCodeSignIn} />
     <Route exact path="/SignIn" component={SignIn} />
     <Route exact path="/Forgotpassword" component={ForgotPassword} />

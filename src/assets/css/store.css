@@ -1,22 +1,22 @@
 /* Shlok css start */
 /* Header */
-.store-nav-tab3{
+.store-nav-tab3 {
   margin-top: -41px;
   margin-left: 77px;
   position: relative;
   z-index: 1;
 }
-.store-dashboardImg1{
+.store-dashboardImg1 {
   width: 20px;
   height: 19px;
 }
-.store-myTicket{
+.store-myTicket {
   width: 18px;
   height: 17px;
   margin-right: 6px;
   margin-top: -2px;
 }
-.store-claim-logo{
+.store-claim-logo {
   width: 20px;
   height: 20px;
   margin-right: 5px;
@@ -28,33 +28,33 @@
   position: relative;
   z-index: 1;
 }
-.store-claim-space{
+.store-claim-space {
   margin-top: -2.9%;
   margin-left: 39%;
 }
-.storeHeader1{
+.storeHeader1 {
   width: 26px;
   height: 26px;
   margin-top: 13px;
   margin-left: 40px;
 }
-.store-chatImg{
+.store-chatImg {
   width: 25px;
   height: 25px;
   margin-top: -4px;
 }
-.store-setting{
+.store-setting {
   width: 24px;
   height: 24px;
 }
-.store-notifi{
+.store-notifi {
   width: 24px;
   height: 24px;
 }
-.store-main-nav{
+.store-main-nav {
   margin-left: 18.5%;
 }
-.store-bitmap5{
+.store-bitmap5 {
   width: 30px;
   height: 30px;
   margin-top: -25px;
@@ -245,6 +245,30 @@
   font-weight: 700;
   font-size: 16px;
 }
+.task-closure-progress {
+  height: 10px;
+  background-color: #ecf2f4;
+  border-radius: 5px;
+  margin-left: 12px;
+}
+.task-closure-progress .progress-bar {
+  background: linear-gradient(to right, #f9c957 0%, #f66c1c 100%);
+  box-shadow: none;
+}
+.task-closure .dte {
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 1;
+  margin-top: -2px;
+}
+.nos-days {
+  font-size: 14px !important;
+  text-align: right;
+  width: 65%;
+  position: relative;
+  left: 17px;
+  margin-top: 2px;
+}
 /* store task view ends */
 
 /* chetan css ends */
@@ -331,9 +355,11 @@
 }
 .bill-graph-list {
   font-weight: 300;
+  text-align: left;
 }
 .bill-graph-list li {
   padding: 4px 0;
+  white-space: nowrap;
 }
 .bill-graph-list li b {
   font-weight: 700;
@@ -351,4 +377,3 @@
   width: 100%;
 }
 /* ----------------------------------------------- */
-
