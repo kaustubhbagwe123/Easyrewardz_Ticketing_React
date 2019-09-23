@@ -35,9 +35,14 @@ class Campaign extends Component {
     /**Header Name change**/  
     const HeaderNameChange=this.state.FirstCollapse
     ? "Campaign Type" : "Customer Name";
-    
-    /**Hide clode button with header**/ 
 
+    /**Hide clode button with header**/ 
+    const HideHeaderChange=this.state.FirstCollapse
+    ? "" : "Campaign Status"
+    const HideCloseButton=this.state.FirstCollapse
+    ? "" :  <button className="closebtn" type="button">
+    <label className="hdrcloselabel">Close</label>
+  </button>
     return (
       <div>
         <div className="table-cntr store">
@@ -48,7 +53,7 @@ class Campaign extends Component {
                 <th>Contacts</th>
                 <th>Campaign Script</th>
                 <th>Campaign End Date</th>
-                <th>Campaign Status</th>
+                <th>{HideHeaderChange}</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -59,9 +64,7 @@ class Campaign extends Component {
                 <td>Hello Mr/Mrs ......, Greetings for the day........</td>
                 <td>12-Aug-19</td>
                 <td>
-                  <button className="closebtn" type="button">
-                    <label className="hdrcloselabel">Close</label>
-                  </button>
+                 {HideCloseButton}
                 </td>
                 <td>
                   <div onClick={this.firstActionOpenClps}>{ImgChange}</div>
