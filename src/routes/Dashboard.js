@@ -114,7 +114,8 @@ class Dashboard extends Component {
             <div>
               <span>Date Range : </span>
               <select>
-                <option>Last 7 days</option>
+                <option>Last 7 days
+                </option>
               </select>
             </div>
           </div>

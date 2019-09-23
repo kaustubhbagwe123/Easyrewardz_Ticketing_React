@@ -500,11 +500,13 @@
   line-height: 19px;
   text-align: left;
 }
-.txt-1 {
+.txt-1{
   background-color: #ecf2f4;
   border-radius: 4px;
   width: 265px;
   height: 43px;
+  border: none;
+  padding-left: 10px;
 }
 .createSpace {
   padding-left: 40px;

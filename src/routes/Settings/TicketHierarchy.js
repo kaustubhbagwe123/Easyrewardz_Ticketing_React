@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Demo from "../../store/Hashtag";
 import TableArr from "./../../assets/Images/table-arr.png";
 import InfoImg from './../../assets/Images/icons8-info.svg';
-import DeleteIcon from './../../assets/Images/delete.svg';
+import DeleteIcon from './../../assets/Images/red-delete-icon.png';
 import ClipIcon from './../../assets/Images/clip.png';
 import CancelIcon from './../../assets/Images/cancel.png';
 

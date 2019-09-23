@@ -3569,7 +3569,15 @@ progress::-moz-progress-bar {
   height: 43px;
   margin-top: 25px;
 }
-
+.oval-5-1-new {
+  background-color: #f8e71c;
+  border-radius: 100%;
+  width: 30px;
+  height: 30px;
+  }
+  .ReactModal__Overlay{
+    overflow: auto;
+    }
 /* Responsive starts */
 @media only screen and (max-width: 480px) {
   .vl {
