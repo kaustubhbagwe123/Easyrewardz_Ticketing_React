@@ -1,6 +1,7 @@
 import React, { Component } from "react";
+import { ProgressBar } from "react-bootstrap";
 import StrImg from "./../../assets/Images/store-black.png";
-import Demo from "../../store/Hashtag";
+import Demo from "./../../store/Hashtag.js";
 
 class StoreTaskView extends Component {
   render() {
@@ -127,7 +128,7 @@ class StoreTaskView extends Component {
                       <div className="str-img">
                         <img src={StrImg} alt="store icon" />
                       </div>
-                      <p>Naman.R</p>
+                      <p>Naman Rampal</p>
                     </div>
                   </div>
                   <div className="col-md-6 mb-4">
@@ -135,13 +136,23 @@ class StoreTaskView extends Component {
                     <p>Bata Store Name</p>
                   </div>
                 </div>
-                <div className="row mb-4">
+                <div className="row mb-5">
                   <div className="col-md-12">
                     <label>Store Address:</label>
                     <p>
                       Opposite sardar jalebi, Sadar Bazar Rd, Sadar Bazar,
                       Roshan Pura, Gurugram, Haryana 122007
                     </p>
+                  </div>
+                </div>
+                <div className="task-closure">
+                  <p className="font-weight-normal mb-2">Task Closure Date</p>
+                  <div className="d-flex">
+                    <p className="dte">28 March 19</p>
+                    <div className="w-100">
+                      <ProgressBar className="task-closure-progress" now={65} />
+                      <p className="nos-days">2 day</p>
+                    </div>
                   </div>
                 </div>
               </div>
