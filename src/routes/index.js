@@ -52,10 +52,17 @@ export class App extends Component {
           path={`${match.url}/priority-settings`}
           component={PrioritySettings}
         />
-        <Route exact path={`${match.url}/qaDashboardSearch`} component={QADashboardSearch} />
-         
-         
-        <Route exact path={`${match.url}/knowledgebase`} component={KnowledgeBase} />
+        <Route
+          exact
+          path={`${match.url}/qaDashboardSearch`}
+          component={QADashboardSearch}
+        />
+
+        <Route
+          exact
+          path={`${match.url}/knowledgebase`}
+          component={KnowledgeBase}
+        />
         <Route
           exact
           path={`${match.url}/chatdashboard`}
@@ -66,8 +73,6 @@ export class App extends Component {
           path={`${match.url}/qaauditview`}
           component={QAAuditview}
         />
-       
-         
       </Layout>
     );
   }

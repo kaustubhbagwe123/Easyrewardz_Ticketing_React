@@ -95,7 +95,7 @@ class Claim extends Component {
                                         </div>
                                         <div className="form-group col-md-4">
                                             <label className="label-6">Claim Type</label>
-                                            <select id="inputState" className="form-control dropdown-label">
+                                            <select id="inputState" className="form-control dropdown-label" style={{width:'260px'}}>
                                                 <option>select</option>
                                             </select>
                                         </div>
