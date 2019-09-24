@@ -75,6 +75,7 @@ export class App extends Component {
           path={`${match.url}/qaauditview`}
           component={QAAuditview}
         />
+         
         <Route
           exact
           path={`${match.url}/hierarchyMaster`}
