@@ -5,6 +5,11 @@ import StoreDashboard from "./StoreDashboard";
 import StoreMaster from "./StoreMaster";
 import StoreTask from "./StoreTask";
 import StoreTaskView from "./StoreTaskView";
+import CreateCRMRoles from "./CreateCRMRoles";
+import CreatePriority from "./CreatePriority";
+import CategoryMaster from "./CategoryMaster";
+ 
+ 
 
 export class StoreApp extends Component {
   render() {
@@ -26,6 +31,21 @@ export class StoreApp extends Component {
           exact
           path={`${match.url}/storetaskview`}
           component={StoreTaskView}
+        />
+        <Route
+          exact
+          path={`${match.url}/categorymaster`}
+          component={CategoryMaster}
+        />
+        <Route
+          exact
+          path={`${match.url}/priority`}
+          component={CreatePriority}
+        />
+        <Route
+          exact
+          path={`${match.url}/crmroles`}
+          component={CreateCRMRoles}
         />
       </StoreLayout>
     );

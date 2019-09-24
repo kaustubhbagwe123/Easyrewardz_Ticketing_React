@@ -15,6 +15,7 @@ import QADashboardSearch from "./QA/QADashboardSearch";
 import ChatDashboard from "./Chat/ChatDashboard";
 import QAAuditview from "./QA/QAAuditview";
 import KnowledgeBase from "./KnowledgeBase";
+import HierarchyMaster from "./Settings/Store/HierarchyMaster";
 import FileUploadLogs from "./Settings/FileUploadLogs";
 // import Aux from "./../Component/Aux";
 
@@ -74,10 +75,16 @@ export class App extends Component {
           path={`${match.url}/qaauditview`}
           component={QAAuditview}
         />
-        <Route 
-        exact
-        path={`${match.url}/fileUploadLogs`}
-        component={FileUploadLogs}/>
+        <Route
+          exact
+          path={`${match.url}/hierarchyMaster`}
+          component={HierarchyMaster}
+        />
+        <Route
+          exact
+          path={`${match.url}/fileUploadLogs`}
+          component={FileUploadLogs}
+        />
       </Layout>
     );
   }

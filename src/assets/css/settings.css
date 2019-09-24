@@ -19,10 +19,11 @@
 /* chetan settings starts */
 .setting-title {
   background-color: #ecf2f4;
-  padding: 18px 35px;
+  padding: 18px 35px !important;
 }
 .setting-title p {
-  font-size: 18px;
+  font-size: 20px;
+  color: #000;
 }
 .setting-tabs {
   padding: 15px 20px;
@@ -30,47 +31,79 @@
 .setting-tabs ul {
   border: none;
 }
+.setting-tabs .nav-tabs .nav-item {
+  margin-right: 30px;
+}
 .setting-tabs .nav-tabs .nav-link {
   font-weight: 400;
-  padding: 7px 30px;
+  padding: 7px 0px;
   border-radius: 3px;
 }
 .setting-tabs .nav-tabs .nav-link.active {
   border: none;
   background-color: #2561a8;
   color: #fff;
+  padding: 7px 30px;
   font-weight: 700;
 }
 .setting-tabs .tab-content {
-  padding: 20px 0;
+  padding: 25px 0;
 }
 .setting-tabs .tab-content .tab-pane .row {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 .setting-tabs .tab-content .tab-pane .row:last-child {
   margin-bottom: 0px;
 }
+.setting-tabs .row > div {
+  padding-right: 10px;
+  padding-left: 10px;
+}
+.setting-tabs .row {
+  margin-right: -10px;
+  margin-left: -10px;
+}
 .setting-cntr {
   background-color: #fff;
   border-radius: 6px;
-  padding: 30px;
+  padding: 10px;
 }
 .setting-cntr p {
   font-size: 12px;
   margin-top: 2px;
+  color: #4a4a4a;
+  min-height: 72px;
 }
 .setting-cntr strong {
   color: #2561a8;
 }
 .setting-box {
   display: flex;
-  margin-bottom: 35px;
+  margin-bottom: 10px;
+  padding: 20px 20px 15px;
+  border-radius: 5px;
+  transition: all 0.3s ease-in-out;
+}
+.setting-box:hover {
+  background-color: #f4f7fa;
 }
 .setting-cntr .setting-box:last-child {
   margin-bottom: 0px;
 }
 .setting-desc {
   padding-left: 20px;
+}
+.setting-icons {
+  flex: 0 0 22px;
+}
+.icon-small {
+  flex: 0 0 18px;
+}
+.big-icon {
+  flex: 0 0 25px;
+}
+.setting-icons img {
+  width: 100%;
 }
 /* chetan settings ends */
 
@@ -346,6 +379,133 @@
 }
 /* chetan priority settings ends */
 
+/* chetan hierarchy master settings starts */
+.store-settings-cntr {
+  padding: 15px 20px;
+}
+.store-settings-cntr table th {
+  font-size: 13px;
+}
+.store-settings-cntr table td {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.store-settings-cntr table tr td:last-child,
+.store-settings-cntr table tr th:last-child {
+  padding-right: 50px;
+}
+.store-settings-cntr .butn {
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  padding: 6px 17px;
+  min-width: auto;
+}
+.del-btn {
+  width: 14px;
+  display: inline-block;
+  margin-right: 20px;
+}
+.del-btn img {
+  width: 100%;
+}
+.store-settings-cntr .pagi ul li {
+  font-size: 14px;
+  width: 30px;
+  height: 30px;
+  line-height: 28px;
+}
+.store-settings-cntr .pagi {
+  padding-top: 35px;
+  padding-bottom: 35px;
+}
+.item-selection select {
+  color: #4a4a4a;
+  font-size: 12px;
+  border: 1px solid #e7eaec;
+  border-radius: 4px;
+  background: url("./../Images/table-arr-dark.png") no-repeat right 6px center;
+  background-size: 9px;
+  padding: 6px 14px 6px 10px;
+}
+.item-selection p {
+  font-size: 12px;
+  display: inline-block;
+  margin-left: 7px;
+}
+.item-selection {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 30px;
+}
+.general-popover .popover {
+  border: 0;
+  box-shadow: 0 0px 10px 0 rgba(0, 0, 0, 0.2);
+}
+.general-popover .popover .arrow {
+  width: 26px;
+  height: 18px;
+  margin: 0;
+}
+.general-popover .popover-body {
+  padding: 25px 35px;
+  color: #4a4a4a;
+  font-family: "Lato", sans-serif;
+}
+.created-popover .title {
+  font-weight: 700;
+  font-size: 16px;
+}
+.created-popover .sub-title {
+  font-size: 13px;
+  color: #9b9b9b;
+  margin-top: 2px;
+}
+.created-popover .popover-body div {
+  margin-bottom: 20px;
+}
+.created-popover .popover-body div:last-child {
+  margin-bottom: 0px;
+}
+.general-popover .bs-popover-auto[x-placement^="bottom"] .arrow::after,
+.general-popover .bs-popover-auto[x-placement^="bottom"] .arrow::before,
+.general-popover .bs-popover-bottom .arrow::after,
+.general-popover .bs-popover-bottom .arrow::before {
+  border-width: 0 13px 18px 13px;
+}
+.general-popover .bs-popover-auto[x-placement^="top"] .arrow::after,
+.general-popover .bs-popover-auto[x-placement^="top"] .arrow::before,
+.general-popover .bs-popover-top .arrow::after,
+.general-popover .bs-popover-top .arrow::before {
+  border-width: 18px 13px 0;
+}
+.general-popover .bs-popover-auto[x-placement^="bottom"] .arrow,
+.general-popover .bs-popover-bottom .arrow {
+  top: -19px;
+}
+.general-popover .bs-popover-auto[x-placement^="top"] .arrow,
+.general-popover .bs-popover-top .arrow {
+  bottom: -19px;
+}
+.general-popover .bs-popover-auto[x-placement^="bottom"] .arrow::before,
+.general-popover .bs-popover-bottom .arrow::before {
+  border-bottom-color: rgba(0, 0, 0, 0.01);
+}
+.general-popover .bs-popover-auto[x-placement^="top"] .arrow::before,
+.general-popover .bs-popover-top .arrow::before {
+  border-top-color: rgba(0, 0, 0, 0.01);
+}
+.general-popover .bs-popover-auto[x-placement^="bottom"],
+.general-popover .bs-popover-bottom {
+  margin-top: 24px;
+}
+.general-popover .bs-popover-auto[x-placement^="top"],
+.general-popover .bs-popover-top {
+  margin-bottom: 24px;
+}
+/* chetan hierarchy master settings ends */
+
 .breadcrumbs-row-padding {
   padding: 15px;
   padding-left: 35px;
@@ -500,7 +660,7 @@
   line-height: 19px;
   text-align: left;
 }
-.txt-1{
+.txt-1 {
   background-color: #ecf2f4;
   border-radius: 4px;
   width: 265px;
@@ -653,65 +813,353 @@
   margin-top: -35px;
 }
 /* --------------Css end-------------------------- */
-/* Shlok File Upload Logs css start */
-.fileUploadTable{
-  background-color: #ffffff;
-  border-radius: 4px;
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.05);
-  height: 870px;
-  margin-left: 35px;
-  margin-right: 35px;
-  margin-top: -10px;
+
+/* ---------------------------------Category Master ------------------------- */
+
+
+ 
+.category-master-table table tr td:first-child
+{
+
+  padding-right: 60px !important;
+
 }
-.lblFileUpload{
-  color: #6B6C6D;
-  font-family: Lato;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 19px;
-  text-align: left;
+/* .delete-combined-shape{
+  background-color: #FFFFFF;
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
+  width: 277px;
+  height: 170px;
+} */
+
+.bottom-margin-class .row{
+  margin-right: 0
 }
-.downloadBtn{
-  background-color: #2561A8;
-  border-radius: 4px;
-  width: 76px;
-  height: 25px;
-  padding: 0px !important;
-  min-width: 85px;
+
+.oval-delete{
+  background-color: #F3F3F3;
+  border-radius: 100%;
+  width: 50px;
+  height: 50px;
 }
-.lblDownloadbtn{
-  color: #FFFFFF;
-  font-family: Lato;
-  font-size: 11px;
-  font-weight: 400;
-  line-height: 16px;
-  text-align: left;
+
+.oval-delete-icons{
+  width: 28px;
+  height: 28px;
+  margin-left: 10px;
+  margin-top: 10px;
 }
-.thRowSpace{
-  width: 20%;
-}
-.created-by-Date{
-  color: rgba(0, 0, 0, 0.8);
+.delete-file-popover{
+  color: #000000;
   font-family: Lato;
   font-size: 14px;
   font-weight: 700;
   line-height: 17px;
+  width: 77px;
   text-align: left;
-  margin-bottom: 15px;
 }
-.subCreated-Date{
-  color: rgba(0, 0, 0, 0.5);
+
+.delete-details-popovel{
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  width: 165px;
+  text-align: left;
+}
+.popver-delete-mar{
+
+  margin-top: 20px;
+  margin-left: 20px;
+}
+.popover-delete-btn{
+  background-color: #2561A8;
+  border-radius: 4px;
+  width: 98px;
+  height: 30px;
+  margin-right: 21px;
+  padding: 0;
+}
+.popover-delete-btn-text{
+  color: #FFFFFF;
   font-family: Lato;
   font-size: 12px;
   font-weight: 400;
   line-height: 14px;
   text-align: left;
 }
+.popover-delete-cancel {
+  color: #2561A8;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14px;
+  text-align: left;
+  margin-top: 10px;
+margin-right:5px; 
+}
+.btn-del-pop button{
+  padding: 0;
+} 
+.mrg-can-del-row{
+  margin-top: 10px;
+  float: right;
+
+} 
+
+.deletepopover .popover{
+
+  position: absolute;
+    will-change: transform;
+    top: 0px;
+    left: 0px;
+    transform: translate3d(603px, 42px, 0px);
+    max-width: initial;
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
+    width: 277px;
+    height: 170px;
+    border: none;
+	
+}
+
+.abc .popover {
+  max-width: initial;
+  position: absolute;
+  will-change: transform;
+  top: 0px;
+  left: 0px;
+  transform: translate3d(603px, 42px, 0px);
+  max-width: initial;
+  background-color: #FFFFFF;
+  border-radius: 4px;
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
+  width: 250px;
+  height: 340px;
+  border: none;
+}
+/* .abc .popover-body {
+  width: 500px;
+} */
+
+.pop-edit-category-text{
+  color: #2561A8;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: left;
+}
+
+.popover-select{
+  background-color: #ECF2F4;
+  border-radius: 4px;
+  width: 200px;
+  height: 35px;
+}
+.popover-text{
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: left;
+}
+
+.popover-header-text{
+  color: #2561A8;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: left;
+}
+
+.popover-lable-text{
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: left;
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 7px;
+  margin-left: 5px; 
+}
+
+.popover-select-cate{
+   
+  border-radius: 4px;
+  width: 200px;
+  height: 35px;
+  border: none;
+  padding-left: 10px; 
+  background:#ECF2F4 url("../Images/dropDown.png") no-repeat right 12px center;
+}
+
+
+.bottom-margin-class .store-col-1-1 {
+  background-color: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.05);
+  width: 827px;
+  height: 898px;
+  margin-left: 50px;
+}
+<<<<<<< HEAD
 .popover-main{
   padding: 20px;
   padding-left: 25px;
   min-width: -8%;
   width:400px;
   height: 110px;
+=======
+
+/* .store-col-1-1 table tr td:last-child {
+  text-align: center;
 }
-/* File Upload Logs Css End */
+.store-col-1-1 table tr th:last-child {
+  text-align: center;
+} */
+/* 
+.store-col-1-1 table tr td:first-child {
+  text-align: center;
+>>>>>>> 84f761f54687c447166627ddf8df84235630bbab
+}
+.store-col-1-1 table tr th:first-child {
+  text-align: center;
+} */
+
+.info-icon-cp{
+    
+      position: relative;
+      left: 5px;
+      bottom: 1px;
+      width: 18px;
+  height: 18px;
+   
+}
+
+.cp-textbox{
+  background-color: #ECF2F4;
+  border-radius: 4px;
+  width: 265px;
+  height: 43px;
+  border: none;
+  margin-top:5px;
+  padding-left: 10px; 
+}
+.cp-textbox::placeholder{
+
+  color: #000000;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  text-align: left;
+}
+
+.crm-pagi .pagi{
+  padding-top: 70%;
+}
+
+
+.roll-radio [type="radio"]:checked,
+[type="radio"]:not(:checked) {
+    position: absolute;
+    left: -9999px;
+}
+.roll-radio [type="radio"]:checked + label,
+[type="radio"]:not(:checked) + label
+{
+  position: relative;
+  padding-left: 24px;
+  cursor: pointer;
+  line-height: 20px;
+  display: inline-block;
+   
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 16px;
+  margin-left: 5px;
+}
+.roll-radio [type="radio"]:checked + label:before,
+[type="radio"]:not(:checked) + label:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #2561A8;
+    border-radius: 100%;
+    background: #fff;
+    
+     
+}
+.roll-radio [type="radio"]:checked + label:after,
+[type="radio"]:not(:checked) + label:after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    background: #2561A8;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    border-radius: 100%;
+    -webkit-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+    color: #2561A8;
+     
+}
+
+.roll-radio [type="radio"]:checked + label {
+  color: #2561A8;
+}
+.roll-radio [type="radio"]:not(:checked) + label:after {
+    opacity: 0;    
+    -webkit-transform: scale(0);
+    transform: scale(0);
+}
+.roll-radio [type="radio"]:checked + label:after {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+}
+
+
+.rolle-name-text{
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 16px;
+  text-align: left;
+       width: 135px;
+    display: inline-block;
+    margin-left: 40px;
+}
+.Create-role-text{
+  color: #2561a8;
+  font-family: Lato;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 22px;
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+.store-col-1-1 .pagi{
+  padding-top: 55%;
+
+}
+
+.ctr-mst .pagi{
+  padding-top: 72%;
+}
+
+/* ------------------------------------end------------------------------------ */
+
+
