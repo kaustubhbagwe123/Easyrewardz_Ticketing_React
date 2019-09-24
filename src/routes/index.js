@@ -15,6 +15,7 @@ import QADashboardSearch from "./QA/QADashboardSearch";
 import ChatDashboard from "./Chat/ChatDashboard";
 import QAAuditview from "./QA/QAAuditview";
 import KnowledgeBase from "./KnowledgeBase";
+
 // import Aux from "./../Component/Aux";
 
 export class App extends Component {
@@ -73,6 +74,7 @@ export class App extends Component {
           path={`${match.url}/qaauditview`}
           component={QAAuditview}
         />
+         
       </Layout>
     );
   }
