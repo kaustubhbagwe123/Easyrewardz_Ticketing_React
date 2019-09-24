@@ -19,7 +19,7 @@
 /* chetan settings starts */
 .setting-title {
   background-color: #ecf2f4;
-  padding: 15px 35px !important;
+  padding: 18px 35px !important;
 }
 .setting-title p {
   font-size: 20px;
@@ -379,6 +379,133 @@
 }
 /* chetan priority settings ends */
 
+/* chetan hierarchy master settings starts */
+.store-settings-cntr {
+  padding: 15px 20px;
+}
+.store-settings-cntr table th {
+  font-size: 13px;
+}
+.store-settings-cntr table td {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.store-settings-cntr table tr td:last-child,
+.store-settings-cntr table tr th:last-child {
+  padding-right: 50px;
+}
+.store-settings-cntr .butn {
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  padding: 6px 17px;
+  min-width: auto;
+}
+.del-btn {
+  width: 14px;
+  display: inline-block;
+  margin-right: 20px;
+}
+.del-btn img {
+  width: 100%;
+}
+.store-settings-cntr .pagi ul li {
+  font-size: 14px;
+  width: 30px;
+  height: 30px;
+  line-height: 28px;
+}
+.store-settings-cntr .pagi {
+  padding-top: 35px;
+  padding-bottom: 35px;
+}
+.item-selection select {
+  color: #4a4a4a;
+  font-size: 12px;
+  border: 1px solid #e7eaec;
+  border-radius: 4px;
+  background: url("./../Images/table-arr-dark.png") no-repeat right 6px center;
+  background-size: 9px;
+  padding: 6px 14px 6px 10px;
+}
+.item-selection p {
+  font-size: 12px;
+  display: inline-block;
+  margin-left: 7px;
+}
+.item-selection {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 30px;
+}
+.general-popover .popover {
+  border: 0;
+  box-shadow: 0 0px 10px 0 rgba(0, 0, 0, 0.2);
+}
+.general-popover .popover .arrow {
+  width: 26px;
+  height: 18px;
+  margin: 0;
+}
+.general-popover .popover-body {
+  padding: 25px 35px;
+  color: #4a4a4a;
+  font-family: "Lato", sans-serif;
+}
+.created-popover .title {
+  font-weight: 700;
+  font-size: 16px;
+}
+.created-popover .sub-title {
+  font-size: 13px;
+  color: #9b9b9b;
+  margin-top: 2px;
+}
+.created-popover .popover-body div {
+  margin-bottom: 20px;
+}
+.created-popover .popover-body div:last-child {
+  margin-bottom: 0px;
+}
+.general-popover .bs-popover-auto[x-placement^="bottom"] .arrow::after,
+.general-popover .bs-popover-auto[x-placement^="bottom"] .arrow::before,
+.general-popover .bs-popover-bottom .arrow::after,
+.general-popover .bs-popover-bottom .arrow::before {
+  border-width: 0 13px 18px 13px;
+}
+.general-popover .bs-popover-auto[x-placement^="top"] .arrow::after,
+.general-popover .bs-popover-auto[x-placement^="top"] .arrow::before,
+.general-popover .bs-popover-top .arrow::after,
+.general-popover .bs-popover-top .arrow::before {
+  border-width: 18px 13px 0;
+}
+.general-popover .bs-popover-auto[x-placement^="bottom"] .arrow,
+.general-popover .bs-popover-bottom .arrow {
+  top: -19px;
+}
+.general-popover .bs-popover-auto[x-placement^="top"] .arrow,
+.general-popover .bs-popover-top .arrow {
+  bottom: -19px;
+}
+.general-popover .bs-popover-auto[x-placement^="bottom"] .arrow::before,
+.general-popover .bs-popover-bottom .arrow::before {
+  border-bottom-color: rgba(0, 0, 0, 0.01);
+}
+.general-popover .bs-popover-auto[x-placement^="top"] .arrow::before,
+.general-popover .bs-popover-top .arrow::before {
+  border-top-color: rgba(0, 0, 0, 0.01);
+}
+.general-popover .bs-popover-auto[x-placement^="bottom"],
+.general-popover .bs-popover-bottom {
+  margin-top: 24px;
+}
+.general-popover .bs-popover-auto[x-placement^="top"],
+.general-popover .bs-popover-top {
+  margin-bottom: 24px;
+}
+/* chetan hierarchy master settings ends */
+
 .breadcrumbs-row-padding {
   padding: 15px;
   padding-left: 35px;
@@ -533,7 +660,7 @@
   line-height: 19px;
   text-align: left;
 }
-.txt-1{
+.txt-1 {
   background-color: #ecf2f4;
   border-radius: 4px;
   width: 265px;
@@ -687,7 +814,7 @@
 }
 /* --------------Css end-------------------------- */
 /* Shlok File Upload Logs css start */
-.fileUploadTable{
+.fileUploadTable {
   background-color: #ffffff;
   border-radius: 4px;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.05);
@@ -696,34 +823,34 @@
   margin-right: 35px;
   margin-top: -10px;
 }
-.lblFileUpload{
-  color: #6B6C6D;
+.lblFileUpload {
+  color: #6b6c6d;
   font-family: Lato;
   font-size: 16px;
   font-weight: 400;
   line-height: 19px;
   text-align: left;
 }
-.downloadBtn{
-  background-color: #2561A8;
+.downloadBtn {
+  background-color: #2561a8;
   border-radius: 4px;
   width: 76px;
   height: 25px;
   padding: 0px !important;
   min-width: 85px;
 }
-.lblDownloadbtn{
-  color: #FFFFFF;
+.lblDownloadbtn {
+  color: #ffffff;
   font-family: Lato;
   font-size: 11px;
   font-weight: 400;
   line-height: 16px;
   text-align: left;
 }
-.thRowSpace{
+.thRowSpace {
   width: 20%;
 }
-.created-by-Date{
+.created-by-Date {
   color: rgba(0, 0, 0, 0.8);
   font-family: Lato;
   font-size: 14px;
@@ -732,7 +859,7 @@
   text-align: left;
   margin-bottom: 15px;
 }
-.subCreated-Date{
+.subCreated-Date {
   color: rgba(0, 0, 0, 0.5);
   font-family: Lato;
   font-size: 12px;
@@ -740,17 +867,17 @@
   line-height: 14px;
   text-align: left;
 }
-.datePopover{
+.datePopover {
   position: absolute !important;
-    will-change: transform !important;
-    top: -220px !important;
-    left: 0px !important;
-    transform: translate3d(435px, 222px, 0px) !important;
-    width: 215px !important;
-    padding: 10px !important;
-    margin-left: -434px !important;
+  will-change: transform !important;
+  top: -220px !important;
+  left: 0px !important;
+  transform: translate3d(435px, 222px, 0px) !important;
+  width: 215px !important;
+  padding: 10px !important;
+  margin-left: -434px !important;
 }
-.body-Popover{
+.body-Popover {
   padding: 15px !important;
 }
 /* File Upload Logs Css End */
