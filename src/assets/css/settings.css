@@ -11,7 +11,7 @@
   color: #2561a8;
   font-family: Lato;
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 500;
   line-height: 19px;
   text-align: left;
 }
@@ -19,10 +19,11 @@
 /* chetan settings starts */
 .setting-title {
   background-color: #ecf2f4;
-  padding: 18px 35px;
+  padding: 18px 35px !important;
 }
 .setting-title p {
-  font-size: 18px;
+  font-size: 20px;
+  color: #000;
 }
 .setting-tabs {
   padding: 15px 20px;
@@ -30,47 +31,79 @@
 .setting-tabs ul {
   border: none;
 }
+.setting-tabs .nav-tabs .nav-item {
+  margin-right: 30px;
+}
 .setting-tabs .nav-tabs .nav-link {
   font-weight: 400;
-  padding: 7px 30px;
+  padding: 7px 0px;
   border-radius: 3px;
 }
 .setting-tabs .nav-tabs .nav-link.active {
   border: none;
   background-color: #2561a8;
   color: #fff;
+  padding: 7px 30px;
   font-weight: 700;
 }
 .setting-tabs .tab-content {
-  padding: 20px 0;
+  padding: 25px 0;
 }
 .setting-tabs .tab-content .tab-pane .row {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 .setting-tabs .tab-content .tab-pane .row:last-child {
   margin-bottom: 0px;
 }
+.setting-tabs .row > div {
+  padding-right: 10px;
+  padding-left: 10px;
+}
+.setting-tabs .row {
+  margin-right: -10px;
+  margin-left: -10px;
+}
 .setting-cntr {
   background-color: #fff;
   border-radius: 6px;
-  padding: 30px;
+  padding: 10px;
 }
 .setting-cntr p {
   font-size: 12px;
   margin-top: 2px;
+  color: #4a4a4a;
+  min-height: 72px;
 }
 .setting-cntr strong {
   color: #2561a8;
 }
 .setting-box {
   display: flex;
-  margin-bottom: 35px;
+  margin-bottom: 10px;
+  padding: 20px 20px 15px;
+  border-radius: 5px;
+  transition: all 0.3s ease-in-out;
+}
+.setting-box:hover {
+  background-color: #f4f7fa;
 }
 .setting-cntr .setting-box:last-child {
   margin-bottom: 0px;
 }
 .setting-desc {
   padding-left: 20px;
+}
+.setting-icons {
+  flex: 0 0 22px;
+}
+.icon-small {
+  flex: 0 0 18px;
+}
+.big-icon {
+  flex: 0 0 25px;
+}
+.setting-icons img {
+  width: 100%;
 }
 /* chetan settings ends */
 
@@ -346,6 +379,133 @@
 }
 /* chetan priority settings ends */
 
+/* chetan hierarchy master settings starts */
+.store-settings-cntr {
+  padding: 15px 20px;
+}
+.store-settings-cntr table th {
+  font-size: 13px;
+}
+.store-settings-cntr table td {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.store-settings-cntr table tr td:last-child,
+.store-settings-cntr table tr th:last-child {
+  padding-right: 50px;
+}
+.store-settings-cntr .butn {
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  padding: 6px 17px;
+  min-width: auto;
+}
+.del-btn {
+  width: 14px;
+  display: inline-block;
+  margin-right: 20px;
+}
+.del-btn img {
+  width: 100%;
+}
+.store-settings-cntr .pagi ul li {
+  font-size: 14px;
+  width: 30px;
+  height: 30px;
+  line-height: 28px;
+}
+.store-settings-cntr .pagi {
+  padding-top: 35px;
+  padding-bottom: 35px;
+}
+.item-selection select {
+  color: #4a4a4a;
+  font-size: 12px;
+  border: 1px solid #e7eaec;
+  border-radius: 4px;
+  background: url("./../Images/table-arr-dark.png") no-repeat right 6px center;
+  background-size: 9px;
+  padding: 6px 14px 6px 10px;
+}
+.item-selection p {
+  font-size: 12px;
+  display: inline-block;
+  margin-left: 7px;
+}
+.item-selection {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 30px;
+}
+.general-popover .popover {
+  border: 0;
+  box-shadow: 0 0px 10px 0 rgba(0, 0, 0, 0.2);
+}
+.general-popover .popover .arrow {
+  width: 26px;
+  height: 18px;
+  margin: 0;
+}
+.general-popover .popover-body {
+  padding: 25px 35px;
+  color: #4a4a4a;
+  font-family: "Lato", sans-serif;
+}
+.created-popover .title {
+  font-weight: 700;
+  font-size: 16px;
+}
+.created-popover .sub-title {
+  font-size: 13px;
+  color: #9b9b9b;
+  margin-top: 2px;
+}
+.created-popover .popover-body div {
+  margin-bottom: 20px;
+}
+.created-popover .popover-body div:last-child {
+  margin-bottom: 0px;
+}
+.general-popover .bs-popover-auto[x-placement^="bottom"] .arrow::after,
+.general-popover .bs-popover-auto[x-placement^="bottom"] .arrow::before,
+.general-popover .bs-popover-bottom .arrow::after,
+.general-popover .bs-popover-bottom .arrow::before {
+  border-width: 0 13px 18px 13px;
+}
+.general-popover .bs-popover-auto[x-placement^="top"] .arrow::after,
+.general-popover .bs-popover-auto[x-placement^="top"] .arrow::before,
+.general-popover .bs-popover-top .arrow::after,
+.general-popover .bs-popover-top .arrow::before {
+  border-width: 18px 13px 0;
+}
+.general-popover .bs-popover-auto[x-placement^="bottom"] .arrow,
+.general-popover .bs-popover-bottom .arrow {
+  top: -19px;
+}
+.general-popover .bs-popover-auto[x-placement^="top"] .arrow,
+.general-popover .bs-popover-top .arrow {
+  bottom: -19px;
+}
+.general-popover .bs-popover-auto[x-placement^="bottom"] .arrow::before,
+.general-popover .bs-popover-bottom .arrow::before {
+  border-bottom-color: rgba(0, 0, 0, 0.01);
+}
+.general-popover .bs-popover-auto[x-placement^="top"] .arrow::before,
+.general-popover .bs-popover-top .arrow::before {
+  border-top-color: rgba(0, 0, 0, 0.01);
+}
+.general-popover .bs-popover-auto[x-placement^="bottom"],
+.general-popover .bs-popover-bottom {
+  margin-top: 24px;
+}
+.general-popover .bs-popover-auto[x-placement^="top"],
+.general-popover .bs-popover-top {
+  margin-bottom: 24px;
+}
+/* chetan hierarchy master settings ends */
+
 .breadcrumbs-row-padding {
   padding: 15px;
   padding-left: 35px;
@@ -353,10 +513,10 @@
 /* .row{
   margin-right: 0px;
 } */
-/* ----------------------------------------------------------------- */
+/* --------------------------------------------------------------- */
 
-/* ------------------------Shlok Ticket Hierarchy css start------------------------------ */
-/* --------------------------Date : 13-09-2019 -------------------------------- */
+/* ------------------------Shlok Ticket Hierarchy css start------------ */
+/* --------------------------Date : 13-09-2019 ----------------------- */
 .mainDivPadding {
   padding-bottom: 25px;
 }
@@ -500,7 +660,7 @@
   line-height: 19px;
   text-align: left;
 }
-.txt-1{
+.txt-1 {
   background-color: #ecf2f4;
   border-radius: 4px;
   width: 265px;
