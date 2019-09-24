@@ -707,17 +707,11 @@
   line-height: 14px;
   text-align: left;
 }
-.datePopover{
-  position: absolute !important;
-    will-change: transform !important;
-    top: -220px !important;
-    left: 0px !important;
-    transform: translate3d(435px, 222px, 0px) !important;
-    width: 215px !important;
-    padding: 10px !important;
-    margin-left: -434px !important;
-}
-.body-Popover{
-  padding: 15px !important;
+.popover-main{
+  padding: 20px;
+  padding-left: 25px;
+  min-width: -8%;
+  width:400px;
+  height: 110px;
 }
 /* File Upload Logs Css End */

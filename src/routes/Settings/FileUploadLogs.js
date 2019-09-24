@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import TableArr from "./../../assets/Images/table-arr.png";
 import InfoIcon from "./../../assets/Images/Info-black.png";
-
 class FileUploadLogs extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { };
   }
   render() {
     return (
@@ -45,8 +44,9 @@ class FileUploadLogs extends Component {
               <tr>
                 <td>Users</td>
                 <td>Users.xls</td>
-                <td>02-09-2019
-                <img className="info-icon" src={InfoIcon} alt="info-icon" />
+                <td>
+                  02-09-2019
+                  <img className="info-icon" src={InfoIcon} alt="info-icon" />
                 </td>
                 <td>Inprogress</td>
                 <td></td>
@@ -55,6 +55,30 @@ class FileUploadLogs extends Component {
               <tr>
                 <td>SLA</td>
                 <td>SLA.csv</td>
+                <td>
+                  02-09-2019
+                      <img
+                        className="info-icon"
+                        src={InfoIcon}
+                        alt="info-icon"
+                      />
+                   
+                </td>
+                <td>Completed</td>
+                <td>
+                  <button className="downloadBtn">
+                    <label className="lblDownloadbtn">DOWNLOAD</label>
+                  </button>
+                </td>
+                <td>
+                  <button className="downloadBtn">
+                    <label className="lblDownloadbtn">DOWNLOAD</label>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td>Category</td>
+                <td>Category.xls</td>
                 <td>
                   02-09-2019
                   <img className="info-icon" src={InfoIcon} alt="info-icon" />
@@ -72,28 +96,11 @@ class FileUploadLogs extends Component {
                 </td>
               </tr>
               <tr>
-                <td>Category</td>
-                <td>Category.xls</td>
-                <td>02-09-2019
-                <img className="info-icon" src={InfoIcon} alt="info-icon" />
-                </td>
-                <td>Completed</td>
-                <td>
-                  <button className="downloadBtn">
-                    <label className="lblDownloadbtn">DOWNLOAD</label>
-                  </button>
-                </td>
-                <td>
-                  <button className="downloadBtn">
-                    <label className="lblDownloadbtn">DOWNLOAD</label>
-                  </button>
-                </td>
-              </tr>
-              <tr>
                 <td>Store</td>
                 <td>Store.xls</td>
-                <td>02-09-2019
-                <img className="info-icon" src={InfoIcon} alt="info-icon" />
+                <td>
+                  02-09-2019
+                  <img className="info-icon" src={InfoIcon} alt="info-icon" />
                 </td>
                 <td>Completed</td>
                 <td>
@@ -110,8 +117,9 @@ class FileUploadLogs extends Component {
               <tr>
                 <td>Item Master</td>
                 <td>Item Master.xls</td>
-                <td>02-09-2019
-                <img className="info-icon" src={InfoIcon} alt="info-icon" />
+                <td>
+                  02-09-2019
+                  <img className="info-icon" src={InfoIcon} alt="info-icon" />
                 </td>
                 <td>Completed</td>
                 <td>
