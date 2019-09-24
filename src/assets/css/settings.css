@@ -11,7 +11,7 @@
   color: #2561a8;
   font-family: Lato;
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 500;
   line-height: 19px;
   text-align: left;
 }
@@ -353,10 +353,10 @@
 /* .row{
   margin-right: 0px;
 } */
-/* ----------------------------------------------------------------- */
+/* --------------------------------------------------------------- */
 
-/* ------------------------Shlok Ticket Hierarchy css start------------------------------ */
-/* --------------------------Date : 13-09-2019 -------------------------------- */
+/* ------------------------Shlok Ticket Hierarchy css start------------ */
+/* --------------------------Date : 13-09-2019 ----------------------- */
 .mainDivPadding {
   padding-bottom: 25px;
 }
@@ -653,3 +653,71 @@
   margin-top: -35px;
 }
 /* --------------Css end-------------------------- */
+/* Shlok File Upload Logs css start */
+.fileUploadTable{
+  background-color: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.05);
+  height: 870px;
+  margin-left: 35px;
+  margin-right: 35px;
+  margin-top: -10px;
+}
+.lblFileUpload{
+  color: #6B6C6D;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  text-align: left;
+}
+.downloadBtn{
+  background-color: #2561A8;
+  border-radius: 4px;
+  width: 76px;
+  height: 25px;
+  padding: 0px !important;
+  min-width: 85px;
+}
+.lblDownloadbtn{
+  color: #FFFFFF;
+  font-family: Lato;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 16px;
+  text-align: left;
+}
+.thRowSpace{
+  width: 20%;
+}
+.created-by-Date{
+  color: rgba(0, 0, 0, 0.8);
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: left;
+  margin-bottom: 15px;
+}
+.subCreated-Date{
+  color: rgba(0, 0, 0, 0.5);
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14px;
+  text-align: left;
+}
+.datePopover{
+  position: absolute !important;
+    will-change: transform !important;
+    top: -220px !important;
+    left: 0px !important;
+    transform: translate3d(435px, 222px, 0px) !important;
+    width: 215px !important;
+    padding: 10px !important;
+    margin-left: -434px !important;
+}
+.body-Popover{
+  padding: 15px !important;
+}
+/* File Upload Logs Css End */
