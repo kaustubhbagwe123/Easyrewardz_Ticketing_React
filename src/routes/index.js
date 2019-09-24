@@ -15,6 +15,7 @@ import QADashboardSearch from "./QA/QADashboardSearch";
 import ChatDashboard from "./Chat/ChatDashboard";
 import QAAuditview from "./QA/QAAuditview";
 import KnowledgeBase from "./KnowledgeBase";
+import HierarchyMaster from "./Settings/Store/HierarchyMaster";
 // import Aux from "./../Component/Aux";
 
 export class App extends Component {
@@ -72,6 +73,11 @@ export class App extends Component {
           exact
           path={`${match.url}/qaauditview`}
           component={QAAuditview}
+        />
+        <Route
+          exact
+          path={`${match.url}/hierarchyMaster`}
+          component={HierarchyMaster}
         />
       </Layout>
     );

@@ -19,10 +19,11 @@
 /* chetan settings starts */
 .setting-title {
   background-color: #ecf2f4;
-  padding: 18px 35px;
+  padding: 15px 35px !important;
 }
 .setting-title p {
-  font-size: 18px;
+  font-size: 20px;
+  color: #000;
 }
 .setting-tabs {
   padding: 15px 20px;
@@ -30,47 +31,79 @@
 .setting-tabs ul {
   border: none;
 }
+.setting-tabs .nav-tabs .nav-item {
+  margin-right: 30px;
+}
 .setting-tabs .nav-tabs .nav-link {
   font-weight: 400;
-  padding: 7px 30px;
+  padding: 7px 0px;
   border-radius: 3px;
 }
 .setting-tabs .nav-tabs .nav-link.active {
   border: none;
   background-color: #2561a8;
   color: #fff;
+  padding: 7px 30px;
   font-weight: 700;
 }
 .setting-tabs .tab-content {
-  padding: 20px 0;
+  padding: 25px 0;
 }
 .setting-tabs .tab-content .tab-pane .row {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 .setting-tabs .tab-content .tab-pane .row:last-child {
   margin-bottom: 0px;
 }
+.setting-tabs .row > div {
+  padding-right: 10px;
+  padding-left: 10px;
+}
+.setting-tabs .row {
+  margin-right: -10px;
+  margin-left: -10px;
+}
 .setting-cntr {
   background-color: #fff;
   border-radius: 6px;
-  padding: 30px;
+  padding: 10px;
 }
 .setting-cntr p {
   font-size: 12px;
   margin-top: 2px;
+  color: #4a4a4a;
+  min-height: 72px;
 }
 .setting-cntr strong {
   color: #2561a8;
 }
 .setting-box {
   display: flex;
-  margin-bottom: 35px;
+  margin-bottom: 10px;
+  padding: 20px 20px 15px;
+  border-radius: 5px;
+  transition: all 0.3s ease-in-out;
+}
+.setting-box:hover {
+  background-color: #f4f7fa;
 }
 .setting-cntr .setting-box:last-child {
   margin-bottom: 0px;
 }
 .setting-desc {
   padding-left: 20px;
+}
+.setting-icons {
+  flex: 0 0 22px;
+}
+.icon-small {
+  flex: 0 0 18px;
+}
+.big-icon {
+  flex: 0 0 25px;
+}
+.setting-icons img {
+  width: 100%;
 }
 /* chetan settings ends */
 
