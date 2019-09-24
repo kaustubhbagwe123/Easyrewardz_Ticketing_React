@@ -80,7 +80,7 @@ class StoreTaskView extends Component {
                     <div className="d-flex align-items-center justify-content-between">
                       <div className="str-owner">
                         <div className="str-img">
-                          <img src={StrImg} alt="store image icon" />
+                          <img src={StrImg} alt="store icon" />
                         </div>
                         <p>Naman.R</p>
                       </div>
@@ -100,7 +100,7 @@ class StoreTaskView extends Component {
                     <div className="d-flex align-items-center justify-content-between">
                       <div className="str-owner">
                         <div className="str-img">
-                          <img src={StrImg} alt="store image icon" />
+                          <img src={StrImg} alt="store icon" />
                         </div>
                         <p>Naman.R</p>
                       </div>
@@ -126,7 +126,7 @@ class StoreTaskView extends Component {
                     <label>Issue Raised By:</label>
                     <div className="str-owner">
                       <div className="str-img">
-                        <img src={StrImg} alt="store image icon" />
+                        <img src={StrImg} alt="store icon" />
                       </div>
                       <p>Naman Rampal</p>
                     </div>

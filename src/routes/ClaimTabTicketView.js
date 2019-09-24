@@ -647,7 +647,7 @@ class ClaimTabTicketView extends Component {
               <div className="col-md-7">
                 <div className="row">
                   <div className="col-md-2">
-                    <div className="oval-5">
+                    <div className="oval-5-1-new">
                       <img
                         src={StoreIcon}
                         style={{ padding: "2px" }}
@@ -669,7 +669,7 @@ class ClaimTabTicketView extends Component {
                 </div>
                 <div className="row">
                   <div className="col-md-2">
-                    <div className="oval-5">
+                    <div className="oval-5-1-new">
                       <img
                         src={StoreIcon}
                         style={{ padding: "2px" }}

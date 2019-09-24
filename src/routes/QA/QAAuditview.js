@@ -560,7 +560,7 @@ class QAAuditview extends Component {
                                   type="radio"
                                   value="1"
                                   name="multifeatured_module[module_id][status]"
-                                  checked="checked"
+                                  
                                 />
                                 YES
                               </label>
@@ -593,7 +593,7 @@ class QAAuditview extends Component {
                                   type="radio"
                                   value="1"
                                   name="multifeatured_module[module_id][status]"
-                                  checked="checked"
+                                 
                                 />
                                 YES
                               </label>
@@ -634,7 +634,7 @@ class QAAuditview extends Component {
                                   type="radio"
                                   value="1"
                                   name="multifeatured_module[module_id][status]"
-                                  checked="checked"
+                                  
                                 />
                                 YES
                               </label>
@@ -675,7 +675,7 @@ class QAAuditview extends Component {
                                   type="radio"
                                   value="1"
                                   name="multifeatured_module[module_id][status]"
-                                  checked="checked"
+                                
                                 />
                                 YES
                               </label>
@@ -739,7 +739,7 @@ class QAAuditview extends Component {
                                   type="radio"
                                   value="1"
                                   name="multifeatured_module[module_id][status]"
-                                  checked="checked"
+                              
                                 />
                                 YES
                               </label>
@@ -772,7 +772,7 @@ class QAAuditview extends Component {
                                   type="radio"
                                   value="1"
                                   name="multifeatured_module[module_id][status]"
-                                  checked="checked"
+                                  
                                 />
                                 YES
                               </label>
@@ -805,7 +805,7 @@ class QAAuditview extends Component {
                                   type="radio"
                                   value="1"
                                   name="multifeatured_module[module_id][status]"
-                                  checked="checked"
+                               
                                 />
                                 YES
                               </label>
@@ -838,7 +838,7 @@ class QAAuditview extends Component {
                                   type="radio"
                                   value="1"
                                   name="multifeatured_module[module_id][status]"
-                                  checked="checked"
+                                
                                 />
                                 YES
                               </label>
@@ -871,7 +871,7 @@ class QAAuditview extends Component {
                                   type="radio"
                                   value="1"
                                   name="multifeatured_module[module_id][status]"
-                                  checked="checked"
+                                  
                                 />
                                 YES
                               </label>
@@ -904,7 +904,7 @@ class QAAuditview extends Component {
                                   type="radio"
                                   value="1"
                                   name="multifeatured_module[module_id][status]"
-                                  checked="checked"
+                                 
                                 />
                                 YES
                               </label>
