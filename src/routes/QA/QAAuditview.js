@@ -15,7 +15,7 @@ import FacebookImg from './../../assets/Images/facebook.png';
 import ClipImg from './../../assets/Images/clip.png';
 import Headphone2Img from './../../assets/Images/headphone2.png';
 import BlackUserIcon from './../../assets/Images/avatar.png'
-import NoteIcon from './../../assets/Images/note-icon.png';
+import NoteIcon from './../../assets/Images/task-new-1.svg';
 import RactRightIcon from './../../assets/Images/ract-right.png';
 import { Accordion,Card } from 'react-bootstrap';
 // import Modal from "react-responsive-modal";

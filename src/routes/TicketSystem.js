@@ -184,12 +184,21 @@ class TicketSystem extends Component {
                           className="row rowmargin"
                           style={{ marginLeft: "26px", marginTop: "14px" }}
                         >
-                          <input
-                            type="checkbox"
-                            className="screen-shot-2018-04-17-at-4-39-16-pm"
-                            onChange={() => this.showAddNoteFuncation()}
-                          />
-                          <label className="add-note">Add Note</label>
+                           <div className="filter-checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id="fil-open"
+                                    name="filter-type"
+                                    style={{display:"none"}}
+                                    onChange={() => this.showAddNoteFuncation()}
+                                  />
+                                  <label htmlFor="fil-open" style={{paddingLeft:"25px"}}>
+                                    <span className="add-note">
+                                    Add Note
+                                    </span>
+                                  </label>
+                                </div>
+                        
                         </div>
                         {this.state.showAddNote ? (
                           <div

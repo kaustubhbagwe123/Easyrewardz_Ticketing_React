@@ -862,7 +862,7 @@
 .plush-img {
   width: 18px;
   height: 18px;
-  margin-left: 785%;
+  margin-left: 790%;
   margin-top: -40%;
 }
 .line-1 {
@@ -1283,9 +1283,7 @@ table {
   font-weight: 700;
   line-height: 17px;
   text-align: left;
-  padding-left: 8px;
-  padding-top: 2px;
-}
+ }
 
 .email-id {
   color: #9b9b9b;
@@ -3166,7 +3164,12 @@ progress::-moz-progress-bar {
 /* model close button css */
 .styles_closeButton__20ID4 {
   display: none;
+ 
 }
+ .ReactModal__Overlay{
+  background-color: rgba(77, 92, 116, 0.2) !important;
+ }
+ 
 /* .styles_modal__gNwvD
 {
   top: 7%;
@@ -3212,12 +3215,13 @@ progress::-moz-progress-bar {
 }
 
 .claim-category {
-  color: #9b9b9b;
+  color: #9B9B9B;
   font-family: Lato;
   font-size: 10px;
   font-weight: 700;
   line-height: 12px;
   text-align: left;
+
 }
 
 .sub-category {
@@ -3314,6 +3318,9 @@ progress::-moz-progress-bar {
   border-radius: 4px;
   width: 359px;
   height: 198px;
+  border: none;
+  resize: none;
+  padding: 5px;
 }
 
 /* ----- */
@@ -4738,3 +4745,51 @@ background: #ECF2F4 url("../Images//down-1.png") no-repeat right 7% center;
 /* ----------------------------------------------------------- */
 
 /* ------------------------------------end---------------------------------- */
+
+/* ---------------------------------myticket list----------------- */
+
+.header-list-text{
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  text-align: left;
+}
+
+.claim-modal-scroll .row {
+  margin-right: 0;
+}
+
+.forgotpass-card{
+
+  background-color: #FFFFFF;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
+  width: 406px;
+  height: 438px;
+}
+.forgot-pass-text{
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 28px;
+  font-weight: 300;
+  line-height: 34px;
+  text-align: left;
+  margin-top: 28px;
+}
+
+.recovery-pass-button{
+  background-color: #2561a8;
+  border-radius: 4px;
+  width: 282px;
+  height: 43px;
+  
+}
+
+.programcode-card-new{
+  background-color: #FFFFFF;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
+  width: 406px;
+  height: 318px;
+}
+

@@ -11,7 +11,7 @@ class ForgotPassword extends Component {
     return (
       <div className="auth-wrapper">
         <div className="auth-content">
-          <div className="card">
+          <div className="card forgotpass-card">
             <div className="card-body text-center">
               <div className="mb-4">
                 <img src={logo} style={{ width: "210px" }} alt="logo" />
@@ -20,7 +20,7 @@ class ForgotPassword extends Component {
                 <h3 className="m-0" style={{ textAlign: "left" }}>
                   {" "}
                   <label
-                    className="col-mb-3 col-form-label col-form-label p-0"
+                    className="col-mb-3 col-form-label col-form-label p-0 forgot-pass-text"
                     style={{ fontWeight: "300" }}
                   >
                     FORGOT PASSWORD
@@ -29,7 +29,7 @@ class ForgotPassword extends Component {
               </div>
               <div className="input-group sb-2">
                 <label
-                  className="col-mb-3 col-form-label col-form-label pt-0"
+                  className="col-mb-3 col-form-label col-form-label pt-0 "
                   style={{
                     fontWeight: "bold",
                     color: "#a5a5a5",
@@ -45,7 +45,7 @@ class ForgotPassword extends Component {
               <div className="input-group mb-3">
                 <button
                   type="button"
-                  className="program-code-button"
+                  className="recovery-pass-button"
                   title=""
                   data-toggle="tooltip"
                   data-original-title="btn btn-primary"

@@ -254,7 +254,7 @@ class ClaimTabTicketView extends Component {
                   </div>
                 </div>
                 <div className="row msg-row">
-                  <div className="col-md-2">
+                  <div className="col-md-2" >
                     <label className="messages-04">Messages: 04</label>
                   </div>
                   <div className="col-md-2">
@@ -438,13 +438,13 @@ class ClaimTabTicketView extends Component {
                     <label className="claim-category">CLAIM CATEGORY</label>
                   </div>
                   <div className="col-md-3">
-                    <label className="sub-category">SUB CATEGORY</label>
+                    <label className="claim-category">SUB CATEGORY</label>
                   </div>
                   <div className="col-md-3">
-                    <label className="claim-type">CLAIM TYPE</label>
+                    <label className="claim-category">CLAIM TYPE</label>
                   </div>
                   <div className="col-md-3">
-                    <label className="claim-asked-for">CLAIM ASKED FOR</label>
+                    <label className="claim-category">CLAIM ASKED FOR</label>
                   </div>
                 </div>
                 <div className="row">
@@ -452,27 +452,27 @@ class ClaimTabTicketView extends Component {
                     <label className="recent-orders">RECENT ORDERS</label>
                   </div>
                   <div className="col-md-3">
-                    <label className="refund">REFUND</label>
+                    <label className="recent-orders">REFUND</label>
                   </div>
                   <div className="col-md-3">
-                    <label className="refund">REFUND</label>
+                    <label className="recent-orders">REFUND</label>
                   </div>
                   <div className="col-md-3">
-                    <label className="refund">10</label>
+                    <label className="recent-orders">10</label>
                   </div>
                 </div>
                 <div className="row">
                   <div className="col-md-3">
-                    <label className="customer-name">CUSTOMER NAME</label>
+                    <label className="claim-category">CUSTOMER NAME</label>
                   </div>
                   <div className="col-md-3">
-                    <label className="phone-number">PHONE NUMBER</label>
+                    <label className="claim-category">PHONE NUMBER</label>
                   </div>
                   <div className="col-md-3">
-                    <label className="email-id">EMAIL</label>
+                    <label className="claim-category">EMAIL</label>
                   </div>
                   <div className="col-md-3">
-                    <label className="gender">GENDER</label>
+                    <label className="claim-category">GENDER</label>
                   </div>
                 </div>
                 <div className="row">
@@ -637,7 +637,7 @@ class ClaimTabTicketView extends Component {
               </div>
             </div>
             <br />
-            <div className="row" style={{ marginLeft: "5px" }}>
+            <div className="row removemarg" style={{ marginLeft: "5px" }}>
               <div className="col-md-5">
                 <textarea
                   className="Add-Comments-textarea"
@@ -691,7 +691,7 @@ class ClaimTabTicketView extends Component {
                 </div>
               </div>
             </div>
-            <div className="row" style={{ marginLeft: "5px" }}>
+            <div className="row" style={{ marginLeft: "5px",marginRight:"0px" }}>
               <div className="col-md-5">
                 <button className="add-comment-button">
                   <label className="add-comment-text">ADD COMMENT</label>
