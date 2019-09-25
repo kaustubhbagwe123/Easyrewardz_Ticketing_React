@@ -1598,6 +1598,9 @@ body {
   font-size: 14px;
   font-weight: 500;
 }
+.fs-12 {
+  font-size: 12px;
+}
 button {
   background-color: #ecf2f4;
   border: 1px solid #2561a8;
