@@ -3,6 +3,7 @@ import TableArr from "./../../../assets/Images/table-arr.png";
 import React, { Component } from "react";
 import InfoIcon from "./../../../assets/Images/Info-black.png";
 import DelIcon from "./../../../assets/Images/red-delete-icon.png";
+import DelBigIcon from "./../../../assets/Images/del-big.png";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
 
 class HierarchyMaster extends Component {
@@ -51,12 +52,12 @@ class HierarchyMaster extends Component {
                             className="info-icon"
                             src={InfoIcon}
                             alt="info-icon"
-                            id="PopoverLegacy"
+                            id="created1"
                           />
                           <UncontrolledPopover
                             trigger="hover"
                             placement="bottom"
-                            target="PopoverLegacy"
+                            target="created1"
                             className="general-popover created-popover"
                           >
                             <PopoverBody>
@@ -92,13 +93,55 @@ class HierarchyMaster extends Component {
                             className="info-icon"
                             src={InfoIcon}
                             alt="info-icon"
+                            id="created2"
                           />
+                          <UncontrolledPopover
+                            trigger="hover"
+                            placement="bottom"
+                            target="created2"
+                            className="general-popover created-popover"
+                          >
+                            <PopoverBody>
+                              <div>
+                                <p className="title">Created By: Admin</p>
+                                <p className="sub-title">
+                                  Created Date: 12 March 2018
+                                </p>
+                              </div>
+                              <div>
+                                <p className="title">Updated By: Manager</p>
+                                <p className="sub-title">
+                                  Updated Date: 12 March 2018
+                                </p>
+                              </div>
+                            </PopoverBody>
+                          </UncontrolledPopover>
                         </td>
                         <td>Inactive</td>
                         <td>
-                          <div className="del-btn">
+                          <div className="del-btn" id="del2">
                             <img src={DelIcon} alt="del-icon" />
                           </div>
+                          <UncontrolledPopover
+                            trigger="legacy"
+                            placement="bottom"
+                            target="del2"
+                            className="general-popover delete-popover"
+                          >
+                            <PopoverBody>
+                              <div className="del-big-icon">
+                                <img src={DelBigIcon} alt="del-icon" />
+                              </div>
+                              <div>
+                                <p className="font-weight-bold blak-clr">
+                                  Delete file?
+                                </p>
+                                <p className="mt-1">
+                                  Are you sure you want to delete this file?
+                                </p>
+                              </div>
+                            </PopoverBody>
+                          </UncontrolledPopover>
                           <button className="butn">EDIT</button>
                         </td>
                       </tr>

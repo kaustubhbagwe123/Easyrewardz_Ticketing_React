@@ -449,9 +449,15 @@
   margin: 0;
 }
 .general-popover .popover-body {
-  padding: 25px 35px;
   color: #4a4a4a;
   font-family: "Lato", sans-serif;
+  padding: 25px;
+}
+.created-popover .popover-body {
+  padding: 25px 35px;
+}
+.created-popover .popover-inner {
+  pointer-events: none;
 }
 .created-popover .title {
   font-weight: 700;
@@ -467,6 +473,19 @@
 }
 .created-popover .popover-body div:last-child {
   margin-bottom: 0px;
+}
+.delete-popover .popover-body {
+  padding: 20px;
+  padding-top: 30px;
+}
+.del-big-icon {
+  background-color: #f3f3f3;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .general-popover .bs-popover-auto[x-placement^="bottom"] .arrow::after,
 .general-popover .bs-popover-auto[x-placement^="bottom"] .arrow::before,
