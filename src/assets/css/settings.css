@@ -832,8 +832,330 @@
   margin-top: -35px;
 }
 /* --------------Css end-------------------------- */
+
+/* ---------------------------------Category Master ------------------------- */ 
+.category-master-table table tr td:first-child
+{
+
+  padding-right: 60px !important;
+
+}
+/* .delete-combined-shape{
+  background-color: #FFFFFF;
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
+  width: 277px;
+  height: 170px;
+} */
+
+.bottom-margin-class .row{
+  margin-right: 0
+}
+
+.oval-delete{
+  background-color: #F3F3F3;
+  border-radius: 100%;
+  width: 50px;
+  height: 50px;
+}
+
+.oval-delete-icons{
+  width: 28px;
+  height: 28px;
+  margin-left: 10px;
+  margin-top: 10px;
+}
+.delete-file-popover{
+  color: #000000;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+  width: 77px;
+  text-align: left;
+}
+
+.delete-details-popovel{
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  width: 165px;
+  text-align: left;
+}
+.popver-delete-mar{
+
+  margin-top: 20px;
+  margin-left: 20px;
+}
+.popover-delete-btn{
+  background-color: #2561A8;
+  border-radius: 4px;
+  width: 98px;
+  height: 30px;
+  margin-right: 21px;
+  padding: 0;
+}
+.popover-delete-btn-text{
+  color: #FFFFFF;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14px;
+  text-align: left;
+}
+.popover-delete-cancel {
+  color: #2561A8;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14px;
+  text-align: left;
+  margin-top: 10px;
+margin-right:5px; 
+}
+.btn-del-pop button{
+  padding: 0;
+} 
+.mrg-can-del-row{
+  margin-top: 10px;
+  float: right;
+
+} 
+
+.deletepopover .popover{
+
+  position: absolute;
+    will-change: transform;
+    top: 0px;
+    left: 0px;
+    transform: translate3d(603px, 42px, 0px);
+    max-width: initial;
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
+    width: 277px;
+    height: 170px;
+    border: none;
+	
+}
+
+.abc .popover {
+  max-width: initial;
+  position: absolute;
+  will-change: transform;
+  top: 0px;
+  left: 0px;
+  transform: translate3d(603px, 42px, 0px);
+  max-width: initial;
+  background-color: #FFFFFF;
+  border-radius: 4px;
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
+  width: 250px;
+  height: 340px;
+  border: none;
+}
+/* .abc .popover-body {
+  width: 500px;
+} */
+
+.pop-edit-category-text{
+  color: #2561A8;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: left;
+}
+
+.popover-select{
+  background-color: #ECF2F4;
+  border-radius: 4px;
+  width: 200px;
+  height: 35px;
+}
+.popover-text{
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: left;
+}
+
+.popover-header-text{
+  color: #2561A8;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: left;
+}
+
+.popover-lable-text{
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: left;
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 7px;
+  margin-left: 5px; 
+}
+
+.popover-select-cate{
+   
+  border-radius: 4px;
+  width: 200px;
+  height: 35px;
+  border: none;
+  padding-left: 10px; 
+  background:#ECF2F4 url("../Images/dropDown.png") no-repeat right 12px center;
+}
+
+
+.bottom-margin-class .store-col-1-1 {
+  background-color: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.05);
+  width: 827px;
+  height: 898px;
+  margin-left: 50px;
+}
+
+
+.info-icon-cp{
+      position: relative;
+      left: 5px;
+      bottom: 1px;
+      width: 18px;
+  height: 18px;
+   
+}
+
+.cp-textbox{
+  background-color: #ECF2F4;
+  border-radius: 4px;
+  width: 265px;
+  height: 43px;
+  border: none;
+  margin-top:5px;
+  padding-left: 10px; 
+}
+.cp-textbox::placeholder{
+
+  color: #000000;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  text-align: left;
+}
+
+.crm-pagi .pagi{
+  padding-top: 70%;
+}
+
+
+.roll-radio [type="radio"]:checked,
+[type="radio"]:not(:checked) {
+    position: absolute;
+    left: -9999px;
+}
+.roll-radio [type="radio"]:checked + label,
+[type="radio"]:not(:checked) + label
+{
+  position: relative;
+  padding-left: 24px;
+  cursor: pointer;
+  line-height: 20px;
+  display: inline-block;
+   
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 16px;
+  margin-left: 5px;
+}
+.roll-radio [type="radio"]:checked + label:before,
+[type="radio"]:not(:checked) + label:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #2561A8;
+    border-radius: 100%;
+    background: #fff;
+    
+     
+}
+.roll-radio [type="radio"]:checked + label:after,
+[type="radio"]:not(:checked) + label:after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    background: #2561A8;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    border-radius: 100%;
+    -webkit-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+    color: #2561A8;
+     
+}
+
+.roll-radio [type="radio"]:checked + label {
+  color: #2561A8;
+}
+.roll-radio [type="radio"]:not(:checked) + label:after {
+    opacity: 0;    
+    -webkit-transform: scale(0);
+    transform: scale(0);
+}
+.roll-radio [type="radio"]:checked + label:after {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+}
+
+
+.rolle-name-text{
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 16px;
+  text-align: left;
+       width: 135px;
+    display: inline-block;
+    margin-left: 40px;
+}
+.Create-role-text{
+  color: #2561a8;
+  font-family: Lato;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 22px;
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+.store-col-1-1 .pagi{
+  padding-top: 55%;
+
+}
+
+.ctr-mst .pagi{
+  padding-top: 72%;
+}
+
+/* ------------------------------------end------------------------------------ */
 /* Shlok File Upload Logs css start */
-.fileUploadTable {
+.fileUploadTable{
   background-color: #ffffff;
   border-radius: 4px;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.05);
@@ -842,34 +1164,34 @@
   margin-right: 35px;
   margin-top: -10px;
 }
-.lblFileUpload {
-  color: #6b6c6d;
+.lblFileUpload{
+  color: #6B6C6D;
   font-family: Lato;
   font-size: 16px;
   font-weight: 400;
   line-height: 19px;
   text-align: left;
 }
-.downloadBtn {
-  background-color: #2561a8;
+.downloadBtn{
+  background-color: #2561A8;
   border-radius: 4px;
   width: 76px;
   height: 25px;
   padding: 0px !important;
   min-width: 85px;
 }
-.lblDownloadbtn {
-  color: #ffffff;
+.lblDownloadbtn{
+  color: #FFFFFF;
   font-family: Lato;
   font-size: 11px;
   font-weight: 400;
   line-height: 16px;
   text-align: left;
 }
-.thRowSpace {
+.thRowSpace{
   width: 20%;
 }
-.created-by-Date {
+.created-by-Date{
   color: rgba(0, 0, 0, 0.8);
   font-family: Lato;
   font-size: 14px;
@@ -878,7 +1200,7 @@
   text-align: left;
   margin-bottom: 15px;
 }
-.subCreated-Date {
+.subCreated-Date{
   color: rgba(0, 0, 0, 0.5);
   font-family: Lato;
   font-size: 12px;
@@ -886,17 +1208,11 @@
   line-height: 14px;
   text-align: left;
 }
-.datePopover {
-  position: absolute !important;
-  will-change: transform !important;
-  top: -220px !important;
-  left: 0px !important;
-  transform: translate3d(435px, 222px, 0px) !important;
-  width: 215px !important;
-  padding: 10px !important;
-  margin-left: -434px !important;
-}
-.body-Popover {
-  padding: 15px !important;
+.popover-main{
+  padding: 20px;
+  padding-left: 25px;
+  min-width: -8%;
+  width:400px;
+  height: 110px;
 }
 /* File Upload Logs Css End */
