@@ -78,9 +78,33 @@ class HierarchyMaster extends Component {
                         </td>
                         <td>Active</td>
                         <td>
-                          <div className="del-btn">
+                          <div className="del-btn" id="del1">
                             <img src={DelIcon} alt="del-icon" />
                           </div>
+                          <UncontrolledPopover
+                            trigger="legacy"
+                            placement="bottom"
+                            target="del1"
+                            className="general-popover delete-popover"
+                          >
+                            <PopoverBody className="d-flex">
+                              <div className="del-big-icon">
+                                <img src={DelBigIcon} alt="del-icon" />
+                              </div>
+                              <div>
+                                <p className="font-weight-bold blak-clr">
+                                  Delete file?
+                                </p>
+                                <p className="mt-1 fs-12">
+                                  Are you sure you want to delete this file?
+                                </p>
+                                <div className="del-can">
+                                  <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                  <button className="butn">Delete</button>
+                                </div>
+                              </div>
+                            </PopoverBody>
+                          </UncontrolledPopover>
                           <button className="butn">EDIT</button>
                         </td>
                       </tr>
@@ -128,7 +152,7 @@ class HierarchyMaster extends Component {
                             target="del2"
                             className="general-popover delete-popover"
                           >
-                            <PopoverBody>
+                            <PopoverBody className="d-flex">
                               <div className="del-big-icon">
                                 <img src={DelBigIcon} alt="del-icon" />
                               </div>
@@ -136,9 +160,15 @@ class HierarchyMaster extends Component {
                                 <p className="font-weight-bold blak-clr">
                                   Delete file?
                                 </p>
-                                <p className="mt-1">
+                                <p className="mt-1 fs-12">
                                   Are you sure you want to delete this file?
                                 </p>
+                                <div className="del-can">
+                                  <a className="fs-12" href={Demo.BLANK_LINK}>
+                                    CANCEL
+                                  </a>
+                                  <button className="butn">Delete</button>
+                                </div>
                               </div>
                             </PopoverBody>
                           </UncontrolledPopover>
