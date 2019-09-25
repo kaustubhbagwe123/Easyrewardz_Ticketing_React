@@ -15,7 +15,6 @@ import QADashboardSearch from "./QA/QADashboardSearch";
 import ChatDashboard from "./Chat/ChatDashboard";
 import QAAuditview from "./QA/QAAuditview";
 import KnowledgeBase from "./KnowledgeBase";
-
 import HierarchyMaster from "./Settings/Store/HierarchyMaster";
 import FileUploadLogs from "./Settings/FileUploadLogs";
 // import Aux from "./../Component/Aux";

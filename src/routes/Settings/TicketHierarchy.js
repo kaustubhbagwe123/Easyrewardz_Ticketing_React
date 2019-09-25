@@ -5,6 +5,7 @@ import InfoImg from './../../assets/Images/icons8-info.svg';
 import DeleteIcon from './../../assets/Images/red-delete-icon.png';
 import ClipIcon from './../../assets/Images/clip.png';
 import CancelIcon from './../../assets/Images/cancel.png';
+import { UncontrolledPopover, PopoverBody } from "reactstrap";
 
 class TicketHierarchy extends Component {
   render() {
@@ -44,21 +45,117 @@ class TicketHierarchy extends Component {
                   <td>HOD</td>
                   <td className="root-hod-manager-tea">Root</td>
                   <td className="admin-admin-admin-ad">
-                    Admin <img src={InfoImg} alt="Info" />
+                    Admin
+                    <img
+                      src={InfoImg}
+                      className="info-icon"
+                      alt="Info"
+                      id="Hod"
+                    />
+                    <UncontrolledPopover
+                      trigger="hover"
+                      placement="bottom"
+                      target="Hod"
+                      className="general-popover created-popover"
+                    >
+                      <PopoverBody>
+                        <div>
+                          <p className="title">Created By: Admin</p>
+                          <p className="sub-title">
+                            Created Date: 12 March 2018
+                          </p>
+                        </div>
+                        <div>
+                          <p className="title">Updated By: Manager</p>
+                          <p className="sub-title">
+                            Updated Date: 12 March 2018
+                          </p>
+                        </div>
+                      </PopoverBody>
+                    </UncontrolledPopover>
                   </td>
                   <td className="enabled-enabled-enab">Active</td>
                   <td>
                     <img src={DeleteIcon} alt="Delete" className="deleteImg" />
                     <button className="btnEditAction">
-                      <label className="edit">EDIT</label>
+                      <label className="edit" id="Edit">
+                        EDIT
+                      </label>
                     </button>
+                    <UncontrolledPopover
+                      trigger="legacy"
+                      placement="bottom"
+                      target="Edit"
+                      className="general-popover created-popover"
+                    >
+                      <PopoverBody>
+                        <div>
+                          <p className="edit-user-action">Edit User</p>
+                          <label className="edit-label-1">
+                            Designation Name
+                          </label>
+                          <input
+                            type="text"
+                            className="txt-edit-popover"
+                            placeholder="Designation Name"
+                          />
+                          <label className="edit-label-1">Reports To</label>
+                          <select
+                            id="inputState"
+                            class="form-control dropdown-setting"
+                          >
+                            <option>select</option>
+                            <option>Root</option>
+                          </select>
+                          <label className="edit-label-1">Status</label>
+                          <select
+                            id="inputState"
+                            class="form-control dropdown-setting"
+                          >
+                            <option>Active</option>
+                            <option>Inactive</option>
+                          </select>
+                          
+                        </div>
+                        <div>
+                         <a className="cancle-action" href={Demo.BLANK_LINK}>Cancle</a>
+                        </div>
+                      </PopoverBody>
+                    </UncontrolledPopover>
                   </td>
                 </tr>
                 <tr>
                   <td className="hod-manager-team-lea">Manager</td>
                   <td className="root-hod-manager-tea">HOD</td>
                   <td className="admin-admin-admin-ad">
-                    Admin <img src={InfoImg} alt="Info" />
+                    Admin
+                    <img
+                      src={InfoImg}
+                      className="info-icon"
+                      alt="Info"
+                      id="Manager"
+                    />
+                    <UncontrolledPopover
+                      trigger="hover"
+                      placement="bottom"
+                      target="Manager"
+                      className="general-popover created-popover"
+                    >
+                      <PopoverBody>
+                        <div>
+                          <p className="title">Created By: Admin</p>
+                          <p className="sub-title">
+                            Created Date: 12 March 2018
+                          </p>
+                        </div>
+                        <div>
+                          <p className="title">Updated By: Manager</p>
+                          <p className="sub-title">
+                            Updated Date: 12 March 2018
+                          </p>
+                        </div>
+                      </PopoverBody>
+                    </UncontrolledPopover>
                   </td>
                   <td className="enabled-enabled-enab">Inative</td>
                   <td>
@@ -72,7 +169,34 @@ class TicketHierarchy extends Component {
                   <td className="hod-manager-team-lea">Team Leader</td>
                   <td className="root-hod-manager-tea">Manager</td>
                   <td className="admin-admin-admin-ad">
-                    Admin <img src={InfoImg} alt="Info" />
+                    Admin
+                    <img
+                      src={InfoImg}
+                      className="info-icon"
+                      alt="Info"
+                      id="TeamLeader"
+                    />
+                    <UncontrolledPopover
+                      trigger="hover"
+                      placement="bottom"
+                      target="TeamLeader"
+                      className="general-popover created-popover"
+                    >
+                      <PopoverBody>
+                        <div>
+                          <p className="title">Created By: Admin</p>
+                          <p className="sub-title">
+                            Created Date: 12 March 2018
+                          </p>
+                        </div>
+                        <div>
+                          <p className="title">Updated By: Manager</p>
+                          <p className="sub-title">
+                            Updated Date: 12 March 2018
+                          </p>
+                        </div>
+                      </PopoverBody>
+                    </UncontrolledPopover>
                   </td>
                   <td className="enabled-enabled-enab">Active</td>
                   <td>
@@ -86,7 +210,34 @@ class TicketHierarchy extends Component {
                   <td className="hod-manager-team-lea">Supervisor</td>
                   <td className="root-hod-manager-tea">Team Leader</td>
                   <td className="admin-admin-admin-ad">
-                    Admin <img src={InfoImg} alt="Info" />
+                    Admin
+                    <img
+                      src={InfoImg}
+                      className="info-icon"
+                      alt="Info"
+                      id="Supervisor"
+                    />
+                    <UncontrolledPopover
+                      trigger="hover"
+                      placement="bottom"
+                      target="Supervisor"
+                      className="general-popover created-popover"
+                    >
+                      <PopoverBody>
+                        <div>
+                          <p className="title">Created By: Admin</p>
+                          <p className="sub-title">
+                            Created Date: 12 March 2018
+                          </p>
+                        </div>
+                        <div>
+                          <p className="title">Updated By: Manager</p>
+                          <p className="sub-title">
+                            Updated Date: 12 March 2018
+                          </p>
+                        </div>
+                      </PopoverBody>
+                    </UncontrolledPopover>
                   </td>
                   <td className="enabled-enabled-enab">Inative</td>
                   <td>
@@ -100,7 +251,34 @@ class TicketHierarchy extends Component {
                   <td className="hod-manager-team-lea">Executive</td>
                   <td className="root-hod-manager-tea">Supervisor</td>
                   <td className="admin-admin-admin-ad">
-                    Admin <img src={InfoImg} alt="Info" />
+                    Admin
+                    <img
+                      src={InfoImg}
+                      className="info-icon"
+                      alt="Info"
+                      id="Executive"
+                    />
+                    <UncontrolledPopover
+                      trigger="hover"
+                      placement="bottom"
+                      target="Executive"
+                      className="general-popover created-popover"
+                    >
+                      <PopoverBody>
+                        <div>
+                          <p className="title">Created By: Admin</p>
+                          <p className="sub-title">
+                            Created Date: 12 March 2018
+                          </p>
+                        </div>
+                        <div>
+                          <p className="title">Updated By: Manager</p>
+                          <p className="sub-title">
+                            Updated Date: 12 March 2018
+                          </p>
+                        </div>
+                      </PopoverBody>
+                    </UncontrolledPopover>
                   </td>
                   <td className="enabled-enabled-enab">Active</td>
                   <td>
@@ -215,9 +393,9 @@ class TicketHierarchy extends Component {
                 <div className="row">
                   <div className="blackDot"></div>
                   <label className="chat-agent-user-type">
-                        Supervisor type file.CSV
+                    Supervisor type file.CSV
                   </label>
-                 <label className="retry">Retry</label>
+                  <label className="retry">Retry</label>
                 </div>
                 <div className="">
                   <label className="failed">Failed</label>
@@ -225,14 +403,14 @@ class TicketHierarchy extends Component {
                 <div className="row">
                   <div className="blackDot"></div>
                   <label className="chat-agent-user-type">
-                  Chat agent 25 Oct type file.CSV
+                    Chat agent 25 Oct type file.CSV
                   </label>
                 </div>
                 <div>
-                <div className="mainProgress">
-                 <div className="ProgressBar"></div>
-                </div>
-                <img src={CancelIcon} alt="Cancel" className="cancelIcon"/>
+                  <div className="mainProgress">
+                    <div className="ProgressBar"></div>
+                  </div>
+                  <img src={CancelIcon} alt="Cancel" className="cancelIcon" />
                 </div>
                 <div className="btnSpace">
                   <button className="CreateADDBtn">

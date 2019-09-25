@@ -405,6 +405,7 @@
   width: 14px;
   display: inline-block;
   margin-right: 20px;
+  cursor: pointer;
 }
 .del-btn img {
   width: 100%;
@@ -442,6 +443,7 @@
 .general-popover .popover {
   border: 0;
   box-shadow: 0 0px 10px 0 rgba(0, 0, 0, 0.2);
+  max-width: initial;
 }
 .general-popover .popover .arrow {
   width: 26px;
@@ -449,9 +451,15 @@
   margin: 0;
 }
 .general-popover .popover-body {
-  padding: 25px 35px;
   color: #4a4a4a;
   font-family: "Lato", sans-serif;
+  padding: 25px;
+}
+.created-popover .popover-body {
+  padding: 25px 35px;
+}
+.created-popover .popover-inner {
+  pointer-events: none;
 }
 .created-popover .title {
   font-weight: 700;
@@ -467,6 +475,31 @@
 }
 .created-popover .popover-body div:last-child {
   margin-bottom: 0px;
+}
+.del-big-icon {
+  background-color: #f3f3f3;
+  border-radius: 50%;
+  flex: 0 0 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20px;
+}
+.del-can button {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  min-width: 105px;
+}
+.del-can {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 25px;
+}
+.del-can a {
+  color: #2561a8;
+  font-size: 12px;
 }
 .general-popover .bs-popover-auto[x-placement^="bottom"] .arrow::after,
 .general-popover .bs-popover-auto[x-placement^="bottom"] .arrow::before,
@@ -608,10 +641,10 @@
   border-color: #d3d3d3;
   box-shadow: inset 0px 0px 5px 0px #d3d3d3;
 }
-.deleteImg {
+.deleteImg{
   opacity: 0.8718843005952381;
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 18px;
   margin-right: 15px;
 }
 .btnEditAction {
@@ -815,14 +848,8 @@
 /* --------------Css end-------------------------- */
 
 /* ---------------------------------Category Master ------------------------- */
-
-
- 
-.category-master-table table tr td:first-child
-{
-
+.category-master-table table tr td:first-child {
   padding-right: 60px !important;
-
 }
 /* .delete-combined-shape{
   background-color: #FFFFFF;
@@ -831,24 +858,24 @@
   height: 170px;
 } */
 
-.bottom-margin-class .row{
-  margin-right: 0
+.bottom-margin-class .row {
+  margin-right: 0;
 }
 
-.oval-delete{
-  background-color: #F3F3F3;
+.oval-delete {
+  background-color: #f3f3f3;
   border-radius: 100%;
   width: 50px;
   height: 50px;
 }
 
-.oval-delete-icons{
+.oval-delete-icons {
   width: 28px;
   height: 28px;
   margin-left: 10px;
   margin-top: 10px;
 }
-.delete-file-popover{
+.delete-file-popover {
   color: #000000;
   font-family: Lato;
   font-size: 14px;
@@ -858,8 +885,8 @@
   text-align: left;
 }
 
-.delete-details-popovel{
-  color: #4A4A4A;
+.delete-details-popovel {
+  color: #4a4a4a;
   font-family: Lato;
   font-size: 12px;
   font-weight: 400;
@@ -867,21 +894,20 @@
   width: 165px;
   text-align: left;
 }
-.popver-delete-mar{
-
+.popver-delete-mar {
   margin-top: 20px;
   margin-left: 20px;
 }
-.popover-delete-btn{
-  background-color: #2561A8;
+.popover-delete-btn {
+  background-color: #2561a8;
   border-radius: 4px;
   width: 98px;
   height: 30px;
   margin-right: 21px;
   padding: 0;
 }
-.popover-delete-btn-text{
-  color: #FFFFFF;
+.popover-delete-btn-text {
+  color: #ffffff;
   font-family: Lato;
   font-size: 12px;
   font-weight: 400;
@@ -889,37 +915,34 @@
   text-align: left;
 }
 .popover-delete-cancel {
-  color: #2561A8;
+  color: #2561a8;
   font-family: Lato;
   font-size: 12px;
   font-weight: 400;
   line-height: 14px;
   text-align: left;
   margin-top: 10px;
-margin-right:5px; 
+  margin-right: 5px;
 }
-.btn-del-pop button{
+.btn-del-pop button {
   padding: 0;
-} 
-.mrg-can-del-row{
+}
+.mrg-can-del-row {
   margin-top: 10px;
   float: right;
+}
 
-} 
-
-.deletepopover .popover{
-
+.deletepopover .popover {
   position: absolute;
-    will-change: transform;
-    top: 0px;
-    left: 0px;
-    transform: translate3d(603px, 42px, 0px);
-    max-width: initial;
-    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
-    width: 277px;
-    height: 170px;
-    border: none;
-	
+  will-change: transform;
+  top: 0px;
+  left: 0px;
+  transform: translate3d(603px, 42px, 0px);
+  max-width: initial;
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
+  width: 277px;
+  height: 170px;
+  border: none;
 }
 
 .abc .popover {
@@ -930,7 +953,7 @@ margin-right:5px;
   left: 0px;
   transform: translate3d(603px, 42px, 0px);
   max-width: initial;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border-radius: 4px;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
   width: 250px;
@@ -941,8 +964,8 @@ margin-right:5px;
   width: 500px;
 } */
 
-.pop-edit-category-text{
-  color: #2561A8;
+.pop-edit-category-text {
+  color: #2561a8;
   font-family: Lato;
   font-size: 14px;
   font-weight: 700;
@@ -950,14 +973,14 @@ margin-right:5px;
   text-align: left;
 }
 
-.popover-select{
-  background-color: #ECF2F4;
+.popover-select {
+  background-color: #ecf2f4;
   border-radius: 4px;
   width: 200px;
   height: 35px;
 }
-.popover-text{
-  color: #4A4A4A;
+.popover-text {
+  color: #4a4a4a;
   font-family: Lato;
   font-size: 12px;
   font-weight: 700;
@@ -965,8 +988,8 @@ margin-right:5px;
   text-align: left;
 }
 
-.popover-header-text{
-  color: #2561A8;
+.popover-header-text {
+  color: #2561a8;
   font-family: Lato;
   font-size: 14px;
   font-weight: 700;
@@ -974,8 +997,8 @@ margin-right:5px;
   text-align: left;
 }
 
-.popover-lable-text{
-  color: #4A4A4A;
+.popover-lable-text {
+  color: #4a4a4a;
   font-family: Lato;
   font-size: 12px;
   font-weight: 700;
@@ -984,19 +1007,17 @@ margin-right:5px;
   display: block;
   margin-top: 10px;
   margin-bottom: 7px;
-  margin-left: 5px; 
+  margin-left: 5px;
 }
 
-.popover-select-cate{
-   
+.popover-select-cate {
   border-radius: 4px;
   width: 200px;
   height: 35px;
   border: none;
-  padding-left: 10px; 
-  background:#ECF2F4 url("../Images/dropDown.png") no-repeat right 12px center;
+  padding-left: 10px;
+  background: #ecf2f4 url("../Images/dropDown.png") no-repeat right 12px center;
 }
-
 
 .bottom-margin-class .store-col-1-1 {
   background-color: #ffffff;
@@ -1007,41 +1028,24 @@ margin-right:5px;
   margin-left: 50px;
 }
 
-/* .store-col-1-1 table tr td:last-child {
-  text-align: center;
-}
-.store-col-1-1 table tr th:last-child {
-  text-align: center;
-} */
-/* 
-.store-col-1-1 table tr td:first-child {
-  text-align: center;
-}
-.store-col-1-1 table tr th:first-child {
-  text-align: center;
-} */
-
-.info-icon-cp{
-    
-      position: relative;
-      left: 5px;
-      bottom: 1px;
-      width: 18px;
+.info-icon-cp {
+  position: relative;
+  left: 5px;
+  bottom: 1px;
+  width: 18px;
   height: 18px;
-   
 }
 
-.cp-textbox{
-  background-color: #ECF2F4;
+.cp-textbox {
+  background-color: #ecf2f4;
   border-radius: 4px;
   width: 265px;
   height: 43px;
   border: none;
-  margin-top:5px;
-  padding-left: 10px; 
+  margin-top: 5px;
+  padding-left: 10px;
 }
-.cp-textbox::placeholder{
-
+.cp-textbox::placeholder {
   color: #000000;
   font-family: Lato;
   font-size: 16px;
@@ -1050,26 +1054,24 @@ margin-right:5px;
   text-align: left;
 }
 
-.crm-pagi .pagi{
+.crm-pagi .pagi {
   padding-top: 70%;
 }
 
-
 .roll-radio [type="radio"]:checked,
 [type="radio"]:not(:checked) {
-    position: absolute;
-    left: -9999px;
+  position: absolute;
+  left: -9999px;
 }
 .roll-radio [type="radio"]:checked + label,
-[type="radio"]:not(:checked) + label
-{
+[type="radio"]:not(:checked) + label {
   position: relative;
   padding-left: 24px;
   cursor: pointer;
   line-height: 20px;
   display: inline-block;
-   
-  color: #4A4A4A;
+
+  color: #4a4a4a;
   font-family: Lato;
   font-size: 13px;
   font-weight: 400;
@@ -1078,61 +1080,57 @@ margin-right:5px;
 }
 .roll-radio [type="radio"]:checked + label:before,
 [type="radio"]:not(:checked) + label:before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 16px;
-    height: 16px;
-    border: 1px solid #2561A8;
-    border-radius: 100%;
-    background: #fff;
-    
-     
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #2561a8;
+  border-radius: 100%;
+  background: #fff;
 }
 .roll-radio [type="radio"]:checked + label:after,
 [type="radio"]:not(:checked) + label:after {
-    content: '';
-    width: 10px;
-    height: 10px;
-    background: #2561A8;
-    position: absolute;
-    top: 3px;
-    left: 3px;
-    border-radius: 100%;
-    -webkit-transition: all 0.2s ease;
-    transition: all 0.2s ease;
-    color: #2561A8;
-     
+  content: "";
+  width: 10px;
+  height: 10px;
+  background: #2561a8;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  border-radius: 100%;
+  -webkit-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+  color: #2561a8;
 }
 
 .roll-radio [type="radio"]:checked + label {
-  color: #2561A8;
+  color: #2561a8;
 }
 .roll-radio [type="radio"]:not(:checked) + label:after {
-    opacity: 0;    
-    -webkit-transform: scale(0);
-    transform: scale(0);
+  opacity: 0;
+  -webkit-transform: scale(0);
+  transform: scale(0);
 }
 .roll-radio [type="radio"]:checked + label:after {
-    opacity: 1;
-    -webkit-transform: scale(1);
-    transform: scale(1);
+  opacity: 1;
+  -webkit-transform: scale(1);
+  transform: scale(1);
 }
 
-
-.rolle-name-text{
-  color: #4A4A4A;
+.rolle-name-text {
+  color: #4a4a4a;
   font-family: Lato;
   font-size: 13px;
   font-weight: 400;
   line-height: 16px;
   text-align: left;
-       width: 135px;
-    display: inline-block;
-    margin-left: 40px;
+  width: 135px;
+  display: inline-block;
+  margin-left: 40px;
 }
-.Create-role-text{
+.Create-role-text {
   color: #2561a8;
   font-family: Lato;
   font-size: 18px;
@@ -1142,15 +1140,109 @@ margin-right:5px;
   margin-bottom: 10px;
 }
 
-.store-col-1-1 .pagi{
+.store-col-1-1 .pagi {
   padding-top: 55%;
-
 }
 
-.ctr-mst .pagi{
+.ctr-mst .pagi {
   padding-top: 72%;
 }
 
 /* ------------------------------------end------------------------------------ */
+/* Shlok File Upload Logs css start */
+.fileUploadTable {
+  background-color: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.05);
+  height: 870px;
+  margin-left: 35px;
+  margin-right: 35px;
+  margin-top: -10px;
+}
+.lblFileUpload {
+  color: #6b6c6d;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  text-align: left;
+}
+.downloadBtn {
+  background-color: #2561a8;
+  border-radius: 4px;
+  width: 76px;
+  height: 25px;
+  padding: 0px !important;
+  min-width: 85px;
+}
+.lblDownloadbtn {
+  color: #ffffff;
+  font-family: Lato;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 16px;
+  text-align: left;
+}
+.thRowSpace {
+  width: 20%;
+}
+.created-by-Date {
+  color: rgba(0, 0, 0, 0.8);
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: left;
+  margin-bottom: 15px;
+}
+.subCreated-Date {
+  color: rgba(0, 0, 0, 0.5);
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14px;
+  text-align: left;
+}
+.popover-main {
+  padding: 20px;
+  padding-left: 25px;
+  min-width: -8%;
+  width: 400px;
+  height: 110px;
+}
+/* File Upload Logs Css End */
 
-
+/* Shlok Css start for Ticket Heirarchy */
+.edit-user-action{
+  color: #2561A8;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: left;
+}
+.edit-label-1{
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: left;
+}
+.txt-edit-popover{
+  background-color: #ECF2F4;
+  border-radius: 4px;
+  width: 200px;
+  height: 35px;
+  border: none;
+  padding: 10px;
+}
+.cancle-action{
+  color: #2561A8;
+  font-family: Lato;
+  font-size: 12px !important;
+  font-weight: 400;
+  line-height: 14px;
+  text-align: left;
+}
+/* Css End */
