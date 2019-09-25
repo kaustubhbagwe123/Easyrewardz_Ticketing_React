@@ -780,7 +780,7 @@
   text-align: left;
   padding-left: 173px;
 }
-.hi-diwakar-i-really1 {
+.hi-diwakar-i-really2 {
   color: #4a4a4a;
   font-family: Lato;
   font-size: 13px;
@@ -788,6 +788,7 @@
   line-height: 16px;
   width: 749px;
   text-align: left;
+  display: contents;
 }
 .comment-text {
   color: #2561a8;

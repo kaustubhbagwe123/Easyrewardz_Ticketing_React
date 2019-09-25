@@ -14,7 +14,7 @@ app.prepare()
     createServer((req, res) => {
       const parsedUrl = parse(req.url, true)
       const { pathname } = parsedUrl
-      if (pathname === './src/index') {
+      if (pathname === './src/index.js') {
         const filePath = join(__dirname, 'static', pathname);
         console.log("New pathname is: " + filePath);
         app.serveStatic(req, res, filePath)
