@@ -926,6 +926,7 @@
 }
 .btn-del-pop button {
   padding: 0;
+  
 }
 .mrg-can-del-row {
   margin-top: 10px;
@@ -995,6 +996,7 @@
   font-weight: 700;
   line-height: 17px;
   text-align: left;
+  margin-bottom: 10px;
 }
 
 .popover-lable-text {
@@ -1246,3 +1248,211 @@
   text-align: left;
 }
 /* Css End */
+/* ----------------------------------------------edit category----------------------------- */
+
+.pop-over-lbl-text{
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: left;
+  margin-bottom: 7px;
+  display: block;
+  margin-top: 10px;
+   
+}
+.pop-over-div{
+  display:block;
+}
+
+.pop-over-text{
+   
+  border-radius: 4px;
+  width: 200px;
+  height: 35px;
+  border: none;
+  padding-left: 5px;
+  background: #ecf2f4;
+}
+.pop-over-select{
+   
+  border-radius: 4px;
+  width: 200px;
+  height: 35px;
+  border: none;
+  padding-left: 5px;
+  background: #ecf2f4 url("../Images/dropDown.png") no-repeat right 12px center;
+}
+
+.pop-over-cancle {
+  color: #2561A8;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14px;
+  text-align: left;
+  margin-top: 12px;
+}
+
+.pop-over-button{
+  background-color: #2561A8;
+  border-radius: 4px;
+  width: 89px;
+  height: 35px;
+  float: right;
+}
+
+.pop-over-btnsave-text{
+  color: #FFFFFF;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14px;
+  text-align: left;
+}
+.btn-rm-p button{
+  min-width: 0;
+  padding: 0;
+}
+
+
+.cp-table table tr td:first-child{
+  width: 50px;
+    text-align: center;
+    padding-right: 0px !important;
+}
+.braille-icon{
+
+  padding-top: 10px;
+}
+.list-edit-button-margin-1 {
+  margin-left: 15px;
+  display: inline-block;
+}
+
+.cp-table table tr td:last-child, .cp-table table tr th:last-child {
+  padding-right: 50px;
+}
+
+.item-selection{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 30px;
+}
+
+.store-col-1-1 .item-selection {
+  
+  position: absolute;
+  top: 91%;
+  transform: translateY(-50%);
+  left: 30px;
+}
+
+.store-col-1 .item-selection {
+  
+  position: absolute;
+  top: 93%;
+  transform: translateY(-50%);
+  left: 30px;
+}
+
+.pop-over-text ::placeholder{
+
+color: #000000;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14px;
+  text-align: left;
+}
+.crm-pagi table tr td:first-child {
+  text-align: left !important;
+}
+ 
+/* .crm-pagi table tr td:last-child, .crm-pagi table tr th:last-child {
+  padding-right: 50px;
+} */
+
+
+.new-table table thead th {
+  border-bottom: 1px solid #eaeaea;
+  padding-right: 30px;
+  padding-left: 50px;
+}
+.new-table table td{
+
+  padding-left: 50px;
+}
+.new-table table tr th:first-child {
+  text-align: left !important;
+  padding-right: 0 !important;
+}
+.new-table table tr td:first-child {
+  text-align: left !important;
+  
+}
+
+
+.new-table .pagi{
+
+  padding-top: 71%;
+}
+
+.rolle-name-text-popover{
+  color: #4a4a4a;
+  font-family: Lato;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 16px;
+  text-align: left;
+  width: 135px;
+  display: inline-block;
+   
+}
+
+.pop-over-select-crm{
+   
+  border-radius: 4px;
+  width: 275px;
+  height: 35px;
+  border: none;
+  padding-left: 5px;
+  background: #ecf2f4 url("../Images/dropDown.png") no-repeat right 12px center;
+}
+
+
+.pop-over-text-crm{
+   
+  border-radius: 4px;
+  width: 275px;
+  height: 35px;
+  border: none;
+  padding-left: 5px;
+  background: #ecf2f4;
+}
+
+.pop-over-lbl-text-pop{
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: left;
+  margin-bottom: 7px;
+  display: inline-block;
+  margin-top: 10px;
+   
+}
+
+.rvmmargin{
+
+  margin-bottom: -10px !important;
+}
+
+.role-info .popover-body{
+
+  margin-bottom: 10px;
+
+}
