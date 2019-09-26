@@ -4,9 +4,9 @@ import TableArr from "./../../../assets/Images/table-arr.png";
 import InfoImg from "./../../../assets/Images/icons8-info.svg";
 import DeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
-import DeleteUpld from "./../../../assets/Images/delete-upl.png";
-import ClipIcon from "./../../../assets/Images/clip.png";
-import CancelIcon from "./../../../assets/Images/cancel.png";
+// import DeleteUpld from "./../../../assets/Images/delete-upl.png";
+// import ClipIcon from "./../../../assets/Images/clip.png";
+// import CancelIcon from "./../../../assets/Images/cancel.png";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
 
 class Brands extends Component{

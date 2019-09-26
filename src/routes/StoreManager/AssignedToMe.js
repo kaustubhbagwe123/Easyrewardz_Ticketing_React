@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React,{Component} from 'react';
 import TableArr from "./../../assets/Images/table-arr.png";
 import InfoIcon from "./../../assets/Images/info-icon.png";
 import Demo from "../../store/Hashtag.js";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
 
-class RaisedByMe extends Component {
+class AssignedToMe extends Component {
     render() {
         return (
           <div>
@@ -19,16 +19,13 @@ class RaisedByMe extends Component {
                       Department <img src={TableArr} alt="table-arr" />
                     </th>
                     <th>
+                      Created By <img src={TableArr} alt="table-arr" />
+                    </th>
+                    <th>
                       Store Name <img src={TableArr} alt="table-arr" />
                     </th>
                     <th>
-                      Priority <img src={TableArr} alt="table-arr" />
-                    </th>
-                    <th>
                       Creation on <img src={TableArr} alt="table-arr" />
-                    </th>
-                    <th>
-                      Assign to <img src={TableArr} alt="table-arr" />
                     </th>
                   </tr>
                 </thead>
@@ -110,7 +107,6 @@ class RaisedByMe extends Component {
                         </ul>
                       </div>
                     </td>
-                    <td>A. Bansal</td>
                   </tr>
                   <tr>
                     <td>ABC1234</td>
@@ -189,7 +185,6 @@ class RaisedByMe extends Component {
                         </ul>
                       </div>
                     </td>
-                    <td>G. Bansal</td>
                   </tr>
                   <tr>
                     <td>ABC1234</td>
@@ -268,7 +263,6 @@ class RaisedByMe extends Component {
                         </ul>
                       </div>
                     </td>
-                    <td>G. Bansal</td>
                   </tr>
                   <tr>
                     <td>ABC1234</td>
@@ -316,7 +310,6 @@ class RaisedByMe extends Component {
                         alt="info-icon"
                       />
                     </td>
-                    <td>A. Bansal</td>
                   </tr>
                   <tr>
                     <td>ABC1234</td>
@@ -364,7 +357,6 @@ class RaisedByMe extends Component {
                         alt="info-icon"
                       />
                     </td>
-                    <td>G. Bansal</td>
                   </tr>
                   <tr>
                     <td>ABC1234</td>
@@ -412,7 +404,6 @@ class RaisedByMe extends Component {
                         alt="info-icon"
                       />
                     </td>
-                    <td>G. Bansal</td>
                   </tr>
                   <tr>
                     <td>ABC1234</td>
@@ -460,7 +451,6 @@ class RaisedByMe extends Component {
                         alt="info-icon"
                       />
                     </td>
-                    <td>G. Bansal</td>
                   </tr>
                 </tbody>
               </table>
@@ -501,4 +491,4 @@ class RaisedByMe extends Component {
     }
 }
 
-export default RaisedByMe;
+export default AssignedToMe;
