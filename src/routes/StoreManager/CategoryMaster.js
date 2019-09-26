@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import TableArr from "./../../assets/Images/table-arr.png";
 import RedDeleteIcon from "./../../assets/Images/red-delete-icon.png";
-import BlackDeleteIcon from "./../../assets/Images/delete.svg";
+import BlackDeleteIcon from "./../../assets/Images/del-big.png";
 import UploadIcon from "./../../assets/Images/clip.png";
 import CrossIcon from "./../../assets/Images/cross-icon.png";
 import { UncontrolledPopover , PopoverBody } from "reactstrap";
 import Demo from "../../store/Hashtag.js";
+ 
+ 
 
  
 class CategoryMaster extends Component {
@@ -26,6 +28,8 @@ class CategoryMaster extends Component {
   }
 
   render() {
+    const editbool=false;
+    const tooltipDelay = { show: 50, hide: 100 };
     return (
       <>
         <div className="breadcrumbs-row">
@@ -48,7 +52,7 @@ class CategoryMaster extends Component {
                       Category <img src={TableArr} alt="table-arr" />
                     </th>
                     <th>
-                      Sub Cat <img src={TableArr} alt="table-arr" />
+                      Sub Category <img src={TableArr} alt="table-arr" />
                     </th>
                     <th>
                       Issue Type <img src={TableArr} alt="table-arr" />
@@ -85,50 +89,32 @@ class CategoryMaster extends Component {
                     <td>
                       <div className="row">
                         <div className="deletepopover">
-                          <img
-                            src={RedDeleteIcon}
-                            alt="delete-icon"
-                            className="red-delete-icon-size"
-                            id="Popover-1"
-                          />
+                          <div className="del-btn" id="del1">
+                            <img src={RedDeleteIcon} alt="del-icon" />
+                          </div>
                           <UncontrolledPopover
-                            placement="bottom"
-                            target="Popover-1"
-                            className="general-popover created-popover"
                             trigger="legacy"
+                            placement="bottom"
+                            target="del1"
+                            className="general-popover delete-popover"
+                            delay={tooltipDelay}
                           >
-                            <PopoverBody>
-                              <div className="row">
-                                <div className="oval-delete popver-delete-mar">
-                                  <img
-                                    src={BlackDeleteIcon}
-                                    alt="delete-icon"
-                                    className="oval-delete-icons"
-                                  />
-                                </div>
-                                <div className="popver-delete-mar">
-                                  <label className="delete-file-popover">
-                                    Delete file?
-                                  </label>
-                                  <p className="delete-details-popovel">
-                                    Are you sure you want to delete this file?
-                                  </p>
+                            <PopoverBody className="d-flex">
+                              <div className="del-big-icon">
+                                <img src={BlackDeleteIcon} alt="del-icon" />
+                              </div>
+                              <div>
+                                <p className="font-weight-bold blak-clr">
+                                  Delete file?
+                                </p>
+                                <p className="mt-1 fs-12">
+                                  Are you sure you want to delete this file?
+                                </p>
+                                <div className="del-can">
+                                  <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                  <button className="butn">Delete</button>
                                 </div>
                               </div>
-                              <div className="row mrg-can-del-row">
-                                <label className="popover-delete-cancel">
-                                  CANCEL
-                                </label>
-                                <button className="popover-delete-btn">
-                                  <label className="popover-delete-btn-text">
-                                    DELETE
-                                  </label>
-                                </button>
-                              </div>
-
-                              <br />
-                              <br />
-                              <br />
                             </PopoverBody>
                           </UncontrolledPopover>
                         </div>
@@ -142,56 +128,73 @@ class CategoryMaster extends Component {
                             </label>
                           </button>
                           <UncontrolledPopover
-                            
-                            target="edit-pop-1"
-                            placement="bottom"
                             trigger="legacy"
+                            placement="bottom"
+                            target="edit-pop-1"
+                            className="general-popover delete-popover"
+                            delay={tooltipDelay}
+                            flip={editbool}
                           >
-                            <PopoverBody>
-                              <label className="popover-header-text">
-                                EDIT CATEGORY
-                              </label>
+                            <PopoverBody className="d-flex">
+                              <div>
+                                <div className="">
+                                  <label className="popover-header-text">
+                                    EDIT CATEGORY
+                                  </label>
+                                </div>
+                                <div className=" pop-over-div">
+                                  <label className="pop-over-lbl-text">
+                                    Brand Name
+                                  </label>
+                                  <select className="pop-over-select">
+                                    <option>Bata</option>
+                                  </select>
+                                </div>
+                                <div className=" pop-over-div">
+                                  <label className="pop-over-lbl-text">
+                                    Category
+                                  </label>
+                                  <select className="pop-over-select">
+                                    <option>Complaint</option>
+                                  </select>
+                                </div>
+                                <div className=" pop-over-div">
+                                  <label className="pop-over-lbl-text">
+                                    Sub Category
+                                  </label>
+                                  <select className="pop-over-select">
+                                    <option>Defective Article</option>
+                                  </select>
+                                </div>
+                                <div className=" pop-over-div">
+                                  <label className="pop-over-lbl-text">
+                                    Issue Type
+                                  </label>
+                                  <select className="pop-over-select">
+                                    <option>Broken Shoes</option>
+                                  </select>
+                                </div>
 
-                              <div>
-                                <label className="popover-lable-text">
-                                  Brand Name
-                                </label>
-                                <select className="popover-select-cate">
-                                  <option>Bata</option>
-                                </select>
-                              </div>
-                              <div>
-                                <label className="popover-lable-text">
-                                  Category
-                                </label>
-                                <select className="popover-select-cate">
-                                  <option>Complaint</option>
-                                </select>
-                              </div>
-                              <div>
-                                <label className="popover-lable-text">
-                                  Sub Category
-                                </label>
-                                <select className="popover-select-cate">
-                                  <option>Defective</option>
-                                </select>
-                              </div>
-                              <div>
-                                <label className="popover-lable-text">
-                                  Issue Type
-                                </label>
-                                <select className="popover-select-cate">
-                                  <option>Broken Shoes</option>
-                                </select>
-                              </div>
-                              <div>
-                                <label className="popover-lable-text">
-                                  Status
-                                </label>
-                                <select className="popover-select-cate">
-                                  <option>Active</option>
-                                  <option>Inactive</option>
-                                </select>
+                                <div className="pop-over-div">
+                                  <label className="pop-over-lbl-text">
+                                    Status
+                                  </label>
+                                  <select className="pop-over-select">
+                                    <option>Active</option>
+                                    <option>Inactive</option>
+                                  </select>
+                                </div>
+                                <br />
+                                <div>
+                                  <label className="pop-over-cancle">
+                                    CANCEL
+                                  </label>
+                                  <button className="pop-over-button">
+                                    <label className="pop-over-btnsave-text">
+                                      SAVE
+                                    </label>
+                                  </button>
+                                </div>
                               </div>
                             </PopoverBody>
                           </UncontrolledPopover>
@@ -222,54 +225,36 @@ class CategoryMaster extends Component {
                     <td>
                       <div className="row">
                         <div className="deletepopover">
-                          <img
-                            src={RedDeleteIcon}
-                            alt="delete-icon"
-                            className="red-delete-icon-size"
-                            id="Popover-2"
-                          />
+                          <div className="del-btn" id="del2">
+                            <img src={RedDeleteIcon} alt="del-icon" />
+                          </div>
                           <UncontrolledPopover
-                            placement="bottom"
-                            target="Popover-2"
                             trigger="legacy"
-                            className="general-popover created-popover"
+                            placement="bottom"
+                            target="del2"
+                            className="general-popover delete-popover"
+                            delay={tooltipDelay}
                           >
-                            <PopoverBody>
-                              <div className="row">
-                                <div className="oval-delete popver-delete-mar">
-                                  <img
-                                    src={BlackDeleteIcon}
-                                    alt="delete-icon"
-                                    className="oval-delete-icons"
-                                  />
-                                </div>
-                                <div className="popver-delete-mar">
-                                  <label className="delete-file-popover">
-                                    Delete file?
-                                  </label>
-                                  <p className="delete-details-popovel">
-                                    Are you sure you want to delete this file?
-                                  </p>
+                            <PopoverBody className="d-flex">
+                              <div className="del-big-icon">
+                                <img src={BlackDeleteIcon} alt="del-icon" />
+                              </div>
+                              <div>
+                                <p className="font-weight-bold blak-clr">
+                                  Delete file?
+                                </p>
+                                <p className="mt-1 fs-12">
+                                  Are you sure you want to delete this file?
+                                </p>
+                                <div className="del-can">
+                                  <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                  <button className="butn">Delete</button>
                                 </div>
                               </div>
-                              <div className="row mrg-can-del-row">
-                                <label className="popover-delete-cancel">
-                                  CANCEL
-                                </label>
-                                <button className="popover-delete-btn">
-                                  <label className="popover-delete-btn-text">
-                                    DELETE
-                                  </label>
-                                </button>
-                              </div>
-
-                              <br />
-                              <br />
-                              <br />
                             </PopoverBody>
                           </UncontrolledPopover>
                         </div>
-                        <div className=" list-edit-button-margin">
+                        <div className=" list-edit-button-margin btn-del-pop">
                           <button
                             className="Table-action-edit-button"
                             id="edit-pop-2"
@@ -278,6 +263,77 @@ class CategoryMaster extends Component {
                               EDIT
                             </label>
                           </button>
+                          <UncontrolledPopover
+                            trigger="legacy"
+                            placement="bottom"
+                            target="edit-pop-2"
+                            className="general-popover delete-popover"
+                            delay={tooltipDelay}
+                            flip={editbool}
+                          >
+                            <PopoverBody className="d-flex">
+                              <div>
+                                <div className="">
+                                  <label className="popover-header-text">
+                                    EDIT CATEGORY
+                                  </label>
+                                </div>
+                                <div className=" pop-over-div">
+                                  <label className="pop-over-lbl-text">
+                                    Brand Name
+                                  </label>
+                                  <select className="pop-over-select">
+                                    <option>Bata</option>
+                                  </select>
+                                </div>
+                                <div className=" pop-over-div">
+                                  <label className="pop-over-lbl-text">
+                                    Category
+                                  </label>
+                                  <select className="pop-over-select">
+                                    <option>Complaint</option>
+                                  </select>
+                                </div>
+                                <div className=" pop-over-div">
+                                  <label className="pop-over-lbl-text">
+                                    Sub Category
+                                  </label>
+                                  <select className="pop-over-select">
+                                    <option>Defective Article</option>
+                                  </select>
+                                </div>
+                                <div className=" pop-over-div">
+                                  <label className="pop-over-lbl-text">
+                                    Issue Type
+                                  </label>
+                                  <select className="pop-over-select">
+                                    <option>Broken Shoes</option>
+                                  </select>
+                                </div>
+
+                                <div className="pop-over-div">
+                                  <label className="pop-over-lbl-text">
+                                    Status
+                                  </label>
+                                  <select className="pop-over-select">
+                                    <option>Active</option>
+                                    <option>Inactive</option>
+                                  </select>
+                                </div>
+                                <br />
+                                <div>
+                                  <label className="pop-over-cancle">
+                                    CANCEL
+                                  </label>
+                                  <button className="pop-over-button">
+                                    <label className="pop-over-btnsave-text">
+                                      SAVE
+                                    </label>
+                                  </button>
+                                </div>
+                              </div>
+                            </PopoverBody>
+                          </UncontrolledPopover>
                         </div>
                       </div>
                     </td>
@@ -305,53 +361,36 @@ class CategoryMaster extends Component {
                     <td>
                       <div className="row">
                         <div className="deletepopover">
-                          <img
-                            src={RedDeleteIcon}
-                            alt="delete-icon"
-                            className="red-delete-icon-size"
-                            id="Popover-3"
-                          />
+                          <div className="del-btn" id="del3">
+                            <img src={RedDeleteIcon} alt="del-icon" />
+                          </div>
                           <UncontrolledPopover
-                            placement="bottom"
-                            target="Popover-3"
                             trigger="legacy"
+                            placement="bottom"
+                            target="del3"
+                            className="general-popover delete-popover"
+                            delay={tooltipDelay}
                           >
-                            <PopoverBody>
-                              <div className="row">
-                                <div className="oval-delete popver-delete-mar">
-                                  <img
-                                    src={BlackDeleteIcon}
-                                    alt="delete-icon"
-                                    className="oval-delete-icons"
-                                  />
-                                </div>
-                                <div className="popver-delete-mar">
-                                  <label className="delete-file-popover">
-                                    Delete file?
-                                  </label>
-                                  <p className="delete-details-popovel">
-                                    Are you sure you want to delete this file?
-                                  </p>
+                            <PopoverBody className="d-flex">
+                              <div className="del-big-icon">
+                                <img src={BlackDeleteIcon} alt="del-icon" />
+                              </div>
+                              <div>
+                                <p className="font-weight-bold blak-clr">
+                                  Delete file?
+                                </p>
+                                <p className="mt-1 fs-12">
+                                  Are you sure you want to delete this file?
+                                </p>
+                                <div className="del-can">
+                                  <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                  <button className="butn">Delete</button>
                                 </div>
                               </div>
-                              <div className="row mrg-can-del-row">
-                                <label className="popover-delete-cancel">
-                                  CANCEL
-                                </label>
-                                <button className="popover-delete-btn">
-                                  <label className="popover-delete-btn-text">
-                                    DELETE
-                                  </label>
-                                </button>
-                              </div>
-
-                              <br />
-                              <br />
-                              <br />
                             </PopoverBody>
                           </UncontrolledPopover>
                         </div>
-                        <div className=" list-edit-button-margin">
+                        <div className=" list-edit-button-margin btn-del-pop">
                           <button
                             className="Table-action-edit-button"
                             id="edit-pop-3"
@@ -361,42 +400,74 @@ class CategoryMaster extends Component {
                             </label>
                           </button>
                           <UncontrolledPopover
-                            placement="bottom"
-                            target="edit-pop-3"
                             trigger="legacy"
+                            placement="auto"
+                            target="edit-pop-3"
+                            className="general-popover delete-popover"
+                            delay={tooltipDelay}
+                            flip={editbool}
                           >
-                            <PopoverBody>
-                              <div className="row">
-                                <div className="oval-delete popver-delete-mar">
-                                  <img
-                                    src={BlackDeleteIcon}
-                                    alt="delete-icon"
-                                    className="oval-delete-icons"
-                                  />
-                                </div>
-                                <div className="popver-delete-mar">
-                                  <label className="delete-file-popover">
-                                    Delete file?
+                            <PopoverBody className="d-flex">
+                              <div>
+                                <div className="">
+                                  <label className="popover-header-text">
+                                    EDIT CATEGORY
                                   </label>
-                                  <p className="delete-details-popovel">
-                                    Are you sure you want to delete this file?
-                                  </p>
                                 </div>
-                              </div>
-                              <div className="row mrg-can-del-row">
-                                <label className="popover-delete-cancel">
-                                  CANCEL
-                                </label>
-                                <button className="popover-delete-btn">
-                                  <label className="popover-delete-btn-text">
-                                    DELETE
+                                <div className=" pop-over-div">
+                                  <label className="pop-over-lbl-text">
+                                    Brand Name
                                   </label>
-                                </button>
-                              </div>
+                                  <select className="pop-over-select">
+                                    <option>Bata</option>
+                                  </select>
+                                </div>
+                                <div className=" pop-over-div">
+                                  <label className="pop-over-lbl-text">
+                                    Category
+                                  </label>
+                                  <select className="pop-over-select">
+                                    <option>Complaint</option>
+                                  </select>
+                                </div>
+                                <div className=" pop-over-div">
+                                  <label className="pop-over-lbl-text">
+                                    Sub Category
+                                  </label>
+                                  <select className="pop-over-select">
+                                    <option>Defective Article</option>
+                                  </select>
+                                </div>
+                                <div className=" pop-over-div">
+                                  <label className="pop-over-lbl-text">
+                                    Issue Type
+                                  </label>
+                                  <select className="pop-over-select">
+                                    <option>Broken Shoes</option>
+                                  </select>
+                                </div>
 
-                              <br />
-                              <br />
-                              <br />
+                                <div className="pop-over-div">
+                                  <label className="pop-over-lbl-text">
+                                    Status
+                                  </label>
+                                  <select className="pop-over-select">
+                                    <option>Active</option>
+                                    <option>Inactive</option>
+                                  </select>
+                                </div>
+                                <br />
+                                <div>
+                                  <label className="pop-over-cancle">
+                                    CANCEL
+                                  </label>
+                                  <button className="pop-over-button">
+                                    <label className="pop-over-btnsave-text">
+                                      SAVE
+                                    </label>
+                                  </button>
+                                </div>
+                              </div>
                             </PopoverBody>
                           </UncontrolledPopover>
                         </div>
@@ -426,53 +497,36 @@ class CategoryMaster extends Component {
                     <td>
                       <div className="row">
                         <div className="deletepopover">
-                          <img
-                            src={RedDeleteIcon}
-                            alt="delete-icon"
-                            className="red-delete-icon-size"
-                            id="Popover-4"
-                          />
+                          <div className="del-btn" id="del4">
+                            <img src={RedDeleteIcon} alt="del-icon" />
+                          </div>
                           <UncontrolledPopover
-                            placement="bottom"
-                            target="Popover-4"
                             trigger="legacy"
+                            placement="bottom"
+                            target="del4"
+                            className="general-popover delete-popover"
+                            delay={tooltipDelay}
                           >
-                            <PopoverBody>
-                              <div className="row">
-                                <div className="oval-delete popver-delete-mar">
-                                  <img
-                                    src={BlackDeleteIcon}
-                                    alt="delete-icon"
-                                    className="oval-delete-icons"
-                                  />
-                                </div>
-                                <div className="popver-delete-mar">
-                                  <label className="delete-file-popover">
-                                    Delete file?
-                                  </label>
-                                  <p className="delete-details-popovel">
-                                    Are you sure you want to delete this file?
-                                  </p>
+                            <PopoverBody className="d-flex">
+                              <div className="del-big-icon">
+                                <img src={BlackDeleteIcon} alt="del-icon" />
+                              </div>
+                              <div>
+                                <p className="font-weight-bold blak-clr">
+                                  Delete file?
+                                </p>
+                                <p className="mt-1 fs-12">
+                                  Are you sure you want to delete this file?
+                                </p>
+                                <div className="del-can">
+                                  <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                  <button className="butn">Delete</button>
                                 </div>
                               </div>
-                              <div className="row mrg-can-del-row">
-                                <label className="popover-delete-cancel">
-                                  CANCEL
-                                </label>
-                                <button className="popover-delete-btn">
-                                  <label className="popover-delete-btn-text">
-                                    DELETE
-                                  </label>
-                                </button>
-                              </div>
-
-                              <br />
-                              <br />
-                              <br />
                             </PopoverBody>
                           </UncontrolledPopover>
                         </div>
-                        <div className=" list-edit-button-margin">
+                        <div className=" list-edit-button-margin btn-del-pop">
                           <button
                             className="Table-action-edit-button"
                             id="edit-pop-4"
@@ -482,42 +536,74 @@ class CategoryMaster extends Component {
                             </label>
                           </button>
                           <UncontrolledPopover
-                            placement="bottom"
-                            target="edit-pop-4"
                             trigger="legacy"
+                            placement="auto"
+                            target="edit-pop-4"
+                            className="general-popover delete-popover"
+                            delay={tooltipDelay}
+                            flip={editbool}
                           >
-                            <PopoverBody>
-                              <div className="row">
-                                <div className="oval-delete popver-delete-mar">
-                                  <img
-                                    src={BlackDeleteIcon}
-                                    alt="delete-icon"
-                                    className="oval-delete-icons"
-                                  />
-                                </div>
-                                <div className="popver-delete-mar">
-                                  <label className="delete-file-popover">
-                                    Delete file?
+                            <PopoverBody className="d-flex">
+                              <div>
+                                <div className="">
+                                  <label className="popover-header-text">
+                                    EDIT CATEGORY
                                   </label>
-                                  <p className="delete-details-popovel">
-                                    Are you sure you want to delete this file?
-                                  </p>
                                 </div>
-                              </div>
-                              <div className="row mrg-can-del-row">
-                                <label className="popover-delete-cancel">
-                                  CANCEL
-                                </label>
-                                <button className="popover-delete-btn">
-                                  <label className="popover-delete-btn-text">
-                                    DELETE
+                                <div className=" pop-over-div">
+                                  <label className="pop-over-lbl-text">
+                                    Brand Name
                                   </label>
-                                </button>
-                              </div>
+                                  <select className="pop-over-select">
+                                    <option>Bata</option>
+                                  </select>
+                                </div>
+                                <div className=" pop-over-div">
+                                  <label className="pop-over-lbl-text">
+                                    Category
+                                  </label>
+                                  <select className="pop-over-select">
+                                    <option>Complaint</option>
+                                  </select>
+                                </div>
+                                <div className=" pop-over-div">
+                                  <label className="pop-over-lbl-text">
+                                    Sub Category
+                                  </label>
+                                  <select className="pop-over-select">
+                                    <option>Defective Article</option>
+                                  </select>
+                                </div>
+                                <div className=" pop-over-div">
+                                  <label className="pop-over-lbl-text">
+                                    Issue Type
+                                  </label>
+                                  <select className="pop-over-select">
+                                    <option>Broken Shoes</option>
+                                  </select>
+                                </div>
 
-                              <br />
-                              <br />
-                              <br />
+                                <div className="pop-over-div">
+                                  <label className="pop-over-lbl-text">
+                                    Status
+                                  </label>
+                                  <select className="pop-over-select">
+                                    <option>Active</option>
+                                    <option>Inactive</option>
+                                  </select>
+                                </div>
+                                <br />
+                                <div>
+                                  <label className="pop-over-cancle">
+                                    CANCEL
+                                  </label>
+                                  <button className="pop-over-button">
+                                    <label className="pop-over-btnsave-text">
+                                      SAVE
+                                    </label>
+                                  </button>
+                                </div>
+                              </div>
                             </PopoverBody>
                           </UncontrolledPopover>
                         </div>
@@ -547,53 +633,36 @@ class CategoryMaster extends Component {
                     <td>
                       <div className="row">
                         <div className="deletepopover">
-                          <img
-                            src={RedDeleteIcon}
-                            alt="delete-icon"
-                            className="red-delete-icon-size"
-                            id="Popover-5"
-                          />
+                          <div className="del-btn" id="del5">
+                            <img src={RedDeleteIcon} alt="del-icon" />
+                          </div>
                           <UncontrolledPopover
-                            placement="bottom"
-                            target="Popover-5"
                             trigger="legacy"
+                            placement="bottom"
+                            target="del5"
+                            className="general-popover delete-popover"
+                            delay={tooltipDelay}
                           >
-                            <PopoverBody>
-                              <div className="row">
-                                <div className="oval-delete popver-delete-mar">
-                                  <img
-                                    src={BlackDeleteIcon}
-                                    alt="delete-icon"
-                                    className="oval-delete-icons"
-                                  />
-                                </div>
-                                <div className="popver-delete-mar">
-                                  <label className="delete-file-popover">
-                                    Delete file?
-                                  </label>
-                                  <p className="delete-details-popovel">
-                                    Are you sure you want to delete this file?
-                                  </p>
+                            <PopoverBody className="d-flex">
+                              <div className="del-big-icon">
+                                <img src={BlackDeleteIcon} alt="del-icon" />
+                              </div>
+                              <div>
+                                <p className="font-weight-bold blak-clr">
+                                  Delete file?
+                                </p>
+                                <p className="mt-1 fs-12">
+                                  Are you sure you want to delete this file?
+                                </p>
+                                <div className="del-can">
+                                  <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                  <button className="butn">Delete</button>
                                 </div>
                               </div>
-                              <div className="row mrg-can-del-row">
-                                <label className="popover-delete-cancel">
-                                  CANCEL
-                                </label>
-                                <button className="popover-delete-btn">
-                                  <label className="popover-delete-btn-text">
-                                    DELETE
-                                  </label>
-                                </button>
-                              </div>
-
-                              <br />
-                              <br />
-                              <br />
                             </PopoverBody>
                           </UncontrolledPopover>
                         </div>
-                        <div className=" list-edit-button-margin">
+                        <div className=" list-edit-button-margin btn-del-pop">
                           <button
                             className="Table-action-edit-button"
                             id="edit-pop-5"
@@ -603,42 +672,74 @@ class CategoryMaster extends Component {
                             </label>
                           </button>
                           <UncontrolledPopover
-                            placement="bottom"
-                            target="edit-pop-5"
                             trigger="legacy"
+                            placement="auto"
+                            target="edit-pop-5"
+                            className="general-popover delete-popover"
+                            delay={tooltipDelay}
+                            flip={editbool}
                           >
-                            <PopoverBody>
-                              <div className="row">
-                                <div className="oval-delete popver-delete-mar">
-                                  <img
-                                    src={BlackDeleteIcon}
-                                    alt="delete-icon"
-                                    className="oval-delete-icons"
-                                  />
-                                </div>
-                                <div className="popver-delete-mar">
-                                  <label className="delete-file-popover">
-                                    Delete file?
+                            <PopoverBody className="d-flex">
+                              <div>
+                                <div className="">
+                                  <label className="popover-header-text">
+                                    EDIT CATEGORY
                                   </label>
-                                  <p className="delete-details-popovel">
-                                    Are you sure you want to delete this file?
-                                  </p>
                                 </div>
-                              </div>
-                              <div className="row mrg-can-del-row">
-                                <label className="popover-delete-cancel">
-                                  CANCEL
-                                </label>
-                                <button className="popover-delete-btn">
-                                  <label className="popover-delete-btn-text">
-                                    DELETE
+                                <div className=" pop-over-div">
+                                  <label className="pop-over-lbl-text">
+                                    Brand Name
                                   </label>
-                                </button>
-                              </div>
+                                  <select className="pop-over-select">
+                                    <option>Bata</option>
+                                  </select>
+                                </div>
+                                <div className=" pop-over-div">
+                                  <label className="pop-over-lbl-text">
+                                    Category
+                                  </label>
+                                  <select className="pop-over-select">
+                                    <option>Complaint</option>
+                                  </select>
+                                </div>
+                                <div className=" pop-over-div">
+                                  <label className="pop-over-lbl-text">
+                                    Sub Category
+                                  </label>
+                                  <select className="pop-over-select">
+                                    <option>Defective Article</option>
+                                  </select>
+                                </div>
+                                <div className=" pop-over-div">
+                                  <label className="pop-over-lbl-text">
+                                    Issue Type
+                                  </label>
+                                  <select className="pop-over-select">
+                                    <option>Broken Shoes</option>
+                                  </select>
+                                </div>
 
-                              <br />
-                              <br />
-                              <br />
+                                <div className="pop-over-div">
+                                  <label className="pop-over-lbl-text">
+                                    Status
+                                  </label>
+                                  <select className="pop-over-select">
+                                    <option>Active</option>
+                                    <option>Inactive</option>
+                                  </select>
+                                </div>
+                                <br />
+                                <div>
+                                  <label className="pop-over-cancle">
+                                    CANCEL
+                                  </label>
+                                  <button className="pop-over-button">
+                                    <label className="pop-over-btnsave-text">
+                                      SAVE
+                                    </label>
+                                  </button>
+                                </div>
+                              </div>
                             </PopoverBody>
                           </UncontrolledPopover>
                         </div>
@@ -647,33 +748,43 @@ class CategoryMaster extends Component {
                   </tr>
                 </tbody>
               </table>
-              <div className="pagi">
-                <ul>
-                  <li>
-                    <a href={Demo.BLANK_LINK}>&lt;</a>
-                  </li>
-                  <li>
-                    <a href={Demo.BLANK_LINK}>1</a>
-                  </li>
-                  <li className="active">
-                    <a href={Demo.BLANK_LINK}>2</a>
-                  </li>
-                  <li>
-                    <a href={Demo.BLANK_LINK}>3</a>
-                  </li>
-                  <li>
-                    <a href={Demo.BLANK_LINK}>4</a>
-                  </li>
-                  <li>
-                    <a href={Demo.BLANK_LINK}>5</a>
-                  </li>
-                  <li>
-                    <a href={Demo.BLANK_LINK}>6</a>
-                  </li>
-                  <li>
-                    <a href={Demo.BLANK_LINK}>&gt;</a>
-                  </li>
-                </ul>
+              <div className="position-relative">
+                <div className="pagi">
+                  <ul>
+                    <li>
+                      <a href={Demo.BLANK_LINK}>&lt;</a>
+                    </li>
+                    <li>
+                      <a href={Demo.BLANK_LINK}>1</a>
+                    </li>
+                    <li className="active">
+                      <a href={Demo.BLANK_LINK}>2</a>
+                    </li>
+                    <li>
+                      <a href={Demo.BLANK_LINK}>3</a>
+                    </li>
+                    <li>
+                      <a href={Demo.BLANK_LINK}>4</a>
+                    </li>
+                    <li>
+                      <a href={Demo.BLANK_LINK}>5</a>
+                    </li>
+                    <li>
+                      <a href={Demo.BLANK_LINK}>6</a>
+                    </li>
+                    <li>
+                      <a href={Demo.BLANK_LINK}>&gt;</a>
+                    </li>
+                  </ul>
+                </div>
+                <div className="item-selection">
+                  <select>
+                    <option>30</option>
+                    <option>50</option>
+                    <option>100</option>
+                  </select>
+                  <p>Items per page</p>
+                </div>
               </div>
             </div>
             <div>

@@ -10,7 +10,6 @@ import MyTicketList from "./MyTicketList";
 import ClaimTabTicketView from "./ClaimTabTicketView";
 import Settings from "./Settings/Settings";
 import PrioritySettings from "./Settings/PrioritySetting";
-import TicketHierarchy from "./Settings/TicketHierarchy";
 import QADashboardSearch from "./QA/QADashboardSearch";
 import ChatDashboard from "./Chat/ChatDashboard";
 import QAAuditview from "./QA/QAAuditview";
@@ -18,6 +17,8 @@ import KnowledgeBase from "./KnowledgeBase";
 import HierarchyMaster from "./Settings/Store/HierarchyMaster";
 import FileUploadLogs from "./Settings/FileUploadLogs";
 import ItemMaster from "./Settings/Store/ItemMaster";
+import TicketHierarchy from "./Settings/Ticketing/TicketHierarchy";
+import Brands from "./Settings/Ticketing/Brands";
 // import Aux from "./../Component/Aux";
 
 export class App extends Component {
@@ -88,6 +89,7 @@ export class App extends Component {
           path={`${match.url}/fileUploadLogs`}
           component={FileUploadLogs}
         />
+        <Route exact path={`${match.url}/brands`} component={Brands} />
       </Layout>
     );
   }

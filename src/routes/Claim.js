@@ -105,7 +105,7 @@ class Claim extends Component {
                                             <label className="label-6"> Claim Asked for %</label>
                                             <input type="text" className="form-control textBox" placeholder="Claim Percentage" />
                                         </div>
-                                        <div className="col-md-4" style={{ marginTop: '24px' }}>
+                                        <div className="col-md-4" style={{ marginTop: '33px' }}>
                                             <button type="button" className=" form-control btn-btn-claim">Attach Product Image</button>
                                         </div>
                                     </div>

@@ -107,9 +107,10 @@
   width: 100%;
 }
 .er-label {
-  font-size: 19px;
+  font-size: 16px;
   font-family: sans-serif;
-  margin-top: 13px;
+  margin-top: 15px;
+  font-weight: 900;
 }
 .rectangle-2 {
   background-color: #2561a8;
@@ -1941,6 +1942,7 @@ table tr th:last-child {
 .pagi {
   text-align: center;
   padding: 25px;
+  
 }
 .pagi ul {
   border: 1px solid #eceff0;
@@ -4736,7 +4738,6 @@ background: #ECF2F4 url("../Images//down-1.png") no-repeat right 7% center;
   float: right;
   margin-right: 20px;
   margin-top: -20px;
-
 }
 .main-content-kb .pagi{
   padding-top: 43%;
@@ -4761,7 +4762,7 @@ background: #ECF2F4 url("../Images//down-1.png") no-repeat right 7% center;
   text-align: left;
 }
 
-.claim-modal-scroll .row {
+.claim-modal-scroll .row{
   margin-right: 0;
 }
 
@@ -4796,4 +4797,9 @@ background: #ECF2F4 url("../Images//down-1.png") no-repeat right 7% center;
   width: 406px;
   height: 318px;
 }
-
+.mainDivPadding .row{
+  display: flex;
+    flex-wrap: wrap;
+    margin-right: 0px !important;
+    margin-left: -15px;
+}
