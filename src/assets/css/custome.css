@@ -3811,7 +3811,7 @@ progress::-moz-progress-bar {
 
 @media only screen and (max-width: 576px) {
   /* dashboard starts */
-  .scroll-table {
+  .rem-table {
     display: none;
   }
   .mobile-table {
