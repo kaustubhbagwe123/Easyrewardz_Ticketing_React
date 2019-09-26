@@ -404,8 +404,15 @@
 .del-btn {
   width: 14px;
   display: inline-block;
-  margin-right: 20px;
+  margin-right: 12px;
   cursor: pointer;
+  padding: 6px 8px;
+  line-height: 1;
+  box-sizing: content-box;
+  transition: all 0.3s ease-in-out;
+}
+.del-btn:hover {
+  background-color: #fdeeee;
 }
 .del-btn img {
   width: 100%;
@@ -455,6 +462,12 @@
   font-family: "Lato", sans-serif;
   padding: 25px;
 }
+.general-popover h4 {
+  font-weight: 700;
+  color: #2561a8;
+  font-size: 14px;
+  text-transform: uppercase;
+}
 .created-popover .popover-body {
   padding: 25px 35px;
 }
@@ -475,6 +488,31 @@
 }
 .created-popover .popover-body div:last-child {
   margin-bottom: 0px;
+}
+.edit-popover label {
+  font-size: 12px;
+  font-weight: 700;
+}
+.edit-popover input,
+.edit-popover select {
+  background-color: #ecf2f4;
+  border-radius: 4px;
+  min-width: 200px;
+  color: #000;
+  font-size: 12px;
+  display: block;
+  border: 0;
+  padding: 8px 15px;
+  margin-top: 3px;
+}
+.edit-popover select {
+  background: #ecf2f4 url("./../Images/table-arr.png") no-repeat right 20px
+    center;
+  background-size: 11px;
+  padding-right: 40px;
+}
+.edit-popover .div-cntr {
+  margin-top: 12px;
 }
 .del-big-icon {
   background-color: #f3f3f3;
@@ -501,6 +539,149 @@
   color: #2561a8;
   font-size: 12px;
 }
+.right-sect-div {
+  background-color: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.05);
+  padding: 20px 45px 25px;
+  margin-bottom: 25px;
+}
+.right-sect-div:last-child {
+  margin-bottom: 0;
+}
+.right-sect-div h3 {
+  color: #2561a8;
+  font-size: 18px;
+  font-weight: 700;
+  padding-bottom: 7px;
+  text-transform: uppercase;
+}
+.right-sect-div label {
+  font-weight: 700;
+}
+.right-sect-div input,
+.right-sect-div select {
+  background-color: #ecf2f4;
+  border-radius: 4px;
+  width: 100%;
+  color: #000;
+  display: block;
+  border: 0;
+  padding: 11px 15px;
+  margin-top: 3px;
+}
+.right-sect-div select {
+  background: #ecf2f4 url("./../Images/table-arr.png") no-repeat right 25px
+    center;
+  background-size: 13px;
+  padding-right: 50px;
+}
+.right-sect-div .div-cntr {
+  margin-top: 12px;
+}
+.right-sect-div .butn {
+  font-weight: 400;
+  font-size: 14px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  width: 100%;
+  margin-top: 30px;
+}
+.file-upload + label {
+  font-weight: 400;
+  border: 1px solid #99afc9;
+  border-radius: 8px;
+  width: 100%;
+  padding: 40px;
+  text-align: center;
+  margin-top: 15px;
+  cursor: pointer;
+}
+.file-upload + label span {
+  font-weight: 700;
+  color: #2561a8;
+}
+.file-icon {
+  width: 37px;
+  margin: 0 auto 13px;
+}
+.file-icon img {
+  width: 100%;
+}
+.del-file {
+  flex: 0 0 14px;
+  line-height: 1;
+  cursor: pointer;
+}
+.del-file img {
+  width: 100%;
+}
+.file-dtls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+.file-dtls:before {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: #4a4a4a;
+  border-radius: 50%;
+  left: -20px;
+  top: 8px;
+}
+.file-cntr {
+  padding-left: 20px;
+  font-size: 14px;
+  margin-top: 12px;
+}
+.file-name {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  padding-right: 20px;
+}
+.file-size {
+  color: #9b9b9b;
+}
+.file-retry {
+  color: #2561a8;
+  font-weight: 700;
+}
+.file-failed {
+  color: #fa6400;
+}
+.file-progress {
+  background-color: #f5f8f9;
+  border-radius: 5px;
+  height: 8px;
+  overflow: hidden;
+  width: 100%;
+}
+.file-progress .progress-bar {
+  background-color: #2561a8;
+}
+.cancel-upload {
+  flex: 0 0 13px;
+  margin-left: 36px;
+  line-height: 1;
+  cursor: pointer;
+}
+.cancel-upload img {
+  width: 100%;
+}
+.file-info {
+  padding-bottom: 10px;
+  padding-top: 13px;
+}
+.table-height {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 .general-popover .bs-popover-auto[x-placement^="bottom"] .arrow::after,
 .general-popover .bs-popover-auto[x-placement^="bottom"] .arrow::before,
 .general-popover .bs-popover-bottom .arrow::after,
@@ -513,6 +694,12 @@
 .general-popover .bs-popover-top .arrow::before {
   border-width: 18px 13px 0;
 }
+.general-popover .bs-popover-auto[x-placement^="left"] .arrow::after,
+.general-popover .bs-popover-auto[x-placement^="left"] .arrow::before,
+.general-popover .bs-popover-left .arrow::after,
+.general-popover .bs-popover-left .arrow::before {
+  border-width: 13px 0 13px 18px;
+}
 .general-popover .bs-popover-auto[x-placement^="bottom"] .arrow,
 .general-popover .bs-popover-bottom .arrow {
   top: -19px;
@@ -520,6 +707,10 @@
 .general-popover .bs-popover-auto[x-placement^="top"] .arrow,
 .general-popover .bs-popover-top .arrow {
   bottom: -19px;
+}
+.general-popover .bs-popover-auto[x-placement^="left"] .arrow,
+.general-popover .bs-popover-left .arrow {
+  right: -19px;
 }
 .general-popover .bs-popover-auto[x-placement^="bottom"] .arrow::before,
 .general-popover .bs-popover-bottom .arrow::before {
@@ -529,6 +720,10 @@
 .general-popover .bs-popover-top .arrow::before {
   border-top-color: rgba(0, 0, 0, 0.01);
 }
+.general-popover .bs-popover-auto[x-placement^="left"] .arrow::before,
+.general-popover .bs-popover-left .arrow::before {
+  border-left-color: rgba(0, 0, 0, 0.01);
+}
 .general-popover .bs-popover-auto[x-placement^="bottom"],
 .general-popover .bs-popover-bottom {
   margin-top: 24px;
@@ -536,6 +731,10 @@
 .general-popover .bs-popover-auto[x-placement^="top"],
 .general-popover .bs-popover-top {
   margin-bottom: 24px;
+}
+.general-popover .bs-popover-auto[x-placement^="left"],
+.general-popover .bs-popover-left {
+  margin-right: 24px;
 }
 /* chetan hierarchy master settings ends */
 

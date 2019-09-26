@@ -1512,7 +1512,7 @@ ticket-details-textarea ::placeholder {
 @import url("https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap");
 
 p,
-label {
+label, h4, h3 {
   margin: 0;
   padding: 0;
 }
