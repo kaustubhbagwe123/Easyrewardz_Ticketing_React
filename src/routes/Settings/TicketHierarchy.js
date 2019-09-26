@@ -115,7 +115,6 @@ class TicketHierarchy extends Component {
                             <option>Active</option>
                             <option>Inactive</option>
                           </select>
-                          
                         </div>
                         <div>
                          <a className="cancle-action" href={Demo.BLANK_LINK}>Cancle</a>
