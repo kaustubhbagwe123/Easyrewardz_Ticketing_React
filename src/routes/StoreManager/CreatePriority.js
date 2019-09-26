@@ -6,9 +6,12 @@ import BlackDeleteIcon from "./../../assets/Images/delete.svg";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import BlackInfoIcon from "./../../assets/Images/Info-black.png";
 import Demo from "../../store/Hashtag.js"
+import Braille from "./../../assets/Images/braille.svg";
+ 
 
 class CreatePriority extends Component {
   render() {
+    const tooltipDelay = { show: 100, hide: 100 };
     return (
       <>
         <div className="breadcrumbs-row">
@@ -20,10 +23,11 @@ class CreatePriority extends Component {
         <br />
         <div className="bottom-margin-class">
           <div className="row">
-            <div className="store-col-1-1 category-master-table">
+            <div className="store-col-1-1 category-master-table cp-table">
               <table className="table">
                 <thead>
                   <tr>
+                    <th></th>
                     <th>
                       Priority Name <img src={TableArr} alt="table-arr" />
                     </th>
@@ -42,6 +46,9 @@ class CreatePriority extends Component {
                 <tbody>
                   <tr>
                     <td>
+                      <img src={Braille} alt="braille-icon" />
+                    </td>
+                    <td>
                       <label className="table-data-text">High</label>
                     </td>
                     <td>
@@ -50,7 +57,31 @@ class CreatePriority extends Component {
                         className="info-icon-cp"
                         src={BlackInfoIcon}
                         alt="info-icon"
+                        id="created1"
                       />
+
+                      <UncontrolledPopover
+                        trigger="hover"
+                        placement="bottom"
+                        target="created1"
+                        className="general-popover created-popover"
+                        delay={tooltipDelay}
+                      >
+                        <PopoverBody>
+                          <div>
+                            <p className="title">Created By: Admin</p>
+                            <p className="sub-title">
+                              Created Date: 12 March 2018
+                            </p>
+                          </div>
+                          <div>
+                            <p className="title">Updated By: Manager</p>
+                            <p className="sub-title">
+                              Updated Date: 12 March 2018
+                            </p>
+                          </div>
+                        </PopoverBody>
+                      </UncontrolledPopover>
                     </td>
                     <td>
                       <label className="table-data-text">23-May-19</label>
@@ -60,67 +91,98 @@ class CreatePriority extends Component {
                     </td>
 
                     <td>
-                      <div className="row">
-                        <div className="deletepopover">
-                          <img
-                            src={RedDeleteIcon}
-                            alt="delete-icon"
-                            className="red-delete-icon-size"
-                            id="Popover-1"
-                          />
-                          <UncontrolledPopover
-                            placement="bottom"
-                            target="Popover-1"
-                          >
-                            <PopoverBody>
-                              <div className="row">
-                                <div className="oval-delete popver-delete-mar">
-                                  <img
-                                    src={BlackDeleteIcon}
-                                    alt="delete-icon"
-                                    className="oval-delete-icons"
-                                  />
-                                </div>
-                                <div className="popver-delete-mar">
-                                  <label className="delete-file-popover">
-                                    Delete file?
-                                  </label>
-                                  <p className="delete-details-popovel">
-                                    Are you sure you want to delete this file?
-                                  </p>
-                                </div>
-                              </div>
-                              <div className="row mrg-can-del-row">
-                                <label className="popover-delete-cancel">
-                                  CANCEL
-                                </label>
-                                <button className="popover-delete-btn">
-                                  <label className="popover-delete-btn-text">
-                                    DELETE
-                                  </label>
-                                </button>
-                              </div>
-
-                              <br />
-                              <br />
-                              <br />
-                            </PopoverBody>
-                          </UncontrolledPopover>
+                      <div className="deletepopover">
+                        <div className="del-btn" id="del1">
+                          <img src={RedDeleteIcon} alt="del-icon" />
                         </div>
-                        <div className=" list-edit-button-margin btn-del-pop">
+                        <UncontrolledPopover
+                          trigger="legacy"
+                          placement="bottom"
+                          target="del1"
+                          className="general-popover delete-popover"
+                        >
+                          <PopoverBody className="d-flex">
+                            <div className="del-big-icon">
+                              <img src={BlackDeleteIcon} alt="del-icon" />
+                            </div>
+                            <div>
+                              <p className="font-weight-bold blak-clr">
+                                Delete file?
+                              </p>
+                              <p className="mt-1 fs-12">
+                                Are you sure you want to delete this file?
+                              </p>
+                              <div className="del-can">
+                                <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                <button className="butn">Delete</button>
+                              </div>
+                            </div>
+                          </PopoverBody>
+                        </UncontrolledPopover>
+                        <div className=" list-edit-button-margin-1 btn-rm-p">
                           <button
                             className="Table-action-edit-button"
-                            id="edit-pop-1"
+                            id="p-edit-pop-1"
                           >
                             <label className="Table-action-edit-button-text">
                               EDIT
                             </label>
                           </button>
+                          <UncontrolledPopover
+                            trigger="legacy"
+                            placement="auto"
+                            target="p-edit-pop-1"
+                            className="general-popover delete-popover"
+                            delay={tooltipDelay}
+                          >
+                            <PopoverBody className="d-flex">
+                              <div>
+                                <div className="">
+                                  <label className="popover-header-text">
+                                    EDIT PRORITY
+                                  </label>
+                                </div>
+                                <div className=" pop-over-div">
+                                  <label className="pop-over-lbl-text">
+                                    Priority Name
+                                  </label>
+                                  <input
+                                    type="text"
+                                    className="pop-over-text"
+                                    placeholder="High"                                    
+                                  />
+                                </div>
+                                <div className=" pop-over-div">
+                                  <label className="pop-over-lbl-text">
+                                    Status
+                                  </label>
+                                  <select className="pop-over-select">
+                                    <option>Active</option>
+                                    <option>Inactive</option>
+                                  </select>
+                                </div>
+                                <br />
+                                <div>
+                                  <label className="pop-over-cancle">
+                                    CANCEL
+                                  </label>
+                                  <button className="pop-over-button">
+                                    <label className="pop-over-btnsave-text">
+                                      SAVE
+                                    </label>
+                                  </button>
+                                </div>
+                              </div>
+                            </PopoverBody>
+                          </UncontrolledPopover>
                         </div>
                       </div>
                     </td>
                   </tr>
                   <tr>
+                    <td>
+                      <img src={Braille} alt="braille-icon" />
+                    </td>
                     <td>
                       <label className="table-data-text">Medium</label>
                     </td>
@@ -130,7 +192,30 @@ class CreatePriority extends Component {
                         className="info-icon-cp"
                         src={BlackInfoIcon}
                         alt="info-icon"
+                        id="created2"
                       />
+                      <UncontrolledPopover
+                        trigger="hover"
+                        placement="bottom"
+                        target="created2"
+                        className="general-popover created-popover"
+                        delay={tooltipDelay}
+                      >
+                        <PopoverBody>
+                          <div>
+                            <p className="title">Created By: Admin</p>
+                            <p className="sub-title">
+                              Created Date: 12 March 2018
+                            </p>
+                          </div>
+                          <div>
+                            <p className="title">Updated By: Manager</p>
+                            <p className="sub-title">
+                              Updated Date: 12 March 2018
+                            </p>
+                          </div>
+                        </PopoverBody>
+                      </UncontrolledPopover>
                     </td>
                     <td>
                       <label className="table-data-text">23-May-19</label>
@@ -140,67 +225,98 @@ class CreatePriority extends Component {
                     </td>
 
                     <td>
-                      <div className="row">
-                        <div className="deletepopover">
-                          <img
-                            src={RedDeleteIcon}
-                            alt="delete-icon"
-                            className="red-delete-icon-size"
-                            id="Popover-2"
-                          />
-                          <UncontrolledPopover
-                            placement="bottom"
-                            target="Popover-2"
-                          >
-                            <PopoverBody>
-                              <div className="row">
-                                <div className="oval-delete popver-delete-mar">
-                                  <img
-                                    src={BlackDeleteIcon}
-                                    alt="delete-icon"
-                                    className="oval-delete-icons"
-                                  />
-                                </div>
-                                <div className="popver-delete-mar">
-                                  <label className="delete-file-popover">
-                                    Delete file?
-                                  </label>
-                                  <p className="delete-details-popovel">
-                                    Are you sure you want to delete this file?
-                                  </p>
-                                </div>
-                              </div>
-                              <div className="row mrg-can-del-row">
-                                <label className="popover-delete-cancel">
-                                  CANCEL
-                                </label>
-                                <button className="popover-delete-btn">
-                                  <label className="popover-delete-btn-text">
-                                    DELETE
-                                  </label>
-                                </button>
-                              </div>
-
-                              <br />
-                              <br />
-                              <br />
-                            </PopoverBody>
-                          </UncontrolledPopover>
+                      <div className="deletepopover">
+                        <div className="del-btn" id="del2">
+                          <img src={RedDeleteIcon} alt="del-icon" />
                         </div>
-                        <div className=" list-edit-button-margin btn-del-pop">
+                        <UncontrolledPopover
+                          trigger="legacy"
+                          placement="bottom"
+                          target="del2"
+                          className="general-popover delete-popover"
+                        >
+                          <PopoverBody className="d-flex">
+                            <div className="del-big-icon">
+                              <img src={BlackDeleteIcon} alt="del-icon" />
+                            </div>
+                            <div>
+                              <p className="font-weight-bold blak-clr">
+                                Delete file?
+                              </p>
+                              <p className="mt-1 fs-12">
+                                Are you sure you want to delete this file?
+                              </p>
+                              <div className="del-can">
+                                <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                <button className="butn">Delete</button>
+                              </div>
+                            </div>
+                          </PopoverBody>
+                        </UncontrolledPopover>
+                        <div className=" list-edit-button-margin-1 btn-rm-p">
                           <button
                             className="Table-action-edit-button"
-                            id="edit-pop-1"
+                            id="p-edit-pop-2"
                           >
                             <label className="Table-action-edit-button-text">
                               EDIT
                             </label>
                           </button>
+                          <UncontrolledPopover
+                            trigger="legacy"
+                            placement="auto"
+                            target="p-edit-pop-2"
+                            className="general-popover delete-popover"
+                            delay={tooltipDelay}
+                          >
+                            <PopoverBody className="d-flex">
+                              <div>
+                                <div className="">
+                                  <label className="popover-header-text">
+                                    EDIT PRORITY
+                                  </label>
+                                </div>
+                                <div className=" pop-over-div">
+                                  <label className="pop-over-lbl-text">
+                                    Priority Name
+                                  </label>
+                                  <input
+                                    type="text"
+                                    className="pop-over-text"
+                                    placeholder="Medium"                                    
+                                  />
+                                </div>
+                                <div className=" pop-over-div">
+                                  <label className="pop-over-lbl-text">
+                                    Status
+                                  </label>
+                                  <select className="pop-over-select">
+                                    <option>Active</option>
+                                    <option>Inactive</option>
+                                  </select>
+                                </div>
+                                <br />
+                                <div>
+                                  <label className="pop-over-cancle">
+                                    CANCEL
+                                  </label>
+                                  <button className="pop-over-button">
+                                    <label className="pop-over-btnsave-text">
+                                      SAVE
+                                    </label>
+                                  </button>
+                                </div>
+                              </div>
+                            </PopoverBody>
+                          </UncontrolledPopover>
                         </div>
                       </div>
                     </td>
                   </tr>
                   <tr>
+                    <td>
+                      <img src={Braille} alt="braille-icon" />
+                    </td>
                     <td>
                       <label className="table-data-text">Low</label>
                     </td>
@@ -210,7 +326,30 @@ class CreatePriority extends Component {
                         className="info-icon-cp"
                         src={BlackInfoIcon}
                         alt="info-icon"
+                        id="created3"
                       />
+
+                      <UncontrolledPopover
+                        trigger="hover"
+                        placement="bottom"
+                        target="created3"
+                        className="general-popover created-popover"
+                      >
+                        <PopoverBody>
+                          <div>
+                            <p className="title">Created By: Admin</p>
+                            <p className="sub-title">
+                              Created Date: 12 March 2018
+                            </p>
+                          </div>
+                          <div>
+                            <p className="title">Updated By: Manager</p>
+                            <p className="sub-title">
+                              Updated Date: 12 March 2018
+                            </p>
+                          </div>
+                        </PopoverBody>
+                      </UncontrolledPopover>
                     </td>
                     <td>
                       <label className="table-data-text">23-May-19</label>
@@ -220,67 +359,98 @@ class CreatePriority extends Component {
                     </td>
 
                     <td>
-                      <div className="row">
-                        <div className="deletepopover">
-                          <img
-                            src={RedDeleteIcon}
-                            alt="delete-icon"
-                            className="red-delete-icon-size"
-                            id="Popover-3"
-                          />
-                          <UncontrolledPopover
-                            placement="bottom"
-                            target="Popover-3"
-                          >
-                            <PopoverBody>
-                              <div className="row">
-                                <div className="oval-delete popver-delete-mar">
-                                  <img
-                                    src={BlackDeleteIcon}
-                                    alt="delete-icon"
-                                    className="oval-delete-icons"
-                                  />
-                                </div>
-                                <div className="popver-delete-mar">
-                                  <label className="delete-file-popover">
-                                    Delete file?
-                                  </label>
-                                  <p className="delete-details-popovel">
-                                    Are you sure you want to delete this file?
-                                  </p>
-                                </div>
-                              </div>
-                              <div className="row mrg-can-del-row">
-                                <label className="popover-delete-cancel">
-                                  CANCEL
-                                </label>
-                                <button className="popover-delete-btn">
-                                  <label className="popover-delete-btn-text">
-                                    DELETE
-                                  </label>
-                                </button>
-                              </div>
-
-                              <br />
-                              <br />
-                              <br />
-                            </PopoverBody>
-                          </UncontrolledPopover>
+                      <div className="deletepopover">
+                        <div className="del-btn" id="del3">
+                          <img src={RedDeleteIcon} alt="del-icon" />
                         </div>
-                        <div className=" list-edit-button-margin btn-del-pop">
+                        <UncontrolledPopover
+                          trigger="legacy"
+                          placement="bottom"
+                          target="del3"
+                          className="general-popover delete-popover"
+                        >
+                          <PopoverBody className="d-flex">
+                            <div className="del-big-icon">
+                              <img src={BlackDeleteIcon} alt="del-icon" />
+                            </div>
+                            <div>
+                              <p className="font-weight-bold blak-clr">
+                                Delete file?
+                              </p>
+                              <p className="mt-1 fs-12">
+                                Are you sure you want to delete this file?
+                              </p>
+                              <div className="del-can">
+                                <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                <button className="butn">Delete</button>
+                              </div>
+                            </div>
+                          </PopoverBody>
+                        </UncontrolledPopover>
+                        <div className=" list-edit-button-margin-1 btn-rm-p">
                           <button
                             className="Table-action-edit-button"
-                            id="edit-pop-1"
+                            id="p-edit-pop-3"
                           >
                             <label className="Table-action-edit-button-text">
                               EDIT
                             </label>
                           </button>
+                          <UncontrolledPopover
+                            trigger="legacy"
+                            placement="auto"
+                            target="p-edit-pop-3"
+                            className="general-popover delete-popover"
+                            delay={tooltipDelay}
+                          >
+                            <PopoverBody className="d-flex">
+                              <div>
+                                <div className="">
+                                  <label className="popover-header-text">
+                                    EDIT PRORITY
+                                  </label>
+                                </div>
+                                <div className=" pop-over-div">
+                                  <label className="pop-over-lbl-text">
+                                    Priority Name
+                                  </label>
+                                  <input
+                                    type="text"
+                                    className="pop-over-text"
+                                    placeholder="Low"                                    
+                                  />
+                                </div>
+                                <div className=" pop-over-div">
+                                  <label className="pop-over-lbl-text">
+                                    Status
+                                  </label>
+                                  <select className="pop-over-select">
+                                    <option>Active</option>
+                                    <option>Inactive</option>
+                                  </select>
+                                </div>
+                                <br />
+                                <div>
+                                  <label className="pop-over-cancle">
+                                    CANCEL
+                                  </label>
+                                  <button className="pop-over-button">
+                                    <label className="pop-over-btnsave-text">
+                                      SAVE
+                                    </label>
+                                  </button>
+                                </div>
+                              </div>
+                            </PopoverBody>
+                          </UncontrolledPopover>
                         </div>
                       </div>
                     </td>
                   </tr>
                   <tr>
+                    <td>
+                      <img src={Braille} alt="braille-icon" />
+                    </td>
                     <td>
                       <label className="table-data-text">6</label>
                     </td>
@@ -290,7 +460,30 @@ class CreatePriority extends Component {
                         className="info-icon-cp"
                         src={BlackInfoIcon}
                         alt="info-icon"
+                        id="created4"
                       />
+                      <UncontrolledPopover
+                        trigger="hover"
+                        placement="bottom"
+                        target="created4"
+                        className="general-popover created-popover"
+                        delay={tooltipDelay}
+                      >
+                        <PopoverBody>
+                          <div>
+                            <p className="title">Created By: Admin</p>
+                            <p className="sub-title">
+                              Created Date: 12 March 2018
+                            </p>
+                          </div>
+                          <div>
+                            <p className="title">Updated By: Manager</p>
+                            <p className="sub-title">
+                              Updated Date: 12 March 2018
+                            </p>
+                          </div>
+                        </PopoverBody>
+                      </UncontrolledPopover>
                     </td>
                     <td>
                       <label className="table-data-text">23-May-19</label>
@@ -300,67 +493,98 @@ class CreatePriority extends Component {
                     </td>
 
                     <td>
-                      <div className="row">
-                        <div className="deletepopover">
-                          <img
-                            src={RedDeleteIcon}
-                            alt="delete-icon"
-                            className="red-delete-icon-size"
-                            id="Popover-4"
-                          />
-                          <UncontrolledPopover
-                            placement="bottom"
-                            target="Popover-4"
-                          >
-                            <PopoverBody>
-                              <div className="row">
-                                <div className="oval-delete popver-delete-mar">
-                                  <img
-                                    src={BlackDeleteIcon}
-                                    alt="delete-icon"
-                                    className="oval-delete-icons"
-                                  />
-                                </div>
-                                <div className="popver-delete-mar">
-                                  <label className="delete-file-popover">
-                                    Delete file?
-                                  </label>
-                                  <p className="delete-details-popovel">
-                                    Are you sure you want to delete this file?
-                                  </p>
-                                </div>
-                              </div>
-                              <div className="row mrg-can-del-row">
-                                <label className="popover-delete-cancel">
-                                  CANCEL
-                                </label>
-                                <button className="popover-delete-btn">
-                                  <label className="popover-delete-btn-text">
-                                    DELETE
-                                  </label>
-                                </button>
-                              </div>
-
-                              <br />
-                              <br />
-                              <br />
-                            </PopoverBody>
-                          </UncontrolledPopover>
+                      <div className="deletepopover">
+                        <div className="del-btn" id="del4">
+                          <img src={RedDeleteIcon} alt="del-icon" />
                         </div>
-                        <div className=" list-edit-button-margin btn-del-pop">
+                        <UncontrolledPopover
+                          trigger="legacy"
+                          placement="bottom"
+                          target="del4"
+                          className="general-popover delete-popover"
+                        >
+                          <PopoverBody className="d-flex">
+                            <div className="del-big-icon">
+                              <img src={BlackDeleteIcon} alt="del-icon" />
+                            </div>
+                            <div>
+                              <p className="font-weight-bold blak-clr">
+                                Delete file?
+                              </p>
+                              <p className="mt-1 fs-12">
+                                Are you sure you want to delete this file?
+                              </p>
+                              <div className="del-can">
+                                <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                <button className="butn">Delete</button>
+                              </div>
+                            </div>
+                          </PopoverBody>
+                        </UncontrolledPopover>
+                        <div className=" list-edit-button-margin-1 btn-rm-p">
                           <button
                             className="Table-action-edit-button"
-                            id="edit-pop-1"
+                            id="p-edit-pop-4"
                           >
                             <label className="Table-action-edit-button-text">
                               EDIT
                             </label>
                           </button>
+                          <UncontrolledPopover
+                            trigger="legacy"
+                            placement="auto"
+                            target="p-edit-pop-4"
+                            className="general-popover delete-popover"
+                            delay={tooltipDelay}
+                          >
+                            <PopoverBody className="d-flex">
+                              <div>
+                                <div className="">
+                                  <label className="popover-header-text">
+                                    EDIT PRORITY
+                                  </label>
+                                </div>
+                                <div className=" pop-over-div">
+                                  <label className="pop-over-lbl-text">
+                                    Priority Name
+                                  </label>
+                                  <input
+                                    type="text"
+                                    className="pop-over-text"
+                                    placeholder="6"                                    
+                                  />
+                                </div>
+                                <div className=" pop-over-div">
+                                  <label className="pop-over-lbl-text">
+                                    Status
+                                  </label>
+                                  <select className="pop-over-select">
+                                    <option>Active</option>
+                                    <option>Inactive</option>
+                                  </select>
+                                </div>
+                                <br />
+                                <div>
+                                  <label className="pop-over-cancle">
+                                    CANCEL
+                                  </label>
+                                  <button className="pop-over-button">
+                                    <label className="pop-over-btnsave-text">
+                                      SAVE
+                                    </label>
+                                  </button>
+                                </div>
+                              </div>
+                            </PopoverBody>
+                          </UncontrolledPopover>
                         </div>
                       </div>
                     </td>
                   </tr>
                   <tr>
+                    <td>
+                      <img src={Braille} alt="braille-icon" />
+                    </td>
                     <td>
                       <label className="table-data-text">8</label>
                     </td>
@@ -370,7 +594,30 @@ class CreatePriority extends Component {
                         className="info-icon-cp"
                         src={BlackInfoIcon}
                         alt="info-icon"
+                        id="created5"
                       />
+                      <UncontrolledPopover
+                        trigger="hover"
+                        placement="bottom"
+                        target="created5"
+                        className="general-popover created-popover"
+                        delay={tooltipDelay}
+                      >
+                        <PopoverBody>
+                          <div>
+                            <p className="title">Created By: Admin</p>
+                            <p className="sub-title">
+                              Created Date: 12 March 2018
+                            </p>
+                          </div>
+                          <div>
+                            <p className="title">Updated By: Manager</p>
+                            <p className="sub-title">
+                              Updated Date: 12 March 2018
+                            </p>
+                          </div>
+                        </PopoverBody>
+                      </UncontrolledPopover>
                     </td>
                     <td>
                       <label className="table-data-text">23-May-19</label>
@@ -380,95 +627,133 @@ class CreatePriority extends Component {
                     </td>
 
                     <td>
-                      <div className="row">
-                        <div className="deletepopover">
-                          <img
-                            src={RedDeleteIcon}
-                            alt="delete-icon"
-                            className="red-delete-icon-size"
-                            id="Popover-5"
-                          />
-                          <UncontrolledPopover
-                            placement="bottom"
-                            target="Popover-5"
-                          >
-                            <PopoverBody>
-                              <div className="row">
-                                <div className="oval-delete popver-delete-mar">
-                                  <img
-                                    src={BlackDeleteIcon}
-                                    alt="delete-icon"
-                                    className="oval-delete-icons"
-                                  />
-                                </div>
-                                <div className="popver-delete-mar">
-                                  <label className="delete-file-popover">
-                                    Delete file?
-                                  </label>
-                                  <p className="delete-details-popovel">
-                                    Are you sure you want to delete this file?
-                                  </p>
-                                </div>
-                              </div>
-                              <div className="row mrg-can-del-row">
-                                <label className="popover-delete-cancel">
-                                  CANCEL
-                                </label>
-                                <button className="popover-delete-btn">
-                                  <label className="popover-delete-btn-text">
-                                    DELETE
-                                  </label>
-                                </button>
-                              </div>
-
-                              <br />
-                              <br />
-                              <br />
-                            </PopoverBody>
-                          </UncontrolledPopover>
+                      <div className="deletepopover">
+                        <div className="del-btn" id="del5">
+                          <img src={RedDeleteIcon} alt="del-icon" />
                         </div>
-                        <div className=" list-edit-button-margin btn-del-pop">
+                        <UncontrolledPopover
+                          trigger="legacy"
+                          placement="bottom"
+                          target="del5"
+                          className="general-popover delete-popover"
+                        >
+                          <PopoverBody className="d-flex">
+                            <div className="del-big-icon">
+                              <img src={BlackDeleteIcon} alt="del-icon" />
+                            </div>
+                            <div>
+                              <p className="font-weight-bold blak-clr">
+                                Delete file?
+                              </p>
+                              <p className="mt-1 fs-12">
+                                Are you sure you want to delete this file?
+                              </p>
+                              <div className="del-can">
+                                <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                <button className="butn">Delete</button>
+                              </div>
+                            </div>
+                          </PopoverBody>
+                        </UncontrolledPopover>
+                        <div className=" list-edit-button-margin-1 btn-rm-p">
                           <button
                             className="Table-action-edit-button"
-                            id="edit-pop-1"
+                            id="p-edit-pop-5"
                           >
                             <label className="Table-action-edit-button-text">
                               EDIT
                             </label>
                           </button>
+                          <UncontrolledPopover
+                            trigger="legacy"
+                            placement="auto"
+                            target="p-edit-pop-5"
+                            className="general-popover delete-popover"
+                            delay={tooltipDelay}
+                          >
+                            <PopoverBody className="d-flex">
+                              <div>
+                                <div className="">
+                                  <label className="popover-header-text">
+                                    EDIT PRORITY
+                                  </label>
+                                </div>
+                                <div className=" pop-over-div">
+                                  <label className="pop-over-lbl-text">
+                                    Priority Name
+                                  </label>
+                                  <input
+                                    type="text"
+                                    className="pop-over-text"
+                                    placeholder="8"                                    
+                                  />
+                                </div>
+                                <div className=" pop-over-div">
+                                  <label className="pop-over-lbl-text">
+                                    Status
+                                  </label>
+                                  <select className="pop-over-select">
+                                    <option>Active</option>
+                                    <option>Inactive</option>
+                                  </select>
+                                </div>
+                                <br />
+                                <div>
+                                  <label className="pop-over-cancle">
+                                    CANCEL
+                                  </label>
+                                  <button className="pop-over-button">
+                                    <label className="pop-over-btnsave-text">
+                                      SAVE
+                                    </label>
+                                  </button>
+                                </div>
+                              </div>
+                            </PopoverBody>
+                          </UncontrolledPopover>
                         </div>
                       </div>
                     </td>
                   </tr>
                 </tbody>
               </table>
-              <div className="pagi">
-                <ul>
-                  <li>
-                    <a href={Demo.BLANK_LINK}>&lt;</a>
-                  </li>
-                  <li>
-                    <a href={Demo.BLANK_LINK}>1</a>
-                  </li>
-                  <li className="active">
-                    <a href={Demo.BLANK_LINK}>2</a>
-                  </li>
-                  <li>
-                    <a href={Demo.BLANK_LINK}>3</a>
-                  </li>
-                  <li>
-                    <a href={Demo.BLANK_LINK}>4</a>
-                  </li>
-                  <li>
-                    <a href={Demo.BLANK_LINK}>5</a>
-                  </li>
-                  <li>
-                    <a href={Demo.BLANK_LINK}>6</a>
-                  </li>
-                  <li>
-                    <a href={Demo.BLANK_LINK}>&gt;</a>
-                  </li>
-                </ul>
+              <div className="position-relative">
+                <div className="pagi">
+                  <ul>
+                    <li>
+                      <a href={Demo.BLANK_LINK}>&lt;</a>
+                    </li>
+                    <li>
+                      <a href={Demo.BLANK_LINK}>1</a>
+                    </li>
+                    <li className="active">
+                      <a href={Demo.BLANK_LINK}>2</a>
+                    </li>
+                    <li>
+                      <a href={Demo.BLANK_LINK}>3</a>
+                    </li>
+                    <li>
+                      <a href={Demo.BLANK_LINK}>4</a>
+                    </li>
+                    <li>
+                      <a href={Demo.BLANK_LINK}>5</a>
+                    </li>
+                    <li>
+                      <a href={Demo.BLANK_LINK}>6</a>
+                    </li>
+                    <li>
+                      <a href={Demo.BLANK_LINK}>&gt;</a>
+                    </li>
+                  </ul>
+                </div>
+                <div className="item-selection">
+                  <select>
+                    <option>30</option>
+                    <option>50</option>
+                    <option>100</option>
+                  </select>
+                  <p>Items per page</p>
+                </div>
               </div>
             </div>
             <div>
@@ -480,7 +765,9 @@ class CreatePriority extends Component {
 
                 <div className="store-create-margin">
                   <div className="row">
-                    <label className="store-create-lable-text">Priority Name</label>
+                    <label className="store-create-lable-text">
+                      Priority Name
+                    </label>
                   </div>
                   <div className="row">
                     <input
