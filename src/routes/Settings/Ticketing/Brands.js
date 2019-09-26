@@ -219,8 +219,50 @@ class Brands extends Component{
                         </PopoverBody>
                       </UncontrolledPopover>
                       <button className="btnEditAction">
-                        <label className="edit">EDIT</label>
+                        <label className="edit" id="Edit2">
+                          EDIT
+                        </label>
                       </button>
+                      <UncontrolledPopover
+                        trigger="legacy"
+                        placement="bottom"
+                        target="Edit2"
+                        className="general-popover created-popover"
+                      >
+                        <PopoverBody>
+                          <div>
+                            <p className="edit-user-action">Edit User</p>
+                            <label className="edit-label-1">
+                              Designation Name
+                            </label>
+                            <input
+                              type="text"
+                              className="txt-edit-popover"
+                              placeholder="Designation Name"
+                            />
+                            <label className="edit-label-1">Status</label>
+                            <select
+                              id="inputState"
+                              className="form-control dropdown-setting"
+                            >
+                              <option>Active</option>
+                              <option>Inactive</option>
+                            </select>
+                            <label className="edit-label-1">Reports To</label>
+                            <select
+                              id="inputState"
+                              className="form-control dropdown-setting"
+                            >
+                              <option>select</option>
+                              <option>Root</option>
+                            </select>
+                          </div>
+                          <div className="del-can">
+                            <a href={Demo.BLANK_LINK}>CANCEL</a>
+                            <button className="butn">Delete</button>
+                          </div>
+                        </PopoverBody>
+                      </UncontrolledPopover>
                     </td>
                   </tr>
                   <tr>
@@ -287,8 +329,50 @@ class Brands extends Component{
                         </PopoverBody>
                       </UncontrolledPopover>
                       <button className="btnEditAction">
-                        <label className="edit">EDIT</label>
+                        <label className="edit" id="Edit3">
+                          EDIT
+                        </label>
                       </button>
+                      <UncontrolledPopover
+                        trigger="legacy"
+                        placement="bottom"
+                        target="Edit3"
+                        className="general-popover created-popover"
+                      >
+                        <PopoverBody>
+                          <div>
+                            <p className="edit-user-action">Edit User</p>
+                            <label className="edit-label-1">
+                              Designation Name
+                            </label>
+                            <input
+                              type="text"
+                              className="txt-edit-popover"
+                              placeholder="Designation Name"
+                            />
+                            <label className="edit-label-1">Status</label>
+                            <select
+                              id="inputState"
+                              className="form-control dropdown-setting"
+                            >
+                              <option>Active</option>
+                              <option>Inactive</option>
+                            </select>
+                            <label className="edit-label-1">Reports To</label>
+                            <select
+                              id="inputState"
+                              className="form-control dropdown-setting"
+                            >
+                              <option>select</option>
+                              <option>Root</option>
+                            </select>
+                          </div>
+                          <div className="del-can">
+                            <a href={Demo.BLANK_LINK}>CANCEL</a>
+                            <button className="butn">Delete</button>
+                          </div>
+                        </PopoverBody>
+                      </UncontrolledPopover>
                     </td>
                   </tr>
                   <tr>
@@ -355,8 +439,50 @@ class Brands extends Component{
                         </PopoverBody>
                       </UncontrolledPopover>
                       <button className="btnEditAction">
-                        <label className="edit">EDIT</label>
+                        <label className="edit" id="Edit5">
+                          EDIT
+                        </label>
                       </button>
+                      <UncontrolledPopover
+                        trigger="legacy"
+                        placement="bottom"
+                        target="Edit5"
+                        className="general-popover created-popover"
+                      >
+                        <PopoverBody>
+                          <div>
+                            <p className="edit-user-action">Edit User</p>
+                            <label className="edit-label-1">
+                              Designation Name
+                            </label>
+                            <input
+                              type="text"
+                              className="txt-edit-popover"
+                              placeholder="Designation Name"
+                            />
+                            <label className="edit-label-1">Status</label>
+                            <select
+                              id="inputState"
+                              className="form-control dropdown-setting"
+                            >
+                              <option>Active</option>
+                              <option>Inactive</option>
+                            </select>
+                            <label className="edit-label-1">Reports To</label>
+                            <select
+                              id="inputState"
+                              className="form-control dropdown-setting"
+                            >
+                              <option>select</option>
+                              <option>Root</option>
+                            </select>
+                          </div>
+                          <div className="del-can">
+                            <a href={Demo.BLANK_LINK}>CANCEL</a>
+                            <button className="butn">Delete</button>
+                          </div>
+                        </PopoverBody>
+                      </UncontrolledPopover>
                     </td>
                   </tr>
                   <tr>
@@ -423,8 +549,50 @@ class Brands extends Component{
                         </PopoverBody>
                       </UncontrolledPopover>
                       <button className="btnEditAction">
-                        <label className="edit">EDIT</label>
+                        <label className="edit" id="Edit6">
+                          EDIT
+                        </label>
                       </button>
+                      <UncontrolledPopover
+                        trigger="legacy"
+                        placement="bottom"
+                        target="Edit6"
+                        className="general-popover created-popover"
+                      >
+                        <PopoverBody>
+                          <div>
+                            <p className="edit-user-action">Edit User</p>
+                            <label className="edit-label-1">
+                              Designation Name
+                            </label>
+                            <input
+                              type="text"
+                              className="txt-edit-popover"
+                              placeholder="Designation Name"
+                            />
+                            <label className="edit-label-1">Status</label>
+                            <select
+                              id="inputState"
+                              className="form-control dropdown-setting"
+                            >
+                              <option>Active</option>
+                              <option>Inactive</option>
+                            </select>
+                            <label className="edit-label-1">Reports To</label>
+                            <select
+                              id="inputState"
+                              className="form-control dropdown-setting"
+                            >
+                              <option>select</option>
+                              <option>Root</option>
+                            </select>
+                          </div>
+                          <div className="del-can">
+                            <a href={Demo.BLANK_LINK}>CANCEL</a>
+                            <button className="butn">Delete</button>
+                          </div>
+                        </PopoverBody>
+                      </UncontrolledPopover>
                     </td>
                   </tr>
                 </tbody>
@@ -509,11 +677,10 @@ class Brands extends Component{
                 </div>
               </div>
               <br />
-              <div className="rectangle-copy-3">
+              {/* <div className="rectangle-copy-3">
                 <div className="createSpace">
                   <label className="bulk-upload">BULK UPLOAD</label>
                   <div className="rectangleBox-1">
-                    {/* <input type="file" className="" /> */}
                     <img src={ClipIcon} alt="Clip" className="clipImgMargin" />
                     <label className="add-file-or-drop-fil">
                       Add File
@@ -525,11 +692,7 @@ class Brands extends Component{
                     <label className="chat-agent-user-type">
                       Chat agent user type file.CSV
                     </label>
-                    {/* <img
-                      src={DeleteUpld}
-                      alt="Delete"
-                      className="icons-8-delete"
-                    /> */}
+                   
                     <div className="del-btn" id="DeleteUpld">
                       <img
                         src={DeleteUpld}
@@ -593,7 +756,7 @@ class Brands extends Component{
                     </button>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

@@ -121,13 +121,13 @@ class HierarchyMaster extends Component {
                               </div>
                             </PopoverBody>
                           </UncontrolledPopover>
-                          <button className="butn" id="edit1">
-                            EDIT
+                          <button className="butn">
+                            <label id="editAction"> EDIT</label>
                           </button>
                           <UncontrolledPopover
                             trigger="legacy"
                             placement="auto"
-                            target="edit1"
+                            target="editAction"
                             className="general-popover edit-popover"
                           >
                             <PopoverBody>
