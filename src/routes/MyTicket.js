@@ -392,7 +392,7 @@ class MyTicket extends Component {
               </div>
               <div className="col-md-8">
                 <img src={ClipImg} alt="clip" className="clip" />
-                <label className="hi-diwakar-i-really1">
+                <label className="hi-diwakar-i-really2">
                   &nbsp; Hi Diwakar, I really appreciate you joining us at
                   Voucherify! My top priority is that you have a great
                   experience.

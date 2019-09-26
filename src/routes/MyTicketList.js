@@ -22,9 +22,9 @@ class MyTicketList extends Component {
         <div className="myticketlist-header">
           <table className="table">
             <tbody>
-              <tr style={{display:'contents'}}>
-                <td style={{ paddingLeft: "6px", paddingTop: "6px" }}>
-                  <div className="Escalation04-box1">
+              <tr style={{ display: "contents" }}>
+                <td style={{ paddingLeft: "6px", paddingTop: "6px" ,paddingRight:"5px"}}>
+                  <div className="Escalation04-box1 ">
                     Escalation:{" "}
                     <label className="oval04">
                       <label style={{ color: "white", padding: "5px" }}>
@@ -34,16 +34,34 @@ class MyTicketList extends Component {
                   </div>
                 </td>
 
-                <td style={{paddingTop:'19px', paddingLeft:'1px'}}>New: 09 </td>
-                <td style={{paddingTop:'19px'}}>Open: 10</td>
-                <td style={{paddingTop:'19px'}}>Resolved: 15 </td>
-                <td style={{paddingTop:'19px'}}>Reassigned by me: 03</td>
-                <td style={{paddingTop:'19px'}}>Closed: 12</td>
-                <td style={{paddingTop:'19px'}}>All: 56</td>
-                <td style={{paddingTop:'19px'}}>Follow Up: 03</td>
-                <td style={{paddingTop:'19px'}}>Draft: 05</td>
+                <td style={{ paddingTop: "19px", paddingLeft: "1px" }}>
+                  <label className="header-list-text">New: 09</label>{" "}
+                </td>
+                <td style={{ paddingTop: "19px" }}>
+                  <label className="header-list-text">Open: 10</label>
+                </td>
+                <td style={{ paddingTop: "19px" }}>
+                  <label className="header-list-text">Resolved: 15</label>{" "}
+                </td>
+                <td style={{ paddingTop: "19px" }}>
+                  <label className="header-list-text">
+                    Reassigned by me: 03
+                  </label>
+                </td>
+                <td style={{ paddingTop: "19px" }}>
+                  <label className="header-list-text">Closed: 12</label>
+                </td>
+                <td style={{ paddingTop: "19px" }}>
+                  <label className="header-list-text">All: 56</label>
+                </td>
+                <td style={{ paddingTop: "19px" }}>
+                  <label className="header-list-text">Follow Up: 03</label>
+                </td>
+                <td style={{ paddingTop: "19px" }}>
+                  <label className="header-list-text">Draft: 05</label>
+                </td>
                 <td></td>
-                <td style={{ paddingTop:'6px' }}>
+                <td style={{ paddingTop: "6px" }}>
                   <div>
                     <button
                       className="Add-ticket-button"
@@ -89,9 +107,13 @@ class MyTicketList extends Component {
               <tbody>
                 <tr onClick={this.hanleChange_MyTicket}>
                   <td>
-                    <img src={HeadPhone3} alt="HeadPhone" className="headPhone3"/> 
+                    <img
+                      src={HeadPhone3}
+                      alt="HeadPhone"
+                      className="headPhone3"
+                    />
                     ABC1234
-                    </td>
+                  </td>
                   <td>
                     <span className="table-btn table-blue-btn">Open</span>
                   </td>
@@ -113,8 +135,13 @@ class MyTicketList extends Component {
                 </tr>
                 <tr onClick={this.hanleChange_MyTicket}>
                   <td>
-                  <img src={HeadPhone3} alt="HeadPhone" className="headPhone3"/> 
-                    ABC1234</td>
+                    <img
+                      src={HeadPhone3}
+                      alt="HeadPhone"
+                      className="headPhone3"
+                    />
+                    ABC1234
+                  </td>
                   <td>
                     <span className="table-btn table-yellow-btn">New</span>
                   </td>
@@ -141,50 +168,50 @@ class MyTicketList extends Component {
                   </td>
                 </tr>
 
-                    <tr onClick={this.hanleChange_MyTicket}>
-                      <td>
-                      <img src={HeadPhone3} alt="HeadPhone" className="headPhone3"/> 
-                        ABC1234</td>
-                      <td>
-                        <span className="table-btn table-green-btn">
-                          Solved
-                        </span>
-                      </td>
-                      <td className="table-img-cntr">
-                        <img
-                          className="task-icon-1"
-                          src={TaskIconBlue}
-                          alt="task-icon-blue"
-                        />
-                      </td>
-                      <td>
-                        Need to change my shipping address{" "}
-                        <span>Hope this help, Please rate us</span>
-                      </td>
-                      <td>
-                        Defective article{" "}
-                        <img
-                          className="info-icon"
-                          src={InfoIcon}
-                          alt="info-icon"
-                        />
-                      </td>
-                      <td>High</td>
-                      <td>Shalini</td>
-                      <td>
-                        12 March 2018{" "}
-                        <img
-                          className="info-icon"
-                          src={InfoIcon}
-                          alt="info-icon"
-                        />
-                      </td>
-                    </tr>
+                <tr onClick={this.hanleChange_MyTicket}>
+                  <td>
+                    <img
+                      src={HeadPhone3}
+                      alt="HeadPhone"
+                      className="headPhone3"
+                    />
+                    ABC1234
+                  </td>
+                  <td>
+                    <span className="table-btn table-green-btn">Solved</span>
+                  </td>
+                  <td className="table-img-cntr">
+                    <img
+                      className="task-icon-1"
+                      src={TaskIconBlue}
+                      alt="task-icon-blue"
+                    />
+                  </td>
+                  <td>
+                    Need to change my shipping address{" "}
+                    <span>Hope this help, Please rate us</span>
+                  </td>
+                  <td>
+                    Defective article{" "}
+                    <img className="info-icon" src={InfoIcon} alt="info-icon" />
+                  </td>
+                  <td>High</td>
+                  <td>Shalini</td>
+                  <td>
+                    12 March 2018{" "}
+                    <img className="info-icon" src={InfoIcon} alt="info-icon" />
+                  </td>
+                </tr>
 
                 <tr onClick={this.hanleChange_MyTicket}>
                   <td>
-                  <img src={HeadPhone3} alt="HeadPhone" className="headPhone3"/> 
-                    ABC1234</td>
+                    <img
+                      src={HeadPhone3}
+                      alt="HeadPhone"
+                      className="headPhone3"
+                    />
+                    ABC1234
+                  </td>
                   <td>
                     <span className="table-btn table-blue-btn">Open</span>
                   </td>
@@ -213,8 +240,13 @@ class MyTicketList extends Component {
 
                 <tr onClick={this.hanleChange_MyTicket}>
                   <td>
-                  <img src={HeadPhone3} alt="HeadPhone" className="headPhone3"/> 
-                    ABC1234</td>
+                    <img
+                      src={HeadPhone3}
+                      alt="HeadPhone"
+                      className="headPhone3"
+                    />
+                    ABC1234
+                  </td>
                   <td>
                     <span className="table-btn table-blue-btn">Open</span>
                   </td>
@@ -248,8 +280,13 @@ class MyTicketList extends Component {
 
                 <tr onClick={this.hanleChange_MyTicket}>
                   <td>
-                  <img src={HeadPhone3} alt="HeadPhone" className="headPhone3"/> 
-                    ABC1234</td>
+                    <img
+                      src={HeadPhone3}
+                      alt="HeadPhone"
+                      className="headPhone3"
+                    />
+                    ABC1234
+                  </td>
                   <td>
                     <span className="table-btn table-yellow-btn">New</span>
                   </td>
@@ -278,8 +315,13 @@ class MyTicketList extends Component {
 
                 <tr onClick={this.hanleChange_MyTicket}>
                   <td>
-                  <img src={HeadPhone3} alt="HeadPhone" className="headPhone3"/> 
-                    ABC1234</td>
+                    <img
+                      src={HeadPhone3}
+                      alt="HeadPhone"
+                      className="headPhone3"
+                    />
+                    ABC1234
+                  </td>
                   <td>
                     <span className="table-btn table-green-btn">Solved</span>
                   </td>
@@ -307,8 +349,13 @@ class MyTicketList extends Component {
                 </tr>
                 <tr onClick={this.hanleChange_MyTicket}>
                   <td>
-                  <img src={HeadPhone3} alt="HeadPhone" className="headPhone3"/> 
-                    ABC1234</td>
+                    <img
+                      src={HeadPhone3}
+                      alt="HeadPhone"
+                      className="headPhone3"
+                    />
+                    ABC1234
+                  </td>
                   <td>
                     <span className="table-btn table-blue-btn">Open</span>
                   </td>
@@ -330,8 +377,13 @@ class MyTicketList extends Component {
                 </tr>
                 <tr onClick={this.hanleChange_MyTicket}>
                   <td>
-                  <img src={HeadPhone3} alt="HeadPhone" className="headPhone3"/> 
-                    ABC1234</td>
+                    <img
+                      src={HeadPhone3}
+                      alt="HeadPhone"
+                      className="headPhone3"
+                    />
+                    ABC1234
+                  </td>
                   <td>
                     <span className="table-btn table-blue-btn">Open</span>
                   </td>
@@ -354,8 +406,13 @@ class MyTicketList extends Component {
 
                 <tr onClick={this.hanleChange_MyTicket}>
                   <td>
-                  <img src={HeadPhone3} alt="HeadPhone" className="headPhone3"/> 
-                    ABC1234</td>
+                    <img
+                      src={HeadPhone3}
+                      alt="HeadPhone"
+                      className="headPhone3"
+                    />
+                    ABC1234
+                  </td>
                   <td>
                     <span className="table-btn table-yellow-btn">New</span>
                   </td>

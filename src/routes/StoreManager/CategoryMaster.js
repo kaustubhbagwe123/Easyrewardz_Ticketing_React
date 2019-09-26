@@ -94,6 +94,8 @@ class CategoryMaster extends Component {
                           <UncontrolledPopover
                             placement="bottom"
                             target="Popover-1"
+                            className="general-popover created-popover"
+                            trigger="legacy"
                           >
                             <PopoverBody>
                               <div className="row">
@@ -140,9 +142,10 @@ class CategoryMaster extends Component {
                             </label>
                           </button>
                           <UncontrolledPopover
-                            trigger="focus"
+                            
                             target="edit-pop-1"
                             placement="bottom"
+                            trigger="legacy"
                           >
                             <PopoverBody>
                               <label className="popover-header-text">
@@ -229,6 +232,7 @@ class CategoryMaster extends Component {
                             placement="bottom"
                             target="Popover-2"
                             trigger="legacy"
+                            className="general-popover created-popover"
                           >
                             <PopoverBody>
                               <div className="row">

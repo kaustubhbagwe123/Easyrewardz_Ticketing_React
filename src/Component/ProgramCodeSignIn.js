@@ -13,7 +13,7 @@ class ProgramCodeSignIn extends Component {
     return (
       <div className="auth-wrapper">
         <div className="auth-content">
-          <div className="card">
+          <div className="card programcode-card-new">
             <div className="card-body text-center">
               <div className="mb-4">
                 <img src={logo} style={{ width: "210px" }} alt="logo" />
