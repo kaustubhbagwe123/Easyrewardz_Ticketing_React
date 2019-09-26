@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import TableArr from "./../../assets/Images/table-arr.png";
 import InfoIcon from "./../../assets/Images/info-icon.png";
 import Demo from "../../store/Hashtag.js";
+import { UncontrolledPopover, PopoverBody } from "reactstrap";
 
 class RaisedByMe extends Component {
     render() {
         return (
-            <div>
-                 <div className="table-cntr">
+          <div>
+            <div className="table-cntr">
               <table>
                 <thead>
                   <tr>
@@ -45,21 +46,29 @@ class RaisedByMe extends Component {
                           className="info-icon"
                           src={InfoIcon}
                           alt="info-icon"
+                          id="Internet"
                         />
-                        <ul className="dash-category-popup dash-popup">
-                          <li>
-                            <p>Category</p>
-                            <p>Defective article</p>
-                          </li>
-                          <li>
-                            <p>Sub Category</p>
-                            <p>Customer wants refund</p>
-                          </li>
-                          <li>
-                            <p>Type</p>
-                            <p>Delivery</p>
-                          </li>
-                        </ul>
+                        <UncontrolledPopover
+                          trigger="hover"
+                          placement="bottom"
+                          target="Internet"
+                          className="general-popover created-popover"
+                        >
+                          <PopoverBody>
+                            <div>
+                              <p className="sub-title">Category</p>
+                              <p className="title">Defective article</p>
+                            </div>
+                            <div>
+                              <p className="sub-title">Sub Category</p>
+                              <p className="title">Customer wants refund</p>
+                            </div>
+                            <div>
+                              <p className="sub-title">Type</p>
+                              <p className="title">Delivery</p>
+                            </div>
+                          </PopoverBody>
+                        </UncontrolledPopover>
                       </div>
                     </td>
                     <td>BATA1</td>
@@ -351,7 +360,7 @@ class RaisedByMe extends Component {
                   </tr>
                 </tbody>
               </table>
-              <div className="pagi">
+              <div className="pagi heightpagination">
                 <ul>
                   <li>
                     <a href={Demo.BLANK_LINK}>&lt;</a>
@@ -383,8 +392,8 @@ class RaisedByMe extends Component {
                 </ul>
               </div>
             </div>
-            </div>
-        )
+          </div>
+        );
     }
 }
 

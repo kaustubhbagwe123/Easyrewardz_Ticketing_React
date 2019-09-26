@@ -463,7 +463,7 @@
 }
 .created-popover .title {
   font-weight: 700;
-  font-size: 16px;
+  font-size: 14px;
 }
 .created-popover .sub-title {
   font-size: 13px;
@@ -569,6 +569,11 @@
   height: auto;
   margin-left: 50px;
 }
+.maskTableHierarchy  table td {
+  font-size: 13px;
+  color: #9b9b9b;
+  padding: 0px 30px;
+}
 .createHierarchyMask {
   background-color: #ffffff;
   border-radius: 4px;
@@ -617,10 +622,15 @@
   line-height: 66px;
   text-align: left !important;
 }
+.heightpagination{
+  text-align: center;
+  padding: 25px;
+  margin-top: 250px;
+}
 .pagination {
   margin-left: 214px;
   padding: 25px;
-  margin-top: 350px;
+  margin-top: 380px;
 }
 .pagination ul {
   border: 1px solid #eceff0;
@@ -720,6 +730,7 @@
   text-align: left;
   padding-right: 40px;
   background: #ecf2f4 url("../Images/dropDown.png") no-repeat right 12px center;
+  border: none;
 }
 .CreateADDBtn {
   background-color: #2561a8;
@@ -808,7 +819,7 @@
 .icons-8-delete {
   width: 18px;
   height: 18px;
-  margin-left: 55px;
+  margin-left: 75px;
 }
 .failed {
   color: #fa6400;
@@ -826,7 +837,7 @@
   font-weight: 700;
   line-height: 17px;
   text-align: left;
-  margin-left: 70px;
+  margin-left: 85px;
 }
 .ProgressBar {
   background-color: #2561a8;
@@ -839,7 +850,7 @@
   width: 70%;
   border-radius: 6px;
   margin-top: 10px;
-  margin-left: 15px;
+  margin-left: 3px;
 }
 .cancelIcon {
   margin-left: 250px;
@@ -1228,6 +1239,7 @@
   font-weight: 700;
   line-height: 14px;
   text-align: left;
+  display: block;
 }
 .txt-edit-popover{
   background-color: #ECF2F4;
@@ -1244,5 +1256,15 @@
   font-weight: 400;
   line-height: 14px;
   text-align: left;
+}
+.action-drop-down-status{
+  background-color: #ECF2F4;
+  border-radius: 4px;
+  width: 200px;
+  height: 35px;
+}
+.position-relative1 {
+  position: relative!important;
+  margin-top: 380px;
 }
 /* Css End */
