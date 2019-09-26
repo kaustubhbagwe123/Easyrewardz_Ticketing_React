@@ -4796,13 +4796,9 @@ background: #ECF2F4 url("../Images//down-1.png") no-repeat right 7% center;
   width: 406px;
   height: 318px;
 }
-<<<<<<< HEAD
-/* ------------------------------------------------------------ */
-=======
 .mainDivPadding .row{
   display: flex;
     flex-wrap: wrap;
     margin-right: 0px !important;
     margin-left: -15px;
 }
->>>>>>> 7a95cef3ab79977fcca84339451837558d9b636d
