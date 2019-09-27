@@ -1517,6 +1517,7 @@
   font-weight: 700;
   line-height: 17px;
   text-align: left;
+  margin-bottom: 15px;
 }
 .edit-label-1 {
   color: #4a4a4a;
@@ -1526,6 +1527,7 @@
   line-height: 14px;
   text-align: left;
   display: block;
+  margin-bottom: 5px;
 }
 .txt-edit-popover {
   background-color: #ecf2f4;

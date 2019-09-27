@@ -495,4 +495,7 @@
 .tic-bill-graph .nvd3-svg {
   width: 100%;
 }
+.apexcharts-toolbar{
+  display: none !important;
+}
 /* ----------------------------------------------- */
