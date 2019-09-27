@@ -11,6 +11,8 @@ import { UncontrolledPopover, PopoverBody } from "reactstrap";
 
 class Brands extends Component{
     render() {
+      const editbool=false;
+      const tooltipDelay = { show: 50, hide: 100 };
       return (
         <div className="mainDivPadding">
           <div className="breadcrumbs-row">
@@ -80,7 +82,6 @@ class Brands extends Component{
                     </td>
                     <td className="enabled-enabled-enab">Active</td>
                     <td>
-                      {/* <img src={DeleteIcon} alt="Delete" className="deleteImg" /> */}
                       <div className="del-btn" id="del1">
                         <img src={DeleteIcon} alt="del-icon" />
                       </div>
@@ -108,8 +109,8 @@ class Brands extends Component{
                           </div>
                         </PopoverBody>
                       </UncontrolledPopover>
-                      <button className="btnEditAction">
-                        <label className="edit" id="Edit">
+                      <button className="btnEditAction" id="Edit">
+                        <label className="edit" >
                           EDIT
                         </label>
                       </button>
@@ -118,10 +119,12 @@ class Brands extends Component{
                         placement="bottom"
                         target="Edit"
                         className="general-popover created-popover"
+                        delay={tooltipDelay}
+                        flip={editbool}
                       >
                         <PopoverBody>
                           <div>
-                            <p className="edit-user-action">Edit User</p>
+                            <p className="edit-user-action">EDIT USER</p>
                             <label className="edit-label-1">
                               Designation Name
                             </label>
@@ -130,22 +133,23 @@ class Brands extends Component{
                               className="txt-edit-popover"
                               placeholder="Designation Name"
                             />
+                            <label className="edit-label-1">Brand Name</label>
+                            <input
+                              type="text"
+                              className="txt-edit-popover"
+                              placeholder="Brand Name"
+                            />
                             <label className="edit-label-1">Status</label>
-                            <select
-                              id="inputState"
+                            {/* <select
+                              id="inputStatus"
                               className="form-control dropdown-setting"
                             >
                               <option>Active</option>
                               <option>Inactive</option>
-                            </select>
-                            <label className="edit-label-1">Reports To</label>
-                            <select
-                              id="inputState"
-                              className="form-control dropdown-setting"
-                            >
-                              <option>select</option>
-                              <option>Root</option>
-                            </select>
+                            </select> */}
+                            <select className="pop-over-select">
+                                    <option>Complaint</option>
+                                  </select>
                           </div>
                           <div className="del-can">
                             <a href={Demo.BLANK_LINK}>CANCEL</a>

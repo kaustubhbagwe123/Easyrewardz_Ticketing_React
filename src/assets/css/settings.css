@@ -1432,6 +1432,7 @@
   font-weight: 700;
   line-height: 17px;
   text-align: left;
+  margin-bottom: 15px;
 }
 .edit-label-1{
   color: #4A4A4A;
@@ -1441,6 +1442,7 @@
   line-height: 14px;
   text-align: left;
   display: block;
+  margin-bottom: 5px;
 }
 .txt-edit-popover{
   background-color: #ECF2F4;

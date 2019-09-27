@@ -43,33 +43,48 @@ class AssignedToMe extends Component {
                           className="info-icon"
                           src={InfoIcon}
                           alt="info-icon"
-                          id="Internet1"
+                          id="AbcInterner"
                         />
                         <UncontrolledPopover
                           trigger="hover"
                           placement="bottom"
-                          target="Internet1"
+                          target="AbcInterner"
                           className="general-popover created-popover"
                         >
                           <PopoverBody>
                             <div>
-                              <p className="sub-title">Category</p>
-                              <p className="title">Defective article</p>
-                            </div>
-                            <div>
-                              <p className="sub-title">Sub Category</p>
-                              <p className="title">Customer wants refund</p>
-                            </div>
-                            <div>
-                              <p className="sub-title">Type</p>
-                              <p className="title">Delivery</p>
+                              <p className="sub-title">Department</p>
+                              <p className="title">Internet</p>
                             </div>
                           </PopoverBody>
                         </UncontrolledPopover>
                       </div>
                     </td>
                     <td>BATA1</td>
-                    <td>High</td>
+                    <td>
+                      ABS
+                      <div className="dash-creation-popup-cntr">
+                        <img
+                          className="info-icon"
+                          src={InfoIcon}
+                          alt="info-icon"
+                          id="ABSStore"
+                        />
+                        <UncontrolledPopover
+                          trigger="hover"
+                          placement="bottom"
+                          target="ABSStore"
+                          className="general-popover created-popover"
+                        >
+                          <PopoverBody>
+                            <div>
+                              <p className="sub-title">Store Name</p>
+                              <p className="title">ABS</p>
+                            </div>
+                          </PopoverBody>
+                        </UncontrolledPopover>
+                      </div>
+                    </td>
                     <td>
                       2 Hour Ago
                       <div className="dash-creation-popup-cntr">
@@ -77,34 +92,44 @@ class AssignedToMe extends Component {
                           className="info-icon"
                           src={InfoIcon}
                           alt="info-icon"
+                          id="hrago2"
                         />
-                        <ul className="dash-creation-popup dash-popup">
-                          <li className="title">Creation details</li>
-                          <li>
-                            <p>Naman Created</p>
-                            <p>2 Hrs ago</p>
-                          </li>
-                          <li>
-                            <p>Assigned to Vikas</p>
-                            <p>1.5 Hrs ago</p>
-                          </li>
-                          <li>
-                            <p>Vikas updated</p>
-                            <p>1 Hr ago</p>
-                          </li>
-                          <li>
-                            <p>Response time remaining by</p>
-                            <p>30 mins</p>
-                          </li>
-                          <li>
-                            <p>Response overdue by</p>
-                            <p>1 Hr</p>
-                          </li>
-                          <li>
-                            <p>Resolution overdue by</p>
-                            <p>2 Hrs</p>
-                          </li>
-                        </ul>
+                        <UncontrolledPopover
+                          trigger="hover"
+                          placement="bottom"
+                          target="hrago2"
+                          className="general-popover created-popover"
+                        >
+                          <PopoverBody>
+                            <ul className="dash-creation-popup">
+                              <li className="title">Creation details</li>
+                              <li>
+                                <p>Naman Created</p>
+                                <p>2 Hrs ago</p>
+                              </li>
+                              <li>
+                                <p>Assigned to Vikas</p>
+                                <p>1.5 Hrs ago</p>
+                              </li>
+                              <li>
+                                <p>Vikas updated</p>
+                                <p>1 Hr ago</p>
+                              </li>
+                              <li>
+                                <p>Response time remaining by</p>
+                                <p>30 mins</p>
+                              </li>
+                              <li>
+                                <p>Response overdue by</p>
+                                <p>1 Hr</p>
+                              </li>
+                              <li>
+                                <p>Resolution overdue by</p>
+                                <p>2 Hrs</p>
+                              </li>
+                            </ul>
+                          </PopoverBody>
+                        </UncontrolledPopover>
                       </div>
                     </td>
                   </tr>
@@ -121,33 +146,48 @@ class AssignedToMe extends Component {
                           className="info-icon"
                           src={InfoIcon}
                           alt="info-icon"
-                          id="hardware1"
+                          id="HhhHardware"
                         />
                         <UncontrolledPopover
                           trigger="hover"
                           placement="bottom"
-                          target="hardware1"
+                          target="HhhHardware"
                           className="general-popover created-popover"
                         >
                           <PopoverBody>
                             <div>
-                              <p className="sub-title">Category</p>
-                              <p className="title">Defective article</p>
-                            </div>
-                            <div>
-                              <p className="sub-title">Sub Category</p>
-                              <p className="title">Customer wants refund</p>
-                            </div>
-                            <div>
-                              <p className="sub-title">Type</p>
-                              <p className="title">Delivery</p>
+                              <p className="sub-title">Department</p>
+                              <p className="title">Hardware</p>
                             </div>
                           </PopoverBody>
                         </UncontrolledPopover>
                       </div>
                     </td>
                     <td>BATA2</td>
-                    <td>High</td>
+                    <td>
+                      HHH
+                      <div className="dash-creation-popup-cntr">
+                        <img
+                          className="info-icon"
+                          src={InfoIcon}
+                          alt="info-icon"
+                          id="HHH2Store"
+                        />
+                        <UncontrolledPopover
+                          trigger="hover"
+                          placement="bottom"
+                          target="HHH2Store"
+                          className="general-popover created-popover"
+                        >
+                          <PopoverBody>
+                            <div>
+                              <p className="sub-title">Store Name</p>
+                              <p className="title">HHH</p>
+                            </div>
+                          </PopoverBody>
+                        </UncontrolledPopover>
+                      </div>
+                    </td>
                     <td>
                       12 March 2018
                       <div className="dash-creation-popup-cntr">
@@ -155,34 +195,44 @@ class AssignedToMe extends Component {
                           className="info-icon"
                           src={InfoIcon}
                           alt="info-icon"
+                          id="marchHhr"
                         />
-                        <ul className="dash-creation-popup dash-popup">
-                          <li className="title">Creation details</li>
-                          <li>
-                            <p>Naman Created</p>
-                            <p>2 Hrs ago</p>
-                          </li>
-                          <li>
-                            <p>Assigned to Vikas</p>
-                            <p>1.5 Hrs ago</p>
-                          </li>
-                          <li>
-                            <p>Vikas updated</p>
-                            <p>1 Hr ago</p>
-                          </li>
-                          <li>
-                            <p>Response time remaining by</p>
-                            <p>30 mins</p>
-                          </li>
-                          <li>
-                            <p>Response overdue by</p>
-                            <p>1 Hr</p>
-                          </li>
-                          <li>
-                            <p>Resolution overdue by</p>
-                            <p>2 Hrs</p>
-                          </li>
-                        </ul>
+                        <UncontrolledPopover
+                          trigger="hover"
+                          placement="auto"
+                          target="marchHhr"
+                          className="general-popover created-popover"
+                        >
+                          <PopoverBody>
+                            <ul className="dash-creation-popup">
+                              <li className="title">Creation details</li>
+                              <li>
+                                <p>Naman Created</p>
+                                <p>2 Hrs ago</p>
+                              </li>
+                              <li>
+                                <p>Assigned to Vikas</p>
+                                <p>1.5 Hrs ago</p>
+                              </li>
+                              <li>
+                                <p>Vikas updated</p>
+                                <p>1 Hr ago</p>
+                              </li>
+                              <li>
+                                <p>Response time remaining by</p>
+                                <p>30 mins</p>
+                              </li>
+                              <li>
+                                <p>Response overdue by</p>
+                                <p>1 Hr</p>
+                              </li>
+                              <li>
+                                <p>Resolution overdue by</p>
+                                <p>2 Hrs</p>
+                              </li>
+                            </ul>
+                          </PopoverBody>
+                        </UncontrolledPopover>
                       </div>
                     </td>
                   </tr>
@@ -199,33 +249,48 @@ class AssignedToMe extends Component {
                           className="info-icon"
                           src={InfoIcon}
                           alt="info-icon"
-                          id="supply1"
+                          id="BataSupply"
                         />
-                          <UncontrolledPopover
+                        <UncontrolledPopover
                           trigger="hover"
                           placement="bottom"
-                          target="supply1"
+                          target="BataSupply"
                           className="general-popover created-popover"
                         >
                           <PopoverBody>
                             <div>
-                              <p className="sub-title">Category</p>
-                              <p className="title">Defective article</p>
-                            </div>
-                            <div>
-                              <p className="sub-title">Sub Category</p>
-                              <p className="title">Customer wants refund</p>
-                            </div>
-                            <div>
-                              <p className="sub-title">Type</p>
-                              <p className="title">Delivery</p>
+                              <p className="sub-title">Department</p>
+                              <p className="title">Supply</p>
                             </div>
                           </PopoverBody>
-                        </UncontrolledPopover>                      
+                        </UncontrolledPopover>
                       </div>
                     </td>
                     <td>BATA3</td>
-                    <td>High</td>
+                    <td>
+                      BATA
+                      <div className="dash-creation-popup-cntr">
+                        <img
+                          className="info-icon"
+                          src={InfoIcon}
+                          alt="info-icon"
+                          id="BATA1Store"
+                        />
+                        <UncontrolledPopover
+                          trigger="hover"
+                          placement="bottom"
+                          target="BATA1Store"
+                          className="general-popover created-popover"
+                        >
+                          <PopoverBody>
+                            <div>
+                              <p className="sub-title">Store Name</p>
+                              <p className="title">BATA</p>
+                            </div>
+                          </PopoverBody>
+                        </UncontrolledPopover>
+                      </div>
+                    </td>
                     <td>
                       12 March 2018
                       <div className="dash-creation-popup-cntr">
@@ -233,34 +298,44 @@ class AssignedToMe extends Component {
                           className="info-icon"
                           src={InfoIcon}
                           alt="info-icon"
+                          id="marchBata"
                         />
-                        <ul className="dash-creation-popup dash-popup">
-                          <li className="title">Creation details</li>
-                          <li>
-                            <p>Naman Created</p>
-                            <p>2 Hrs ago</p>
-                          </li>
-                          <li>
-                            <p>Assigned to Vikas</p>
-                            <p>1.5 Hrs ago</p>
-                          </li>
-                          <li>
-                            <p>Vikas updated</p>
-                            <p>1 Hr ago</p>
-                          </li>
-                          <li>
-                            <p>Response time remaining by</p>
-                            <p>30 mins</p>
-                          </li>
-                          <li>
-                            <p>Response overdue by</p>
-                            <p>1 Hr</p>
-                          </li>
-                          <li>
-                            <p>Resolution overdue by</p>
-                            <p>2 Hrs</p>
-                          </li>
-                        </ul>
+                        <UncontrolledPopover
+                          trigger="hover"
+                          placement="auto"
+                          target="marchBata"
+                          className="general-popover created-popover"
+                        >
+                          <PopoverBody>
+                            <ul className="dash-creation-popup">
+                              <li className="title">Creation details</li>
+                              <li>
+                                <p>Naman Created</p>
+                                <p>2 Hrs ago</p>
+                              </li>
+                              <li>
+                                <p>Assigned to Vikas</p>
+                                <p>1.5 Hrs ago</p>
+                              </li>
+                              <li>
+                                <p>Vikas updated</p>
+                                <p>1 Hr ago</p>
+                              </li>
+                              <li>
+                                <p>Response time remaining by</p>
+                                <p>30 mins</p>
+                              </li>
+                              <li>
+                                <p>Response overdue by</p>
+                                <p>1 Hr</p>
+                              </li>
+                              <li>
+                                <p>Resolution overdue by</p>
+                                <p>2 Hrs</p>
+                              </li>
+                            </ul>
+                          </PopoverBody>
+                        </UncontrolledPopover>
                       </div>
                     </td>
                   </tr>
@@ -276,39 +351,91 @@ class AssignedToMe extends Component {
                         className="info-icon"
                         src={InfoIcon}
                         alt="info-icon"
-                        id="internet2"
+                        id="HnmInternet"
                       />
-                       <UncontrolledPopover
+                      <UncontrolledPopover
+                        trigger="hover"
+                        placement="bottom"
+                        target="HnmInternet"
+                        className="general-popover created-popover"
+                      >
+                        <PopoverBody>
+                          <div>
+                            <p className="sub-title">Department</p>
+                            <p className="title">Internet</p>
+                          </div>
+                        </PopoverBody>
+                      </UncontrolledPopover>
+                    </td>
+                    <td>BATA1</td>
+                    <td>
+                      HNM
+                      <div className="dash-creation-popup-cntr">
+                        <img
+                          className="info-icon"
+                          src={InfoIcon}
+                          alt="info-icon"
+                          id="HNMStore"
+                        />
+                        <UncontrolledPopover
                           trigger="hover"
                           placement="bottom"
-                          target="internet2"
+                          target="HNMStore"
                           className="general-popover created-popover"
                         >
                           <PopoverBody>
                             <div>
-                              <p className="sub-title">Category</p>
-                              <p className="title">Defective article</p>
-                            </div>
-                            <div>
-                              <p className="sub-title">Sub Category</p>
-                              <p className="title">Customer wants refund</p>
-                            </div>
-                            <div>
-                              <p className="sub-title">Type</p>
-                              <p className="title">Delivery</p>
+                              <p className="sub-title">Store Name</p>
+                              <p className="title">HNM</p>
                             </div>
                           </PopoverBody>
                         </UncontrolledPopover>
+                      </div>
                     </td>
-                    <td>BATA1</td>
-                    <td>High</td>
                     <td>
                       12 March 2018{" "}
                       <img
                         className="info-icon"
                         src={InfoIcon}
                         alt="info-icon"
+                        id="HnmMarch"
                       />
+                      <UncontrolledPopover
+                        trigger="hover"
+                        placement="auto"
+                        target="HnmMarch"
+                        className="general-popover created-popover"
+                      >
+                        <PopoverBody>
+                          <ul className="dash-creation-popup">
+                            <li className="title">Creation details</li>
+                            <li>
+                              <p>Naman Created</p>
+                              <p>2 Hrs ago</p>
+                            </li>
+                            <li>
+                              <p>Assigned to Vikas</p>
+                              <p>1.5 Hrs ago</p>
+                            </li>
+                            <li>
+                              <p>Vikas updated</p>
+                              <p>1 Hr ago</p>
+                            </li>
+                            <li>
+                              <p>Response time remaining by</p>
+                              <p>30 mins</p>
+                            </li>
+                            <li>
+                              <p>Response overdue by</p>
+                              <p>1 Hr</p>
+                            </li>
+                            <li>
+                              <p>Resolution overdue by</p>
+                              <p>2 Hrs</p>
+                            </li>
+                          </ul>
+                        </PopoverBody>
+                      </UncontrolledPopover>
                     </td>
                   </tr>
                   <tr>
@@ -323,39 +450,91 @@ class AssignedToMe extends Component {
                         className="info-icon"
                         src={InfoIcon}
                         alt="info-icon"
-                        id="hardware5"
+                        id="HhhHardware1"
                       />
-                       <UncontrolledPopover
+                      <UncontrolledPopover
+                        trigger="hover"
+                        placement="bottom"
+                        target="HhhHardware1"
+                        className="general-popover created-popover"
+                      >
+                        <PopoverBody>
+                          <div>
+                            <p className="sub-title">Department</p>
+                            <p className="title">Hardware</p>
+                          </div>
+                        </PopoverBody>
+                      </UncontrolledPopover>
+                    </td>
+                    <td>BATA2</td>
+                    <td>
+                      HHH
+                      <div className="dash-creation-popup-cntr">
+                        <img
+                          className="info-icon"
+                          src={InfoIcon}
+                          alt="info-icon"
+                          id="HHH1Store"
+                        />
+                        <UncontrolledPopover
                           trigger="hover"
                           placement="bottom"
-                          target="hardware5"
+                          target="HHH1Store"
                           className="general-popover created-popover"
                         >
                           <PopoverBody>
                             <div>
-                              <p className="sub-title">Category</p>
-                              <p className="title">Defective article</p>
-                            </div>
-                            <div>
-                              <p className="sub-title">Sub Category</p>
-                              <p className="title">Customer wants refund</p>
-                            </div>
-                            <div>
-                              <p className="sub-title">Type</p>
-                              <p className="title">Delivery</p>
+                              <p className="sub-title">Store Name</p>
+                              <p className="title">HHH</p>
                             </div>
                           </PopoverBody>
                         </UncontrolledPopover>
+                      </div>
                     </td>
-                    <td>BATA2</td>
-                    <td>High</td>
                     <td>
-                      12 March 2018{" "}
+                      12 March 2018
                       <img
                         className="info-icon"
                         src={InfoIcon}
                         alt="info-icon"
+                        id="Hhh1march"
                       />
+                      <UncontrolledPopover
+                        trigger="hover"
+                        placement="auto"
+                        target="Hhh1march"
+                        className="general-popover created-popover"
+                      >
+                        <PopoverBody>
+                          <ul className="dash-creation-popup">
+                            <li className="title">Creation details</li>
+                            <li>
+                              <p>Naman Created</p>
+                              <p>2 Hrs ago</p>
+                            </li>
+                            <li>
+                              <p>Assigned to Vikas</p>
+                              <p>1.5 Hrs ago</p>
+                            </li>
+                            <li>
+                              <p>Vikas updated</p>
+                              <p>1 Hr ago</p>
+                            </li>
+                            <li>
+                              <p>Response time remaining by</p>
+                              <p>30 mins</p>
+                            </li>
+                            <li>
+                              <p>Response overdue by</p>
+                              <p>1 Hr</p>
+                            </li>
+                            <li>
+                              <p>Resolution overdue by</p>
+                              <p>2 Hrs</p>
+                            </li>
+                          </ul>
+                        </PopoverBody>
+                      </UncontrolledPopover>
                     </td>
                   </tr>
                   <tr>
@@ -370,39 +549,91 @@ class AssignedToMe extends Component {
                         className="info-icon"
                         src={InfoIcon}
                         alt="info-icon"
-                        id="supply2"
+                        id="RRtSupply"
                       />
+                      <UncontrolledPopover
+                        trigger="hover"
+                        placement="bottom"
+                        target="RRtSupply"
+                        className="general-popover created-popover"
+                      >
+                        <PopoverBody>
+                          <div>
+                            <p className="sub-title">Department</p>
+                            <p className="title">Supply</p>
+                          </div>
+                        </PopoverBody>
+                      </UncontrolledPopover>
+                    </td>
+                    <td>BATA3</td>
+                    <td>
+                      RRT
+                      <div className="dash-creation-popup-cntr">
+                        <img
+                          className="info-icon"
+                          src={InfoIcon}
+                          alt="info-icon"
+                          id="RRTStore"
+                        />
                         <UncontrolledPopover
                           trigger="hover"
                           placement="bottom"
-                          target="supply2"
+                          target="RRTStore"
                           className="general-popover created-popover"
                         >
                           <PopoverBody>
                             <div>
-                              <p className="sub-title">Category</p>
-                              <p className="title">Defective article</p>
-                            </div>
-                            <div>
-                              <p className="sub-title">Sub Category</p>
-                              <p className="title">Customer wants refund</p>
-                            </div>
-                            <div>
-                              <p className="sub-title">Type</p>
-                              <p className="title">Delivery</p>
+                              <p className="sub-title">Store Name</p>
+                              <p className="title">RRT</p>
                             </div>
                           </PopoverBody>
                         </UncontrolledPopover>
+                      </div>
                     </td>
-                    <td>BATA3</td>
-                    <td>High</td>
                     <td>
-                      12 March 2018{" "}
+                      12 March 2018
                       <img
                         className="info-icon"
                         src={InfoIcon}
                         alt="info-icon"
+                        id="Rrt3march"
                       />
+                      <UncontrolledPopover
+                        trigger="hover"
+                        placement="auto"
+                        target="Rrt3march"
+                        className="general-popover created-popover"
+                      >
+                        <PopoverBody>
+                          <ul className="dash-creation-popup">
+                            <li className="title">Creation details</li>
+                            <li>
+                              <p>Naman Created</p>
+                              <p>2 Hrs ago</p>
+                            </li>
+                            <li>
+                              <p>Assigned to Vikas</p>
+                              <p>1.5 Hrs ago</p>
+                            </li>
+                            <li>
+                              <p>Vikas updated</p>
+                              <p>1 Hr ago</p>
+                            </li>
+                            <li>
+                              <p>Response time remaining by</p>
+                              <p>30 mins</p>
+                            </li>
+                            <li>
+                              <p>Response overdue by</p>
+                              <p>1 Hr</p>
+                            </li>
+                            <li>
+                              <p>Resolution overdue by</p>
+                              <p>2 Hrs</p>
+                            </li>
+                          </ul>
+                        </PopoverBody>
+                      </UncontrolledPopover>
                     </td>
                   </tr>
                   <tr>
@@ -417,39 +648,91 @@ class AssignedToMe extends Component {
                         className="info-icon"
                         src={InfoIcon}
                         alt="info-icon"
-                        id="hardware3"
+                        id="HghHardware"
                       />
                       <UncontrolledPopover
+                        trigger="hover"
+                        placement="bottom"
+                        target="HghHardware"
+                        className="general-popover created-popover"
+                      >
+                        <PopoverBody>
+                          <div>
+                            <p className="sub-title">Department</p>
+                            <p className="title">Hardware</p>
+                          </div>
+                        </PopoverBody>
+                      </UncontrolledPopover>
+                    </td>
+                    <td>BATA3</td>
+                    <td>
+                      HGH
+                      <div className="dash-creation-popup-cntr">
+                        <img
+                          className="info-icon"
+                          src={InfoIcon}
+                          alt="info-icon"
+                          id="HGHStore"
+                        />
+                        <UncontrolledPopover
                           trigger="hover"
                           placement="bottom"
-                          target="hardware3"
+                          target="HGHStore"
                           className="general-popover created-popover"
                         >
                           <PopoverBody>
                             <div>
-                              <p className="sub-title">Category</p>
-                              <p className="title">Defective article</p>
-                            </div>
-                            <div>
-                              <p className="sub-title">Sub Category</p>
-                              <p className="title">Customer wants refund</p>
-                            </div>
-                            <div>
-                              <p className="sub-title">Type</p>
-                              <p className="title">Delivery</p>
+                              <p className="sub-title">Store Name</p>
+                              <p className="title">HGH</p>
                             </div>
                           </PopoverBody>
                         </UncontrolledPopover>
+                      </div>
                     </td>
-                    <td>BATA3</td>
-                    <td>High</td>
                     <td>
-                      12 March 2018{" "}
+                      12 March 2018
                       <img
                         className="info-icon"
                         src={InfoIcon}
                         alt="info-icon"
+                        id="HGHMarch"
                       />
+                      <UncontrolledPopover
+                        trigger="hover"
+                        placement="auto"
+                        target="HGHMarch"
+                        className="general-popover created-popover"
+                      >
+                        <PopoverBody>
+                          <ul className="dash-creation-popup">
+                            <li className="title">Creation details</li>
+                            <li>
+                              <p>Naman Created</p>
+                              <p>2 Hrs ago</p>
+                            </li>
+                            <li>
+                              <p>Assigned to Vikas</p>
+                              <p>1.5 Hrs ago</p>
+                            </li>
+                            <li>
+                              <p>Vikas updated</p>
+                              <p>1 Hr ago</p>
+                            </li>
+                            <li>
+                              <p>Response time remaining by</p>
+                              <p>30 mins</p>
+                            </li>
+                            <li>
+                              <p>Response overdue by</p>
+                              <p>1 Hr</p>
+                            </li>
+                            <li>
+                              <p>Resolution overdue by</p>
+                              <p>2 Hrs</p>
+                            </li>
+                          </ul>
+                        </PopoverBody>
+                      </UncontrolledPopover>
                     </td>
                   </tr>
                 </tbody>
