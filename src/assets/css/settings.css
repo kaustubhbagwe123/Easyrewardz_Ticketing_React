@@ -738,6 +738,36 @@
 }
 /* chetan hierarchy master settings ends */
 
+/* chetan item master settings starts */
+.item-settings-cntr table th,
+.item-settings-cntr table td {
+  padding-right: 13px;
+  padding-left: 13px;
+}
+.item-settings-cntr table tr td:last-child,
+.item-settings-cntr table tr th:last-child {
+  padding-right: 20px;
+  text-align: left;
+}
+.item-settings-cntr table tr td:first-child,
+.item-settings-cntr table tr th:first-child {
+  padding-left: 20px;
+}
+.down-excel a {
+  line-height: 1;
+}
+.down-excel p {
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 12px;
+  margin-right: 10px;
+}
+.down-excel {
+  display: flex;
+  align-items: flex-end;
+}
+/* chetan item master settings ends */
+
 .breadcrumbs-row-padding {
   padding: 15px;
   padding-left: 35px;
@@ -850,7 +880,7 @@
   border-color: #d3d3d3;
   box-shadow: inset 0px 0px 5px 0px #d3d3d3;
 }
-.deleteImg{
+.deleteImg {
   opacity: 0.8718843005952381;
   width: 16px;
   height: 18px;
@@ -1425,8 +1455,8 @@
 /* File Upload Logs Css End */
 
 /* Shlok Css start for Ticket Heirarchy */
-.edit-user-action{
-  color: #2561A8;
+.edit-user-action {
+  color: #2561a8;
   font-family: Lato;
   font-size: 14px;
   font-weight: 700;
@@ -1434,8 +1464,8 @@
   text-align: left;
   margin-bottom: 15px;
 }
-.edit-label-1{
-  color: #4A4A4A;
+.edit-label-1 {
+  color: #4a4a4a;
   font-family: Lato;
   font-size: 12px;
   font-weight: 700;
@@ -1444,16 +1474,16 @@
   display: block;
   margin-bottom: 5px;
 }
-.txt-edit-popover{
-  background-color: #ECF2F4;
+.txt-edit-popover {
+  background-color: #ecf2f4;
   border-radius: 4px;
   width: 200px;
   height: 35px;
   border: none;
   padding: 10px;
 }
-.cancle-action{
-  color: #2561A8;
+.cancle-action {
+  color: #2561a8;
   font-family: Lato;
   font-size: 12px !important;
   font-weight: 400;
