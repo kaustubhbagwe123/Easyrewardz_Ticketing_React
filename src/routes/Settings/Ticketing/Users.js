@@ -852,41 +852,213 @@ class Users extends Component {
               <div className="col-md-4">
                 <div className="right-sect-div right-sect-collapse">
                   <h3>Create Users</h3>
-                  <a
-                    className="collapse-title"
-                    data-toggle="collapse"
-                    href="#personal-details"
-                    role="button"
-                    aria-expanded="false"
-                    aria-controls="personal-details"
-                  >
-                    Personal Details
-                  </a>
-
-                  <div
-                    className="collapse multi-collapse"
-                    id="personal-details"
-                  >
-                    <div className="div-cntr">
-                      <label>Designation Name</label>
-                      <input type="text" defaultValue="Store Manager" />
+                  <div className="collapse-cntr">
+                    <a
+                      className="collapse-title"
+                      data-toggle="collapse"
+                      href="#personal-details"
+                      role="button"
+                      aria-expanded="true"
+                      aria-controls="personal-details"
+                    >
+                      Personal Details
+                    </a>
+                    <div className="multi-collapse show" id="personal-details">
+                      <div className="div-cntr">
+                        <label>User Name</label>
+                        <input type="text" defaultValue="Ajay" />
+                      </div>
+                      <div className="div-cntr">
+                        <label>Mobile Number</label>
+                        <input type="text" defaultValue="9876543210" />
+                      </div>
+                      <div className="div-cntr">
+                        <label>Email ID</label>
+                        <input type="text" defaultValue="something@email.com" />
+                      </div>
+                      <div className="btn-coll">
+                        <button
+                          data-target="#profile-details"
+                          data-toggle="collapse"
+                          className="butn"
+                        >
+                          SAVE &amp; NEXT
+                        </button>
+                      </div>
                     </div>
-                    <div className="div-cntr">
-                      <label>Report To</label>
-                      <select>
-                        <option>Select</option>
-                        <option>Root</option>
-                        <option>Root</option>
-                      </select>
+                  </div>
+                  <div className="collapse-cntr">
+                    <a
+                      className="collapse-title"
+                      data-toggle="collapse"
+                      href="#profile-details"
+                      role="button"
+                      aria-expanded="false"
+                      aria-controls="profile-details"
+                    >
+                      Profile Details
+                    </a>
+                    <div
+                      className="collapse multi-collapse"
+                      id="profile-details"
+                    >
+                      <div className="div-cntr">
+                        <label>User Designation</label>
+                        <select>
+                          <option>Manager</option>
+                          <option>Manager</option>
+                          <option>Manager</option>
+                        </select>
+                      </div>
+                      <div className="div-cntr">
+                        <label>Reportee Designation</label>
+                        <select>
+                          <option>HOD</option>
+                          <option>HOD</option>
+                          <option>HOD</option>
+                        </select>
+                      </div>
+                      <div className="div-cntr">
+                        <label>Report To</label>
+                        <select>
+                          <option>HOD</option>
+                          <option>HOD</option>
+                          <option>HOD</option>
+                        </select>
+                      </div>
+                      <div className="btn-coll">
+                        <button
+                          data-target="#mapped-category"
+                          data-toggle="collapse"
+                          className="butn"
+                        >
+                          SAVE &amp; NEXT
+                        </button>
+                      </div>
                     </div>
-                    <div className="div-cntr">
-                      <label>Status</label>
-                      <select>
-                        <option>Active</option>
-                        <option>Inactive</option>
-                      </select>
+                  </div>
+                  <div className="collapse-cntr">
+                    <a
+                      className="collapse-title"
+                      data-toggle="collapse"
+                      href="#mapped-category"
+                      role="button"
+                      aria-expanded="false"
+                      aria-controls="mapped-category"
+                    >
+                      Mapped Category
+                    </a>
+                    <div
+                      className="collapse multi-collapse"
+                      id="mapped-category"
+                    >
+                      <div className="div-cntr">
+                        <label>Brand</label>
+                        <select>
+                          <option>Bata, PVR</option>
+                          <option>Bata, PVR</option>
+                          <option>Bata, PVR</option>
+                        </select>
+                      </div>
+                      <div className="div-cntr">
+                        <label>Categories</label>
+                        <select>
+                          <option>Compliant</option>
+                          <option>Compliant</option>
+                          <option>Compliant</option>
+                        </select>
+                      </div>
+                      <div className="div-cntr">
+                        <label>Sub Categories</label>
+                        <select>
+                          <option>Payments</option>
+                          <option>Payments</option>
+                          <option>Payments</option>
+                        </select>
+                      </div>
+                      <div className="div-cntr">
+                        <label>Issue Type</label>
+                        <select>
+                          <option>Not Processed</option>
+                          <option>Not Processed</option>
+                          <option>Not Processed</option>
+                        </select>
+                      </div>
+                      <div className="mapped-cate-extra">
+                        <div className="div-cntr">
+                          <label>CRM Role</label>
+                          <select>
+                            <option>Manager</option>
+                            <option>Manager</option>
+                            <option>Manager</option>
+                          </select>
+                        </div>
+                        <div className="div-cntr escalation-options">
+                          <div className="filter-checkbox">
+                            <input
+                              type="checkbox"
+                              id="copy-esc"
+                              name="esc-options"
+                            />
+                            <label htmlFor="copy-esc">Copy Escalation</label>
+                          </div>
+                          <div className="filter-checkbox">
+                            <input
+                              type="checkbox"
+                              id="assign-esc"
+                              name="esc-options"
+                            />
+                            <label htmlFor="assign-esc">
+                              Assign Escalation
+                            </label>
+                          </div>
+                          <div className="sup-agent-cntr">
+                            <div className="status-options">
+                              <input
+                                type="radio"
+                                name="supervisor-agent"
+                                id="supervisor"
+                              />
+                              <label
+                                htmlFor="supervisor"
+                                className="logout-label"
+                              >
+                                Supervisor
+                              </label>
+                            </div>
+                            <div className="status-options">
+                              <input
+                                type="radio"
+                                name="supervisor-agent"
+                                id="agent"
+                              />
+                              <label htmlFor="agent" className="logout-label">
+                                Agent
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="div-cntr">
+                          <label>Select Agent</label>
+                          <select>
+                            <option>Amit</option>
+                            <option>Amit</option>
+                            <option>Amit</option>
+                          </select>
+                        </div>
+                        <div className="div-cntr">
+                          <label>Status</label>
+                          <select>
+                            <option>Inactive</option>
+                            <option>Inactive</option>
+                            <option>Inactive</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div className="btn-coll">
+                        <button className="butn">ADD</button>
+                      </div>
                     </div>
-                    <button className="butn">ADD</button>
                   </div>
                 </div>
                 <div className="right-sect-div">
