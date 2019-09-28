@@ -20,30 +20,65 @@ import FacebookImg from "./../assets/Images/facebook.png";
 import ClipImg from "./../assets/Images/clip.png";
 import PencilImg from "./../assets/Images/pencil.png";
 import { Collapse, CardBody, Card } from "reactstrap";
+import CustomerIcon from "./../assets/Images/customer-icon.png";
+import CrossIcon from "./../assets/Images/cancel.png";
+import TikcetSystemStoreModal from './../routes/TicketSystemStoreModal';
+ 
 
 class MyTicket extends Component {
-  state = {
-    open: false,
-    collapseUp: true,
-    varMar: ""
-  };
+  constructor(props) {
+    super(props);
 
-  handleUpOpen = () => {
+    this.state = {
+      open: false,
+      collapseUp: true,
+      varMar: "",
+      profilemodal: false,
+      storemodal: false
+    };
+  }
+
+
+  HandleClaimPageView(){
+
+    this.props.history.push("claimTabTicketView");
+  }
+
+  HandleProfileModalOpen() {
+    this.setState({ profilemodal: true });
+  }
+  HandleProfileModalClose() {
+    this.setState({ profilemodal: false });
+  }
+
+  HandleStoreModalOpen() {
+    this.setState({ storemodal: true });
+  }
+  HandleStoreModalClose() {
+    this.setState({ storemodal: false });
+  }
+
+  handleUpOpen() {
     this.setState({ collapseUp: false, varMar: "63%" });
-  };
-  handleUpClose = () => {
+  }
+  handleUpClose() {
     this.setState({ collapseUp: true, varMar: "37%" });
-  };
-  onOpenModal = () => {
+  }
+  onOpenModal() {
     this.setState({ open: true });
-  };
-  onCloseModal = () => {
+  }
+  onCloseModal() {
     this.setState({ open: false });
-  };
+  }
   render() {
     const { open } = this.state;
     const HidecollapsUp = this.state.collapseUp ? (
-      <img src={Up1Img} alt="up" className="up-1" onClick={this.handleUpOpen} />
+      <img
+        src={Up1Img}
+        alt="up"
+        className="up-1"
+        onClick={this.handleUpOpen.bind(this)}
+      />
     ) : (
       ""
     );
@@ -84,14 +119,14 @@ class MyTicket extends Component {
               src={LoadingImg}
               alt="Loading"
               className="loading-rectangle"
-              onClick={this.onOpenModal}
+              onClick={this.onOpenModal.bind(this)}
             />
           </div>
         </div>
         <div className="historical-model">
           <Modal
             open={open}
-            onClose={this.onCloseModal}
+            onClose={this.onCloseModal.bind(this)}
             closeIconId="sdsg"
             modalId="Historical-popup"
             overlayId="logout-ovrly"
@@ -107,7 +142,12 @@ class MyTicket extends Component {
                 <label className="mobile-number">Mobile Number</label>
                 <br />
                 <label className="mobile-no">+91 9873470074</label>
-                <img src={EyeImg} alt="eye" className="eyeImg" />
+                <img
+                  src={EyeImg}
+                  alt="eye"
+                  className="eyeImg"
+                  onClick={this.HandleProfileModalOpen.bind(this)}
+                />
                 <div className="bill-1">
                   <img src={BillInvoiceImg} alt="eye" className="billImg" />
                 </div>
@@ -184,8 +224,11 @@ class MyTicket extends Component {
                 <div className="row data-store">
                   <div className="col-md-12">
                     <label className="label-4 storeSpacing">Store</label>
-                    <label className="bata-rajouri-garden">
-                      Bata Raj ouri Garden &nbsp;
+                    <label
+                      className="bata-rajouri-garden"
+                      onClick={this.HandleStoreModalOpen.bind(this)}
+                    >
+                      Bata Rajouri Garden &nbsp;
                       <img
                         src={PencilImg}
                         alt="Pencile"
@@ -255,7 +298,7 @@ class MyTicket extends Component {
               <div className="col-md-2 col-3">
                 <label className="task-03">Task: 03</label>
               </div>
-              <div className="col-md-2 col-3">
+              <div className="col-md-2 col-3" onClick={this.HandleClaimPageView.bind(this)} >
                 <label className="claim-00">Claim: 00</label>
               </div>
             </div>
@@ -310,7 +353,7 @@ class MyTicket extends Component {
                 {HidecollapsUp}
                 <label
                   className="comment"
-                  onClick={this.handleUpClose}
+                  onClick={this.handleUpClose.bind(this)}
                   style={{ marginLeft: this.state.varMar }}
                 >
                   Comment
@@ -426,6 +469,90 @@ class MyTicket extends Component {
             </div>
           </div>
         </div>
+        <Modal
+          open={this.state.profilemodal}
+          onClose={this.HandleProfileModalClose.bind(this)}
+          modalId="profile-popup"
+          overlayId="logout-ovrly"
+        >
+          <div className="profilemodalmaindiv">
+            <div style={{ float: "right" }}>
+              <img
+                src={CrossIcon}
+                alt="cross-icon"
+                className="pro-cross-icn"
+                onClick={this.HandleProfileModalClose.bind(this)}
+              />
+            </div>
+            <div className="row profilemodalrow">
+              <div className="col-md-6">
+                <label className="profilemodal-text">Name</label>
+                <label className="profilemodal-textval">Diwakar Monga</label>
+              </div>
+              <div className="col-md-6">
+                <label className="profilemodal-text">Mobile</label>
+                <label className="profilemodal-textval">+91 9873470074</label>
+              </div>
+            </div>
+            <div className="row profilemodalrow-1">
+              <div className="col-md-6">
+                <label className="profilemodal-text">Email</label>
+                <label className="profilemodal-textval">
+                  monga24@gmail.com
+                </label>
+              </div>
+              <div className="col-md-6">
+                <input
+                  type="text"
+                  className="alternumber"
+                  placeholder="Alternate Number"
+                />
+              </div>
+            </div>
+            <div className="row" style={{ marginLeft: "15px" }}>
+              <div className="openticketbox profilemodalrow-1">
+                <label className="open-tickets-box-text">
+                  04
+                  <small className="open-tickets-box-textval">
+                    Open Tickets
+                  </small>
+                </label>
+              </div>
+              <div className="openticketbox-2 profilemodalrow-1">
+                <label className="open-tickets-box-text">
+                  11
+                  <small className="open-tickets-box-textval">
+                    Total Tickets
+                  </small>
+                </label>
+              </div>
+            </div>
+            <div className="row profilemodal-row-3">
+              <img src={CustomerIcon} alt="customer-icon" />
+              <label className="full-profile-view-text">
+                FULL PROFILE VIEW
+              </label>
+            </div>
+          </div>
+        </Modal>
+        <Modal
+          open={this.state.storemodal}
+          onClose={this.HandleStoreModalClose.bind(this)}
+          modalId="ticket-store-modal"
+          overlayId="layout-ticket-store-modal"
+        >
+          <div className="profilemodalmaindiv">
+            <div style={{ float: "" }}>
+              <img
+                src={CrossIcon}
+                alt="cross-icon"
+                className="pro-cross-icn-1"
+                onClick={this.HandleStoreModalClose.bind(this)}
+              />
+            </div>
+            <TikcetSystemStoreModal />
+          </div>
+        </Modal>
       </div>
     );
   }

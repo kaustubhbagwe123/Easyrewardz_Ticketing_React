@@ -21,6 +21,7 @@ import BataShoesIcon from './../assets/Images/bata.png';
 import StoreIcon from './../assets/Images/store.png';
 // import PencilImg from './../assets/Images/pencil.png';
 import HistoricalTable from './HistoricalTable';
+import HeadPhone3 from "./../assets/Images/headphone3.png";
  
 
 class ClaimTabTicketView extends Component {
@@ -255,16 +256,16 @@ class ClaimTabTicketView extends Component {
                 </div>
                 <div className="row msg-row">
                   <div className="col-md-2" >
-                    <label className="messages-04">Messages: 04</label>
+                    <label className="messages-04-1">Messages: 04</label>
                   </div>
                   <div className="col-md-2">
-                    <label className="notes-00">Notes: 00</label>
+                    <label className="notes-00">Notes: 04</label>
                   </div>
                   <div className="col-md-2">
                     <label className="task-03">Task: 03</label>
                   </div>
                   <div className="col-md-2">
-                    <label className="claim-00">Claim: 00</label>
+                    <label className="claim-00-1">Claim: 03</label>
                   </div>
                 </div>
 
@@ -298,7 +299,11 @@ class ClaimTabTicketView extends Component {
                 </thead>
                 <tbody>
                   <tr onClick={this.openModal}>
-                    <td>ABC1234</td>
+                    <td> <img
+                      src={HeadPhone3}
+                      alt="HeadPhone"
+                      className="headPhone3"
+                    />ABC1234</td>
                     <td>
                       <span className="table-btn table-blue-btn">Open</span>
                     </td>
@@ -328,7 +333,11 @@ class ClaimTabTicketView extends Component {
                   </tr>
 
                   <tr>
-                    <td>ABC1234</td>
+                    <td><img
+                      src={HeadPhone3}
+                      alt="HeadPhone"
+                      className="headPhone3"
+                    />ABC1234</td>
                     <td>
                       <span className="table-btn table-yellow-btn">New</span>
                     </td>
@@ -366,7 +375,11 @@ class ClaimTabTicketView extends Component {
                   </tr>
 
                   <tr>
-                    <td>ABC1234</td>
+                    <td><img
+                      src={HeadPhone3}
+                      alt="HeadPhone"
+                      className="headPhone3"
+                    />ABC1234</td>
                     <td>
                       <span className="table-btn table-green-btn">Solved</span>
                     </td>
@@ -667,7 +680,7 @@ class ClaimTabTicketView extends Component {
                     </div>
                   </div>
                 </div>
-                <div className="row">
+                <div className="row" style={{marginTop:"20px"}}>
                   <div className="col-md-2">
                     <div className="oval-5-1-new">
                       <img
