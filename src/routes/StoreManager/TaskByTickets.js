@@ -451,8 +451,20 @@ class TaskByTickets extends Component{
                         className="info-icon"
                         src={InfoIcon}
                         alt="info-icon"
-                        id="TaskHardware3"
+                        id="TaskHHH3"
                       />
+                      <UncontrolledPopover
+                          trigger="hover"
+                          placement="bottom"
+                          target="TaskHHH3"
+                          className="general-popover created-popover">
+                          <PopoverBody>
+                            <div>
+                              <p className="sub-title">Department</p>
+                              <p className="title">HHH</p>
+                            </div>
+                          </PopoverBody>
+                        </UncontrolledPopover> 
                     </td>
                     <td>
                       12 March 2018
@@ -536,8 +548,20 @@ class TaskByTickets extends Component{
                         className="info-icon"
                         src={InfoIcon}
                         alt="info-icon"
-                        id="TaskHardware3"
+                        id="TaskRRT3"
                       />
+                       <UncontrolledPopover
+                          trigger="hover"
+                          placement="bottom"
+                          target="TaskRRT3"
+                          className="general-popover created-popover">
+                          <PopoverBody>
+                            <div>
+                              <p className="sub-title">Department</p>
+                              <p className="title">RRT</p>
+                            </div>
+                          </PopoverBody>
+                        </UncontrolledPopover> 
                     </td>
                     <td>
                       12 March 2018

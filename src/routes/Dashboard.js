@@ -22,9 +22,13 @@ import DelSearch from "./../assets/Images/del-search.png";
 import { Collapse, CardBody, Card } from "reactstrap";
 import Demo from "../store/Hashtag.js";
 import ModernDatepicker from "react-modern-datepicker";
-
+import { UncontrolledPopover, PopoverBody } from "reactstrap";
+import DateRangePicker from '@wojtekmaj/react-daterange-picker';
 import BarChart from "../Component/PieChart/BarChart.js";
 import MultiBarChart from "../Component/PieChart/MultiBarChart.js";
+// import DateRangePicker from '@wojtekmaj/react-daterange-picker';
+
+
 class Dashboard extends Component {
   constructor(props) {
     super(props);
@@ -35,7 +39,8 @@ class Dashboard extends Component {
       open: false,
       StatusModel: false,
       Schedule: false,
-      startDate: new Date()
+      startDate: '',
+      date: [new Date(), new Date()],
     };
     this.toggle = this.toggle.bind(this);
     this.toggleSearch = this.toggleSearch.bind(this);
@@ -73,7 +78,7 @@ class Dashboard extends Component {
       startDate: date
     });
   }
-
+ 
   closeModal = () => {
     this.setState({ modalIsOpen: false });
   };
@@ -83,6 +88,7 @@ class Dashboard extends Component {
   StatusCloseModel() {
     this.setState({ StatusModel: false });
   }
+  onChange = date => this.setState({ date })
   render() {
     const TitleChange = this.state.collapseSearch
       ? "Close Search"
@@ -113,9 +119,46 @@ class Dashboard extends Component {
           <div>
             <div>
               <span>Date Range : </span>
-              <select>
-                <option>Last 7 days</option>
-              </select>
+
+              <label id="lastDatepicker">
+                Last 7 days
+                <img
+                  src={TableArr}
+                  alt="table-arr"
+                  className="datePicketArrow"
+                />
+              </label>
+              {/* <ModernDatepicker
+                  date={this.state.startDate}
+                  format={"DD-MM-YYYY"}
+                  className="cXcRo"
+                  showBorder
+                  onChange={date => this.handleChange(date)}
+                  placeholder={"Select a date"}
+                /> */}
+              <UncontrolledPopover
+                trigger="legacy"
+                placement="auto"
+                target="lastDatepicker"
+                className="general-popover delete-popover"
+              >
+                <PopoverBody className="d-flex">
+                  <div>
+                    {/* <ModernDatepicker
+                  date={this.state.startDate}
+                  format={"DD-MM-YYYY"}
+                  className="cXcRo"
+                  showBorder
+                  onChange={date => this.handleChange(date)}
+                  placeholder={"Select a date"}
+                /> */}
+                   <DateRangePicker
+          onChange={this.onChange}
+          value={this.state.date}
+        />
+                  </div>
+                </PopoverBody>
+              </UncontrolledPopover>
             </div>
           </div>
         </div>
