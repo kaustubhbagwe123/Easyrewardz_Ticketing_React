@@ -225,28 +225,6 @@ class Header extends Component {
             </a>
           </div>
         </div>
-        {/* <div className="main-nav">
-          <div className="bitmap1">
-            <img src={CalenderLogo} alt="logo" className="calImg" />
-          </div>
-          <div className="bitmap2">
-            <img src={ChatLogo} alt="logo" className="chatImg" />
-          </div>
-          <div className="bitmap3">
-            <img
-              src={NotificationLogo}
-              alt="logo"
-              className="notifi"
-              onClick={this.openModal}
-            />
-          </div>
-          <div className="bitmap4">
-            <img src={SettingLogo} alt="logo" className="setting" />
-          </div>
-          <div className="bitmap5">
-            <label onClick={this.onOpenModal}>NR</label>
-          </div>
-        </div> */}
 
         <Modal
           onClose={this.closeModal}
