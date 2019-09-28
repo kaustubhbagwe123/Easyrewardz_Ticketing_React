@@ -341,8 +341,8 @@
   width: 22px;
   height: 22px;
   padding: 3px;
-  margin-left: 115px;
-  margin-top: -75px;
+  margin-left: 5px;
+  vertical-align: top;
 }
 .oval-55 {
   background-color: #f8e71c;
@@ -352,8 +352,8 @@
   padding: 6px;
 }
 .oval-head {
-  padding-left: 70%;
-  margin-top: -45px;
+  margin-top: -7px;
+  margin-left: 712px;
 }
 .naman-r {
   color: #000000;
@@ -3073,6 +3073,7 @@ table tr th:last-child {
   min-height: 300px;
   overflow: auto;
   max-height: 350px;
+  margin-left: -50px;
 }
 /**Historical popup css edn**/
 
@@ -3238,7 +3239,6 @@ progress::-moz-progress-bar {
   line-height: 12px;
   text-align: left;
 }
-
 .claim-type {
   color: #9b9b9b;
   font-family: Lato;
@@ -4651,7 +4651,6 @@ background: #ECF2F4 url("../Images//down-1.png") no-repeat right 7% center;
   display: none;
 }
 
-
 .add-select-category{
   background: #ECF2F4 url("../Images//table-arr.png") no-repeat right 7% center;
   border-radius: 4px;
@@ -4718,7 +4717,6 @@ background: #ECF2F4 url("../Images//down-1.png") no-repeat right 7% center;
   font-weight: 400;
   line-height: 17px;
   text-align: left;
-  
 }
 
 .cancel-button-modal{
@@ -4788,7 +4786,6 @@ background: #ECF2F4 url("../Images//down-1.png") no-repeat right 7% center;
   border-radius: 4px;
   width: 282px;
   height: 43px;
-  
 }
 
 .programcode-card-new{
@@ -4802,4 +4799,42 @@ background: #ECF2F4 url("../Images//down-1.png") no-repeat right 7% center;
     flex-wrap: wrap;
     margin-right: 0px !important;
     margin-left: -15px;
+}
+.lblHistorical{
+  margin-left: 10px;
+  margin-bottom: 15px;
+  font-weight: 700;
+  font-size: 22px;
+}
+.historyTable{
+  font-size: 12px;
+    padding: 10px 30px;
+    margin-right: -40px;
+}
+.historyTable table thead tr{
+  background-color: #ffffff;
+  border-bottom: none;
+}
+.historyTable table th{
+  font-size: 12px;
+    padding: 0px 30px;
+}
+.historyTable table tbody tr{
+  border-bottom: none;
+}
+.historyTable table td{
+  font-size: 13px;
+    color: #9b9b9b;
+    padding: 10px 30px;
+}
+.cancalImg{
+  width: 18px;
+    height: 18px;
+    float: right;
+    margin-top: 5px;
+}
+.datePicketArrow{
+  width: 15px;
+    height: 10px;
+    margin-left: 5px;
 }

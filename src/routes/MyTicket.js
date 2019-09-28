@@ -19,6 +19,7 @@ import Loading1Img from "./../assets/Images/loading1.png";
 import FacebookImg from "./../assets/Images/facebook.png";
 import ClipImg from "./../assets/Images/clip.png";
 import PencilImg from "./../assets/Images/pencil.png";
+import CancelImg from "./../assets/Images/cancel.png";
 import { Collapse, CardBody, Card } from "reactstrap";
 
 class MyTicket extends Component {
@@ -35,6 +36,7 @@ class MyTicket extends Component {
     this.setState({ collapseUp: true, varMar: "37%" });
   };
   onOpenModal = () => {
+    debugger
     this.setState({ open: true });
   };
   onCloseModal = () => {
@@ -59,8 +61,32 @@ class MyTicket extends Component {
                 <label className="id-abc-1234">
                   ID - ABC1234
                   <span className="updated-2-d-ago">Updated 2d ago</span>
-                  {/* <button onClick={this.onOpenModal}>Open modal</button> */}
                 </label>
+                <img
+                  src={LoadingImg}
+                  alt="Loading"
+                  className="loading-rectangle"
+                  onClick={this.onOpenModal}
+                />
+              </div>
+             
+              <div className="historical-model">
+                <Modal
+                  open={open}
+                  onClose={this.onCloseModal}
+                  closeIconId="sdsg"
+                  modalId="Historical-popup"
+                  overlayId="logout-ovrly"
+                >
+                  <label className="lblHistorical">Historical Ticket</label>
+                  <img
+                    src={CancelImg}
+                    alt="cancelImg"
+                    className="cancalImg"
+                    onClick={this.onCloseModal}
+                  />
+                  <HistoricalTable />
+                </Modal>
               </div>
 
               <div className="col-xs-9 oval-head">
@@ -69,7 +95,6 @@ class MyTicket extends Component {
                 <img src={DownImg} alt="down" className="down-header" />
                 <button type="button" className="myticket-submit-solve-button">
                   <label className="myticket-submit-solve-button-text">
-                    {" "}
                     Submit As Solved
                   </label>
                   <img
@@ -80,25 +105,7 @@ class MyTicket extends Component {
                 </button>
               </div>
             </div>
-            <img
-              src={LoadingImg}
-              alt="Loading"
-              className="loading-rectangle"
-              onClick={this.onOpenModal}
-            />
           </div>
-        </div>
-        <div className="historical-model">
-          <Modal
-            open={open}
-            onClose={this.onCloseModal}
-            closeIconId="sdsg"
-            modalId="Historical-popup"
-            overlayId="logout-ovrly"
-          >
-            <h4>Historical Ticket</h4>
-            <HistoricalTable />
-          </Modal>
         </div>
         <div className="card-rectangle">
           <div className="rectangle-box">
@@ -364,12 +371,11 @@ class MyTicket extends Component {
                   Rashmi.C
                   <span>
                     <label className="updated-2-d-ago">
-                      Reassign to{" "}
+                      Reassign to
                       <label style={{ fontWeight: "bold", color: "black" }}>
-                        {" "}
                         Naman.R
                       </label>
-                    </label>{" "}
+                    </label>
                   </span>
                 </label>
               </div>
