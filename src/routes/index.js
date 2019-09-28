@@ -19,6 +19,7 @@ import FileUploadLogs from "./Settings/FileUploadLogs";
 import ItemMaster from "./Settings/Store/ItemMaster";
 import TicketHierarchy from "./Settings/Ticketing/TicketHierarchy";
 import Brands from "./Settings/Ticketing/Brands";
+import Users from "./Settings/Ticketing/Users";
 // import Aux from "./../Component/Aux";
 
 export class App extends Component {
@@ -84,6 +85,7 @@ export class App extends Component {
           component={HierarchyMaster}
         />
         <Route exact path={`${match.url}/itemMaster`} component={ItemMaster} />
+        <Route exact path={`${match.url}/users`} component={Users} />
         <Route
           exact
           path={`${match.url}/fileUploadLogs`}
