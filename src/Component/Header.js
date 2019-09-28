@@ -2,16 +2,26 @@ import React, { Component } from "react";
 import { ProgressBar } from "react-bootstrap";
 import Modal from "react-responsive-modal";
 import DashboardLogo from "./../assets/Images/dashboardBlack.png";
+import DashboardLogoBlue from "./../assets/Images/dashboardBlue.png";
+import storeBlack from "./../assets/Images/store-black.png";
+import storeBlue from "./../assets/Images/storeBlue.png";
 import TicketLogo from "./../assets/Images/ticket.png";
+import TicketLogoBlue from "./../assets/Images/ticket-blue.png";
 import KnowledgeLogo from "./../assets/Images/knowledge.png";
+import KnowledgeLogoBlue from "./../assets/Images/knowledge-blue.png";
+import CalendarLogo from "./../assets/Images/calendar-black.png";
+import CalendarLogoBlue from "./../assets/Images/calendar-blue.png";
 import CalenderLogo from "./../assets/Images/calender.png";
 import ChatLogo from "./../assets/Images/chat.png";
+import ChatLogoBlue from "./../assets/Images/chat-blue.png";
 import NotificationLogo from "./../assets/Images/Notification.png";
 import SettingLogo from "./../assets/Images/setting.png";
+import SettingLogoBlue from "./../assets/Images/setting-blue.png";
 import UserLogo from "./../assets/Images/user-img.jpg";
 import StatusLogo from "./../assets/Images/status.png";
 import Hamb from "./../assets/Images/hamb.png";
 import ClaimLogo from "./../assets/Images/icon9.svg";
+import ClaimLogoBlue from "./../assets/Images/claim-blue.png";
 
 class Header extends Component {
   state = {
@@ -37,76 +47,206 @@ class Header extends Component {
 
   render() {
     return (
-      <div className="card-Nav">
-        <div className="card-header1">
-          <div className="container-fluid">
-            <div className="row card-row">
-              <div className="col-md-8 p-0">
-                <div className="er">
-                  <label className="er-label">ER</label>
-                </div>
-                <div className="hamb-menu">
-                  <img src={Hamb} alt="hamburger icon" />
-                </div>
-                <div className="col-md-2 nav-tab3">
+      <React.Fragment>
+        <div className="d-flex align-items-center justify-content-between">
+          <div className="d-flex">
+            <div className="er">
+              <label className="er-label">ER</label>
+            </div>
+            <div className="hamb-menu">
+              <img src={Hamb} alt="hamburger icon" />
+            </div>
+            <div className="headers-menu">
+              <a href="/admin/dashboard" className="single-menu active">
+                <div className="header-icons-cntr">
                   <img
                     src={DashboardLogo}
-                    alt="logo"
+                    alt="dashboard icon"
                     className="dashboardImg1"
                   />
-                  {/* <label className="dashboards-label1">Dashboard</label> */}
-                  <a href="/admin/dashboard">
-                    <label className="dashboards-label1">Dashboard</label>
-                  </a>
+                  <img
+                    src={DashboardLogoBlue}
+                    alt="dashboard icon"
+                    className="dashboardImg1"
+                    style={{ display: "none" }}
+                  />
                 </div>
-
-                <div className="col-md-2 nav-tab1">
-                  <img src={TicketLogo} alt="logo" className="myTicket" />
-                  {/* <label>My Tickets</label> */}
-                  <a href="myTicketlist">
-                    <label className="myTiket-label">My Tickets</label>
-                  </a>
+                Dashboards
+              </a>
+              <a href="/admin/dashboard" className="single-menu">
+                <div className="header-icons-cntr">
+                  <img
+                    src={storeBlack}
+                    alt="store icon"
+                    className="stores-icon"
+                  />
+                  <img
+                    src={storeBlue}
+                    alt="store icon"
+                    className="stores-icon"
+                    style={{ display: "none" }}
+                  />
                 </div>
-                <div className="col-md-2 claim-space">
-                  <img src={ClaimLogo} alt="logo" className="claim-logo" />
-                  <a href="claim">
-                    <label>Claim</label>
-                  </a>
+                Store Issues
+              </a>
+              <a href="myTicketlist" className="single-menu">
+                <div className="header-icons-cntr">
+                  <img
+                    src={TicketLogo}
+                    alt="ticket icon"
+                    className="myTicket"
+                  />
+                  <img
+                    src={TicketLogoBlue}
+                    alt="ticket icon"
+                    className="myTicket"
+                    style={{ display: "none" }}
+                  />
                 </div>
-                <div className="col-md-4 nav-tab2">
+                My Tickets
+              </a>
+              <a href="myTicketlist" className="single-menu">
+                <div className="header-icons-cntr">
                   <img
                     src={KnowledgeLogo}
-                    alt="logo"
+                    alt="knowledge icon"
                     className="knowledgeNav"
                   />
-                  <label className="knowledge-label">Knowledge Base</label>
-                </div>
-              </div>
-              <div className="main-nav">
-                <div className="bitmap1">
-                  <img src={CalenderLogo} alt="logo" className="calImg" />
-                </div>
-                <div className="bitmap2">
-                  <img src={ChatLogo} alt="logo" className="chatImg" />
-                </div>
-                <div className="bitmap3">
                   <img
-                    src={NotificationLogo}
-                    alt="logo"
-                    className="notifi"
-                    onClick={this.openModal}
+                    src={KnowledgeLogoBlue}
+                    alt="knowledge icon"
+                    className="knowledgeNav"
+                    style={{ display: "none" }}
                   />
                 </div>
-                <div className="bitmap4">
-                  <img src={SettingLogo} alt="logo" className="setting" />
+                Knowledge Base
+              </a>
+              <a href="/admin/dashboard" className="single-menu">
+                <div className="header-icons-cntr">
+                  <img
+                    src={storeBlack}
+                    alt="dashboard icon"
+                    className="stores-icon"
+                  />
+                  <img
+                    src={storeBlue}
+                    alt="dashboard icon"
+                    className="stores-icon"
+                    style={{ display: "none" }}
+                  />
                 </div>
-                <div className="bitmap5">
-                  <label onClick={this.onOpenModal}>NR</label>
+                Dashboard
+              </a>
+              <a href="myTicketlist" className="single-menu">
+                <div className="header-icons-cntr">
+                  <img src={TicketLogo} alt="task icon" className="myTicket" />
+                  <img
+                    src={TicketLogoBlue}
+                    alt="task icon"
+                    className="myTicket"
+                    style={{ display: "none" }}
+                  />
                 </div>
-              </div>
+                Task
+              </a>
+              <a href="myTicketlist" className="single-menu">
+                <div className="header-icons-cntr">
+                  <img
+                    src={ClaimLogo}
+                    alt="claim icon"
+                    className="claim-logo"
+                  />
+                  <img
+                    src={ClaimLogoBlue}
+                    alt="claim icon"
+                    className="claim-logo"
+                    style={{ display: "none" }}
+                  />
+                </div>
+                Claim
+              </a>
+              <a href="myTicketlist" className="single-menu">
+                <div className="header-icons-cntr">
+                  <img
+                    src={CalendarLogo}
+                    alt="campaign icon"
+                    className="campaign-logo"
+                  />
+                  <img
+                    src={CalendarLogoBlue}
+                    alt="campaign icon"
+                    className="campaign-logo"
+                    style={{ display: "none" }}
+                  />
+                </div>
+                Campaign
+              </a>
             </div>
           </div>
+
+          <div className="header-right-icons">
+            <a href="#!">
+              <img src={CalenderLogo} alt="logo" className="calImg" />
+            </a>
+            <a href="#!">
+              <img src={ChatLogo} alt="logo" className="chatImg" />
+              <img
+                src={ChatLogoBlue}
+                alt="logo"
+                className="chatImg"
+                style={{ display: "none" }}
+              />
+            </a>
+            <a href="#!">
+              <img
+                src={NotificationLogo}
+                alt="logo"
+                className="notifi"
+                onClick={this.openModal}
+              />
+              <span style={{ display: "none" }} className="icon-fullname">
+                Notifications
+              </span>
+            </a>
+            <a href="#!">
+              <img src={SettingLogo} alt="logo" className="setting" />
+              <img
+                src={SettingLogoBlue}
+                alt="logo"
+                className="setting"
+                style={{ display: "none" }}
+              />
+              <span style={{ display: "none" }} className="icon-fullname">
+                Settings
+              </span>
+            </a>
+            <a href="#!" className="bitmap5" onClick={this.onOpenModal}>
+              NR
+            </a>
+          </div>
         </div>
+        {/* <div className="main-nav">
+          <div className="bitmap1">
+            <img src={CalenderLogo} alt="logo" className="calImg" />
+          </div>
+          <div className="bitmap2">
+            <img src={ChatLogo} alt="logo" className="chatImg" />
+          </div>
+          <div className="bitmap3">
+            <img
+              src={NotificationLogo}
+              alt="logo"
+              className="notifi"
+              onClick={this.openModal}
+            />
+          </div>
+          <div className="bitmap4">
+            <img src={SettingLogo} alt="logo" className="setting" />
+          </div>
+          <div className="bitmap5">
+            <label onClick={this.onOpenModal}>NR</label>
+          </div>
+        </div> */}
 
         <Modal
           onClose={this.closeModal}
@@ -235,7 +375,7 @@ class Header extends Component {
             </div>
           </Modal>
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 }
