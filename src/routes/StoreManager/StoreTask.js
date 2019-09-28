@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import RaisedByMe from "./RaisedByMe";
 import Campaign from "./Campaign";
+import AssignedToMe from "./AssignedToMe";
+import TaskByTickets from "./TaskByTickets";
 
 class StoreTask extends Component {
   render() {
@@ -74,7 +76,7 @@ class StoreTask extends Component {
             role="tabpanel"
             aria-labelledby="assigned-to-me-tab"
           >
-            2
+            <AssignedToMe/>
           </div>
           <div
             className="tab-pane fade"
@@ -82,7 +84,7 @@ class StoreTask extends Component {
             role="tabpanel"
             aria-labelledby="task-by-tickets-tab"
           >
-            3
+           <TaskByTickets/>
           </div>
           <div
             className="tab-pane fade"

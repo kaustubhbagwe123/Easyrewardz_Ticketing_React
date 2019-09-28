@@ -107,9 +107,10 @@
   width: 100%;
 }
 .er-label {
-  font-size: 19px;
+  font-size: 16px;
   font-family: sans-serif;
-  margin-top: 13px;
+  margin-top: 15px;
+  font-weight: 900;
 }
 .rectangle-2 {
   background-color: #2561a8;
@@ -3812,7 +3813,7 @@ progress::-moz-progress-bar {
 
 @media only screen and (max-width: 576px) {
   /* dashboard starts */
-  .scroll-table {
+  .rem-table {
     display: none;
   }
   .mobile-table {

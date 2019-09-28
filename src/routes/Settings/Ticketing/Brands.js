@@ -3,11 +3,16 @@ import Demo from "../../../store/Hashtag";
 import TableArr from "./../../../assets/Images/table-arr.png";
 import InfoImg from "./../../../assets/Images/icons8-info.svg";
 import DeleteIcon from "./../../../assets/Images/red-delete-icon.png";
-import DelBigIcon from "./../../../assets/Images/del-big.png"; 
+import DelBigIcon from "./../../../assets/Images/del-big.png";
+// import DeleteUpld from "./../../../assets/Images/delete-upl.png";
+// import ClipIcon from "./../../../assets/Images/clip.png";
+// import CancelIcon from "./../../../assets/Images/cancel.png";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
 
 class Brands extends Component{
     render() {
+      const editbool=false;
+      const tooltipDelay = { show: 50, hide: 100 };
       return (
         <div className="mainDivPadding">
           <div className="breadcrumbs-row">
@@ -77,7 +82,6 @@ class Brands extends Component{
                     </td>
                     <td className="enabled-enabled-enab">Active</td>
                     <td>
-                      {/* <img src={DeleteIcon} alt="Delete" className="deleteImg" /> */}
                       <div className="del-btn" id="del1">
                         <img src={DeleteIcon} alt="del-icon" />
                       </div>
@@ -105,48 +109,61 @@ class Brands extends Component{
                           </div>
                         </PopoverBody>
                       </UncontrolledPopover>
-                      <button className="btnEditAction">
-                        <label className="edit" id="Edit">
-                          EDIT
-                        </label>
+                      <button className="btnEditAction" id="edit-pop-1">
+                        <label className="edit">EDIT</label>
                       </button>
                       <UncontrolledPopover
                         trigger="legacy"
                         placement="bottom"
-                        target="Edit"
-                        className="general-popover created-popover"
+                        target="edit-pop-1"
+                        className="general-popover delete-popover"
+                        delay={tooltipDelay}
+                        flip={editbool}
                       >
-                        <PopoverBody>
+                        <PopoverBody className="d-flex">
                           <div>
-                            <p className="edit-user-action">Edit User</p>
-                            <label className="edit-label-1">
-                              Designation Name
-                            </label>
-                            <input
-                              type="text"
-                              className="txt-edit-popover"
-                              placeholder="Designation Name"
-                            />
-                            <label className="edit-label-1">Status</label>
-                            <select
-                              id="inputState"
-                              className="form-control dropdown-setting"
-                            >
-                              <option>Active</option>
-                              <option>Inactive</option>
-                            </select>
-                            <label className="edit-label-1">Reports To</label>
-                            <select
-                              id="inputState"
-                              className="form-control dropdown-setting"
-                            >
-                              <option>select</option>
-                              <option>Root</option>
-                            </select>
-                          </div>
-                          <div className="del-can">
-                            <a href={Demo.BLANK_LINK}>CANCEL</a>
-                            <button className="butn">Delete</button>
+                            <div className="">
+                              <label className="popover-header-text">
+                                EDIT USER
+                              </label>
+                            </div>
+                            <div className="pop-over-div">
+                              <label className="edit-label-1">
+                                Designation Name
+                              </label>
+                              <input
+                                type="text"
+                                className="txt-edit-popover"
+                                placeholder="Designation Name"
+                              />
+                            </div>
+                            <div className="pop-over-div">
+                              <label className="edit-label-1">Brand Name</label>
+                              <input
+                                type="text"
+                                className="txt-edit-popover"
+                                placeholder="Brand Name"
+                              />
+                            </div>
+                            <div className="pop-over-div">
+                              <label className="edit-label-1">Status</label>
+                              <select
+                                id="inputStatus"
+                                className="edit-dropDwon dropdown-setting"
+                              >
+                                <option>Active</option>
+                                <option>Inactive</option>
+                              </select>
+                            </div>
+                            <br />
+                            <div>
+                              <label className="pop-over-cancle">CANCEL</label>
+                              <button className="pop-over-button">
+                                <label className="pop-over-btnsave-text">
+                                  SAVE
+                                </label>
+                              </button>
+                            </div>
                           </div>
                         </PopoverBody>
                       </UncontrolledPopover>
@@ -215,48 +232,61 @@ class Brands extends Component{
                           </div>
                         </PopoverBody>
                       </UncontrolledPopover>
-                      <button className="btnEditAction">
-                        <label className="edit" id="Edit2">
-                          EDIT
-                        </label>
+                      <button className="btnEditAction" id="edit-pop-2">
+                        <label className="edit">EDIT</label>
                       </button>
                       <UncontrolledPopover
                         trigger="legacy"
                         placement="bottom"
-                        target="Edit2"
-                        className="general-popover created-popover"
+                        target="edit-pop-2"
+                        className="general-popover delete-popover"
+                        delay={tooltipDelay}
+                        flip={editbool}
                       >
-                        <PopoverBody>
+                        <PopoverBody className="d-flex">
                           <div>
-                            <p className="edit-user-action">Edit User</p>
-                            <label className="edit-label-1">
-                              Designation Name
-                            </label>
-                            <input
-                              type="text"
-                              className="txt-edit-popover"
-                              placeholder="Designation Name"
-                            />
-                            <label className="edit-label-1">Status</label>
-                            <select
-                              id="inputState"
-                              className="form-control dropdown-setting"
-                            >
-                              <option>Active</option>
-                              <option>Inactive</option>
-                            </select>
-                            <label className="edit-label-1">Reports To</label>
-                            <select
-                              id="inputState"
-                              className="form-control dropdown-setting"
-                            >
-                              <option>select</option>
-                              <option>Root</option>
-                            </select>
-                          </div>
-                          <div className="del-can">
-                            <a href={Demo.BLANK_LINK}>CANCEL</a>
-                            <button className="butn">Delete</button>
+                            <div className="">
+                              <label className="popover-header-text">
+                                EDIT USER
+                              </label>
+                            </div>
+                            <div className="pop-over-div">
+                              <label className="edit-label-1">
+                                Designation Name
+                              </label>
+                              <input
+                                type="text"
+                                className="txt-edit-popover"
+                                placeholder="Designation Name"
+                              />
+                            </div>
+                            <div className="pop-over-div">
+                              <label className="edit-label-1">Brand Name</label>
+                              <input
+                                type="text"
+                                className="txt-edit-popover"
+                                placeholder="Brand Name"
+                              />
+                            </div>
+                            <div className="pop-over-div">
+                              <label className="edit-label-1">Status</label>
+                              <select
+                                id="inputStatus"
+                                className="edit-dropDwon dropdown-setting"
+                              >
+                                <option>Active</option>
+                                <option>Inactive</option>
+                              </select>
+                            </div>
+                            <br />
+                            <div>
+                              <label className="pop-over-cancle">CANCEL</label>
+                              <button className="pop-over-button">
+                                <label className="pop-over-btnsave-text">
+                                  SAVE
+                                </label>
+                              </button>
+                            </div>
                           </div>
                         </PopoverBody>
                       </UncontrolledPopover>
@@ -325,48 +355,61 @@ class Brands extends Component{
                           </div>
                         </PopoverBody>
                       </UncontrolledPopover>
-                      <button className="btnEditAction">
-                        <label className="edit" id="Edit3">
-                          EDIT
-                        </label>
+                      <button className="btnEditAction" id="edit-pop-3">
+                        <label className="edit">EDIT</label>
                       </button>
                       <UncontrolledPopover
                         trigger="legacy"
                         placement="bottom"
-                        target="Edit3"
-                        className="general-popover created-popover"
+                        target="edit-pop-3"
+                        className="general-popover delete-popover"
+                        delay={tooltipDelay}
+                        flip={editbool}
                       >
-                        <PopoverBody>
+                        <PopoverBody className="d-flex">
                           <div>
-                            <p className="edit-user-action">Edit User</p>
-                            <label className="edit-label-1">
-                              Designation Name
-                            </label>
-                            <input
-                              type="text"
-                              className="txt-edit-popover"
-                              placeholder="Designation Name"
-                            />
-                            <label className="edit-label-1">Status</label>
-                            <select
-                              id="inputState"
-                              className="form-control dropdown-setting"
-                            >
-                              <option>Active</option>
-                              <option>Inactive</option>
-                            </select>
-                            <label className="edit-label-1">Reports To</label>
-                            <select
-                              id="inputState"
-                              className="form-control dropdown-setting"
-                            >
-                              <option>select</option>
-                              <option>Root</option>
-                            </select>
-                          </div>
-                          <div className="del-can">
-                            <a href={Demo.BLANK_LINK}>CANCEL</a>
-                            <button className="butn">Delete</button>
+                            <div className="">
+                              <label className="popover-header-text">
+                                EDIT USER
+                              </label>
+                            </div>
+                            <div className="pop-over-div">
+                              <label className="edit-label-1">
+                                Designation Name
+                              </label>
+                              <input
+                                type="text"
+                                className="txt-edit-popover"
+                                placeholder="Designation Name"
+                              />
+                            </div>
+                            <div className="pop-over-div">
+                              <label className="edit-label-1">Brand Name</label>
+                              <input
+                                type="text"
+                                className="txt-edit-popover"
+                                placeholder="Brand Name"
+                              />
+                            </div>
+                            <div className="pop-over-div">
+                              <label className="edit-label-1">Status</label>
+                              <select
+                                id="inputStatus"
+                                className="edit-dropDwon dropdown-setting"
+                              >
+                                <option>Active</option>
+                                <option>Inactive</option>
+                              </select>
+                            </div>
+                            <br />
+                            <div>
+                              <label className="pop-over-cancle">CANCEL</label>
+                              <button className="pop-over-button">
+                                <label className="pop-over-btnsave-text">
+                                  SAVE
+                                </label>
+                              </button>
+                            </div>
                           </div>
                         </PopoverBody>
                       </UncontrolledPopover>
@@ -435,48 +478,61 @@ class Brands extends Component{
                           </div>
                         </PopoverBody>
                       </UncontrolledPopover>
-                      <button className="btnEditAction">
-                        <label className="edit" id="Edit5">
-                          EDIT
-                        </label>
+                      <button className="btnEditAction" id="edit-pop-4">
+                        <label className="edit">EDIT</label>
                       </button>
                       <UncontrolledPopover
                         trigger="legacy"
                         placement="bottom"
-                        target="Edit5"
-                        className="general-popover created-popover"
+                        target="edit-pop-4"
+                        className="general-popover delete-popover"
+                        delay={tooltipDelay}
+                        flip={editbool}
                       >
-                        <PopoverBody>
+                        <PopoverBody className="d-flex">
                           <div>
-                            <p className="edit-user-action">Edit User</p>
-                            <label className="edit-label-1">
-                              Designation Name
-                            </label>
-                            <input
-                              type="text"
-                              className="txt-edit-popover"
-                              placeholder="Designation Name"
-                            />
-                            <label className="edit-label-1">Status</label>
-                            <select
-                              id="inputState"
-                              className="form-control dropdown-setting"
-                            >
-                              <option>Active</option>
-                              <option>Inactive</option>
-                            </select>
-                            <label className="edit-label-1">Reports To</label>
-                            <select
-                              id="inputState"
-                              className="form-control dropdown-setting"
-                            >
-                              <option>select</option>
-                              <option>Root</option>
-                            </select>
-                          </div>
-                          <div className="del-can">
-                            <a href={Demo.BLANK_LINK}>CANCEL</a>
-                            <button className="butn">Delete</button>
+                            <div className="">
+                              <label className="popover-header-text">
+                                EDIT USER
+                              </label>
+                            </div>
+                            <div className="pop-over-div">
+                              <label className="edit-label-1">
+                                Designation Name
+                              </label>
+                              <input
+                                type="text"
+                                className="txt-edit-popover"
+                                placeholder="Designation Name"
+                              />
+                            </div>
+                            <div className="pop-over-div">
+                              <label className="edit-label-1">Brand Name</label>
+                              <input
+                                type="text"
+                                className="txt-edit-popover"
+                                placeholder="Brand Name"
+                              />
+                            </div>
+                            <div className="pop-over-div">
+                              <label className="edit-label-1">Status</label>
+                              <select
+                                id="inputStatus"
+                                className="edit-dropDwon dropdown-setting"
+                              >
+                                <option>Active</option>
+                                <option>Inactive</option>
+                              </select>
+                            </div>
+                            <br />
+                            <div>
+                              <label className="pop-over-cancle">CANCEL</label>
+                              <button className="pop-over-button">
+                                <label className="pop-over-btnsave-text">
+                                  SAVE
+                                </label>
+                              </button>
+                            </div>
                           </div>
                         </PopoverBody>
                       </UncontrolledPopover>
@@ -545,48 +601,61 @@ class Brands extends Component{
                           </div>
                         </PopoverBody>
                       </UncontrolledPopover>
-                      <button className="btnEditAction">
-                        <label className="edit" id="Edit6">
-                          EDIT
-                        </label>
+                      <button className="btnEditAction" id="edit-pop-5">
+                        <label className="edit">EDIT</label>
                       </button>
                       <UncontrolledPopover
                         trigger="legacy"
                         placement="bottom"
-                        target="Edit6"
-                        className="general-popover created-popover"
+                        target="edit-pop-5"
+                        className="general-popover delete-popover"
+                        delay={tooltipDelay}
+                        flip={editbool}
                       >
-                        <PopoverBody>
+                        <PopoverBody className="d-flex">
                           <div>
-                            <p className="edit-user-action">Edit User</p>
-                            <label className="edit-label-1">
-                              Designation Name
-                            </label>
-                            <input
-                              type="text"
-                              className="txt-edit-popover"
-                              placeholder="Designation Name"
-                            />
-                            <label className="edit-label-1">Status</label>
-                            <select
-                              id="inputState"
-                              className="form-control dropdown-setting"
-                            >
-                              <option>Active</option>
-                              <option>Inactive</option>
-                            </select>
-                            <label className="edit-label-1">Reports To</label>
-                            <select
-                              id="inputState"
-                              className="form-control dropdown-setting"
-                            >
-                              <option>select</option>
-                              <option>Root</option>
-                            </select>
-                          </div>
-                          <div className="del-can">
-                            <a href={Demo.BLANK_LINK}>CANCEL</a>
-                            <button className="butn">Delete</button>
+                            <div className="">
+                              <label className="popover-header-text">
+                                EDIT USER
+                              </label>
+                            </div>
+                            <div className="pop-over-div">
+                              <label className="edit-label-1">
+                                Designation Name
+                              </label>
+                              <input
+                                type="text"
+                                className="txt-edit-popover"
+                                placeholder="Designation Name"
+                              />
+                            </div>
+                            <div className="pop-over-div">
+                              <label className="edit-label-1">Brand Name</label>
+                              <input
+                                type="text"
+                                className="txt-edit-popover"
+                                placeholder="Brand Name"
+                              />
+                            </div>
+                            <div className="pop-over-div">
+                              <label className="edit-label-1">Status</label>
+                              <select
+                                id="inputStatus"
+                                className="edit-dropDwon dropdown-setting"
+                              >
+                                <option>Active</option>
+                                <option>Inactive</option>
+                              </select>
+                            </div>
+                            <br />
+                            <div>
+                              <label className="pop-over-cancle">CANCEL</label>
+                              <button className="pop-over-button">
+                                <label className="pop-over-btnsave-text">
+                                  SAVE
+                                </label>
+                              </button>
+                            </div>
                           </div>
                         </PopoverBody>
                       </UncontrolledPopover>

@@ -942,7 +942,7 @@ class Dashboard extends Component {
                   </CardBody>
                 </Card>
               </Collapse>
-              <div className="scroll-table">
+              <div className="scroll-table rem-table">
                 <table>
                   <thead>
                     <tr>

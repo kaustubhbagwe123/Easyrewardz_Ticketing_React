@@ -495,4 +495,16 @@
 .tic-bill-graph .nvd3-svg {
   width: 100%;
 }
+.apexcharts-toolbar{
+  display: none !important;
+}
+.opendonutChart .apexcharts-canvas .position-right{
+  right: 40px !important;
+}
+/* Task by ticket css start */
+.taskByTable table th, .taskByTable table td{
+  font-size: 12px;
+  padding: 20px 20px;
+}
+/* css end */
 /* ----------------------------------------------- */

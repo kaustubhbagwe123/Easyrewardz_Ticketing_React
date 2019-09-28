@@ -8,6 +8,7 @@ import DelBigIcon from "./../../../assets/Images/del-big.png";
 import FileUpload from "./../../../assets/Images/file.png";
 import DelBlack from "./../../../assets/Images/del-black.png";
 import UploadCancel from "./../../../assets/Images/upload-cancel.png";
+import DownExcel from "./../../../assets/Images/csv.png";
 import { ProgressBar } from "react-bootstrap";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
 
@@ -22,6 +23,16 @@ class HierarchyMaster extends Component {
 
   fileUpload = e => {
     this.setState({ fileName: e.target.files[0].name });
+  };
+  fileDrop = e => {
+    this.setState({ fileName: e.dataTransfer.files[0].name });
+    e.preventDefault();
+  };
+  fileDragOver = e => {
+    e.preventDefault();
+  };
+  fileDragEnter = e => {
+    e.preventDefault();
   };
   render() {
     return (
@@ -328,14 +339,27 @@ class HierarchyMaster extends Component {
                   <button className="butn">ADD</button>
                 </div>
                 <div className="right-sect-div">
-                  <h3>Bulk Upload</h3>
+                  <div className="d-flex justify-content-between align-items-center pb-2">
+                    <h3 className="pb-0">Bulk Upload</h3>
+                    <div className="down-excel">
+                      <p>Template</p>
+                      <a href={Demo.BLANK_LINK}>
+                        <img src={DownExcel} alt="download icon" />
+                      </a>
+                    </div>
+                  </div>
                   <input
                     id="file-upload"
                     className="file-upload d-none"
                     type="file"
                     onChange={this.fileUpload}
                   />
-                  <label htmlFor="file-upload">
+                  <label
+                    htmlFor="file-upload"
+                    onDrop={this.fileDrop}
+                    onDragOver={this.fileDragOver}
+                    onDragEnter={this.fileDragEnter}
+                  >
                     <div className="file-icon">
                       <img src={FileUpload} alt="file-upload" />
                     </div>

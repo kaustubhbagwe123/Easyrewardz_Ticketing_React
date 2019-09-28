@@ -46,12 +46,12 @@ class RaisedByMe extends Component {
                           className="info-icon"
                           src={InfoIcon}
                           alt="info-icon"
-                          id="Internet"
+                          id="Internet1"
                         />
                         <UncontrolledPopover
                           trigger="hover"
                           placement="bottom"
-                          target="Internet"
+                          target="Internet1"
                           className="general-popover created-popover"
                         >
                           <PopoverBody>
@@ -125,21 +125,29 @@ class RaisedByMe extends Component {
                           className="info-icon"
                           src={InfoIcon}
                           alt="info-icon"
+                          id="hardware1"
                         />
-                        <ul className="dash-category-popup dash-popup">
-                          <li>
-                            <p>Category</p>
-                            <p>Defective article</p>
-                          </li>
-                          <li>
-                            <p>Sub Category</p>
-                            <p>Customer wants refund</p>
-                          </li>
-                          <li>
-                            <p>Type</p>
-                            <p>Delivery</p>
-                          </li>
-                        </ul>
+                        <UncontrolledPopover
+                          trigger="hover"
+                          placement="bottom"
+                          target="hardware1"
+                          className="general-popover created-popover"
+                        >
+                          <PopoverBody>
+                            <div>
+                              <p className="sub-title">Category</p>
+                              <p className="title">Defective article</p>
+                            </div>
+                            <div>
+                              <p className="sub-title">Sub Category</p>
+                              <p className="title">Customer wants refund</p>
+                            </div>
+                            <div>
+                              <p className="sub-title">Type</p>
+                              <p className="title">Delivery</p>
+                            </div>
+                          </PopoverBody>
+                        </UncontrolledPopover>
                       </div>
                     </td>
                     <td>BATA2</td>
@@ -196,21 +204,29 @@ class RaisedByMe extends Component {
                           className="info-icon"
                           src={InfoIcon}
                           alt="info-icon"
+                          id="supply1"
                         />
-                        <ul className="dash-category-popup dash-popup">
-                          <li>
-                            <p>Category</p>
-                            <p>Defective article</p>
-                          </li>
-                          <li>
-                            <p>Sub Category</p>
-                            <p>Customer wants refund</p>
-                          </li>
-                          <li>
-                            <p>Type</p>
-                            <p>Delivery</p>
-                          </li>
-                        </ul>
+                          <UncontrolledPopover
+                          trigger="hover"
+                          placement="bottom"
+                          target="supply1"
+                          className="general-popover created-popover"
+                        >
+                          <PopoverBody>
+                            <div>
+                              <p className="sub-title">Category</p>
+                              <p className="title">Defective article</p>
+                            </div>
+                            <div>
+                              <p className="sub-title">Sub Category</p>
+                              <p className="title">Customer wants refund</p>
+                            </div>
+                            <div>
+                              <p className="sub-title">Type</p>
+                              <p className="title">Delivery</p>
+                            </div>
+                          </PopoverBody>
+                        </UncontrolledPopover>                      
                       </div>
                     </td>
                     <td>BATA3</td>
@@ -266,7 +282,29 @@ class RaisedByMe extends Component {
                         className="info-icon"
                         src={InfoIcon}
                         alt="info-icon"
+                        id="internet2"
                       />
+                       <UncontrolledPopover
+                          trigger="hover"
+                          placement="bottom"
+                          target="internet2"
+                          className="general-popover created-popover"
+                        >
+                          <PopoverBody>
+                            <div>
+                              <p className="sub-title">Category</p>
+                              <p className="title">Defective article</p>
+                            </div>
+                            <div>
+                              <p className="sub-title">Sub Category</p>
+                              <p className="title">Customer wants refund</p>
+                            </div>
+                            <div>
+                              <p className="sub-title">Type</p>
+                              <p className="title">Delivery</p>
+                            </div>
+                          </PopoverBody>
+                        </UncontrolledPopover>
                     </td>
                     <td>BATA1</td>
                     <td>High</td>
@@ -292,7 +330,29 @@ class RaisedByMe extends Component {
                         className="info-icon"
                         src={InfoIcon}
                         alt="info-icon"
+                        id="hardware5"
                       />
+                       <UncontrolledPopover
+                          trigger="hover"
+                          placement="bottom"
+                          target="hardware5"
+                          className="general-popover created-popover"
+                        >
+                          <PopoverBody>
+                            <div>
+                              <p className="sub-title">Category</p>
+                              <p className="title">Defective article</p>
+                            </div>
+                            <div>
+                              <p className="sub-title">Sub Category</p>
+                              <p className="title">Customer wants refund</p>
+                            </div>
+                            <div>
+                              <p className="sub-title">Type</p>
+                              <p className="title">Delivery</p>
+                            </div>
+                          </PopoverBody>
+                        </UncontrolledPopover>
                     </td>
                     <td>BATA2</td>
                     <td>High</td>
@@ -318,7 +378,29 @@ class RaisedByMe extends Component {
                         className="info-icon"
                         src={InfoIcon}
                         alt="info-icon"
+                        id="supply2"
                       />
+                        <UncontrolledPopover
+                          trigger="hover"
+                          placement="bottom"
+                          target="supply2"
+                          className="general-popover created-popover"
+                        >
+                          <PopoverBody>
+                            <div>
+                              <p className="sub-title">Category</p>
+                              <p className="title">Defective article</p>
+                            </div>
+                            <div>
+                              <p className="sub-title">Sub Category</p>
+                              <p className="title">Customer wants refund</p>
+                            </div>
+                            <div>
+                              <p className="sub-title">Type</p>
+                              <p className="title">Delivery</p>
+                            </div>
+                          </PopoverBody>
+                        </UncontrolledPopover>
                     </td>
                     <td>BATA3</td>
                     <td>High</td>
@@ -344,7 +426,29 @@ class RaisedByMe extends Component {
                         className="info-icon"
                         src={InfoIcon}
                         alt="info-icon"
+                        id="hardware3"
                       />
+                      <UncontrolledPopover
+                          trigger="hover"
+                          placement="bottom"
+                          target="hardware3"
+                          className="general-popover created-popover"
+                        >
+                          <PopoverBody>
+                            <div>
+                              <p className="sub-title">Category</p>
+                              <p className="title">Defective article</p>
+                            </div>
+                            <div>
+                              <p className="sub-title">Sub Category</p>
+                              <p className="title">Customer wants refund</p>
+                            </div>
+                            <div>
+                              <p className="sub-title">Type</p>
+                              <p className="title">Delivery</p>
+                            </div>
+                          </PopoverBody>
+                        </UncontrolledPopover>
                     </td>
                     <td>BATA3</td>
                     <td>High</td>

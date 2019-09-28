@@ -16,8 +16,10 @@ import QAAuditview from "./QA/QAAuditview";
 import KnowledgeBase from "./KnowledgeBase";
 import HierarchyMaster from "./Settings/Store/HierarchyMaster";
 import FileUploadLogs from "./Settings/FileUploadLogs";
+import ItemMaster from "./Settings/Store/ItemMaster";
 import TicketHierarchy from "./Settings/Ticketing/TicketHierarchy";
 import Brands from "./Settings/Ticketing/Brands";
+import Users from "./Settings/Ticketing/Users";
 // import Aux from "./../Component/Aux";
 
 export class App extends Component {
@@ -76,22 +78,20 @@ export class App extends Component {
           path={`${match.url}/qaauditview`}
           component={QAAuditview}
         />
-         
+
         <Route
           exact
           path={`${match.url}/hierarchyMaster`}
           component={HierarchyMaster}
         />
+        <Route exact path={`${match.url}/itemMaster`} component={ItemMaster} />
+        <Route exact path={`${match.url}/users`} component={Users} />
         <Route
           exact
           path={`${match.url}/fileUploadLogs`}
           component={FileUploadLogs}
         />
-        <Route
-        exact
-        path={`${match.url}/brands`}
-        component={Brands}
-        />
+        <Route exact path={`${match.url}/brands`} component={Brands} />
       </Layout>
     );
   }
