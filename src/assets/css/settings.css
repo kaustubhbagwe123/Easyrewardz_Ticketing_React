@@ -1236,7 +1236,7 @@
   font-weight: 700;
   line-height: 17px;
   text-align: left;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 .popover-lable-text {
@@ -1473,6 +1473,16 @@
   text-align: left;
   display: block;
   margin-bottom: 5px;
+  margin-top: 10px;
+}
+.edit-dropDwon{
+  border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    display: block;
+    width: 100%;
+    height: 35px;
+    padding: 10px;
+    padding-left: 15px;
 }
 .txt-edit-popover {
   background-color: #ecf2f4;

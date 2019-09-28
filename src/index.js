@@ -4,6 +4,8 @@ import "./index.css";
 // import App from './App';
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import 'react-app-polyfill/ie9';
+import 'react-app-polyfill/ie11';
 
 //Css
 import "./assets/css/style.css";

@@ -118,7 +118,7 @@ class CategoryMaster extends Component {
                             </PopoverBody>
                           </UncontrolledPopover>
                         </div>
-                        <div className=" list-edit-button-margin btn-del-pop">
+                        <div className="list-edit-button-margin btn-del-pop">
                           <button
                             className="Table-action-edit-button"
                             id="edit-pop-1"

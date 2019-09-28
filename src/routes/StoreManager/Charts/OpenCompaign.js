@@ -36,17 +36,33 @@ class OpenCompaign extends Component {
   constructor(props) {
     super(props);
   
+    // this.state = {
+    //   options: {},
+    //   series: [22, 37, 40],
+    //   labels: ['A', 'B', 'C']
+    // }
     this.state = {
-      options: {},
-      series: [22, 37, 40],
-      labels: ['A', 'B', 'C']
+      options: {
+        responsive: [{
+          breakpoint: 450,
+          options: {
+            chart: {
+              width: 100
+            },
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }]
+      },
+      series: [44.50, 55, 41, 17]
     }
   }
   
   render() {
     return (
-      <div className="donut">
-        <Chart options={this.state.options} series={this.state.series} type="donut" width="350" />
+      <div className="chart">
+        <Chart options={this.state.options} series={this.state.series} type="donut" width="400" className="opendonutChart"/>
       </div>
     );
   }
