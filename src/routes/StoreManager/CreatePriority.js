@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import TableArr from "./../../assets/Images/table-arr.png";
 import RedDeleteIcon from "./../../assets/Images/red-delete-icon.png";
-import BlackDeleteIcon from "./../../assets/Images/delete.svg";
+import BlackDeleteIcon from "./../../assets/Images/del-big.png";
  
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import BlackInfoIcon from "./../../assets/Images/Info-black.png";
@@ -10,6 +10,38 @@ import Braille from "./../../assets/Images/braille.svg";
  
 
 class CreatePriority extends Component {
+  state = {
+    index: this.props.index,
+    targetbox: null
+  };
+  cssGrid = {
+    1: "one",
+    2: "two",
+    3: "three",
+    4: "four",
+    5: "five",
+    6: "six"
+  };
+
+  dragEnd = (event) => {
+    debugger;
+    this.setState({targetbox: null})
+  }
+dragStart = (event) => {
+ 
+    event.dataTransfer.setData("text", event.target.id)
+    this.setState({targetbox: true})
+  }
+drop = (event) => {
+  debugger;
+                    if (event.target.id) {
+                      this.props.swap(
+                        event.dataTransfer.getData("text"),
+                        event.target.id
+                      );
+                      event.dataTransfer.clearData();
+                    }
+                  }
   render() {
     const tooltipDelay = { show: 100, hide: 100 };
     return (
@@ -20,7 +52,7 @@ class CreatePriority extends Component {
             <label className="storemaster-text">&nbsp;Priority</label>
           </div>
         </div>
-        <br />
+
         <div className="bottom-margin-class">
           <div className="row">
             <div className="store-col-1-1 category-master-table cp-table">
@@ -44,7 +76,15 @@ class CreatePriority extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
+                  <tr
+                    id="abc1"
+                    className={this.cssGrid[this.state.index]}
+                    draggable="true"
+                    onDrop={this.drop}
+                    onDragStart={this.dragStart}
+                    onDragOver={event => event.preventDefault()}
+                    onDragEnd={this.dragEnd}
+                  >
                     <td>
                       <img src={Braille} alt="braille-icon" />
                     </td>
@@ -149,7 +189,7 @@ class CreatePriority extends Component {
                                   <input
                                     type="text"
                                     className="pop-over-text"
-                                    placeholder="High"                                    
+                                    placeholder="High"
                                   />
                                 </div>
                                 <div className=" pop-over-div">
@@ -179,7 +219,15 @@ class CreatePriority extends Component {
                       </div>
                     </td>
                   </tr>
-                  <tr>
+                  <tr
+                    id="abc2"
+                    className={this.cssGrid[this.state.index]}
+                    draggable="true"
+                    onDrop={this.drop}
+                    onDragStart={this.dragStart}
+                    onDragOver={event => event.preventDefault()}
+                    onDragEnd={this.dragEnd}
+                  >
                     <td>
                       <img src={Braille} alt="braille-icon" />
                     </td>
@@ -283,7 +331,7 @@ class CreatePriority extends Component {
                                   <input
                                     type="text"
                                     className="pop-over-text"
-                                    placeholder="Medium"                                    
+                                    placeholder="Medium"
                                   />
                                 </div>
                                 <div className=" pop-over-div">
@@ -313,7 +361,15 @@ class CreatePriority extends Component {
                       </div>
                     </td>
                   </tr>
-                  <tr>
+                  <tr
+                    id="abc3"
+                    className={this.cssGrid[this.state.index]}
+                    draggable="true"
+                    onDrop={this.drop}
+                    onDragStart={this.dragStart}
+                    onDragOver={event => event.preventDefault()}
+                    onDragEnd={this.dragEnd}
+                  >
                     <td>
                       <img src={Braille} alt="braille-icon" />
                     </td>
@@ -417,7 +473,7 @@ class CreatePriority extends Component {
                                   <input
                                     type="text"
                                     className="pop-over-text"
-                                    placeholder="Low"                                    
+                                    placeholder="Low"
                                   />
                                 </div>
                                 <div className=" pop-over-div">
@@ -447,7 +503,15 @@ class CreatePriority extends Component {
                       </div>
                     </td>
                   </tr>
-                  <tr>
+                  <tr
+                    id="abc4"
+                    className={this.cssGrid[this.state.index]}
+                    draggable="true"
+                    onDrop={this.drop}
+                    onDragStart={this.dragStart}
+                    onDragOver={event => event.preventDefault()}
+                    onDragEnd={this.dragEnd}
+                  >
                     <td>
                       <img src={Braille} alt="braille-icon" />
                     </td>
@@ -551,7 +615,7 @@ class CreatePriority extends Component {
                                   <input
                                     type="text"
                                     className="pop-over-text"
-                                    placeholder="6"                                    
+                                    placeholder="6"
                                   />
                                 </div>
                                 <div className=" pop-over-div">
@@ -581,7 +645,15 @@ class CreatePriority extends Component {
                       </div>
                     </td>
                   </tr>
-                  <tr>
+                  <tr
+                    id="abc5"
+                    className={this.cssGrid[this.state.index]}
+                    draggable="true"
+                    onDrop={this.drop}
+                    onDragStart={this.dragStart}
+                    onDragOver={event => event.preventDefault()}
+                    onDragEnd={this.dragEnd}
+                  >
                     <td>
                       <img src={Braille} alt="braille-icon" />
                     </td>
@@ -685,7 +757,7 @@ class CreatePriority extends Component {
                                   <input
                                     type="text"
                                     className="pop-over-text"
-                                    placeholder="8"                                    
+                                    placeholder="8"
                                   />
                                 </div>
                                 <div className=" pop-over-div">

@@ -2,33 +2,41 @@ import React, { Component } from "react";
 import TableArr from "./../../assets/Images/table-arr.png";
 import RedDeleteIcon from "./../../assets/Images/red-delete-icon.png";
 import BlackDeleteIcon from "./../../assets/Images/del-big.png";
-import UploadIcon from "./../../assets/Images/clip.png";
-import CrossIcon from "./../../assets/Images/cross-icon.png";
+// import UploadIcon from "./../../assets/Images/clip.png";
+// import CrossIcon from "./../../assets/Images/cross-icon.png";
 import { UncontrolledPopover , PopoverBody } from "reactstrap";
 import Demo from "../../store/Hashtag.js";
+import DelBigIcon from "./../../assets/Images/del-big.png";
+import FileUpload from "./../../assets/Images/file.png";
+import DelBlack from "./../../assets/Images/del-black.png";
+import UploadCancel from "./../../assets/Images/upload-cancel.png";
+import { ProgressBar } from "react-bootstrap";
+ 
+ 
+
  
  
 
  
 class CategoryMaster extends Component {
-
   constructor(props) {
     super(props);
 
-    this.DeleteToggle = this.DeleteToggle.bind(this);
     this.state = {
-      deletePopoverOpen: false
+      fileName: "",
+      catmulti:false
     };
   }
 
-  DeleteToggle() {
-    this.setState({
-      deletePopoverOpen: !this.state.deletePopoverOpen
-    });
+  HandleMultiSelect(){
+    this.setState({ catmulti: true });
   }
+  fileUpload = e => {
+    this.setState({ fileName: e.target.files[0].name });
+  };
 
   render() {
-    const editbool=false;
+    const editbool = false;
     const tooltipDelay = { show: 50, hide: 100 };
     return (
       <>
@@ -807,9 +815,17 @@ class CategoryMaster extends Component {
                     <label className="store-create-lable-text">Category</label>
                   </div>
                   <div className="row">
-                    <select className="store-create-select">
+                    <select className="store-create-select" >
+                      <option>Complaint</option>
+                      <option>Complaint</option>
                       <option>Complaint</option>
                     </select>
+                    {/* <div className="category-multiple-cm">
+                      <div className="searchbox-cat-cm">
+                        <input type="text" className="searchtext-cm" placeholder="Search"/>
+                        <label className="search-add">+Add</label>
+                      </div>
+                    </div> */}
                   </div>
                 </div>
 
@@ -861,89 +877,89 @@ class CategoryMaster extends Component {
               </div>
               <br />
               <div className="store-col-2">
-                <br />
-                <div className="row">
-                  <label className="Create-store-text">BULK UPLOAD</label>
-                </div>
-                <div className="store-create-margin">
-                  <div className="row rectangle-upload">
-                    <div className="upload-icon-center">
-                      <img
-                        src={UploadIcon}
-                        alt="upload-icon"
-                        className="upload-icon"
-                      />
-                    </div>
-
-                    <div className="row upload-add-text">
-                      Add File &nbsp;
-                      <span className="upload-add-text1">
-                        or Drop File here
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div className="store-create-margin">
-                  <div className="row">
-                    <div className="store-create-oval"></div>
-                    <div className="store-upload-details-div">
-                      <label className="store-upload-details-text">
-                        Chat agent user type file.CSV
-                      </label>
-                      <div className="upload-file-memory">
-                        <span>122.6kb</span>
-                      </div>
-                    </div>
-                    <div className="store-upload-details-div-2">
-                      <img
-                        src={BlackDeleteIcon}
-                        alt="delete-icon"
-                        className="store-icons-8-delete"
-                      />
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="store-create-oval"></div>
-                    <div className="store-upload-details-div">
-                      <label className="store-upload-details-text">
-                        Supervisor type file.CSV
-                      </label>
-                      <div className="file-upload-faild-text">
-                        <span>Faild</span>
-                      </div>
-                    </div>
-                    <div className="store-upload-details-div-4">
-                      <label className="file-upload-retry-text">Retry</label>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="store-create-oval"></div>
-                    <div className="store-upload-details-div">
-                      <label className="store-upload-details-text">
-                        Chat agent 25 Oct type file.CSV
-                      </label>
-                      <div className="file-upload-progress">
-                        <div className="file-upload-progress-status"></div>
-                      </div>
-                    </div>
-                    <div className="store-upload-details-div-3">
-                      <img
-                        src={CrossIcon}
-                        alt="cross-icon"
-                        className="store-create-cross-icon"
-                      />
-                    </div>
-                  </div>
+                <div className="right-sect-div">
                   <br />
-                  <div className="store-create-margin">
-                    <div className="row">
-                      <button className="store-create-button">
-                        <label className="store-create-button-text">ADD</label>
-                      </button>
+                  <h3>Bulk Upload</h3>
+                  <input
+                    id="file-upload"
+                    className="file-upload d-none"
+                    type="file"
+                    onChange={this.fileUpload.bind(this)}
+                  />
+                  <label htmlFor="file-upload">
+                    <div className="file-icon">
+                      <img src={FileUpload} alt="file-upload" />
                     </div>
-                  </div>
+                    <span>Add File</span> or Drop File here
+                  </label>
+                  {this.state.fileName && (
+                    <div className="file-info">
+                      <div className="file-cntr">
+                        <div className="file-dtls">
+                          <p className="file-name">{this.state.fileName}</p>
+                          <div className="del-file" id="del-file-1">
+                            <img src={DelBlack} alt="delete-black" />
+                          </div>
+                          <UncontrolledPopover
+                            trigger="legacy"
+                            placement="auto"
+                            target="del-file-1"
+                            className="general-popover delete-popover"
+                          >
+                            <PopoverBody className="d-flex">
+                              <div className="del-big-icon">
+                                <img src={DelBigIcon} alt="del-icon" />
+                              </div>
+                              <div>
+                                <p className="font-weight-bold blak-clr">
+                                  Delete file?
+                                </p>
+                                <p className="mt-1 fs-12">
+                                  Are you sure you want to delete this file?
+                                </p>
+                                <div className="del-can">
+                                  <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                  <button className="butn">Delete</button>
+                                </div>
+                              </div>
+                            </PopoverBody>
+                          </UncontrolledPopover>
+                        </div>
+                        <div>
+                          <span className="file-size">122.6kb</span>
+                        </div>
+                      </div>
+                      <div className="file-cntr">
+                        <div className="file-dtls">
+                          <p className="file-name">{this.state.fileName}</p>
+                          <a className="file-retry" href={Demo.BLANK_LINK}>
+                            Retry
+                          </a>
+                        </div>
+                        <div>
+                          <span className="file-failed">Failed</span>
+                        </div>
+                      </div>
+                      <div className="file-cntr">
+                        <div className="file-dtls">
+                          <p className="file-name pr-0">
+                            {this.state.fileName}
+                          </p>
+                        </div>
+                        <div>
+                          <div className="d-flex align-items-center mt-2">
+                            <ProgressBar className="file-progress" now={60} />
+                            <div className="cancel-upload">
+                              <img src={UploadCancel} alt="upload cancel" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  <button className="butn">ADD</button>
+                  <br />
                 </div>
-                <br />
               </div>
             </div>
           </div>

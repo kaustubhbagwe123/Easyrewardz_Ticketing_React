@@ -8,6 +8,7 @@ import StoreTaskView from "./StoreTaskView";
 import CreateCRMRoles from "./CreateCRMRoles";
 import CreatePriority from "./CreatePriority";
 import CategoryMaster from "./CategoryMaster";
+import CreateSLA from "./CreateSLA";
  
  
 
@@ -47,6 +48,7 @@ export class StoreApp extends Component {
           path={`${match.url}/crmroles`}
           component={CreateCRMRoles}
         />
+        <Route exact path={`${match.url}/sla`} component={CreateSLA} />
       </StoreLayout>
     );
   }
