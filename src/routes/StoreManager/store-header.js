@@ -7,13 +7,13 @@ import SettingLogo from "./../../assets/Images/setting.png";
 import Hamb from "./../../assets/Images/hamb.png";
 import ClaimLogo from "./../../assets/Images/icon9.svg";
 import DashboardLogoBlue from "./../../assets/Images/dashboardBlue.png";
-import KnowledgeLogoBlue from "./../../assets/Images/knowledge-blue.png";
+// import KnowledgeLogoBlue from "./../../assets/Images/knowledge-blue.png";
 import SettingLogoBlue from "./../../assets/Images/setting-blue.png";
 import ClaimLogoBlue from "./../../assets/Images/claim-blue.png";
-import CalendarLogoBlue from "./../../assets/Images/calendar-blue.png";
+// import CalendarLogoBlue from "./../../assets/Images/calendar-blue.png";
 import Demo from "./../../store/Hashtag";
 import TicketLogoBlue from "./../../assets/Images/ticket-blue.png";
-import KnowledgeLogo from "./../../assets/Images/knowledge.png";
+// import KnowledgeLogo from "./../../assets/Images/knowledge.png";
 import ChatLogoBlue from "./../../assets/Images/chat-blue.png";
 
 class Header extends Component {
