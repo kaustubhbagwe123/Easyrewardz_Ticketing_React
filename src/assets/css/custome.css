@@ -108,6 +108,22 @@
 .er-label {
   font-weight: 700;
 }
+.headers-menu .active {
+  font-weight: 700;
+  color: #2561a8;
+}
+.header-icons-cntr img:first-child {
+  display: block;
+}
+.header-icons-cntr img:last-child {
+  display: none;
+}
+.headers-menu .active .header-icons-cntr img:first-child {
+  display: none;
+}
+.headers-menu .active .header-icons-cntr img:last-child {
+  display: block;
+}
 .headers-menu {
   display: flex;
   align-items: center;
@@ -136,7 +152,7 @@
 }
 .header-icons-cntr {
   line-height: 1;
-  padding-right: 8px;
+  margin-right: 8px;
 }
 .single-menu {
   display: flex;
