@@ -204,19 +204,16 @@ class CreateSLA extends Component {
                                     EDIT CATEGORY
                                   </label>
                                 </div>
-                                <div className=" pop-over-div">
+                                <div className="pop-over-div">
                                   <label className="pop-over-lbl-text">
                                     Brand Name
                                   </label>
-                                  {/* <select className="pop-over-select">
-                                    <option>Bata</option>
-                                  </select> */}
 
-                                  <React.Bootstrap.Select>
+                                  {/* <React.Bootstrap.Select>
                                     <option>Mustard</option>
                                     <option>Ketchup</option>
                                     <option>Barbecue</option>
-                                  </React.Bootstrap.Select>
+                                  </React.Bootstrap.Select> */}
                                 </div>
 
                                 <br />

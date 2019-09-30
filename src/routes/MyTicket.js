@@ -22,14 +22,16 @@ import PencilImg from "./../assets/Images/pencil.png";
 import CancelImg from "./../assets/Images/cancel.png";
 import { Collapse, CardBody, Card } from "reactstrap";
 import CrossIcon from "./../assets/Images/cancel.png";
-import TikcetSystemStoreModal from './../routes/TicketSystemStoreModal';
+import CustomerIcon from "./../assets/Images/customer-icon.png";
+import TikcetSystemStoreModal from "./../routes/TicketSystemStoreModal";
 
 class MyTicket extends Component {
   state = {
     open: false,
     collapseUp: true,
     varMar: "",
-    storemodal: false
+    storemodal: false,
+    profilemodal: false
   };
 
   handleUpOpen = () => {
@@ -50,7 +52,13 @@ class MyTicket extends Component {
   HandleStoreModalClose() {
     this.setState({ storemodal: false });
   }
-  
+  HandleProfileModalOpen() {
+    this.setState({ profilemodal: true });
+  }
+  HandleProfileModalClose() {
+    this.setState({ profilemodal: false });
+  }
+
   render() {
     const { open } = this.state;
     const HidecollapsUp = this.state.collapseUp ? (
@@ -78,7 +86,7 @@ class MyTicket extends Component {
                   onClick={this.onOpenModal}
                 />
               </div>
-             
+
               <div className="historical-model">
                 <Modal
                   open={open}
@@ -123,7 +131,78 @@ class MyTicket extends Component {
                 <label className="mobile-number">Mobile Number</label>
                 <br />
                 <label className="mobile-no">+91 9873470074</label>
-                <img src={EyeImg} alt="eye" className="eyeImg" />
+                <img
+                  src={EyeImg}
+                  alt="eye"
+                  className="eyeImg"
+                  onClick={this.HandleProfileModalOpen.bind(this)}
+                />
+                <Modal
+          open={this.state.profilemodal}
+          onClose={this.HandleProfileModalClose.bind(this)}
+          modalId="profile-popup"
+          overlayId="logout-ovrly"
+        >
+          <div className="profilemodalmaindiv">
+            <div style={{ float: "right" }}>
+              <img
+                src={CrossIcon}
+                alt="cross-icon"
+                className="pro-cross-icn"
+                onClick={this.HandleProfileModalClose.bind(this)}
+              />
+            </div>
+            <div className="row profilemodalrow">
+              <div className="col-md-6">
+                <label className="profilemodal-text">Name</label>
+                <label className="profilemodal-textval">Diwakar Monga</label>
+              </div>
+              <div className="col-md-6">
+                <label className="profilemodal-text">Mobile</label>
+                <label className="profilemodal-textval">+91 9873470074</label>
+              </div>
+            </div>
+            <div className="row profilemodalrow-1">
+              <div className="col-md-6">
+                <label className="profilemodal-text">Email</label>
+                <label className="profilemodal-textval">
+                  monga24@gmail.com
+                </label>
+              </div>
+              <div className="col-md-6">
+                <input
+                  type="text"
+                  className="alternumber"
+                  placeholder="Alternate Number"
+                />
+              </div>
+            </div>
+            <div className="row" style={{ marginLeft: "15px" }}>
+              <div className="openticketbox profilemodalrow-1">
+                <label className="open-tickets-box-text">
+                  04
+                  <small className="open-tickets-box-textval">
+                    Open Tickets
+                  </small>
+                </label>
+              </div>
+              <div className="openticketbox-2 profilemodalrow-1">
+                <label className="open-tickets-box-text">
+                  11
+                  <small className="open-tickets-box-textval">
+                    Total Tickets
+                  </small>
+                </label>
+              </div>
+            </div>
+            <div className="row profilemodal-row-3">
+              <img src={CustomerIcon} alt="customer-icon" />
+              <label className="full-profile-view-text">
+                FULL PROFILE VIEW
+              </label>
+            </div>
+          </div>
+        </Modal>
                 <div className="bill-1">
                   <img src={BillInvoiceImg} alt="eye" className="billImg" />
                 </div>
@@ -200,7 +279,10 @@ class MyTicket extends Component {
                 <div className="row data-store">
                   <div className="col-md-12">
                     <label className="label-4 storeSpacing">Store</label>
-                    <label className="bata-rajouri-garden" onClick={this.HandleStoreModalOpen.bind(this)}>
+                    <label
+                      className="bata-rajouri-garden"
+                      onClick={this.HandleStoreModalOpen.bind(this)}
+                    >
                       Bata Raj ouri Garden &nbsp;
                       <img
                         src={PencilImg}
@@ -209,28 +291,31 @@ class MyTicket extends Component {
                       />
                     </label>
                     <Modal
-          open={this.state.storemodal}
-          onClose={this.HandleStoreModalClose.bind(this)}
-          modalId="ticket-store-modal"
-          overlayId="layout-ticket-store-modal"
-        >
-          <div className="profilemodalmaindiv">
-            <div style={{ float: "" }}>
-              <img
-                src={CrossIcon}
-                alt="cross-icon"
-                className="pro-cross-icn-1"
-                onClick={this.HandleStoreModalClose.bind(this)}
-              />
-            </div>
-            <TikcetSystemStoreModal />
-          </div>
-        </Modal>
+                      open={this.state.storemodal}
+                      onClose={this.HandleStoreModalClose.bind(this)}
+                      modalId="ticket-store-modal"
+                      overlayId="layout-ticket-store-modal"
+                    >
+                      <div className="profilemodalmaindiv">
+                        <div style={{ float: "" }}>
+                          <img
+                            src={CrossIcon}
+                            alt="cross-icon"
+                            className="pro-cross-icn-1"
+                            onClick={this.HandleStoreModalClose.bind(this)}
+                          />
+                        </div>
+                        <TikcetSystemStoreModal />
+                      </div>
+                    </Modal>
                   </div>
                   <div className="col-md-12">
                     <label className="label-4 storeSpacing">Product</label>
-                    <label className="bata-rajouri-garden">
-                      Red Tennis Coca Cola White Monogr ...&nbsp;
+                    <label
+                      className="bata-rajouri-garden"
+                      onClick={this.HandleStoreModalOpen.bind(this)}
+                    >
+                      Red Tennis Coca Cola White Monogr...&nbsp;
                       <img
                         src={PencilImg}
                         alt="Pencile"
@@ -256,8 +341,8 @@ class MyTicket extends Component {
             </div>
             <div className="row">
               <label className="label-3">
-                Where I can see details of my rewards in the â€˜Rewardsâ€™ tab
-                within the â€˜Refer and Earn Rewardsâ€™ screen.You will also get
+                Where I can see details of my rewards in the 'Rewards' tab
+                within the 'Refer and Earn Rewards' screen.You will also get
                 details of which of your friends have joined, which friends have
                 transacted etc. on the same tab.
               </label>

@@ -2,12 +2,19 @@ import React,{Component} from 'react';
 import { Accordion, Card,Button } from "react-bootstrap";
 import BlueStoreIcon from "./../assets/Images/storeBlue.png";
 import BlackProductIcon from "./../assets/Images/product-black.png";
+import MyTicket from './MyTicket';
 
-
-
-
-class TikcetSystemStoreModal extends Component
-{
+class TikcetSystemStoreModal extends Component{
+  constructor(props) {
+    super(props)
+    this.state = {
+      storemodal: false
+    }
+    this.abs= new MyTicket()
+  }
+  HandleStoreModalClose() {
+    this.setState({ storemodal: false });
+  }
 
     render(){
         return (
@@ -91,6 +98,7 @@ class TikcetSystemStoreModal extends Component
                   </Card.Body>
                 </Accordion.Collapse>
               </Card>
+
               <hr />
               <Card>
                 <Card.Header>
@@ -101,7 +109,9 @@ class TikcetSystemStoreModal extends Component
                         alt="blue-store-icon"
                         className="storemd-icon"
                       />
-                      <label className="collstore-head-text-black">PRODUCT</label>
+                      <label className="collstore-head-text-black">
+                        PRODUCT
+                      </label>
                     </div>
                   </Accordion.Toggle>
                 </Card.Header>

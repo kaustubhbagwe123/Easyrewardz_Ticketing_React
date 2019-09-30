@@ -220,7 +220,7 @@ class Header extends Component {
                 Notifications
               </span>
             </a>
-            <a href="#!">
+            <a href="settings">
               <img src={SettingLogo} alt="logo" className="setting" />
               <img
                 src={SettingLogoBlue}
