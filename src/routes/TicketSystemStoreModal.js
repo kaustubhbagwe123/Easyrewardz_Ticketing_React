@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 import { Accordion, Card,Button } from "react-bootstrap";
 import BlueStoreIcon from "./../assets/Images/storeBlue.png";
 import BlackProductIcon from "./../assets/Images/product-black.png";
+import MyTicket from './MyTicket';
 import CrossIcon from "./../assets/Images/cancel.png";
 import Modal from "react-responsive-modal";
 import MyTicket from './MyTicket';

@@ -34,7 +34,6 @@ class ClaimTabTicketView extends Component {
       open:false
     };
     this.openModal = this.openModal.bind(this);
-
     this.closeModal = this.closeModal.bind(this);
   }
 
@@ -284,15 +283,15 @@ class ClaimTabTicketView extends Component {
                       Category <img src={TableArrowIcon} alt="table-arr-icon" />
                     </th>
                     <th>
-                      Raised by{" "}
+                      Raised by
                       <img src={TableArrowIcon} alt="table-arr-icon" />
                     </th>
                     <th>
-                      Creation on{" "}
+                      Creation on
                       <img src={TableArrowIcon} alt="table-arr-icon" />
                     </th>
                     <th>
-                      Assign to{" "}
+                      Assign to
                       <img src={TableArrowIcon} alt="table-arr-icon" />
                     </th>
                   </tr>
@@ -309,11 +308,11 @@ class ClaimTabTicketView extends Component {
                     </td>
                     <td className="table-img-cntr"></td>
                     <td>
-                      Need to change my shipping address{" "}
+                      Need to change my shipping address 
                       <span>Hope this help, Please rate us</span>
                     </td>
                     <td>
-                      Defective article{" "}
+                      Defective article 
                       <img
                         className="info-icon"
                         src={InfoIcon}
@@ -322,7 +321,7 @@ class ClaimTabTicketView extends Component {
                     </td>
                     <td>N Rampal</td>
                     <td>
-                      12 March 2018{" "}
+                      12 March 2018 
                       <img
                         className="info-icon"
                         src={InfoIcon}
@@ -342,20 +341,16 @@ class ClaimTabTicketView extends Component {
                       <span className="table-btn table-yellow-btn">New</span>
                     </td>
                     <td className="table-img-cntr">
-                      {/* <img
-                          className="task-icon-1"
-                          src="Images/task-icon-blue.png"
-                          alt="missing"
-                        /> */}
+                     
                     </td>
                     <td>
-                      Need to change my shipping address{" "}
+                      Need to change my shipping address 
                       <span>
                         Hope this help, Please rate us (1 new comment)
                       </span>
                     </td>
                     <td>
-                      Defective article{" "}
+                      Defective article 
                       <img
                         className="info-icon"
                         src={InfoIcon}
@@ -364,7 +359,7 @@ class ClaimTabTicketView extends Component {
                     </td>
                     <td>N Rampal</td>
                     <td>
-                      12 March 2018{" "}
+                      12 March 2018 
                       <img
                         className="info-icon"
                         src={InfoIcon}
@@ -391,11 +386,11 @@ class ClaimTabTicketView extends Component {
                         /> */}
                     </td>
                     <td>
-                      Need to change my shipping address{" "}
+                      Need to change my shipping address 
                       <span>Hope this help, Please rate us</span>
                     </td>
                     <td>
-                      Defective article{" "}
+                      Defective article 
                       <img
                         className="info-icon"
                         src={InfoIcon}
@@ -404,7 +399,7 @@ class ClaimTabTicketView extends Component {
                     </td>
                     <td>N Rampal</td>
                     <td>
-                      12 March 2018{" "}
+                      12 March 2018 
                       <img
                         className="info-icon"
                         src={InfoIcon}

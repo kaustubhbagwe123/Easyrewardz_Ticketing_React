@@ -23,7 +23,7 @@ import { Collapse, CardBody, Card } from "reactstrap";
 import Demo from "../store/Hashtag.js";
 import ModernDatepicker from "react-modern-datepicker";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
-import DateRangePicker from "@wojtekmaj/react-daterange-picker";
+// import DateRangePicker from "@wojtekmaj/react-daterange-picker";
 import BarChart from "../Component/PieChart/BarChart.js";
 import MultiBarChart from "../Component/PieChart/MultiBarChart.js";
 // import DateRangePicker from '@wojtekmaj/react-daterange-picker';
@@ -86,6 +86,9 @@ class Dashboard extends Component {
   }
   StatusCloseModel() {
     this.setState({ StatusModel: false });
+  }
+  HandleChangeRedict(){
+    this.props.history.push("/admin/chatdashboard");
   }
   onChange = date => this.setState({ date });
   render() {
@@ -194,7 +197,7 @@ class Dashboard extends Component {
                         <span className="card-value red-clr">07</span>
                       </div>
                     </div>
-                    <div className="col-md col-sm-4 col-6">
+                    <div className="col-md col-sm-4 col-6" onClick={this.HandleChangeRedict.bind(this)}>
                       <div className="dash-top-cards">
                         <p className="card-head">Total no of chat</p>
                         <span className="card-value">102</span>

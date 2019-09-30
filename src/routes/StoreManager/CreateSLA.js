@@ -204,7 +204,7 @@ class CreateSLA extends Component {
                                     EDIT CATEGORY
                                   </label>
                                 </div>
-                                <div className=" pop-over-div">
+                                <div className="pop-over-div">
                                   <label className="pop-over-lbl-text">
                                     Brand Name
                                   </label>
