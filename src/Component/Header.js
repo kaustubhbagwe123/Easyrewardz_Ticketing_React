@@ -3,15 +3,15 @@ import { ProgressBar } from "react-bootstrap";
 import Modal from "react-responsive-modal";
 import DashboardLogo from "./../assets/Images/dashboardBlack.png";
 import DashboardLogoBlue from "./../assets/Images/dashboardBlue.png";
-import storeBlack from "./../assets/Images/store-black.png";
-import storeBlue from "./../assets/Images/storeBlue.png";
+// import storeBlack from "./../assets/Images/store-black.png";
+// import storeBlue from "./../assets/Images/storeBlue.png";
 import TicketLogo from "./../assets/Images/ticket.png";
 import TicketLogoBlue from "./../assets/Images/ticket-blue.png";
 import KnowledgeLogo from "./../assets/Images/knowledge.png";
 import KnowledgeLogoBlue from "./../assets/Images/knowledge-blue.png";
-import CalendarLogo from "./../assets/Images/calendar-black.png";
-import CalendarLogoBlue from "./../assets/Images/calendar-blue.png";
-import CalenderLogo from "./../assets/Images/calender.png";
+// import CalendarLogo from "./../assets/Images/calendar-black.png";
+// import CalendarLogoBlue from "./../assets/Images/calendar-blue.png";
+// import CalenderLogo from "./../assets/Images/calender.png";
 import ChatLogo from "./../assets/Images/chat.png";
 import ChatLogoBlue from "./../assets/Images/chat-blue.png";
 import NotificationLogo from "./../assets/Images/Notification.png";
@@ -20,8 +20,9 @@ import SettingLogoBlue from "./../assets/Images/setting-blue.png";
 import UserLogo from "./../assets/Images/user-img.jpg";
 import StatusLogo from "./../assets/Images/status.png";
 import Hamb from "./../assets/Images/hamb.png";
-import ClaimLogo from "./../assets/Images/icon9.svg";
-import ClaimLogoBlue from "./../assets/Images/claim-blue.png";
+// import ClaimLogo from "./../assets/Images/icon9.svg";
+// import ClaimLogoBlue from "./../assets/Images/claim-blue.png";
+import Demo from "../store/Hashtag";
 
 class Header extends Component {
   state = {
@@ -46,9 +47,20 @@ class Header extends Component {
   };
 
   render() {
+  //   const Dashboard =this.state.dashboard 
+  //   ?  <img
+  //   src={DashboardLogo}
+  //   alt="dashboard icon"
+  //   className="dashboardImg1"
+  // /> : 
+  // <img
+  //   src={DashboardLogoBlue}
+  //   alt="dashboard icon"
+  //   className="dashboardImg1"
+  // />;
     return (
       <React.Fragment>
-        <div className="d-flex align-items-center justify-content-between">
+        <div className="d-flex align-items-center justify-content-between" style={{background:'white'}}>
           <div className="d-flex">
             <div className="er">
               <label className="er-label">ER</label>
@@ -57,23 +69,23 @@ class Header extends Component {
               <img src={Hamb} alt="hamburger icon" />
             </div>
             <div className="headers-menu">
-              <a href="/admin/dashboard" className="single-menu active">
+              <a href="/admin/dashboard" className="single-menu">
                 <div className="header-icons-cntr">
                   <img
                     src={DashboardLogo}
                     alt="dashboard icon"
                     className="dashboardImg1"
-                  />
+                  /> 
                   <img
                     src={DashboardLogoBlue}
                     alt="dashboard icon"
                     className="dashboardImg1"
-                    style={{ display: "none" }}
+                      style={{ display: "none" }}
                   />
                 </div>
                 Dashboards
               </a>
-              <a href="/admin/dashboard" className="single-menu">
+              {/* <a href={Demo.BLANK_LINK} className="single-menu">
                 <div className="header-icons-cntr">
                   <img
                     src={storeBlack}
@@ -88,7 +100,7 @@ class Header extends Component {
                   />
                 </div>
                 Store Issues
-              </a>
+              </a> */}
               <a href="myTicketlist" className="single-menu">
                 <div className="header-icons-cntr">
                   <img
@@ -105,7 +117,7 @@ class Header extends Component {
                 </div>
                 My Tickets
               </a>
-              <a href="myTicketlist" className="single-menu">
+              <a href={Demo.BLANK_LINK} className="single-menu">
                 <div className="header-icons-cntr">
                   <img
                     src={KnowledgeLogo}
@@ -121,7 +133,7 @@ class Header extends Component {
                 </div>
                 Knowledge Base
               </a>
-              <a href="/admin/dashboard" className="single-menu">
+              {/* <a href="/admin/dashboard" className="single-menu">
                 <div className="header-icons-cntr">
                   <img
                     src={storeBlack}
@@ -136,8 +148,8 @@ class Header extends Component {
                   />
                 </div>
                 Dashboard
-              </a>
-              <a href="myTicketlist" className="single-menu">
+              </a> */}
+              {/* <a href={Demo.BLANK_LINK} className="single-menu">
                 <div className="header-icons-cntr">
                   <img src={TicketLogo} alt="task icon" className="myTicket" />
                   <img
@@ -148,8 +160,8 @@ class Header extends Component {
                   />
                 </div>
                 Task
-              </a>
-              <a href="myTicketlist" className="single-menu">
+              </a> */}
+              {/* <a href={Demo.BLANK_LINK} className="single-menu">
                 <div className="header-icons-cntr">
                   <img
                     src={ClaimLogo}
@@ -164,8 +176,8 @@ class Header extends Component {
                   />
                 </div>
                 Claim
-              </a>
-              <a href="myTicketlist" className="single-menu">
+              </a> */}
+              {/* <a href={Demo.BLANK_LINK} className="single-menu">
                 <div className="header-icons-cntr">
                   <img
                     src={CalendarLogo}
@@ -180,14 +192,14 @@ class Header extends Component {
                   />
                 </div>
                 Campaign
-              </a>
+              </a> */}
             </div>
           </div>
 
           <div className="header-right-icons">
-            <a href="#!">
+            {/* <a href="#!">
               <img src={CalenderLogo} alt="logo" className="calImg" />
-            </a>
+            </a> */}
             <a href="#!">
               <img src={ChatLogo} alt="logo" className="chatImg" />
               <img
