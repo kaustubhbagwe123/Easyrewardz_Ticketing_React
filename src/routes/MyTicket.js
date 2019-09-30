@@ -21,8 +21,10 @@ import ClipImg from "./../assets/Images/clip.png";
 import PencilImg from "./../assets/Images/pencil.png";
 import CancelImg from "./../assets/Images/cancel.png";
 import { Collapse, CardBody, Card } from "reactstrap";
+import CustomerIcon from "./../assets/Images/customer-icon.png";
 import CrossIcon from "./../assets/Images/cancel.png";
 import TikcetSystemStoreModal from './../routes/TicketSystemStoreModal';
+ 
 
 class MyTicket extends Component {
   constructor(props) {
@@ -65,29 +67,28 @@ class MyTicket extends Component {
     this.setState({ storemodal: false });
   }
 
-  handleUpOpen = () => {
+  handleUpOpen() {
     this.setState({ collapseUp: false, varMar: "63%" });
-  };
-  handleUpClose = () => {
+  }
+  handleUpClose() {
     this.setState({ collapseUp: true, varMar: "37%" });
   };
   onOpenModal = () => {
+    
     this.setState({ open: true });
-  };
-  onCloseModal = () => {
+  }
+  onCloseModal() {
     this.setState({ open: false });
-  };
-  HandleStoreModalOpen() {
-    this.setState({ storemodal: true });
   }
-  HandleStoreModalClose() {
-    this.setState({ storemodal: false });
-  }
-  
   render() {
     const { open } = this.state;
     const HidecollapsUp = this.state.collapseUp ? (
-      <img src={Up1Img} alt="up" className="up-1" onClick={this.handleUpOpen} />
+      <img
+        src={Up1Img}
+        alt="up"
+        className="up-1"
+        onClick={this.handleUpOpen.bind(this)}
+      />
     ) : (
       ""
     );
@@ -149,6 +150,18 @@ class MyTicket extends Component {
             </div>
           </div>
         </div>
+        <div className="historical-model">
+          <Modal
+            open={open}
+            onClose={this.onCloseModal.bind(this)}
+            closeIconId="sdsg"
+            modalId="Historical-popup"
+            overlayId="logout-ovrly"
+          >
+            <h4>Historical Ticket</h4>
+            <HistoricalTable />
+          </Modal>
+        </div>
         <div className="card-rectangle">
           <div className="rectangle-box">
             <div className="row">
@@ -156,7 +169,12 @@ class MyTicket extends Component {
                 <label className="mobile-number">Mobile Number</label>
                 <br />
                 <label className="mobile-no">+91 9873470074</label>
-                <img src={EyeImg} alt="eye" className="eyeImg" />
+                <img
+                  src={EyeImg}
+                  alt="eye"
+                  className="eyeImg"
+                  onClick={this.HandleProfileModalOpen.bind(this)}
+                />
                 <div className="bill-1">
                   <img src={BillInvoiceImg} alt="eye" className="billImg" />
                 </div>
@@ -233,37 +251,22 @@ class MyTicket extends Component {
                 <div className="row data-store">
                   <div className="col-md-12">
                     <label className="label-4 storeSpacing">Store</label>
-                    <label className="bata-rajouri-garden" onClick={this.HandleStoreModalOpen.bind(this)}>
-                      Bata Raj ouri Garden &nbsp;
+                    <label
+                      className="bata-rajouri-garden"
+                      onClick={this.HandleStoreModalOpen.bind(this)}
+                    >
+                      Bata Rajouri Garden &nbsp;
                       <img
                         src={PencilImg}
                         alt="Pencile"
                         className="pencilImg"
                       />
                     </label>
-                    <Modal
-          open={this.state.storemodal}
-          onClose={this.HandleStoreModalClose.bind(this)}
-          modalId="ticket-store-modal"
-          overlayId="layout-ticket-store-modal"
-        >
-          <div className="profilemodalmaindiv">
-            <div style={{ float: "" }}>
-              <img
-                src={CrossIcon}
-                alt="cross-icon"
-                className="pro-cross-icn-1"
-                onClick={this.HandleStoreModalClose.bind(this)}
-              />
-            </div>
-            <TikcetSystemStoreModal />
-          </div>
-        </Modal>
                   </div>
                   <div className="col-md-12">
                     <label className="label-4 storeSpacing">Product</label>
                     <label className="bata-rajouri-garden">
-                      Red Tennis Coca Cola White Monogr ...&nbsp;
+                      Red Tennis Coca Cola White Monogr…&nbsp;
                       <img
                         src={PencilImg}
                         alt="Pencile"
@@ -289,8 +292,8 @@ class MyTicket extends Component {
             </div>
             <div className="row">
               <label className="label-3">
-                Where I can see details of my rewards in the â€˜Rewardsâ€™ tab
-                within the â€˜Refer and Earn Rewardsâ€™ screen.You will also get
+                Where I can see details of my rewards in the ‘Rewards’ tab
+                within the ‘Refer and Earn Rewards’ screen.You will also get
                 details of which of your friends have joined, which friends have
                 transacted etc. on the same tab.
               </label>
@@ -380,7 +383,7 @@ class MyTicket extends Component {
                 {HidecollapsUp}
                 <label
                   className="comment"
-                  onClick={this.handleUpClose}
+                  onClick={this.handleUpClose.bind(this)}
                   style={{ marginLeft: this.state.varMar }}
                 >
                   Comment
@@ -567,7 +570,7 @@ class MyTicket extends Component {
           modalId="ticket-store-modal"
           overlayId="layout-ticket-store-modal"
         >
-          <div className="profilemodalmaindiv">
+          <div className="profilemodalmaindiv-1">
             <div style={{ float: "" }}>
               <img
                 src={CrossIcon}

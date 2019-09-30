@@ -75,7 +75,7 @@ class CreateSLA extends Component {
                         id="sla-priority-1"
                       />
                       <UncontrolledPopover
-                        trigger="hover"
+                        trigger="click"
                         placement="bottom"
                         target="sla-priority-1"
                         className="general-popover created-popover"
@@ -88,14 +88,14 @@ class CreateSLA extends Component {
                             </label>
                           </div>
                           <div>
-                            <label className="createhead-text-1">
+                            <label className="createhead-text-1-1">
                               Priority
                             </label>
-                            <label className="createhead-text-1">
+                            <label className="createhead-text-1-1">
                               %SLA Breach
                             </label>
-                            <label className="createhead-text-1">Respond</label>
-                            <label className="createhead-text-1">Resolve</label>
+                            <label className="createhead-text-1-1">Respond</label>
+                            <label className="createhead-text-1-1">Resolve</label>
                           </div>
                           <div>
                             <label className="createhead-text-2">High</label>
@@ -208,15 +208,15 @@ class CreateSLA extends Component {
                                   <label className="pop-over-lbl-text">
                                     Brand Name
                                   </label>
-                                  {/* <select className="pop-over-select">
+                                  <select className="pop-over-select">
                                     <option>Bata</option>
-                                  </select> */}
+                                  </select>
 
-                                  <React.Bootstrap.Select>
+                                  {/* <React.Bootstrap.Select>
                                     <option>Mustard</option>
                                     <option>Ketchup</option>
                                     <option>Barbecue</option>
-                                  </React.Bootstrap.Select>
+                                  </React.Bootstrap.Select> */}
                                 </div>
 
                                 <br />
