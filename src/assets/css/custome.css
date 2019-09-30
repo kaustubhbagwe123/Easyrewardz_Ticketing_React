@@ -5101,12 +5101,15 @@ background: url("../Images/down-1.png") no-repeat right 12px center;
     color: #9b9b9b;
     padding: 10px 30px;
 }
+
 .cancalImg{
   width: 18px;
     height: 18px;
     float: right;
     margin-top: 5px;
 }
+
+
 .datePicketArrow{
   width: 15px;
     height: 10px;
