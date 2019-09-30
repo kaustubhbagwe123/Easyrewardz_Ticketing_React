@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import { ProgressBar } from "react-bootstrap";
 import Modal from "react-responsive-modal";
 import DashboardLogo from "./../assets/Images/dashboardBlack.png";
@@ -27,7 +28,36 @@ import Demo from "../store/Hashtag";
 class Header extends Component {
   state = {
     modalIsOpen: false,
-    open: false
+    open: false,
+    cont: [
+      {
+        data: "Dashboards",
+        urls: "dashboard",
+        logoBlack: DashboardLogo,
+        logoBlue: DashboardLogoBlue,
+        imgAlt: "dashboard icon",
+        imgClass: "dashboardImg1",
+        activeClass: "active single-menu"
+      },
+      {
+        data: "My Tickets",
+        urls: "myTicketlist",
+        logoBlack: TicketLogo,
+        logoBlue: TicketLogoBlue,
+        imgAlt: "ticket icon",
+        imgClass: "myTicket",
+        activeClass: "single-menu"
+      },
+      {
+        data: "Knowledge Base",
+        urls: "knowledgebase",
+        logoBlack: KnowledgeLogo,
+        logoBlue: KnowledgeLogoBlue,
+        imgAlt: "knowledge icon",
+        imgClass: "knowledgeNav",
+        activeClass: "single-menu"
+      }
+    ]
   };
 
   onOpenModal = () => {
@@ -46,21 +76,51 @@ class Header extends Component {
     this.setState({ modalIsOpen: false });
   };
 
+  componentWillMount() {
+    let pageName, lastOne, lastValue, arr;
+    arr = [...this.state.cont];
+    setTimeout(
+      function() {
+        pageName = window.location.pathname;
+        lastOne = pageName.split("/");
+        lastValue = lastOne[lastOne.length - 1];
+        arr.forEach(i => {
+          i.activeClass = "single-menu";
+          if (i.urls === lastValue) i.activeClass = "active single-menu";
+        });
+        this.setState({ cont: arr });
+      }.bind(this),
+      1
+    );
+  }
+
+  actives = e => {
+    const contDummy = [...this.state.cont];
+    contDummy.forEach(i => {
+      i.activeClass = "single-menu";
+      if (i.data === e.target.textContent) i.activeClass = "active single-menu";
+    });
+    this.setState({ cont: contDummy });
+  };
+
   render() {
-  //   const Dashboard =this.state.dashboard 
-  //   ?  <img
-  //   src={DashboardLogo}
-  //   alt="dashboard icon"
-  //   className="dashboardImg1"
-  // /> : 
-  // <img
-  //   src={DashboardLogoBlue}
-  //   alt="dashboard icon"
-  //   className="dashboardImg1"
-  // />;
+    //   const Dashboard =this.state.dashboard
+    //   ?  <img
+    //   src={DashboardLogo}
+    //   alt="dashboard icon"
+    //   className="dashboardImg1"
+    // /> :
+    // <img
+    //   src={DashboardLogoBlue}
+    //   alt="dashboard icon"
+    //   className="dashboardImg1"
+    // />;
     return (
       <React.Fragment>
-        <div className="d-flex align-items-center justify-content-between" style={{background:'white'}}>
+        <div
+          className="d-flex align-items-center justify-content-between"
+          style={{ background: "white" }}
+        >
           <div className="d-flex">
             <div className="er">
               <label className="er-label">ER</label>
@@ -69,23 +129,52 @@ class Header extends Component {
               <img src={Hamb} alt="hamburger icon" />
             </div>
             <div className="headers-menu">
-              <a href="/admin/dashboard" className="single-menu">
+              {this.state.cont.map(item => (
+                // <div
+                //   onClick={this.actives}
+                //   className={item.activeClass}
+                //   key={item.data}
+                // >
+                //   {item.data}
+                // </div>
+                <Link
+                  onClick={this.actives}
+                  key={item.data}
+                  to={item.urls}
+                  className={item.activeClass}
+                >
+                  <div className="header-icons-cntr">
+                    <img
+                      src={item.logoBlack}
+                      alt={item.imgAlt}
+                      className={item.imgClass}
+                    />
+                    <img
+                      src={item.logoBlue}
+                      alt={item.imgAlt}
+                      className={item.imgClass}
+                    />
+                  </div>
+                  {item.data}
+                </Link>
+              ))}
+              {/* <Link to="/admin/dashboard" className="single-menu">
                 <div className="header-icons-cntr">
                   <img
                     src={DashboardLogo}
                     alt="dashboard icon"
                     className="dashboardImg1"
-                  /> 
+                  />
                   <img
                     src={DashboardLogoBlue}
                     alt="dashboard icon"
                     className="dashboardImg1"
-                      style={{ display: "none" }}
+                    style={{ display: "none" }}
                   />
                 </div>
                 Dashboards
-              </a>
-              {/* <a href={Demo.BLANK_LINK} className="single-menu">
+              </Link> */}
+              {/* <Link to={Demo.BLANK_LINK} className="single-menu">
                 <div className="header-icons-cntr">
                   <img
                     src={storeBlack}
@@ -100,8 +189,8 @@ class Header extends Component {
                   />
                 </div>
                 Store Issues
-              </a> */}
-              <a href="myTicketlist" className="single-menu">
+              </Link> */}
+              {/* <Link to="myTicketlist" className="single-menu">
                 <div className="header-icons-cntr">
                   <img
                     src={TicketLogo}
@@ -116,8 +205,8 @@ class Header extends Component {
                   />
                 </div>
                 My Tickets
-              </a>
-              <a href={Demo.BLANK_LINK} className="single-menu">
+              </Link> */}
+              {/* <Link to={Demo.BLANK_LINK} className="single-menu">
                 <div className="header-icons-cntr">
                   <img
                     src={KnowledgeLogo}
@@ -132,8 +221,8 @@ class Header extends Component {
                   />
                 </div>
                 Knowledge Base
-              </a>
-              {/* <a href="/admin/dashboard" className="single-menu">
+              </Link> */}
+              {/* <Link to="/admin/dashboard" className="single-menu">
                 <div className="header-icons-cntr">
                   <img
                     src={storeBlack}
@@ -148,8 +237,8 @@ class Header extends Component {
                   />
                 </div>
                 Dashboard
-              </a> */}
-              {/* <a href={Demo.BLANK_LINK} className="single-menu">
+              </Link> */}
+              {/* <Link to={Demo.BLANK_LINK} className="single-menu">
                 <div className="header-icons-cntr">
                   <img src={TicketLogo} alt="task icon" className="myTicket" />
                   <img
@@ -160,8 +249,8 @@ class Header extends Component {
                   />
                 </div>
                 Task
-              </a> */}
-              {/* <a href={Demo.BLANK_LINK} className="single-menu">
+              </Link> */}
+              {/* <Link to={Demo.BLANK_LINK} className="single-menu">
                 <div className="header-icons-cntr">
                   <img
                     src={ClaimLogo}
@@ -176,8 +265,8 @@ class Header extends Component {
                   />
                 </div>
                 Claim
-              </a> */}
-              {/* <a href={Demo.BLANK_LINK} className="single-menu">
+              </Link> */}
+              {/* <Link to={Demo.BLANK_LINK} className="single-menu">
                 <div className="header-icons-cntr">
                   <img
                     src={CalendarLogo}
@@ -192,7 +281,7 @@ class Header extends Component {
                   />
                 </div>
                 Campaign
-              </a> */}
+              </Link> */}
             </div>
           </div>
 

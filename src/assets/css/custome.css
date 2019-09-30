@@ -108,6 +108,22 @@
 .er-label {
   font-weight: 700;
 }
+.headers-menu .active {
+  font-weight: 700;
+  color: #2561a8;
+}
+.header-icons-cntr img:first-child {
+  display: block;
+}
+.header-icons-cntr img:last-child {
+  display: none;
+}
+.headers-menu .active .header-icons-cntr img:first-child {
+  display: none;
+}
+.headers-menu .active .header-icons-cntr img:last-child {
+  display: block;
+}
 .headers-menu {
   display: flex;
   align-items: center;
@@ -136,7 +152,7 @@
 }
 .header-icons-cntr {
   line-height: 1;
-  padding-right: 8px;
+  margin-right: 8px;
 }
 .single-menu {
   display: flex;
@@ -5115,3 +5131,28 @@ background: url("../Images/down-1.png") no-repeat right 12px center;
     height: 10px;
     margin-left: 5px;
 }
+/* ----------------------------store and product modal search modal----------------------- */
+
+
+
+#storeproductsearchmodal{
+  background-color: #FFFFFF;
+  box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.15);
+  width: 1002px;
+  height: 694px;
+}
+#layout-storeproductsearchmodal{
+  padding: 70px 10px 70px 0px;
+      background-color: rgba(77, 92, 116, 0.2);
+  }
+  
+  .storeproductdetailsdiv{
+    background-color: #EDF2F4;
+    border-radius: 4px;
+    width: 571px;
+    height: 694px;
+  }
+
+
+  /* ------------------------------------------------------------------------------------- */
+ 
