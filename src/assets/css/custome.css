@@ -5115,3 +5115,28 @@ background: url("../Images/down-1.png") no-repeat right 12px center;
     height: 10px;
     margin-left: 5px;
 }
+/* ----------------------------store and product modal search modal----------------------- */
+
+
+
+#storeproductsearchmodal{
+  background-color: #FFFFFF;
+  box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.15);
+  width: 1002px;
+  height: 694px;
+}
+#layout-storeproductsearchmodal{
+  padding: 70px 10px 70px 0px;
+      background-color: rgba(77, 92, 116, 0.2);
+  }
+  
+  .storeproductdetailsdiv{
+    background-color: #EDF2F4;
+    border-radius: 4px;
+    width: 571px;
+    height: 694px;
+  }
+
+
+  /* ------------------------------------------------------------------------------------- */
+ 

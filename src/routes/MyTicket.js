@@ -35,7 +35,8 @@ class MyTicket extends Component {
       collapseUp: true,
       varMar: "",
       profilemodal: false,
-      storemodal: false
+      storemodal: false,
+      storeproductsearch:false
     };
   }
 
@@ -45,6 +46,13 @@ class MyTicket extends Component {
     this.props.history.push("claimTabTicketView");
   }
 
+  HandleStoreProductSearchModalOpen(){
+    this.setState({storeproductsearch:true});
+  }
+  HandleStoreProductSearchModalClose(){
+    this.setState({ storeproductsearch: false });
+
+  }
   HandleProfileModalOpen() {
     this.setState({ profilemodal: true });
   }
@@ -104,7 +112,7 @@ class MyTicket extends Component {
                   onClick={this.onOpenModal}
                 />
               </div>
-             
+
               <div className="historical-model">
                 <Modal
                   open={open}
@@ -140,7 +148,6 @@ class MyTicket extends Component {
                 </button>
               </div>
             </div>
-           
           </div>
         </div>
         <div className="historical-model">
@@ -318,7 +325,10 @@ class MyTicket extends Component {
               <div className="col-md-2 col-3">
                 <label className="task-03">Task: 03</label>
               </div>
-              <div className="col-md-2 col-3" onClick={this.HandleClaimPageView.bind(this)} >
+              <div
+                className="col-md-2 col-3"
+                onClick={this.HandleClaimPageView.bind(this)}
+              >
                 <label className="claim-00">Claim: 00</label>
               </div>
             </div>
@@ -572,6 +582,26 @@ class MyTicket extends Component {
             <TikcetSystemStoreModal />
           </div>
         </Modal>
+        {/* -----------------------Store and product sreach modal-------------------- */}
+        {/* <Modal
+          open={this.state.storeproductsearch}
+          onClose={this.HandleStoreProductSearchModalClose.bind(this)}
+          modalId="storeproductsearchmodal"
+          overlayId="layout-storeproductsearchmodal"
+        >
+          <div className="profilemodalmaindiv">
+            <div style={{ float: "" }}>
+              <img
+                src={CrossIcon}
+                alt="cross-icon"
+                className="pro-cross-icn-1"
+                onClick={this.HandleStoreModalClose.bind(this)}
+              />
+            </div>
+            <TikcetSystemStoreModal />
+          </div>
+        </Modal> */}
+        {/* ---------------------------------------------------------- */}
       </div>
     );
   }
