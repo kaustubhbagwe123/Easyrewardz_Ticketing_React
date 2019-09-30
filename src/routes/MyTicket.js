@@ -140,12 +140,7 @@ class MyTicket extends Component {
                 </button>
               </div>
             </div>
-            <img
-              src={LoadingImg}
-              alt="Loading"
-              className="loading-rectangle"
-              onClick={this.onOpenModal.bind(this)}
-            />
+           
           </div>
         </div>
         <div className="historical-model">
