@@ -89,7 +89,7 @@
   height: 55px;
 }
 .er {
-  height: 60px;
+  height: 58px;       /* 60px; */ 
   flex: 0 0 60px;
   background: #2561a8;
   color: #fff;
@@ -422,7 +422,7 @@
 }
 .down-header {
   width: 24px;
-  height: 13px;
+  height: 10px;
   padding-left: 7px;
 }
 .head-header {
@@ -449,6 +449,64 @@
   line-height: 14px;
   text-align: left;
   display: block;
+}
+.lable-name{
+  font-weight: bold;
+    color: black;
+    padding-left: 4px;
+}
+#HeadePhone-popup{
+  border-radius: 8px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+  padding: 10;
+  margin-right: 150px;
+  margin-top: 45px;
+  /* margin-bottom: 4px; */
+  display: inline-block;
+}
+.myTicket-table table td{
+  font-size: 16px;
+  color: #5f5d5d;
+  padding: 10px 15px;
+}
+.myTicket-table table th {
+  font-size: 12px;
+  padding: 0px 15px;
+  color: #9b9b9b;
+}
+.myTicket-table table thead tr{
+  background-color: #ffffff;
+  border-bottom: none;
+}
+.myTicket-table table tbody tr{
+  border-bottom: 1px solid #eeeeee;
+  border: none;
+}
+.btn-outline-primary {
+  color: #2561A8;
+  background-color: transparent;
+  background-image: none;
+  border-color: #2561A8;
+  width: 190px;
+}
+.btn {
+  padding: 10px 20px;
+  border-radius: 0.25rem;
+  font-size: 14px;
+  margin-bottom: 5px;
+  margin-right: -25px;
+  transition: all 0.3s ease-in-out;
+}
+.btn:not(:disabled):not(.disabled) {
+  cursor: pointer;
+}
+.button-margin{
+  margin-left: 32px;
+  margin-top: 15px;
+}
+.myTicket-table table tr td:last-child, table tr th:last-child {
+  text-align: right;
+  float: left;
 }
 /****************My Ticket********************/
 
@@ -1081,8 +1139,8 @@
   color: white;
 }
 .down-white {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 16px;
   padding: 3px;
   margin-left: 12px;
 }
@@ -1888,7 +1946,7 @@ table {
 }
 table th {
   font-size: 12px;
-  padding: 20px 30px;
+  padding: 20px 28px;            /*20px 30px;*/
 }
 table td {
   font-size: 13px;
@@ -2009,7 +2067,7 @@ table td span {
 }
 table tr td:last-child,
 table tr th:last-child {
-  text-align: right;
+  text-align: none;      /*text-align: right;*/
 }
 .pagi {
   text-align: center;
@@ -5132,9 +5190,6 @@ background: url("../Images/down-1.png") no-repeat right 12px center;
     margin-left: 5px;
 }
 /* ----------------------------store and product modal search modal----------------------- */
-
-
-
 #storeproductsearchmodal{
   background-color: #FFFFFF;
   box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.15);
@@ -5152,7 +5207,154 @@ background: url("../Images/down-1.png") no-repeat right 12px center;
     width: 571px;
     height: 694px;
   }
+  /* ---------------------------------------------- */
+ /* Css Store_CRM Roles Shlok */
+/**  =====================
+      Switches css start
+     =====================  **/
+.switch input[type=checkbox] {
+  opacity: 0;
+  position: absolute;
+}
+.switch input[type=checkbox] + .cr {
+  position: relative;
+  display: inline-block;
+  -webkit-transition: 0.4s ease;
+  transition: 0.4s ease;
+  height: 20px;
+  width: 35px;
+  border: 1px solid #e9eaec;
+  border-radius: 60px;
+  cursor: pointer;
+  z-index: 0;
+  top: 5px;
+  margin-left: 115px;
+}
+.switch input[type=checkbox] + .cr:after, .switch input[type=checkbox] + .cr:before {
+  content: "";
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 0;
+}
+.switch input[type=checkbox] + .cr:before {
+  -webkit-transition: 0.2s cubic-bezier(0.24, 0, 0.5, 1);
+  transition: 0.2s cubic-bezier(0.24, 0, 0.5, 1);
+  height: 20px;
+  width: 35px;
+  border-radius: 30px;
+  background: #C9C9C9;
+}
+.switch input[type=checkbox] + .cr:after {
+  -webkit-box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 4px 0 0 rgba(0, 0, 0, 0.04), 0 4px 9px rgba(0, 0, 0, 0.13), 0 3px 3px rgba(0, 0, 0, 0.05);
+          box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 4px 0 0 rgba(0, 0, 0, 0.04), 0 4px 9px rgba(0, 0, 0, 0.13), 0 3px 3px rgba(0, 0, 0, 0.05);
+  -webkit-transition: 0.35s cubic-bezier(0.54, 1.6, 0.5, 1);
+  transition: 0.35s cubic-bezier(0.54, 1.6, 0.5, 1);
+  background: #f7f7f7;
+  height: 19px;
+  width: 19px;
+  border-radius: 60px;
+}
+.switch input[type=checkbox]:checked + .cr:before {
+  background: linear-gradient(-135deg, #1de9b6 0%, #1dc4e9 100%);
+  -webkit-transition: width 0.2s cubic-bezier(0, 0, 0, 0.1);
+  transition: width 0.2s cubic-bezier(0, 0, 0, 0.1);
+}
+.switch input[type=checkbox]:checked + .cr:after {
+  left: 16px;
+}
+.switch input[type=checkbox]:disabled + label {
+  opacity: 0.5;
+  -webkit-filter: grayscale(0.4);
+          filter: grayscale(0.4);
+  cursor: not-allowed;
+}
+.switch.switch-primary input[type=checkbox]:checked + .cr:before {
+  background: #51D663;
+}
+.switch.switch-danger input[type=checkbox]:checked + .cr:before {
+  background: #f44236;
+}
+.switch.switch-success input[type=checkbox]:checked + .cr:before {
+  background: #1de9b6;
+}
+.switch.switch-warning input[type=checkbox]:checked + .cr:before {
+  background: #f4c22b;
+}
+.switch.switch-info input[type=checkbox]:checked + .cr:before {
+  background: #3ebfea;
+}
+.switch.switch-alternative input[type=checkbox]:checked + .cr:before {
+  background: linear-gradient(-135deg, #899FD4 0%, #A389D4 100%);
+}
 
+/**====== Switches css end ======**/
 
-  /* ------------------------------------------------------------------------------------- */
- 
+/* *************New react table start css(SHLOK BAROT)************** */
+.ReactTable .rt-thead.-header{
+  box-shadow: none !important;
+  background-color: #e5e9ed;
+  border-bottom: 1px solid #eeeeee;
+}
+.ReactTable {
+  border-radius: 5px !important;
+}
+.ReactTable .rt-thead .rt-th.-sort-desc, .ReactTable .rt-thead .rt-td.-sort-desc{
+  box-shadow: none !important;
+}
+.ReactTable .rt-thead .rt-th.-sort-asc, .ReactTable .rt-thead .rt-td.-sort-asc {
+  box-shadow: none !important;
+}
+.ReactTable .rt-th, .ReactTable .rt-td{
+  color: #949191 !important;
+}
+.ReactTable .rt-thead .rt-resizable-header-content {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  float: left !important;
+  color: black !important;
+}
+.ReactTable .rt-thead .rt-th, .ReactTable .rt-thead .rt-td {
+  border-right: none !important;
+  /* padding: 20px 0px !important; */
+}
+.ReactTable .rt-tbody .rt-td {
+  padding: 18px 20px !important;
+  border-right: none !important;
+}
+.ReactTable .rt-thead .rt-th.-cursor-pointer, .ReactTable .rt-thead .rt-td.-cursor-pointer {
+  padding: 20px 20px !important;
+}
+.react-tabel-button{
+  background-color: #2561a8;
+  border-radius: 4px;
+  width: 57px;
+  height: 27px;
+  min-width: auto;
+  padding: 0px !important;
+}
+ .rt-tableMoveImge{
+  flex: 0 0 auto !important;
+    width: 0px !important;
+} 
+/* .ReactTable .rt-thead .rt-resizable-header {
+  flex: 60 0 auto !important;
+  width: 0px !important;
+} */
+.btn-padding-rTbale{
+  padding-top: 20px !important;
+}
+ .rt-resizable-header{
+   flex: 0 0 auto !important;
+    width: 0px !important;
+} 
+.headerAdminStyle{
+  background: aqua !important;
+}
+.store-settings-cntr > .rt-td:nth-child(1){
+  width: 50%;
+} 
+/* .rt-th{
+  display: none !important;
+} */
+/* ****************End css */

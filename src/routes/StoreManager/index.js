@@ -6,12 +6,9 @@ import StoreMaster from "./StoreMaster";
 import StoreTask from "./StoreTask";
 import StoreTaskView from "./StoreTaskView";
 import CreateCRMRoles from "./CreateCRMRoles";
-import CreatePriority from "./CreatePriority";
 import CategoryMaster from "./CategoryMaster";
 import CreateSLA from "./CreateSLA";
  
- 
-
 export class StoreApp extends Component {
   render() {
     const { match } = this.props;
@@ -40,15 +37,11 @@ export class StoreApp extends Component {
         />
         <Route
           exact
-          path={`${match.url}/priority`}
-          component={CreatePriority}
-        />
-        <Route
-          exact
           path={`${match.url}/crmroles`}
           component={CreateCRMRoles}
         />
         <Route exact path={`${match.url}/sla`} component={CreateSLA} />
+      
       </StoreLayout>
     );
   }

@@ -20,6 +20,11 @@ import ItemMaster from "./Settings/Store/ItemMaster";
 import TicketHierarchy from "./Settings/Ticketing/TicketHierarchy";
 import Brands from "./Settings/Ticketing/Brands";
 import Users from "./Settings/Ticketing/Users";
+import SLATemplate from "./SLATemplate";
+import Store_CRMRoles from "./Store_CRMRoles";
+import CreatePriority from "./CreatePriority";
+import ClaimCategoryMaster from "./ClaimCategoryMaster";
+import abc from "./abc";
 // import Aux from "./../Component/Aux";
 
 export class App extends Component {
@@ -92,6 +97,11 @@ export class App extends Component {
           component={FileUploadLogs}
         />
         <Route exact path={`${match.url}/brands`} component={Brands} />
+        <Route exact path={`${match.url}/slaTemplate`} component={SLATemplate} />
+        <Route exact path={`${match.url}/claimCategoryMaster`} component={ClaimCategoryMaster} />
+        <Route exact path={`${match.url}/store_CRMRoles`} component={Store_CRMRoles} />
+        <Route exact path={`${match.url}/priority`} component={CreatePriority} />
+        <Route exact path={`${match.url}/abc`} component={abc} />
       </Layout>
     );
   }

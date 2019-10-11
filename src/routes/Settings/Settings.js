@@ -89,7 +89,7 @@ class Settings extends Component {
                 <div className="row">
                   <div className="col-md-3">
                     <div className="setting-cntr">
-                      <a href={Demo.BLANK_LINK} className="setting-box">
+                      <a href="ticketHierarchy" className="setting-box">
                         <div className="setting-icons">
                           <img src={hierarchy} alt="hierarchy" />
                         </div>
@@ -149,7 +149,7 @@ class Settings extends Component {
                   </div>
                   <div className="col-md-3">
                     <div className="setting-cntr">
-                      <a href={Demo.BLANK_LINK} className="setting-box">
+                      <a href="Priority" className="setting-box">
                         <div className="setting-icons">
                           <img src={priority} alt="priority" />
                         </div>
@@ -353,7 +353,7 @@ class Settings extends Component {
                           </p>
                         </div>
                       </a>
-                      <a href={Demo.BLANK_LINK} className="setting-box">
+                      <a href="slaTemplate" className="setting-box">
                         <div className="setting-icons icon-small">
                           <img src={templates} alt="templates" />
                         </div>

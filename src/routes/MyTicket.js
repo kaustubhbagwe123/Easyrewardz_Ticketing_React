@@ -35,7 +35,8 @@ class MyTicket extends Component {
       varMar: "",
       profilemodal: false,
       storemodal: false,
-      storeproductsearch:false
+      storeproductsearch:false,
+      headPhoneTable:false
     };
   }
 
@@ -51,12 +52,12 @@ class MyTicket extends Component {
     this.setState({ storeproductsearch: false });
 
   }
-  // HandleProfileModalOpen() {
-  //   this.setState({ profilemodal: true });
-  // }
-  // HandleProfileModalClose() {
-  //   this.setState({ profilemodal: false });
-  // }
+  HandleHeadePhoneModalOpen() {
+    this.setState({ headPhoneTable: true });
+  }
+  HandleHeadePhoneModalClose() {
+    this.setState({ headPhoneTable: false });
+  }
 
   // HandleStoreModalOpen() {
   //   this.setState({ storemodal: true });
@@ -137,7 +138,7 @@ class MyTicket extends Component {
                 </Modal>
               </div>
 
-              <div className="col-xs-9 oval-head">
+              <div className="col-xs-9 oval-head" onClick={this.HandleHeadePhoneModalOpen.bind(this)}>
                 <img src={Headphone2Img} alt="headphone" className="oval-55" />
                 <label className="naman-r">Naman.R</label>
                 <img src={DownImg} alt="down" className="down-header" />
@@ -152,6 +153,56 @@ class MyTicket extends Component {
                   />
                 </button>
               </div>
+              <Modal
+                  open={this.state.headPhoneTable}
+                  onClose={this.HandleHeadePhoneModalClose.bind(this)}
+                  closeIconId="close"
+                  modalId="HeadePhone-popup"
+                  overlayId="logout-ovrly"
+                >
+                  <div className="myTicket-table">
+                 <table>
+                   <thead>
+                     <tr>
+                       <th>
+                         Emp Id
+                       </th>
+                       <th>
+                         Name
+                       </th>
+                       <th>
+                         Designation
+                       </th>
+                     </tr>
+                   </thead>
+                   <tbody>
+                     <tr>
+                       <td>9938</td>
+                       <td>Rashmi.C</td>
+                       <td>Agent</td>
+                     </tr>
+                     <tr>
+                       <td>3234</td>
+                       <td>Juhi.H</td>
+                       <td>Agent</td>
+                     </tr>
+                     <tr>
+                       <td>3234</td>
+                       <td>Nidhi.J</td>
+                       <td>Agent</td>
+                     </tr>
+                     <tr>
+                       <td>2343</td>
+                       <td>Abhishek.C</td>
+                       <td>Agent</td>
+                     </tr>
+                   </tbody>
+                 </table>
+                 <div className="button-margin">
+                 <button type="button" class="btn btn-outline-primary">SELECT</button>
+                 </div>
+                 </div>
+                </Modal>
             </div>
           </div>
         </div>
@@ -518,7 +569,7 @@ class MyTicket extends Component {
                   <span>
                     <label className="updated-2-d-ago">
                       Reassign to
-                      <label style={{ fontWeight: "bold", color: "black" }}>
+                      <label className="lable-name">
                         Naman.R
                       </label>
                     </label>

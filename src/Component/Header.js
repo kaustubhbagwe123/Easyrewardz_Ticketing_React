@@ -23,7 +23,7 @@ import StatusLogo from "./../assets/Images/status.png";
 import Hamb from "./../assets/Images/hamb.png";
 // import ClaimLogo from "./../assets/Images/icon9.svg";
 // import ClaimLogoBlue from "./../assets/Images/claim-blue.png";
-import Demo from "../store/Hashtag";
+// import Demo from "../store/Hashtag";
 
 class Header extends Component {
   state = {
@@ -76,7 +76,7 @@ class Header extends Component {
     this.setState({ modalIsOpen: false });
   };
 
-  componentWillMount() {
+  componentDidMount() {
     let pageName, lastOne, lastValue, arr;
     arr = [...this.state.cont];
     setTimeout(

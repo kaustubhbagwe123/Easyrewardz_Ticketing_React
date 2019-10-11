@@ -1,20 +1,21 @@
-import React, { Component } from "react";
-import TableArr from "./../../assets/Images/table-arr.png";
-import RedDeleteIcon from "./../../assets/Images/red-delete-icon.png";
-import BlackDeleteIcon from "./../../assets/Images/del-big.png";
+import React,{Component} from 'react';
+import TableArr from "./../assets/Images/table-arr.png"
+import RedDeleteIcon from "./../assets/Images/red-delete-icon.png";
+import BlackDeleteIcon from "./../assets/Images/del-big.png";
 // import UploadIcon from "./../../assets/Images/clip.png";
-// import CrossIcon from "./../../assets/Images/cross-icon.png";
+import BlackInfoIcon from "./../assets/Images/Info-black.png";
 import { UncontrolledPopover , PopoverBody } from "reactstrap";
-import Demo from "../../store/Hashtag.js";
-import DelBigIcon from "./../../assets/Images/del-big.png";
-import FileUpload from "./../../assets/Images/file.png";
-import DelBlack from "./../../assets/Images/del-black.png";
-import UploadCancel from "./../../assets/Images/upload-cancel.png";
+import Demo from './../store/Hashtag';
+import DelBigIcon from "./../assets/Images/del-big.png";
+import FileUpload from "./../assets/Images/file.png";
+import DelBlack from "./../assets/Images/del-black.png";
+import UploadCancel from "./../assets/Images/upload-cancel.png";
 import { ProgressBar } from "react-bootstrap";
- 
-class CategoryMaster extends Component {
+
+class ClaimCategoryMaster extends Component{
   constructor(props) {
     super(props);
+
     this.state = {
       fileName: "",
       catmulti:false
@@ -34,19 +35,19 @@ class CategoryMaster extends Component {
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
-          <a href={Demo.BLANK_LINK}>Settings</a>
+          <a href="settings">Settings</a>
           <span>&gt;</span>
-          <a href={Demo.BLANK_LINK}>Ticketing</a>
+          <a href={Demo.BLANK_LINK}>Store</a>
           <span>&gt;</span>
           <a href={Demo.BLANK_LINK} className="active">
-            Category Master
+            Claim Category Master
           </a>
         </div>
         <div className="container-fluid">
           <div className="store-settings-cntr">
             <div className="row">
               <div className="col-md-8">
-                <div className="table-cntr table-height category-master">
+                <div className="table-cntr table-height claim-tableData">
                   <table>
                     <thead>
                       <tr>
@@ -54,20 +55,19 @@ class CategoryMaster extends Component {
                           Brand Name <img src={TableArr} alt="table-arr" />
                         </th>
                         <th>
-                          Category <img src={TableArr} alt="table-arr" />
+                          Claim Category <img src={TableArr} alt="table-arr" />
                         </th>
                         <th>
-                          Sub Category <img src={TableArr} alt="table-arr" />
+                          Claim Sub Cat <img src={TableArr} alt="table-arr" />
                         </th>
                         <th>
-                          Issue Type <img src={TableArr} alt="table-arr" />
+                          Claim Issue type{" "}
+                          <img src={TableArr} alt="table-arr" />
                         </th>
                         <th>
                           Status <img src={TableArr} alt="table-arr" />
                         </th>
-
-                        {/* <th></th> */}
-                        <th>Action</th>
+                        <th>Actions</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -76,7 +76,7 @@ class CategoryMaster extends Component {
                           <label className="table-data-text">Bata</label>
                         </td>
                         <td>
-                          <label className="table-data-text">Complaint</label>
+                          <label className="table-data-text">Exchange</label>
                         </td>
                         <td>
                           <label className="table-data-text">
@@ -87,14 +87,35 @@ class CategoryMaster extends Component {
                           <label className="table-data-text">
                             Broken Shoes
                           </label>
+                          <img
+                            className="info-icon-cp"
+                            src={BlackInfoIcon}
+                            alt="info-icon"
+                            id="created-info-1"
+                          />
+                          <UncontrolledPopover
+                            trigger="hover"
+                            placement="bottom"
+                            target="created-info-1"
+                            className="general-popover created-popover"
+                            flip={true}
+                          >
+                            <PopoverBody>
+                              <div>
+                                <p className="title">
+                                  Claim Issue type: Active
+                                </p>
+                                <p className="sub-title">Broken Shoes</p>
+                              </div>
+                            </PopoverBody>
+                          </UncontrolledPopover>
                         </td>
-
                         <td>
                           <label className="table-data-text">Active</label>
                         </td>
-
                         <td>
                           <div className="row">
+                            <div className="deletepopover">
                               <div className="del-btn" id="del1">
                                 <img src={RedDeleteIcon} alt="del-icon" />
                               </div>
@@ -123,6 +144,7 @@ class CategoryMaster extends Component {
                                   </div>
                                 </PopoverBody>
                               </UncontrolledPopover>
+                            </div>
                             <div className="list-edit-button-margin btn-del-pop">
                               <button
                                 className="Table-action-edit-button"
@@ -144,7 +166,7 @@ class CategoryMaster extends Component {
                                   <div>
                                     <div className="">
                                       <label className="popover-header-text">
-                                        EDIT CATEGORY
+                                        EDIT CLAIM CATEGORY
                                       </label>
                                     </div>
                                     <div className=" pop-over-div">
@@ -155,25 +177,25 @@ class CategoryMaster extends Component {
                                         <option>Bata</option>
                                       </select>
                                     </div>
-                                    <div className=" pop-over-div">
+                                    <div className="pop-over-div">
                                       <label className="pop-over-lbl-text">
-                                        Category
+                                        Claim Category
                                       </label>
                                       <select className="pop-over-select">
-                                        <option>Complaint</option>
+                                        <option>Refund</option>
                                       </select>
                                     </div>
-                                    <div className=" pop-over-div">
+                                    <div className="pop-over-div">
                                       <label className="pop-over-lbl-text">
-                                        Sub Category
+                                        Claim Sub Category
                                       </label>
                                       <select className="pop-over-select">
                                         <option>Defective Article</option>
                                       </select>
                                     </div>
-                                    <div className=" pop-over-div">
+                                    <div className="pop-over-div">
                                       <label className="pop-over-lbl-text">
-                                        Issue Type
+                                        Claim Issue Type
                                       </label>
                                       <select className="pop-over-select">
                                         <option>Broken Shoes</option>
@@ -212,7 +234,7 @@ class CategoryMaster extends Component {
                           <label className="table-data-text">Bata</label>
                         </td>
                         <td>
-                          <label className="table-data-text">Complaint</label>
+                          <label className="table-data-text">Refund</label>
                         </td>
                         <td>
                           <label className="table-data-text">
@@ -223,6 +245,28 @@ class CategoryMaster extends Component {
                           <label className="table-data-text">
                             Broken Shoes
                           </label>
+                          <img
+                            className="info-icon-cp"
+                            src={BlackInfoIcon}
+                            alt="info-icon"
+                            id="claimIssue-2"
+                          />
+                          <UncontrolledPopover
+                            trigger="hover"
+                            placement="bottom"
+                            target="claimIssue-2"
+                            className="general-popover created-popover"
+                            flip={true}
+                          >
+                            <PopoverBody>
+                              <div>
+                                <p className="title">
+                                  Claim Issue type: Inactive
+                                </p>
+                                <p className="sub-title">Broken Shoes</p>
+                              </div>
+                            </PopoverBody>
+                          </UncontrolledPopover>
                         </td>
 
                         <td>
@@ -231,6 +275,7 @@ class CategoryMaster extends Component {
 
                         <td>
                           <div className="row">
+                            <div className="deletepopover">
                               <div className="del-btn" id="del2">
                                 <img src={RedDeleteIcon} alt="del-icon" />
                               </div>
@@ -259,6 +304,7 @@ class CategoryMaster extends Component {
                                   </div>
                                 </PopoverBody>
                               </UncontrolledPopover>
+                            </div>
                             <div className=" list-edit-button-margin btn-del-pop">
                               <button
                                 className="Table-action-edit-button"
@@ -280,7 +326,7 @@ class CategoryMaster extends Component {
                                   <div>
                                     <div className="">
                                       <label className="popover-header-text">
-                                        EDIT CATEGORY
+                                        EDIT Claim CATEGORY
                                       </label>
                                     </div>
                                     <div className=" pop-over-div">
@@ -293,15 +339,15 @@ class CategoryMaster extends Component {
                                     </div>
                                     <div className=" pop-over-div">
                                       <label className="pop-over-lbl-text">
-                                        Category
+                                        Claim Category
                                       </label>
                                       <select className="pop-over-select">
-                                        <option>Complaint</option>
+                                        <option>Exchange</option>
                                       </select>
                                     </div>
                                     <div className=" pop-over-div">
                                       <label className="pop-over-lbl-text">
-                                        Sub Category
+                                        Claim Sub Category
                                       </label>
                                       <select className="pop-over-select">
                                         <option>Defective Article</option>
@@ -309,7 +355,7 @@ class CategoryMaster extends Component {
                                     </div>
                                     <div className=" pop-over-div">
                                       <label className="pop-over-lbl-text">
-                                        Issue Type
+                                        Claim Issue Type
                                       </label>
                                       <select className="pop-over-select">
                                         <option>Broken Shoes</option>
@@ -348,7 +394,7 @@ class CategoryMaster extends Component {
                           <label className="table-data-text">Bata</label>
                         </td>
                         <td>
-                          <label className="table-data-text">Complaint</label>
+                          <label className="table-data-text">Exchange</label>
                         </td>
                         <td>
                           <label className="table-data-text">
@@ -359,6 +405,28 @@ class CategoryMaster extends Component {
                           <label className="table-data-text">
                             Broken Shoes
                           </label>
+                          <img
+                            className="info-icon-cp"
+                            src={BlackInfoIcon}
+                            alt="info-icon"
+                            id="claimIssue-3"
+                          />
+                          <UncontrolledPopover
+                            trigger="hover"
+                            placement="bottom"
+                            target="claimIssue-3"
+                            className="general-popover created-popover"
+                            flip={true}
+                          >
+                            <PopoverBody>
+                              <div>
+                                <p className="title">
+                                  Claim Issue type: Active
+                                </p>
+                                <p className="sub-title">Broken Shoes</p>
+                              </div>
+                            </PopoverBody>
+                          </UncontrolledPopover>
                         </td>
 
                         <td>
@@ -367,6 +435,7 @@ class CategoryMaster extends Component {
 
                         <td>
                           <div className="row">
+                            <div className="deletepopover">
                               <div className="del-btn" id="del3">
                                 <img src={RedDeleteIcon} alt="del-icon" />
                               </div>
@@ -395,6 +464,7 @@ class CategoryMaster extends Component {
                                   </div>
                                 </PopoverBody>
                               </UncontrolledPopover>
+                            </div>
                             <div className=" list-edit-button-margin btn-del-pop">
                               <button
                                 className="Table-action-edit-button"
@@ -416,7 +486,7 @@ class CategoryMaster extends Component {
                                   <div>
                                     <div className="">
                                       <label className="popover-header-text">
-                                        EDIT CATEGORY
+                                        EDIT Claim CATEGORY
                                       </label>
                                     </div>
                                     <div className=" pop-over-div">
@@ -429,15 +499,15 @@ class CategoryMaster extends Component {
                                     </div>
                                     <div className=" pop-over-div">
                                       <label className="pop-over-lbl-text">
-                                        Category
+                                        Claim Category
                                       </label>
                                       <select className="pop-over-select">
-                                        <option>Complaint</option>
+                                        <option>Exchange</option>
                                       </select>
                                     </div>
                                     <div className=" pop-over-div">
                                       <label className="pop-over-lbl-text">
-                                        Sub Category
+                                        Claim Sub Category
                                       </label>
                                       <select className="pop-over-select">
                                         <option>Defective Article</option>
@@ -445,7 +515,7 @@ class CategoryMaster extends Component {
                                     </div>
                                     <div className=" pop-over-div">
                                       <label className="pop-over-lbl-text">
-                                        Issue Type
+                                        Claim Issue Type
                                       </label>
                                       <select className="pop-over-select">
                                         <option>Broken Shoes</option>
@@ -484,7 +554,7 @@ class CategoryMaster extends Component {
                           <label className="table-data-text">Bata</label>
                         </td>
                         <td>
-                          <label className="table-data-text">Complaint</label>
+                          <label className="table-data-text">Exchange</label>
                         </td>
                         <td>
                           <label className="table-data-text">
@@ -495,14 +565,37 @@ class CategoryMaster extends Component {
                           <label className="table-data-text">
                             Broken Shoes
                           </label>
+                          <img
+                            className="info-icon-cp"
+                            src={BlackInfoIcon}
+                            alt="info-icon"
+                            id="claimIssue-4"
+                          />
+                          <UncontrolledPopover
+                            trigger="hover"
+                            placement="bottom"
+                            target="claimIssue-4"
+                            className="general-popover created-popover"
+                            flip={true}
+                          >
+                            <PopoverBody>
+                              <div>
+                                <p className="title">
+                                  Claim Issue type: Inactive
+                                </p>
+                                <p className="sub-title">Broken Shoes</p>
+                              </div>
+                            </PopoverBody>
+                          </UncontrolledPopover>
                         </td>
 
                         <td>
-                          <label className="table-data-text">Inative</label>
+                          <label className="table-data-text">Inactive</label>
                         </td>
 
                         <td>
                           <div className="row">
+                            <div className="deletepopover">
                               <div className="del-btn" id="del4">
                                 <img src={RedDeleteIcon} alt="del-icon" />
                               </div>
@@ -531,6 +624,7 @@ class CategoryMaster extends Component {
                                   </div>
                                 </PopoverBody>
                               </UncontrolledPopover>
+                            </div>
                             <div className=" list-edit-button-margin btn-del-pop">
                               <button
                                 className="Table-action-edit-button"
@@ -552,7 +646,7 @@ class CategoryMaster extends Component {
                                   <div>
                                     <div className="">
                                       <label className="popover-header-text">
-                                        EDIT CATEGORY
+                                        EDIT Claim CATEGORY
                                       </label>
                                     </div>
                                     <div className=" pop-over-div">
@@ -565,15 +659,15 @@ class CategoryMaster extends Component {
                                     </div>
                                     <div className=" pop-over-div">
                                       <label className="pop-over-lbl-text">
-                                        Category
+                                        Claim Category
                                       </label>
                                       <select className="pop-over-select">
-                                        <option>Complaint</option>
+                                        <option>Exchange</option>
                                       </select>
                                     </div>
                                     <div className=" pop-over-div">
                                       <label className="pop-over-lbl-text">
-                                        Sub Category
+                                        Claim Sub Category
                                       </label>
                                       <select className="pop-over-select">
                                         <option>Defective Article</option>
@@ -581,7 +675,7 @@ class CategoryMaster extends Component {
                                     </div>
                                     <div className=" pop-over-div">
                                       <label className="pop-over-lbl-text">
-                                        Issue Type
+                                        Claim Issue Type
                                       </label>
                                       <select className="pop-over-select">
                                         <option>Broken Shoes</option>
@@ -620,7 +714,7 @@ class CategoryMaster extends Component {
                           <label className="table-data-text">Bata</label>
                         </td>
                         <td>
-                          <label className="table-data-text">Complaint</label>
+                          <label className="table-data-text">Exchange</label>
                         </td>
                         <td>
                           <label className="table-data-text">
@@ -631,6 +725,28 @@ class CategoryMaster extends Component {
                           <label className="table-data-text">
                             Broken Shoes
                           </label>
+                          <img
+                            className="info-icon-cp"
+                            src={BlackInfoIcon}
+                            alt="info-icon"
+                            id="claimIssue-5"
+                          />
+                          <UncontrolledPopover
+                            trigger="hover"
+                            placement="bottom"
+                            target="claimIssue-5"
+                            className="general-popover created-popover"
+                            flip={true}
+                          >
+                            <PopoverBody>
+                              <div>
+                                <p className="title">
+                                  Claim Issue type: Active
+                                </p>
+                                <p className="sub-title">Broken Shoes</p>
+                              </div>
+                            </PopoverBody>
+                          </UncontrolledPopover>
                         </td>
 
                         <td>
@@ -639,6 +755,7 @@ class CategoryMaster extends Component {
 
                         <td>
                           <div className="row">
+                            <div className="deletepopover">
                               <div className="del-btn" id="del5">
                                 <img src={RedDeleteIcon} alt="del-icon" />
                               </div>
@@ -667,6 +784,7 @@ class CategoryMaster extends Component {
                                   </div>
                                 </PopoverBody>
                               </UncontrolledPopover>
+                            </div>
                             <div className=" list-edit-button-margin btn-del-pop">
                               <button
                                 className="Table-action-edit-button"
@@ -688,7 +806,7 @@ class CategoryMaster extends Component {
                                   <div>
                                     <div className="">
                                       <label className="popover-header-text">
-                                        EDIT CATEGORY
+                                        EDIT Claim CATEGORY
                                       </label>
                                     </div>
                                     <div className=" pop-over-div">
@@ -701,15 +819,15 @@ class CategoryMaster extends Component {
                                     </div>
                                     <div className=" pop-over-div">
                                       <label className="pop-over-lbl-text">
-                                        Category
+                                        Claim Category
                                       </label>
                                       <select className="pop-over-select">
-                                        <option>Complaint</option>
+                                        <option>Exchange</option>
                                       </select>
                                     </div>
                                     <div className=" pop-over-div">
                                       <label className="pop-over-lbl-text">
-                                        Sub Category
+                                        Claim Sub Category
                                       </label>
                                       <select className="pop-over-select">
                                         <option>Defective Article</option>
@@ -717,7 +835,7 @@ class CategoryMaster extends Component {
                                     </div>
                                     <div className=" pop-over-div">
                                       <label className="pop-over-lbl-text">
-                                        Issue Type
+                                        Claim Issue Type
                                       </label>
                                       <select className="pop-over-select">
                                         <option>Broken Shoes</option>
@@ -796,60 +914,40 @@ class CategoryMaster extends Component {
               <div className="col-md-4">
                 <div className="store-col-2">
                   <div className="createSpace">
-                    <label className="Create-store-text">CREATE CATEGORY</label>
-                    <div className="divSpace">
-                      <div className="dropDrownSpace">
-                        <label className="reports-to"> Brand Name</label>
-                        <select
-                          id="inputState"
-                          className="form-control dropdown-setting"
-                        >
-                          <option>Bata</option>
-                        </select>
-                      </div>
+                    <label className="Create-store-text">
+                      CREATE CLAIM CATEGORY
+                    </label>
+                    <div className="dropDrownSpace">
+                      <label className="reports-to">Brand Name</label>
+                      <select id="inputState" className="store-create-select">
+                        <option>Bata</option>
+                      </select>
                     </div>
-                    <div className="divSpace">
-                      <div className="dropDrownSpace">
-                        <label className="reports-to"> Category</label>
-                        <select
-                          id="inputState"
-                          className="form-control dropdown-setting"
-                        >
-                          <option>Complaint</option>
-                          <option>Complaint</option>
-                          <option>Complaint</option>
-                        </select>
-                      </div>
+                    <div className="dropDrownSpace">
+                      <label className="reports-to">Claim Category</label>
+                      <select id="inputState" className="store-create-select">
+                      <option>Complaint</option>
+                        <option>Complaint</option>
+                        <option>Complaint</option>
+                      </select>
                     </div>
-                    <div className="divSpace">
-                      <div className="dropDrownSpace">
-                        <label className="reports-to">Sub Category</label>
-                        <select
-                          id="inputState"
-                          className="form-control dropdown-setting"
-                        >
-                          <option>Defective Article</option>
-                        </select>
-                      </div>
+
+                     <div className="dropDrownSpace">
+                      <label className="reports-to">Claim Sub Category</label>
+                      <select id="inputState" className="store-create-select">
+                        <option>Defective Article</option>
+                      </select>
                     </div>
-                    <div className="divSpace">
-                      <div className="dropDrownSpace">
-                        <label className="reports-to">Issue Type</label>
-                        <select
-                          id="inputState"
-                          className="form-control dropdown-setting"
-                        >
-                          <option>Broken Shoes</option>
-                        </select>
-                      </div>
+                     <div className="dropDrownSpace">
+                      <label className="reports-to">Claim Issue Type</label>
+                      <select id="inputState" className="store-create-select">
+                        <option>Broken Shoes</option>
+                      </select>
                     </div>
-                    <div className="divSpace">
+                    <div className="divSpace-3">
                       <div className="dropDrownSpace">
                         <label className="reports-to">Status</label>
-                        <select
-                          id="inputState"
-                          className="form-control dropdown-setting"
-                        >
+                        <select className="store-create-select">
                           <option>Active</option>
                           <option>Inactive</option>
                         </select>
@@ -860,7 +958,6 @@ class CategoryMaster extends Component {
                         <label className="addLable">ADD</label>
                       </button>
                     </div>
-                    <br />
                   </div>
                 </div>
                 <br />
@@ -958,4 +1055,4 @@ class CategoryMaster extends Component {
   }
 }
 
-export default CategoryMaster;
+export default ClaimCategoryMaster;
