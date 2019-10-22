@@ -555,7 +555,7 @@
 .QA-card-2 {
   background-color: #ffffff;
   border-radius: 4px;
-  width: 872px;
+  width:886px;   /*872px;*/ 
   height: 892px;
 }
 .QA-card-3 {

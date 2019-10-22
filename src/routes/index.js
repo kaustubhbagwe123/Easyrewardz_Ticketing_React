@@ -24,7 +24,10 @@ import SLATemplate from "./SLATemplate";
 import Store_CRMRoles from "./Store_CRMRoles";
 import CreatePriority from "./CreatePriority";
 import ClaimCategoryMaster from "./ClaimCategoryMaster";
-import abc from "./abc";
+import Alerts from "./Settings/Alerts";
+import TestingDemo from "./TestingDemo";
+import Templates from "./Settings/Ticketing/Templates";
+import AddSearchMyTicket from "./AddSearchMyTicket";
 // import Aux from "./../Component/Aux";
 
 export class App extends Component {
@@ -97,11 +100,34 @@ export class App extends Component {
           component={FileUploadLogs}
         />
         <Route exact path={`${match.url}/brands`} component={Brands} />
-        <Route exact path={`${match.url}/slaTemplate`} component={SLATemplate} />
-        <Route exact path={`${match.url}/claimCategoryMaster`} component={ClaimCategoryMaster} />
-        <Route exact path={`${match.url}/store_CRMRoles`} component={Store_CRMRoles} />
-        <Route exact path={`${match.url}/priority`} component={CreatePriority} />
-        <Route exact path={`${match.url}/abc`} component={abc} />
+        <Route
+          exact
+          path={`${match.url}/slaTemplate`}
+          component={SLATemplate}
+        />
+        <Route
+          exact
+          path={`${match.url}/claimCategoryMaster`}
+          component={ClaimCategoryMaster}
+        />
+        <Route
+          exact
+          path={`${match.url}/store_CRMRoles`}
+          component={Store_CRMRoles}
+        />
+        <Route
+          exact
+          path={`${match.url}/priority`}
+          component={CreatePriority}
+        />
+        <Route exact path={`${match.url}/alerts`} component={Alerts} />
+        <Route
+          exact
+          path={`${match.url}/TestingDemo`}
+          component={TestingDemo}
+        />
+        <Route exact path={`${match.url}/templates`} component={Templates} />
+        <Route exact path={`${match.url}/addSearchMyTicket`} component={AddSearchMyTicket} />
       </Layout>
     );
   }

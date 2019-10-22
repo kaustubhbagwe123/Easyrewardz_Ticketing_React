@@ -786,8 +786,9 @@
   border: 1px solid #2561a8;
   border-radius: 6px;
   width: 23px;
-  height: 22px;
+  height: 21px;
   padding: 4px;
+  margin-top: 1px;
 }
 .bill-1 {
   margin-top: -25px;
@@ -1951,7 +1952,7 @@ table th {
 table td {
   font-size: 13px;
   color: #9b9b9b;
-  padding: 18px 30px;
+  padding: 18px 25px;
 }
 table thead img {
   width: 12px;
@@ -2348,9 +2349,12 @@ table tr th:last-child {
   box-shadow: none;
 }
 .tab-content {
-  padding: 12px 20px;
+  padding: 12px 0px;
   box-shadow: none;
   background: initial;
+}
+.alert-p1{
+  padding: 35px !important;
 }
 /* tabs ends */
 
@@ -2939,7 +2943,7 @@ table tr th:last-child {
   margin-left: 5px;
   padding-top: 9px;
 }
-.span-color {
+.span-color{
   color: red;
 }
 .search-customer-padding {
@@ -3902,6 +3906,15 @@ progress::-moz-progress-bar {
 
 @media only screen and (max-width: 767px) {
   /* dashboard starts */
+  .ticketToTask-chart .apexcharts-canvas{
+    width: 100% !important;
+    overflow: auto;
+  }
+ 
+  .ticketToTask-chart .apexcharts-canvas svg{
+    width: auto !important;
+    overflow: auto;
+  }
   #bill-graph-tab .col-md-3 {
     order: 1;
   }
@@ -3957,6 +3970,24 @@ progress::-moz-progress-bar {
 }
 
 @media only screen and (max-width: 480px) {
+  .hamb-menu li {
+    display: block;
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+}
+.hamb-menu .dropdown-menu.show:before {
+  display: none;
+}
+.hamb-menu ul {
+  padding: 0;
+  font-size: 12px;
+}
+.active a {
+  color: #fff !important;
+}
+.active {
+  background-color: #2561a8;
+}
   .vl {
     border: 0;
     height: auto;
@@ -4163,10 +4194,11 @@ progress::-moz-progress-bar {
   }
   .er-label {
     font-size: 16px;
-    margin-top: 16px;
+    margin-top: 0;
   }
   .hamb-menu {
     display: block;
+    margin-left: 10px;
   }
 
   /* dashboard starts */
@@ -4858,7 +4890,6 @@ progress::-moz-progress-bar {
 }
 
 /* ----------------------------------------------------------- */
-
 /* ------------------------------------end---------------------------------- */
 
 /* ---------------------------------myticket list----------------- */
@@ -4939,7 +4970,6 @@ progress::-moz-progress-bar {
   width: 548px;
   height: 494px;
 }
-
 
 .profilemodal-text{
   color: #4A4A4A;
@@ -5060,7 +5090,6 @@ padding: 70px 10px 70px 0px;
   margin-top: 10px;
 }
 .storemodal-select{
-   
   border-radius: 4px;
   width: 365px;
   height: 43px;
@@ -5134,7 +5163,6 @@ padding-left: 25px;
 }
 
 .profilemodalmaindiv .card .card-header button{
-
   width: 100%;
 padding:0;
 margin-bottom:0;
@@ -5183,12 +5211,126 @@ background: url("../Images/down-1.png") no-repeat right 12px center;
     margin-top: 5px;
 }
 
-
 .datePicketArrow{
   width: 15px;
     height: 10px;
     margin-left: 5px;
 }
+.storemodal-row-1 button{
+  padding: 0;
+}
+
+.profilemodalmaindiv-1{
+  clear: both;
+  overflow: hidden;
+}
+
+.profilemodalmaindiv-1 .card{
+  padding-top: 20px;
+} 
+
+.profilemodalmaindiv-1 .card .card-header {
+  background-color: transparent;
+  border-bottom: 1px solid #f1f1f1;
+  padding: 20px 0px;
+  position: relative;
+}
+ 
+.profilemodalmaindiv-1 .card-body {
+    padding: 0px 23px;
+}
+
+.profilemodalmaindiv-1 .card .card-header button{
+
+  margin-left: 10px;
+  width: 100%;
+  padding: 0;
+  margin-bottom: 0;
+  background: url(../Images/down-1.png) no-repeat right 24px center;
+}
+
+.storeproduct-tab-head-text{
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: left;
+}
+
+.storeheadsearchdiv{
+  margin-left: 20px;
+}
+
+.tabhead1{
+  width: 30%;
+}
+
+.tabhead2{
+  width: 15%;
+  text-align: right;
+}
+
+.tabhead3{
+  width: 25%;
+  text-align: right;
+}
+
+.tabhead4{
+  width: 25%;
+    text-align: right;
+}
+
+.tabdatadeactive{
+  color: #9B9B9B;
+  font-family: Lato;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 16px;
+  text-align: right;
+}
+.tabdatadeactive-1{
+  color: #9B9B9B;
+  font-family: Lato;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 16px;
+  text-align: left;
+}
+
+.addselected-button{
+  background-color: #EDF2F4;
+  border: 1px solid #3069AC;
+  border-radius: 4px;
+  width: 175px;
+  height: 43px;
+  margin-right: 20px;
+  cursor: pointer;
+}
+.addselected-button-text{
+  color: #2561A8;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  text-align: left;
+}
+.bigblue {
+  color: DodgerBlue;
+  padding: 40px;
+  font-family: Arial;
+  text-align: center;
+}
+
+/* 
+.storemodal-select{  
+  border-radius: 4px;
+  width: 365px;
+  height: 43px;
+  border: none;
+  padding-left: 10px;
+  background: #ecf2f4 url("../Images/dropDown.png") no-repeat right 12px center;
+} */
 /* ----------------------------store and product modal search modal----------------------- */
 #storeproductsearchmodal{
   background-color: #FFFFFF;
@@ -5210,6 +5352,9 @@ background: url("../Images/down-1.png") no-repeat right 12px center;
     border-radius: 4px;
     width: 571px;
     height: 694px;
+  }
+  .disabled-link {
+    pointer-events: none;
   }
   /* ---------------------------------------------- */
  /* Css Store_CRM Roles Shlok */
@@ -5309,8 +5454,11 @@ background: url("../Images/down-1.png") no-repeat right 12px center;
 .ReactTable .rt-thead .rt-th.-sort-asc, .ReactTable .rt-thead .rt-td.-sort-asc {
   box-shadow: none !important;
 }
-.ReactTable .rt-th, .ReactTable .rt-td{
-  color: #949191 !important;
+.rt-tbody .ReactTable .rt-th, .ReactTable .rt-td{
+  color: #9E9E9E !important;
+    font-weight: 600;
+    text-align: left;
+    font-size: 13px;
 }
 .ReactTable .rt-thead .rt-resizable-header-content {
   overflow: hidden;
@@ -5320,14 +5468,23 @@ background: url("../Images/down-1.png") no-repeat right 12px center;
 }
 .ReactTable .rt-thead .rt-th, .ReactTable .rt-thead .rt-td {
   border-right: none !important;
-  /* padding: 20px 0px !important; */
+  padding: 20px 25px !important;
+  color: #393a3a !important;
+  font-weight: 600;
+  text-align: left;
+  font-size: 13px;
 }
 .ReactTable .rt-tbody .rt-td {
-  padding: 18px 20px !important;
+  padding: 18px 18px !important;
   border-right: none !important;
+  font-weight: 500;
 }
 .ReactTable .rt-thead .rt-th.-cursor-pointer, .ReactTable .rt-thead .rt-td.-cursor-pointer {
-  padding: 20px 20px !important;
+  padding: 20px 25px !important;
+  color: #393a3a !important;
+    font-weight: 600;
+    text-align: left;
+    font-size: 13px;
 }
 .react-tabel-button{
   background-color: #2561a8;
@@ -5341,15 +5498,18 @@ background: url("../Images/down-1.png") no-repeat right 12px center;
   flex: 0 0 auto !important;
     width: 0px !important;
 } 
-/* .ReactTable .rt-thead .rt-resizable-header {
-  flex: 60 0 auto !important;
-  width: 0px !important;
-} */
+svg:not(:root).svg-inline--fa {
+  overflow: visible;
+  color: #A7AAAD;
+  width: 20px;
+  height: 18px;
+  margin: -2px;
+}
 .btn-padding-rTbale{
   padding-top: 20px !important;
 }
  .rt-resizable-header{
-   flex: 0 0 auto !important;
+   /* flex: 0 0 auto !important; */
     width: 0px !important;
 } 
 .headerAdminStyle{
@@ -5361,136 +5521,383 @@ background: url("../Images/down-1.png") no-repeat right 12px center;
 /* .rt-th{
   display: none !important;
 } */
-/* ****************End css */
-.storemodal-row-1 button{
-  padding: 0;
+
+/* Drag and drop table By Shlok  */
+.ant-table-thead > tr > th, .ant-table-tbody > tr > td {
+  padding: 20px 25px !important;
 }
-
-.profilemodalmaindiv-1{
-  clear: both;
-  overflow: hidden;
+table span {
+  font-size: 13px !important;
 }
-
-.profilemodalmaindiv-1 .card{
-
-  padding-top: 20px;
-} 
-
-.profilemodalmaindiv-1 .card .card-header {
-  background-color: transparent;
-  border-bottom: 1px solid #f1f1f1;
-  padding: 20px 0px;
-  position: relative;
- 
-   
-
+.ant-table-thead > tr > th{
+  background: #E5E9ED !important;
 }
- 
-.profilemodalmaindiv-1 .card-body {
-    padding: 0px 23px;
-
+table thead tr {
+  background-color: #e5e9ed !important;
 }
-
-.profilemodalmaindiv-1 .card .card-header button{
-
-  margin-left: 10px;
-  width: 100%;
-  padding: 0;
-  margin-bottom: 0;
-  background: url(../Images/down-1.png) no-repeat right 24px center;
+/* End css  */
+/* Multi-Select Drop Down css start by SHLOK */
+.dropDown-multiselect{
+  width: 295px !important;
+  height: calc(2.55rem + 2px);
 }
-
-
-.storeproduct-tab-head-text{
-  color: #4A4A4A;
-  font-family: Lato;
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 14px;
-  text-align: left;
+.add-valueLogo-Dd{
+  padding: 4px 8px;
+    cursor: pointer;
+    float: right;
+    color: rgb(42, 112, 193);
 }
-
-.storeheadsearchdiv{
-
-  margin-left: 20px;
-}
-
-
-.tabhead1{
-
-  width: 30%;
-}
-
-.tabhead2{
-
-  width: 15%;
-  text-align: right;
-}
-
-.tabhead3{
-
-  width: 25%;
-  text-align: right;
-}
-
-
-.tabhead4{
-
-  width: 25%;
-    text-align: right;
-}
-
-.tabdatadeactive{
-  color: #9B9B9B;
-  font-family: Lato;
-  font-size: 13px;
-  font-weight: 700;
-  line-height: 16px;
-  text-align: right;
-}
-.tabdatadeactive-1{
-  color: #9B9B9B;
-  font-family: Lato;
-  font-size: 13px;
-  font-weight: 700;
-  line-height: 16px;
-  text-align: left;
-}
-
-.addselected-button{
-  background-color: #EDF2F4;
-  border: 1px solid #3069AC;
-  border-radius: 4px;
-  width: 175px;
-  height: 43px;
-  margin-right: 20px;
-  cursor: pointer;
-}
-.addselected-button-text{
+.sweetAlert-inCategory{
   color: #2561A8;
-  font-family: Lato;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 17px;
-  text-align: left;
+  float: right;
 }
-.bigblue {
-  color: DodgerBlue;
-  padding: 40px;
-  font-family: Arial;
+/* Scrolling css start By Shlok*/
+.ant-select-dropdown-menu-vertical::-webkit-scrollbar {
+width: 5px;
+}
+
+.ant-select-dropdown-menu-vertical::-webkit-scrollbar-track {
+background: #F3F3F3; 
+border-radius: 10px;
+}
+
+.ant-select-dropdown-menu-vertical::-webkit-scrollbar-thumb {
+background: #D2DDEB; 
+border-radius: 10px;
+}
+
+.ant-select-dropdown-menu-vertical::-webkit-scrollbar-thumb:hover {
+background: #D2DDEB; 
+border-radius: 10px;
+}
+/* Scrolling css End */
+.ant-select-dropdown ul .ant-select-dropdown-menu-item:last-child {
+  background: #F9F9F9;
+}
+/* Multi select drop down css End */
+/*********8 Alert page css Start *********/
+.alert-tableImge{
+  width: 20px;
+  height: 18px;
+  margin-left: 15px;
+}
+.communication-labelHeader{
+  color: #393a3a !important;
+  font-weight: 500;
+  text-align: left;
+  font-size: 12px;
+}
+.right-sect-div h4 {
+  color: #2561A8;
+  font-size: 17px;
+  font-weight: 600;
+  padding-top: 20px;
+}
+.ant-checkbox + span {
+  padding-right: 18px !important;
+  font-weight: 500 !important;
+}
+.ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #2561A8 !important;
+  border-color: #2561A8 !important;
+}
+.text-areaModel{
+  background-color: #FFFF;
+  padding: 12px;
+  height: auto;
+  display: block;
+  width: 100%;
+  font-size: 14px;
+  border-radius: 4px;
+  border-color: #f1f0f0;
+  resize: none;
+}
+/* Alert page css End */
+/* Next pop-up in Alert Page start css */
+#Alert-next-popup {
+  border-radius: 8px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+  padding: 0;
+  margin-right: 250px;
+  margin-top: -54px;
+  display: inline-block;
+  width: 780px;
+  height: auto;
+}
+.alert-nav-tabs3 {
+  border-bottom: 1px solid #ececec;
+  border: none;
+  margin-left: 270px;
+}
+.alert-nav-tabs3 .nav-link {
+  color: #4a4a4a;
+  font-weight: 700;
+  padding: 12px 20px;
+  border: 0;
+}
+.alert-nav-tabs3 .nav-link.active {
+  color: #2561a8;
+  border-bottom: 2px solid #2561a8;
+  box-shadow: none;
+}
+.container-fluid-alert {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+  padding: 0;
+}
+.position-relative-alert {
+  position: inherit!important;
+  background: #F3F3F3;
+  padding-bottom: 15px;
+  margin-top: -25px;
+}
+.alert-tabs {
+  padding: 15px 20px;
+  background: #F3F3F3;
+  border-radius: 8px 8px 0px 0px;
+  width: 100%;
+}
+.margin-Alerttab{
+  margin-left: 250px;
+}
+.cancelImg-alert{
+  height: 20px;
+    float: right;
+    margin-top: -42px;
+    margin-right: -13px;
+}
+.alert-sec-div h3{
+  color: #2561a8;
+  font-size: 18px;
+  font-weight: 700;
+  padding-bottom: 7px;
+}
+.alert-sec-div{
+  padding: 25px 45px;
+}
+.alert-main-popuplbl{
+  font-size: 22px;
+  font-weight: 500;
+  color: #2561A8;
+  padding-bottom: 20px;
+  margin-top: -10px;
+}
+/* pop-up End css */
+/* Email-test editor */
+#cke_32 {
+  display: none;
+}
+#cke_47{
+  display: none;
+}
+#cke_1_bottom{
+  display: none;
+}
+#cke_editor1{
+  border-radius: 3px;
+}
+#cke_24{
+  display: none;
+}
+.textbox-email-editor{
+  border: 1px #F4F4F4 solid;
+  width: 240px;
+  margin-left: 60px;
+  height: 34px;
+  border-radius: 3px;
+  padding-left: 10px;
+}
+.text-box2{
+  margin-left: 57px;
+}
+.text-box3{
+  margin-left: 49px;
+}
+.text-box4{
+  margin-left: 28px;
+}
+.div-padding-alert{
+  padding-left: 15px;
+}
+.m-t1{
+  margin-bottom: -10px;
+}
+.label-color-alert{
+  color: #807e7e;
+}
+.butn-2{
+  background-color: #2561a8;
+  color: #fff;
+  font-size: 12px;
+  padding: 8px 25px;
+  border-radius: 5px;
+  cursor: pointer;
+  height: 40px;
+}
+.div-button1{
+  float: right;
+  margin-top: 25px;
+  margin-bottom: 20px;
+}
+/* .sms-mainLabel{
+  padding: 25px 40px;
+  margin-top: -70px;
+  color: #2561a8;
+  font-size: 18px;
+  font-weight: 700;
+  padding-bottom: 7px;
+} */
+/* Template page css Start by Shlok */
+.template-table  .ReactTable .rt-tbody .rt-td {
+  padding: 18px 25px !important;
+  border-right: none !important;
+  font-weight: 500;
+}
+.template-table .rt-tr .rt-th:last-child{
+  margin-left: 20px !important;
+}
+.template-table .rt-tr .rt-th:last-child div{
+  margin-left: 20px !important;
+}
+.modal-header{
+  border: none !important;
+  padding: 0;
+}
+.modal-body{
+  padding: 0 !important;
+}
+/* Template css End */
+/* Add-Search My Ticket page  start css*/
+.addSearch-header{
+background-color: #ecf2f4;
+  width: auto;
+  height: 55px;
+  padding: 12px 20px;
+}
+.mobile-noAddsearch{
+  font-weight: 700;
+    font-size: 16px;
+}
+.arrowImg-addSearch{
+  margin-right: 15px;
+}
+.label-addsearch{
+  font-size: 15px;
+  font-weight: 500;
+  margin-right: 10px;
+}
+.paste-addSearch{
+  width: 18px;
+    margin-left: 12px;
+}
+.bck-AddSearch{
+  background: #F5F8F9;
+  height: auto;
+}
+.addsearch-div{
+  padding: 15px;
+}
+.addsearch-div .card{
+  border: 1px solid rgba(0,0,0,.125) !important;
+}
+.addSearchCard{
+  padding: 50px 270px;
+}
+.label1-AddSearch{
+  font-size: 16px;
+  font-weight: 700;
+}
+.label2-AddSearch{
+  font-size: 16px;
+  font-weight: 500;
+}
+.search-customerAddSrch{
+  background-color: #ecf2f4;
+    border-radius: 4px;
+    width: 90%;
+    height: 43px;
+    margin-top: 10px;
+    padding-left: 15px;
+    border: none;
+}
+.seacrh-img-addsearch{
+  width: 4%;
+    display: inline-block;
+    background: #ECF2F4;
+    padding-top: 11px;
+    padding-bottom: 11px;
+    border-radius: 4px;
+    margin-left: -5px;
+}
+.srch-imge{
+  margin-top: -5px;
+}
+.notFound-addSrch{
+  width: 35px;
+  height: 30px;
+}
+.div-notFound{
+  margin-top: 60px;
   text-align: center;
 }
+.lbl-count-foundData{
+  font-size: 24px;
+    font-weight: 600;
+    margin-top: 15px;
+}
+.btn-addCustomer{
+  color: #2662A9;
+  background-color: #FBFBFB;
+  border-color: #2662A9;
+  font-weight: 600;
+  height: 34px;
+  padding-top: 5px;
+  margin-left: 280px;
+  margin-top: 15px;
+}
+.lbl-popup-title{
+  font-size: 18px;
+  font-weight: 500;
+}
+#AddSearchModel{
+  position: relative;
+    padding: 1.2rem;
+    background: #ffffff;
+    background-clip: padding-box;
+    box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.25);
+    margin: -60px auto;
+    width: 670px;
+    border-radius: 10px;
+}
+.pop-upAddSearchPD{
+  padding: 0px 15px;
+}
+.row-margin1{
+  margin-top: 20px;
+    margin-bottom: 15px;
+}
+.radio-btn-margin{
+  margin-top: 10px;
+}
+.datePicker-modal{
+  background: #ECF2F4 !important;
+    border: none !important;
+    background:#ecf2f4 url("../../assets/Images/calender.png") no-repeat right 7% center !important; 
+    background-size: 15px !important;
+    height: 40px !important;
+}
+.btn-float{
+  float: right;
+  margin-top: 15px;
+}
+.cancel-btn-A{
+  margin-right: 20px;
+}
+/* css End */
+/* ****************End css ************************/
 
-/* 
-.storemodal-select{
-   
-  border-radius: 4px;
-  width: 365px;
-  height: 43px;
-  border: none;
-  padding-left: 10px;
-  background: #ecf2f4 url("../Images/dropDown.png") no-repeat right 12px center;
-} */
-  /* ------------------------------------------------------------------------------------- */
  
   

@@ -8,7 +8,8 @@ import StoreTaskView from "./StoreTaskView";
 import CreateCRMRoles from "./CreateCRMRoles";
 import CategoryMaster from "./CategoryMaster";
 import CreateSLA from "./CreateSLA";
- 
+// import "./styles.css";
+// import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 export class StoreApp extends Component {
   render() {
     const { match } = this.props;

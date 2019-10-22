@@ -119,14 +119,26 @@ class Header extends Component {
       <React.Fragment>
         <div
           className="d-flex align-items-center justify-content-between"
-          style={{ background: "white" }}
-        >
+          style={{ background: "white" }}>
           <div className="d-flex">
             <div className="er">
               <label className="er-label">ER</label>
             </div>
             <div className="hamb-menu">
-              <img src={Hamb} alt="hamburger icon" />
+              <div className="dropdown">
+                <img src={Hamb} alt="hamburger icon" data-toggle="dropdown" />
+                <ul className="dropdown-menu">
+                  <li>
+                    <Link to="dashboard">Dashboards</Link>
+                  </li>
+                  <li>
+                    <Link to="myTicketlist">My Tickets</Link>
+                  </li>
+                  <li>
+                    <Link to="knowledgebase">Knowledge Base</Link>
+                  </li>
+                </ul>
+              </div>
             </div>
             <div className="headers-menu">
               {this.state.cont.map(item => (

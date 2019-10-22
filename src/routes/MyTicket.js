@@ -58,12 +58,12 @@ class MyTicket extends Component {
     this.setState({ headPhoneTable: false });
   }
 
-  // HandleStoreModalOpen() {
-  //   this.setState({ storemodal: true });
-  // }
-  // HandleStoreModalClose() {
-  //   this.setState({ storemodal: false });
-  // }
+  HandleStoreModalOpen() {
+    this.setState({ storemodal: true });
+  }
+  HandleStoreModalClose() {
+    this.setState({ storemodal: false });
+  }
 
   handleUpOpen() {
     this.setState({ collapseUp: false, varMar: "63%" });

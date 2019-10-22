@@ -10,7 +10,7 @@ import HeadPhone3 from "./../assets/Images/headphone3.png";
 
 class MyTicketList extends Component {
   hanleChange = () => {
-    this.props.history.push("/admin/ticketsystem");
+    this.props.history.push("/admin/addSearchMyTicket");
   };
   hanleChange_MyTicket = () => {
     this.props.history.push("/admin/myticket");
@@ -333,17 +333,17 @@ class MyTicketList extends Component {
                         /> */}
                   </td>
                   <td>
-                    Need to change my shipping address{" "}
+                    Need to change my shipping address
                     <span>Hope this help, Please rate us</span>
                   </td>
                   <td>
-                    Defective article{" "}
+                    Defective article
                     <img className="info-icon" src={InfoIcon} alt="info-icon" />
                   </td>
                   <td>High</td>
                   <td>Naman</td>
                   <td>
-                    12 March 2018{" "}
+                    12 March 2018
                     <img className="info-icon" src={InfoIcon} alt="info-icon" />
                   </td>
                 </tr>
@@ -361,17 +361,17 @@ class MyTicketList extends Component {
                   </td>
                   <td className="table-img-cntr"></td>
                   <td>
-                    Need to change my shipping address{" "}
+                    Need to change my shipping address
                     <span>Hope this help, Please rate us</span>
                   </td>
                   <td>
-                    Defective article{" "}
+                    Defective article
                     <img className="info-icon" src={InfoIcon} alt="info-icon" />
                   </td>
                   <td>High</td>
                   <td>Akriti</td>
                   <td>
-                    12 March 2018{" "}
+                    12 March 2018
                     <img className="info-icon" src={InfoIcon} alt="info-icon" />
                   </td>
                 </tr>
@@ -389,17 +389,17 @@ class MyTicketList extends Component {
                   </td>
                   <td className="table-img-cntr"></td>
                   <td>
-                    Need to change my shipping address{" "}
+                    Need to change my shipping address
                     <span>Hope this help, Please rate us</span>
                   </td>
                   <td>
-                    Defective article{" "}
+                    Defective article
                     <img className="info-icon" src={InfoIcon} alt="info-icon" />
                   </td>
                   <td>High</td>
                   <td>Juhi</td>
                   <td>
-                    12 March 2018{" "}
+                    12 March 2018
                     <img className="info-icon" src={InfoIcon} alt="info-icon" />
                   </td>
                 </tr>
@@ -424,17 +424,17 @@ class MyTicketList extends Component {
                         /> */}
                   </td>
                   <td>
-                    Need to change my shipping address{" "}
+                    Need to change my shipping address
                     <span>Hope this help, Please rate us (1 new comment)</span>
                   </td>
                   <td>
-                    Defective article{" "}
+                    Defective article
                     <img className="info-icon" src={InfoIcon} alt="info-icon" />
                   </td>
                   <td>High</td>
                   <td>Shalini</td>
                   <td>
-                    12 March 2018{" "}
+                    12 March 2018
                     <img className="info-icon" src={InfoIcon} alt="info-icon" />
                   </td>
                 </tr>

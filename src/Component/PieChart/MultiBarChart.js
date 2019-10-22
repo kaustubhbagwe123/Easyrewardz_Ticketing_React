@@ -96,7 +96,7 @@ class MultiBarChart extends Component {
       <div className="app">
       <div className="row">
         <div className="col mixed-chart">
-          <Chart options={this.state.optionsMixedChart} series={this.state.seriesMixedChart} type="line" width="540" height="200" />
+          <Chart options={this.state.optionsMixedChart} series={this.state.seriesMixedChart} type="line" width="540" height="200" className="ticketToTask-chart"/>
         </div>
       </div>
     </div>

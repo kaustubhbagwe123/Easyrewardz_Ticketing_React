@@ -19,6 +19,7 @@ import "./../node_modules/popper.js/dist/popper.js";
 import "./../node_modules/bootstrap/dist/js/bootstrap.js";
 import "./../node_modules/jquery/dist/jquery.js";
 import "./assets/css/chat.css";
+import "react-table/react-table.css";
 
 /////js
 import "./../node_modules/bootstrap/dist/js/bootstrap.min.js";
