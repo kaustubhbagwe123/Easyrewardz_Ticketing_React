@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import Demo from "../store/Hashtag.js";
 import SearchIcon from "./../assets/Images/search-icon.png";
 import TableArr from "./../assets/Images/table-arr.png";
@@ -7,23 +7,45 @@ import TaskIconBlue from "./../assets/Images/task-icon-blue.png";
 import TaskIconGray from "./../assets/Images/task-icon-gray.png";
 import CliamIconBlue from "./../assets/Images/cliam-icon-blue.png";
 import HeadPhone3 from "./../assets/Images/headphone3.png";
-
+import BlackLeftArrow from "./../assets/Images/black-left-arrow.png";
+import SearchBlackImg from "./../assets/Images/searchBlack.png";
+import Headphone2Img from "./../assets/Images/headphone2.png";
+import Modal from "react-bootstrap/Modal";
 class MyTicketList extends Component {
+  constructor(props) {
+    super(props)
+  
+    this.state = {
+      AssignModal:false
+    }
+  }
+  
   hanleChange = () => {
     this.props.history.push("/admin/addSearchMyTicket");
   };
   hanleChange_MyTicket = () => {
     this.props.history.push("/admin/myticket");
   };
- 
+  handleAssignModalOpen(){
+    this.setState({ AssignModal: true });
+  }
+  handleAssignModalClose(){
+    this.setState({AssignModal:false});
+  }
   render() {
     return (
-      <>
+      <Fragment>
         <div className="myticketlist-header">
           <table className="table">
             <tbody>
               <tr style={{ display: "contents" }}>
-                <td style={{ paddingLeft: "6px", paddingTop: "6px" ,paddingRight:"5px"}}>
+                <td
+                  style={{
+                    paddingLeft: "6px",
+                    paddingTop: "6px",
+                    paddingRight: "5px"
+                  }}
+                >
                   <div className="Escalation04-box1 ">
                     Escalation:{" "}
                     <label className="oval04">
@@ -60,7 +82,15 @@ class MyTicketList extends Component {
                 <td style={{ paddingTop: "19px" }}>
                   <label className="header-list-text">Draft: 05</label>
                 </td>
-                <td></td>
+                <td>
+                  <button
+                    className="myTicket-btn-A"
+                    type="button"
+                    onClick={this.handleAssignModalOpen.bind(this)}
+                  >
+                    A
+                  </button>
+                </td>
                 <td style={{ paddingTop: "6px" }}>
                   <div>
                     <button
@@ -76,7 +106,128 @@ class MyTicketList extends Component {
             </tbody>
           </table>
         </div>
-
+        <Modal
+          size="lg"
+          show={this.state.AssignModal}
+          // onHide={this.handleAssignModalClose.bind(this)}
+          className="assign-modal-KBase"
+        >
+          <Modal.Header>
+            <div className="assign-modal-header">
+              <img
+                src={BlackLeftArrow}
+                alt="black-left-arrow-icon"
+                className="black-left-arrow"
+                onClick={this.handleAssignModalClose.bind(this)}
+              />
+              <label className="claim-details">Assign Tickets To</label>
+              <img
+                src={SearchBlackImg}
+                alt="SearchBlack"
+                className="black-left-arrow srch-mleft-spc"
+              />
+            </div>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="assign-modal-div">
+              <input
+                type="text"
+                className="txt-1 txt-btmSpace"
+                placeholder="First Name"
+              />
+              <input
+                type="text"
+                className="txt-1 txt-btmSpace"
+                placeholder="Last Name"
+              />
+              <input
+                type="text"
+                className="txt-1 txt-btmSpace"
+                placeholder="Email"
+              />
+              <div className="txt-btmSpace">
+                <select
+                  id="inputState"
+                  className="form-control dropdown-setting"
+                >
+                  <option>Select</option>
+                  <option>Designation</option>
+                </select>
+              </div>
+              <button className="butn assign-btn" type="button">
+                SEARCH
+              </button>
+              <a href="#!" className="anchorTag-clear">
+                CLEAR
+              </a>
+            </div>
+            <div className="assign-modal-body">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Agent</th>
+                    <th>Designation</th>
+                    <th>Email</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <img
+                        src={Headphone2Img}
+                        alt="headphone"
+                        className="oval-55 assign-hdphone"
+                      />
+                      Naman.R
+                    </td>
+                    <td>Supply</td>
+                    <td>naman@flipkart.com</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <img
+                        src={Headphone2Img}
+                        alt="headphone"
+                        className="oval-55 assign-hdphone"
+                      />
+                      Nidhi.J
+                    </td>
+                    <td>Supply</td>
+                    <td>naman@flipkart.com</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <img
+                        src={Headphone2Img}
+                        alt="headphone"
+                        className="oval-55 assign-hdphone"
+                      />
+                      Rashmi.C
+                    </td>
+                    <td>Supply</td>
+                    <td>naman@flipkart.com</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <img
+                        src={Headphone2Img}
+                        alt="headphone"
+                        className="oval-55 assign-hdphone"
+                      />
+                      Juhi.H
+                    </td>
+                    <td>Supply</td>
+                    <td>naman@flipkart.com</td>
+                  </tr>
+                </tbody>
+              </table>
+              <textarea className="assign-modal-textArea" placeholder="Add Remarks"></textarea>
+              <button className="assign-butn btn-assign-tikcet" type="button">
+                ASSIGN TICKETS
+              </button>
+            </div>
+          </Modal.Body>
+        </Modal>
         <div className="container-fluid" style={{ marginTop: "30px" }}>
           <div className="table-cntr mt-3">
             <table>
@@ -477,7 +628,7 @@ class MyTicketList extends Component {
             </div>
           </div>
         </div>
-      </>
+      </Fragment>
     );
   }
 }

@@ -1745,7 +1745,7 @@ button {
 .butn {
   background-color: #2561a8;
   color: #fff;
-  font-size: 12px;
+  font-size: 13px;
   padding: 8px 25px;
   border-radius: 5px;
   cursor: pointer;
@@ -3175,7 +3175,7 @@ table tr th:last-child {
 }
 
 .myticketlist-header table td {
-  padding: 25px 15px 0px 15px;
+  /* padding: 25px 15px 0px 15px; */
   color: #727474;
 }
 .add-tickets {
@@ -3327,8 +3327,9 @@ progress::-moz-progress-bar {
 }
 
 .black-left-arrow {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 18px;
+  margin-top: -5px;
 }
 
 .claim-details {
@@ -3338,6 +3339,8 @@ progress::-moz-progress-bar {
   font-weight: 700;
   line-height: 19px;
   text-align: left;
+  margin-left: 20px;
+  text-transform: uppercase;
 }
 
 .id-a-22134 {
@@ -4464,18 +4467,6 @@ progress::-moz-progress-bar {
   vertical-align: top;
 }
 
-/* .kb-table table thead tr{
-  border: 0px !important;
-} */
-
-/* .kb-table table tbody td{
-  border: 0px;
-} */
-
-/* 
-.kb-table table{
-} */
-
 /* ------------------------------------end---------------------------------- */
 
 .ReactModal__Overlay {
@@ -4763,6 +4754,7 @@ progress::-moz-progress-bar {
 .back-button-left {
   width: 18.9px;
   height: 12.96px;
+  margin-top: -4.5px;
 }
 
 .kb-modal-type-select {
@@ -4773,6 +4765,9 @@ progress::-moz-progress-bar {
   padding-left: 10px;
   background: #ecf2f4 url("../Images//down-1.png") no-repeat right 7% center;
   margin-left: 20px;
+}
+.claimTab-drawerModal .ant-drawer-content-wrapper{
+  width: auto !important;
 }
 
 /* ----------------------------------------------------------- */
@@ -4805,6 +4800,7 @@ progress::-moz-progress-bar {
   border: none;
   padding-left: 10px;
   margin-left: 18px;
+  background-size: 14px;
 }
 
 .add-select-subcategory {
@@ -4820,7 +4816,7 @@ progress::-moz-progress-bar {
 .addkb-subject {
   background-color: #ecf2f4;
   border-radius: 4px;
-  width: 530px;
+  width: 535px;
   height: 43px;
   border: none;
   margin-left: 17px;
@@ -4875,8 +4871,8 @@ progress::-moz-progress-bar {
 }
 
 .cancel-button-modal-icon {
-  width: 20px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
   float: right;
   margin-right: 20px;
   margin-top: -20px;
@@ -5897,6 +5893,114 @@ background-color: #ecf2f4;
   margin-right: 20px;
 }
 /* css End */
+.KBase .cke_browser_webkit{
+  margin-left: 17px !important;
+  width: 535px !important;
+}
+.KBase .cke_contents{
+  height: 160px !important;
+}
+.KBase .cke_bottom{
+  display: none !important;
+}
+.KBase .cke_combo_text{
+  padding: 0px !important;
+}
+.KBase .cke_top{
+  padding: 0px !important;
+}
+/* css start Knowledge base pop-up modal by Shlok */
+.myTicket-btn-A{
+  min-width: 0px;
+  padding: 12px;
+  margin-top: -11px;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #2561a8;
+  color: #fff;
+  font-size: 12px;
+}
+.assign-modal-KBase .modal-lg{
+  max-width: 435px;
+  margin-right: -20px !important;
+  margin-top: 115px !important;
+}
+.assign-modal-div{
+  padding: 0px 40px 0px 30px;
+}
+.assign-modal-header{
+  padding: 25px 30px 10px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #eae9e9;
+}
+.assign-modal-body{
+  padding: 25px 30px 10px;
+  margin-bottom: 15px;
+  border-top: 1px solid #eae9e9;
+  margin-top: 18px;
+}
+.txt-btmSpace{
+  margin-bottom: 15px;
+}
+.srch-mleft-spc{
+  margin-left: 154px;
+}
+.assign-btn{
+  height: 43px;
+}
+.anchorTag-clear{
+  color: #2561A8;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  text-align: left;
+  margin-left: 15px;
+}
+.assign-modal-body table thead tr {
+  background-color: white !important;
+  border-bottom: none !important;
+}
+.assign-modal-body table th {
+  font-size: 14px;
+  padding: 10px 5px;
+  color: #bbb8b8;
+}
+.assign-modal-body table tbody tr{
+  border-bottom: none;
+}
+.assign-modal-body table td {
+  font-size: 14px;
+  color: #9b9b9b;
+  padding: 10px 5px;
+}
+.assign-hdphone{
+  margin-right: 8px;
+}
+.assign-modal-textArea{
+  background-color: #ECF2F4;
+  border-radius: 4px;
+  width: 359px;
+  height: 236px;
+  border: none;
+  padding: 15px;
+  resize: none;
+  margin-top: 15px;
+}
+.btn-assign-tikcet{
+  height: 43px;
+  width: 360px;
+  margin-top: 12px;
+}
+.assign-butn{
+  background-color: #2561a8;
+  color: #fff;
+  font-size: 14px;
+  padding: 8px 25px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+/* Css End Knowledge base */
 /* ****************End css ************************/
 
  

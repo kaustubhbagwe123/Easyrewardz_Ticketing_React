@@ -4,6 +4,7 @@ import 'react-app-polyfill/ie11';
 // import '../assets/css/style.css';
 import "./../assets/css/custome.css";
 import Logo from "./../assets/Images/logo.jpg";
+import {Link} from 'react-router-dom'
 
 class SingIn extends Component {
     hanleChange = () => {
@@ -50,12 +51,12 @@ class SingIn extends Component {
               <div>
                 <br />
                 <p className="mb-0 text-muted">
-                  <a
-                    href="Forgotpassword"
+                  <Link
+                    to="Forgotpassword"
                     style={{ color: "#246ec3", letterSpacing: "0.5px" }}
                   >
                     FORGOT PASSWORD
-                  </a>
+                  </Link>
                 </p>
               </div>
             </div>

@@ -26,7 +26,6 @@ import Modal from "react-bootstrap/Modal";
 class Alerts extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       fileName: "",
       AddAlertTabsPopup: false,
@@ -67,7 +66,7 @@ class Alerts extends Component {
       content: newContent
     });
   }
-
+ 
   render() {
     const data = [
       {
@@ -666,7 +665,7 @@ class Alerts extends Component {
                                 }}
                               />
                               <div className="div-button1">
-                                <button className="butn-2" type="submit">
+                                <button className="butn-2" type="submit" id="sms-tab">
                                   SAVE & NEXT
                                 </button>
                               </div>

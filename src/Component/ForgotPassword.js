@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 // import '../assets/css/style.css'
 import logo from "../assets/Images/logo.jpg";
+import {Link} from 'react-router-dom'
 
 class ForgotPassword extends Component {
   // componentDidMount() {
@@ -56,12 +57,12 @@ class ForgotPassword extends Component {
 
               <div style={{ paddingTop: "10px" }}>
                 <p className="mb-0 text-muted">
-                  <a
-                    href="SignIn"
+                  <Link
+                    to="SignIn"
                     style={{ color: "#246ec3", letterSpacing: "0.5px" }}
                   >
                     TRY LOGIN AGAIN
-                  </a>
+                  </Link>
                 </p>
               </div>
             </div>

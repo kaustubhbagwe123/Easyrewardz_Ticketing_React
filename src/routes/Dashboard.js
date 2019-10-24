@@ -22,11 +22,15 @@ import DelSearch from "./../assets/Images/del-search.png";
 import { Collapse, CardBody, Card } from "reactstrap";
 import Demo from "../store/Hashtag.js";
 import ModernDatepicker from "react-modern-datepicker";
-import { UncontrolledPopover, PopoverBody } from "reactstrap";
-// import DateRangePicker from "@wojtekmaj/react-daterange-picker";
+// import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import BarChart from "../Component/PieChart/BarChart.js";
 import MultiBarChart from "../Component/PieChart/MultiBarChart.js";
-// import DateRangePicker from '@wojtekmaj/react-daterange-picker';
+// import DatetimeRangePicker from 'react-bootstrap-datetimerangepicker';
+// import moment from 'moment';
+
+// import {
+//   Button,
+// } from 'react-bootstrap';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -38,14 +42,24 @@ class Dashboard extends Component {
       open: false,
       StatusModel: false,
       Schedule: false,
-      startDate: "",
-      date: [new Date(), new Date()]
+      // startDate: "",
+      date: [new Date(), new Date()],
+      // startDate: moment().subtract(29, 'days'),
+      // endDate: moment(),
+      // ranges: {
+      //   'Today': [moment(), moment()],
+      //   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+      //   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+      //   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+      //   'This Month': [moment().startOf('month'), moment().endOf('month')],
+      //   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+      // },
     };
     this.toggle = this.toggle.bind(this);
     this.toggleSearch = this.toggleSearch.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    // this.handleApply = this.handleApply.bind(this);
   }
   toggle() {
     this.setState(state => ({ collapse: !state.collapse }));
@@ -72,12 +86,17 @@ class Dashboard extends Component {
   openModal = () => {
     this.setState({ modalIsOpen: true });
   };
-  handleChange(date) {
-    this.setState({
-      startDate: date
-    });
-  }
-
+  // handleChange(date) {
+  //   this.setState({
+  //     startDate: date
+  //   });
+  // }
+  // handleApply(event, picker) {
+  //   this.setState({
+  //     startDate: picker.startDate,
+  //     endDate: picker.endDate,
+  //   });
+  // }
   closeModal = () => {
     this.setState({ modalIsOpen: false });
   };
@@ -101,6 +120,13 @@ class Dashboard extends Component {
     ) : (
       <img className="search-icon" src={SearchIcon} alt="search-icon" />
     );
+    // let start = this.state.startDate.format('YYYY-MM-DD');
+    // let end = this.state.endDate.format('YYYY-MM-DD');
+    // let label = start + ' - ' + end;
+    // if (start === end) {
+    //   label = start;
+    // }
+
     return (
       <div>
         <div className="container-fluid dash-dropdowns">
@@ -122,7 +148,7 @@ class Dashboard extends Component {
             <div>
               <span>Date Range : </span>
 
-              <label id="lastDatepicker">
+              <label>
                 Last 7 days
                 <img
                   src={TableArr}
@@ -130,6 +156,21 @@ class Dashboard extends Component {
                   className="datePicketArrow"
                 />
               </label>
+              {/* <DatetimeRangePicker
+            startDate={this.state.startDate}
+            endDate={this.state.endDate}
+            onApply={this.handleApply}
+          >
+            <div className="input-group">
+              <input type="text" className="form-control" value={label}/>
+                <span className="input-group-btn">
+                    <Button className="default date-range-toggle">
+                      <i className="fa fa-calendar"/>
+                    </Button>
+                </span>
+            </div>
+          </DatetimeRangePicker> */}
+
               {/* <ModernDatepicker
                   date={this.state.startDate}
                   format={"DD-MM-YYYY"}
@@ -138,7 +179,7 @@ class Dashboard extends Component {
                   onChange={date => this.handleChange(date)}
                   placeholder={"Select a date"}
                 /> */}
-              <UncontrolledPopover
+              {/* <UncontrolledPopover
                 trigger="legacy"
                 placement="auto"
                 target="lastDatepicker"
@@ -146,21 +187,17 @@ class Dashboard extends Component {
               >
                 <PopoverBody className="d-flex">
                   <div>
-                    <ModernDatepicker
+                     <ModernDatepicker
                       date={this.state.startDate}
                       format={"DD-MM-YYYY"}
                       className="cXcRo"
                       showBorder
                       onChange={date => this.handleChange(date)}
                       placeholder={"Select a date"}
-                    />
-                    {/* <DateRangePicker
-                      onChange={this.onChange}
-                      value={this.state.date}
-                    /> */}
+                    /> 
                   </div>
                 </PopoverBody>
-              </UncontrolledPopover>
+              </UncontrolledPopover> */}
             </div>
           </div>
         </div>
@@ -197,7 +234,10 @@ class Dashboard extends Component {
                         <span className="card-value red-clr">07</span>
                       </div>
                     </div>
-                    <div className="col-md col-sm-4 col-6" onClick={this.HandleChangeRedict.bind(this)}>
+                    <div
+                      className="col-md col-sm-4 col-6"
+                      onClick={this.HandleChangeRedict.bind(this)}
+                    >
                       <div className="dash-top-cards">
                         <p className="card-head">Total no of chat</p>
                         <span className="card-value">102</span>

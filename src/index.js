@@ -21,6 +21,10 @@ import "./../node_modules/jquery/dist/jquery.js";
 import "./assets/css/chat.css";
 import "react-table/react-table.css";
 
+// import 'bootstrap/dist/css/bootstrap.css';
+// import 'bootstrap-daterangepicker/daterangepicker.css';
+
+
 /////js
 import "./../node_modules/bootstrap/dist/js/bootstrap.min.js";
 // import "./assets/js/bootstrap.min.js";

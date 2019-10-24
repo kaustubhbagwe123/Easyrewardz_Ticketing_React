@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import Modal from "react-responsive-modal";
 import HistoricalTable from "./HistoricalTable";
 import HeadphoneImg from "./../assets/Images/headphone.png";
@@ -23,8 +23,8 @@ import CancelImg from "./../assets/Images/cancel.png";
 import { Collapse, CardBody, Card } from "reactstrap";
 import CustomerIcon from "./../assets/Images/customer-icon.png";
 import CrossIcon from "./../assets/Images/cancel.png";
-import TikcetSystemStoreModal from './../routes/TicketSystemStoreModal';
- 
+import TikcetSystemStoreModal from "./../routes/TicketSystemStoreModal";
+
 class MyTicket extends Component {
   constructor(props) {
     super(props);
@@ -35,21 +35,20 @@ class MyTicket extends Component {
       varMar: "",
       profilemodal: false,
       storemodal: false,
-      storeproductsearch:false,
-      headPhoneTable:false
+      storeproductsearch: false,
+      headPhoneTable: false
     };
   }
 
-  HandleClaimPageView(){
+  HandleClaimPageView() {
     this.props.history.push("claimTabTicketView");
   }
 
-  HandleStoreProductSearchModalOpen(){
-    this.setState({storeproductsearch:true});
+  HandleStoreProductSearchModalOpen() {
+    this.setState({ storeproductsearch: true });
   }
-  HandleStoreProductSearchModalClose(){
+  HandleStoreProductSearchModalClose() {
     this.setState({ storeproductsearch: false });
-
   }
   HandleHeadePhoneModalOpen() {
     this.setState({ headPhoneTable: true });
@@ -70,11 +69,10 @@ class MyTicket extends Component {
   }
   handleUpClose() {
     this.setState({ collapseUp: true, varMar: "37%" });
-  };
-  onOpenModal = () => {
-    
-    this.setState({ open: true });
   }
+  onOpenModal = () => {
+    this.setState({ open: true });
+  };
   onCloseModal() {
     this.setState({ open: false });
   }
@@ -98,7 +96,7 @@ class MyTicket extends Component {
       ""
     );
     return (
-      <div>
+      <Fragment>
         <div className="head-header">
           <div className="head-header-1">
             <div className="row">
@@ -137,7 +135,10 @@ class MyTicket extends Component {
                 </Modal>
               </div>
 
-              <div className="col-xs-9 oval-head" onClick={this.HandleHeadePhoneModalOpen.bind(this)}>
+              <div
+                className="col-xs-9 oval-head"
+                onClick={this.HandleHeadePhoneModalOpen.bind(this)}
+              >
                 <img src={Headphone2Img} alt="headphone" className="oval-55" />
                 <label className="naman-r">Naman.R</label>
                 <img src={DownImg} alt="down" className="down-header" />
@@ -153,55 +154,51 @@ class MyTicket extends Component {
                 </button>
               </div>
               <Modal
-                  open={this.state.headPhoneTable}
-                  onClose={this.HandleHeadePhoneModalClose.bind(this)}
-                  closeIconId="close"
-                  modalId="HeadePhone-popup"
-                  overlayId="logout-ovrly"
-                >
-                  <div className="myTicket-table">
-                 <table>
-                   <thead>
-                     <tr>
-                       <th>
-                         Emp Id
-                       </th>
-                       <th>
-                         Name
-                       </th>
-                       <th>
-                         Designation
-                       </th>
-                     </tr>
-                   </thead>
-                   <tbody>
-                     <tr>
-                       <td>9938</td>
-                       <td>Rashmi.C</td>
-                       <td>Agent</td>
-                     </tr>
-                     <tr>
-                       <td>3234</td>
-                       <td>Juhi.H</td>
-                       <td>Agent</td>
-                     </tr>
-                     <tr>
-                       <td>3234</td>
-                       <td>Nidhi.J</td>
-                       <td>Agent</td>
-                     </tr>
-                     <tr>
-                       <td>2343</td>
-                       <td>Abhishek.C</td>
-                       <td>Agent</td>
-                     </tr>
-                   </tbody>
-                 </table>
-                 <div className="button-margin">
-                 <button type="button" class="btn btn-outline-primary">SELECT</button>
-                 </div>
-                 </div>
-                </Modal>
+                open={this.state.headPhoneTable}
+                onClose={this.HandleHeadePhoneModalClose.bind(this)}
+                closeIconId="close"
+                modalId="HeadePhone-popup"
+                overlayId="logout-ovrly"
+              >
+                <div className="myTicket-table">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Emp Id</th>
+                        <th>Name</th>
+                        <th>Designation</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>9938</td>
+                        <td>Rashmi.C</td>
+                        <td>Agent</td>
+                      </tr>
+                      <tr>
+                        <td>3234</td>
+                        <td>Juhi.H</td>
+                        <td>Agent</td>
+                      </tr>
+                      <tr>
+                        <td>3234</td>
+                        <td>Nidhi.J</td>
+                        <td>Agent</td>
+                      </tr>
+                      <tr>
+                        <td>2343</td>
+                        <td>Abhishek.C</td>
+                        <td>Agent</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div className="button-margin">
+                    <button type="button" className="btn btn-outline-primary">
+                      SELECT
+                    </button>
+                  </div>
+                </div>
+              </Modal>
             </div>
           </div>
         </div>
@@ -231,71 +228,75 @@ class MyTicket extends Component {
                   onClick={this.HandleProfileModalOpen.bind(this)}
                 />
                 <Modal
-          open={this.state.profilemodal}
-          onClose={this.HandleProfileModalClose.bind(this)}
-          modalId="profile-popup"
-          overlayId="logout-ovrly"
-        >
-          <div className="profilemodalmaindiv">
-            <div style={{ float: "right" }}>
-              <img
-                src={CrossIcon}
-                alt="cross-icon"
-                className="pro-cross-icn"
-                onClick={this.HandleProfileModalClose.bind(this)}
-              />
-            </div>
-            <div className="row profilemodalrow">
-              <div className="col-md-6">
-                <label className="profilemodal-text">Name</label>
-                <label className="profilemodal-textval">Diwakar Monga</label>
-              </div>
-              <div className="col-md-6">
-                <label className="profilemodal-text">Mobile</label>
-                <label className="profilemodal-textval">+91 9873470074</label>
-              </div>
-            </div>
-            <div className="row profilemodalrow-1">
-              <div className="col-md-6">
-                <label className="profilemodal-text">Email</label>
-                <label className="profilemodal-textval">
-                  monga24@gmail.com
-                </label>
-              </div>
-              <div className="col-md-6">
-                <input
-                  type="text"
-                  className="alternumber"
-                  placeholder="Alternate Number"
-                />
-              </div>
-            </div>
-            <div className="row" style={{ marginLeft: "15px" }}>
-              <div className="openticketbox profilemodalrow-1">
-                <label className="open-tickets-box-text">
-                  04
-                  <small className="open-tickets-box-textval">
-                    Open Tickets
-                  </small>
-                </label>
-              </div>
-              <div className="openticketbox-2 profilemodalrow-1">
-                <label className="open-tickets-box-text">
-                  11
-                  <small className="open-tickets-box-textval">
-                    Total Tickets
-                  </small>
-                </label>
-              </div>
-            </div>
-            <div className="row profilemodal-row-3">
-              <img src={CustomerIcon} alt="customer-icon" />
-              <label className="full-profile-view-text">
-                FULL PROFILE VIEW
-              </label>
-            </div>
-          </div>
-        </Modal>
+                  open={this.state.profilemodal}
+                  onClose={this.HandleProfileModalClose.bind(this)}
+                  modalId="profile-popup"
+                  overlayId="logout-ovrly"
+                >
+                  <div className="profilemodalmaindiv">
+                    <div style={{ float: "right" }}>
+                      <img
+                        src={CrossIcon}
+                        alt="cross-icon"
+                        className="pro-cross-icn"
+                        onClick={this.HandleProfileModalClose.bind(this)}
+                      />
+                    </div>
+                    <div className="row profilemodalrow">
+                      <div className="col-md-6">
+                        <label className="profilemodal-text">Name</label>
+                        <label className="profilemodal-textval">
+                          Diwakar Monga
+                        </label>
+                      </div>
+                      <div className="col-md-6">
+                        <label className="profilemodal-text">Mobile</label>
+                        <label className="profilemodal-textval">
+                          +91 9873470074
+                        </label>
+                      </div>
+                    </div>
+                    <div className="row profilemodalrow-1">
+                      <div className="col-md-6">
+                        <label className="profilemodal-text">Email</label>
+                        <label className="profilemodal-textval">
+                          monga24@gmail.com
+                        </label>
+                      </div>
+                      <div className="col-md-6">
+                        <input
+                          type="text"
+                          className="alternumber"
+                          placeholder="Alternate Number"
+                        />
+                      </div>
+                    </div>
+                    <div className="row" style={{ marginLeft: "15px" }}>
+                      <div className="openticketbox profilemodalrow-1">
+                        <label className="open-tickets-box-text">
+                          04
+                          <small className="open-tickets-box-textval">
+                            Open Tickets
+                          </small>
+                        </label>
+                      </div>
+                      <div className="openticketbox-2 profilemodalrow-1">
+                        <label className="open-tickets-box-text">
+                          11
+                          <small className="open-tickets-box-textval">
+                            Total Tickets
+                          </small>
+                        </label>
+                      </div>
+                    </div>
+                    <div className="row profilemodal-row-3">
+                      <img src={CustomerIcon} alt="customer-icon" />
+                      <label className="full-profile-view-text">
+                        FULL PROFILE VIEW
+                      </label>
+                    </div>
+                  </div>
+                </Modal>
                 <div className="bill-1">
                   <img src={BillInvoiceImg} alt="eye" className="billImg" />
                 </div>
@@ -580,9 +581,7 @@ class MyTicket extends Component {
                   <span>
                     <label className="updated-2-d-ago">
                       Reassign to
-                      <label className="lable-name">
-                        Naman.R
-                      </label>
+                      <label className="lable-name">Naman.R</label>
                     </label>
                   </span>
                 </label>
@@ -744,7 +743,7 @@ class MyTicket extends Component {
           </div>
         </Modal> */}
         {/* ---------------------------------------------------------- */}
-      </div>
+      </Fragment>
     );
   }
 }
