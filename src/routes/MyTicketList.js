@@ -82,7 +82,7 @@ class MyTicketList extends Component {
                 <td style={{ paddingTop: "19px" }}>
                   <label className="header-list-text">Draft: 05</label>
                 </td>
-                <td>
+                <td style={{ paddingTop: "18px" }}>
                   <button
                     className="myTicket-btn-A"
                     type="button"

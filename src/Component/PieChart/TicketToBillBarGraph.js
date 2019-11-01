@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Chart from 'react-apexcharts'
-class MultiBarChart extends Component {
+class TicketToBillBarGraph extends Component {
   constructor(props) {
     super(props);
   
@@ -10,17 +10,17 @@ class MultiBarChart extends Component {
           id: 'basic-bar'
         },
         xaxis: {
-          categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+          categories: ['Offline', 'Web', 'Mobile']
         },
       },
       seriesMixedChart: [ {
-        name: 'Total Tickets',
+        name: 'Total Bills',
         type: 'column',
-        data: [23, 12, 54, 61, 32, 56, 81, 19]
+        data: [85, 85, 85]
       }, {
-        name: 'Tickets with Task',
+        name: 'Ticketed Bills',
         type: 'column',
-        data: [62, 12, 45, 55, 76, 41, 23, 43]
+        data: [83, 83, 83]
       }],
     }
   }
@@ -30,7 +30,7 @@ class MultiBarChart extends Component {
       <div className="app">
       <div className="row">
         <div className="col mixed-chart">
-          <Chart options={this.state.optionsMixedChart} series={this.state.seriesMixedChart} type="line" width="540" height="200" className="ticketToTask-chart"/>
+          <Chart options={this.state.optionsMixedChart} series={this.state.seriesMixedChart} type="line" width="400" height="190" className="ticketToTask-chart-1"/>
         </div>
       </div>
     </div>
@@ -38,4 +38,4 @@ class MultiBarChart extends Component {
   }
 }
 
-export default MultiBarChart;
+export default TicketToBillBarGraph;

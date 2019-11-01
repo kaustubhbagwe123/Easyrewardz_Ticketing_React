@@ -1,8 +1,6 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 // import "../../node_modules/jquery/dist/jquery.js";
 import { ProgressBar } from "react-bootstrap";
-// import "../../node_modules/popper.js/dist/popper.js";
-// import "../../node_modules/bootstrap/dist/js/bootstrap.js";
 import Modal from "react-responsive-modal";
 import PieChart from "../Component/PieChart/PieChart";
 import SearchIcon from "./../assets/Images/search-icon.png";
@@ -19,18 +17,17 @@ import Schedule from "./../assets/Images/schedule.png";
 import Assign from "./../assets/Images/assign.png";
 import CancalImg from "./../assets/Images/cancal blue.png";
 import DelSearch from "./../assets/Images/del-search.png";
+import BlackLeftArrow from "./../assets/Images/black-left-arrow.png";
+import SearchBlackImg from "./../assets/Images/searchBlack.png";
+import Headphone2Img from "./../assets/Images/headphone2.png";
 import { Collapse, CardBody, Card } from "reactstrap";
 import Demo from "../store/Hashtag.js";
 import ModernDatepicker from "react-modern-datepicker";
 // import { UncontrolledPopover, PopoverBody } from "reactstrap";
-import BarChart from "../Component/PieChart/BarChart.js";
 import MultiBarChart from "../Component/PieChart/MultiBarChart.js";
-// import DatetimeRangePicker from 'react-bootstrap-datetimerangepicker';
-// import moment from 'moment';
-
-// import {
-//   Button,
-// } from 'react-bootstrap';
+import TicketToBillBarGraph from "../Component/PieChart/TicketToBillBarGraph";
+import TicketGenerationSourceBar from "../Component/PieChart/TicketGenerationSourceBar";
+import TicketToClaimMultiBar from "../Component/PieChart/TicketToClaimMultiBar";
 
 class Dashboard extends Component {
   constructor(props) {
@@ -42,18 +39,10 @@ class Dashboard extends Component {
       open: false,
       StatusModel: false,
       Schedule: false,
+      AssignModal: false,
+      TicketTabIndex: "bill-graph-tab",
       // startDate: "",
-      date: [new Date(), new Date()],
-      // startDate: moment().subtract(29, 'days'),
-      // endDate: moment(),
-      // ranges: {
-      //   'Today': [moment(), moment()],
-      //   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-      //   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-      //   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-      //   'This Month': [moment().startOf('month'), moment().endOf('month')],
-      //   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-      // },
+      date: [new Date(), new Date()]
     };
     this.toggle = this.toggle.bind(this);
     this.toggleSearch = this.toggleSearch.bind(this);
@@ -82,21 +71,17 @@ class Dashboard extends Component {
   ScheduleCloseModel = () => {
     this.setState({ Schedule: false });
   };
+  handleAssignModalOpen() {
+    this.setState({ AssignModal: true });
+  }
+  handleAssignModalClose() {
+    this.setState({ AssignModal: false });
+  }
 
   openModal = () => {
     this.setState({ modalIsOpen: true });
   };
-  // handleChange(date) {
-  //   this.setState({
-  //     startDate: date
-  //   });
-  // }
-  // handleApply(event, picker) {
-  //   this.setState({
-  //     startDate: picker.startDate,
-  //     endDate: picker.endDate,
-  //   });
-  // }
+
   closeModal = () => {
     this.setState({ modalIsOpen: false });
   };
@@ -106,8 +91,12 @@ class Dashboard extends Component {
   StatusCloseModel() {
     this.setState({ StatusModel: false });
   }
-  HandleChangeRedict(){
+  HandleChangeRedict() {
     this.props.history.push("/admin/chatdashboard");
+  }
+  handlechangebtntab(e) {
+    var idIndex = e.target.id;
+    this.setState({ TicketTabIndex: idIndex });
   }
   onChange = date => this.setState({ date });
   render() {
@@ -120,15 +109,9 @@ class Dashboard extends Component {
     ) : (
       <img className="search-icon" src={SearchIcon} alt="search-icon" />
     );
-    // let start = this.state.startDate.format('YYYY-MM-DD');
-    // let end = this.state.endDate.format('YYYY-MM-DD');
-    // let label = start + ' - ' + end;
-    // if (start === end) {
-    //   label = start;
-    // }
 
     return (
-      <div>
+      <Fragment>
         <div className="container-fluid dash-dropdowns">
           <div className="d-flex">
             <div>
@@ -156,48 +139,7 @@ class Dashboard extends Component {
                   className="datePicketArrow"
                 />
               </label>
-              {/* <DatetimeRangePicker
-            startDate={this.state.startDate}
-            endDate={this.state.endDate}
-            onApply={this.handleApply}
-          >
-            <div className="input-group">
-              <input type="text" className="form-control" value={label}/>
-                <span className="input-group-btn">
-                    <Button className="default date-range-toggle">
-                      <i className="fa fa-calendar"/>
-                    </Button>
-                </span>
-            </div>
-          </DatetimeRangePicker> */}
-
-              {/* <ModernDatepicker
-                  date={this.state.startDate}
-                  format={"DD-MM-YYYY"}
-                  className="cXcRo"
-                  showBorder
-                  onChange={date => this.handleChange(date)}
-                  placeholder={"Select a date"}
-                /> */}
-              {/* <UncontrolledPopover
-                trigger="legacy"
-                placement="auto"
-                target="lastDatepicker"
-                className="general-popover delete-popover"
-              >
-                <PopoverBody className="d-flex">
-                  <div>
-                     <ModernDatepicker
-                      date={this.state.startDate}
-                      format={"DD-MM-YYYY"}
-                      className="cXcRo"
-                      showBorder
-                      onChange={date => this.handleChange(date)}
-                      placeholder={"Select a date"}
-                    /> 
-                  </div>
-                </PopoverBody>
-              </UncontrolledPopover> */}
+              {/*  </DatetimeRangePicker> */}
             </div>
           </div>
         </div>
@@ -267,6 +209,8 @@ class Dashboard extends Component {
                               role="tab"
                               aria-controls="bill-graph-tab"
                               aria-selected="true"
+                              id="bill-graph-tab"
+                              onClick={this.handlechangebtntab.bind(this)}
                             >
                               Tickets to bill graph
                             </a>
@@ -279,6 +223,8 @@ class Dashboard extends Component {
                               role="tab"
                               aria-controls="source-tab"
                               aria-selected="false"
+                              id="source-tab"
+                              onClick={this.handlechangebtntab.bind(this)}
                             >
                               Tickets generation source tab
                             </a>
@@ -306,7 +252,7 @@ class Dashboard extends Component {
                                 </ul>
                               </div>
                               <div className="col-md-9 tic-bill-graph">
-                                <BarChart />
+                                <TicketToBillBarGraph />
                               </div>
                             </div>
                           </div>
@@ -316,7 +262,24 @@ class Dashboard extends Component {
                             role="tabpanel"
                             aria-labelledby="source-tab"
                           >
-                            <BarChart />
+                            <div className="row">
+                              <div className="col-md-3">
+                                <ul className="bill-graph-list">
+                                  <li>
+                                    Offline : <b>20/100</b>
+                                  </li>
+                                  <li>
+                                    Web : <b>10/80</b>
+                                  </li>
+                                  <li>
+                                    Mobile : <b>5/100</b>
+                                  </li>
+                                </ul>
+                              </div>
+                              <div className="col-md-9 tic-bill-graph">
+                                <TicketGenerationSourceBar />
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -394,7 +357,7 @@ class Dashboard extends Component {
                             role="tabpanel"
                             aria-labelledby="claim-tab"
                           >
-                            <BarChart />
+                            <TicketToClaimMultiBar />
                           </div>
                         </div>
                       </div>
@@ -607,14 +570,162 @@ class Dashboard extends Component {
                                     </div>
                                   </div>
                                 </Modal>
-                                <button className="btn-inv btn-dis">
-                                  <img
-                                    src={Assign}
-                                    className="assign-icon"
-                                    alt="assign-icon"
-                                  />
-                                  Assign
-                                </button>
+                                {this.state.TicketTabIndex === "source-tab" ? (
+                                  <button
+                                    className="btn-inv"
+                                    onClick={this.handleAssignModalOpen.bind(
+                                      this
+                                    )}
+                                  >
+                                    <img
+                                      src={Assign}
+                                      className="assign-icon"
+                                      alt="assign-icon"
+                                    />
+                                    Assign
+                                  </button>
+                                ) : <button
+                                className="btn-inv btn-dis"
+                              >
+                                <img
+                                  src={Assign}
+                                  className="assign-icon"
+                                  alt="assign-icon"
+                                />
+                                Assign
+                              </button>}
+                                <Modal
+                                  onClose={this.handleAssignModalClose.bind(
+                                    this
+                                  )}
+                                  open={this.state.AssignModal}
+                                  modalId="AssignPop-up"
+                                >
+                                  <div className="assign-modal-headerDashboard">
+                                    <img
+                                      src={BlackLeftArrow}
+                                      alt="black-left-arrow-icon"
+                                      className="black-left-arrow"
+                                      onClick={this.handleAssignModalClose.bind(
+                                        this
+                                      )}
+                                    />
+                                    <label className="claim-details">
+                                      Assign Tickets To
+                                    </label>
+                                    <img
+                                      src={SearchBlackImg}
+                                      alt="SearchBlack"
+                                      className="black-left-arrow srch-mleft-spc"
+                                    />
+                                  </div>
+                                  <div className="assign-modal-div">
+                                    <input
+                                      type="text"
+                                      className="txt-1 txt-btmSpace"
+                                      placeholder="First Name"
+                                    />
+                                    <input
+                                      type="text"
+                                      className="txt-1 txt-btmSpace"
+                                      placeholder="Last Name"
+                                    />
+                                    <input
+                                      type="text"
+                                      className="txt-1 txt-btmSpace"
+                                      placeholder="Email"
+                                    />
+                                    <div className="txt-btmSpace">
+                                      <select
+                                        id="inputState"
+                                        className="form-control dropdown-setting"
+                                      >
+                                        <option>Select</option>
+                                        <option>Designation</option>
+                                      </select>
+                                    </div>
+                                    <button
+                                      className="butn assign-btn"
+                                      type="button"
+                                    >
+                                      SEARCH
+                                    </button>
+                                    <a href="#!" className="anchorTag-clear">
+                                      CLEAR
+                                    </a>
+                                  </div>
+                                  <div className="assign-modal-body">
+                                    <table>
+                                      <thead>
+                                        <tr>
+                                          <th>Agent</th>
+                                          <th>Designation</th>
+                                          <th>Email</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <tr>
+                                          <td>
+                                            <img
+                                              src={Headphone2Img}
+                                              alt="headphone"
+                                              className="oval-55 assign-hdphone"
+                                            />
+                                            Naman.R
+                                          </td>
+                                          <td>Supply</td>
+                                          <td>naman@flipkart.com</td>
+                                        </tr>
+                                        <tr>
+                                          <td>
+                                            <img
+                                              src={Headphone2Img}
+                                              alt="headphone"
+                                              className="oval-55 assign-hdphone"
+                                            />
+                                            Nidhi.J
+                                          </td>
+                                          <td>Supply</td>
+                                          <td>naman@flipkart.com</td>
+                                        </tr>
+                                        <tr>
+                                          <td>
+                                            <img
+                                              src={Headphone2Img}
+                                              alt="headphone"
+                                              className="oval-55 assign-hdphone"
+                                            />
+                                            Rashmi.C
+                                          </td>
+                                          <td>Supply</td>
+                                          <td>naman@flipkart.com</td>
+                                        </tr>
+                                        <tr>
+                                          <td>
+                                            <img
+                                              src={Headphone2Img}
+                                              alt="headphone"
+                                              className="oval-55 assign-hdphone"
+                                            />
+                                            Juhi.H
+                                          </td>
+                                          <td>Supply</td>
+                                          <td>naman@flipkart.com</td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                    <textarea
+                                      className="assign-modal-textArea"
+                                      placeholder="Add Remarks"
+                                    ></textarea>
+                                    <button
+                                      className="assign-butn btn-assign-tikcet"
+                                      type="button"
+                                    >
+                                      ASSIGN TICKETS
+                                    </button>
+                                  </div>
+                                </Modal>
                               </div>
                             </div>
                           </div>
@@ -2409,7 +2520,7 @@ class Dashboard extends Component {
             </ul>
           </div>
         </Modal>
-      </div>
+      </Fragment>
     );
   }
 }

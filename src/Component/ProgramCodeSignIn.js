@@ -19,8 +19,7 @@ class ProgramCodeSignIn extends Component {
                 <img src={logo} style={{ width: "210px" }} alt="logo" />
               </div>
               <h3
-                className="mb-3"
-                style={{ textAlign: "left", fontWeight: "300" }}
+                className="sign-in"
               >
                 SIGN IN
               </h3>

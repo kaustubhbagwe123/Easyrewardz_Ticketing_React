@@ -8,6 +8,8 @@ import StoreTaskView from "./StoreTaskView";
 import CreateCRMRoles from "./CreateCRMRoles";
 import CategoryMaster from "./CategoryMaster";
 import CreateSLA from "./CreateSLA";
+import EditStoreTask from "./EditStoreTask";
+import StoreTaskByTicket from "./StoreTaskByTicket";
 // import "./styles.css";
 // import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 export class StoreApp extends Component {
@@ -42,6 +44,8 @@ export class StoreApp extends Component {
           component={CreateCRMRoles}
         />
         <Route exact path={`${match.url}/sla`} component={CreateSLA} />
+        <Route exact path={`${match.url}/editStoreTask`} component={EditStoreTask} />
+        <Route exact path={`${match.url}/storeTaskByTicket`} component={StoreTaskByTicket} />
       
       </StoreLayout>
     );

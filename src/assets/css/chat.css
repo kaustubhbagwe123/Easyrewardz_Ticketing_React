@@ -1,137 +1,131 @@
 /* ------------------- for chat-dashborad start ----------------------- */
 
-.Chat-main-header{
-    background-color: #ECF2F4;
-    width: auto;
-    height: 57px;
-  }
-
-  .lable-text{
-    color: #4A4A4A;
-    font-family: Lato;
-    font-size: 16px;
-    font-weight: 300;
-    line-height: 19px;
-    text-align: left;
-  }
-
-  .text-center-header{
-
-    padding: 15px;
-  
-
-  }
-.text-center-margin{
-    margin-left: 5px;
+.Chat-main-header {
+  background-color: #ecf2f4;
+  width: auto;
+  height: 57px;
 }
 
-  .sort-down-arrow{
-    opacity: 0.2647758152173913;
-    width: 20px;
-    height: 15px;
-    margin-left: 5px;
-  }
-
-  .container-fluid {
-    width: 100%;
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
+.lable-text {
+  color: #4a4a4a;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 19px;
+  text-align: left;
 }
-.Chat-main-header .row{
-    margin: 0px;
+
+.text-center-header {
+  padding: 15px;
 }
-.team-mamber-card{
-    background-color: #FFFFFF;
-    border-radius: 4px;
-    width: 294px;
-    height: 191px;
-    margin-top: 15px;
-  }
-  .response-speed-card{
-    background-color: #FFFFFF;
-    border-radius: 4px;
-    width: 610px;
-    height: 194px;
-    margin-top: 15px;
-  }
-  .chat-status-card{
-    
-    background-color: #FFFFFF;
-    border-radius: 4px;
-    width: 289px;
-    height: 194px;
-    margin-top: 15px;
-  }
+.text-center-margin {
+  margin-left: 5px;
+}
 
-  .chat-score-card{
-    background-color: #FFFFFF;
-    border-radius: 4px;
-    width: 605px;
-    height: 243px;
-  }
+.sort-down-arrow {
+  opacity: 0.2647758152173913;
+  width: 20px;
+  height: 15px;
+  margin-left: 5px;
+  cursor: pointer;
+}
 
-  .chat-live-card{
-    background-color: #FFFFFF;
-    border-radius: 4px;
-    width: 608px;
-    height: 243px;
-  }
+.container-fluid {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+.Chat-main-header .row {
+  margin: 0px;
+}
+.team-mamber-card {
+  background-color: #ffffff;
+  border-radius: 4px;
+  /* width: 294px; */
+  height: 191px;
+  margin-top: 15px;
+}
+.response-speed-card {
+  background-color: #ffffff;
+  border-radius: 4px;
+  /* width: 610px; */
+  height: 194px;
+  margin-top: 15px;
+}
+.chat-status-card {
+  background-color: #ffffff;
+  border-radius: 4px;
+  /* width: 289px; */
+  height: 194px;
+  margin-top: 15px;
+}
 
-  .total-chat-card{
-    background-color: #FFFFFF;
-    border-radius: 4px;
-    width: 929px;
-    height: 243px;
-  }
+.chat-score-card {
+  background-color: #ffffff;
+  border-radius: 4px;
+  /* width: 605px; */
+  height: 243px;
+}
 
-  .missed-chat-card{
-    background-color: #FFFFFF;
-    border-radius: 4px;
-    width: 289px;
-    height: 243px;
-  }
+.chat-live-card {
+  background-color: #ffffff;
+  border-radius: 4px;
+  /* width: 608px; */
+  height: 243px;
+}
 
- .card-titel{
-   
-        color: #4A4A4A;
-        font-family: Lato;
-        font-size: 16px;
-        font-weight: 700;
-        line-height: 19px;
-        width: 188px;
-        text-align: left;
-        padding: 15px;
-      }
+.total-chat-card {
+  background-color: #ffffff;
+  border-radius: 4px;
+  /* width: 929px; */
+  height: 243px;
+}
 
-      .aside-cont-new-1 {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: calc(100% - 63px);
-    }
-    .aside-cont-3{
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: calc(100% - 35px);
-  }
-  
-    .card-content-number{
-        color: #4A4A4A;
-        font-family: Lato;
-        font-size: 28px;
-        font-weight: 300;
-        line-height: 34px;
-        width: 50px;
-        text-align: left;
-        /* padding-left: 18px; */
+.missed-chat-card {
+  background-color: #ffffff;
+  border-radius: 4px;
+  /* width: 289px; */
+  height: 243px;
+}
 
-    }
-    .card-content-text
-    {
-        color: #4A4A4A;
+.card-titel {
+  color: #4a4a4a;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19px;
+  width: 100%;
+  text-align: center;
+  padding-top: 15px;
+}
+
+.aside-cont-new-1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100% - 63px);
+}
+.aside-cont-3 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100% - 35px);
+}
+
+.card-content-number {
+  color: #4a4a4a;
+  font-family: Lato;
+  font-size: 28px;
+  font-weight: 300;
+  line-height: 34px;
+  width: 50px;
+  text-align: left;
+  /* padding-left: 18px; */
+}
+.card-content-text {
+  color: #4a4a4a;
   font-family: Lato;
   font-size: 10px;
   font-weight: 700;
@@ -139,106 +133,103 @@
   width: 78px;
   text-align: left;
   margin-top: 8px;
-    }
-    .response-speed-dropdown{
-        background-color: #ECF2F4 !important;
-        border-radius: 4px;
-        width: 147px;
-        height: 35px;
-        border: none;
-        float: right;
-        margin-right: 15px;
-    margin-top: 10px;
-    background: url("../Images//table-arr.png") no-repeat right 8px center;
-      }
+}
 
-      .select-text{
-        color: #6E6E6E;
-        font-family: Lato;
-        font-size: 14px;
-        font-weight: 400;
-        line-height: 17px;
-        text-align: left;
-        padding-left: 10px;
-      }
+.response-speed-dropdown {
+  background-color: #ecf2f4 !important;
+  border-radius: 4px;
+  width: 140px;
+  height: 35px;
+  border: none;
+  float: right;
+  margin-right: 15px;
+  margin-top: 10px;
+  background: url("../Images//table-arr.png") no-repeat right 8px center;
+  background-size: 15px;
+  cursor: pointer;
+}
 
+.select-text {
+  color: #6e6e6e;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  text-align: left;
+  padding-left: 10px;
+}
 
-      .response-card-content-text {
-        color: #4A4A4A;
-    font-family: Lato;
-    font-size: 10px;
-    font-weight: 700;
-    line-height: 12px;
-    width: auto;
-    text-align: left;
-    margin-top: 8px;
-    }
+.response-card-content-text {
+  color: #4a4a4a;
+  font-family: Lato;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 12px;
+  width: auto;
+  text-align: left;
+  margin-top: 8px;
+}
 
-    .aside-cont-1{
+.aside-cont-1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100% - 108px);
+}
 
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: calc(100% - 108px)
-    }
-
-    .missed-chat-30{
-        color: #4A4A4A;
+.missed-chat-30 {
+  color: #4a4a4a;
   font-family: Lato;
   font-size: 36px;
   font-weight: 300;
   line-height: 43px;
   width: 117px;
   text-align: left;
-    }
-
-    .missed-chat-small-text{
-
-        color: #4A4A4A;
-        font-family: Lato;
-        font-size: 12px;
-        font-weight: 500;
-        line-height: 14px;
-        text-align: left;
-        padding: 0px 5px;
-    }
-
-.card-content-number .response-small{
-    display: inline;
-    font-weight: 200;
-    font-size:18px; 
+}
+.missed-chat-small-text {
+  color: #4a4a4a;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 14px;
+  text-align: left;
+  padding: 0px 4px;
 }
 
-.response-row{
-
-    margin: 35px 20px 0px 35px;
+.card-content-number .response-small {
+  display: inline;
+  font-weight: 200;
+  font-size: 18px;
 }
 
-.team-member-center-text
-{
-    text-align: center;
-    }
+.response-row {
+  margin: 35px 20px 0px 35px;
+}
+
+.team-member-center-text {
+  text-align: center;
+}
 .team-member-30{
-    text-align: center;
-    padding-left: 125px;
-    padding-top: 28px;
+  text-align: center;
+  width: 100%;
+  /* padding-left: 125px; */
+  /* padding-top: 28px; */
 }
 
-.team-member-p{
-    display: flex;
-    padding: 10px 46px;
+.team-member-p {
+  display: flex;
+  padding: 10px 46px;
 }
 
-.float-search-chat{  
-  
-  border: 1px solid #F0F0F0; 
-  width: 204px;
+.float-search-chat {
+  border: 1px solid #f0f0f0;
+  width: 220px;
   height: 43px;
   top: 97px;
   z-index: 1;
   border-radius: 21.5px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.04);
-  position: absolute; 
+  position: absolute;
   left: 50%;
   transform: translateX(-50%);
   background-color: #fff;
@@ -247,9 +238,9 @@
 }
 
 .back-to-main-dashboa {
-  color: #2561A8;
+  color: #2561a8;
   font-family: Lato;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   line-height: 14px;
   text-align: left;
@@ -257,15 +248,23 @@
   padding-top: 15px;
   padding-left: 5px;
 }
-.removeleft-1 .row{
- 
-   
+.removeleft-1 .row {
   margin-right: -10px;
   /* margin-right: -12px; */
 }
 
-.addmargin .row{
-
-  margin-left:10px; 
+.addmargin .row {
+  margin-left: 10px;
 }
+/* dashboad css start by shlok */
+.apexcharts-legend.position-bottom.center, .apexcharts-legend.position-top.center {
+  /* justify-content: center; */
+  margin-bottom: 170px !important;
+  margin-left: 304px !important;
+}
+.ticketToTask-chart-1 .apexcharts-legend.position-bottom.center{
+  margin-bottom: 160px !important;
+    margin-left: 200px !important;
+}
+/* dashboad css end */
 /* -------------------------------------------------------------------- */

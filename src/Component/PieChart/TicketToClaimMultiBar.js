@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import Chart from 'react-apexcharts'
-class MultiBarChart extends Component {
+import Chart from 'react-apexcharts';
+
+class TicketToClaimMultiBar extends Component {
   constructor(props) {
     super(props);
   
@@ -38,4 +39,4 @@ class MultiBarChart extends Component {
   }
 }
 
-export default MultiBarChart;
+export default TicketToClaimMultiBar;

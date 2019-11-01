@@ -208,7 +208,7 @@ class QAAuditview extends Component {
                         className="Black-headphone"
                       />
                     </div>
-                    <div style={{ marginLeft: "10px" }}>
+                    <div style={{ marginLeft: "10px",fontWeight:"600" }}>
                       <label>Naman.R</label>
                     </div>
                     <div style={{ marginLeft: "10px" }}>

@@ -18,6 +18,7 @@
     "browserslist": "^4.7.0",
     "ckeditor4-react": "^1.0.0",
     "fusioncharts": "^3.14.0-sr.1",
+    "history": "^4.10.1",
     "jquery": "^3.4.1",
     "mdbreact": "^4.20.0",
     "multiselect-react-dropdown": "^1.2.4",

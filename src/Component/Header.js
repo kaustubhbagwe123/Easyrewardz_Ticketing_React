@@ -119,7 +119,8 @@ class Header extends Component {
       <React.Fragment>
         <div
           className="d-flex align-items-center justify-content-between"
-          style={{ background: "white" }}>
+          style={{ background: "white" }}
+        >
           <div className="d-flex">
             <div className="er">
               <label className="er-label">ER</label>
@@ -402,10 +403,12 @@ class Header extends Component {
                   <img src={UserLogo} alt="User" />
                 </div>
                 <div>
-                  <p>Naman Rampal</p>
+                  <p style={{ marginTop: "15px", marginBottom: "0" }}>
+                    Naman Rampal
+                  </p>
                   <p className="mail-id">naman@fabindia.com</p>
                 </div>
-                <button>LOGout</button>
+                <button style={{cursor:"pointer"}}>LOGOUT</button>
               </div>
               <div className="status-sctn">
                 <div className="d-flex align-items-center">

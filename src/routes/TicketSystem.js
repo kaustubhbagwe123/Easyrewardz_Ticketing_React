@@ -160,7 +160,7 @@ class TicketSystem extends Component {
                               </div>
                               <div
                                 className="col-md-4 Medium"
-                                style={{paddingLeft:'31px' }}
+                                style={{paddingLeft:'15px' }}
                               >
                                 <button className="">
                                   <label className="medium-button-text">
@@ -170,7 +170,7 @@ class TicketSystem extends Component {
                               </div>
                               <div
                                 className="col-md-4 Low"
-                                style={{ paddingLeft:'42px' }}
+                                style={{ paddingLeft:'15px' }}
                               >
                                 <button className="low-button">
                                   <label className="low-button-text">Low</label>

@@ -606,7 +606,6 @@ class Alerts extends Component {
                               aria-labelledby="customer-tab"
                             >
                               <label className="alert-main-popuplbl">
-                                {" "}
                                 Compose your Email
                               </label>
                               <div className="div-padding-alert">

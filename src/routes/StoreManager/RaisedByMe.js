@@ -1,13 +1,24 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import TableArr from "./../../assets/Images/table-arr.png";
 import InfoIcon from "./../../assets/Images/info-icon.png";
 import Demo from "../../store/Hashtag.js";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
-
+import {history} from './../../store/history'
 class RaisedByMe extends Component {
+  constructor(props) {
+    super(props)
+  
+    this.state = {
+       
+    }
+  }
+  handleChangeStoreTask(e) {
+    e.preventDefault();
+    history.push('/store/editStoreTask');
+  };
     render() {
         return (
-          <div>
+          <Fragment>
             <div className="table-cntr">
               <table>
                 <thead>
@@ -33,7 +44,7 @@ class RaisedByMe extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
+                  <tr onClick={this.handleChangeStoreTask.bind(this)}>
                     <td>ABC1234</td>
                     <td>
                       <span className="table-btn table-blue-btn">Open</span>
@@ -496,7 +507,7 @@ class RaisedByMe extends Component {
                 </ul>
               </div>
             </div>
-          </div>
+          </Fragment>
         );
     }
 }

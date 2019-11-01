@@ -70,32 +70,34 @@
 /* End header */
 /* ***************************** */
 /* Campaign tab css start */
-.closebtn{
-  background-color: #2561A8;
+.closebtn {
+  background-color: #2561a8;
   border-radius: 4px;
   width: 68px;
   height: 31px;
   min-width: 68px !important;
+  cursor: pointer;
 }
-.hdrcloselabel{
-  color: #FFFFFF;
+.hdrcloselabel {
+  color: #ffffff;
   font-family: Lato;
   font-size: 13px;
   font-weight: 500;
   line-height: 16px;
   text-align: left;
   text-transform: initial;
+  cursor: pointer;
 }
 .store button {
   padding: 0px;
 }
-.table-cntr-card .card-body{
+.table-cntr-card .card-body {
   padding: 0;
 }
 .table-cntr-card {
   height: 0;
 }
-.table-cntr-card table thead tr th{
+.table-cntr-card table thead tr th {
   color: #989898;
   font-family: Lato;
   font-size: 12px;
@@ -104,31 +106,31 @@
   width: 113px;
   text-align: left;
 }
-.contactBtnGreen{
-  background-color: #9CC541;
+.contactBtnGreen {
+  background-color: #9cc541;
   border-radius: 4px;
   box-shadow: inset 0 0 4px 0 rgba(0, 0, 0, 0.5);
   width: 81px;
   height: 31px;
 }
-.notConnectedBtnRed{
-    background-color: #C0505F;
-    border-radius: 4px;
-    box-shadow: inset 0 0 7px 0 rgba(0, 0, 0, 0.5);
-    width: 105px;
-    height: 31px;
-    text-transform: initial;
+.notConnectedBtnRed {
+  background-color: #c0505f;
+  border-radius: 4px;
+  box-shadow: inset 0 0 7px 0 rgba(0, 0, 0, 0.5);
+  width: 105px;
+  height: 31px;
+  text-transform: initial;
 }
-.followUpBtnYellow{
-  background-color: #F5A623;
+.followUpBtnYellow {
+  background-color: #f5a623;
   border-radius: 4px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5), inset 0 0 7px 0 rgba(0, 0, 0, 0.5);
   width: 78px;
   height: 31px;
   text-transform: initial;
 }
-.table-btnlabel{
-  color: #FFFFFF;
+.table-btnlabel {
+  color: #ffffff;
   font-family: Lato;
   font-size: 13px;
   font-weight: 700;
@@ -136,57 +138,58 @@
   text-align: left;
   text-transform: initial;
 }
-.saveBtn{
-  background-color: #ECF2F4;
-  border: 1px solid #2561A8;
+.saveBtn {
+  background-color: #ecf2f4;
+  border: 1px solid #2561a8;
   border-radius: 4px;
   width: 59px;
   height: 31px;
 }
-.saveLabel{
-  color: #2561A8;
+.saveLabel {
+  color: #2561a8;
   font-family: Lato;
   font-size: 13px;
   font-weight: 700;
   line-height: 16px;
   text-align: left;
-  text-transform: initial
+  text-transform: initial;
 }
-.raisedticket-Btn{
-  background-color: #2561A8;
+.raisedticket-Btn {
+  background-color: #2561a8;
   border-radius: 4px;
   width: 101px;
   height: 31px;
-  text-transform: initial
+  text-transform: initial;
 }
-.raise-ticketLbl{
-  color: #FFFFFF;
+.raise-ticketLbl {
+  color: #ffffff;
   font-family: Lato;
   font-size: 13px;
   font-weight: 700;
   line-height: 16px;
   text-align: left;
 }
-.txtStore{
+.txtStore {
   padding-top: 0px !important;
-  background: #E5E9ED url(/static/media/calendar-black.d0d589e5.svg) no-repeat right 15px center;
+  background: #e5e9ed url(/static/media/calendar-black.d0d589e5.svg) no-repeat
+    right 15px center;
 }
-.dateTimeStore{
-  background-color: #ECF2F4;
+.dateTimeStore {
+  background-color: #ecf2f4;
   border-radius: 4px;
   width: 183px;
   height: 31px;
   border: none;
   padding-left: 10px;
 }
-.responceDrop-down{
-  background-color: #ECF2F4;
-    border-radius: 4px;
-    width: 190px;
-    height: 31px;
-    padding-left: 12px;
+.responceDrop-down {
+  background-color: #ecf2f4;
+  border-radius: 4px;
+  width: 190px;
+  height: 31px;
+  padding-left: 12px;
 }
-  /* Compaign css End */
+/* Compaign css End */
 /* Shlok css end */
 /* --------------------------------------------- */
 
@@ -475,10 +478,13 @@
 .bill-graph-list {
   font-weight: 300;
   text-align: left;
+  margin-left: 25px;
+  margin-top: 30px;
 }
 .bill-graph-list li {
   padding: 4px 0;
   white-space: nowrap;
+  font-size: 15px;
 }
 .bill-graph-list li b {
   font-weight: 700;
@@ -495,16 +501,332 @@
 .tic-bill-graph .nvd3-svg {
   width: 100%;
 }
-.apexcharts-toolbar{
+.apexcharts-toolbar {
   display: none !important;
 }
-.opendonutChart .apexcharts-canvas .position-right{
+.opendonutChart .apexcharts-canvas .position-right {
   right: 40px !important;
 }
 /* Task by ticket css start */
-.taskByTable table th, .taskByTable table td{
+.taskByTable table th,
+.taskByTable table td {
   font-size: 12px;
   padding: 20px 20px;
 }
 /* css end */
+/* Edit Store Task page css start by Shlok */
+.edit-storeTask-header {
+  background-color: #ecf2f4;
+  width: 100%;
+  height: 57px;
+  padding: 15px 20px 0px;
+}
+.store-header-lbl {
+  color: #4a4a4a;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 19px;
+  text-align: left;
+}
+.btnstore-last {
+  display: block;
+  float: right;
+  margin-top: -8px;
+}
+.submitAs-reopen {
+  background-color: #2561a8;
+  border-radius: 4px;
+  width: 210px;
+  height: 43px;
+  margin-left: 20px;
+  cursor: pointer;
+}
+.store-Edit-lbl {
+  color: #9b9b9b;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19px;
+  text-align: left;
+  margin-bottom: 7px;
+}
+.store-card-padding {
+  padding: 20px 40px;
+  margin-left: -15px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  /* width: 780px; */
+}
+.store-edit-txt {
+  background-color: #ecf2f4;
+  border-radius: 4px;
+  height: 43px;
+  border: none;
+  padding: 10px;
+}
+.store-mrg {
+  margin-top: 20px;
+}
+.store-crmrole-Btn {
+  background-color: #2561a8;
+  color: #fff;
+  font-size: 14px;
+  padding: 3px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  min-width: 10px;
+}
+.textarea-store {
+  background-color: #ecf2f4;
+  border-radius: 4px;
+  width: 100%;
+  height: 148px;
+  resize: none;
+  border: none;
+  padding: 10px;
+}
+.textarea-store-comments {
+  background-color: #ecf2f4;
+  border-radius: 4px;
+  width: 100%;
+  height: 129px;
+  resize: none;
+  border: none;
+  padding: 10px;
+}
+.butn-store {
+  background-color: #2561a8;
+  color: #fff;
+  font-size: 14px;
+  padding: 8px 25px;
+  border-radius: 5px;
+  cursor: pointer;
+  height: 40px;
+  width: 155px;
+  float: right;
+  text-transform: uppercase;
+}
+.store-mrg-1 {
+  margin-top: 25px;
+}
+.store-hrLbl {
+  color: #000000;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  text-align: left;
+  float: right;
+}
+.naman-r-store {
+  color: #000000;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: left;
+  padding-left: 6px;
+  cursor: pointer;
+}
+.store-comment {
+  color: #9b9b9b;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: left;
+}
+.store-cmt-comment {
+  color: #505050;
+  font-family: Lato;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 16px;
+  text-align: left;
+  width: 100%;
+}
+.store-card-2 {
+  padding: 20px 30px;
+  margin-left: -60px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  width: 466px;
+  height: auto;
+}
+.naman-r-store-2 {
+  color: #000000;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: left;
+  cursor: pointer;
+}
+.store-edit-data {
+  color: #4a4a4a;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19px;
+  /* width: 100%; */
+  text-align: left;
+}
+.store-edit-data-1 {
+  color: #4a4a4a;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19px;
+  text-align: left;
+  /* padding-left: 7px; */
+}
+.store-mrg-3 {
+  margin-top: 25px;
+}
+.task-clouserDate {
+  color: #4a4a4a;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  text-align: left;
+  margin-top: 10px;
+}
+.store-date {
+  color: #4a4a4a;
+  font-family: Lato;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: left;
+}
+.progressbar-2 {
+  width: 75%;
+  margin-left: 6px;
+  margin-bottom: 3px;
+}
+.progressbar-lbl {
+  color: #4a4a4a;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: left;
+  float: right;
+  margin-right: 115px;
+}
+.store-hdrtMdal {
+  padding: 7px 113px 10px 20px;
+}
+.modal-lbl {
+  color: #2561a8;
+  font-size: 15px;
+  font-weight: 600;
+}
+.modal-lbl-1 {
+  color: #16cba3;
+  font-size: 15px;
+  font-weight: 600;
+}
+.modal-lbl-2 {
+  color: #696969;
+  font-size: 15px;
+  font-weight: 600;
+}
+#SubmitReopn-popup {
+  border-radius: 8px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+  padding: 10;
+  margin-right: 25px;
+  margin-top: 45px;
+  /* margin-bottom: 4px; */
+  display: inline-block;
+}
+.storeImg-11 {
+  height: 18px;
+  width: 19px;
+  margin: 7px;
+}
+.oval-5-1-new-store {
+  background-color: #f8e71c;
+  border-radius: 100%;
+  width: 32px;
+  height: 32px;
+  display: inline-block;
+}
+/*  css End edit Store Task*/
+/* Store Task by tikcet css start by Shlok */
+.store-header-task {
+  margin-top: -20px;
+  margin-left: -288px;
+}
+.headerBtn-store {
+  margin-top: -41px;
+  float: right;
+  margin-right: 20px;
+}
+.raisedClaim-storeBtn {
+  background-color: #2561a8;
+  border-radius: 4px;
+  width: 141px;
+  height: 43px;
+  margin-left: 20px;
+  cursor: pointer;
+}
+.raisedClaim-lbl {
+  color: #ffffff;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  text-align: left;
+  cursor: pointer;
+}
+.btn-store-resolved {
+  background-color: #2561a8;
+  border-radius: 4px;
+  height: 43px;
+  margin-left: 15px;
+  cursor: pointer;
+}
+.ImgBlue-lbl {
+  width: 20px;
+  height: 14px;
+  padding: 3px;
+  margin-left: 7px;
+}
+.noEditImg {
+  height: 18px;
+  width: 19px;
+  margin-left: 660px;
+  margin-top: -30px;
+}
+.noEditImg-1 {
+  height: 18px;
+  width: 19px;
+  margin-left: 660px;
+  margin-top: -252px;
+}
+.store-card-padding-ticket {
+  padding: 20px 40px;
+  margin-left: -15px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  width: 780px;
+  height: 100vh;
+}
+.hrMargin {
+  margin-top: 20px;
+  margin-bottom: 15px;
+}
+.newtab {
+  width: 100%;
+  background: none;
+  /* padding-top: 45px;
+    padding-bottom: 15px; */
+  padding-left: 0;
+  padding-right: 0;
+}
+/*  Store Task by tikcet css end*/
 /* ----------------------------------------------- */

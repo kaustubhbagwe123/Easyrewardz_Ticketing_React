@@ -263,7 +263,7 @@ class CreatePriority extends Component {
       {
         title: "Action",
         dataIndex: "action",
-        key: "action"
+        key: "action",
       }
     ];
   }

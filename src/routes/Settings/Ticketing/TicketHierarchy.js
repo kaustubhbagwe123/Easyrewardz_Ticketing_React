@@ -67,7 +67,7 @@ class TicketHierarchy extends Component {
                         <th>
                           Status <img src={TableArr} alt="table-arr" />
                         </th>
-                        <th>Actions</th>
+                        <th style={{float:'left',marginLeft:'15px'}}>Actions</th>
                       </tr>
                     </thead>
                     <tbody>

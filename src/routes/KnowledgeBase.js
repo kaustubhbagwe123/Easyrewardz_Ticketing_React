@@ -130,7 +130,7 @@ class KnowledgeBase extends Component {
                     <th>Type</th>
                     <th>Category</th>
                     <th>Sub catogory</th>
-                    <th>Action</th>
+                    <th className="pad">Action</th>
                   </tr>
                 </thead>
                 <tbody>

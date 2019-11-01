@@ -26,6 +26,7 @@
   height: 39px;
   margin-left: -40px;
   min-width: auto;
+  cursor: pointer;
 }
 .downloadQualityCss {
   width: 12px;
@@ -64,17 +65,18 @@
   width: 144px;
   height: 43px;
   margin-left: 16px;
-  margin-top: 31px;
+  margin-top: 44px;
+  cursor: pointer;
 }
 .labelSearch {
   color: #ffffff;
   font-family: Lato;
   font-size: 15px;
-  font-size: 14px;
   font-weight: 400;
   line-height: 17px;
   text-align: left;
   text-transform: initial;
+  cursor: pointer;
 }
 .rowMargin {
   margin-left: -27px !important;
@@ -120,6 +122,7 @@
   background: #fff url("./../Images//table-arr.png") no-repeat right 20px center;
   background-size: 13px;
   color: #a7a7a7;
+  cursor: pointer;
 }
 .table-expandable-sctn2 .tab-content .row {
   padding: 20px 0;
@@ -211,6 +214,8 @@
   width: 185px;
   height: 43px;
   float: right;
+  cursor: pointer;
+  line-height: 0;
 }
 .view-searchLabl {
   color: #ffffff;
@@ -219,6 +224,7 @@
   font-weight: 400;
   line-height: 17px;
   text-align: left;
+  cursor: pointer;
 }
 /* .container-fluid .all-row{
     padding-left: 10px !important;
@@ -328,6 +334,7 @@
   width: 158px;
   height: 31px;
   border: none;
+  padding: 10px;;
 }
 .msg-row .col-md-2 {
   padding: 0px;
@@ -401,11 +408,14 @@
 .qa-detials-row {
   display: flex;
 }
-.down-icon {
-  margin-left: 20px;
-  width: 21px;
-  height: 21px;
-}
+/* .down-icon {
+  margin-left: 10px;
+  margin-top: 10px;
+  cursor: pointer;
+  width: 15px;
+  height: 10px;
+  padding: 0;
+} */
 
 .name-text {
   color: #4a4a4a;
@@ -436,6 +446,7 @@
   border-radius: 4px;
   width: 304px;
   height: 43px;
+  cursor: pointer;
 }
 .calculate-button-text {
   color: #ffffff;
@@ -444,6 +455,7 @@
   font-weight: 400;
   line-height: 17px;
   text-align: left;
+  cursor: pointer;
 }
 .collap-head-text {
   color: #4a4a4a;
@@ -507,10 +519,12 @@
   width: 22px;
   height: 22px;
 }
-.bluedownarrow {
-  width: 21px;
-  height: 21px;
-}
+/* .bluedownarrow {
+  width: 15px;
+  height: 10px;
+  padding: 0;
+  cursor: pointer;
+} */
 
 .qa-flex {
   padding: 13px;
@@ -575,13 +589,13 @@
   line-height: 100%;
 }
 
-.qa-textbox {
+/* .qa-textbox {
   background-color: #ecf2f4;
   border-radius: 4px;
   width: 158px;
   height: 31px;
   border: none;
-}
+} */
 .msg-row .col-md-2 {
   padding: 0px;
 }
@@ -661,9 +675,9 @@
   border-radius: 0px !important;
 }
 .down-icon {
-  margin-left: 20px;
-  width: 21px;
-  height: 21px;
+  margin-left: 10px;
+  width: 15px;
+  height: 10px;
 }
 .collapsebutton .toggle-button-blue {
   min-width: 0;
@@ -769,8 +783,8 @@
   height: 22px;
 }
 .bluedownarrow {
-  width: 21px;
-  height: 21px;
+  width: 15px;
+  height: 10px;
 }
 
 .QA-card-2 .row .col-md-3 .row {
@@ -783,7 +797,7 @@
 
 .v3-new-1 {
   border: 1px solid #dfdfdf;
-  width: 118%;
+  width: 110%;
   margin-top: 3.6%;
 }
 
@@ -793,19 +807,22 @@
   font-size: 12px;
   font-weight: 700;
   line-height: 14px;
-  text-align: left;
-  padding-left: 37px;
+  text-align: center;
+  width: 100%;
+  /* padding-left: 37px; */
 }
 
 .v4-new-1 {
   border: 1px solid #dfdfdf;
-  width: 113%;
+  width: 110%;
   margin-top: 3.6%;
-  margin-left: -13.5%;
+  margin-left: -8.5%;
 }
 .up-1-1 {
-  width: 22px;
-  height: 16px;
+  width: 15px;
+  height: 10px;
+  padding: 0;
+  cursor: pointer;
   margin: 7px;
   margin-left: 57%;
 }
@@ -832,12 +849,13 @@
   font-size: 12px;
   font-weight: 700;
   line-height: 14px;
-  text-align: left;
-  padding-left: 23px;
+  text-align: center;
+  width: 100%;
+  /* padding-left: 23px; */
 }
 .v3-1-1 {
   border: 1px solid #dfdfdf;
-  width: 113%;
+  width: 110%;
   margin-top: 3.6%;
 }
 .v6-1-1 {
@@ -975,6 +993,7 @@ padding: 5px 40px;
   border-bottom: 1px solid #f1f1f1;
   padding: 20px 0px;
   position: relative;
+  cursor: pointer;
 }
 .btn-default.btn-on.active {
   background-color: #2561a8;
@@ -1019,7 +1038,7 @@ padding: 5px 40px;
   width: 535px;
   height: 94px;
   margin-left: 35px;
-  margin-top: 30px;
+  margin-top: 50px;
 }
 .Chat-Satisfaction-chat-good {
   height: 94px;
@@ -1039,15 +1058,17 @@ padding: 5px 40px;
   width: auto;
 }
 .Chat-Satisfaction-chat-detail {
-  padding: 30px 20px;
+  padding: 35px 30px;
+  font-size: 16px;
 }
 
 .good-bad-text {
   color: #4a4a4a;
   font-family: Lato;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   line-height: 14px;
-  width: 63px;
-  text-align: left;
+  /* width: 63px;
+  text-align: left; */
 }
+/* Css End */

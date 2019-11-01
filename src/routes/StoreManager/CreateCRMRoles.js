@@ -199,7 +199,7 @@ class CreateCRMRoles extends Component {
                               </div>
                             </PopoverBody>
                           </UncontrolledPopover>
-                          <button className="butn" id="crm-edit-pop-1">
+                          <button className="store-crmrole-Btn" id="crm-edit-pop-1">
                             <label className="Table-action-edit-button-text">
                               EDIT
                             </label>
@@ -494,7 +494,7 @@ class CreateCRMRoles extends Component {
                               </div>
                             </PopoverBody>
                           </UncontrolledPopover>
-                          <button className="butn" id="crm-edit-pop-2">
+                          <button className="store-crmrole-Btn" id="crm-edit-pop-2">
                             <label className="Table-action-edit-button-text">
                               EDIT
                             </label>
@@ -789,7 +789,7 @@ class CreateCRMRoles extends Component {
                               </div>
                             </PopoverBody>
                           </UncontrolledPopover>
-                          <button className="butn" id="crm-edit-pop-3">
+                          <button className="store-crmrole-Btn" id="crm-edit-pop-3">
                             <label className="Table-action-edit-button-text">
                               EDIT
                             </label>
@@ -1084,7 +1084,7 @@ class CreateCRMRoles extends Component {
                               </div>
                             </PopoverBody>
                           </UncontrolledPopover>
-                          <button className="butn" id="crm-edit-pop-4">
+                          <button className="store-crmrole-Btn" id="crm-edit-pop-4">
                             <label className="Table-action-edit-button-text">
                               EDIT
                             </label>
@@ -1379,7 +1379,7 @@ class CreateCRMRoles extends Component {
                               </div>
                             </PopoverBody>
                           </UncontrolledPopover>
-                          <button className="butn" id="crm-edit-pop-5">
+                          <button className="store-crmrole-Btn" id="crm-edit-pop-5">
                             <label className="Table-action-edit-button-text">
                               EDIT
                             </label>

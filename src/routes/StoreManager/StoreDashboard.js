@@ -197,7 +197,7 @@ class StoreDashboard extends Component {
                               aria-controls="date-tab"
                               aria-selected="true"
                             >
-                              Task: <span>06</span>
+                              Task: <span className="task06">06</span>
                             </a>
                           </li>
 

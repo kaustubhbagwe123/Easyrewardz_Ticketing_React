@@ -305,8 +305,8 @@ class ChatDashboard extends Component{
                       </div>
                     </div>
                     <div style={{marginTop:"10px"}}>
-                      <label className="good-bad-text" style={{float:"left",paddingLeft:"20px"}}>Good</label>
-                      <label className="good-bad-text" style={{float:"right"}}>Bad</label>
+                      <label className="good-bad-text" style={{float:"left",paddingLeft:"35px"}}>Good</label>
+                      <label className="good-bad-text" style={{float:"right",paddingRight:'170px'}}>Bad</label>
                     </div>
                   </div>
                 </div>

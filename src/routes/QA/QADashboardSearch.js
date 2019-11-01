@@ -365,6 +365,7 @@ class QADashboardSearch extends Component {
                                     type="text"
                                     className="txtQASearch"
                                     placeholder="Ticket Resolution Date"
+                                    style={{display:'block'}}
                                   />
                                 </div>
                               </div>

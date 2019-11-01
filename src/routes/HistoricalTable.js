@@ -2,7 +2,7 @@ import React from 'react';
 
 function HistoricalTable(){
     return(
-        <div className="table-scrolling historyTable">
+        <div className="table-scrolling historyTable remov">
             <table>
                 <thead>
                     <tr>
