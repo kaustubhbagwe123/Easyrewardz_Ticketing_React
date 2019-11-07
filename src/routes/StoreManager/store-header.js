@@ -11,10 +11,9 @@ import DashboardLogoBlue from "./../../assets/Images/dashboardBlue.png";
 import SettingLogoBlue from "./../../assets/Images/setting-blue.png";
 import ClaimLogoBlue from "./../../assets/Images/claim-blue.png";
 // import CalendarLogoBlue from "./../../assets/Images/calendar-blue.png";
-import Demo from "./../../store/Hashtag";
 import TicketLogoBlue from "./../../assets/Images/ticket-blue.png";
-// import KnowledgeLogo from "./../../assets/Images/knowledge.png";
 import ChatLogoBlue from "./../../assets/Images/chat-blue.png";
+import {Link} from 'react-router-dom';
 
 class Header extends Component {
   state = {
@@ -236,7 +235,7 @@ class Header extends Component {
             <img src={Hamb} alt="hamburger icon" />
           </div>
           <div className="headers-menu">
-            <a href="/store/storedashboard" className="single-menu">
+            <Link to="storedashboard" className="single-menu">
               <div className="header-icons-cntr">
                 <img
                   src={DashboardLogo}
@@ -251,7 +250,7 @@ class Header extends Component {
                 />
               </div>
               Dashboards
-            </a>
+            </Link>
             {/* <a href={Demo.BLANK_LINK} className="single-menu">
               <div className="header-icons-cntr">
                 <img
@@ -268,7 +267,7 @@ class Header extends Component {
               </div>
               Store Issues
             </a> */}
-            <a href="StoreTask" className="single-menu">
+            <Link to="StoreTask" className="single-menu">
               <div className="header-icons-cntr">
                 <img
                   src={TicketLogo}
@@ -283,7 +282,7 @@ class Header extends Component {
                 />
               </div>
               Task
-            </a>
+            </Link>
             {/* <a href={Demo.BLANK_LINK} className="single-menu">
               <div className="header-icons-cntr">
                 <img
@@ -328,7 +327,7 @@ class Header extends Component {
               </div>
               Task
             </a> */}
-            <a href={Demo.BLANK_LINK} className="single-menu">
+            <Link to="claim" className="single-menu">
               <div className="header-icons-cntr">
                 <img
                   src={ClaimLogo}
@@ -343,7 +342,7 @@ class Header extends Component {
                 />
               </div>
               Claim
-            </a>
+            </Link>
             {/* <a href={Demo.BLANK_LINK} className="single-menu">
               <div className="header-icons-cntr">
                 <img

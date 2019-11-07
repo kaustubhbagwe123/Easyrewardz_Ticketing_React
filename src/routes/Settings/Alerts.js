@@ -269,7 +269,7 @@ class Alerts extends Component {
     const columns = [
       {
         Header: (
-          <span>
+          <span className="table-column">
             Alert Type
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
@@ -286,7 +286,7 @@ class Alerts extends Component {
       {
         id: "createdBy",
         Header: (
-          <span>
+          <span className="table-column">
             Created by
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
@@ -295,17 +295,18 @@ class Alerts extends Component {
       },
       {
         Header: (
-          <span>
+          <span className="table-column">
             Status
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
         accessor: "status"
+        
       },
       {
         Header: "Actions",
         accessor: "action",
-        sortable: false
+        sortable: false,
       }
     ];
     return (
@@ -327,7 +328,7 @@ class Alerts extends Component {
                   <ReactTable
                     data={data}
                     columns={columns}
-                    resizable={false}
+                    // resizable={false}
                     defaultPageSize={5}
                     showPagination={false}
                   />

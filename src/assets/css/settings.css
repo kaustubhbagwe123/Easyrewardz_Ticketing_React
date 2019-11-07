@@ -19,7 +19,7 @@
 /* chetan settings starts */
 .setting-title {
   background-color: #ecf2f4;
-  padding: 18px 35px 1px !important;
+  padding: 18px 35px !important;
 }
 .setting-title p {
   font-size: 20px;
@@ -44,6 +44,14 @@
   background-color: #2561a8;
   color: #fff;
   padding: 7px 30px;
+  font-weight: 500;
+  font-size: 16px;
+}
+.setting-tabs .es .nav-link.active {
+  border: none;
+  background-color: #dbe4e7;
+  color: #2561a8;
+  padding: 7px 20px;
   font-weight: 500;
   font-size: 16px;
 }
@@ -219,6 +227,9 @@
 
 .store-col-2 .row {
   margin-left: 40px;
+}
+.store-col-2 .ro{
+  margin-left: 20px;
 }
 .store-create-select {
   background-color: #ecf2f4;
@@ -416,7 +427,7 @@ margin-top:15px;
   height: 20px;
 }
 .list-edit-button-margin {
-  margin-left: 15px;
+  margin-left: 10px;
 }
 
 /* chetan priority settings starts */
@@ -2042,7 +2053,9 @@ margin-top:15px;
   margin-left: 24px;
   margin-top: 10px;
 }
-
+.ma{
+  margin-left: 0px;
+}
 .createhead-text{
   color: #2561A8;
   font-family: Lato;
@@ -2203,6 +2216,7 @@ margin-top:15px;
   padding-left: 10px;
   margin-left: -18px;
   border-color: #ecf2f4;
+  border: none;
   background: #ecf2f4 url("../Images/dropDown.png") no-repeat right 12px center;
 }
 
@@ -2344,4 +2358,12 @@ margin-top:15px;
   font-size: 13px;
   color: #9b9b9b;
   padding: 18px 20px;
+}
+.esc {
+  padding:9px 10px;
+}
+.ali {
+  margin-top: 10px;
+  margin-left: 25px;
+  margin-right: 10px;
 }

@@ -2025,7 +2025,7 @@ table th {
 table td {
   font-size: 13px;
   color: #9b9b9b;
-  padding: 18px 26px;
+  padding: 18px 23px;
 }
 table thead img {
   width: 12px;
@@ -2273,8 +2273,8 @@ table tr th:last-child {
 .table-expandable-sctn button {
   background-color: #fff;
   margin-right: 15px;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-top: 12px;
+  padding-bottom: 12px;
 }
 .table-expandable-sctn button.btn-inv {
   color: #fff;
@@ -2506,6 +2506,7 @@ table tr th:last-child {
 .status-sctn {
   padding-top: 0 !important;
   border-top: none !important;
+  padding-bottom: 10px !important;
   margin-top: -12px;
 }
 .chat-status {
@@ -2980,7 +2981,7 @@ table tr th:last-child {
   padding-right: 35px;
   width: 151px;
   font-size: 14px;
-  background: #dbe4e7 url("../Images/dropDown.png") no-repeat right 12px center;
+  background: #dbe4e7 url("../Images/down-1.png") no-repeat right 12px center;
   background-size: 16px;
 }
 /* extra css end */
@@ -3003,7 +3004,20 @@ table tr th:last-child {
 }
 .claim-A22345 {
   color: #4a4a4a;
-  margin-left: -8px;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 19px;
+  text-align: left;
+}
+.claim-title {
+  color: #4a4a4a;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 19px;
+  text-align: left;
+  padding: 14px;
 }
 .btn-claim {
   background-color: #2561a8;
@@ -3046,7 +3060,7 @@ table tr th:last-child {
   max-width: 75%;
 }
 .oderDetails-table {
-  margin-left: 5px;
+  margin-left: -20px;
   padding-top: 9px;
 }
 .span-color {
@@ -3116,15 +3130,17 @@ table tr th:last-child {
 .arrow-img-1 {
   width: 18px;
   height: 18px;
-  float: right;
-  margin-right: 60px;
-  margin-top: -4%;
+  /* float: right; */
+  margin-right: 10px;
+  margin-top: -5px;
+  margin-left: 10px;
 }
 .plush-img-1 {
   width: 18px;
   height: 18px;
-  margin-left: 830px;
-  margin-top: -9%;
+  margin-left: 10px;
+  /* margin-top: -9%; */
+  float: right;
 }
 .first-margin {
   margin-left: -13px;
@@ -3201,6 +3217,7 @@ table tr th:last-child {
   border-radius: 6px;
   padding-top: 35px;
   padding-left: 25px;
+  height: auto;
 }
 /**************************************/
 
@@ -3286,13 +3303,13 @@ table tr th:last-child {
 .Add-ticket-button {
   background-color: #2561a8;
   border-radius: 4px;
-  width: 145px;
+  width: 155px;
   height: 43px;
   cursor: pointer;
 }
 
 .myticketlist-header table td {
-  padding: 25px 15px 0px 15px;
+  padding: 15px 15px 5px 15px;
   color: #727474;
 }
 .add-tickets {
@@ -3304,12 +3321,12 @@ table tr th:last-child {
   text-align: left;
   cursor: pointer;
 }
-.oval04 {
+/* .oval04 {
   background-color: #2561a8;
   border-radius: 100%;
   width: 30px;
   height: 30px;
-}
+} */
 
 /* ---------------------------------------------------------- */
 
@@ -4195,6 +4212,7 @@ progress::-moz-progress-bar {
     align-items: center;
     margin-right: 10px;
   }
+
   .line-1 {
     display: inline-block;
     margin: 0 15px;
@@ -4769,6 +4787,7 @@ progress::-moz-progress-bar {
 }
 .kb-table table thead th.pad {
   padding-right: 100px;
+  float: inherit;
 }
 
 .reject-button {
@@ -4964,7 +4983,7 @@ progress::-moz-progress-bar {
   border: none;
   margin-left: 17px;
   margin-top: 15px;
-  padding-left: 10px;
+  padding: 10px;
 }
 
 .addkb-subject::placeholder {
@@ -5113,7 +5132,15 @@ progress::-moz-progress-bar {
   width: 548px;
   height: 494px;
 }
-
+#BillInvoice-popup{
+  border-radius: 8px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+  padding: 0 16px 0 28px;
+  margin: 0 auto;
+  display: inline-block;
+  min-width: 83%;
+  height: 550px;
+  }
 .profilemodal-text {
   color: #4a4a4a;
   font-family: Lato;
@@ -5615,7 +5642,7 @@ progress::-moz-progress-bar {
   overflow: hidden;
   text-overflow: ellipsis;
   float: left !important;
-  color: black !important;
+  color: #545455 !important;
 }
 .ReactTable .rt-thead .rt-th,
 .ReactTable .rt-thead .rt-td {
@@ -5860,6 +5887,10 @@ table thead tr {
 #cke_editor1 {
   border-radius: 3px;
 }
+#cke_editor1 {
+  margin-left: 17px !important;
+  width: 530px !important;
+}
 #cke_24 {
   display: none;
 }
@@ -6062,7 +6093,7 @@ table thead tr {
 /* css End */
 .KBase .cke_browser_webkit {
   margin-left: 17px !important;
-  width: 535px !important;
+  width: 530px !important;
 }
 .KBase .cke_contents {
   height: 160px !important;
@@ -6085,7 +6116,8 @@ table thead tr {
   cursor: pointer;
   background-color: #2561a8;
   color: #fff;
-  font-size: 12px;
+  height: 43px;
+  font-size: 14px;
 }
 .assign-modal-KBase .modal-lg {
   max-width: 435px;
@@ -6231,6 +6263,64 @@ table thead tr {
   width: 100%;
   cursor: pointer;
 }
+.commentbt {
+  margin-top: -50px;
+  text-align: right;
+  margin-right: 15px;
+}
+.commentbtn {
+  background: #2561a8;
+  border: none;
+  cursor: pointer;
+}
+.txt {
+  cursor: pointer;
+  color: white;
+  font-size: 14px;
+}
+.plusminus {
+  margin-top: -32px;
+  float: right;
+}
+.li-1 {
+  border: 1px solid #cad4d7;
+  margin-left: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.d-block {
+  padding: 10px 30px !important;
+}
+.logou {
+  padding-bottom: 10px !important;
+}
+.pink1 {
+  padding: 7px 10px;
+  border: 0px;
+}
+.pink1 .pink2 {
+  margin-top: 0px;
+}
+.pink2 input + label {
+  padding-left: 0;
+}
+.draft td {
+  padding: 20px 15px !important;
+  color: #9b9b9b !important;
+}
+.claimplus {
+  float: right;
+}
+.plusline1 {
+  border: 1px solid #9b9b9b;
+  padding-top: 15px;
+  padding-bottom: 17px;
+}
+.plusline2 {
+  border: 1px solid #9b9b9b;
+  padding-bottom: 17px;
+  padding-top: 15px;
+}
 /* My Ticket page email Editor css start by Shlok */
 .myTicketEmail .cke_chrome {
   display: block;
@@ -6265,5 +6355,359 @@ table thead tr {
   margin-top: -5px;
   margin-right: 8px;
 }
+.myTicketEmail #cke_editor1 {
+  margin-left: -67px;
+  width: 176%;
+}
 /* Email Editor css End*/
+/* myTicket css start for comment pop up by Shlok*/
+.commentsDwarer .ant-drawer-content-wrapper {
+  width: 580px !important;
+}
+.btn-addMoreTask {
+  color: black;
+  background-color: #fff;
+  font-weight: 600;
+  float: right;
+  margin-top: -10px;
+}
+.lblHeader-drawer {
+  font-weight: 700;
+  font-size: 16px;
+}
+.commentsDwarer .ant-drawer-body {
+  padding: 0px !important;
+}
+.drawer-header-1 {
+  padding: 15px 20px 10px;
+  background: #ecf2f4;
+}
+.drawer-hr {
+  margin-top: 0px;
+}
+.deleteImg {
+  height: 16px;
+  width: 13px;
+  float: right;
+  margin-top: 2px;
+  cursor: pointer;
+  margin-right: 3px;
+}
+.knowledgeTbl table tr td:last-child,
+table tr th:last-child {
+  /* text-align: right; */
+  float: left;
+}
+.active .myTciket-tab-span {
+  background-color: #2561a8;
+  border-radius: 100%;
+  color: #fff;
+  padding: 1px 4px 3px 3px;
+}
+.comment-padding {
+  padding: 30px;
+}
+.table-column {
+  float: left;
+}
+.cmt-lbl {
+  font-weight: 700;
+  font-size: 15px;
+}
+.cmdtxt-2 {
+  background-color: #fff;
+  border-radius: 4px;
+  width: 100%;
+  height: 43px;
+  border: none;
+  padding: 8px;
+  border: 1px solid;
+  border-color: #949090;
+}
+.cmt-textarea {
+  background-color: #ffff;
+  padding: 8px;
+  /* height: auto; */
+  display: block;
+  width: 100%;
+  font-size: 14px;
+  border-radius: 4px;
+  border-color: #949090;
+  resize: none;
+  border: 1px solid;
+}
+.frm-margin {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+.frm-margin1 {
+  padding-bottom: 15px;
+}
+.cmt-regtangleDDL {
+  border-radius: 4px;
+  width: 100%;
+  height: 43px;
+  padding-left: 14px;
+  padding-right: 40px;
+  border-color: #949090;
+  background: #ffffff url("../Images/down-1.png") no-repeat right 12px center;
+  background-size: 16px;
+  cursor: pointer;
+  border: 1px solid;
+}
+.select-CmtDDl {
+  color: #585454;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: left;
+}
+.cmdtxt-2::placeholder {
+  color: black;
+}
+.cmt-textarea::placeholder {
+  color: black;
+}
+/* myTicket css end */
+/* Dashboard datepicker css start by kalpesh  */
+.react-datepicker button {
+  padding-top: 0;
+  padding-bottom: 0;
+  background: transparent;
+  margin-right: 0;
+}
+.table-expandable-sctn .react-datepicker__navigation {
+  text-align: center;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  padding: 0;
+  border: 0.55rem solid transparent;
+  z-index: 1;
+}
+.table-expandable-sctn .react-datepicker__navigation--previous {
+  left: -70px;
+  border-right-color: #ccc;
+}
+.table-expandable-sctn .react-datepicker__navigation--next {
+  right: -70px;
+  border-left-color: #ccc;
+}
+.table-expandable-sctn .react-datepicker-wrapper {
+  width: 100%;
+}
+.allspc{
+  margin-bottom: 25px;
+}
+/* dashboard datepicker css end */
+/* My Ticket/Eye Button css Start By Kalpesh */
+.customerBill{
+  padding: 10px 0 0 20px;
+  margin-bottom: 20px;
+  }
+  .customer-text{
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 19px;
+  text-align: left;
+  padding-top: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+  }
+  .namepad{
+  padding: 0 0 0 35px;
+  margin-bottom: 20px;
+  display: grid;
+  }
+  .fullna {
+  color: #9B9B9B;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 22px;
+  text-align: left;
+  }
+  .namedi{
+  color: #000000;
+  font-family: Lato;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 20px;
+  text-align: left;
+  }
+  .xyz {
+  background-color: #EDF2F4;
+  }
+  .calnex{
+  float: right;
+  padding: 0px 28px 18px 0px;
+  }
+  .calnexbtn {
+  background-color: transparent;
+  border-radius: 4px;
+  border: none;
+  width: 134px;
+  height: 43px;
+  }
+  .calnexbtn1 {
+  background-color: #2561A8;
+  border-radius: 4px;
+  width: 134px;
+  height: 43px;
+  margin-left: 10px;
+  cursor: pointer;
+  }
+  .calnexbtn1-text{
+  color: #FFFFFF;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  text-align: left;
+  cursor: pointer;
+  }
+  .calnexbtn-text {
+  color: #2561A8;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  text-align: left;
+  cursor: pointer;
+  }
+  .search-orderhis{
+  border-radius: 4px;
+  width: 300px;
+  height: 43px;
+  margin-left: 2px;
+  border: none;
+  cursor: pointer;
+  }
+  .histo {
+  padding: 20px 0 25px 15px;
+  }
+  .tablehistrical {
+  margin-top: 25px;
+  }
+  .tablehistrical .ReactTable {
+  border: none;
+  background: #EDF2F4;
+  }
+  .tablehistrical .ReactTable .rt-thead .rt-th.-cursor-pointer, .ReactTable .rt-thead .rt-td.-cursor-pointer {
+  padding: 0px !important;
+  background-color: #EDF2F4;
+  border: none;
+  }
+  .historyTable-header{
+  float: left;
+  padding: 1px 0px 0px 18px;
+  }
+  .tablehistrical .rt-thead {
+  border:none !important;
+  color: #4A4A4A;
+  font-size: 13px;
+  }
+  .tablehistrical .ReactTable .rt-tbody .rt-td {
+  border-bottom: 1px solid #EDF2F4;
+  }
+  .tablehistricaldetail .ReactTable .rt-tbody .rt-tr-group{
+  border : none;
+  }
+  .tablehistrical .rt-tbody .ReactTable .rt-th, .ReactTable .rt-td {
+  font-size: 14px;
+  color: #000 !important;
+  }
+  #hispop-upBck {
+  background-color: rgba(77, 92, 116, 0.2)
+  }
+  .skipmar {
+  margin-top: 38px;
+  } 
+  .done{
+  margin-top: 256px;
+  }
+  .skiptext {
+  color: #2561A8;
+  font-family: Lato;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 19px;
+  text-align: left;
+  padding-top: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
+  }
+  .histOrderHide {
+  display: none;
+  }
+  .orderswitch {
+  margin-top: -27px;
+  margin-left: -25px;
+  }
+  .switch input[type="checkbox"] + .ord {
+  margin-left: 70 !important;
+  }
+  .customerOrder-text {
+  color: #9B9B9B;
+  font-family: Lato;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 19px;
+  text-align: left;
+  padding-top: 5px;
+  /*  padding-left: 15px;  */
+  /*  padding-right: 15px;  */
+  }
+  .customerItem-text {
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 19px;
+  text-align: left;
+  padding-top: 5px;
+  padding-left: 75px; 
+  padding-right: 15px; 
+  }
+  .order1checkbox {
+  padding: 0;
+  }
+  .order1checkbox .order2checkbox {
+  margin-top: 0;
+  }
+  .order1checkbox input + label {
+  padding-left: 22px;
+  }
+  /* MyTicket/Eye Css End */
+  /* MyTicket ProgressBar Response Css Kalpesh Start */
+.mobilenumber-resp {
+  font-size: 10px;
+  }
+  .mobilenumber-resp .respo{
+  float: left;
+  margin-left: 35px;
+  }
+  .mobilenumber-resp .resol{
+  float: right;
+  color: green;
+  margin-right: 35px;
+  }
+  .mobilenumber-resp .line-respo{
+  border-right: 2px solid orange;
+  padding: 3px;
+  top: 20px;
+  left: -26px;
+  position: relative;
+  }
+  .mobilenumber-resp .line-resol{
+  border-right: 2px solid red;
+  padding: 3px;
+  top: 20px;
+  position: relative;
+  right: -20px;
+  }
+  /* MyTicket Css End */
 /* ****************End css ************************/

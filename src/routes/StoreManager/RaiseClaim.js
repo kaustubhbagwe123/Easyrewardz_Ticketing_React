@@ -1,14 +1,14 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { Collapse, CardBody, Card } from "reactstrap";
-import TableDemo from "./TableDemo";
-import BataShoes from "./../assets/Images/Bata-shoes.jpg";
-import SearchBlueImg from "./../assets/Images/search-blue.png";
-import ArrowImg from "./../assets/Images/arrow.png";
-import PlusImg from "./../assets/Images/plus.png";
-import Headphone2Img from "./../assets/Images/headphone2.png";
-import SearchBlackImg from "./../assets/Images/searchBlack.png";
+import TableDemo from "../TableDemo";
+import BataShoes from "./../../assets/Images/Bata-shoes.jpg";
+import SearchBlueImg from "./../../assets/Images/search-blue.png";
+import ArrowImg from "./../../assets/Images/arrow.png";
+import PlusImg from "./../../assets/Images/plus.png";
+import Headphone2Img from "./../../assets/Images/headphone2.png";
+import SearchBlackImg from "./../../assets/Images/searchBlack.png";
 
-class Claim extends Component {
+class RaiseClaim extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -21,7 +21,7 @@ class Claim extends Component {
   }
   render() {
     return (
-      <div>
+      <Fragment>
         <div className="row claim-header-card width">
           <div className="col-md-9">
             <label className="claim-ticket">Claim Ticket ID :</label>
@@ -72,19 +72,25 @@ class Claim extends Component {
                     </div>
                   </div>
                   <div className="row">
-                    <div className="claim-status-card">
+                    <div className="col-md-12 claim-status-card">
                       <label>
                         <b>Claim Status: Open</b>
                       </label>
-                      <div className="line-2"></div>
-                      <img src={ArrowImg} alt="Arrow" className="arrow-img-1" />
-                      <div className="line-3"></div>
-                      <img
-                        src={PlusImg}
-                        alt="Plush"
-                        className="plush-img-1"
-                        onClick={this.toggle}
-                      />
+                      <div className="claimplus">
+                        <span className="plusline1"></span>
+                        <img
+                          src={ArrowImg}
+                          alt="Arrow"
+                          className="arrow-img-1"
+                        />
+                        <span className="plusline2"></span>
+                        <img
+                          src={PlusImg}
+                          alt="Plush"
+                          className="plush-img-1"
+                          onClick={this.toggle}
+                        />
+                      </div>
                     </div>
 
                     <Collapse isOpen={this.state.collapse}>
@@ -178,6 +184,11 @@ class Claim extends Component {
                         className="ticket-comments-textarea"
                         placeholder="Add your Comment here"
                       ></textarea>
+                      <div className="commentbt">
+                        <button type="button" className="commentbtn">
+                          <label className="txt">ADD COMMENT</label>
+                        </button>
+                      </div>
                     </div>
                   </div>
                   <div className="row ">
@@ -248,9 +259,9 @@ class Claim extends Component {
             </div>
           </div>
         </div>
-      </div>
+      </Fragment>
     );
   }
 }
 
-export default Claim;
+export default RaiseClaim;

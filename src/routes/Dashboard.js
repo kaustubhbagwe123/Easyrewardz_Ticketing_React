@@ -22,12 +22,14 @@ import SearchBlackImg from "./../assets/Images/searchBlack.png";
 import Headphone2Img from "./../assets/Images/headphone2.png";
 import { Collapse, CardBody, Card } from "reactstrap";
 import Demo from "../store/Hashtag.js";
-import ModernDatepicker from "react-modern-datepicker";
 // import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import MultiBarChart from "../Component/PieChart/MultiBarChart.js";
 import TicketToBillBarGraph from "../Component/PieChart/TicketToBillBarGraph";
 import TicketGenerationSourceBar from "../Component/PieChart/TicketGenerationSourceBar";
 import TicketToClaimMultiBar from "../Component/PieChart/TicketToClaimMultiBar";
+import HeadPhone3 from "./../assets/Images/headphone3.png";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 class Dashboard extends Component {
   constructor(props) {
@@ -40,15 +42,32 @@ class Dashboard extends Component {
       StatusModel: false,
       Schedule: false,
       AssignModal: false,
-      TicketTabIndex: "bill-graph-tab",
-      // startDate: "",
+      TicketTabIndex: "nav-link active",
+      ByDateCreatDate: "",
+      ByDateSelectDate: "",
+      ByAllCreateDate: "",
+      ByAllLastDate: "",
+      TotalNoOfChatShow: true,
       date: [new Date(), new Date()]
     };
     this.toggle = this.toggle.bind(this);
     this.toggleSearch = this.toggleSearch.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
-    // this.handleApply = this.handleApply.bind(this);
+    // this.toggleHoverState = this.toggleHoverState.bind(this);
+  }
+
+  handleByDateCreate(date) {
+    this.setState({ ByDateCreatDate: date });
+  }
+  handleChangeSelectDate(date) {
+    this.setState({ ByDateSelectDate: date });
+  }
+  handleAllCreateDate(date) {
+    this.setState({ ByAllCreateDate: date });
+  }
+  handleAllLastDate(date) {
+    this.setState({ ByAllLastDate: date });
   }
   toggle() {
     this.setState(state => ({ collapse: !state.collapse }));
@@ -77,11 +96,9 @@ class Dashboard extends Component {
   handleAssignModalClose() {
     this.setState({ AssignModal: false });
   }
-
   openModal = () => {
     this.setState({ modalIsOpen: true });
   };
-
   closeModal = () => {
     this.setState({ modalIsOpen: false });
   };
@@ -95,10 +112,31 @@ class Dashboard extends Component {
     this.props.history.push("/admin/chatdashboard");
   }
   handlechangebtntab(e) {
-    var idIndex = e.target.id;
+    var idIndex = e.target.className;
     this.setState({ TicketTabIndex: idIndex });
   }
   onChange = date => this.setState({ date });
+
+  checkAllCheckbox(event) {
+    const allCheckboxChecked = event.target.checked;
+    var checkboxes = document.getElementsByName("dashboardcheckbox[]");
+    if (allCheckboxChecked) {
+      for (var i in checkboxes) {
+        if (checkboxes[i].checked === false) {
+          checkboxes[i].checked = true;
+        }
+      }
+    } else {
+      for (var J in checkboxes) {
+        if (checkboxes[J].checked === false) {
+          checkboxes[J].checked = true;
+        }
+      }
+    }
+  }
+  handleMouseHover() {
+   this.setState( {TotalNoOfChatShow:!this.state.TotalNoOfChatShow})
+  }
   render() {
     const TitleChange = this.state.collapseSearch
       ? "Close Search"
@@ -130,7 +168,6 @@ class Dashboard extends Component {
           <div>
             <div>
               <span>Date Range : </span>
-
               <label>
                 Last 7 days
                 <img
@@ -176,7 +213,7 @@ class Dashboard extends Component {
                         <span className="card-value red-clr">07</span>
                       </div>
                     </div>
-                    <div
+                    {this.state.TotalNoOfChatShow && <div
                       className="col-md col-sm-4 col-6"
                       onClick={this.HandleChangeRedict.bind(this)}
                     >
@@ -185,7 +222,7 @@ class Dashboard extends Component {
                         <span className="card-value">102</span>
                         <small className="blue-clr">View More Insights</small>
                       </div>
-                    </div>
+                    </div>}
                   </div>
                 </div>
                 <div className="container-fluid btm-mar">
@@ -209,7 +246,6 @@ class Dashboard extends Component {
                               role="tab"
                               aria-controls="bill-graph-tab"
                               aria-selected="true"
-                              id="bill-graph-tab"
                               onClick={this.handlechangebtntab.bind(this)}
                             >
                               Tickets to bill graph
@@ -217,13 +253,12 @@ class Dashboard extends Component {
                           </li>
                           <li className="nav-item">
                             <a
-                              className="nav-link"
+                              className="nav-link tab2"
                               data-toggle="tab"
                               href="#source-tab"
                               role="tab"
                               aria-controls="source-tab"
                               aria-selected="false"
-                              id="source-tab"
                               onClick={this.handlechangebtntab.bind(this)}
                             >
                               Tickets generation source tab
@@ -276,7 +311,7 @@ class Dashboard extends Component {
                                   </li>
                                 </ul>
                               </div>
-                              <div className="col-md-9 tic-bill-graph">
+                              <div className="col-md-9 ">
                                 <TicketGenerationSourceBar />
                               </div>
                             </div>
@@ -284,8 +319,11 @@ class Dashboard extends Component {
                         </div>
                       </div>
                     </div>
-                    <div className="col-lg-3">
-                      <div className="dash-top-cards">
+                    <div
+                      className="col-lg-3"
+                    >
+                      <div className="dash-top-cards" onMouseOver={this.handleMouseHover.bind(this)}
+                      onMouseLeave={this.handleMouseHover.bind(this)}>
                         <p className="card-head">SLA</p>
                         <div className="resp-success">
                           <p className="card-head">Response Success</p>
@@ -293,7 +331,7 @@ class Dashboard extends Component {
                             <big>60%</big>
                           </span>
                           <p className="card-head mt-lg-4 mt-2">
-                            Resolution Success :{" "}
+                            Resolution Success :
                             <span className="font-weight-bold">57.23%</span>
                           </p>
                         </div>
@@ -468,23 +506,25 @@ class Dashboard extends Component {
                           <div className="container-fluid">
                             <div className="row">
                               <div className="col-md-3 col-sm-6">
-                                <input
-                                  type="text"
-                                  placeholder="Creation Date"
+                                <DatePicker
+                                  selected={this.state.ByDateCreatDate}
+                                  onChange={this.handleByDateCreate.bind(this)}
+                                  placeholderText="Creation Date"
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  // className="form-control"
                                 />
                               </div>
                               <div className="col-md-3 col-sm-6">
-                                {/* <input
-                                  type="text"
-                                  placeholder="Last Updated Date"
-                                /> */}
-                                <ModernDatepicker
-                                  date={this.state.startDate}
-                                  format={"DD-MM-YYYY"}
-                                  className="cXcRo"
-                                  showBorder
-                                  onChange={date => this.handleChange(date)}
-                                  placeholder={"Select a date"}
+                                <DatePicker
+                                  selected={this.state.ByDateSelectDate}
+                                  onChange={this.handleChangeSelectDate.bind(
+                                    this
+                                  )}
+                                  placeholderText="Creation Date"
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  // className="form-control"
                                 />
                               </div>
                               <div className="col-md-3 col-sm-6">
@@ -570,30 +610,27 @@ class Dashboard extends Component {
                                     </div>
                                   </div>
                                 </Modal>
-                                {this.state.TicketTabIndex === "source-tab" ? (
-                                  <button
-                                    className="btn-inv"
-                                    onClick={this.handleAssignModalOpen.bind(
-                                      this
-                                    )}
-                                  >
-                                    <img
-                                      src={Assign}
-                                      className="assign-icon"
-                                      alt="assign-icon"
-                                    />
-                                    Assign
-                                  </button>
-                                ) : <button
-                                className="btn-inv btn-dis"
-                              >
-                                <img
-                                  src={Assign}
-                                  className="assign-icon"
-                                  alt="assign-icon"
-                                />
-                                Assign
-                              </button>}
+                                <button
+                                  className={
+                                    this.state.TicketTabIndex ===
+                                    "nav-link active"
+                                      ? "btn-inv btn-dis"
+                                      : "btn-inv"
+                                  }
+                                  onClick={
+                                    this.state.TicketTabIndex !==
+                                    "nav-link active"
+                                      ? this.handleAssignModalOpen.bind(this)
+                                      : null
+                                  }
+                                >
+                                  <img
+                                    src={Assign}
+                                    className="assign-icon"
+                                    alt="assign-icon"
+                                  />
+                                  Assign
+                                </button>
                                 <Modal
                                   onClose={this.handleAssignModalClose.bind(
                                     this
@@ -928,11 +965,15 @@ class Dashboard extends Component {
                           aria-labelledby="all-tab"
                         >
                           <div className="container-fluid">
-                            <div className="row all-row">
-                              <div className="col-md-3 col-sm-6">
-                                <input
-                                  type="text"
-                                  placeholder="Creation Date"
+                            <div className="row">
+                              <div className="col-md-3 col-sm-6 allspc">
+                                <DatePicker
+                                  selected={this.state.ByAllCreateDate}
+                                  onChange={this.handleAllCreateDate.bind(this)}
+                                  placeholderText="Creation Date"
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  // className="form-control"
                                 />
                               </div>
                               <div className="col-md-3 col-sm-6">
@@ -954,10 +995,14 @@ class Dashboard extends Component {
                                   placeholder="Email"
                                 />
                               </div>
-                              <div className="col-md-3 col-sm-6">
-                                <input
-                                  type="text"
-                                  placeholder="Last Updated Date"
+                              <div className="col-md-3 col-sm-6 allspc">
+                                <DatePicker
+                                  selected={this.state.ByAllLastDate}
+                                  onChange={this.handleAllLastDate.bind(this)}
+                                  placeholderText="Last Updated Date"
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  // className="form-control"
                                 />
                               </div>
                               <div className="col-md-3 col-sm-6">
@@ -979,7 +1024,7 @@ class Dashboard extends Component {
                                   placeholder="Mobile"
                                 />
                               </div>
-                              <div className="col-md-3 col-sm-6">
+                              <div className="col-md-3 col-sm-6 allspc">
                                 <select>
                                   <option>Category</option>
                                 </select>
@@ -1001,7 +1046,7 @@ class Dashboard extends Component {
                                   <option>Assigned To</option>
                                 </select>
                               </div>
-                              <div className="col-md-3 col-sm-6">
+                              <div className="col-md-3 col-sm-6 allspc">
                                 <select>
                                   <option>Sub Category</option>
                                 </select>
@@ -1048,7 +1093,7 @@ class Dashboard extends Component {
                             </div>
                             <div className="row p-0">
                               <div className="col-md-6">
-                                <div className="row all-row">
+                                <div className="row allspc">
                                   <div className="col-sm-6">
                                     <select>
                                       <option>With Claim</option>
@@ -1142,7 +1187,19 @@ class Dashboard extends Component {
                 <table>
                   <thead>
                     <tr>
-                      <th>ID</th>
+                      <div className="filter-type pink1">
+                        <div className="filter-checkbox pink2">
+                          <input
+                            type="checkbox"
+                            id="fil-id"
+                            name="filter-type"
+                            onChange={this.checkAllCheckbox.bind(this)}
+                          />
+                          <label htmlFor="fil-id">
+                            <td>ID</td>
+                          </label>
+                        </div>
+                      </div>
                       <th>
                         Status
                         <div className="position-relative d-inline-block">
@@ -1284,7 +1341,25 @@ class Dashboard extends Component {
                   </thead>
                   <tbody>
                     <tr className="pink-bg">
-                      <td>ABC1234</td>
+                      <div className="filter-type pink1">
+                        <div className="filter-checkbox pink2">
+                          <input
+                            type="checkbox"
+                            id="fil-ab1"
+                            name="dashboardcheckbox[]"
+                          />
+                          <label htmlFor="fil-ab1">
+                            <td>
+                              <img
+                                src={HeadPhone3}
+                                alt="HeadPhone"
+                                className="headPhone3"
+                              />
+                              ABCD1234
+                            </td>
+                          </label>
+                        </div>
+                      </div>
                       <td>
                         <span className="table-btn table-blue-btn">Open</span>
                       </td>
@@ -1358,7 +1433,25 @@ class Dashboard extends Component {
                       </td>
                     </tr>
                     <tr className="orange-bg">
-                      <td>ABC1234</td>
+                      <div className="filter-type pink1">
+                        <div className="filter-checkbox pink2">
+                          <input
+                            type="checkbox"
+                            id="fil-ab2"
+                            name="dashboardcheckbox[]"
+                          />
+                          <label htmlFor="fil-ab2">
+                            <td>
+                              <img
+                                src={HeadPhone3}
+                                alt="HeadPhone"
+                                className="headPhone3"
+                              />
+                              ABCD1234
+                            </td>
+                          </label>
+                        </div>
+                      </div>
                       <td>
                         <span className="table-btn table-blue-btn">Open</span>
                       </td>
@@ -1432,7 +1525,25 @@ class Dashboard extends Component {
                       </td>
                     </tr>
                     <tr className="blue-bg">
-                      <td>ABC1234</td>
+                      <div className="filter-type pink1">
+                        <div className="filter-checkbox pink2">
+                          <input
+                            type="checkbox"
+                            id="fil-ab3"
+                            name="dashboardcheckbox[]"
+                          />
+                          <label htmlFor="fil-ab3">
+                            <td>
+                              <img
+                                src={HeadPhone3}
+                                alt="HeadPhone"
+                                className="headPhone3"
+                              />
+                              ABCD1234
+                            </td>
+                          </label>
+                        </div>
+                      </div>
                       <td>
                         <span className="table-btn table-yellow-btn">New</span>
                       </td>
@@ -1531,7 +1642,25 @@ class Dashboard extends Component {
                       </td>
                     </tr>
                     <tr>
-                      <td>ABC1234</td>
+                      <div className="filter-type pink1">
+                        <div className="filter-checkbox pink2">
+                          <input
+                            type="checkbox"
+                            id="fil-ab4"
+                            name="dashboardcheckbox[]"
+                          />
+                          <label htmlFor="fil-ab4">
+                            <td>
+                              <img
+                                src={HeadPhone3}
+                                alt="HeadPhone"
+                                className="headPhone3"
+                              />
+                              ABCD1234
+                            </td>
+                          </label>
+                        </div>
+                      </div>
                       <td>
                         <span className="table-btn table-yellow-btn">New</span>
                       </td>
@@ -1566,7 +1695,25 @@ class Dashboard extends Component {
                       </td>
                     </tr>
                     <tr>
-                      <td>ABC1234</td>
+                      <div className="filter-type pink1">
+                        <div className="filter-checkbox pink2">
+                          <input
+                            type="checkbox"
+                            id="fil-ab5"
+                            name="dashboardcheckbox[]"
+                          />
+                          <label htmlFor="fil-ab5">
+                            <td>
+                              <img
+                                src={HeadPhone3}
+                                alt="HeadPhone"
+                                className="headPhone3"
+                              />
+                              ABCD1234
+                            </td>
+                          </label>
+                        </div>
+                      </div>
                       <td>
                         <span className="table-btn table-green-btn">
                           Solved
@@ -1619,7 +1766,25 @@ class Dashboard extends Component {
                       </td>
                     </tr>
                     <tr>
-                      <td>ABC1234</td>
+                      <div className="filter-type pink1">
+                        <div className="filter-checkbox pink2">
+                          <input
+                            type="checkbox"
+                            id="fil-ab7"
+                            name="dashboardcheckbox[]"
+                          />
+                          <label htmlFor="fil-ab7">
+                            <td>
+                              <img
+                                src={HeadPhone3}
+                                alt="HeadPhone"
+                                className="headPhone3"
+                              />
+                              ABCD1234
+                            </td>
+                          </label>
+                        </div>
+                      </div>
                       <td>
                         <span className="table-btn table-green-btn">
                           Solved
@@ -1650,7 +1815,25 @@ class Dashboard extends Component {
                       </td>
                     </tr>
                     <tr>
-                      <td>ABC1234</td>
+                      <div className="filter-type pink1">
+                        <div className="filter-checkbox pink2">
+                          <input
+                            type="checkbox"
+                            id="fil-ab6"
+                            name="dashboardcheckbox[]"
+                          />
+                          <label htmlFor="fil-ab6">
+                            <td>
+                              <img
+                                src={HeadPhone3}
+                                alt="HeadPhone"
+                                className="headPhone3"
+                              />
+                              ABCD1234
+                            </td>
+                          </label>
+                        </div>
+                      </div>
                       <td>
                         <span className="table-btn table-green-btn">
                           Solved

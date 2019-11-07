@@ -5,7 +5,6 @@ import Layout from "./../Component/layout";
 import MyTicket from "./MyTicket";
 import TicketSystem from "./TicketSystem";
 import Chatbot from "./Chatbot";
-import Claim from "./Claim";
 import MyTicketList from "./MyTicketList";
 import ClaimTabTicketView from "./ClaimTabTicketView";
 import Settings from "./Settings/Settings";
@@ -43,7 +42,6 @@ export class App extends Component {
           component={TicketSystem}
         />
         <Route exact path={`${match.url}/chatbot`} component={Chatbot} />
-        <Route exact path={`${match.url}/claim`} component={Claim} />
         <Route
           exact
           path={`${match.url}/myTicketList`}

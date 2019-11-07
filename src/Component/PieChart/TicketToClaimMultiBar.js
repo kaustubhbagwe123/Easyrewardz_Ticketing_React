@@ -17,11 +17,11 @@ class TicketToClaimMultiBar extends Component {
       seriesMixedChart: [ {
         name: 'Total Tickets',
         type: 'column',
-        data: [23, 12, 54, 61, 32, 56, 81, 19]
+        data: [2500, 2000, 1700, 1700, 1300, 1800, 2000]
       }, {
         name: 'Tickets with Task',
         type: 'column',
-        data: [62, 12, 45, 55, 76, 41, 23, 43]
+        data: [1300, 1200, 1100, 1200, 1000, 1300, 1100]
       }],
     }
   }

@@ -10,11 +10,12 @@ import LoadingImg from "./../assets/Images/loading.png";
 import EyeImg from "./../assets/Images/eye.png";
 import BillInvoiceImg from "./../assets/Images/bill-Invoice.png";
 import MsgImg from "./../assets/Images/msg.png";
-// import Down1Img from "./../assets/Images/down-1.png";
+import Down1Img from "./../assets/Images/down-1.png";
 import ArrowImg from "./../assets/Images/arrow.png";
 import PlusImg from "./../assets/Images/plus.png";
 import MinusImg from "./../assets/Images/minus.png";
 import RightImg from "./../assets/Images/right.png";
+import DeleteImg from "./../assets/Images/del-black.png";
 import Up1Img from "./../assets/Images/up-1.png";
 import Loading1Img from "./../assets/Images/loading1.png";
 import FacebookImg from "./../assets/Images/facebook.png";
@@ -22,6 +23,7 @@ import ClipImg from "./../assets/Images/clip.png";
 import PencilImg from "./../assets/Images/pencil.png";
 import CancelImg from "./../assets/Images/cancel.png";
 import { Collapse, CardBody, Card } from "reactstrap";
+import { Drawer } from "antd";
 import CustomerIcon from "./../assets/Images/customer-icon.png";
 import CrossIcon from "./../assets/Images/cancel.png";
 import TikcetSystemStoreModal from "./../routes/TicketSystemStoreModal";
@@ -30,7 +32,7 @@ import StoreIcon from "./../assets/Images/store.png";
 import MyTicketTask from "./Tabs/MyTicketTask";
 import MyTicketClaim from "./Tabs/MyTicketClaim";
 import CKEditor from "ckeditor4-react";
-
+import ReactTable from "react-table";
 class MyTicket extends Component {
   constructor(props) {
     super(props);
@@ -38,13 +40,23 @@ class MyTicket extends Component {
     this.state = {
       open: false,
       collapseUp: true,
-      varMar: "",
       profilemodal: false,
       storemodal: false,
       storeproductsearch: false,
       headPhoneTable: false,
       labelModal: false,
-      EmailCollapse: false
+      EmailCollapse: false,
+      CommentsDrawer: false,
+      BillInvoiceModal: false,
+      values: [
+        {
+          taskTitle: "",
+          taskDescription: "",
+          department: "",
+          type: "",
+          assign: ""
+        }
+      ]
     };
   }
 
@@ -71,12 +83,11 @@ class MyTicket extends Component {
   HandleStoreModalClose() {
     this.setState({ storemodal: false });
   }
-
   handleUpOpen() {
-    this.setState({ collapseUp: false, varMar: "63%" });
+    this.setState({ collapseUp: true });
   }
   handleUpClose() {
-    this.setState({ collapseUp: true, varMar: "37%" });
+    this.setState({ collapseUp: false });
   }
   onOpenModal = () => {
     this.setState({ open: true });
@@ -99,7 +110,122 @@ class MyTicket extends Component {
   HandleEmailCollapseOpen() {
     this.setState(state => ({ EmailCollapse: !state.EmailCollapse }));
   }
-
+  handleCommentsDrawerOpen() {
+    this.setState({ CommentsDrawer: true });
+  }
+  handleCommentsDrawerClose() {
+    this.setState({ CommentsDrawer: false });
+  }
+  handleBillImgModalOpen() {
+    this.setState({ BillInvoiceModal: true });
+  }
+  handleBillImgModalClose() {
+    this.setState({ BillInvoiceModal: false });
+  }
+  handleSubmitForm(e) {
+    e.preventDefault();
+  }
+  handleAddNewForm() {
+    this.setState(prevState => ({
+      values: [
+        ...prevState.values,
+        {
+          taskTitle: "",
+          taskDescription: "",
+          department: "",
+          type: "",
+          assign: ""
+        }
+      ]
+    }));
+  }
+  handleRemoveForm(i) {
+    let values = [...this.state.values];
+    values.splice(i, 1);
+    this.setState({ values });
+  }
+  CreateUIForm() {
+    return this.state.values.map((el, i) => (
+      <div key={i}>
+        <div className="comment-padding">
+          <label className="cmt-lbl" value={el || ""}>
+            Task {i + 1}
+          </label>
+          <img
+            src={DeleteImg}
+            alt="DeleteImg"
+            className="deleteImg"
+            onClick={this.handleRemoveForm.bind(this, i)}
+          />
+          <div className="frm-margin">
+            <input
+              type="text"
+              name="taskTitle"
+              className="cmdtxt-2"
+              placeholder="Task Title"
+              value={el.taskTitle || ""}
+              onChange={this.handleChange.bind(this, i)}
+            />
+          </div>
+          <div className="frm-margin1">
+            <textarea
+              rows="6"
+              className="cmt-textarea"
+              placeholder="Task Description"
+              value={el.taskDescription || ""}
+              name="taskDescription"
+              onChange={this.handleChange.bind(this, i)}
+            ></textarea>
+          </div>
+          <div className="row frm-margin1">
+            <div className="col-md-6">
+              <select
+                className="cmt-regtangleDDL select-CmtDDl"
+                name="department"
+                // value={el.department || ""}
+                defaultValue={el.department || ""}
+                onChange={this.handleChange.bind(this, i)}
+              >
+                <option>Select</option>
+                <option>Department</option>
+              </select>
+            </div>
+            <div className="col-md-6">
+              <select
+                className="cmt-regtangleDDL select-CmtDDl"
+                name="type"
+                defaultValue={el.type || ""}
+                onChange={this.handleChange.bind(this, i)}
+              >
+                <option>Select</option>
+                <option>Type</option>
+              </select>
+            </div>
+          </div>
+          <div className="row frm-margin1">
+            <div className="col-md-6">
+              <select
+                className="cmt-regtangleDDL select-CmtDDl"
+                name="assign"
+                defaultValue={el.assign || ""}
+                onChange={this.handleChange.bind(this, i)}
+              >
+                <option>Select</option>
+                <option>Assign to</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <hr />
+      </div>
+    ));
+  }
+  handleChange(i, e) {
+    const { name, value } = e.target;
+    let values = [...this.state.values];
+    values[i] = { ...values[i], [name]: value };
+    this.setState({ values });
+  }
   render() {
     const { open } = this.state;
     const HidecollapsUp = this.state.collapseUp ? (
@@ -107,10 +233,15 @@ class MyTicket extends Component {
         src={Up1Img}
         alt="up"
         className="up-1"
-        onClick={this.handleUpOpen.bind(this)}
+        onClick={this.handleUpClose.bind(this)}
       />
     ) : (
-      ""
+      <img
+        src={Down1Img}
+        alt="up"
+        className="up-1"
+        onClick={this.handleUpOpen.bind(this)}
+      />
     );
     const EmailCollapseUpDown = this.state.EmailCollapse ? (
       <img
@@ -127,6 +258,157 @@ class MyTicket extends Component {
         onClick={this.HandleEmailCollapseOpen.bind(this)}
       />
     );
+    const data = [
+      {
+        orderNumber: "BB2213451123",
+        MobileNum: <span>9873470074</span>,
+        Amount: "13,500",
+        purDate: (
+          <span>
+            <label>23 May 2018</label>
+          </span>
+        )
+      },
+      {
+        orderNumber: "BB2213451123",
+        MobileNum: <span>9873470074</span>,
+        Amount: "12,500",
+        purDate: (
+          <span>
+            <label>13 May 2018</label>
+          </span>
+        )
+      },
+      {
+        orderNumber: "BB2213451123",
+
+        MobileNum: <span>9873470074</span>,
+        Amount: "11,500",
+        purDate: (
+          <span>
+            <label>10 May 2019</label>
+          </span>
+        )
+      },
+      {
+        orderNumber: "BB2213451123",
+        MobileNum: <span>9873470074</span>,
+        Amount: "15,200",
+        purDate: (
+          <span>
+            <label>21 May 2015</label>
+          </span>
+        )
+      },
+      {
+        orderNumber: "BB2213451123",
+        MobileNum: <span>9873470074</span>,
+        Amount: "10,000",
+        purDate: (
+          <span>
+            <label>10 May 2017</label>
+          </span>
+        )
+      }
+    ];
+
+    const columns = [
+      {
+        Header: <span className="historyTable-header">Order Number</span>,
+        accessor: "orderNumber"
+      },
+      {
+        id: "createdBy",
+        Header: <span className="historyTable-header">Mobile Number</span>,
+        accessor: "MobileNum"
+      },
+      {
+        Header: <span className="historyTable-header">Amount</span>,
+        accessor: "Amount"
+      },
+      {
+        Header: <span className="historyTable-header">Purchase Date</span>,
+        accessor: "purDate"
+      }
+    ];
+
+    const data1 = [
+      {
+        sku: (
+          <span>
+            <div className="filter-type order1checkbox">
+              <div className="filter-checkbox order2checkbox">
+                <input type="checkbox" id="fil-id" name="filter-type" />
+                <label htmlFor="fil-id">BB221345</label>
+              </div>
+            </div>
+          </span>
+        ),
+
+        Name: (
+          <span>
+            <label>HUSH PUPPIES</label>
+            <label>HUSH PUPPIES</label>
+          </span>
+        ),
+        Price: "4500",
+        Quantity: (
+          <span>
+            <label>01</label>
+          </span>
+        ),
+        Mop: <label>Cash</label>
+      },
+      {
+        sku: (
+          <span>
+            <div className="filter-type order1checkbox">
+              <div className="filter-checkbox order2checkbox">
+                <input type="checkbox" id="fil-id1" name="filter-type" />
+                <label htmlFor="fil-id1">BB221345</label>
+              </div>
+            </div>
+          </span>
+        ),
+        Name: (
+          <span>
+            <label>HUSH PUPPIES</label>
+            <label>HUSH PUPPIES</label>
+          </span>
+        ),
+        Price: "4500",
+        Quantity: (
+          <span>
+            <label>01</label>
+          </span>
+        ),
+        Mop: <label>Cash</label>
+      }
+    ];
+
+    const columns1 = [
+      {
+        Header: <span className="historyTable-header ">SKU</span>,
+        accessor: "sku"
+      },
+      {
+        id: "createdBy",
+        Header: <span className="historyTable-header">Name</span>,
+        accessor: "Name"
+      },
+      {
+        Header: <span className="historyTable-header">Price</span>,
+        accessor: "Price"
+      },
+      {
+        Header: <span className="historyTable-header">Quantity</span>,
+        accessor: "Quantity"
+      },
+      {
+        Header: <span className="historyTable-header">MOP</span>,
+        accessor: "Mop"
+      }
+    ];
     return (
       <Fragment>
         <div className="head-header">
@@ -344,13 +626,174 @@ class MyTicket extends Component {
                   </div>
                 </Modal>
                 <div className="bill-1">
-                  <img src={BillInvoiceImg} alt="eye" className="billImg" />
+                  <img
+                    src={BillInvoiceImg}
+                    alt="eye"
+                    className="billImg"
+                    onClick={this.handleBillImgModalOpen.bind(this)}
+                  />
+                  <Modal
+                    open={this.state.BillInvoiceModal}
+                    onClose={this.handleBillImgModalClose.bind(this)}
+                    modalId="BillInvoice-popup"
+                    overlayId="logout-ovrly"
+                  >
+                    <div className="row">
+                      <div className="col-md-5">
+                        <div className="customerBill">
+                          <img
+                            src={CustomerIcon}
+                            alt="customer-icon"
+                            style={{ marginTop: "-10px" }}
+                          />
+                          <label className="customer-text">CUSTOMER</label>
+                        </div>
+                        <div className="row">
+                          <div className="col-md-6 namepad">
+                            <label className="fullna">Full Name</label>
+                            <label className="namedi">Diwakar Monga</label>
+                          </div>
+                          <div className="col-md-6 namepad">
+                            <label className="fullna">Mobile Number</label>
+                            <label className="namedi">+91 9873470074</label>
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className="col-md-6 namepad">
+                            <label className="fullna">Email ID</label>
+                            <label className="namedi">diwakar@gmail.com</label>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="col-md-7 xyz">
+                        <div className="histOrderHide">
+                          <div className="histo">
+                            <img
+                              src={CustomerIcon}
+                              alt="customer-icon"
+                              style={{ marginTop: "-10px" }}
+                            />
+                            <label className="customer-text">
+                              HISTORICAL ORDER
+                            </label>
+                          </div>
+                          <div className="col-md-6">
+                            <input
+                              type="text"
+                              className="search-orderhis"
+                              placeholder="Search Order"
+                            />
+                          </div>
+                          <div className="tablehistrical">
+                            <ReactTable
+                              data={data}
+                              columns={columns}
+                              resizable={false}
+                              defaultPageSize={5}
+                              showPagination={false}
+                            />
+                          </div>
+
+                          <div className="row skipmar">
+                            <div className="col-md-5">
+                              <label className="skiptext">
+                                SKIP ATTATCHING ORDER
+                              </label>
+                            </div>
+                            <div className="col-md-7">
+                              <div className="calnex">
+                                <button type="button" className="calnexbtn">
+                                  <label className="calnexbtn-text">
+                                    Cancel
+                                  </label>
+                                </button>
+                                <button
+                                  type="button"
+                                  className="calnexbtn1"
+                                  // onClick={this.handleHistoricalDetailNext.bind(this)}
+                                >
+                                  <label className="calnexbtn1-text">
+                                    Next
+                                  </label>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="histOrderShow">
+                          <div className="row histo">
+                            <div className="col-md-7">
+                              <img
+                                src={CustomerIcon}
+                                alt="customer-icon"
+                                style={{ marginTop: "-10px" }}
+                              />
+                              <img
+                                src={DownImg}
+                                alt="down"
+                                className="down-header"
+                              />
+                              <label className="customer-text">
+                                ORDER - BB2213451123
+                              </label>
+                            </div>
+                            <div className="col-md-5">
+                              <label className="customerOrder-text">
+                                ORDER
+                              </label>
+                              <label className="customerItem-text">ITEM</label>
+                              <div className="orderswitch">
+                                <div className="switch switch-primary d-inline">
+                                  <input type="checkbox" id="editTasks-p-2" />
+                                  <label
+                                    htmlFor="editTasks-p-2"
+                                    className="cr ord"
+                                  ></label>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="tablehistrical tablehistricaldetail">
+                            <ReactTable
+                              data={data1}
+                              columns={columns1}
+                              resizable={false}
+                              defaultPageSize={2}
+                              showPagination={false}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="row skipmar done">
+                          <div className="col-md-12">
+                            <div className="calnex">
+                              <button type="button" className="calnexbtn">
+                                <label className="calnexbtn-text">Cancel</label>
+                              </button>
+                              <button type="button" className="calnexbtn1">
+                                <label className="calnexbtn1-text">DONE</label>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </Modal>
                 </div>
                 <div className="card-space-1">
                   <label className="target-closure-date">
                     Target Closure Date &nbsp;
                   </label>
                   <label className="Date-target">28 March 19</label>
+                </div>
+                <div className="mobilenumber-resp">
+                  <span className="line-respo"></span>
+                  <label className="respo">Response</label>
+                  <label className="resol">
+                    <span className="line-resol"></span>
+                    Resolution
+                  </label>
                 </div>
                 <progress
                   style={{ width: "100%" }}
@@ -498,12 +941,6 @@ class MyTicket extends Component {
                   <div className="mob-float">
                     <img src={ArrowImg} alt="Arrow" className="arrow-img" />
                     <div className="line-1"></div>
-                    {/* <img
-                      src={PlusImg}
-                      alt="Plush"
-                      className="plush-img"
-                      onClick={this.HandleEmailCollapseOpen.bind(this)}
-                    /> */}
                     {EmailCollapseUpDown}
                   </div>
                 </div>
@@ -687,12 +1124,32 @@ class MyTicket extends Component {
                     {HidecollapsUp}
                     <label
                       className="comment"
-                      onClick={this.handleUpClose.bind(this)}
-                      style={{ marginLeft: this.state.varMar }}
+                      onClick={this.handleCommentsDrawerOpen.bind(this)}
                     >
                       Comment
                     </label>
                   </div>
+                  <Drawer
+                    placement="right"
+                    closable={false}
+                    onClose={this.handleCommentsDrawerClose.bind(this)}
+                    visible={this.state.CommentsDrawer}
+                    className="commentsDwarer"
+                  >
+                    <div className="drawer-header-1">
+                      <label className="lblHeader-drawer">Task</label>
+                      <button
+                        type="button"
+                        className="btn-addMoreTask"
+                        onClick={this.handleAddNewForm.bind(this)}
+                      >
+                        ADD MORE TASK
+                      </button>
+                    </div>
+                    <form onSubmit={this.handleSubmitForm.bind(this)}>
+                      {this.CreateUIForm()}
+                    </form>
+                  </Drawer>
                 </div>
                 <div className="row card-op-out">
                   <Collapse isOpen={this.state.collapseUp}>
@@ -953,24 +1410,6 @@ class MyTicket extends Component {
                 FULL PROFILE VIEW
               </label>
             </div>
-          </div>
-        </Modal>
-        <Modal
-          open={this.state.storemodal}
-          onClose={this.HandleStoreModalClose.bind(this)}
-          modalId="ticket-store-modal"
-          overlayId="layout-ticket-store-modal"
-        >
-          <div className="profilemodalmaindiv-1">
-            <div style={{ float: "" }}>
-              <img
-                src={CrossIcon}
-                alt="cross-icon"
-                className="pro-cross-icn-1"
-                onClick={this.HandleStoreModalClose.bind(this)}
-              />
-            </div>
-            <TikcetSystemStoreModal />
           </div>
         </Modal>
         {/* -----------------------Store and product sreach modal-------------------- */}

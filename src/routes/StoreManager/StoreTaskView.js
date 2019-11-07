@@ -30,7 +30,7 @@ class StoreTaskView extends Component {
                 <div className="row mb-3">
                   <div className="col-md-12">
                     <label>Task Title</label>
-                    <input type="text" value="Wifi is not working form 5hrs" />
+                    <input type="text" placeholder="Task Title"/>
                   </div>
                 </div>
                 <div className="row">
@@ -59,7 +59,7 @@ class StoreTaskView extends Component {
                 <div className="row mb-3">
                   <div className="col-md-12">
                     <label>Task Details</label>
-                    <textarea>Customer History/Security Check when…</textarea>
+                    <textarea placeholder="Add Task Details"></textarea>
                   </div>
                 </div>
                 <div className="row pt-2">

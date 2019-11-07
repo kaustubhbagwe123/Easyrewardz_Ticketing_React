@@ -355,7 +355,6 @@ class Header extends Component {
             </div>
             <div className="viewticketspeadding">
               <a href="{#}">
-                {" "}
                 <label className="md-4 view-tickets">VIEW TICKETS</label>
               </a>
             </div>
@@ -369,7 +368,6 @@ class Header extends Component {
             </div>
             <div className="viewticketspeadding">
               <a href="{#}">
-                {" "}
                 <label className="md-4 view-tickets">VIEW TICKETS</label>
               </a>
             </div>
@@ -383,7 +381,6 @@ class Header extends Component {
             </div>
             <div className="viewticketspeadding">
               <a href="{#}">
-                {" "}
                 <label className="md-4 view-tickets">VIEW TICKETS</label>
               </a>
             </div>

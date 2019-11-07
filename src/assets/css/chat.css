@@ -209,7 +209,7 @@
 .team-member-center-text {
   text-align: center;
 }
-.team-member-30{
+.team-member-30 {
   text-align: center;
   width: 100%;
   /* padding-left: 125px; */
@@ -257,14 +257,46 @@
   margin-left: 10px;
 }
 /* dashboad css start by shlok */
-.apexcharts-legend.position-bottom.center, .apexcharts-legend.position-top.center {
+.apexcharts-legend.position-bottom.center,
+.apexcharts-legend.position-top.center {
   /* justify-content: center; */
   margin-bottom: 170px !important;
   margin-left: 304px !important;
 }
-.ticketToTask-chart-1 .apexcharts-legend.position-bottom.center{
-  margin-bottom: 160px !important;
-    margin-left: 200px !important;
+.ticketToTask-chart-1 .apexcharts-legend.position-bottom.center {
+  margin-bottom: 150px !important;
+  margin-left: 200px !important;
+}
+.chat-lbl1 {
+  text-align: left;
+  padding-left: 18px;
+}
+.chat-lbl2 {
+  text-align: left;
+  padding-left: 18px;
+}
+.chat-lbl3 {
+  text-align: initial;
+  padding-left: 60px;
+}
+.chat-lbl4 {
+  text-align: left;
+  padding-left: 18px;
+}
+.chat-lbl5 {
+  text-align: left;
+  padding-left: 35px;
+}
+.chat-lbl6 {
+  padding-left: 25px;
+  text-align: left;
+}
+.chat-lbl7{
+  text-align: left;
+  padding-left: 20px;
+}
+.dash-linechart #chart{
+  margin-top: -5px !important;
 }
 /* dashboad css end */
 /* -------------------------------------------------------------------- */

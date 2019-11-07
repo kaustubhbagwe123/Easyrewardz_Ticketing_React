@@ -490,10 +490,10 @@ class QADashboardSearch extends Component {
                         <div className="filter-checkbox">
                           <input
                             type="checkbox"
-                            id="fil-open"
+                            id="fil-abc1"
                             name="filter-type"
                           />
-                          <label htmlFor="fil-open">1123</label>
+                          <label htmlFor="fil-abc1">1123</label>
                         </div>
                       </td>
                       <td>
@@ -513,10 +513,10 @@ class QADashboardSearch extends Component {
                         <div className="filter-checkbox">
                           <input
                             type="checkbox"
-                            id="fil-open"
+                            id="fil-abc2"
                             name="filter-type"
                           />
-                          <label htmlFor="fil-open">1123</label>
+                          <label htmlFor="fil-abc2">1123</label>
                         </div>
                       </td>
                       <td>
@@ -536,10 +536,10 @@ class QADashboardSearch extends Component {
                         <div className="filter-checkbox">
                           <input
                             type="checkbox"
-                            id="fil-open"
+                            id="fil-abc3"
                             name="filter-type"
                           />
-                          <label htmlFor="fil-open">1123</label>
+                          <label htmlFor="fil-abc3">1123</label>
                         </div>
                       </td>
                       <td>
@@ -559,10 +559,10 @@ class QADashboardSearch extends Component {
                         <div className="filter-checkbox">
                           <input
                             type="checkbox"
-                            id="fil-open"
+                            id="fil-abc4"
                             name="filter-type"
                           />
-                          <label htmlFor="fil-open">1123</label>
+                          <label htmlFor="fil-abc4">1123</label>
                         </div>
                       </td>
                       <td>
@@ -582,10 +582,10 @@ class QADashboardSearch extends Component {
                         <div className="filter-checkbox">
                           <input
                             type="checkbox"
-                            id="fil-open"
+                            id="fil-abc5"
                             name="filter-type"
                           />
-                          <label htmlFor="fil-open">1123</label>
+                          <label htmlFor="fil-abc5">1123</label>
                         </div>
                       </td>
                       <td>
@@ -605,10 +605,10 @@ class QADashboardSearch extends Component {
                         <div className="filter-checkbox">
                           <input
                             type="checkbox"
-                            id="fil-open"
+                            id="fil-abc6"
                             name="filter-type"
                           />
-                          <label htmlFor="fil-open">1123</label>
+                          <label htmlFor="fil-abc6">1123</label>
                         </div>
                       </td>
                       <td>
@@ -628,10 +628,10 @@ class QADashboardSearch extends Component {
                         <div className="filter-checkbox">
                           <input
                             type="checkbox"
-                            id="fil-open"
+                            id="fil-abc7"
                             name="filter-type"
                           />
-                          <label htmlFor="fil-open">1123</label>
+                          <label htmlFor="fil-abc7">1123</label>
                         </div>
                       </td>
                       <td>

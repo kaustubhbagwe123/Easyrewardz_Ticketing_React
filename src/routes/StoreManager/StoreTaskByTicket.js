@@ -223,7 +223,7 @@ class StoreTaskByTicket extends Component {
                 </div>
               </div>
               <div className="col-md-4">
-                <div className="card store-card-2">
+                <div className="card store-card-3">
                   <div className="row">
                     <div className="col-md-6">
                       <label className="store-Edit-lbl">Issue Raised By:</label>

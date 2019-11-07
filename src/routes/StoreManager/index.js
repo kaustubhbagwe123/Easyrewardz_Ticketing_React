@@ -10,6 +10,10 @@ import CategoryMaster from "./CategoryMaster";
 import CreateSLA from "./CreateSLA";
 import EditStoreTask from "./EditStoreTask";
 import StoreTaskByTicket from "./StoreTaskByTicket";
+import RaiseClaim from "./RaiseClaim";
+import Claim from "./Claim";
+import ClaimApproveReject from "./ClaimApproveReject";
+import StoreAddTask from "./StoreAddTask";
 // import "./styles.css";
 // import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 export class StoreApp extends Component {
@@ -46,7 +50,10 @@ export class StoreApp extends Component {
         <Route exact path={`${match.url}/sla`} component={CreateSLA} />
         <Route exact path={`${match.url}/editStoreTask`} component={EditStoreTask} />
         <Route exact path={`${match.url}/storeTaskByTicket`} component={StoreTaskByTicket} />
-      
+        <Route exact path={`${match.url}/raiseClaim`} component={RaiseClaim} />
+        <Route exact path={`${match.url}/claim`} component={Claim} />
+        <Route exact path={`${match.url}/claimApproveReject`} component={ClaimApproveReject} />
+        <Route exact path={`${match.url}/storeAddTask`} component={StoreAddTask} />
       </StoreLayout>
     );
   }

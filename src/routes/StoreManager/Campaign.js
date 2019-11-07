@@ -9,17 +9,16 @@ class Campaign extends Component {
     super(props);
     this.state = {
       FirstCollapse: false,
-      TwoCollapse:false
-
+      TwoCollapse: false
     };
     this.firstActionOpenClps = this.firstActionOpenClps.bind(this);
-    this.twoActionOpenClps=this.twoActionOpenClps.bind(this);
+    this.twoActionOpenClps = this.twoActionOpenClps.bind(this);
   }
   firstActionOpenClps() {
     this.setState(state => ({ FirstCollapse: !state.FirstCollapse }));
   }
-  twoActionOpenClps(){
-    this.setState(state => ({TwoCollapse:!state.TwoCollapse}));
+  twoActionOpenClps() {
+    this.setState(state => ({ TwoCollapse: !state.TwoCollapse }));
   }
   render() {
     const ImgChange = this.state.FirstCollapse ? (
@@ -32,17 +31,22 @@ class Campaign extends Component {
     ) : (
       <img src={down} alt="collapse down" />
     );
-    /**Header Name change**/  
-    const HeaderNameChange=this.state.FirstCollapse
-    ? "Campaign Type" : "Customer Name";
+    /**Header Name change**/
 
-    /**Hide clode button with header**/ 
-    const HideHeaderChange=this.state.FirstCollapse
-    ? "" : "Campaign Status"
-    const HideCloseButton=this.state.FirstCollapse
-    ? "" :  <button className="closebtn" type="button">
-    <label className="hdrcloselabel">Close</label>
-  </button>
+    const HeaderNameChange = this.state.FirstCollapse
+      ? "Campaign Type"
+      : "Customer Name";
+
+    /**Hide clode button with header**/
+
+    const HideHeaderChange = this.state.FirstCollapse ? "" : "Campaign Status";
+    const HideCloseButton = this.state.FirstCollapse ? (
+      ""
+    ) : (
+      <button className="closebtn" type="button">
+        <label className="hdrcloselabel">Close</label>
+      </button>
+    );
     return (
       <div>
         <div className="table-cntr store">
@@ -63,9 +67,7 @@ class Campaign extends Component {
                 <td>10</td>
                 <td>Hello Mr/Mrs ......, Greetings for the day........</td>
                 <td>12-Aug-19</td>
-                <td>
-                 {HideCloseButton}
-                </td>
+                <td>{HideCloseButton}</td>
                 <td>
                   <div onClick={this.firstActionOpenClps}>{ImgChange}</div>
                 </td>
@@ -75,7 +77,7 @@ class Campaign extends Component {
                   <Collapse isOpen={this.state.FirstCollapse}>
                     <Card>
                       <CardBody>
-                        <CampaignTable1/>
+                        <CampaignTable1 />
                       </CardBody>
                     </Card>
                   </Collapse>
@@ -100,7 +102,7 @@ class Campaign extends Component {
                   <Collapse isOpen={this.state.TwoCollapse}>
                     <Card>
                       <CardBody>
-                        <CampaignTable1/>
+                        <CampaignTable1 />
                       </CardBody>
                     </Card>
                   </Collapse>

@@ -16,11 +16,11 @@ class TicketToBillBarGraph extends Component {
       seriesMixedChart: [ {
         name: 'Total Bills',
         type: 'column',
-        data: [85, 85, 85]
+        data: [2500, 2500, 2500]
       }, {
         name: 'Ticketed Bills',
         type: 'column',
-        data: [83, 83, 83]
+        data: [1700, 1700, 1700]
       }],
     }
   }
@@ -30,7 +30,7 @@ class TicketToBillBarGraph extends Component {
       <div className="app">
       <div className="row">
         <div className="col mixed-chart">
-          <Chart options={this.state.optionsMixedChart} series={this.state.seriesMixedChart} type="line" width="400" height="190" className="ticketToTask-chart-1"/>
+          <Chart options={this.state.optionsMixedChart} series={this.state.seriesMixedChart} type="line" width="400" height="180" className="ticketToTask-chart-1"/>
         </div>
       </div>
     </div>

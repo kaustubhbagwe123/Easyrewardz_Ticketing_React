@@ -648,10 +648,18 @@
 }
 .store-card-2 {
   padding: 20px 30px;
-  margin-left: -60px;
+  /* margin-left: -60px; */
   margin-top: 12px;
   margin-bottom: 12px;
-  width: 466px;
+  width: 100%;
+  height: 69vw;
+}
+.store-card-3 {
+  padding: 20px 30px;
+  /* margin-left: -60px; */
+  margin-top: 12px;
+  margin-bottom: 12px;
+  width: 100%;
   height: auto;
 }
 .naman-r-store-2 {
@@ -679,7 +687,7 @@
   font-weight: 700;
   line-height: 19px;
   text-align: left;
-  /* padding-left: 7px; */
+  padding-left: 7px;
 }
 .store-mrg-3 {
   margin-top: 25px;
@@ -702,7 +710,7 @@
   text-align: left;
 }
 .progressbar-2 {
-  width: 75%;
+  width: 70%;
   margin-left: 6px;
   margin-bottom: 3px;
 }
@@ -714,7 +722,7 @@
   line-height: 17px;
   text-align: left;
   float: right;
-  margin-right: 115px;
+  margin-right: 90px;
 }
 .store-hdrtMdal {
   padding: 7px 113px 10px 20px;
@@ -829,4 +837,133 @@
   padding-right: 0;
 }
 /*  Store Task by tikcet css end*/
+/* Claim page by shlok */
+.main-Claimdiv {
+  padding: 5px 15px 15px;
+}
+.claimTbl table tr td:last-child,
+table tr th:last-child {
+  text-align: right;
+  float: left;
+}
+.claim-headPhoneImg {
+  width: 18px;
+  height: 19px;
+  margin-right: 7px;
+}
+.claimTbl .claim-span {
+  font-size: 10px !important;
+}
+.claim-comment {
+  color: #505050;
+  font-family: Lato;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 16px;
+  width: 807px;
+  text-align: left;
+}
+.claim-bataShoes {
+  width: 350px;
+  height: 197px;
+  margin-left: -10px;
+}
+.col-md-10-card {
+  margin-left: 5px;
+  flex: 0 0 75%;
+  max-width: 70%;
+}
+.claim-customer-padding {
+  padding: 60px;
+  padding-left: 6%;
+  padding-top: 5px;
+}
+/* Claim page end */
+/* StoreAddTask css start by kalpesh */
+.card1 {
+width: 100%;
+padding: 42px 20px;
+margin-left: 0;
+margin-right: 0;
+}
+.store-Edit-lblcre {
+color: #4a4a4a;
+font-family: Lato;
+font-size: 20px;
+font-weight: 700;
+margin-bottom: 25px;
+}
+.store-Edit-lbl1 {
+color: #9b9b9b;
+font-family: Lato;
+font-size: 14px;
+font-weight: 700;
+line-height: 19px;
+text-align: left;
+margin-bottom: 7px;
+}
+.cardmargin {
+margin-left: -30px;
+height: 49.6vw;
+}
+/* StoreAddTask css end */
+/* ClaimApproveReject css start for header button and bottom page by Kalpesh */
+.claim-title1{
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 550;
+  line-height: 22px;
+  text-align: left;
+  padding: 14px 5px 14px 30px;
+}
+.btn-approrej {
+  float: right;
+  margin-top: 4px;
+}
+.btn-approrej1 {
+background-color: #2561a8;
+border-radius: 4px;
+border-color: #2561a8;
+width: 155px;
+height: 40px;
+font-size: 14px;
+cursor: pointer;
+color: white;
+margin-left: 10px;
+}
+.oval-approve {
+  background-color: #f8e71c;
+  border-radius: 100%;
+  width: 31px;
+  height: 31px;
+  float: left;
+  padding: 4px;
+  margin: 9px 15px 9px 35px;
+}
+.card-radius2 b {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 2;
+}
+.card-radius2 label {
+  font-size: 16px;
+  font-weight: 400;
+}
+.a {
+  border-radius: 50%;
+    background-color: #2561a8;
+    color: white;
+    padding: 3px 10px 5px 11px;
+    font-weight: 500;
+    margin-right: 10px;
+}
+.cardbor {
+  border:1px solid #e0e0e0 !important;
+}
+.alankrit {
+  margin-bottom: 20px;
+  display: grid;
+}
+/* ClaimApproveReject css end */
 /* ----------------------------------------------- */

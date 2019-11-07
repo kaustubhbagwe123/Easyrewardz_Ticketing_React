@@ -303,7 +303,7 @@ class KnowledgeBase extends Component {
                     <th>Type</th>
                     <th>Category</th>
                     <th>Sub catogory</th>
-                    <th>Action</th>
+                    <th className="pad">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -665,7 +665,7 @@ class KnowledgeBase extends Component {
                   CANCEL
                 </label>
                 <button className="add-kb-button-modal">
-                  <label className="add-kb-button-text-modal">SAVE</label>
+                  <label className="add-kb-button-text-modal">APPROVE</label>
                 </button>
               </div>
             </div>
