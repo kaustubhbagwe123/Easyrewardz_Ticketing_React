@@ -48,6 +48,7 @@ class MyTicket extends Component {
       EmailCollapse: false,
       CommentsDrawer: false,
       BillInvoiceModal: false,
+      HistOrderShow: true,
       values: [
         {
           taskTitle: "",
@@ -58,6 +59,13 @@ class MyTicket extends Component {
         }
       ]
     };
+    this.toggleView = this.toggleView.bind(this);
+  }
+
+  toggleView() {
+    this.setState({
+      HistOrderShow: !this.state.HistOrderShow
+    });
   }
 
   HandleClaimPageView() {
@@ -138,6 +146,9 @@ class MyTicket extends Component {
         }
       ]
     }));
+  }
+  componentWillMount() {
+    this.setState({ HistOrderShow: true });
   }
   handleRemoveForm(i) {
     let values = [...this.state.values];
@@ -347,8 +358,12 @@ class MyTicket extends Component {
 
         Name: (
           <span>
-            <label>HUSH PUPPIES</label>
-            <label>HUSH PUPPIES</label>
+            <label>
+              HUSH PUPPIES{" "}
+              <span style={{ display: "block" }}>
+                Blue Casual Shoes For Men
+              </span>
+            </label>
           </span>
         ),
         Price: "4500",
@@ -372,8 +387,12 @@ class MyTicket extends Component {
         ),
         Name: (
           <span>
-            <label>HUSH PUPPIES</label>
-            <label>HUSH PUPPIES</label>
+            <label>
+              HUSH PUPPIES
+              <span style={{ display: "block" }}>
+                Blue Casual Shoes For Men
+              </span>
+            </label>
           </span>
         ),
         Price: "4500",
@@ -667,116 +686,138 @@ class MyTicket extends Component {
                       </div>
 
                       <div className="col-md-7 xyz">
-                        <div className="histOrderHide">
-                          <div className="histo">
-                            <img
-                              src={CustomerIcon}
-                              alt="customer-icon"
-                              style={{ marginTop: "-10px" }}
-                            />
-                            <label className="customer-text">
-                              HISTORICAL ORDER
-                            </label>
-                          </div>
-                          <div className="col-md-6">
-                            <input
-                              type="text"
-                              className="search-orderhis"
-                              placeholder="Search Order"
-                            />
-                          </div>
-                          <div className="tablehistrical">
-                            <ReactTable
-                              data={data}
-                              columns={columns}
-                              resizable={false}
-                              defaultPageSize={5}
-                              showPagination={false}
-                            />
-                          </div>
-
-                          <div className="row skipmar">
-                            <div className="col-md-5">
-                              <label className="skiptext">
-                                SKIP ATTATCHING ORDER
-                              </label>
-                            </div>
-                            <div className="col-md-7">
-                              <div className="calnex">
-                                <button type="button" className="calnexbtn">
-                                  <label className="calnexbtn-text">
-                                    Cancel
-                                  </label>
-                                </button>
-                                <button
-                                  type="button"
-                                  className="calnexbtn1"
-                                  // onClick={this.handleHistoricalDetailNext.bind(this)}
-                                >
-                                  <label className="calnexbtn1-text">
-                                    Next
-                                  </label>
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="histOrderShow">
-                          <div className="row histo">
-                            <div className="col-md-7">
+                        {this.state.HistOrderShow ? (
+                          <div>
+                            <div className="histo">
                               <img
                                 src={CustomerIcon}
                                 alt="customer-icon"
                                 style={{ marginTop: "-10px" }}
                               />
-                              <img
-                                src={DownImg}
-                                alt="down"
-                                className="down-header"
-                              />
                               <label className="customer-text">
-                                ORDER - BB2213451123
+                                HISTORICAL ORDER
                               </label>
+                              <img
+                                src={CrossIcon}
+                                alt="cross-icon"
+                                style={{ float: "right" }}
+                                onClick={this.handleBillImgModalClose.bind(
+                                  this
+                                )}
+                              />
                             </div>
-                            <div className="col-md-5">
-                              <label className="customerOrder-text">
-                                ORDER
-                              </label>
-                              <label className="customerItem-text">ITEM</label>
-                              <div className="orderswitch">
-                                <div className="switch switch-primary d-inline">
-                                  <input type="checkbox" id="editTasks-p-2" />
-                                  <label
-                                    htmlFor="editTasks-p-2"
-                                    className="cr ord"
-                                  ></label>
+                            <div className="col-md-6">
+                              <input
+                                type="text"
+                                className="search-orderhis"
+                                placeholder="Search Order"
+                              />
+                            </div>
+                            <div className="tablehistrical">
+                              <ReactTable
+                                data={data}
+                                columns={columns}
+                                // resizable={false}
+                                defaultPageSize={5}
+                                showPagination={false}
+                              />
+                            </div>
+
+                            <div className="row skipmar">
+                              <div className="col-md-5">
+                                <label className="skiptext">
+                                  SKIP ATTATCHING ORDER
+                                </label>
+                              </div>
+                              <div className="col-md-7">
+                                <div className="calnex">
+                                  <button type="button" className="calnexbtn">
+                                    <label className="calnexbtn-text">
+                                      Cancel
+                                    </label>
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className="calnexbtn1"
+                                    onClick={this.toggleView}
+                                  >
+                                    <label className="calnexbtn1-text">
+                                      Next
+                                    </label>
+                                  </button>
                                 </div>
                               </div>
                             </div>
                           </div>
-                          <div className="tablehistrical tablehistricaldetail">
-                            <ReactTable
-                              data={data1}
-                              columns={columns1}
-                              resizable={false}
-                              defaultPageSize={2}
-                              showPagination={false}
-                            />
-                          </div>
-                        </div>
-
-                        <div className="row skipmar done">
-                          <div className="col-md-12">
-                            <div className="calnex">
-                              <button type="button" className="calnexbtn">
-                                <label className="calnexbtn-text">Cancel</label>
-                              </button>
-                              <button type="button" className="calnexbtn1">
-                                <label className="calnexbtn1-text">DONE</label>
-                              </button>
+                        ) : (
+                          <div>
+                            <div className="row histo">
+                              <div className="col-md-7">
+                                <img
+                                  src={CustomerIcon}
+                                  alt="customer-icon"
+                                  style={{ marginTop: "-10px" }}
+                                />
+                                <img
+                                  src={DownImg}
+                                  alt="down"
+                                  className="down-header"
+                                />
+                                <label className="customer-text">
+                                  ORDER - BB2213451123
+                                </label>
+                              </div>
+                              <div className="col-md-5">
+                                <label className="customerOrder-text">
+                                  ORDER
+                                </label>
+                                <label className="customerItem-text">
+                                  ITEM
+                                </label>
+                                <div className="orderswitch">
+                                  <div className="switch switch-primary d-inline">
+                                    <input type="checkbox" id="editTasks-p-2" />
+                                    <label
+                                      htmlFor="editTasks-p-2"
+                                      className="cr ord"
+                                    ></label>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="tablehistrical tablehistricaldetail">
+                              <ReactTable
+                                data={data1}
+                                columns={columns1}
+                                // resizable={false}
+                                defaultPageSize={2}
+                                showPagination={false}
+                              />
+                            </div>
+                            <div className="row skipmar done">
+                              <div className="col-md-12">
+                                <div className="calnex">
+                                  <button type="button" className="calnexbtn">
+                                    <label className="calnexbtn-text">
+                                      Cancel
+                                    </label>
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className="calnexbtn1"
+                                    onClick={this.handleBillImgModalClose.bind(
+                                      this
+                                    )}
+                                  >
+                                    <label className="calnexbtn1-text">
+                                      DONE
+                                    </label>
+                                  </button>
+                                </div>
+                              </div>
                             </div>
                           </div>
-                        </div>
+                        )}
                       </div>
                     </div>
                   </Modal>

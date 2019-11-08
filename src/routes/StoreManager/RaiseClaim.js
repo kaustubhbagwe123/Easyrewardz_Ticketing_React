@@ -12,12 +12,18 @@ class RaiseClaim extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      collapse: false
+      collapse: false,
+      SearchDetails: true
     };
     this.toggle = this.toggle.bind(this);
   }
   toggle() {
     this.setState(state => ({ collapse: !state.collapse }));
+  }
+  handleShowSearchDetails() {
+    this.setState({
+      SearchDetails: !this.state.SearchDetails
+    });
   }
   render() {
     return (
@@ -93,9 +99,9 @@ class RaiseClaim extends Component {
                       </div>
                     </div>
 
-                    <Collapse isOpen={this.state.collapse}>
-                      <Card style={{ marginRight: "31px" }}>
-                        <CardBody style={{ marginRight: "-162px" }}>
+                    <Collapse isOpen={this.state.collapse} style={{width:'100%'}}>
+                      <Card>
+                        <CardBody>
                           <div className="row">
                             <div className="col-md-6">
                               <label className="claim-A22345">
@@ -112,10 +118,50 @@ class RaiseClaim extends Component {
                                 src={SearchBlackImg}
                                 alt="Search"
                                 className="searchImg-2"
+                                onClick={this.handleShowSearchDetails.bind(
+                                  this
+                                )}
                               />
+                              <span className="Searchline"> </span>
                             </div>
-                            <TableDemo />
                           </div>
+                          {this.state.SearchDetails ? (
+                            <div>
+                              <TableDemo />
+                            </div>
+                          ) : (
+                            <div className="uploadsearch">
+                              <div className="row">
+                                <div className="col-md-10 uploadsechmargin">
+                                  <label className="uploadsearch-text">
+                                    No order found with this number
+                                  </label>
+                                </div>
+                              </div>
+                              <div className="row">
+                                <div className="col-md-10 uploadsechmargin">
+                                  <button
+                                    type="button"
+                                    className="uploadsearchbtn"
+                                  >
+                                    <label
+                                      for="file-upload"
+                                      className="uploadsearchbtn-text"
+                                    >
+                                      UPLOAD FILE
+                                    </label>
+                                  </button>
+                                </div>
+                              </div>
+                              <div className="row">
+                                <div className="col-md-10 uploadsechmargin">
+                                  <u>
+                                    <a href="#!">DOWNLOAD SAMPLE FILE</a>
+                                  </u>
+                                </div>
+                              </div>
+                            </div>
+                          )}
                         </CardBody>
                       </Card>
                     </Collapse>

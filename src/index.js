@@ -36,7 +36,7 @@ import ProgramCodeSignIn from "./Component/ProgramCodeSignIn";
 import App from "./routes/index";
 import PieChart from "./Component/PieChart/PieChart";
 import StoreApp from "./routes/StoreManager/index";
-// import MyTicket from './routes/MyTicket';
+import QAApp from './routes/QA/index';
 // import MyTicket from './routes/MyTicket';
 
 // ReactDOM.render(<App />, document.getElementById('root'));
@@ -45,6 +45,7 @@ ReactDOM.render(
   <Router>
     <Route path="/admin" component={App} />
     <Route path="/store" component={StoreApp} />
+    <Route path="/qa" component={QAApp} />
     <Route exact path="/" component={ProgramCodeSignIn} />
     <Route exact path="/SignIn" component={SignIn} />
     <Route exact path="/Forgotpassword" component={ForgotPassword} />

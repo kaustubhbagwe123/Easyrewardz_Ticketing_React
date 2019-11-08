@@ -9,7 +9,6 @@ import MyTicketList from "./MyTicketList";
 import ClaimTabTicketView from "./ClaimTabTicketView";
 import Settings from "./Settings/Settings";
 import PrioritySettings from "./Settings/PrioritySetting";
-import QADashboardSearch from "./QA/QADashboardSearch";
 import ChatDashboard from "./Chat/ChatDashboard";
 import QAAuditview from "./QA/QAAuditview";
 import KnowledgeBase from "./KnowledgeBase";
@@ -63,12 +62,6 @@ export class App extends Component {
           path={`${match.url}/priority-settings`}
           component={PrioritySettings}
         />
-        <Route
-          exact
-          path={`${match.url}/qaDashboardSearch`}
-          component={QADashboardSearch}
-        />
-
         <Route
           exact
           path={`${match.url}/knowledgebase`}

@@ -3303,7 +3303,7 @@ table tr th:last-child {
 .Add-ticket-button {
   background-color: #2561a8;
   border-radius: 4px;
-  width: 155px;
+  width: 148px;
   height: 43px;
   cursor: pointer;
 }
@@ -5306,7 +5306,7 @@ progress::-moz-progress-bar {
   line-height: 17px;
   text-align: center;
   cursor: pointer;
-  padding-top: 10px;
+  /* padding-top: 10px; */
 }
 
 .collstore-head-text {
@@ -5642,7 +5642,8 @@ progress::-moz-progress-bar {
   overflow: hidden;
   text-overflow: ellipsis;
   float: left !important;
-  color: #545455 !important;
+  color: #4A4A4A !important;
+  font-weight: 500;
 }
 .ReactTable .rt-thead .rt-th,
 .ReactTable .rt-thead .rt-td {
@@ -6503,7 +6504,7 @@ table tr th:last-child {
 /* dashboard datepicker css end */
 /* My Ticket/Eye Button css Start By Kalpesh */
 .customerBill{
-  padding: 10px 0 0 20px;
+  padding: 20px 0 0 20px;
   margin-bottom: 20px;
   }
   .customer-text{
@@ -6585,6 +6586,7 @@ table tr th:last-child {
   margin-left: 2px;
   border: none;
   cursor: pointer;
+  padding: 10px;
   }
   .histo {
   padding: 20px 0 25px 15px;
@@ -6627,7 +6629,7 @@ table tr th:last-child {
   margin-top: 38px;
   } 
   .done{
-  margin-top: 256px;
+  margin-top: 218px;
   }
   .skiptext {
   color: #2561A8;
@@ -6710,4 +6712,43 @@ table tr th:last-child {
   right: -20px;
   }
   /* MyTicket Css End */
+  /* Tooltip css start by Shlok In Edit Button */
+  .edtpadding{
+    padding: 15px;
+  }
+  .ant-popover-placement-bottom > .ant-popover-content > .ant-popover-arrow {
+    left: 50%;
+    -webkit-transform: translateX(-50%) rotate(45deg);
+    -ms-transform: translateX(-50%) rotate(45deg);
+    transform: translateX(-50%) rotate(45deg);
+    width: 20px !important;
+    height: 20px !important;
+    margin-top: -5px !important;
+    background: white !important;
+}
+  /* Tooltip css End by Shlok In Edit Button */
+  /* MyTicketNew Css Start Kalpesh */
+.newReact .ReactTable .rt-thead .rt-tr {
+  font-size: 13px;
+  color: #4A4A4A;
+  padding: 0 0 0 13px; 
+  font-weight: 600;
+  }
+  .newReact .table-b {
+  border-radius: 15px;
+  width: 76px;
+  display: inline-block;
+  padding: 4px 10px;
+  text-transform: uppercase;
+  text-align: center;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  }
+  .newReact .ReactTable .rt-tbody .rt-td {
+  padding: 12px 20px !important;
+  color: #9b9b9b !important;
+  border-bottom: 1px solid #EEEE !important;
+  }
+  /* MyTicketNew Css end*/
 /* ****************End css ************************/

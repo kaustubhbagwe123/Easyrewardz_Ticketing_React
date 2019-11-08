@@ -1,26 +1,23 @@
-import React,{Component} from 'react';
-import { Accordion, Card,Button } from "react-bootstrap";
+import React, { Component, Fragment } from "react";
+import { Accordion, Card, Button } from "react-bootstrap";
 import BlueStoreIcon from "./../assets/Images/storeBlue.png";
 import BlackProductIcon from "./../assets/Images/product-black.png";
-import MyTicket from './MyTicket';
+import MyTicket from "./MyTicket";
 import CrossIcon from "./../assets/Images/cancel.png";
 import Modal from "react-responsive-modal";
 
 class TikcetSystemStoreModal extends Component {
   constructor(props) {
-                       super(props);
+    super(props);
 
-                       this.state = {
-                         storeproductsearch: false,
-                         checkactive:"#9B9B9B"
+    this.state = {
+      storeproductsearch: false,
+      checkactive: "#9B9B9B"
+    };
+    this.myTicket = new MyTicket();
+  }
 
-                       };
-                       this.myTicket=new MyTicket();
-                     }
- 
-  
   HandleStoreProductSearchModalOpen() {
- 
     this.myTicket.HandleStoreModalClose.bind(this);
     this.setState({ storeproductsearch: true });
   }
@@ -30,16 +27,13 @@ class TikcetSystemStoreModal extends Component {
     });
   }
 
-HandalDatatable(){
-  debugger;
-this.setState({checkactive:"#4A4A4A"});
-
-
-}
+  HandalDatatable() {
+    this.setState({ checkactive: "#4A4A4A" });
+  }
 
   render() {
     return (
-      <>
+      <Fragment>
         <Accordion defaultActiveKey="0">
           <Card>
             <Card.Header aria-expanded="true">
@@ -179,7 +173,7 @@ this.setState({checkactive:"#4A4A4A"});
                         <div className="row" style={{ display: "block" }}>
                           <select className="storemodal-select">
                             <option>Select State</option>
-                            <option selected>Delhi</option>
+                            <option>Delhi</option>
                           </select>
                           <div
                             className="filter-checkbox"
@@ -277,7 +271,7 @@ this.setState({checkactive:"#4A4A4A"});
                               this
                             )}
                           >
-                            <label className="storemodal-search-btn-text">
+                            <label className="storemodal-search-btn-text"  style={{paddingTop:'12px'}}>
                               SEARCH
                             </label>
                           </div>
@@ -437,7 +431,7 @@ this.setState({checkactive:"#4A4A4A"});
             </div>
           </div>
         </Modal>
-      </>
+      </Fragment>
     );
   }
 }

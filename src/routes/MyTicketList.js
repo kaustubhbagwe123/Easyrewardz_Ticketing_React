@@ -12,6 +12,15 @@ import SearchBlackImg from "./../assets/Images/searchBlack.png";
 import Headphone2Img from "./../assets/Images/headphone2.png";
 import Modal from "react-bootstrap/Modal";
 import MyTicketNew from "./Tabs/MyTicketNew.js";
+import MyTicketOpen from "./Tabs/MyTicketOpen.js";
+import MyTicketResolved from "./Tabs/MyTicketResolved.js";
+import MyTicketReassign from "./Tabs/MyTicketReassign.js";
+import MyTicketClosed from "./Tabs/MyTicketClosed.js";
+import MyTicketAll from "./Tabs/MyTicketAll.js";
+import MyTicketFollowUp from "./Tabs/MyTicketFollowUp.js";
+import MyTicketDraft from "./Tabs/MyTicketDraft.js";
+
+
 class MyTicketList extends Component {
   constructor(props) {
     super(props);
@@ -256,11 +265,7 @@ class MyTicketList extends Component {
                             </span>
                           </td>
                           <td className="table-img-cntr">
-                            {/* <img
-                          className="task-icon-1"
-                          src="Images/task-icon-blue.png"
-                          alt="missing"
-                        /> */}
+                            
                           </td>
                           <td>
                             Need to change my shipping address{" "}
@@ -599,11 +604,7 @@ class MyTicketList extends Component {
                             </span>
                           </td>
                           <td className="table-img-cntr">
-                            {/* <img
-                          className="task-icon-1"
-                          src="Images/task-icon-blue.png"
-                          alt="missing"
-                        />  */}
+                           
                           </td>
                           <td>
                             Need to change my shipping address
@@ -689,7 +690,7 @@ class MyTicketList extends Component {
                 role="tabpanel"
                 aria-labelledby="Open-tab"
               >
-                <h1 style={{ textAlign: "center" }}>Open</h1>
+                <MyTicketOpen />
               </div>
 
               <div
@@ -698,7 +699,7 @@ class MyTicketList extends Component {
                 role="tabpanel"
                 aria-labelledby="Resolved-tab"
               >
-                <h1 style={{ textAlign: "center" }}>Resolved</h1>
+                <MyTicketResolved />
               </div>
 
               <div
@@ -707,7 +708,7 @@ class MyTicketList extends Component {
                 role="tabpanel"
                 aria-labelledby="Reassigned-tab"
               >
-                <h1 style={{ textAlign: "center" }}>Reassigned</h1>
+                <MyTicketReassign />
               </div>
 
               <div
@@ -716,7 +717,7 @@ class MyTicketList extends Component {
                 role="tabpanel"
                 aria-labelledby="Closed-tab"
               >
-                <h1 style={{ textAlign: "center" }}>Closed</h1>
+                <MyTicketClosed/>
               </div>
 
               <div
@@ -725,7 +726,7 @@ class MyTicketList extends Component {
                 role="tabpanel"
                 aria-labelledby="All-tab"
               >
-                <h1 style={{ textAlign: "center" }}>All</h1>
+              <MyTicketAll/>
               </div>
 
               <div
@@ -734,7 +735,7 @@ class MyTicketList extends Component {
                 role="tabpanel"
                 aria-labelledby="Follow-tab"
               >
-                <h1 style={{ textAlign: "center" }}>Follow Up</h1>
+                <MyTicketFollowUp/>
               </div>
 
               <div
@@ -743,7 +744,9 @@ class MyTicketList extends Component {
                 role="tabpanel"
                 aria-labelledby="Draft-tab"
               >
-                <div className="container-fluid">
+                <MyTicketDraft/>
+                </div>
+                {/* <div className="container-fluid">
                   <div className="table-cntr mt-3">
                     <table className="draft">
                       <thead>
@@ -929,8 +932,8 @@ class MyTicketList extends Component {
                       </ul>
                     </div>
                   </div>
-                </div>
-              </div>
+                </div> */}
+              
             </div>
           </div>
          

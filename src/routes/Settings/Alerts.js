@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { UncontrolledPopover, PopoverBody } from "reactstrap";
+import { Popover } from "antd";
 // import Modal from "react-responsive-modal";
 import ReactTable from "react-table";
 // import "react-table/react-table.css";
@@ -66,10 +66,11 @@ class Alerts extends Component {
       content: newContent
     });
   }
- 
+
   render() {
     const data = [
       {
+        id: "A1",
         alertType: "New Ticket Creation",
         communicationMode: (
           <div>
@@ -82,33 +83,11 @@ class Alerts extends Component {
             />
           </div>
         ),
-        createdBy: (
-          <span>
-            Admin
-            <img
-              className="info-icon-cp"
-              src={BlackInfoIcon}
-              alt="info-icon"
-              id="created1"
-            />
-          </span>
-        ),
-        status: "Active",
-        action: (
-          <span>
-            <img
-              src={RedDeleteIcon}
-              alt="del-icon"
-              className="del-btn"
-              id="del2"
-            />
-            <button className="react-tabel-button" id="p-edit-pop-2">
-              <label className="Table-action-edit-button-text">EDIT</label>
-            </button>
-          </span>
-        )
+
+        status: "Active"
       },
       {
+        id: "A2",
         alertType: "New Ticket Creation",
         communicationMode: (
           <div>
@@ -121,33 +100,11 @@ class Alerts extends Component {
             />
           </div>
         ),
-        createdBy: (
-          <span>
-            Admin
-            <img
-              className="info-icon-cp"
-              src={BlackInfoIcon}
-              alt="info-icon"
-              id="created2"
-            />
-          </span>
-        ),
-        status: "Inactive",
-        action: (
-          <span>
-            <img
-              src={RedDeleteIcon}
-              alt="del-icon"
-              className="del-btn"
-              id="del2"
-            />
-            <button className="react-tabel-button" id="p-edit-pop-2">
-              <label className="Table-action-edit-button-text">EDIT</label>
-            </button>
-          </span>
-        )
+
+        status: "Inactive"
       },
       {
+        id: "A3",
         alertType: "New Ticket Creation",
         communicationMode: (
           <div>
@@ -160,33 +117,11 @@ class Alerts extends Component {
             />
           </div>
         ),
-        createdBy: (
-          <span>
-            Admin
-            <img
-              className="info-icon-cp"
-              src={BlackInfoIcon}
-              alt="info-icon"
-              id="created3"
-            />
-          </span>
-        ),
-        status: "Active",
-        action: (
-          <span>
-            <img
-              src={RedDeleteIcon}
-              alt="del-icon"
-              className="del-btn"
-              id="del2"
-            />
-            <button className="react-tabel-button" id="p-edit-pop-2">
-              <label className="Table-action-edit-button-text">EDIT</label>
-            </button>
-          </span>
-        )
+
+        status: "Active"
       },
       {
+        id: "A4",
         alertType: "New Ticket Creation",
         communicationMode: (
           <div>
@@ -199,33 +134,11 @@ class Alerts extends Component {
             />
           </div>
         ),
-        createdBy: (
-          <span>
-            Admin
-            <img
-              className="info-icon-cp"
-              src={BlackInfoIcon}
-              alt="info-icon"
-              id="Alertcreated4"
-            />
-          </span>
-        ),
-        status: "Inactive",
-        action: (
-          <span>
-            <img
-              src={RedDeleteIcon}
-              alt="del-icon"
-              className="del-btn"
-              id="del2"
-            />
-            <button className="react-tabel-button" id="p-edit-pop-2">
-              <label className="Table-action-edit-button-text">EDIT</label>
-            </button>
-          </span>
-        )
+
+        status: "Inactive"
       },
       {
+        id: "A5",
         alertType: "New Ticket Creation",
         communicationMode: (
           <div>
@@ -238,31 +151,8 @@ class Alerts extends Component {
             />
           </div>
         ),
-        createdBy: (
-          <span>
-            Admin
-            <img
-              className="info-icon-cp"
-              src={BlackInfoIcon}
-              alt="info-icon"
-              id="created5"
-            />
-          </span>
-        ),
-        status: "Active",
-        action: (
-          <span>
-            <img
-              src={RedDeleteIcon}
-              alt="del-icon"
-              className="del-btn"
-              id="del2"
-            />
-            <button className="react-tabel-button" id="p-edit-pop-2">
-              <label className="Table-action-edit-button-text">EDIT</label>
-            </button>
-          </span>
-        )
+
+        status: "Active"
       }
     ];
 
@@ -291,7 +181,25 @@ class Alerts extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "createdBy"
+        Cell: row => {
+          var ids = row.original["id"];
+          return (
+            <div>
+              <span>
+                Admin
+                <Popover content={popoverData} placement="bottom">
+                  <img
+                    className="info-icon-cp"
+                    src={BlackInfoIcon}
+                    alt="info-icon"
+                    id={ids}
+                  />
+                </Popover>
+              </span>
+            </div>
+          );
+        }
+        // accessor: "createdBy"
       },
       {
         Header: (
@@ -301,14 +209,106 @@ class Alerts extends Component {
           </span>
         ),
         accessor: "status"
-        
       },
       {
         Header: "Actions",
-        accessor: "action",
+        // accessor: "action",
         sortable: false,
+        Cell: row => {
+          var ids = row.original["id"];
+          return (
+            <>
+              <span>
+                <Popover content={ActionDelete} placement="bottom">
+                  <img
+                    src={RedDeleteIcon}
+                    alt="del-icon"
+                    className="del-btn"
+                    id={ids}
+                  />
+                </Popover>
+                <Popover content={ActionEditBtn} placement="bottom">
+                  <button className="react-tabel-button" id="p-edit-pop-2">
+                    <label className="Table-action-edit-button-text">
+                      EDIT
+                    </label>
+                  </button>
+                </Popover>
+              </span>
+            </>
+          );
+        }
       }
     ];
+    const popoverData = (
+      <>
+        <div>
+          <b>
+            <p className="title">Created By: Admin</p>
+          </b>
+          <p className="sub-title">Created Date: 12 March 2018</p>
+        </div>
+        <div>
+          <b>
+            <p className="title">Updated By: Manager</p>
+          </b>
+          <p className="sub-title">Updated Date: 12 March 2018</p>
+        </div>
+      </>
+    );
+    const ActionDelete = (
+      <div className="d-flex general-popover popover-body">
+        <div className="del-big-icon">
+          <img src={DelBigIcon} alt="del-icon" />
+        </div>
+        <div>
+          <p className="font-weight-bold blak-clr">Delete file?</p>
+          <p className="mt-1 fs-12">
+            Are you sure you want to delete this file?
+          </p>
+          <div className="del-can">
+            <a href={Demo.BLANK_LINK}>CANCEL</a>
+            <button className="butn">Delete</button>
+          </div>
+        </div>
+      </div>
+    );
+    const ActionEditBtn = (
+      <div className="edtpadding">
+        <div className="">
+          <label className="popover-header-text">EDIT ALERTS</label>
+        </div>
+        <div className="pop-over-div">
+          <label className="edit-label-1">Alert Type</label>
+          <input
+            type="text"
+            className="txt-edit-popover"
+            placeholder="Enter Alert Type"
+          />
+        </div>
+        {/* <div className="pop-over-div">
+          <label className="edit-label-1">Issue Type</label>
+          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
+            <option>Select</option>
+            <option>Admin</option>
+          </select>
+        </div> */}
+        <div className="pop-over-div">
+          <label className="edit-label-1">Status</label>
+          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
+            <option>Active</option>
+            <option>Inactive</option>
+          </select>
+        </div>
+        <br />
+        <div>
+          <label className="pop-over-cancle">CANCEL</label>
+          <button className="pop-over-button">
+            <label className="pop-over-btnsave-text">SAVE</label>
+          </button>
+        </div>
+      </div>
+    );
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
@@ -332,91 +332,7 @@ class Alerts extends Component {
                     defaultPageSize={5}
                     showPagination={false}
                   />
-                  <UncontrolledPopover
-                    trigger="hover"
-                    placement="bottom"
-                    target="created1"
-                    className="general-popover created-popover"
-                  >
-                    <PopoverBody>
-                      <div>
-                        <p className="title">Created By: Admin</p>
-                        <p className="sub-title">Created Date: 12 March 2018</p>
-                      </div>
-                      <div>
-                        <p className="title">Updated By: Manager</p>
-                        <p className="sub-title">Updated Date: 12 March 2018</p>
-                      </div>
-                    </PopoverBody>
-                  </UncontrolledPopover>
-                  <UncontrolledPopover
-                    trigger="hover"
-                    placement="auto"
-                    target="created2"
-                    className="general-popover created-popover"
-                  >
-                    <PopoverBody>
-                      <div>
-                        <p className="title">Created By: Admin</p>
-                        <p className="sub-title">Created Date: 12 March 2018</p>
-                      </div>
-                      <div>
-                        <p className="title">Updated By: Manager</p>
-                        <p className="sub-title">Updated Date: 12 March 2018</p>
-                      </div>
-                    </PopoverBody>
-                  </UncontrolledPopover>
-                  <UncontrolledPopover
-                    trigger="hover"
-                    placement="auto"
-                    target="created3"
-                    className="general-popover created-popover"
-                  >
-                    <PopoverBody>
-                      <div>
-                        <p className="title">Created By: Admin</p>
-                        <p className="sub-title">Created Date: 12 March 2018</p>
-                      </div>
-                      <div>
-                        <p className="title">Updated By: Manager</p>
-                        <p className="sub-title">Updated Date: 12 March 2018</p>
-                      </div>
-                    </PopoverBody>
-                  </UncontrolledPopover>
-                  <UncontrolledPopover
-                    trigger="hover"
-                    placement="auto"
-                    target="Alertcreated4"
-                    className="general-popover created-popover"
-                  >
-                    <PopoverBody>
-                      <div>
-                        <p className="title">Created By: Admin</p>
-                        <p className="sub-title">Created Date: 12 March 2018</p>
-                      </div>
-                      <div>
-                        <p className="title">Updated By: Manager</p>
-                        <p className="sub-title">Updated Date: 12 March 2018</p>
-                      </div>
-                    </PopoverBody>
-                  </UncontrolledPopover>
-                  <UncontrolledPopover
-                    trigger="hover"
-                    placement="bottom"
-                    target="created5"
-                    className="general-popover created-popover"
-                  >
-                    <PopoverBody>
-                      <div>
-                        <p className="title">Created By: Admin</p>
-                        <p className="sub-title">Created Date: 12 March 2018</p>
-                      </div>
-                      <div>
-                        <p className="title">Updated By: Manager</p>
-                        <p className="sub-title">Updated Date: 12 March 2018</p>
-                      </div>
-                    </PopoverBody>
-                  </UncontrolledPopover>
+
                   <div className="position-relative">
                     <div className="pagi">
                       <ul>
@@ -665,7 +581,11 @@ class Alerts extends Component {
                                 }}
                               />
                               <div className="div-button1">
-                                <button className="butn-2" type="submit" id="sms-tab">
+                                <button
+                                  className="butn-2"
+                                  type="submit"
+                                  id="sms-tab"
+                                >
                                   SAVE & NEXT
                                 </button>
                               </div>
@@ -759,30 +679,6 @@ class Alerts extends Component {
                           <div className="del-file" id="del-file-1">
                             <img src={DelBlack} alt="delete-black" />
                           </div>
-                          <UncontrolledPopover
-                            trigger="legacy"
-                            placement="auto"
-                            target="del-file-1"
-                            className="general-popover delete-popover"
-                          >
-                            <PopoverBody className="d-flex">
-                              <div className="del-big-icon">
-                                <img src={DelBigIcon} alt="del-icon" />
-                              </div>
-                              <div>
-                                <p className="font-weight-bold blak-clr">
-                                  Delete file?
-                                </p>
-                                <p className="mt-1 fs-12">
-                                  Are you sure you want to delete this file?
-                                </p>
-                                <div className="del-can">
-                                  <a href={Demo.BLANK_LINK}>CANCEL</a>
-                                  <button className="butn">Delete</button>
-                                </div>
-                              </div>
-                            </PopoverBody>
-                          </UncontrolledPopover>
                         </div>
                         <div>
                           <span className="file-size">122.6kb</span>

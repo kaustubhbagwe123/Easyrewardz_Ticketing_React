@@ -1,11 +1,134 @@
 import React, { Component } from 'react'
-import { Table } from 'react-bootstrap';
+import ReactTable from "react-table";
+// import { Table } from 'react-bootstrap';
 
 class TableDemo extends Component {
     render() {
+        const dataorder = [
+            {
+                statusNew: (
+                            <span className="table-b table-blue-btn">
+                            <label>Open</label>
+                            </span>
+                            ),   
+            },
+            {
+                statusNew: (
+                            <span className="table-b table-yellow-btn">
+                            <label>New</label>
+                            </span>
+                           ),
+            },
+            {
+                statusNew: (
+                            <span className="table-b table-green-btn">
+                            <label>Solved</label>
+                            </span>
+                           ),
+            },
+            {
+                statusNew: (
+                            <span className="table-b table-blue-btn">
+                            <label>Open</label>
+                            </span>
+                           ),
+            },
+            {
+                statusNew: (
+                            <span className="table-b table-blue-btn">
+                            <label>Open</label>
+                            </span>
+                           ),
+            }
+            
+          ];
+      
+          const columnsorder = [
+            {
+              Header: <span>Invoice Number</span>,
+              accessor: "InvoiceNumber",
+                        Cell:props => 
+                        <span>
+                            <label>BB33476</label>
+                        </span>
+            },
+            {
+              Header: <span>Invoice Date</span>,
+              accessor: "InvoiceDate",
+                         Cell:props =>
+                         <label>02</label>
+            },
+            {
+                Header: <span>Item Count</span>,
+                accessor: "ItemCount",
+                        Cell:props =>
+                            <span>
+                                <label>2999</label>
+                            </span>    
+                            
+            },
+            {
+                Header: <span>Item Price</span>,
+                accessor: "Item Price",
+                        Cell:props =>
+                        <span>
+                            <label>@2999</label>
+                        </span>
+            },
+            {
+                Header: <span>Price Paid</span>,
+                accessor: "PricePaid",
+                        Cell:props =>
+                        <span>
+                            <label>SB221</label>
+                        </span>
+            },
+            {
+                Header: <span>Store Code</span>,
+                accessor: "StoreCode",
+                        Cell:props =>
+                        <span>
+                            <label>SB221</label>
+                        </span>
+            },
+            {
+                Header: <span>Store Address</span>,
+                accessor: "StoreAddres",
+                        Cell:props =>
+                        <span>
+                            <label>Paper Bag</label>
+                        </span>
+            },
+            {
+                Header: <span>Product Name</span>,
+                accessor: "ProductName",
+                        Cell:props =>
+                        <span>
+                            <label>01</label>
+                        </span>
+            },
+            {
+                Header: <span>Number Of Item</span>,
+                accessor: "Number Of Item",
+                        Cell:props =>
+                        <span>
+                            <label>13 May 2049</label>
+                        </span>
+            },
+
+
+          ];
+
         return (
             <div className="oderDetails-table">
-                <Table responsive>
+                <ReactTable
+                    data={dataorder}
+                    columns={columnsorder}
+                    // resizable={false}
+                    defaultPageSize={5}
+                    showPagination={false}
+                  />
+                {/* <Table responsive>
                     <thead>
                         <tr>
                             <th>Invoice Number</th>
@@ -54,7 +177,7 @@ class TableDemo extends Component {
                             <td>03</td>
                         </tr>
                     </tbody>
-                </Table>
+                </Table> */}
             </div>
         )
     }
