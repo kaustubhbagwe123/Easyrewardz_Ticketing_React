@@ -11,15 +11,15 @@ class MyTicketClosed extends Component {
         const dataClose = [
             {
                 statusNew: (
-                            <span className="table-b table-blue-btn">
-                            <label>Open</label>
+                            <span className="table-b table-green-btn">
+                            <label>Solved</label>
                             </span>
                             ),   
             },
             {
                 statusNew: (
-                            <span className="table-b table-yellow-btn">
-                            <label>New</label>
+                            <span className="table-b table-green-btn">
+                            <label>Solved</label>
                             </span>
                            ),
             },
@@ -32,22 +32,8 @@ class MyTicketClosed extends Component {
             },
             {
                 statusNew: (
-                            <span className="table-b table-blue-btn">
-                            <label>Open</label>
-                            </span>
-                           ),
-            },
-            {
-                statusNew: (
-                            <span className="table-b table-blue-btn">
-                            <label>Open</label>
-                            </span>
-                           ),
-            },
-            {
-                statusNew: (
-                            <span className="table-b table-yellow-btn">
-                            <label>Open</label>
+                            <span className="table-b table-green-btn">
+                            <label>Solved</label>
                             </span>
                            ),
             },
@@ -60,22 +46,50 @@ class MyTicketClosed extends Component {
             },
             {
                 statusNew: (
-                            <span className="table-b table-blue-btn">
-                            <label>Open</label>
+                            <span className="table-b table-green-btn">
+                            <label>Solved</label>
                             </span>
                            ),
             },
             {
                 statusNew: (
-                            <span className="table-b table-blue-btn">
-                            <label>Open</label>
+                            <span className="table-b table-green-btn">
+                            <label>Solved</label>
                             </span>
                            ),
             },
             {
                 statusNew: (
-                            <span className="table-b table-yellow-btn">
-                            <label>New</label>
+                            <span className="table-b table-green-btn">
+                            <label>Solved</label>
+                            </span>
+                           ),
+            },
+            {
+                statusNew: (
+                            <span className="table-b table-green-btn">
+                            <label>Solved</label>
+                            </span>
+                           ),
+            },
+            {
+                statusNew: (
+                            <span className="table-b table-green-btn">
+                            <label>Solved</label>
+                            </span>
+                           )                
+            },
+            {
+                statusNew: (
+                            <span className="table-b table-green-btn">
+                            <label>Solved</label>
+                            </span>
+                           )                
+            },
+            {
+                statusNew: (
+                            <span className="table-b table-green-btn">
+                            <label>Solved</label>
                             </span>
                            )                
             }

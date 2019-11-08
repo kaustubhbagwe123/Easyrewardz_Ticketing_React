@@ -25,25 +25,12 @@ class MyTicketFollowUp extends Component {
             },
             {
                 statusNew: (
-                            <span className="table-b table-green-btn">
-                            <label>Solved</label>
-                            </span>
-                           ),
-            },
-            {
-                statusNew: (
-                            <span className="table-b table-blue-btn">
-                            <label>Open</label>
-                            </span>
-                           ),
-            },
-            {
-                statusNew: (
                             <span className="table-b table-blue-btn">
                             <label>Open</label>
                             </span>
                            ),
             }
+         
             
           ];
       

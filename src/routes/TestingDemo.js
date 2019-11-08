@@ -1,41 +1,30 @@
 import React, { Component } from "react";
-import Chart from "react-apexcharts";
+import { PieChart } from "react-d3-components";
 class TestingDemo extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      options: {
-        chart: {
-          id: "apexchart-example"
-        },
-        xaxis: {
-          categories: ["Call", "Email", "Social"]
-        }
-      },
-      series: [
-        {
-          name: "series-1",
-          data: [1600, 1450, 2300]
-        }
-      ]
-    };
+    this.state = {};
   }
 
   render() {
+    var sort = null;
+    var data = {
+      // label: 'somethingA',
+      values: [
+        { x: "Low", y: 22 },
+        { x: "High", y: 37 },
+        { x: "Medium", y: 40 }
+      ]
+    };
     return (
-      <div className="app">
-        <div className="row">
-          <div className="col mixed-chart">
-            <Chart
-              options={this.state.options}
-              series={this.state.series}
-              type="bar"
-              width={400}
-              height={200}
-            />
-          </div>
-        </div>
+      <div>
+        <PieChart
+          data={data}
+          width={370}
+          height={250}
+          margin={{ top: 10, bottom: 10, left: 100, right: 100 }}
+          sort={sort}
+        />
       </div>
     );
   }

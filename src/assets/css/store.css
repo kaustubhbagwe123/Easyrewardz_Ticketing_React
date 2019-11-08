@@ -968,11 +968,11 @@ margin-left: 10px;
 /* ClaimApproveReject css end */
 /* Raiseclaim search collapse css start kalpesh */
 .Searchline {
-  border-bottom: 1px solid black;
-  width: 84%;
-  margin-top: 10px;
-  margin-left: 15px;
-  margin-right: 2px;
+  border-bottom: 1px solid #E3E3E3;
+    width: 98%;
+    margin-top: 10px;
+    margin-left: 0px;
+    margin-right: 0px;
   }
   .uploadsearch-text {
   color: #4A4A4A;
@@ -1013,6 +1013,35 @@ margin-left: 10px;
   }
   .uploadsearch {
   text-align: center;
+  margin-top: 70px;
+  }
+  .searchtext {
+    background-color: #FFFFFF;
+    border: 1px solid #979797;
+    border-radius: 4px;
+    width: 299px;
+    height: 43px;
+    float: right;
+    padding: 10px;
+  }
+  .searchImg-raise {
+    width: 20px;
+    height: 20px;
+    float: right;
+    margin-right: -280px;
+    margin-top: 12px;
+  }
+  .oderDetails-table .ReactTable .rt-thead.-header {
+    background-color: #fff;
+  }
+  .orderdetailtext {
+    color: #4A4A4A;
+    font-family: Lato;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 19px;
+    text-align: left;
+    margin-top: 10px;
   }
   /* Raiseclaim search collapse css start kalpesh */
 /* ----------------------------------------------- */

@@ -2,7 +2,6 @@ import React, { Component, Fragment } from "react";
 // import "../../node_modules/jquery/dist/jquery.js";
 import { ProgressBar } from "react-bootstrap";
 import Modal from "react-responsive-modal";
-import PieChart from "../Component/PieChart/PieChart";
 import SearchIcon from "./../assets/Images/search-icon.png";
 import TableArr from "./../assets/Images/table-arr.png";
 import Dash from "./../assets/Images/dash.png";
@@ -30,6 +29,7 @@ import TicketToClaimMultiBar from "../Component/PieChart/TicketToClaimMultiBar";
 import HeadPhone3 from "./../assets/Images/headphone3.png";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import OpenByPriorityPie from "../Component/PieChart/PieChart";
 
 class Dashboard extends Component {
   constructor(props) {
@@ -231,7 +231,7 @@ class Dashboard extends Component {
                       <div className="dash-top-cards prio-pie-cntr">
                         <p className="card-head mb-0">Open By Priority</p>
                         <div className="prio-pie-chart">
-                          <PieChart />
+                          <OpenByPriorityPie />
                         </div>
                       </div>
                     </div>

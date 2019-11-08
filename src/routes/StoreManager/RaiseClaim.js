@@ -101,29 +101,28 @@ class RaiseClaim extends Component {
 
                     <Collapse isOpen={this.state.collapse} style={{width:'100%'}}>
                       <Card>
-                        <CardBody>
+                        <CardBody style={{padding:"15px 5px 15px 20px"}}>
                           <div className="row">
                             <div className="col-md-6">
-                              <label className="claim-A22345">
+                              <label className="orderdetailtext">
                                 Order details
                               </label>
                             </div>
                             <div className="col-md-6">
                               <input
                                 type="text"
-                                className="search-order"
+                                className="searchtext"
                                 placeholder="Search Order"
                               />
                               <img
                                 src={SearchBlackImg}
                                 alt="Search"
-                                className="searchImg-2"
-                                onClick={this.handleShowSearchDetails.bind(
-                                  this
-                                )}
+                                className="searchImg-raise"
+                                onClick={this.handleShowSearchDetails.bind(this)}
                               />
-                              <span className="Searchline"> </span>
+                              
                             </div>
+                            <span className="Searchline"> </span>
                           </div>
                           {this.state.SearchDetails ? (
                             <div>
@@ -132,14 +131,14 @@ class RaiseClaim extends Component {
                           ) : (
                             <div className="uploadsearch">
                               <div className="row">
-                                <div className="col-md-10 uploadsechmargin">
+                                <div className="col-md-12 uploadsechmargin">
                                   <label className="uploadsearch-text">
                                     No order found with this number
                                   </label>
                                 </div>
                               </div>
                               <div className="row">
-                                <div className="col-md-10 uploadsechmargin">
+                                <div className="col-md-12 uploadsechmargin">
                                   <button
                                     type="button"
                                     className="uploadsearchbtn"
@@ -154,7 +153,7 @@ class RaiseClaim extends Component {
                                 </div>
                               </div>
                               <div className="row">
-                                <div className="col-md-10 uploadsechmargin">
+                                <div className="col-md-12 uploadsechmargin">
                                   <u>
                                     <a href="#!">DOWNLOAD SAMPLE FILE</a>
                                   </u>

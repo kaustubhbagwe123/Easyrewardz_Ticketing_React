@@ -12,39 +12,27 @@ class MyTicketReassign extends Component {
         const dataReassign = [
             {
                 statusNew: (
-                            <span className="table-b table-blue-btn">
-                            <label>Open</label>
+                            <span className="table-b table-green-btn">
+                            <label>Solved</label>
                             </span>
                             ),   
             },
             {
                 statusNew: (
-                            <span className="table-b table-yellow-btn">
-                            <label>New</label>
+                            <span className="table-b table-green-btn">
+                            <label>Solved</label>
                             </span>
                            ),
             },
             {
                 statusNew: (
-                            <span className="table-b table-yellow-btn">
-                            <label>New</label>
-                            </span>
-                           ),
-            },
-            {
-                statusNew: (
-                            <span className="table-b table-yellow-btn">
-                            <label>New</label>
-                            </span>
-                           ),
-            },
-            {
-                statusNew: (
-                            <span className="table-b table-yellow-btn">
-                            <label>New</label>
+                            <span className="table-b table-green-btn">
+                            <label>Solved</label>
                             </span>
                            ),
             }
+           
+          
          
           ];
       

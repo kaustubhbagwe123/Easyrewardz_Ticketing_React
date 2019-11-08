@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Route } from "react-router-dom";
-import QADashboardSearch from "./QADashboardSearch";
+import QADashboard from "./QADashboard";
 import Layout from './qalayout';
+import QAMyTicket from "./QAMyTicket";
 
 class index extends Component {
   render() {
@@ -11,8 +12,11 @@ class index extends Component {
         <Route
           exact
           path={`${match.url}/Dashboard`}
-          component={QADashboardSearch}
+          component={QADashboard}
         />
+        <Route exact
+        path={`${match.url}/myTicket`}
+        component={QAMyTicket}/>
       </Layout>
     );
   }

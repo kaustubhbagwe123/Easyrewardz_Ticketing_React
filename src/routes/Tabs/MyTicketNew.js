@@ -10,8 +10,8 @@ class MyTicketNew extends Component {
     const dataNew = [
       {
         statusNew: (
-          <span className="table-b table-blue-btn">
-            <label>Open</label>
+          <span className="table-b table-yellow-btn">
+            <label>New</label>
           </span>
         )
       },
@@ -24,50 +24,43 @@ class MyTicketNew extends Component {
       },
       {
         statusNew: (
-          <span className="table-b table-green-btn">
-            <label>Solved</label>
-          </span>
-        )
-      },
-      {
-        statusNew: (
-          <span className="table-b table-blue-btn">
-            <label>Open</label>
-          </span>
-        )
-      },
-      {
-        statusNew: (
-          <span className="table-b table-blue-btn">
-            <label>Open</label>
+          <span className="table-b table-yellow-btn">
+            <label>New</label>
           </span>
         )
       },
       {
         statusNew: (
           <span className="table-b table-yellow-btn">
-            <label>Open</label>
+            <label>New</label>
           </span>
         )
       },
       {
         statusNew: (
-          <span className="table-b table-green-btn">
-            <label>Solved</label>
+          <span className="table-b table-yellow-btn">
+            <label>New</label>
           </span>
         )
       },
       {
         statusNew: (
-          <span className="table-b table-blue-btn">
-            <label>Open</label>
+          <span className="table-b table-yellow-btn">
+            <label>New</label>
           </span>
         )
       },
       {
         statusNew: (
-          <span className="table-b table-blue-btn">
-            <label>Open</label>
+          <span className="table-b table-yellow-btn">
+            <label>New</label>
+          </span>
+        )
+      },
+      {
+        statusNew: (
+          <span className="table-b table-yellow-btn">
+            <label>New</label>
           </span>
         )
       },

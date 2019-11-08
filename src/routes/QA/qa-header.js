@@ -36,7 +36,7 @@ class Header extends Component {
       },
       {
         data: "My Tickets",
-        urls: "#!",
+        urls: "myTicket",
         logoBlack: TicketLogo,
         logoBlue: TicketLogoBlue,
         imgAlt: "ticket icon",
@@ -128,7 +128,7 @@ class Header extends Component {
                     <Link to="dashboard">Dashboards</Link>
                   </li>
                   <li>
-                    <Link to="#!">My Tickets</Link>
+                    <Link to="myTicket">My Tickets</Link>
                   </li>
                   <li>
                     <Link to="knowledgebase">Knowledge Base</Link>

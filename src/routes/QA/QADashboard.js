@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import PieChart from "./../QA/Charts/PieChart";
+import PieChart from "./Charts/PieChart";
 import BarQualityScore from "./Charts/BarQualityScore";
 import BarTop3CSA from "./Charts/BarTop3CSA";
 import Downloading from "./../../assets/Images/downloading_updates.png";
@@ -10,7 +10,7 @@ import { Collapse, CardBody, Card } from "reactstrap";
 import csv from "./../../assets/Images/csv.png";
 import Assign from "./../../assets/Images/Assign1.png";
 
-class QADashboardSearch extends Component {
+class QADashboard extends Component {
   constructor(props) {
     super(props);
 
@@ -692,4 +692,4 @@ class QADashboardSearch extends Component {
   }
 }
 
-export default QADashboardSearch;
+export default QADashboard;

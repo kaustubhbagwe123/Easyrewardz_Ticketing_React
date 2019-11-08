@@ -18,15 +18,15 @@ class MyTicketOpen extends Component {
             },
             {
                 statusNew: (
-                            <span className="table-b table-yellow-btn">
-                            <label>New</label>
+                            <span className="table-b table-blue-btn">
+                            <label>Open</label>
                             </span>
                            ),
             },
             {
                 statusNew: (
-                            <span className="table-b table-green-btn">
-                            <label>Solved</label>
+                            <span className="table-b table-blue-btn">
+                            <label>Open</label>
                             </span>
                            ),
             },
@@ -46,15 +46,15 @@ class MyTicketOpen extends Component {
             },
             {
                 statusNew: (
-                            <span className="table-b table-yellow-btn">
+                            <span className="table-b table-blue-btn">
                             <label>Open</label>
                             </span>
                            ),
             },
             {
                 statusNew: (
-                            <span className="table-b table-green-btn">
-                            <label>Solved</label>
+                            <span className="table-b table-blue-btn">
+                            <label>Open</label>
                             </span>
                            ),
             },
@@ -74,8 +74,8 @@ class MyTicketOpen extends Component {
             },
             {
                 statusNew: (
-                            <span className="table-b table-yellow-btn">
-                            <label>New</label>
+                            <span className="table-b table-blue-btn">
+                            <label>Open</label>
                             </span>
                            )                
             }

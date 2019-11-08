@@ -14,12 +14,18 @@ class ClaimApproveReject extends Component {
     super(props);
 
     this.state = {
-        collapse: false
+        collapse: false,
+        SearchDetails: true
     };
     
   }
   handleToggle() {
     this.setState(state => ({ collapse: !state.collapse }));
+  }
+  handleShowSearchDetails() {
+    this.setState({
+      SearchDetails: !this.state.SearchDetails
+    });
   }
   render() {
     return (
@@ -86,7 +92,73 @@ class ClaimApproveReject extends Component {
                       </div>
                     </div>
 
-                    <Collapse isOpen={this.state.collapse}>
+                    <Collapse isOpen={this.state.collapse} style={{width:'100%'}}>
+                      <Card>
+                        <CardBody style={{padding:"15px 5px 15px 20px"}}>
+                          <div className="row">
+                            <div className="col-md-6">
+                              <label className="orderdetailtext">
+                                Order details
+                              </label>
+                            </div>
+                            <div className="col-md-6">
+                              <input
+                                type="text"
+                                className="searchtext"
+                                placeholder="Search Order"
+                              />
+                              <img
+                                src={SearchBlackImg}
+                                alt="Search"
+                                className="searchImg-raise"
+                                onClick={this.handleShowSearchDetails.bind(this)}
+                              />
+                              
+                            </div>
+                            <span className="Searchline"> </span>
+                          </div>
+                          {this.state.SearchDetails ? (
+                            <div>
+                              <TableDemo />
+                            </div>
+                          ) : (
+                            <div className="uploadsearch">
+                              <div className="row">
+                                <div className="col-md-12 uploadsechmargin">
+                                  <label className="uploadsearch-text">
+                                    No order found with this number
+                                  </label>
+                                </div>
+                              </div>
+                              <div className="row">
+                                <div className="col-md-12 uploadsechmargin">
+                                  <button
+                                    type="button"
+                                    className="uploadsearchbtn"
+                                  >
+                                    <label
+                                      for="file-upload"
+                                      className="uploadsearchbtn-text"
+                                    >
+                                      UPLOAD FILE
+                                    </label>
+                                  </button>
+                                </div>
+                              </div>
+                              <div className="row">
+                                <div className="col-md-12 uploadsechmargin">
+                                  <u>
+                                    <a href="#!">DOWNLOAD SAMPLE FILE</a>
+                                  </u>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </CardBody>
+                      </Card>
+                    </Collapse>
+
+                    {/* <Collapse isOpen={this.state.collapse}>
                       <Card style={{ marginRight: "31px" }}>
                         <CardBody style={{ marginRight: "-162px" }}>
                           <div className="row">
@@ -111,7 +183,7 @@ class ClaimApproveReject extends Component {
                           </div>
                         </CardBody>
                       </Card>
-                    </Collapse>
+                    </Collapse> */}
                   </div>
                   <div className="row margin-claim">
                     <div className="form-group col-md-4">
