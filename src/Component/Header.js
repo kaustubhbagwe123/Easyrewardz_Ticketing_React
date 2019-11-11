@@ -21,14 +21,20 @@ import SettingLogoBlue from "./../assets/Images/setting-blue.png";
 import UserLogo from "./../assets/Images/user-img.jpg";
 import StatusLogo from "./../assets/Images/status.png";
 import Hamb from "./../assets/Images/hamb.png";
+import CancelIcon from "./../assets/Images/cancel.png";
+import { Drawer } from "antd";
+
 // import ClaimLogo from "./../assets/Images/icon9.svg";
 // import ClaimLogoBlue from "./../assets/Images/claim-blue.png";
 // import Demo from "../store/Hashtag";
 
 class Header extends Component {
+
+
   state = {
     modalIsOpen: false,
     open: false,
+    ChatDetailModel: false,
     cont: [
       {
         data: "Dashboards",
@@ -60,6 +66,16 @@ class Header extends Component {
     ]
   };
 
+  handleChatDetailModelOpen() {
+    this.setState({ ChatDetailModel: true });
+  }
+  handleChatDetailModelClose() {
+    this.setState({ ChatDetailModel: false })
+  }
+  // handleChatbot() {
+  //   debugger
+  //   this.props.history.push('chatbot');
+  // };
   onOpenModal = () => {
     this.setState({ open: true });
   };
@@ -80,7 +96,7 @@ class Header extends Component {
     let pageName, lastOne, lastValue, arr;
     arr = [...this.state.cont];
     setTimeout(
-      function() {
+      function () {
         pageName = window.location.pathname;
         lastOne = pageName.split("/");
         lastValue = lastOne[lastOne.length - 1];
@@ -115,6 +131,8 @@ class Header extends Component {
     //   alt="dashboard icon"
     //   className="dashboardImg1"
     // />;
+
+
     return (
       <React.Fragment>
         <div
@@ -303,7 +321,8 @@ class Header extends Component {
               <img src={CalenderLogo} alt="logo" className="calImg" />
             </a> */}
             <a href="#!">
-              <img src={ChatLogo} alt="logo" className="chatImg" />
+              <img src={ChatLogo} alt="logo" className="chatImg"
+                onClick={this.handleChatDetailModelOpen.bind(this)} />
               <img
                 src={ChatLogoBlue}
                 alt="logo"
@@ -311,6 +330,117 @@ class Header extends Component {
                 style={{ display: "none" }}
               />
             </a>
+            <div className="chatdrawermodel">
+              <Drawer
+                className="claimTab-drawerModal chatdrawer"
+                placement={"left"}
+                closable={false}
+                onClose={this.handleChatDetailModelClose.bind(this)}
+                visible={this.state.ChatDetailModel}
+              >
+
+                <div className="row">
+                  <div className="col-lg-12 p-0">
+                    <div className="chatbot-left">
+                      <div className="chatpadding">
+                        <label className="ongoing">Ongoing Chats (03)</label>
+                        <img
+                          src={CancelIcon}
+                          alt="cancel-icone"
+                          className="cancelbtn-chat"
+                          onClick={this.handleChatDetailModelClose.bind(this)}
+                        />
+                        <div className="chatleftdrawer">
+                          <div className="chat-info">
+                            <div className="d-flex align-items-center">
+                              <span className="dark-blue-ini initial">V</span>
+                              <div className="name-num ml-2">
+                                <p>Varun Kumar</p>
+                                <p className="num">+91-9873470074</p>
+                              </div>
+                            </div>
+                            <div>
+                              <div className="mess-time">
+                                <p>2 New Messages</p>
+                                <p>56s</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="chat-info active">
+                            <div className="d-flex align-items-center">
+                              <span className="light-blue-ini initial">M</span>
+                              <div className="name-num ml-2" >
+                                <p>Mohit Verma</p>
+                                <p className="num">Mohit90@gmail.com</p>
+                              </div>
+                            </div>
+                            <div>
+                              <div className="mess-time">
+                                <p>1 New Messages</p>
+                                <p>1m:36s</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="chat-info">
+                            <div className="d-flex align-items-center">
+                              <span className="yellow-ini initial">A</span>
+                              <div className="name-num ml-2">
+                                <p>Ankit Gupta</p>
+                                <p className="num">+91-9382838834</p>
+                              </div>
+                            </div>
+                            <div>
+                              <div className="mess-time">
+                                <p>No New Messages</p>
+                                <p>1m:36s</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="chatpadding">
+                        <label className="ongoing" style={{ marginTop: "20px" }}>New Chats (02)</label>
+                        <div className="chatleftdrawer">
+                          <div className="chat-info">
+                            <div className="d-flex align-items-center">
+                              <span className="green-ini initial">V</span>
+                              <div className="name-num ml-2">
+                                <p>Vipin Kumar</p>
+                                <p className="num">+91-9873470074</p>
+                              </div>
+                            </div>
+                            <div>
+                              <div className="mess-time">
+                                <p>Waiting for reply</p>
+                                <p>56s</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="chat-info">
+                            <div className="d-flex align-items-center">
+                              <span className="orange-ini initial">M</span>
+                              <div className="name-num ml-2">
+                                <p>Mohit Kumar</p>
+                                <p className="num">Mohit90@gmail.com</p>
+                              </div>
+                            </div>
+                            <div>
+                              <div className="mess-time">
+                                <p>Waiting for reply</p>
+                                <p>1m:36s</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <button className="butn-inv hist-btn">My historical chat</button>
+                  </div>
+
+                </div>
+              </Drawer>
+            </div>
+
             <a href="#!">
               <img
                 src={NotificationLogo}
@@ -405,7 +535,7 @@ class Header extends Component {
                   </p>
                   <p className="mail-id">naman@fabindia.com</p>
                 </div>
-                <button style={{cursor:"pointer"}}>LOGOUT</button>
+                <button style={{ cursor: "pointer" }}>LOGOUT</button>
               </div>
               <div className="status-sctn">
                 <div className="d-flex align-items-center">

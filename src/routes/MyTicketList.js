@@ -20,7 +20,6 @@ import MyTicketAll from "./Tabs/MyTicketAll.js";
 import MyTicketFollowUp from "./Tabs/MyTicketFollowUp.js";
 import MyTicketDraft from "./Tabs/MyTicketDraft.js";
 
-
 class MyTicketList extends Component {
   constructor(props) {
     super(props);
@@ -941,7 +940,7 @@ class MyTicketList extends Component {
         <Modal
           size="lg"
           show={this.state.AssignModal}
-          // onHide={this.handleAssignModalClose.bind(this)}
+          onHide={this.handleAssignModalClose.bind(this)}
           className="assign-modal-KBase"
         >
           <Modal.Header>

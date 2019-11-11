@@ -28,7 +28,7 @@ import TicketGenerationSourceBar from "../Component/PieChart/TicketGenerationSou
 import TicketToClaimMultiBar from "../Component/PieChart/TicketToClaimMultiBar";
 import HeadPhone3 from "./../assets/Images/headphone3.png";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+// import "react-datepicker/dist/react-datepicker.css";
 import OpenByPriorityPie from "../Component/PieChart/PieChart";
 
 class Dashboard extends Component {

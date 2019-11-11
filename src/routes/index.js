@@ -10,7 +10,6 @@ import ClaimTabTicketView from "./ClaimTabTicketView";
 import Settings from "./Settings/Settings";
 import PrioritySettings from "./Settings/PrioritySetting";
 import ChatDashboard from "./Chat/ChatDashboard";
-import QAAuditview from "./QA/QAAuditview";
 import KnowledgeBase from "./KnowledgeBase";
 import HierarchyMaster from "./Settings/Store/HierarchyMaster";
 import FileUploadLogs from "./Settings/FileUploadLogs";
@@ -72,12 +71,7 @@ export class App extends Component {
           path={`${match.url}/chatdashboard`}
           component={ChatDashboard}
         />
-        <Route
-          exact
-          path={`${match.url}/qaauditview`}
-          component={QAAuditview}
-        />
-
+      
         <Route
           exact
           path={`${match.url}/hierarchyMaster`}

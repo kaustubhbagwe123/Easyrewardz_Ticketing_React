@@ -1072,3 +1072,29 @@ padding: 5px 40px;
   text-align: left; */
 }
 /* Css End */
+
+/* My ticket button css start by kalpesh */
+.table-ba {
+  border-radius: 15px;
+  width: 100px;
+  display: inline-block;
+  padding: 4px 10px;
+  text-transform: uppercase;
+  text-align: center;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  }
+  .Qatable-blue-btn {
+  background-color: #cbe0f1;
+  border: 1px solid #0076ff;
+  color: #1775e2;
+  font-size: 12px;
+  }
+  .Qatable-green-btn {
+  background-color: #cbf1e9;
+  border: 1px solid #2d8f7b;
+  color: #2d8f7b;
+  font-size: 12px;
+  }
+/* My ticket button css end */

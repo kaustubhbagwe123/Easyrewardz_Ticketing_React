@@ -299,4 +299,302 @@
   margin-top: -5px !important;
 }
 /* dashboad css end */
+/* ChatBot Create modal css start by shlok */
+.mdlcancleImg{
+  margin-top: -24px;
+  float: right;
+}
+.mainDiv-crt{
+  padding: 0px 15px 0px 15px;
+}
+.lbl-customerMdl{
+  font-size: 15px;
+    font-weight: 700;
+}
+.lbl-sourceChat{
+  float: right;
+    font-weight: 600;
+}
+.lbl-mdlHeader{
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+.mdl-lbl{
+  font-weight: 500;
+  color: #9B9B9B;
+  margin-bottom: 4px;
+}
+.txt-border{
+  border: 1px solid;
+  color: #d6d4d4;
+}
+.chat-txt1{
+  background-color: #F9F9F9;
+  border-radius: 4px;
+  width: 100%;
+  height: 38px;
+  padding: 10px;
+}
+.chat-mdlMargin{
+  margin-bottom: 15px;
+}
+#CreateCustomer-mdl{
+  border-radius: 5px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+  padding: 10;
+  margin-right: 215px;
+  display: inline-block;
+  min-width: 870px !important;
+  margin-top: -62px;
+}
+.drop-downlist-mdl{
+  border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    display: block;
+    width: 100%;
+    height: 37px;
+    padding: 10px;
+    padding-left: 15px;
+}
+.dropdown-chat{
+  color: #635e5e;
+  font-family: Lato;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: left;
+  padding-right: 40px;
+  background: #F9F9F9 url("../Images/dropDown.png") no-repeat right 12px center;
+  cursor: pointer;
+}
+.text-areaChatModel {
+  background-color: #F9F9F9;
+  padding: 12px;
+  height: auto;
+  display: block;
+  width: 100%;
+  font-size: 14px;
+  border-radius: 4px;
+  border-color: #bdbdbd;
+  resize: none;
+}
+.chatbutn-2 {
+  background-color: #2561a8;
+  color: #fff;
+  font-size: 14px;
+  padding: 8px 25px;
+  border-radius: 5px;
+  cursor: pointer;
+  height: 40px;
+}
+.chatAnchor{
+  color: #2561A8;
+    margin-top: 10px;
+    margin-right: 15px;
+}
+.chatbtnDiv{
+  float: right;
+    margin-top: 15px;
+}
+.curshar-pointer{
+  cursor: pointer;
+}
+#createTicketModal{
+  border-radius: 5px;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+    padding: 10;
+    display: inline-block;
+    min-width: 610px !important;
+    margin-top: 120px;
+}
+.openTciketLbl{
+  font-size: 15px;
+    font-weight: 600;
+}
+.flot-calcel{
+  float: right;
+}
+.modal-lbl1{
+  font-size: 13px;
+    font-weight: 400;
+}
+.span-lbl2{
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 500;
+}
+.modal-lbl2{
+  font-size: 13px;
+    font-weight: 700;
+}
+.opn-ticketDiv{
+  margin-top: 6px;
+}
+.no-mdl{
+  font-weight: 700;
+    color: #2561A8;
+}
+.padding-div{
+  padding: 10px;
+}
+/* ChatBot Create modal css end */
+/* dashboard Chatbot drawer css start kalpesh*/
+.chatdrawer .ant-drawer-mask {
+  background: none;
+  }
+  .chatdrawer .ant-drawer-content-wrapper {
+  margin-top: 58px;
+  }
+  .chatdrawer .ant-drawer-wrapper-body {
+  width: 325px;
+  }
+  .chatdrawer .chatleftdrawer {
+  /* max-height: 200px;  */
+  overflow: auto;
+  }
+  .ongoing {
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  text-align: left;
+  margin-bottom: 10px;
+  }
+  .cancelbtn-chat {
+  width: 17px;
+  height: 16px;
+  float: right;
+  margin-right: 0px;
+  margin-top: 0px;
+  cursor: pointer;
+  }
+  .chatpadding {
+  padding: 0 10px;
+  border-bottom: 1px solid #e8e8e8;
+  }
+  .chatdrawer .ant-drawer-body {
+  background-color: #fffef7;
+  }
+  /* dashboard Chatbot drawer css end kalpesh */
+  /* Chatbot recent chat and drawer css start kalpesh*/
+.table-bchat{
+  background-color: #EBEBEB;
+  border-radius: 4px;
+  width: 28px;
+  height: 22px;
+  }
+  .chatreact .ReactTable {
+  margin: 10px;
+  border: none;
+  
+  }
+  .chatreact .chatnamereact {
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: left;
+  }
+  .chatreact .ReactTable .rt-tbody {
+  background-color: #fff;
+  border-radius: 8px !important;
+  }
+  .chatreact .ReactTable .rt-tbody .rt-td {
+  padding: 10px 20px !important;
+  }
+  .actionleft {
+  float: right;
+  margin-top: -51px;
+  margin-right: 20px;
+  }
+  .actionright {
+  float: right;
+  margin-top: -62px;
+  margin-right: 20px;
+  }
+  .searchImg-raisechat {
+  width: 20px;
+  height: 20px;
+  float: right;
+  margin-right: 0px; 
+  
+  }
+  .searchtextchat {
+  border: none;
+  background-color: #FFFFFF;
+  border-radius: 4px;
+  width: 260px;
+  height: 43px;
+  float: right;
+  padding: 10px;
+  }
+  .chatreact .chatthumb {
+  width: 20px;
+  height: 20px;
+  }
+  .drawerchat .ant-drawer-content-wrapper {
+  height: 210px !important;
+  margin-left: 317px;
+  width: 74% !important;
+  box-shadow: 0 0px 0px rgba(0, 0, 0, 0.15) !important;
+  }
+  .drawerchat .ant-drawer-mask {
+  background: none;
+  }
+  .drawerchat .crossdrawer {
+  font-size: 25px;
+  float: right;
+  width: 20px;
+  height: 20px;
+  font-weight: 700;
+  margin-top: -7px;
+  }
+  .drawerchat .chaton {
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  text-align: left;
+  }
+  .drawerchat .mohitdrawer{
+  color: #000000;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 50px;
+  text-align: left;
+  }
+  .drawerchat .num {
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 13px;
+  text-align: left;
+  border-bottom: 1px solid #E4E4E4;
+  padding-bottom: 15px;
+  }
+  .twothous {
+  color: #2561A8;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 25px;
+  text-align: left;
+  }
+  .twotho{
+  display: grid;
+  padding-left: 25px;
+  }
+  .twothoustext {
+  color: #2561A8;
+  font-family: Lato;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 19px;
+  text-align: left;
+  }
+  /* Chatbot recent chat and drawer css end kalpesh*/
 /* -------------------------------------------------------------------- */
