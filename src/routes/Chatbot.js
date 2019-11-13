@@ -9,12 +9,15 @@ import CancelImg from "./../assets/Images/cancel.png";
 import Modal from "react-responsive-modal";
 
 class Chatbot extends Component {
-  state = {
+  constructor(props) {
+    super(props);
+
+  this.state = {
     ReactChatModel: false,
     CrateTicketMdl: false,
     OpenTicketMdl: false
   };
-
+  }
   handleReactChatModelOpen() {
     this.setState({ ReactChatModel: true });
   }

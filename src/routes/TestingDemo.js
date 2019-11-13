@@ -1,33 +1,40 @@
-import React, { Component } from "react";
-import { PieChart } from "react-d3-components";
-class TestingDemo extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+import React, { Component } from 'react'
+import Slider from 'react-rangeslider'
+import 'react-rangeslider/lib/index.css'
 
+ class TestingDemo extends Component {
+   constructor(props) {
+     super(props)
+   
+     this.state = {
+      value: 10
+     }
+   }
+   
+
+  handleChange = value => {
+    this.setState({
+      value: value
+    })
+  };
+
+  
   render() {
-    var sort = null;
-    var data = {
-      // label: 'somethingA',
-      values: [
-        { x: "Low", y: 22 },
-        { x: "High", y: 37 },
-        { x: "Medium", y: 40 }
-      ]
-    };
+    const { value } = this.state
     return (
-      <div>
-        <PieChart
-          data={data}
-          width={370}
-          height={250}
-          margin={{ top: 10, bottom: 10, left: 100, right: 100 }}
-          sort={sort}
+      <div className='slider'>
+        <Slider
+          min={0}
+          max={100}
+          value={value}
+          // onChangeStart={this.handleChangeStart}
+          onChange={this.handleChange}
+          // onChangeComplete={this.handleChangeComplete}
         />
+        {/* <div className='value'>{value}</div> */}
       </div>
-    );
+    )
   }
 }
 
-export default TestingDemo;
+export default TestingDemo

@@ -4,17 +4,17 @@ import RedDeleteIcon from "./../../assets/Images/red-delete-icon.png";
 import BlackDeleteIcon from "./../../assets/Images/del-big.png";
 // import UploadIcon from "./../../assets/Images/clip.png";
 // import CrossIcon from "./../../assets/Images/cross-icon.png";
-import { UncontrolledPopover , PopoverBody } from "reactstrap";
+import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import Demo from "../../store/Hashtag.js";
 import DelBigIcon from "./../../assets/Images/del-big.png";
 import FileUpload from "./../../assets/Images/file.png";
 import DelBlack from "./../../assets/Images/del-black.png";
 import UploadCancel from "./../../assets/Images/upload-cancel.png";
 import { ProgressBar } from "react-bootstrap";
-import {Link} from 'react-router-dom';
-import { Select} from "antd";
+import { Link } from "react-router-dom";
+import { Select } from "antd";
 import SweetAlert from "react-bootstrap-sweetalert";
- 
+
 const { Option } = Select;
 const NEW_ITEM = "NEW_ITEM";
 
@@ -25,17 +25,27 @@ class CategoryMaster extends Component {
     super(props);
     this.state = {
       fileName: "",
-      catmulti:false,
-        listOfCategory: ["Complaint 1", "Complaint 2","Complaint 3","Complaint 4"],
-        listOfSubCategory: ["Complaint 1", "Complaint 2","Complaint 3","Complaint 4"],
-        list1Value: "",
-        showList1: false,
-        ListOfSubCate:"",
-        ShowSubCate:false
-      }
+      catmulti: false,
+      listOfCategory: [
+        "Complaint 1",
+        "Complaint 2",
+        "Complaint 3",
+        "Complaint 4"
+      ],
+      listOfSubCategory: [
+        "Complaint 1",
+        "Complaint 2",
+        "Complaint 3",
+        "Complaint 4"
+      ],
+      list1Value: "",
+      showList1: false,
+      ListOfSubCate: "",
+      ShowSubCate: false
+    };
   }
 
-  HandleMultiSelect(){
+  HandleMultiSelect() {
     this.setState({ catmulti: true });
   }
   fileUpload = e => {
@@ -92,7 +102,7 @@ class CategoryMaster extends Component {
     }
   };
   render() {
-    const { list1Value,ListOfSubCate } = this.state;
+    const { list1Value, ListOfSubCate } = this.state;
     const editbool = false;
     const tooltipDelay = { show: 50, hide: 100 };
     const list1SelectOptions = this.state.listOfCategory.map(o => (
@@ -880,7 +890,7 @@ class CategoryMaster extends Component {
                     </div>
                     <div className="divSpace">
                       <div className="dropDrownSpace">
-                        <label className="reports-to"> Category</label>
+                        <label className="reports-to">Category</label>
                         <Select
                           showSearch={true}
                           value={list1Value}
@@ -889,13 +899,15 @@ class CategoryMaster extends Component {
                         >
                           {list1SelectOptions}
                           <Option value={NEW_ITEM}>
-                            <span className="sweetAlert-inCategory">+ ADD NEW</span>
+                            <span className="sweetAlert-inCategory">
+                              + ADD NEW
+                            </span>
                           </Option>
                         </Select>
 
                         <SweetAlert
                           show={this.state.showList1}
-                          style={{width:'320px'}}
+                          style={{ width: "320px" }}
                           title="Add New Category"
                           text="Enter new Category"
                           showCancelButton
@@ -905,7 +917,9 @@ class CategoryMaster extends Component {
                           validationMsg="Please enter a category!"
                           onConfirm={inputValue => {
                             inputValue = inputValue.trim();
-                            if (this.state.listOfCategory.includes(inputValue)) {
+                            if (
+                              this.state.listOfCategory.includes(inputValue)
+                            ) {
                               this.setState({
                                 showList1: false,
                                 list1Value: inputValue
@@ -944,13 +958,15 @@ class CategoryMaster extends Component {
                         >
                           {listSubCategory}
                           <Option value={NEW_ITEM}>
-                            <span className="sweetAlert-inCategory">+ ADD NEW</span>
+                            <span className="sweetAlert-inCategory">
+                              + ADD NEW
+                            </span>
                           </Option>
                         </Select>
 
                         <SweetAlert
                           show={this.state.ShowSubCate}
-                          style={{width:'320px'}}
+                          style={{ width: "320px" }}
                           title="Add New Sub Category"
                           text="Enter new Category"
                           showCancelButton
@@ -960,7 +976,9 @@ class CategoryMaster extends Component {
                           validationMsg="Please enter a category!"
                           onConfirm={inputValue => {
                             inputValue = inputValue.trim();
-                            if (this.state.listOfSubCategory.includes(inputValue)) {
+                            if (
+                              this.state.listOfSubCategory.includes(inputValue)
+                            ) {
                               this.setState({
                                 ShowSubCate: false,
                                 ListOfSubCate: inputValue

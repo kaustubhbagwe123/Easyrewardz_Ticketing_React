@@ -5,7 +5,6 @@ import StoreDashboard from "./StoreDashboard";
 import StoreMaster from "./StoreMaster";
 import StoreTask from "./StoreTask";
 import StoreTaskView from "./StoreTaskView";
-import CreateCRMRoles from "./CreateCRMRoles";
 import CategoryMaster from "./CategoryMaster";
 import CreateSLA from "./CreateSLA";
 import EditStoreTask from "./EditStoreTask";
@@ -14,7 +13,7 @@ import RaiseClaim from "./RaiseClaim";
 import Claim from "./Claim";
 import ClaimApproveReject from "./ClaimApproveReject";
 import StoreAddTask from "./StoreAddTask";
-// import "./styles.css";
+// import StoreCRMRole from "../Settings/Ticketing/StoreCRMRole";
 // import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 export class StoreApp extends Component {
   render() {
@@ -42,11 +41,7 @@ export class StoreApp extends Component {
           path={`${match.url}/categorymaster`}
           component={CategoryMaster}
         />
-        <Route
-          exact
-          path={`${match.url}/crmroles`}
-          component={CreateCRMRoles}
-        />
+       
         <Route exact path={`${match.url}/sla`} component={CreateSLA} />
         <Route exact path={`${match.url}/editStoreTask`} component={EditStoreTask} />
         <Route exact path={`${match.url}/storeTaskByTicket`} component={StoreTaskByTicket} />

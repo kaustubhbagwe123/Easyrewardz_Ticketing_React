@@ -20,11 +20,19 @@ import Users from "./Settings/Ticketing/Users";
 import SLATemplate from "./SLATemplate";
 import Store_CRMRoles from "./Store_CRMRoles";
 import CreatePriority from "./CreatePriority";
-import ClaimCategoryMaster from "./ClaimCategoryMaster";
 import Alerts from "./Settings/Alerts";
 import TestingDemo from "./TestingDemo";
 import Templates from "./Settings/Ticketing/Templates";
 import AddSearchMyTicket from "./AddSearchMyTicket";
+import ClaimCategoryMaster from "./Settings/Store/ClaimCategoryMaster";
+import TicketCRMRole from "./Settings/Ticketing/TicketCRMRole";
+import StoreCRMRole from "./Settings/Ticketing/StoreCRMRole";
+import StoreUsers from "./Settings/Ticketing/StoreUsers";
+import StoreAlerts from "./Settings/Ticketing/StoreAlerts";
+import Reports from "./Settings/Ticketing/Reports";
+import StoreReports from "./Settings/Ticketing/StoreReports";
+import Module  from "./Settings/Ticketing/Module";
+import StoreModule from "./Settings/Ticketing/StoreModule";
 // import Aux from "./../Component/Aux";
 
 export class App extends Component {
@@ -113,6 +121,14 @@ export class App extends Component {
         />
         <Route exact path={`${match.url}/templates`} component={Templates} />
         <Route exact path={`${match.url}/addSearchMyTicket`} component={AddSearchMyTicket} />
+        <Route exact path={`${match.url}/ticketCRMRole`} component={TicketCRMRole} />
+        <Route exact path={`${match.url}/storeCRMRole`} component={StoreCRMRole} />
+        <Route exact path={`${match.url}/storeUsers`} component={StoreUsers} />
+        <Route exact path={`${match.url}/storeAlerts`} component={StoreAlerts} />
+        <Route exact path={`${match.url}/reports`} component={Reports} />
+        <Route exact path={`${match.url}/storeReports`} component={StoreReports} />
+        <Route exact path={`${match.url}/module`} component={Module} />
+        <Route exact path={`${match.url}/storeModule`} component={StoreModule} />
       </Layout>
     );
   }

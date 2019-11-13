@@ -13,10 +13,14 @@ class QAMyTicket extends Component {
 
     this.state = {};
   }
-  hanleChange_MyTicket = () => {
-    this.props.history.push("/qa/myticket");
-  };
 
+  hanleChangeMyTicketPage = (rowInfo, column) => {
+    return {
+      onClick: e => {
+        this.props.history.push("qaAuditView");
+      }
+    };
+  };
   render() {
     const dataAll = [
       {
@@ -234,7 +238,7 @@ class QAMyTicket extends Component {
                     // resizable={false}
                     defaultPageSize={5}
                     showPagination={true}
-                    // getTrProps={this.}
+                    getTrProps={this.hanleChangeMyTicketPage}
                   />
                 </div>
               </div>

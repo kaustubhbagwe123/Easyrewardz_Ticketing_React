@@ -5826,8 +5826,8 @@ table thead tr {
 }
 .alert-nav-tabs3 .nav-link.active {
   color: #2561a8;
-  /* border-bottom: 2px solid #2561a8; */
-  box-shadow: none;
+  border-bottom: 2px solid #2561a8;
+  /* box-shadow: none; */
 }
 .container-fluid-alert {
   width: 100%;
@@ -6751,4 +6751,283 @@ table tr th:last-child {
   border-bottom: 1px solid #EEEE !important;
   }
   /* MyTicketNew Css end*/
+  /* React table body color css start by shlok */
+  .alertsTable .rt-tbody .ReactTable .rt-th, .ReactTable .rt-td {
+    font-size: 14px;
+    color: #A0A0A0 !important;
+}
+  /* React table body color css end */
+  /* StoreUser page css start by shlok */
+  .storeUsers table th {
+    font-size: 12px;
+    padding: 20px 16px;
+}
+  /* StoreUser page css end by shlok */
+  /* Reports Css Start Kalpesh */
+.reportbutton {
+  float: right;
+  margin-top: -10px;
+  margin-right: 16px;
+  }
+  .addplusbtn {
+  width: 120px;
+  height: 40px;
+  background-color: #2561a8;
+  cursor: pointer;
+  }
+  .addplusbtntext {
+  color: #ffffff;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  text-align: left;
+  cursor: pointer;
+  }
+  .downloadaction {
+  width: 17px;
+  display: inline-block;
+  margin-right: 15px;
+  cursor: pointer;
+  /* padding: 6px 8px; */
+  line-height: 1;
+  box-sizing: content-box;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  }
+  .reactreport .ReactTable .rt-tbody .rt-td {
+  color: #9b9b9b !important;
+  }
+  .ticketreport {
+  margin-bottom: 10px;
+  }
+  .reportpad {
+  padding: 30px 40px !important;
+  }
+  .ticketreport input{
+  border-radius: 4px;
+  width: 100%;
+  height: 35px;
+  padding-left: 8px; 
+  padding-right: 40px;
+  border-color: #ecf2f4;
+  background: #ecf2f4;
+  /* background-size: 13px; */
+  cursor: pointer;
+  border: none;
+  }
+  .ticketreport select{
+  border-radius: 4px;
+  width: 100%;
+  height: 35px;
+  padding-left: 8px; 
+  padding-right: 40px; 
+  border-color: #ecf2f4;
+  background: #ecf2f4 url("./../Images//table-arr.png") no-repeat right 20px center;
+  background-size: 13px;
+  cursor: pointer;
+  border: none;
+  font-weight: 600;
+  }
+  .ticketreport label {
+  font-size: 13px;
+  font-weight: 500;
+  font-family: lato;
+  text-align: left;
+  line-height: 25px;
+  display: block;
+  }
+  .ticketreport .react-datepicker-wrapper {
+  
+  border-radius: 4px;
+  
+  border: 0;
+  background: #fff url(/static/media/calendar-black.d0d589e5.svg) no-repeat right 15px center;
+  color: #4a4a4a;
+  }
+  #addreport-popup {
+  border-radius: 8px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+  padding: 0;
+  /* margin-right: 360px; */
+  margin-top: 0;
+  margin-bottom: 0;
+  display: inline-block;
+  max-width: 1150px;
+  }
+  .entercenter {
+  padding: 15px 20px;
+  background: #f3f3f3;
+  border-radius: 8px 8px 0px 0px;
+  width: 100%;
+  text-align: center;
+  }
+  .nextbutton-text {
+  background-color: #2561a8;
+  color: #fff;
+  font-size: 13px;
+  padding: 8px 25px;
+  border-radius: 5px;
+  cursor: pointer;
+  height: 40px;
+  width: 150px;
+  }
+  .nextbutton1 {
+    float: right;
+    margin-bottom: 20px;
+    margin-right: -1px;
+    margin-top: 15px;
+  }
+  #nextbuttonpopup {
+  border-radius: 8px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+  padding: 0;
+  /* margin-right: 360px; */
+  margin-top: 0;
+  margin-bottom: 0;
+  display: inline-block;
+  width: 730px;
+  height: 415px;
+  }
+  .cancelnextpopup{
+  height: 20px;
+  float: right;
+  }
+  .reportdetail {
+  font-size: 20px;
+  font-family: lato;
+  font-weight: 600;
+  text-align: left;
+  color: #2561A8;
+  }
+  .contpaddre {
+  padding: 0;
+  }
+  .totalresultcircle{
+  background-color:#F3F3F3;
+  font-size: 24px;
+  width: 190px;
+  height: 190px;
+  border-radius: 100%;
+  text-align: center;
+  margin: 65px 0 0 75px;
+  }
+  .totalresult {
+  display: block;
+  font-size: 20px;
+  font-weight: 500;
+  font-family: lato;
+  padding: 65px 0 0 0;
+  line-height: 0; 
+  }
+  .totalresultnumber {
+  font-size: 2.5em;
+  font-weight: 600;
+  color: #2561A8;
+  font-family: lato;
+  }
+  .Schedulenext {
+  width: 270px;
+  height: 40px;
+  background: #fff;
+  color: #2561a8;
+  }
+  .Schedulenext1 {
+  width: 270px;
+  height: 40px;
+  background-color: #2561A8;
+  color: #fff;
+  margin-bottom: 40px;
+  }
+  .buttonschdulesave {
+  margin-bottom: 10px;
+  margin-top: 75px;
+  }
+  .rname input{
+  border-radius: 4px;
+  width: 270px;
+  height: 40px;
+  padding: 10px;
+  border-color: #ecf2f4;
+  background: #ecf2f4;
+  cursor: pointer;
+  border: none;
+  }
+  .ranmetext {
+  margin-top: 65px;
+  display: grid;
+  }
+  .renametext {
+  font-size: 16px;
+  font-weight: 600;
+  font-family: lato;
+  text-align: left;
+  }
+  .margin-report {
+    margin: auto;
+    display: block;
+    float: none;
+    text-align: center;
+  }
+  .reactreport .ReactTable .rt-tbody {
+    background: #fff;
+}
+  /* Reports Css end Kalpesh */
+  /* storeReports css start by Shlok */
+  #addStorereport-modal {
+    border-radius: 8px;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+    padding: 0;
+    /* margin-right: 360px; */
+    margin-top: 0;
+    margin-bottom: 0;
+    display: inline-block;
+    min-width: 950px;
+}
+.ticketstrReport label {
+  font-size: 13px;
+  font-weight: 500;
+  font-family: lato;
+  text-align: left;
+  line-height: 25px;
+  display: block;
+}
+.ticketstrReport input {
+  border-radius: 4px;
+  width: 100%;
+  height: 37px;
+  padding-left: 8px;
+  padding-right: 40px;
+  border-color: #ecf2f4;
+  background: #ecf2f4;
+  /* background-size: 13px; */
+  cursor: pointer;
+  border: none;
+}
+.ticketstrReport select{
+  border-radius: 4px;
+  width: 100%;
+  height: 37px;
+  padding-left: 8px; 
+  padding-right: 40px; 
+  border-color: #ecf2f4;
+  background: #ecf2f4 url("./../Images//table-arr.png") no-repeat right 20px center;
+  background-size: 13px;
+  cursor: pointer;
+  border: none;
+  font-weight: 600;
+  }
+  .mdl-row{
+    margin-bottom: 10px;
+  }
+  .store-totalresultcircle {
+    background-color: #F3F3F3;
+    font-size: 24px;
+    width: 200px;
+    height: 200px;
+    border-radius: 100%;
+    text-align: center;
+    margin: 65px 0 0 75px;
+}
+  /* storeReports css End by Shlok */
 /* ****************End css ************************/

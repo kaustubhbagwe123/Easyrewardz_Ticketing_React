@@ -5,32 +5,32 @@ import { Popover } from "antd";
 // import Modal from "react-responsive-modal";
 import ReactTable from "react-table";
 // import "react-table/react-table.css";
-import DelBigIcon from "./../../assets/Images/del-big.png";
-import FileUpload from "./../../assets/Images/file.png";
-import DelBlack from "./../../assets/Images/del-black.png";
-import UploadCancel from "./../../assets/Images/upload-cancel.png";
-import DownExcel from "./../../assets/Images/csv.png";
+import DelBigIcon from "./../../../assets/Images/del-big.png";
+import FileUpload from "./../../../assets/Images/file.png";
+import DelBlack from "./../../../assets/Images/del-black.png";
+import UploadCancel from "./../../../assets/Images/upload-cancel.png";
+import DownExcel from "./../../../assets/Images/csv.png";
 import { ProgressBar } from "react-bootstrap";
-import Demo from "./../../store/Hashtag";
+import Demo from "./../../../store/Hashtag";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
-import LetterBox from "./../../assets/Images/SecuredLetter2.png";
-import SmsImg from "./../../assets/Images/Sms.png";
-import NotificationImg from "./../../assets/Images/Notification.png";
-import RedDeleteIcon from "./../../assets/Images/red-delete-icon.png";
-import BlackInfoIcon from "./../../assets/Images/Info-black.png";
-import CancelImg from "./../../assets/Images/Circle-cancel.png";
+import LetterBox from "./../../../assets/Images/SecuredLetter2.png";
+import SmsImg from "./../../../assets/Images/Sms.png";
+import NotificationImg from "./../../../assets/Images/Notification.png";
+import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
+import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
+import CancelImg from "./../../../assets/Images/Circle-cancel.png";
 import { Checkbox } from "antd";
 import CKEditor from "react-ckeditor-component";
 import Modal from "react-bootstrap/Modal";
 
-class Alerts extends Component {
+class StoreAlerts extends Component {
   constructor(props) {
     super(props);
     this.state = {
       fileName: "",
       AddAlertTabsPopup: false,
       content: "",
-      tabIndex:0
+      tabIndex: 0
     };
     this.updateContent = this.updateContent.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -51,7 +51,7 @@ class Alerts extends Component {
     e.preventDefault();
   };
   handleAddAlertTabsOpen() {
-    this.setState({ AddAlertTabsPopup: true,tabIndex:0 });
+    this.setState({ AddAlertTabsPopup: true, tabIndex: 0 });
   }
   handleAddAlertTabsClose() {
     this.setState({ AddAlertTabsPopup: false });
@@ -67,16 +67,17 @@ class Alerts extends Component {
       content: newContent
     });
   }
-  handleTabChange(index){
+  handleTabChange(index) {
     this.setState({
-      tabIndex:index
-    })
+      tabIndex: index
+    });
   }
+
   render() {
     const data = [
       {
         id: "A1",
-        alertType: "New Ticket Creation",
+        alertType: "Task Creation Store",
         communicationMode: (
           <div>
             <img src={LetterBox} alt="Letter" className="alert-tableImge" />
@@ -93,7 +94,7 @@ class Alerts extends Component {
       },
       {
         id: "A2",
-        alertType: "New Ticket Creation",
+        alertType: "Claim Creation",
         communicationMode: (
           <div>
             <img src={LetterBox} alt="Letter" className="alert-tableImge" />
@@ -110,7 +111,7 @@ class Alerts extends Component {
       },
       {
         id: "A3",
-        alertType: "New Ticket Creation",
+        alertType: "Claim Assign",
         communicationMode: (
           <div>
             <img src={LetterBox} alt="Letter" className="alert-tableImge" />
@@ -127,7 +128,7 @@ class Alerts extends Component {
       },
       {
         id: "A4",
-        alertType: "New Ticket Creation",
+        alertType: "Task Resolved",
         communicationMode: (
           <div>
             <img src={LetterBox} alt="Letter" className="alert-tableImge" />
@@ -144,7 +145,7 @@ class Alerts extends Component {
       },
       {
         id: "A5",
-        alertType: "New Ticket Creation",
+        alertType: "Claim Approved",
         communicationMode: (
           <div>
             <img src={LetterBox} alt="Letter" className="alert-tableImge" />
@@ -317,9 +318,13 @@ class Alerts extends Component {
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
-          <Link to="settings" className="header-path">Settings</Link>
+          <Link to="settings" className="header-path">
+            Settings
+          </Link>
           <span>&gt;</span>
-          <Link to={Demo.BLANK_LINK} className="header-path">Ticketing</Link>
+          <Link to={Demo.BLANK_LINK} className="header-path">
+            Store
+          </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
             Alerts
@@ -401,7 +406,10 @@ class Alerts extends Component {
                   <div className="div-cntr">
                     <label>Notification</label>
                     <br />
-                    <Checkbox>Internal</Checkbox>
+                    <Checkbox style={{ marginRight: "14px" }}>
+                      Internal
+                    </Checkbox>
+                    <Checkbox>Ticketing</Checkbox>
                   </div>
                   <div className="div-cntr">
                     <label>Status</label>
@@ -429,36 +437,42 @@ class Alerts extends Component {
                         >
                           <li className="nav-item">
                             <a
-                              className={`nav-link ${this.state.tabIndex === 0 && 'active'}`}
+                              className={`nav-link ${this.state.tabIndex ===
+                                0 && "active"}`}
                               data-toggle="tab"
                               href="#email-tab"
                               role="tab"
                               aria-controls="email-tab"
                               aria-selected="true"
+                              style={{ pointerEvents: "none" }}
                             >
                               Email
                             </a>
                           </li>
                           <li className="nav-item">
                             <a
-                              className={`nav-link ${this.state.tabIndex === 1 && 'active'}`}
+                              className={`nav-link ${this.state.tabIndex ===
+                                1 && "active"}`}
                               data-toggle="tab"
                               href="#sms-tab"
                               role="tab"
                               aria-controls="sms-tab"
                               aria-selected="false"
+                              style={{ pointerEvents: "none" }}
                             >
                               SMS
                             </a>
                           </li>
                           <li className="nav-item">
                             <a
-                               className={`nav-link ${this.state.tabIndex === 2 && 'active'}`}
+                              className={`nav-link ${this.state.tabIndex ===
+                                2 && "active"}`}
                               data-toggle="tab"
                               href="#notification-tab"
                               role="tab"
                               aria-controls="notification-tab"
                               aria-selected="false"
+                              style={{ pointerEvents: "none" }}
                             >
                               Notification
                             </a>
@@ -475,7 +489,8 @@ class Alerts extends Component {
                     <Modal.Body>
                       <div className="tab-content">
                         <div
-                          className={`tab-pane fade ${this.state.tabIndex === 0 && 'show active'}`}
+                          className={`tab-pane fade ${this.state.tabIndex ===
+                            0 && "show active"}`}
                           id="email-tab"
                           role="tabpanel"
                           aria-labelledby="email-tab"
@@ -590,7 +605,7 @@ class Alerts extends Component {
                                   className="butn-2"
                                   type="submit"
                                   id="sms-tab"
-                                  onClick={this.handleTabChange.bind(this,1)}
+                                  onClick={this.handleTabChange.bind(this, 1)}
                                 >
                                   SAVE & NEXT
                                 </button>
@@ -614,8 +629,10 @@ class Alerts extends Component {
                             </div>
                           </div>
                         </div>
-                        <div id="sms-tab" 
-                        className={`tab-pane fade ${this.state.tabIndex === 1 && 'show active'}`}
+                        <div
+                          id="sms-tab"
+                          className={`tab-pane fade ${this.state.tabIndex ===
+                            1 && "show active"}`}
                         >
                           <div className="sms-mainLabel alert-p1">
                             <label className="alert-main-popuplbl">
@@ -626,29 +643,80 @@ class Alerts extends Component {
                               className="text-areaModel"
                             ></textarea>
                             <div className="div-button1">
-                              <button className="butn-2" type="submit" onClick={this.handleTabChange.bind(this,2)}>
+                              <button
+                                className="butn-2"
+                                type="submit"
+                                onClick={this.handleTabChange.bind(this, 2)}
+                              >
                                 SAVE & NEXT
                               </button>
                             </div>
                           </div>
                         </div>
-                        <div id="notification-tab"
-                        className={`tab-pane fade ${this.state.tabIndex === 2 && 'show active'}`}
-                         >
-                          <div className="sms-mainLabel alert-p1">
-                            <label className="alert-main-popuplbl">
-                              Compose your Notification
-                            </label>
-                            <textarea
-                              rows="10"
-                              className="text-areaModel"
-                            ></textarea>
-                            <div className="div-button1">
-                              <button className="butn-2" type="submit">
-                                SAVE & NEXT
-                              </button>
+                        <div
+                          id="notification-tab"
+                          className={`tab-pane fade ${this.state.tabIndex ===
+                            2 && "show active"}`}
+                        >
+                          <div className="position-relative-alert">
+                            <ul className="nav alert-nav-tabs3" role="tablist">
+                              <li className="nav-item">
+                                <a
+                                  className="nav-link active"
+                                  data-toggle="tab"
+                                  href="#notifi-Internal-tab"
+                                  role="tab"
+                                  aria-controls="notifi-Internal-tab"
+                                  aria-selected="true"
+                                >
+                                  Internal
+                                </a>
+                              </li>
+                              <li className="nav-item">
+                                <a
+                                  className="nav-link"
+                                  data-toggle="tab"
+                                  href="#ticketing-tab"
+                                  role="tab"
+                                  aria-controls="ticketing-tab"
+                                  aria-selected="false"
+                                >
+                                  Ticketing
+                                </a>
+                              </li>
+                            </ul>
+                          </div>
+                          <div className="tab-content p-0 alert-p1">
+                          <div
+                            className="tab-pane fade show active"
+                            id="notifi-Internal-tab"
+                            role="tabpanel"
+                            aria-labelledby="notifi-Internal-tab"
+                          >
+                            <div className="sms-mainLabel alert-p1">
+                              <label className="alert-main-popuplbl">
+                                Compose your Notification
+                              </label>
+                              <textarea
+                                rows="10"
+                                className="text-areaModel"
+                              ></textarea>
+                              <div className="div-button1">
+                                <button className="butn-2" type="submit">
+                                  SAVE & NEXT
+                                </button>
+                              </div>
                             </div>
                           </div>
+                          <div
+                            className="tab-pane fade"
+                            id="ticketing-tab"
+                            role="tabpanel"
+                            aria-labelledby="ticketing-tab"
+                          >
+                            Ticketing
+                          </div>                          
+                          </div>                          
                         </div>
                       </div>
                     </Modal.Body>
@@ -733,4 +801,4 @@ class Alerts extends Component {
   }
 }
 
-export default Alerts;
+export default StoreAlerts;

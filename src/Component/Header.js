@@ -23,15 +23,15 @@ import StatusLogo from "./../assets/Images/status.png";
 import Hamb from "./../assets/Images/hamb.png";
 import CancelIcon from "./../assets/Images/cancel.png";
 import { Drawer } from "antd";
-
-// import ClaimLogo from "./../assets/Images/icon9.svg";
+// import {history} from "./../store/history";
 // import ClaimLogoBlue from "./../assets/Images/claim-blue.png";
 // import Demo from "../store/Hashtag";
 
 class Header extends Component {
+  constructor(props) {
+    super(props);
 
-
-  state = {
+    this.state = {
     modalIsOpen: false,
     open: false,
     ChatDetailModel: false,
@@ -66,16 +66,15 @@ class Header extends Component {
     ]
   };
 
+}
+
   handleChatDetailModelOpen() {
     this.setState({ ChatDetailModel: true });
   }
   handleChatDetailModelClose() {
     this.setState({ ChatDetailModel: false })
   }
-  // handleChatbot() {
-  //   debugger
-  //   this.props.history.push('chatbot');
-  // };
+ 
   onOpenModal = () => {
     this.setState({ open: true });
   };
@@ -338,7 +337,6 @@ class Header extends Component {
                 onClose={this.handleChatDetailModelClose.bind(this)}
                 visible={this.state.ChatDetailModel}
               >
-
                 <div className="row">
                   <div className="col-lg-12 p-0">
                     <div className="chatbot-left">
@@ -366,6 +364,7 @@ class Header extends Component {
                               </div>
                             </div>
                           </div>
+                          <Link to="/admin/chatbot">
                           <div className="chat-info active">
                             <div className="d-flex align-items-center">
                               <span className="light-blue-ini initial">M</span>
@@ -381,6 +380,7 @@ class Header extends Component {
                               </div>
                             </div>
                           </div>
+                          </Link>
                           <div className="chat-info">
                             <div className="d-flex align-items-center">
                               <span className="yellow-ini initial">A</span>
