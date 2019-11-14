@@ -166,11 +166,11 @@ class Module extends Component {
               Thanks for chatting with us.Have We resolved yore Question(s)?
             </label>
             <div className="shortcut-option">
-              <input type="radio" name="logout-status" id="yes" />
+              <input type="radio" name="yes" id="yes" />
               <label htmlFor="yes" className="logout-label1">
                 Yes
               </label>
-              <input type="radio" name="logout-status" id="no" />
+              <input type="radio" name="yes" id="no" />
               <label htmlFor="no" className="logout-label1">
                 No
               </label>
@@ -185,11 +185,11 @@ class Module extends Component {
           <span>
             <label>Do you need any help?</label>
             <div className="shortcut-option">
-              <input type="radio" name="logout-status" id="yes1" />
+              <input type="radio" name="yes1" id="yes1" />
               <label htmlFor="yes1" className="logout-label1">
                 Yes
               </label>
-              <input type="radio" name="logout-status" id="no1" />
+              <input type="radio" name="yes1" id="no1" />
               <label htmlFor="no1" className="logout-label1">
                 No
               </label>
@@ -222,11 +222,11 @@ class Module extends Component {
           <span>
             <label>Do you need any other help?</label>
             <div className="shortcut-option">
-              <input type="radio" name="logout-status" id="yes2" />
+              <input type="radio" name="yes2" id="yes2" />
               <label htmlFor="yes2" className="logout-label1">
                 Yes
               </label>
-              <input type="radio" name="logout-status" id="no2" />
+              <input type="radio" name="yes2" id="no2" />
               <label htmlFor="no2" className="logout-label1">
                 No
               </label>

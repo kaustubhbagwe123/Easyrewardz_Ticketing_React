@@ -180,7 +180,7 @@ class StoreReports extends Component {
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="header-path">
-            Ticketing
+            Store
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">

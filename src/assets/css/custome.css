@@ -7030,4 +7030,81 @@ table tr th:last-child {
     margin: 65px 0 0 75px;
 }
   /* storeReports css End by Shlok */
+  /* My Ticket Claim:03 add tadk modal css start by Shlok */
+  .claim-addTask-btn{
+    float: right;
+    margin-top: -55px;
+  }
+  #ClaimAdd-taskPopup {
+    /* border-radius: 8px; */
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+    padding: 10;
+    margin-right: 360px;
+    margin-top: 0;
+    margin-bottom: 0;
+    display: inline-block;
+    width: 588px;
+}
+.ClaimAddTadk-modal-textArea {
+  background-color: #ecf2f4;
+  border-radius: 4px;
+  width: 100%;
+  border: none;
+  padding: 15px;
+  resize: none;
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+.claim-AddTask-Mdl{
+  background: #ECF2F4;
+    height: 50px;
+    padding: 12px 28px 0px 16px;
+    margin: 12px 0px 0px 0xp;
+    margin-top: -19px;
+    width: 588px;
+    margin-left: -19px;
+}
+.claim-hdrMdl{
+  font-weight: 700;
+  font-size: 16px;
+}
+.task-details{
+  color: #4a4a4a;
+  font-family: Lato;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 19px;
+  padding-top: 3px;
+  text-align: left;
+  margin-left: 20px;
+  text-transform: uppercase;
+}
+.wifiLbl-drawer{
+  font-weight: 700;
+  font-size: 17px;
+}
+.addTasklbl-name {
+  font-weight: bold;
+  color: black;
+  display: flex;
+}
+.addTask-2-d-ago {
+  color: #9b9b9b;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: left;
+  display: block;
+  padding-left: 7px;
+}
+.status-opn {
+  background-color: #F9F9F9;
+  border-radius: 100%;
+  width: 30px;
+  height: 30px;
+  margin-left: 14px;
+  padding: 6px;
+}
+  /* My Ticket Claim:03 add tadk modal css end */
 /* ****************End css ************************/

@@ -1,12 +1,107 @@
 import React, { Component } from "react";
+import Modal from "react-responsive-modal";
+import { Drawer } from "antd";
 import TableArrowIcon from "./../../assets/Images/table-arr.png";
 import InfoIcon from "./../../assets/Images/info-icon.png";
 import HeadPhone3 from "./../../assets/Images/headphone3.png";
+import BlackLeftArrow from "./../../assets/Images/black-left-arrow.png";
+import CancelImg from "./../../assets/Images/cancel.png";
+import Headphone2Img from "./../../assets/Images/headphone2.png";
+import RightCirculImg from "./../../assets/Images/right.png";
+import CalSmallImg from "./../../assets/Images/cal-small.png";
 
 class MyTicketTask extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      AddTaskModal: false,
+      TaskDetailDrawer: false
+    };
+  }
+  handleAddTaskModalOpn() {
+    this.setState({ AddTaskModal: true });
+  }
+  handleAddTaskModalCls() {
+    this.setState({ AddTaskModal: false });
+  }
+  handleTaskDetailsDrawerOpn() {
+    this.setState({ TaskDetailDrawer: true });
+  }
+  handleTaskDetailsDrawerCls() {
+    this.setState({ TaskDetailDrawer: false });
+  }
   render() {
     return (
       <div>
+        <div className="claim-addTask-btn">
+          <button
+            type="button"
+            className="butn"
+            onClick={this.handleAddTaskModalOpn.bind(this)}
+          >
+            ADD TASK
+          </button>
+        </div>
+        <Modal
+          open={this.state.AddTaskModal}
+          onClose={this.handleAddTaskModalCls.bind(this)}
+          closeIconId="sdsg"
+          modalId="ClaimAdd-taskPopup"
+          overlayId="logout-ovrly"
+        >
+          <div className="claim-AddTask-Mdl">
+            <label className="claim-hdrMdl">Task</label>
+            <img
+              src={CancelImg}
+              alt="cancelImg"
+              className="cancalImg"
+              onClick={this.handleAddTaskModalCls.bind(this)}
+            />
+          </div>
+          <div style={{ padding: "20px 8px 0px 8px" }}>
+            <input type="text" class="txt-1" placeholder="Task Title" />
+            <textarea
+              class="ClaimAddTadk-modal-textArea"
+              placeholder="Task Description"
+              rows="6"
+            ></textarea>
+            <div className="row">
+              <div className="col-md-6">
+                <select id="inputState" class="form-control dropdown-setting">
+                  <option>Department</option>
+                </select>
+              </div>
+              <div className="col-md-6">
+                <select id="inputState" class="form-control dropdown-setting">
+                  <option>Task Priority</option>
+                </select>
+              </div>
+            </div>
+            <div className="row m-t-15">
+              <div className="col-md-6">
+                <select id="inputState" class="form-control dropdown-setting">
+                  <option>Assign To</option>
+                </select>
+              </div>
+              <div className="col-md-6">
+                <select id="inputState" class="form-control dropdown-setting">
+                  <option>Function</option>
+                </select>
+              </div>
+            </div>
+            <div className="row m-t-20" style={{ float: "right" }}>
+              <div style={{ marginRight: "15px" }}>
+                <a href="#!" style={{ marginRight: "15px" }}>
+                  CANCEL
+                </a>
+                <button className="butn" type="button">
+                  CREATE TASK
+                </button>
+              </div>
+            </div>
+          </div>
+        </Modal>
         <div className="row table-cntr mt-3">
           <table>
             <thead>
@@ -38,7 +133,7 @@ class MyTicketTask extends Component {
               </tr>
             </thead>
             <tbody>
-              <tr>
+              <tr onClick={this.handleTaskDetailsDrawerOpn.bind(this)}>
                 <td>
                   <img
                     src={HeadPhone3}
@@ -119,6 +214,77 @@ class MyTicketTask extends Component {
               </tr>
             </tbody>
           </table>
+          <Drawer
+            className="claimTab-drawerModal"
+            placement={"right"}
+            closable={false}
+            // onClose={this.handleClaimDetailsModalClose}
+            visible={this.state.TaskDetailDrawer}
+          >
+            <div style={{ marginLeft: "10px" }}>
+              <img
+                src={BlackLeftArrow}
+                alt="black-left-arrow-icon"
+                className="black-left-arrow"
+                onClick={this.handleTaskDetailsDrawerCls.bind(this)}
+              />
+              <label className="task-details">Task Details</label>
+            </div>
+            <hr className="claimline" />
+            <div className="">
+              <label className="wifiLbl-drawer">
+                WIFI is not working from 5hrs
+              </label>
+              <div className="row">
+                <div className="col-xs-3">
+                  <img
+                    src={Headphone2Img}
+                    alt="headphone"
+                    className="oval-56"
+                  />
+                </div>
+                <div className="col-xs-9">
+                  <label className="addTask-2-d-ago">
+                    ASSIGNED TO
+                    <span className="addTasklbl-name">Naman Rampal</span>
+                  </label>
+                </div>
+                <div className="col-xs-3">
+                  <img
+                    src={RightCirculImg}
+                    alt="headphone"
+                    className="status-opn"
+                  />
+                </div>
+                <div className="col-xs-9">
+                  <label className="addTask-2-d-ago">
+                    STATUS
+                    <span className="addTasklbl-name">Open</span>
+                  </label>
+                </div>
+                <div className="col-xs-3">
+                  <img
+                    src={CalSmallImg}
+                    alt="headphone"
+                    className="status-opn"
+                  />
+                </div>
+                <div className="col-xs-9">
+                  <label className="addTask-2-d-ago">
+                    DUE DATE
+                    <span className="addTasklbl-name">Today</span>
+                  </label>
+                </div>
+              </div>
+             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+               Sed interdum cursus nulla, a sagittis arcu dapibus vel. 
+               Phasellus ut justo mauris. Nullam sed efficitur tellus, eget sollicitudin tellus. 
+               Donec metus augue, auctor ac dignissim suscipit, blandit vel libero. 
+               Fusce accumsan finibus nisi sed sodales. Phasellus tincidunt nisl dictum ipsum pellentesque dapibus. 
+               Mauris mollis magna vel arcu pretium, et lobortis ipsum placerat.
+                Maecenas mollis convallis felis vel posuere.</p>
+            </div>
+          </Drawer>
         </div>
       </div>
     );
