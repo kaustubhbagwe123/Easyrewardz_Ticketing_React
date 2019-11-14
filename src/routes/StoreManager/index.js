@@ -6,7 +6,7 @@ import StoreMaster from "./StoreMaster";
 import StoreTask from "./StoreTask";
 import StoreTaskView from "./StoreTaskView";
 import CategoryMaster from "./CategoryMaster";
-import CreateSLA from "./CreateSLA";
+// import CreateSLA from "../Settings/Ticketing/CreateSLA";
 import EditStoreTask from "./EditStoreTask";
 import StoreTaskByTicket from "./StoreTaskByTicket";
 import RaiseClaim from "./RaiseClaim";
@@ -42,7 +42,7 @@ export class StoreApp extends Component {
           component={CategoryMaster}
         />
        
-        <Route exact path={`${match.url}/sla`} component={CreateSLA} />
+        {/* <Route exact path={`${match.url}/sla`} component={CreateSLA} /> */}
         <Route exact path={`${match.url}/editStoreTask`} component={EditStoreTask} />
         <Route exact path={`${match.url}/storeTaskByTicket`} component={StoreTaskByTicket} />
         <Route exact path={`${match.url}/raiseClaim`} component={RaiseClaim} />

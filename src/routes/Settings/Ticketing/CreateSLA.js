@@ -1,16 +1,17 @@
 import React,{Component} from 'react';
-import TableArr from "./../../assets/Images/table-arr.png";
-import RedDeleteIcon from "./../../assets/Images/red-delete-icon.png";
-import BlackDeleteIcon from "./../../assets/Images/del-big.png";
+import {Link} from 'react-router-dom';
+import TableArr from "./../../../assets/Images/table-arr.png";
+import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
+import BlackDeleteIcon from "./../../../assets/Images/del-big.png";
 // import UploadIcon from "./../../assets/Images/clip.png";
 // import CrossIcon from "./../../assets/Images/cross-icon.png";
 import { UncontrolledPopover , PopoverBody } from "reactstrap";
-import Demo from "../../store/Hashtag.js";
-import BlackInfoIcon from "./../../assets/Images/Info-black.png";
-import DelBigIcon from "./../../assets/Images/del-big.png";
-import FileUpload from "./../../assets/Images/file.png";
-import DelBlack from "./../../assets/Images/del-black.png";
-import UploadCancel from "./../../assets/Images/upload-cancel.png";
+import Demo from "../../../store/Hashtag.js";
+import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
+import DelBigIcon from "./../../../assets/Images/del-big.png";
+import FileUpload from "./../../../assets/Images/file.png";
+import DelBlack from "./../../../assets/Images/del-black.png";
+import UploadCancel from "./../../../assets/Images/upload-cancel.png";
 import { ProgressBar } from "react-bootstrap";
 
 class CreateSLA extends Component {
@@ -30,13 +31,13 @@ class CreateSLA extends Component {
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
-          <a href={Demo.BLANK_LINK}>Settings</a>
+          <Link to="settings">Settings</Link>
           <span>&gt;</span>
-          <a href={Demo.BLANK_LINK}>Ticketing</a>
+          <Link to={Demo.BLANK_LINK}>Ticketing</Link>
           <span>&gt;</span>
-          <a href={Demo.BLANK_LINK} className="active">
+          <Link to={Demo.BLANK_LINK} className="active">
             SLA
-          </a>
+          </Link>
         </div>
         <div className="container-fluid">
           <div className="store-settings-cntr">

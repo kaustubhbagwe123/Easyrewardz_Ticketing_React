@@ -276,13 +276,14 @@ class MyTicketTask extends Component {
                   </label>
                 </div>
               </div>
-             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.<br/> 
                Sed interdum cursus nulla, a sagittis arcu dapibus vel. 
-               Phasellus ut justo mauris. Nullam sed efficitur tellus, eget sollicitudin tellus. 
+               {/* Phasellus ut justo mauris. Nullam sed efficitur tellus, eget sollicitudin tellus. 
                Donec metus augue, auctor ac dignissim suscipit, blandit vel libero. 
                Fusce accumsan finibus nisi sed sodales. Phasellus tincidunt nisl dictum ipsum pellentesque dapibus. 
                Mauris mollis magna vel arcu pretium, et lobortis ipsum placerat.
-                Maecenas mollis convallis felis vel posuere.</p>
+                Maecenas mollis convallis felis vel posuere. */}
+                </p>
             </div>
           </Drawer>
         </div>

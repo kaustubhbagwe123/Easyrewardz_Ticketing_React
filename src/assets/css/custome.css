@@ -7106,5 +7106,12 @@ table tr th:last-child {
   margin-left: 14px;
   padding: 6px;
 }
+.TaskTab-drawerModal .ant-drawer .ant-drawer-content {
+  height: 100%;
+  width: 435px !important;
+}
+.TaskTab-drawerModal .ant-drawer-content-wrapper {
+  width: auto !important;
+}
   /* My Ticket Claim:03 add tadk modal css end */
 /* ****************End css ************************/

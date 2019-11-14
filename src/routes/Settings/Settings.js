@@ -163,7 +163,7 @@ class Settings extends Component {
                           </p>
                         </div>
                       </a>
-                      <Link to={Demo.BLANK_LINK} className="setting-box">
+                      <Link to="sla" className="setting-box">
                         <div className="setting-icons">
                           <img src={sla} alt="sla" />
                         </div>
@@ -324,7 +324,7 @@ class Settings extends Component {
                           </p>
                         </div>
                       </a>
-                      <a href={Demo.BLANK_LINK} className="setting-box">
+                      <a href="departmentMaster" className="setting-box">
                         <div className="setting-icons icon-small">
                           <img src={department} alt="department" />
                         </div>
@@ -341,7 +341,7 @@ class Settings extends Component {
                   </div>
                   <div className="col-md-3">
                     <div className="setting-cntr">
-                      <a href={Demo.BLANK_LINK} className="setting-box">
+                      <a href="storePriority" className="setting-box">
                         <div className="setting-icons">
                           <img src={priority} alt="priority" />
                         </div>
@@ -354,7 +354,7 @@ class Settings extends Component {
                           </p>
                         </div>
                       </a>
-                      <a href="slaTemplate" className="setting-box">
+                      <a href="SlaTemplateDepartment" className="setting-box">
                         <div className="setting-icons icon-small">
                           <img src={templates} alt="templates" />
                         </div>
@@ -384,7 +384,7 @@ class Settings extends Component {
                   </div>
                   <div className="col-md-3">
                     <div className="setting-cntr">
-                      <a href={Demo.BLANK_LINK} className="setting-box">
+                      <a href="Storecrmrole" className="setting-box">
                         <div className="setting-icons">
                           <img src={crmRoles} alt="crm-roles" />
                         </div>
@@ -397,7 +397,7 @@ class Settings extends Component {
                           </p>
                         </div>
                       </a>
-                      <a href={Demo.BLANK_LINK} className="setting-box">
+                      <a href="storeusers" className="setting-box">
                         <div className="setting-icons big-icon">
                           <img src={users} alt="users" />
                         </div>
@@ -427,7 +427,7 @@ class Settings extends Component {
                   </div>
                   <div className="col-md-3">
                     <div className="setting-cntr">
-                      <a href={Demo.BLANK_LINK} className="setting-box">
+                      <a href="storereports" className="setting-box">
                         <div className="setting-icons icon-small">
                           <img src={reports} alt="reports" />
                         </div>
@@ -575,7 +575,95 @@ class Settings extends Component {
                 role="tabpanel"
                 aria-labelledby="chat-tab"
               >
-                <p>Coming Soon</p>
+                <div className="row">
+                  <div className="col-md-3">
+                    <div className="setting-cntr">
+                      <a href={Demo.BLANK_LINK} className="setting-box">
+                        <div className="setting-icons">
+                          <img src={hierarchy} alt="hierarchy" />
+                        </div>
+                        <div className="setting-desc">
+                          <strong>Elements</strong>
+                          <p>
+                            A system in which members of an organization or
+                            society are ranked according to relative status or
+                            authority.
+                          </p>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                  <div className="col-md-3">
+                    <div className="setting-cntr">
+                      <a href={Demo.BLANK_LINK} className="setting-box">
+                        <div className="setting-icons">
+                          <img src={storeSettings} alt="store-settings" />
+                        </div>
+                        <div className="setting-desc">
+                          <strong>Language</strong>
+                          <p>
+                            A system in which members of an organization or
+                            society are ranked according to relative status or
+                            authority.
+                          </p>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                  <div className="col-md-3">
+                    <div className="setting-cntr">
+                      <a href={Demo.BLANK_LINK} className="setting-box">
+                        <div className="setting-icons">
+                          <img src={priority} alt="priority" />
+                        </div>
+                        <div className="setting-desc">
+                          <strong>Theme</strong>
+                          <p>
+                            A system in which members of an organization or
+                            society are ranked according to relative status or
+                            authority.
+                          </p>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-3">
+                    <div className="setting-cntr">
+                      <a href={Demo.BLANK_LINK} className="setting-box">
+                        <div className="setting-icons icon-small">
+                          <img src={brand} alt="brand" />
+                        </div>
+                        <div className="setting-desc">
+                          <strong>Rules</strong>
+                          <p>
+                            A system in which members of an organization or
+                            society are ranked according to relative status or
+                            authority.
+                          </p>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                  <div className="col-md-3">
+                    <div className="setting-cntr">
+                      <a href={Demo.BLANK_LINK} className="setting-box">
+                        <div className="setting-icons icon-small">
+                          <img src={category} alt="category" />
+                        </div>
+                        <div className="setting-desc">
+                          <strong>Configuration</strong>
+                          <p>
+                            A system in which members of an organization or
+                            society are ranked according to relative status or
+                            authority.
+                          </p>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

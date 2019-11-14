@@ -1044,4 +1044,60 @@ margin-left: 10px;
     margin-top: 10px;
   }
   /* Raiseclaim search collapse css start kalpesh */
+  
+/* Department-Master Css Start Kalpesh */
+.deptMaster .ReactTable .rt-thead .rt-tr {
+  font-size: 12px;
+  }
+  .deptMaster .ReactTable{
+  border: none;
+  }
+  .right-sect-collapse .div-cntrdept{
+  padding: 0 10px;
+  }
+  .editdeptpopover {
+  background-color: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0); 
+  padding: 25px 10px;
+  /* margin-bottom: 25px; */
+  }
+  .editdeptpopover input,
+  .editdeptpopover select {
+  background-color: #ecf2f4;
+  border-radius: 4px;
+  width: 250px;
+  color: #000;
+  display: block;
+  border: 0;
+  padding: 11px 15px;
+  margin-top: 5px;
+  }
+  .delcan-btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: -25px;
+  }
+  /* Department-Master Css end */
+  /* SLA Template Department Start by Kalpesh */
+.slatemp-text-1 {
+  color: #4a4a4a;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: left;
+  display: inline-block;
+  width: 33%;
+  }
+  .slatempreact .ReactTable {
+  border-left: none;
+  border-right: none;
+  }
+  .slatempreact {
+  border-left: 1px solid rgb(0,0,0,0.1);
+  border-right: 1px solid rgb(0,0,0,0.1);
+  }
+  /* SLA Template Department End */
 /* ----------------------------------------------- */

@@ -33,6 +33,10 @@ import Reports from "./Settings/Ticketing/Reports";
 import StoreReports from "./Settings/Ticketing/StoreReports";
 import Module  from "./Settings/Ticketing/Module";
 import StoreModule from "./Settings/Ticketing/StoreModule";
+import DepartmentMaster from "./Settings/Store/DepartmentMaster";
+import CreateSLA from "./Settings/Ticketing/CreateSLA";
+import SlaTemplateDepartment from "./Settings/Ticketing/SlaTemplateDepartment";
+import StorePriority from "./Settings/Ticketing/StorePriority";
 // import Aux from "./../Component/Aux";
 
 export class App extends Component {
@@ -129,6 +133,10 @@ export class App extends Component {
         <Route exact path={`${match.url}/storeReports`} component={StoreReports} />
         <Route exact path={`${match.url}/module`} component={Module} />
         <Route exact path={`${match.url}/storeModule`} component={StoreModule} />
+        <Route exact path={`${match.url}/departmentMaster`} component={DepartmentMaster} />
+        <Route exact path={`${match.url}/sLA`} component={CreateSLA} />
+        <Route exact path={`${match.url}/slaTemplateDepartment`} component={SlaTemplateDepartment} />
+        <Route exact path={`${match.url}/storePriority`} component={StorePriority} />
       </Layout>
     );
   }

@@ -30,7 +30,7 @@ class StoreCRMRole extends Component {
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
-          <Link to={Demo.BLANK_LINK} className="header-path">
+          <Link to="settings" className="header-path">
             Settings
           </Link>
           <span>&gt;</span>
