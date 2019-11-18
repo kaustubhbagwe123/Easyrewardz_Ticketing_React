@@ -824,7 +824,7 @@ class StorePriority extends Component {
               <div className="col-md-4">
                 <div className="createHierarchyMask">
                   <div className="createSpace">
-                    <label className="create-department">CREATE PRORITY</label>
+                    <label className="create-department">CREATE PRIORITY</label>
                     <div className="div-padding-1">
                       <label className="designation-name">Priority Name</label>
                       <input

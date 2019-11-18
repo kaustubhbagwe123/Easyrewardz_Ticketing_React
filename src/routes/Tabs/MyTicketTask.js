@@ -9,6 +9,7 @@ import CancelImg from "./../../assets/Images/cancel.png";
 import Headphone2Img from "./../../assets/Images/headphone2.png";
 import RightCirculImg from "./../../assets/Images/right.png";
 import CalSmallImg from "./../../assets/Images/cal-small.png";
+import StoreImg from "./../../assets/Images/store.png";
 
 class MyTicketTask extends Component {
   constructor(props) {
@@ -215,7 +216,7 @@ class MyTicketTask extends Component {
             </tbody>
           </table>
           <Drawer
-            className="claimTab-drawerModal"
+            className="taskTab-drawerModal"
             placement={"right"}
             closable={false}
             // onClose={this.handleClaimDetailsModalClose}
@@ -235,7 +236,7 @@ class MyTicketTask extends Component {
               <label className="wifiLbl-drawer">
                 WIFI is not working from 5hrs
               </label>
-              <div className="row">
+              <div className="row m-b-15">
                 <div className="col-xs-3">
                   <img
                     src={Headphone2Img}
@@ -244,7 +245,7 @@ class MyTicketTask extends Component {
                   />
                 </div>
                 <div className="col-xs-9">
-                  <label className="addTask-2-d-ago">
+                  <label className="addTask-2-d-ago m-r-25">
                     ASSIGNED TO
                     <span className="addTasklbl-name">Naman Rampal</span>
                   </label>
@@ -257,7 +258,7 @@ class MyTicketTask extends Component {
                   />
                 </div>
                 <div className="col-xs-9">
-                  <label className="addTask-2-d-ago">
+                  <label className="addTask-2-d-ago m-r-25">
                     STATUS
                     <span className="addTasklbl-name">Open</span>
                   </label>
@@ -276,14 +277,60 @@ class MyTicketTask extends Component {
                   </label>
                 </div>
               </div>
-             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.<br/> 
-               Sed interdum cursus nulla, a sagittis arcu dapibus vel. 
-               {/* Phasellus ut justo mauris. Nullam sed efficitur tellus, eget sollicitudin tellus. 
-               Donec metus augue, auctor ac dignissim suscipit, blandit vel libero. 
-               Fusce accumsan finibus nisi sed sodales. Phasellus tincidunt nisl dictum ipsum pellentesque dapibus. 
-               Mauris mollis magna vel arcu pretium, et lobortis ipsum placerat.
-                Maecenas mollis convallis felis vel posuere. */}
-                </p>
+              <p className="tasktasb-para">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                <br />
+                Sed interdum cursus nulla, a sagittis arcu dapibus vel.
+                <br />
+                Phasellus ut justo mauris. Nullam sed efficitur tellus, eget
+                sollicitudin tellus. Donec metus augue, auctor ac dignissim
+                suscipit, blandit vel libero. Fusce accumsan finibus nisi sed
+                sodales. Phasellus tincidunt nisl dictum ipsum pellentesque
+                dapibus. Mauris mollis magna vel arcu pretium, et lobortis ipsum
+                placerat. Maecenas mollis convallis felis vel posuere.
+              </p>
+              <hr className="claimline" />
+              <textarea
+                className="task-drawerv-textArea"
+                placeholder="Add Comments"
+              ></textarea>
+              <button className="assign-butn btn-assign-tikcet" type="button">
+                ADD COMMENT
+              </button>
+              <div className="row m-t-20">
+                <div className="col-xs-6">
+                <div className="storeImg-drawer">                  
+                  <img
+                    src={StoreImg}
+                    alt="headphone"
+                    className="storeImg"
+                  />
+                  </div>
+                  <label className="varun-taskDrawer">Varun Nagpal</label>
+                  <span className="addTask-time-ago">2hr ago</span>
+                  <label className="task-drawer-lnl">
+                    Hi Diwakar, I really appreciate you joining us at
+                    Voucherify! My top priority
+                  </label>
+                </div>
+              </div>
+              <div className="row m-t-20">
+                <div className="col-xs-6">
+                  <div className="storeImg-drawer">                  
+                  <img
+                    src={StoreImg}
+                    alt="headphone"
+                    className="storeImg"
+                  />
+                  </div>
+                  <label className="varun-taskDrawer">Varun Nagpal</label>
+                  <span className="addTask-time-ago">2hr ago</span>
+                  <label className="task-drawer-lnl">
+                    Hi Diwakar, I really appreciate you joining us at
+                    Voucherify! My top priority
+                  </label>
+                </div>
+              </div>
             </div>
           </Drawer>
         </div>

@@ -7082,6 +7082,7 @@ table tr th:last-child {
 .wifiLbl-drawer{
   font-weight: 700;
   font-size: 17px;
+  margin-bottom: 15px;
 }
 .addTasklbl-name {
   font-weight: bold;
@@ -7106,12 +7107,71 @@ table tr th:last-child {
   margin-left: 14px;
   padding: 6px;
 }
-.TaskTab-drawerModal .ant-drawer .ant-drawer-content {
+.taskTab-drawerModal .ant-drawer-content {
   height: 100%;
   width: 435px !important;
 }
-.TaskTab-drawerModal .ant-drawer-content-wrapper {
+.taskTab-drawerModal .ant-drawer-content-wrapper {
   width: auto !important;
+}
+.tasktasb-para{
+  color: #000000;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 23px;
+  /* width: 356px; */
+  text-align: left;
+}
+.task-drawerv-textArea{
+  background-color: #ECF2F4;
+    border-radius: 4px;
+    width: 359px;
+    height: 166px;
+    border: none;
+    resize: none;
+    padding: 15px;
+}
+.varun-taskDrawer{
+    font-weight: bold;
+    color: black;
+    display: inline-block;
+    padding-left: 8px;
+}
+.addTask-time-ago {
+  color: #9b9b9b;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: left;
+  display: inline-block;
+  padding-left: 7px;
+}
+.task-drawer-lnl{
+  color: #505050;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 23px;
+  width: 343px;
+  text-align: left;
+  float: right;
+  margin-right: 3px;
+}
+.storeImg-drawer{
+  background-color: #f8e71c;
+  border-radius: 100%;
+  width: 30px;
+  height: 30px;
+  margin-left: 14px;
+  padding: 6px;
+  display: inline;
+}
+.storeImg{
+  width: 20px;
+  height: 18px;
+  margin-top: -5px;
 }
   /* My Ticket Claim:03 add tadk modal css end */
 /* ****************End css ************************/

@@ -334,7 +334,7 @@
   width: 158px;
   height: 31px;
   border: none;
-  padding: 10px;;
+  padding: 10px;
 }
 .msg-row .col-md-2 {
   padding: 0px;
@@ -569,7 +569,7 @@
 .QA-card-2 {
   background-color: #ffffff;
   border-radius: 4px;
-  width:886px;   /*872px;*/ 
+  width: 886px; /*872px;*/
   height: 892px;
 }
 .QA-card-3 {
@@ -1084,17 +1084,89 @@ padding: 5px 40px;
   cursor: pointer;
   font-size: 13px;
   font-weight: 700;
-  }
-  .Qatable-blue-btn {
+}
+.Qatable-blue-btn {
   background-color: #cbe0f1;
   border: 1px solid #0076ff;
   color: #1775e2;
   font-size: 12px;
-  }
-  .Qatable-green-btn {
+}
+.Qatable-green-btn {
   background-color: #cbf1e9;
   border: 1px solid #2d8f7b;
   color: #2d8f7b;
   font-size: 12px;
-  }
+}
 /* My ticket button css end */
+/* Qa Hierar Master Css Start By Kalpesh */
+.QahierarReact .ReactTable {
+  border: none;
+}
+.QahierarReact {
+  border-left: 1px solid rgb(0, 0, 0, 0.1);
+  border-right: 1px solid rgb(0, 0, 0, 0.1);
+}
+
+.qacrmroles .ReactTable {
+  border: none;
+}
+.qacrmroles {
+  border-left: 1px solid rgb(0, 0, 0, 0.1);
+  border-right: 1px solid rgb(0, 0, 0, 0.1);
+}
+/* Qa CrmRoles Css End By Kalpesh */
+/* QA Reports page css Start by Shlok */
+.QAreports .ReactTable {
+  border: none;
+}
+.QAreports .ReactTable .rt-tbody {
+  background: white;
+}
+.QaModal input[type="text"] {
+  width: 250px;
+  border-radius: 4px;
+  padding: 10px 50px 10px 20px;
+  border: 0;
+  background: #ECF2F4 url("./../Images/calendar-black.svg") no-repeat right 15px
+    center;
+  color: #4a4a4a;
+}
+.qAReport select{
+  border-radius: 4px;
+  width: 250px;
+  height: 35px;
+  padding-left: 8px; 
+  padding-right: 40px; 
+  border-color: #ecf2f4;
+  background: #ecf2f4 url("./../Images//table-arr.png") no-repeat right 20px center;
+  background-size: 13px;
+  cursor: pointer;
+  border: none;
+  font-weight: 600;
+  }
+  .qAReport label {
+    font-size: 13px;
+    font-weight: 600;
+    font-family: lato;
+    text-align: left;
+    line-height: 25px;
+    display: block;
+    }
+   .Qadate .react-datepicker__navigation--next {
+      right: -70px !important;
+      border-left-color: #ccc;
+  }
+  .Qadate .react-datepicker__navigation--previous {
+    left: -70px !important;
+    border-right-color: #ccc;
+}
+/* QA Reports page css End by Shlok */
+/* Qa UserMaster css start Kalpesh */
+.qausermasterreact .ReactTable {
+  border: none;
+  }
+  .qausermasterreact {
+  border-left: 1px solid rgb(0,0,0,0.1);
+  border-right: 1px solid rgb(0,0,0,0.1);
+  }
+  /* Qa UserMaster Css End */

@@ -8,6 +8,7 @@ import DownExcel from "./../../../assets/Images/csv.png";
 import UploadCancel from "./../../../assets/Images/upload-cancel.png";
 import { ProgressBar } from "react-bootstrap";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
+import {Link} from 'react-router-dom'
 
 class ItemMaster extends Component {
   constructor(props) {
@@ -35,13 +36,13 @@ class ItemMaster extends Component {
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
-          <a href={Demo.BLANK_LINK}>Settings</a>
+          <Link to="settings" className="header-path">Settings</Link>
           <span>&gt;</span>
-          <a href={Demo.BLANK_LINK}>Store</a>
+          <Link to={Demo.BLANK_LINK} className="header-path">Store</Link>
           <span>&gt;</span>
-          <a href={Demo.BLANK_LINK} className="active">
+          <Link to={Demo.BLANK_LINK} className="active header-path">
             Item Master
-          </a>
+          </Link>
         </div>
         <div className="container-fluid">
           <div className="store-settings-cntr item-settings-cntr">

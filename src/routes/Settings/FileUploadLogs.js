@@ -1,20 +1,29 @@
 import React, { Component } from "react";
 import TableArr from "./../../assets/Images/table-arr.png";
 import InfoIcon from "./../../assets/Images/Info-black.png";
+import Demo from "./../../store/Hashtag.js";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
+import { Link } from "react-router-dom";
 class FileUploadLogs extends Component {
   constructor(props) {
     super(props);
-    this.state = { };
+    this.state = {};
   }
   render() {
     return (
       <div className="mainDivPadding">
-        <div className="breadcrumbs-row">
-          <div className="breadcrumbs-row-padding">
-            <label className="settings-ticketing">Settings > Ticketing ></label>
-            <label className="lblFileUpload"> &nbsp;File Upload Logs</label>
-          </div>
+        <div className="container-fluid setting-title setting-breadcrumb">
+          <Link to="settings" className="header-path">
+            Settings
+          </Link>
+          <span>&gt;</span>
+          <Link to={Demo.BLANK_LINK} className="header-path">
+            Ticketing
+          </Link>
+          <span>&gt;</span>
+          <Link to={Demo.BLANK_LINK} className="active header-path">
+            File Upload Logs
+          </Link>
         </div>
         <br />
         <div className="fileUploadTable">
@@ -38,7 +47,7 @@ class FileUploadLogs extends Component {
                   <img src={TableArr} alt="table-arr" />
                 </th>
                 <th>Error File</th>
-                <th style={{width:'10%'}}>Success File</th>
+                <th style={{ width: "10%" }}>Success File</th>
               </tr>
             </thead>
             <tbody>
@@ -47,7 +56,12 @@ class FileUploadLogs extends Component {
                 <td>Users.xls</td>
                 <td>
                   02-09-2019
-                  <img className="info-icon" src={InfoIcon} alt="info-icon"  id="Users"/>
+                  <img
+                    className="info-icon"
+                    src={InfoIcon}
+                    alt="info-icon"
+                    id="Users"
+                  />
                   <UncontrolledPopover
                     trigger="hover"
                     placement="bottom"
@@ -75,7 +89,12 @@ class FileUploadLogs extends Component {
                 <td>SLA.csv</td>
                 <td>
                   02-09-2019
-                  <img className="info-icon" src={InfoIcon} alt="info-icon"  id="SLA"/>
+                  <img
+                    className="info-icon"
+                    src={InfoIcon}
+                    alt="info-icon"
+                    id="SLA"
+                  />
                   <UncontrolledPopover
                     trigger="hover"
                     placement="bottom"
@@ -111,7 +130,12 @@ class FileUploadLogs extends Component {
                 <td>Category.xls</td>
                 <td>
                   02-09-2019
-                  <img className="info-icon" src={InfoIcon} alt="info-icon"  id="Category"/>
+                  <img
+                    className="info-icon"
+                    src={InfoIcon}
+                    alt="info-icon"
+                    id="Category"
+                  />
                   <UncontrolledPopover
                     trigger="hover"
                     placement="bottom"
@@ -147,7 +171,12 @@ class FileUploadLogs extends Component {
                 <td>Store.xls</td>
                 <td>
                   02-09-2019
-                  <img className="info-icon" src={InfoIcon} alt="info-icon"  id="Store"/>
+                  <img
+                    className="info-icon"
+                    src={InfoIcon}
+                    alt="info-icon"
+                    id="Store"
+                  />
                   <UncontrolledPopover
                     trigger="hover"
                     placement="bottom"
@@ -183,7 +212,12 @@ class FileUploadLogs extends Component {
                 <td>Item Master.xls</td>
                 <td>
                   02-09-2019
-                  <img className="info-icon" src={InfoIcon} alt="info-icon"  id="ItemMaster"/>
+                  <img
+                    className="info-icon"
+                    src={InfoIcon}
+                    alt="info-icon"
+                    id="ItemMaster"
+                  />
                   <UncontrolledPopover
                     trigger="hover"
                     placement="bottom"

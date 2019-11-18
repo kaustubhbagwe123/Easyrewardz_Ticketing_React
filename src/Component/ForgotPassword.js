@@ -4,10 +4,6 @@ import logo from "../assets/Images/logo.jpg";
 import {Link} from 'react-router-dom'
 
 class ForgotPassword extends Component {
-  // componentDidMount() {
-  //   document.querySelectorAll(".card-Nav")[0].style.display = "none";
-  // }
-
   render() {
     return (
       <div className="auth-wrapper">
@@ -19,7 +15,6 @@ class ForgotPassword extends Component {
               </div>
               <div style={{ marginBottom: "18px" }}>
                 <h3 className="m-0" style={{ textAlign: "left" }}>
-                  {" "}
                   <label
                     className="col-mb-3 col-form-label col-form-label p-0 forgot-pass-text"
                     style={{ fontWeight: "300" }}

@@ -1100,4 +1100,45 @@ margin-left: 10px;
   border-right: 1px solid rgb(0,0,0,0.1);
   }
   /* SLA Template Department End */
+  /* Config add pop-up css start by Kalpesh */
+  .config-button {
+    float: right;
+    margin: 10px 38px 10px 0;
+    }
+    .config-buttontext {
+    width: 140px;
+    height: 40px;
+    cursor: pointer;
+    background-color: #2561a8;
+    color: #fff;
+    }
+    .config-tab {
+    width: 100%;
+    }
+    .cancelImg-config {
+    float: right;
+    width: 25px;
+    height: 25px;
+    margin-top: 15px;
+    cursor: pointer;
+    }
+    .templateName {
+    text-align: left;
+    padding: 25px 0px 20px 55px;
+    }
+    .template-text {
+    font-size: 20px;
+    font-weight: 600;
+    color: #2561a8;
+    font-family: lato;
+    
+    }
+    .template-editor {
+    width: 90% !important;
+    margin-left: 40px !important;
+    }
+    .template-editor .cke_bottom {
+    display: none;
+    }
+  /* Config add pop-up css End by Kalpesh */
 /* ----------------------------------------------- */
