@@ -135,7 +135,7 @@ class Dashboard extends Component {
     }
   }
   handleMouseHover() {
-   this.setState( {TotalNoOfChatShow:!this.state.TotalNoOfChatShow})
+    this.setState({ TotalNoOfChatShow: !this.state.TotalNoOfChatShow });
   }
   render() {
     const TitleChange = this.state.collapseSearch
@@ -213,16 +213,18 @@ class Dashboard extends Component {
                         <span className="card-value red-clr">07</span>
                       </div>
                     </div>
-                    {this.state.TotalNoOfChatShow && <div
-                      className="col-md col-sm-4 col-6"
-                      onClick={this.HandleChangeRedict.bind(this)}
-                    >
-                      <div className="dash-top-cards">
-                        <p className="card-head">Total no of chat</p>
-                        <span className="card-value">102</span>
-                        <small className="blue-clr">View More Insights</small>
+                    {this.state.TotalNoOfChatShow && (
+                      <div
+                        className="col-md col-sm-4 col-6"
+                        onClick={this.HandleChangeRedict.bind(this)}
+                      >
+                        <div className="dash-top-cards">
+                          <p className="card-head">Total no of chat</p>
+                          <span className="card-value">102</span>
+                          <small className="blue-clr">View More Insights</small>
+                        </div>
                       </div>
-                    </div>}
+                    )}
                   </div>
                 </div>
                 <div className="container-fluid btm-mar">
@@ -319,11 +321,12 @@ class Dashboard extends Component {
                         </div>
                       </div>
                     </div>
-                    <div
-                      className="col-lg-3"
-                    >
-                      <div className="dash-top-cards" onMouseOver={this.handleMouseHover.bind(this)}
-                      onMouseLeave={this.handleMouseHover.bind(this)}>
+                    <div className="col-lg-3">
+                      <div
+                        className="dash-top-cards"
+                        onMouseOver={this.handleMouseHover.bind(this)}
+                        onMouseLeave={this.handleMouseHover.bind(this)}
+                      >
                         <p className="card-head">SLA</p>
                         <div className="resp-success">
                           <p className="card-head">Response Success</p>

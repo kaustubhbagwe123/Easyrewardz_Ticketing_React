@@ -385,7 +385,7 @@ class Header extends Component {
               Notifications
             </span>
           </a>
-          <a href="#!">
+          <Link to="/admin/settings">
             <img src={SettingLogo} alt="logo" className="setting" />
             <img
               src={SettingLogoBlue}
@@ -396,7 +396,7 @@ class Header extends Component {
             <span style={{ display: "none" }} className="icon-fullname">
               Settings
             </span>
-          </a>
+          </Link>
           <a href="#!" className="bitmap5">
             SM
           </a>

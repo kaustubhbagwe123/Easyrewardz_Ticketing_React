@@ -2453,7 +2453,7 @@ table tr th:last-child {
   border-radius: 8px;
 }
 .logout-block > div {
-  padding: 25px 30px;
+  padding: 15px 15px 10px 15px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -2763,6 +2763,7 @@ table tr th:last-child {
 .mess-time p {
   font-size: 11px;
   line-height: 0.7;
+  font-weight: 600;
 }
 .chatbot-left button {
   font-weight: 700;
@@ -7174,4 +7175,529 @@ table tr th:last-child {
   margin-top: -5px;
 }
   /* My Ticket Claim:03 add tadk modal css end */
+  /* TicketSystem Css Start Kalpesh */
+.marginsystem {
+  padding: 0;
+  }
+  .column {
+  width: 45%;
+  }
+  .column1 {
+  width: 10%;
+  height: auto;
+  background-color: #f5f8f9;
+  }
+  .paddingsystem {
+  padding: 40px;
+  }
+  .ticket-details-system {
+  color: #9b9b9b;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: left;
+  }
+  .ticket-details-textarea-system {
+  background-color: #ecf2f4;
+  border-radius: 4px;
+  width: 100%;
+  height: 123px;
+  border: none;
+  resize: none;
+  padding: 10px;
+  }
+  .category-select-system {
+  background-color: #ecf2f4;
+  border-radius: 4px;
+  width: 100%;
+  height: 43px;
+  padding: 10px;
+  border: none;
+  }
+  .High button {
+  background-color: #ffffff;
+  border: 1px solid #d02139;
+  border-radius: 4px;
+  height: 43px;
+  min-width: 60px;
+  /* margin-left: 22px; */
+  cursor: pointer;
+  }
+  .Low button {
+  background-color: #ffffff;
+  border: 1px solid #5aa805;
+  border-radius: 4px;
+  min-width: 60px;
+  height: 43px;
+  margin-left: -8px;
+  cursor: pointer;
+  }
+  .Medium button {
+  background-color: #f5a623;
+  border: 1px solid #9f814a;
+  border-radius: 4px;
+  min-width: 68px;
+  height: 43px;
+  margin-left: -15px;
+  cursor: pointer;
+  } 
+  .Qc button {
+  background-color: #ffffff;
+  border: 1px solid #2561A8;
+  border-radius: 4px;
+  min-width: 60px;
+  height: 43px;
+  
+  cursor: pointer;
+  }
+  .Etc button {
+  background-color: #ffffff;
+  border: 1px solid #f4f4f4;
+  min-width: 60px;
+  height: 43px;
+  margin-left: -50px;
+  cursor: pointer;
+  }
+  .Qc-button-text {
+  color: #2561a8;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: left;
+  text-transform: capitalize;
+  cursor: pointer;
+  }
+  .Etb-button-text {
+  color: #000;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: left;
+  text-transform: capitalize;
+  cursor: pointer;
+  }
+  .addNote-textarea-system {
+  background-color: #ecf2f4;
+  border-radius: 4px;
+  width: 100%;
+  height: 123px;
+  border: none;
+  resize: none;
+  padding: 10px;
+  }
+  .myticketlist-header-system {
+  background-color: #f5f8f9;
+  width: auto;
+  height: 620px;
+  }
+  .system .nav-tabs .nav-link.active {
+  border: none;
+  background-color: transparent;
+  color: #fff;
+  font-weight: 400;
+  padding: 20px 0;
+  font-size: 16px;
+  }
+  .system .nav-tabs .nav-link {
+  font-weight: 400;
+  padding: 20px 0px;
+  border-radius: 3px; 
+  }
+  .system ul {
+  display: grid;
+  }
+  .system {
+  padding: 15px 0px;
+  text-align: center;
+  }
+  .system .nav-tabs .nav-item {
+  margin-right: 0;
+  }
+  .active .system-tab-span {
+  background: transparent;
+  color: #2561a8;
+  display: block;
+  font-weight: 600;
+  font-family: lato;
+  font-size: 12px;
+  }
+  .system-tab-span {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: lato;
+  }
+  .tabpaddingsystem {
+  padding: 0;
+  box-shadow: none;
+  background: initial;
+  }
+  .category2 {
+  color: #9b9b9b;
+  font-family: Lato;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 27px;
+  text-align: left;
+  }
+  .category1 {
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: left;
+  }
+  .systemeditbutton {
+  background-color: #FBFBFB;
+  border: 1px solid #2561A8;
+  border-radius: 4px;
+  width: 93px;
+  line-height: 0;
+  height: 31.32px;
+  cursor: pointer;
+  }
+  .systemeditbutton-text {
+  color: #2561A8;
+  font-family: Lato;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 12px;
+  width: 23.07px;
+  text-align: left;
+  cursor: pointer;
+  }
+  .collapsetask {
+  padding: 0;
+  margin-bottom: 0;
+  background-color: #ECF2F4;
+  border: none;
+  }
+  .btn{
+  padding: 10px 20px;
+  font-size: 14px;
+  margin-bottom: 5px;
+  color: #000;
+  transition: all 0.3s ease-in-out;
+  font-weight: 500;
+  }
+  .btn-link {
+  font-weight: 500;
+  color: #000;
+  }
+  .btn-link:hover {
+  color: #000;
+  text-decoration: none;
+  }
+  .createtasksystem {
+  background-color: #2561A8;
+  border-radius: 4px;
+  width: 254px;
+  height: 45px;
+  cursor: pointer;
+  }
+  .createtasksystem-text {
+  color: #FFFFFF;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  text-align: left;
+  cursor: pointer;
+  }
+  .systemtaskreact {
+  padding: 0 10px;
+  }
+  .systemtaskreact .ReactTable {
+  border: none;
+  }
+  .systemtaskreact .ReactTable .rt-thead.-header {
+  background-color: transparent;
+  }
+  .systemtaskreact .ReactTable .rt-tbody .rt-td {
+  padding: 10px 20px !important;
+  }
+  .systemtaskreact .ReactTable .rt-thead .rt-th.-cursor-pointer, .ReactTable .rt-thead .rt-td.-cursor-pointer {
+  padding: 10px 15px !important;
+  }
+  .systemorder {
+  background-color: #ECF2F4;
+  }
+  .arrow-imgtask-1 {
+  width: 15px;
+  height: 15px;
+  /* float: right; */
+  margin-right: 10px;
+  margin-top: 0px;
+  margin-left: 10px;
+  cursor: pointer;
+  }
+  .systemordersearch {
+  background-color: #FFFFFF;
+  border: 1px solid #979797;
+  border-radius: 4px;
+  width: 100%;
+  height: 43px;
+  float: right;
+  padding: 10px;
+  }
+  .systemorder-imgsearch {
+  width: 20px;
+  height: 20px;
+  float: right;
+  margin-right: -495px;
+  margin-top: 12px;
+  }
+  .addmanualbtn {
+  text-align: center;
+  margin-top: 20px;
+  }
+  .addmanual{
+  width: 118px;
+  height: 30px;
+  background-color: transparent;
+  border: 1px solid #2561a8;
+  color: #2561a8;
+  line-height: 0;
+  cursor: pointer;
+  }
+  .addmanuallytext1 {
+  background-color: #ecf2f4;
+  border-radius: 4px;
+  width: 100%;
+  height: 43px;
+  border: none;
+  padding: 10px;
+  }
+  .addmanuallytext1::placeholder
+  {
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 19px;
+  text-align: left;
+  padding: 10px;
+  
+  }
+  .addmanuallytext {
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: left;
+  }
+  #addOrderTableModal {
+  position: relative;
+  padding: 0;
+  background: #ffffff;
+  background-clip: padding-box;
+  box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.25);
+  margin: 0 auto;
+  min-width: 80%;
+  border-radius: 10px;
+  }
+  .reacttableordermodal .ReactTable {
+  border: none;
+  }
+  .reacttableordermodal .ReactTable .rt-thead .rt-th.-cursor-pointer, .ReactTable .rt-thead .rt-td.-cursor-pointer {
+  padding: 12px 15px !important;
+  }
+  .reacttableordermodal .ReactTable .rt-thead.-header {
+  box-shadow: none !important;
+  background-color: #fff;
+  border:none;
+  }
+  .searchtextpopup {
+  background-color: #FFFFFF;
+  border: 1px solid #979797;
+  border-radius: 4px;
+  width: 100%;
+  height: 43px;
+  float: right;
+  padding: 10px;
+  }
+  .searchtextimgpopup {
+  width: 20px;
+  height: 20px;
+  float: right;
+  margin-right: -210px;
+  margin-top: 12px;
+  }
+  .orderdetailpopup {
+  font-size: 16px;
+  font-weight: 600;
+  font-family: lato;
+  color: #4a4a4a;
+  margin-top: 8px;
+  }
+  .minus-imgorder {
+  width: 15px;
+  height: 2px;
+  /* float: right; */
+  margin-right: 10px;
+  margin-top: 0px;
+  margin-left: 10px;
+  cursor: pointer;
+  }
+  .orderswitchitem {
+  margin-top: 5px;
+  margin-left: -106px;
+  margin-right: 8px;
+  }
+  .storemainrow {
+  margin-left: 0; 
+  margin-right: 0;
+  background-color: #ecf2f4;
+  border-radius: 5px;
+  height: 54px;
+  }
+  .storeplusline {
+  float: right;
+  margin-top: 15px;
+  }
+  .systemstoredropdown {
+  background-color: #DBE4E7;
+  width: 70%;
+  height: 30px;
+  margin-top: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #000;
+  font-family: lato;
+  border: none;
+  padding: 5px;
+  border-radius: 5px;
+  line-height: 14px;
+  background: #DBE4E7 url("../Images/dropDown.png") no-repeat right 12px center;
+  }
+  .systemstoredropdown1 {
+  background-color: #DBE4E7;
+  width: 35%;
+  height: 30px;
+  margin-top: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #000;
+  font-family: lato;
+  border: none;
+  padding: 5px;
+  border-radius: 5px;
+  line-height: 14px;
+  background: #DBE4E7 url("../Images/dropDown.png") no-repeat right 12px center;
+  }
+  .systemstordercustomer {
+  margin-top: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #000;
+  font-family: lato;
+  border: none;
+  padding: 5px;
+  border-radius: 5px;
+  line-height: 14px;
+  }
+  #addStoreTableModal {
+  position: relative;
+  padding: 0;
+  background: #ffffff;
+  background-clip: padding-box;
+  box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.25);
+  margin: 0 auto;
+  min-width: 83%;
+  border-radius: 10px
+  }
+  .newtabstore {
+  background: none;
+  padding-left: 15px;
+  padding-right: 0;
+  }
+  .store-nav-tabs {
+  border-bottom: 1px solid gray;
+  border: none;
+  margin-left: 0px;
+  }
+  .store-nav-tabs .nav-link.active {
+  color: #2561a8;
+  border: none;
+  }
+  .store-nav-tabs .nav-link {
+  color: #4a4a4a;
+  font-weight: 700;
+  padding: 12px 0px;
+  border: 0;
+  margin-right: 15px;
+  }
+  .tabcontentstore {
+  padding: 0px;
+  }
+  .linestore1 {
+  border: 1px solid #E3E3E3;
+  width: 100%;
+  height: 0px;
+  display: block;
+  border-bottom: thick;
+  }
+  .linestore2 {
+  border: 1px solid #E3E3E3;
+  width: 100%;
+  height: 0px;
+  display: block;
+  border-bottom: thick;
+  margin-bottom: 10px;
+  }
+  .linestore3 {
+  border: 1px solid #E3E3E3;
+  width: 100%;
+  height: 0px;
+  display: block;
+  border-bottom: thick;
+  /* margin-bottom: 10px; */
+  }
+  .reactstoreselect .ReactTable {
+  border: none;
+  }
+  .reactstoreselect .ReactTable .rt-thead .rt-th.-cursor-pointer, .ReactTable .rt-thead .rt-td.-cursor-pointer {
+  padding: 12px 15px !important;
+  }
+  .reactstoreselect .ReactTable .rt-thead.-header {
+  box-shadow: none !important;
+  background-color: transparent;
+  border:none;
+  }
+  .switchmargin {
+  margin-bottom: 8px;
+  margin-left: -102px;
+  }
+  .ticktSycard {
+  background-color: #fff;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.03);
+  border: 1px solid #ebebeb;
+  border-radius: 5px;
+  }
+  .reacttableordermodal .ReactTable .rt-tbody {
+    overflow: hidden;
+  }
+  .storedetailtabsbutton {
+    float: right;
+      margin-right: 15px;
+      margin-top: 15px;
+  }
+  .addstoretabsbtn{  
+    background-color: #2561A8;
+    border-radius: 4px;
+    width: 145px;
+    height: 43px;
+    color: #fff;
+    cursor: pointer;
+    font-family: lato;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 17px;
+  }
+  /* TicketSystem Css End Kalpesh */
 /* ****************End css ************************/

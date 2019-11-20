@@ -48,6 +48,9 @@ import ChatRules from "./Chat/ChatRules";
 import ChatThemes from "./Chat/ChatThemes";
 import ChatConfigureBrand from "./Chat/ChatConfigureBrand";
 import QaUserMaster from "./QA/QaUserMaster";
+import QaAuditParameters from "./QA/QaAuditParameters";
+import HistoricalChat from "./Chat/HistoricalChat";
+import UserProfile from "./UserProfile";
 // import Aux from "./../Component/Aux";
 
 export class App extends Component {
@@ -160,6 +163,9 @@ export class App extends Component {
         <Route exact path={`${match.url}/chatThemes`} component={ChatThemes} />
         <Route exact path={`${match.url}/chatConfigureBrand`} component={ChatConfigureBrand} />
         <Route exact path={`${match.url}/qAUserMaster`} component={QaUserMaster} />
+        <Route exact path={`${match.url}/qAAuditParameters`} component={QaAuditParameters} />
+        <Route exact path={`${match.url}/historicalChat`} component={HistoricalChat} />
+        <Route exact path={`${match.url}/userProfile`} component={UserProfile} />
       </Layout>
     );
   }

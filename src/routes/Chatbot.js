@@ -12,11 +12,12 @@ class Chatbot extends Component {
   constructor(props) {
     super(props);
 
-  this.state = {
-    ReactChatModel: false,
-    CrateTicketMdl: false,
-    OpenTicketMdl: false
-  };
+    this.state = {
+      ReactChatModel: false,
+      CrateTicketMdl: false,
+      OpenTicketMdl: false
+    };
+    this.handleReactChatModelOpen = this.handleReactChatModelOpen.bind(this);
   }
   handleReactChatModelOpen() {
     this.setState({ ReactChatModel: true });
@@ -36,7 +37,16 @@ class Chatbot extends Component {
   handleOpenTicketCls() {
     this.setState({ OpenTicketMdl: false });
   }
-
+  handlePageChange(){
+    this.props.history.push("historicalChat");
+  }
+  HandleRowClickEvt = () => {
+    return {
+      onClick: e => {
+        this.handleReactChatModelOpen();
+      }
+    };
+  };
   render() {
     const datachat = [
       {
@@ -45,9 +55,7 @@ class Chatbot extends Component {
         chattime: <label className="chatnamereact">3 hrs ago</label>,
         chatmsg: (
           <span>
-            <span className="table-bchat">
-              <label>03</label>
-            </span>
+            <span className="table-bchat">05</span>
             <label className="chatnamereact">
               Lorem ipsum dolar sit amet,consecteture adipiscing elit
             </label>
@@ -68,9 +76,7 @@ class Chatbot extends Component {
         chattime: <label className="chatnamereact">12 hrs ago</label>,
         chatmsg: (
           <span>
-            <span className="table-bchat">
-              <label>03</label>
-            </span>
+            <span className="table-bchat">43</span>
             <label className="chatnamereact">
               Lorem ipsum dolar sit amet,consecteture adipiscing elit
             </label>
@@ -83,9 +89,7 @@ class Chatbot extends Component {
         chattime: <label className="chatnamereact">Jul 30 12:56 PM</label>,
         chatmsg: (
           <span>
-            <span className="table-bchat">
-              <label>03</label>
-            </span>
+            <span className="table-bchat">34</span>
             <label className="chatnamereact">
               Lorem ipsum dolar sit amet,consecteture adipiscing elit
             </label>
@@ -98,9 +102,7 @@ class Chatbot extends Component {
         chattime: <label className="chatnamereact">Jul 30 12:56 PM</label>,
         chatmsg: (
           <span>
-            <span className="table-bchat">
-              <label>03</label>
-            </span>
+            <span className="table-bchat">23</span>
             <label className="chatnamereact">
               Lorem ipsum dolar sit amet,consecteture adipiscing elit
             </label>
@@ -113,9 +115,7 @@ class Chatbot extends Component {
         chattime: <label className="chatnamereact">Jul 30 12:56 PM</label>,
         chatmsg: (
           <span>
-            <span className="table-bchat">
-              <label>03</label>
-            </span>
+            <span className="table-bchat">45</span>
             <label className="chatnamereact">
               Lorem ipsum dolar sit amet,consecteture adipiscing elit
             </label>
@@ -136,9 +136,7 @@ class Chatbot extends Component {
         chattime: <label className="chatnamereact">Jul 30 12:56 PM</label>,
         chatmsg: (
           <span>
-            <span className="table-bchat">
-              <label>03</label>
-            </span>
+            <span className="table-bchat">23</span>
             <label className="chatnamereact">
               Lorem ipsum dolar sit amet,consecteture adipiscing elit
             </label>
@@ -163,12 +161,6 @@ class Chatbot extends Component {
       {
         Header: <span>Message</span>,
         accessor: "chatmsg"
-        // Cell:props =>
-        // <span>
-        //     <span className="table-bchat">
-        //     <label>03</label></span>
-        //    <label>Lorem ipsum dolar sit amet,consecteture adipiscing elit</label>
-        // </span>
       }
     ];
 
@@ -263,7 +255,7 @@ class Chatbot extends Component {
                 </div>
               </div>
             </div>
-            <button className="butn-inv hist-btn">My historical chat</button>
+            <button className="butn-inv hist-btn" onClick={this.handlePageChange.bind(this)}>My historical chat</button>
           </div>
           <div className="col-lg-9 p-0">
             <div className="chatbot-right">
@@ -294,12 +286,6 @@ class Chatbot extends Component {
                     </a>
                   </li>
                 </ul>
-                {/* <div className="action-part d-flex align-items-center">
-                                    <select className="butn">
-                                        <option value="">ACTION</option>
-                                    </select>
-                                    <button className="butn cross">&times;</button>
-                                </div>  */}
               </div>
               <div className="tab-content p-0">
                 <div
@@ -602,7 +588,7 @@ class Chatbot extends Component {
                       src={SearchBlackImg}
                       alt="Search"
                       className="searchImg-raisechat"
-                      onClick={this.handleReactChatModelOpen.bind(this)}
+                      // onClick={this.handleReactChatModelOpen.bind(this)}
                     />
                     <button className="butn cross">&times;</button>
                   </div>
@@ -613,6 +599,7 @@ class Chatbot extends Component {
                       // resizable={false}
                       defaultPageSize={6}
                       showPagination={false}
+                      getTrProps={this.HandleRowClickEvt}
                     />
                   </div>
                   <Drawer

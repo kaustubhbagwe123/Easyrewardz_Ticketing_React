@@ -18,7 +18,7 @@ import modules from "./../../assets/Images/modules.png";
 import item from "./../../assets/Images/item.png";
 import department from "./../../assets/Images/department.png";
 import audit from "./../../assets/Images/audit.png";
-import Demo from "../../store/Hashtag";
+// import Demo from "../../store/Hashtag";
 import { Link } from "react-router-dom";
 
 class Settings extends Component {
@@ -90,7 +90,7 @@ class Settings extends Component {
                 <div className="row">
                   <div className="col-md-3">
                     <div className="setting-cntr">
-                      <a href="ticketHierarchy" className="setting-box">
+                      <Link to="ticketHierarchy" className="setting-box">
                         <div className="setting-icons">
                           <img src={hierarchy} alt="hierarchy" />
                         </div>
@@ -102,7 +102,7 @@ class Settings extends Component {
                             authority.
                           </p>
                         </div>
-                      </a>
+                      </Link>
                       <Link to="brands" className="setting-box">
                         <div className="setting-icons">
                           <img src={brand} alt="brand" />
@@ -522,7 +522,7 @@ class Settings extends Component {
                           </p>
                         </div>
                       </Link>
-                      <a href={Demo.BLANK_LINK} className="setting-box">
+                      <Link to="QaAuditParameters" className="setting-box">
                         <div className="setting-icons icon-small">
                           <img src={audit} alt="audit" />
                         </div>
@@ -534,7 +534,7 @@ class Settings extends Component {
                             authority.
                           </p>
                         </div>
-                      </a>
+                      </Link>
                     </div>
                   </div>
                   <div className="col-md-3">

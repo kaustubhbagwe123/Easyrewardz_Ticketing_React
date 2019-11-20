@@ -292,7 +292,7 @@ class QaCrmRoles extends Component {
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="header-path">
-            Store
+            QA
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
