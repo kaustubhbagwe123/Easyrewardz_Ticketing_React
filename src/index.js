@@ -13,6 +13,7 @@ import "./assets/css/settings.css";
 import "./assets/css/QA.css";
 import "./assets/css/store.css";
 import "./assets/css/custome.css";
+// import "./assets/css/artboard.css";
 
 //JS
 import "./../node_modules/popper.js/dist/popper.js";
@@ -21,11 +22,7 @@ import "./../node_modules/jquery/dist/jquery.js";
 import "./assets/css/chat.css";
 import "react-table/react-table.css";
 import "react-datepicker/dist/react-datepicker.css";
-
-// import 'bootstrap/dist/css/bootstrap.css';
-// import 'bootstrap-daterangepicker/daterangepicker.css';
-
-
+ 
 /////js
 import "./../node_modules/bootstrap/dist/js/bootstrap.min.js";
 // import "./assets/js/bootstrap.min.js";
@@ -38,9 +35,9 @@ import App from "./routes/index";
 import PieChart from "./Component/PieChart/PieChart";
 import StoreApp from "./routes/StoreManager/index";
 import QAApp from './routes/QA/index';
+import ArtBoardApp from './routes/ArtBoard/index';
+import TenantApp from "./routes/Tenant Controller";
 // import MyTicket from './routes/MyTicket';
-
-// ReactDOM.render(<App />, document.getElementById('root'));
 
 ReactDOM.render(
   <Router>
@@ -51,6 +48,8 @@ ReactDOM.render(
     <Route exact path="/SignIn" component={SignIn} />
     <Route exact path="/Forgotpassword" component={ForgotPassword} />
     <Route exact path="/PieChart" component={PieChart} />
+    <Route path="/artBoard" component={ArtBoardApp} />
+    <Route path="/tenantApp" component={TenantApp} />
   </Router>,
   document.getElementById("root")
 );

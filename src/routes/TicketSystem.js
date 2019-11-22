@@ -11,12 +11,14 @@ import TicketLogoBlue from "./../assets/Images/ticket-blue.png";
 import TicketSystemOrder from "./Tabs/TicketSystemOrder";
 import TicketSystemTask from "./Tabs/TicketSystemTask";
 import TicketSystemStore from "./Tabs/TicketSystemStore";
+import Modal from "react-responsive-modal";
 
 class TicketSystem extends Component {
   constructor() {
     super();
     this.state = {
       showAddNote: false,
+      SubmitBtnReopn: false,
       TabIconColor: "nav-link active"
     };
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
@@ -31,6 +33,12 @@ class TicketSystem extends Component {
   handlechangebtntab(e) {
     var idIndex = e.target.className;
     this.setState({ TabIconColor: idIndex });
+  }
+  handleSubmitReopnModalOpen() {
+    this.setState({ SubmitBtnReopn: true });
+  }
+  handleSubmitReopnModalClose() {
+    this.setState({ SubmitBtnReopn: false });
   }
   render() {
     return (
@@ -61,9 +69,21 @@ class TicketSystem extends Component {
 
                 <td className="tdtextnew" style={{ padding: "5px" }}>
                   <label className="save-as-a-draft">SAVE AS DRAFT</label>
-                  <button className="rectanglecreateticket">
+                  <button className="rectanglecreateticket"
+                  onClick={this.handleSubmitReopnModalOpen.bind(this)}>
                     <label className="create-ticket">CREACT TICKET</label>
                   </button>
+                  <Modal
+            open={this.state.SubmitBtnReopn}
+            onClose={this.handleSubmitReopnModalClose.bind(this)}
+            closeIconId="close"
+            modalId="CreateTicket1-popup"
+            overlayId="logout-ovrly"
+          >
+            <div>
+              <label>Submit As Solved</label>
+            </div>
+          </Modal>
                 </td>
               </tr>
             </tbody>

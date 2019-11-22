@@ -126,7 +126,7 @@ class Templates extends Component {
           return (
             <>
               <span>
-                <Popover content={ActionDelete} placement="bottom">
+                <Popover content={ActionDelete} placement="bottom" trigger="click">
                   <img
                     src={DeleteIcon}
                     alt="del-icon"
@@ -134,7 +134,7 @@ class Templates extends Component {
                     id={ids}
                   />
                 </Popover>
-                <Popover content={ActionEditBtn} placement="bottom">
+                <Popover content={ActionEditBtn} placement="bottom" trigger="click">
                   <button className="react-tabel-button" id="p-edit-pop-2">
                     <label className="Table-action-edit-button-text">
                       EDIT

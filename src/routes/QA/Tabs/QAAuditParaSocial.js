@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import MinusCircle from "./../../../assets/Images/minuscircle.png";
 import PlusCircle from "./../../../assets/Images/pluscircle.png";
 
-class QAAuditParaEmail extends Component {
+class QAAuditParaSocial extends Component {
     constructor(props) {
         super(props)
     
@@ -161,11 +161,10 @@ class QAAuditParaEmail extends Component {
           AddParameters: !this.state.AddParameters
         });
       }
-    
     render() {
         return (
             <Fragment>
-                {this.state.AddParameters ? (
+                 {this.state.AddParameters ? (
                     <div style={{ height: "75vh" }}>
                       <div className="callTab-padding">
                         <label className="call-tab-lbl">
@@ -259,4 +258,4 @@ class QAAuditParaEmail extends Component {
     }
 }
 
-export default QAAuditParaEmail
+export default QAAuditParaSocial

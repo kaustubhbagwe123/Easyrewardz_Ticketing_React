@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import MinusCircle from "./../../../assets/Images/minuscircle.png";
 import PlusCircle from "./../../../assets/Images/pluscircle.png";
 
-class QAAuditParaEmail extends Component {
+ class QAAuditParaChat extends Component {
     constructor(props) {
         super(props)
     
@@ -161,102 +161,101 @@ class QAAuditParaEmail extends Component {
           AddParameters: !this.state.AddParameters
         });
       }
-    
     render() {
         return (
             <Fragment>
-                {this.state.AddParameters ? (
-                    <div style={{ height: "75vh" }}>
-                      <div className="callTab-padding">
-                        <label className="call-tab-lbl">
-                          No Audit parameters has been added till now.
-                          <br />
-                          Click below to add parameters
-                        </label>
-                        <div className="m-t-50">
-                          <button
-                            className="addBtn-callTab"
-                            type="button"
-                            onClick={this.handleChangeToggle}
-                          >
-                            <label className="addLable">ADD PARAMETERS</label>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    <div>
-                      <div className="tab-contentCall">
-                        <label style={{ fontWeight: "500" }}>
-                          Maximum Marks : 100
-                        </label>
+            {this.state.AddParameters ? (
+               <div style={{ height: "75vh" }}>
+                 <div className="callTab-padding">
+                   <label className="call-tab-lbl">
+                     No Audit parameters has been added till now.
+                     <br />
+                     Click below to add parameters
+                   </label>
+                   <div className="m-t-50">
+                     <button
+                       className="addBtn-callTab"
+                       type="button"
+                       onClick={this.handleChangeToggle}
+                     >
+                       <label className="addLable">ADD PARAMETERS</label>
+                     </button>
+                   </div>
+                 </div>
+               </div>
+             ) : (
+               <div>
+                 <div className="tab-contentCall">
+                   <label style={{ fontWeight: "500" }}>
+                     Maximum Marks : 100
+                   </label>
 
-                        <div className="row">
-                          <div className="col-md-6">
-                            <div className="card m-t-10 QaAuditScr">
-                              <div className="call-tab-div-P call-card-scrolling">
-                                <div className="row">
-                                  <div className="col-md-7">
-                                    <label className="call-lbl">
-                                      Parameter Name
-                                    </label>
-                                    <input
-                                      type="text"
-                                      className="call-txt"
-                                      placeholder="Enter Parameter Name"
-                                    />
-                                  </div>
-                                  <div className="col-md-5">
-                                    <label className="call-totalMarks">
-                                      Total Marks:
-                                      <span className="call-spn">20</span>
-                                    </label>
-                                  </div>
-                                </div>
-                                <div className="row m-t-20">
-                                  <div className="col-md-6">
-                                    <label className="call-lbl">
-                                      Add Sub Parameter
-                                    </label>
-                                  </div>
-                                  <div className="col-md-6">
-                                    <label className="call-lbl-1 m-r-30">
-                                      Marks
-                                    </label>
-                                    <label className="call-lbl-1 m-r-30">
-                                      Mandatory
-                                    </label>
-                                    <label className="call-lbl-1 m-r-30">
-                                      Fatal
-                                    </label>
-                                  </div>
-                                </div>
-                                {this.CreateParameter()}
-                                <button className="call-btn-save">
-                                  <label className="addLable">SAVE</label>
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="card m-t-10 call-card-scrolling">
-                              <div className="call-twoCard">
-                                <button
-                                  className="butn-blue assign-btn"
-                                  type="button"
-                                >
-                                  + Add More Parameters
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-            </Fragment>
+                   <div className="row">
+                     <div className="col-md-6">
+                       <div className="card m-t-10 QaAuditScr">
+                         <div className="call-tab-div-P call-card-scrolling">
+                           <div className="row">
+                             <div className="col-md-7">
+                               <label className="call-lbl">
+                                 Parameter Name
+                               </label>
+                               <input
+                                 type="text"
+                                 className="call-txt"
+                                 placeholder="Enter Parameter Name"
+                               />
+                             </div>
+                             <div className="col-md-5">
+                               <label className="call-totalMarks">
+                                 Total Marks:
+                                 <span className="call-spn">20</span>
+                               </label>
+                             </div>
+                           </div>
+                           <div className="row m-t-20">
+                             <div className="col-md-6">
+                               <label className="call-lbl">
+                                 Add Sub Parameter
+                               </label>
+                             </div>
+                             <div className="col-md-6">
+                               <label className="call-lbl-1 m-r-30">
+                                 Marks
+                               </label>
+                               <label className="call-lbl-1 m-r-30">
+                                 Mandatory
+                               </label>
+                               <label className="call-lbl-1 m-r-30">
+                                 Fatal
+                               </label>
+                             </div>
+                           </div>
+                           {this.CreateParameter()}
+                           <button className="call-btn-save">
+                             <label className="addLable">SAVE</label>
+                           </button>
+                         </div>
+                       </div>
+                     </div>
+                     <div className="col-md-6">
+                       <div className="card m-t-10 call-card-scrolling">
+                         <div className="call-twoCard">
+                           <button
+                             className="butn-blue assign-btn"
+                             type="button"
+                           >
+                             + Add More Parameters
+                           </button>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+             )}
+       </Fragment>
         )
     }
 }
 
-export default QAAuditParaEmail
+export default QAAuditParaChat

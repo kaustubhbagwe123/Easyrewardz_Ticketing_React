@@ -15,7 +15,7 @@ import TicketLogoBlue from "./../../assets/Images/ticket-blue.png";
 import ChatLogoBlue from "./../../assets/Images/chat-blue.png";
 import { Link } from "react-router-dom";
 
-class Header extends Component {
+class TenantHeader extends Component {
   state = {
     modalIsOpen: false,
     open: false
@@ -52,7 +52,7 @@ class Header extends Component {
               <img src={Hamb} alt="hamburger icon" />
             </div>
             <div className="headers-menu">
-              <Link to="storedashboard" className="single-menu">
+              <Link to="dashboard" className="single-menu">
                 <div className="header-icons-cntr">
                   <img
                     src={DashboardLogo}
@@ -69,7 +69,7 @@ class Header extends Component {
                 Dashboards
               </Link>
 
-              <Link to="StoreTask" className="single-menu">
+              <Link to="#!" className="single-menu">
                 <div className="header-icons-cntr">
                   <img
                     src={TicketLogo}
@@ -86,7 +86,7 @@ class Header extends Component {
                 Task
               </Link>
 
-              <Link to="claim" className="single-menu">
+              <Link to="#!" className="single-menu">
                 <div className="header-icons-cntr">
                   <img
                     src={ClaimLogo}
@@ -144,4 +144,4 @@ class Header extends Component {
   }
 }
 
-export default Header;
+export default TenantHeader;

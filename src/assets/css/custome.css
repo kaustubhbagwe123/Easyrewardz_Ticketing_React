@@ -6048,7 +6048,7 @@ table thead tr {
   border-color: #2662a9;
   font-weight: 600;
   height: 34px;
-  padding-top: 5px;
+  padding-top: 5px !important;
   margin-left: 280px;
   margin-top: 15px;
 }
@@ -6329,11 +6329,11 @@ table thead tr {
   padding: 0;
 }
 .myTicketEmail #cke_editor1 {
-  margin-top: -30px;
-  margin-left: -64px;
-  width: 1220px;
+  margin-top: -31px !important;
+  margin-left: -69px !important;
+  width: 1230px !important;
   border: 1px solid #d1d1d1;
-  border-radius: 7px;
+  border-top: none;
 }
 .myTicketEmail .cke_top {
   border-bottom: 1px solid #e6e6e6;
@@ -7699,5 +7699,552 @@ table tr th:last-child {
     font-weight: 400;
     line-height: 17px;
   }
+  #CreateTicket1-popup {
+    border-radius: 8px;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+    padding: 10;
+    margin-right: 10px;
+    margin-top: 45px;
+    margin-bottom: 4px;
+    width: 184px;
+    display: inline-block;
+  }
   /* TicketSystem Css End Kalpesh */
+  /* UserProfile CSS Start By Kalpesh */
+.profile-settings-cntr {
+padding: 35px 300px;
+}
+.centerprofile {
+padding: 200px 200px 20px 200px;
+}
+.profilemain {
+background-color: #ffffff;
+border-radius: 4px;
+box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.05);
+width: auto;
+height: auto;
+}
+.forwardpasstext {
+color: #2561A8;
+font-family: lato;
+font-size: 13px;
+font-weight: 400;
+margin-bottom: 15px;
+margin-top: 15px;
+text-decoration: underline;
+cursor: pointer;
+}
+.half-circle {
+height: 100px;
+width: 633px;
+background-color: #2561A8;
+border-left: 0;
+box-sizing: border-box;
+border-bottom-left-radius: 100px;
+border-bottom-right-radius: 100px;
+}
+.profimg {
+width: 60px;
+height: 60px;
+margin-top: 50px;
+}
+.profimg1 {
+width: 150px;
+height: 150px;
+border-radius: 5px;
+}
+.uploadtextprofile1 {
+margin-top: 15px;
+font-size: 14px;
+font-weight: 500;
+font-family: lato;
+color: #9b9b9b;
+padding: 4px;
+cursor: pointer;
+background-color: #ecf2f4;
+}
+.imguserupload {
+text-align: center;
+width: 150px;
+height: 200px;
+background: #fff;
+border-radius: 15px;
+margin: 0 auto;
+position: relative;
+top: 40px;
+}
+#ProfileForgot-popup {
+border-radius: 8px;
+box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+padding: 10;
+margin-top: 0;
+margin-bottom: 0;
+display: inline-block;
+}
+.modalforgotpadding {
+padding: 25px 80px;
+}
+.Changepasswordheader {
+color: #000;
+font-family: Lato;
+font-size: 20px;
+font-weight: 800;
+line-height: 29px;
+text-align: left;
+padding-bottom: 20px;
+}
+.file-uploadprofile + label {
+font-weight: 400;
+text-align: center;
+margin-top: 15px;
+cursor: pointer;
+}
+/* UserProfile CSS End By Kalpesh */
+/* MyTicket Comment Collapse Css start Kalpesh */
+.commentcollapseTicket {
+  width: 75%;
+  margin-left: 25%;
+  }
+  .commentcollapseTicket .card-body {
+  padding: 12px;
+  }
+  .commentcollapseTicket .Commentlabel {
+  background-color: #ECF2F4;
+  padding: 10px 0 10px 25px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  }
+  .commenttextborder {
+  border-radius: 5px;
+  border: 1px solid #EBEBEB;
+  }
+  .commentcollapseTicket .commenttextmessage {
+  padding: 25px;
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  text-align: left;
+  }
+  .Commentlabel1 {
+  color: #000000;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: left;
+  }
+  .SendCommentBtn {
+  text-align: end;
+  margin-right: 25px;
+  margin-bottom: 20px;
+  }
+  .SendCommentBtn1 {
+  background-color: #2561A8;
+  border-radius: 4px;
+  width: 128px;
+  height: 43px;
+  color: #fff;
+  cursor: pointer;
+  }
+  .comment-line {
+  border: 1px solid #cad4d7;
+  height: 42px;
+  margin-top: -42px;
+  margin-right: 40px;
+  float: right;
+  }
+  .CommentMinus-img {
+  width: 15px;
+  height: 2px;
+  margin-left: 0;
+  margin-top: -21px;
+  cursor: pointer;
+  float: right;
+  margin-right: 14px;
+  }
+  .myTicketCommentCollapse #cke_editor2 {
+  margin-top: 20px !important;
+  margin-left: 0px !important;
+  width: 1200px !important;
+  border: 1px solid #d1d1d1;
+  }
+  .myTicketCommentCollapse .card-body {
+  padding: 0;
+  }
+  .myTicketCommentCollapse #cke_2_bottom {
+  display: none;
+  }
+  /* MyTicket Comment Collapse Css start Kalpesh */
+  /* Header Headphone Img Pop-up CSS Start Kalpesh */
+.headphoneheader {
+width: 22px;
+height: 22px;
+}
+#HeadPhoneHeader-popup {
+border-radius: 8px;
+box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+padding: 0;
+margin-right: 8px;
+margin-top: -12px;
+margin-bottom: 4px;
+width: 300px;
+display: inline-block;
+height: 300px;
+}
+.logincenter {
+text-align: center;
+background-color: #F3F3F3;
+margin-left: 0;
+margin-right: 0;
+border-top-left-radius: 8px;
+border-top-right-radius: 8px;
+padding: 14px 0;
+}
+.logincenterimg {
+text-align: center;
+margin-left: 0;
+margin-right: 0;
+margin-top: 45px;
+}
+.logintoivr {
+font-family: lato;
+font-size: 15px;
+font-weight: 600;
+color: #000;
+}
+.agenttextrow {
+margin-left: 0;
+margin-right: 0;
+margin-bottom: 20px;
+text-align: center;
+}
+.agenttextrow1 {
+margin-left: 0;
+margin-right: 0;
+text-align: center;
+margin-top: 40px;
+margin-bottom: 3px;
+}
+.agenttext {
+border:1px solid #e5e5e5;
+border-radius: 4px;
+width: 85%;
+height: 35px;
+background-color: #fff;
+padding: 10px;
+}
+.agentidtext {
+font-size: 14px;
+font-weight: 600;
+font-family: lato;
+color: #4A4A4A;
+margin-left: 10px;
+}
+.loginbtnagent {
+width: 228px;
+height: 35px;
+background-color: #2561a8;
+color: #fff;
+font-family: lato;
+font-weight: 400;
+font-size: 14px;
+cursor: pointer;
+line-height: 1px;
+}
+.easyrewardlogo {
+width: 100px;
+height: 25px;
+}
+.poweredby {
+font-size: 11px;
+font-family: lato;
+margin-right: 5px;
+color: lightgray;
+}
+#Login-popup {
+border-radius: 8px;
+box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+padding: 10px;
+margin-right: 8px;
+margin-top: -12px;
+margin-bottom: 4px;
+width: 350px;
+display: inline-block;
+height: 370px;
+}
+.amitsinghlogo {
+width: 60px;
+height: 60px;
+}
+.amitsinghcenter {
+margin-left: 0;
+margin-right: 0;
+text-align: center;
+margin-top: 25px;
+}
+.amitsinghcenter2 {
+margin-left: 0;
+margin-right: 0;
+text-align: center;
+margin-top: 10px;
+}
+.amitsinghcenter1 {
+margin-left: 15px;
+margin-right: 0;
+text-align: center;
+margin-top: 25px;
+}
+.amitsinghtext {
+font-size: 15px;
+font-weight: 700;
+font-family: lato;
+}
+.amitsinghtextonline {
+font-size: 14px;
+font-weight: 600;
+font-family: lato;
+border: 1px solid greenyellow;
+margin-right: 5px;
+padding: 5px;
+}
+.amitnextrow {
+margin-left: 0;
+margin-right: 0;
+margin-top: 25px;
+margin-bottom: 25px;
+text-align: center;
+}
+.logouttamitsingh {
+font-size: 14px;
+font-family: lato;
+font-weight: 400;
+color: #9B9B9B;
+}
+.logoutImg {
+margin-right: 4px;
+width: 19px;
+height: 19px;
+cursor: pointer;
+}
+.status1 input:checked + label::before {
+background-color: #6dd400;
+border: double 3px #fff;
+}
+.status1 input:checked + label {
+border: 1px solid #6dd400;
+border-radius: 5px;
+}
+
+.status1 input + label::before {
+content: "";
+position: absolute;
+background-color: #fff;
+border: 1px solid #6dd400;
+border-radius: 50%;
+width: 15px;
+height: 15px;
+left: 2px;
+top: 9px;
+}
+.status1 input + label {
+position: relative;
+padding-left: 20px;
+}
+.logout-label {
+font-size: 14px;
+font-weight: 500;
+cursor: pointer;
+}
+.logout-label1 {
+font-size: 14px;
+font-weight: 500;
+cursor: pointer;
+padding: 5px;
+}
+#NextButton-popup {
+border-radius: 8px;
+box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+padding: 10px;
+margin-right: 8px;
+margin-top: -12px;
+margin-bottom: 4px;
+width: 410px;
+display: inline-block;
+height: auto;
+}
+.CallwrapBtn {
+width: 228px;
+height: 35px;
+background-color: #44d7b6;
+border: none;
+color: #fff;
+font-family: lato;
+font-weight: 400;
+font-size: 14px;
+cursor: pointer;
+line-height: 1px;
+}
+.SwitchToProgBtn {
+width: 228px;
+height: 35px;
+background-color: #32c5ff;
+color: #fff;
+border: none;
+font-family: lato;
+font-weight: 400;
+font-size: 14px;
+cursor: pointer;
+line-height: 1px;
+}
+.amitsinghcallrow {
+text-align: center;
+background-color: #F3F3F3;
+margin-left: -10px;
+margin-right: -10px;
+padding: 41px 0;
+margin-top: 25px;
+}
+.amitsinghwaiting {
+border:1px solid #e5e5e5;
+border-radius: 4px;
+width: 228px;
+height: 35px;
+background-color: #fff;
+padding: 10px;
+}
+.idletimeamit {
+font-size: 14px;
+font-weight: 400;
+font-family: lato;
+color: #44d7b6;
+margin-top: 3px;
+margin-left: 10px;
+}
+.amitnextbuttonrow1 {
+margin-left: 0;
+margin-right: 0;
+margin-top: 15px;
+margin-bottom: 45px;
+text-align: center;
+}
+.amitnextbuttonrow3 {
+margin-left: 0;
+margin-right: 0;
+margin-top: 15px;
+margin-bottom: 15px;
+text-align: center;
+}
+.amitnextbuttonrow {
+margin-left: 0;
+margin-right: 0;
+margin-top: 25px;
+margin-bottom: 0px;
+text-align: center;
+}
+.takeabreak {
+border: 1px solid #e5e5e5;
+width: 120px;
+margin: 0 auto;
+padding: 5px;
+}
+.takebreaktext {
+font-size: 13px;
+font-family: lato;
+font-weight: 400;
+color: #795548;
+cursor: pointer;
+}
+.backtohomerow {
+margin-left: 0;
+margin-right: 0;
+margin-top: 10px;
+margin-bottom: 10px;
+text-align: center;
+}
+.backtohomelogoutrow {
+margin-left: 0;
+margin-right: 0;
+margin-top: 25px;
+margin-bottom: 10px;
+text-align: center;
+}
+.logoutbacktohome {
+font-size: 13px;
+font-family: lato;
+font-weight: 400;
+color: #9B9B9B;
+}
+.backtohometext {
+font-size: 12px;
+font-family: lato;
+font-weight: 400;
+color: #2561a8;
+cursor: pointer;
+}
+.CallwrapBtnwaiting {
+width: 228px;
+height: 35px;
+background-color: #E5E5E5;
+border: none;
+color: #9B9B9B;
+font-family: lato;
+font-weight: 600;
+font-size: 14px;
+cursor: pointer;
+line-height: 1px;
+}
+.holdbtn {
+width: 228px;
+height: 35px;
+background-color: #1cd188;
+border: none;
+color: #fff;
+font-family: lato;
+font-weight: 600;
+font-size: 14px;
+cursor: pointer;
+line-height: 1px;
+}
+.tranferbtn {
+width: 228px;
+height: 35px;
+background-color: #3d7aff;
+border: none;
+color: #fff;
+font-family: lato;
+font-weight: 600;
+font-size: 14px;
+cursor: pointer;
+line-height: 1px;
+}
+.incomingcalltext {
+font-size: 12px;
+font-weight: 400;
+font-family: lato;
+color: #4A4A4A;
+margin-top: 3px;
+margin-left: 77px;
+}
+.incomingcallrow {
+margin-left: 0;
+margin-right: 0;
+}
+.tooltiptransfercallrow {
+margin-left: 0;
+margin-right: 0;
+text-align: center;
+margin-top: 20px;
+margin-bottom: 3px;
+}
+.agenttext-tooltip {
+border:1px solid #e5e5e5;
+border-radius: 4px;
+width: 100%;
+height: 35px;
+background-color: #fff;
+padding: 10px;
+}
+/* Header Headphone Img Pop-up CSS End Kalpesh */
 /* ****************End css ************************/

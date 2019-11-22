@@ -128,7 +128,7 @@ class QaUserMaster extends Component {
           var ids = row.original["id"];
           return (
             <div>
-              <Popover content={QaUserMasterDel} placement="bottom">
+              <Popover content={QaUserMasterDel} placement="bottom" trigger="click">
                 <img
                   src={DeleteIcon}
                   alt="del-icon"
@@ -136,7 +136,7 @@ class QaUserMaster extends Component {
                   className="downloadaction"
                 />
               </Popover>
-              <Popover content={QaUserMasterEdit} placement="bottom">
+              <Popover content={QaUserMasterEdit} placement="bottom" trigger="click">
                 <button className="react-tabel-button" id={ids}>
                   <label className="Table-action-edit-button-text">EDIT</label>
                 </button>

@@ -4,6 +4,9 @@ import Demo from "./../../store/Hashtag";
 import { Tabs, Tab } from "react-bootstrap-tabs";
 import MinusCircle from "./../../assets/Images/minuscircle.png";
 import PlusCircle from "./../../assets/Images/pluscircle.png";
+import QAAuditParaEmail from "./Tabs/QAAuditParaEmail";
+import QAAuditParaSocial from "./Tabs/QAAuditParaSocial";
+import QAAuditParaChat from "./Tabs/QAAuditParaChat";
 
 class QaAuditParameters extends Component {
   constructor(props) {
@@ -166,8 +169,6 @@ class QaAuditParameters extends Component {
     });
   }
   render() {
-    console.log(this.state.values);
-
     return (
       <Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
@@ -280,15 +281,13 @@ class QaAuditParameters extends Component {
                   )}
                 </Tab>
                 <Tab label="Email">
-                  <div className="">
-                    <h3>Email</h3>
-                  </div>
+                  <QAAuditParaEmail/>
                 </Tab>
                 <Tab label="Social">
-                  <h3>Social</h3>
+                  <QAAuditParaSocial />
                 </Tab>
                 <Tab label="Chat">
-                  <h3>Chat</h3>
+                  <QAAuditParaChat />
                 </Tab>
               </Tabs>
             </section>

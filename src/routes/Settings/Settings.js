@@ -324,7 +324,7 @@ class Settings extends Component {
                           </p>
                         </div>
                       </Link>
-                      <a href="departmentMaster" className="setting-box">
+                      <Link to="departmentMaster" className="setting-box">
                         <div className="setting-icons icon-small">
                           <img src={department} alt="department" />
                         </div>
@@ -336,12 +336,12 @@ class Settings extends Component {
                             authority.
                           </p>
                         </div>
-                      </a>
+                      </Link>
                     </div>
                   </div>
                   <div className="col-md-3">
                     <div className="setting-cntr">
-                      <a href="storePriority" className="setting-box">
+                      <Link to="storePriority" className="setting-box">
                         <div className="setting-icons">
                           <img src={priority} alt="priority" />
                         </div>
@@ -353,8 +353,8 @@ class Settings extends Component {
                             authority.
                           </p>
                         </div>
-                      </a>
-                      <a href="SlaTemplateDepartment" className="setting-box">
+                      </Link>
+                      <Link to="SlaTemplateDepartment" className="setting-box">
                         <div className="setting-icons icon-small">
                           <img src={templates} alt="templates" />
                         </div>
@@ -366,7 +366,7 @@ class Settings extends Component {
                             authority.
                           </p>
                         </div>
-                      </a>
+                      </Link>
                       <Link to="claimCategoryMaster" className="setting-box">
                         <div className="setting-icons">
                           <img src={category} alt="category" />
@@ -384,7 +384,7 @@ class Settings extends Component {
                   </div>
                   <div className="col-md-3">
                     <div className="setting-cntr">
-                      <a href="Storecrmrole" className="setting-box">
+                      <Link to="Storecrmrole" className="setting-box">
                         <div className="setting-icons">
                           <img src={crmRoles} alt="crm-roles" />
                         </div>
@@ -396,8 +396,8 @@ class Settings extends Component {
                             authority.
                           </p>
                         </div>
-                      </a>
-                      <a href="storeusers" className="setting-box">
+                      </Link>
+                      <Link to="storeusers" className="setting-box">
                         <div className="setting-icons big-icon">
                           <img src={users} alt="users" />
                         </div>
@@ -409,7 +409,7 @@ class Settings extends Component {
                             authority.
                           </p>
                         </div>
-                      </a>
+                      </Link>
                       <Link to="storeAlerts" className="setting-box">
                         <div className="setting-icons icon-small">
                           <img src={alert} alt="alert" />
@@ -552,7 +552,7 @@ class Settings extends Component {
                           </p>
                         </div>
                       </Link>
-                      <a href="fileuploadlogs" className="setting-box">
+                      <Link to="fileuploadlogs" className="setting-box">
                         <div className="setting-icons">
                           <img src={fileUpload} alt="file-upload" />
                         </div>
@@ -564,7 +564,7 @@ class Settings extends Component {
                             authority.
                           </p>
                         </div>
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </div>
