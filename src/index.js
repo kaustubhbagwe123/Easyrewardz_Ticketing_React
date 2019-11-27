@@ -13,11 +13,7 @@ import "./assets/css/settings.css";
 import "./assets/css/QA.css";
 import "./assets/css/store.css";
 import "./assets/css/custome.css";
-<<<<<<< HEAD
 //import "./assets/css/artboard.css";
-=======
-// import "./assets/css/artboard.css";
->>>>>>> 87cf9956995434be31979d6f420b9f3ed566a17d
 
 //JS
 import "./../node_modules/popper.js/dist/popper.js";
@@ -40,12 +36,7 @@ import PieChart from "./Component/PieChart/PieChart";
 import StoreApp from "./routes/StoreManager/index";
 import QAApp from './routes/QA/index';
 import ArtBoardApp from './routes/ArtBoard/index';
-<<<<<<< HEAD
-// import ArtBoard from "./routes/ArtBoard/ArtBoard";
-// import header from "./routes/ArtBoard/header";
-=======
 import TenantApp from "./routes/Tenant Controller";
->>>>>>> 87cf9956995434be31979d6f420b9f3ed566a17d
 // import MyTicket from './routes/MyTicket';
 
 ReactDOM.render(
@@ -58,10 +49,7 @@ ReactDOM.render(
     <Route exact path="/Forgotpassword" component={ForgotPassword} />
     <Route exact path="/PieChart" component={PieChart} />
     <Route path="/artBoard" component={ArtBoardApp} />
-<<<<<<< HEAD
-=======
     <Route path="/tenantApp" component={TenantApp} />
->>>>>>> 87cf9956995434be31979d6f420b9f3ed566a17d
   </Router>,
   document.getElementById("root")
 );

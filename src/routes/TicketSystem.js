@@ -146,37 +146,6 @@ class TicketSystem extends Component {
                   </div>
                 </div>
 
-<<<<<<< HEAD
-                    <td className="tdtextnew" style={{ padding: "5px 20px" }}>
-                      <label className="save-as-a-draft">SAVE AS DRAFT</label>
-                      <button className="rectanglecreateticket">
-                        <label className="create-ticket">CREACT TICKET</label>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div className="mask-ticket-system">
-              <table className="table">
-                <tbody>
-                  <tr>
-                    <td>
-                      <div className="margin-ticket-system-td">
-                        <div className="row rowmargin">
-                          <label className="ticket-tittle">Ticket Tittle</label>
-                        </div>
-                        <div className="row rowmargin">
-                          <div className="col-md-6">
-                            <input
-                              type="text"
-                              name="title"
-                              className="ticket-tittle-textbox"
-                              placeholder="suggestion"
-                            />
-                          </div>
-                        </div>
-=======
                 <div className="row m-b-10">
                   <div className="col-md-6">
                     <label className="category">Sub Category</label>
@@ -252,7 +221,6 @@ class TicketSystem extends Component {
                     <label className="category">Channel Of Ourchase</label>
                   </div>
                 </div>
->>>>>>> 87cf9956995434be31979d6f420b9f3ed566a17d
 
                 <div className="row m-b-10">
                   <div className="col-md-6">
@@ -335,134 +303,17 @@ class TicketSystem extends Component {
                       <div className="col-md-4">
                         <label className="category2">Alternate Number</label>
                       </div>
-<<<<<<< HEAD
-                    </td>
-                    <td className="rectangletd">
-                      <div className="margin-ticket-system-td">
-                        <div className="colmarigin-tab">
-                          <div className="row">
-                            <div className="col-md-4">
-                              <label className="customer-name">
-                                Customer Name
-                              </label>
-                            </div>
-                            <div className="col-md-4">
-                              <label className="phone-number">
-                                Phone Number
-                              </label>
-                            </div>
-                            <div className="col-md-4">
-                              <label className="email-id">Email ID</label>
-                            </div>
-                          </div>
-                          <div className="row">
-                            <div className="col-md-4">
-                              <label className="alankrit-kumar">
-                                Alankrit Kumar
-                              </label>
-                            </div>
-                            <div className="col-md-4">
-                              <label className="b91-9873470074">
-                                +91-9873470074
-                              </label>
-                            </div>
-                            <div className="col-md-4">
-                              <label className="alankrit-easyrewardz">
-                                alankrit@easyrewardz.com
-                              </label>
-                            </div>
-                          </div>
-                          <br />
-                          <div className="row">
-                            <div className="col-md-4">
-                              <label className="customer-name">Gender</label>
-                            </div>
-                            <div className="col-md-4">
-                              <label className="phone-number">
-                                Alternate Number
-                              </label>
-                            </div>
-                            <div className="col-md-4">
-                              <label className="email-id">
-                                Alternate Email ID
-                              </label>
-                            </div>
-                          </div>
-                          <div className="row">
-                            <div className="col-md-4">
-                              <label className="alankrit-kumar">Male</label>
-                            </div>
-                            <div className="col-md-4">
-                              <label className="a91-9873470074">-NA-</label>
-                            </div>
-                            <div className="col-md-4">
-                              <label className="alankrit-easyrewardz">
-                                alankrit@easyrewardz.com
-                              </label>
-                            </div>
-                          </div>
-                          <div className="row">
-                            <button className="edit-button">
-                              <label className="edit-button-text">EDIT</label>
-                            </button>
-                          </div>
-                        </div>
-                        <div className="ticketsystem-line"></div>
-=======
                       <div className="col-md-4">
                         <label className="category2">Alternate Email Id</label>
->>>>>>> 87cf9956995434be31979d6f420b9f3ed566a17d
                       </div>
                     </div>
 
-<<<<<<< HEAD
-                    <td className="right-rectangle" style={{padding: "15px 0"}}>
-                      <div className="margin-ticket-system-td">
-                        <div className="btn-group-vertical">
-                          <div style={{display: "block", margin: "auto"}}>
-                            <img
-                              src={CustomreIcon}
-                              alt="customer-icon"
-                              className="customer-icon"
-                            />
-                          </div>
-                          <span className="customer-text">CUSTOMER</span>
-                          <br />
-                          <div style={{display: "block", margin: "auto", marginTop:"15px"}}>
-                            <img
-                              src={OrderIcon}
-                              alt="order-icon"
-                              className="order-icon"
-                            />
-                          </div>
-                          <span className="order-text">ORDER</span>
-                          <br />
-                          <div style={{display: "block", margin: "auto", marginTop:"15px"}}>
-                            <img
-                              src={StoreIcon}
-                              alt="store-icon"
-                              className="store-icon"
-                            /> 
-                          </div>
-                          <span className="store-text">STORE</span>
-                          <br />
-                          <div style={{display: "block", margin: "auto", marginTop:"15px"}}>
-                            <img
-                              src={TaskIcon}
-                              alt="task-icon"
-                              className="task-icon"
-                            />
-                          </div>
-                          <span className="task-text">TAKS</span>
-                        </div>
-=======
                     <div className="row" style={{ marginBottom: "20px" }}>
                       <div className="col-md-4">
                         <label className="category1">Male</label>
                       </div>
                       <div className="col-md-4">
                         <label className="category1">-NA-</label>
->>>>>>> 87cf9956995434be31979d6f420b9f3ed566a17d
                       </div>
                       <div className="col-md-4">
                         <label className="category1">

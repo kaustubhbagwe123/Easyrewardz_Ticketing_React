@@ -2779,11 +2779,7 @@ table tr th:last-child {
 .mess-time p {
   font-size: 11px;
   line-height: 0.7;
-<<<<<<< HEAD
-  margin-bottom: 4px;
-=======
   font-weight: 600;
->>>>>>> 87cf9956995434be31979d6f420b9f3ed566a17d
 }
 .chatbot-left button {
   font-weight: 700;
@@ -6348,15 +6344,9 @@ table thead tr {
   padding: 0;
 }
 .myTicketEmail #cke_editor1 {
-<<<<<<< HEAD
   margin-top: 0;
   margin-left: 0;
   width: 100%;
-=======
-  margin-top: -31px !important;
-  margin-left: -69px !important;
-  width: 1230px !important;
->>>>>>> 87cf9956995434be31979d6f420b9f3ed566a17d
   border: 1px solid #d1d1d1;
   border-top: none;
 }

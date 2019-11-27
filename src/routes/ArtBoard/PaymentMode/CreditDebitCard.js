@@ -4,11 +4,7 @@ import { Link } from "react-router-dom";
 // import { faUnlockalt } from "@fortawesome/free-solid-svg-icons";
 import visa from "../../../assets/Images/visa.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-<<<<<<< HEAD
 import { faUnlockAlt, faInfo, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-=======
-import { faUnlockAlt, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
->>>>>>> 87cf9956995434be31979d6f420b9f3ed566a17d
 
 class CreditDebitCard extends Component {
   render() {

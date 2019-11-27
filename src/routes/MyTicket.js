@@ -1005,11 +1005,7 @@ class MyTicket extends Component {
               <Collapse isOpen={this.state.EmailCollapse}>
                 <Card>
                   <CardBody>
-<<<<<<< HEAD
                     <div className="">
-=======
-                    <div className="col-md-12">
->>>>>>> 87cf9956995434be31979d6f420b9f3ed566a17d
                       <CKEditor
                         config={{
                           toolbar: [
@@ -1328,10 +1324,6 @@ class MyTicket extends Component {
                       experience.
                     </label>
                   </div>
-<<<<<<< HEAD
-                  <label className="comment-text1" style={{paddingLeft: "75px"}}>Comment</label>
-                  <div className="col-md-2"></div>
-=======
                   <label className="comment-text1"
                   onClick={this.HandleComment1CollapseOpen.bind(this)}
                   >Comment</label>
@@ -1379,7 +1371,6 @@ class MyTicket extends Component {
                 </Card>
               </Collapse>
                   </div>
->>>>>>> 87cf9956995434be31979d6f420b9f3ed566a17d
                 </div>
                 <div className="row row-spacing new-top-bottom-margin" style={{ marginBottom: "18px" }}>
                   <div className="col-xs-3">
