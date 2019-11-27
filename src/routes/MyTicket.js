@@ -999,7 +999,7 @@ class MyTicket extends Component {
               <Collapse isOpen={this.state.EmailCollapse}>
                 <Card style={{ marginRight: "31px" }}>
                   <CardBody>
-                    <div className="col-md-8">
+                    <div className="col-md-12">
                       <CKEditor
                         config={{
                           toolbar: [
@@ -1325,7 +1325,7 @@ class MyTicket extends Component {
               <Collapse isOpen={this.state.Comment1Collapse}>
                 <Card>
                   <CardBody>
-                    <div className="col-md-8">
+                    <div className="col-md-12">
                       <CKEditor
                         config={{
                           toolbar: [

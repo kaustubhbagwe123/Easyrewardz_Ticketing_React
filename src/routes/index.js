@@ -152,7 +152,6 @@ export class App extends Component {
         <Route exact path={`${match.url}/slaTemplateDepartment`} component={SlaTemplateDepartment} />
         <Route exact path={`${match.url}/storePriority`} component={StorePriority} />
         <Route exact path={`${match.url}/storeMaster`} component={StoreMaster} />
-        <Route exact path={`${match.url}/storeMaster`} component={StoreMaster} />
         <Route exact path={`${match.url}/qaHierarchyMaster`} component={QaHierarchyMaster} />
         <Route exact path={`${match.url}/qaCrmRoles`} component={QaCrmRoles} />
         <Route exact path={`${match.url}/categoryMaster`} component={CategoryMaster} />

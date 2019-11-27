@@ -1,0 +1,1123 @@
+/* Dashboard Css Start By Kalpesh */
+.tenant-overview {
+    font-size: 14px;
+    font-family: lato;
+    font-weight: 700;
+    color: #2561a8;
+    text-align: left;
+    margin-left: 15px;
+}
+.tenant-overview1 {
+    font-size: 18px !important;
+    font-family: lato !important;
+    font-weight: 700 !important;
+    color: #2561a8 !important;
+    text-align: left !important;
+}
+.tenant-accounts {
+    margin-right: 50px;
+}
+.tenant-accounts .dropdown1 {
+    border-radius: 5px;
+    width: 100px;
+    height: 31px;
+    background: #fff url("../Images/dropDown.png") no-repeat right 12px center;
+    background-size: 13px;
+    cursor: pointer;
+    border: none;
+    padding: 4px 10px;
+  }
+  .tenant-accounts1 {
+      font-size: 15px;
+      font-weight: 500;
+      font-family: lato;
+      color: #000;
+      margin-right: 10px;
+  }
+  .tenant-accounts-date .dropdown1 {
+    border-radius: 5px;
+    width: 120px;
+    height: 31px;
+    background: #fff url("../Images/dropDown.png") no-repeat right 12px center;
+    background-size: 13px;
+    cursor: pointer;
+    border: none;
+    padding: 4px 10px;
+  }
+  #AllAcountTenantModal {
+    width: 270px;
+    position: relative;
+    padding: 15px 45px;
+    background: #ffffff;
+    background-clip: padding-box;
+    box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.25);
+    margin: 39px 0 0 900px;
+    border-radius: 5px;
+  }
+  .AllAcounttext{
+    display: block;
+    line-height: 28px;
+    font-size: 15px;
+    font-weight: 400;
+    color: #000;
+    font-family: lato;
+  }
+  .rightblue {
+      width: 20px;
+      height: 15px;
+  }
+  .rightbluefloat {
+      float: left;
+      margin-left: -30px;
+  }
+  .card-head1 {
+    font-weight: 800;
+    text-align: left;
+    text-indent: 10%;
+    font-size: 16px;
+    font-family: lato;
+}
+.card-values1 {
+    text-align: center;
+}
+.card-head1number {
+    font-family: lato;
+    font-size: 40px;
+    font-weight: 300;
+    color: #4A4A4A;
+}
+.card-head1number1 {
+    font-size: 16px;
+    font-family: lato;
+    font-weight: 600;
+}
+.toparrownumber {
+    width: 20px;
+    height: 15px;
+    transform: rotate(90deg);
+    margin-bottom: 12px;
+    margin-left: 3px;
+    padding: 0 0 3px 5px;
+}
+.toparrownumberred {
+    width: 20px;
+    height: 15px;
+    transform: rotate(-90deg);
+    margin-bottom: 5px;
+    margin-left: 3px;
+    padding: 0 0 3px 5px;
+}
+.healthcircle{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border-top: 8px solid red;
+    border-bottom: 8px solid green;
+    border-left: 8px solid yellow;
+    border-right: 8px solid red;
+    display: block;
+    margin: 0 auto;
+}
+.card-head1number12 {
+    padding-right: 12px;
+    font-size: 16px;
+    font-family: lato;
+    font-weight: 600;
+}
+.actionbuttonreact {
+    min-width: 75px;
+    height: 25px;
+    background-color: #4fca9f;
+    border: none;
+    color: #FFF;
+    padding: 0;
+    font-size: 12px;
+    line-height: 11px;
+    cursor: pointer;
+}
+.looksnumber {
+    font-size: 11px;
+}
+.lookssmall {
+    margin-bottom: 25px;
+    margin-right: 4px;
+}
+.tenantreact .ReactTable {
+    border: none;
+}
+.tenantreact .ReactTable .rt-thead .rt-tr {
+    background-color: #E6E6E6;
+}
+.tenantreact .ReactTable .rt-tbody .rt-td {
+    padding: 18px 20PX 0PX 20px !important;
+}
+.sectiontenant select {
+    width: 100%;
+    border-radius: 4px;
+    padding: 10px 45px 10px 20px;
+    border: 0;
+    background: #ECF2F4 url("./../Images//table-arr.png") no-repeat right 20px center;
+    background-size: 13px;
+    color: #a7a7a7;
+}
+.dash-top-cards1 {
+    padding: 12px 60px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    text-align: center;
+    height: 100%;
+    min-height: 140px;
+    font-size: 16px;
+}
+.searchaccount {
+    font-family: lato;
+    font-size: 18px;
+    font-weight: 600;
+    color: #4a4a4a;
+}
+.sectiontenant .searchbtn {
+    width: 140px;
+    height: 40px;
+    font-size: 16px;
+    line-height: 1px;
+    color: #fff;
+    background-color: #2561a8;
+    border: none;
+}
+.sectiontenant .halfcircle {
+    border:1px solid #2561a8;
+    background: #2561a8 url("./../Images//table-arr.png") no-repeat right 23px center;
+    height: 35px;
+    width: 65px;
+    border-radius: 0 0 90px 90px;
+    margin: 0 auto;
+    background-size: 16px;
+    cursor: pointer;
+}
+.halfcirclemarginleft {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+.paddsett {
+    padding: 40px 90px;
+    background: #eef1f6;
+}
+.settingstenant-tabs1 .nav-tabs {
+    border: none;
+}
+.settingstenant-tabs1 .nav-tabs .nav-link.active {
+    color: #2561a8;
+    background-color: #fff;
+    border: none;
+    box-shadow: none;
+    padding: 10px 14px;
+    font-size: 16px;
+    font-family: lato;
+    text-align: center;
+}
+.settingstenant-tabs1 .nav-tabs .nav-link {
+    color: #8e8e8e;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 10px 14px;
+    background-color: #f3f3f3;
+    border-top-left-radius: 13px;
+    border-top-right-radius: 13px;
+    border: 1px solid #ededed;
+    font-family: lato;
+    width: 170px;
+    height: 40px;
+    text-align: center;
+    line-height: 17px;
+}
+.settingstenant-tabs1 .tab-content {
+    padding: 22px 0px 0px;
+    box-shadow: none;
+    background: #fff;
+}
+.settingstenant-tabs1 .plans{
+    padding: 30px 88px;
+}
+/* .settingstenant-tabs1 .pro {
+    border: 1px solid #FC8900;
+    border-radius: 10px;
+}
+.settingstenant-tabs1 .essential {
+    border: 1px solid #fabe1a;
+    border-radius: 10px;
+}
+.settingstenant-tabs1 .enterprise {
+    border: 1px solid #595959;
+    border-radius: 10px;
+} */
+.customerplan {
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    height: 50px;
+    margin: 70px 0;
+    border-radius: 4px;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.05);
+}
+.customerplan label {
+    font-size: 16px;
+    color: #2561a8;
+    font-weight: 500;
+    line-height: 3;
+    cursor: pointer;
+}
+.customerplan .blueplus {
+    margin: 0 20px;
+}
+.customerplan .nextblue {
+    float: right;
+    margin-right: 10px;
+    margin-top: 12px;
+}
+.automatic {
+    font-family: lato;
+    font-size: 17px;
+    font-weight: 600;
+    color: #4A4A4A;
+}
+.automatic1 {
+    font-family: lato;
+    font-size: 15px;
+    font-weight: 500;
+    color: #4A4A4A;
+    line-height: 18px;
+}
+.fivedays {
+    float: right;
+    margin-right: 20px;
+}
+.fivedays select{
+    width: 90px;
+    padding: 1px 10px;
+    background: #FFF url("./../Images//table-arr.png") no-repeat right 7px center;
+    background-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #D9DADC;
+    cursor: pointer;
+}
+.textautomatic {
+    margin-left: 65px;
+    border: 1px solid #D9DADC;
+    border-radius: 8px;
+}
+.textautomatic label {
+    display: block;
+}
+.textautomatic .dearcompany{
+  margin-top: 10px;
+  font-size: 14px;
+  font-family: lato;
+  font-weight: 500;
+  color: #4a4a4a;
+  line-height: 25px;
+}
+.textautomatic .dearcompany1{
+    margin-top: 15px;
+    font-size: 14px;
+    font-family: lato;
+    font-weight: 500;
+    color: #4a4a4a;
+    margin-bottom: 30px;
+}
+.textautomatic .dearcompany2{
+    font-size: 14px;
+    font-family: lato;
+    font-weight: 500;
+    color: #4a4a4a;
+}
+.twobutton {
+    float: right;
+}
+.twobutton .cancel {
+    min-width: 90px;
+    padding: 0;
+    height: 35px;
+    font-size: 15px;
+    background-color: #fff;
+    border: 1px solid #D9DADC;
+    margin-right: 15px;
+    line-height: 3px;
+}
+.twobutton .save {
+    min-width: 90px;
+    padding: 0;
+    height: 35px;
+    font-size: 15px;
+    background-color: #2561a8;
+    color: #fff;
+    border: 1px solid #2561a8;
+    line-height: 3px;
+}
+.card-enterprise {
+    height: 175px;
+    background: linear-gradient(#777777,#323232);
+    border-radius: 10px;
+    border: 1px solid #595959;
+}
+.card-essential {
+    height: 175px;
+    background: linear-gradient(#fec937,#f7b604);
+    border-radius: 10px;
+    border: 1px solid #fabe1a;
+}
+.card-essential .pencil {
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    padding: 4px;
+    float: right;
+    cursor: pointer;
+}
+.card-pro {
+    height: 175px;
+    background: linear-gradient(#FB8900,#FA7000);
+    border-radius: 10px;
+    border: 1px solid #FC8900;
+}
+.card-pro .p1{
+    font-family: lato;
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 20px;
+}
+.card-pro .p3{
+    font-family: lato;
+    font-size: 22px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 42px;
+}
+.card-pro .p2{
+    font-family: lato;
+    font-size: 15px;
+    font-weight: 300;
+    color: #fff;
+    float: right;
+}
+.card-pro .p4{
+    font-family: lato;
+    font-size: 15px;
+    font-weight: 300;
+    color: #fff;
+}
+.card-essential .p1{
+    font-family: lato;
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 20px;
+}
+.card-essential .p3{
+    font-family: lato;
+    font-size: 22px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 42px;
+}
+.card-essential .p2{
+    font-family: lato;
+    font-size: 15px;
+    font-weight: 300;
+    color: #fff;
+    float: right;
+}
+.card-essential .p4{
+    font-family: lato;
+    font-size: 15px;
+    font-weight: 300;
+    color: #fff;
+}
+.card-enterprise .p1{
+    font-family: lato;
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 20px;
+}
+.card-enterprise .p3{
+    font-family: lato;
+    font-size: 22px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 42px;
+}
+.card-enterprise .p2{
+    font-family: lato;
+    font-size: 15px;
+    font-weight: 300;
+    color: #fff;
+    float: right;
+}
+.card-enterprise .p4{
+    font-family: lato;
+    font-size: 15px;
+    font-weight: 300;
+    color: #fff;
+}
+.pro {
+    text-align: center;
+    margin-top: 15px;
+}
+.pro label {
+    display: block;
+}
+.pro1 label {
+    display: block;
+}
+.pro2 label {
+    display: block;
+}
+.pro3 {
+    float:left;
+    margin-left: 25px;
+}
+.pro2 {
+    float:right;
+    margin-right: 25px;
+}
+.paddsett1 {
+    padding: 30px 70px;
+    background: #eef1f6;
+}
+.dash-cntr1 {
+    padding: 30px 70px;
+    position: relative;
+}
+.enterprisetext {
+    font-family: lato;
+    font-size: 20px;
+    font-weight: 600;
+    color: #000;
+    margin-bottom: 15px;
+}
+.tenantEnterprise .switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+.tenantEnterprise .switch input[type="checkbox"] {
+    opacity: 0;
+    position: absolute;
+}
+.tenantEnterprise .switch input[type="checkbox"] + .cr {
+    position: relative;
+    display: inline-block;
+    transition: 0.4s ease;
+    height: 20px;
+    width: 35px;
+    border: 1px solid #e9eaec;
+    border-radius: 60px;
+    cursor: pointer;
+    z-index: 0;
+    top: 5px;
+    margin-left: 15px;
+}
+.tenantEnterprise .switch input[type="checkbox"] + .cr:before {
+    transition: 0.2s cubic-bezier(0.24, 0, 0.5, 1);
+    height: 20px;
+    width: 35px;
+    border-radius: 30px;
+    background: #d9dadc;
+}
+.tenantEnterprise .switch input[type="checkbox"] + .cr:after {
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 4px 0 0 rgba(0, 0, 0, 0.04), 0 4px 9px rgba(0, 0, 0, 0.13), 0 3px 3px rgba(0, 0, 0, 0.05);
+    transition: 0.35s cubic-bezier(0.54, 1.6, 0.5, 1);
+    background: #f7f7f7;
+    height: 19px;
+    width: 19px;
+    border-radius: 60px;
+}
+.EnterpriseReact .ReactTable .rt-thead.-header {
+    background-color: #E5E5E5;
+}
+.EnterpriseReact .ReactTable {
+    border: none;
+}
+.EnterpriseReact .ReactTable .rt-thead .rt-resizable-header-content {
+    color: #000 !important;
+}
+.EnterpriseReact .ReactTable .rt-tbody .rt-td {
+    padding: 1px 20px !important;
+    border-right: none !important;
+    color: #4A4A4A !important;
+}
+.EnterpriseReact .Dotent {
+    margin-right: 5px;
+    margin-top: -5px;
+}
+.savecancelenterprise{
+    float: right;
+    margin-right: 80px;
+}
+.savecancelenterprise .Save {
+    min-width: 149px;
+    height: 40px;
+    background-color: #2561a8;
+    color: #fff;
+    font-size: 16px;
+    line-height: 4px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 1px solid #2561a8
+}
+.savecancelenterprise .Cancel {
+    min-width: 149px;
+    height: 40px;
+    background-color: #FFF;
+    color: #9B9B9B;
+    font-size: 16px;
+    line-height: 4px;
+    border-radius: 5px;
+    margin-right: 10px;
+    border: 1px solid #9B9B9B;
+    cursor: pointer;
+}
+.createPlan {
+    padding: 45px 300px;
+}
+.CenterPlan {
+    padding: 50px 165px;
+}
+.CenterPlan .createplantext {
+    color: #4a4a4a;
+    font-family: Lato;
+    font-size: 22px;
+    font-weight: bold;
+    line-height: 19px;
+    text-align: left;
+}
+.CenterPlan .PlanName {
+    color: #595959;
+    font-family: Lato;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 30px;
+    text-align: left;
+}
+.CenterPlan .txt-1 {
+    background: transparent;
+    border-radius: 4px;
+    width: 100%;
+    height: 43px;
+    border: none;
+    color: #000;
+    padding: 10px;
+    border: 1px solid #ecf2f4;
+}
+.CenterPlan select {
+    width: 100%;
+    border-radius: 4px;
+    padding: 10px 45px 10px 20px;
+    border: 0;
+    background: transparent url("./../Images//table-arr.png") no-repeat right 20px center;
+    background-size: 13px;
+    color: #a7a7a7;
+    cursor: pointer;
+    border: 1px solid #ECF2F4;
+}
+.PlanStatus input:checked + label::before {
+    background-color: #2561a8;
+    border: double 3px #fff;
+}
+.PlanStatus input:checked + label {
+    color: #2561a8;
+}
+    
+.PlanStatus input + label::before {
+    content: "";
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #2561a8;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    left: 2px;
+    top: 3px;
+}
+.PlanStatus input + label {
+    position: relative;
+    padding-left: 20px;
+}
+.logout-label {
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    text-transform: capitalize;
+}
+.checkbox-plan input + label {
+    position: relative;
+    padding-left: 35px;
+}
+.checkbox-plan input + label::before {
+    content: "";
+    width: 17px;
+    height: 17px;
+    position: absolute;
+    background-color: #fefefe;
+    border: 1px solid #e0ddd9;
+    left: 0;
+    top: 50%;
+    transform: translateY(-51%);
+    border-radius: 3px;
+    cursor: pointer;
+}
+.checkbox-plan input + label::after {
+    content: "";
+    position: absolute;
+    left: 6px;
+    width: 5px;
+    height: 7px;
+    border: solid #fefefe;
+    border-width: 0 1.5px 1.5px 0;
+    top: 50%;
+    transform: translateY(-65%) rotate(45deg);
+    cursor: pointer;
+}
+.checkbox-plan input:checked + label:before {
+    background-color: #2561a8;
+}
+.CenterPlan .cancel {
+    float: left;
+}
+.CenterPlan .save {
+    float: right;
+}
+.CenterPlan .save button {
+    width: 110px;
+    height: 40px;
+    background: #2561a8;
+    color: #fff;
+    line-height: 2px;
+    font-size: 16px;
+    border-radius: 2px;
+    border: 1px solid #2561a8;
+    cursor: pointer;
+}
+.CenterPlan .cancel button {
+    width: 110px;
+    height: 40px;
+    background: #FFF;
+    color: #9B9B9B;
+    line-height: 2px;
+    font-size: 16px;
+    border-radius: 2px;
+    border: 1px solid #9B9B9B;
+    cursor: pointer;
+}
+.input-group-addon {
+    padding: 14px 12px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1;
+    color: #555;
+    text-align: center;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.ListAllReacttable .ReactTable .rt-thead.-header {
+    background-color: #E5E5E5;
+}
+.ListAllReacttable .ReactTable {
+    border: none;
+}
+.ListAllReacttable .ReactTable .rt-thead .rt-resizable-header-content {
+    color: #000 !important;
+}
+.ListAllReacttable .ReactTable .rt-tbody .rt-td {
+    padding: 15px 20px !important;
+    border-right: none !important;
+    color: #4A4A4A !important;
+}
+.ListAllReacttable .Dotent {
+    margin-right: 5px;
+    margin-top: -5px;
+}
+.ListAllReacttable .delicon {
+    width: 15px;
+    height: 18px;
+    margin-left: 12px;
+}
+.savecancelenterprise1{
+    float: left;
+    margin-left: 20px;
+}
+.savecancelenterprise1 .addnew {
+    min-width: 170px;
+    height: 40px;
+    background-color: #FFF;
+    color: #2561a8;
+    font-size: 15px;
+    line-height: 4px;
+    border-radius: 5px;
+    margin-right: 10px;
+    border: 1px solid #2561a8;
+    cursor: pointer;
+}
+.tooltipcenterplan {
+    padding: 40px 50px;
+}
+.CenterPlan .txt-1tooltip {
+    background: transparent;
+    border-radius: 4px;
+    width: 100%;
+    height: 80px;
+    border: none;
+    color: #000;
+    padding: 10px;
+    border: 1px solid #ecf2f4;
+}
+.card-pro:hover {
+    box-shadow: 0 10px 10px -10px #FB8900;
+}
+.card-essential:hover {
+    box-shadow: 0 10px 10px -10px #f7b604;
+}
+.card-enterprise:hover {
+    box-shadow: 0 10px 10px -10px #595959;
+}
+.paddingtenatedit {
+    padding: 15px 25px 100px 25px;
+    /* background: bisque; */
+}
+.paddingtenatedit .twogeneratepayment{
+    float: right;
+}
+.twogeneratepayment .SendPayRem{
+    background-color: #2561a8;
+    color: #fff;
+    width: 180px;
+    padding: 8px 8px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: lato;
+    height: 35px;
+    line-height: 4px;
+    border: 1px solid #2561a8;
+    cursor: pointer;
+    border-radius: 4px;
+}
+.twogeneratepayment .GenPayLink{
+    background-color: #fff;
+    color: #2561a8;
+    width: 180px;
+    padding: 8px 8px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: lato;
+    height: 35px;
+    line-height: 4px;
+    border: 1px solid #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 15px;
+}
+.Looksedit {
+    width: 50px;
+    height: 50px;
+    margin-top: 0px;
+    margin-right: 10px;
+    border-radius: 5px;
+}
+.looksedittext {
+    font-size: 17px;
+    font-weight: 600;
+    font-family: lato;
+    color: #4a4a4a;
+}
+.deactivatedlook {
+    font-size: 12px;
+    font-weight: 600;
+    font-family: lato;
+    background: #f5ecec;
+    margin-left: 15px;
+    padding: 1px 6px;
+    border-radius: 3px;;
+    color: #ed102a;
+}
+.card-a {
+    background-color: #ffffff;
+    height: 350px;
+    border-radius: 4px;
+    padding: 10px 15px;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.05);
+    border: 1px solid;
+}
+.card-a .PlanDetail {
+    font-size: 16px;
+    font-weight: 600;
+    font-family: lato;
+    text-align: left;
+    color: #4a4a4a;
+}
+.SenderCard .nav-tabs{
+    border: none;
+    margin-top: 10px;
+}
+.SenderCard .nav-tabs .nav-link.active {
+    color: #2561a8;
+    background-color: #D4EBFF;
+    padding: 3px 10px;
+    border: none;
+    font-size: 14px;
+    font-weight: 400;
+    font-family: lato;
+}
+.SenderCard .nav-tabs .nav-link {
+    color: #4a4a4a;
+    padding: 3px 10px;
+    border: none;
+    font-size: 14px;
+    font-weight: 400;
+    font-family: lato;
+    border-radius: 3px;
+}
+.txt-1pro {
+    border-radius: 4px;
+    width: 100%;
+    height: 43px;
+    border: none;
+    color: #000;
+    padding: 10px;
+    border: 1px solid #ecf2f4;
+    margin-top: 10px;
+    background: #ECF2F4 url("./../Images//changepencil.png") no-repeat right 20px center;
+}
+.card-a .plantext {
+    float: right;
+    margin-right: 20px;
+    font-size: 16px;
+    color: #4A4A4A;
+    font-weight: 600;
+    font-family: lato;
+}
+.card-a .plantext1 {
+    float: left;
+    display: contents;
+    font-size: 16px;
+    color: #4A4A4A;
+    font-weight: 600;
+    font-family: lato;
+}
+.card-a .plantexta {
+    float: right;
+    margin-right: 20px;
+    font-size: 14px;
+    color: #9b9b9b;
+    font-weight: 500;
+    font-family: lato;
+}
+.card-a .plantexta1 {
+    float: left;
+    font-size: 14px;
+    color: #9b9b9b;
+    font-weight: 500;
+    font-family: lato;
+}
+.card-a .chat {
+    width: 17px;
+    height: 15px;
+    margin-right: 6px;
+}
+.card-a .more {
+    float: right;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: lato;
+    text-align: right;
+    color: #2561a8;
+}
+#PaymentTenant-popup { 
+    border-radius: 8px;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+    padding: 30px 95px;
+    margin: 0 auto;
+    min-width: 545px;
+}
+#PaymentTenant-popup .paymentlink {
+    font-size: 18px;
+    font-family: lato;
+    color: #4a4a4a;
+    font-weight: 600;
+}
+#PaymentTenant-popup .paymentlinktext {
+    font-size: 16px;
+    font-family: lato;
+    color: #9B9B9B;
+    font-weight: 500;
+}
+#PaymentTenant-popup .paymentlinktext1 {
+    font-size: 16px;
+    font-family: lato;
+    color: #000;
+    font-weight: 500;
+}
+.editde h3{
+    font-size: 15px;
+    font-weight: 500;
+    color: #9b9b9b;
+    font-family: lato;
+    line-height: 18px;
+}
+.editde p{
+    font-size: 14px;
+    font-weight: 600;
+    color: #4A4A4A;
+    font-family: lato;
+    line-height: 8px;
+}
+.editde li {
+    margin-right: 55px;
+}
+.cancelpopbtn {
+    background-color: #fff;
+    color: #9B9B9B;
+    width: 100px;
+    padding: 8px 8px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: lato;
+    height: 35px;
+    line-height: 4px;
+    border: 1px solid #E5E5E5;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 15px;
+}
+.savepopbtn {
+    background-color: #2561a8;
+    color: #fff;
+    width: 100px;
+    padding: 8px 8px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: lato;
+    height: 35px;
+    line-height: 4px;
+    border: 1px solid #2561a8;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.reactplandetail .printdownload {
+    color: #2561a8;
+    cursor: pointer;
+}
+.reactplandetail table td {
+    font-size: 13px;
+    color: #595959;
+    padding: 5px 13px;
+    font-family: lato;
+    font-weight: 400;
+}
+.reactplandetail table tbody tr {
+    border: none;
+}
+.reactplandetail table thead tr {
+    background-color: #FFF !important;
+    border: none;
+    font-family: lato;
+    font-weight: 400;
+}
+.emailcheck {
+    font-size: 16px;
+    font-family: lato;
+    color: #9B9B9B;
+    font-weight: 500;
+}
+#RemainderTenant-popup {
+    border-radius: 8px;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+    padding: 30px 55px;
+    margin: 0 auto;
+    max-width: 690px;
+}
+#RemainderTenant-popup .paymentlink {
+    font-size: 18px;
+    font-family: lato;
+    color: #4a4a4a;
+    font-weight: 600;
+}
+.SePaRe {
+    border: 1px solid #D9DADC;
+    border-radius: 8px;
+    padding: 17px 43px;
+}
+.SePaRe .dearcompany {
+    font-size: 14px;
+    font-family: lato;
+    font-weight: 500;
+    color: #4a4a4a;
+    line-height: 25px;
+}
+.SePaRe .dearcompany1 {
+    margin-top: 15px;
+    font-size: 14px;
+    font-family: lato;
+    font-weight: 500;
+    color: #4a4a4a;
+    margin-bottom: 30px;
+}
+.SePaRe .dearcompany2 {
+    font-size: 14px;
+    font-family: lato;
+    font-weight: 500;
+    color: #4a4a4a;
+}
+.SePaRe label {
+    display: block;
+}
+#RemainderTenant-popup .paymentlinktext {
+    font-size: 16px;
+    font-family: lato;
+    color: #9B9B9B;
+    font-weight: 500;
+}
+.card-b .billsavebtn{
+    background-color: #2561a8;
+    color: #fff;
+    width: 100px;
+    padding: 8px 8px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: lato;
+    height: 35px;
+    line-height: 4px;
+    border: 1px solid #2561a8;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.card-b .txt-1bill {
+    background: transparent;
+    border-radius: 4px;
+    width: 64%;
+    height: 30px;
+    display: block;
+    color: #000;
+    padding: 10px;
+    border: 1px solid #ecf2f4;
+}
+.card-b .plantext1z {
+    font-size: 14px;
+    color: #4A4A4A;
+    font-weight: 600;
+    font-family: lato;
+}
+.card-b .plantexta1 {
+    font-size: 14px;
+    color: #9b9b9b;
+    font-weight: 500;
+    font-family: lato;
+    width: 142px;
+}
+.card-b .plantexta12 {
+    font-size: 14px;
+    color: #9b9b9b;
+    font-weight: 500;
+    font-family: lato;
+    width: 250px;
+}
