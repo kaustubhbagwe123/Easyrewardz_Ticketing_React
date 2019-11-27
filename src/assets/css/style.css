@@ -10,8 +10,9 @@
 @import url("../plugins/jquery-scrollbar/css/perfect-scrollbar.css");
 @import url("../fonts/datta/datta-icon.css"); */
 
-@import "bootstrap.min.css";
 /* @import "Custome.css"; */
+@import "bootstrap.min.css";
+
 /**  =====================
       Custom css start
 ==========================  **/
@@ -165,7 +166,7 @@ p.text-muted {
 }
 .card .card-block,
 .card .card-body {
-  padding: 30px 40px;
+  padding: 0;
 }
 .card.card-load {
   position: relative;
@@ -3849,7 +3850,7 @@ table.footable-paging-center > tfoot > tr.footable-paging > td {
 }
 .auth-wrapper .auth-content {
   position: relative;
-  width: 420px;
+  width: 430px;
   padding: 15px;
   z-index: 5;
 }
@@ -4571,3 +4572,4 @@ a.btn-theme.active {
   -webkit-box-shadow: none;
           box-shadow: none;
 }
+

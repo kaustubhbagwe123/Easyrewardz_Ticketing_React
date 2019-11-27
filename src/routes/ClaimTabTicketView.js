@@ -87,10 +87,8 @@ class ClaimTabTicketView extends Component {
         <div className="head-header">
           <div className="head-header-1">
             <div className="row">
-              <div className="col-xs-3">
+              <div className="col-3 col-sm-3">
                 <img src={HeadphoneImg} alt="headphone" className="headphone" />
-              </div>
-              <div className="col-xs-9">
                 <label className="id-abc-1234">
                   ID - ABC1234
                   <span className="updated-2-d-ago">Updated 2d ago</span>
@@ -123,10 +121,11 @@ class ClaimTabTicketView extends Component {
               </div>
 
               <div
-                className="col-xs-9 oval-head"
+                className="col-9 col-sm-9"
                 onClick={this.HandleHeadePhoneModalOpen.bind(this)}
               >
-                <img src={Headphone2Img} alt="headphone" className="oval-55" />
+                <div style={{float: "right"}}>
+                  <img src={Headphone2Img} alt="headphone" className="oval-55" />
                 <label className="naman-r">Naman.R</label>
                 <img src={DownImg} alt="down" className="down-header" />
                 <button type="button" className="myticket-submit-solve-button">
@@ -139,6 +138,7 @@ class ClaimTabTicketView extends Component {
                     className="down-white"
                   />
                 </button>
+                </div>
               </div>
               <Modal
                 open={this.state.headPhoneTable}
@@ -193,7 +193,8 @@ class ClaimTabTicketView extends Component {
           <div className="rectangle-box">
             <div className="row">
               <div className="col-md-3">
-                <label className="mobile-number">Mobile Number</label>
+                <div style={{padding: "15px"}}>
+                  <label className="mobile-number">Mobile Number</label>
                 <br />
                 <label className="mobile-no">+91 9873470074</label>
                 <img
@@ -272,7 +273,7 @@ class ClaimTabTicketView extends Component {
                     </div>
                   </div>
                 </Modal>
-                <div className="bill-1">
+                <div className="" style={{display: "inline", marginLeft: "5px"}}>
                   <img src={BillInvoiceImg} alt="eye" className="billImg" />
                 </div>
                 <div className="card-space-1">
@@ -280,6 +281,14 @@ class ClaimTabTicketView extends Component {
                     Target Closure Date &nbsp;
                   </label>
                   <label className="Date-target">28 March 19</label>
+                </div>
+                <div className="mobilenumber-resp">
+                  <span className="line-respo"></span>
+                  <label className="respo">Response</label>
+                  <label className="resol">
+                    <span className="line-resol"></span>
+                    Resolution
+                  </label>
                 </div>
                 <progress
                   style={{ width: "100%" }}
@@ -289,10 +298,12 @@ class ClaimTabTicketView extends Component {
                 <p className="logout-label font-weight-bold prog-indi-1">
                   2 day
                 </p>
+                </div>
               </div>
-              <div className="vl"></div>
-              <div className="col-md-6">
-                <div className="row mob-pad" style={{ paddingLeft: "20px" }}>
+
+              <div className="col-md-5">
+                <div className="mid-sec">
+                  <div className="row mob-pad">
                   <div className="col-md-4">
                     <div className="form-group">
                       <label className="label-4">Status</label>
@@ -318,9 +329,9 @@ class ClaimTabTicketView extends Component {
                     </div>
                   </div>
                 </div>
-                <div className="row drop-card">
+                <div className="row">
                   <div className="col-md-4">
-                    <div className="form-group">
+                    <div className="">
                       <label className="label-4">Category</label>
                       <select className="rectangle-9 select-category-placeholder">
                         <option>Select</option>
@@ -328,7 +339,7 @@ class ClaimTabTicketView extends Component {
                     </div>
                   </div>
                   <div className="col-md-4 dropdrown">
-                    <div className="form-group">
+                    <div className="">
                       <label className="label-4">Sub Category</label>
                       <select className="rectangle-9 select-category-placeholder">
                         <option>Select</option>
@@ -336,7 +347,7 @@ class ClaimTabTicketView extends Component {
                     </div>
                   </div>
                   <div className="col-md-4 dropdrown">
-                    <div className="form-group">
+                    <div className="">
                       <label className="label-4">Issue Type</label>
                       <select className="rectangle-9 select-category-placeholder">
                         <option>Select</option>
@@ -344,9 +355,13 @@ class ClaimTabTicketView extends Component {
                     </div>
                   </div>
                 </div>
-                <div className="v2"></div>
-                <div className="row data-store">
-                  <div className="col-md-12">
+                </div>
+              </div>
+
+              <div className="col-md-4">
+                <div style={{padding: "15px 0"}}>
+                  <div className="">
+                  <div className="form-group">
                     <label className="label-4 storeSpacing">Store</label>
                     <label
                       className="bata-rajouri-garden"
@@ -378,7 +393,7 @@ class ClaimTabTicketView extends Component {
                       </div>
                     </Modal>
                   </div>
-                  <div className="col-md-12">
+                  <div className="">
                     <label className="label-4 storeSpacing">Product</label>
                     <label
                       className="bata-rajouri-garden"
@@ -393,12 +408,14 @@ class ClaimTabTicketView extends Component {
                     </label>
                   </div>
                 </div>
+                 </div>
               </div>
             </div>
           </div>
         </div>
         <div>
-          <div className="rectangle-3">
+        <div style={{padding: "15px" , background:"#fff"}}>
+          <div className="rectangle-3 text-editor">
             <div className="row">
               <label className="ticket-title-where">Ticket Title:</label>
             </div>
@@ -419,12 +436,17 @@ class ClaimTabTicketView extends Component {
             <div className="row">
               <div className="mask1">
                 <div className="mail-mask">
-                  <img src={MsgImg} alt="msg" className="smg-Img" />
-                  <label className="email">Email</label>
-                  <img src={Dow} alt="down" className="dropDown" />
-                  <img src={ArrowImg} alt="Arrow" className="arrow-img" />
-                  <div className="line-1"></div>
-                  <img src={PlusImg} alt="Plush" className="plush-img" />
+                  <select className="my-tic-email">
+                    <option>Email</option>
+                    <option>Facebook</option>
+                    <option>SMS</option>
+                  </select>
+                   <div className="mob-float" style={{display: "inline" , float: "right"}}>
+                    <img src={ArrowImg} alt="Arrow" className="arrow-img" />
+                    <div className="line-1"></div>
+                    <img src={PlusImg} alt="Plush" className="plush-img" />
+                   </div>
+                  
                 </div>
               </div>
             </div>
@@ -588,6 +610,7 @@ class ClaimTabTicketView extends Component {
                 </tbody>
               </table>
             </div>
+          </div>
           </div>
         </div>
         <div className="DrawerModal">

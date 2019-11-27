@@ -433,10 +433,8 @@ class MyTicket extends Component {
         <div className="head-header">
           <div className="head-header-1">
             <div className="row">
-              <div className="col-xs-3">
+              <div className="col-3 col-sm-3">
                 <img src={HeadphoneImg} alt="headphone" className="headphone" />
-              </div>
-              <div className="col-xs-9">
                 <label className="id-abc-1234">
                   ID - ABC1234
                   <span className="updated-2-d-ago">Updated 2d ago</span>
@@ -468,8 +466,9 @@ class MyTicket extends Component {
                 </Modal>
               </div>
 
-              <div className="col-xs-9 oval-head">
-                <img src={Headphone2Img} alt="headphone" className="oval-55" />
+              <div className="col-9 col-sm-9">
+                <div style={{float: "right"}}>
+                  <img src={Headphone2Img} alt="headphone" className="oval-55" />
                 <label
                   className="naman-r"
                   onClick={this.HandlelabelModalOpen.bind(this)}
@@ -491,6 +490,7 @@ class MyTicket extends Component {
                     className="down-white"
                   />
                 </button>
+                </div>
               </div>
               <Modal
                 open={this.state.labelModal}
@@ -565,7 +565,8 @@ class MyTicket extends Component {
           <div className="rectangle-box">
             <div className="row">
               <div className="col-md-3">
-                <label className="mobile-number">Mobile Number</label>
+                <div style={{padding: "15px"}}>
+                  <label className="mobile-number">Mobile Number</label>
                 <br />
                 <label className="mobile-no">+91 9873470074</label>
                 <img
@@ -644,7 +645,7 @@ class MyTicket extends Component {
                     </div>
                   </div>
                 </Modal>
-                <div className="bill-1">
+                <div className="" style={{display: "inline", marginLeft: "5px"}}>
                   <img
                     src={BillInvoiceImg}
                     alt="eye"
@@ -844,10 +845,11 @@ class MyTicket extends Component {
                 <p className="logout-label font-weight-bold prog-indi-1">
                   2 day
                 </p>
+                </div>                
               </div>
-              <div className="vl"></div>
-              <div className="col-md-6">
-                <div className="row mob-pad" style={{ paddingLeft: "20px" }}>
+              <div className="col-md-5">
+                <div className="mid-sec">
+                  <div className="row mob-pad">
                   <div className="col-md-4">
                     <div className="form-group">
                       <label className="label-4">Status</label>
@@ -873,9 +875,9 @@ class MyTicket extends Component {
                     </div>
                   </div>
                 </div>
-                <div className="row drop-card">
+                <div className="row">
                   <div className="col-md-4">
-                    <div className="form-group">
+                    <div className="">
                       <label className="label-4">Category</label>
                       <select className="rectangle-9 select-category-placeholder">
                         <option>Select</option>
@@ -883,7 +885,7 @@ class MyTicket extends Component {
                     </div>
                   </div>
                   <div className="col-md-4 dropdrown">
-                    <div className="form-group">
+                    <div className="">
                       <label className="label-4">Sub Category</label>
                       <select className="rectangle-9 select-category-placeholder">
                         <option>Select</option>
@@ -891,7 +893,7 @@ class MyTicket extends Component {
                     </div>
                   </div>
                   <div className="col-md-4 dropdrown">
-                    <div className="form-group">
+                    <div className="">
                       <label className="label-4">Issue Type</label>
                       <select className="rectangle-9 select-category-placeholder">
                         <option>Select</option>
@@ -899,9 +901,12 @@ class MyTicket extends Component {
                     </div>
                   </div>
                 </div>
-                <div className="v2"></div>
-                <div className="row data-store">
-                  <div className="col-md-12">
+                </div>
+              </div>
+              <div className="col-md-4">
+                <div style={{padding: "15px 0"}}>
+                  <div className="">
+                  <div className="form-group">
                     <label className="label-4 storeSpacing">Store</label>
                     <label
                       className="bata-rajouri-garden"
@@ -933,8 +938,8 @@ class MyTicket extends Component {
                       </div>
                     </Modal>
                   </div>
-                  <div className="col-md-12">
-                    <label className="label-4 storeSpacing">Product</label>
+                  <div className="">
+                    <label className="label-4">Product</label>
                     <label
                       className="bata-rajouri-garden"
                       onClick={this.HandleStoreModalOpen.bind(this)}
@@ -948,12 +953,13 @@ class MyTicket extends Component {
                     </label>
                   </div>
                 </div>
+                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div>
-          <div className="rectangle-3">
+        <div style={{padding: "15px" , background:"#fff"}}>
+          <div className="rectangle-3 text-editor">
             <div className="row">
               <label className="ticket-title-where">Ticket Title:</label>
             </div>
@@ -979,7 +985,7 @@ class MyTicket extends Component {
                     <option>Facebook</option>
                     <option>SMS</option>
                   </select>
-                  <div className="mob-float">
+                  <div className="mob-float" style={{display: "inline" , float: "right"}}>
                     <img src={ArrowImg} alt="Arrow" className="arrow-img" />
                     <div className="line-1"></div>
                     {EmailCollapseUpDown}
@@ -989,9 +995,9 @@ class MyTicket extends Component {
             </div>
             <div className="myTicketEmail">
               <Collapse isOpen={this.state.EmailCollapse}>
-                <Card style={{ marginRight: "31px" }}>
+                <Card>
                   <CardBody>
-                    <div className="col-md-8">
+                    <div className="">
                       <CKEditor
                         config={{
                           toolbar: [
@@ -1231,7 +1237,7 @@ class MyTicket extends Component {
 
                 <div
                   className="row new-top-bottom-margin"
-                  style={{ marginLeft: "20px" }}
+                  style={{ marginBottom: "18px" }}
                 >
                   <div className="col-xs-3">
                     <img
@@ -1260,7 +1266,7 @@ class MyTicket extends Component {
                     <label className="comment-text">Comment</label>
                   </div>
                 </div>
-                <div className="row row-spacing new-top-bottom-margin">
+                <div className="row row-spacing new-top-bottom-margin" style={{ marginBottom: "18px" }}>
                   <div className="col-xs-3">
                     <img
                       src={Headphone2Img}
@@ -1284,10 +1290,10 @@ class MyTicket extends Component {
                       experience.
                     </label>
                   </div>
-                  <label className="comment-text1">Comment</label>
+                  <label className="comment-text1" style={{paddingLeft: "75px"}}>Comment</label>
                   <div className="col-md-2"></div>
                 </div>
-                <div className="row row-spacing new-top-bottom-margin">
+                <div className="row row-spacing new-top-bottom-margin" style={{ marginBottom: "18px" }}>
                   <div className="col-xs-3">
                     <img src={BlackUserIcon} alt="Avatar" className="oval-6" />
                   </div>
@@ -1304,7 +1310,7 @@ class MyTicket extends Component {
                       Need to change my shipping address
                     </label>
                   </div>
-                  <label className="reply-comment">
+                  <label className="reply-comment" style={{paddingLeft: "75px"}}>
                     Reply
                     <br />
                     Comment

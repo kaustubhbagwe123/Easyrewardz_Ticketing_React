@@ -50,7 +50,7 @@ class TicketSystem extends Component {
                       />
                     </td>
 
-                    <td className="tdtextnew" style={{ padding: "5px" }}>
+                    <td className="tdtextnew" style={{ padding: "5px 20px" }}>
                       <label className="save-as-a-draft">SAVE AS DRAFT</label>
                       <button className="rectanglecreateticket">
                         <label className="create-ticket">CREACT TICKET</label>
@@ -64,7 +64,7 @@ class TicketSystem extends Component {
               <table className="table">
                 <tbody>
                   <tr>
-                    <td style={{ width: "45%" }}>
+                    <td>
                       <div className="margin-ticket-system-td">
                         <div className="row rowmargin">
                           <label className="ticket-tittle">Ticket Tittle</label>
@@ -213,7 +213,7 @@ class TicketSystem extends Component {
                         ) : null}
                       </div>
                     </td>
-                    <td className="rectangletd" style={{ width: "45%" }}>
+                    <td className="rectangletd">
                       <div className="margin-ticket-system-td">
                         <div className="colmarigin-tab">
                           <div className="row">
@@ -287,10 +287,10 @@ class TicketSystem extends Component {
                       </div>
                     </td>
 
-                    <td className="right-rectangle" style={{ width: "5%" }}>
+                    <td className="right-rectangle" style={{padding: "15px 0"}}>
                       <div className="margin-ticket-system-td">
                         <div className="btn-group-vertical">
-                          <div>
+                          <div style={{display: "block", margin: "auto"}}>
                             <img
                               src={CustomreIcon}
                               alt="customer-icon"
@@ -299,7 +299,7 @@ class TicketSystem extends Component {
                           </div>
                           <span className="customer-text">CUSTOMER</span>
                           <br />
-                          <div style={{marginTop:"15px"}}>
+                          <div style={{display: "block", margin: "auto", marginTop:"15px"}}>
                             <img
                               src={OrderIcon}
                               alt="order-icon"
@@ -308,7 +308,7 @@ class TicketSystem extends Component {
                           </div>
                           <span className="order-text">ORDER</span>
                           <br />
-                          <div style={{marginTop:"15px"}}>
+                          <div style={{display: "block", margin: "auto", marginTop:"15px"}}>
                             <img
                               src={StoreIcon}
                               alt="store-icon"
@@ -317,7 +317,7 @@ class TicketSystem extends Component {
                           </div>
                           <span className="store-text">STORE</span>
                           <br />
-                          <div style={{marginTop:"15px"}}>
+                          <div style={{display: "block", margin: "auto", marginTop:"15px"}}>
                             <img
                               src={TaskIcon}
                               alt="task-icon"

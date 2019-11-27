@@ -46,7 +46,7 @@ class MyTicketList extends Component {
       <Fragment>
         <div className="myticketlist-header">
           <div className="setting-tabs esc">
-            <ul className="nav nav-tabs es" role="tablist">
+            <ul className="nav nav-tabs es" style={{display: "inline"}} role="tablist">
               <li className="nav-item">
                 <a
                   className="nav-link active"
@@ -156,7 +156,9 @@ class MyTicketList extends Component {
                   Draft: <span className="myTciket-tab-span">05</span>
                 </a>
               </li>
-              <div className="ali">
+            </ul>
+
+              <div className="mlistbtn">
                 <button
                   className="myTicket-btn-A"
                   type="button"
@@ -164,8 +166,6 @@ class MyTicketList extends Component {
                 >
                   ASSIGN
                 </button>
-              </div>
-              <div className="">
                 <button
                   className="Add-ticket-button"
                   type="button"
@@ -174,8 +174,6 @@ class MyTicketList extends Component {
                   <label className="add-tickets">ADD TICKETS</label>
                 </button>
               </div>
-            </ul>
-
             <div className="tab-content">
               <div
                 className="tab-pane fade show active"
@@ -184,7 +182,7 @@ class MyTicketList extends Component {
                 aria-labelledby="Escalation-tab"
               >
                 <div className="container-fluid">
-                  <div className="table-cntr mt-3">
+                  <div className="table-cntr mt-3 mtictab">
                     <table>
                       <thead>
                         <tr>

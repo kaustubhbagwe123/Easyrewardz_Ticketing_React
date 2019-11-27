@@ -208,6 +208,8 @@
 .store-task-tabs .nav-tabs .nav-link {
   font-weight: 400;
   padding: 17px 15px;
+  font-size: 16px;
+    font-weight: 600;
 }
 .store-task-tabs .nav-tabs .nav-link.active {
   font-weight: 700;
@@ -222,6 +224,11 @@
 .store-task-tab-cont {
   padding-right: 15px;
   padding-left: 15px;
+}
+
+.store-task-tab-cont table th {
+  font-size: 12px;
+  padding: 15px 25px;
 }
 /* store task ends */
 
@@ -860,13 +867,12 @@ table tr th:last-child {
   font-size: 13px;
   font-weight: 700;
   line-height: 16px;
-  width: 807px;
   text-align: left;
 }
 .claim-bataShoes {
   width: 350px;
   height: 197px;
-  margin-left: -10px;
+  margin-left: 0px;
 }
 .col-md-10-card {
   margin-left: 5px;
@@ -915,7 +921,7 @@ height: 49.6vw;
   font-weight: 550;
   line-height: 22px;
   text-align: left;
-  padding: 14px 5px 14px 30px;
+  padding: 10px 0 0 0;
 }
 .btn-approrej {
   float: right;
@@ -930,7 +936,7 @@ height: 40px;
 font-size: 14px;
 cursor: pointer;
 color: white;
-margin-left: 10px;
+margin: 3px 0px 8px 12px;
 }
 .oval-approve {
   background-color: #f8e71c;

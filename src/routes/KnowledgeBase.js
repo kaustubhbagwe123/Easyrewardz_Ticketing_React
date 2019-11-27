@@ -169,8 +169,9 @@ class KnowledgeBase extends Component {
                         pain in feet/knee/leg
                       </label>
                     </td>
-                    <td>
-                      <button className="reject-button">
+                    <td style={{padding:"15px 0"}}>
+                      <span style={{float:"right"}}>
+                        <button className="reject-button">
                         <label className="reject-button-text">reject</label>
                       </button>
                       <button
@@ -179,6 +180,7 @@ class KnowledgeBase extends Component {
                       >
                         <label className="approve-button-text">APPROVE</label>
                       </button>
+                      </span>
                     </td>
                   </tr>
                   <tr>
@@ -226,8 +228,9 @@ class KnowledgeBase extends Component {
                         pain in feet/knee/leg
                       </label>
                     </td>
-                    <td>
-                      <button className="reject-button">
+                    <td style={{padding:"15px 0"}}>
+                      <span style={{float:"right"}}>
+                        <button className="reject-button">
                         <label className="reject-button-text">reject</label>
                       </button>
                       <button
@@ -236,6 +239,7 @@ class KnowledgeBase extends Component {
                       >
                         <label className="approve-button-text">APPROVE</label>
                       </button>
+                      </span>
                     </td>
                   </tr>
                 </tbody>

@@ -178,7 +178,7 @@ class Chatbot extends Component {
           <div className="col-lg-3 p-0">
             <div className="chatbot-left">
               <div className="chat-cntr">
-                <p>Ongoing Chats (03)</p>
+                <p className="ongng">Ongoing Chats (03)</p>
                 <div className="chat-left-height">
                   <div className="chat-info">
                     <div className="d-flex align-items-center">

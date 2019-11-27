@@ -14,10 +14,9 @@ class ClaimApproveReject extends Component {
     super(props);
 
     this.state = {
-        collapse: false,
-        SearchDetails: true
+      collapse: false,
+      SearchDetails: true
     };
-    
   }
   handleToggle() {
     this.setState(state => ({ collapse: !state.collapse }));
@@ -33,29 +32,25 @@ class ClaimApproveReject extends Component {
         <div className="row claim-header-card width">
           <div className="col-md-7">
             <label className="claim-title1">Claim Ticket ID :</label>
-            <label className="claim-A22345">
-              A22345
-            </label>
+            <label className="claim-A22345">A22345</label>
             <label className="claim-title1">Task ID :</label>
-            <label className="claim-A22345">
-              A22345
-            </label>
+            <label className="claim-A22345">A22345</label>
             <label className="claim-title1">Ticket ID :</label>
-            <label className="claim-A22345">
-              A22345
-            </label>
+            <label className="claim-A22345">A22345</label>
           </div>
           <div className="col-md-5">
             {/* <div className="oval-approve">
               <img src={StoreIcon} style={{ padding: "1px",width:"22px",height:"18px" }} alt="store-icon"/>
               </div> */}
-              <div className="oval-5-1-new-store" style={{marginLeft:"30px",marginRight:"15px"}}>
-                <img src={storeImg} alt="headphone" className="storeImg-11" />
-              </div>
-              <label className="naman-R">Naman.R</label>
-              <img src={DownImg} alt="down" className="down-header" />
+            <div
+              className="oval-5-1-new-store"
+              style={{ marginLeft: "70px", marginRight: "15px" }}
+            >
+              <img src={storeImg} alt="headphone" className="storeImg-11" />
+            </div>
+            <label className="naman-R">Naman.R</label>
+            <img src={DownImg} alt="down" className="down-header" />
             <div className="btn-approrej">
-               
               <button type="button" className="btn-approrej1">
                 APPROVE CLAIM
               </button>
@@ -66,12 +61,12 @@ class ClaimApproveReject extends Component {
           </div>
         </div>
         <div className="back-color">
-          <div className="row width">
-            <div className="col-md-9-card">
-              <div className="card card-radius">
+          <div className="row" style={{ margin: "0" }}>
+            <div className="col-md-9" style={{ padding: "0" }}>
+              <div className="card card-radius" style={{ padding: "45px 45px 30px", margin: "0 0 20px" }}>
                 <div className="search-customer-padding">
-                  <div className="row">
-                    <div className="col-md-12 claim-status-card">
+                  <div className="">
+                    <div className="claim-status-card">
                       <label>
                         <b>Claim Status: Open</b>
                       </label>
@@ -92,9 +87,12 @@ class ClaimApproveReject extends Component {
                       </div>
                     </div>
 
-                    <Collapse isOpen={this.state.collapse} style={{width:'100%'}}>
+                    <Collapse
+                      isOpen={this.state.collapse}
+                      style={{ width: "100%" }}
+                    >
                       <Card>
-                        <CardBody style={{padding:"15px 5px 15px 20px"}}>
+                        <CardBody style={{ padding: "15px 5px 15px 20px" }}>
                           <div className="row">
                             <div className="col-md-6">
                               <label className="orderdetailtext">
@@ -111,9 +109,10 @@ class ClaimApproveReject extends Component {
                                 src={SearchBlackImg}
                                 alt="Search"
                                 className="searchImg-raise"
-                                onClick={this.handleShowSearchDetails.bind(this)}
+                                onClick={this.handleShowSearchDetails.bind(
+                                  this
+                                )}
                               />
-                              
                             </div>
                             <span className="Searchline"> </span>
                           </div>
@@ -185,7 +184,7 @@ class ClaimApproveReject extends Component {
                       </Card>
                     </Collapse> */}
                   </div>
-                  <div className="row margin-claim">
+                  <div className="row">
                     <div className="form-group col-md-4">
                       <label className="label-6">Claim Category</label>
                       <select
@@ -209,13 +208,13 @@ class ClaimApproveReject extends Component {
                       <select
                         id="inputState"
                         className="form-control dropdown-label"
-                        style={{ width: "260px" }}
+                        
                       >
                         <option>select</option>
                       </select>
                     </div>
                   </div>
-                  <div className="row margin-claim">
+                  <div className="row">
                     <div className="form-group col-md-4">
                       <label className="label-6"> Claim Asked for %</label>
                       <input
@@ -233,43 +232,46 @@ class ClaimApproveReject extends Component {
                       </button>
                     </div>
                   </div>
-                  <div className="row margin-claim">
+                  <div className="row">
                     <div className="form-group col-md-4">
                       <label className="label-6">Attached Image</label>
                     </div>
                   </div>
                   <img src={BataShoes} alt="Bata" className="claim-bataShoes" />
 
-
-                  <div className="row ">
+                  <div className="row" style={{ margin: "0" }}>
                     <label className="label-6">Comments By Store</label>
                   </div>
-                  <div className="row comment-02-margin">
+                  <div className="row" style={{ margin: "0" }}>
                     <div className="col-xs-3">
-                      <img src={Headphone2Img} alt="headphone" className="oval-55 naman" />
+                      <img
+                        src={Headphone2Img}
+                        alt="headphone"
+                        className="oval-55 naman"
+                      />
                     </div>
                     <div className="col-md-9">
                       <label className="naman-R">Naman.R</label>
                     </div>
-                    <div className="col-md-2 hr-ago-margin">
+                    <div className="col-md-2">
                       <label className="hr-ago">5 hr ago</label>
                     </div>
                   </div>
-                  <div className="row">
+                  <div className="row" style={{ margin: "0" }}>
                     <label className="label-6">Comments:</label>
                   </div>
-                  <div className="row">
-                    <div className="col-md-12" style={{marginLeft:'-13px'}}>
-                    <label className="claim-comment">
-                      Hi Diwakar, I really appreciate you joining us at
-                      Voucherify! My top priority is that you have a great
-                      experince with us and learn how to easily implement
-                      successful promo campaigns.
-                    </label>
-                    <hr/>
+                  <div className="row" style={{ margin: "0" }}>
+                    <div className="">
+                      <label className="claim-comment">
+                        Hi Diwakar, I really appreciate you joining us at
+                        Voucherify! My top priority is that you have a great
+                        experince with us and learn how to easily implement
+                        successful promo campaigns.
+                      </label>
+                      <hr />
+                    </div>
                   </div>
-                  </div>
-                  <div className="row comment-02-margin">
+                  <div className="row" style={{ margin: "0" }}>
                     <div className="col-xs-3">
                       <img
                         src={Headphone2Img}
@@ -287,11 +289,10 @@ class ClaimApproveReject extends Component {
                 </div>
               </div>
 
-                <div className="card card-radius">
-                  <div className="search-customer-padding">
-
-                    <div className="row margin-claim">
-                    <div className="form-group col-md-4">
+              <div className="card card-radius" style={{ padding: "30px 45px 30px" }}>
+                <div className="search-customer-padding">
+                  <div className="row" style={{ margin: "0" }}>
+                    <div className="form-group col-md-4" style={{ padding: "0" }}>
                       <label className="label-6"> Claim Asked for %</label>
                       <input
                         type="text"
@@ -299,14 +300,14 @@ class ClaimApproveReject extends Component {
                         placeholder="Claim Percentage"
                       />
                     </div>
-                    </div>
-              
-                  <div className="row margin-claim">
-                    <div className="col-md-12">
+                  </div>
+
+                  <div className="row" style={{ margin: "0" }}>
+                    <div className="">
                       <label className="label-6">Comments By Approval</label>
                       <hr></hr>
                     </div>
-                    <div className="col-md-12">
+                    <div className="">
                       <textarea
                         className="ticket-comments-textarea"
                         placeholder="Add your Comment here"
@@ -318,10 +319,14 @@ class ClaimApproveReject extends Component {
                       </div>
                     </div>
                   </div>
-                  <div className="row ">
-                    <label className="label-6">Comments By Approval: 02</label>
+                  <div className="row" style={{ margin: "0" }}>
+                    <div className="">
+                      <label className="label-6">
+                        Comments By Approval: 02
+                      </label>
+                    </div>
                   </div>
-                  <div className="row comment-02-margin">
+                  <div className="row" style={{ margin: "0" }}>
                     <div className="col-xs-3">
                       <img
                         src={Headphone2Img}
@@ -336,21 +341,21 @@ class ClaimApproveReject extends Component {
                       <label className="hr-ago">5 hr ago</label>
                     </div>
                   </div>
-                  <div className="row">
+                  <div className="row" style={{ margin: "0" }}>
                     <label className="label-6">Comments:</label>
                   </div>
-                  <div className="row">
-                    <div className="col-md-12" style={{marginLeft:'-13px'}}>
-                    <label className="claim-comment">
-                      Hi Diwakar, I really appreciate you joining us at
-                      Voucherify! My top priority is that you have a great
-                      experince with us and learn how to easily implement
-                      successful promo campaigns.
-                    </label>
-                    <hr/>
+                  <div className="row" style={{ margin: "0" }}>
+                    <div className="">
+                      <label className="claim-comment">
+                        Hi Diwakar, I really appreciate you joining us at
+                        Voucherify! My top priority is that you have a great
+                        experince with us and learn how to easily implement
+                        successful promo campaigns.
+                      </label>
+                      <hr />
+                    </div>
                   </div>
-                  </div>
-                  <div className="row comment-02-margin">
+                  <div className="row" style={{ margin: "0" }}>
                     <div className="col-xs-3">
                       <img
                         src={Headphone2Img}
@@ -366,40 +371,50 @@ class ClaimApproveReject extends Component {
                     </div>
                   </div>
                 </div>
-                </div>
+              </div>
             </div>
-            
+
             <div className="col-md-3">
               <div className="card card-radius2 cardbor">
                 <div className="alankrit">
-                  <label><b>CUSTOMER NAME</b></label>
                   <label>
-                    <span className="a">
-                        A 
-                    </span>
-                        Alankrit
+                    <b>CUSTOMER NAME</b>
+                  </label>
+                  <label>
+                    <span className="a">A</span>
+                    Alankrit
                   </label>
                 </div>
                 <div className="alankrit">
-                  <label><b>PHONE NUMBER</b></label>
+                  <label>
+                    <b>PHONE NUMBER</b>
+                  </label>
                   <label>+91-98734670074</label>
                 </div>
                 <div className="alankrit">
-                  <label><b>ALTERNATE NUMBER</b></label>
+                  <label>
+                    <b>ALTERNATE NUMBER</b>
+                  </label>
                   <label>+91-98734670074</label>
                 </div>
                 <div className="alankrit">
-                  <label><b>EMAIL</b></label>
+                  <label>
+                    <b>EMAIL</b>
+                  </label>
                   <label>alankrit@easyrewardz.com</label>
                 </div>
                 <div className="alankrit">
-                  <label><b>ALTERNATE EMAIL</b></label>
+                  <label>
+                    <b>ALTERNATE EMAIL</b>
+                  </label>
                   <label>alankrit@easyrewardz.com</label>
                 </div>
                 <div className="alankrit">
-                  <label><b>GENDER</b></label>
+                  <label>
+                    <b>GENDER</b>
+                  </label>
                   <label>Male</label>
-                  </div>
+                </div>
               </div>
             </div>
           </div>

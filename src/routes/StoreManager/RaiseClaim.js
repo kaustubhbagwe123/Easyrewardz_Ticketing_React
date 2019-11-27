@@ -28,7 +28,8 @@ class RaiseClaim extends Component {
   render() {
     return (
       <Fragment>
-        <div className="row claim-header-card width">
+        <div className="raiseclaim">
+          <div className="row" style={{background: "#ecf2f4"}}>
           <div className="col-md-9">
             <label className="claim-ticket">Claim Ticket ID :</label>
             <label className="claim-A22345">
@@ -36,7 +37,7 @@ class RaiseClaim extends Component {
             </label>
           </div>
           <div className="col-md-3">
-            <div className="btn-margin">
+            <div className="btn-margin" style={{float: "right" , marginLeft: "30px" }}>
               <button type="button" className="btn-btn-claim">
                 CANCEL
               </button>
@@ -47,11 +48,11 @@ class RaiseClaim extends Component {
           </div>
         </div>
         <div className="back-color">
-          <div className="row width">
-            <div className="col-md-9-card">
+          <div className="row">
+            <div className="col-md-9" style={{padding:"0"}}>
               <div className="card card-radius">
                 <div className="search-customer-padding">
-                  <div className="first-margin">
+                  <div className="col-md-12">
                     <label className="label-color">
                       <b>SEARCH CUSTOMER BY</b>
                     </label>
@@ -63,8 +64,8 @@ class RaiseClaim extends Component {
                       ADD NEW CUSTOMER
                     </label>
                   </div>
-                  <div className="row">
-                    <div className="col-md-9">
+                  <div className="col-md-12">
+                    <div style={{position:"relative"}}>
                       <input
                         type="text"
                         className="search-mobile-textbox"
@@ -77,8 +78,8 @@ class RaiseClaim extends Component {
                       />
                     </div>
                   </div>
-                  <div className="row">
-                    <div className="col-md-12 claim-status-card">
+                  <div className="col-md-12">
+                    <div className="claim-status-card">
                       <label>
                         <b>Claim Status: Open</b>
                       </label>
@@ -101,7 +102,7 @@ class RaiseClaim extends Component {
 
                     <Collapse isOpen={this.state.collapse} style={{width:'100%'}}>
                       <Card>
-                        <CardBody style={{padding:"15px 5px 15px 20px"}}>
+                        <CardBody style={{padding:"15px 0 0"}}>
                           <div className="row">
                             <div className="col-md-6">
                               <label className="orderdetailtext">
@@ -122,7 +123,6 @@ class RaiseClaim extends Component {
                               />
                               
                             </div>
-                            <span className="Searchline"> </span>
                           </div>
                           {this.state.SearchDetails ? (
                             <div>
@@ -165,7 +165,7 @@ class RaiseClaim extends Component {
                       </Card>
                     </Collapse>
                   </div>
-                  <div className="row margin-claim">
+                  <div className="row">
                     <div className="form-group col-md-4">
                       <label className="label-6">Claim Category</label>
                       <select
@@ -189,13 +189,12 @@ class RaiseClaim extends Component {
                       <select
                         id="inputState"
                         className="form-control dropdown-label"
-                        style={{ width: "260px" }}
                       >
                         <option>select</option>
                       </select>
                     </div>
                   </div>
-                  <div className="row margin-claim">
+                  <div className="row">
                     <div className="form-group col-md-4">
                       <label className="label-6"> Claim Asked for %</label>
                       <input
@@ -213,13 +212,15 @@ class RaiseClaim extends Component {
                       </button>
                     </div>
                   </div>
-                  <div className="row margin-claim">
+                  <div className="row">
                     <div className="form-group col-md-4">
                       <label className="label-6">Attached Image</label>
                     </div>
                   </div>
-                  <img src={BataShoes} alt="Bata" className="batashoes" />
-                  <div className="row margin-claim">
+                  <div className="col-md-12">
+                    <img src={BataShoes} alt="Bata" className="batashoes" />
+                  </div>
+                  <div className="row">
                     <div className="col-md-12">
                       <label className="label-6">Comments</label>
                       <hr></hr>
@@ -236,11 +237,11 @@ class RaiseClaim extends Component {
                       </div>
                     </div>
                   </div>
-                  <div className="row ">
+                    <div className="col-md-12">
                     <label className="label-6">Comments: 02</label>
                   </div>
-                  <div className="row comment-02-margin">
-                    <div className="col-xs-3">
+                  <div className="row">
+                    <div className="col-md-1">
                       <img
                         src={Headphone2Img}
                         alt="headphone"
@@ -250,14 +251,14 @@ class RaiseClaim extends Component {
                     <div className="col-md-9">
                       <label className="naman-R">Naman.R</label>
                     </div>
-                    <div className="col-md-2 hr-ago-margin">
+                    <div className="col-md-2">
                       <label className="hr-ago">5 hr ago</label>
                     </div>
                   </div>
-                  <div className="row">
+                    <div className="col-md-12">
                     <label className="label-6">Comments:</label>
                   </div>
-                  <div className="row">
+                    <div className="col-md-12">
                     <label>
                       Hi Diwakar, I really appreciate you joining us at
                       Voucherify! My top priority is that you have a great
@@ -269,7 +270,7 @@ class RaiseClaim extends Component {
               </div>
             </div>
             <div className="col-md-3">
-              <div className="card card-radius2">
+              <div className="card card-radius2" style={{padding: "20px"}}>
                 <label>
                   <b>CUSTOMER NAME</b>
                 </label>
@@ -303,6 +304,7 @@ class RaiseClaim extends Component {
               </div>
             </div>
           </div>
+        </div>
         </div>
       </Fragment>
     );

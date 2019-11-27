@@ -77,7 +77,7 @@ class StoreTask extends Component {
           </ul>
           <button className="butn" onClick={this.handleChagneAddTask.bind(this)}>Add Task</button>
         </div>
-        <div className="tab-content store-task-tab-cont">
+        <div className="tab-content store-task-tab-cont" style={{padding:"15px"}}>
           <div
             className="tab-pane fade show active"
             id="raised-by-me-tab"

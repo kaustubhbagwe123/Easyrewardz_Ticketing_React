@@ -262,6 +262,7 @@
   font-weight: 300;
   line-height: 34px;
   text-align: left;
+  padding-top: 10px;
   display: block;
   margin-bottom: 30px;
 }
@@ -390,9 +391,10 @@
 }
 /************My Ticket Header******************/
 .headphone {
-  width: 23px;
-  height: 25px;
-  margin-right: 7px;
+  width: 25px;
+    height: 27px;
+    margin-right: 9px;
+    vertical-align: initial;
 }
 .loading-rectangle {
   background-color: #ecf2f4;
@@ -401,6 +403,7 @@
   width: 23px;
   height: 25px;
   padding: 5px;
+  margin-top: 7px;
   margin-left: 7px;
   vertical-align: top;
   cursor: pointer;
@@ -439,10 +442,10 @@
 .head-header {
   background-color: #ecf2f4;
   width: auto;
-  height: 57px;
+  height: auto;
 }
 .head-header-1 {
-  padding: 15px 30px;
+  padding: 7px 15px;
 }
 .id-abc-1234 {
   color: #4a4a4a;
@@ -451,6 +454,7 @@
   font-weight: 400;
   line-height: 19px;
   text-align: left;
+  padding-top: 5px;
 }
 .updated-2-d-ago {
   color: #9b9b9b;
@@ -588,9 +592,8 @@ table tr th:last-child {
   border-radius: 10px;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.03);
   width: auto;
-  height: 159px;
+  height: auto;
   margin: 15px;
-  padding: 15px;
 }
 .rectangle2 {
   background-color: #ecf2f4;
@@ -602,8 +605,11 @@ table tr th:last-child {
   border-radius: 4px;
   width: auto;
   height: auto;
-  /* margin: 32px; */
-  padding: 30px;
+  /* margin: 32px;
+  padding: 30px; */
+}
+.text-editor .row {
+  margin: 0;
 }
 .card-rectangle {
   background: #f5f8f9;
@@ -616,6 +622,7 @@ table tr th:last-child {
   font-weight: 700;
   line-height: 17px;
   text-align: left;
+  margin-bottom: 5px;
   padding-left: 3px;
 }
 .ticket-details-wher {
@@ -802,10 +809,10 @@ table tr th:last-child {
 .eyeImg {
   background-color: #ecf2f4;
   border: 1px solid #2561a8;
-  border-radius: 6px;
-  width: 23px;
-  height: 23px;
-  padding: 5px;
+  border-radius: 5px;
+    width: auto;
+    height: 20px;
+    padding: 4px;
   cursor: pointer;
 }
 .searchImg-2 {
@@ -816,10 +823,10 @@ table tr th:last-child {
 .billImg {
   background-color: #ecf2f4;
   border: 1px solid #2561a8;
-  border-radius: 6px;
-  width: 23px;
-  height: 23px;
-  padding: 5px;
+  border-radius: 5px;
+    width: auto;
+    height: 20px;
+    padding: 4px;
   margin-top: 1.5px;
   cursor: pointer;
 }
@@ -884,7 +891,7 @@ table tr th:last-child {
   width: 30px;
   height: 30px;
   padding: 7px;
-  margin-left: -20px;
+  margin-left: 14px;
 }
 .reassign-to-naman-r {
   color: #4a4a4a;
@@ -932,8 +939,8 @@ table tr th:last-child {
   text-align: left;
 }
 .card-space-1 {
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding-top: 20px;
+  padding-bottom: 5px;
 }
 .hi-naman-please-hel {
   color: #4a4a4a;
@@ -975,17 +982,18 @@ table tr th:last-child {
   cursor: pointer;
 }
 .label-2 {
-  margin-top: -3px;
-  font-size: 20px;
+  margin-top: 0;
+  font-size: 22px;
   margin-bottom: 15px;
   padding-left: 3px;
   color: #5c5c5c;
 }
 .label-3 {
-  margin-top: -2px;
-  font-size: 14px;
-  padding-left: 3px;
-  padding-bottom: 22px;
+  margin-top: 0;
+    font-size: 16px;
+    padding-left: 3px;
+    line-height: initial;
+    padding-bottom: 22px;
 }
 .mail-card {
   background-color: #ecf2f4;
@@ -998,14 +1006,15 @@ table tr th:last-child {
   border-radius: 8px;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.03);
   width: 100%;
-  height: 41px;
+  height: auto;
 }
 .mail-mask {
-  background-color: #dbe4e7;
   border-radius: 5px;
-  width: 151px;
-  height: 32px;
+  height: auto;
   margin: 4px;
+  position: relative;
+  width: 100%;
+  display: inline-block;
 }
 .email {
   color: #000000;
@@ -1020,8 +1029,7 @@ table tr th:last-child {
 .arrow-img {
   width: 15px;
   height: 15px;
-  margin-left: 775%;
-  margin-top: -38%;
+  margin: 5px 15px 0;
 }
 .dropdrown {
   margin-left: -21px;
@@ -1029,22 +1037,22 @@ table tr th:last-child {
 .plush-img {
   width: 15px;
   height: 15px;
-  margin-left: 797%;
-  margin-top: -42%;
+    margin: 5px 15px 0;
+    cursor: pointer;
 }
 .minus-img {
   width: 15px;
   height: 2px;
-  margin-left: 797%;
-  margin-top: -42%;
+  margin: 5px 15px 0;
   cursor: pointer;
 }
 .line-1 {
   border: 1px solid #cad4d7;
-  height: 39px;
-  width: 0px;
-  margin-top: -37%;
-  margin-left: 790%;
+  width: 1px;
+  height: 40px;
+  position: absolute;
+  top: -4px;
+  right: 42px;
 }
 .label-4 {
   color: #9b9b9b;
@@ -1052,11 +1060,13 @@ table tr th:last-child {
   font-size: 12px;
   font-weight: 700;
   line-height: 14px;
+  display: block;
+  margin-bottom: 5px;
   text-align: left;
 }
 .rectangle-9 {
   border-radius: 4px;
-  width: 158px;
+  width: 100%;
   height: 31px;
   padding-left: 8px;
   padding-right: 40px;
@@ -1065,6 +1075,12 @@ table tr th:last-child {
   background-size: 13px;
   cursor: pointer;
   border: none;
+}
+.mid-sec {
+  padding: 15px 0px 15px 40px;
+    border-right: 1px solid #ebebeb;
+    border-left: 1px solid #ebebeb;
+    height: 100%;
 }
 .drop-card {
   margin-top: -15px;
@@ -1082,12 +1098,12 @@ table tr th:last-child {
   line-height: 17px;
   text-align: left;
   white-space: nowrap;
-  padding-left: 8px;
   cursor: pointer;
 }
 .storeSpacing {
-  padding-left: 8px;
-  padding-top: 15px;
+  padding-left: 0;
+  padding-top: 0;
+  display: block;
 }
 .pencilImg {
   width: 13px;
@@ -1570,14 +1586,12 @@ table {
 .customer-icon {
   width: 32px;
   height: 32px;
-  margin-left: 20px;
-  margin-right: 20px;
   cursor: pointer;
 }
 .customer-text {
   color: #2561a8;
   font-family: Lato;
-  font-size: 9px;
+  font-size: 9px !important;
   font-weight: 700;
   line-height: 11px;
   text-align: left;
@@ -1587,37 +1601,33 @@ table {
 .order-icon {
   width: 32px;
   height: 32px;
-  margin-left: 20px;
-  margin-right: 20px;
   cursor: pointer;
 }
 .order-text {
   color: #4a4a4a;
   font-family: Lato;
-  font-size: 9px;
+  font-size: 9px !important;
   font-weight: 700;
   line-height: 11px;
   text-align: left;
-  margin-left: 18px;
+  margin: auto;
   padding-top: 10px;
   cursor: pointer;
 }
 .store-icon {
   width: 32px;
   height: 32px;
-  margin-left: 20px;
-  margin-right: 20px;
   cursor: pointer;
 }
 
 .store-text {
   color: #4a4a4a;
   font-family: Lato;
-  font-size: 9px;
+  font-size: 9px !important;
   font-weight: 700;
   line-height: 11px;
   text-align: left;
-  margin-left: 18px;
+  margin: auto;
   padding-top: 10px;
   cursor: pointer;
 }
@@ -1625,19 +1635,17 @@ table {
 .task-icon {
   width: 28px;
   height: 28px;
-  margin-left: 20px;
-  margin-right: 20px;
   cursor: pointer;
 }
 
 .task-text {
   color: #4a4a4a;
   font-family: Lato;
-  font-size: 9px;
+  font-size: 9px !important;
   font-weight: 700;
   line-height: 11px;
   text-align: left;
-  margin-left: 20px;
+  margin: auto;
   padding-top: 10px;
   cursor: pointer;
 }
@@ -1826,7 +1834,7 @@ button {
   color: #2561a8;
   font-size: 12px;
   padding: 8px 25px;
-  border-radius: 5px;
+  border-radius: 50px;
   cursor: pointer;
 }
 
@@ -2019,8 +2027,8 @@ table {
   border-radius: 5px 5px 0px 0;
 }
 table th {
-  font-size: 12px;
-  padding: 20px 26px; /*20px 30px;*/
+  font-size: 13px;
+  padding: 15px 25px; /*20px 30px;*/
 }
 table td {
   font-size: 13px;
@@ -2111,19 +2119,19 @@ table td span {
   background-color: #cbe0f1;
   border: 1px solid #0076ff;
   color: #1775e2;
-  font-size: 10px;
+  font-size: 10px !important;
 }
 .table-yellow-btn {
   background-color: #ffe4b2;
   border: 1px solid #ffa400;
   color: #dc6530;
-  font-size: 10px;
+  font-size: 10px !important;
 }
 .table-green-btn {
   background-color: #cbf1e9;
   border: 1px solid #2d8f7b;
   color: #2d8f7b;
-  font-size: 10px;
+  font-size: 10px !important;
 }
 .task-icon-1 {
   width: 20px;
@@ -2434,6 +2442,7 @@ table tr th:last-child {
   color: #2561a8;
   border-bottom: 2px solid #2561a8;
   box-shadow: none;
+  background: #e3e9eb;
 }
 .tab-content {
   padding: 12px 0px;
@@ -2478,6 +2487,9 @@ table tr th:last-child {
   text-transform: uppercase;
   font-weight: 500;
   cursor: pointer;
+}
+.logout-block p {
+  margin-bottom: 0;
 }
 .logout-status {
   width: 19px;
@@ -2706,6 +2718,10 @@ table tr th:last-child {
 .chat-cntr .chat-info:last-child {
   border-bottom: none;
 }
+.chat-cntr .ongng {
+  font-size: 16px;
+  font-weight: 600;
+}
 .chat-info {
   padding: 17px;
   border-bottom: 1px solid #e4e4e4;
@@ -2749,8 +2765,8 @@ table tr th:last-child {
   margin-top: -10px;
 }
 .name-num p {
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 600;
   color: #000;
   line-height: 0.7;
 }
@@ -2763,6 +2779,7 @@ table tr th:last-child {
 .mess-time p {
   font-size: 11px;
   line-height: 0.7;
+  margin-bottom: 4px;
 }
 .chatbot-left button {
   font-weight: 700;
@@ -2793,13 +2810,13 @@ table tr th:last-child {
 }
 .action-part select {
   font-size: 14px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  padding-right: 60px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 42px;
   cursor: pointer;
   background: #2561a8 url("../Images/down-white.png") no-repeat right 20px
     center;
-  background-size: 14px;
+    background-size: 13px;
 }
 /* .sel-arr::after {
     content: '';
@@ -2822,6 +2839,8 @@ table tr th:last-child {
 }
 .top-tab-act .nav-tabs .nav-link {
   padding: 20px;
+  font-size: 16px;
+    font-weight: 600;
 }
 .chat-user-det {
   background-color: #fff;
@@ -2846,7 +2865,9 @@ table tr th:last-child {
 }
 .chat-user-name {
   color: #000;
-  font-weight: 700;
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 4px;
 }
 .chat-user-det textarea {
   background-color: #ecf2f4;
@@ -2955,7 +2976,8 @@ table tr th:last-child {
 }
 .auth-content .card .card-block,
 .auth-content .card .card-body {
-  padding: 25px 62px 60px;
+  padding: 35px 60px 70px;
+  box-shadow: 0 0 4px 0px #ddd;
 }
 .auth-wrapper .auth-content {
   padding: 0;
@@ -2997,8 +3019,8 @@ table tr th:last-child {
 }
 .claim-ticket {
   font-size: 15px;
-  padding: 14px;
-  padding-left: 15px;
+  padding: 15px;
+  padding-left: 0;
   margin-bottom: 0px;
   color: #5e6061;
 }
@@ -3009,6 +3031,7 @@ table tr th:last-child {
   font-weight: 500;
   line-height: 19px;
   text-align: left;
+  margin-right: 40px;
 }
 .claim-title {
   color: #4a4a4a;
@@ -3025,7 +3048,7 @@ table tr th:last-child {
   border-color: #2561a8;
   width: 145px;
   height: 40px;
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
   color: white;
 }
@@ -3048,10 +3071,10 @@ table tr th:last-child {
   background-image: none;
   border-color: #2561a8;
   border-radius: 0.25rem;
-  height: 42px;
+  height: 40px;
   line-height: 10px;
   margin-right: 10px;
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
 }
 .col-md-9-card {
@@ -3060,58 +3083,55 @@ table tr th:last-child {
   max-width: 75%;
 }
 .oderDetails-table {
-  margin-left: -20px;
-  padding-top: 0px;
+  padding-top: 15px;
 }
 .span-color {
   color: red;
 }
 .search-customer-padding {
-  padding: 23px;
-  padding-left: 7%;
-  padding-top: 5px;
+  padding: 30px;
 }
 .back-color {
   background-color: #f5f8f9;
   padding-top: 20px;
-  margin-left: -13px;
 }
 .card-radius {
   border-radius: 6px;
-  padding-top: 15px;
-  padding-left: 15px;
 }
 .label-color {
   color: #6b6767;
+  margin-right: 5px;
 }
 .add-customer-color {
-  margin-left: 230px;
   color: #4275b1;
+  float: right;
   cursor: pointer;
 }
 .search-mobile-textbox {
   background-color: #ecf2f4;
   border-radius: 4px;
-  width: 875px;
-  height: 43px;
-  margin-left: -15px;
+  width: 100%;
+  height: 40px;
   margin-top: 15px;
+  margin-bottom: 20px;
   padding: 10px;
   border: none;
 }
 .searchImg {
   width: 16px;
   height: 16px;
-  margin-top: -70px;
-  margin-left: 825px;
+}
+.raiseclaim .searchImg {
+  position: absolute;
+  top: 25px;
+  right: 15px;
 }
 .claim-status-card {
   background-color: #ecf2f4;
   width: auto;
-  height: 54px;
-  border-radius: 10px;
-  padding: 15px;
-  padding-left: 10px;
+  height: 40px;
+  border-radius: 4px;
+  padding: 9px 15px;
 }
 .line-2 {
   border: 1px solid #cad4d7;
@@ -3160,8 +3180,7 @@ table tr th:last-child {
   margin-left: 833px;
 }
 .batashoes {
-  width: 156px;
-  margin-left: -11px;
+  width: 150px;
 }
 .label-6 {
   color: #4a4a4a;
@@ -3174,14 +3193,17 @@ table tr th:last-child {
   padding-top: 15px;
   padding-bottom: 10px;
 }
+.raiseclaim .row {
+  margin: 0;
+}
 .ticket-comments-textarea {
   background-color: #ecf2f4;
   border-radius: 4px;
-  width: 870px;
-  height: 123px;
+  width: 100%;
+  min-height: 125px;
   border: none;
+  height: auto;
   resize: none;
-  padding-left: 10px;
 }
 .hr-ago {
   color: #9b9b9b;
@@ -3341,7 +3363,7 @@ table tr th:last-child {
   min-height: 300px;
   overflow: auto;
   max-height: 350px;
-  margin-left: -50px;
+  margin-left: 0;
 }
 /**Historical popup css edn**/
 
@@ -3384,6 +3406,8 @@ progress::-moz-progress-bar {
   width: 100%;
   text-align: center;
   position: relative;
+  margin: 0;
+    text-transform: capitalize;
 }
 .dropdown-label {
   color: #9b9b9b;
@@ -3865,7 +3889,7 @@ progress::-moz-progress-bar {
 .program-code-button {
   background-color: #2561a8;
   border-radius: 4px;
-  width: 282px;
+  width: 100%;
   height: 43px;
   margin-right: 10px;
   cursor: pointer;
@@ -3884,7 +3908,7 @@ progress::-moz-progress-bar {
 .program-code-textbox {
   background-color: #ecf2f4;
   border-radius: 4px;
-  width: 282px;
+  width: 100%;
   height: 43px;
   padding: 10px;
 }
@@ -4212,7 +4236,6 @@ progress::-moz-progress-bar {
     align-items: center;
     margin-right: 10px;
   }
-
   .line-1 {
     display: inline-block;
     margin: 0 15px;
@@ -4476,13 +4499,9 @@ progress::-moz-progress-bar {
 
 .main-content-kb {
   background-color: #ffffff;
-  border-radius: 4px;
-  width: 1216px;
-  height: 889px;
-  margin: 10px;
-  margin-top: 20px;
-  margin-left: 20px;
-  margin-bottom: 20px;
+    border-radius: 4px;
+    width: 97%;
+    margin: 20px;
 }
 
 .main-content-margin {
@@ -4693,13 +4712,9 @@ progress::-moz-progress-bar {
 
 .main-content-kb {
   background-color: #ffffff;
-  border-radius: 4px;
-  width: 1216px;
-  height: 889px;
-  margin: 10px;
-  margin-top: 20px;
-  margin-left: 20px;
-  margin-bottom: 20px;
+    border-radius: 4px;
+    width: 97%;
+    margin: 20px;
 }
 
 .main-content-margin {
@@ -4786,7 +4801,7 @@ progress::-moz-progress-bar {
   background-color: white;
 }
 .kb-table table thead th.pad {
-  padding-right: 100px;
+  padding-right: 0;
   float: inherit;
 }
 
@@ -5112,11 +5127,11 @@ progress::-moz-progress-bar {
 }
 .historyTable {
   font-size: 12px;
-  padding: 10px 30px;
-  margin-right: -40px;
+  padding: 10px 0px;
+  margin-right:0;
 }
 .historyTable table thead tr {
-  background-color: #ffffff;
+  background-color: #ffffff !important;
   border-bottom: none;
 }
 
@@ -5644,6 +5659,7 @@ progress::-moz-progress-bar {
   float: left !important;
   color: #4A4A4A !important;
   font-weight: 500;
+  white-space: normal;
 }
 .ReactTable .rt-thead .rt-th,
 .ReactTable .rt-thead .rt-td {
@@ -5737,7 +5753,7 @@ table thead tr {
   border-radius: 50%;
   background-color: #2561a8;
   color: white;
-  padding: 5px;
+  padding: 5px 8px;
   font-weight: 500;
 }
 /* Scrolling css start By Shlok*/
@@ -5889,8 +5905,8 @@ table thead tr {
   border-radius: 3px;
 }
 #cke_editor1 {
-  margin-left: 17px !important;
-  width: 530px !important;
+  margin-left: 0 !important;
+  width: 100% !important;
 }
 #cke_24 {
   display: none;
@@ -6314,13 +6330,13 @@ table thead tr {
 }
 .plusline1 {
   border: 1px solid #9b9b9b;
-  padding-top: 15px;
-  padding-bottom: 17px;
+  padding-top: 9px;
+  padding-bottom: 9px;
 }
 .plusline2 {
   border: 1px solid #9b9b9b;
-  padding-bottom: 17px;
-  padding-top: 15px;
+  padding-top: 9px;
+  padding-bottom: 9px;
 }
 /* My Ticket page email Editor css start by Shlok */
 .myTicketEmail .cke_chrome {
@@ -6328,9 +6344,9 @@ table thead tr {
   padding: 0;
 }
 .myTicketEmail #cke_editor1 {
-  margin-top: -30px;
-  margin-left: -64px;
-  width: 1220px;
+  margin-top: 0;
+  margin-left: 0;
+  width: 100%;
   border: 1px solid #d1d1d1;
   border-radius: 7px;
 }
@@ -6357,8 +6373,8 @@ table thead tr {
   margin-right: 8px;
 }
 .myTicketEmail #cke_editor1 {
-  margin-left: -67px;
-  width: 176%;
+  margin-left: 0;
+  width: 100%;
 }
 /* Email Editor css End*/
 /* myTicket css start for comment pop up by Shlok*/
@@ -6403,7 +6419,8 @@ table tr th:last-child {
   background-color: #2561a8;
   border-radius: 100%;
   color: #fff;
-  padding: 1px 4px 3px 3px;
+  font-size: 12px;
+  padding: 3px 6px 4px 6px;
 }
 .comment-padding {
   padding: 30px;
@@ -6510,7 +6527,7 @@ table tr th:last-child {
   .customer-text{
   color: #4A4A4A;
   font-family: Lato;
-  font-size: 18px;
+  font-size: 9px !important;
   font-weight: 700;
   line-height: 19px;
   text-align: left;
@@ -6759,7 +6776,7 @@ table tr th:last-child {
   /* React table body color css end */
   /* StoreUser page css start by shlok */
   .storeUsers table th {
-    font-size: 12px;
+    font-size: 13px;
     padding: 20px 16px;
 }
   /* StoreUser page css end by shlok */

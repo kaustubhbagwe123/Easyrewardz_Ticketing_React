@@ -61,7 +61,7 @@ class EditStoreTask extends Component {
           </Modal>
         </div>
         <div className="row width">
-          <div className="col-md-8">
+          <div className="col-md-7">
             <div className="card store-card-padding">
               <label className="store-Edit-lbl"> Task Title</label>
               <input
@@ -183,7 +183,7 @@ class EditStoreTask extends Component {
               </div>
             </div>
           </div>
-          <div className="col-md-4">
+          <div className="col-md-5" style={{padding:"0"}}>
             <div className="card store-card-2">
               <div className="row">
                 <div className="col-md-6">

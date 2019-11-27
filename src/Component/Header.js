@@ -530,7 +530,7 @@ class Header extends Component {
                   <img src={UserLogo} alt="User" />
                 </div>
                 <div>
-                  <p style={{ marginTop: "15px", marginBottom: "0" }}>
+                  <p style={{ fontSize: "16px", fontWeight: "600" }}>
                     Naman Rampal
                   </p>
                   <p className="mail-id">naman@fabindia.com</p>
@@ -567,11 +567,11 @@ class Header extends Component {
                 <div className="d-flex justify-content-between">
                   <div>
                     <p className="logout-label">Login Time</p>
-                    <p className="font-weight-bold">9:30 AM</p>
+                    <p className="font-weight-bold" style={{fontSize: "16px"}}>9:30 AM</p>
                   </div>
                   <div>
                     <p className="logout-label">Logout Time</p>
-                    <p className="font-weight-bold">6:30 PM</p>
+                    <p className="font-weight-bold" style={{fontSize: "16px" , float: "right" }}>6:30 PM</p>
                   </div>
                 </div>
                 <ProgressBar className="logout-progress" now={60} />
