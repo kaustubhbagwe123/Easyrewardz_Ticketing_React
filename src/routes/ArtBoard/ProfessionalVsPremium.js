@@ -6,8 +6,8 @@ import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { faSquareFull } from "@fortawesome/free-solid-svg-icons";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
-import { Popover } from "antd";
-import { Link } from "react-router-dom";
+// import { Popover } from "antd";
+// import { Link } from "react-router-dom";
 
 class ProfessionalVsPremium extends Component {
     render() {
