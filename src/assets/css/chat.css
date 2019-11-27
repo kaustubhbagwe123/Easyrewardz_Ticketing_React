@@ -296,54 +296,54 @@
   padding-left: 25px;
   text-align: left;
 }
-.chat-lbl7{
+.chat-lbl7 {
   text-align: left;
   padding-left: 20px;
 }
-.dash-linechart #chart{
+.dash-linechart #chart {
   margin-top: -5px !important;
 }
 /* dashboad css end */
 /* ChatBot Create modal css start by shlok */
-.mdlcancleImg{
+.mdlcancleImg {
   margin-top: -24px;
   float: right;
 }
-.mainDiv-crt{
+.mainDiv-crt {
   padding: 0px 15px 0px 15px;
 }
-.lbl-customerMdl{
+.lbl-customerMdl {
   font-size: 15px;
-    font-weight: 700;
+  font-weight: 700;
 }
-.lbl-sourceChat{
+.lbl-sourceChat {
   float: right;
-    font-weight: 600;
+  font-weight: 600;
 }
-.lbl-mdlHeader{
+.lbl-mdlHeader {
   margin-top: 10px;
   margin-bottom: 5px;
 }
-.mdl-lbl{
+.mdl-lbl {
   font-weight: 500;
-  color: #9B9B9B;
+  color: #9b9b9b;
   margin-bottom: 4px;
 }
-.txt-border{
+.txt-border {
   border: 1px solid;
   color: #d6d4d4;
 }
-.chat-txt1{
-  background-color: #F9F9F9;
+.chat-txt1 {
+  background-color: #f9f9f9;
   border-radius: 4px;
   width: 100%;
   height: 38px;
   padding: 10px;
 }
-.chat-mdlMargin{
+.chat-mdlMargin {
   margin-bottom: 15px;
 }
-#CreateCustomer-mdl{
+#CreateCustomer-mdl {
   border-radius: 5px;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
   padding: 10;
@@ -352,16 +352,16 @@
   min-width: 870px !important;
   margin-top: -62px;
 }
-.drop-downlist-mdl{
-  border-radius: .25rem;
-    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-    display: block;
-    width: 100%;
-    height: 37px;
-    padding: 10px;
-    padding-left: 15px;
+.drop-downlist-mdl {
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  display: block;
+  width: 100%;
+  height: 37px;
+  padding: 10px;
+  padding-left: 15px;
 }
-.dropdown-chat{
+.dropdown-chat {
   color: #635e5e;
   font-family: Lato;
   font-size: 15px;
@@ -369,11 +369,11 @@
   line-height: 17px;
   text-align: left;
   padding-right: 40px;
-  background: #F9F9F9 url("../Images/dropDown.png") no-repeat right 12px center;
+  background: #f9f9f9 url("../Images/dropDown.png") no-repeat right 12px center;
   cursor: pointer;
 }
 .text-areaChatModel {
-  background-color: #F9F9F9;
+  background-color: #f9f9f9;
   padding: 12px;
   height: auto;
   display: block;
@@ -392,214 +392,348 @@
   cursor: pointer;
   height: 40px;
 }
-.chatAnchor{
-  color: #2561A8;
-    margin-top: 10px;
-    margin-right: 15px;
+.chatAnchor {
+  color: #2561a8;
+  margin-top: 10px;
+  margin-right: 15px;
 }
-.chatbtnDiv{
+.chatbtnDiv {
   float: right;
-    margin-top: 15px;
+  margin-top: 15px;
 }
-.curshar-pointer{
+.curshar-pointer {
   cursor: pointer;
 }
-#createTicketModal{
+#createTicketModal {
   border-radius: 5px;
-    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
-    padding: 10;
-    display: inline-block;
-    min-width: 610px !important;
-    margin-top: 120px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+  padding: 10;
+  display: inline-block;
+  min-width: 610px !important;
+  margin-top: 120px;
 }
-.openTciketLbl{
+.openTciketLbl {
   font-size: 15px;
-    font-weight: 600;
+  font-weight: 600;
 }
-.flot-calcel{
+.flot-calcel {
   float: right;
 }
-.modal-lbl1{
+.modal-lbl1 {
   font-size: 13px;
-    font-weight: 400;
+  font-weight: 400;
 }
-.span-lbl2{
+.span-lbl2 {
   display: inline-block;
   font-size: 12px;
   font-weight: 500;
 }
-.modal-lbl2{
+.modal-lbl2 {
   font-size: 13px;
-    font-weight: 700;
+  font-weight: 700;
 }
-.opn-ticketDiv{
+.opn-ticketDiv {
   margin-top: 6px;
 }
-.no-mdl{
+.no-mdl {
   font-weight: 700;
-    color: #2561A8;
+  color: #2561a8;
 }
-.padding-div{
+.padding-div {
   padding: 10px;
 }
 /* ChatBot Create modal css end */
 /* dashboard Chatbot drawer css start kalpesh*/
 .chatdrawer .ant-drawer-mask {
   background: none;
-  }
-  .chatdrawer .ant-drawer-content-wrapper {
+}
+.chatdrawer .ant-drawer-content-wrapper {
   margin-top: 58px;
-  }
-  .chatdrawer .ant-drawer-wrapper-body {
+}
+.chatdrawer .ant-drawer-wrapper-body {
   width: 325px;
-  }
-  .chatdrawer .chatleftdrawer {
+}
+.chatdrawer .chatleftdrawer {
   /* max-height: 200px;  */
   overflow: auto;
-  }
-  .ongoing {
-  color: #4A4A4A;
+}
+.ongoing {
+  color: #4a4a4a;
   font-family: Lato;
   font-size: 16px;
   font-weight: 400;
   line-height: 19px;
   text-align: left;
   margin-bottom: 10px;
-  }
-  .cancelbtn-chat {
+}
+.cancelbtn-chat {
   width: 17px;
   height: 16px;
   float: right;
   margin-right: 0px;
   margin-top: 0px;
   cursor: pointer;
-  }
-  .chatpadding {
+}
+.chatpadding {
   padding: 0 10px;
   border-bottom: 1px solid #e8e8e8;
-  }
-  .chatdrawer .ant-drawer-body {
+}
+.chatdrawer .ant-drawer-body {
   background-color: #fffef7;
-  }
-  /* dashboard Chatbot drawer css end kalpesh */
-  /* Chatbot recent chat and drawer css start kalpesh*/
-.table-bchat{
-  background-color: #EBEBEB;
+}
+/* dashboard Chatbot drawer css end kalpesh */
+/* Chatbot recent chat and drawer css start kalpesh*/
+.table-bchat {
+  background-color: #ebebeb;
   border-radius: 4px;
   width: 28px;
   height: 22px;
-  }
-  .chatreact .ReactTable {
+}
+.chatreact .ReactTable {
   margin: 10px;
   border: none;
-  
-  }
-  .chatreact .chatnamereact {
-  color: #4A4A4A;
+}
+.chatreact .chatnamereact {
+  color: #4a4a4a;
   font-family: Lato;
   font-size: 13px;
   font-weight: 700;
-  text-align: left;
-  }
-  .chatreact .ReactTable .rt-tbody {
+  display: initial;
+  margin-left: 5px;
+}
+.chatreact .ReactTable .rt-tbody {
   background-color: #fff;
   border-radius: 8px !important;
-  }
-  .chatreact .ReactTable .rt-tbody .rt-td {
+}
+.chatreact .ReactTable .rt-tbody .rt-td {
   padding: 10px 20px !important;
-  }
-  .actionleft {
+}
+.actionleft {
   float: right;
   margin-top: -51px;
   margin-right: 20px;
-  }
-  .actionright {
+}
+.actionright {
   float: right;
   margin-top: -62px;
   margin-right: 20px;
-  }
-  .searchImg-raisechat {
+}
+.searchImg-raisechat {
   width: 20px;
   height: 20px;
-  float: right;
-  margin-right: 0px; 
-  
-  }
-  .searchtextchat {
+  margin-left: -31px;
+  margin-right: 8px;
+}
+.searchtextchat {
   border: none;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border-radius: 4px;
   width: 260px;
   height: 43px;
   float: right;
   padding: 10px;
-  }
-  .chatreact .chatthumb {
+  margin-right: 4px;
+}
+.chatreact .chatthumb {
   width: 20px;
   height: 20px;
-  }
-  .drawerchat .ant-drawer-content-wrapper {
+}
+.drawerchat .ant-drawer-content-wrapper {
   height: 210px !important;
   margin-left: 317px;
   width: 74% !important;
   box-shadow: 0 0px 0px rgba(0, 0, 0, 0.15) !important;
-  }
-  .drawerchat .ant-drawer-mask {
+}
+.drawerchat .ant-drawer-mask {
   background: none;
-  }
-  .drawerchat .crossdrawer {
+}
+.drawerchat .crossdrawer {
   font-size: 25px;
   float: right;
   width: 20px;
   height: 20px;
   font-weight: 700;
   margin-top: -7px;
-  }
-  .drawerchat .chaton {
-  color: #4A4A4A;
+}
+.drawerchat .chaton {
+  color: #4a4a4a;
   font-family: Lato;
   font-size: 16px;
   font-weight: 400;
   line-height: 19px;
   text-align: left;
-  }
-  .drawerchat .mohitdrawer{
+}
+.drawerchat .mohitdrawer {
   color: #000000;
   font-family: Lato;
   font-size: 16px;
   font-weight: 600;
   line-height: 50px;
   text-align: left;
-  }
-  .drawerchat .num {
-  color: #4A4A4A;
+}
+.drawerchat .num {
+  color: #4a4a4a;
   font-family: Lato;
   font-size: 11px;
   font-weight: 400;
   line-height: 13px;
   text-align: left;
-  border-bottom: 1px solid #E4E4E4;
+  border-bottom: 1px solid #e4e4e4;
   padding-bottom: 15px;
-  }
-  .twothous {
-  color: #2561A8;
+}
+.twothous {
+  color: #2561a8;
   font-family: Lato;
   font-size: 16px;
   font-weight: 500;
   line-height: 25px;
   text-align: left;
-  }
-  .twotho{
+}
+.twotho {
   display: grid;
   padding-left: 25px;
-  }
-  .twothoustext {
-  color: #2561A8;
+}
+.twothoustext {
+  color: #2561a8;
   font-family: Lato;
   font-size: 18px;
   font-weight: 500;
   line-height: 19px;
   text-align: left;
+}
+/* Chatbot recent chat and drawer css end kalpesh*/
+/* Chat Elements Css Start Kalpesh */
+.chat-elementicon {
+  border-radius: 100%;
+  background-color: #fa6400;
+  width: 30px;
+  height: 30px;
+  padding: 3px 7px;
+}
+.chatelementiconimg {
+  width: 15px;
+  height: 15px;
+}
+.ChatElementReact .ReactTable {
+  border: none;
+}
+.ChatElementReact .ReactTable .rt-tbody .rt-td {
+  color: #4a4a4a !important;
+  padding: 10px 20px !important;
+}
+.chatelementbrowse {
+  height: 25px;
+  padding: 0;
+  float: right;
+  border: none;
+  background-color: #9b9b9b;
+  color: #fff;
+}
+.custom-file-label {
+  background-color: #ecf2f4;
+  border-radius: 4px;
+  width: 100%;
+  height: 43px;
+  border: none;
+  padding: 10px;
+}
+.custom-file-label::after {
+  position: absolute;
+  top: 9px;
+  right: 20px;
+  bottom: 0;
+  z-index: 3;
+  display: block;
+  height: 25px;
+  line-height: 12px;
+  color: #495057;
+  content: "Browse";
+  background-color: #d3d9db;
+  border-left: inherit;
+  border-radius: 0 0.25rem 0.25rem 0;
+}
+/* Chat Elements Css End */
+
+/* Chat Theme page Css start By Shlok */
+.chat-file-upl {
+  font-weight: 400;
+  color: #afafaf;
+}
+/* Chat Theme page Css end */
+/* ChatConfigureBrand Css Start Kalpesh */
+.setting-chat-config {
+  padding: 20px 20px;
+  /* background-color: #ecf2f4; */
   }
-  /* Chatbot recent chat and drawer css end kalpesh*/
+  .chat-config-center {
+  margin: 0 auto;
+  }
+  .ChatThemeflex {
+  display: flex;
+  }
+  .ChatConfigtheme {
+  width: 70px;
+  height: 70px;
+  margin-right: 40px;
+  }
+  .ChatConfigthemelast {
+  width: 70px;
+  height: 70px;
+  margin-right: 0px;
+  }
+  .ChatBataLogo {
+  width: 100px;
+  height: 50px;
+  }
+  .bataimgborder {
+  border:1px solid #D9DADC;
+  text-align: center;
+  padding: 10px 0px;
+  }
+  .chatconfigpadding {
+  padding: 10px 90px;
+  }
+  .chatconfigbtn {
+  margin-top: 10px;
+  }
+  #pluspopup {
+  width: 400px;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+  }
+  .chat-config-center .table-height {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 480px;
+}
+  /* ChatConfigureBrand Css end Kalpesh */
+  /* Chat Historical chat page css start by Shlok */
+  .chat-historicalHdr{
+    background-color: #ECF2F4;
+    width: 100%;
+    height: 57px;
+  }
+  .chatSrchHder{
+    float: right;
+    margin-top: 7px;
+    margin-right: 15px;
+  }
+  .mychatHistoriLbl{
+    color: #4A4A4A;
+    font-family: Lato;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 18px;
+    text-align: left;
+    margin-top: 18px;
+    margin-left: 25px;
+  }
+  .HistoChat .ReactTable .rt-tbody .rt-tr-group {
+    border-bottom: solid 1px rgba(0,0,0,0.05);
+    border: none;
+}
+  /* Chat Historical chat page css End by Shlok */
 /* -------------------------------------------------------------------- */

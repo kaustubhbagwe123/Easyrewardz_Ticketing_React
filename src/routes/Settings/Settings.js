@@ -18,7 +18,7 @@ import modules from "./../../assets/Images/modules.png";
 import item from "./../../assets/Images/item.png";
 import department from "./../../assets/Images/department.png";
 import audit from "./../../assets/Images/audit.png";
-import Demo from "../../store/Hashtag";
+// import Demo from "../../store/Hashtag";
 import { Link } from "react-router-dom";
 
 class Settings extends Component {
@@ -90,7 +90,7 @@ class Settings extends Component {
                 <div className="row">
                   <div className="col-md-3">
                     <div className="setting-cntr">
-                      <a href="ticketHierarchy" className="setting-box">
+                      <Link to="ticketHierarchy" className="setting-box">
                         <div className="setting-icons">
                           <img src={hierarchy} alt="hierarchy" />
                         </div>
@@ -102,7 +102,7 @@ class Settings extends Component {
                             authority.
                           </p>
                         </div>
-                      </a>
+                      </Link>
                       <Link to="brands" className="setting-box">
                         <div className="setting-icons">
                           <img src={brand} alt="brand" />
@@ -120,7 +120,7 @@ class Settings extends Component {
                   </div>
                   <div className="col-md-3">
                     <div className="setting-cntr">
-                      <a href={Demo.BLANK_LINK} className="setting-box">
+                      <Link to="storeMaster" className="setting-box">
                         <div className="setting-icons">
                           <img src={storeSettings} alt="store-settings" />
                         </div>
@@ -132,8 +132,8 @@ class Settings extends Component {
                             authority.
                           </p>
                         </div>
-                      </a>
-                      <a href={Demo.BLANK_LINK} className="setting-box">
+                      </Link>
+                      <Link to="categoryMaster" className="setting-box">
                         <div className="setting-icons">
                           <img src={category} alt="category" />
                         </div>
@@ -145,12 +145,12 @@ class Settings extends Component {
                             authority.
                           </p>
                         </div>
-                      </a>
+                      </Link>
                     </div>
                   </div>
                   <div className="col-md-3">
                     <div className="setting-cntr">
-                      <a href="Priority" className="setting-box">
+                      <Link to="Priority" className="setting-box">
                         <div className="setting-icons">
                           <img src={priority} alt="priority" />
                         </div>
@@ -162,7 +162,7 @@ class Settings extends Component {
                             authority.
                           </p>
                         </div>
-                      </a>
+                      </Link>
                       <Link to="sla" className="setting-box">
                         <div className="setting-icons">
                           <img src={sla} alt="sla" />
@@ -193,7 +193,7 @@ class Settings extends Component {
                           </p>
                         </div>
                       </Link>
-                      <a href={Demo.BLANK_LINK} className="setting-box">
+                      <Link to="ticketCRMRole" className="setting-box">
                         <div className="setting-icons">
                           <img src={crmRoles} alt="crm-roles" />
                         </div>
@@ -205,7 +205,7 @@ class Settings extends Component {
                             authority.
                           </p>
                         </div>
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -242,7 +242,7 @@ class Settings extends Component {
                   </div>
                   <div className="col-md-3">
                     <div className="setting-cntr">
-                      <a href={Demo.BLANK_LINK} className="setting-box">
+                      <Link to="reports" className="setting-box">
                         <div className="setting-icons icon-small">
                           <img src={reports} alt="reports" />
                         </div>
@@ -254,8 +254,8 @@ class Settings extends Component {
                             authority.
                           </p>
                         </div>
-                      </a>
-                      <a href={Demo.BLANK_LINK} className="setting-box">
+                      </Link>
+                      <Link to="module" className="setting-box">
                         <div className="setting-icons">
                           <img src={modules} alt="modules" />
                         </div>
@@ -267,7 +267,7 @@ class Settings extends Component {
                             authority.
                           </p>
                         </div>
-                      </a>
+                      </Link>
                     </div>
                   </div>
                   <div className="col-md-3">
@@ -311,7 +311,7 @@ class Settings extends Component {
                           </p>
                         </div>
                       </Link>
-                      <a href={Demo.BLANK_LINK} className="setting-box">
+                      <Link to="itemMaster" className="setting-box">
                         <div className="setting-icons icon-small">
                           <img src={item} alt="item" />
                         </div>
@@ -323,8 +323,8 @@ class Settings extends Component {
                             authority.
                           </p>
                         </div>
-                      </a>
-                      <a href="departmentMaster" className="setting-box">
+                      </Link>
+                      <Link to="departmentMaster" className="setting-box">
                         <div className="setting-icons icon-small">
                           <img src={department} alt="department" />
                         </div>
@@ -336,12 +336,12 @@ class Settings extends Component {
                             authority.
                           </p>
                         </div>
-                      </a>
+                      </Link>
                     </div>
                   </div>
                   <div className="col-md-3">
                     <div className="setting-cntr">
-                      <a href="storePriority" className="setting-box">
+                      <Link to="storePriority" className="setting-box">
                         <div className="setting-icons">
                           <img src={priority} alt="priority" />
                         </div>
@@ -353,8 +353,8 @@ class Settings extends Component {
                             authority.
                           </p>
                         </div>
-                      </a>
-                      <a href="SlaTemplateDepartment" className="setting-box">
+                      </Link>
+                      <Link to="SlaTemplateDepartment" className="setting-box">
                         <div className="setting-icons icon-small">
                           <img src={templates} alt="templates" />
                         </div>
@@ -366,8 +366,8 @@ class Settings extends Component {
                             authority.
                           </p>
                         </div>
-                      </a>
-                      <a href={Demo.BLANK_LINK} className="setting-box">
+                      </Link>
+                      <Link to="claimCategoryMaster" className="setting-box">
                         <div className="setting-icons">
                           <img src={category} alt="category" />
                         </div>
@@ -379,12 +379,12 @@ class Settings extends Component {
                             authority.
                           </p>
                         </div>
-                      </a>
+                      </Link>
                     </div>
                   </div>
                   <div className="col-md-3">
                     <div className="setting-cntr">
-                      <a href="Storecrmrole" className="setting-box">
+                      <Link to="Storecrmrole" className="setting-box">
                         <div className="setting-icons">
                           <img src={crmRoles} alt="crm-roles" />
                         </div>
@@ -396,8 +396,8 @@ class Settings extends Component {
                             authority.
                           </p>
                         </div>
-                      </a>
-                      <a href="storeusers" className="setting-box">
+                      </Link>
+                      <Link to="storeusers" className="setting-box">
                         <div className="setting-icons big-icon">
                           <img src={users} alt="users" />
                         </div>
@@ -409,8 +409,8 @@ class Settings extends Component {
                             authority.
                           </p>
                         </div>
-                      </a>
-                      <a href={Demo.BLANK_LINK} className="setting-box">
+                      </Link>
+                      <Link to="storeAlerts" className="setting-box">
                         <div className="setting-icons icon-small">
                           <img src={alert} alt="alert" />
                         </div>
@@ -422,12 +422,12 @@ class Settings extends Component {
                             authority.
                           </p>
                         </div>
-                      </a>
+                      </Link>
                     </div>
                   </div>
                   <div className="col-md-3">
                     <div className="setting-cntr">
-                      <a href="storereports" className="setting-box">
+                      <Link to="storereports" className="setting-box">
                         <div className="setting-icons icon-small">
                           <img src={reports} alt="reports" />
                         </div>
@@ -439,8 +439,8 @@ class Settings extends Component {
                             authority.
                           </p>
                         </div>
-                      </a>
-                      <a href={Demo.BLANK_LINK} className="setting-box">
+                      </Link>
+                      <Link to="storeModule" className="setting-box">
                         <div className="setting-icons">
                           <img src={modules} alt="modules" />
                         </div>
@@ -452,8 +452,8 @@ class Settings extends Component {
                             authority.
                           </p>
                         </div>
-                      </a>
-                      <a href={Demo.BLANK_LINK} className="setting-box">
+                      </Link>
+                      <Link to="fileuploadlogs" className="setting-box">
                         <div className="setting-icons">
                           <img src={fileUpload} alt="file-upload" />
                         </div>
@@ -465,7 +465,7 @@ class Settings extends Component {
                             authority.
                           </p>
                         </div>
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -479,7 +479,7 @@ class Settings extends Component {
                 <div className="row">
                   <div className="col-md-3">
                     <div className="setting-cntr">
-                      <a href={Demo.BLANK_LINK} className="setting-box">
+                      <Link to="qaHierarchyMaster" className="setting-box">
                         <div className="setting-icons">
                           <img src={hierarchy} alt="hierarchy" />
                         </div>
@@ -491,8 +491,8 @@ class Settings extends Component {
                             authority.
                           </p>
                         </div>
-                      </a>
-                      <a href={Demo.BLANK_LINK} className="setting-box">
+                      </Link>
+                      <Link to="qaCRMRoles" className="setting-box">
                         <div className="setting-icons">
                           <img src={crmRoles} alt="crm-roles" />
                         </div>
@@ -504,12 +504,12 @@ class Settings extends Component {
                             authority.
                           </p>
                         </div>
-                      </a>
+                      </Link>
                     </div>
                   </div>
                   <div className="col-md-3">
                     <div className="setting-cntr">
-                      <a href={Demo.BLANK_LINK} className="setting-box">
+                      <Link to="QaUsermaster" className="setting-box">
                         <div className="setting-icons big-icon">
                           <img src={users} alt="users" />
                         </div>
@@ -521,8 +521,8 @@ class Settings extends Component {
                             authority.
                           </p>
                         </div>
-                      </a>
-                      <a href={Demo.BLANK_LINK} className="setting-box">
+                      </Link>
+                      <Link to="QaAuditParameters" className="setting-box">
                         <div className="setting-icons icon-small">
                           <img src={audit} alt="audit" />
                         </div>
@@ -534,12 +534,12 @@ class Settings extends Component {
                             authority.
                           </p>
                         </div>
-                      </a>
+                      </Link>
                     </div>
                   </div>
                   <div className="col-md-3">
                     <div className="setting-cntr">
-                      <a href={Demo.BLANK_LINK} className="setting-box">
+                      <Link to="qareports" className="setting-box">
                         <div className="setting-icons icon-small">
                           <img src={reports} alt="reports" />
                         </div>
@@ -551,8 +551,8 @@ class Settings extends Component {
                             authority.
                           </p>
                         </div>
-                      </a>
-                      <a href={Demo.BLANK_LINK} className="setting-box">
+                      </Link>
+                      <Link to="fileuploadlogs" className="setting-box">
                         <div className="setting-icons">
                           <img src={fileUpload} alt="file-upload" />
                         </div>
@@ -564,7 +564,7 @@ class Settings extends Component {
                             authority.
                           </p>
                         </div>
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -578,7 +578,7 @@ class Settings extends Component {
                 <div className="row">
                   <div className="col-md-3">
                     <div className="setting-cntr">
-                      <a href={Demo.BLANK_LINK} className="setting-box">
+                      <Link to="ChatElements" className="setting-box">
                         <div className="setting-icons">
                           <img src={hierarchy} alt="hierarchy" />
                         </div>
@@ -590,12 +590,12 @@ class Settings extends Component {
                             authority.
                           </p>
                         </div>
-                      </a>
+                      </Link>
                     </div>
                   </div>
                   <div className="col-md-3">
                     <div className="setting-cntr">
-                      <a href={Demo.BLANK_LINK} className="setting-box">
+                      <Link to="chatLanguage" className="setting-box">
                         <div className="setting-icons">
                           <img src={storeSettings} alt="store-settings" />
                         </div>
@@ -607,12 +607,12 @@ class Settings extends Component {
                             authority.
                           </p>
                         </div>
-                      </a>
+                      </Link>
                     </div>
                   </div>
                   <div className="col-md-3">
                     <div className="setting-cntr">
-                      <a href={Demo.BLANK_LINK} className="setting-box">
+                      <Link to="chatThemes" className="setting-box">
                         <div className="setting-icons">
                           <img src={priority} alt="priority" />
                         </div>
@@ -624,14 +624,14 @@ class Settings extends Component {
                             authority.
                           </p>
                         </div>
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </div>
                 <div className="row">
                   <div className="col-md-3">
                     <div className="setting-cntr">
-                      <a href={Demo.BLANK_LINK} className="setting-box">
+                      <Link to="ChatRules" className="setting-box">
                         <div className="setting-icons icon-small">
                           <img src={brand} alt="brand" />
                         </div>
@@ -643,12 +643,12 @@ class Settings extends Component {
                             authority.
                           </p>
                         </div>
-                      </a>
+                      </Link>
                     </div>
                   </div>
                   <div className="col-md-3">
                     <div className="setting-cntr">
-                      <a href={Demo.BLANK_LINK} className="setting-box">
+                      <Link to="ChatConfigureBrand" className="setting-box">
                         <div className="setting-icons icon-small">
                           <img src={category} alt="category" />
                         </div>
@@ -660,7 +660,7 @@ class Settings extends Component {
                             authority.
                           </p>
                         </div>
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </div>

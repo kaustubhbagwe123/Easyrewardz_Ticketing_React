@@ -17,11 +17,11 @@ class Brands extends Component {
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
-          <Link to="settings">Settings</Link>
+          <Link to="settings" className="header-path">Settings</Link>
           <span>&gt;</span>
-          <Link to={Demo.BLANK_LINK}>Ticketing</Link>
+          <Link to={Demo.BLANK_LINK} className="header-path">Ticketing</Link>
           <span>&gt;</span>
-          <Link to={Demo.BLANK_LINK} className="active">
+          <Link to={Demo.BLANK_LINK} className="active header-path">
             Brands
           </Link>
         </div>

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+<<<<<<< HEAD
 import StepZilla from "react-stepzilla";
 import congratulationimg from "../../assets/Images/congratulation-final.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -7,6 +8,9 @@ import {
   faInfo,
   faInfoCircle
 } from "@fortawesome/free-solid-svg-icons";
+=======
+import congratulationimg from "../../assets/Images/congratulation-final.jpg";
+>>>>>>> 87cf9956995434be31979d6f420b9f3ed566a17d
 
 class Congratulation extends Component {
   render() {

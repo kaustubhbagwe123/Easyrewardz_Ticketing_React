@@ -4,15 +4,10 @@ import { ProgressBar } from "react-bootstrap";
 import Modal from "react-responsive-modal";
 import DashboardLogo from "./../assets/Images/dashboardBlack.png";
 import DashboardLogoBlue from "./../assets/Images/dashboardBlue.png";
-// import storeBlack from "./../assets/Images/store-black.png";
-// import storeBlue from "./../assets/Images/storeBlue.png";
 import TicketLogo from "./../assets/Images/ticket.png";
 import TicketLogoBlue from "./../assets/Images/ticket-blue.png";
 import KnowledgeLogo from "./../assets/Images/knowledge.png";
 import KnowledgeLogoBlue from "./../assets/Images/knowledge-blue.png";
-// import CalendarLogo from "./../assets/Images/calendar-black.png";
-// import CalendarLogoBlue from "./../assets/Images/calendar-blue.png";
-// import CalenderLogo from "./../assets/Images/calender.png";
 import ChatLogo from "./../assets/Images/chat.png";
 import ChatLogoBlue from "./../assets/Images/chat-blue.png";
 import NotificationLogo from "./../assets/Images/Notification.png";
@@ -23,58 +18,90 @@ import StatusLogo from "./../assets/Images/status.png";
 import Hamb from "./../assets/Images/hamb.png";
 import CancelIcon from "./../assets/Images/cancel.png";
 import { Drawer } from "antd";
-// import {history} from "./../store/history";
-// import ClaimLogoBlue from "./../assets/Images/claim-blue.png";
-// import Demo from "../store/Hashtag";
+import HeadPhoneBlue from "./../assets/Images/headphone2.png";
+import EasyRewardLogo from "./../assets/Images/logo.jpg";
+import AmitSinghLogo from "./../assets/Images/amitsingh.png";
+import LogoutImg from "./../assets/Images/logout.png";
+import TakeBreak from "./../assets/Images/takebreak.png";
+import { Popover } from "antd";
 
 class Header extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-    modalIsOpen: false,
-    open: false,
-    ChatDetailModel: false,
-    cont: [
-      {
-        data: "Dashboards",
-        urls: "dashboard",
-        logoBlack: DashboardLogo,
-        logoBlue: DashboardLogoBlue,
-        imgAlt: "dashboard icon",
-        imgClass: "dashboardImg1",
-        activeClass: "active single-menu"
-      },
-      {
-        data: "My Tickets",
-        urls: "myTicketlist",
-        logoBlack: TicketLogo,
-        logoBlue: TicketLogoBlue,
-        imgAlt: "ticket icon",
-        imgClass: "myTicket",
-        activeClass: "single-menu"
-      },
-      {
-        data: "Knowledge Base",
-        urls: "knowledgebase",
-        logoBlack: KnowledgeLogo,
-        logoBlue: KnowledgeLogoBlue,
-        imgAlt: "knowledge icon",
-        imgClass: "knowledgeNav",
-        activeClass: "single-menu"
-      }
-    ]
-  };
-
-}
-
+      modalIsOpen: false,
+      HeadPhoneOpen: false,
+      LoginOpen: false,
+      open: false,
+      NextButton: false,
+      ChatDetailModel: false,
+      NextButtonModal: false,
+      WaitingCall: false,
+      cont: [
+        {
+          data: "Dashboards",
+          urls: "dashboard",
+          logoBlack: DashboardLogo,
+          logoBlue: DashboardLogoBlue,
+          imgAlt: "dashboard icon",
+          imgClass: "dashboardImg1",
+          activeClass: "active single-menu"
+        },
+        {
+          data: "My Tickets",
+          urls: "myTicketlist",
+          logoBlack: TicketLogo,
+          logoBlue: TicketLogoBlue,
+          imgAlt: "ticket icon",
+          imgClass: "myTicket",
+          activeClass: "single-menu"
+        },
+        {
+          data: "Knowledge Base",
+          urls: "knowledgebase",
+          logoBlack: KnowledgeLogo,
+          logoBlue: KnowledgeLogoBlue,
+          imgAlt: "knowledge icon",
+          imgClass: "knowledgeNav",
+          activeClass: "single-menu"
+        }
+      ]
+    };
+  }
+  handleNextButtonShow() {
+    this.setState({ NextButton: !this.state.NextButton });
+  }
+  handleWaitingShow() {
+    this.setState({ WaitingCall: !this.setState.WaitingCall });
+  }
+  handleHeadPhoneModalOpen() {
+    this.setState({ HeadPhoneOpen: true });
+  }
+  handleHeadPhoneModalClose() {
+    this.setState({ HeadPhoneOpen: false });
+  }
+  handleLoginModalOpen() {
+    this.handleHeadPhoneModalClose();
+    this.setState({ LoginOpen: true });
+  }
+  handleLoginModalClose() {
+    this.setState({ LoginOpen: false });
+  }
+  handleNextBtnModalOpen() {
+    this.handleLoginModalClose();
+    this.setState({ NextButtonModal: true });
+  }
+  handleNextBtnModalClose() {
+    this.setState({ NextButtonModal: false });
+  }
   handleChatDetailModelOpen() {
     this.setState({ ChatDetailModel: true });
   }
   handleChatDetailModelClose() {
-    this.setState({ ChatDetailModel: false })
+    this.setState({ ChatDetailModel: false });
   }
- 
+
   onOpenModal = () => {
     this.setState({ open: true });
   };
@@ -95,7 +122,7 @@ class Header extends Component {
     let pageName, lastOne, lastValue, arr;
     arr = [...this.state.cont];
     setTimeout(
-      function () {
+      function() {
         pageName = window.location.pathname;
         lastOne = pageName.split("/");
         lastValue = lastOne[lastOne.length - 1];
@@ -119,19 +146,31 @@ class Header extends Component {
   };
 
   render() {
-    //   const Dashboard =this.state.dashboard
-    //   ?  <img
-    //   src={DashboardLogo}
-    //   alt="dashboard icon"
-    //   className="dashboardImg1"
-    // /> :
-    // <img
-    //   src={DashboardLogoBlue}
-    //   alt="dashboard icon"
-    //   className="dashboardImg1"
-    // />;
-
-
+    const TransferCall = (
+      <>
+        <div>
+          <div className="row tooltiptransfercallrow">
+            <div className="col-md-8">
+              <label className="agentidtext-tooltip">Enter Agent ID</label>
+            </div>
+          </div>
+          <div className="row agenttextrow">
+            <div className="col-md-12">
+              <input
+                type="text"
+                className="agenttext-tooltip"
+                placeholder="9876543210"
+              />
+            </div>
+          </div>
+          <div className="row agenttextrow">
+            <div className="col-md-12">
+              <button className="loginbtnagent">Connenting</button>
+            </div>
+          </div>
+        </div>
+      </>
+    );
     return (
       <React.Fragment>
         <div
@@ -160,13 +199,6 @@ class Header extends Component {
             </div>
             <div className="headers-menu">
               {this.state.cont.map(item => (
-                // <div
-                //   onClick={this.actives}
-                //   className={item.activeClass}
-                //   key={item.data}
-                // >
-                //   {item.data}
-                // </div>
                 <Link
                   onClick={this.actives}
                   key={item.data}
@@ -188,140 +220,386 @@ class Header extends Component {
                   {item.data}
                 </Link>
               ))}
-              {/* <Link to="/admin/dashboard" className="single-menu">
-                <div className="header-icons-cntr">
-                  <img
-                    src={DashboardLogo}
-                    alt="dashboard icon"
-                    className="dashboardImg1"
-                  />
-                  <img
-                    src={DashboardLogoBlue}
-                    alt="dashboard icon"
-                    className="dashboardImg1"
-                    style={{ display: "none" }}
-                  />
-                </div>
-                Dashboards
-              </Link> */}
-              {/* <Link to={Demo.BLANK_LINK} className="single-menu">
-                <div className="header-icons-cntr">
-                  <img
-                    src={storeBlack}
-                    alt="store icon"
-                    className="stores-icon"
-                  />
-                  <img
-                    src={storeBlue}
-                    alt="store icon"
-                    className="stores-icon"
-                    style={{ display: "none" }}
-                  />
-                </div>
-                Store Issues
-              </Link> */}
-              {/* <Link to="myTicketlist" className="single-menu">
-                <div className="header-icons-cntr">
-                  <img
-                    src={TicketLogo}
-                    alt="ticket icon"
-                    className="myTicket"
-                  />
-                  <img
-                    src={TicketLogoBlue}
-                    alt="ticket icon"
-                    className="myTicket"
-                    style={{ display: "none" }}
-                  />
-                </div>
-                My Tickets
-              </Link> */}
-              {/* <Link to={Demo.BLANK_LINK} className="single-menu">
-                <div className="header-icons-cntr">
-                  <img
-                    src={KnowledgeLogo}
-                    alt="knowledge icon"
-                    className="knowledgeNav"
-                  />
-                  <img
-                    src={KnowledgeLogoBlue}
-                    alt="knowledge icon"
-                    className="knowledgeNav"
-                    style={{ display: "none" }}
-                  />
-                </div>
-                Knowledge Base
-              </Link> */}
-              {/* <Link to="/admin/dashboard" className="single-menu">
-                <div className="header-icons-cntr">
-                  <img
-                    src={storeBlack}
-                    alt="dashboard icon"
-                    className="stores-icon"
-                  />
-                  <img
-                    src={storeBlue}
-                    alt="dashboard icon"
-                    className="stores-icon"
-                    style={{ display: "none" }}
-                  />
-                </div>
-                Dashboard
-              </Link> */}
-              {/* <Link to={Demo.BLANK_LINK} className="single-menu">
-                <div className="header-icons-cntr">
-                  <img src={TicketLogo} alt="task icon" className="myTicket" />
-                  <img
-                    src={TicketLogoBlue}
-                    alt="task icon"
-                    className="myTicket"
-                    style={{ display: "none" }}
-                  />
-                </div>
-                Task
-              </Link> */}
-              {/* <Link to={Demo.BLANK_LINK} className="single-menu">
-                <div className="header-icons-cntr">
-                  <img
-                    src={ClaimLogo}
-                    alt="claim icon"
-                    className="claim-logo"
-                  />
-                  <img
-                    src={ClaimLogoBlue}
-                    alt="claim icon"
-                    className="claim-logo"
-                    style={{ display: "none" }}
-                  />
-                </div>
-                Claim
-              </Link> */}
-              {/* <Link to={Demo.BLANK_LINK} className="single-menu">
-                <div className="header-icons-cntr">
-                  <img
-                    src={CalendarLogo}
-                    alt="campaign icon"
-                    className="campaign-logo"
-                  />
-                  <img
-                    src={CalendarLogoBlue}
-                    alt="campaign icon"
-                    className="campaign-logo"
-                    style={{ display: "none" }}
-                  />
-                </div>
-                Campaign
-              </Link> */}
             </div>
           </div>
 
           <div className="header-right-icons">
-            {/* <a href="#!">
-              <img src={CalenderLogo} alt="logo" className="calImg" />
-            </a> */}
             <a href="#!">
-              <img src={ChatLogo} alt="logo" className="chatImg"
-                onClick={this.handleChatDetailModelOpen.bind(this)} />
+              <img
+                src={HeadPhoneBlue}
+                alt="logo"
+                className="headphoneheader"
+                onClick={this.handleHeadPhoneModalOpen.bind(this)}
+              />
+            </a>
+            <Modal
+              open={this.state.HeadPhoneOpen}
+              onClose={this.handleHeadPhoneModalClose.bind(this)}
+              closeIconId="close"
+              modalId="HeadPhoneHeader-popup"
+              overlayId="logout-ovrly"
+            >
+              <div className="HeaderheadphoneModal">
+                <div className="row logincenter">
+                  <div className="col-md-12">
+                    <label className="logintoivr">Login to IVR</label>
+                  </div>
+                </div>
+                <div className="row agenttextrow1">
+                  <div className="col-md-5">
+                    <label className="agentidtext">Agent ID</label>
+                  </div>
+                </div>
+                <div className="row agenttextrow">
+                  <div className="col-md-12">
+                    <input type="text" className="agenttext" />
+                  </div>
+                </div>
+                <div className="row agenttextrow">
+                  <div className="col-md-12">
+                    <button
+                      className="loginbtnagent"
+                      onClick={this.handleLoginModalOpen.bind(this)}
+                    >
+                      Login
+                    </button>
+                  </div>
+                </div>
+
+                <div className="row logincenterimg">
+                  <div className="col-md-12">
+                    <span className="poweredby">Powered by</span>
+                    <img
+                      src={EasyRewardLogo}
+                      alt="logo"
+                      className="easyrewardlogo"
+                    />
+                  </div>
+                </div>
+              </div>
+            </Modal>
+            <Modal
+              open={this.state.LoginOpen}
+              onClose={this.handleLoginModalClose.bind(this)}
+              closeIconId="close"
+              modalId="Login-popup"
+              overlayId="logout-ovrly"
+            >
+              <div className="row logincenterimg">
+                <div className="col-md-12">
+                  <img
+                    src={AmitSinghLogo}
+                    alt="logo"
+                    className="amitsinghlogo"
+                  />
+                </div>
+              </div>
+              <div className="row amitsinghcenter">
+                <div className="col-md-12">
+                  <label className="amitsinghtext">Amit Singh</label>
+                </div>
+              </div>
+              {/* <div className="row amitsinghcenter">
+                <div className="col-md-12">
+                <div className="status1">
+                  <input type="radio" name="logout-status" id="online" />
+                  <label htmlFor="online" className="logout-label" style={{marginRight:"25px"}}>
+                    Online
+                  </label>
+                
+                
+                  <input type="radio" name="logout-status" id="away" />
+                  <label htmlFor="away" className="logout-label">
+                    Offline
+                  </label>
+                </div>
+                                
+                </div>
+              </div>
+              <div className="row amitnextrow">
+                <div className="col-md-12">
+                  <button className="loginbtnagent"
+                  onClick={this.handleNextButtonShow.bind(this)}
+                  >Next</button>
+                </div>
+              </div>
+              <div className="row amitnextrow">
+                  <div className="col-md-12">
+                  <img src={LogoutImg} alt="logo" className="logoutImg"/>
+                    <span className="logouttamitsingh">Logout</span> 
+                  </div>
+                </div> */}
+              {this.state.NextButton === true ? (
+                <div>
+                  <div className="row amitsinghcenter1">
+                    <div className="col-md-7">
+                      <label className="amitsinghtext">Choose Mode:</label>
+                    </div>
+                  </div>
+                  <div className="row amitsinghcenter2">
+                    <div className="col-md-12">
+                      <div className="status1">
+                        <input type="radio" name="logout-status" id="online" />
+                        <label
+                          htmlFor="online"
+                          className="logout-label1"
+                          style={{ marginRight: "25px" }}
+                        >
+                          Preview
+                        </label>
+
+                        <input type="radio" name="logout-status" id="away" />
+                        <label htmlFor="away" className="logout-label1">
+                          progressive
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row amitnextrow">
+                    <div className="col-md-12">
+                      <button
+                        className="loginbtnagent"
+                        onClick={this.handleNextBtnModalOpen.bind(this)}
+                      >
+                        Next
+                      </button>
+                    </div>
+                  </div>
+                  <div className="row amitnextrow">
+                    <div className="col-md-12">
+                      <img src={LogoutImg} alt="logo" className="logoutImg" />
+                      <span className="logouttamitsingh">Logout</span>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  <div className="row amitsinghcenter">
+                    <div className="col-md-12">
+                      <div className="status1">
+                        <input type="radio" name="logout-status" id="online" />
+                        <label
+                          htmlFor="online"
+                          className="logout-label1"
+                          style={{ marginRight: "25px" }}
+                        >
+                          Online
+                        </label>
+
+                        <input type="radio" name="logout-status" id="away" />
+                        <label htmlFor="away" className="logout-label1">
+                          Offline
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row amitnextrow">
+                    <div className="col-md-12">
+                      <button
+                        className="loginbtnagent"
+                        onClick={this.handleNextButtonShow.bind(this)}
+                      >
+                        Next
+                      </button>
+                    </div>
+                  </div>
+                  <div className="row amitnextrow">
+                    <div className="col-md-12">
+                      <img src={LogoutImg} alt="logo" className="logoutImg" />
+                      <span className="logouttamitsingh">Logout</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </Modal>
+
+            <Modal
+              open={this.state.NextButtonModal}
+              onClose={this.handleNextBtnModalClose.bind(this)}
+              closeIconId="close"
+              modalId="NextButton-popup"
+              overlayId="logout-ovrly"
+            >
+              <div className="row logincenterimg">
+                <div className="col-md-12">
+                  <img
+                    src={AmitSinghLogo}
+                    alt="logo"
+                    className="amitsinghlogo"
+                  />
+                </div>
+              </div>
+              <div className="row amitsinghcenter">
+                <div className="col-md-12">
+                  <label className="amitsinghtext">Amit Singh</label>
+                </div>
+              </div>
+
+              {this.state.WaitingCall === true ? (
+                <div>
+                  <div className="row amitsinghcallrow">
+                    <div className="row incomingcallrow">
+                      <div className="col-md-12">
+                        <label className="incomingcalltext">
+                          Incoming Call:
+                        </label>
+                      </div>
+                    </div>
+                    <div className="col-md-12">
+                      <input
+                        type="text"
+                        className="amitsinghwaiting"
+                        placeholder="9876543210"
+                        onClick={this.handleWaitingShow.bind(this)}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="row amitnextbuttonrow">
+                    <div className="col-md-12">
+                      <button className="holdbtn">Hold</button>
+                    </div>
+                  </div>
+                  <div className="row amitnextbuttonrow3">
+                    <div className="col-md-12">
+                      <Popover
+                        content={TransferCall}
+                        placement="bottom"
+                        trigger="click"
+                      >
+                        <button className="tranferbtn">Transfer Call</button>
+                      </Popover>
+                      {/* <UncontrolledPopover
+                        trigger="hover"
+                        placement="bottom"
+                        target="transfercallto"
+                        className="general-popover created-popover"
+                      >
+                        <PopoverBody>
+                          <div>
+                            <div className="row tooltiptransfercallrow">
+                              <div className="col-md-8">
+                                <label className="agentidtext">
+                                  Enter Agent ID
+                                </label>
+                              </div>
+                            </div>
+                            <div className="row agenttextrow">
+                              <div className="col-md-12">
+                                <input
+                                  type="text"
+                                  className="agenttext"
+                                  placeholder="9876543210"
+                                />
+                              </div>
+                            </div>
+                            <div className="row agenttextrow">
+                              <div className="col-md-12">
+                                <button className="loginbtnagent">
+                                  Connenting
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </PopoverBody>
+                      </UncontrolledPopover> */}
+                    </div>
+                  </div>
+
+                  <div className="row amitnextbuttonrow3">
+                    <div className="col-md-12">
+                      <button className="CallwrapBtnwaiting">Call Wrap</button>
+                    </div>
+                  </div>
+                  <div className="row amitnextbuttonrow1">
+                    <div className="col-md-12">
+                      <button className="CallwrapBtnwaiting">
+                        Switch to progressive
+                      </button>
+                    </div>
+                  </div>
+                  <div className="row amitnextrow">
+                    <div className="col-md-12">
+                      <div className="takeabreak">
+                        <img src={TakeBreak} alt="logo" className="logoutImg" />
+                        <span className="takebreaktext">Take a Breake</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="row backtohomelogoutrow">
+                    <div className="col-md-12">
+                      <img src={LogoutImg} alt="logo" className="logoutImg" />
+                      <span className="logoutbacktohome">Logout</span>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  <div className="row amitsinghcallrow">
+                    <div className="col-md-12">
+                      <input
+                        type="text"
+                        className="amitsinghwaiting"
+                        placeholder="Waiting for incoming call"
+                        onClick={this.handleWaitingShow.bind(this)}
+                      />
+                      <div className="row">
+                        <div className="col-md-8">
+                          <label className="idletimeamit">
+                            Idle Time: 02:24
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="row amitnextbuttonrow">
+                    <div className="col-md-12">
+                      <button className="CallwrapBtn">Call Wrap</button>
+                    </div>
+                  </div>
+                  <div className="row amitnextbuttonrow1">
+                    <div className="col-md-12">
+                      <button className="SwitchToProgBtn">
+                        Switch to progressive
+                      </button>
+                    </div>
+                  </div>
+                  <div className="row amitnextrow">
+                    <div className="col-md-12">
+                      <div className="takeabreak">
+                        <img src={TakeBreak} alt="logo" className="logoutImg" />
+                        <span className="takebreaktext">Take a Breake</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="row backtohomelogoutrow">
+                    <div className="col-md-12">
+                      <img src={LogoutImg} alt="logo" className="logoutImg" />
+                      <span className="logoutbacktohome">Logout</span>
+                    </div>
+                  </div>
+
+                  <div className="row backtohomerow">
+                    <div className="col-md-12">
+                      <a href="#!" className="backtohometext">
+                        >>Back to Home
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </Modal>
+
+            <a href="#!">
+              <img
+                src={ChatLogo}
+                alt="logo"
+                className="chatImg"
+                onClick={this.handleChatDetailModelOpen.bind(this)}
+              />
               <img
                 src={ChatLogoBlue}
                 alt="logo"
@@ -365,21 +643,23 @@ class Header extends Component {
                             </div>
                           </div>
                           <Link to="/admin/chatbot">
-                          <div className="chat-info active">
-                            <div className="d-flex align-items-center">
-                              <span className="light-blue-ini initial">M</span>
-                              <div className="name-num ml-2" >
-                                <p>Mohit Verma</p>
-                                <p className="num">Mohit90@gmail.com</p>
+                            <div className="chat-info active">
+                              <div className="d-flex align-items-center">
+                                <span className="light-blue-ini initial">
+                                  M
+                                </span>
+                                <div className="name-num ml-2">
+                                  <p>Mohit Verma</p>
+                                  <p className="num">Mohit90@gmail.com</p>
+                                </div>
+                              </div>
+                              <div>
+                                <div className="mess-time">
+                                  <p>1 New Messages</p>
+                                  <p>1m:36s</p>
+                                </div>
                               </div>
                             </div>
-                            <div>
-                              <div className="mess-time">
-                                <p>1 New Messages</p>
-                                <p>1m:36s</p>
-                              </div>
-                            </div>
-                          </div>
                           </Link>
                           <div className="chat-info">
                             <div className="d-flex align-items-center">
@@ -399,7 +679,12 @@ class Header extends Component {
                         </div>
                       </div>
                       <div className="chatpadding">
-                        <label className="ongoing" style={{ marginTop: "20px" }}>New Chats (02)</label>
+                        <label
+                          className="ongoing"
+                          style={{ marginTop: "20px" }}
+                        >
+                          New Chats (02)
+                        </label>
                         <div className="chatleftdrawer">
                           <div className="chat-info">
                             <div className="d-flex align-items-center">
@@ -434,9 +719,10 @@ class Header extends Component {
                         </div>
                       </div>
                     </div>
-                    <button className="butn-inv hist-btn">My historical chat</button>
+                    <button className="butn-inv hist-btn">
+                      My historical chat
+                    </button>
                   </div>
-
                 </div>
               </Drawer>
             </div>

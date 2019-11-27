@@ -11,6 +11,7 @@ import UploadCancel from "./../../../assets/Images/upload-cancel.png";
 import DownExcel from "./../../../assets/Images/csv.png";
 import { ProgressBar } from "react-bootstrap";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
+import {Link} from 'react-router-dom'
 
 class HierarchyMaster extends Component {
   constructor(props) {
@@ -38,13 +39,13 @@ class HierarchyMaster extends Component {
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
-          <a href={Demo.BLANK_LINK}>Settings</a>
+          <Link to="settings">Settings</Link>
           <span>&gt;</span>
-          <a href={Demo.BLANK_LINK}>Store</a>
+          <Link to="#!">Store</Link>
           <span>&gt;</span>
-          <a href={Demo.BLANK_LINK} className="active">
+          <Link to={Demo.BLANK_LINK} className="active">
             Hierarchy Master
-          </a>
+          </Link>
         </div>
         <div className="container-fluid">
           <div className="store-settings-cntr">

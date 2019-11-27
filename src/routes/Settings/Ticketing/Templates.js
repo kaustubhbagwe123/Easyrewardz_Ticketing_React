@@ -11,8 +11,24 @@ import { Link } from "react-router-dom";
 // import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
 import DeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import CancelImg from "./../../../assets/Images/Circle-cancel.png";
+import CKEditor from "react-ckeditor-component";
+import Modal from "react-bootstrap/Modal";
 
 class Templates extends Component {
+  constructor(props) {
+    super(props)
+  
+    this.state = {
+      ConfigTabsModal: false
+    }
+  }
+  handleConfigureTabsOpen(){
+    this.setState({ConfigTabsModal:true})
+  }
+  handleConfigureTabsClose(){
+    this.setState({ConfigTabsModal:false})
+  }
   render() {
     const data = [
       {
@@ -110,7 +126,7 @@ class Templates extends Component {
           return (
             <>
               <span>
-                <Popover content={ActionDelete} placement="bottom">
+                <Popover content={ActionDelete} placement="bottom" trigger="click">
                   <img
                     src={DeleteIcon}
                     alt="del-icon"
@@ -118,7 +134,7 @@ class Templates extends Component {
                     id={ids}
                   />
                 </Popover>
-                <Popover content={ActionEditBtn} placement="bottom">
+                <Popover content={ActionEditBtn} placement="bottom" trigger="click">
                   <button className="react-tabel-button" id="p-edit-pop-2">
                     <label className="Table-action-edit-button-text">
                       EDIT
@@ -305,9 +321,48 @@ class Templates extends Component {
                       </div>
                     </div>
                     <div className="btnSpace">
-                      <button className="CreateADDBtn">
+                      <button className="CreateADDBtn" 
+                      onClick={this.handleConfigureTabsOpen.bind(this)}
+                      >
                         <label className="addLable">CONFIGURE TEMPLATE</label>
                       </button>
+                      <Modal
+                          size="lg"
+                          show={this.state.ConfigTabsModal}
+                          onHide={this.handleConfigureTabsClose.bind(this)}
+                      >
+                    <Modal.Header>
+                      <div className="row config-tab">
+                      <div className="col-md-9 templateName">
+                        <label className="template-text">TEMPLATE NAME : COMPLAINT STATUS</label>
+                      </div>
+                      <div className="col-md-3">
+                          <img src={CancelImg} alt="CancelImg" className="cancelImg-config"
+                          onClick={this.handleConfigureTabsClose.bind(this)}/> 
+                      </div>
+                      </div>
+                    </Modal.Header>
+                    <Modal.Body>
+                      <div className="template-editor">
+                        <CKEditor
+                                
+                                content={this.state.content}
+                                events={{
+                                  // "blur": this.onBlur,
+                                  // "afterPaste": this.afterPaste,
+                                  change: this.onChange,
+                                  items: this.fileUpload
+                                }}
+                        />
+                      </div>
+                      <div className="config-button">
+                              <button className="config-buttontext" type="submit">
+                                SAVE & NEXT
+                              </button>
+                      </div>
+                    </Modal.Body>
+                  </Modal>
+
                     </div>
                   </div>
                 </div>

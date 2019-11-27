@@ -1,13 +1,22 @@
+<<<<<<< HEAD
 import React, { Component } from 'react'
 // import visa from "./../../assets/Images/visa.png";
 // import master from "./../../assets/Images/master.png";
+=======
+import React, { Component } from 'react';
+>>>>>>> 87cf9956995434be31979d6f420b9f3ed566a17d
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { faSquareFull } from "@fortawesome/free-solid-svg-icons";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+<<<<<<< HEAD
 import { Popover } from "antd";
 import { Link } from "react-router-dom";
+=======
+// import { Popover } from "antd";
+// import { Link } from "react-router-dom";
+>>>>>>> 87cf9956995434be31979d6f420b9f3ed566a17d
 
 class EssentialVsPremium extends Component {
     render() {

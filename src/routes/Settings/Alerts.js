@@ -192,7 +192,7 @@ class Alerts extends Component {
             <div>
               <span>
                 Admin
-                <Popover content={popoverData} placement="bottom">
+                <Popover content={popoverData} placement="bottom" >
                   <img
                     className="info-icon-cp"
                     src={BlackInfoIcon}
@@ -224,7 +224,7 @@ class Alerts extends Component {
           return (
             <>
               <span>
-                <Popover content={ActionDelete} placement="bottom">
+                <Popover content={ActionDelete} placement="bottom" trigger="click">
                   <img
                     src={RedDeleteIcon}
                     alt="del-icon"
@@ -232,7 +232,7 @@ class Alerts extends Component {
                     id={ids}
                   />
                 </Popover>
-                <Popover content={ActionEditBtn} placement="bottom">
+                <Popover content={ActionEditBtn} placement="bottom" trigger="click">
                   <button className="react-tabel-button" id="p-edit-pop-2">
                     <label className="Table-action-edit-button-text">
                       EDIT

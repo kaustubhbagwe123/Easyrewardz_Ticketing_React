@@ -49,6 +49,8 @@ class MyTicket extends Component {
       CommentsDrawer: false,
       BillInvoiceModal: false,
       HistOrderShow: true,
+      CommentCollapse: false,
+      Comment1Collapse: false,
       values: [
         {
           taskTitle: "",
@@ -117,6 +119,12 @@ class MyTicket extends Component {
   }
   HandleEmailCollapseOpen() {
     this.setState(state => ({ EmailCollapse: !state.EmailCollapse }));
+  }
+  handleCommentCollapseOpen() {
+    this.setState(state => ({ CommentCollapse: !state.CommentCollapse }));
+  }
+  HandleComment1CollapseOpen() {
+    this.setState(state => ({ Comment1Collapse: !state.Comment1Collapse }));
   }
   handleCommentsDrawerOpen() {
     this.setState({ CommentsDrawer: true });
@@ -997,7 +1005,11 @@ class MyTicket extends Component {
               <Collapse isOpen={this.state.EmailCollapse}>
                 <Card>
                   <CardBody>
+<<<<<<< HEAD
                     <div className="">
+=======
+                    <div className="col-md-12">
+>>>>>>> 87cf9956995434be31979d6f420b9f3ed566a17d
                       <CKEditor
                         config={{
                           toolbar: [
@@ -1032,14 +1044,6 @@ class MyTicket extends Component {
                           ]
                         }}
                       />
-                      {/* <button className="sendEmail-btn" type="button">
-                        <img
-                          src={SendEmail}
-                          alt="SendEmail"
-                          className="sendmail-Img"
-                        />
-                        Send
-                      </button> */}
                     </div>
                   </CardBody>
                 </Card>
@@ -1263,7 +1267,41 @@ class MyTicket extends Component {
                     </label>
                   </div>
                   <div className="col-md-2 mob-flex">
-                    <label className="comment-text">Comment</label>
+                    <label
+                      className="comment-text"
+                      onClick={this.handleCommentCollapseOpen.bind(this)}
+                    >
+                      Comment
+                    </label>
+                  </div>
+                  <div className="commentcollapseTicket">
+                  <Collapse isOpen={this.state.CommentCollapse}>
+                    <Card>
+                      <CardBody>
+                        <div className="commenttextborder">
+                          <div className="Commentlabel">
+                              <label className="Commentlabel1">Comment</label>
+                          </div>
+                          <div>
+                              <span className="comment-line"></span>
+                              <img src={MinusImg} alt="Minus" className="CommentMinus-img"/>
+                          </div>
+                          <div className="commenttextmessage">
+                            <label style={{marginBottom:"10px"}}>Hello,</label>
+                            <label>
+                              I saw a vintage table lamp on your site last month and I'd bookmarked it to buy it later for a friend. I can't seem to find it anymore through.
+                              <br></br>Is it out of stock or do you not sell those anymore ? 
+                            </label>
+                            <label style={{marginTop:"10px",display:"block"}}>Thanks</label>
+                            <label>Naman Rampal.</label>
+                          </div>
+                            <div className="SendCommentBtn">
+                              <button className="SendCommentBtn1">SEND</button>
+                            </div>
+                        </div>
+                      </CardBody>
+                    </Card>
+                  </Collapse>
                   </div>
                 </div>
                 <div className="row row-spacing new-top-bottom-margin" style={{ marginBottom: "18px" }}>
@@ -1290,8 +1328,58 @@ class MyTicket extends Component {
                       experience.
                     </label>
                   </div>
+<<<<<<< HEAD
                   <label className="comment-text1" style={{paddingLeft: "75px"}}>Comment</label>
                   <div className="col-md-2"></div>
+=======
+                  <label className="comment-text1"
+                  onClick={this.HandleComment1CollapseOpen.bind(this)}
+                  >Comment</label>
+<div className="myTicketCommentCollapse">
+              <Collapse isOpen={this.state.Comment1Collapse}>
+                <Card>
+                  <CardBody>
+                    <div className="col-md-12">
+                      <CKEditor
+                        config={{
+                          toolbar: [
+                            {
+                              name: "basicstyles",
+                              items: ["Bold", "Italic", "Strike"]
+                            },
+                            {
+                              name: "styles",
+                              items: ["Styles", "Format"]
+                            },
+                            {
+                              name: "paragraph",
+                              items: ["NumberedList", "BulletedList"]
+                            },
+                            {
+                              name: "links",
+                              items: ["Link", "Unlink"]
+                            },
+                            {
+                              name: "insert",
+                              items: ["Image", "Table"]
+                            },
+                            {
+                              name: "tools",
+                              items: ["Maximize"]
+                            },
+                            {
+                              name: "editing",
+                              items: ["Scayt"]
+                            }
+                          ]
+                        }}
+                      />
+                    </div>
+                  </CardBody>
+                </Card>
+              </Collapse>
+                  </div>
+>>>>>>> 87cf9956995434be31979d6f420b9f3ed566a17d
                 </div>
                 <div className="row row-spacing new-top-bottom-margin" style={{ marginBottom: "18px" }}>
                   <div className="col-xs-3">

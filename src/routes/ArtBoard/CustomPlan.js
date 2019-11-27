@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+<<<<<<< HEAD
 // import visa from "./../../assets/Images/visa.png";
 // import master from "./../../assets/Images/master.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,6 +9,14 @@ import { faSquareFull } from "@fortawesome/free-solid-svg-icons";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { Popover } from "antd";
 import { Link } from "react-router-dom";
+=======
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import { faSquareFull } from "@fortawesome/free-solid-svg-icons";
+// import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+// import { Popover } from "antd";
+// import { Link } from "react-router-dom";
+>>>>>>> 87cf9956995434be31979d6f420b9f3ed566a17d
 
 class CustomPlan extends Component {
     render() {

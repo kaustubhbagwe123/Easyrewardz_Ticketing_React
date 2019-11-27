@@ -1,12 +1,15 @@
 import React, { Component } from "react";
 import StepZilla from "react-stepzilla";
 import congratulation from "../../assets/Images/cong-img.jpg";
+<<<<<<< HEAD
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUnlockAlt,
   faInfo,
   faInfoCircle
 } from "@fortawesome/free-solid-svg-icons";
+=======
+>>>>>>> 87cf9956995434be31979d6f420b9f3ed566a17d
 
 class POstatus extends Component {
   render() {

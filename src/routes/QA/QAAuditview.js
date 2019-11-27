@@ -40,17 +40,14 @@ class QAAuditview extends Component {
     this.setState({ collapseUp: !this.state.collapseUp });
   };
    
-  
   QALeadListModelClose = () => {
     this.setState({ QALeadModel: false });
   };
+  handlePageChange(){
+    this.props.history.push("dashboard")
+  }
   render() {
-
-    // const HidecollapsUp = this.state.collapseUp ? (
-    //   <img src={Up1Img} alt="up" className="up-1" onClick={this.handleUpOpen} />
-    // ) : (
-    //   ""
-    // );
+ 
     return (
       <>
         <div className="qa-header">
@@ -67,7 +64,7 @@ class QAAuditview extends Component {
               </div>
             </div>
             <div className="col-md-8">
-              <button className="button-audit-done">
+              <button className="button-audit-done" onClick={this.handlePageChange.bind(this)}>
                 <label className="button-audit-done-text">AUDIT DONE</label>
               </button>
             </div>

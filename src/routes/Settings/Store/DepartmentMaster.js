@@ -129,8 +129,10 @@ class DepartmentMaster extends Component {
           var ids = row.original["id"];
           return (
             <div>
+              <Popover content={ActionDelete} placement="bottom" trigger="click">
               <img src={DeleteIcon} alt="del-icon" className="downloadaction" />
-              <Popover content={DepartEdit} placement="bottom">
+              </Popover>
+              <Popover content={DepartEdit} placement="bottom" trigger="click">
                 <button className="react-tabel-button" id={ids}>
                   <label className="Table-action-edit-button-text">EDIT</label>
                 </button>
@@ -188,7 +190,23 @@ class DepartmentMaster extends Component {
         </div>
       </div>
     );
-
+    const ActionDelete = (
+      <div className="d-flex general-popover popover-body">
+        <div className="del-big-icon">
+          <img src={DelBigIcon} alt="del-icon" />
+        </div>
+        <div>
+          <p className="font-weight-bold blak-clr">Delete file?</p>
+          <p className="mt-1 fs-12">
+            Are you sure you want to delete this file?
+          </p>
+          <div className="del-can">
+            <a href={Demo.BLANK_LINK}>CANCEL</a>
+            <button className="butn">Delete</button>
+          </div>
+        </div>
+      </div>
+    );
     return (
       <Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
