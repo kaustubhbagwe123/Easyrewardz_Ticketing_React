@@ -7,7 +7,7 @@ class OfflineMode extends Component {
   render() {
     const {change}=this.props;
     return (
-      <div>
+    <div class="custom-artboard">
         <div className="checkout-cart cc-right">
           <label>Choose Offline Mode</label>
           <div className="payment-mode">

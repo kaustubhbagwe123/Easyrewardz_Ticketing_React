@@ -1097,17 +1097,17 @@ class Dashboard extends Component {
                             <div className="row p-0">
                               <div className="col-md-6">
                                 <div className="row allspc">
-                                  <div className="col-sm-6">
+                                  <div className="col-sm-6 m-b-25">
                                     <select>
                                       <option>With Claim</option>
                                     </select>
                                   </div>
                                   <div className="col-sm-6">
                                     <select>
-                                      <option>WIth Task</option>
+                                      <option>With Task</option>
                                     </select>
                                   </div>
-                                  <div className="col-sm-6">
+                                  <div className="col-sm-6 m-b-25">
                                     <select>
                                       <option>Claim Status</option>
                                     </select>
@@ -1117,7 +1117,7 @@ class Dashboard extends Component {
                                       <option>Task Status</option>
                                     </select>
                                   </div>
-                                  <div className="col-sm-6">
+                                  <div className="col-sm-6 m-b-25">
                                     <select>
                                       <option>Claim Category</option>
                                     </select>
@@ -1127,7 +1127,7 @@ class Dashboard extends Component {
                                       <option>Task Department</option>
                                     </select>
                                   </div>
-                                  <div className="col-sm-6">
+                                  <div className="col-sm-6 m-b-25">
                                     <select>
                                       <option>Claim Sub Category</option>
                                     </select>

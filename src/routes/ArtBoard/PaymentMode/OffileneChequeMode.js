@@ -1,10 +1,19 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 class OffileneChequeMode extends Component {
+  constructor(props) {
+    super(props)
+  
+    this.state = {
+       
+    }
+  }
+  
+  
   render() {
     const { change } = this.props;
     return (
-      <div>
+    <div class="custom-artboard">
         <div className="checkout-cart cc-right">
           <label>Enter Cheque Details</label>
           <div className="payment-mode">
@@ -60,6 +69,7 @@ class OffileneChequeMode extends Component {
                 </div>
                 <div className="row">
                   <div className="col-12 col-sm-12">
+                    <Link to="Chequestatus">
                     <button
                       type="submit"
                       className="btn-primary"
@@ -67,9 +77,10 @@ class OffileneChequeMode extends Component {
                         width: "100%",
                         marginTop: "10px"
                       }}
+                      
                     >
                       Submit
-                    </button>
+                    </button></Link>
                   </div>
                 </div>
                 <Link to="#!" className="backbtn" onClick={() => change("OFFLINE_MODE")}>

@@ -13,7 +13,7 @@ class ArtBoard extends Component {
     render() {
         
         return (
-            <div>
+            <div class="custom-artboard">
                 <section>
                     <div className="carousel-sec">
                         <div className="row">
