@@ -10,10 +10,10 @@ class CreditDebitCard extends Component {
   render() {
     const { change } = this.props;
     return (
-      <div>
+    <div class="custom-artboard">
         <div className="checkout-cart cc-right">
           <label>Enter Card Details</label>
-          <div className="payment-mode">
+          <div className="">
             <form>
               <div className="cheque-details">
                 <div className="row">
@@ -68,7 +68,8 @@ class CreditDebitCard extends Component {
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col-12 col-sm-12">
+                  <div className="col-12 col-sm-12">                    
+                    <Link to="Congratulation">
                     <button
                       type="submit"
                       className="btn-primary"
@@ -76,10 +77,11 @@ class CreditDebitCard extends Component {
                         width: "100%",
                         marginTop: "10px"
                       }}
+                      
                     >
                       <FontAwesomeIcon icon={faUnlockAlt} className="" style={{color: "#fff" , marginRight: "3px"}} /> Pay
                       Securely
-                    </button>
+                    </button></Link>
                   </div>
                 </div>
                 <Link

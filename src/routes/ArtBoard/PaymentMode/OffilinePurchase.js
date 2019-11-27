@@ -5,7 +5,7 @@ class OffilinePurchase extends Component {
   render() {
     const {change}=this.props;
     return (
-      <div>
+    <div class="custom-artboard">
         <div className="checkout-cart cc-right">
           <label>Enter Purchase Order Details</label>
           <div className="payment-mode">
@@ -61,6 +61,7 @@ class OffilinePurchase extends Component {
                 </div>
                 <div className="row">
                   <div className="col-12 col-sm-12">
+                    <Link to="POstatus">
                     <button
                       type="submit"
                       className="btn-primary"
@@ -68,9 +69,10 @@ class OffilinePurchase extends Component {
                         width: "100%",
                         marginTop: "10px"
                       }}
+                      
                     >
                       Submit
-                    </button>
+                    </button></Link>
                   </div>
                 </div>
                 <Link to="#!" className="backbtn" onClick={() => change("OFFLINE_MODE")}>

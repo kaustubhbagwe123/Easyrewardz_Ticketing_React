@@ -1,21 +1,11 @@
 import React, { Component, useState } from "react";
 import StepZilla from "react-stepzilla";
 import { Radio } from "antd";
-// import visa from "./../../assets/Images/visa.png";
-// import master from "./../../assets/Images/master.png";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
-import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import { faSquareFull } from "@fortawesome/free-solid-svg-icons";
-import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
-// import { faCreditCard } from "@fortawesome/free-solid-svg-icons";
-// import { faLaptop } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; 
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { Popover } from "antd";
 import { Link } from "react-router-dom";
-// import offlineMode from "./PaymentMode/offlineMode";
-// import offilinePurchase from "./PaymentMode/offilinePurchase";
-// import paymentMode from "./PaymentMode/paymentMode";
-// import chequeDetails from "./PaymentMode/chequeDetails";
+
 import OnlinePaymentMode from "./PaymentMode/OnlinePaymentMode";
 import PaymentMode from "./PaymentMode/PaymentMode";
 import OfflineMode from "./PaymentMode/OfflineMode";
@@ -24,7 +14,11 @@ import OffilinePurchase from "./PaymentMode/OffilinePurchase";
 import OffileneChequeMode from "./PaymentMode/OffileneChequeMode";
 import CreditDebitCard from "./PaymentMode/CreditDebitCard";
 import PaymentModeOption from "./PaymentMode/PaymentModeOption";
-import './../../assets/css/artboard.css'
+import PlanFuaturetable from "./PlanFuaturetable";
+import EssentialProfeTable from "./EssentialProfeTable";
+import EssentialVsPremium from "./EssentialVsPremium";
+import ProfessionalVsPremium from "./ProfessionalVsPremium";
+import CustomPlan from "./CustomPlan";
 
 class Signup extends Component {
   constructor(props) {
@@ -57,7 +51,7 @@ class Signup extends Component {
   }
   render() {
     return (
-      <div className="customArtboard">
+      <div class="custom-artboard signupsteps">
         <div
           className={
             this.state.onStep4 === true
@@ -69,7 +63,7 @@ class Signup extends Component {
             <div className="step-progress">
               <StepZilla
                 steps={steps}
-                // startAtStep={4}
+                //startAtStep={3}
                 stepsNavigation={false}
                 backButtonText="Back"
                 nextButtonText="Save / Next"
@@ -384,23 +378,45 @@ function Step3(props) {
 function Step4(props) {
   const content1 = (
     <div className="store-popDiv">
-      <Link to="#!" className="complans-poplinks">
+      <Link
+        to="#!"
+        className="complans-poplinks"
+        onClick={() => tabToggle("ESSENTIALPROFE_TABLE")}
+      >
         Essential Vs Professional
       </Link>
-      <Link to="#!" className="complans-poplinks">
+      <Link
+        to="#!"
+        className="complans-poplinks"
+        onClick={() => tabToggle("ESSENTIALPREMIUM_TABLE")}
+      >
         Essential Vs Premium
       </Link>
-      <Link to="#!" className="complans-poplinks">
+      <Link
+        to="#!"
+        className="complans-poplinks"
+        onClick={() => tabToggle("PRODFESSIONALPREMIUM_TABLE")}
+      >
         Professional Vs Premium
       </Link>
     </div>
   );
+  const [activetab, setPlanFuatureActivetab] = useState("PLANFUATURE_TABLE");
+  const tabToggle = tab => {
+    setPlanFuatureActivetab(tab);
+  };
   return (
     <div>
       <div className="plan-details-main">
         <div className="container">
           <div className="row">
-            <div className="col-12">
+            <div className="col-12 no-padding">
+              <div className="backtoalllink">
+                <Link className="nav-link" to="#">
+                  <FontAwesomeIcon icon={faArrowLeft} />
+                  Back to All Plans
+                </Link>
+              </div>
               <div className="togbtn">
                 <label className="customerOrder-text">Monthly</label>
                 <label className="customerItem-text">Yearly</label>
@@ -415,358 +431,21 @@ function Step4(props) {
           </div>
           <div className="row">
             <div className="plan-datatable table-responsive">
-              <table className="table">
-                <tr>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th>
-                    <span className="most-popular">* Most Popular *</span>
-                  </th>
-                </tr>
-                <tr className="value-th">
-                  <th>
-                    <h2>Plan</h2>
-                    <h2>Features</h2>
-                  </th>
-                  <th>
-                    <div className="plan-th text-center">
-                      <h3>Essential</h3>
-                      <h2>₹ 999</h2>
-                      <p>Per User/Month</p>
-                    </div>
-                  </th>
-                  <th>
-                    <div className="plan-th text-center">
-                      <h3>Professional</h3>
-                      <h2>₹ 1999</h2>
-                      <p>Per User/Month</p>
-                    </div>
-                  </th>
-                  <th className="active-col">
-                    <div className="plan-th text-center">
-                      <h3>Premium</h3>
-                      <h2>₹ 2999</h2>
-                      <p>Per User/Month</p>
-                    </div>
-                  </th>
-                </tr>
-                <tr>
-                  <td>
-                    <FontAwesomeIcon icon={faSquareFull} className="sq" />
-                    Calls to Ticket
-                    <FontAwesomeIcon icon={faInfoCircle} className="info" />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                  <td className="plantab-check"></td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <FontAwesomeIcon icon={faSquareFull} className="sq" />
-                    Email Ticketing
-                    <FontAwesomeIcon icon={faInfoCircle} className="info" />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <FontAwesomeIcon icon={faSquareFull} className="sq" />
-                    Social Tickets
-                    <FontAwesomeIcon icon={faInfoCircle} className="info" />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <FontAwesomeIcon icon={faSquareFull} className="sq" />
-                    Chat Tickets
-                    <FontAwesomeIcon icon={faInfoCircle} className="info" />
-                  </td>
-                  <td className="plantab-check"></td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <FontAwesomeIcon icon={faSquareFull} className="sq" />
-                    Support Bot
-                    <FontAwesomeIcon icon={faInfoCircle} className="info" />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <FontAwesomeIcon icon={faSquareFull} className="sq" />
-                    Live Chat Support to customers
-                    <FontAwesomeIcon icon={faInfoCircle} className="info" />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                  <td className="plantab-check"></td>
-                </tr>
-                <tr>
-                  <td>
-                    <FontAwesomeIcon icon={faSquareFull} className="sq" />
-                    Knowledge Base
-                    <FontAwesomeIcon icon={faInfoCircle} className="info" />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <FontAwesomeIcon icon={faSquareFull} className="sq" />
-                    Reporting and Analytics
-                    <FontAwesomeIcon icon={faInfoCircle} className="info" />
-                  </td>
-                  <td className="plantab-check"></td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                  <td className="plantab-check"></td>
-                </tr>
-                <tr>
-                  <td>
-                    <FontAwesomeIcon icon={faSquareFull} className="sq" />
-                    Prebuild Dashboard
-                    <FontAwesomeIcon icon={faInfoCircle} className="info" />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <FontAwesomeIcon icon={faSquareFull} className="sq" />
-                    Roles and Permission
-                    <FontAwesomeIcon icon={faInfoCircle} className="info" />
-                  </td>
-                  <td className="plantab-check"></td>
-                  <td className="plantab-check"></td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <FontAwesomeIcon icon={faSquareFull} className="sq" />
-                    SLA Management
-                    <FontAwesomeIcon icon={faInfoCircle} className="info" />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <FontAwesomeIcon icon={faSquareFull} className="sq" />
-                    Skilled Based Ticket Assignment
-                    <FontAwesomeIcon icon={faInfoCircle} className="info" />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <FontAwesomeIcon icon={faSquareFull} className="sq" />
-                    IVR Phone Trees
-                    <FontAwesomeIcon icon={faInfoCircle} className="info" />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                  <td className="plantab-check"></td>
-                </tr>
-                <tr>
-                  <td>
-                    <FontAwesomeIcon icon={faSquareFull} className="sq" />
-                    Inbound / Outbound Calling
-                    <FontAwesomeIcon icon={faInfoCircle} className="info" />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <FontAwesomeIcon icon={faSquareFull} className="sq" />
-                    Realtime IVR Analytics
-                    <FontAwesomeIcon icon={faInfoCircle} className="info" />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <FontAwesomeIcon icon={faSquareFull} className="sq" />
-                    SLA Management
-                    <FontAwesomeIcon icon={faInfoCircle} className="info" />
-                  </td>
-                  <td className="plantab-check"></td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <FontAwesomeIcon icon={faSquareFull} className="sq" />
-                    Skilled Based Ticket Assignment
-                    <FontAwesomeIcon icon={faInfoCircle} className="info" />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                  <td className="plantab-check"></td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <FontAwesomeIcon icon={faSquareFull} className="sq" />
-                    IVR Phone Trees
-                    <FontAwesomeIcon icon={faInfoCircle} className="info" />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <FontAwesomeIcon icon={faSquareFull} className="sq" />
-                    Inbound / Outbound Calling
-                    <FontAwesomeIcon icon={faInfoCircle} className="info" />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faPlusCircle} className="plusicon" />
-                  </td>
-                  <td className="plantab-check"></td>
-                  <td className="plantab-check"></td>
-                </tr>
-                <tr>
-                  <td>
-                    <FontAwesomeIcon icon={faSquareFull} className="sq" />
-                    Roles and Permission
-                    <FontAwesomeIcon icon={faInfoCircle} className="info" />
-                  </td>
-                  <td className="plantab-check">
-                    <FontAwesomeIcon icon={faPlusCircle} className="plusicon" />
-                  </td>
-                  <td className="plantab-check"></td>
-                  <td className="plantab-check"></td>
-                </tr>
-                <tr>
-                  <td>
-                    <FontAwesomeIcon icon={faSquareFull} className="sq" />
-                    Realtime IVR Analytics
-                    <FontAwesomeIcon icon={faInfoCircle} className="info" />
-                  </td>
-                  <td className="plantab-check"></td>
-                  <td className="plantab-check"></td>
-                  <td className="plantab-check"></td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td>
-                    <button
-                      type="submit"
-                      className="btn addplanbtn btn-primary"
-                    >
-                      Add Plan
-                    </button>
-                  </td>
-                </tr>
-              </table>
+              {activetab === "PLANFUATURE_TABLE" && (
+                <PlanFuaturetable change={tabToggle} />
+              )}
+              {activetab === "ESSENTIALPROFE_TABLE" && (
+                <EssentialProfeTable change={tabToggle} />
+              )}
+              {activetab === "ESSENTIALPREMIUM_TABLE" && (
+                <EssentialVsPremium change={tabToggle} />
+              )}
+              {activetab === "PRODFESSIONALPREMIUM_TABLE" && (
+                <ProfessionalVsPremium change={tabToggle} />
+              )}
+              {activetab === "CUSTOMPLAN_TABLE" && (
+                <CustomPlan change={tabToggle} />
+              )}
             </div>
           </div>
           <div className="row">
@@ -777,13 +456,13 @@ function Step4(props) {
                   className="btn btn-primary back"
                   style={{ margin: "0 10px 0 0" }}
                 >
-                  {" "}
                   Back
                 </button>
                 <button
                   type="button"
                   className="btn btn-primary cusplan"
                   style={{ margin: "0 10px 0 0" }}
+                  onClick={() => tabToggle("CUSTOMPLAN_TABLE")}
                 >
                   +Create Custom Plan
                 </button>
@@ -805,25 +484,6 @@ function Step4(props) {
   );
 }
 function Step5(props) {
-  // const [toggle, setToggle] = useState(true);
-  // const handleToggle = () => {
-  //   setToggle(false);
-  // };
-  // const [toggleOnline, setToggleOnline] = useState(true);
-  // const handleOnlineMode = () => {
-  //   setToggleOnline(false);
-  // };
-
-  // const [toggle1, SetChequeDetails] = useState(true);
-  // const handleChequeDetails = () => {
-  //   SetChequeDetails(false);
-  // };
-
-  // const [PurchaseOrderDiv, SetPurchaseOrder] = useState(true);
-  // const handlePurchaseOreder = () => {
-  //   SetPurchaseOrder(false);
-  // };
-
   const [activetab, setActivetab] = useState("PAYMENT_MODE");
   const tabToggle = tab => {
     setActivetab(tab);
@@ -895,7 +555,7 @@ function Step5(props) {
                 <CreditDebitCard change={tabToggle} />
               )}
               {activetab === "PAYMENTMODE_OPTION" && (
-                <PaymentModeOption change={tabToggle}/>
+                <PaymentModeOption change={tabToggle} />
               )}
             </div>
           </div>
