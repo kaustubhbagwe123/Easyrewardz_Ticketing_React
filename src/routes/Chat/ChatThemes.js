@@ -261,7 +261,7 @@ class ChatThemes extends Component {
           <div className="store-settings-cntr">
             <div className="row">
               <div className="col-md-8">
-                <div className="table-cntr table-height chatThemes">
+                <div className="table-cntr table-height chatThemes ChatElementReact">
                   <ReactTable
                     data={dataChatRules}
                     columns={columnsChatRules}

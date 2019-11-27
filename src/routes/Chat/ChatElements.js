@@ -462,7 +462,7 @@ class ChatElements extends Component {
             />
           </div>
           <div className="divSpace">
-            <div className="dropDrownSpace">
+            <div className="">
               <label className="reports-to">Element Name</label>
               <input
                 type="text"
@@ -471,7 +471,7 @@ class ChatElements extends Component {
               />
             </div>
           </div>
-          <div className="dropDrownSpace">
+          <div className="" style={{marginBottom: "15px"}}>
             <label className="reports-to">Element Icon</label>
             <div class="custom-file">
               <input type="file" className="custom-file-input" />
@@ -531,7 +531,7 @@ class ChatElements extends Component {
                       />
                     </div>
                     <div className="divSpace">
-                      <div className="dropDrownSpace">
+                      <div className="">
                         <label className="reports-to">Element Name</label>
                         <input
                           type="text"
@@ -540,7 +540,7 @@ class ChatElements extends Component {
                         />
                       </div>
                     </div>
-                    <div className="dropDrownSpace">
+                    <div className="" style={{marginBottom: "15px"}}>
                       <label className="reports-to">Element Icon</label>
                       <div class="custom-file">
                         <input type="file" className="custom-file-input" />

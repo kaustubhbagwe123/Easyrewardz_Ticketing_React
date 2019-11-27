@@ -1202,8 +1202,7 @@
   padding: 10px;
 }
 .createSpace {
-  padding-left: 40px;
-  padding-bottom: 40px;
+  padding: 0px 40px 40px;
 }
 .divSpace {
   padding-bottom: 10px;
@@ -1214,10 +1213,6 @@
 }
 .div-padding-1 {
   padding-bottom: 10px;
-  padding-right: 45px;
-}
-.dropDrownSpace {
-  padding-right: 45px;
 }
 .dropdown-setting {
   color: #9b9b9b;
@@ -1255,7 +1250,6 @@
 }
 .btnSpace {
   margin-top: 20px;
-  padding-right: 45px;
 }
 .bulk-upload {
   color: #2561a8;
@@ -2712,7 +2706,7 @@
 .shortcutarea {
   background-color: #ecf2f4;
   border-radius: 4px;
-  width: 293px;
+  width: 100%;
   height: 140px;
   border: none;
   padding: 10px;
@@ -2730,7 +2724,7 @@
   cursor: pointer;
 }
 .dropDrownSpace1 {
-  padding-right: 95px;
+  padding-right: 50px;
 }
 .txt-12 {
   background-color: #ecf2f4;

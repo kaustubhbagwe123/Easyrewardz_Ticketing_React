@@ -604,7 +604,7 @@
 .plan-datatable tr:last-child td {
   border: none;
 }
-.ant-popover-inner-content {
+.plan-datatable .ant-popover-inner-content {
   padding: 12px 0px !important;
 }
 .store-popDiv {
