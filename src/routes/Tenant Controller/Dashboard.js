@@ -297,6 +297,7 @@ class Dashboard extends Component {
                     <div className="dash-top-cards">
                       <p className="card-head1">Revenue</p>
                       <div className="card-values1">
+                      <span className="card-head1number1">₹</span>
                         <span className="card-head1number">43.8k</span>
                         <img
                           src={BlackTopArrow}

@@ -563,7 +563,7 @@ class CustomPlan extends Component {
             <Fragment>
                 <div className="container-fluid">
               <div className="dash-cntr1">
-                <label className="enterprisetext">Create Plan</label>
+                <label className="enterprisetext">Custom Plan</label>
                 <div
                   className="EnterpriseReact"
                   style={{ backgroundColor: "#fff" }}

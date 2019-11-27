@@ -6839,9 +6839,7 @@ table tr th:last-child {
   display: block;
   }
   .ticketreport .react-datepicker-wrapper {
-  
   border-radius: 4px;
-  
   border: 0;
   background: #fff url(/static/media/calendar-black.d0d589e5.svg) no-repeat right 15px center;
   color: #4a4a4a;

@@ -19,7 +19,7 @@ class TenantHeader extends Component {
     super(props);
 
     this.state = {
-      modalIsOpen: false,
+      // modalIsOpen: false,
       LoginOpen: false,
       open: false,
       cont: [
@@ -56,13 +56,13 @@ class TenantHeader extends Component {
     this.setState({ open: false });
   };
 
-  openModal = () => {
-    this.setState({ modalIsOpen: true });
-  };
+  // openModal = () => {
+  //   this.setState({ modalIsOpen: true });
+  // };
 
-  closeModal = () => {
-    this.setState({ modalIsOpen: false });
-  };
+  // closeModal = () => {
+  //   this.setState({ modalIsOpen: false });
+  // };
 
   componentDidMount() {
     let pageName, lastOne, lastValue, arr;
@@ -171,7 +171,7 @@ class TenantHeader extends Component {
           </div>
         </div>
 
-        <Modal
+        {/* <Modal
           onClose={this.closeModal}
           open={this.state.modalIsOpen}
           modalId="Notification-popup"
@@ -216,7 +216,7 @@ class TenantHeader extends Component {
               </a>
             </div>
           </div>
-        </Modal>
+        </Modal> */}
         <div>
           <Modal
             open={this.state.open}

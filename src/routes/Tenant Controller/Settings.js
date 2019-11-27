@@ -104,7 +104,7 @@ export class Settings extends Component {
                           <div className="card-enterprise">
                           <div className="row">
                               <div className="col-md-12 pro">
-                                <label className="p3">Essential</label>
+                                <label className="p3">Enterprise</label>
                                 <label className="p4">1 User</label>
                               </div>
                             </div>

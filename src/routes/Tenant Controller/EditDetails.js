@@ -5,8 +5,6 @@ import Store from "./../../assets/Images/store-tikcet-system.png";
 import Ticket from "./../../assets/Images/Ticket1.png";
 import { Tabs, Tab } from "react-bootstrap-tabs";
 import Modal from "react-responsive-modal";
-// import ReactTable from "react-table";
-// import {Link} from 'react-router-dom'
 
 class EditDetails extends Component {
   constructor(props) {
@@ -43,10 +41,11 @@ class EditDetails extends Component {
                 <label className="deactivatedlook">DEACTIVATED</label>
               </div>
               <div className="col-md-6">
+                <div>
                 <div className="twogeneratepayment">
                   <button
                     className="GenPayLink"
-                    // onClick={this.HandlePaymentModalOpen.bind(this)}
+                    onClick={this.HandlePaymentModalOpen.bind(this)}
                   >
                     Generate Payment Link
                   </button>
@@ -56,6 +55,7 @@ class EditDetails extends Component {
                   >
                     Send Payment Remainder
                   </button>
+                </div>
                 </div>
               </div>
             </div>

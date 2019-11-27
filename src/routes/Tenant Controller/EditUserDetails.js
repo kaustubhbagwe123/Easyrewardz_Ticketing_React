@@ -5,10 +5,35 @@ import Store from "./../../assets/Images/store-tikcet-system.png";
 import Ticket from "./../../assets/Images/Ticket1.png";
 import EditPencil from "./../../assets/Images/EditPencil.png";
 import { Tabs, Tab } from "react-bootstrap-tabs";
+import Modal from "react-responsive-modal";
+import { Radio } from "antd";
 
 class EditUserDetails extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      CompanyDetail: false,
+      OtherDetail: false,
+      // CreateDate: "",
+    };
+  }
+  // handleCreateDate(date) {
+  //   this.setState({ CreateDate: date });
+  // }
+  HandleCompanyDetailModalOpen() {
+    this.setState({ CompanyDetail: true });
+  }
+  HandleCompanyDetailModalClose() {
+    this.setState({ CompanyDetail: false });
+  }
+  HandleOtherDetailModalOpen() {
+    this.setState({ OtherDetail: true });
+  }
+  HandleOtherDetailModalClose() {
+    this.setState({ OtherDetail: false });
+  }
   render() {
-    
     return (
       <Fragment>
         <div className="container-fluid">
@@ -60,8 +85,11 @@ class EditUserDetails extends Component {
                       <label className="PlanDetail">Company Details</label>
                     </div>
                     <div className="col-md-6">
-                      <img src={EditPencil} alt={EditPencil} className="more"
-                      // onClick={this.handleCompanyDetailModalOpen.bind(this)}
+                      <img
+                        src={EditPencil}
+                        alt={EditPencil}
+                        className="more"
+                        onClick={this.HandleCompanyDetailModalOpen.bind(this)}
                       />
                     </div>
                   </div>
@@ -109,6 +137,161 @@ class EditUserDetails extends Component {
                   </div>
                 </div>
               </div>
+              <Modal
+                open={this.state.CompanyDetail}
+                onClose={this.HandleCompanyDetailModalClose.bind(this)}
+                closeIconId="sdsg"
+                modalId="TenantCompany-popup"
+                // overlayId="logout-ovrly"
+              >
+                <div className="tabs-content OtherDet">
+                  <form>
+                    <div className="row">
+                      <div className="col-12">
+                        <h3>Enter Company Details</h3>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-12 col-sm-6">
+                        <label>Company Name</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter Company Name"
+                        ></input>
+                      </div>
+                      <div className="col-12 col-sm-6">
+                        <label>Company Type</label>
+                        <select className="dropdown" name="Company Type">
+                          <option value="">Select</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="2">3</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-12 col-sm-6">
+                        <label>Company Incorporation Date</label>
+                        {/* <DatePicker
+                          selected={this.state.CreateDate}
+                          onChange={this.handleCreateDate.bind(this)}
+                          placeholderText="Enter Company Incorporation Date"
+                          showMonthDropdown
+                          showYearDropdown
+                          className="form-control"
+                      /> */}
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter Company Incorporation Date"
+                        ></input>
+                      </div>
+                      <div className="col-12 col-sm-6">
+                        <label>No. of Employees</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter No. of Employees"
+                        ></input>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-12 col-sm-6">
+                        <label>Email ID</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter Email ID"
+                        ></input>
+                      </div>
+                      <div className="col-12 col-sm-6">
+                        <label>Contact No.</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter Contact No."
+                        ></input>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-12 col-sm-6">
+                        <label>Contact Person Name</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter Contact Person Name"
+                        ></input>
+                      </div>
+                      <div className="col-12 col-sm-6">
+                        <label>Contact Person Phone No.</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter Contact Person Phone No."
+                        ></input>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-12">
+                        <label>Address</label>
+                        <textarea
+                          className="form-control"
+                          placeholder="Enter your Address"
+                          style={{ height: "auto" }}
+                        ></textarea>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-12 col-sm-6">
+                        <label>Pincode</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter your Pincode"
+                        ></input>
+                      </div>
+                      <div className="col-12 col-sm-6">
+                        <label>City</label>
+                        <select className="dropdown" name="Company Type">
+                          <option value="">Select</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="2">3</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="row m-b-20">
+                      <div className="col-12 col-sm-6">
+                        <label>State</label>
+                        <select className="dropdown" name="Company Type">
+                          <option value="">Select</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="2">3</option>
+                        </select>
+                      </div>
+                      <div className="col-12 col-sm-6">
+                        <label>Country</label>
+                        <select className="dropdown" name="Company Type">
+                          <option value="">Select</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="2">3</option>
+                        </select>
+                      </div>
+                    </div>
+                  </form>
+                  <div className="row m-b-10">
+                    <div className="col-md-6 ComDet">
+                      <button className="Can">Cancel</button>
+                    </div>
+                    <div className="col-md-6 ComDet">
+                      <button className="Sav">Save</button>
+                    </div>
+                  </div>
+                </div>
+              </Modal>
               <div className="col-md-4">
                 <div className="card-a card-b">
                   <div className="row">
@@ -161,7 +344,12 @@ class EditUserDetails extends Component {
                       <label className="PlanDetail">Other Details</label>
                     </div>
                     <div className="col-md-6">
-                      <img src={EditPencil} alt={EditPencil} className="more" />
+                      <img
+                        src={EditPencil}
+                        alt={EditPencil}
+                        className="more"
+                        onClick={this.HandleOtherDetailModalOpen.bind(this)}
+                      />
                     </div>
                   </div>
                   <div className="row m-b-15">
@@ -208,6 +396,129 @@ class EditUserDetails extends Component {
                   </div>
                 </div>
               </div>
+              <Modal
+                open={this.state.OtherDetail}
+                onClose={this.HandleOtherDetailModalClose.bind(this)}
+                closeIconId="sdsg"
+                modalId="TenantCompany-popup"
+                // overlayId="logout-ovrly"
+              >
+                <div className="tabs-content OtherDet">
+                  <form>
+                    <div className="row">
+                      <div className="col-12">
+                        <h3>Enter Other Details</h3>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-12 col-sm-6">
+                        <label>No. of Users</label>
+                        <select className="dropdown" name="users">
+                          <option value="">Select</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="2">3</option>
+                        </select>
+                      </div>
+                      <div className="col-12 col-sm-6">
+                        <label>No. of Simultaneous Logins</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter No. of Simultaneous Logins"
+                        ></input>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-12 col-sm-6">
+                        <label>Monthly Ticket Volume</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter Monthly Ticket Volume"
+                        ></input>
+                      </div>
+                      <div className="col-12 col-sm-6">
+                        <label>Ticket Archiving Policy</label>
+                        <div className="radio-tabs">
+                          <Radio.Group defaultValue="a" buttonStyle="solid">
+                            <Radio.Button value="3 Months">
+                              3 Months
+                            </Radio.Button>
+                            <Radio.Button value="6 Months">
+                              6 Months
+                            </Radio.Button>
+                            <Radio.Button value="9 Months">
+                              9 Months
+                            </Radio.Button>
+                          </Radio.Group>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-12 col-sm-6">
+                        <label>Tenant Type</label>
+                        <div className="radio-tabs">
+                          <Radio.Group defaultValue="a" buttonStyle="solid">
+                            <Radio.Button value="Shared">Shared</Radio.Button>
+                            <Radio.Button value="Dedicated">
+                              Dedicated
+                            </Radio.Button>
+                          </Radio.Group>
+                        </div>
+                      </div>
+                      <div className="col-12 col-sm-6">
+                        <label>Server Type</label>
+                        <div className="radio-tabs">
+                          <Radio.Group defaultValue="a" buttonStyle="solid">
+                            <Radio.Button value="Shared">Shared</Radio.Button>
+                            <Radio.Button value="Dedicated">
+                              Dedicated
+                            </Radio.Button>
+                          </Radio.Group>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-12 col-sm-6">
+                        <label>Email Sender ID</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter Email Sender ID"
+                        ></input>
+                      </div>
+                      <div className="col-12 col-sm-6">
+                        <label>SMS Sender ID</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter SMS Sender ID"
+                        ></input>
+                      </div>
+                    </div>
+                    <div className="row m-b-20">
+                      <div className="col-12 col-sm-6">
+                        <label>CRM Interface Language</label>
+                        <select className="dropdown" name="Interface">
+                          <option value="">Select</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="2">3</option>
+                        </select>
+                      </div>
+                    </div>
+                  </form>
+                  <div className="row m-b-10">
+                    <div className="col-md-6 ComDet">
+                      <button className="Can">Cancel</button>
+                    </div>
+                    <div className="col-md-6 ComDet">
+                      <button className="Sav">Save</button>
+                    </div>
+                  </div>
+                </div>
+              </Modal>
             </div>
             <div className="row m-t-20">
               <div className="col-md-4">
