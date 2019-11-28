@@ -1,13 +1,7 @@
-import React, { Component } from 'react'
-// import visa from "./../../assets/Images/visa.png";
-// import master from "./../../assets/Images/master.png";
+import React, { Component } from 'react' 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import { faSquareFull } from "@fortawesome/free-solid-svg-icons";
-import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
-import { Popover } from "antd";
-import { Link } from "react-router-dom";
+import { faSquareFull } from "@fortawesome/free-solid-svg-icons"; 
 
 class CustomPlan extends Component {
     render() {
