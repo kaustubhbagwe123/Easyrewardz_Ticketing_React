@@ -5,7 +5,7 @@ import BluePlus from "./../../assets/Images/blueplus.png";
 import ListAll from "./../../assets/Images/listall.png";
 import Custom from "./../../assets/Images/custom.png";
 import NextBlue from "./../../assets/Images/nextblue.png";
-import Pencil from "./../../assets/Images/pencil.png";
+import Pencil from "./../../assets/Images/PencilYellow.png";
 
 
 export class Settings extends Component {

@@ -200,7 +200,7 @@
 }
 .paddsett {
     padding: 40px 90px;
-    background: #eef1f6;
+    background: #F5F5F5;
 }
 .settingstenant-tabs1 .nav-tabs {
     border: none;
@@ -366,8 +366,6 @@
 .card-essential .pencil {
     width: 20px;
     height: 20px;
-    background: #fff;
-    padding: 4px;
     float: right;
     cursor: pointer;
 }
@@ -486,13 +484,19 @@
 .dash-cntr1 {
     padding: 30px 70px;
     position: relative;
+    background-color: #F5F5F5;
+}
+.dash-cntrr1 {
+    padding: 15px 0;
+    position: relative;
+    background: #F5F5F5;
 }
 .enterprisetext {
     font-family: lato;
     font-size: 20px;
     font-weight: 600;
     color: #000;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 .tenantEnterprise .switch {
     position: relative;
@@ -553,6 +557,7 @@
 .savecancelenterprise{
     float: right;
     margin-right: 80px;
+    margin-bottom: 25px;
 }
 .savecancelenterprise .Save {
     min-width: 149px;
@@ -579,6 +584,7 @@
 }
 .createPlan {
     padding: 45px 300px;
+    background-color: #F5F5F5;
 }
 .CenterPlan {
     padding: 50px 165px;
@@ -600,6 +606,16 @@
     text-align: left;
 }
 .CenterPlan .txt-1 {
+    background: transparent;
+    border-radius: 4px;
+    width: 100%;
+    height: 43px;
+    border: none;
+    color: #000;
+    padding: 10px;
+    border: 1px solid #ecf2f4;
+}
+.card-a .txt-1 {
     background: transparent;
     border-radius: 4px;
     width: 100%;
@@ -783,7 +799,7 @@
 }
 .paddingtenatedit {
     padding: 15px 25px 100px 25px;
-    /* background: bisque; */
+    background: #F5F5F5;
 }
 .paddingtenatedit .twogeneratepayment{
     float: right;
@@ -885,7 +901,7 @@
     padding: 10px;
     border: 1px solid #ecf2f4;
     margin-top: 10px;
-    background: #ECF2F4 url("./../Images//changepencil.png") no-repeat right 20px center;
+    background: #fff url("./../Images//changepencil.png") no-repeat right 20px center;
 }
 .card-a .plantext {
     float: right;

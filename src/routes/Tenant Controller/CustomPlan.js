@@ -542,10 +542,10 @@ class CustomPlan extends Component {
               Header: <span>Show/Hide</span>,
               accessor: "showHide"
             },
-            {
-              Header: <span>Add ons</span>,
-              accessor: "addOn"
-            },
+            // {
+            //   Header: <span>Add ons</span>,
+            //   accessor: "addOn"
+            // },
             {
               Header: <span>Monthly(Per User)</span>,
               accessor: "Month",
@@ -575,8 +575,7 @@ class CustomPlan extends Component {
                     defaultPageSize={22}
                     showPagination={false}
                   />
-                </div>
-                <div className="row">
+                  <div className="row">
                   <div className="col-md-12">
                     <div className="savecancelenterprise">
                       <button className="Cancel">Cancel</button>
@@ -584,6 +583,8 @@ class CustomPlan extends Component {
                     </div>
                   </div>
                 </div>
+                </div>
+                
               </div>
             </div>
             </Fragment>

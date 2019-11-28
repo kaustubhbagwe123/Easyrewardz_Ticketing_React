@@ -575,8 +575,7 @@ class CreateNewPlan extends Component {
                     defaultPageSize={22}
                     showPagination={false}
                   />
-                </div>
-                <div className="row">
+                  <div className="row">
                   <div className="col-md-12">
                     <div className="savecancelenterprise">
                       <button className="Cancel">Cancel</button>
@@ -584,6 +583,8 @@ class CreateNewPlan extends Component {
                     </div>
                   </div>
                 </div>
+                </div>
+                
               </div>
             </div>
           </Fragment>

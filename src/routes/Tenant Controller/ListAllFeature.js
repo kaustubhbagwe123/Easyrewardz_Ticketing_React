@@ -77,6 +77,75 @@ class ListAllFeature extends Component {
         </div>
       </div>
     );
+    const AddNew = (
+      <div>
+        <div className="CenterPlan tooltipcenterplan">
+          <div className="row m-b-20">
+            <div className="col-md-12">
+              <label className="createplantext">Add New Feature</label>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-12">
+              <label className="PlanName">Feature Name</label>
+              <input type="text" className="txt-1" placeholder="Phone Trees" />
+            </div>
+          </div>
+          <div className="row m-t-10">
+            <div className="col-md-12">
+              <label className="PlanName">Plan Price(Monthly)</label>
+              <div className="input-group">
+                <span class="input-group-addon">₹</span>
+                <input type="text" class="form-control" placeholder="199" />
+              </div>
+              {/* <span>₹</span>
+                        <input
+                          type="text"
+                          className="txt-1"
+                          placeholder="11999"
+                        /> */}
+            </div>
+          </div>
+
+          <div className="row m-t-10">
+            <div className="col-md-12">
+              <label className="PlanName">Plan Price(Yearly)</label>
+              <div className="input-group">
+                <span class="input-group-addon">₹</span>
+                <input type="text" class="form-control" placeholder="99" />
+              </div>
+            </div>
+          </div>
+
+          <div className="row m-t-10">
+            <div className="col-md-12">
+              <label className="PlanName">ToolTip</label>
+
+              <input
+                type="textarea"
+                className="txt-1tooltip"
+                placeholder="Lorem ipsum is simply dummytext of printing and type setting
+                        industry.Lorem ipsum is simply dummytext of printing and type setting
+                        industry."
+              />
+            </div>
+          </div>
+
+          <div className="row m-t-40">
+            <div className="col-md-6">
+              <div className="cancel">
+                <button>Cancel</button>
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="save">
+                <button>Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
     const data = [
       {
         Fea: (
@@ -425,11 +494,10 @@ class ListAllFeature extends Component {
                 defaultPageSize={22}
                 showPagination={false}
               />
-            </div>
-            <div className="row">
+              <div className="row">
               <div className="col-md-6">
                 <div className="savecancelenterprise1">
-                  <Popover content={Pencil1} placement="top" trigger="click">
+                  <Popover content={AddNew} placement="top" trigger="click">
                     <button className="addnew">+ Add New Features</button>
                   </Popover>
                 </div>
@@ -441,6 +509,8 @@ class ListAllFeature extends Component {
                 </div>
               </div>
             </div>
+            </div>
+            
           </div>
         </div>
       </Fragment>

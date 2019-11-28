@@ -247,7 +247,7 @@ class EditDetails extends Component {
                 </ul>
               </div>
             </div>
-            <div className="row m-t-20">
+            <div className="row">
               <div className="col-md-4">
                 <div className="card-a">
                   <label className="PlanDetail">Plan Details</label>

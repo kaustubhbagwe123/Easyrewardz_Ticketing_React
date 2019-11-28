@@ -15,12 +15,8 @@ class EditUserDetails extends Component {
     this.state = {
       CompanyDetail: false,
       OtherDetail: false,
-      // CreateDate: "",
     };
   }
-  // handleCreateDate(date) {
-  //   this.setState({ CreateDate: date });
-  // }
   HandleCompanyDetailModalOpen() {
     this.setState({ CompanyDetail: true });
   }
@@ -77,7 +73,7 @@ class EditUserDetails extends Component {
                 </ul>
               </div>
             </div>
-            <div className="row m-t-20">
+            <div className="row">
               <div className="col-md-4">
                 <div className="card-a card-b">
                   <div className="row m-b-20">
@@ -142,7 +138,6 @@ class EditUserDetails extends Component {
                 onClose={this.HandleCompanyDetailModalClose.bind(this)}
                 closeIconId="sdsg"
                 modalId="TenantCompany-popup"
-                // overlayId="logout-ovrly"
               >
                 <div className="tabs-content OtherDet">
                   <form>
@@ -173,14 +168,6 @@ class EditUserDetails extends Component {
                     <div className="row">
                       <div className="col-12 col-sm-6">
                         <label>Company Incorporation Date</label>
-                        {/* <DatePicker
-                          selected={this.state.CreateDate}
-                          onChange={this.handleCreateDate.bind(this)}
-                          placeholderText="Enter Company Incorporation Date"
-                          showMonthDropdown
-                          showYearDropdown
-                          className="form-control"
-                      /> */}
                         <input
                           type="text"
                           className="form-control"

@@ -260,7 +260,7 @@ class Dashboard extends Component {
             </div>
           </div>
         </div>
-        <section className="dash-cntr">
+        <section className="dash-cntr" style={{backgroundColor:"#F5F5F5"}}>
           <Card>
             <CardBody>
               <div className="container-fluid dash-tp-card">
@@ -345,8 +345,8 @@ class Dashboard extends Component {
         </section>
         <section className="">
           <Collapse isOpen={this.state.collapseSearch}>
-            <Card>
-              <CardBody>
+            <Card style={{padding:"25px 0px",backgroundColor:"#F5F5F5"}}>
+              <CardBody style={{padding:"0"}}>
                 <div className="container-fluid dash-tp-card">
                   <div className="dash-top-cards1">
                     <div className="row sectiontenant m-b-20 m-t-20">
@@ -415,7 +415,7 @@ class Dashboard extends Component {
           </Collapse>
         </section>
         <div className="container-fluid">
-          <div className="table-cntr mt-3">
+          <div className="table-cntr m-t-10">
             <div className="tenantreact">
               <ReactTable
                 data={data}
