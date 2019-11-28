@@ -2442,7 +2442,7 @@ table tr th:last-child {
   color: #2561a8;
   border-bottom: 2px solid #2561a8;
   box-shadow: none;
-  background: #e3e9eb;
+  /*background: #e3e9eb;*/
 }
 .tab-content {
   padding: 12px 0px;
@@ -2977,7 +2977,7 @@ table tr th:last-child {
 .auth-content .card .card-block,
 .auth-content .card .card-body {
   padding: 35px 60px 70px;
-  box-shadow: 0 0 4px 0px #ddd;
+  /*box-shadow: 0 0 4px 0px #ddd;*/
 }
 .auth-wrapper .auth-content {
   padding: 0;
@@ -3326,7 +3326,7 @@ table tr th:last-child {
   background-color: #2561a8;
   border-radius: 4px;
   width: 148px;
-  height: 43px;
+  height: 40px;
   cursor: pointer;
 }
 
@@ -6148,12 +6148,12 @@ table thead tr {
 .myTicket-btn-A {
   min-width: 0px;
   /* padding: 12px; */
-  margin-top: -10px;
+  margin-top: 0px;
   border-radius: 5px;
   cursor: pointer;
   background-color: #2561a8;
   color: #fff;
-  height: 43px;
+  height: 40px;
   font-size: 14px;
 }
 .assign-modal-KBase .modal-lg {
