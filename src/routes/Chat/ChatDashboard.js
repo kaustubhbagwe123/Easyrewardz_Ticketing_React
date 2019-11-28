@@ -41,8 +41,9 @@ class ChatDashboard extends Component {
     return (
       <div>
         <div className="Chat-main-header">
-          <div className="row text-center-header">
-            <div className="text-center-margin">
+          <div className="row" style={{padding: "15px 0"}}>
+           <div className="col-md-6">
+             <div style={{display: "inline"}}>
               <label className="lable-text">
                 Brand :<b> All</b>
               </label>
@@ -52,7 +53,7 @@ class ChatDashboard extends Component {
                 className="sort-down-arrow"
               />
             </div>
-            <div className="text-center-margin">
+             <div style={{display: "inline" , marginRight: "10px"}}>
               <label className="lable-text">
                 Agent :<b> All</b>
               </label>
@@ -62,9 +63,11 @@ class ChatDashboard extends Component {
                 className="sort-down-arrow"
               />
             </div>
-            <div>
+           </div>
+            <div className="col-md-6">
+              <div style={{float: "right"}}>
               <div
-                style={{ marginLeft: this.state.daterangeszie }}
+               
                 onClick={this.daterangefunction}
               >
                 <label className="lable-text">
@@ -76,6 +79,7 @@ class ChatDashboard extends Component {
                   className="sort-down-arrow"
                 />
               </div>
+            </div>
             </div>
           </div>
         </div>
@@ -328,9 +332,9 @@ class ChatDashboard extends Component {
               <div className="missed-chat-card">
                 <p className="card-titel chat-lbl5">Missed Chat</p>
                 <p className="missed-chat-30 team-member-30">30</p>
-                <p className="team-member-center-text">18 : New Visitor</p>
+                <p className="team-member-center-text teamchat-p">18 : New Visitor</p>
 
-                <p className="team-member-center-text">
+                <p className="team-member-center-text teamchat-p">
                   12 : Returning Visitor
                 </p>
 

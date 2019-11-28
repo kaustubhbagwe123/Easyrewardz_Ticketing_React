@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+// import visa from "./../../assets/Images/visa.png";
+// import master from "./../../assets/Images/master.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";

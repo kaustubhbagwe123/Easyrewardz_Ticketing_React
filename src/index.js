@@ -13,7 +13,7 @@ import "./assets/css/settings.css";
 import "./assets/css/QA.css";
 import "./assets/css/store.css";
 import "./assets/css/custome.css";
-// import "./assets/css/artboard.css";
+//import "./assets/css/artboard.css";
 
 //JS
 import "./../node_modules/popper.js/dist/popper.js";

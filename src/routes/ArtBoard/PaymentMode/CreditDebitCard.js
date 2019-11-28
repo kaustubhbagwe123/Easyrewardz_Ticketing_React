@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faUnlockalt } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom"; 
 import visa from "../../../assets/Images/visa.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUnlockAlt, faInfoCircle } from "@fortawesome/free-solid-svg-icons";

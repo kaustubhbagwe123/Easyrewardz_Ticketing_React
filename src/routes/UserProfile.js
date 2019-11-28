@@ -79,7 +79,7 @@ class UserProfile extends Component {
                     </div>
                   </div>
 
-                  <div className="centerprofile">
+                  <div className="centerprofile col-md-6">
                     <div className="divSpace">
                       <div className="">
                         <label className="designation-name">Name</label>

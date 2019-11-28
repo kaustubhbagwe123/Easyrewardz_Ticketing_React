@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import StepZilla from "react-stepzilla";
-import congratulation from "../../assets/Images/cong-img.jpg";
+import congratulation from "../../assets/Images/cong-img.jpg"; 
 
 class POstatus extends Component {
   render() {

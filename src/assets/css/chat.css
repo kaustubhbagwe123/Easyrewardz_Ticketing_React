@@ -190,10 +190,10 @@
   color: #4a4a4a;
   font-family: Lato;
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 14px;
   text-align: left;
-  padding: 0px 4px;
+  padding: 10px 13px 0;
 }
 
 .card-content-number .response-small {
@@ -211,14 +211,19 @@
 }
 .team-member-30 {
   text-align: center;
+  margin-bottom: 10px;
   width: 100%;
   /* padding-left: 125px; */
   /* padding-top: 28px; */
 }
-
+.teamchat-p {
+  font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 0;
+}
 .team-member-p {
   display: flex;
-  padding: 10px 46px;
+  padding: 10px 28px;
 }
 
 .float-search-chat {

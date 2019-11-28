@@ -1,6 +1,8 @@
 import React, { Component, useState } from "react";
 import StepZilla from "react-stepzilla";
 import { Radio } from "antd";
+// import visa from "./../../assets/Images/visa.png";
+// import master from "./../../assets/Images/master.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; 
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { Popover } from "antd";

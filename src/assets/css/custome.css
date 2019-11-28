@@ -262,6 +262,7 @@
   font-weight: 300;
   line-height: 34px;
   text-align: left;
+  padding-top: 10px;
   display: block;
   margin-bottom: 30px;
 }
@@ -390,9 +391,10 @@
 }
 /************My Ticket Header******************/
 .headphone {
-  width: 23px;
-  height: 25px;
-  margin-right: 7px;
+  width: 25px;
+  height: 27px;
+  margin-right: 9px;
+  vertical-align: initial;
 }
 .loading-rectangle {
   background-color: #ecf2f4;
@@ -401,6 +403,7 @@
   width: 23px;
   height: 25px;
   padding: 5px;
+  margin-top: 7px;
   margin-left: 7px;
   vertical-align: top;
   cursor: pointer;
@@ -439,10 +442,10 @@
 .head-header {
   background-color: #ecf2f4;
   width: auto;
-  height: 57px;
+  height: auto;
 }
 .head-header-1 {
-  padding: 15px 30px;
+  padding: 7px 15px;
 }
 .id-abc-1234 {
   color: #4a4a4a;
@@ -451,6 +454,7 @@
   font-weight: 400;
   line-height: 19px;
   text-align: left;
+  padding-top: 5px;
 }
 .updated-2-d-ago {
   color: #9b9b9b;
@@ -588,9 +592,8 @@ table tr th:last-child {
   border-radius: 10px;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.03);
   width: auto;
-  height: 159px;
+  height: auto;
   margin: 15px;
-  padding: 15px;
 }
 .rectangle2 {
   background-color: #ecf2f4;
@@ -602,8 +605,11 @@ table tr th:last-child {
   border-radius: 4px;
   width: auto;
   height: auto;
-  /* margin: 32px; */
-  padding: 30px;
+  /* margin: 32px;
+  padding: 30px; */
+}
+.text-editor .row {
+  margin: 0;
 }
 .card-rectangle {
   background: #f5f8f9;
@@ -616,6 +622,7 @@ table tr th:last-child {
   font-weight: 700;
   line-height: 17px;
   text-align: left;
+  margin-bottom: 5px;
   padding-left: 3px;
 }
 .ticket-details-wher {
@@ -802,10 +809,10 @@ table tr th:last-child {
 .eyeImg {
   background-color: #ecf2f4;
   border: 1px solid #2561a8;
-  border-radius: 6px;
-  width: 23px;
-  height: 23px;
-  padding: 5px;
+  border-radius: 5px;
+  width: auto;
+  height: 20px;
+  padding: 4px;
   cursor: pointer;
 }
 .searchImg-2 {
@@ -816,10 +823,10 @@ table tr th:last-child {
 .billImg {
   background-color: #ecf2f4;
   border: 1px solid #2561a8;
-  border-radius: 6px;
-  width: 23px;
-  height: 23px;
-  padding: 5px;
+  border-radius: 5px;
+  width: auto;
+  height: 20px;
+  padding: 4px;
   margin-top: 1.5px;
   cursor: pointer;
 }
@@ -884,7 +891,7 @@ table tr th:last-child {
   width: 30px;
   height: 30px;
   padding: 7px;
-  margin-left: -20px;
+  margin-left: 14px;
 }
 .reassign-to-naman-r {
   color: #4a4a4a;
@@ -932,8 +939,8 @@ table tr th:last-child {
   text-align: left;
 }
 .card-space-1 {
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding-top: 20px;
+  padding-bottom: 5px;
 }
 .hi-naman-please-hel {
   color: #4a4a4a;
@@ -975,16 +982,17 @@ table tr th:last-child {
   cursor: pointer;
 }
 .label-2 {
-  margin-top: -3px;
-  font-size: 20px;
+  margin-top: 0;
+  font-size: 22px;
   margin-bottom: 15px;
   padding-left: 3px;
   color: #5c5c5c;
 }
 .label-3 {
-  margin-top: -2px;
-  font-size: 14px;
+  margin-top: 0;
+  font-size: 16px;
   padding-left: 3px;
+  line-height: initial;
   padding-bottom: 22px;
 }
 .mail-card {
@@ -998,14 +1006,15 @@ table tr th:last-child {
   border-radius: 8px;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.03);
   width: 100%;
-  height: 41px;
+  height: auto;
 }
 .mail-mask {
-  background-color: #dbe4e7;
   border-radius: 5px;
-  width: 151px;
-  height: 32px;
+  height: auto;
   margin: 4px;
+  position: relative;
+  width: 100%;
+  display: inline-block;
 }
 .email {
   color: #000000;
@@ -1020,8 +1029,7 @@ table tr th:last-child {
 .arrow-img {
   width: 15px;
   height: 15px;
-  margin-left: 775%;
-  margin-top: -38%;
+  margin: 5px 15px 0;
 }
 .dropdrown {
   margin-left: -21px;
@@ -1029,22 +1037,22 @@ table tr th:last-child {
 .plush-img {
   width: 15px;
   height: 15px;
-  margin-left: 797%;
-  margin-top: -42%;
+  margin: 5px 15px 0;
+  cursor: pointer;
 }
 .minus-img {
   width: 15px;
   height: 2px;
-  margin-left: 797%;
-  margin-top: -42%;
+  margin: 5px 15px 0;
   cursor: pointer;
 }
 .line-1 {
   border: 1px solid #cad4d7;
-  height: 39px;
-  width: 0px;
-  margin-top: -37%;
-  margin-left: 790%;
+  width: 1px;
+  height: 40px;
+  position: absolute;
+  top: -4px;
+  right: 42px;
 }
 .label-4 {
   color: #9b9b9b;
@@ -1052,11 +1060,13 @@ table tr th:last-child {
   font-size: 12px;
   font-weight: 700;
   line-height: 14px;
+  display: block;
+  margin-bottom: 5px;
   text-align: left;
 }
 .rectangle-9 {
   border-radius: 4px;
-  width: 158px;
+  width: 100%;
   height: 31px;
   padding-left: 8px;
   padding-right: 40px;
@@ -1065,6 +1075,12 @@ table tr th:last-child {
   background-size: 13px;
   cursor: pointer;
   border: none;
+}
+.mid-sec {
+  padding: 15px 0px 15px 40px;
+  border-right: 1px solid #ebebeb;
+  border-left: 1px solid #ebebeb;
+  height: 100%;
 }
 .drop-card {
   margin-top: -15px;
@@ -1082,12 +1098,12 @@ table tr th:last-child {
   line-height: 17px;
   text-align: left;
   white-space: nowrap;
-  padding-left: 8px;
   cursor: pointer;
 }
 .storeSpacing {
-  padding-left: 8px;
-  padding-top: 15px;
+  padding-left: 0;
+  padding-top: 0;
+  display: block;
 }
 .pencilImg {
   width: 13px;
@@ -1570,14 +1586,12 @@ table {
 .customer-icon {
   width: 32px;
   height: 32px;
-  margin-left: 20px;
-  margin-right: 20px;
   cursor: pointer;
 }
 .customer-text {
   color: #2561a8;
   font-family: Lato;
-  font-size: 9px;
+  font-size: 9px !important;
   font-weight: 700;
   line-height: 11px;
   text-align: left;
@@ -1587,37 +1601,33 @@ table {
 .order-icon {
   width: 32px;
   height: 32px;
-  margin-left: 20px;
-  margin-right: 20px;
   cursor: pointer;
 }
 .order-text {
   color: #4a4a4a;
   font-family: Lato;
-  font-size: 9px;
+  font-size: 9px !important;
   font-weight: 700;
   line-height: 11px;
   text-align: left;
-  margin-left: 18px;
+  margin: auto;
   padding-top: 10px;
   cursor: pointer;
 }
 .store-icon {
   width: 32px;
   height: 32px;
-  margin-left: 20px;
-  margin-right: 20px;
   cursor: pointer;
 }
 
 .store-text {
   color: #4a4a4a;
   font-family: Lato;
-  font-size: 9px;
+  font-size: 9px !important;
   font-weight: 700;
   line-height: 11px;
   text-align: left;
-  margin-left: 18px;
+  margin: auto;
   padding-top: 10px;
   cursor: pointer;
 }
@@ -1625,19 +1635,17 @@ table {
 .task-icon {
   width: 28px;
   height: 28px;
-  margin-left: 20px;
-  margin-right: 20px;
   cursor: pointer;
 }
 
 .task-text {
   color: #4a4a4a;
   font-family: Lato;
-  font-size: 9px;
+  font-size: 9px !important;
   font-weight: 700;
   line-height: 11px;
   text-align: left;
-  margin-left: 20px;
+  margin: auto;
   padding-top: 10px;
   cursor: pointer;
 }
@@ -1826,7 +1834,7 @@ button {
   color: #2561a8;
   font-size: 12px;
   padding: 8px 25px;
-  border-radius: 5px;
+  border-radius: 50px;
   cursor: pointer;
 }
 
@@ -2019,8 +2027,8 @@ table {
   border-radius: 5px 5px 0px 0;
 }
 table th {
-  font-size: 12px;
-  padding: 20px 26px; /*20px 30px;*/
+  font-size: 13px;
+  padding: 15px 25px; /*20px 30px;*/
 }
 table td {
   font-size: 13px;
@@ -2111,19 +2119,19 @@ table td span {
   background-color: #cbe0f1;
   border: 1px solid #0076ff;
   color: #1775e2;
-  font-size: 10px;
+  font-size: 10px !important;
 }
 .table-yellow-btn {
   background-color: #ffe4b2;
   border: 1px solid #ffa400;
   color: #dc6530;
-  font-size: 10px;
+  font-size: 10px !important;
 }
 .table-green-btn {
   background-color: #cbf1e9;
   border: 1px solid #2d8f7b;
   color: #2d8f7b;
-  font-size: 10px;
+  font-size: 10px !important;
 }
 .task-icon-1 {
   width: 20px;
@@ -2434,6 +2442,7 @@ table tr th:last-child {
   color: #2561a8;
   border-bottom: 2px solid #2561a8;
   box-shadow: none;
+  /*background: #e3e9eb;*/
 }
 .tab-content {
   padding: 12px 0px;
@@ -2478,6 +2487,9 @@ table tr th:last-child {
   text-transform: uppercase;
   font-weight: 500;
   cursor: pointer;
+}
+.logout-block p {
+  margin-bottom: 0;
 }
 .logout-status {
   width: 19px;
@@ -2706,6 +2718,10 @@ table tr th:last-child {
 .chat-cntr .chat-info:last-child {
   border-bottom: none;
 }
+.chat-cntr .ongng {
+  font-size: 16px;
+  font-weight: 600;
+}
 .chat-info {
   padding: 17px;
   border-bottom: 1px solid #e4e4e4;
@@ -2749,8 +2765,8 @@ table tr th:last-child {
   margin-top: -10px;
 }
 .name-num p {
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 600;
   color: #000;
   line-height: 0.7;
 }
@@ -2796,11 +2812,11 @@ table tr th:last-child {
   font-size: 14px;
   padding-top: 10px;
   padding-bottom: 10px;
-  padding-right: 60px;
+  padding-right: 42px;
   cursor: pointer;
   background: #2561a8 url("../Images/down-white.png") no-repeat right 20px
     center;
-  background-size: 14px;
+  background-size: 13px;
 }
 /* .sel-arr::after {
     content: '';
@@ -2823,6 +2839,8 @@ table tr th:last-child {
 }
 .top-tab-act .nav-tabs .nav-link {
   padding: 20px;
+  font-size: 16px;
+  font-weight: 600;
 }
 .chat-user-det {
   background-color: #fff;
@@ -2847,7 +2865,9 @@ table tr th:last-child {
 }
 .chat-user-name {
   color: #000;
-  font-weight: 700;
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 4px;
 }
 .chat-user-det textarea {
   background-color: #ecf2f4;
@@ -2956,7 +2976,8 @@ table tr th:last-child {
 }
 .auth-content .card .card-block,
 .auth-content .card .card-body {
-  padding: 25px 62px 60px;
+  padding: 35px 60px 70px;
+  /*box-shadow: 0 0 4px 0px #ddd;*/
 }
 .auth-wrapper .auth-content {
   padding: 0;
@@ -2998,8 +3019,8 @@ table tr th:last-child {
 }
 .claim-ticket {
   font-size: 15px;
-  padding: 14px;
-  padding-left: 15px;
+  padding: 15px;
+  padding-left: 0;
   margin-bottom: 0px;
   color: #5e6061;
 }
@@ -3010,6 +3031,7 @@ table tr th:last-child {
   font-weight: 500;
   line-height: 19px;
   text-align: left;
+  margin-right: 40px;
 }
 .claim-title {
   color: #4a4a4a;
@@ -3026,7 +3048,7 @@ table tr th:last-child {
   border-color: #2561a8;
   width: 145px;
   height: 40px;
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
   color: white;
 }
@@ -3049,10 +3071,10 @@ table tr th:last-child {
   background-image: none;
   border-color: #2561a8;
   border-radius: 0.25rem;
-  height: 42px;
+  height: 40px;
   line-height: 10px;
   margin-right: 10px;
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
 }
 .col-md-9-card {
@@ -3061,58 +3083,55 @@ table tr th:last-child {
   max-width: 75%;
 }
 .oderDetails-table {
-  margin-left: -20px;
-  padding-top: 0px;
+  padding-top: 15px;
 }
 .span-color {
   color: red;
 }
 .search-customer-padding {
-  padding: 23px;
-  padding-left: 7%;
-  padding-top: 5px;
+  padding: 30px;
 }
 .back-color {
   background-color: #f5f8f9;
   padding-top: 20px;
-  margin-left: -13px;
 }
 .card-radius {
   border-radius: 6px;
-  padding-top: 15px;
-  padding-left: 15px;
 }
 .label-color {
   color: #6b6767;
+  margin-right: 5px;
 }
 .add-customer-color {
-  margin-left: 230px;
   color: #4275b1;
+  float: right;
   cursor: pointer;
 }
 .search-mobile-textbox {
   background-color: #ecf2f4;
   border-radius: 4px;
-  width: 875px;
-  height: 43px;
-  margin-left: -15px;
+  width: 100%;
+  height: 40px;
   margin-top: 15px;
+  margin-bottom: 20px;
   padding: 10px;
   border: none;
 }
 .searchImg {
   width: 16px;
   height: 16px;
-  margin-top: -70px;
-  margin-left: 825px;
+}
+.raiseclaim .searchImg {
+  position: absolute;
+  top: 25px;
+  right: 15px;
 }
 .claim-status-card {
   background-color: #ecf2f4;
   width: auto;
-  height: 54px;
-  border-radius: 10px;
-  padding: 15px;
-  padding-left: 10px;
+  height: 40px;
+  border-radius: 4px;
+  padding: 9px 15px;
 }
 .line-2 {
   border: 1px solid #cad4d7;
@@ -3161,8 +3180,7 @@ table tr th:last-child {
   margin-left: 833px;
 }
 .batashoes {
-  width: 156px;
-  margin-left: -11px;
+  width: 150px;
 }
 .label-6 {
   color: #4a4a4a;
@@ -3175,14 +3193,17 @@ table tr th:last-child {
   padding-top: 15px;
   padding-bottom: 10px;
 }
+.raiseclaim .row {
+  margin: 0;
+}
 .ticket-comments-textarea {
   background-color: #ecf2f4;
   border-radius: 4px;
-  width: 870px;
-  height: 123px;
+  width: 100%;
+  min-height: 125px;
   border: none;
+  height: auto;
   resize: none;
-  padding-left: 10px;
 }
 .hr-ago {
   color: #9b9b9b;
@@ -3305,7 +3326,7 @@ table tr th:last-child {
   background-color: #2561a8;
   border-radius: 4px;
   width: 148px;
-  height: 43px;
+  height: 40px;
   cursor: pointer;
 }
 
@@ -3342,7 +3363,7 @@ table tr th:last-child {
   min-height: 300px;
   overflow: auto;
   max-height: 350px;
-  margin-left: -50px;
+  margin-left: 0;
 }
 /**Historical popup css edn**/
 
@@ -3385,6 +3406,8 @@ progress::-moz-progress-bar {
   width: 100%;
   text-align: center;
   position: relative;
+  margin: 0;
+  text-transform: capitalize;
 }
 .dropdown-label {
   color: #9b9b9b;
@@ -3866,7 +3889,7 @@ progress::-moz-progress-bar {
 .program-code-button {
   background-color: #2561a8;
   border-radius: 4px;
-  width: 282px;
+  width: 100%;
   height: 43px;
   margin-right: 10px;
   cursor: pointer;
@@ -3885,7 +3908,7 @@ progress::-moz-progress-bar {
 .program-code-textbox {
   background-color: #ecf2f4;
   border-radius: 4px;
-  width: 282px;
+  width: 100%;
   height: 43px;
   padding: 10px;
 }
@@ -4213,7 +4236,6 @@ progress::-moz-progress-bar {
     align-items: center;
     margin-right: 10px;
   }
-
   .line-1 {
     display: inline-block;
     margin: 0 15px;
@@ -4478,12 +4500,8 @@ progress::-moz-progress-bar {
 .main-content-kb {
   background-color: #ffffff;
   border-radius: 4px;
-  width: 1216px;
-  height: 889px;
-  margin: 10px;
-  margin-top: 20px;
-  margin-left: 20px;
-  margin-bottom: 20px;
+  width: 97%;
+  margin: 20px;
 }
 
 .main-content-margin {
@@ -4695,12 +4713,8 @@ progress::-moz-progress-bar {
 .main-content-kb {
   background-color: #ffffff;
   border-radius: 4px;
-  width: 1216px;
-  height: 889px;
-  margin: 10px;
-  margin-top: 20px;
-  margin-left: 20px;
-  margin-bottom: 20px;
+  width: 97%;
+  margin: 20px;
 }
 
 .main-content-margin {
@@ -4787,7 +4801,7 @@ progress::-moz-progress-bar {
   background-color: white;
 }
 .kb-table table thead th.pad {
-  padding-right: 100px;
+  padding-right: 0;
   float: inherit;
 }
 
@@ -5113,11 +5127,11 @@ progress::-moz-progress-bar {
 }
 .historyTable {
   font-size: 12px;
-  padding: 10px 30px;
-  margin-right: -40px;
+  padding: 10px 0px;
+  margin-right: 0;
 }
 .historyTable table thead tr {
-  background-color: #ffffff;
+  background-color: #ffffff !important;
   border-bottom: none;
 }
 
@@ -5133,7 +5147,7 @@ progress::-moz-progress-bar {
   width: 548px;
   height: 494px;
 }
-#BillInvoice-popup{
+#BillInvoice-popup {
   border-radius: 8px;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
   padding: 0 16px 0 28px;
@@ -5141,7 +5155,7 @@ progress::-moz-progress-bar {
   display: inline-block;
   min-width: 83%;
   height: 550px;
-  }
+}
 .profilemodal-text {
   color: #4a4a4a;
   font-family: Lato;
@@ -5643,8 +5657,29 @@ progress::-moz-progress-bar {
   overflow: hidden;
   text-overflow: ellipsis;
   float: left !important;
-  color: #4A4A4A !important;
+  color: #4a4a4a !important;
   font-weight: 500;
+  white-space: normal;
+}
+.ChatElementReact
+  .ReactTable
+  .rt-thead
+  .rt-resizable-header:last-child
+  .rt-resizable-header-content {
+  float: right !important;
+}
+.ChatElementReact .react-tabel-button {
+  float: right;
+}
+.chatRules
+  .ReactTable
+  .rt-thead
+  .rt-resizable-header:last-child
+  .rt-resizable-header-content {
+  float: right !important;
+}
+.chatRules .react-tabel-button {
+  float: right;
 }
 .ReactTable .rt-thead .rt-th,
 .ReactTable .rt-thead .rt-td {
@@ -5738,7 +5773,7 @@ table thead tr {
   border-radius: 50%;
   background-color: #2561a8;
   color: white;
-  padding: 5px;
+  padding: 5px 8px;
   font-weight: 500;
 }
 /* Scrolling css start By Shlok*/
@@ -5890,8 +5925,8 @@ table thead tr {
   border-radius: 3px;
 }
 #cke_editor1 {
-  margin-left: 17px !important;
-  width: 530px !important;
+  margin-left: 0 !important;
+  width: 100% !important;
 }
 #cke_24 {
   display: none;
@@ -6113,12 +6148,12 @@ table thead tr {
 .myTicket-btn-A {
   min-width: 0px;
   /* padding: 12px; */
-  margin-top: -10px;
+  margin-top: 0px;
   border-radius: 5px;
   cursor: pointer;
   background-color: #2561a8;
   color: #fff;
-  height: 43px;
+  height: 40px;
   font-size: 14px;
 }
 .assign-modal-KBase .modal-lg {
@@ -6315,13 +6350,13 @@ table thead tr {
 }
 .plusline1 {
   border: 1px solid #9b9b9b;
-  padding-top: 15px;
-  padding-bottom: 17px;
+  padding-top: 9px;
+  padding-bottom: 9px;
 }
 .plusline2 {
   border: 1px solid #9b9b9b;
-  padding-bottom: 17px;
-  padding-top: 15px;
+  padding-top: 9px;
+  padding-bottom: 9px;
 }
 /* My Ticket page email Editor css start by Shlok */
 .myTicketEmail .cke_chrome {
@@ -6329,9 +6364,9 @@ table thead tr {
   padding: 0;
 }
 .myTicketEmail #cke_editor1 {
-  margin-top: -31px !important;
-  margin-left: -69px !important;
-  width: 1230px !important;
+  margin-top: 0;
+  margin-left: 0;
+  width: 100%;
   border: 1px solid #d1d1d1;
   border-top: none;
 }
@@ -6358,8 +6393,8 @@ table thead tr {
   margin-right: 8px;
 }
 .myTicketEmail #cke_editor1 {
-  margin-left: -67px;
-  width: 176%;
+  margin-left: 0;
+  width: 100%;
 }
 /* Email Editor css End*/
 /* myTicket css start for comment pop up by Shlok*/
@@ -6404,7 +6439,8 @@ table tr th:last-child {
   background-color: #2561a8;
   border-radius: 100%;
   color: #fff;
-  padding: 1px 4px 3px 3px;
+  font-size: 12px;
+  padding: 3px 6px 4px 6px;
 }
 .comment-padding {
   padding: 30px;
@@ -6499,88 +6535,88 @@ table tr th:last-child {
 .table-expandable-sctn .react-datepicker-wrapper {
   width: 100%;
 }
-.allspc{
+.allspc {
   margin-bottom: 25px;
 }
 /* dashboard datepicker css end */
 /* My Ticket/Eye Button css Start By Kalpesh */
-.customerBill{
+.customerBill {
   padding: 20px 0 0 20px;
   margin-bottom: 20px;
-  }
-  .customer-text{
-  color: #4A4A4A;
+}
+.customer-text {
+  color: #4a4a4a;
   font-family: Lato;
-  font-size: 18px;
+  font-size: 9px !important;
   font-weight: 700;
   line-height: 19px;
   text-align: left;
   padding-top: 5px;
   padding-left: 15px;
   padding-right: 15px;
-  }
-  .namepad{
+}
+.namepad {
   padding: 0 0 0 35px;
   margin-bottom: 20px;
   display: grid;
-  }
-  .fullna {
-  color: #9B9B9B;
+}
+.fullna {
+  color: #9b9b9b;
   font-family: Lato;
   font-size: 12px;
   font-weight: 700;
   line-height: 22px;
   text-align: left;
-  }
-  .namedi{
+}
+.namedi {
   color: #000000;
   font-family: Lato;
   font-size: 17px;
   font-weight: 700;
   line-height: 20px;
   text-align: left;
-  }
-  .xyz {
-  background-color: #EDF2F4;
-  }
-  .calnex{
+}
+.xyz {
+  background-color: #edf2f4;
+}
+.calnex {
   float: right;
   padding: 0px 28px 18px 0px;
-  }
-  .calnexbtn {
+}
+.calnexbtn {
   background-color: transparent;
   border-radius: 4px;
   border: none;
   width: 134px;
   height: 43px;
-  }
-  .calnexbtn1 {
-  background-color: #2561A8;
+}
+.calnexbtn1 {
+  background-color: #2561a8;
   border-radius: 4px;
   width: 134px;
   height: 43px;
   margin-left: 10px;
   cursor: pointer;
-  }
-  .calnexbtn1-text{
-  color: #FFFFFF;
+}
+.calnexbtn1-text {
+  color: #ffffff;
   font-family: Lato;
   font-size: 14px;
   font-weight: 400;
   line-height: 17px;
   text-align: left;
   cursor: pointer;
-  }
-  .calnexbtn-text {
-  color: #2561A8;
+}
+.calnexbtn-text {
+  color: #2561a8;
   font-family: Lato;
   font-size: 14px;
   font-weight: 400;
   line-height: 17px;
   text-align: left;
   cursor: pointer;
-  }
-  .search-orderhis{
+}
+.search-orderhis {
   border-radius: 4px;
   width: 300px;
   height: 43px;
@@ -6588,52 +6624,54 @@ table tr th:last-child {
   border: none;
   cursor: pointer;
   padding: 10px;
-  }
-  .histo {
+}
+.histo {
   padding: 20px 0 25px 15px;
-  }
-  .tablehistrical {
+}
+.tablehistrical {
   margin-top: 25px;
-  }
-  .tablehistrical .ReactTable {
+}
+.tablehistrical .ReactTable {
   border: none;
-  background: #EDF2F4;
-  }
-  .tablehistrical .ReactTable .rt-thead .rt-th.-cursor-pointer, .ReactTable .rt-thead .rt-td.-cursor-pointer {
+  background: #edf2f4;
+}
+.tablehistrical .ReactTable .rt-thead .rt-th.-cursor-pointer,
+.ReactTable .rt-thead .rt-td.-cursor-pointer {
   padding: 0px !important;
-  background-color: #EDF2F4;
+  background-color: #edf2f4;
   border: none;
-  }
-  .historyTable-header{
+}
+.historyTable-header {
   float: left;
   padding: 1px 0px 0px 18px;
-  }
-  .tablehistrical .rt-thead {
-  border:none !important;
-  color: #4A4A4A;
+}
+.tablehistrical .rt-thead {
+  border: none !important;
+  color: #4a4a4a;
   font-size: 13px;
-  }
-  .tablehistrical .ReactTable .rt-tbody .rt-td {
-  border-bottom: 1px solid #EDF2F4;
-  }
-  .tablehistricaldetail .ReactTable .rt-tbody .rt-tr-group{
-  border : none;
-  }
-  .tablehistrical .rt-tbody .ReactTable .rt-th, .ReactTable .rt-td {
+}
+.tablehistrical .ReactTable .rt-tbody .rt-td {
+  border-bottom: 1px solid #edf2f4;
+}
+.tablehistricaldetail .ReactTable .rt-tbody .rt-tr-group {
+  border: none;
+}
+.tablehistrical .rt-tbody .ReactTable .rt-th,
+.ReactTable .rt-td {
   font-size: 14px;
   color: #000 !important;
-  }
-  #hispop-upBck {
-  background-color: rgba(77, 92, 116, 0.2)
-  }
-  .skipmar {
+}
+#hispop-upBck {
+  background-color: rgba(77, 92, 116, 0.2);
+}
+.skipmar {
   margin-top: 38px;
-  } 
-  .done{
+}
+.done {
   margin-top: 218px;
-  }
-  .skiptext {
-  color: #2561A8;
+}
+.skiptext {
+  color: #2561a8;
   font-family: Lato;
   font-size: 15px;
   font-weight: 600;
@@ -6642,19 +6680,19 @@ table tr th:last-child {
   padding-top: 15px;
   padding-left: 15px;
   padding-right: 15px;
-  }
-  .histOrderHide {
+}
+.histOrderHide {
   display: none;
-  }
-  .orderswitch {
+}
+.orderswitch {
   margin-top: -27px;
   margin-left: -25px;
-  }
-  .switch input[type="checkbox"] + .ord {
+}
+.switch input[type="checkbox"] + .ord {
   margin-left: 70 !important;
-  }
-  .customerOrder-text {
-  color: #9B9B9B;
+}
+.customerOrder-text {
+  color: #9b9b9b;
   font-family: Lato;
   font-size: 18px;
   font-weight: 600;
@@ -6663,79 +6701,79 @@ table tr th:last-child {
   padding-top: 5px;
   /*  padding-left: 15px;  */
   /*  padding-right: 15px;  */
-  }
-  .customerItem-text {
-  color: #4A4A4A;
+}
+.customerItem-text {
+  color: #4a4a4a;
   font-family: Lato;
   font-size: 18px;
   font-weight: 600;
   line-height: 19px;
   text-align: left;
   padding-top: 5px;
-  padding-left: 75px; 
-  padding-right: 15px; 
-  }
-  .order1checkbox {
+  padding-left: 75px;
+  padding-right: 15px;
+}
+.order1checkbox {
   padding: 0;
-  }
-  .order1checkbox .order2checkbox {
+}
+.order1checkbox .order2checkbox {
   margin-top: 0;
-  }
-  .order1checkbox input + label {
+}
+.order1checkbox input + label {
   padding-left: 22px;
-  }
-  /* MyTicket/Eye Css End */
-  /* MyTicket ProgressBar Response Css Kalpesh Start */
+}
+/* MyTicket/Eye Css End */
+/* MyTicket ProgressBar Response Css Kalpesh Start */
 .mobilenumber-resp {
   font-size: 10px;
-  }
-  .mobilenumber-resp .respo{
+}
+.mobilenumber-resp .respo {
   float: left;
   margin-left: 35px;
-  }
-  .mobilenumber-resp .resol{
+}
+.mobilenumber-resp .resol {
   float: right;
   color: green;
   margin-right: 35px;
-  }
-  .mobilenumber-resp .line-respo{
+}
+.mobilenumber-resp .line-respo {
   border-right: 2px solid orange;
   padding: 3px;
   top: 20px;
   left: -26px;
   position: relative;
-  }
-  .mobilenumber-resp .line-resol{
+}
+.mobilenumber-resp .line-resol {
   border-right: 2px solid red;
   padding: 3px;
   top: 20px;
   position: relative;
   right: -20px;
-  }
-  /* MyTicket Css End */
-  /* Tooltip css start by Shlok In Edit Button */
-  .edtpadding{
-    padding: 15px;
-  }
-  .ant-popover-placement-bottom > .ant-popover-content > .ant-popover-arrow {
-    left: 50%;
-    -webkit-transform: translateX(-50%) rotate(45deg);
-    -ms-transform: translateX(-50%) rotate(45deg);
-    transform: translateX(-50%) rotate(45deg);
-    width: 20px !important;
-    height: 20px !important;
-    margin-top: -5px !important;
-    background: white !important;
 }
-  /* Tooltip css End by Shlok In Edit Button */
-  /* MyTicketNew Css Start Kalpesh */
+/* MyTicket Css End */
+/* Tooltip css start by Shlok In Edit Button */
+.edtpadding {
+  padding: 15px;
+}
+.ant-popover-placement-bottom > .ant-popover-content > .ant-popover-arrow {
+  left: 50%;
+  -webkit-transform: translateX(-50%) rotate(45deg);
+  -ms-transform: translateX(-50%) rotate(45deg);
+  transform: translateX(-50%) rotate(45deg);
+  width: 20px !important;
+  height: 20px !important;
+  margin-top: -5px !important;
+  background: white !important;
+}
+/* Tooltip css End by Shlok In Edit Button */
+/* MyTicketNew Css Start Kalpesh */
 .newReact .ReactTable .rt-thead .rt-tr {
   font-size: 13px;
-  color: #4A4A4A;
-  padding: 0 0 0 13px; 
+  color: #4a4a4a;
+  padding: 0 0 0 13px;
   font-weight: 600;
-  }
-  .newReact .table-b {
+}
+.newReact .table-b {
   border-radius: 15px;
   width: 76px;
   display: inline-block;
@@ -6745,38 +6783,39 @@ table tr th:last-child {
   cursor: pointer;
   font-size: 13px;
   font-weight: 700;
-  }
-  .newReact .ReactTable .rt-tbody .rt-td {
+}
+.newReact .ReactTable .rt-tbody .rt-td {
   padding: 12px 20px !important;
   color: #9b9b9b !important;
-  border-bottom: 1px solid #EEEE !important;
-  }
-  /* MyTicketNew Css end*/
-  /* React table body color css start by shlok */
-  .alertsTable .rt-tbody .ReactTable .rt-th, .ReactTable .rt-td {
-    font-size: 14px;
-    color: #A0A0A0 !important;
+  border-bottom: 1px solid #eeee !important;
 }
-  /* React table body color css end */
-  /* StoreUser page css start by shlok */
-  .storeUsers table th {
-    font-size: 12px;
-    padding: 20px 16px;
+/* MyTicketNew Css end*/
+/* React table body color css start by shlok */
+.alertsTable .rt-tbody .ReactTable .rt-th,
+.ReactTable .rt-td {
+  font-size: 14px;
+  color: #a0a0a0 !important;
 }
-  /* StoreUser page css end by shlok */
-  /* Reports Css Start Kalpesh */
+/* React table body color css end */
+/* StoreUser page css start by shlok */
+.storeUsers table th {
+  font-size: 13px;
+  padding: 20px 16px;
+}
+/* StoreUser page css end by shlok */
+/* Reports Css Start Kalpesh */
 .reportbutton {
   float: right;
   margin-top: -10px;
   margin-right: 16px;
-  }
-  .addplusbtn {
+}
+.addplusbtn {
   width: 120px;
   height: 40px;
   background-color: #2561a8;
   cursor: pointer;
-  }
-  .addplusbtntext {
+}
+.addplusbtntext {
   color: #ffffff;
   font-family: Lato;
   font-size: 14px;
@@ -6784,8 +6823,8 @@ table tr th:last-child {
   line-height: 17px;
   text-align: left;
   cursor: pointer;
-  }
-  .downloadaction {
+}
+.downloadaction {
   width: 17px;
   display: inline-block;
   margin-right: 15px;
@@ -6795,56 +6834,58 @@ table tr th:last-child {
   box-sizing: content-box;
   transition: all 0.3s ease-in-out;
   cursor: pointer;
-  }
-  .reactreport .ReactTable .rt-tbody .rt-td {
+}
+.reactreport .ReactTable .rt-tbody .rt-td {
   color: #9b9b9b !important;
-  }
-  .ticketreport {
+}
+.ticketreport {
   margin-bottom: 10px;
-  }
-  .reportpad {
+}
+.reportpad {
   padding: 30px 40px !important;
-  }
-  .ticketreport input{
+}
+.ticketreport input {
   border-radius: 4px;
   width: 100%;
   height: 35px;
-  padding-left: 8px; 
+  padding-left: 8px;
   padding-right: 40px;
   border-color: #ecf2f4;
   background: #ecf2f4;
   /* background-size: 13px; */
   cursor: pointer;
   border: none;
-  }
-  .ticketreport select{
+}
+.ticketreport select {
   border-radius: 4px;
   width: 100%;
   height: 35px;
-  padding-left: 8px; 
-  padding-right: 40px; 
+  padding-left: 8px;
+  padding-right: 40px;
   border-color: #ecf2f4;
-  background: #ecf2f4 url("./../Images//table-arr.png") no-repeat right 20px center;
+  background: #ecf2f4 url("./../Images//table-arr.png") no-repeat right 20px
+    center;
   background-size: 13px;
   cursor: pointer;
   border: none;
   font-weight: 600;
-  }
-  .ticketreport label {
+}
+.ticketreport label {
   font-size: 13px;
   font-weight: 500;
   font-family: lato;
   text-align: left;
   line-height: 25px;
   display: block;
-  }
-  .ticketreport .react-datepicker-wrapper {
+}
+.ticketreport .react-datepicker-wrapper {
   border-radius: 4px;
   border: 0;
-  background: #fff url(/static/media/calendar-black.d0d589e5.svg) no-repeat right 15px center;
+  background: #fff url(/static/media/calendar-black.d0d589e5.svg) no-repeat
+    right 15px center;
   color: #4a4a4a;
-  }
-  #addreport-popup {
+}
+#addreport-popup {
   border-radius: 8px;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
   padding: 0;
@@ -6853,15 +6894,15 @@ table tr th:last-child {
   margin-bottom: 0;
   display: inline-block;
   max-width: 1150px;
-  }
-  .entercenter {
+}
+.entercenter {
   padding: 15px 20px;
   background: #f3f3f3;
   border-radius: 8px 8px 0px 0px;
   width: 100%;
   text-align: center;
-  }
-  .nextbutton-text {
+}
+.nextbutton-text {
   background-color: #2561a8;
   color: #fff;
   font-size: 13px;
@@ -6870,14 +6911,14 @@ table tr th:last-child {
   cursor: pointer;
   height: 40px;
   width: 150px;
-  }
-  .nextbutton1 {
-    float: right;
-    margin-bottom: 20px;
-    margin-right: -1px;
-    margin-top: 15px;
-  }
-  #nextbuttonpopup {
+}
+.nextbutton1 {
+  float: right;
+  margin-bottom: 20px;
+  margin-right: -1px;
+  margin-top: 15px;
+}
+#nextbuttonpopup {
   border-radius: 8px;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
   padding: 0;
@@ -6887,62 +6928,62 @@ table tr th:last-child {
   display: inline-block;
   width: 730px;
   height: 415px;
-  }
-  .cancelnextpopup{
+}
+.cancelnextpopup {
   height: 20px;
   float: right;
-  }
-  .reportdetail {
+}
+.reportdetail {
   font-size: 20px;
   font-family: lato;
   font-weight: 600;
   text-align: left;
-  color: #2561A8;
-  }
-  .contpaddre {
+  color: #2561a8;
+}
+.contpaddre {
   padding: 0;
-  }
-  .totalresultcircle{
-  background-color:#F3F3F3;
+}
+.totalresultcircle {
+  background-color: #f3f3f3;
   font-size: 24px;
   width: 190px;
   height: 190px;
   border-radius: 100%;
   text-align: center;
   margin: 65px 0 0 75px;
-  }
-  .totalresult {
+}
+.totalresult {
   display: block;
   font-size: 20px;
   font-weight: 500;
   font-family: lato;
   padding: 65px 0 0 0;
-  line-height: 0; 
-  }
-  .totalresultnumber {
+  line-height: 0;
+}
+.totalresultnumber {
   font-size: 2.5em;
   font-weight: 600;
-  color: #2561A8;
+  color: #2561a8;
   font-family: lato;
-  }
-  .Schedulenext {
+}
+.Schedulenext {
   width: 270px;
   height: 40px;
   background: #fff;
   color: #2561a8;
-  }
-  .Schedulenext1 {
+}
+.Schedulenext1 {
   width: 270px;
   height: 40px;
-  background-color: #2561A8;
+  background-color: #2561a8;
   color: #fff;
   margin-bottom: 40px;
-  }
-  .buttonschdulesave {
+}
+.buttonschdulesave {
   margin-bottom: 10px;
   margin-top: 75px;
-  }
-  .rname input{
+}
+.rname input {
   border-radius: 4px;
   width: 270px;
   height: 40px;
@@ -6951,37 +6992,37 @@ table tr th:last-child {
   background: #ecf2f4;
   cursor: pointer;
   border: none;
-  }
-  .ranmetext {
+}
+.ranmetext {
   margin-top: 65px;
   display: grid;
-  }
-  .renametext {
+}
+.renametext {
   font-size: 16px;
   font-weight: 600;
   font-family: lato;
   text-align: left;
-  }
-  .margin-report {
-    margin: auto;
-    display: block;
-    float: none;
-    text-align: center;
-  }
-  .reactreport .ReactTable .rt-tbody {
-    background: #fff;
 }
-  /* Reports Css end Kalpesh */
-  /* storeReports css start by Shlok */
-  #addStorereport-modal {
-    border-radius: 8px;
-    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
-    padding: 0;
-    /* margin-right: 360px; */
-    margin-top: 0;
-    margin-bottom: 0;
-    display: inline-block;
-    min-width: 950px;
+.margin-report {
+  margin: auto;
+  display: block;
+  float: none;
+  text-align: center;
+}
+.reactreport .ReactTable .rt-tbody {
+  background: #fff;
+}
+/* Reports Css end Kalpesh */
+/* storeReports css start by Shlok */
+#addStorereport-modal {
+  border-radius: 8px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+  padding: 0;
+  /* margin-right: 360px; */
+  margin-top: 0;
+  margin-bottom: 0;
+  display: inline-block;
+  min-width: 950px;
 }
 .ticketstrReport label {
   font-size: 13px;
@@ -7003,46 +7044,47 @@ table tr th:last-child {
   cursor: pointer;
   border: none;
 }
-.ticketstrReport select{
+.ticketstrReport select {
   border-radius: 4px;
   width: 100%;
   height: 37px;
-  padding-left: 8px; 
-  padding-right: 40px; 
+  padding-left: 8px;
+  padding-right: 40px;
   border-color: #ecf2f4;
-  background: #ecf2f4 url("./../Images//table-arr.png") no-repeat right 20px center;
+  background: #ecf2f4 url("./../Images//table-arr.png") no-repeat right 20px
+    center;
   background-size: 13px;
   cursor: pointer;
   border: none;
   font-weight: 600;
-  }
-  .mdl-row{
-    margin-bottom: 10px;
-  }
-  .store-totalresultcircle {
-    background-color: #F3F3F3;
-    font-size: 24px;
-    width: 200px;
-    height: 200px;
-    border-radius: 100%;
-    text-align: center;
-    margin: 65px 0 0 75px;
 }
-  /* storeReports css End by Shlok */
-  /* My Ticket Claim:03 add tadk modal css start by Shlok */
-  .claim-addTask-btn{
-    float: right;
-    margin-top: -55px;
-  }
-  #ClaimAdd-taskPopup {
-    /* border-radius: 8px; */
-    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
-    padding: 10;
-    margin-right: 360px;
-    margin-top: 0;
-    margin-bottom: 0;
-    display: inline-block;
-    width: 588px;
+.mdl-row {
+  margin-bottom: 10px;
+}
+.store-totalresultcircle {
+  background-color: #f3f3f3;
+  font-size: 24px;
+  width: 200px;
+  height: 200px;
+  border-radius: 100%;
+  text-align: center;
+  margin: 65px 0 0 75px;
+}
+/* storeReports css End by Shlok */
+/* My Ticket Claim:03 add tadk modal css start by Shlok */
+.claim-addTask-btn {
+  float: right;
+  margin-top: -55px;
+}
+#ClaimAdd-taskPopup {
+  /* border-radius: 8px; */
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+  padding: 10;
+  margin-right: 360px;
+  margin-top: 0;
+  margin-bottom: 0;
+  display: inline-block;
+  width: 588px;
 }
 .ClaimAddTadk-modal-textArea {
   background-color: #ecf2f4;
@@ -7054,20 +7096,20 @@ table tr th:last-child {
   margin-top: 15px;
   margin-bottom: 10px;
 }
-.claim-AddTask-Mdl{
-  background: #ECF2F4;
-    height: 50px;
-    padding: 12px 28px 0px 16px;
-    margin: 12px 0px 0px 0xp;
-    margin-top: -19px;
-    width: 588px;
-    margin-left: -19px;
+.claim-AddTask-Mdl {
+  background: #ecf2f4;
+  height: 50px;
+  padding: 12px 28px 0px 16px;
+  margin: 12px 0px 0px 0xp;
+  margin-top: -19px;
+  width: 588px;
+  margin-left: -19px;
 }
-.claim-hdrMdl{
+.claim-hdrMdl {
   font-weight: 700;
   font-size: 16px;
 }
-.task-details{
+.task-details {
   color: #4a4a4a;
   font-family: Lato;
   font-size: 18px;
@@ -7078,7 +7120,7 @@ table tr th:last-child {
   margin-left: 20px;
   text-transform: uppercase;
 }
-.wifiLbl-drawer{
+.wifiLbl-drawer {
   font-weight: 700;
   font-size: 17px;
   margin-bottom: 15px;
@@ -7099,7 +7141,7 @@ table tr th:last-child {
   padding-left: 7px;
 }
 .status-opn {
-  background-color: #F9F9F9;
+  background-color: #f9f9f9;
   border-radius: 100%;
   width: 30px;
   height: 30px;
@@ -7113,7 +7155,7 @@ table tr th:last-child {
 .taskTab-drawerModal .ant-drawer-content-wrapper {
   width: auto !important;
 }
-.tasktasb-para{
+.tasktasb-para {
   color: #000000;
   font-family: Lato;
   font-size: 14px;
@@ -7122,20 +7164,20 @@ table tr th:last-child {
   /* width: 356px; */
   text-align: left;
 }
-.task-drawerv-textArea{
-  background-color: #ECF2F4;
-    border-radius: 4px;
-    width: 359px;
-    height: 166px;
-    border: none;
-    resize: none;
-    padding: 15px;
+.task-drawerv-textArea {
+  background-color: #ecf2f4;
+  border-radius: 4px;
+  width: 359px;
+  height: 166px;
+  border: none;
+  resize: none;
+  padding: 15px;
 }
-.varun-taskDrawer{
-    font-weight: bold;
-    color: black;
-    display: inline-block;
-    padding-left: 8px;
+.varun-taskDrawer {
+  font-weight: bold;
+  color: black;
+  display: inline-block;
+  padding-left: 8px;
 }
 .addTask-time-ago {
   color: #9b9b9b;
@@ -7147,7 +7189,7 @@ table tr th:last-child {
   display: inline-block;
   padding-left: 7px;
 }
-.task-drawer-lnl{
+.task-drawer-lnl {
   color: #505050;
   font-family: Lato;
   font-size: 14px;
@@ -7158,7 +7200,7 @@ table tr th:last-child {
   float: right;
   margin-right: 3px;
 }
-.storeImg-drawer{
+.storeImg-drawer {
   background-color: #f8e71c;
   border-radius: 100%;
   width: 30px;
@@ -7167,36 +7209,36 @@ table tr th:last-child {
   padding: 6px;
   display: inline;
 }
-.storeImg{
+.storeImg {
   width: 20px;
   height: 18px;
   margin-top: -5px;
 }
-  /* My Ticket Claim:03 add tadk modal css end */
-  /* TicketSystem Css Start Kalpesh */
+/* My Ticket Claim:03 add tadk modal css end */
+/* TicketSystem Css Start Kalpesh */
 .marginsystem {
   padding: 0;
-  }
-  .column {
-  width: 45%;
-  }
-  .column1 {
-  width: 10%;
+}
+.column {
+  width: 46%;
+}
+.column1 {
+  width: 7%;
   height: auto;
   background-color: #f5f8f9;
-  }
-  .paddingsystem {
+}
+.paddingsystem {
   padding: 40px;
-  }
-  .ticket-details-system {
+}
+.ticket-details-system {
   color: #9b9b9b;
   font-family: Lato;
   font-size: 14px;
   font-weight: 700;
   line-height: 17px;
   text-align: left;
-  }
-  .ticket-details-textarea-system {
+}
+.ticket-details-textarea-system {
   background-color: #ecf2f4;
   border-radius: 4px;
   width: 100%;
@@ -7204,16 +7246,16 @@ table tr th:last-child {
   border: none;
   resize: none;
   padding: 10px;
-  }
-  .category-select-system {
+}
+.category-select-system {
   background-color: #ecf2f4;
   border-radius: 4px;
   width: 100%;
   height: 43px;
   padding: 10px;
   border: none;
-  }
-  .High button {
+}
+.High button {
   background-color: #ffffff;
   border: 1px solid #d02139;
   border-radius: 4px;
@@ -7221,8 +7263,8 @@ table tr th:last-child {
   min-width: 60px;
   /* margin-left: 22px; */
   cursor: pointer;
-  }
-  .Low button {
+}
+.Low button {
   background-color: #ffffff;
   border: 1px solid #5aa805;
   border-radius: 4px;
@@ -7230,8 +7272,8 @@ table tr th:last-child {
   height: 43px;
   margin-left: -8px;
   cursor: pointer;
-  }
-  .Medium button {
+}
+.Medium button {
   background-color: #f5a623;
   border: 1px solid #9f814a;
   border-radius: 4px;
@@ -7239,25 +7281,25 @@ table tr th:last-child {
   height: 43px;
   margin-left: -15px;
   cursor: pointer;
-  } 
-  .Qc button {
+}
+.Qc button {
   background-color: #ffffff;
-  border: 1px solid #2561A8;
+  border: 1px solid #2561a8;
   border-radius: 4px;
   min-width: 60px;
   height: 43px;
-  
+
   cursor: pointer;
-  }
-  .Etc button {
+}
+.Etc button {
   background-color: #ffffff;
   border: 1px solid #f4f4f4;
   min-width: 60px;
   height: 43px;
   margin-left: -50px;
   cursor: pointer;
-  }
-  .Qc-button-text {
+}
+.Qc-button-text {
   color: #2561a8;
   font-family: Lato;
   font-size: 14px;
@@ -7266,8 +7308,8 @@ table tr th:last-child {
   text-align: left;
   text-transform: capitalize;
   cursor: pointer;
-  }
-  .Etb-button-text {
+}
+.Etb-button-text {
   color: #000;
   font-family: Lato;
   font-size: 14px;
@@ -7276,8 +7318,8 @@ table tr th:last-child {
   text-align: left;
   text-transform: capitalize;
   cursor: pointer;
-  }
-  .addNote-textarea-system {
+}
+.addNote-textarea-system {
   background-color: #ecf2f4;
   border-radius: 4px;
   width: 100%;
@@ -7285,81 +7327,81 @@ table tr th:last-child {
   border: none;
   resize: none;
   padding: 10px;
-  }
-  .myticketlist-header-system {
-  background-color: #f5f8f9;
+}
+.myticketlist-header-system {
+  background-color: #ecf2f4;
   width: auto;
   height: 620px;
-  }
-  .system .nav-tabs .nav-link.active {
+}
+.system .nav-tabs .nav-link.active {
   border: none;
   background-color: transparent;
   color: #fff;
   font-weight: 400;
   padding: 20px 0;
   font-size: 16px;
-  }
-  .system .nav-tabs .nav-link {
+}
+.system .nav-tabs .nav-link {
   font-weight: 400;
   padding: 20px 0px;
-  border-radius: 3px; 
-  }
-  .system ul {
+  border-radius: 3px;
+}
+.system ul {
   display: grid;
-  }
-  .system {
+}
+.system {
   padding: 15px 0px;
   text-align: center;
-  }
-  .system .nav-tabs .nav-item {
+}
+.system .nav-tabs .nav-item {
   margin-right: 0;
-  }
-  .active .system-tab-span {
+}
+.active .system-tab-span {
   background: transparent;
   color: #2561a8;
   display: block;
   font-weight: 600;
   font-family: lato;
-  font-size: 12px;
-  }
-  .system-tab-span {
+  font-size: 10px;
+}
+.system-tab-span {
   display: block;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 600;
   font-family: lato;
-  }
-  .tabpaddingsystem {
+}
+.tabpaddingsystem {
   padding: 0;
   box-shadow: none;
   background: initial;
-  }
-  .category2 {
+}
+.category2 {
   color: #9b9b9b;
   font-family: Lato;
   font-size: 13px;
   font-weight: 700;
   line-height: 27px;
   text-align: left;
-  }
-  .category1 {
-  color: #4A4A4A;
+}
+.category1 {
+  color: #4a4a4a;
   font-family: Lato;
   font-size: 14px;
   font-weight: 700;
   line-height: 17px;
   text-align: left;
-  }
-  .systemeditbutton {
-  background-color: #FBFBFB;
-  border: 1px solid #2561A8;
+}
+.systemeditbutton {
+  background-color: #fbfbfb;
+  border: 1px solid #2561a8;
   border-radius: 4px;
   width: 93px;
   line-height: 0;
   height: 31.32px;
   cursor: pointer;
-  }
-  .systemeditbutton-text {
-  color: #2561A8;
+}
+.systemeditbutton-text {
+  color: #2561a8;
   font-family: Lato;
   font-size: 10px;
   font-weight: 700;
@@ -7367,64 +7409,65 @@ table tr th:last-child {
   width: 23.07px;
   text-align: left;
   cursor: pointer;
-  }
-  .collapsetask {
+}
+.collapsetask {
   padding: 0;
   margin-bottom: 0;
-  background-color: #ECF2F4;
+  background-color: #ecf2f4;
   border: none;
-  }
-  .btn{
+}
+.btn {
   padding: 10px 20px;
   font-size: 14px;
   margin-bottom: 5px;
   color: #000;
   transition: all 0.3s ease-in-out;
   font-weight: 500;
-  }
-  .btn-link {
+}
+.btn-link {
   font-weight: 500;
   color: #000;
-  }
-  .btn-link:hover {
+}
+.btn-link:hover {
   color: #000;
   text-decoration: none;
-  }
-  .createtasksystem {
-  background-color: #2561A8;
+}
+.createtasksystem {
+  background-color: #2561a8;
   border-radius: 4px;
   width: 254px;
   height: 45px;
   cursor: pointer;
-  }
-  .createtasksystem-text {
-  color: #FFFFFF;
+}
+.createtasksystem-text {
+  color: #ffffff;
   font-family: Lato;
   font-size: 14px;
   font-weight: 400;
   line-height: 17px;
   text-align: left;
   cursor: pointer;
-  }
-  .systemtaskreact {
+}
+.systemtaskreact {
   padding: 0 10px;
-  }
-  .systemtaskreact .ReactTable {
+}
+.systemtaskreact .ReactTable {
   border: none;
-  }
-  .systemtaskreact .ReactTable .rt-thead.-header {
+}
+.systemtaskreact .ReactTable .rt-thead.-header {
   background-color: transparent;
-  }
-  .systemtaskreact .ReactTable .rt-tbody .rt-td {
+}
+.systemtaskreact .ReactTable .rt-tbody .rt-td {
   padding: 10px 20px !important;
-  }
-  .systemtaskreact .ReactTable .rt-thead .rt-th.-cursor-pointer, .ReactTable .rt-thead .rt-td.-cursor-pointer {
+}
+.systemtaskreact .ReactTable .rt-thead .rt-th.-cursor-pointer,
+.ReactTable .rt-thead .rt-td.-cursor-pointer {
   padding: 10px 15px !important;
-  }
-  .systemorder {
-  background-color: #ECF2F4;
-  }
-  .arrow-imgtask-1 {
+}
+.systemorder {
+  background-color: #ecf2f4;
+}
+.arrow-imgtask-1 {
   width: 15px;
   height: 15px;
   /* float: right; */
@@ -7432,28 +7475,28 @@ table tr th:last-child {
   margin-top: 0px;
   margin-left: 10px;
   cursor: pointer;
-  }
-  .systemordersearch {
-  background-color: #FFFFFF;
+}
+.systemordersearch {
+  background-color: #ffffff;
   border: 1px solid #979797;
   border-radius: 4px;
   width: 100%;
   height: 43px;
   float: right;
   padding: 10px;
-  }
-  .systemorder-imgsearch {
+}
+.systemorder-imgsearch {
   width: 20px;
   height: 20px;
   float: right;
   margin-right: -495px;
   margin-top: 12px;
-  }
-  .addmanualbtn {
+}
+.addmanualbtn {
   text-align: center;
   margin-top: 20px;
-  }
-  .addmanual{
+}
+.addmanual {
   width: 118px;
   height: 30px;
   background-color: transparent;
@@ -7461,35 +7504,33 @@ table tr th:last-child {
   color: #2561a8;
   line-height: 0;
   cursor: pointer;
-  }
-  .addmanuallytext1 {
+}
+.addmanuallytext1 {
   background-color: #ecf2f4;
   border-radius: 4px;
   width: 100%;
   height: 43px;
   border: none;
   padding: 10px;
-  }
-  .addmanuallytext1::placeholder
-  {
-  color: #4A4A4A;
+}
+.addmanuallytext1::placeholder {
+  color: #4a4a4a;
   font-family: Lato;
   font-size: 14px;
   font-weight: 700;
   line-height: 19px;
   text-align: left;
   padding: 10px;
-  
-  }
-  .addmanuallytext {
-  color: #4A4A4A;
+}
+.addmanuallytext {
+  color: #4a4a4a;
   font-family: Lato;
   font-size: 14px;
   font-weight: 700;
   line-height: 17px;
   text-align: left;
-  }
-  #addOrderTableModal {
+}
+#addOrderTableModal {
   position: relative;
   padding: 0;
   background: #ffffff;
@@ -7498,42 +7539,43 @@ table tr th:last-child {
   margin: 0 auto;
   min-width: 80%;
   border-radius: 10px;
-  }
-  .reacttableordermodal .ReactTable {
+}
+.reacttableordermodal .ReactTable {
   border: none;
-  }
-  .reacttableordermodal .ReactTable .rt-thead .rt-th.-cursor-pointer, .ReactTable .rt-thead .rt-td.-cursor-pointer {
+}
+.reacttableordermodal .ReactTable .rt-thead .rt-th.-cursor-pointer,
+.ReactTable .rt-thead .rt-td.-cursor-pointer {
   padding: 12px 15px !important;
-  }
-  .reacttableordermodal .ReactTable .rt-thead.-header {
+}
+.reacttableordermodal .ReactTable .rt-thead.-header {
   box-shadow: none !important;
   background-color: #fff;
-  border:none;
-  }
-  .searchtextpopup {
-  background-color: #FFFFFF;
+  border: none;
+}
+.searchtextpopup {
+  background-color: #ffffff;
   border: 1px solid #979797;
   border-radius: 4px;
   width: 100%;
   height: 43px;
   float: right;
   padding: 10px;
-  }
-  .searchtextimgpopup {
+}
+.searchtextimgpopup {
   width: 20px;
   height: 20px;
   float: right;
   margin-right: -210px;
   margin-top: 12px;
-  }
-  .orderdetailpopup {
+}
+.orderdetailpopup {
   font-size: 16px;
   font-weight: 600;
   font-family: lato;
   color: #4a4a4a;
   margin-top: 8px;
-  }
-  .minus-imgorder {
+}
+.minus-imgorder {
   width: 15px;
   height: 2px;
   /* float: right; */
@@ -7541,25 +7583,25 @@ table tr th:last-child {
   margin-top: 0px;
   margin-left: 10px;
   cursor: pointer;
-  }
-  .orderswitchitem {
+}
+.orderswitchitem {
   margin-top: 5px;
   margin-left: -106px;
   margin-right: 8px;
-  }
-  .storemainrow {
-  margin-left: 0; 
+}
+.storemainrow {
+  margin-left: 0;
   margin-right: 0;
   background-color: #ecf2f4;
   border-radius: 5px;
   height: 54px;
-  }
-  .storeplusline {
+}
+.storeplusline {
   float: right;
   margin-top: 15px;
-  }
-  .systemstoredropdown {
-  background-color: #DBE4E7;
+}
+.systemstoredropdown {
+  background-color: #dbe4e7;
   width: 70%;
   height: 30px;
   margin-top: 12px;
@@ -7571,10 +7613,10 @@ table tr th:last-child {
   padding: 5px;
   border-radius: 5px;
   line-height: 14px;
-  background: #DBE4E7 url("../Images/dropDown.png") no-repeat right 12px center;
-  }
-  .systemstoredropdown1 {
-  background-color: #DBE4E7;
+  background: #dbe4e7 url("../Images/dropDown.png") no-repeat right 12px center;
+}
+.systemstoredropdown1 {
+  background-color: #dbe4e7;
   width: 35%;
   height: 30px;
   margin-top: 12px;
@@ -7586,9 +7628,9 @@ table tr th:last-child {
   padding: 5px;
   border-radius: 5px;
   line-height: 14px;
-  background: #DBE4E7 url("../Images/dropDown.png") no-repeat right 12px center;
-  }
-  .systemstordercustomer {
+  background: #dbe4e7 url("../Images/dropDown.png") no-repeat right 12px center;
+}
+.systemstordercustomer {
   margin-top: 12px;
   font-size: 14px;
   font-weight: 700;
@@ -7598,8 +7640,8 @@ table tr th:last-child {
   padding: 5px;
   border-radius: 5px;
   line-height: 14px;
-  }
-  #addStoreTableModal {
+}
+#addStoreTableModal {
   position: relative;
   padding: 0;
   background: #ffffff;
@@ -7607,253 +7649,264 @@ table tr th:last-child {
   box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.25);
   margin: 0 auto;
   min-width: 83%;
-  border-radius: 10px
-  }
-  .newtabstore {
+  border-radius: 10px;
+}
+.newtabstore {
   background: none;
   padding-left: 15px;
   padding-right: 0;
-  }
-  .store-nav-tabs {
+}
+.store-nav-tabs {
   border-bottom: 1px solid gray;
   border: none;
   margin-left: 0px;
-  }
-  .store-nav-tabs .nav-link.active {
+}
+.store-nav-tabs .nav-link.active {
   color: #2561a8;
   border: none;
-  }
-  .store-nav-tabs .nav-link {
+}
+.store-nav-tabs .nav-link {
   color: #4a4a4a;
   font-weight: 700;
   padding: 12px 0px;
   border: 0;
   margin-right: 15px;
-  }
-  .tabcontentstore {
+}
+.tabcontentstore {
   padding: 0px;
-  }
-  .linestore1 {
-  border: 1px solid #E3E3E3;
+}
+.linestore1 {
+  border: 1px solid #e3e3e3;
   width: 100%;
   height: 0px;
   display: block;
   border-bottom: thick;
-  }
-  .linestore2 {
-  border: 1px solid #E3E3E3;
+}
+.linestore2 {
+  border: 1px solid #e3e3e3;
   width: 100%;
   height: 0px;
   display: block;
   border-bottom: thick;
   margin-bottom: 10px;
-  }
-  .linestore3 {
-  border: 1px solid #E3E3E3;
+}
+.linestore3 {
+  border: 1px solid #e3e3e3;
   width: 100%;
   height: 0px;
   display: block;
   border-bottom: thick;
   /* margin-bottom: 10px; */
-  }
-  .reactstoreselect .ReactTable {
+}
+.reactstoreselect .ReactTable {
   border: none;
-  }
-  .reactstoreselect .ReactTable .rt-thead .rt-th.-cursor-pointer, .ReactTable .rt-thead .rt-td.-cursor-pointer {
+}
+.reactstoreselect .ReactTable .rt-thead .rt-th.-cursor-pointer,
+.ReactTable .rt-thead .rt-td.-cursor-pointer {
   padding: 12px 15px !important;
-  }
-  .reactstoreselect .ReactTable .rt-thead.-header {
+}
+.reactstoreselect .ReactTable .rt-thead.-header {
   box-shadow: none !important;
   background-color: transparent;
-  border:none;
-  }
-  .switchmargin {
+  border: none;
+}
+.switchmargin {
   margin-bottom: 8px;
   margin-left: -102px;
-  }
-  .ticktSycard {
+}
+.ticktSycard {
   background-color: #fff;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.03);
   border: 1px solid #ebebeb;
   border-radius: 5px;
-  }
-  .reacttableordermodal .ReactTable .rt-tbody {
-    overflow: hidden;
-  }
-  .storedetailtabsbutton {
-    float: right;
-      margin-right: 15px;
-      margin-top: 15px;
-  }
-  .addstoretabsbtn{  
-    background-color: #2561A8;
-    border-radius: 4px;
-    width: 145px;
-    height: 43px;
-    color: #fff;
-    cursor: pointer;
-    font-family: lato;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 17px;
-  }
-  #CreateTicket1-popup {
-    border-radius: 8px;
-    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
-    padding: 10;
-    margin-right: 10px;
-    margin-top: 45px;
-    margin-bottom: 4px;
-    width: 184px;
-    display: inline-block;
-  }
-  /* TicketSystem Css End Kalpesh */
-  /* UserProfile CSS Start By Kalpesh */
+}
+.reacttableordermodal .ReactTable .rt-tbody {
+  overflow: hidden;
+}
+.storedetailtabsbutton {
+  float: right;
+  margin-right: 15px;
+  margin-top: 15px;
+}
+.addstoretabsbtn {
+  background-color: #2561a8;
+  border-radius: 4px;
+  width: 145px;
+  height: 43px;
+  color: #fff;
+  cursor: pointer;
+  font-family: lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+}
+#CreateTicket1-popup {
+  border-radius: 8px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+  padding: 10;
+  margin-right: 10px;
+  margin-top: 45px;
+  margin-bottom: 4px;
+  width: 184px;
+  display: inline-block;
+}
+/* TicketSystem Css End Kalpesh */
+/* UserProfile CSS Start By Kalpesh */
 .profile-settings-cntr {
-padding: 35px 300px;
+  padding: 35px 300px;
 }
 .centerprofile {
-padding: 200px 200px 20px 200px;
+  padding: 100px 0px 20px;
+  margin: auto;
 }
 .profilemain {
-background-color: #ffffff;
-border-radius: 4px;
-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.05);
-width: auto;
-height: auto;
+  background-color: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.05);
+  width: auto;
+  height: auto;
+  padding-bottom: 20px;
+  overflow: hidden;
 }
 .forwardpasstext {
-color: #2561A8;
-font-family: lato;
-font-size: 13px;
-font-weight: 400;
-margin-bottom: 15px;
-margin-top: 15px;
-text-decoration: underline;
-cursor: pointer;
+  color: #2561a8;
+  font-family: lato;
+  font-size: 13px;
+  font-weight: 400;
+  margin-bottom: 15px;
+  margin-top: 15px;
+  text-decoration: underline;
+  cursor: pointer;
 }
 .half-circle {
-height: 100px;
-width: 633px;
-background-color: #2561A8;
-border-left: 0;
-box-sizing: border-box;
-border-bottom-left-radius: 100px;
-border-bottom-right-radius: 100px;
+  position: relative;
+}
+.half-circle::before {
+  position: absolute;
+    content: "";
+    height: 200px;
+    width: 100%;
+    background-color: #2561a8;
+    border-left: 0;
+    box-sizing: border-box;
+    border-radius: 50%;
+    top: -100px;
 }
 .profimg {
-width: 60px;
-height: 60px;
-margin-top: 50px;
+  width: 60px;
+  height: 60px;
+  margin-top:30px;
 }
 .profimg1 {
-width: 150px;
-height: 150px;
-border-radius: 5px;
+  width: 150px;
+  height: 150px;
+  border-radius: 5px;
 }
 .uploadtextprofile1 {
-margin-top: 15px;
-font-size: 14px;
-font-weight: 500;
-font-family: lato;
-color: #9b9b9b;
-padding: 4px;
-cursor: pointer;
-background-color: #ecf2f4;
+  margin-top: 15px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: lato;
+  color: #9b9b9b;
+  padding: 5px 15px;
+  cursor: pointer;
+  background-color: #ecf2f4;
 }
 .imguserupload {
-text-align: center;
-width: 150px;
-height: 200px;
-background: #fff;
-border-radius: 15px;
-margin: 0 auto;
-position: relative;
-top: 40px;
+  text-align: center;
+  width: 150px;
+  height: auto;
+  background: #fff;
+  border-radius: 15px;
+  padding-bottom: 15px;
+  margin: 0 auto;
+  position: relative;
+  top: 10px;
+  box-shadow: 0px 5px 4px 0px #ddd;
 }
 #ProfileForgot-popup {
-border-radius: 8px;
-box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
-padding: 10;
-margin-top: 0;
-margin-bottom: 0;
-display: inline-block;
+  border-radius: 8px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+  padding: 10;
+  margin-top: 0;
+  margin-bottom: 0;
+  display: inline-block;
 }
 .modalforgotpadding {
-padding: 25px 80px;
+  padding: 25px 80px;
 }
 .Changepasswordheader {
-color: #000;
-font-family: Lato;
-font-size: 20px;
-font-weight: 800;
-line-height: 29px;
-text-align: left;
-padding-bottom: 20px;
+  color: #000;
+  font-family: Lato;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 29px;
+  text-align: left;
+  padding-bottom: 20px;
 }
 .file-uploadprofile + label {
-font-weight: 400;
-text-align: center;
-margin-top: 15px;
-cursor: pointer;
+  font-weight: 400;
+  text-align: center;
+  margin-top: 15px;
+  cursor: pointer;
 }
 /* UserProfile CSS End By Kalpesh */
 /* MyTicket Comment Collapse Css start Kalpesh */
 .commentcollapseTicket {
   width: 75%;
   margin-left: 25%;
-  }
-  .commentcollapseTicket .card-body {
+}
+.commentcollapseTicket .card-body {
   padding: 12px;
-  }
-  .commentcollapseTicket .Commentlabel {
-  background-color: #ECF2F4;
+}
+.commentcollapseTicket .Commentlabel {
+  background-color: #ecf2f4;
   padding: 10px 0 10px 25px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
-  }
-  .commenttextborder {
+}
+.commenttextborder {
   border-radius: 5px;
-  border: 1px solid #EBEBEB;
-  }
-  .commentcollapseTicket .commenttextmessage {
+  border: 1px solid #ebebeb;
+}
+.commentcollapseTicket .commenttextmessage {
   padding: 25px;
-  color: #4A4A4A;
+  color: #4a4a4a;
   font-family: Lato;
   font-size: 14px;
   font-weight: 400;
   line-height: 17px;
   text-align: left;
-  }
-  .Commentlabel1 {
+}
+.Commentlabel1 {
   color: #000000;
   font-family: Lato;
   font-size: 14px;
   font-weight: 700;
   line-height: 17px;
   text-align: left;
-  }
-  .SendCommentBtn {
+}
+.SendCommentBtn {
   text-align: end;
   margin-right: 25px;
   margin-bottom: 20px;
-  }
-  .SendCommentBtn1 {
-  background-color: #2561A8;
+}
+.SendCommentBtn1 {
+  background-color: #2561a8;
   border-radius: 4px;
   width: 128px;
   height: 43px;
   color: #fff;
   cursor: pointer;
-  }
-  .comment-line {
+}
+.comment-line {
   border: 1px solid #cad4d7;
   height: 42px;
   margin-top: -42px;
   margin-right: 40px;
   float: right;
-  }
-  .CommentMinus-img {
+}
+.CommentMinus-img {
   width: 15px;
   height: 2px;
   margin-left: 0;
@@ -7861,388 +7914,388 @@ cursor: pointer;
   cursor: pointer;
   float: right;
   margin-right: 14px;
-  }
-  .myTicketCommentCollapse #cke_editor2 {
+}
+.myTicketCommentCollapse #cke_editor2 {
   margin-top: 20px !important;
   margin-left: 0px !important;
   width: 1200px !important;
   border: 1px solid #d1d1d1;
-  }
-  .myTicketCommentCollapse .card-body {
+}
+.myTicketCommentCollapse .card-body {
   padding: 0;
-  }
-  .myTicketCommentCollapse #cke_2_bottom {
+}
+.myTicketCommentCollapse #cke_2_bottom {
   display: none;
-  }
-  /* MyTicket Comment Collapse Css start Kalpesh */
-  /* Header Headphone Img Pop-up CSS Start Kalpesh */
+}
+/* MyTicket Comment Collapse Css start Kalpesh */
+/* Header Headphone Img Pop-up CSS Start Kalpesh */
 .headphoneheader {
-width: 22px;
-height: 22px;
+  width: 22px;
+  height: 22px;
 }
 #HeadPhoneHeader-popup {
-border-radius: 8px;
-box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
-padding: 0;
-margin-right: 8px;
-margin-top: -12px;
-margin-bottom: 4px;
-width: 300px;
-display: inline-block;
-height: 300px;
+  border-radius: 8px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+  padding: 0;
+  margin-right: 8px;
+  margin-top: -12px;
+  margin-bottom: 4px;
+  width: 300px;
+  display: inline-block;
+  height: 300px;
 }
 .logincenter {
-text-align: center;
-background-color: #F3F3F3;
-margin-left: 0;
-margin-right: 0;
-border-top-left-radius: 8px;
-border-top-right-radius: 8px;
-padding: 14px 0;
+  text-align: center;
+  background-color: #f3f3f3;
+  margin-left: 0;
+  margin-right: 0;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  padding: 14px 0;
 }
 .logincenterimg {
-text-align: center;
-margin-left: 0;
-margin-right: 0;
-margin-top: 45px;
+  text-align: center;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 45px;
 }
 .logintoivr {
-font-family: lato;
-font-size: 15px;
-font-weight: 600;
-color: #000;
+  font-family: lato;
+  font-size: 15px;
+  font-weight: 600;
+  color: #000;
 }
 .agenttextrow {
-margin-left: 0;
-margin-right: 0;
-margin-bottom: 20px;
-text-align: center;
+  margin-left: 0;
+  margin-right: 0;
+  margin-bottom: 20px;
+  text-align: center;
 }
 .agenttextrow1 {
-margin-left: 0;
-margin-right: 0;
-text-align: center;
-margin-top: 40px;
-margin-bottom: 3px;
+  margin-left: 0;
+  margin-right: 0;
+  text-align: center;
+  margin-top: 40px;
+  margin-bottom: 3px;
 }
 .agenttext {
-border:1px solid #e5e5e5;
-border-radius: 4px;
-width: 85%;
-height: 35px;
-background-color: #fff;
-padding: 10px;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  width: 85%;
+  height: 35px;
+  background-color: #fff;
+  padding: 10px;
 }
 .agentidtext {
-font-size: 14px;
-font-weight: 600;
-font-family: lato;
-color: #4A4A4A;
-margin-left: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: lato;
+  color: #4a4a4a;
+  margin-left: 10px;
 }
 .loginbtnagent {
-width: 228px;
-height: 35px;
-background-color: #2561a8;
-color: #fff;
-font-family: lato;
-font-weight: 400;
-font-size: 14px;
-cursor: pointer;
-line-height: 1px;
+  width: 228px;
+  height: 35px;
+  background-color: #2561a8;
+  color: #fff;
+  font-family: lato;
+  font-weight: 400;
+  font-size: 14px;
+  cursor: pointer;
+  line-height: 1px;
 }
 .easyrewardlogo {
-width: 100px;
-height: 25px;
+  width: 100px;
+  height: 25px;
 }
 .poweredby {
-font-size: 11px;
-font-family: lato;
-margin-right: 5px;
-color: lightgray;
+  font-size: 11px;
+  font-family: lato;
+  margin-right: 5px;
+  color: lightgray;
 }
 #Login-popup {
-border-radius: 8px;
-box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
-padding: 10px;
-margin-right: 8px;
-margin-top: -12px;
-margin-bottom: 4px;
-width: 350px;
-display: inline-block;
-height: 370px;
+  border-radius: 8px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+  padding: 10px;
+  margin-right: 8px;
+  margin-top: -12px;
+  margin-bottom: 4px;
+  width: 350px;
+  display: inline-block;
+  height: 370px;
 }
 .amitsinghlogo {
-width: 60px;
-height: 60px;
+  width: 60px;
+  height: 60px;
 }
 .amitsinghcenter {
-margin-left: 0;
-margin-right: 0;
-text-align: center;
-margin-top: 25px;
+  margin-left: 0;
+  margin-right: 0;
+  text-align: center;
+  margin-top: 25px;
 }
 .amitsinghcenter2 {
-margin-left: 0;
-margin-right: 0;
-text-align: center;
-margin-top: 10px;
+  margin-left: 0;
+  margin-right: 0;
+  text-align: center;
+  margin-top: 10px;
 }
 .amitsinghcenter1 {
-margin-left: 15px;
-margin-right: 0;
-text-align: center;
-margin-top: 25px;
+  margin-left: 15px;
+  margin-right: 0;
+  text-align: center;
+  margin-top: 25px;
 }
 .amitsinghtext {
-font-size: 15px;
-font-weight: 700;
-font-family: lato;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: lato;
 }
 .amitsinghtextonline {
-font-size: 14px;
-font-weight: 600;
-font-family: lato;
-border: 1px solid greenyellow;
-margin-right: 5px;
-padding: 5px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: lato;
+  border: 1px solid greenyellow;
+  margin-right: 5px;
+  padding: 5px;
 }
 .amitnextrow {
-margin-left: 0;
-margin-right: 0;
-margin-top: 25px;
-margin-bottom: 25px;
-text-align: center;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  text-align: center;
 }
 .logouttamitsingh {
-font-size: 14px;
-font-family: lato;
-font-weight: 400;
-color: #9B9B9B;
+  font-size: 14px;
+  font-family: lato;
+  font-weight: 400;
+  color: #9b9b9b;
 }
 .logoutImg {
-margin-right: 4px;
-width: 19px;
-height: 19px;
-cursor: pointer;
+  margin-right: 4px;
+  width: 19px;
+  height: 19px;
+  cursor: pointer;
 }
 .status1 input:checked + label::before {
-background-color: #6dd400;
-border: double 3px #fff;
+  background-color: #6dd400;
+  border: double 3px #fff;
 }
 .status1 input:checked + label {
-border: 1px solid #6dd400;
-border-radius: 5px;
+  border: 1px solid #6dd400;
+  border-radius: 5px;
 }
 
 .status1 input + label::before {
-content: "";
-position: absolute;
-background-color: #fff;
-border: 1px solid #6dd400;
-border-radius: 50%;
-width: 15px;
-height: 15px;
-left: 2px;
-top: 9px;
+  content: "";
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #6dd400;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  left: 2px;
+  top: 9px;
 }
 .status1 input + label {
-position: relative;
-padding-left: 20px;
+  position: relative;
+  padding-left: 20px;
 }
 .logout-label {
-font-size: 14px;
-font-weight: 500;
-cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
 }
 .logout-label1 {
-font-size: 14px;
-font-weight: 500;
-cursor: pointer;
-padding: 5px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 5px;
 }
 #NextButton-popup {
-border-radius: 8px;
-box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
-padding: 10px;
-margin-right: 8px;
-margin-top: -12px;
-margin-bottom: 4px;
-width: 410px;
-display: inline-block;
-height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+  padding: 10px;
+  margin-right: 8px;
+  margin-top: -12px;
+  margin-bottom: 4px;
+  width: 410px;
+  display: inline-block;
+  height: auto;
 }
 .CallwrapBtn {
-width: 228px;
-height: 35px;
-background-color: #44d7b6;
-border: none;
-color: #fff;
-font-family: lato;
-font-weight: 400;
-font-size: 14px;
-cursor: pointer;
-line-height: 1px;
+  width: 228px;
+  height: 35px;
+  background-color: #44d7b6;
+  border: none;
+  color: #fff;
+  font-family: lato;
+  font-weight: 400;
+  font-size: 14px;
+  cursor: pointer;
+  line-height: 1px;
 }
 .SwitchToProgBtn {
-width: 228px;
-height: 35px;
-background-color: #32c5ff;
-color: #fff;
-border: none;
-font-family: lato;
-font-weight: 400;
-font-size: 14px;
-cursor: pointer;
-line-height: 1px;
+  width: 228px;
+  height: 35px;
+  background-color: #32c5ff;
+  color: #fff;
+  border: none;
+  font-family: lato;
+  font-weight: 400;
+  font-size: 14px;
+  cursor: pointer;
+  line-height: 1px;
 }
 .amitsinghcallrow {
-text-align: center;
-background-color: #F3F3F3;
-margin-left: -10px;
-margin-right: -10px;
-padding: 41px 0;
-margin-top: 25px;
+  text-align: center;
+  background-color: #f3f3f3;
+  margin-left: -10px;
+  margin-right: -10px;
+  padding: 41px 0;
+  margin-top: 25px;
 }
 .amitsinghwaiting {
-border:1px solid #e5e5e5;
-border-radius: 4px;
-width: 228px;
-height: 35px;
-background-color: #fff;
-padding: 10px;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  width: 228px;
+  height: 35px;
+  background-color: #fff;
+  padding: 10px;
 }
 .idletimeamit {
-font-size: 14px;
-font-weight: 400;
-font-family: lato;
-color: #44d7b6;
-margin-top: 3px;
-margin-left: 10px;
+  font-size: 14px;
+  font-weight: 400;
+  font-family: lato;
+  color: #44d7b6;
+  margin-top: 3px;
+  margin-left: 10px;
 }
 .amitnextbuttonrow1 {
-margin-left: 0;
-margin-right: 0;
-margin-top: 15px;
-margin-bottom: 45px;
-text-align: center;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 15px;
+  margin-bottom: 45px;
+  text-align: center;
 }
 .amitnextbuttonrow3 {
-margin-left: 0;
-margin-right: 0;
-margin-top: 15px;
-margin-bottom: 15px;
-text-align: center;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  text-align: center;
 }
 .amitnextbuttonrow {
-margin-left: 0;
-margin-right: 0;
-margin-top: 25px;
-margin-bottom: 0px;
-text-align: center;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 25px;
+  margin-bottom: 0px;
+  text-align: center;
 }
 .takeabreak {
-border: 1px solid #e5e5e5;
-width: 120px;
-margin: 0 auto;
-padding: 5px;
+  border: 1px solid #e5e5e5;
+  width: 120px;
+  margin: 0 auto;
+  padding: 5px;
 }
 .takebreaktext {
-font-size: 13px;
-font-family: lato;
-font-weight: 400;
-color: #795548;
-cursor: pointer;
+  font-size: 13px;
+  font-family: lato;
+  font-weight: 400;
+  color: #795548;
+  cursor: pointer;
 }
 .backtohomerow {
-margin-left: 0;
-margin-right: 0;
-margin-top: 10px;
-margin-bottom: 10px;
-text-align: center;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: center;
 }
 .backtohomelogoutrow {
-margin-left: 0;
-margin-right: 0;
-margin-top: 25px;
-margin-bottom: 10px;
-text-align: center;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 25px;
+  margin-bottom: 10px;
+  text-align: center;
 }
 .logoutbacktohome {
-font-size: 13px;
-font-family: lato;
-font-weight: 400;
-color: #9B9B9B;
+  font-size: 13px;
+  font-family: lato;
+  font-weight: 400;
+  color: #9b9b9b;
 }
 .backtohometext {
-font-size: 12px;
-font-family: lato;
-font-weight: 400;
-color: #2561a8;
-cursor: pointer;
+  font-size: 12px;
+  font-family: lato;
+  font-weight: 400;
+  color: #2561a8;
+  cursor: pointer;
 }
 .CallwrapBtnwaiting {
-width: 228px;
-height: 35px;
-background-color: #E5E5E5;
-border: none;
-color: #9B9B9B;
-font-family: lato;
-font-weight: 600;
-font-size: 14px;
-cursor: pointer;
-line-height: 1px;
+  width: 228px;
+  height: 35px;
+  background-color: #e5e5e5;
+  border: none;
+  color: #9b9b9b;
+  font-family: lato;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  line-height: 1px;
 }
 .holdbtn {
-width: 228px;
-height: 35px;
-background-color: #1cd188;
-border: none;
-color: #fff;
-font-family: lato;
-font-weight: 600;
-font-size: 14px;
-cursor: pointer;
-line-height: 1px;
+  width: 228px;
+  height: 35px;
+  background-color: #1cd188;
+  border: none;
+  color: #fff;
+  font-family: lato;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  line-height: 1px;
 }
 .tranferbtn {
-width: 228px;
-height: 35px;
-background-color: #3d7aff;
-border: none;
-color: #fff;
-font-family: lato;
-font-weight: 600;
-font-size: 14px;
-cursor: pointer;
-line-height: 1px;
+  width: 228px;
+  height: 35px;
+  background-color: #3d7aff;
+  border: none;
+  color: #fff;
+  font-family: lato;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  line-height: 1px;
 }
 .incomingcalltext {
-font-size: 12px;
-font-weight: 400;
-font-family: lato;
-color: #4A4A4A;
-margin-top: 3px;
-margin-left: 77px;
+  font-size: 12px;
+  font-weight: 400;
+  font-family: lato;
+  color: #4a4a4a;
+  margin-top: 3px;
+  margin-left: 77px;
 }
 .incomingcallrow {
-margin-left: 0;
-margin-right: 0;
+  margin-left: 0;
+  margin-right: 0;
 }
 .tooltiptransfercallrow {
-margin-left: 0;
-margin-right: 0;
-text-align: center;
-margin-top: 20px;
-margin-bottom: 3px;
+  margin-left: 0;
+  margin-right: 0;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 3px;
 }
 .agenttext-tooltip {
-border:1px solid #e5e5e5;
-border-radius: 4px;
-width: 100%;
-height: 35px;
-background-color: #fff;
-padding: 10px;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  width: 100%;
+  height: 35px;
+  background-color: #fff;
+  padding: 10px;
 }
 /* Header Headphone Img Pop-up CSS End Kalpesh */
 /* ****************End css ************************/

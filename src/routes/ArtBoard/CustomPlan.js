@@ -1,10 +1,7 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react' 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import { faSquareFull } from "@fortawesome/free-solid-svg-icons";
-// import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
-// import { Popover } from "antd";
-// import { Link } from "react-router-dom";
+import { faSquareFull } from "@fortawesome/free-solid-svg-icons"; 
 
 class CustomPlan extends Component {
     render() {

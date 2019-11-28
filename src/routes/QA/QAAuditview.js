@@ -75,7 +75,8 @@ class QAAuditview extends Component {
           <div className="rectangle-box">
             <div className="row">
               <div className="col-md-3">
-                <div className="row removelinespace">
+                <div style={{padding: "15px"}}>
+                  <div className="row removelinespace">
                   <div>
                     <label className="mobile-number">Customer Name</label>
                     <br />
@@ -99,10 +100,12 @@ class QAAuditview extends Component {
                   <br />
                   <label className="mobile-no">naman.kreative@gmail.com</label>
                 </div>
+                </div>
               </div>
-              <div className="vl"></div>
-              <div className="col-md-6">
-                <div className="row" style={{ paddingLeft: "20px" }}>
+
+              <div className="col-md-5">
+                <div className="mid-sec">
+                  <div className="row mob-pad">
                   <div className="col-md-4">
                     <div className="form-group">
                       <label className="label-4">Status</label>
@@ -134,9 +137,9 @@ class QAAuditview extends Component {
                     </div>
                   </div>
                 </div>
-                <div className="row drop-card">
+                <div className="row">
                   <div className="col-md-4">
-                    <div className="form-group">
+                    <div className="">
                       <label className="label-4">Category</label>
                       <input
                         type="text"
@@ -146,7 +149,7 @@ class QAAuditview extends Component {
                     </div>
                   </div>
                   <div className="col-md-4 dropdrown">
-                    <div className="form-group">
+                    <div className="">
                       <label className="label-4">Sub Category</label>
                       <input
                         type="text"
@@ -156,9 +159,13 @@ class QAAuditview extends Component {
                     </div>
                   </div>
                 </div>
-                <div className="v2"></div>
-                <div className="row data-store">
-                  <div className="col-md-12">
+                </div>
+              </div>
+
+              <div className="col-md-4">
+                <div style={{padding: "15px 0"}}>
+                  <div className="">
+                  <div className="form-group">
                     <label className="label-4 storeSpacing">Store</label>
                     <label className="bata-rajouri-garden">
                       Bata Raj ouri Garden &nbsp;
@@ -169,7 +176,7 @@ class QAAuditview extends Component {
                       />
                     </label>
                   </div>
-                  <div className="col-md-12">
+                  <div className="">
                     <label className="label-4 storeSpacing">Product</label>
                     <label className="bata-rajouri-garden">
                       Red Tennis Coca Cola White Monogr…&nbsp;
@@ -181,14 +188,16 @@ class QAAuditview extends Component {
                     </label>
                   </div>
                 </div>
+                 </div>
               </div>
             </div>
           </div>
         </div>
         <div className="removerowmargin">
           <div className="row">
-            <div className="QA-card-2">
-              <div className="row">
+            <div className="col-md-9" style={{padding: "0"}}>
+              <div className="QA-card-2">
+                <div className="row">
                 <div className="col-md-9">
                   <label className="ticket-title-text">Ticket Title:</label>
                   <br />
@@ -317,7 +326,7 @@ class QAAuditview extends Component {
                 <Card>
                   <CardBody>
                     <div className="row">
-                      <div className="card-details-QA">
+                      <div className="card-details-QA" style={{marginLeft: "36%"}}>
                         <div className="screen-shot-2018-05-03-at-2-29-59-pm">
                           <label className="label-5">Dear Matthew,</label>
                           <label className="label-5">
@@ -455,16 +464,17 @@ class QAAuditview extends Component {
                   </label>
                 </div>
               </div>
-              <br />
+              </div>
             </div>
-            <div className="QA-card-3">
-              <div className="row">
+            <div className="col-md-3" style={{paddingRight: "0"}}>
+              <div className="QA-card-3">
+                <div className="row">
                 <div className="margin-audit-detials">
                   <img src={NoteIcon} alt="Note-Icon" className="note-icon" />
                   <label className="audit-details">Audit Details</label>
                 </div>
                 <div className="audit-score-box">
-                  <label className="">Audit Score</label>
+                  <label style={{display:"block"}}>Audit Score</label>
                   <label className="percentage">95%</label>
                 </div>
               </div>
@@ -550,7 +560,7 @@ class QAAuditview extends Component {
                               className="btn-group"
                               id="status"
                               data-toggle="buttons"
-                              style={{ marginLeft: "101px" }}
+                              style={{ marginLeft: "120px" }}
                             >
                               <label className="btn btn-default btn-on btn-xs active ">
                                 <input
@@ -583,7 +593,7 @@ class QAAuditview extends Component {
                               className="btn-group"
                               id="status"
                               data-toggle="buttons"
-                              style={{ marginLeft: "108px" }}
+                              style={{ marginLeft: "88px" }}
                             >
                               <label className="btn btn-default btn-on btn-xs active ">
                                 <input
@@ -624,7 +634,7 @@ class QAAuditview extends Component {
                               className="btn-group"
                               id="status"
                               data-toggle="buttons"
-                              style={{ marginLeft: "19px" }}
+                              style={{ marginLeft: "7px" }}
                             >
                               <label className="btn btn-default btn-on btn-xs active ">
                                 <input
@@ -665,7 +675,7 @@ class QAAuditview extends Component {
                               className="btn-group"
                               id="status"
                               data-toggle="buttons"
-                              style={{ marginLeft: "104px" }}
+                              style={{ marginLeft: "85px" }}
                             >
                               <label className="btn btn-default btn-on btn-xs active ">
                                 <input
@@ -982,7 +992,7 @@ class QAAuditview extends Component {
                 </Accordion>
               </div>
 
-              <div style={{ marginLeft: "28px" }}>
+              <div style={{ padding: "15px" }}>
                 <button className="calculate-button">
                   <label className="calculate-button-text">
                     CALCULATE &nbsp; SCORE
@@ -1024,6 +1034,7 @@ class QAAuditview extends Component {
                   </div>
                 </div>
               </Modal> */}
+              </div>
             </div>
           </div>
         </div>
