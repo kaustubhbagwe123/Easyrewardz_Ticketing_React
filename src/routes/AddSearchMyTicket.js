@@ -5,40 +5,40 @@ import PasteImg from "./../assets/Images/past.png";
 import SearchBlueImg from "./../assets/Images/search-blue.png";
 import NotFoundImg from "./../assets/Images/notFound.png";
 import Modal from "react-responsive-modal";
-import { Radio } from 'antd';
-import ModernDatepicker from "react-modern-datepicker";
+import { Radio } from "antd";
+import DatePicker from "react-datepicker";
 
 class AddSearchMyTicket extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-             AddCustomer:false,
-             value: "",
-             startDate:""
-        }
-        this.handleAddCustomerOpen=this.handleAddCustomerOpen.bind(this)
-        this.handleAddCustomerClose=this.handleAddCustomerClose.bind(this)
-        this.handleChange=this.handleChange.bind(this)
-    }
-    handleAddCustomerOpen(){
-        this.setState({AddCustomer:true})
-    }
-    handleAddCustomerClose(){
-        this.setState({AddCustomer:false})
-    }
-    onChange = e => {
-        this.setState({
-          value: e.target.value,
-        });
-      };
-      handleChange(date) {
-        this.setState({
-          startDate: date
-        });
-      }
-      handleRedirect= () =>{
-        this.props.history.push("/admin/ticketsystem");
-      }
+  constructor(props) {
+    super(props);
+    this.state = {
+      AddCustomer: false,
+      value: "",
+      startDate: ""
+    };
+    this.handleAddCustomerOpen = this.handleAddCustomerOpen.bind(this);
+    this.handleAddCustomerClose = this.handleAddCustomerClose.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+  handleAddCustomerOpen() {
+    this.setState({ AddCustomer: true });
+  }
+  handleAddCustomerClose() {
+    this.setState({ AddCustomer: false });
+  }
+  onChange = e => {
+    this.setState({
+      value: e.target.value
+    });
+  };
+  handleChange(date) {
+    this.setState({
+      startDate: date
+    });
+  }
+  handleRedirect = () => {
+    this.props.history.push("/admin/ticketsystem");
+  };
   render() {
     return (
       <Fragment>
@@ -76,7 +76,7 @@ class AddSearchMyTicket extends Component {
                   onClick={this.handleRedirect}
                 />
               </div>
-              <div className="div-notFound">
+              <div className="div-notFoundaddseacr">
                 <img
                   src={NotFoundImg}
                   alt="Not Found"
@@ -88,13 +88,15 @@ class AddSearchMyTicket extends Component {
                   <br /> <span>Phone number, Email Id</span>
                 </label>
               </div>
-              <button
-                type="button"
-                className="btn btn-addCustomer"
-                onClick={this.handleAddCustomerOpen}
-              >
-                Add Customer
-              </button>
+              <div style={{ width: "90%", textAlign: "center" }}>
+                <button
+                  type="button"
+                  className="btn btn-addCustomer"
+                  onClick={this.handleAddCustomerOpen}
+                >
+                  Add Customer
+                </button>
+              </div>
             </div>
             <Modal
               onClose={this.handleAddCustomerClose}
@@ -140,15 +142,23 @@ class AddSearchMyTicket extends Component {
                   </div>
                 </div>
                 <div className="row row-margin1">
-                  <div className="col-md-6">
-                    <ModernDatepicker
+                  <div className="col-md-6 addcustdate">
+                    <DatePicker
+                      date ={this.state.startDate}
+                      onChange={date => this.handleChange(date)}
+                      placeholderText="DOB"
+                      showMonthDropdown
+                      showYearDropdown
+                      className="txt-1"
+                    />
+                    {/* <ModernDatepicker
                       date={this.state.startDate}
                       format={"DD-MM-YYYY"}
                       className="cXcRo datePicker-modal"
                       showBorder
                       onChange={date => this.handleChange(date)}
                       placeholder={"DOB"}
-                    />
+                    /> */}
                   </div>
                 </div>
                 <hr />
@@ -169,8 +179,16 @@ class AddSearchMyTicket extends Component {
                   </div>
                 </div>
                 <div className="btn-float">
-                  <a href="#!" className="cancel-btn-A" onClick={this.handleAddCustomerClose}>CANCEL</a>
-                  <button className="butn">SAVE</button>
+                  <a
+                    href="#!"
+                    className="cancel-btn-A"
+                    onClick={this.handleAddCustomerClose}
+                  >
+                    CANCEL
+                  </a>
+                  <a href="ticketsystem">
+                    <button className="butn">SAVE</button>
+                  </a>
                 </div>
               </div>
             </Modal>
