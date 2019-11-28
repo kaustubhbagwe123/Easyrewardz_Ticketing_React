@@ -1,5 +1,10 @@
 import React, { Component, Fragment } from "react";
 import Modal from "react-responsive-modal";
+import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { faCommentAlt } from "@fortawesome/free-solid-svg-icons";
+import { faComment } from "@fortawesome/free-solid-svg-icons";
+import { faPhone } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import HistoricalTable from "./HistoricalTable";
 import HeadphoneImg from "./../assets/Images/headphone.png";
 import Headphone2Img from "./../assets/Images/headphone2.png";
@@ -475,29 +480,33 @@ class MyTicket extends Component {
               </div>
 
               <div className="col-9 col-sm-9">
-                <div style={{float: "right"}}>
-                  <img src={Headphone2Img} alt="headphone" className="oval-55" />
-                <label
-                  className="naman-r"
-                  onClick={this.HandlelabelModalOpen.bind(this)}
-                >
-                  Naman.R
-                </label>
-                <img src={DownImg} alt="down" className="down-header" />
-                <button
-                  type="button"
-                  className="myticket-submit-solve-button"
-                  onClick={this.HandleHeadePhoneModalOpen.bind(this)}
-                >
-                  <label className="myticket-submit-solve-button-text">
-                    SUBMIT AS SOLVED
-                  </label>
+                <div style={{ float: "right" }}>
                   <img
-                    src={DownWhiteImg}
+                    src={Headphone2Img}
                     alt="headphone"
-                    className="down-white"
+                    className="oval-55"
                   />
-                </button>
+                  <label
+                    className="naman-r"
+                    onClick={this.HandlelabelModalOpen.bind(this)}
+                  >
+                    Naman.R
+                  </label>
+                  <img src={DownImg} alt="down" className="down-header" />
+                  <button
+                    type="button"
+                    className="myticket-submit-solve-button"
+                    onClick={this.HandleHeadePhoneModalOpen.bind(this)}
+                  >
+                    <label className="myticket-submit-solve-button-text">
+                      SUBMIT AS SOLVED
+                    </label>
+                    <img
+                      src={DownWhiteImg}
+                      alt="headphone"
+                      className="down-white"
+                    />
+                  </button>
                 </div>
               </div>
               <Modal
@@ -573,400 +582,408 @@ class MyTicket extends Component {
           <div className="rectangle-box">
             <div className="row">
               <div className="col-md-3">
-                <div style={{padding: "15px"}}>
+                <div style={{ padding: "15px" }}>
                   <label className="mobile-number">Mobile Number</label>
-                <br />
-                <label className="mobile-no">+91 9873470074</label>
-                <img
-                  src={EyeImg}
-                  alt="eye"
-                  className="eyeImg"
-                  onClick={this.HandleProfileModalOpen.bind(this)}
-                />
-                <Modal
-                  open={this.state.profilemodal}
-                  onClose={this.HandleProfileModalClose.bind(this)}
-                  modalId="profile-popup"
-                  overlayId="logout-ovrly"
-                >
-                  <div className="profilemodalmaindiv">
-                    <div style={{ float: "right" }}>
-                      <img
-                        src={CrossIcon}
-                        alt="cross-icon"
-                        className="pro-cross-icn"
-                        onClick={this.HandleProfileModalClose.bind(this)}
-                      />
-                    </div>
-                    <div className="row profilemodalrow">
-                      <div className="col-md-6">
-                        <label className="profilemodal-text">Name</label>
-                        <label className="profilemodal-textval">
-                          Diwakar Monga
-                        </label>
-                      </div>
-                      <div className="col-md-6">
-                        <label className="profilemodal-text">Mobile</label>
-                        <label className="profilemodal-textval">
-                          +91 9873470074
-                        </label>
-                      </div>
-                    </div>
-                    <div className="row profilemodalrow-1">
-                      <div className="col-md-6">
-                        <label className="profilemodal-text">Email</label>
-                        <label className="profilemodal-textval">
-                          monga24@gmail.com
-                        </label>
-                      </div>
-                      <div className="col-md-6">
-                        <input
-                          type="text"
-                          className="alternumber"
-                          placeholder="Alternate Number"
-                        />
-                      </div>
-                    </div>
-                    <div className="row" style={{ marginLeft: "15px" }}>
-                      <div className="openticketbox profilemodalrow-1">
-                        <label className="open-tickets-box-text">
-                          04
-                          <small className="open-tickets-box-textval">
-                            Open Tickets
-                          </small>
-                        </label>
-                      </div>
-                      <div className="openticketbox-2 profilemodalrow-1">
-                        <label className="open-tickets-box-text">
-                          11
-                          <small className="open-tickets-box-textval">
-                            Total Tickets
-                          </small>
-                        </label>
-                      </div>
-                    </div>
-                    <div className="row profilemodal-row-3">
-                      <img src={CustomerIcon} alt="customer-icon" />
-                      <label className="full-profile-view-text">
-                        FULL PROFILE VIEW
-                      </label>
-                    </div>
-                  </div>
-                </Modal>
-                <div className="" style={{display: "inline", marginLeft: "5px"}}>
+                  <br />
+                  <label className="mobile-no">+91 9873470074</label>
                   <img
-                    src={BillInvoiceImg}
+                    src={EyeImg}
                     alt="eye"
-                    className="billImg"
-                    onClick={this.handleBillImgModalOpen.bind(this)}
+                    className="eyeImg"
+                    onClick={this.HandleProfileModalOpen.bind(this)}
                   />
                   <Modal
-                    open={this.state.BillInvoiceModal}
-                    onClose={this.handleBillImgModalClose.bind(this)}
-                    modalId="BillInvoice-popup"
+                    open={this.state.profilemodal}
+                    onClose={this.HandleProfileModalClose.bind(this)}
+                    modalId="profile-popup"
                     overlayId="logout-ovrly"
                   >
-                    <div className="row">
-                      <div className="col-md-5">
-                        <div className="customerBill">
-                          <img
-                            src={CustomerIcon}
-                            alt="customer-icon"
-                            style={{ marginTop: "-10px" }}
-                          />
-                          <label className="customer-text">CUSTOMER</label>
+                    <div className="profilemodalmaindiv">
+                      <div style={{ float: "right" }}>
+                        <img
+                          src={CrossIcon}
+                          alt="cross-icon"
+                          className="pro-cross-icn"
+                          onClick={this.HandleProfileModalClose.bind(this)}
+                        />
+                      </div>
+                      <div className="row profilemodalrow">
+                        <div className="col-md-6">
+                          <label className="profilemodal-text">Name</label>
+                          <label className="profilemodal-textval">
+                            Diwakar Monga
+                          </label>
                         </div>
-                        <div className="row">
-                          <div className="col-md-6 namepad">
-                            <label className="fullna">Full Name</label>
-                            <label className="namedi">Diwakar Monga</label>
-                          </div>
-                          <div className="col-md-6 namepad">
-                            <label className="fullna">Mobile Number</label>
-                            <label className="namedi">+91 9873470074</label>
-                          </div>
-                        </div>
-                        <div className="row">
-                          <div className="col-md-6 namepad">
-                            <label className="fullna">Email ID</label>
-                            <label className="namedi">diwakar@gmail.com</label>
-                          </div>
+                        <div className="col-md-6">
+                          <label className="profilemodal-text">Mobile</label>
+                          <label className="profilemodal-textval">
+                            +91 9873470074
+                          </label>
                         </div>
                       </div>
-
-                      <div className="col-md-7 xyz">
-                        {this.state.HistOrderShow ? (
-                          <div>
-                            <div className="histo">
-                              <img
-                                src={CustomerIcon}
-                                alt="customer-icon"
-                                style={{ marginTop: "-10px" }}
-                              />
-                              <label className="customer-text">
-                                HISTORICAL ORDER
-                              </label>
-                              <img
-                                src={CrossIcon}
-                                alt="cross-icon"
-                                style={{ float: "right" }}
-                                onClick={this.handleBillImgModalClose.bind(
-                                  this
-                                )}
-                              />
+                      <div className="row profilemodalrow-1">
+                        <div className="col-md-6">
+                          <label className="profilemodal-text">Email</label>
+                          <label className="profilemodal-textval">
+                            monga24@gmail.com
+                          </label>
+                        </div>
+                        <div className="col-md-6">
+                          <input
+                            type="text"
+                            className="alternumber"
+                            placeholder="Alternate Number"
+                          />
+                        </div>
+                      </div>
+                      <div className="row" style={{ marginLeft: "15px" }}>
+                        <div className="openticketbox profilemodalrow-1">
+                          <label className="open-tickets-box-text">
+                            04
+                            <small className="open-tickets-box-textval">
+                              Open Tickets
+                            </small>
+                          </label>
+                        </div>
+                        <div className="openticketbox-2 profilemodalrow-1">
+                          <label className="open-tickets-box-text">
+                            11
+                            <small className="open-tickets-box-textval">
+                              Total Tickets
+                            </small>
+                          </label>
+                        </div>
+                      </div>
+                      <div className="row profilemodal-row-3">
+                        <img src={CustomerIcon} alt="customer-icon" />
+                        <label className="full-profile-view-text">
+                          FULL PROFILE VIEW
+                        </label>
+                      </div>
+                    </div>
+                  </Modal>
+                  <div
+                    className=""
+                    style={{ display: "inline", marginLeft: "5px" }}
+                  >
+                    <img
+                      src={BillInvoiceImg}
+                      alt="eye"
+                      className="billImg"
+                      onClick={this.handleBillImgModalOpen.bind(this)}
+                    />
+                    <Modal
+                      open={this.state.BillInvoiceModal}
+                      onClose={this.handleBillImgModalClose.bind(this)}
+                      modalId="BillInvoice-popup"
+                      overlayId="logout-ovrly"
+                    >
+                      <div className="row">
+                        <div className="col-md-5">
+                          <div className="customerBill">
+                            <img
+                              src={CustomerIcon}
+                              alt="customer-icon"
+                              style={{ marginTop: "-10px" }}
+                            />
+                            <label className="customer-text">CUSTOMER</label>
+                          </div>
+                          <div className="row">
+                            <div className="col-md-6 namepad">
+                              <label className="fullna">Full Name</label>
+                              <label className="namedi">Diwakar Monga</label>
                             </div>
-                            <div className="col-md-6">
-                              <input
-                                type="text"
-                                className="search-orderhis"
-                                placeholder="Search Order"
-                              />
-                            </div>
-                            <div className="tablehistrical">
-                              <ReactTable
-                                data={data}
-                                columns={columns}
-                                // resizable={false}
-                                defaultPageSize={5}
-                                showPagination={false}
-                              />
-                            </div>
-
-                            <div className="row skipmar">
-                              <div className="col-md-5">
-                                <label className="skiptext">
-                                  SKIP ATTATCHING ORDER
-                                </label>
-                              </div>
-                              <div className="col-md-7">
-                                <div className="calnex">
-                                  <button type="button" className="calnexbtn">
-                                    <label className="calnexbtn-text">
-                                      Cancel
-                                    </label>
-                                  </button>
-                                  <button
-                                    type="button"
-                                    className="calnexbtn1"
-                                    onClick={this.toggleView}
-                                  >
-                                    <label className="calnexbtn1-text">
-                                      Next
-                                    </label>
-                                  </button>
-                                </div>
-                              </div>
+                            <div className="col-md-6 namepad">
+                              <label className="fullna">Mobile Number</label>
+                              <label className="namedi">+91 9873470074</label>
                             </div>
                           </div>
-                        ) : (
-                          <div>
-                            <div className="row histo">
-                              <div className="col-md-7">
+                          <div className="row">
+                            <div className="col-md-6 namepad">
+                              <label className="fullna">Email ID</label>
+                              <label className="namedi">
+                                diwakar@gmail.com
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="col-md-7 xyz">
+                          {this.state.HistOrderShow ? (
+                            <div>
+                              <div className="histo">
                                 <img
                                   src={CustomerIcon}
                                   alt="customer-icon"
                                   style={{ marginTop: "-10px" }}
                                 />
-                                <img
-                                  src={DownImg}
-                                  alt="down"
-                                  className="down-header"
-                                />
                                 <label className="customer-text">
-                                  ORDER - BB2213451123
+                                  HISTORICAL ORDER
                                 </label>
+                                <img
+                                  src={CrossIcon}
+                                  alt="cross-icon"
+                                  style={{ float: "right" }}
+                                  onClick={this.handleBillImgModalClose.bind(
+                                    this
+                                  )}
+                                />
                               </div>
-                              <div className="col-md-5">
-                                <label className="customerOrder-text">
-                                  ORDER
-                                </label>
-                                <label className="customerItem-text">
-                                  ITEM
-                                </label>
-                                <div className="orderswitch">
-                                  <div className="switch switch-primary d-inline">
-                                    <input type="checkbox" id="editTasks-p-2" />
-                                    <label
-                                      htmlFor="editTasks-p-2"
-                                      className="cr ord"
-                                    ></label>
+                              <div className="col-md-6">
+                                <input
+                                  type="text"
+                                  className="search-orderhis"
+                                  placeholder="Search Order"
+                                />
+                              </div>
+                              <div className="tablehistrical">
+                                <ReactTable
+                                  data={data}
+                                  columns={columns}
+                                  // resizable={false}
+                                  defaultPageSize={5}
+                                  showPagination={false}
+                                />
+                              </div>
+
+                              <div className="row skipmar">
+                                <div className="col-md-5">
+                                  <label className="skiptext">
+                                    SKIP ATTATCHING ORDER
+                                  </label>
+                                </div>
+                                <div className="col-md-7">
+                                  <div className="calnex">
+                                    <button type="button" className="calnexbtn">
+                                      <label className="calnexbtn-text">
+                                        Cancel
+                                      </label>
+                                    </button>
+                                    <button
+                                      type="button"
+                                      className="calnexbtn1"
+                                      onClick={this.toggleView}
+                                    >
+                                      <label className="calnexbtn1-text">
+                                        Next
+                                      </label>
+                                    </button>
                                   </div>
                                 </div>
                               </div>
                             </div>
-                            <div className="tablehistrical tablehistricaldetail">
-                              <ReactTable
-                                data={data1}
-                                columns={columns1}
-                                // resizable={false}
-                                defaultPageSize={2}
-                                showPagination={false}
-                              />
-                            </div>
-                            <div className="row skipmar done">
-                              <div className="col-md-12">
-                                <div className="calnex">
-                                  <button type="button" className="calnexbtn">
-                                    <label className="calnexbtn-text">
-                                      Cancel
-                                    </label>
-                                  </button>
-                                  <button
-                                    type="button"
-                                    className="calnexbtn1"
-                                    onClick={this.handleBillImgModalClose.bind(
-                                      this
-                                    )}
-                                  >
-                                    <label className="calnexbtn1-text">
-                                      DONE
-                                    </label>
-                                  </button>
+                          ) : (
+                            <div>
+                              <div className="row histo">
+                                <div className="col-md-7">
+                                  <img
+                                    src={CustomerIcon}
+                                    alt="customer-icon"
+                                    style={{ marginTop: "-10px" }}
+                                  />
+                                  <img
+                                    src={DownImg}
+                                    alt="down"
+                                    className="down-header"
+                                  />
+                                  <label className="customer-text">
+                                    ORDER - BB2213451123
+                                  </label>
+                                </div>
+                                <div className="col-md-5">
+                                  <label className="customerOrder-text">
+                                    ORDER
+                                  </label>
+                                  <label className="customerItem-text">
+                                    ITEM
+                                  </label>
+                                  <div className="orderswitch">
+                                    <div className="switch switch-primary d-inline">
+                                      <input
+                                        type="checkbox"
+                                        id="editTasks-p-2"
+                                      />
+                                      <label
+                                        htmlFor="editTasks-p-2"
+                                        className="cr ord"
+                                      ></label>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="tablehistrical tablehistricaldetail">
+                                <ReactTable
+                                  data={data1}
+                                  columns={columns1}
+                                  // resizable={false}
+                                  defaultPageSize={2}
+                                  showPagination={false}
+                                />
+                              </div>
+                              <div className="row skipmar done">
+                                <div className="col-md-12">
+                                  <div className="calnex">
+                                    <button type="button" className="calnexbtn">
+                                      <label className="calnexbtn-text">
+                                        Cancel
+                                      </label>
+                                    </button>
+                                    <button
+                                      type="button"
+                                      className="calnexbtn1"
+                                      onClick={this.handleBillImgModalClose.bind(
+                                        this
+                                      )}
+                                    >
+                                      <label className="calnexbtn1-text">
+                                        DONE
+                                      </label>
+                                    </button>
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        )}
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  </Modal>
+                    </Modal>
+                  </div>
+                  <div className="card-space-1">
+                    <label className="target-closure-date">
+                      Target Closure Date &nbsp;
+                    </label>
+                    <label className="Date-target">28 March 19</label>
+                  </div>
+                  <div className="mobilenumber-resp">
+                    <span className="line-respo"></span>
+                    <label className="respo">Response</label>
+                    <label className="resol">
+                      <span className="line-resol"></span>
+                      Resolution
+                    </label>
+                  </div>
+                  <progress
+                    style={{ width: "100%" }}
+                    value="50"
+                    max="100"
+                  ></progress>
+                  <p className="logout-label font-weight-bold prog-indi-1">
+                    2 day
+                  </p>
                 </div>
-                <div className="card-space-1">
-                  <label className="target-closure-date">
-                    Target Closure Date &nbsp;
-                  </label>
-                  <label className="Date-target">28 March 19</label>
-                </div>
-                <div className="mobilenumber-resp">
-                  <span className="line-respo"></span>
-                  <label className="respo">Response</label>
-                  <label className="resol">
-                    <span className="line-resol"></span>
-                    Resolution
-                  </label>
-                </div>
-                <progress
-                  style={{ width: "100%" }}
-                  value="50"
-                  max="100"
-                ></progress>
-                <p className="logout-label font-weight-bold prog-indi-1">
-                  2 day
-                </p>
-                </div>                
               </div>
               <div className="col-md-5">
                 <div className="mid-sec">
                   <div className="row mob-pad">
-                  <div className="col-md-4">
-                    <div className="form-group">
-                      <label className="label-4">Status</label>
-                      <select className="rectangle-9 select-category-placeholder">
-                        <option>Select</option>
-                      </select>
+                    <div className="col-md-4">
+                      <div className="form-group">
+                        <label className="label-4">Status</label>
+                        <select className="rectangle-9 select-category-placeholder">
+                          <option>Select</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="col-md-4 dropdrown">
+                      <div className="form-group">
+                        <label className="label-4">Priority</label>
+                        <select className="rectangle-9 select-category-placeholder">
+                          <option>Select</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="col-md-4 dropdrown">
+                      <div className="form-group">
+                        <label className="label-4">Brand</label>
+                        <select className="rectangle-9 select-category-placeholder">
+                          <option>Select</option>
+                        </select>
+                      </div>
                     </div>
                   </div>
-                  <div className="col-md-4 dropdrown">
-                    <div className="form-group">
-                      <label className="label-4">Priority</label>
-                      <select className="rectangle-9 select-category-placeholder">
-                        <option>Select</option>
-                      </select>
+                  <div className="row">
+                    <div className="col-md-4">
+                      <div className="">
+                        <label className="label-4">Category</label>
+                        <select className="rectangle-9 select-category-placeholder">
+                          <option>Select</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="col-md-4 dropdrown">
+                      <div className="">
+                        <label className="label-4">Sub Category</label>
+                        <select className="rectangle-9 select-category-placeholder">
+                          <option>Select</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="col-md-4 dropdrown">
+                      <div className="">
+                        <label className="label-4">Issue Type</label>
+                        <select className="rectangle-9 select-category-placeholder">
+                          <option>Select</option>
+                        </select>
+                      </div>
                     </div>
                   </div>
-                  <div className="col-md-4 dropdrown">
-                    <div className="form-group">
-                      <label className="label-4">Brand</label>
-                      <select className="rectangle-9 select-category-placeholder">
-                        <option>Select</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-4">
-                    <div className="">
-                      <label className="label-4">Category</label>
-                      <select className="rectangle-9 select-category-placeholder">
-                        <option>Select</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="col-md-4 dropdrown">
-                    <div className="">
-                      <label className="label-4">Sub Category</label>
-                      <select className="rectangle-9 select-category-placeholder">
-                        <option>Select</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="col-md-4 dropdrown">
-                    <div className="">
-                      <label className="label-4">Issue Type</label>
-                      <select className="rectangle-9 select-category-placeholder">
-                        <option>Select</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
                 </div>
               </div>
               <div className="col-md-4">
-                <div style={{padding: "15px 0"}}>
+                <div style={{ padding: "15px 0" }}>
                   <div className="">
-                  <div className="form-group">
-                    <label className="label-4 storeSpacing">Store</label>
-                    <label
-                      className="bata-rajouri-garden"
-                      onClick={this.HandleStoreModalOpen.bind(this)}
-                    >
-                      Bata Rajouri Garden &nbsp;
-                      <img
-                        src={PencilImg}
-                        alt="Pencile"
-                        className="pencilImg"
-                      />
-                    </label>
-                    <Modal
-                      open={this.state.storemodal}
-                      onClose={this.HandleStoreModalClose.bind(this)}
-                      modalId="ticket-store-modal"
-                      overlayId="layout-ticket-store-modal"
-                    >
-                      <div className="profilemodalmaindiv">
-                        <div style={{ float: "" }}>
-                          <img
-                            src={CrossIcon}
-                            alt="cross-icon"
-                            className="pro-cross-icn-1"
-                            onClick={this.HandleStoreModalClose.bind(this)}
-                          />
+                    <div className="form-group">
+                      <label className="label-4 storeSpacing">Store</label>
+                      <label
+                        className="bata-rajouri-garden"
+                        onClick={this.HandleStoreModalOpen.bind(this)}
+                      >
+                        Bata Rajouri Garden &nbsp;
+                        <img
+                          src={PencilImg}
+                          alt="Pencile"
+                          className="pencilImg"
+                        />
+                      </label>
+                      <Modal
+                        open={this.state.storemodal}
+                        onClose={this.HandleStoreModalClose.bind(this)}
+                        modalId="ticket-store-modal"
+                        overlayId="layout-ticket-store-modal"
+                      >
+                        <div className="profilemodalmaindiv">
+                          <div style={{ float: "" }}>
+                            <img
+                              src={CrossIcon}
+                              alt="cross-icon"
+                              className="pro-cross-icn-1"
+                              onClick={this.HandleStoreModalClose.bind(this)}
+                            />
+                          </div>
+                          <TikcetSystemStoreModal />
                         </div>
-                        <TikcetSystemStoreModal />
-                      </div>
-                    </Modal>
-                  </div>
-                  <div className="">
-                    <label className="label-4">Product</label>
-                    <label
-                      className="bata-rajouri-garden"
-                      onClick={this.HandleStoreModalOpen.bind(this)}
-                    >
-                      Red Tennis Coca Cola White Monogr...&nbsp;
-                      <img
-                        src={PencilImg}
-                        alt="Pencile"
-                        className="pencilImg"
-                      />
-                    </label>
+                      </Modal>
+                    </div>
+                    <div className="">
+                      <label className="label-4">Product</label>
+                      <label
+                        className="bata-rajouri-garden"
+                        onClick={this.HandleStoreModalOpen.bind(this)}
+                      >
+                        Red Tennis Coca Cola White Monogr...&nbsp;
+                        <img
+                          src={PencilImg}
+                          alt="Pencile"
+                          className="pencilImg"
+                        />
+                      </label>
+                    </div>
                   </div>
                 </div>
-                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div style={{padding: "15px" , background:"#fff"}}>
+        <div style={{ padding: "15px", background: "#fff" }}>
           <div className="rectangle-3 text-editor">
             <div className="row">
               <label className="ticket-title-where">Ticket Title:</label>
@@ -988,12 +1005,33 @@ class MyTicket extends Component {
             <div className="row">
               <div className="mask1">
                 <div className="mail-mask">
-                  <select className="my-tic-email">
-                    <option>Email</option>
-                    <option>Facebook</option>
-                    <option>SMS</option>
-                  </select>
-                  <div className="mob-float" style={{display: "inline" , float: "right"}}>
+                  <div class="dropdown" style={{display: "inherit"}}>
+                    <button
+                      class="dropdown-toggle my-tic-email"
+                      type="button"
+                      data-toggle="dropdown"
+                    >
+                      <FontAwesomeIcon icon={faEnvelope} /> Email
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <a href="#"><FontAwesomeIcon icon={faEnvelope} /> Email</a>
+                      </li>
+                      <li>
+                        <a href="#"><FontAwesomeIcon icon={faCommentAlt} /> SMS</a>
+                      </li>
+                      <li>
+                        <a href="#"><FontAwesomeIcon icon={faComment} /> Facebook</a>
+                      </li>
+                      <li>
+                        <a href="#"><FontAwesomeIcon icon={faPhone} /> Call</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div
+                    className="mob-float"
+                    style={{ display: "inline", float: "right" }}
+                  >
                     <img src={ArrowImg} alt="Arrow" className="arrow-img" />
                     <div className="line-1"></div>
                     {EmailCollapseUpDown}
@@ -1271,36 +1309,53 @@ class MyTicket extends Component {
                     </label>
                   </div>
                   <div className="commentcollapseTicket">
-                  <Collapse isOpen={this.state.CommentCollapse}>
-                    <Card>
-                      <CardBody>
-                        <div className="commenttextborder">
-                          <div className="Commentlabel">
+                    <Collapse isOpen={this.state.CommentCollapse}>
+                      <Card>
+                        <CardBody>
+                          <div className="commenttextborder">
+                            <div className="Commentlabel">
                               <label className="Commentlabel1">Comment</label>
-                          </div>
-                          <div>
+                            </div>
+                            <div>
                               <span className="comment-line"></span>
-                              <img src={MinusImg} alt="Minus" className="CommentMinus-img"/>
-                          </div>
-                          <div className="commenttextmessage">
-                            <label style={{marginBottom:"10px"}}>Hello,</label>
-                            <label>
-                              I saw a vintage table lamp on your site last month and I'd bookmarked it to buy it later for a friend. I can't seem to find it anymore through.
-                              <br></br>Is it out of stock or do you not sell those anymore ? 
-                            </label>
-                            <label style={{marginTop:"10px",display:"block"}}>Thanks</label>
-                            <label>Naman Rampal.</label>
-                          </div>
+                              <img
+                                src={MinusImg}
+                                alt="Minus"
+                                className="CommentMinus-img"
+                              />
+                            </div>
+                            <div className="commenttextmessage">
+                              <label style={{ marginBottom: "10px" }}>
+                                Hello,
+                              </label>
+                              <label>
+                                I saw a vintage table lamp on your site last
+                                month and I'd bookmarked it to buy it later for
+                                a friend. I can't seem to find it anymore
+                                through.
+                                <br></br>Is it out of stock or do you not sell
+                                those anymore ?
+                              </label>
+                              <label
+                                style={{ marginTop: "10px", display: "block" }}
+                              >
+                                Thanks
+                              </label>
+                              <label>Naman Rampal.</label>
+                            </div>
                             <div className="SendCommentBtn">
                               <button className="SendCommentBtn1">SEND</button>
                             </div>
-                        </div>
-                      </CardBody>
-                    </Card>
-                  </Collapse>
+                          </div>
+                        </CardBody>
+                      </Card>
+                    </Collapse>
                   </div>
                 </div>
-                <div className="row row-spacing new-top-bottom-margin" style={{ marginBottom: "18px" }}>
+                <div
+                  className="row row-spacing new-top-bottom-margin"
+                  style={{ marginBottom: "18px" }}
+                >
                   <div className="col-xs-3">
                     <img
                       src={Headphone2Img}
@@ -1324,55 +1379,61 @@ class MyTicket extends Component {
                       experience.
                     </label>
                   </div>
-                  <label className="comment-text1"
-                  onClick={this.HandleComment1CollapseOpen.bind(this)}
-                  >Comment</label>
-<div className="myTicketCommentCollapse">
-              <Collapse isOpen={this.state.Comment1Collapse}>
-                <Card>
-                  <CardBody>
-                    <div className="col-md-12">
-                      <CKEditor
-                        config={{
-                          toolbar: [
-                            {
-                              name: "basicstyles",
-                              items: ["Bold", "Italic", "Strike"]
-                            },
-                            {
-                              name: "styles",
-                              items: ["Styles", "Format"]
-                            },
-                            {
-                              name: "paragraph",
-                              items: ["NumberedList", "BulletedList"]
-                            },
-                            {
-                              name: "links",
-                              items: ["Link", "Unlink"]
-                            },
-                            {
-                              name: "insert",
-                              items: ["Image", "Table"]
-                            },
-                            {
-                              name: "tools",
-                              items: ["Maximize"]
-                            },
-                            {
-                              name: "editing",
-                              items: ["Scayt"]
-                            }
-                          ]
-                        }}
-                      />
-                    </div>
-                  </CardBody>
-                </Card>
-              </Collapse>
+                  <label
+                    className="comment-text1"
+                    onClick={this.HandleComment1CollapseOpen.bind(this)}
+                  >
+                    Comment
+                  </label>
+                  <div className="myTicketCommentCollapse">
+                    <Collapse isOpen={this.state.Comment1Collapse}>
+                      <Card>
+                        <CardBody>
+                          <div className="col-md-12">
+                            <CKEditor
+                              config={{
+                                toolbar: [
+                                  {
+                                    name: "basicstyles",
+                                    items: ["Bold", "Italic", "Strike"]
+                                  },
+                                  {
+                                    name: "styles",
+                                    items: ["Styles", "Format"]
+                                  },
+                                  {
+                                    name: "paragraph",
+                                    items: ["NumberedList", "BulletedList"]
+                                  },
+                                  {
+                                    name: "links",
+                                    items: ["Link", "Unlink"]
+                                  },
+                                  {
+                                    name: "insert",
+                                    items: ["Image", "Table"]
+                                  },
+                                  {
+                                    name: "tools",
+                                    items: ["Maximize"]
+                                  },
+                                  {
+                                    name: "editing",
+                                    items: ["Scayt"]
+                                  }
+                                ]
+                              }}
+                            />
+                          </div>
+                        </CardBody>
+                      </Card>
+                    </Collapse>
                   </div>
                 </div>
-                <div className="row row-spacing new-top-bottom-margin" style={{ marginBottom: "18px" }}>
+                <div
+                  className="row row-spacing new-top-bottom-margin"
+                  style={{ marginBottom: "18px" }}
+                >
                   <div className="col-xs-3">
                     <img src={BlackUserIcon} alt="Avatar" className="oval-6" />
                   </div>
@@ -1389,7 +1450,10 @@ class MyTicket extends Component {
                       Need to change my shipping address
                     </label>
                   </div>
-                  <label className="reply-comment" style={{paddingLeft: "75px"}}>
+                  <label
+                    className="reply-comment"
+                    style={{ paddingLeft: "75px" }}
+                  >
                     Reply
                     <br />
                     Comment
