@@ -3005,6 +3005,27 @@ table tr th:last-child {
   font-size: 14px;
   background: #dbe4e7 url("../Images/down-1.png") no-repeat right 12px center;
   background-size: 16px;
+  text-align: left;
+}
+.my-tic-email::after {
+  display: none;
+}
+.mail-mask .dropdown-menu.show:before {
+  display: none;
+}
+.mail-mask svg {
+  text-align: left;
+  color: #212529 !important;
+  float: left;
+  margin: 1px 5px 1px 0 !important;
+}
+.mail-mask ul li {
+  font-size: 14px;
+  display: block;
+  margin-bottom: 5px;
+}
+.mail-mask ul {
+  padding: 15px 0;
 }
 /* extra css end */
 

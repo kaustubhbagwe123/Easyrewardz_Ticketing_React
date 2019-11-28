@@ -1,5 +1,10 @@
 import React, { Component, Fragment } from "react";
 import Modal from "react-responsive-modal";
+import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { faCommentAlt } from "@fortawesome/free-solid-svg-icons";
+import { faComment } from "@fortawesome/free-solid-svg-icons";
+import { faPhone } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import HistoricalTable from "./HistoricalTable";
 import HeadphoneImg from "./../assets/Images/headphone.png";
 import Headphone2Img from "./../assets/Images/headphone2.png";
@@ -1001,11 +1006,29 @@ class MyTicket extends Component {
             <div className="row">
               <div className="mask1">
                 <div className="mail-mask">
-                  <select className="my-tic-email">
-                    <option>Email</option>
-                    <option>Facebook</option>
-                    <option>SMS</option>
-                  </select>
+                  <div class="dropdown" style={{display: "inherit"}}>
+                    <button
+                      class="dropdown-toggle my-tic-email"
+                      type="button"
+                      data-toggle="dropdown"
+                    >
+                      <FontAwesomeIcon icon={faEnvelope} /> Email
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <a href="#!"><FontAwesomeIcon icon={faEnvelope} /> Email</a>
+                      </li>
+                      <li>
+                        <a href="#!"><FontAwesomeIcon icon={faCommentAlt} /> SMS</a>
+                      </li>
+                      <li>
+                        <a href="#!"><FontAwesomeIcon icon={faComment} /> Facebook</a>
+                      </li>
+                      <li>
+                        <a href="#!"><FontAwesomeIcon icon={faPhone} /> Call</a>
+                      </li>
+                    </ul>
+                  </div>
                   <div
                     className="mob-float"
                     style={{ display: "inline", float: "right" }}
