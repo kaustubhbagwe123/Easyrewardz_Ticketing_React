@@ -36,6 +36,7 @@ import StoreIcon from "./../assets/Images/store.png";
 // import SendEmail from "./../assets/Images/sendEmail.png";
 import MyTicketTask from "./Tabs/MyTicketTask";
 import MyTicketClaim from "./Tabs/MyTicketClaim";
+import FileUpload from "./../assets/Images/file.png";
 import CKEditor from "ckeditor4-react";
 import ReactTable from "react-table";
 class MyTicket extends Component {
@@ -1015,16 +1016,16 @@ class MyTicket extends Component {
                     </button>
                     <ul class="dropdown-menu">
                       <li>
-                        <a href="#"><FontAwesomeIcon icon={faEnvelope} /> Email</a>
+                        <a href="#!"><FontAwesomeIcon icon={faEnvelope} /> Email</a>
                       </li>
                       <li>
-                        <a href="#"><FontAwesomeIcon icon={faCommentAlt} /> SMS</a>
+                        <a href="#!"><FontAwesomeIcon icon={faCommentAlt} /> SMS</a>
                       </li>
                       <li>
-                        <a href="#"><FontAwesomeIcon icon={faComment} /> Facebook</a>
+                        <a href="#!"><FontAwesomeIcon icon={faComment} /> Facebook</a>
                       </li>
                       <li>
-                        <a href="#"><FontAwesomeIcon icon={faPhone} /> Call</a>
+                        <a href="#!"><FontAwesomeIcon icon={faPhone} /> Call</a>
                       </li>
                     </ul>
                   </div>
@@ -1080,8 +1081,44 @@ class MyTicket extends Component {
                       />
                     </div>
                   </CardBody>
+                  <div className="row colladrowa">
+                <div className="col-md-12 colladrow">
+                  <ul>
+                    <li>
+                      <label>To: diwarkar@gmail.com</label>
+                    </li>
+                    <li>
+                      <label className="CCdi">CC: diwarkar@gmail.com
+                      <span className="one">+1</span></label>
+                    </li>
+                    <li>
+                      <label className="CCdi">BCC: diwarkar@gmail.com
+                      <span className="one">+1</span></label>
+                    </li>
+                    <li>
+                    <div className="filter-checkbox">
+                    <input type="checkbox" id="fil-open" name="filter-type" style={{ display: "none" }} />
+                    <label htmlFor="fil-open" style={{ paddingLeft: "25px" }}>
+                      <span>Inform Store Note</span>
+                    </label>
+                  </div>
+                    </li>
+                    <li>
+                      <span>
+                        <img src={FileUpload} alt="file-upload" className="fileup"/>
+                      </span>
+                      <label style={{color:"#2561a8"}}>3 files</label>
+                    </li>
+                    <li style={{ float: "right" }}>
+                      <button className="sav">Save As Draft</button>
+                      <button className="send">Send</button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
                 </Card>
               </Collapse>
+              
             </div>
             <div className="edit-storeTask-header newtab">
               <div className="tab-content">
@@ -1205,7 +1242,10 @@ class MyTicket extends Component {
                       I Have solved this issue
                     </label>
                   </div>
-                  <div className="col-md-2 mob-flex">
+                  <div
+                    className="col-md-2 mob-flex"
+                    style={{ paddingLeft: "50px", paddingRight: "0" }}
+                  >
                     {HidecollapsUp}
                     <label
                       className="comment"

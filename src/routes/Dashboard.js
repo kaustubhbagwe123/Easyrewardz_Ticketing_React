@@ -30,6 +30,10 @@ import HeadPhone3 from "./../assets/Images/headphone3.png";
 import DatePicker from "react-datepicker";
 // import "react-datepicker/dist/react-datepicker.css";
 import OpenByPriorityPie from "../Component/PieChart/PieChart";
+// import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import ReactTable from "react-table";
+
 
 class Dashboard extends Component {
   constructor(props) {
@@ -147,6 +151,71 @@ class Dashboard extends Component {
     ) : (
       <img className="search-icon" src={SearchIcon} alt="search-icon" />
     );
+
+
+    // const dataDash = [
+    //  {
+    //    idDash: (
+    //     <div className="filter-type pink1">
+    //       <div className="filter-checkbox pink2">
+    //         <input
+    //           type="checkbox"
+    //           id="fil-ab1"
+    //           name="dashboardcheckbox[]"
+    //         />
+    //         <label htmlFor="fil-ab1">
+    //             <img
+    //               src={HeadPhone3}
+    //               alt="HeadPhone"
+    //               className="headPhone3"
+    //             />
+    //             ABCD1234
+    //         </label>
+    //       </div>
+    //     </div>
+    //    ),
+    //  }
+    // ];
+
+    // const columnsDash = [
+    //   {
+    //     Header: <span>ID</span>,
+    //     accessor: "idDash"
+    //   },
+    //   {
+    //     Header: <span>Status <FontAwesomeIcon icon={faCaretDown} /></span>,
+    //     accessor: "statusDash"
+    //   },
+    //   {
+    //     Header: <label><span style={{fontWeight:"bold",fontSize:"13px !important"}}>Subject/</span><span>Lastest Message</span></label>,
+    //     accessor: "subjectDash",
+    //   },
+    //   {
+    //       Header: <span>Category <FontAwesomeIcon icon={faCaretDown} /></span>,
+    //       accessor: "categoryDash",
+    //               // Cell:props =>
+    //               //     <span>
+    //               //         <label>Defective article{" "}</label>
+    //               //         <img className="info-icon" src={InfoIcon} alt="info-icon" />
+    //               //     </span>
+    //   },
+    //   {
+    //       Header: <span>Priority <FontAwesomeIcon icon={faCaretDown} /></span>,
+    //       accessor: "priorityDash",
+    //               Cell:props =>
+    //               <span>High</span>
+    //   },
+    //   {
+    //       Header: <span>Assigne <FontAwesomeIcon icon={faCaretDown} /></span>,
+    //       accessor: "assigneeDash",
+    //               Cell:props =>
+    //               <span>N Rampal</span>
+    //   },
+    //   {
+    //       Header: <span>Creation On <FontAwesomeIcon icon={faCaretDown} /></span>,
+    //       accessor: "creationNew",
+    //   },
+    // ];
 
     return (
       <Fragment>
@@ -1187,6 +1256,15 @@ class Dashboard extends Component {
                 </Card>
               </Collapse>
               <div className="scroll-table rem-table">
+              {/* <div className="DashBoarReact"> 
+                <ReactTable
+                    data={dataDash}
+                    columns={columnsDash}
+                    // resizable={false}
+                    defaultPageSize={5}
+                    showPagination={true}
+                />
+                </div> */}
                 <table>
                   <thead>
                     <tr>
@@ -1867,7 +1945,7 @@ class Dashboard extends Component {
                       </td>
                     </tr>
                   </tbody>
-                </table>
+                </table> 
               </div>
               <div className="mobile-table">
                 <div className="table-row pink-bg">

@@ -340,7 +340,7 @@ class AllAcounts extends Component {
 
     return (
       <Fragment>
-        <div className="container-fluid">
+        <div className="">
           <div className="dash-cntrr1">
             <div className="table-cntr mt-3">
               <div className="tenantreact">

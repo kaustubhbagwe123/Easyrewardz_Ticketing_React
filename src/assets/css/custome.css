@@ -978,7 +978,7 @@ table tr th:last-child {
   font-weight: 700;
   line-height: 16px;
   text-align: left;
-  padding-left: 76px;
+  padding-left: 75px;
   cursor: pointer;
 }
 .label-2 {
@@ -6115,6 +6115,11 @@ table thead tr {
   margin-top: 60px;
   text-align: center;
 }
+.div-notFoundaddseacr {
+  margin-top: 60px;
+  text-align: center;
+  width: 90%;
+}
 .lbl-count-foundData {
   font-size: 24px;
   font-weight: 600;
@@ -6127,7 +6132,6 @@ table thead tr {
   font-weight: 600;
   height: 34px;
   padding-top: 5px !important;
-  margin-left: 280px;
   margin-top: 15px;
 }
 .lbl-popup-title {
@@ -7250,7 +7254,6 @@ table tr th:last-child {
   height: 30px;
   margin-left: 14px;
   padding: 6px;
-  display: inline;
 }
 .storeImg {
   width: 20px;
@@ -8341,4 +8344,64 @@ table tr th:last-child {
   padding: 10px;
 }
 /* Header Headphone Img Pop-up CSS End Kalpesh */
+.addcustdate .react-datepicker-wrapper {
+  width: 100%;
+}
+.addcustdate .react-datepicker__navigation--next {
+  right: -75px;
+  border-left-color: #ccc;
+}
+.addcustdate .react-datepicker__navigation--previous {
+  left: -75px;
+  border-left-color: #ccc;
+}
+.colladrow label{
+  font-family: lato;
+  font-size: 15px;
+  color: #9b9b9b;
+  margin-right: 15px;
+}
+ .CCdi {
+  border: 1px solid #9b9b9b;
+  padding: 7px 10px;
+}
+.colladrow .fileup {
+  width: 14px;
+  height: 14px;
+  margin-right: 7px;
+  cursor: pointer;
+}
+.colladrow .send{
+  background: #2561a8;
+  color: #fff;
+  font-size: 14px;
+  height: 40px;
+  width: 120px;
+  border-radius: 5px;
+  border: 1px solid #2561a8;
+  cursor: pointer;
+}
+.colladrow .sav{
+  background: #fff;
+  color: #2561a8;
+  font-size: 14px;
+  height: 40px;
+  width: 120px;
+  border-radius: 5px;
+  margin-right: 10px;
+  border: 1px solid #fff;
+  cursor: pointer;
+}
+.colladrow .one{
+  color: #2561a8;
+}
+.myTicketEmail {
+  position: relative;
+}
+.colladrowa { 
+   position: absolute;
+    width: 100%;
+    bottom: 0;
+}
+
 /* ****************End css ************************/

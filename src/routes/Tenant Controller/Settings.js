@@ -12,8 +12,8 @@ export class Settings extends Component {
   render() {
     return (
       <Fragment>
-        <div className="contaoner-fluid">
-          <div className="dash-cntr">
+        <div className="">
+          <div className="">
             <div className="paddsett">
               <div className="settingstenant-tabs1">
                 <section>

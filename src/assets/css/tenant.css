@@ -291,16 +291,17 @@
 }
 .fivedays select{
     width: 90px;
+    height: 35px;
     padding: 1px 10px;
     background: #FFF url("./../Images//table-arr.png") no-repeat right 7px center;
     background-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #D9DADC;
+    border-radius: 4px;
+    border: 1px solid #F5F5F5;
     cursor: pointer;
 }
 .textautomatic {
     margin-left: 65px;
-    border: 1px solid #D9DADC;
+    border: 1px solid #F5F5F5;
     border-radius: 8px;
 }
 .textautomatic label {
@@ -332,17 +333,19 @@
     float: right;
 }
 .twobutton .cancel {
-    min-width: 90px;
+    min-width: 110px;
     padding: 0;
     height: 35px;
     font-size: 15px;
     background-color: #fff;
-    border: 1px solid #D9DADC;
+    border: 1px solid #F5F5F5;
+    border-radius: 3px;
     margin-right: 15px;
     line-height: 3px;
+    cursor: pointer;
 }
 .twobutton .save {
-    min-width: 90px;
+    min-width: 110px;
     padding: 0;
     height: 35px;
     font-size: 15px;
@@ -350,6 +353,8 @@
     color: #fff;
     border: 1px solid #2561a8;
     line-height: 3px;
+    border-radius: 3px;
+    cursor: pointer;
 }
 .card-enterprise {
     height: 175px;
@@ -487,7 +492,7 @@
     background-color: #F5F5F5;
 }
 .dash-cntrr1 {
-    padding: 15px 0;
+    padding: 15px 20px;
     position: relative;
     background: #F5F5F5;
 }
@@ -1181,4 +1186,10 @@
     padding: 40px 100px;
     border-radius: 10px;
     margin: 0;
+}
+.EnterpriseReact .rt-tr-group {
+    background-color: #fff;
+}
+.EnterpriseReact .rt-tr-group:nth-of-type(even){
+    background: #F5F5F5;
 }
