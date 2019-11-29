@@ -3962,6 +3962,9 @@ progress::-moz-progress-bar {
   margin-top: 25px;
 }
 
+.obpml {
+  margin-left: -36px;
+}
 /* Responsive starts */
 
 @media only screen and (max-width: 992px) {
@@ -4076,6 +4079,10 @@ progress::-moz-progress-bar {
   .table-expandable-sctn input[type="text"]::placeholder {
     font-size: 14px;
   }
+  .setting-tabs ul {
+    border: none;
+    margin-bottom: 25px;
+}
   /* dashboard ends */
 }
 
@@ -4188,8 +4195,11 @@ progress::-moz-progress-bar {
   .active a {
     color: #fff !important;
   }
-  .active {
-    background-color: #2561a8;
+  .header-right-icons a:last-child {
+    margin-right: 0px;
+  }
+  .header-right-icons {
+    padding: 0 15px;
   }
   .vl {
     border: 0;
@@ -4460,6 +4470,18 @@ progress::-moz-progress-bar {
     flex: 0 0 100%;
     max-width: 100%;
   }
+  .obpml {
+    margin-left: 0;
+  }
+  .mlistbtn {
+    float: none;
+    text-align: center;
+}
+.setting-tabs ul {
+  border: none;
+  display: flex !important;
+  margin-bottom: 25px;
+}
   /* dashboard ends */
 }
 /* Responsive ends */

@@ -12,10 +12,10 @@ class OpenByPriorityPie extends Component {
       ]
     };
     return (
-      <div style={{marginLeft:'-36px'}}>
+      <div className="obpml">
         <PieChart
           data={data}
-          width={350}
+          width={300}
           height={260}
           margin={{ top: 10, bottom: 10, left: 100, right: 100 }}
           sort={sort}

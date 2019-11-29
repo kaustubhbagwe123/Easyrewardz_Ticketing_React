@@ -46,7 +46,7 @@ class MyTicketList extends Component {
       <Fragment>
         <div className="myticketlist-header">
           <div className="setting-tabs esc">
-            <ul className="nav nav-tabs es" style={{display: "inline"}} role="tablist">
+            <ul className="nav nav-tabs es" role="tablist" style={{display: "inline"}}>
               <li className="nav-item">
                 <a
                   className="nav-link active"
@@ -182,8 +182,8 @@ class MyTicketList extends Component {
                 aria-labelledby="Escalation-tab"
               >
                 <div className="container-fluid">
-                  <div className="table-cntr mt-3 mtictab">
-                    <table>
+                  <div className="table-cntr mt-3 mtictab table-responsive" style={{overflow: "initial"}}>
+                    <table className="table-responsive" style={{display: "inline-table"}}>
                       <thead>
                         <tr>
                           <th>ID</th>
