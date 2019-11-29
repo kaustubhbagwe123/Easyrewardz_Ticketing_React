@@ -265,8 +265,9 @@ class Dashboard extends Component {
             <CardBody>
               <div className="container-fluid dash-tp-card">
                 <div className="row justify-content-center">
-                  <div className="col-md col-sm-4 col-6">
-                    <div className="dash-top-cards">
+                  <div className="col-12 col-sm-4 col-md col-6">
+                    <div style={{marginBottom: "15px"}}>
+                      <div className="dash-top-cards">
                       <p className="card-head1">Accounts</p>
                       <div className="card-values1">
                         <span className="card-head1number">343</span>
@@ -278,8 +279,10 @@ class Dashboard extends Component {
                         <span className="card-head1number1">43</span>
                       </div>
                     </div>
+                    </div>
                   </div>
-                  <div className="col-md col-sm-4 col-6">
+                  <div className="col-12 col-sm-4 col-md col-6">
+                    <div style={{marginBottom: "15px"}}>
                     <div className="dash-top-cards">
                       <p className="card-head1">Onboarded</p>
                       <div className="card-values1">
@@ -293,7 +296,9 @@ class Dashboard extends Component {
                       </div>
                     </div>
                   </div>
-                  <div className="col-md col-sm-4 col-6">
+                  </div>
+                  <div className="col-12 col-sm-4 col-md col-6">
+                    <div style={{marginBottom: "15px"}}>
                     <div className="dash-top-cards">
                       <p className="card-head1">Revenue</p>
                       <div className="card-values1">
@@ -308,7 +313,9 @@ class Dashboard extends Component {
                       </div>
                     </div>
                   </div>
-                  <div className="col-md col-sm-4 col-6">
+                </div>
+                  <div className="col-12 col-sm-4 col-md col-6">
+                    <div style={{marginBottom: "15px"}}>
                     <div className="dash-top-cards">
                       <p className="card-head1">Churned</p>
                       <div className="card-values1">
@@ -326,8 +333,10 @@ class Dashboard extends Component {
                         <span className="card-head1number1">3</span>
                       </div>
                     </div>
+                </div>
                   </div>
-                  <div className="col-md col-sm-4 col-6">
+                  <div className="col-12 col-sm-4 col-md col-6">
+                    <div style={{marginBottom: "15px"}}>
                     <div className="dash-top-cards">
                       <p className="card-head1">Health</p>
                       <div>
@@ -338,6 +347,7 @@ class Dashboard extends Component {
                       </div>
                     </div>
                   </div>
+                </div>
                 </div>
               </div>
             </CardBody>

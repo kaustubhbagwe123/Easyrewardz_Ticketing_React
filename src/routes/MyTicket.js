@@ -3,7 +3,9 @@ import Modal from "react-responsive-modal";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { faCommentAlt } from "@fortawesome/free-solid-svg-icons";
 import { faComment } from "@fortawesome/free-solid-svg-icons";
+import { faBrain } from "@fortawesome/free-solid-svg-icons";
 import { faPhone } from "@fortawesome/free-solid-svg-icons";
+import { faCalculator } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import HistoricalTable from "./HistoricalTable";
 import HeadphoneImg from "./../assets/Images/headphone.png";
@@ -56,6 +58,7 @@ class MyTicket extends Component {
       BillInvoiceModal: false,
       HistOrderShow: true,
       CommentCollapse: false,
+      CommentCollapse2: false,
       Comment1Collapse: false,
       values: [
         {
@@ -128,6 +131,19 @@ class MyTicket extends Component {
   }
   handleCommentCollapseOpen() {
     this.setState(state => ({ CommentCollapse: !state.CommentCollapse }));
+  }
+  handleCommentCollapseClose() {
+    this.setState(state => ({ CommentCollapse: false }));
+  }
+  hanldeCommentOpen2() {
+    this.setState({ CommentCollapse2: true });
+  }
+  hanldeCommentClose2() {
+    this.setState({ CommentCollapse2: false });
+  }
+  handleCommentCollapseOpen2() {
+    this.setState(state => ({ CommentCollapse2: !state.CommentCollapse2 }));
+    this.handleCommentCollapseClose();
   }
   HandleComment1CollapseOpen() {
     this.setState(state => ({ Comment1Collapse: !state.Comment1Collapse }));
@@ -873,10 +889,10 @@ class MyTicket extends Component {
                   </p>
                 </div>
               </div>
-              <div className="col-md-5">
+              <div className="col-md-6">
                 <div className="mid-sec">
                   <div className="row mob-pad">
-                    <div className="col-md-4">
+                    <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4">
                       <div className="form-group">
                         <label className="label-4">Status</label>
                         <select className="rectangle-9 select-category-placeholder">
@@ -884,7 +900,7 @@ class MyTicket extends Component {
                         </select>
                       </div>
                     </div>
-                    <div className="col-md-4 dropdrown">
+                    <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
                       <div className="form-group">
                         <label className="label-4">Priority</label>
                         <select className="rectangle-9 select-category-placeholder">
@@ -892,7 +908,7 @@ class MyTicket extends Component {
                         </select>
                       </div>
                     </div>
-                    <div className="col-md-4 dropdrown">
+                    <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
                       <div className="form-group">
                         <label className="label-4">Brand</label>
                         <select className="rectangle-9 select-category-placeholder">
@@ -900,26 +916,24 @@ class MyTicket extends Component {
                         </select>
                       </div>
                     </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-md-4">
-                      <div className="">
+                    <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                      <div className="form-group">
                         <label className="label-4">Category</label>
                         <select className="rectangle-9 select-category-placeholder">
                           <option>Select</option>
                         </select>
                       </div>
                     </div>
-                    <div className="col-md-4 dropdrown">
-                      <div className="">
+                    <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
+                      <div className="form-group">
                         <label className="label-4">Sub Category</label>
                         <select className="rectangle-9 select-category-placeholder">
                           <option>Select</option>
                         </select>
                       </div>
                     </div>
-                    <div className="col-md-4 dropdrown">
-                      <div className="">
+                    <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
+                      <div className="form-group">
                         <label className="label-4">Issue Type</label>
                         <select className="rectangle-9 select-category-placeholder">
                           <option>Select</option>
@@ -929,9 +943,9 @@ class MyTicket extends Component {
                   </div>
                 </div>
               </div>
-              <div className="col-md-4">
+              <div className="col-md-3">
                 <div style={{ padding: "15px 0" }}>
-                  <div className="">
+                  <div className="storebox">
                     <div className="form-group">
                       <label className="label-4 storeSpacing">Store</label>
                       <label
@@ -1006,7 +1020,7 @@ class MyTicket extends Component {
             <div className="row">
               <div className="mask1">
                 <div className="mail-mask">
-                  <div class="dropdown" style={{display: "inherit"}}>
+                  <div class="dropdown" style={{ display: "inherit" }}>
                     <button
                       class="dropdown-toggle my-tic-email"
                       type="button"
@@ -1016,19 +1030,28 @@ class MyTicket extends Component {
                     </button>
                     <ul class="dropdown-menu">
                       <li>
-                        <a href="#!"><FontAwesomeIcon icon={faEnvelope} /> Email</a>
+                        <a href="#!">
+                          <FontAwesomeIcon icon={faEnvelope} /> Email
+                        </a>
                       </li>
                       <li>
-                        <a href="#!"><FontAwesomeIcon icon={faCommentAlt} /> SMS</a>
+                        <a href="#!">
+                          <FontAwesomeIcon icon={faCommentAlt} /> SMS
+                        </a>
                       </li>
                       <li>
-                        <a href="#!"><FontAwesomeIcon icon={faComment} /> Facebook</a>
+                        <a href="#!">
+                          <FontAwesomeIcon icon={faComment} /> Facebook
+                        </a>
                       </li>
                       <li>
-                        <a href="#!"><FontAwesomeIcon icon={faPhone} /> Call</a>
+                        <a href="#!">
+                          <FontAwesomeIcon icon={faPhone} /> Call
+                        </a>
                       </li>
                     </ul>
                   </div>
+                
                   <div
                     className="mob-float"
                     style={{ display: "inline", float: "right" }}
@@ -1042,6 +1065,38 @@ class MyTicket extends Component {
             </div>
             <div className="myTicketEmail">
               <Collapse isOpen={this.state.EmailCollapse}>
+                          <a href="#!" className="kblink" style={{top: "5px"}}><FontAwesomeIcon icon={faBrain} />  Kb Link</a>
+                          <div class="dropdown collapbtn" style={{ display: "inherit" , top: "5px"}}>
+                            <button
+                              class="dropdown-toggle my-tic-email"
+                              type="button"
+                              data-toggle="dropdown"
+                            >
+                              <FontAwesomeIcon icon={faCalculator} /> Template
+                            </button>
+                            <ul class="dropdown-menu">
+                              <li>
+                                <a href="#!">
+                                 Template 1
+                                </a>
+                              </li>
+                              <li>
+                                <a href="#!">
+                                 Template 2
+                                </a>
+                              </li>
+                              <li>
+                                <a href="#!">
+                                 Template 3
+                                </a>
+                              </li>
+                              <li>
+                                <a href="#!">
+                                 Template 4
+                                </a>
+                              </li>
+                            </ul>
+                          </div>
                 <Card>
                   <CardBody>
                     <div className="">
@@ -1082,43 +1137,58 @@ class MyTicket extends Component {
                     </div>
                   </CardBody>
                   <div className="row colladrowa">
-                <div className="col-md-12 colladrow">
-                  <ul>
-                    <li>
-                      <label>To: diwarkar@gmail.com</label>
-                    </li>
-                    <li>
-                      <label className="CCdi">CC: diwarkar@gmail.com
-                      <span className="one">+1</span></label>
-                    </li>
-                    <li>
-                      <label className="CCdi">BCC: diwarkar@gmail.com
-                      <span className="one">+1</span></label>
-                    </li>
-                    <li>
-                    <div className="filter-checkbox">
-                    <input type="checkbox" id="fil-open" name="filter-type" style={{ display: "none" }} />
-                    <label htmlFor="fil-open" style={{ paddingLeft: "25px" }}>
-                      <span>Inform Store Note</span>
-                    </label>
+                    <div className="col-md-12 colladrow">
+                      <ul>
+                        <li>
+                          <label>To: diwarkar@gmail.com</label>
+                        </li>
+                        <li>
+                          <label className="CCdi">
+                            CC: diwarkar@gmail.com
+                            <span className="one">+1</span>
+                          </label>
+                        </li>
+                        <li>
+                          <label className="CCdi">
+                            BCC: diwarkar@gmail.com
+                            <span className="one">+1</span>
+                          </label>
+                        </li>
+                        <li>
+                          <div className="filter-checkbox">
+                            <input
+                              type="checkbox"
+                              id="fil-open"
+                              name="filter-type"
+                              style={{ display: "none" }}
+                            />
+                            <label
+                              htmlFor="fil-open"
+                              style={{ paddingLeft: "25px" }}
+                            >
+                              <span>Inform Store Note</span>
+                            </label>
+                          </div>
+                        </li>
+                        <li>
+                          <span>
+                            <img
+                              src={FileUpload}
+                              alt="file-upload"
+                              className="fileup"
+                            />
+                          </span>
+                          <label style={{ color: "#2561a8" }}>3 files</label>
+                        </li>
+                        <li style={{ float: "right" }}>
+                          <button className="sav">Save As Draft</button>
+                          <button className="send">Send</button>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
-                    </li>
-                    <li>
-                      <span>
-                        <img src={FileUpload} alt="file-upload" className="fileup"/>
-                      </span>
-                      <label style={{color:"#2561a8"}}>3 files</label>
-                    </li>
-                    <li style={{ float: "right" }}>
-                      <button className="sav">Save As Draft</button>
-                      <button className="send">Send</button>
-                    </li>
-                  </ul>
-                </div>
-              </div>
                 </Card>
               </Collapse>
-              
             </div>
             <div className="edit-storeTask-header newtab">
               <div className="tab-content">
@@ -1189,16 +1259,16 @@ class MyTicket extends Component {
                 className="tab-pane fade show active"
                 id="Message-tab"
                 role="tabpanel"
-                aria-labelledby="Message-tab"
+                aria-labelledby="Message-tab" style={{marginTop: "10px"}}
               >
                 <div className="row message-header">
-                  <div className="col-md-3">
+                  <div className="col-12 col-xs-12 col-sm-3">
                     <label className="user-label">User</label>
                   </div>
-                  <div className="col-md-8">
+                  <div className="col-12 col-xs-12 col-sm-7">
                     <label className="message-label">Message</label>
                   </div>
-                  <div className="1">
+                  <div className="col-12 col-xs-12 col-sm-2">
                     <label className="action-label">Action</label>
                   </div>
                 </div>
@@ -1214,8 +1284,8 @@ class MyTicket extends Component {
                   </div>
                 </div>
                 <div className="row top-margin">
-                  <div className="col-md-4">
-                    <div className="row">
+                  <div className="col-12 col-xs-12 col-sm-4 col-md-3">
+                    <div className="row" style={{marginTop:"0"}}>
                       <div className="oval-5-1">
                         <img
                           src={RightImg}
@@ -1233,18 +1303,16 @@ class MyTicket extends Component {
                         src={MsgImg}
                         alt="right"
                         className="smg-Img"
-                        style={{ marginLeft: "95px" }}
                       />
                     </div>
                   </div>
-                  <div className="col-md-6">
+                  <div className="col-12 col-xs-12 col-sm-6 col-md-7">
                     <label className="i-have-solved-this-i">
                       I Have solved this issue
                     </label>
                   </div>
                   <div
-                    className="col-md-2 mob-flex"
-                    style={{ paddingLeft: "50px", paddingRight: "0" }}
+                    className="col-12 col-xs-12 col-sm-2 col-md-2 mob-flex"
                   >
                     {HidecollapsUp}
                     <label
@@ -1277,6 +1345,8 @@ class MyTicket extends Component {
                   </Drawer>
                 </div>
                 <div className="row card-op-out">
+                <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
+                  <div className="col-12 col-xs-12 col-sm-6 col-md-7">
                   <Collapse isOpen={this.state.collapseUp}>
                     <Card>
                       <CardBody>
@@ -1299,6 +1369,8 @@ class MyTicket extends Component {
                       </CardBody>
                     </Card>
                   </Collapse>
+                  </div>
+                <div className="col-12 col-xs-12 col-sm-2"></div>
                 </div>
 
                 <div className="row">
@@ -1314,17 +1386,13 @@ class MyTicket extends Component {
                 </div>
 
                 <div
-                  className="row new-top-bottom-margin"
-                  style={{ marginBottom: "18px" }}
-                >
-                  <div className="col-xs-3">
+                  className="row new-top-bottom-margin">
+                  <div className="col-12 col-xs-12 col-sm-4 col-md-3">
                     <img
                       src={Loading1Img}
                       alt="right"
                       className="oval-loading"
                     />
-                  </div>
-                  <div className="col-xs-9">
                     <label className="rashmi-c">
                       Rashmi.C
                       <span>
@@ -1335,12 +1403,12 @@ class MyTicket extends Component {
                       </span>
                     </label>
                   </div>
-                  <div className="col-md-8">
+                  <div className="col-12 col-xs-12 col-sm-6 col-md-7">
                     <label className="hi-naman-please-hel">
                       Hi @Naman Please help customer with voucher Issue
                     </label>
                   </div>
-                  <div className="col-md-2 mob-flex">
+                  <div className="col-12 col-xs-12 col-sm-2 mob-flex">
                     <label
                       className="comment-text"
                       onClick={this.handleCommentCollapseOpen.bind(this)}
@@ -1348,7 +1416,10 @@ class MyTicket extends Component {
                       Comment
                     </label>
                   </div>
-                  <div className="commentcollapseTicket">
+                  <div className="row">
+                    <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
+                    <div className="col-12 col-xs-12 col-sm-6 col-md-7">
+                      <div className="commentcollapseTicket">
                     <Collapse isOpen={this.state.CommentCollapse}>
                       <Card>
                         <CardBody>
@@ -1384,26 +1455,217 @@ class MyTicket extends Component {
                               <label>Naman Rampal.</label>
                             </div>
                             <div className="SendCommentBtn">
-                              <button className="SendCommentBtn1">SEND</button>
+                              <button
+                                className="SendCommentBtn1"
+                                onClick={this.handleCommentCollapseOpen2.bind(
+                                  this
+                                )}
+                              >
+                                SEND
+                              </button>
                             </div>
                           </div>
                         </CardBody>
                       </Card>
                     </Collapse>
                   </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="myTicketCommentCollapse myTicketEmail">
+                  <Collapse isOpen={this.state.CommentCollapse2}>
+                    <div className="col-12" style={{ marginTop: "5px" }}>
+                      <div className="mask1">
+                        <div className="mail-mask">
+                          <div class="dropdown" style={{ display: "inherit" }}>
+                            <button
+                              class="dropdown-toggle my-tic-email"
+                              type="button"
+                              data-toggle="dropdown"
+                            >
+                              <FontAwesomeIcon icon={faEnvelope} /> Email
+                            </button>
+                            <ul class="dropdown-menu">
+                              <li>
+                                <a href="#!">
+                                  <FontAwesomeIcon icon={faEnvelope} /> Email
+                                </a>
+                              </li>
+                              <li>
+                                <a href="#!">
+                                  <FontAwesomeIcon icon={faCommentAlt} /> SMS
+                                </a>
+                              </li>
+                              <li>
+                                <a href="#!">
+                                  <FontAwesomeIcon icon={faComment} /> Facebook
+                                </a>
+                              </li>
+                              <li>
+                                <a href="#!">
+                                  <FontAwesomeIcon icon={faPhone} /> Call
+                                </a>
+                              </li>
+                            </ul>
+                          </div>
+                          <a href="#!" className="kblink"><FontAwesomeIcon icon={faBrain} />  Kb Link</a>
+                          <div class="dropdown collapbtn" style={{ display: "inherit" }}>
+                            <button
+                              class="dropdown-toggle my-tic-email"
+                              type="button"
+                              data-toggle="dropdown"
+                            >
+                              <FontAwesomeIcon icon={faCalculator} /> Template
+                            </button>
+                            <ul class="dropdown-menu">
+                              <li>
+                                <a href="#!">
+                                 Template 1
+                                </a>
+                              </li>
+                              <li>
+                                <a href="#!">
+                                 Template 2
+                                </a>
+                              </li>
+                              <li>
+                                <a href="#!">
+                                 Template 3
+                                </a>
+                              </li>
+                              <li>
+                                <a href="#!">
+                                 Template 4
+                                </a>
+                              </li>
+                            </ul>
+                          </div>
+                            <h3 className="textbhead">Subject: <span>Need to change my shipping address</span></h3>
+                          <div
+                            className="mob-float"
+                            style={{ display: "inline", float: "right" }}
+                          >
+                            <img
+                              src={ArrowImg}
+                              alt="Arrow"
+                              className="arrow-img"
+                            />
+                            <div className="line-1"></div>
+                            <img
+                              src={MinusImg}
+                              alt="Minus"
+                              className="minus-img"
+                              onClick={this.hanldeCommentClose2.bind(this)}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <Card>
+                      <CardBody>
+                        <div className="col-md-12">
+                          <CKEditor
+                            config={{
+                              toolbar: [
+                                {
+                                  name: "basicstyles",
+                                  items: ["Bold", "Italic", "Strike"]
+                                },
+                                {
+                                  name: "styles",
+                                  items: ["Styles", "Format"]
+                                },
+                                {
+                                  name: "paragraph",
+                                  items: ["NumberedList", "BulletedList"]
+                                },
+                                {
+                                  name: "links",
+                                  items: ["Link", "Unlink"]
+                                },
+                                {
+                                  name: "insert",
+                                  items: ["Image", "Table"]
+                                },
+                                {
+                                  name: "tools",
+                                  items: ["Maximize"]
+                                },
+                                {
+                                  name: "editing",
+                                  items: ["Scayt"]
+                                }
+                              ]
+                            }}
+                          />
+                        </div>
+                      </CardBody>
+                      <div className="row colladrowa">
+                        <div className="col-md-12 colladrow">
+                          <ul style={{ padding: "0 15px" }}>
+                            <li>
+                              <label>To: diwarkar@gmail.com</label>
+                            </li>
+                            <li>
+                              <label className="CCdi">
+                                CC: diwarkar@gmail.com
+                                <span className="one">+1</span>
+                              </label>
+                            </li>
+                            <li>
+                              <label className="CCdi">
+                                BCC: diwarkar@gmail.com
+                                <span className="one">+1</span>
+                              </label>
+                            </li>
+                            <li>
+                              <div className="filter-checkbox">
+                                <input
+                                  type="checkbox"
+                                  id="fil-open"
+                                  name="filter-type"
+                                  style={{ display: "none" }}
+                                />
+                                <label
+                                  htmlFor="fil-open"
+                                  style={{ paddingLeft: "25px" }}
+                                >
+                                  <span>Inform Store Note</span>
+                                </label>
+                              </div>
+                            </li>
+                            <li>
+                              <span>
+                                <img
+                                  src={FileUpload}
+                                  alt="file-upload"
+                                  className="fileup"
+                                />
+                              </span>
+                              <label style={{ color: "#2561a8" }}>
+                                3 files
+                              </label>
+                            </li>
+                            <li style={{ float: "right" }}>
+                              <button className="sav">Save As Draft</button>
+                              <button className="send">Send</button>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </Card>
+                  </Collapse>
                 </div>
                 <div
                   className="row row-spacing new-top-bottom-margin"
-                  style={{ marginBottom: "18px" }}
                 >
-                  <div className="col-xs-3">
+                  <div className="col-12 col-xs-12 col-sm-4 col-md-3">
                     <img
                       src={Headphone2Img}
                       alt="headphone"
                       className="oval-56"
                     />
-                  </div>
-                  <div className="col-xs-9">
                     <label className="rashmi-c">Rashmi.C</label>
                     <img
                       src={FacebookImg}
@@ -1411,7 +1673,7 @@ class MyTicket extends Component {
                       className="facebook"
                     />
                   </div>
-                  <div className="col-md-8">
+                  <div className="col-12 col-xs-12 col-sm-6 col-md-7">
                     <img src={ClipImg} alt="clip" className="clip" />
                     <label className="hi-diwakar-i-really2">
                       &nbsp; Hi Diwakar, I really appreciate you joining us at
@@ -1419,65 +1681,19 @@ class MyTicket extends Component {
                       experience.
                     </label>
                   </div>
+                  <div className="col-12 col-xs-12 col-sm-2">
                   <label
                     className="comment-text1"
-                    onClick={this.HandleComment1CollapseOpen.bind(this)}
+                    onClick={this.hanldeCommentOpen2.bind(this)}
                   >
                     Comment
-                  </label>
-                  <div className="myTicketCommentCollapse">
-                    <Collapse isOpen={this.state.Comment1Collapse}>
-                      <Card>
-                        <CardBody>
-                          <div className="col-md-12">
-                            <CKEditor
-                              config={{
-                                toolbar: [
-                                  {
-                                    name: "basicstyles",
-                                    items: ["Bold", "Italic", "Strike"]
-                                  },
-                                  {
-                                    name: "styles",
-                                    items: ["Styles", "Format"]
-                                  },
-                                  {
-                                    name: "paragraph",
-                                    items: ["NumberedList", "BulletedList"]
-                                  },
-                                  {
-                                    name: "links",
-                                    items: ["Link", "Unlink"]
-                                  },
-                                  {
-                                    name: "insert",
-                                    items: ["Image", "Table"]
-                                  },
-                                  {
-                                    name: "tools",
-                                    items: ["Maximize"]
-                                  },
-                                  {
-                                    name: "editing",
-                                    items: ["Scayt"]
-                                  }
-                                ]
-                              }}
-                            />
-                          </div>
-                        </CardBody>
-                      </Card>
-                    </Collapse>
-                  </div>
+                  </label></div>
                 </div>
                 <div
                   className="row row-spacing new-top-bottom-margin"
-                  style={{ marginBottom: "18px" }}
                 >
-                  <div className="col-xs-3">
+                  <div className="col-12 col-xs-12 col-sm-4 col-md-3">
                     <img src={BlackUserIcon} alt="Avatar" className="oval-6" />
-                  </div>
-                  <div className="col-xs-9">
                     <label className="rashmi-c">Diwakar</label>
                     <img
                       src={Headphone2Img}
@@ -1485,19 +1701,20 @@ class MyTicket extends Component {
                       className="headphone1"
                     />
                   </div>
-                  <div className="col-md-8">
+                  <div className="col-12 col-xs-12 col-sm-6 col-md-7">
                     <label className="need-to-change-my-sh">
                       Need to change my shipping address
                     </label>
                   </div>
+                  <div className="col-12 col-xs-12 col-sm-2">
                   <label
                     className="reply-comment"
-                    style={{ paddingLeft: "75px" }}
                   >
                     Reply
                     <br />
                     Comment
                   </label>
+                  </div>
                 </div>
               </div>
 
@@ -1516,7 +1733,7 @@ class MyTicket extends Component {
                 aria-labelledby="Notes-tab"
               >
                 <div className="row removemarg" style={{ marginTop: "20px" }}>
-                  <div className="col-md-4">
+                  <div className="col-12 col-xs-12 col-sm-5">
                     <textarea
                       className="Add-Notes-textarea"
                       placeholder="Add Notes"
@@ -1525,7 +1742,7 @@ class MyTicket extends Component {
                       <label className="notesbtn-text">ADD COMMENT</label>
                     </button>
                   </div>
-                  <div className="col-md-8" style={{ marginLeft: "-35px" }}>
+                  <div className="col-12 col-xs-12 col-sm-7">
                     <div className="row">
                       <div className="col-md-1">
                         <div className="oval-5-1-new">

@@ -59,7 +59,7 @@ class QADashboard extends Component {
         <section className="dash-cntr">
           <div className="container-fluid btm-mar store-dash-top">
             <div className="row">
-              <div className="col">
+              <div className="col-12 col-xs-6 col-md-3">
                 <div className="dash-top-cards">
                   <p className="card-head">Total Tickets For QC</p>
                   <div className="aside-cont">
@@ -69,7 +69,7 @@ class QADashboard extends Component {
                   </div>
                 </div>
               </div>
-              <div className="col">
+              <div className="col-12 col-xs-6 col-sm-3">
                 <div className="dash-top-cards">
                   <p className="card-head">QC Done</p>
                   <div className="aside-cont">
@@ -79,7 +79,7 @@ class QADashboard extends Component {
                   </div>
                 </div>
               </div>
-              <div className="col">
+              <div className="col-12 col-xs-6 col-sm-3">
                 <div className="dash-top-cards">
                   <p className="card-head">Pending for QC</p>
                   <div className="aside-cont">
@@ -89,7 +89,7 @@ class QADashboard extends Component {
                   </div>
                 </div>
               </div>
-              <div className="col">
+              <div className="col-12 col-xs-6 col-sm-3">
                 <div className="dash-top-cards">
                   <p className="card-head">Quality Score</p>
                   <div className="aside-cont">
@@ -104,7 +104,7 @@ class QADashboard extends Component {
         </section>
         <div className="container-fluid btm-mar">
           <div className="row">
-            <div className="col-lg-4">
+            <div className="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-4">
               <div className="dash-top-cards">
                 <p className="card-head">Quality Score By KPI</p>
                 <div className="prio-pie-chart">
@@ -112,13 +112,13 @@ class QADashboard extends Component {
                 </div>
               </div>
             </div>
-            <div className="col-lg-4">
+            <div className="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-4">
               <div className="dash-top-cards">
                 <p className="card-head">Quality Score By QA Lead</p>
                 <BarQualityScore />
               </div>
             </div>
-            <div className="col-lg-4">
+            <div className="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-4">
               <div className="dash-top-cards">
                 <p className="card-head">Top 3 CSA Quality Score</p>
                 <BarTop3CSA />
@@ -133,11 +133,11 @@ class QADashboard extends Component {
                 Quality Score by Agent/TL
               </span>
             </div>
-            <div className="container-fluid">
+            <div className="">
               <div className="row rowMargin">
-                <div className="col-md-10">
+                <div className="col-12 col-md-12">
                   <div className="row">
-                    <div className="col-md-3 dropDwonWidth">
+                    <div className="col-12 col-sm-6 col-md-6 col-lg-3 dropDwonWidth">
                       <label className="label-6"> Select Agent/QA Lead</label>
                       <select
                         id="inputState"
@@ -146,7 +146,7 @@ class QADashboard extends Component {
                         <option>Agent</option>
                       </select>
                     </div>
-                    <div className="col-md-3 dropDwonWidth">
+                    <div className="col-12 col-sm-6 col-md-6 col-lg-3 dropDwonWidth">
                       <label className="label-6">Select Agent</label>
                       <select
                         id="inputState"
@@ -155,7 +155,7 @@ class QADashboard extends Component {
                         <option>Vikash</option>
                       </select>
                     </div>
-                    <div className="col-md-3 dropDwonWidth">
+                    <div className="col-12 col-sm-6 col-md-6 col-lg-3 dropDwonWidth">
                       <label className="label-6">QC from date</label>
                       <input
                         type="text"
@@ -163,7 +163,7 @@ class QADashboard extends Component {
                         className="form-control txtQA"
                       />
                     </div>
-                    <div className="col-md-3 dropDwonWidth">
+                    <div className="col-12 col-sm-6 col-md-6 col-lg-3 dropDwonWidth">
                       <label className="label-6">QC to date</label>
                       <input
                         type="text"
@@ -174,7 +174,7 @@ class QADashboard extends Component {
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col-md-2">
+                  <div className="col-12 col-xs-2">
                     <button className="btnSearchQa" type="button">
                       <label className="labelSearch">Search</label>
                     </button>
@@ -184,8 +184,8 @@ class QADashboard extends Component {
             </div>
 
             <div className="table-cntr mt-3">
-              <div className="store-table-cntr">
-                <table>
+              <div className="store-table-cntr table-responsive">
+                <table className="table-responsive">
                   <thead>
                     <tr>
                       <th>Agent Name</th>
@@ -471,7 +471,8 @@ class QADashboard extends Component {
                     </CardBody>
                   </Card>
                 </Collapse>
-                <table>
+                <div className="table-responsive">
+                  <table className="table-responsive">
                   <thead>
                     <tr>
                       <th>ID</th>
@@ -648,6 +649,7 @@ class QADashboard extends Component {
                     </tr>
                   </tbody>
                 </table>
+                </div>
                 <div className="pagi">
                   <ul>
                     <li>

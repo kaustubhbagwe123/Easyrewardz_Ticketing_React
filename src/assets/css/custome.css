@@ -1,3 +1,6 @@
+a {
+  cursor: pointer;
+}
 .card-Nav {
   border-radius: 0;
   -webkit-box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
@@ -609,7 +612,7 @@ table tr th:last-child {
   padding: 30px; */
 }
 .text-editor .row {
-  margin: 0;
+  margin:20px 0 0 0;
 }
 .card-rectangle {
   background: #f5f8f9;
@@ -697,17 +700,6 @@ table tr th:last-child {
   margin-left: -202px;
   cursor: pointer;
 }
-.user-label {
-  /* padding-right: 23%; */
-  padding-left: 15px;
-}
-.message-label {
-  padding-right: 65%;
-  margin-left: 3%;
-}
-.action-label {
-  margin-left: 110%;
-}
 .line-4 {
   text-align: center;
   display: block;
@@ -736,7 +728,6 @@ table tr th:last-child {
   font-weight: 700;
   line-height: 16px;
   text-align: left;
-  margin-left: -13%;
 }
 .smg-Img {
   width: 22px;
@@ -761,9 +752,8 @@ table tr th:last-child {
   font-size: 13px;
   font-weight: 700;
   line-height: 16px;
-  text-align: left;
-  /* padding-left: 2%; */
-  margin-left: 37%;
+  text-align: right;
+  float: right;
   cursor: pointer;
 }
 .rectangle-4 {
@@ -890,8 +880,8 @@ table tr th:last-child {
   border-radius: 100%;
   width: 30px;
   height: 30px;
+  vertical-align: top;
   padding: 7px;
-  margin-left: 14px;
 }
 .reassign-to-naman-r {
   color: #4a4a4a;
@@ -949,7 +939,6 @@ table tr th:last-child {
   font-weight: 700;
   line-height: 16px;
   text-align: left;
-  padding-left: 165px;
 }
 .hi-diwakar-i-really2 {
   color: #4a4a4a;
@@ -967,8 +956,8 @@ table tr th:last-child {
   font-size: 13px;
   font-weight: 700;
   line-height: 16px;
-  text-align: left;
-  padding-left: 172px;
+  text-align: right;
+  float: right;
   cursor: pointer;
 }
 .comment-text1 {
@@ -977,8 +966,8 @@ table tr th:last-child {
   font-size: 13px;
   font-weight: 700;
   line-height: 16px;
-  text-align: left;
-  padding-left: 75px;
+  text-align: right;
+  float: right;
   cursor: pointer;
 }
 .label-2 {
@@ -1031,9 +1020,6 @@ table tr th:last-child {
   height: 15px;
   margin: 5px 15px 0;
 }
-.dropdrown {
-  margin-left: -21px;
-}
 .plush-img {
   width: 15px;
   height: 15px;
@@ -1077,7 +1063,7 @@ table tr th:last-child {
   border: none;
 }
 .mid-sec {
-  padding: 15px 0px 15px 40px;
+  padding: 30px;
   border-right: 1px solid #ebebeb;
   border-left: 1px solid #ebebeb;
   height: 100%;
@@ -1097,7 +1083,7 @@ table tr th:last-child {
   font-weight: 700;
   line-height: 17px;
   text-align: left;
-  white-space: nowrap;
+  white-space: normal;
   cursor: pointer;
 }
 .storeSpacing {
@@ -1112,13 +1098,12 @@ table tr th:last-child {
 }
 .card-details {
   background-color: #fafafa;
-  width: 655px;
+  width: auto;
   height: 253px;
-  margin-left: 28.5%;
 }
 .card-details-1 {
   background-color: #ffffff;
-  width: 540px;
+  width: auto;
   height: 195px;
   margin: 29px;
   margin-left: 58px;
@@ -1145,21 +1130,19 @@ table tr th:last-child {
   border-radius: 100%;
   width: 30px;
   height: 30px;
-  margin-left: 14px;
   padding: 6px;
 }
 .row-spacing {
   margin-top: 22px;
 }
 .facebook {
-  width: 26px;
-  height: 26px;
-  margin-left: 140px;
+  width: 25px;
+  height: 25px;
+  float: right;
 }
 .clip {
   width: 22px;
   height: 22px;
-  margin-left: 50px;
 }
 .oval-6 {
   background-color: #50e3c2;
@@ -1167,12 +1150,11 @@ table tr th:last-child {
   width: 30px;
   height: 30px;
   padding: 4px;
-  margin-left: 14px;
 }
 .headphone1 {
   width: 25px;
   height: 28px;
-  margin-left: 146px;
+  float: right;
 }
 .need-to-change-my-sh {
   color: #4a4a4a;
@@ -1181,7 +1163,6 @@ table tr th:last-child {
   font-weight: 700;
   line-height: 16px;
   text-align: left;
-  margin-left: 55px;
 }
 .reply-comment {
   color: #2561a8;
@@ -1190,7 +1171,7 @@ table tr th:last-child {
   font-weight: 700;
   line-height: 16px;
   text-align: right;
-  padding-left: 55px;
+  float: right;
   cursor: pointer;
 }
 .btn-primary1 {
@@ -3965,8 +3946,56 @@ progress::-moz-progress-bar {
 .obpml {
   margin-left: -36px;
 }
+.textbhead {
+  display: inline;
+    font-size: 14px;
+    padding: 0 15px;
+    font-weight: bold;
+}
+.textbhead span {
+font-weight: normal;
+}
+.collapbtn {
+  position: absolute;
+  right: 10%;
+  top: 41px;
+  z-index: 1;
+  border: 1px solid #d1d1d1;
+  border-top: 0;
+  border-bottom: 0;
+  border-right: 0;
+}
+.collapbtn button {
+  background: none;
+  width: auto;
+}
+.kblink {
+  position: absolute;
+  top: 41px;
+  right: 0;
+  z-index: 1;
+  padding: 5px 8px 5px 5px;
+  border: 1px solid #d1d1d1;
+  border-top: 0;
+  color: #333;
+  border-right: 0;
+  border-bottom: 0;
+}
+.floatingtabs {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+.action-label {
+  float: right;
+}
 /* Responsive starts */
 
+@media only screen and (max-width: 1200px) {
+  .colladrow label {
+    font-size: 12px !important;
+  }
+}
 @media only screen and (max-width: 992px) {
   /* dashboard starts */
   body {
@@ -4086,6 +4115,12 @@ progress::-moz-progress-bar {
   /* dashboard ends */
 }
 
+@media only screen and (max-width: 991px) {
+  .target-closure-date {font-size: 11px;}
+  .Date-target{font-size: 12px;}
+  .bata-rajouri-garden {line-height: 22px;}
+}
+
 @media only screen and (max-width: 800px) {
   /* dashboard starts */
   .save-view-search {
@@ -4104,8 +4139,26 @@ progress::-moz-progress-bar {
   }
   /* dashboard ends */
 }
-
+@media only screen and (max-width: 768px) {
+  
+  .mobilenumber-resp .respo {
+    margin-left: 0 !important;
+}
+.mobilenumber-resp .resol {
+  margin-right: 0!important;
+}
+.card-details-1 {
+  height: auto;
+}
+}
 @media only screen and (max-width: 767px) {
+  .storebox {
+    padding: 0 15px;
+  }
+  .v3,
+  .v4 {
+    display: none;
+  }
   /* dashboard starts */
   .ticketToTask-chart .apexcharts-canvas {
     width: 100% !important;
@@ -4158,6 +4211,9 @@ progress::-moz-progress-bar {
     width: auto !important;
     overflow: auto;
   }
+  .sectiontenant select {
+    margin-bottom: 10px;
+}
   /* dashboard ends */
 }
 
@@ -4244,7 +4300,7 @@ progress::-moz-progress-bar {
     width: 45px;
   }
   .rectangle-box .select-category-placeholder {
-    width: calc(100% - 100px);
+    width: 100%;
   }
   .notes-00,
   .task-03,
@@ -4436,6 +4492,14 @@ progress::-moz-progress-bar {
   .mob-mar-btm button:last-child {
     margin-bottom: 0px;
   }
+  
+.grapwid {
+  max-width: 100% !important;
+  overflow: auto;
+}
+.dash-top-cards1 {
+  padding: 12px 20px !important;
+}
   /* dashboard ends */
 }
 
@@ -4461,6 +4525,10 @@ progress::-moz-progress-bar {
   .save-view-search button:last-child {
     margin-bottom: 0px;
   }
+  .btnSearchQa {
+    width: 100%;
+    margin-top: 15px;
+}
   /* dashboard ends */
 }
 
@@ -7898,12 +7966,9 @@ table tr th:last-child {
 }
 /* UserProfile CSS End By Kalpesh */
 /* MyTicket Comment Collapse Css start Kalpesh */
-.commentcollapseTicket {
-  width: 75%;
-  margin-left: 25%;
-}
+
 .commentcollapseTicket .card-body {
-  padding: 12px;
+  padding: 20px;
 }
 .commentcollapseTicket .Commentlabel {
   background-color: #ecf2f4;
@@ -7962,9 +8027,9 @@ table tr th:last-child {
   margin-right: 14px;
 }
 .myTicketCommentCollapse #cke_editor2 {
-  margin-top: 20px !important;
+  margin-top: 0px !important;
   margin-left: 0px !important;
-  width: 1200px !important;
+  width: 100% !important;
   border: 1px solid #d1d1d1;
 }
 .myTicketCommentCollapse .card-body {

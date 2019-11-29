@@ -67,7 +67,7 @@ class StoreDashboard extends Component {
         <section className="dash-cntr">
           <div className="container-fluid btm-mar store-dash-top">
             <div className="row">
-              <div className="col">
+              <div className="col-12 col-xs-6 col-sm-4">
                 <div className="dash-top-cards">
                   <p className="card-head">Task</p>
                   <div className="aside-cont">
@@ -82,7 +82,7 @@ class StoreDashboard extends Component {
                   </div>
                 </div>
               </div>
-              <div className="col">
+              <div className="col-12 col-xs-6 col-sm-4">
                 <div className="dash-top-cards">
                   <p className="card-head">Task</p>
                   <div className="aside-cont">
@@ -93,7 +93,7 @@ class StoreDashboard extends Component {
                   </div>
                 </div>
               </div>
-              <div className="col">
+              <div className="col-12 col-xs-6 col-sm-4">
                 <div className="dash-top-cards">
                   <p className="card-head">Claim</p>
                   <div className="aside-cont">
@@ -108,13 +108,13 @@ class StoreDashboard extends Component {
                   </div>
                 </div>
               </div>
-              <div className="col">
+              <div className="col-12 col-xs-6 col-sm-4">
                 <div className="dash-top-cards">
                   <p className="card-head">Claim</p>
                   <span className="card-value red-clr">40</span>
                 </div>
               </div>
-              <div className="col">
+              <div className="col-12 col-xs-6 col-sm-4">
                 <div className="dash-top-cards">
                   <p className="card-head">Campaign</p>
                   <div className="aside-cont">
@@ -129,37 +129,37 @@ class StoreDashboard extends Component {
           </div>
           <div className="container-fluid btm-mar">
             <div className="row">
-              <div className="col-lg-4">
-                <div className="dash-top-cards">
+              <div className="col-12 col-xs-6 col-sm-6 col-md-6 col-lg-4">
+                <div className="dash-top-cards grapwid">
                   <p className="card-head">Open Task-Department Wise</p>
                   <TaskDepartment />
                 </div>
               </div>
-              <div className="col-lg-4">
-                <div className="dash-top-cards">
+              <div className="col-12 col-xs-6 col-sm-6 col-md-6 col-lg-4">
+                <div className="dash-top-cards grapwid">
                   <p className="card-head">Task by priority</p>
                   <TaskByPriority />
                 </div>
               </div>
-              <div className="col-lg-4">
+              <div className="col-12 col-xs-6 col-sm-6 col-md-6 col-lg-4">
                 <div className="dash-top-cards">
                   <p className="card-head">Open Campaign by type</p>
                   <OpenCompaign />
                 </div>
               </div>
-              <div className="col-lg-4">
-                <div className="dash-top-cards">
+              <div className="col-12 col-xs-6 col-sm-6 col-md-6 col-lg-4">
+                <div className="dash-top-cards grapwid">
                   <p className="card-head">Claim Vs Invoice &amp; Article</p>
                   <ClaimVsInvoice />
                 </div>
               </div>
-              <div className="col-lg-4">
+              <div className="col-12 col-xs-6 col-sm-6 col-md-6 col-lg-4">
                 <div className="dash-top-cards">
                   <p className="card-head">Open Claim Stats</p>
                   <OpenClaim />
                 </div>
               </div>
-              <div className="col-lg-4">
+              <div className="col-12 col-xs-6 col-sm-6 col-md-6 col-lg-4">
                 <div className="dash-top-cards">
                   <p className="card-head">Claim Vs Invoice Amount</p>
                   <InvoiceAmountPie />
@@ -364,7 +364,8 @@ class StoreDashboard extends Component {
                     </CardBody>
                   </Card>
                 </Collapse>
-                <table>
+                <div className="table-responsive">
+                  <table className="table-responsive">
                   <thead>
                     <tr>
                       <th>ID</th>
@@ -825,6 +826,7 @@ class StoreDashboard extends Component {
                     </tr>
                   </tbody>
                 </table>
+                </div>
                 <div className="pagi">
                   <ul>
                     <li>
