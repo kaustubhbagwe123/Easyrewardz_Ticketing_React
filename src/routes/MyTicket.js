@@ -463,7 +463,7 @@ class MyTicket extends Component {
         <div className="head-header">
           <div className="head-header-1">
             <div className="row">
-              <div className="col-3 col-sm-3">
+              <div className="col-12 col-xs-4 col-sm-4 col-md-3">
                 <img src={HeadphoneImg} alt="headphone" className="headphone" />
                 <label className="id-abc-1234">
                   ID - ABC1234
@@ -496,8 +496,8 @@ class MyTicket extends Component {
                 </Modal>
               </div>
 
-              <div className="col-9 col-sm-9">
-                <div style={{ float: "right" }}>
+              <div className="col-12 col-xs-8 col-sm-8 col-md-9">
+                <div style={{ float: "right", marginTop: "10px" }}>
                   <img
                     src={Headphone2Img}
                     alt="headphone"
@@ -1416,9 +1416,9 @@ class MyTicket extends Component {
                       Comment
                     </label>
                   </div>
-                  <div className="row">
+                  <div className="row" style={{width:"100%"}}>
                     <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
-                    <div className="col-12 col-xs-12 col-sm-6 col-md-7">
+                    <div className="col-12 col-xs-12 col-sm-8 col-md-9">
                       <div className="commentcollapseTicket">
                     <Collapse isOpen={this.state.CommentCollapse}>
                       <Card>

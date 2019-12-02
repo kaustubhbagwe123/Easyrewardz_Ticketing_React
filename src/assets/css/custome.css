@@ -2957,7 +2957,7 @@ table tr th:last-child {
 }
 .auth-content .card .card-block,
 .auth-content .card .card-body {
-  padding: 35px 60px 70px;
+  padding: 35px 60px 50px;
   /*box-shadow: 0 0 4px 0px #ddd;*/
 }
 .auth-wrapper .auth-content {
@@ -4217,7 +4217,7 @@ font-weight: normal;
   /* dashboard ends */
 }
 
-@media only screen and (max-width: 576px) {
+@media only screen and (max-width: 580px) {
   /* dashboard starts */
   .rem-table {
     display: none;
@@ -4233,6 +4233,15 @@ font-weight: normal;
     padding: 20px 15px;
   }
   /* dashboard ends */
+  .myticket-submit-solve-button {
+    width: 200px;
+    height: auto;
+    margin-left: 5px;
+}
+.myticket-submit-solve-button-text {
+  font-size: 12px;
+  margin-left: 0;
+}
 }
 
 @media only screen and (max-width: 480px) {
@@ -4434,9 +4443,10 @@ font-weight: normal;
     width: 100%;
   }
   .myticket-submit-solve-button {
-    margin-left: 14px;
-    width: 200px;
+    margin-left: 9px;
+    width: auto;
     float: right;
+    padding: 5px 10px;
   }
   .myticket-submit-solve-button-text {
     margin-left: 0;
@@ -4499,6 +4509,12 @@ font-weight: normal;
 }
 .dash-top-cards1 {
   padding: 12px 20px !important;
+}
+.mid-sec {
+  padding: 15px;
+}
+.arrow-img {
+  margin: 5px 30px 0;
 }
   /* dashboard ends */
 }
@@ -5222,7 +5238,7 @@ font-weight: normal;
   background-color: #ffffff;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
   width: 406px;
-  height: 318px;
+  height: auto;
 }
 .mainDivPadding .row {
   display: flex;
@@ -7968,7 +7984,7 @@ table tr th:last-child {
 /* MyTicket Comment Collapse Css start Kalpesh */
 
 .commentcollapseTicket .card-body {
-  padding: 20px;
+  padding: 0px;
 }
 .commentcollapseTicket .Commentlabel {
   background-color: #ecf2f4;
