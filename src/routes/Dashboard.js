@@ -30,9 +30,10 @@ import HeadPhone3 from "./../assets/Images/headphone3.png";
 import DatePicker from "react-datepicker";
 // import "react-datepicker/dist/react-datepicker.css";
 import OpenByPriorityPie from "../Component/PieChart/PieChart";
-// import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import ReactTable from "react-table";
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ReactTable from "react-table";
+import { Popover } from "antd";
 
 
 class Dashboard extends Component {
@@ -142,6 +143,57 @@ class Dashboard extends Component {
     this.setState({ TotalNoOfChatShow: !this.state.TotalNoOfChatShow });
   }
   render() {
+    const DefArti = (
+      <div className="dash-creation-popup-cntr">
+        <ul className="dash-category-popup">
+          <li>
+            <p>Category</p>
+            <p>Defective article</p>
+          </li>
+          <li>
+            <p>Sub Category</p>
+            <p>Customer wants refund</p>
+          </li>
+          <li>
+            <p>Type</p>
+            <p>Delivery</p>
+          </li>
+        </ul>
+      </div>
+    );
+
+    const InsertPlaceholder = (
+      <div className="insertpop1">
+        <ul className="dash-creation-popup">
+          <li className="title">Creation details</li>
+          <li>
+            <p>Naman Created</p>
+            <p>2 Hrs ago</p>
+          </li>
+          <li>
+            <p>Assigned to Vikas</p>
+            <p>1.5 Hrs ago</p>
+          </li>
+          <li>
+            <p>Vikas updated</p>
+            <p>1 Hr ago</p>
+          </li>
+          <li>
+            <p>Response time remaining by</p>
+            <p>30 mins</p>
+          </li>
+          <li>
+            <p>Response overdue by</p>
+            <p>1 Hr</p>
+          </li>
+          <li>
+            <p>Resolution overdue by</p>
+            <p>2 Hrs</p>
+          </li>
+        </ul>
+      </div>
+    );
+
     const TitleChange = this.state.collapseSearch
       ? "Close Search"
       : "Search Tickets";
@@ -152,73 +204,488 @@ class Dashboard extends Component {
       <img className="search-icon" src={SearchIcon} alt="search-icon" />
     );
 
+    const dataDash = [
+      {
+        idDash: (
+          <span>
+            <div className="filter-type pink1">
+              <div className="filter-checkbox pink2 pinkmargin">
+                <input
+                  type="checkbox"
+                  id="fil-ab7"
+                  name="dashboardcheckbox[]"
+                />
+                <label htmlFor="fil-ab7">
+                  <img
+                    src={HeadPhone3}
+                    alt="HeadPhone"
+                    className="headPhone3"
+                  />
+                  ABC1234
+                </label>
+              </div>
+            </div>
+          </span>
+        ),
+        statusDash: (
+          <span className="table-b table-blue-btn">
+            <label>Open</label>
+          </span>
+        ),
+        subjectDash: (
+          <div>
+            Need to change my shipping address <br></br>
+            <span>Hope this help, Please rate us</span>
+          </div>
+        ),
+        creationNew: (
+          <span>
+            <label>2 Hour Ago</label>
+            <Popover content={InsertPlaceholder} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
+        )
+      },
+      {
+        idDash: (
+          <span>
+            <div className="filter-type pink1">
+              <div className="filter-checkbox pink2 pinkmargin">
+                <input
+                  type="checkbox"
+                  id="fil-ab6"
+                  name="dashboardcheckbox[]"
+                />
+                <label htmlFor="fil-ab6">
+                  <img
+                    src={HeadPhone3}
+                    alt="HeadPhone"
+                    className="headPhone3"
+                  />
+                  ABC1234
+                </label>
+              </div>
+            </div>
+          </span>
+        ),
+        statusDash: (
+          <span className="table-b table-blue-btn">
+            <label>Open</label>
+          </span>
+        ),
+        subjectDash: (
+          <div style={{ color: "#000" }}>
+            Need to change my shipping address <br></br>
+            <span>Hope this help, Please rate us</span>
+          </div>
+        ),
+        creationNew: (
+          <span>
+            <label>12 March 2018</label>
+            <Popover content={InsertPlaceholder} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
+        )
+      },
+      {
+        idDash: (
+          <span>
+            <div className="filter-type pink1">
+              <div className="filter-checkbox pink2 pinkmargin">
+                <input
+                  type="checkbox"
+                  id="fil-ab5"
+                  name="dashboardcheckbox[]"
+                />
+                <label htmlFor="fil-ab5">
+                  <img
+                    src={HeadPhone3}
+                    alt="HeadPhone"
+                    className="headPhone3"
+                  />
+                  ABC1234
+                </label>
+              </div>
+            </div>
+          </span>
+        ),
+        statusDash: (
+          <span className="table-b table-yellow-btn">
+            <label>New</label>
+          </span>
+        ),
+        subjectDash: (
+          <div>
+            <img
+              className="task-icon-1 marginimg"
+              src={TaskIconBlue}
+              alt="task-icon-blue"
+            />
+            Need to change my shipping address <br></br>
+            <span>Hope this help, Please rate us</span>
+          </div>
+        ),
+        creationNew: (
+          <span>
+            <label>12 March 2018</label>
+            <Popover content={InsertPlaceholder} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
+        )
+      },
+      {
+        idDash: (
+          <span>
+            <div className="filter-type pink1">
+              <div className="filter-checkbox pink2 pinkmargin">
+                <input
+                  type="checkbox"
+                  id="fil-ab4"
+                  name="dashboardcheckbox[]"
+                />
+                <label htmlFor="fil-ab4">
+                  <img
+                    src={HeadPhone3}
+                    alt="HeadPhone"
+                    className="headPhone3"
+                  />
+                  ABC1234
+                </label>
+              </div>
+            </div>
+          </span>
+        ),
+        statusDash: (
+          <span className="table-b table-yellow-btn">
+            <label>New</label>
+          </span>
+        ),
+        subjectDash: (
+          <div>
+            <img
+              className="task-icon-1 marginimg"
+              src={TaskIconGray}
+              alt="task-icon-gray"
+            />
+            Need to change my shipping address <br></br>
+            <span>Hope this help, Please rate us</span>
+          </div>
+        ),
+        creationNew: (
+          <span>
+            <label>12 March 2018</label>
+            <Popover content={InsertPlaceholder} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
+        )
+      },
+      {
+        idDash: (
+          <span>
+            <div className="filter-type pink1">
+              <div className="filter-checkbox pink2 pinkmargin">
+                <input
+                  type="checkbox"
+                  id="fil-ab3"
+                  name="dashboardcheckbox[]"
+                />
+                <label htmlFor="fil-ab3">
+                  <img
+                    src={HeadPhone3}
+                    alt="HeadPhone"
+                    className="headPhone3"
+                  />
+                  ABC1234
+                </label>
+              </div>
+            </div>
+          </span>
+        ),
+        statusDash: (
+          <span className="table-b table-green-btn">
+            <label>Solved</label>
+          </span>
+        ),
+        subjectDash: (
+          <div>
+            <img
+              className="claim-icon marginimg"
+              src={CliamIconBlue}
+              alt="cliam-icon-blue"
+            />
+            Need to change my shipping address <br></br>
+            <span>
+              <img
+                className="task-icon-1 marginimg"
+                src={TaskIconGray}
+                alt="task-icon-gray"
+              />
+              Hope this help, Please rate us
+            </span>
+          </div>
+        ),
+        creationNew: (
+          <span>
+            <label>12 March 2018</label>
+            <Popover content={InsertPlaceholder} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
+        )
+      },
+      {
+        idDash: (
+          <span>
+            <div className="filter-type pink1">
+              <div className="filter-checkbox pink2 pinkmargin">
+                <input
+                  type="checkbox"
+                  id="fil-ab2"
+                  name="dashboardcheckbox[]"
+                />
+                <label htmlFor="fil-ab2">
+                  <img
+                    src={HeadPhone3}
+                    alt="HeadPhone"
+                    className="headPhone3"
+                  />
+                  ABC1234
+                </label>
+              </div>
+            </div>
+          </span>
+        ),
+        statusDash: (
+          <span className="table-b table-green-btn">
+            <label>Solved</label>
+          </span>
+        ),
+        subjectDash: (
+          <div>
+            Need to change my shipping address <br></br>
+            <span>Hope this help, Please rate us</span>
+          </div>
+        ),
+        creationNew: (
+          <span>
+            <label>12 March 2018</label>
+            <Popover content={InsertPlaceholder} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
+        )
+      },
+      {
+        idDash: (
+          <span>
+            <div className="filter-type pink1">
+              <div className="filter-checkbox pink2 pinkmargin">
+                <input
+                  type="checkbox"
+                  id="fil-ab1"
+                  name="dashboardcheckbox[]"
+                />
+                <label htmlFor="fil-ab1">
+                  <img
+                    src={HeadPhone3}
+                    alt="HeadPhone"
+                    className="headPhone3"
+                  />
+                  ABC1234
+                </label>
+              </div>
+            </div>
+          </span>
+        ),
+        statusDash: (
+          <span className="table-b table-green-btn">
+            <label>Solved</label>
+          </span>
+        ),
+        subjectDash: (
+          <div>
+            Need to change my shipping address <br></br>
+            <span>Hope this help, Please rate us</span>
+          </div>
+        ),
+        creationNew: (
+          <span>
+            <label>12 March 2018</label>
+            <Popover content={InsertPlaceholder} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
+        )
+      }
+    ];
 
-    // const dataDash = [
-    //  {
-    //    idDash: (
-    //     <div className="filter-type pink1">
-    //       <div className="filter-checkbox pink2">
-    //         <input
-    //           type="checkbox"
-    //           id="fil-ab1"
-    //           name="dashboardcheckbox[]"
-    //         />
-    //         <label htmlFor="fil-ab1">
-    //             <img
-    //               src={HeadPhone3}
-    //               alt="HeadPhone"
-    //               className="headPhone3"
-    //             />
-    //             ABCD1234
-    //         </label>
-    //       </div>
-    //     </div>
-    //    ),
-    //  }
-    // ];
-
-    // const columnsDash = [
-    //   {
-    //     Header: <span>ID</span>,
-    //     accessor: "idDash"
-    //   },
-    //   {
-    //     Header: <span>Status <FontAwesomeIcon icon={faCaretDown} /></span>,
-    //     accessor: "statusDash"
-    //   },
-    //   {
-    //     Header: <label><span style={{fontWeight:"bold",fontSize:"13px !important"}}>Subject/</span><span>Lastest Message</span></label>,
-    //     accessor: "subjectDash",
-    //   },
-    //   {
-    //       Header: <span>Category <FontAwesomeIcon icon={faCaretDown} /></span>,
-    //       accessor: "categoryDash",
-    //               // Cell:props =>
-    //               //     <span>
-    //               //         <label>Defective article{" "}</label>
-    //               //         <img className="info-icon" src={InfoIcon} alt="info-icon" />
-    //               //     </span>
-    //   },
-    //   {
-    //       Header: <span>Priority <FontAwesomeIcon icon={faCaretDown} /></span>,
-    //       accessor: "priorityDash",
-    //               Cell:props =>
-    //               <span>High</span>
-    //   },
-    //   {
-    //       Header: <span>Assigne <FontAwesomeIcon icon={faCaretDown} /></span>,
-    //       accessor: "assigneeDash",
-    //               Cell:props =>
-    //               <span>N Rampal</span>
-    //   },
-    //   {
-    //       Header: <span>Creation On <FontAwesomeIcon icon={faCaretDown} /></span>,
-    //       accessor: "creationNew",
-    //   },
-    // ];
+    const columnsDash = [
+      {
+        Header: (
+          <span>
+            <div className="filter-type pink1">
+              <div className="filter-checkbox pink2 pinkmargin">
+                <input
+                  type="checkbox"
+                  id="fil-ab1"
+                  name="dashboardcheckbox[]"
+                  onChange={this.checkAllCheckbox.bind(this)}
+                />
+                <label htmlFor="fil-ab1" onClick={this.StatusOpenModel}>
+                  ID
+                </label>
+              </div>
+            </div>
+          </span>
+        ),
+        accessor: "idDash"
+      },
+      {
+        Header: (
+          <span>
+            Status <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "statusDash"
+      },
+      // {
+      //   Header: <span></span>,
+      //   accessor: "Img"
+      // },
+      {
+        Header: (
+          <label>
+            <span style={{ fontWeight: "bold", fontSize: "13px !important" }}>
+              Subject/
+            </span>
+            <span>Lastest Message</span>
+          </label>
+        ),
+        accessor: "subjectDash"
+      },
+      {
+        Header: (
+          <span>
+            Category <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "categoryDash",
+        Cell: props => (
+          <span>
+            <label>Defective article </label>
+            <Popover content={DefArti} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
+        )
+      },
+      {
+        Header: (
+          <span>
+            Priority <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "priorityDash",
+        Cell: props => <span>High</span>
+      },
+      {
+        Header: (
+          <span>
+            Assigne <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "assigneeDash",
+        Cell: props => <span>N Rampal</span>
+      },
+      {
+        Header: (
+          <span>
+            Creation On <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "creationNew"
+      }
+    ];
 
     return (
       <Fragment>
+        <div className="position-relative d-inline-block">
+          <Modal
+            onClose={this.StatusCloseModel}
+            open={this.state.StatusModel}
+            modalId="Status-popup"
+            overlayId="logout-ovrly"
+          >
+            <div className="status-drop-down">
+              <div className="sort-sctn">
+                <div className="d-flex">
+                  <a href={Demo.BLANK_LINK} className="sorting-icon">
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY A TO Z</p>
+                </div>
+                <div className="d-flex">
+                  <a href={Demo.BLANK_LINK} className="sorting-icon">
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY Z TO A</p>
+                </div>
+              </div>
+              <div className="filter-type">
+                <p>FILTER BY TYPE</p>
+                <div className="filter-checkbox">
+                  <input type="checkbox" id="fil-open" name="filter-type" />
+                  <label htmlFor="fil-open">
+                    <span className="table-btn table-blue-btn">Open</span>
+                  </label>
+                </div>
+                <div className="filter-checkbox">
+                  <input type="checkbox" id="fil-new" name="filter-type" />
+                  <label htmlFor="fil-new">
+                    <span className="table-btn table-yellow-btn">New</span>
+                  </label>
+                </div>
+                <div className="filter-checkbox">
+                  <input type="checkbox" id="fil-solved" name="filter-type" />
+                  <label htmlFor="fil-solved">
+                    <span className="table-btn table-green-btn">Solved</span>
+                  </label>
+                </div>
+              </div>
+              <div className="filter-type filter-color">
+                <p>FILTER BY COLOR</p>
+                <div className="filter-checkbox">
+                  <input type="checkbox" id="fil-red" name="filter-color" />
+                  <label htmlFor="fil-red">
+                    <span className="fil-color-red fil-color-bg"></span>
+                  </label>
+                </div>
+                <div className="filter-checkbox">
+                  <input type="checkbox" id="fil-orange" name="filter-color" />
+                  <label htmlFor="fil-orange">
+                    <span className="fil-color-orange fil-color-bg"></span>
+                  </label>
+                </div>
+                <div className="filter-checkbox">
+                  <input type="checkbox" id="fil-white" name="filter-color" />
+                  <label htmlFor="fil-white">
+                    <span className="fil-color-white fil-color-bg"></span>
+                  </label>
+                </div>
+                <div className="filter-checkbox">
+                  <input type="checkbox" id="fil-green" name="filter-color" />
+                  <label htmlFor="fil-green">
+                    <span className="fil-color-green fil-color-bg"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </Modal>
+        </div>
         <div className="container-fluid dash-dropdowns">
           <div className="d-flex">
             <div>
@@ -928,6 +1395,16 @@ class Dashboard extends Component {
                                   <option>Ticket Status</option>
                                 </select>
                               </div>
+                              <div className="col-md-3 col-sm-6">
+                                <select>
+                                  <option>Channel Of Purchase</option>
+                                </select>
+                              </div>
+                              <div className="col-md-3 col-sm-6">
+                                <select>
+                                  <option>Ticket action Type</option>
+                                </select>
+                              </div>
                             </div>
                             <div className="row justify-content-between">
                               <div className="col-auto d-flex align-items-center">
@@ -1256,16 +1733,16 @@ class Dashboard extends Component {
                 </Card>
               </Collapse>
               <div className="scroll-table rem-table">
-              {/* <div className="DashBoarReact"> 
-                <ReactTable
+                <div className="DashBoarReact">
+                  <ReactTable
                     data={dataDash}
                     columns={columnsDash}
                     // resizable={false}
-                    defaultPageSize={5}
-                    showPagination={true}
-                />
-                </div> */}
-                <table>
+                    defaultPageSize={10}
+                    showPagination={false}
+                  />
+                </div>
+                {/* <table>
                   <thead>
                     <tr>
                       <div className="filter-type pink1">
@@ -1751,6 +2228,7 @@ class Dashboard extends Component {
                           src={TaskIconGray}
                           alt="task-icon-gray"
                         />
+
                       </td>
                       <td>
                         Need to change my shipping address{" "}
@@ -1945,7 +2423,7 @@ class Dashboard extends Component {
                       </td>
                     </tr>
                   </tbody>
-                </table> 
+                </table>  */}
               </div>
               <div className="mobile-table">
                 <div className="table-row pink-bg">

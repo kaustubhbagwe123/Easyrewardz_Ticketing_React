@@ -26,7 +26,7 @@ class Settings extends Component {
     return (
       <React.Fragment>
         <div className="container-fluid setting-title">
-          <p className="font-weight-bold">Settings</p>
+          <div className="setmainscreen">Settings</div>
         </div>
         <div className="container-fluid">
           <div className="setting-tabs">

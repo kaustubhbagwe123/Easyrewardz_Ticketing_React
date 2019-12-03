@@ -44,7 +44,7 @@ class ClaimApproveReject extends Component {
               </div> */}
             <div
               className="oval-5-1-new-store"
-              style={{ marginLeft: "70px", marginRight: "15px" }}
+              style={{ marginLeft: "30px", marginRight: "15px" }}
             >
               <img src={storeImg} alt="headphone" className="storeImg-11" />
             </div>
@@ -282,7 +282,7 @@ class ClaimApproveReject extends Component {
                     <div className="col-md-9">
                       <label className="naman-R">Naman.R</label>
                     </div>
-                    <div className="col-md-2 hr-ago-margin">
+                    <div className="col-md-2">
                       <label className="hr-ago">5 hr ago</label>
                     </div>
                   </div>
@@ -307,7 +307,7 @@ class ClaimApproveReject extends Component {
                       <label className="label-6">Comments By Approval</label>
                       <hr></hr>
                     </div>
-                    <div className="">
+                    <div className="" style={{display:"contents"}}>
                       <textarea
                         className="ticket-comments-textarea"
                         placeholder="Add your Comment here"
@@ -337,7 +337,7 @@ class ClaimApproveReject extends Component {
                     <div className="col-md-9">
                       <label className="naman-R">Naman.R</label>
                     </div>
-                    <div className="col-md-2 hr-ago-margin">
+                    <div className="col-md-2">
                       <label className="hr-ago">5 hr ago</label>
                     </div>
                   </div>
@@ -366,7 +366,7 @@ class ClaimApproveReject extends Component {
                     <div className="col-md-9">
                       <label className="naman-R">Naman.R</label>
                     </div>
-                    <div className="col-md-2 hr-ago-margin">
+                    <div className="col-md-2">
                       <label className="hr-ago">5 hr ago</label>
                     </div>
                   </div>

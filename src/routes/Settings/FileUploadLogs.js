@@ -47,7 +47,7 @@ class FileUploadLogs extends Component {
                   <img src={TableArr} alt="table-arr" />
                 </th>
                 <th>Error File</th>
-                <th style={{ width: "10%" }}>Success File</th>
+                <th>Success File</th>
               </tr>
             </thead>
             <tbody>

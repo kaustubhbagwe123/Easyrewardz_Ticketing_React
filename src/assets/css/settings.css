@@ -2358,6 +2358,9 @@
 .esc {
   padding: 9px 10px;
 }
+.esc1 .nav-tabs .nav-link{
+  margin-right: -10px;
+}
 .mlistbtn {
   float: right;
 }
@@ -2766,4 +2769,35 @@
 .ticketreport .react-datepicker__navigation--next {
   right: -70px;
 }
+.setmainscreen {
+  font-weight:  bold !important;
+  font-size: 19px;
+  color: #000;
+} 
+.alignradio .status-options input + label::before {
+  content: "";
+  position: absolute;
+  background-color: #ecf2f4;
+  border: 1px solid #2561a8;
+  border-radius: 50%;
+  width: 11px;
+  height: 11px;
+  left: 0;
+  top: 6px;
+}
+.alignradio .status-options input + label {
+  position: relative;
+  padding-left: 15px;
+  margin-top: 15px;
+}
+.popgrid {
+  display: grid;
+}
+.dropDrownSpace .ant-select-selection--single {
+  background-color: #ecf2f4;
+}
+.tickhierpad table th{
+  padding: 15px 20px;
+}
+
 /* Module Css End */

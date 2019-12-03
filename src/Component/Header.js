@@ -823,9 +823,9 @@ class Header extends Component {
                 </div>
                 <button style={{ cursor: "pointer" }}>LOGOUT</button>
               </div>
-              <div className="status-sctn">
+              <div className="status-sctn alignradio">
                 <div className="d-flex align-items-center">
-                  <div className="logout-status">
+                  <div className="logout-status" style={{marginTop:"10px"}}>
                     <img src={StatusLogo} alt="status" />
                   </div>
                   <p className="logout-label chat-status">Chat Status :</p>

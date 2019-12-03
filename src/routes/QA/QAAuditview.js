@@ -83,7 +83,7 @@ class QAAuditview extends Component {
 
                     <label className="mobile-no">Naman Rampal</label>
                   </div>
-                  <div style={{ marginLeft: "75px" }}>
+                  <div className="mobiotw" style={{ marginLeft: "75px" }}>
                     <label className="mobile-number">Gender</label>
                     <br />
                     <label className="mobile-no">Male</label>
@@ -348,7 +348,7 @@ class QAAuditview extends Component {
               </Collapse>
 
               <div
-                className="row row-spacing new-top-bottom-margin"
+                className="row row-spacing new-top-bottom-margin padqa"
                 style={{ marginBottom: "18px", marginTop: "22px" }}
               >
                 <div className="col-xs-3">
@@ -385,8 +385,8 @@ class QAAuditview extends Component {
                 </div>
               </div>
               <div
-                className="row new-top-bottom-margin"
-                style={{ marginLeft: "35px", marginBottom: "18px" }}
+                className="row new-top-bottom-margin padqa"
+                style={{ marginBottom: "18px" }}
               >
                 <div className="col-xs-3">
                   <img src={Loading1Img} alt="right" className="oval-loading" />
@@ -412,7 +412,7 @@ class QAAuditview extends Component {
               </div>
 
               <div
-                className="row row-spacing new-top-bottom-margin"
+                className="row row-spacing new-top-bottom-margin padqa"
                 style={{ marginBottom: "18px" }}
               >
                 <div className="col-xs-3">
@@ -445,7 +445,7 @@ class QAAuditview extends Component {
 
                 <div className="col-md-2"></div>
               </div>
-              <div className="row row-spacing new-top-bottom-margin">
+              <div className="row row-spacing new-top-bottom-margin padqa">
                 <div className="col-xs-3">
                   <img src={BlackUserIcon} alt="Avatar" className="oval-6" />
                 </div>

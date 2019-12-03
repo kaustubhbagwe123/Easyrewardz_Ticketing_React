@@ -24,7 +24,7 @@ class MyTicketClaim extends Component {
   render() {
     return (
       <Fragment>
-        <div className="row table-cntr mt-3">
+        <div className="row table-cntr mt-3 paddcla">
           <table>
             <thead>
               <tr>

@@ -1068,6 +1068,12 @@ table tr th:last-child {
   border-left: 1px solid #ebebeb;
   height: 100%;
 }
+.mid-secnew {
+  padding: 15px 30px 0px 30px;
+  border-right: 1px solid #ebebeb;
+  border-left: 1px solid #ebebeb;
+  height: 100%;
+}
 .drop-card {
   margin-top: -15px;
   padding-left: 20px;
@@ -1907,6 +1913,7 @@ button {
 }
 .dash-category-popup li {
   margin-bottom: 15px;
+  display: block;
 }
 .dash-category-popup li:last-child {
   margin-bottom: 0px;
@@ -3996,6 +4003,102 @@ font-weight: normal;
     font-size: 12px !important;
   }
 }
+@media only screen and (max-width: 1024px) {
+  /* Qa Dashboard */
+  .QAtable table th {
+    padding: 15px 10px;
+  }
+  .QAtable table td {
+    padding: 18px 10px;
+  }
+  /* MyTicketClaim */
+  .paddcla table th {
+    padding: 15px 5px;
+  }
+  .paddcla table td {
+    padding: 15px 5px;
+  }
+  /*MyTicketList  */
+  .esc1 .nav-tabs .nav-link {
+    margin-right: -15px;
+  }
+  .setting-tabs .es .nav-link.active {
+    padding: 7px 7px;
+    font-weight: 500;
+    font-size: 13px;
+  }
+  .mtictab table th {
+    padding: 16px 5px;
+    font-size: 13px;
+  }
+  .myticketlist-header table td {
+    padding: 15px 5px 15px 5px;
+  }
+  /* Setting>Store>Storemaster */
+  .store-master table td {
+    padding: 18px 5px;
+  }
+  .store-master table th {
+    padding: 20px 5px;
+  }
+  /* Qa>QaAuditView */
+  .removelinespace .mobiotw {
+    margin-left: 32px !important;
+  }
+  /*Store/StoreTask */
+  .store-task-tab-cont table th {
+    padding: 15px 5px;
+  }
+  .store-task-tab-cont table td {
+    padding: 15px 5px;
+  }
+  /* Setting/Brand */
+  .brandtable table th {
+    padding: 15px 10px;
+  }
+  .brandtable table td {
+    padding: 15px 10px;
+  }
+  /* Setting/CategoryMaster */
+  .category-master table td {
+    padding: 18px 5px;
+  }
+  .category-master table th {
+    padding: 18px 5px;
+  }
+  /* HierarchyMaster */
+  .hiermas table th{
+    padding: 20px 10px;
+  }
+  .hiermas table td {
+    padding: 20px 10px;
+  }
+  /* Setting/Template */
+  .template-table .ReactTable .rt-thead .rt-th.-cursor-pointer, .ReactTable .rt-thead .rt-td.-cursor-pointer {
+    padding: 20px 15px !important;
+  }
+  .template-table .ReactTable .rt-tbody .rt-td {
+    padding: 18px 10px !important;
+  }
+  /*Store/Claim  */
+  .store-task-tab-cont table th {
+    padding: 15px 10px;
+  }
+  .store-task-tab-cont table td {
+    padding: 15px 10px;
+  }
+  /* Setting/Store/CrmRole */
+  .crm-padding-div {
+    padding-right: 32px;
+  }
+  /*  */
+  .ChatElementReact .ReactTable .rt-thead .rt-th.-cursor-pointer, .ReactTable .rt-thead .rt-td.-cursor-pointer {
+    padding: 20px 5px !important;
+  }
+  .ChatElementReact .ReactTable .rt-tbody .rt-td {
+    padding: 10px 5px !important;
+  }
+}
 @media only screen and (max-width: 992px) {
   /* dashboard starts */
   body {
@@ -4634,9 +4737,9 @@ font-weight: normal;
   font-weight: 400;
   line-height: 14px;
   text-align: left;
-  padding: 9px;
-  padding-left: 35px;
+  margin-left: 20px;
   cursor: pointer;
+  display: inline;
 }
 
 .searchicon {
@@ -4912,7 +5015,7 @@ font-weight: normal;
   background-color: white;
 }
 .kb-table table thead th.pad {
-  padding-right: 0;
+  padding-right: 65px;
   float: inherit;
 }
 
@@ -5879,13 +5982,6 @@ table thead tr {
 .sweetAlert-inCategory {
   color: #2561a8;
   float: right;
-}
-.task06 {
-  border-radius: 50%;
-  background-color: #2561a8;
-  color: white;
-  padding: 5px 8px;
-  font-weight: 500;
 }
 /* Scrolling css start By Shlok*/
 .ant-select-dropdown-menu-vertical::-webkit-scrollbar {
@@ -7339,7 +7435,7 @@ table tr th:last-child {
 .column1 {
   width: 7%;
   height: auto;
-  background-color: #f5f8f9;
+  background-color: #ecf2f4;
 }
 .paddingsystem {
   padding: 40px;
@@ -7389,11 +7485,11 @@ table tr th:last-child {
 }
 .Medium button {
   background-color: #f5a623;
-  border: 1px solid #9f814a;
+  border: 1px solid #f5a623;
   border-radius: 4px;
   min-width: 68px;
   height: 43px;
-  margin-left: -15px;
+  margin-left: -10px;
   cursor: pointer;
 }
 .Qc button {
@@ -8424,7 +8520,7 @@ table tr th:last-child {
   font-family: lato;
   font-size: 15px;
   color: #9b9b9b;
-  margin-right: 15px;
+  margin-right: 10px;
 }
  .CCdi {
   border: 1px solid #9b9b9b;
@@ -8441,7 +8537,7 @@ table tr th:last-child {
   color: #fff;
   font-size: 14px;
   height: 40px;
-  width: 120px;
+  width: 115px;
   border-radius: 5px;
   border: 1px solid #2561a8;
   cursor: pointer;
@@ -8451,7 +8547,7 @@ table tr th:last-child {
   color: #2561a8;
   font-size: 14px;
   height: 40px;
-  width: 120px;
+  width: 115px;
   border-radius: 5px;
   margin-right: 10px;
   border: 1px solid #fff;
@@ -8468,5 +8564,24 @@ table tr th:last-child {
     width: 100%;
     bottom: 0;
 }
-
+.DashBoarReact .table-b {
+  border-radius: 15px;
+  width: 76px;
+  display: inline-block;
+  padding: 4px 10px;
+  text-transform: uppercase;
+  text-align: center;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+}
+.marginimg {
+  margin-left: -20px;
+}
+.pinkmargin input + label {
+  padding-left: 25px;
+}
+.DashBoarReact .ReactTable .rt-thead .rt-resizable-header-content {
+  font-size: 12px;
+}
 /* ****************End css ************************/

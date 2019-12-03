@@ -12,6 +12,7 @@ import TicketSystemOrder from "./Tabs/TicketSystemOrder";
 import TicketSystemTask from "./Tabs/TicketSystemTask";
 import TicketSystemStore from "./Tabs/TicketSystemStore";
 import Modal from "react-responsive-modal";
+import CKEditor from 'ckeditor4-react';
 
 class TicketSystem extends Component {
   constructor() {
@@ -218,7 +219,7 @@ class TicketSystem extends Component {
                 </div>
                 <div className="row m-b-10">
                   <div className="col-md-6">
-                    <label className="category">Channel Of Ourchase</label>
+                    <label className="category">Channel Of Purchase</label>
                   </div>
                 </div>
 
@@ -231,8 +232,44 @@ class TicketSystem extends Component {
                     </select>
                   </div>
                 </div>
+                <div>
+                  <CKEditor
+                  config={{
+                    toolbar: [
+                    {
+                      name: 'basicstyles',
+                      items: ['Bold', 'Italic','Strike']
+                    },
+                    {
+                      name: 'styles',
+                      items: ['Styles', 'Format']
+                    },
+                    {
+                      name: 'paragraph',
+                      items: ['NumberedList', 'BulletedList']
+                    },
+                    {
+                      name: 'links',
+                      items: ['Link', 'Unlink']
+                    },
+                    {
+                      name: 'insert',
+                      items: ['Image', 'Table']
+                    },
+                    {
+                      name: 'tools',
+                      items: ['Maximize']
+                    },
+                    {
+                      name: 'editing',
+                      items: ['Scayt']
+                    }
+                  ],
+                  }}
+                />
+                    </div>
 
-                <div className="row m-b-10">
+                <div className="row m-b-10 m-t-10">
                   <div
                     className="filter-checkbox"
                     style={{ marginLeft: "15px" }}
@@ -250,6 +287,7 @@ class TicketSystem extends Component {
                   </div>
                 </div>
                 {this.state.showAddNote ? (
+                  <div>
                   <div className="row m-b-10">
                     <div className="col-md-12">
                       <textarea
@@ -257,6 +295,8 @@ class TicketSystem extends Component {
                         placeholder="Write your note here"
                       ></textarea>
                     </div>
+                  </div>
+                  
                   </div>
                 ) : null}
               </div>

@@ -30,13 +30,13 @@ class RaiseClaim extends Component {
       <Fragment>
         <div className="raiseclaim">
           <div className="row" style={{background: "#ecf2f4"}}>
-          <div className="col-md-9">
+          <div className="col-md-8">
             <label className="claim-ticket">Claim Ticket ID :</label>
             <label className="claim-A22345">
               <b>A22345</b>
             </label>
           </div>
-          <div className="col-md-3">
+          <div className="col-md-4">
             <div className="btn-margin" style={{float: "right" , marginLeft: "30px" }}>
               <button type="button" className="btn-btn-claim">
                 CANCEL
@@ -266,6 +266,21 @@ class RaiseClaim extends Component {
                       successful promo campaigns.
                     </label>
                   </div>
+                  <div className="row">
+                    <div className="col-md-1">
+                      <img
+                        src={Headphone2Img}
+                        alt="headphone"
+                        className="oval-55 naman"
+                      />
+                    </div>
+                    <div className="col-md-9">
+                      <label className="naman-R">Naman.R</label>
+                    </div>
+                    <div className="col-md-2">
+                      <label className="hr-ago">5 hr ago</label>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -274,7 +289,10 @@ class RaiseClaim extends Component {
                 <label>
                   <b>CUSTOMER NAME</b>
                 </label>
-                <label>Alankrit</label>
+                
+                <label>
+                <span className="a">A</span>
+                  Alankrit</label>
                 <br />
                 <label>
                   <b>PHONE NUMBER</b>

@@ -415,6 +415,12 @@
   padding-bottom: 20px;
   background: transparent;
 }
+.table-expandable-sctn1 .nav-tabs .nav-link.active {
+  color: #2561a8;
+  border-bottom: 2px solid #2561a8;
+  box-shadow: none;
+  /*background: #e3e9eb;*/
+}
 .table-expandable-sctn1 .nav-tabs {
   border-color: #dae2e5;
   position: relative;
@@ -1147,6 +1153,9 @@ margin: 3px 0px 8px 12px;
     display: none;
     }
   /* Config add pop-up css End by Kalpesh */
+  .stinlitab {
+    display: inline-table;
+  }
 /* ----------------------------------------------- */
 
 

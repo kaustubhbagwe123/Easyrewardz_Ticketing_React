@@ -137,7 +137,7 @@ class QADashboard extends Component {
               <div className="row rowMargin">
                 <div className="col-12 col-md-12">
                   <div className="row">
-                    <div className="col-12 col-sm-6 col-md-6 col-lg-3 dropDwonWidth">
+                    <div className="col-12 col-sm-6 col-md-6 col-lg dropDwonWidth">
                       <label className="label-6"> Select Agent/QA Lead</label>
                       <select
                         id="inputState"
@@ -146,7 +146,7 @@ class QADashboard extends Component {
                         <option>Agent</option>
                       </select>
                     </div>
-                    <div className="col-12 col-sm-6 col-md-6 col-lg-3 dropDwonWidth">
+                    <div className="col-12 col-sm-6 col-md-6 col-lg dropDwonWidth">
                       <label className="label-6">Select Agent</label>
                       <select
                         id="inputState"
@@ -155,7 +155,7 @@ class QADashboard extends Component {
                         <option>Vikash</option>
                       </select>
                     </div>
-                    <div className="col-12 col-sm-6 col-md-6 col-lg-3 dropDwonWidth">
+                    <div className="col-12 col-sm-6 col-md-6 col-lg dropDwonWidth">
                       <label className="label-6">QC from date</label>
                       <input
                         type="text"
@@ -163,7 +163,7 @@ class QADashboard extends Component {
                         className="form-control txtQA"
                       />
                     </div>
-                    <div className="col-12 col-sm-6 col-md-6 col-lg-3 dropDwonWidth">
+                    <div className="col-12 col-sm-6 col-md-6 col-lg dropDwonWidth">
                       <label className="label-6">QC to date</label>
                       <input
                         type="text"
@@ -171,21 +171,26 @@ class QADashboard extends Component {
                         className="form-control txtQA"
                       />
                     </div>
+                    <div className="col-12 col-xs-2 col-lg">
+                    <button className="btnSearchQa" type="button">
+                      <label className="labelSearch">Search</label>
+                    </button>
+                  </div>
                   </div>
                 </div>
-                <div className="row">
+                {/* <div className="row">
                   <div className="col-12 col-xs-2">
                     <button className="btnSearchQa" type="button">
                       <label className="labelSearch">Search</label>
                     </button>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
 
             <div className="table-cntr mt-3">
               <div className="store-table-cntr table-responsive">
-                <table className="table-responsive">
+                <table className="table-responsive stinlitab">
                   <thead>
                     <tr>
                       <th>Agent Name</th>
@@ -472,7 +477,7 @@ class QADashboard extends Component {
                   </Card>
                 </Collapse>
                 <div className="table-responsive">
-                  <table className="table-responsive">
+                  <table className="table-responsive stinlitab">
                   <thead>
                     <tr>
                       <th>ID</th>

@@ -197,7 +197,7 @@ class StoreDashboard extends Component {
                               aria-controls="date-tab"
                               aria-selected="true"
                             >
-                              Task: <span className="task06">06</span>
+                              Task: <span className="myTciket-tab-span">06</span>
                             </a>
                           </li>
 
@@ -210,11 +210,11 @@ class StoreDashboard extends Component {
                               aria-controls="ticket-tab"
                               aria-selected="false"
                             >
-                              Claim: <span>05</span>
+                              Claim: <span className="myTciket-tab-span">05</span>
                             </a>
                           </li>
                           <div className="save-view-search">
-                            <button className="btn-inv">View Search</button>
+                            <button className="btn-inv">VIEW SEARCH</button>
                           </div>
                         </ul>
                         <div className="tab-content p-0">
@@ -364,8 +364,8 @@ class StoreDashboard extends Component {
                     </CardBody>
                   </Card>
                 </Collapse>
-                <div className="table-responsive">
-                  <table className="table-responsive">
+                <div className="tickhierpad">
+                  <table className="table-responsive stinlitab">
                   <thead>
                     <tr>
                       <th>ID</th>

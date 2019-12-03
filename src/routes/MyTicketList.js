@@ -45,7 +45,7 @@ class MyTicketList extends Component {
     return (
       <Fragment>
         <div className="myticketlist-header">
-          <div className="setting-tabs esc">
+          <div className="setting-tabs esc esc1">
             <ul className="nav nav-tabs es" role="tablist" style={{display: "inline"}}>
               <li className="nav-item">
                 <a

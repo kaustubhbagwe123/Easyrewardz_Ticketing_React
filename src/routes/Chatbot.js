@@ -15,9 +15,16 @@ class Chatbot extends Component {
     this.state = {
       ReactChatModel: false,
       CrateTicketMdl: false,
-      OpenTicketMdl: false
+      OpenTicketMdl: false,
+      AllAcount: false
     };
     this.handleReactChatModelOpen = this.handleReactChatModelOpen.bind(this);
+  }
+  handleAccountAllOpen() {
+    this.setState({ AllAcount:true});
+  }
+  handleAccountAllClose() {
+    this.setState({ AllAcount:false});
   }
   handleReactChatModelOpen() {
     this.setState({ ReactChatModel: true });
@@ -295,11 +302,25 @@ class Chatbot extends Component {
                   aria-labelledby="current-chat-tab"
                 >
                   <div className="action-part d-flex align-items-center actionleft">
-                    <select className="butn">
-                      <option value="">ACTION</option>
-                    </select>
+                    <button className="butn"
+                    onClick={this.handleAccountAllOpen.bind(this)}
+                    >ACTION</button>
                     <button className="butn cross">&times;</button>
                   </div>
+                  <Modal
+                onClose={this.handleAccountAllClose.bind(this)}
+                open={this.state.AllAcount}
+                modalId="AllAcountTenantModal"
+                overlayId="logout-ovrly"
+              >
+                <div className="popgrid">
+                  <label>Transfer to Agent/Supervisor</label>
+                  <label>Ban Visitor</label>
+                  <label>Translate Chat</label>
+                  <label>End Chat</label>
+                  <label>End Chat & Create Ticket</label>
+                </div>
+              </Modal>
                   <div className="row m-0">
                     <div className="col-md-8"></div>
                     <div className="col-md-4">

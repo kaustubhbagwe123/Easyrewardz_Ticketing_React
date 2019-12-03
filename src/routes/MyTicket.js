@@ -890,7 +890,7 @@ class MyTicket extends Component {
                 </div>
               </div>
               <div className="col-md-6">
-                <div className="mid-sec">
+                <div className="mid-sec mid-secnew">
                   <div className="row mob-pad">
                     <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4">
                       <div className="form-group">
@@ -935,6 +935,22 @@ class MyTicket extends Component {
                     <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
                       <div className="form-group">
                         <label className="label-4">Issue Type</label>
+                        <select className="rectangle-9 select-category-placeholder">
+                          <option>Select</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
+                      <div className="form-group">
+                        <label className="label-4">Channel Of Purchase</label>
+                        <select className="rectangle-9 select-category-placeholder">
+                          <option>Select</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
+                      <div className="form-group">
+                        <label className="label-4">Ticket Action Type</label>
                         <select className="rectangle-9 select-category-placeholder">
                           <option>Select</option>
                         </select>

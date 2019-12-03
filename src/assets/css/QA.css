@@ -590,7 +590,7 @@
   text-align: right;
   padding: 5px 15px;
   margin: 0;
-  margin-left: 23%;
+  margin-left: 35px;
 }
 .audit-details {
   color: #4a4a4a;
@@ -653,6 +653,7 @@
   margin-left: 10px;
   width: 15px;
   height: 10px;
+  margin-top: 10px;
 }
 .collapsebutton .toggle-button-blue {
   min-width: 0;
@@ -1303,4 +1304,8 @@ padding: 5px 40px;
   background: #555;
     border-radius:8px;
 }
+.padqa {
+  padding: 0 0 0 20px;
+}
+
 /* QA AuditParameters css end by Shlok */

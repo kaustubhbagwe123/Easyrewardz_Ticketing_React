@@ -29,7 +29,7 @@ class Brands extends Component {
           <div className="store-settings-cntr">
             <div className="row">
               <div className="col-md-8">
-                <div className="table-cntr table-height">
+                <div className="table-cntr table-height brandtable">
                   <table>
                     <thead>
                       <tr>
