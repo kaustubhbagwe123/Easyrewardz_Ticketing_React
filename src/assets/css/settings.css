@@ -2790,8 +2790,8 @@
   padding-left: 15px;
   margin-top: 15px;
 }
-.popgrid {
-  display: grid;
+.popgrid ul li {
+  display: block;
 }
 .dropDrownSpace .ant-select-selection--single {
   background-color: #ecf2f4;

@@ -1189,7 +1189,14 @@
 }
 .EnterpriseReact .rt-tr-group {
     background-color: #fff;
+    line-height: 36px;
+}
+.EnterpriseReact .ReactTable .rt-tbody .rt-tr-group {
+    border: none;
 }
 .EnterpriseReact .rt-tr-group:nth-of-type(even){
     background: #F5F5F5;
+}
+.tendashmod ul li {
+    display: block;
 }
