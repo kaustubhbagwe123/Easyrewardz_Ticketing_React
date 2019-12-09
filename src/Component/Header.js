@@ -738,7 +738,7 @@ class Header extends Component {
                 Notifications
               </span>
             </a>
-            <a href="settings">
+            <Link to="settings">
               <img src={SettingLogo} alt="logo" className="setting" />
               <img
                 src={SettingLogoBlue}
@@ -749,7 +749,7 @@ class Header extends Component {
               <span style={{ display: "none" }} className="icon-fullname">
                 Settings
               </span>
-            </a>
+            </Link>
             <a href="#!" className="bitmap5" onClick={this.onOpenModal}>
               NR
             </a>
