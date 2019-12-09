@@ -35,7 +35,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ReactTable from "react-table";
 import { Popover } from "antd";
 
-
 class Dashboard extends Component {
   constructor(props) {
     super(props);
@@ -193,7 +192,34 @@ class Dashboard extends Component {
         </ul>
       </div>
     );
-
+    const TaskBlue = (
+      <div className="dash-task-popup-new">
+        <div className="d-flex justify-content-between align-items-center">
+          <p className="m-b-0">
+            TASK: <span className="green-clr">02</span>/
+            <span className="task-red-clr">04</span>
+          </p>
+          <div className="d-flex align-items-center">
+            2 NEW
+            <div className="nw-chat">
+              <img src={Chat} alt="chat" />
+            </div>
+          </div>
+        </div>
+        <ProgressBar className="task-progress" now={70} />
+      </div>
+    );
+    const ClaimBlue = (
+      <div className="dash-task-popup-new">
+        <div className="d-flex justify-content-between align-items-center">
+          <p>
+            CLAIM: <span className="green-clr">02</span>/
+            <span className="task-red-clr">01</span>
+          </p>
+        </div>
+        <ProgressBar className="task-progress" now={70} />
+      </div>
+    );
     const TitleChange = this.state.collapseSearch
       ? "Close Search"
       : "Search Tickets";
@@ -318,11 +344,18 @@ class Dashboard extends Component {
         ),
         subjectDash: (
           <div>
-            <img
+            <Popover content={TaskBlue} placement="bottom">
+              <img
+                className="task-icon-1 marginimg"
+                src={TaskIconBlue}
+                alt="task-icon-blue"
+              />
+            </Popover>
+            {/* <img
               className="task-icon-1 marginimg"
               src={TaskIconBlue}
               alt="task-icon-blue"
-            />
+            /> */}
             Need to change my shipping address <br></br>
             <span>Hope this help, Please rate us</span>
           </div>
@@ -412,11 +445,18 @@ class Dashboard extends Component {
         ),
         subjectDash: (
           <div>
-            <img
+            <Popover content={ClaimBlue} placement="bottom">
+              <img
+                className="claim-icon marginimg"
+                src={CliamIconBlue}
+                alt="cliam-icon-blue"
+              />
+            </Popover>
+            {/* <img
               className="claim-icon marginimg"
               src={CliamIconBlue}
               alt="cliam-icon-blue"
-            />
+            /> */}
             Need to change my shipping address <br></br>
             <span>
               <img
@@ -535,9 +575,7 @@ class Dashboard extends Component {
                   name="dashboardcheckbox[]"
                   onChange={this.checkAllCheckbox.bind(this)}
                 />
-                <label htmlFor="fil-ab1" onClick={this.StatusOpenModel}>
-                  ID
-                </label>
+                <label htmlFor="fil-ab1">ID</label>
               </div>
             </div>
           </span>
@@ -546,7 +584,7 @@ class Dashboard extends Component {
       },
       {
         Header: (
-          <span>
+          <span onClick={this.StatusOpenModel}>
             Status <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),

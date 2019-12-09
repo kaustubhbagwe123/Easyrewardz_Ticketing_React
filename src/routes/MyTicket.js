@@ -3,7 +3,7 @@ import Modal from "react-responsive-modal";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { faCommentAlt } from "@fortawesome/free-solid-svg-icons";
 import { faComment } from "@fortawesome/free-solid-svg-icons";
-import { faBrain } from "@fortawesome/free-solid-svg-icons";
+// import { faBrain } from "@fortawesome/free-solid-svg-icons";
 import { faPhone } from "@fortawesome/free-solid-svg-icons";
 import { faCalculator } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -41,6 +41,13 @@ import MyTicketClaim from "./Tabs/MyTicketClaim";
 import FileUpload from "./../assets/Images/file.png";
 import CKEditor from "ckeditor4-react";
 import ReactTable from "react-table";
+import KnowledgeLogo from "./../assets/Images/knowledge.png";
+import DownArrowIcon from "./../assets/Images/down-1.png";
+import CopyBlue from "./../assets/Images/copyblue.png";
+import ViewBlue from "./../assets/Images/viewblue.png";
+import ThumbTick from "./../assets/Images/thumbticket.png";
+import AutoSave from "./../assets/Images/AutoSave.png";
+
 class MyTicket extends Component {
   constructor(props) {
     super(props);
@@ -60,6 +67,7 @@ class MyTicket extends Component {
       CommentCollapse: false,
       CommentCollapse2: false,
       Comment1Collapse: false,
+      KbLink: false,
       values: [
         {
           taskTitle: "",
@@ -78,11 +86,16 @@ class MyTicket extends Component {
       HistOrderShow: !this.state.HistOrderShow
     });
   }
+  HandleKbLinkModalOpen() {
+    this.setState({ KbLink: true });
+  }
+  HandleKbLinkModalClose() {
+    this.setState({ KbLink: false });
+  }
 
   HandleClaimPageView() {
     this.props.history.push("claimTabTicketView");
   }
-
   HandleStoreProductSearchModalOpen() {
     this.setState({ storeproductsearch: true });
   }
@@ -281,6 +294,21 @@ class MyTicket extends Component {
         src={Down1Img}
         alt="up"
         className="up-1"
+        onClick={this.handleUpOpen.bind(this)}
+      />
+    );
+    const HidecollapsUpKbLink = this.state.collapseUp ? (
+      <img
+        src={Up1Img}
+        alt="up"
+        className="down-icon-kb1"
+        onClick={this.handleUpClose.bind(this)}
+      />
+    ) : (
+      <img
+        src={Down1Img}
+        alt="up"
+        className="down-icon-kb1"
         onClick={this.handleUpOpen.bind(this)}
       />
     );
@@ -1034,6 +1062,10 @@ class MyTicket extends Component {
               </label>
             </div>
             <div className="row">
+              <img src={ThumbTick} alt="thumb" className="thumbtick" />
+              <img src={ThumbTick} alt="thumb" className="thumbtick" />
+            </div>
+            <div className="row">
               <div className="mask1">
                 <div className="mail-mask">
                   <div class="dropdown" style={{ display: "inherit" }}>
@@ -1067,7 +1099,7 @@ class MyTicket extends Component {
                       </li>
                     </ul>
                   </div>
-                
+
                   <div
                     className="mob-float"
                     style={{ display: "inline", float: "right" }}
@@ -1081,38 +1113,48 @@ class MyTicket extends Component {
             </div>
             <div className="myTicketEmail">
               <Collapse isOpen={this.state.EmailCollapse}>
-                          <a href="#!" className="kblink" style={{top: "5px"}}><FontAwesomeIcon icon={faBrain} />  Kb Link</a>
-                          <div class="dropdown collapbtn" style={{ display: "inherit" , top: "5px"}}>
-                            <button
-                              class="dropdown-toggle my-tic-email"
-                              type="button"
-                              data-toggle="dropdown"
-                            >
-                              <FontAwesomeIcon icon={faCalculator} /> Template
-                            </button>
-                            <ul class="dropdown-menu">
-                              <li>
-                                <a href="#!">
-                                 Template 1
-                                </a>
-                              </li>
-                              <li>
-                                <a href="#!">
-                                 Template 2
-                                </a>
-                              </li>
-                              <li>
-                                <a href="#!">
-                                 Template 3
-                                </a>
-                              </li>
-                              <li>
-                                <a href="#!">
-                                 Template 4
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
+                <a href="#!" className="kblink" style={{ top: "5px" }}>
+                  {/* <FontAwesomeIcon icon={faBrain} /> Kb Link */}
+                  <img
+                    src={KnowledgeLogo}
+                    alt="KnowledgeLogo"
+                    className="knoim"
+                    onClick={this.HandleKbLinkModalOpen.bind(this)}
+                  />
+                  Kb Link
+                </a>
+                <div
+                  class="dropdown collapbtn"
+                  style={{ display: "inherit", top: "5px" }}
+                >
+                  <button
+                    class="dropdown-toggle my-tic-email"
+                    type="button"
+                    data-toggle="dropdown"
+                  >
+                    <FontAwesomeIcon icon={faCalculator} /> Template
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a href="#!">Template 1</a>
+                    </li>
+                    <li>
+                      <a href="#!">Template 2</a>
+                    </li>
+                    <li>
+                      <a href="#!">Template 3</a>
+                    </li>
+                    <li>
+                      <a href="#!">Template 4</a>
+                    </li>
+                  </ul>
+                </div>
+                <div>
+                
+                  <label className="kblink-auto">
+                  <img src={AutoSave} alt="Auto" className="autosavekb" />
+                    Auto Save</label>
+                </div>
                 <Card>
                   <CardBody>
                     <div className="">
@@ -1159,14 +1201,23 @@ class MyTicket extends Component {
                           <label>To: diwarkar@gmail.com</label>
                         </li>
                         <li>
-                          <label className="CCdi">
-                            CC: diwarkar@gmail.com
+                          <label className="">
+                            <input
+                              type="text"
+                              className="CCdi"
+                              placeholder="CC: diwarkar@gmail.com"
+                            />
+
                             <span className="one">+1</span>
                           </label>
                         </li>
                         <li>
-                          <label className="CCdi">
-                            BCC: diwarkar@gmail.com
+                          <label className="">
+                            <input
+                              type="text"
+                              className="CCdi"
+                              placeholder="BCC: diwarkar@gmail.com"
+                            />
                             <span className="one">+1</span>
                           </label>
                         </li>
@@ -1205,6 +1256,150 @@ class MyTicket extends Component {
                   </div>
                 </Card>
               </Collapse>
+            </div>
+            <div>
+              <Modal
+                open={this.state.KbLink}
+                onClose={this.HandleKbLinkModalClose.bind(this)}
+                modalId="KbLink-popup"
+                overlayId="logout-ovrlykb"
+              >
+                <div className="row" style={{ margin: "0" }}>
+                  <div className="col-md-7" style={{ padding: "0" }}>
+                    <div className="knokb">
+                      <h5>
+                        <img
+                          src={KnowledgeLogo}
+                          alt="KnowledgeLogo"
+                          className="knoim1"
+                        />
+                        KNOWLEGE BASE
+                      </h5>
+                      <p>Message</p>
+                      <div className="textkb">
+                        <p className="table-details-data-modal">
+                          Can I purchase a domain through Google?
+                        </p>
+                        {HidecollapsUpKbLink}
+                        {/* <img
+                          src={DownArrowIcon}
+                          alt="down-arrow-icon"
+                          className="down-icon-kb1"
+                        /> */}
+                        <Collapse isOpen={this.state.collapseUp}>
+                          <Card>
+                            <CardBody>
+                              <p>
+                                Google can help you purchase a domain through
+                                one of our domain host partners. During sign up,
+                                just select the option to 'buy a new
+                                domain.'We'll then guide you through the process
+                                to help you set up G suite for your new domain.
+                              </p>
+                              <img
+                                src={CopyBlue}
+                                alt=""
+                                className="copyblue-kb"
+                              />
+                              <a href="#!" className="copyblue-kbtext">
+                                Copy
+                              </a>
+                            </CardBody>
+                          </Card>
+                        </Collapse>
+                      </div>
+
+                      <div className="textkb">
+                        <p className="table-details-data-modal">
+                          Can I still use the previous version of Sites ?
+                        </p>
+
+                        <img
+                          src={DownArrowIcon}
+                          alt="down-arrow-icon"
+                          className="down-icon-kb1"
+                        />
+                      </div>
+                      <div className="textkb">
+                        <p className="table-details-data-modal">
+                          Can I still use the previous version of Sites ?
+                        </p>
+                        <img
+                          src={DownArrowIcon}
+                          alt="down-arrow-icon"
+                          className="down-icon-kb1"
+                        />
+                      </div>
+                      <div className="textkb">
+                        <p className="table-details-data-modal">
+                          Can I still use the previous version of Sites ?
+                        </p>
+                        <img
+                          src={DownArrowIcon}
+                          alt="down-arrow-icon"
+                          className="down-icon-kb1"
+                        />
+                      </div>
+                      <div className="textkb">
+                        <p className="table-details-data-modal">
+                          Can I still use the previous version of Sites ?
+                        </p>
+                        <img
+                          src={DownArrowIcon}
+                          alt="down-arrow-icon"
+                          className="down-icon-kb1"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-md-5 kblinkright">
+                    <div className="knokb-a">
+                      <img
+                        src={CancelImg}
+                        alt="cancelImg"
+                        className="cancalImg-kb"
+                        onClick={this.HandleKbLinkModalClose.bind(this)}
+                      />
+                      <h5>KB TEMPLATE</h5>
+                      <div className="form-group">
+                        <select className="kblinkrectangle-9 select-category-placeholderkblink">
+                          <option>Type</option>
+                          <option>Type-a</option>
+                          <option>Type-b</option>
+                        </select>
+                      </div>
+
+                      <div className="form-group">
+                        <select className="kblinkrectangle-9 select-category-placeholderkblink">
+                          <option>Category</option>
+                          <option>Category-a</option>
+                          <option>Category-b</option>
+                        </select>
+                      </div>
+                      <div className="form-group">
+                        <select className="kblinkrectangle-9 select-category-placeholderkblink">
+                          <option>Sub-Category</option>
+                          <option>Category-a</option>
+                          <option>Category-b</option>
+                        </select>
+                      </div>
+                      <div>
+                        <button className="kblink-search">SEARCH</button>
+                      </div>
+                      <div style={{ marginTop: "275px" }}>
+                        <a href="#!" className="copyblue-kbtext">
+                          VIEW POLICY
+                        </a>
+                        <img
+                          src={ViewBlue}
+                          alt="viewpolicy"
+                          className="viewpolicy-kb"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Modal>
             </div>
             <div className="edit-storeTask-header newtab">
               <div className="tab-content">
@@ -1275,7 +1470,8 @@ class MyTicket extends Component {
                 className="tab-pane fade show active"
                 id="Message-tab"
                 role="tabpanel"
-                aria-labelledby="Message-tab" style={{marginTop: "10px"}}
+                aria-labelledby="Message-tab"
+                style={{ marginTop: "10px" }}
               >
                 <div className="row message-header">
                   <div className="col-12 col-xs-12 col-sm-3">
@@ -1301,7 +1497,7 @@ class MyTicket extends Component {
                 </div>
                 <div className="row top-margin">
                   <div className="col-12 col-xs-12 col-sm-4 col-md-3">
-                    <div className="row" style={{marginTop:"0"}}>
+                    <div className="row" style={{ marginTop: "0" }}>
                       <div className="oval-5-1">
                         <img
                           src={RightImg}
@@ -1315,11 +1511,7 @@ class MyTicket extends Component {
                       >
                         Solved by NamanR
                       </label>
-                      <img
-                        src={MsgImg}
-                        alt="right"
-                        className="smg-Img"
-                      />
+                      <img src={MsgImg} alt="right" className="smg-Img" />
                     </div>
                   </div>
                   <div className="col-12 col-xs-12 col-sm-6 col-md-7">
@@ -1327,9 +1519,7 @@ class MyTicket extends Component {
                       I Have solved this issue
                     </label>
                   </div>
-                  <div
-                    className="col-12 col-xs-12 col-sm-2 col-md-2 mob-flex"
-                  >
+                  <div className="col-12 col-xs-12 col-sm-2 col-md-2 mob-flex">
                     {HidecollapsUp}
                     <label
                       className="comment"
@@ -1361,32 +1551,33 @@ class MyTicket extends Component {
                   </Drawer>
                 </div>
                 <div className="row card-op-out">
-                <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
+                  <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
                   <div className="col-12 col-xs-12 col-sm-6 col-md-7">
-                  <Collapse isOpen={this.state.collapseUp}>
-                    <Card>
-                      <CardBody>
-                        <div className="card-details">
-                          <div className="card-details-1">
-                            <label className="label-5">Dear Matthew,</label>
-                            <label className="label-5">
-                              We're always working to make Shopify exactly what
-                              you need for your retails business. Your feedback
-                              helps us decide which features to build, and what
-                              improvements should be made to our platform.
-                              <br />
-                              <br />
-                              To help us make Shopify the best it can be, we
-                              want your feedback today, take a few minutes to
-                              fill out survays before Tuesday,July 7th.
-                            </label>
+                    <Collapse isOpen={this.state.collapseUp}>
+                      <Card>
+                        <CardBody>
+                          <div className="card-details">
+                            <div className="card-details-1">
+                              <label className="label-5">Dear Matthew,</label>
+                              <label className="label-5">
+                                We're always working to make Shopify exactly
+                                what you need for your retails business. Your
+                                feedback helps us decide which features to
+                                build, and what improvements should be made to
+                                our platform.
+                                <br />
+                                <br />
+                                To help us make Shopify the best it can be, we
+                                want your feedback today, take a few minutes to
+                                fill out survays before Tuesday,July 7th.
+                              </label>
+                            </div>
                           </div>
-                        </div>
-                      </CardBody>
-                    </Card>
-                  </Collapse>
+                        </CardBody>
+                      </Card>
+                    </Collapse>
                   </div>
-                <div className="col-12 col-xs-12 col-sm-2"></div>
+                  <div className="col-12 col-xs-12 col-sm-2"></div>
                 </div>
 
                 <div className="row">
@@ -1401,8 +1592,7 @@ class MyTicket extends Component {
                   </div>
                 </div>
 
-                <div
-                  className="row new-top-bottom-margin">
+                <div className="row new-top-bottom-margin">
                   <div className="col-12 col-xs-12 col-sm-4 col-md-3">
                     <img
                       src={Loading1Img}
@@ -1432,59 +1622,64 @@ class MyTicket extends Component {
                       Comment
                     </label>
                   </div>
-                  <div className="row" style={{width:"100%"}}>
+                  <div className="row" style={{ width: "100%" }}>
                     <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
                     <div className="col-12 col-xs-12 col-sm-8 col-md-9">
                       <div className="commentcollapseTicket">
-                    <Collapse isOpen={this.state.CommentCollapse}>
-                      <Card>
-                        <CardBody>
-                          <div className="commenttextborder">
-                            <div className="Commentlabel">
-                              <label className="Commentlabel1">Comment</label>
-                            </div>
-                            <div>
-                              <span className="comment-line"></span>
-                              <img
-                                src={MinusImg}
-                                alt="Minus"
-                                className="CommentMinus-img"
-                              />
-                            </div>
-                            <div className="commenttextmessage">
-                              <label style={{ marginBottom: "10px" }}>
-                                Hello,
-                              </label>
-                              <label>
-                                I saw a vintage table lamp on your site last
-                                month and I'd bookmarked it to buy it later for
-                                a friend. I can't seem to find it anymore
-                                through.
-                                <br></br>Is it out of stock or do you not sell
-                                those anymore ?
-                              </label>
-                              <label
-                                style={{ marginTop: "10px", display: "block" }}
-                              >
-                                Thanks
-                              </label>
-                              <label>Naman Rampal.</label>
-                            </div>
-                            <div className="SendCommentBtn">
-                              <button
-                                className="SendCommentBtn1"
-                                onClick={this.handleCommentCollapseOpen2.bind(
-                                  this
-                                )}
-                              >
-                                SEND
-                              </button>
-                            </div>
-                          </div>
-                        </CardBody>
-                      </Card>
-                    </Collapse>
-                  </div>
+                        <Collapse isOpen={this.state.CommentCollapse}>
+                          <Card>
+                            <CardBody>
+                              <div className="commenttextborder">
+                                <div className="Commentlabel">
+                                  <label className="Commentlabel1">
+                                    Comment
+                                  </label>
+                                </div>
+                                <div>
+                                  <span className="comment-line"></span>
+                                  <img
+                                    src={MinusImg}
+                                    alt="Minus"
+                                    className="CommentMinus-img"
+                                  />
+                                </div>
+                                <div className="commenttextmessage">
+                                  <label style={{ marginBottom: "10px" }}>
+                                    Hello,
+                                  </label>
+                                  <label>
+                                    I saw a vintage table lamp on your site last
+                                    month and I'd bookmarked it to buy it later
+                                    for a friend. I can't seem to find it
+                                    anymore through.
+                                    <br></br>Is it out of stock or do you not
+                                    sell those anymore ?
+                                  </label>
+                                  <label
+                                    style={{
+                                      marginTop: "10px",
+                                      display: "block"
+                                    }}
+                                  >
+                                    Thanks
+                                  </label>
+                                  <label>Naman Rampal.</label>
+                                </div>
+                                <div className="SendCommentBtn">
+                                  <button
+                                    className="SendCommentBtn1"
+                                    onClick={this.handleCommentCollapseOpen2.bind(
+                                      this
+                                    )}
+                                  >
+                                    SEND
+                                  </button>
+                                </div>
+                              </div>
+                            </CardBody>
+                          </Card>
+                        </Collapse>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1525,8 +1720,18 @@ class MyTicket extends Component {
                               </li>
                             </ul>
                           </div>
-                          <a href="#!" className="kblink"><FontAwesomeIcon icon={faBrain} />  Kb Link</a>
-                          <div class="dropdown collapbtn" style={{ display: "inherit" }}>
+                          <a href="#!" className="kblink">
+                            <img
+                              src={KnowledgeLogo}
+                              alt="KnowledgeLogo"
+                              className="knoim"
+                            />{" "}
+                            Kb Link
+                          </a>
+                          <div
+                            class="dropdown collapbtn"
+                            style={{ display: "inherit" }}
+                          >
                             <button
                               class="dropdown-toggle my-tic-email"
                               type="button"
@@ -1536,28 +1741,24 @@ class MyTicket extends Component {
                             </button>
                             <ul class="dropdown-menu">
                               <li>
-                                <a href="#!">
-                                 Template 1
-                                </a>
+                                <a href="#!">Template 1</a>
                               </li>
                               <li>
-                                <a href="#!">
-                                 Template 2
-                                </a>
+                                <a href="#!">Template 2</a>
                               </li>
                               <li>
-                                <a href="#!">
-                                 Template 3
-                                </a>
+                                <a href="#!">Template 3</a>
                               </li>
                               <li>
-                                <a href="#!">
-                                 Template 4
-                                </a>
+                                <a href="#!">Template 4</a>
                               </li>
                             </ul>
                           </div>
-                            <h3 className="textbhead">Subject: <span>Need to change my shipping address</span></h3>
+                          
+                          <h3 className="textbhead">
+                            Subject:{" "}
+                            <span>Need to change my shipping address</span>
+                          </h3>
                           <div
                             className="mob-float"
                             style={{ display: "inline", float: "right" }}
@@ -1624,14 +1825,22 @@ class MyTicket extends Component {
                               <label>To: diwarkar@gmail.com</label>
                             </li>
                             <li>
-                              <label className="CCdi">
-                                CC: diwarkar@gmail.com
+                              <label className="">
+                                <input
+                                  type="text"
+                                  className="CCdi"
+                                  placeholder="CC: diwarkar@gmail.com"
+                                />
                                 <span className="one">+1</span>
                               </label>
                             </li>
                             <li>
-                              <label className="CCdi">
-                                BCC: diwarkar@gmail.com
+                              <label className="">
+                                <input
+                                  type="text"
+                                  className="CCdi"
+                                  placeholder="BCC: diwarkar@gmail.com"
+                                />
                                 <span className="one">+1</span>
                               </label>
                             </li>
@@ -1673,9 +1882,7 @@ class MyTicket extends Component {
                     </Card>
                   </Collapse>
                 </div>
-                <div
-                  className="row row-spacing new-top-bottom-margin"
-                >
+                <div className="row row-spacing new-top-bottom-margin">
                   <div className="col-12 col-xs-12 col-sm-4 col-md-3">
                     <img
                       src={Headphone2Img}
@@ -1698,16 +1905,15 @@ class MyTicket extends Component {
                     </label>
                   </div>
                   <div className="col-12 col-xs-12 col-sm-2">
-                  <label
-                    className="comment-text1"
-                    onClick={this.hanldeCommentOpen2.bind(this)}
-                  >
-                    Comment
-                  </label></div>
+                    <label
+                      className="comment-text1"
+                      onClick={this.hanldeCommentOpen2.bind(this)}
+                    >
+                      Comment
+                    </label>
+                  </div>
                 </div>
-                <div
-                  className="row row-spacing new-top-bottom-margin"
-                >
+                <div className="row row-spacing new-top-bottom-margin">
                   <div className="col-12 col-xs-12 col-sm-4 col-md-3">
                     <img src={BlackUserIcon} alt="Avatar" className="oval-6" />
                     <label className="rashmi-c">Diwakar</label>
@@ -1723,13 +1929,11 @@ class MyTicket extends Component {
                     </label>
                   </div>
                   <div className="col-12 col-xs-12 col-sm-2">
-                  <label
-                    className="reply-comment"
-                  >
-                    Reply
-                    <br />
-                    Comment
-                  </label>
+                    <label className="reply-comment">
+                      Reply
+                      <br />
+                      Comment
+                    </label>
                   </div>
                 </div>
               </div>

@@ -236,21 +236,26 @@ class Dashboard extends Component {
                 modalId="AllAcountTenantModal"
                 overlayId="logout-ovrly"
               >
-                <div>
+                <div className="tendashmod">
+                  <ul>
+                    <li>
                   <label className="AllAcounttext">All</label>
+                  </li>
                   <div className="rightbluefloat">
                     <img
                       src={RightBlue}
                       alt="Right-Blue"
                       className="rightblue"
                     />
-                  </div>
-                  <label className="AllAcounttext">Looks Salon Pvt.Ltd</label>
-                  <label className="AllAcounttext">Bata India Ltd</label>
-                  <label className="AllAcounttext">
+                  </div> 
+                  <li>
+                  <label className="AllAcounttext">Looks Salon Pvt.Ltd</label></li>
+                  <li><label className="AllAcounttext">Bata India Ltd</label></li>
+                  <li><label className="AllAcounttext">
                     VlCC Health Care Limited
-                  </label>
-                  <label className="AllAcounttext">RBL Ltd</label>
+                  </label></li>
+                  <li><label className="AllAcounttext">RBL Ltd</label></li>
+                  </ul>
                 </div>
               </Modal>
             </div>

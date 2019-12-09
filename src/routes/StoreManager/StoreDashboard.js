@@ -65,9 +65,9 @@ class StoreDashboard extends Component {
           </div>
         </div>
         <section className="dash-cntr">
-          <div className="container-fluid btm-mar store-dash-top">
+          <div className="container-fluid btm-mar store-dash-top storecards">
             <div className="row">
-              <div className="col-12 col-xs-6 col-sm-4">
+              <div className="col-12 col-xs-6 col-sm-4 col-md-2">
                 <div className="dash-top-cards">
                   <p className="card-head">Task</p>
                   <div className="aside-cont">
@@ -82,7 +82,7 @@ class StoreDashboard extends Component {
                   </div>
                 </div>
               </div>
-              <div className="col-12 col-xs-6 col-sm-4">
+              <div className="col-12 col-xs-6 col-sm-4 col-md-2">
                 <div className="dash-top-cards">
                   <p className="card-head">Task</p>
                   <div className="aside-cont">
@@ -93,7 +93,7 @@ class StoreDashboard extends Component {
                   </div>
                 </div>
               </div>
-              <div className="col-12 col-xs-6 col-sm-4">
+              <div className="col-12 col-xs-6 col-sm-4 col-md-2">
                 <div className="dash-top-cards">
                   <p className="card-head">Claim</p>
                   <div className="aside-cont">
@@ -108,13 +108,13 @@ class StoreDashboard extends Component {
                   </div>
                 </div>
               </div>
-              <div className="col-12 col-xs-6 col-sm-4">
+              <div className="col-12 col-xs-6 col-sm-4 col-md-2">
                 <div className="dash-top-cards">
                   <p className="card-head">Claim</p>
                   <span className="card-value red-clr">40</span>
                 </div>
               </div>
-              <div className="col-12 col-xs-6 col-sm-4">
+              <div className="col-12 col-xs-6 col-sm-4 col-md-2">
                 <div className="dash-top-cards">
                   <p className="card-head">Campaign</p>
                   <div className="aside-cont">
@@ -364,7 +364,7 @@ class StoreDashboard extends Component {
                     </CardBody>
                   </Card>
                 </Collapse>
-                <div className="tickhierpad">
+                <div className="table-responsive tickhierpad">
                   <table className="table-responsive stinlitab">
                   <thead>
                     <tr>

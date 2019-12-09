@@ -114,13 +114,13 @@ class TicketSystemStore extends Component {
     return (
       <Fragment>
         <div className="row storemainrow">
-          <div className="col-md-8">
+          <div className="col-12 col-lg-7 col-xl-8">
             <select className="systemstoredropdown">
               <option>Customer Want to visit store</option>
               <option>Customer Already visited store</option>
             </select>
           </div>
-          <div className="col-md-3">
+          <div className="col-12 col-lg-3 col-xl-3">
             <div style={{ display: "flex", marginTop: "7px" }}>
               <label className="orderdetailpopup">Yes</label>
               <div className="switchmargin">
@@ -132,7 +132,7 @@ class TicketSystemStore extends Component {
               <label className="orderdetailpopup">No</label>
             </div>
           </div>
-          <div className="col-md-1">
+          <div className="col-12 col-lg-2 col-xl-1">
             <div className="storeplusline">
               <span className="plusline1"></span>
               <img

@@ -8745,4 +8745,34 @@ table tr th:last-child {
   margin-top: -4px;
 }
 /* MyTicket KbLink Css end Kalpesh */
+.dash-task-popup-new {
+  width: 220px;
+  padding: 20px 20px 25px;
+  transform: translateX(0%);
+  left: 50%;
+  top: initial !important;
+  bottom: 34px;
+}
+.DashBoarReact .ReactTable .rt-tbody .rt-tr-group:nth-child(1) {
+  background-color: #ffdfdf;
+}
+.DashBoarReact .ReactTable .rt-tbody .rt-tr-group:nth-child(2) {
+  background-color: #fff3df;
+}
+.DashBoarReact .ReactTable .rt-tbody .rt-tr-group:nth-child(3) {
+  background-color: #def3ff;
+}
+@media (min-width: 768px) {
+.storecards .col-sm-4 {
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+}
+}
+@media (min-width: 768px) {
+  .storecards .col-md-2 {
+      flex: 0 0 20%;
+      max-width: 20%;
+  }
+  }
+
 /* ****************End css ************************/

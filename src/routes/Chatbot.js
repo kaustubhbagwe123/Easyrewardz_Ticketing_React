@@ -314,11 +314,15 @@ class Chatbot extends Component {
                 overlayId="logout-ovrly"
               >
                 <div className="popgrid">
+                  <ul>
+                  <li>
                   <label>Transfer to Agent/Supervisor</label>
-                  <label>Ban Visitor</label>
-                  <label>Translate Chat</label>
-                  <label>End Chat</label>
-                  <label>End Chat & Create Ticket</label>
+                  </li>
+                  <li><label>Ban Visitor</label></li>
+                  <li><label>Translate Chat</label></li>
+                  <li><label>End Chat</label></li>
+                  <li><label>End Chat & Create Ticket</label></li>
+                  </ul>
                 </div>
               </Modal>
                   <div className="row m-0">

@@ -199,12 +199,12 @@ class TicketSystemOrder extends Component {
     return (
       <div>
         <div className="row storemainrow">
-          <div className="col-md-8">
+          <div className="col-12 col-lg-7 col-xl-8">
             <label className="systemstordercustomer">
               Customer Want to attach order
             </label>
           </div>
-          <div className="col-md-3">
+          <div className="col-12 col-lg-3 col-xl-3">
             <div style={{ display: "flex", marginTop: "7px" }}>
               <label className="orderdetailpopup">Yes</label>
               <div className="switchmargin">
@@ -216,7 +216,7 @@ class TicketSystemOrder extends Component {
               <label className="orderdetailpopup">No</label>
             </div>
           </div>
-          <div className="col-md-1">
+          <div className="col-12 col-lg-2 col-xl-1">
             <div className="storeplusline">
               <span className="plusline1"></span>
               <img
