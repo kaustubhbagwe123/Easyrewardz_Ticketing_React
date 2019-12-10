@@ -1,10 +1,6 @@
 import React, { Component, Fragment } from "react";
 import Modal from "react-responsive-modal";
-import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
-import { faCommentAlt } from "@fortawesome/free-solid-svg-icons";
-import { faComment } from "@fortawesome/free-solid-svg-icons";
-// import { faBrain } from "@fortawesome/free-solid-svg-icons";
-import { faPhone } from "@fortawesome/free-solid-svg-icons";
+// import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { faCalculator } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import HistoricalTable from "./HistoricalTable";
@@ -47,6 +43,10 @@ import CopyBlue from "./../assets/Images/copyblue.png";
 import ViewBlue from "./../assets/Images/viewblue.png";
 import ThumbTick from "./../assets/Images/thumbticket.png";
 import AutoSave from "./../assets/Images/AutoSave.png";
+import Email1 from "./../assets/Images/SecuredLetter2.png";
+import Sms1 from "./../assets/Images/Sms.png";
+import Facebook1 from "./../assets/Images/facebook.png";
+import Call1 from "./../assets/Images/call.png";
 
 class MyTicket extends Component {
   constructor(props) {
@@ -68,6 +68,7 @@ class MyTicket extends Component {
       CommentCollapse2: false,
       Comment1Collapse: false,
       KbLink: false,
+      fileName: "",
       values: [
         {
           taskTitle: "",
@@ -81,6 +82,19 @@ class MyTicket extends Component {
     this.toggleView = this.toggleView.bind(this);
   }
 
+  fileUpload = e => {
+    this.setState({ fileName: e.target.files[0].name });
+  };
+  fileDrop = e => {
+    this.setState({ fileName: e.dataTransfer.files[0].name });
+    e.preventDefault();
+  };
+  fileDragOver = e => {
+    e.preventDefault();
+  };
+  fileDragEnter = e => {
+    e.preventDefault();
+  };
   toggleView() {
     this.setState({
       HistOrderShow: !this.state.HistOrderShow
@@ -525,7 +539,7 @@ class MyTicket extends Component {
               </div>
 
               <div className="col-12 col-xs-8 col-sm-8 col-md-9">
-                <div style={{ float: "right", marginTop: "10px" }}>
+                <div style={{ float: "right", marginTop: "0px" }}>
                   <img
                     src={Headphone2Img}
                     alt="headphone"
@@ -1074,27 +1088,41 @@ class MyTicket extends Component {
                       type="button"
                       data-toggle="dropdown"
                     >
-                      <FontAwesomeIcon icon={faEnvelope} /> Email
+                      <img src={Email1} alt="email" className="EMFCImg" />
+                          <span className="EMFCText">Email</span>
+                      {/* <FontAwesomeIcon icon={faEnvelope} /> Email */}
                     </button>
                     <ul class="dropdown-menu">
                       <li>
                         <a href="#!">
-                          <FontAwesomeIcon icon={faEnvelope} /> Email
+                          <img src={Email1} alt="email" className="EMFCImg" />
+                          <span className="EMFCText">Email</span>
+                          {/* <FontAwesomeIcon icon={faEnvelope} /> Email */}
                         </a>
                       </li>
                       <li>
                         <a href="#!">
-                          <FontAwesomeIcon icon={faCommentAlt} /> SMS
+                          <img src={Sms1} alt="sma" className="EMFCImg" />
+                          <span className="EMFCText">SMS</span>
+                          {/* <FontAwesomeIcon icon={faCommentAlt} /> SMS */}
                         </a>
                       </li>
                       <li>
                         <a href="#!">
-                          <FontAwesomeIcon icon={faComment} /> Facebook
+                          <img
+                            src={Facebook1}
+                            alt="facebook"
+                            className="EMFCImg"
+                          />
+                          <span className="EMFCText">Facebook</span>
+                          {/* <FontAwesomeIcon icon={faComment} /> Facebook */}
                         </a>
                       </li>
                       <li>
                         <a href="#!">
-                          <FontAwesomeIcon icon={faPhone} /> Call
+                          <img src={Call1} alt="call" className="EMFCImg" />
+                          <span className="EMFCText">Call</span>
+                          {/* <FontAwesomeIcon icon={faPhone} /> Call */}
                         </a>
                       </li>
                     </ul>
@@ -1150,10 +1178,10 @@ class MyTicket extends Component {
                   </ul>
                 </div>
                 <div>
-                
                   <label className="kblink-auto">
-                  <img src={AutoSave} alt="Auto" className="autosavekb" />
-                    Auto Save</label>
+                    <img src={AutoSave} alt="Auto" className="autosavekb" />
+                    Auto Save
+                  </label>
                 </div>
                 <Card>
                   <CardBody>
@@ -1239,11 +1267,24 @@ class MyTicket extends Component {
                         </li>
                         <li>
                           <span>
-                            <img
-                              src={FileUpload}
-                              alt="file-upload"
-                              className="fileup"
+                            <input
+                              id="file-upload"
+                              className="file-upload1 d-none"
+                              type="file"
+                              onChange={this.fileUpload}
                             />
+                            <label
+                              htmlFor="file-upload"
+                              onDrop={this.fileDrop}
+                              onDragOver={this.fileDragOver}
+                              onDragEnter={this.fileDragEnter}
+                            >
+                              <img
+                                src={FileUpload}
+                                alt="file-upload"
+                                className="fileup"
+                              />
+                            </label>
                           </span>
                           <label style={{ color: "#2561a8" }}>3 files</label>
                         </li>
@@ -1695,31 +1736,67 @@ class MyTicket extends Component {
                               type="button"
                               data-toggle="dropdown"
                             >
-                              <FontAwesomeIcon icon={faEnvelope} /> Email
+                              <img src={Email1} alt="email" className="EMFCImg" />
+                          <span className="EMFCText">Email</span>
+                              {/* <FontAwesomeIcon icon={faEnvelope} /> Email */}
                             </button>
                             <ul class="dropdown-menu">
                               <li>
                                 <a href="#!">
-                                  <FontAwesomeIcon icon={faEnvelope} /> Email
+                                  <img
+                                    src={Email1}
+                                    alt="email"
+                                    className="EMFCImg"
+                                  />
+                                  <span className="EMFCText">Email</span>
+                                  {/* <FontAwesomeIcon icon={faEnvelope} /> Email */}
                                 </a>
                               </li>
                               <li>
                                 <a href="#!">
-                                  <FontAwesomeIcon icon={faCommentAlt} /> SMS
+                                  <img
+                                    src={Sms1}
+                                    alt="sms"
+                                    className="EMFCImg"
+                                  />
+                                  <span className="EMFCText">SMS</span>
+                                  {/* <FontAwesomeIcon icon={faCommentAlt} /> SMS */}
                                 </a>
                               </li>
                               <li>
                                 <a href="#!">
-                                  <FontAwesomeIcon icon={faComment} /> Facebook
+                                  <img
+                                    src={Facebook1}
+                                    alt="facebook"
+                                    className="EMFCImg"
+                                  />
+                                  <span className="EMFCText">Facebook</span>
+                                  {/* <FontAwesomeIcon icon={faComment} /> Facebook */}
                                 </a>
                               </li>
                               <li>
                                 <a href="#!">
-                                  <FontAwesomeIcon icon={faPhone} /> Call
+                                  <img
+                                    src={Call1}
+                                    alt="call"
+                                    className="EMFCImg"
+                                  />
+                                  <span className="EMFCText">Call</span>
+                                  {/* <FontAwesomeIcon icon={faPhone} /> Call */}
                                 </a>
                               </li>
                             </ul>
                           </div>
+
+                          <label className="kblink-auto1">
+                            <img
+                              src={AutoSave}
+                              alt="Auto"
+                              className="autosavekb"
+                            />
+                            Auto Save
+                          </label>
+
                           <a href="#!" className="kblink">
                             <img
                               src={KnowledgeLogo}
@@ -1728,6 +1805,7 @@ class MyTicket extends Component {
                             />{" "}
                             Kb Link
                           </a>
+
                           <div
                             class="dropdown collapbtn"
                             style={{ display: "inherit" }}
@@ -1754,7 +1832,7 @@ class MyTicket extends Component {
                               </li>
                             </ul>
                           </div>
-                          
+
                           <h3 className="textbhead">
                             Subject:{" "}
                             <span>Need to change my shipping address</span>
@@ -1848,12 +1926,12 @@ class MyTicket extends Component {
                               <div className="filter-checkbox">
                                 <input
                                   type="checkbox"
-                                  id="fil-open"
+                                  id="fil-open1"
                                   name="filter-type"
                                   style={{ display: "none" }}
                                 />
                                 <label
-                                  htmlFor="fil-open"
+                                  htmlFor="fil-open1"
                                   style={{ paddingLeft: "25px" }}
                                 >
                                   <span>Inform Store Note</span>
@@ -1862,11 +1940,24 @@ class MyTicket extends Component {
                             </li>
                             <li>
                               <span>
-                                <img
-                                  src={FileUpload}
-                                  alt="file-upload"
-                                  className="fileup"
+                                <input
+                                  id="file-upload"
+                                  className="file-upload1 d-none"
+                                  type="file"
+                                  onChange={this.fileUpload}
                                 />
+                                <label
+                                  htmlFor="file-upload"
+                                  onDrop={this.fileDrop}
+                                  onDragOver={this.fileDragOver}
+                                  onDragEnter={this.fileDragEnter}
+                                >
+                                  <img
+                                    src={FileUpload}
+                                    alt="file-upload"
+                                    className="fileup"
+                                  />
+                                </label>
                               </span>
                               <label style={{ color: "#2561a8" }}>
                                 3 files

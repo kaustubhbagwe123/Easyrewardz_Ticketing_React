@@ -301,7 +301,7 @@ class Dashboard extends Component {
           </span>
         ),
         subjectDash: (
-          <div style={{ color: "#000" }}>
+          <div>
             Need to change my shipping address <br></br>
             <span>Hope this help, Please rate us</span>
           </div>
