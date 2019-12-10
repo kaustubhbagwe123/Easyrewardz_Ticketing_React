@@ -181,7 +181,6 @@ class StoreUsers extends Component {
                             className="info-icon"
                             src={InfoIcon}
                             alt="info-icon"
-                            // id="desig1"
                           />
                         </td>
                         <td>

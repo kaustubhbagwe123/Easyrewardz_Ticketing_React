@@ -2799,5 +2799,18 @@
 .tickhierpad table th{
   padding: 15px 20px;
 }
-
 /* Module Css End */
+/* Setting ReactTable Css Start Kalpesh */
+.TicketStoreReact .ReactTable .rt-thead .rt-th.-cursor-pointer, .ReactTable .rt-thead .rt-td.-cursor-pointer {
+  padding: 20px 8px !important;
+}
+.TicketStoreReact .ReactTable .rt-tbody .rt-td {
+  padding: 18px 8px !important;
+}
+.TicketCategoyMasReact .ReactTable .rt-thead .rt-th.-cursor-pointer, .ReactTable .rt-thead .rt-td.-cursor-pointer {
+  padding: 20px 10px !important;
+}
+.TicketCategoyMasReact .ReactTable .rt-tbody .rt-td {
+  padding: 18px 10px !important;
+}
+/* Setting ReactTable Css Start Kalpesh */

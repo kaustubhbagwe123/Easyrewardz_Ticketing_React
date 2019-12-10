@@ -1,9 +1,5 @@
 import React, { Component } from "react";
-import TableArr from "./../../../assets/Images/table-arr.png";
 import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
-import BlackDeleteIcon from "./../../../assets/Images/del-big.png";
-// import UploadIcon from "./../../assets/Images/clip.png";
-// import CrossIcon from "./../../assets/Images/cross-icon.png";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import Demo from "./../../../store/Hashtag.js";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
@@ -14,6 +10,10 @@ import { ProgressBar } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { Select } from "antd";
 import SweetAlert from "react-bootstrap-sweetalert";
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Popover } from "antd";
+import ReactTable from "react-table";
 
 const { Option } = Select;
 const NEW_ITEM = "NEW_ITEM";
@@ -102,9 +102,188 @@ class CategoryMaster extends Component {
     }
   };
   render() {
+    const dataTickCate = [
+      {
+        id: "U1",
+        status: <span>Active</span>
+      },
+      {
+        id: "U2",
+        status: <span>Inactive</span>
+      },
+      {
+        id: "U3",
+        status: <span>Active</span>
+      },
+      {
+        id: "U4",
+        status: <span>Inactive</span>
+      },
+      {
+        id: "U5",
+        status: <span>Active</span>
+      }
+    ];
+
+    const columnsTickCate = [
+      {
+        Header: (
+          <span>
+            Brand Name
+            <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "BrandName",
+        Cell: row => <span>Bata</span>
+      },
+      {
+        Header: (
+          <span>
+            Category
+            <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "Category",
+        Cell: row => <span>Complaint</span>
+      },
+      {
+        Header: (
+          <span>
+            Sub Category
+            <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "SubCategory",
+        Cell: row => <span>Defective article</span>
+      },
+      {
+        Header: (
+          <span>
+            Issue Type
+            <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "IssueType",
+        Cell: row => <span>Broken Shoes</span>
+      },
+      {
+        Header: (
+          <span>
+            Status
+            <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "status"
+      },
+      {
+        Header: <span>Actions</span>,
+        accessor: "actiondept",
+        Cell: row => {
+          var ids = row.original["id"];
+          return (
+            <>
+              <span>
+                <Popover
+                  content={ActionDelete}
+                  placement="bottom"
+                  trigger="click"
+                >
+                  <img
+                    src={RedDeleteIcon}
+                    alt="del-icon"
+                    className="del-btn"
+                    id={ids}
+                  />
+                </Popover>
+                <Popover
+                  content={ActionEditBtn}
+                  placement="bottom"
+                  trigger="click"
+                >
+                  <button className="react-tabel-button" id="p-edit-pop-2">
+                    <label className="Table-action-edit-button-text">
+                      EDIT
+                    </label>
+                  </button>
+                </Popover>
+              </span>
+            </>
+          );
+        }
+      }
+    ];
+    const ActionDelete = (
+      <div className="d-flex general-popover popover-body">
+        <div className="del-big-icon">
+          <img src={DelBigIcon} alt="del-icon" />
+        </div>
+        <div>
+          <p className="font-weight-bold blak-clr">Delete file?</p>
+          <p className="mt-1 fs-12">
+            Are you sure you want to delete this file?
+          </p>
+          <div className="del-can">
+            <a href={Demo.BLANK_LINK}>CANCEL</a>
+            <button className="butn">Delete</button>
+          </div>
+        </div>
+      </div>
+    );
+    const ActionEditBtn = (
+      <div className="edtpadding">
+        <div className="">
+          <label className="popover-header-text">CREATE CATEGORY</label>
+        </div>
+        <div className="pop-over-div">
+          <label className="edit-label-1">Brand Name</label>
+          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
+            <option>Bata</option>
+            <option>Bata1</option>
+            <option>Bata3</option>
+          </select>
+        </div>
+        <div className="pop-over-div">
+          <label className="edit-label-1">Category</label>
+          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
+            <option>Bata</option>
+            <option>Bata1</option>
+            <option>Bata3</option>
+          </select>
+        </div>
+        <div className="pop-over-div">
+          <label className="edit-label-1">Sub-Category</label>
+          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
+            <option>Bata</option>
+            <option>Bata1</option>
+            <option>Bata3</option>
+          </select>
+        </div>
+        <div className="pop-over-div">
+          <label className="edit-label-1">Issue Type</label>
+          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
+            <option>Bata</option>
+            <option>Bata1</option>
+            <option>Bata3</option>
+          </select>
+        </div>
+        <div className="pop-over-div">
+          <label className="edit-label-1">Status</label>
+          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
+            <option>Active</option>
+            <option>Inactive</option>
+          </select>
+        </div>
+        <br />
+        <div>
+          <label className="pop-over-cancle">CANCEL</label>
+          <button className="pop-over-button">
+            <label className="pop-over-btnsave-text">SAVE</label>
+          </button>
+        </div>
+      </div>
+    );
+
     const { list1Value, ListOfSubCate } = this.state;
-    const editbool = false;
-    const tooltipDelay = { show: 50, hide: 100 };
     const list1SelectOptions = this.state.listOfCategory.map(o => (
       <Option key={o}>{o}</Option>
     ));
@@ -114,9 +293,13 @@ class CategoryMaster extends Component {
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
-          <Link to="settings" className="header-path">Settings</Link>
+          <Link to="settings" className="header-path">
+            Settings
+          </Link>
           <span>&gt;</span>
-          <Link to={Demo.BLANK_LINK} className="header-path">Ticketing</Link>
+          <Link to={Demo.BLANK_LINK} className="header-path">
+            Ticketing
+          </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
             Category Master
@@ -126,751 +309,14 @@ class CategoryMaster extends Component {
           <div className="store-settings-cntr">
             <div className="row">
               <div className="col-md-8">
-                <div className="table-cntr table-height category-master">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>
-                          Brand Name <img src={TableArr} alt="table-arr" />
-                        </th>
-                        <th>
-                          Category <img src={TableArr} alt="table-arr" />
-                        </th>
-                        <th>
-                          Sub Category <img src={TableArr} alt="table-arr" />
-                        </th>
-                        <th>
-                          Issue Type <img src={TableArr} alt="table-arr" />
-                        </th>
-                        <th>
-                          Status <img src={TableArr} alt="table-arr" />
-                        </th>
-
-                        {/* <th></th> */}
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>
-                          <label className="table-data-text">Bata</label>
-                        </td>
-                        <td>
-                          <label className="table-data-text">Complaint</label>
-                        </td>
-                        <td>
-                          <label className="table-data-text">
-                            Defective article
-                          </label>
-                        </td>
-                        <td>
-                          <label className="table-data-text">
-                            Broken Shoes
-                          </label>
-                        </td>
-
-                        <td>
-                          <label className="table-data-text">Active</label>
-                        </td>
-
-                        <td>
-                          <div className="row">
-                            <div className="del-btn" id="del1">
-                              <img src={RedDeleteIcon} alt="del-icon" />
-                            </div>
-                            <UncontrolledPopover
-                              trigger="legacy"
-                              placement="bottom"
-                              target="del1"
-                              className="general-popover delete-popover"
-                              delay={tooltipDelay}
-                            >
-                              <PopoverBody className="d-flex">
-                                <div className="del-big-icon">
-                                  <img src={BlackDeleteIcon} alt="del-icon" />
-                                </div>
-                                <div>
-                                  <p className="font-weight-bold blak-clr">
-                                    Delete file?
-                                  </p>
-                                  <p className="mt-1 fs-12">
-                                    Are you sure you want to delete this file?
-                                  </p>
-                                  <div className="del-can">
-                                    <a href={Demo.BLANK_LINK}>CANCEL</a>
-                                    <button className="butn">Delete</button>
-                                  </div>
-                                </div>
-                              </PopoverBody>
-                            </UncontrolledPopover>
-                            <div className="list-edit-button-margin btn-del-pop">
-                              <button
-                                className="Table-action-edit-button"
-                                id="edit-pop-1"
-                              >
-                                <label className="Table-action-edit-button-text">
-                                  EDIT
-                                </label>
-                              </button>
-                              <UncontrolledPopover
-                                trigger="legacy"
-                                placement="bottom"
-                                target="edit-pop-1"
-                                className="general-popover delete-popover"
-                                delay={tooltipDelay}
-                                flip={editbool}
-                              >
-                                <PopoverBody className="d-flex">
-                                  <div>
-                                    <div className="">
-                                      <label className="popover-header-text">
-                                        EDIT CATEGORY
-                                      </label>
-                                    </div>
-                                    <div className=" pop-over-div">
-                                      <label className="pop-over-lbl-text">
-                                        Brand Name
-                                      </label>
-                                      <select className="pop-over-select">
-                                        <option>Bata</option>
-                                      </select>
-                                    </div>
-                                    <div className=" pop-over-div">
-                                      <label className="pop-over-lbl-text">
-                                        Category
-                                      </label>
-                                      <select className="pop-over-select">
-                                        <option>Complaint</option>
-                                      </select>
-                                    </div>
-                                    <div className=" pop-over-div">
-                                      <label className="pop-over-lbl-text">
-                                        Sub Category
-                                      </label>
-                                      <select className="pop-over-select">
-                                        <option>Defective Article</option>
-                                      </select>
-                                    </div>
-                                    <div className=" pop-over-div">
-                                      <label className="pop-over-lbl-text">
-                                        Issue Type
-                                      </label>
-                                      <select className="pop-over-select">
-                                        <option>Broken Shoes</option>
-                                      </select>
-                                    </div>
-
-                                    <div className="pop-over-div">
-                                      <label className="pop-over-lbl-text">
-                                        Status
-                                      </label>
-                                      <select className="pop-over-select">
-                                        <option>Active</option>
-                                        <option>Inactive</option>
-                                      </select>
-                                    </div>
-                                    <br />
-                                    <div>
-                                      <label className="pop-over-cancle">
-                                        CANCEL
-                                      </label>
-                                      <button className="pop-over-button">
-                                        <label className="pop-over-btnsave-text">
-                                          SAVE
-                                        </label>
-                                      </button>
-                                    </div>
-                                  </div>
-                                </PopoverBody>
-                              </UncontrolledPopover>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <label className="table-data-text">Bata</label>
-                        </td>
-                        <td>
-                          <label className="table-data-text">Complaint</label>
-                        </td>
-                        <td>
-                          <label className="table-data-text">
-                            Defective article
-                          </label>
-                        </td>
-                        <td>
-                          <label className="table-data-text">
-                            Broken Shoes
-                          </label>
-                        </td>
-
-                        <td>
-                          <label className="table-data-text">Inactive</label>
-                        </td>
-
-                        <td>
-                          <div className="row">
-                            <div className="del-btn" id="del2">
-                              <img src={RedDeleteIcon} alt="del-icon" />
-                            </div>
-                            <UncontrolledPopover
-                              trigger="legacy"
-                              placement="bottom"
-                              target="del2"
-                              className="general-popover delete-popover"
-                              delay={tooltipDelay}
-                            >
-                              <PopoverBody className="d-flex">
-                                <div className="del-big-icon">
-                                  <img src={BlackDeleteIcon} alt="del-icon" />
-                                </div>
-                                <div>
-                                  <p className="font-weight-bold blak-clr">
-                                    Delete file?
-                                  </p>
-                                  <p className="mt-1 fs-12">
-                                    Are you sure you want to delete this file?
-                                  </p>
-                                  <div className="del-can">
-                                    <a href={Demo.BLANK_LINK}>CANCEL</a>
-                                    <button className="butn">Delete</button>
-                                  </div>
-                                </div>
-                              </PopoverBody>
-                            </UncontrolledPopover>
-                            <div className=" list-edit-button-margin btn-del-pop">
-                              <button
-                                className="Table-action-edit-button"
-                                id="edit-pop-2"
-                              >
-                                <label className="Table-action-edit-button-text">
-                                  EDIT
-                                </label>
-                              </button>
-                              <UncontrolledPopover
-                                trigger="legacy"
-                                placement="bottom"
-                                target="edit-pop-2"
-                                className="general-popover delete-popover"
-                                delay={tooltipDelay}
-                                flip={editbool}
-                              >
-                                <PopoverBody className="d-flex">
-                                  <div>
-                                    <div className="">
-                                      <label className="popover-header-text">
-                                        EDIT CATEGORY
-                                      </label>
-                                    </div>
-                                    <div className=" pop-over-div">
-                                      <label className="pop-over-lbl-text">
-                                        Brand Name
-                                      </label>
-                                      <select className="pop-over-select">
-                                        <option>Bata</option>
-                                      </select>
-                                    </div>
-                                    <div className=" pop-over-div">
-                                      <label className="pop-over-lbl-text">
-                                        Category
-                                      </label>
-                                      <select className="pop-over-select">
-                                        <option>Complaint</option>
-                                      </select>
-                                    </div>
-                                    <div className=" pop-over-div">
-                                      <label className="pop-over-lbl-text">
-                                        Sub Category
-                                      </label>
-                                      <select className="pop-over-select">
-                                        <option>Defective Article</option>
-                                      </select>
-                                    </div>
-                                    <div className=" pop-over-div">
-                                      <label className="pop-over-lbl-text">
-                                        Issue Type
-                                      </label>
-                                      <select className="pop-over-select">
-                                        <option>Broken Shoes</option>
-                                      </select>
-                                    </div>
-
-                                    <div className="pop-over-div">
-                                      <label className="pop-over-lbl-text">
-                                        Status
-                                      </label>
-                                      <select className="pop-over-select">
-                                        <option>Active</option>
-                                        <option>Inactive</option>
-                                      </select>
-                                    </div>
-                                    <br />
-                                    <div>
-                                      <label className="pop-over-cancle">
-                                        CANCEL
-                                      </label>
-                                      <button className="pop-over-button">
-                                        <label className="pop-over-btnsave-text">
-                                          SAVE
-                                        </label>
-                                      </button>
-                                    </div>
-                                  </div>
-                                </PopoverBody>
-                              </UncontrolledPopover>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <label className="table-data-text">Bata</label>
-                        </td>
-                        <td>
-                          <label className="table-data-text">Complaint</label>
-                        </td>
-                        <td>
-                          <label className="table-data-text">
-                            Defective article
-                          </label>
-                        </td>
-                        <td>
-                          <label className="table-data-text">
-                            Broken Shoes
-                          </label>
-                        </td>
-
-                        <td>
-                          <label className="table-data-text">Active</label>
-                        </td>
-
-                        <td>
-                          <div className="row">
-                            <div className="del-btn" id="del3">
-                              <img src={RedDeleteIcon} alt="del-icon" />
-                            </div>
-                            <UncontrolledPopover
-                              trigger="legacy"
-                              placement="bottom"
-                              target="del3"
-                              className="general-popover delete-popover"
-                              delay={tooltipDelay}
-                            >
-                              <PopoverBody className="d-flex">
-                                <div className="del-big-icon">
-                                  <img src={BlackDeleteIcon} alt="del-icon" />
-                                </div>
-                                <div>
-                                  <p className="font-weight-bold blak-clr">
-                                    Delete file?
-                                  </p>
-                                  <p className="mt-1 fs-12">
-                                    Are you sure you want to delete this file?
-                                  </p>
-                                  <div className="del-can">
-                                    <a href={Demo.BLANK_LINK}>CANCEL</a>
-                                    <button className="butn">Delete</button>
-                                  </div>
-                                </div>
-                              </PopoverBody>
-                            </UncontrolledPopover>
-                            <div className=" list-edit-button-margin btn-del-pop">
-                              <button
-                                className="Table-action-edit-button"
-                                id="edit-pop-3"
-                              >
-                                <label className="Table-action-edit-button-text">
-                                  EDIT
-                                </label>
-                              </button>
-                              <UncontrolledPopover
-                                trigger="legacy"
-                                placement="auto"
-                                target="edit-pop-3"
-                                className="general-popover delete-popover"
-                                delay={tooltipDelay}
-                                flip={editbool}
-                              >
-                                <PopoverBody className="d-flex">
-                                  <div>
-                                    <div className="">
-                                      <label className="popover-header-text">
-                                        EDIT CATEGORY
-                                      </label>
-                                    </div>
-                                    <div className=" pop-over-div">
-                                      <label className="pop-over-lbl-text">
-                                        Brand Name
-                                      </label>
-                                      <select className="pop-over-select">
-                                        <option>Bata</option>
-                                      </select>
-                                    </div>
-                                    <div className=" pop-over-div">
-                                      <label className="pop-over-lbl-text">
-                                        Category
-                                      </label>
-                                      <select className="pop-over-select">
-                                        <option>Complaint</option>
-                                      </select>
-                                    </div>
-                                    <div className=" pop-over-div">
-                                      <label className="pop-over-lbl-text">
-                                        Sub Category
-                                      </label>
-                                      <select className="pop-over-select">
-                                        <option>Defective Article</option>
-                                      </select>
-                                    </div>
-                                    <div className=" pop-over-div">
-                                      <label className="pop-over-lbl-text">
-                                        Issue Type
-                                      </label>
-                                      <select className="pop-over-select">
-                                        <option>Broken Shoes</option>
-                                      </select>
-                                    </div>
-
-                                    <div className="pop-over-div">
-                                      <label className="pop-over-lbl-text">
-                                        Status
-                                      </label>
-                                      <select className="pop-over-select">
-                                        <option>Active</option>
-                                        <option>Inactive</option>
-                                      </select>
-                                    </div>
-                                    <br />
-                                    <div>
-                                      <label className="pop-over-cancle">
-                                        CANCEL
-                                      </label>
-                                      <button className="pop-over-button">
-                                        <label className="pop-over-btnsave-text">
-                                          SAVE
-                                        </label>
-                                      </button>
-                                    </div>
-                                  </div>
-                                </PopoverBody>
-                              </UncontrolledPopover>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <label className="table-data-text">Bata</label>
-                        </td>
-                        <td>
-                          <label className="table-data-text">Complaint</label>
-                        </td>
-                        <td>
-                          <label className="table-data-text">
-                            Defective article
-                          </label>
-                        </td>
-                        <td>
-                          <label className="table-data-text">
-                            Broken Shoes
-                          </label>
-                        </td>
-
-                        <td>
-                          <label className="table-data-text">Inative</label>
-                        </td>
-
-                        <td>
-                          <div className="row">
-                            <div className="del-btn" id="del4">
-                              <img src={RedDeleteIcon} alt="del-icon" />
-                            </div>
-                            <UncontrolledPopover
-                              trigger="legacy"
-                              placement="bottom"
-                              target="del4"
-                              className="general-popover delete-popover"
-                              delay={tooltipDelay}
-                            >
-                              <PopoverBody className="d-flex">
-                                <div className="del-big-icon">
-                                  <img src={BlackDeleteIcon} alt="del-icon" />
-                                </div>
-                                <div>
-                                  <p className="font-weight-bold blak-clr">
-                                    Delete file?
-                                  </p>
-                                  <p className="mt-1 fs-12">
-                                    Are you sure you want to delete this file?
-                                  </p>
-                                  <div className="del-can">
-                                    <a href={Demo.BLANK_LINK}>CANCEL</a>
-                                    <button className="butn">Delete</button>
-                                  </div>
-                                </div>
-                              </PopoverBody>
-                            </UncontrolledPopover>
-                            <div className=" list-edit-button-margin btn-del-pop">
-                              <button
-                                className="Table-action-edit-button"
-                                id="edit-pop-4"
-                              >
-                                <label className="Table-action-edit-button-text">
-                                  EDIT
-                                </label>
-                              </button>
-                              <UncontrolledPopover
-                                trigger="legacy"
-                                placement="auto"
-                                target="edit-pop-4"
-                                className="general-popover delete-popover"
-                                delay={tooltipDelay}
-                                flip={editbool}
-                              >
-                                <PopoverBody className="d-flex">
-                                  <div>
-                                    <div className="">
-                                      <label className="popover-header-text">
-                                        EDIT CATEGORY
-                                      </label>
-                                    </div>
-                                    <div className=" pop-over-div">
-                                      <label className="pop-over-lbl-text">
-                                        Brand Name
-                                      </label>
-                                      <select className="pop-over-select">
-                                        <option>Bata</option>
-                                      </select>
-                                    </div>
-                                    <div className=" pop-over-div">
-                                      <label className="pop-over-lbl-text">
-                                        Category
-                                      </label>
-                                      <select className="pop-over-select">
-                                        <option>Complaint</option>
-                                      </select>
-                                    </div>
-                                    <div className=" pop-over-div">
-                                      <label className="pop-over-lbl-text">
-                                        Sub Category
-                                      </label>
-                                      <select className="pop-over-select">
-                                        <option>Defective Article</option>
-                                      </select>
-                                    </div>
-                                    <div className=" pop-over-div">
-                                      <label className="pop-over-lbl-text">
-                                        Issue Type
-                                      </label>
-                                      <select className="pop-over-select">
-                                        <option>Broken Shoes</option>
-                                      </select>
-                                    </div>
-
-                                    <div className="pop-over-div">
-                                      <label className="pop-over-lbl-text">
-                                        Status
-                                      </label>
-                                      <select className="pop-over-select">
-                                        <option>Active</option>
-                                        <option>Inactive</option>
-                                      </select>
-                                    </div>
-                                    <br />
-                                    <div>
-                                      <label className="pop-over-cancle">
-                                        CANCEL
-                                      </label>
-                                      <button className="pop-over-button">
-                                        <label className="pop-over-btnsave-text">
-                                          SAVE
-                                        </label>
-                                      </button>
-                                    </div>
-                                  </div>
-                                </PopoverBody>
-                              </UncontrolledPopover>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <label className="table-data-text">Bata</label>
-                        </td>
-                        <td>
-                          <label className="table-data-text">Complaint</label>
-                        </td>
-                        <td>
-                          <label className="table-data-text">
-                            Defective article
-                          </label>
-                        </td>
-                        <td>
-                          <label className="table-data-text">
-                            Broken Shoes
-                          </label>
-                        </td>
-
-                        <td>
-                          <label className="table-data-text">Active</label>
-                        </td>
-
-                        <td>
-                          <div className="row">
-                            <div className="del-btn" id="del5">
-                              <img src={RedDeleteIcon} alt="del-icon" />
-                            </div>
-                            <UncontrolledPopover
-                              trigger="legacy"
-                              placement="bottom"
-                              target="del5"
-                              className="general-popover delete-popover"
-                              delay={tooltipDelay}
-                            >
-                              <PopoverBody className="d-flex">
-                                <div className="del-big-icon">
-                                  <img src={BlackDeleteIcon} alt="del-icon" />
-                                </div>
-                                <div>
-                                  <p className="font-weight-bold blak-clr">
-                                    Delete file?
-                                  </p>
-                                  <p className="mt-1 fs-12">
-                                    Are you sure you want to delete this file?
-                                  </p>
-                                  <div className="del-can">
-                                    <a href={Demo.BLANK_LINK}>CANCEL</a>
-                                    <button className="butn">Delete</button>
-                                  </div>
-                                </div>
-                              </PopoverBody>
-                            </UncontrolledPopover>
-                            <div className=" list-edit-button-margin btn-del-pop">
-                              <button
-                                className="Table-action-edit-button"
-                                id="edit-pop-5"
-                              >
-                                <label className="Table-action-edit-button-text">
-                                  EDIT
-                                </label>
-                              </button>
-                              <UncontrolledPopover
-                                trigger="legacy"
-                                placement="auto"
-                                target="edit-pop-5"
-                                className="general-popover delete-popover"
-                                delay={tooltipDelay}
-                                flip={editbool}
-                              >
-                                <PopoverBody className="d-flex">
-                                  <div>
-                                    <div className="">
-                                      <label className="popover-header-text">
-                                        EDIT CATEGORY
-                                      </label>
-                                    </div>
-                                    <div className=" pop-over-div">
-                                      <label className="pop-over-lbl-text">
-                                        Brand Name
-                                      </label>
-                                      <select className="pop-over-select">
-                                        <option>Bata</option>
-                                      </select>
-                                    </div>
-                                    <div className=" pop-over-div">
-                                      <label className="pop-over-lbl-text">
-                                        Category
-                                      </label>
-                                      <select className="pop-over-select">
-                                        <option>Complaint</option>
-                                      </select>
-                                    </div>
-                                    <div className=" pop-over-div">
-                                      <label className="pop-over-lbl-text">
-                                        Sub Category
-                                      </label>
-                                      <select className="pop-over-select">
-                                        <option>Defective Article</option>
-                                      </select>
-                                    </div>
-                                    <div className=" pop-over-div">
-                                      <label className="pop-over-lbl-text">
-                                        Issue Type
-                                      </label>
-                                      <select className="pop-over-select">
-                                        <option>Broken Shoes</option>
-                                      </select>
-                                    </div>
-
-                                    <div className="pop-over-div">
-                                      <label className="pop-over-lbl-text">
-                                        Status
-                                      </label>
-                                      <select className="pop-over-select">
-                                        <option>Active</option>
-                                        <option>Inactive</option>
-                                      </select>
-                                    </div>
-                                    <br />
-                                    <div>
-                                      <label className="pop-over-cancle">
-                                        CANCEL
-                                      </label>
-                                      <button className="pop-over-button">
-                                        <label className="pop-over-btnsave-text">
-                                          SAVE
-                                        </label>
-                                      </button>
-                                    </div>
-                                  </div>
-                                </PopoverBody>
-                              </UncontrolledPopover>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div className="position-relative">
-                    <div className="pagi">
-                      <ul>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&lt;</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>1</a>
-                        </li>
-                        <li className="active">
-                          <a href={Demo.BLANK_LINK}>2</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>3</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>4</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>5</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>6</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&gt;</a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="item-selection">
-                      <select>
-                        <option>30</option>
-                        <option>50</option>
-                        <option>100</option>
-                      </select>
-                      <p>Items per page</p>
-                    </div>
-                  </div>
+                <div className="table-cntr table-height TicketCategoyMasReact">
+                  <ReactTable
+                    data={dataTickCate}
+                    columns={columnsTickCate}
+                    // resizable={false}
+                    defaultPageSize={5}
+                    showPagination={true}
+                  />
                 </div>
               </div>
               <div className="col-md-4">

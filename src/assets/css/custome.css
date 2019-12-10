@@ -8569,7 +8569,37 @@ table tr th:last-child {
   width: 115px;
   border-radius: 5px;
   margin-right: 10px;
-  border: 1px solid #fff;
+  border: 1px solid #2561a8;
+  cursor: pointer;
+}
+.EMFCImg {
+  width: 20px;
+  height: 15px;
+}
+.EMFCText {
+  margin: 0 15px;
+  color: #000;
+}
+.kblink-auto1 {
+  position: absolute;
+  top: 42px;
+  right: 0;
+  z-index: 1;
+  padding: 5px 8px 5px 5px;
+  border: 1px solid #d1d1d1;
+  border-top: 0;
+  color: #333;
+  border-right: 0;
+  border-bottom: 0;
+}
+.myTicketCommentCollapse .cke_bottom {
+  display: none;
+}
+.myTicketEmail .cke_bottom {
+  display: none;
+}
+.file-upload1 + label {
+  font-weight: 400;
   cursor: pointer;
 }
 .colladrow .one{
@@ -8745,6 +8775,7 @@ table tr th:last-child {
   margin-top: -4px;
 }
 /* MyTicket KbLink Css end Kalpesh */
+/* Dashboard ReactTable Css Start Kalpesh */
 .dash-task-popup-new {
   width: 220px;
   padding: 20px 20px 25px;
@@ -8763,16 +8794,17 @@ table tr th:last-child {
   background-color: #def3ff;
 }
 @media (min-width: 768px) {
-.storecards .col-sm-4 {
+  .storecards .col-sm-4 {
     flex: 0 0 33.333333%;
     max-width: 33.333333%;
-}
+  }
 }
 @media (min-width: 768px) {
   .storecards .col-md-2 {
       flex: 0 0 20%;
       max-width: 20%;
   }
-  }
+}
+/* Dashboard ReactTable Css Start Kalpesh */
 
 /* ****************End css ************************/
