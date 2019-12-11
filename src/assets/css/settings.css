@@ -2813,4 +2813,16 @@
 .TicketCategoyMasReact .ReactTable .rt-tbody .rt-td {
   padding: 18px 10px !important;
 }
+.StoreItemMasterReact .ReactTable .rt-thead .rt-th.-cursor-pointer, .ReactTable .rt-thead .rt-td.-cursor-pointer {
+  padding: 20px 5px !important;
+}
+.StoreItemMasterReact .ReactTable .rt-tbody .rt-td {
+  padding: 18px 5px !important;
+}
+.StoreUserReact .ReactTable .rt-thead .rt-th.-cursor-pointer, .ReactTable .rt-thead .rt-td.-cursor-pointer {
+  padding: 20px 7px !important;
+}
 /* Setting ReactTable Css Start Kalpesh */
+.TicketHierarchyReact .ReactTable .-pagination .-pageInfo {
+  display: none;
+}

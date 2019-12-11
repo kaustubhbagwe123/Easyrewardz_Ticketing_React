@@ -1,5 +1,4 @@
 import Demo from "./../../../store/Hashtag.js";
-import TableArr from "./../../../assets/Images/table-arr.png";
 import React, { Component } from "react";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
 import FileUpload from "./../../../assets/Images/file.png";
@@ -8,7 +7,11 @@ import DownExcel from "./../../../assets/Images/csv.png";
 import UploadCancel from "./../../../assets/Images/upload-cancel.png";
 import { ProgressBar } from "react-bootstrap";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
-import {Link} from 'react-router-dom'
+import { Link } from "react-router-dom";
+import ReactTable from "react-table";
+
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 class ItemMaster extends Component {
   constructor(props) {
@@ -33,12 +36,98 @@ class ItemMaster extends Component {
     e.preventDefault();
   };
   render() {
+    const dataStorItem = [
+      {
+        id: "I1"
+      },
+      {
+        id: "I2"
+      }
+    ];
+
+    const columnsStorItem = [
+      {
+        Header: (
+          <span>
+            Brand Name
+            <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "brandName",
+        Cell: row => <span>Bata</span>
+      },
+      {
+        Header: (
+          <span>
+            Item Code
+            <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "itemCode",
+        Cell: row => <span>12345</span>
+      },
+      {
+        Header: (
+          <span>
+            Item Name
+            <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "itemName",
+        Cell: row => <span>White Sneakers</span>
+      },
+      {
+        Header: (
+          <span>
+            Department Name
+            <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "depatName",
+        Cell: row => <span>Casual Shoes</span>
+      },
+      {
+        Header: (
+          <span>
+            Item Cat
+            <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "itemCat",
+        Cell: row => <span>Shoes</span>
+      },
+      {
+        Header: (
+          <span>
+            Item Sub Cat
+            <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "itemSubCat",
+        Cell: rwo => <span>Casual Shoes</span>
+      },
+      {
+        Header: (
+          <span>
+            Item Group
+            <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "itemGroup",
+        Cell: row => <span>Shoes</span>
+      }
+    ];
+
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
-          <Link to="settings" className="header-path">Settings</Link>
+          <Link to="settings" className="header-path">
+            Settings
+          </Link>
           <span>&gt;</span>
-          <Link to={Demo.BLANK_LINK} className="header-path">Store</Link>
+          <Link to={Demo.BLANK_LINK} className="header-path">
+            Store
+          </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
             Item Master
@@ -48,95 +137,14 @@ class ItemMaster extends Component {
           <div className="store-settings-cntr item-settings-cntr">
             <div className="row">
               <div className="col-md-8">
-                <div className="table-cntr table-height">
-                  <div className="scroll-table">
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>
-                            Brand Name <img src={TableArr} alt="table-arr" />
-                          </th>
-                          <th>
-                            Item Code <img src={TableArr} alt="table-arr" />
-                          </th>
-                          <th>
-                            Item Name <img src={TableArr} alt="table-arr" />
-                          </th>
-                          <th>
-                            Department Name{" "}
-                            <img src={TableArr} alt="table-arr" />
-                          </th>
-                          <th>
-                            Item Cat <img src={TableArr} alt="table-arr" />
-                          </th>
-                          <th>
-                            Item Sub Cat <img src={TableArr} alt="table-arr" />
-                          </th>
-                          <th>
-                            Item Group <img src={TableArr} alt="table-arr" />
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>Bata</td>
-                          <td>12345</td>
-                          <td>White Sneakers</td>
-                          <td>Casual Shoes</td>
-                          <td>Shoes</td>
-                          <td>Casual Shoes</td>
-                          <td>Shoes</td>
-                        </tr>
-                        <tr>
-                          <td>Bata</td>
-                          <td>12345</td>
-                          <td>White Sneakers</td>
-                          <td>Casual Shoes</td>
-                          <td>Shoes</td>
-                          <td>Casual Shoes</td>
-                          <td>Shoes</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <div className="position-relative">
-                    <div className="pagi">
-                      <ul>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&lt;</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>1</a>
-                        </li>
-                        <li className="active">
-                          <a href={Demo.BLANK_LINK}>2</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>3</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>4</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>5</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>6</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&gt;</a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="item-selection">
-                      <select>
-                        <option>30</option>
-                        <option>50</option>
-                        <option>100</option>
-                      </select>
-                      <p>Items per page</p>
-                    </div>
-                  </div>
+                <div className="table-cntr table-height StoreItemMasterReact">
+                  <ReactTable
+                    data={dataStorItem}
+                    columns={columnsStorItem}
+                    // resizable={false}
+                    defaultPageSize={5}
+                    showPagination={true}
+                  />
                 </div>
               </div>
               <div className="col-md-4">

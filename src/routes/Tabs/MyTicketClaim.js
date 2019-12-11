@@ -1,11 +1,14 @@
 import React, { Component, Fragment } from "react";
-import TableArrowIcon from "./../../assets/Images/table-arr.png";
 import InfoIcon from "./../../assets/Images/info-icon.png";
 import HeadPhone3 from "./../../assets/Images/headphone3.png";
 import BlackLeftArrow from "./../../assets/Images/black-left-arrow.png";
 import BataShoesIcon from "./../../assets/Images/bata.png";
 import StoreIcon from "./../../assets/Images/store.png";
 import { Drawer } from "antd";
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { Popover } from "antd";
+import ReactTable from "react-table";
 
 class MyTicketClaim extends Component {
   constructor(props) {
@@ -21,128 +24,240 @@ class MyTicketClaim extends Component {
   handleClaimDetailsModalClose() {
     this.setState({ ClaimDetailsModal: false });
   }
+  HandleRowClickDraw = () => {
+    return {
+      onClick: e => {
+        this.handleClaimDetailsModalOpen();
+      }
+    };
+  };
   render() {
+     // const popoverData1 = (
+    //   <>
+    //     <div>
+    //       <b>
+    //         <p className="title">Created By: Admin</p>
+    //       </b>
+    //       <p className="sub-title">Created Date: 12 March 2018</p>
+    //     </div>
+    //     <div>
+    //       <b>
+    //         <p className="title">Updated By: Manager</p>
+    //       </b>
+    //       <p className="sub-title">Updated Date: 12 March 2018</p>
+    //     </div>
+    //   </>
+    // );
+
+    const dataTicketClaim = [
+      {
+        id: "Ta1",
+        claimIssue: (
+          <label>
+            Need to change my shipping address
+            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
+          </label>
+        ),
+        status: (
+          <span className="table-btn table-blue-btn">Open</span>
+        ),
+       
+        creationOn: (
+          <div>
+          <span>
+            12 March 2018
+            <img
+                className="info-icon"
+                src={InfoIcon}
+                alt="info-icon"
+                
+              />
+            {/* <Popover content={popoverData1} placement="bottom">
+              <img
+                className="info-icon"
+                src={InfoIcon}
+                alt="info-icon"
+                
+              />
+            </Popover> */}
+          </span>
+        </div>
+        ),
+      
+      },
+      {
+        id: "Ta2",
+        claimIssue: (
+          <label>
+            Need to change my shipping address
+            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us(1 new comment)</span>
+          </label>
+        ),
+        status: (
+          <span className="table-btn table-yellow-btn">New</span>
+        ),
+        creationOn: (
+          <div>
+          <span>
+            12 March 2018
+            <img
+                className="info-icon"
+                src={InfoIcon}
+                alt="info-icon"
+                
+              />
+            {/* <Popover content={popoverData1} placement="bottom">
+              <img
+                className="info-icon"
+                src={InfoIcon}
+                alt="info-icon"
+                
+              />
+            </Popover> */}
+          </span>
+        </div>
+        ),
+       
+      },
+      {
+        id: "Ta3",
+        claimIssue: (
+          <label>
+            Need to change my shipping address
+            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
+          </label>
+        ),
+        status: (
+          <span className="table-btn table-green-btn">Solved</span>
+        ),
+        creationOn: (
+          <div>
+          <span>
+            12 March 2018
+            <img
+                className="info-icon"
+                src={InfoIcon}
+                alt="info-icon"
+                
+              />
+            {/* <Popover content={popoverData1} placement="bottom">
+              <img
+                className="info-icon"
+                src={InfoIcon}
+                alt="info-icon"
+                
+              />
+            </Popover> */}
+          </span>
+        </div>
+        ),
+      }
+     
+    ];
+
+    const columnsTicketClaim = [
+      {
+        Header: (
+          <span>
+            ID
+         
+          </span>
+        ),
+        accessor: "id",
+        Cell: row => (
+          <span>
+            <img
+                src={HeadPhone3}
+                alt="HeadPhone"
+                className="headPhone3"
+            />
+            ABC1234
+          </span>
+        ),
+      },
+      {
+        Header: (
+          <span>
+            Status
+           
+          </span>
+        ),
+        accessor: "status",
+        
+      },
+      {
+        Header: (
+          <span>
+            Claim Issue Type
+           
+          </span>
+        ),
+        accessor: "claimIssue"
+      },
+      {
+        Header: (
+          <span>
+            Category
+            <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "cate",
+        Cell: props => (
+          <span>
+            <label>Defective article </label>
+            <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            {/* <Popover content={} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover> */}
+          </span>
+        )
+      },
+      {
+        Header: (
+          <span>
+            Raised By
+            <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "createdBy",
+        Cell: row => (
+          <label>N Rampal</label>
+        ),
+      },
+      {
+        Header: (
+          <span>
+            Creation on
+            <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "creationOn"
+      },
+      {
+        Header: (
+          <span>
+            Assign to
+            <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "assignTo",
+        Cell: row => (
+          <label>A. Bansal</label>
+        ),
+      },
+    
+    ];
     return (
       <Fragment>
-        <div className="row table-cntr mt-3 paddcla">
-          <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Status</th>
-                <th className="table-img-cntr"></th>
-                <th>Claim Issue Type</th>
-                <th>
-                  Category <img src={TableArrowIcon} alt="table-arr-icon" />
-                </th>
-                <th>
-                  Raised by
-                  <img src={TableArrowIcon} alt="table-arr-icon" />
-                </th>
-                <th>
-                  Creation on
-                  <img src={TableArrowIcon} alt="table-arr-icon" />
-                </th>
-                <th>
-                  Assign to
-                  <img src={TableArrowIcon} alt="table-arr-icon" />
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr onClick={this.handleClaimDetailsModalOpen.bind(this)}>
-                <td>
-                  <img
-                    src={HeadPhone3}
-                    alt="HeadPhone"
-                    className="headPhone3"
-                  />
-                  ABC1234
-                </td>
-                <td>
-                  <span className="table-btn table-blue-btn">Open</span>
-                </td>
-                <td className="table-img-cntr"></td>
-                <td>
-                  Need to change my shipping address
-                  <span>Hope this help, Please rate us</span>
-                </td>
-                <td>
-                  Defective article
-                  <img className="info-icon" src={InfoIcon} alt="info-icon" />
-                </td>
-                <td>N Rampal</td>
-                <td>
-                  12 March 2018
-                  <img className="info-icon" src={InfoIcon} alt="info-icon" />
-                </td>
-                <td>A. Bansal</td>
-              </tr>
-              <tr>
-                <td>
-                  <img
-                    src={HeadPhone3}
-                    alt="HeadPhone"
-                    className="headPhone3"
-                  />
-                  ABC1234
-                </td>
-                <td>
-                  <span className="table-btn table-yellow-btn">New</span>
-                </td>
-                <td className="table-img-cntr"></td>
-                <td>
-                  Need to change my shipping address
-                  <span>Hope this help, Please rate us (1 new comment)</span>
-                </td>
-                <td>
-                  Defective article
-                  <img className="info-icon" src={InfoIcon} alt="info-icon" />
-                </td>
-                <td>N Rampal</td>
-                <td>
-                  12 March 2018
-                  <img className="info-icon" src={InfoIcon} alt="info-icon" />
-                </td>
-                <td>G. Bansal</td>
-              </tr>
-
-              <tr>
-                <td>
-                  <img
-                    src={HeadPhone3}
-                    alt="HeadPhone"
-                    className="headPhone3"
-                  />
-                  ABC1234
-                </td>
-                <td>
-                  <span className="table-btn table-green-btn">Solved</span>
-                </td>
-                <td className="table-img-cntr">
-                  {/* <img
-                          className="task-icon-1"
-                          src="Images/task-icon-blue.png"
-                          alt="missing"
-                        /> */}
-                </td>
-                <td>
-                  Need to change my shipping address
-                  <span>Hope this help, Please rate us</span>
-                </td>
-                <td>
-                  Defective article
-                  <img className="info-icon" src={InfoIcon} alt="info-icon" />
-                </td>
-                <td>N Rampal</td>
-                <td>
-                  12 March 2018
-                  <img className="info-icon" src={InfoIcon} alt="info-icon" />
-                </td>
-                <td>G. Bansal</td>
-              </tr>
-            </tbody>
-          </table>
+        <div className="table-cntr mt-3 MyTicketClaimReact">
+        <ReactTable
+                    data={dataTicketClaim}
+                    columns={columnsTicketClaim}
+                    // resizable={false}
+                    defaultPageSize={3}
+                    showPagination={true}
+                    getTrProps={this.HandleRowClickDraw} 
+                />
         </div>
         <div className="DrawerModal">
           <Drawer

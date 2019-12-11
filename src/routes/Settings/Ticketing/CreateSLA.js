@@ -1,18 +1,18 @@
-import React,{Component} from 'react';
-import {Link} from 'react-router-dom';
-import TableArr from "./../../../assets/Images/table-arr.png";
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
-import BlackDeleteIcon from "./../../../assets/Images/del-big.png";
-// import UploadIcon from "./../../assets/Images/clip.png";
-// import CrossIcon from "./../../assets/Images/cross-icon.png";
-import { UncontrolledPopover , PopoverBody } from "reactstrap";
+import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import Demo from "../../../store/Hashtag.js";
-import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
 import FileUpload from "./../../../assets/Images/file.png";
 import DelBlack from "./../../../assets/Images/del-black.png";
 import UploadCancel from "./../../../assets/Images/upload-cancel.png";
 import { ProgressBar } from "react-bootstrap";
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Popover } from "antd";
+import ReactTable from "react-table";
+import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
 
 class CreateSLA extends Component {
   constructor(props) {
@@ -26,14 +26,268 @@ class CreateSLA extends Component {
     this.setState({ fileName: e.target.files[0].name });
   };
   render() {
-    const editbool = false;
-    const tooltipDelay = { show: 50, hide: 100 };
+    const dataTickSla = [
+      {
+        id: "Sl1",
+        IssueType: <span>Broken Shoes</span>,
+
+        status: <span>Active</span>
+      },
+      {
+        id: "Sl2",
+        IssueType: <span>Delay in Delivery</span>,
+
+        status: <span>Inactive</span>
+      }
+    ];
+
+    const columnsTickSla = [
+      {
+        Header: (
+          <span>
+            Issue Type
+            <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "IssueType"
+      },
+      {
+        Header: (
+          <span>
+            SLA by Priority
+            <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "SlaPriority",
+        Cell: row => {
+          var ids = row.original["id"];
+          return (
+            <div>
+              <span>
+                <label>High,Medium,Low</label>
+                <Popover content={SlaType} placement="bottom">
+                  <img
+                    className="info-icon"
+                    src={BlackInfoIcon}
+                    alt="info-icon"
+                    id={ids}
+                  />
+                </Popover>
+              </span>
+            </div>
+          );
+        }
+      },
+      {
+        Header: (
+          <span>
+            Created By
+            <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "CretedBy",
+        Cell: row => {
+          var ids = row.original["id"];
+          return (
+            <div>
+              <span>
+                Admin
+                <Popover content={popoverData} placement="bottom">
+                  <img
+                    className="info-icon-cp"
+                    src={BlackInfoIcon}
+                    alt="info-icon"
+                    id={ids}
+                  />
+                </Popover>
+              </span>
+            </div>
+          );
+        }
+      },
+
+      {
+        Header: (
+          <span>
+            Status
+            <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "status"
+      },
+      {
+        Header: <span>Actions</span>,
+        accessor: "actiondept",
+        Cell: row => {
+          var ids = row.original["id"];
+          return (
+            <>
+              <span>
+                <Popover
+                  content={ActionDelete}
+                  placement="bottom"
+                  trigger="click"
+                >
+                  <img
+                    src={RedDeleteIcon}
+                    alt="del-icon"
+                    className="del-btn"
+                    id={ids}
+                  />
+                </Popover>
+                <Popover
+                  content={ActionEditBtn}
+                  placement="bottom"
+                  trigger="click"
+                >
+                  <button className="react-tabel-button" id="p-edit-pop-2">
+                    <label className="Table-action-edit-button-text">
+                      EDIT
+                    </label>
+                  </button>
+                </Popover>
+              </span>
+            </>
+          );
+        }
+      }
+    ];
+    const SlaType = (
+      <div className="general-popover created-popover">
+        <div>
+          <label className="slatargettext-1">SLA TARGETS</label>
+        </div>
+        <div>
+          <label className="createhead-text-1">Priority</label>
+          <label className="createhead-text-1">%SLA</label>
+          <label className="createhead-text-1">Respond</label>
+          <label className="createhead-text-1">Resolve</label>
+        </div>
+        <div>
+          <label className="slatemp-textpopup-1">High</label>
+          <label className="slatemp-textpopup-1">30%</label>
+          <label className="slatemp-textpopup-1">30M</label>
+          <label className="slatemp-textpopup-1">30M</label>
+        </div>
+        <div>
+          <label className="slatemp-textpopup-1">Medium</label>
+          <label className="slatemp-textpopup-1">30%</label>
+          <label className="slatemp-textpopup-1">30M</label>
+          <label className="slatemp-textpopup-1">30M</label>
+        </div>
+        <div>
+          <label className="slatemp-textpopup-1">Low</label>
+          <label className="slatemp-textpopup-1">30%</label>
+          <label className="slatemp-textpopup-1">30M</label>
+          <label className="slatemp-textpopup-1">30M</label>
+        </div>
+      </div>
+    );
+
+    const popoverData = (
+      <>
+        <div>
+          <b>
+            <p className="title">Created By: Admin</p>
+          </b>
+          <p className="sub-title">Created Date: 12 March 2018</p>
+        </div>
+        <div>
+          <b>
+            <p className="title">Updated By: Manager</p>
+          </b>
+          <p className="sub-title">Updated Date: 12 March 2018</p>
+        </div>
+      </>
+    );
+    const ActionDelete = (
+      <div className="d-flex general-popover popover-body">
+        <div className="del-big-icon">
+          <img src={DelBigIcon} alt="del-icon" />
+        </div>
+        <div>
+          <p className="font-weight-bold blak-clr">Delete file?</p>
+          <p className="mt-1 fs-12">
+            Are you sure you want to delete this file?
+          </p>
+          <div className="del-can">
+            <a href={Demo.BLANK_LINK}>CANCEL</a>
+            <button className="butn">Delete</button>
+          </div>
+        </div>
+      </div>
+    );
+    const ActionEditBtn = (
+      <div className="edtpadding">
+        <div className="">
+          <label className="popover-header-text">CREATE SLA</label>
+        </div>
+        <div className="pop-over-div">
+          <label className="edit-label-1">Issue Type</label>
+          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
+            <option>Broken Shoes</option>
+            <option>Delay in Delivery</option>
+            <option>Broken Shoes</option>
+          </select>
+        </div>
+
+        <div className="pop-over-div m-t-10">
+          <div>
+            <label className="slatargettext-1">SLA TARGETS</label>
+          </div>
+          <div>
+            <label className="createhead-text-1">Priority</label>
+            <label className="createhead-text-1">%SLA</label>
+            <label className="createhead-text-1">Respond</label>
+            <label className="createhead-text-1">Resolve</label>
+          </div>
+          <div>
+            <label className="slatemp-textpopup-1">High</label>
+            <label className="slatemp-textpopup-1">30%</label>
+            <label className="slatemp-textpopup-1">30M</label>
+            <label className="slatemp-textpopup-1">30M</label>
+          </div>
+          <div>
+            <label className="slatemp-textpopup-1">Medium</label>
+            <label className="slatemp-textpopup-1">30%</label>
+            <label className="slatemp-textpopup-1">30M</label>
+            <label className="slatemp-textpopup-1">30M</label>
+          </div>
+          <div>
+            <label className="slatemp-textpopup-1">Low</label>
+            <label className="slatemp-textpopup-1">30%</label>
+            <label className="slatemp-textpopup-1">30M</label>
+            <label className="slatemp-textpopup-1">30M</label>
+          </div>
+        </div>
+
+        <div className="pop-over-div">
+          <label className="edit-label-1">Status</label>
+          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
+            <option>Active</option>
+            <option>Inactive</option>
+          </select>
+        </div>
+        <br />
+        <div>
+          <label className="pop-over-cancle">CANCEL</label>
+          <button className="pop-over-button">
+            <label className="pop-over-btnsave-text">SAVE</label>
+          </button>
+        </div>
+      </div>
+    );
+
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
-          <Link to="settings"  className="header-path">Settings</Link>
+          <Link to="settings" className="header-path">
+            Settings
+          </Link>
           <span>&gt;</span>
-          <Link to={Demo.BLANK_LINK}  className="header-path">Ticketing</Link>
+          <Link to={Demo.BLANK_LINK} className="header-path">
+            Ticketing
+          </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
             SLA
@@ -43,452 +297,14 @@ class CreateSLA extends Component {
           <div className="store-settings-cntr">
             <div className="row">
               <div className="col-md-8">
-                <div className="table-cntr table-height">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>
-                          Issue Type <img src={TableArr} alt="table-arr" />
-                        </th>
-                        <th>
-                          SLA by Priority <img src={TableArr} alt="table-arr" />
-                        </th>
-                        <th>
-                          Created By <img src={TableArr} alt="table-arr" />
-                        </th>
-                        <th>
-                          Status <img src={TableArr} alt="table-arr" />
-                        </th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>
-                          <label className="table-data-text">Broken Shoe</label>
-                        </td>
-                        <td>
-                          <label className="table-data-text">
-                            High,Medium,Low
-                          </label>
-                          <img
-                            className="info-icon-cp"
-                            src={BlackInfoIcon}
-                            alt="info-icon"
-                            id="sla-priority-1"
-                          />
-                          <UncontrolledPopover
-                            trigger="hover"
-                            placement="bottom"
-                            target="sla-priority-1"
-                            className="general-popover created-popover"
-                            flip={true}
-                          >
-                            <PopoverBody>
-                              <div>
-                                <label className="slatargettext-1">
-                                  SLA TARGETS
-                                </label>
-                              </div>
-                              <div>
-                                <label className="createhead-text-1">
-                                  Priority
-                                </label>
-                                <label className="createhead-text-1">
-                                  %SLA <br/> Breach
-                                </label>
-                                <label className="createhead-text-1">
-                                  Respond
-                                </label>
-                                <label className="createhead-text-1">
-                                  Resolve
-                                </label>
-                              </div>
-                              <div>
-                                <label className="createhead-text-2">
-                                  High
-                                </label>
-                                <label className="createhead-text-2">30%</label>
-                                <label className="createhead-text-2">30M</label>
-                                <label className="createhead-text-2">12H</label>
-                              </div>
-                              <div>
-                                <label className="createhead-text-2">Low</label>
-                                <label className="createhead-text-2">30%</label>
-                                <label className="createhead-text-2">24H</label>
-                                <label className="createhead-text-2">12H</label>
-                              </div>
-                            </PopoverBody>
-                          </UncontrolledPopover>
-                        </td>
-                        <td>
-                          <label className="table-data-text">Admin</label>
-                          <img
-                            className="info-icon-cp"
-                            src={BlackInfoIcon}
-                            alt="info-icon"
-                            id="created-info-1"
-                          />
-                          <UncontrolledPopover
-                            trigger="hover"
-                            placement="bottom"
-                            target="created-info-1"
-                            className="general-popover created-popover"
-                            flip={true}
-                          >
-                            <PopoverBody>
-                              <div>
-                                <p className="title">Created By: Admin</p>
-                                <p className="sub-title">
-                                  Created Date: 12 March 2018
-                                </p>
-                              </div>
-                              <div>
-                                <p className="title">Updated By: Manager</p>
-                                <p className="sub-title">
-                                  Updated Date: 12 March 2018
-                                </p>
-                              </div>
-                            </PopoverBody>
-                          </UncontrolledPopover>
-                        </td>
-                        <td>
-                          <label className="table-data-text">Active</label>
-                        </td>
-                        <td>
-                          <div className="row">
-                            <div className="deletepopover">
-                              <div className="del-btn" id="del1">
-                                <img src={RedDeleteIcon} alt="del-icon" />
-                              </div>
-                              <UncontrolledPopover
-                                trigger="legacy"
-                                placement="bottom"
-                                target="del1"
-                                className="general-popover delete-popover"
-                                delay={tooltipDelay}
-                              >
-                                <PopoverBody className="d-flex">
-                                  <div className="del-big-icon">
-                                    <img src={BlackDeleteIcon} alt="del-icon" />
-                                  </div>
-                                  <div>
-                                    <p className="font-weight-bold blak-clr">
-                                      Delete file?
-                                    </p>
-                                    <p className="mt-1 fs-12">
-                                      Are you sure you want to delete this file?
-                                    </p>
-                                    <div className="del-can">
-                                      <a href={Demo.BLANK_LINK}>CANCEL</a>
-                                      <button className="butn">Delete</button>
-                                    </div>
-                                  </div>
-                                </PopoverBody>
-                              </UncontrolledPopover>
-                            </div>
-                            <div className=" list-edit-button-margin btn-del-pop">
-                              <button
-                                className="Table-action-edit-button"
-                                id="edit-pop-1"
-                              >
-                                <label className="Table-action-edit-button-text">
-                                  EDIT
-                                </label>
-                              </button>
-                              <UncontrolledPopover
-                                trigger="legacy"
-                                placement="bottom"
-                                target="edit-pop-1"
-                                className="general-popover delete-popover"
-                                delay={tooltipDelay}
-                                flip={editbool}
-                              >
-                                <PopoverBody className="d-flex">
-                                  <div>
-                                    <div className="">
-                                      <label className="popover-header-text">
-                                        EDIT CATEGORY
-                                      </label>
-                                    </div>
-                                    <div className="pop-over-div">
-                                      <label className="pop-over-lbl-text">
-                                        Brand Name
-                                      </label>
-                                      {/* <React.Bootstrap.Select>
-                                    <option>Mustard</option>
-                                    <option>Ketchup</option>
-                                    <option>Barbecue</option>
-                                  </React.Bootstrap.Select> */}
-                                    </div>
-                                    <br />
-                                    <div>
-                                      <label className="pop-over-cancle">
-                                        CANCEL
-                                      </label>
-                                      <button className="pop-over-button">
-                                        <label className="pop-over-btnsave-text">
-                                          SAVE
-                                        </label>
-                                      </button>
-                                    </div>
-                                  </div>
-                                </PopoverBody>
-                              </UncontrolledPopover>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <label className="table-data-text">
-                            Delay in Delivery
-                          </label>
-                        </td>
-                        <td>
-                          <label className="table-data-text">Medium,Low</label>
-                          <img
-                            className="info-icon-cp"
-                            src={BlackInfoIcon}
-                            alt="info-icon"
-                            id="sla-priority-2"
-                          />
-                          <UncontrolledPopover
-                            trigger="hover"
-                            placement="bottom"
-                            target="sla-priority-2"
-                            className="general-popover created-popover"
-                            flip={true}
-                          >
-                            <PopoverBody>
-                              <div>
-                                <label className="slatargettext-1">
-                                  SLA TARGETS
-                                </label>
-                              </div>
-                              <div>
-                                <label className="createhead-text-1">
-                                  Priority
-                                </label>
-                                <label className="createhead-text-1">
-                                  %SLA Breach
-                                </label>
-                                <label className="createhead-text-1">
-                                  Respond
-                                </label>
-                                <label className="createhead-text-1">
-                                  Resolve
-                                </label>
-                              </div>
-                              <div>
-                                <label className="createhead-text-2">
-                                  High
-                                </label>
-                                <label className="createhead-text-2">30%</label>
-                                <label className="createhead-text-2">30M</label>
-                                <label className="createhead-text-2">12H</label>
-                              </div>
-                              <div>
-                                <label className="createhead-text-2">Low</label>
-                                <label className="createhead-text-2">30%</label>
-                                <label className="createhead-text-2">24H</label>
-                                <label className="createhead-text-2">12H</label>
-                              </div>
-                            </PopoverBody>
-                          </UncontrolledPopover>
-                        </td>
-                        <td>
-                          <label className="table-data-text">Admin</label>
-                          <img
-                            className="info-icon-cp"
-                            src={BlackInfoIcon}
-                            alt="info-icon"
-                            id="created-info-2"
-                          />
-
-                          <UncontrolledPopover
-                            trigger="hover"
-                            placement="bottom"
-                            target="created-info-2"
-                            className="general-popover created-popover"
-                            flip={true}
-                          >
-                            <PopoverBody>
-                              <div>
-                                <p className="title">Created By: Admin</p>
-                                <p className="sub-title">
-                                  Created Date: 12 March 2018
-                                </p>
-                              </div>
-                              <div>
-                                <p className="title">Updated By: Manager</p>
-                                <p className="sub-title">
-                                  Updated Date: 12 March 2018
-                                </p>
-                              </div>
-                            </PopoverBody>
-                          </UncontrolledPopover>
-                        </td>
-                        <td>
-                          <label className="table-data-text">Inactive</label>
-                        </td>
-
-                        <td>
-                          <div className="row">
-                            <div className="deletepopover">
-                              <div className="del-btn" id="sla-del2">
-                                <img src={RedDeleteIcon} alt="del-icon" />
-                              </div>
-                              <UncontrolledPopover
-                                trigger="legacy"
-                                placement="bottom"
-                                target="sla-del2"
-                                className="general-popover delete-popover"
-                                delay={tooltipDelay}
-                              >
-                                <PopoverBody className="d-flex">
-                                  <div className="del-big-icon">
-                                    <img src={BlackDeleteIcon} alt="del-icon" />
-                                  </div>
-                                  <div>
-                                    <p className="font-weight-bold blak-clr">
-                                      Delete file?
-                                    </p>
-                                    <p className="mt-1 fs-12">
-                                      Are you sure you want to delete this file?
-                                    </p>
-                                    <div className="del-can">
-                                      <a href={Demo.BLANK_LINK}>CANCEL</a>
-                                      <button className="butn">Delete</button>
-                                    </div>
-                                  </div>
-                                </PopoverBody>
-                              </UncontrolledPopover>
-                            </div>
-                            <div className=" list-edit-button-margin btn-del-pop">
-                              <button
-                                className="Table-action-edit-button"
-                                id="edit-pop-2"
-                              >
-                                <label className="Table-action-edit-button-text">
-                                  EDIT
-                                </label>
-                              </button>
-                              <UncontrolledPopover
-                                trigger="legacy"
-                                placement="bottom"
-                                target="edit-pop-2"
-                                className="general-popover delete-popover"
-                                delay={tooltipDelay}
-                                flip={editbool}
-                              >
-                                <PopoverBody className="d-flex">
-                                  <div>
-                                    <div className="">
-                                      <label className="popover-header-text">
-                                        EDIT CATEGORY
-                                      </label>
-                                    </div>
-                                    <div className=" pop-over-div">
-                                      <label className="pop-over-lbl-text">
-                                        Brand Name
-                                      </label>
-                                      <select className="pop-over-select">
-                                        <option>Bata</option>
-                                      </select>
-                                    </div>
-                                    <div className=" pop-over-div">
-                                      <label className="pop-over-lbl-text">
-                                        Category
-                                      </label>
-                                      <select className="pop-over-select">
-                                        <option>Complaint</option>
-                                      </select>
-                                    </div>
-                                    <div className=" pop-over-div">
-                                      <label className="pop-over-lbl-text">
-                                        Sub Category
-                                      </label>
-                                      <select className="pop-over-select">
-                                        <option>Defective Article</option>
-                                      </select>
-                                    </div>
-                                    <div className=" pop-over-div">
-                                      <label className="pop-over-lbl-text">
-                                        Issue Type
-                                      </label>
-                                      <select className="pop-over-select">
-                                        <option>Broken Shoes</option>
-                                      </select>
-                                    </div>
-
-                                    <div className="pop-over-div">
-                                      <label className="pop-over-lbl-text">
-                                        Status
-                                      </label>
-                                      <select className="pop-over-select">
-                                        <option>Active</option>
-                                        <option>Inactive</option>
-                                      </select>
-                                    </div>
-                                    <br />
-                                    <div>
-                                      <label className="pop-over-cancle">
-                                        CANCEL
-                                      </label>
-                                      <button className="pop-over-button">
-                                        <label className="pop-over-btnsave-text">
-                                          SAVE
-                                        </label>
-                                      </button>
-                                    </div>
-                                  </div>
-                                </PopoverBody>
-                              </UncontrolledPopover>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div className="position-relative">
-                    <div className="pagi">
-                      <ul>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&lt;</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>1</a>
-                        </li>
-                        <li className="active">
-                          <a href={Demo.BLANK_LINK}>2</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>3</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>4</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>5</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>6</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&gt;</a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="item-selection">
-                      <select>
-                        <option>30</option>
-                        <option>50</option>
-                        <option>100</option>
-                      </select>
-                      <p>Items per page</p>
-                    </div>
-                  </div>
+                <div className="table-cntr table-height TicketSlaReact">
+                  <ReactTable
+                    data={dataTickSla}
+                    columns={columnsTickSla}
+                    // resizable={false}
+                    defaultPageSize={5}
+                    showPagination={true}
+                  />
                 </div>
               </div>
               <div className="col-md-4">
@@ -498,10 +314,7 @@ class CreateSLA extends Component {
                     <div className="divSpace">
                       <div className="dropDrownSpace">
                         <label className="reports-to">Issue Type</label>
-                        <select
-                          id="inputState"
-                          className="store-create-select"
-                        >
+                        <select id="inputState" className="store-create-select">
                           <option>Broken Shoe</option>
                           <option>Delay in Delivery</option>
                         </select>
@@ -512,7 +325,9 @@ class CreateSLA extends Component {
                     </div>
                     <div className="slatargetRow-1">
                       <label className="createhead-text-new">Priority</label>
-                      <label className="createhead-text">%SLA <br /> Breach</label>
+                      <label className="createhead-text">
+                        %SLA <br /> Breach
+                      </label>
                       <label className="createhead-text">Rerspond</label>
                       <label className="createhead-text">Resolve</label>
                     </div>
