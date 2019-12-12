@@ -21,7 +21,11 @@ class StoreCRMRole extends Component {
       fileName: ""
     };
   }
-
+  handleTabChange(index){
+    this.setState({
+      tabIndex:index
+    })
+  }
   fileUpload = e => {
     this.setState({ fileName: e.target.files[0].name });
   };

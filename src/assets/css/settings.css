@@ -2823,6 +2823,4 @@
   padding: 20px 7px !important;
 }
 /* Setting ReactTable Css Start Kalpesh */
-.TicketHierarchyReact .ReactTable .-pagination .-pageInfo {
-  display: none;
-}
+

@@ -8824,6 +8824,9 @@ table tr th:last-child {
 .MyTicketListReact .pinkmyticket {
   padding: 0 0;
 }
+.tabpadtick {
+  padding-bottom: 60px !important;
+}
 .slatemp-textpopup-1 {
   color: #4a4a4a;
   font-family: Lato;
@@ -8834,5 +8837,62 @@ table tr th:last-child {
   display: inline-block;
   width: 25%;
 }
-
+.newReact .ReactTable .rt-thead .rt-th.-cursor-pointer, .ReactTable .rt-thead .rt-td.-cursor-pointer {
+  padding: 20px 12px !important;
+}
+/* MyTicket Bottom Header Css Start Kalpesh */
+.TicketTabs {
+  background-color: #FFFFFF;
+  border: 1px solid #E7E7E7;
+  box-shadow: 0 -2px 4px 0 rgba(0, 0, 0, 0.07);
+  padding: 0 5px;
+  position: fixed;
+  bottom: 0;
+}
+.TicketTabs li {
+  padding: 15px 0;
+}
+.TicketTabs .active {
+  border-top: 3px solid #2561a8;
+}
+.TicketTabs .Sub {
+  margin: 0 24px;
+}
+.TicketTabs .SubR {
+  margin-right: 12px;
+}
+.TicketTabs .SubL {
+  margin-left: 12px;
+}
+.TicketTabs .Ticket{
+  width: 22px;
+  height: 22px;
+}
+.TicketTabs .cancel{
+  width: 16px;
+  height: 16px;
+}
+.TicketTabs .Subject{
+  margin: 0 15px;
+  color: #000000;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+  opacity: 0.501983;
+  text-align: left;
+}
+.TicketTabs .More {
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: left;
+}
+.TicketTabs .MoreUp {
+  width: 14px;
+  height: 11px;
+}
+/* MyTicket Bottom Header Css End Kalpesh */
 /* ****************End css ************************/

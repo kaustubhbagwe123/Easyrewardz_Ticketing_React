@@ -191,7 +191,7 @@ class TicketSystemStore extends Component {
               <input
                 type="text"
                 className="systemordersearch"
-                placeholder="Search By Store Name,Pin Code,Store Code"
+                placeholder="Search By Store Name, Pin Code, Store Code"
               />
               <img
                 src={SearchBlackImg}
@@ -281,7 +281,7 @@ class TicketSystemStore extends Component {
             <input
               type="text"
               className="systemordersearch"
-              placeholder="Search By Store Name,Pin Code,Store Code"
+              placeholder="Search By Store Name, Pin Code, Store Code"
             />
             <img
               src={SearchBlackImg}
