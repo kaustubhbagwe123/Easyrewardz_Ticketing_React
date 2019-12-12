@@ -132,8 +132,8 @@ class Dashboard extends Component {
       }
     } else {
       for (var J in checkboxes) {
-        if (checkboxes[J].checked === false) {
-          checkboxes[J].checked = true;
+        if (checkboxes[J].checked === true) {
+          checkboxes[J].checked = false;
         }
       }
     }

@@ -1,6 +1,9 @@
 import React, { Component, Fragment } from "react";
 import Modal from "react-responsive-modal";
+<<<<<<< HEAD
 // import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+=======
+>>>>>>> c7f696d97f0e09ace8b638f7cc1d3a6cf432eccc
 import { faCalculator } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import HistoricalTable from "./HistoricalTable";
@@ -1552,7 +1555,7 @@ class MyTicket extends Component {
                       >
                         Solved by NamanR
                       </label>
-                      <img src={MsgImg} alt="right" className="smg-Img" />
+                      <img src={MsgImg} alt="right" className="smg-Img1" />
                     </div>
                   </div>
                   <div className="col-12 col-xs-12 col-sm-6 col-md-7">

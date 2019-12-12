@@ -729,10 +729,10 @@ table tr th:last-child {
   line-height: 16px;
   text-align: left;
 }
-.smg-Img {
+.smg-Img1 {
   width: 22px;
   height: 16px;
-  margin: 7px;
+  margin: 7px 0 0 88px;
 }
 .up {
   width: 18px;
@@ -8805,6 +8805,34 @@ table tr th:last-child {
       max-width: 20%;
   }
 }
-/* Dashboard ReactTable Css Start Kalpesh */
+/* Dashboard ReactTable Css End Kalpesh */
+/* MyTicketList ReactTable Start Kalpesh */
+.MyTicketListReact .table-b {
+  border-radius: 15px;
+  width: 76px;
+  display: inline-block;
+  padding: 4px 10px;
+  text-transform: uppercase;
+  text-align: center;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+}
+.MyTicketListReact .ticketid {
+  font-size: 12px;
+}
+.MyTicketListReact .pinkmyticket {
+  padding: 0 0;
+}
+.slatemp-textpopup-1 {
+  color: #4a4a4a;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: left;
+  display: inline-block;
+  width: 25%;
+}
 
 /* ****************End css ************************/

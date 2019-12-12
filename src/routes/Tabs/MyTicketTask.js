@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Modal from "react-responsive-modal";
 import { Drawer } from "antd";
-import TableArrowIcon from "./../../assets/Images/table-arr.png";
 import InfoIcon from "./../../assets/Images/info-icon.png";
 import HeadPhone3 from "./../../assets/Images/headphone3.png";
 import BlackLeftArrow from "./../../assets/Images/black-left-arrow.png";
@@ -10,6 +9,10 @@ import Headphone2Img from "./../../assets/Images/headphone2.png";
 import RightCirculImg from "./../../assets/Images/right.png";
 import CalSmallImg from "./../../assets/Images/cal-small.png";
 import StoreImg from "./../../assets/Images/store.png";
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { Popover } from "antd";
+import ReactTable from "react-table";
 
 class MyTicketTask extends Component {
   constructor(props) {
@@ -32,7 +35,292 @@ class MyTicketTask extends Component {
   handleTaskDetailsDrawerCls() {
     this.setState({ TaskDetailDrawer: false });
   }
+  HandleRowClickDraw = () => {
+    return {
+      onClick: e => {
+        this.handleTaskDetailsDrawerOpn();
+      }
+    };
+  };
   render() {
+    // const popoverData1 = (
+    //   <>
+    //     <div>
+    //       <b>
+    //         <p className="title">Created By: Admin</p>
+    //       </b>
+    //       <p className="sub-title">Created Date: 12 March 2018</p>
+    //     </div>
+    //     <div>
+    //       <b>
+    //         <p className="title">Updated By: Manager</p>
+    //       </b>
+    //       <p className="sub-title">Updated Date: 12 March 2018</p>
+    //     </div>
+    //   </>
+    // );
+
+    const dataTicketTask = [
+      {
+        id: "Ta1",
+        taskTitle: (
+          <label>
+            Wifi is not working from 5hrs
+          </label>
+        ),
+        status: (
+          <span className="table-btn table-blue-btn">Open</span>
+        ),
+        dept: (
+          <div>
+          <span>
+            Internet
+            <img
+                className="info-icon"
+                src={InfoIcon}
+                alt="info-icon"
+                
+              />
+            {/* <Popover content={popoverData1} placement="bottom">
+              <img
+                className="info-icon"
+                src={InfoIcon}
+                alt="info-icon"
+                
+              />
+            </Popover> */}
+          </span>
+        </div>
+        ),
+        creationOn: (
+          <div>
+          <span>
+            2 Hour Ago
+            <img
+                className="info-icon"
+                src={InfoIcon}
+                alt="info-icon"
+                
+              />
+            {/* <Popover content={popoverData1} placement="bottom">
+              <img
+                className="info-icon"
+                src={InfoIcon}
+                alt="info-icon"
+                
+              />
+            </Popover> */}
+          </span>
+        </div>
+        ),
+      
+      },
+      {
+        id: "Ta2",
+        taskTitle: (
+          <label>
+            Store door are not working
+          </label>
+        ),
+        status: (
+          <span className="table-btn table-blue-btn">Open</span>
+        ),
+        dept: (
+          <div>
+          <span>
+            hardware
+            <img
+                className="info-icon"
+                src={InfoIcon}
+                alt="info-icon"
+                
+              />
+            {/* <Popover content={popoverData1} placement="bottom">
+              <img
+                className="info-icon"
+                src={InfoIcon}
+                alt="info-icon"
+                
+              />
+            </Popover> */}
+          </span>
+        </div>
+        ),
+        creationOn: (
+          <div>
+          <span>
+            12 March 2018
+            <img
+                className="info-icon"
+                src={InfoIcon}
+                alt="info-icon"
+                
+              />
+            {/* <Popover content={popoverData1} placement="bottom">
+              <img
+                className="info-icon"
+                src={InfoIcon}
+                alt="info-icon"
+                
+              />
+            </Popover> */}
+          </span>
+        </div>
+        ),
+       
+      },
+      {
+        id: "Ta3",
+        taskTitle: (
+          <label>
+            Supplies are not coming on time
+          </label>
+        ),
+        status: (
+          <span className="table-btn table-green-btn">Solved</span>
+        ),
+        dept: (
+          <div>
+          <span>
+            supply
+            <img
+                className="info-icon"
+                src={InfoIcon}
+                alt="info-icon"
+                
+              />
+            {/* <Popover content={popoverData1} placement="bottom">
+              <img
+                className="info-icon"
+                src={InfoIcon}
+                alt="info-icon"
+                
+              />
+            </Popover> */}
+          </span>
+        </div>
+        ),
+        creationOn: (
+          <div>
+          <span>
+            12 March 2018
+            <img
+                className="info-icon"
+                src={InfoIcon}
+                alt="info-icon"
+                
+              />
+            {/* <Popover content={popoverData1} placement="bottom">
+              <img
+                className="info-icon"
+                src={InfoIcon}
+                alt="info-icon"
+                
+              />
+            </Popover> */}
+          </span>
+        </div>
+        ),
+      }
+     
+    ];
+
+    const columnsTicketTask = [
+      {
+        Header: (
+          <span>
+            ID
+            
+          </span>
+        ),
+        accessor: "id",
+        Cell: row => (
+          <span>
+            <img
+                src={HeadPhone3}
+                alt="HeadPhone"
+                className="headPhone3"
+            />
+            ABC1234
+          </span>
+        ),
+      },
+      {
+        Header: (
+          <span>
+            Status
+          
+          </span>
+        ),
+        accessor: "status",
+        
+      },
+      {
+        Header: (
+          <span>
+            Task Title
+        
+          </span>
+        ),
+        accessor: "taskTitle"
+      },
+      {
+        Header: (
+          <span>
+            Department
+            <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "dept"
+      },
+      {
+        Header: (
+          <span>
+            Store Code
+            <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "storeCode",
+        Cell: row => (
+          <label>2349</label>
+        ),
+      },
+      {
+        Header: (
+          <span>
+            Created By
+            <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "createdBy",
+        Cell: row => (
+          <label>N Rampal</label>
+        ),
+      },
+      {
+        Header: (
+          <span>
+            Creation on
+            <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "creationOn"
+      },
+      {
+        Header: (
+          <span>
+            Assign to
+            <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "assignTo",
+        Cell: row => (
+          <label>A. Bansal</label>
+        ),
+      },
+    
+    ];
+    
     return (
       <div>
         <div className="claim-addTask-btn">
@@ -103,8 +391,16 @@ class MyTicketTask extends Component {
             </div>
           </div>
         </Modal>
-        <div className="row table-cntr mt-3">
-          <table>
+        <div className="table-cntr mt-3 MyTicketTaskReact">
+                <ReactTable
+                    data={dataTicketTask}
+                    columns={columnsTicketTask}
+                    // resizable={false}
+                    defaultPageSize={3}
+                    showPagination={true}
+                    getTrProps={this.HandleRowClickDraw}
+                />
+          {/* <table>
             <thead>
               <tr>
                 <th>ID</th>
@@ -214,7 +510,7 @@ class MyTicketTask extends Component {
                 <td>G. Bansal</td>
               </tr>
             </tbody>
-          </table>
+          </table> */}
           <Drawer
             className="taskTab-drawerModal"
             placement={"right"}

@@ -1,8 +1,10 @@
 import React, { Component } from "react";
-import TableArr from "./../../assets/Images/table-arr.png";
-import InfoIcon from "./../../assets/Images/Info-black.png";
 import Demo from "./../../store/Hashtag.js";
-import { UncontrolledPopover, PopoverBody } from "reactstrap";
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Popover } from "antd";
+import BlackInfoIcon from "./../../assets/Images/Info-black.png";
+import ReactTable from "react-table";
 import { Link } from "react-router-dom";
 class FileUploadLogs extends Component {
   constructor(props) {
@@ -10,6 +12,170 @@ class FileUploadLogs extends Component {
     this.state = {};
   }
   render() {
+    const dataTickFileUpload = [
+      {
+        id: "FU1",
+        Type: (
+          <span>User</span>
+        ),
+        fileName: (
+          <span>User.xls</span>
+        ),
+        status: (
+          <span>Inprogress</span>
+        ),
+      },
+      {
+        id: "FU2",
+        Type: (
+          <span>SLA</span>
+        ),
+        fileName: (
+          <span>SLA.xls</span>
+        ),
+        status: (
+          <span>Completed</span>
+        ),
+      },
+      {
+        id: "FU3",
+        Type: (
+          <span>Category</span>
+        ),
+        fileName: (
+          <span>Category.xls</span>
+        ),
+        status: (
+          <span>Completed</span>
+        ),
+      },
+      {
+        id: "FU4",
+        Type: (
+          <span>Store</span>
+        ),
+        fileName: (
+          <span>Store.xls</span>
+        ),
+        status: (
+          <span>Completed</span>
+        ),
+      },
+      {
+        id: "FU5",
+        Type: (
+          <span>ItemMaster</span>
+        ),
+        fileName: (
+          <span>Item Master.xls</span>
+        ),
+        status: (
+          <span>Completed</span>
+        ),
+      }
+    ];
+
+    const columnsTickFileUpload = [
+      {
+        Header: (
+          <span>
+            Type
+            <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "Type"
+      },
+      {
+        Header: (
+          <span>
+            File Name
+            <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "fileName"
+      },
+      {
+        Header: (
+          <span>
+            Date
+            <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "Date",
+        Cell: row => {
+          var ids = row.original["id"];
+          return (
+            <div>
+              <span>
+                02-09-2019
+                <Popover content={popoverData} placement="bottom">
+                  <img
+                    className="info-icon-cp"
+                    src={BlackInfoIcon}
+                    alt="info-icon"
+                    id={ids}
+                  />
+                </Popover>
+              </span>
+            </div>
+          );
+        }
+      },
+      {
+        Header: (
+          <span>
+            Status
+            <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "status"
+      },
+      {
+        Header: (
+          <span>Error File</span>
+        ),
+        accessor: "Erroor",
+        Cell: row => (
+          <div>
+            <button className="downloadBtn">
+              <label className="lblDownloadbtn">DOWNLOAD</label>
+            </button>
+          </div>
+        ),
+      },
+      {
+        Header: (
+          <span>Success File</span>
+        ),
+        accessor: "success",
+        Cell: row => (
+          <div>
+            <button className="downloadBtn">
+              <label className="lblDownloadbtn">DOWNLOAD</label>
+            </button>
+          </div>
+        ),
+      },
+    ];
+
+    const popoverData = (
+      <>
+        <div>
+          <b>
+            <p className="title">Created By: Admin</p>
+          </b>
+          <p className="sub-title">Created Date: 12 March 2018</p>
+        </div>
+        <div>
+          <b>
+            <p className="title">Updated By: Manager</p>
+          </b>
+          <p className="sub-title">Updated Date: 12 March 2018</p>
+        </div>
+      </>
+    );
+   
+
     return (
       <div className="mainDivPadding">
         <div className="container-fluid setting-title setting-breadcrumb">
@@ -26,230 +192,14 @@ class FileUploadLogs extends Component {
           </Link>
         </div>
         <br />
-        <div className="fileUploadTable">
-          <table>
-            <thead>
-              <tr>
-                <th className="thRowSpace">
-                  Type
-                  <img src={TableArr} alt="table-arr" />
-                </th>
-                <th>
-                  File Name
-                  <img src={TableArr} alt="table-arr" />
-                </th>
-                <th className="thRowSpace">
-                  Date
-                  <img src={TableArr} alt="table-arr" />
-                </th>
-                <th>
-                  Status
-                  <img src={TableArr} alt="table-arr" />
-                </th>
-                <th>Error File</th>
-                <th>Success File</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Users</td>
-                <td>Users.xls</td>
-                <td>
-                  02-09-2019
-                  <img
-                    className="info-icon"
-                    src={InfoIcon}
-                    alt="info-icon"
-                    id="Users"
+        <div className="fileUploadTable TicketFileUploadReact">
+                  <ReactTable
+                    data={dataTickFileUpload}
+                    columns={columnsTickFileUpload}
+                    // resizable={false}
+                    defaultPageSize={5}
+                    showPagination={true}
                   />
-                  <UncontrolledPopover
-                    trigger="hover"
-                    placement="bottom"
-                    target="Users"
-                    className="general-popover created-popover"
-                  >
-                    <PopoverBody>
-                      <div>
-                        <p className="title">Created By: Admin</p>
-                        <p className="sub-title">Created Date: 02-09-2019</p>
-                      </div>
-                      <div>
-                        <p className="title">Updated By: Manager</p>
-                        <p className="sub-title">Updated Date: 02-09-2019</p>
-                      </div>
-                    </PopoverBody>
-                  </UncontrolledPopover>
-                </td>
-                <td>Inprogress</td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>SLA</td>
-                <td>SLA.csv</td>
-                <td>
-                  02-09-2019
-                  <img
-                    className="info-icon"
-                    src={InfoIcon}
-                    alt="info-icon"
-                    id="SLA"
-                  />
-                  <UncontrolledPopover
-                    trigger="hover"
-                    placement="bottom"
-                    target="SLA"
-                    className="general-popover created-popover"
-                  >
-                    <PopoverBody>
-                      <div>
-                        <p className="title">Created By: Admin</p>
-                        <p className="sub-title">Created Date: 02-09-2019</p>
-                      </div>
-                      <div>
-                        <p className="title">Updated By: Manager</p>
-                        <p className="sub-title">Updated Date: 02-09-2019</p>
-                      </div>
-                    </PopoverBody>
-                  </UncontrolledPopover>
-                </td>
-                <td>Completed</td>
-                <td>
-                  <button className="downloadBtn">
-                    <label className="lblDownloadbtn">DOWNLOAD</label>
-                  </button>
-                </td>
-                <td>
-                  <button className="downloadBtn">
-                    <label className="lblDownloadbtn">DOWNLOAD</label>
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td>Category</td>
-                <td>Category.xls</td>
-                <td>
-                  02-09-2019
-                  <img
-                    className="info-icon"
-                    src={InfoIcon}
-                    alt="info-icon"
-                    id="Category"
-                  />
-                  <UncontrolledPopover
-                    trigger="hover"
-                    placement="bottom"
-                    target="Category"
-                    className="general-popover created-popover"
-                  >
-                    <PopoverBody>
-                      <div>
-                        <p className="title">Created By: Admin</p>
-                        <p className="sub-title">Created Date: 02-09-2019</p>
-                      </div>
-                      <div>
-                        <p className="title">Updated By: Manager</p>
-                        <p className="sub-title">Updated Date: 02-09-2019</p>
-                      </div>
-                    </PopoverBody>
-                  </UncontrolledPopover>
-                </td>
-                <td>Completed</td>
-                <td>
-                  <button className="downloadBtn">
-                    <label className="lblDownloadbtn">DOWNLOAD</label>
-                  </button>
-                </td>
-                <td>
-                  <button className="downloadBtn">
-                    <label className="lblDownloadbtn">DOWNLOAD</label>
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td>Store</td>
-                <td>Store.xls</td>
-                <td>
-                  02-09-2019
-                  <img
-                    className="info-icon"
-                    src={InfoIcon}
-                    alt="info-icon"
-                    id="Store"
-                  />
-                  <UncontrolledPopover
-                    trigger="hover"
-                    placement="bottom"
-                    target="Store"
-                    className="general-popover created-popover"
-                  >
-                    <PopoverBody>
-                      <div>
-                        <p className="title">Created By: Admin</p>
-                        <p className="sub-title">Created Date: 02-09-2019</p>
-                      </div>
-                      <div>
-                        <p className="title">Updated By: Manager</p>
-                        <p className="sub-title">Updated Date: 02-09-2019</p>
-                      </div>
-                    </PopoverBody>
-                  </UncontrolledPopover>
-                </td>
-                <td>Completed</td>
-                <td>
-                  <button className="downloadBtn">
-                    <label className="lblDownloadbtn">DOWNLOAD</label>
-                  </button>
-                </td>
-                <td>
-                  <button className="downloadBtn">
-                    <label className="lblDownloadbtn">DOWNLOAD</label>
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td>Item Master</td>
-                <td>Item Master.xls</td>
-                <td>
-                  02-09-2019
-                  <img
-                    className="info-icon"
-                    src={InfoIcon}
-                    alt="info-icon"
-                    id="ItemMaster"
-                  />
-                  <UncontrolledPopover
-                    trigger="hover"
-                    placement="bottom"
-                    target="ItemMaster"
-                    className="general-popover created-popover"
-                  >
-                    <PopoverBody>
-                      <div>
-                        <p className="title">Created By: Admin</p>
-                        <p className="sub-title">Created Date: 02-09-2019</p>
-                      </div>
-                      <div>
-                        <p className="title">Updated By: Manager</p>
-                        <p className="sub-title">Updated Date: 02-09-2019</p>
-                      </div>
-                    </PopoverBody>
-                  </UncontrolledPopover>
-                </td>
-                <td>Completed</td>
-                <td>
-                  <button className="downloadBtn">
-                    <label className="lblDownloadbtn">DOWNLOAD</label>
-                  </button>
-                </td>
-                <td>
-                  <button className="downloadBtn">
-                    <label className="lblDownloadbtn">DOWNLOAD</label>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
         </div>
       </div>
     );

@@ -1,7 +1,5 @@
 import React, { Component, Fragment } from "react";
-import Demo from "../store/Hashtag.js";
 import SearchIcon from "./../assets/Images/search-icon.png";
-import TableArr from "./../assets/Images/table-arr.png";
 import InfoIcon from "./../assets/Images/info-icon.png";
 import TaskIconBlue from "./../assets/Images/task-icon-blue.png";
 import TaskIconGray from "./../assets/Images/task-icon-gray.png";
@@ -19,6 +17,10 @@ import MyTicketClosed from "./Tabs/MyTicketClosed.js";
 import MyTicketAll from "./Tabs/MyTicketAll.js";
 import MyTicketFollowUp from "./Tabs/MyTicketFollowUp.js";
 import MyTicketDraft from "./Tabs/MyTicketDraft.js";
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ReactTable from "react-table";
+
 
 class MyTicketList extends Component {
   constructor(props) {
@@ -41,7 +43,704 @@ class MyTicketList extends Component {
   handleAssignModalClose() {
     this.setState({ AssignModal: false });
   }
+  clickCheckbox(evt) {
+    evt.stopPropagation();
+  }
+  checkAllCheckbox(event) {
+    const allCheckboxChecked = event.target.checked;
+    var checkboxes = document.getElementsByName("MyTicketListcheckbox[]");
+    if (allCheckboxChecked) {
+      for (var i in checkboxes) {
+        if (checkboxes[i].checked === false) {
+          checkboxes[i].checked = true;
+        }
+      }
+    } else {
+      for (var J in checkboxes) {
+        if (checkboxes[J].checked === true) {
+          checkboxes[J].checked = false;
+        }
+      }
+    }
+  }
+  HandleRowClickPage = () => {
+    return {
+      onClick: e => { 
+        this.props.history.push("myticket");
+      }
+    };
+  };
   render() {
+
+    // const DefArti = (
+    //   <div className="dash-creation-popup-cntr">
+    //     <ul className="dash-category-popup">
+    //       <li>
+    //         <p>Category</p>
+    //         <p>Defective article</p>
+    //       </li>
+    //       <li>
+    //         <p>Sub Category</p>
+    //         <p>Customer wants refund</p>
+    //       </li>
+    //       <li>
+    //         <p>Type</p>
+    //         <p>Delivery</p>
+    //       </li>
+    //     </ul>
+    //   </div>
+    // );
+
+    // const InsertPlaceholder = (
+    //   <div className="insertpop1">
+    //     <ul className="dash-creation-popup">
+    //       <li className="title">Creation details</li>
+    //       <li>
+    //         <p>Naman Created</p>
+    //         <p>2 Hrs ago</p>
+    //       </li>
+    //       <li>
+    //         <p>Assigned to Vikas</p>
+    //         <p>1.5 Hrs ago</p>
+    //       </li>
+    //       <li>
+    //         <p>Vikas updated</p>
+    //         <p>1 Hr ago</p>
+    //       </li>
+    //       <li>
+    //         <p>Response time remaining by</p>
+    //         <p>30 mins</p>
+    //       </li>
+    //       <li>
+    //         <p>Response overdue by</p>
+    //         <p>1 Hr</p>
+    //       </li>
+    //       <li>
+    //         <p>Resolution overdue by</p>
+    //         <p>2 Hrs</p>
+    //       </li>
+    //     </ul>
+    //   </div>
+    // );
+    // const TaskBlue = (
+    //   <div className="dash-task-popup-new">
+    //     <div className="d-flex justify-content-between align-items-center">
+    //       <p className="m-b-0">
+    //         TASK: <span className="green-clr">02</span>/
+    //         <span className="task-red-clr">04</span>
+    //       </p>
+    //       <div className="d-flex align-items-center">
+    //         2 NEW
+    //         <div className="nw-chat">
+    //           <img src={Chat} alt="chat" />
+    //         </div>
+    //       </div>
+    //     </div>
+    //     <ProgressBar className="task-progress" now={70} />
+    //   </div>
+    // );
+    // const ClaimBlue = (
+    //   <div className="dash-task-popup-new">
+    //     <div className="d-flex justify-content-between align-items-center">
+    //       <p>
+    //         CLAIM: <span className="green-clr">02</span>/
+    //         <span className="task-red-clr">01</span>
+    //       </p>
+    //     </div>
+    //     <ProgressBar className="task-progress" now={70} />
+    //   </div>
+    // );
+
+    const dataDash = [
+      {
+        idDash: (
+          <span onClick={e => this.clickCheckbox(e)}>
+            <div className="filter-type pink1 pinkmyticket">
+              <div className="filter-checkbox pink2 pinkmargin">
+                <input
+                  type="checkbox"
+                  id="fil-ab1"
+                  name="MyTicketListcheckbox[]"
+                  
+                />
+                <label htmlFor="fil-ab1">
+                  <img
+                    src={HeadPhone3}
+                    alt="HeadPhone"
+                    className="headPhone3"
+                  />
+                  ABC1234
+                </label>
+              </div>
+            </div>
+          </span>
+        ),
+        statusDash: (
+          <span className="table-b table-blue-btn">
+            <label>Open</label>
+          </span>
+        ),
+        subjectDash: (
+          <div>
+            Need to change my shipping address <br></br>
+            <span>Hope this help, Please rate us</span>
+          </div>
+        ),
+        creationNew: (
+          <span>
+            <label>12 March 2018</label>
+            <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            {/* <Popover content={InsertPlaceholder} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover> */}
+          </span>
+        ),
+        assigneeDash: (
+          <span>Naman</span>
+        ),
+      },
+      {
+        idDash: (
+          <span onClick={e => this.clickCheckbox(e)}>
+            <div className="filter-type pink1 pinkmyticket">
+              <div className="filter-checkbox pink2 pinkmargin">
+                <input
+                  type="checkbox"
+                  id="fil-ab2"
+                  name="MyTicketListcheckbox[]"
+                />
+                <label htmlFor="fil-ab2">
+                  <img
+                    src={HeadPhone3}
+                    alt="HeadPhone"
+                    className="headPhone3"
+                  />
+                  ABC1234
+                </label>
+              </div>
+            </div>
+          </span>
+        ),
+        statusDash: (
+          <span className="table-b table-yellow-btn">
+            <label>New</label>
+          </span>
+        ),
+        subjectDash: (
+          <div>
+            Need to change my shipping address <br></br>
+            <span>Hope this help, Please rate us</span>
+          </div>
+        ),
+        creationNew: (
+          <span>
+            <label>12 March 2018</label>
+            <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            {/* <Popover content={InsertPlaceholder} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover> */}
+          </span>
+        ),
+        assigneeDash: (
+          <span>Rashmi</span>
+        ),
+      },
+      {
+        idDash: (
+          <span onClick={e => this.clickCheckbox(e)}>
+            <div className="filter-type pink1 pinkmyticket">
+              <div className="filter-checkbox pink2 pinkmargin">
+              
+                <input
+                  type="checkbox"
+                  id="fil-ab3"
+                  name="MyTicketListcheckbox[]"
+                />
+                <label htmlFor="fil-ab3">
+                  <img
+                    src={HeadPhone3}
+                    alt="HeadPhone"
+                    className="headPhone3"
+                  />
+                  ABC1234
+                </label>
+              </div>
+            </div>
+          </span>
+        ),
+        statusDash: (
+          <span className="table-b table-green-btn">
+            <label>Solved</label>
+          </span>
+        ),
+        subjectDash: (
+          <div>
+            <img
+                className="task-icon-1 marginimg"
+                src={TaskIconBlue}
+                alt="task-icon-blue"
+              />
+            {/* <Popover content={TaskBlue} placement="bottom">
+              <img
+                className="task-icon-1 marginimg"
+                src={TaskIconBlue}
+                alt="task-icon-blue"
+              />
+            </Popover> */}
+            Need to change my shipping address <br></br>
+            <span>Hope this help, Please rate us</span>
+          </div>
+        ),
+        creationNew: (
+          <span>
+            <label>12 March 2018</label>
+            <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            {/* <Popover content={InsertPlaceholder} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover> */}
+          </span>
+        ),
+        assigneeDash: (
+          <span>Shalini</span>
+        ),
+      },
+      {
+        idDash: (
+          <span onClick={e => this.clickCheckbox(e)}>
+            <div className="filter-type pink1 pinkmyticket">
+              <div className="filter-checkbox pink2 pinkmargin">
+
+                <input
+                  type="checkbox"
+                  id="fil-ab4"
+                  name="MyTicketListcheckbox[]"
+                />
+                <label htmlFor="fil-ab4">
+                  <img
+                    src={HeadPhone3}
+                    alt="HeadPhone"
+                    className="headPhone3"
+                  />
+                  ABC1234
+                </label>
+              </div>
+            </div>
+          </span>
+        ),
+        statusDash: (
+          <span className="table-b table-blue-btn">
+            <label>Open</label>
+          </span>
+        ),
+        subjectDash: (
+          <div>
+            <img
+              className="task-icon-1 marginimg"
+              src={TaskIconGray}
+              alt="task-icon-gray"
+            />
+            Need to change my shipping address <br></br>
+            <span>Hope this help, Please rate us</span>
+          </div>
+        ),
+        creationNew: (
+          <span>
+            <label>12 March 2018</label>
+            <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            {/* <Popover content={InsertPlaceholder} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover> */}
+          </span>
+        ),
+        assigneeDash: (
+          <span>Vikas</span>
+        ),
+      },
+      {
+        idDash: (
+          <span onClick={e => this.clickCheckbox(e)}>
+            <div className="filter-type pink1 pinkmyticket">
+              <div className="filter-checkbox pink2 pinkmargin">
+                <input
+                  type="checkbox"
+                  id="fil-ab5"
+                  name="MyTicketListcheckbox[]"
+                />
+                <label htmlFor="fil-ab5">
+                  <img
+                    src={HeadPhone3}
+                    alt="HeadPhone"
+                    className="headPhone3"
+                  />
+                  ABC1234
+                </label>
+              </div>
+            </div>
+          </span>
+        ),
+        statusDash: (
+          <span className="table-b table-blue-btn">
+            <label>Open</label>
+          </span>
+        ),
+        subjectDash: (
+          <div>
+            <img
+                className="claim-icon marginimg"
+                src={CliamIconBlue}
+                alt="cliam-icon-blue"
+              />
+            {/* <Popover content={ClaimBlue} placement="bottom">
+              <img
+                className="claim-icon marginimg"
+                src={CliamIconBlue}
+                alt="cliam-icon-blue"
+              />
+            </Popover> */}
+            Need to change my shipping address <br></br>
+            <span>
+              <img
+                className="task-icon-1 marginimg"
+                src={TaskIconGray}
+                alt="task-icon-gray"
+              />
+              Hope this help, Please rate us
+            </span>
+          </div>
+        ),
+        creationNew: (
+          <span>
+            <label>12 March 2018</label>
+            <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            {/* <Popover content={InsertPlaceholder} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover> */}
+          </span>
+        ),
+        assigneeDash: (
+          <span>Nidhi</span>
+        ),
+      },
+      {
+        idDash: (
+          <span onClick={e => this.clickCheckbox(e)}>
+            <div className="filter-type pink1 pinkmyticket">
+              <div className="filter-checkbox pink2 pinkmargin">
+              
+                <input
+                  type="checkbox"
+                  id="fil-ab6"
+                  name="MyTicketListcheckbox[]"
+                />
+                <label htmlFor="fil-ab6">
+                  <img
+                    src={HeadPhone3}
+                    alt="HeadPhone"
+                    className="headPhone3"
+                  />
+                  ABC1234
+                </label>
+              </div>
+            </div>
+          </span>
+        ),
+        statusDash: (
+          <span className="table-b table-yellow-btn">
+            <label>New</label>
+          </span>
+        ),
+        subjectDash: (
+          <div>
+            Need to change my shipping address <br></br>
+            <span>Hope this help, Please rate us</span>
+          </div>
+        ),
+        creationNew: (
+          <span>
+            <label>12 March 2018</label>
+            <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            {/* <Popover content={InsertPlaceholder} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover> */}
+          </span>
+        ),
+        assigneeDash: (
+          <span>Mansi</span>
+        ),
+      },
+      {
+        idDash: (
+          <span onClick={e => this.clickCheckbox(e)}>
+            <div className="filter-type pink1 pinkmyticket">
+              <div className="filter-checkbox pink2 pinkmargin">
+              
+                <input
+                  type="checkbox"
+                  id="fil-ab7"
+                  name="MyTicketListcheckbox[]"
+                />
+                <label htmlFor="fil-ab7">
+                  <img
+                    src={HeadPhone3}
+                    alt="HeadPhone"
+                    className="headPhone3"
+                  />
+                  ABC1234
+                </label>
+              </div>
+            </div>
+          </span>
+        ),
+        statusDash: (
+          <span className="table-b table-green-btn">
+            <label>Solved</label>
+          </span>
+        ),
+        subjectDash: (
+          <div>
+            Need to change my shipping address <br></br>
+            <span>Hope this help, Please rate us</span>
+          </div>
+        ),
+        creationNew: (
+          <span>
+            <label>12 March 2018</label>
+            <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            {/* <Popover content={InsertPlaceholder} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover> */}
+          </span>
+        ),
+        assigneeDash: (
+          <span>Naman</span>
+        ),
+      },
+      {
+        idDash: (
+          <span onClick={e => this.clickCheckbox(e)}>
+            <div className="filter-type pink1 pinkmyticket">
+              <div className="filter-checkbox pink2 pinkmargin">
+              
+                <input
+                  type="checkbox"
+                  id="fil-ab8"
+                  name="MyTicketListcheckbox[]"
+                />
+                <label htmlFor="fil-ab8">
+                  <img
+                    src={HeadPhone3}
+                    alt="HeadPhone"
+                    className="headPhone3"
+                  />
+                  ABC1234
+                </label>
+              </div>
+            </div>
+          </span>
+        ),
+        statusDash: (
+          <span className="table-b table-blue-btn">
+            <label>Open</label>
+          </span>
+        ),
+        subjectDash: (
+          <div>
+            Need to change my shipping address <br></br>
+            <span>Hope this help, Please rate us</span>
+          </div>
+        ),
+        creationNew: (
+          <span>
+            <label>12 March 2018</label>
+            <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            {/* <Popover content={InsertPlaceholder} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover> */}
+          </span>
+        ),
+        assigneeDash: (
+          <span>Akriti</span>
+        ),
+      },
+      {
+        idDash: (
+          <span onClick={e => this.clickCheckbox(e)}>
+            <div className="filter-type pink1 pinkmyticket">
+              <div className="filter-checkbox pink2 pinkmargin">
+
+                <input
+                  type="checkbox"
+                  id="fil-ab9"
+                  name="MyTicketListcheckbox[]"
+                />
+                <label htmlFor="fil-ab9">
+                  <img
+                    src={HeadPhone3}
+                    alt="HeadPhone"
+                    className="headPhone3"
+                  />
+                  ABC1234
+                </label>
+              </div>
+            </div>
+          </span>
+        ),
+        statusDash: (
+          <span className="table-b table-blue-btn">
+            <label>Open</label>
+          </span>
+        ),
+        subjectDash: (
+          <div>
+            Need to change my shipping address <br></br>
+            <span>Hope this help, Please rate us</span>
+          </div>
+        ),
+        creationNew: (
+          <span>
+            <label>12 March 2018</label>
+            <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            {/* <Popover content={InsertPlaceholder} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover> */}
+          </span>
+        ),
+        assigneeDash: (
+          <span>Juhi</span>
+        ),
+      },
+      {
+        idDash: (
+          <span onClick={e => this.clickCheckbox(e)}>
+            <div className="filter-type pink1 pinkmyticket">
+              <div className="filter-checkbox pink2 pinkmargin">
+              
+                <input
+                  type="checkbox"
+                  id="fil-ab10"
+                  name="MyTicketListcheckbox[]"
+                />
+                <label htmlFor="fil-ab10">
+                  <img
+                    src={HeadPhone3}
+                    alt="HeadPhone"
+                    className="headPhone3"
+                  />
+                  ABC1234
+                </label>
+              </div>
+            </div>
+          </span>
+        ),
+        statusDash: (
+          <span className="table-b table-yellow-btn">
+            <label>New</label>
+          </span>
+        ),
+        subjectDash: (
+          <div>
+            Need to change my shipping address <br></br>
+            <span>Hope this help, Please rate us</span>
+          </div>
+        ),
+        creationNew: (
+          <span>
+            <label>12 March 2018</label>
+            <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            {/* <Popover content={InsertPlaceholder} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover> */}
+          </span>
+        ),
+        assigneeDash: (
+          <span>Shalini</span>
+        ),
+      }
+    ];
+
+    const columnsDash = [
+      {
+        Header: (
+          <span>
+            <div className="filter-type pink1 pinkmyticket">
+              <div className="filter-checkbox pink2 pinkmargin">
+                <input
+                  type="checkbox"
+                  id="fil-aball"
+                  name="MyTicketListcheckbox[]"
+                  onChange={this.checkAllCheckbox.bind(this)}
+                />
+                <label htmlFor="fil-aball" className="ticketid">ID</label>
+              </div>
+            </div>
+          </span>
+        ),
+        accessor: "idDash"
+      },
+      {
+        Header: (
+          <span onClick={this.StatusOpenModel}>
+            Status <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "statusDash"
+      },
+      {
+        Header: (
+          <label className="ticketid">
+            <span>
+              Subject/
+            </span>
+            <span style={{ fontWeight: "bold", fontSize: "11px !important" }}>Lastest Message</span>
+          </label>
+        ),
+        accessor: "subjectDash"
+      },
+      {
+        Header: (
+          <span className="ticketid">
+            Category <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "categoryDash",
+        Cell: props => (
+          <span>
+            <label>Defective article </label>
+            <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            {/* <Popover content={DefArti} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover> */}
+          </span>
+        )
+      },
+      {
+        Header: (
+          <span className="ticketid">
+            Priority <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "priorityDash",
+        Cell: props => <span>High</span>
+      },
+      {
+        Header: (
+          <span className="ticketid">
+            Assignee <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "assigneeDash"
+      },
+      {
+        Header: (
+          <span className="ticketid">
+            Creation On <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "creationNew"
+      }
+    ];
+
+    
     return (
       <Fragment>
         <div className="myticketlist-header">
@@ -183,7 +882,18 @@ class MyTicketList extends Component {
               >
                 <div className="container-fluid">
                   <div className="table-cntr mt-3 mtictab table-responsive" style={{overflow: "initial"}}>
-                    <table className="table-responsive" style={{display: "inline-table"}}>
+                  <div className="MyTicketListReact">
+                  <ReactTable
+                    data={dataDash}
+                    columns={columnsDash}
+                    // resizable={false}
+                    defaultPageSize={10}
+                    showPagination={false}
+                    getTrProps={this.HandleRowClickPage}
+                  />
+                </div>
+
+                    {/* <table className="table-responsive" style={{display: "inline-table"}}>
                       <thead>
                         <tr>
                           <th>ID</th>
@@ -629,8 +1339,8 @@ class MyTicketList extends Component {
                           </td>
                         </tr>
                       </tbody>
-                    </table>
-                    <div className="pagi">
+                    </table> */}
+                    {/* <div className="pagi">
                       <ul>
                         <li>
                           <a href={Demo.BLANK_LINK}>&lt;</a>
@@ -660,7 +1370,7 @@ class MyTicketList extends Component {
                           <a href={Demo.BLANK_LINK}>&gt;</a>
                         </li>
                       </ul>
-                    </div>
+                    </div> */}
                     <div className="float-search">
                       <small>Search Tickets</small>
                       <img

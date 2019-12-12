@@ -1,8 +1,5 @@
 import React, { Component } from "react";
 import Demo from "./../../../store/Hashtag.js";
-import TableArr from "./../../../assets/Images/table-arr.png";
-import InfoIcon from "./../../../assets/Images/Info-black.png";
-// import DelIcon from "./../../../assets/Images/red-delete-icon.png";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
 import FileUpload from "./../../../assets/Images/file.png";
 import DelBlack from "./../../../assets/Images/del-black.png";
@@ -10,7 +7,12 @@ import UploadCancel from "./../../../assets/Images/upload-cancel.png";
 import DownExcel from "./../../../assets/Images/csv.png";
 import { ProgressBar } from "react-bootstrap";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
-import {Link} from 'react-router-dom';
+import { Link } from "react-router-dom";
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
+import { Popover } from "antd";
+import ReactTable from "react-table";
 
 class StoreUsers extends Component {
   constructor(props) {
@@ -35,10 +37,138 @@ class StoreUsers extends Component {
     e.preventDefault();
   };
   render() {
+    const dataStorUser = [
+      {
+        id: "H1",
+        Desig: <span>Store Manager</span>,
+        Report: <span>Root</span>,
+        status: <span>Active</span>
+      },
+      {
+        id: "H2",
+        Desig: <span>Store Executive</span>,
+        Report: <span>Store Manager</span>,
+        status: <span>Inactive</span>
+      }
+    ];
+
+    const columnsStorUser = [
+      {
+        Header: (
+          <span>
+            Brand Name
+            <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "brandName",
+        Cell: row => <span>Bata1</span>
+      },
+      {
+        Header: (
+          <span>
+            Store Code
+            <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "storeCode",
+        Cell: row => <span>1234</span>
+      },
+      {
+        Header: (
+          <span>
+            User Name
+            <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "uName",
+        Cell: row => {
+          var ids = row.original["id"];
+          return (
+            <div>
+              <span>
+                Vikas
+                <Popover content={popoverData} placement="bottom">
+                  <img
+                    className="info-icon-cp"
+                    src={BlackInfoIcon}
+                    alt="info-icon"
+                    id={ids}
+                  />
+                </Popover>
+              </span>
+            </div>
+          );
+        }
+      },
+      {
+        Header: (
+          <span>
+            Reportee Name
+            <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "ReporName",
+        Cell: row => {
+          var ids = row.original["id"];
+          return (
+            <div>
+              <span>
+                Naman
+                <Popover content={popoverData} placement="bottom">
+                  <img
+                    className="info-icon-cp"
+                    src={BlackInfoIcon}
+                    alt="info-icon"
+                    id={ids}
+                  />
+                </Popover>
+              </span>
+            </div>
+          );
+        }
+      },
+      {
+        Header: (
+          <span>
+            Department
+            <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "Dept",
+        Cell: row => <span>IT</span>
+      },
+      {
+        Header: (
+          <span>
+            Function
+            <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "Fun",
+        Cell: row => <span>Infra</span>
+      }
+    ];
+    const popoverData = (
+      <>
+        <div>
+          <b>
+            <p className="title">Created By: Admin</p>
+          </b>
+          <p className="sub-title">Created Date: 12 March 2018</p>
+        </div>
+        <div>
+          <b>
+            <p className="title">Updated By: Manager</p>
+          </b>
+          <p className="sub-title">Updated Date: 12 March 2018</p>
+        </div>
+      </>
+    );
+
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
-        <Link to="settings" className="header-path">
+          <Link to="settings" className="header-path">
             Settings
           </Link>
           <span>&gt;</span>
@@ -47,15 +177,22 @@ class StoreUsers extends Component {
           </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
-           User Master
+            User Master
           </Link>
         </div>
         <div className="container-fluid">
           <div className="store-settings-cntr">
             <div className="row">
               <div className="col-md-8">
-                <div className="table-cntr table-height storeUsers">
-                  <table>
+                <div className="table-cntr table-height StoreUserReact">
+                  <ReactTable
+                    data={dataStorUser}
+                    columns={columnsStorUser}
+                    // resizable={false}
+                    defaultPageSize={5}
+                    showPagination={true}
+                  />
+                  {/* <table>
                     <thead>
                       <tr>
                         <th>
@@ -87,7 +224,7 @@ class StoreUsers extends Component {
                             className="info-icon"
                             src={InfoIcon}
                             alt="info-icon"
-                            // id="desig1"
+                            
                           />
                         </td>
                         <td>
@@ -267,45 +404,7 @@ class StoreUsers extends Component {
                         </td>
                       </tr>
                     </tbody>
-                  </table>
-                  <div className="position-relative">
-                    <div className="pagi">
-                      <ul>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&lt;</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>1</a>
-                        </li>
-                        <li className="active">
-                          <a href={Demo.BLANK_LINK}>2</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>3</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>4</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>5</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>6</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&gt;</a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="item-selection">
-                      <select>
-                        <option>30</option>
-                        <option>50</option>
-                        <option>100</option>
-                      </select>
-                      <p>Items per page</p>
-                    </div>
-                  </div>
+                  </table> */}
                 </div>
               </div>
               <div className="col-md-4">
@@ -326,11 +425,11 @@ class StoreUsers extends Component {
                       <div className="div-cntr">
                         <label>Brand</label>
                         <select
-                        id="inputState"
-                        className="form-control dropdown-setting"
-                      >
-                        <option>Bata</option>
-                      </select>
+                          id="inputState"
+                          className="form-control dropdown-setting"
+                        >
+                          <option>Bata</option>
+                        </select>
                       </div>
                       <div className="div-cntr">
                         <label>Store Code</label>

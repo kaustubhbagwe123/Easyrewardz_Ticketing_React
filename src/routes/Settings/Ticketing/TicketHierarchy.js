@@ -255,6 +255,7 @@ class TicketHierarchy extends Component {
                     defaultPageSize={5}
                     showPagination={true}
                   />
+                  
                 </div>
               </div>
               <div className="col-md-4">
