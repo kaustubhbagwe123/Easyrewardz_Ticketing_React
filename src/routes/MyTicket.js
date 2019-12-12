@@ -47,6 +47,9 @@ import Email1 from "./../assets/Images/SecuredLetter2.png";
 import Sms1 from "./../assets/Images/Sms.png";
 import Facebook1 from "./../assets/Images/facebook.png";
 import Call1 from "./../assets/Images/call.png";
+import Ticket from "./../assets/Images/TicketGrey.png";
+import MoreUp from "./../assets/Images/table-arr-up.png";
+import CancelImgGrey from "./../assets/Images/CancelGrey.png";
 
 class MyTicket extends Component {
   constructor(props) {
@@ -1082,17 +1085,17 @@ class MyTicket extends Component {
             <div className="row">
               <div className="mask1">
                 <div className="mail-mask">
-                  <div class="dropdown" style={{ display: "inherit" }}>
+                  <div className="dropdown" style={{ display: "inherit" }}>
                     <button
-                      class="dropdown-toggle my-tic-email"
+                      className="dropdown-toggle my-tic-email"
                       type="button"
                       data-toggle="dropdown"
                     >
                       <img src={Email1} alt="email" className="EMFCImg" />
-                          <span className="EMFCText">Email</span>
+                      <span className="EMFCText">Email</span>
                       {/* <FontAwesomeIcon icon={faEnvelope} /> Email */}
                     </button>
-                    <ul class="dropdown-menu">
+                    <ul className="dropdown-menu">
                       <li>
                         <a href="#!">
                           <img src={Email1} alt="email" className="EMFCImg" />
@@ -1152,17 +1155,17 @@ class MyTicket extends Component {
                   Kb Link
                 </a>
                 <div
-                  class="dropdown collapbtn"
+                  className="dropdown collapbtn"
                   style={{ display: "inherit", top: "5px" }}
                 >
                   <button
-                    class="dropdown-toggle my-tic-email"
+                    className="dropdown-toggle my-tic-email"
                     type="button"
                     data-toggle="dropdown"
                   >
                     <FontAwesomeIcon icon={faCalculator} /> Template
                   </button>
-                  <ul class="dropdown-menu">
+                  <ul className="dropdown-menu">
                     <li>
                       <a href="#!">Template 1</a>
                     </li>
@@ -1498,7 +1501,7 @@ class MyTicket extends Component {
                 </div>
               </div>
             </div>
-            <div className="tab-content p-0">
+            <div className="tab-content p-0 tabpadtick">
               <div
                 className="tab-pane fade"
                 id="Claim-tab"
@@ -1730,17 +1733,24 @@ class MyTicket extends Component {
                     <div className="col-12" style={{ marginTop: "5px" }}>
                       <div className="mask1">
                         <div className="mail-mask">
-                          <div class="dropdown" style={{ display: "inherit" }}>
+                          <div
+                            className="dropdown"
+                            style={{ display: "inherit" }}
+                          >
                             <button
-                              class="dropdown-toggle my-tic-email"
+                              className="dropdown-toggle my-tic-email"
                               type="button"
                               data-toggle="dropdown"
                             >
-                              <img src={Email1} alt="email" className="EMFCImg" />
-                          <span className="EMFCText">Email</span>
+                              <img
+                                src={Email1}
+                                alt="email"
+                                className="EMFCImg"
+                              />
+                              <span className="EMFCText">Email</span>
                               {/* <FontAwesomeIcon icon={faEnvelope} /> Email */}
                             </button>
-                            <ul class="dropdown-menu">
+                            <ul className="dropdown-menu">
                               <li>
                                 <a href="#!">
                                   <img
@@ -1807,17 +1817,17 @@ class MyTicket extends Component {
                           </a>
 
                           <div
-                            class="dropdown collapbtn"
+                            className="dropdown collapbtn"
                             style={{ display: "inherit" }}
                           >
                             <button
-                              class="dropdown-toggle my-tic-email"
+                              className="dropdown-toggle my-tic-email"
                               type="button"
                               data-toggle="dropdown"
                             >
                               <FontAwesomeIcon icon={faCalculator} /> Template
                             </button>
-                            <ul class="dropdown-menu">
+                            <ul className="dropdown-menu">
                               <li>
                                 <a href="#!">Template 1</a>
                               </li>
@@ -2190,6 +2200,58 @@ class MyTicket extends Component {
           </div>
         </Modal> */}
         {/* ---------------------------------------------------------- */}
+
+        <div className="row" style={{ margin: "0" }}>
+          <div className="TicketTabs">
+            <ul className="mb-0">
+              <li className="SubR">
+                <img src={PlusImg} alt="Plus" className="Ticket" />
+              </li>
+              <li className="Sub">
+                <span>
+                  <img src={Ticket} alt="Ticket" className="Ticket" />
+                </span>
+                <label className="Subject">Subject: Need to change m...</label>
+                <span>
+                  <img src={CancelImgGrey} alt="Cancel" className="cancel" />
+                </span>
+              </li>
+              <li className="Sub active">
+                <span>
+                  <img src={Ticket} alt="Ticket" className="Ticket" />
+                </span>
+                <label className="Subject">Subject: Need to change m...</label>
+                <span>
+                  <img src={CancelImgGrey} alt="Cancel" className="cancel" />
+                </span>
+              </li>
+              <li className="Sub">
+                <span>
+                  <img src={Ticket} alt="Ticket" className="Ticket" />
+                </span>
+                <label className="Subject">Subject: Need to change m...</label>
+                <span>
+                  <img src={CancelImgGrey} alt="Cancel" className="cancel" />
+                </span>
+              </li>
+              <li className="Sub">
+                <span>
+                  <img src={Ticket} alt="Ticket" className="Ticket" />
+                </span>
+                <label className="Subject">Subject: Need to change m...</label>
+                <span>
+                  <img src={CancelImgGrey} alt="Cancel" className="cancel" />
+                </span>
+              </li>
+              <li className="SubL">
+                <label className="More">More</label>
+                <span>
+                  <img src={MoreUp} alt="Cancel" className="MoreUp" />
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
       </Fragment>
     );
   }
