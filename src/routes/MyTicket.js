@@ -1,9 +1,6 @@
 import React, { Component, Fragment } from "react";
 import Modal from "react-responsive-modal";
-<<<<<<< HEAD
 // import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
-=======
->>>>>>> c7f696d97f0e09ace8b638f7cc1d3a6cf432eccc
 import { faCalculator } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import HistoricalTable from "./HistoricalTable";
