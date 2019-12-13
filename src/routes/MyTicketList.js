@@ -8,7 +8,10 @@ import HeadPhone3 from "./../assets/Images/headphone3.png";
 import BlackLeftArrow from "./../assets/Images/black-left-arrow.png";
 import SearchBlackImg from "./../assets/Images/searchBlack.png";
 import Headphone2Img from "./../assets/Images/headphone2.png";
-import Modal from "react-bootstrap/Modal";
+import Demo from "../store/Hashtag.js";
+import DelSearch from "./../assets/Images/del-search.png";
+// import Modal from "react-bootstrap/Modal";
+import Modal from "react-responsive-modal";
 import MyTicketNew from "./Tabs/MyTicketNew.js";
 import MyTicketOpen from "./Tabs/MyTicketOpen.js";
 import MyTicketResolved from "./Tabs/MyTicketResolved.js";
@@ -20,16 +23,60 @@ import MyTicketDraft from "./Tabs/MyTicketDraft.js";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ReactTable from "react-table";
-
+import { Popover } from "antd";
+import Chat from "./../assets/Images/chat.png";
+import { ProgressBar } from "react-bootstrap";
+import CancalImg from "./../assets/Images/cancal blue.png";
+import { Collapse, CardBody, Card } from "reactstrap";
+import csv from "./../assets/Images/csv.png";
+import Schedule from "./../assets/Images/schedule.png";
+import Assign from "./../assets/Images/assign.png";
+import DatePicker from "react-datepicker";
 
 class MyTicketList extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      AssignModal: false
+      AssignModal: false,
+      collapseSearch: false,
+      BysDateCreatDate: "",
+      ByDateSelectDate: "",
+      ByAllCreateDate: "",
+      ByAllLastDate: "",
+      open: false,
+      Schedule: false
     };
+    this.toggleSearch = this.toggleSearch.bind(this);
   }
+
+  toggleSearch() {
+    this.setState(state => ({ collapseSearch: !state.collapseSearch }));
+  }
+  handleByDateCreate(date) {
+    this.setState({ ByDateCreatDate: date });
+  }
+  handleChangeSelectDate(date) {
+    this.setState({ ByDateSelectDate: date });
+  }
+  handleAllCreateDate(date) {
+    this.setState({ ByAllCreateDate: date });
+  }
+  handleAllLastDate(date) {
+    this.setState({ ByAllLastDate: date });
+  }
+  ScheduleOpenModel = () => {
+    this.setState({ Schedule: true });
+  };
+  ScheduleCloseModel = () => {
+    this.setState({ Schedule: false });
+  };
+  onOpenModal = () => {
+    this.setState({ open: true });
+  };
+  onCloseModal = () => {
+    this.setState({ open: false });
+  };
 
   hanleChange = () => {
     this.props.history.push("/admin/addSearchMyTicket");
@@ -46,6 +93,7 @@ class MyTicketList extends Component {
   clickCheckbox(evt) {
     evt.stopPropagation();
   }
+
   checkAllCheckbox(event) {
     const allCheckboxChecked = event.target.checked;
     var checkboxes = document.getElementsByName("MyTicketListcheckbox[]");
@@ -65,91 +113,100 @@ class MyTicketList extends Component {
   }
   HandleRowClickPage = () => {
     return {
-      onClick: e => { 
+      onClick: e => {
         this.props.history.push("myticket");
       }
     };
   };
   render() {
+    const DefArti = (
+      <div className="dash-creation-popup-cntr">
+        <ul className="dash-category-popup dashnewpopup">
+          <li>
+            <p>Category</p>
+            <p>Defective article</p>
+          </li>
+          <li>
+            <p>Sub Category</p>
+            <p>Customer wants refund</p>
+          </li>
+          <li>
+            <p>Type</p>
+            <p>Delivery</p>
+          </li>
+        </ul>
+      </div>
+    );
 
-    // const DefArti = (
-    //   <div className="dash-creation-popup-cntr">
-    //     <ul className="dash-category-popup">
-    //       <li>
-    //         <p>Category</p>
-    //         <p>Defective article</p>
-    //       </li>
-    //       <li>
-    //         <p>Sub Category</p>
-    //         <p>Customer wants refund</p>
-    //       </li>
-    //       <li>
-    //         <p>Type</p>
-    //         <p>Delivery</p>
-    //       </li>
-    //     </ul>
-    //   </div>
-    // );
+    const InsertPlaceholder = (
+      <div className="insertpop1">
+        <ul className="dash-creation-popup">
+          <li className="title">Creation details</li>
+          <li>
+            <p>Naman Created</p>
+            <p>2 Hrs ago</p>
+          </li>
+          <li>
+            <p>Assigned to Vikas</p>
+            <p>1.5 Hrs ago</p>
+          </li>
+          <li>
+            <p>Vikas updated</p>
+            <p>1 Hr ago</p>
+          </li>
+          <li>
+            <p>Response time remaining by</p>
+            <p>30 mins</p>
+          </li>
+          <li>
+            <p>Response overdue by</p>
+            <p>1 Hr</p>
+          </li>
+          <li>
+            <p>Resolution overdue by</p>
+            <p>2 Hrs</p>
+          </li>
+        </ul>
+      </div>
+    );
+    const TaskBlue = (
+      <div className="dash-task-popup-new">
+        <div className="d-flex justify-content-between align-items-center">
+          <p className="m-b-0">
+            TASK: <span className="green-clr">02</span>/
+            <span className="task-red-clr">04</span>
+          </p>
+          <div className="d-flex align-items-center">
+            2 NEW
+            <div className="nw-chat">
+              <img src={Chat} alt="chat" />
+            </div>
+          </div>
+        </div>
+        <ProgressBar className="task-progress" now={70} />
+      </div>
+    );
+    const ClaimBlue = (
+      <div className="dash-task-popup-new">
+        <div className="d-flex justify-content-between align-items-center">
+          <p>
+            CLAIM: <span className="green-clr">02</span>/
+            <span className="task-red-clr">01</span>
+          </p>
+        </div>
+        <ProgressBar className="task-progress" now={70} />
+      </div>
+    );
 
-    // const InsertPlaceholder = (
-    //   <div className="insertpop1">
-    //     <ul className="dash-creation-popup">
-    //       <li className="title">Creation details</li>
-    //       <li>
-    //         <p>Naman Created</p>
-    //         <p>2 Hrs ago</p>
-    //       </li>
-    //       <li>
-    //         <p>Assigned to Vikas</p>
-    //         <p>1.5 Hrs ago</p>
-    //       </li>
-    //       <li>
-    //         <p>Vikas updated</p>
-    //         <p>1 Hr ago</p>
-    //       </li>
-    //       <li>
-    //         <p>Response time remaining by</p>
-    //         <p>30 mins</p>
-    //       </li>
-    //       <li>
-    //         <p>Response overdue by</p>
-    //         <p>1 Hr</p>
-    //       </li>
-    //       <li>
-    //         <p>Resolution overdue by</p>
-    //         <p>2 Hrs</p>
-    //       </li>
-    //     </ul>
-    //   </div>
-    // );
-    // const TaskBlue = (
-    //   <div className="dash-task-popup-new">
-    //     <div className="d-flex justify-content-between align-items-center">
-    //       <p className="m-b-0">
-    //         TASK: <span className="green-clr">02</span>/
-    //         <span className="task-red-clr">04</span>
-    //       </p>
-    //       <div className="d-flex align-items-center">
-    //         2 NEW
-    //         <div className="nw-chat">
-    //           <img src={Chat} alt="chat" />
-    //         </div>
-    //       </div>
-    //     </div>
-    //     <ProgressBar className="task-progress" now={70} />
-    //   </div>
-    // );
-    // const ClaimBlue = (
-    //   <div className="dash-task-popup-new">
-    //     <div className="d-flex justify-content-between align-items-center">
-    //       <p>
-    //         CLAIM: <span className="green-clr">02</span>/
-    //         <span className="task-red-clr">01</span>
-    //       </p>
-    //     </div>
-    //     <ProgressBar className="task-progress" now={70} />
-    //   </div>
-    // );
+    const TitleChange = this.state.collapseSearch
+      ? "Close Search"
+      : "Search Tickets";
+
+    const ImgChange = this.state.collapseSearch ? (
+      <img className="search-icon" src={CancalImg} alt="search-icon" />
+    ) : (
+      <img className="search-icon" src={SearchIcon} alt="search-icon" />
+    );
 
     const dataDash = [
       {
@@ -161,7 +218,6 @@ class MyTicketList extends Component {
                   type="checkbox"
                   id="fil-ab1"
                   name="MyTicketListcheckbox[]"
-                  
                 />
                 <label htmlFor="fil-ab1">
                   <img
@@ -189,15 +245,13 @@ class MyTicketList extends Component {
         creationNew: (
           <span>
             <label>12 March 2018</label>
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            {/* <Popover content={InsertPlaceholder} placement="bottom">
+
+            <Popover content={InsertPlaceholder} placement="bottom">
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover> */}
+            </Popover>
           </span>
         ),
-        assigneeDash: (
-          <span>Naman</span>
-        ),
+        assigneeDash: <span>Naman</span>
       },
       {
         idDash: (
@@ -235,22 +289,19 @@ class MyTicketList extends Component {
         creationNew: (
           <span>
             <label>12 March 2018</label>
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            {/* <Popover content={InsertPlaceholder} placement="bottom">
+
+            <Popover content={InsertPlaceholder} placement="bottom">
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover> */}
+            </Popover>
           </span>
         ),
-        assigneeDash: (
-          <span>Rashmi</span>
-        ),
+        assigneeDash: <span>Rashmi</span>
       },
       {
         idDash: (
           <span onClick={e => this.clickCheckbox(e)}>
             <div className="filter-type pink1 pinkmyticket">
               <div className="filter-checkbox pink2 pinkmargin">
-              
                 <input
                   type="checkbox"
                   id="fil-ab3"
@@ -275,18 +326,13 @@ class MyTicketList extends Component {
         ),
         subjectDash: (
           <div>
-            <img
-                className="task-icon-1 marginimg"
-                src={TaskIconBlue}
-                alt="task-icon-blue"
-              />
-            {/* <Popover content={TaskBlue} placement="bottom">
+            <Popover content={TaskBlue} placement="bottom">
               <img
                 className="task-icon-1 marginimg"
                 src={TaskIconBlue}
                 alt="task-icon-blue"
               />
-            </Popover> */}
+            </Popover>
             Need to change my shipping address <br></br>
             <span>Hope this help, Please rate us</span>
           </div>
@@ -294,22 +340,19 @@ class MyTicketList extends Component {
         creationNew: (
           <span>
             <label>12 March 2018</label>
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            {/* <Popover content={InsertPlaceholder} placement="bottom">
+
+            <Popover content={InsertPlaceholder} placement="bottom">
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover> */}
+            </Popover>
           </span>
         ),
-        assigneeDash: (
-          <span>Shalini</span>
-        ),
+        assigneeDash: <span>Shalini</span>
       },
       {
         idDash: (
           <span onClick={e => this.clickCheckbox(e)}>
             <div className="filter-type pink1 pinkmyticket">
               <div className="filter-checkbox pink2 pinkmargin">
-
                 <input
                   type="checkbox"
                   id="fil-ab4"
@@ -346,15 +389,13 @@ class MyTicketList extends Component {
         creationNew: (
           <span>
             <label>12 March 2018</label>
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            {/* <Popover content={InsertPlaceholder} placement="bottom">
+
+            <Popover content={InsertPlaceholder} placement="bottom">
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover> */}
+            </Popover>
           </span>
         ),
-        assigneeDash: (
-          <span>Vikas</span>
-        ),
+        assigneeDash: <span>Vikas</span>
       },
       {
         idDash: (
@@ -385,18 +426,13 @@ class MyTicketList extends Component {
         ),
         subjectDash: (
           <div>
-            <img
-                className="claim-icon marginimg"
-                src={CliamIconBlue}
-                alt="cliam-icon-blue"
-              />
-            {/* <Popover content={ClaimBlue} placement="bottom">
+            <Popover content={ClaimBlue} placement="bottom">
               <img
                 className="claim-icon marginimg"
                 src={CliamIconBlue}
                 alt="cliam-icon-blue"
               />
-            </Popover> */}
+            </Popover>
             Need to change my shipping address <br></br>
             <span>
               <img
@@ -411,22 +447,19 @@ class MyTicketList extends Component {
         creationNew: (
           <span>
             <label>12 March 2018</label>
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            {/* <Popover content={InsertPlaceholder} placement="bottom">
+
+            <Popover content={InsertPlaceholder} placement="bottom">
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover> */}
+            </Popover>
           </span>
         ),
-        assigneeDash: (
-          <span>Nidhi</span>
-        ),
+        assigneeDash: <span>Nidhi</span>
       },
       {
         idDash: (
           <span onClick={e => this.clickCheckbox(e)}>
             <div className="filter-type pink1 pinkmyticket">
               <div className="filter-checkbox pink2 pinkmargin">
-              
                 <input
                   type="checkbox"
                   id="fil-ab6"
@@ -458,22 +491,19 @@ class MyTicketList extends Component {
         creationNew: (
           <span>
             <label>12 March 2018</label>
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            {/* <Popover content={InsertPlaceholder} placement="bottom">
+
+            <Popover content={InsertPlaceholder} placement="bottom">
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover> */}
+            </Popover>
           </span>
         ),
-        assigneeDash: (
-          <span>Mansi</span>
-        ),
+        assigneeDash: <span>Mansi</span>
       },
       {
         idDash: (
           <span onClick={e => this.clickCheckbox(e)}>
             <div className="filter-type pink1 pinkmyticket">
               <div className="filter-checkbox pink2 pinkmargin">
-              
                 <input
                   type="checkbox"
                   id="fil-ab7"
@@ -505,22 +535,19 @@ class MyTicketList extends Component {
         creationNew: (
           <span>
             <label>12 March 2018</label>
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            {/* <Popover content={InsertPlaceholder} placement="bottom">
+
+            <Popover content={InsertPlaceholder} placement="bottom">
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover> */}
+            </Popover>
           </span>
         ),
-        assigneeDash: (
-          <span>Naman</span>
-        ),
+        assigneeDash: <span>Naman</span>
       },
       {
         idDash: (
           <span onClick={e => this.clickCheckbox(e)}>
             <div className="filter-type pink1 pinkmyticket">
               <div className="filter-checkbox pink2 pinkmargin">
-              
                 <input
                   type="checkbox"
                   id="fil-ab8"
@@ -552,22 +579,19 @@ class MyTicketList extends Component {
         creationNew: (
           <span>
             <label>12 March 2018</label>
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            {/* <Popover content={InsertPlaceholder} placement="bottom">
+
+            <Popover content={InsertPlaceholder} placement="bottom">
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover> */}
+            </Popover>
           </span>
         ),
-        assigneeDash: (
-          <span>Akriti</span>
-        ),
+        assigneeDash: <span>Akriti</span>
       },
       {
         idDash: (
           <span onClick={e => this.clickCheckbox(e)}>
             <div className="filter-type pink1 pinkmyticket">
               <div className="filter-checkbox pink2 pinkmargin">
-
                 <input
                   type="checkbox"
                   id="fil-ab9"
@@ -599,22 +623,19 @@ class MyTicketList extends Component {
         creationNew: (
           <span>
             <label>12 March 2018</label>
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            {/* <Popover content={InsertPlaceholder} placement="bottom">
+
+            <Popover content={InsertPlaceholder} placement="bottom">
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover> */}
+            </Popover>
           </span>
         ),
-        assigneeDash: (
-          <span>Juhi</span>
-        ),
+        assigneeDash: <span>Juhi</span>
       },
       {
         idDash: (
           <span onClick={e => this.clickCheckbox(e)}>
             <div className="filter-type pink1 pinkmyticket">
               <div className="filter-checkbox pink2 pinkmargin">
-              
                 <input
                   type="checkbox"
                   id="fil-ab10"
@@ -646,15 +667,13 @@ class MyTicketList extends Component {
         creationNew: (
           <span>
             <label>12 March 2018</label>
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            {/* <Popover content={InsertPlaceholder} placement="bottom">
+
+            <Popover content={InsertPlaceholder} placement="bottom">
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover> */}
+            </Popover>
           </span>
         ),
-        assigneeDash: (
-          <span>Shalini</span>
-        ),
+        assigneeDash: <span>Shalini</span>
       }
     ];
 
@@ -670,7 +689,9 @@ class MyTicketList extends Component {
                   name="MyTicketListcheckbox[]"
                   onChange={this.checkAllCheckbox.bind(this)}
                 />
-                <label htmlFor="fil-aball" className="ticketid">ID</label>
+                <label htmlFor="fil-aball" className="ticketid">
+                  ID
+                </label>
               </div>
             </div>
           </span>
@@ -688,10 +709,10 @@ class MyTicketList extends Component {
       {
         Header: (
           <label className="ticketid">
-            <span>
-              Subject/
+            <span>Subject/</span>
+            <span style={{ fontWeight: "bold", fontSize: "11px !important" }}>
+              Lastest Message
             </span>
-            <span style={{ fontWeight: "bold", fontSize: "11px !important" }}>Lastest Message</span>
           </label>
         ),
         accessor: "subjectDash"
@@ -706,10 +727,10 @@ class MyTicketList extends Component {
         Cell: props => (
           <span>
             <label>Defective article </label>
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            {/* <Popover content={DefArti} placement="bottom">
+
+            <Popover content={DefArti} placement="bottom">
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover> */}
+            </Popover>
           </span>
         )
       },
@@ -740,12 +761,15 @@ class MyTicketList extends Component {
       }
     ];
 
-    
     return (
       <Fragment>
         <div className="myticketlist-header">
           <div className="setting-tabs esc esc1">
-            <ul className="nav nav-tabs es" role="tablist" style={{display: "inline"}}>
+            <ul
+              className="nav nav-tabs es"
+              role="tablist"
+              style={{ display: "inline" }}
+            >
               <li className="nav-item">
                 <a
                   className="nav-link active"
@@ -857,22 +881,22 @@ class MyTicketList extends Component {
               </li>
             </ul>
 
-              <div className="mlistbtn">
-                <button
-                  className="myTicket-btn-A"
-                  type="button"
-                  onClick={this.handleAssignModalOpen.bind(this)}
-                >
-                  ASSIGN
-                </button>
-                <button
-                  className="Add-ticket-button"
-                  type="button"
-                  onClick={this.hanleChange}
-                >
-                  <label className="add-tickets">ADD TICKETS</label>
-                </button>
-              </div>
+            <div className="mlistbtn">
+              {/* <button
+                className="myTicket-btn-A"
+                type="button"
+                onClick={this.handleAssignModalOpen.bind(this)}
+              >
+                ASSIGN
+              </button> */}
+              <button
+                className="Add-ticket-button"
+                type="button"
+                onClick={this.hanleChange}
+              >
+                <label className="add-tickets">ADD TICKETS</label>
+              </button>
+            </div>
             <div className="tab-content">
               <div
                 className="tab-pane fade show active"
@@ -881,504 +905,931 @@ class MyTicketList extends Component {
                 aria-labelledby="Escalation-tab"
               >
                 <div className="container-fluid">
-                  <div className="table-cntr mt-3 mtictab table-responsive" style={{overflow: "initial"}}>
-                  <div className="MyTicketListReact">
-                  <ReactTable
-                    data={dataDash}
-                    columns={columnsDash}
-                    // resizable={false}
-                    defaultPageSize={10}
-                    showPagination={false}
-                    getTrProps={this.HandleRowClickPage}
-                  />
-                </div>
-
-                    {/* <table className="table-responsive" style={{display: "inline-table"}}>
-                      <thead>
-                        <tr>
-                          <th>ID</th>
-                          <th>
-                            Status <img src={TableArr} alt="table-arr" />
-                          </th>
-                          <th className="table-img-cntr"></th>
-                          <th>
-                            Subject<span>/Lastest Message</span>
-                          </th>
-                          <th>
-                            Category <img src={TableArr} alt="table-arr" />
-                          </th>
-                          <th>
-                            Priority <img src={TableArr} alt="table-arr" />
-                          </th>
-                          <th>
-                            Assignee <img src={TableArr} alt="table-arr" />
-                          </th>
-                          <th>
-                            Creation on <img src={TableArr} alt="table-arr" />
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr onClick={this.hanleChange_MyTicket}>
-                          <td>
-                            <img
-                              src={HeadPhone3}
-                              alt="HeadPhone"
-                              className="headPhone3"
-                            />
-                            ABC1234
-                          </td>
-                          <td>
-                            <span className="table-btn table-blue-btn">
-                              Open
-                            </span>
-                          </td>
-                          <td className="table-img-cntr"></td>
-                          <td>
-                            Need to change my shipping address{" "}
-                            <span>Hope this help, Please rate us</span>
-                          </td>
-                          <td>
-                            Defective article{" "}
-                            <img
-                              className="info-icon"
-                              src={InfoIcon}
-                              alt="info-icon"
-                            />
-                          </td>
-                          <td>High</td>
-                          <td>Naman</td>
-                          <td>
-                            12 March 2018{" "}
-                            <img
-                              className="info-icon"
-                              src={InfoIcon}
-                              alt="info-icon"
-                            />
-                          </td>
-                        </tr>
-                        <tr onClick={this.hanleChange_MyTicket}>
-                          <td>
-                            <img
-                              src={HeadPhone3}
-                              alt="HeadPhone"
-                              className="headPhone3"
-                            />
-                            ABC1234
-                          </td>
-                          <td>
-                            <span className="table-btn table-yellow-btn">
-                              New
-                            </span>
-                          </td>
-                          <td className="table-img-cntr">
-                            
-                          </td>
-                          <td>
-                            Need to change my shipping address{" "}
-                            <span>
-                              Hope this help, Please rate us (1 new comment)
-                            </span>
-                          </td>
-                          <td>
-                            Defective article{" "}
-                            <img
-                              className="info-icon"
-                              src={InfoIcon}
-                              alt="info-icon"
-                            />
-                          </td>
-                          <td>High</td>
-                          <td>Rashmi</td>
-                          <td>
-                            12 March 2018{" "}
-                            <img
-                              className="info-icon"
-                              src={InfoIcon}
-                              alt="info-icon"
-                            />
-                          </td>
-                        </tr>
-
-                        <tr onClick={this.hanleChange_MyTicket}>
-                          <td>
-                            <img
-                              src={HeadPhone3}
-                              alt="HeadPhone"
-                              className="headPhone3"
-                            />
-                            ABC1234
-                          </td>
-                          <td>
-                            <span className="table-btn table-green-btn">
-                              Solved
-                            </span>
-                          </td>
-                          <td className="table-img-cntr">
-                            <img
-                              className="task-icon-1"
-                              src={TaskIconBlue}
-                              alt="task-icon-blue"
-                            />
-                          </td>
-                          <td>
-                            Need to change my shipping address{" "}
-                            <span>Hope this help, Please rate us</span>
-                          </td>
-                          <td>
-                            Defective article{" "}
-                            <img
-                              className="info-icon"
-                              src={InfoIcon}
-                              alt="info-icon"
-                            />
-                          </td>
-                          <td>High</td>
-                          <td>Shalini</td>
-                          <td>
-                            12 March 2018{" "}
-                            <img
-                              className="info-icon"
-                              src={InfoIcon}
-                              alt="info-icon"
-                            />
-                          </td>
-                        </tr>
-
-                        <tr onClick={this.hanleChange_MyTicket}>
-                          <td>
-                            <img
-                              src={HeadPhone3}
-                              alt="HeadPhone"
-                              className="headPhone3"
-                            />
-                            ABC1234
-                          </td>
-                          <td>
-                            <span className="table-btn table-blue-btn">
-                              Open
-                            </span>
-                          </td>
-                          <td className="table-img-cntr">
-                            <img
-                              className="task-icon-1"
-                              src={TaskIconGray}
-                              alt="task-icon-gray"
-                            />
-                          </td>
-                          <td>
-                            Need to change my shipping address{" "}
-                            <span>Hope this help, Please rate us</span>
-                          </td>
-                          <td>
-                            Defective article{" "}
-                            <img
-                              className="info-icon"
-                              src={InfoIcon}
-                              alt="info-icon"
-                            />
-                          </td>
-                          <td>High</td>
-                          <td>Vikash</td>
-                          <td>
-                            12 March 2018{" "}
-                            <img
-                              className="info-icon"
-                              src={InfoIcon}
-                              alt="info-icon"
-                            />
-                          </td>
-                        </tr>
-
-                        <tr onClick={this.hanleChange_MyTicket}>
-                          <td>
-                            <img
-                              src={HeadPhone3}
-                              alt="HeadPhone"
-                              className="headPhone3"
-                            />
-                            ABC1234
-                          </td>
-                          <td>
-                            <span className="table-btn table-blue-btn">
-                              Open
-                            </span>
-                          </td>
-                          <td className="table-img-cntr">
-                            <img
-                              className="claim-icon"
-                              src={CliamIconBlue}
-                              alt="cliam-icon-blue"
-                            />
-                            <img
-                              className="task-icon-1"
-                              src={TaskIconGray}
-                              alt="task-icon-gray"
-                            />
-                          </td>
-                          <td>
-                            Need to change my shipping address{" "}
-                            <span>Hope this help, Please rate us</span>
-                          </td>
-                          <td>
-                            Defective article{" "}
-                            <img
-                              className="info-icon"
-                              src={InfoIcon}
-                              alt="info-icon"
-                            />
-                          </td>
-                          <td>High</td>
-                          <td>Nidhi</td>
-                          <td>
-                            12 March 2018{" "}
-                            <img
-                              className="info-icon"
-                              src={InfoIcon}
-                              alt="info-icon"
-                            />
-                          </td>
-                        </tr>
-
-                        <tr onClick={this.hanleChange_MyTicket}>
-                          <td>
-                            <img
-                              src={HeadPhone3}
-                              alt="HeadPhone"
-                              className="headPhone3"
-                            />
-                            ABC1234
-                          </td>
-                          <td>
-                            <span className="table-btn table-yellow-btn">
-                              New
-                            </span>
-                          </td>
-                          <td className="table-img-cntr"></td>
-                          <td>
-                            Need to change my shipping address{" "}
-                            <span>
-                              Hope this help, Please rate us (1 new comment)
-                            </span>
-                          </td>
-                          <td>
-                            Defective article{" "}
-                            <img
-                              className="info-icon"
-                              src={InfoIcon}
-                              alt="info-icon"
-                            />
-                          </td>
-                          <td>High</td>
-                          <td>Mansi</td>
-                          <td>
-                            12 March 2018{" "}
-                            <img
-                              className="info-icon"
-                              src={InfoIcon}
-                              alt="info-icon"
-                            />
-                          </td>
-                        </tr>
-
-                        <tr onClick={this.hanleChange_MyTicket}>
-                          <td>
-                            <img
-                              src={HeadPhone3}
-                              alt="HeadPhone"
-                              className="headPhone3"
-                            />
-                            ABC1234
-                          </td>
-                          <td>
-                            <span className="table-btn table-green-btn">
-                              Solved
-                            </span>
-                          </td>
-                          <td className="table-img-cntr"></td>
-                          <td>
-                            Need to change my shipping address
-                            <span>Hope this help, Please rate us</span>
-                          </td>
-                          <td>
-                            Defective article
-                            <img
-                              className="info-icon"
-                              src={InfoIcon}
-                              alt="info-icon"
-                            />
-                          </td>
-                          <td>High</td>
-                          <td>Naman</td>
-                          <td>
-                            12 March 2018
-                            <img
-                              className="info-icon"
-                              src={InfoIcon}
-                              alt="info-icon"
-                            />
-                          </td>
-                        </tr>
-                        <tr onClick={this.hanleChange_MyTicket}>
-                          <td>
-                            <img
-                              src={HeadPhone3}
-                              alt="HeadPhone"
-                              className="headPhone3"
-                            />
-                            ABC1234
-                          </td>
-                          <td>
-                            <span className="table-btn table-blue-btn">
-                              Open
-                            </span>
-                          </td>
-                          <td className="table-img-cntr"></td>
-                          <td>
-                            Need to change my shipping address
-                            <span>Hope this help, Please rate us</span>
-                          </td>
-                          <td>
-                            Defective article
-                            <img
-                              className="info-icon"
-                              src={InfoIcon}
-                              alt="info-icon"
-                            />
-                          </td>
-                          <td>High</td>
-                          <td>Akriti</td>
-                          <td>
-                            12 March 2018
-                            <img
-                              className="info-icon"
-                              src={InfoIcon}
-                              alt="info-icon"
-                            />
-                          </td>
-                        </tr>
-                        <tr onClick={this.hanleChange_MyTicket}>
-                          <td>
-                            <img
-                              src={HeadPhone3}
-                              alt="HeadPhone"
-                              className="headPhone3"
-                            />
-                            ABC1234
-                          </td>
-                          <td>
-                            <span className="table-btn table-blue-btn">
-                              Open
-                            </span>
-                          </td>
-                          <td className="table-img-cntr"></td>
-                          <td>
-                            Need to change my shipping address
-                            <span>Hope this help, Please rate us</span>
-                          </td>
-                          <td>
-                            Defective article
-                            <img
-                              className="info-icon"
-                              src={InfoIcon}
-                              alt="info-icon"
-                            />
-                          </td>
-                          <td>High</td>
-                          <td>Juhi</td>
-                          <td>
-                            12 March 2018
-                            <img
-                              className="info-icon"
-                              src={InfoIcon}
-                              alt="info-icon"
-                            />
-                          </td>
-                        </tr>
-
-                        <tr onClick={this.hanleChange_MyTicket}>
-                          <td>
-                            <img
-                              src={HeadPhone3}
-                              alt="HeadPhone"
-                              className="headPhone3"
-                            />
-                            ABC1234
-                          </td>
-                          <td>
-                            <span className="table-btn table-yellow-btn">
-                              New
-                            </span>
-                          </td>
-                          <td className="table-img-cntr">
-                           
-                          </td>
-                          <td>
-                            Need to change my shipping address
-                            <span>
-                              Hope this help, Please rate us (1 new comment)
-                            </span>
-                          </td>
-                          <td>
-                            Defective article
-                            <img
-                              className="info-icon"
-                              src={InfoIcon}
-                              alt="info-icon"
-                            />
-                          </td>
-                          <td>High</td>
-                          <td>Shalini</td>
-                          <td>
-                            12 March 2018
-                            <img
-                              className="info-icon"
-                              src={InfoIcon}
-                              alt="info-icon"
-                            />
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table> */}
-                    {/* <div className="pagi">
-                      <ul>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&lt;</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>1</a>
-                        </li>
-                        <li className="active">
-                          <a href={Demo.BLANK_LINK}>2</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>3</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>4</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>5</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>6</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>7</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&gt;</a>
-                        </li>
-                      </ul>
-                    </div> */}
-                    <div className="float-search">
-                      <small>Search Tickets</small>
-                      <img
-                        className="search-icon"
-                        src={SearchIcon}
-                        alt="search-icon"
+                  <div
+                    className="table-cntr mt-3 mtictab table-responsive"
+                    style={{ overflow: "initial" }}
+                  >
+                    <div>
+                      <Collapse isOpen={this.state.collapseSearch}>
+                        <Card>
+                          <CardBody>
+                            <div className="myticlist-expand-sect">
+                              <div className="position-relative">
+                                <ul className="nav nav-tabs" role="tablist">
+                                  <li className="nav-item">
+                                    <a
+                                      className="nav-link active"
+                                      data-toggle="tab"
+                                      href="#date-tab"
+                                      role="tab"
+                                      aria-controls="date-tab"
+                                      aria-selected="true"
+                                    >
+                                      By Date
+                                    </a>
+                                  </li>
+                                  <li className="nav-item">
+                                    <a
+                                      className="nav-link"
+                                      data-toggle="tab"
+                                      href="#customer-tab"
+                                      role="tab"
+                                      aria-controls="customer-tab"
+                                      aria-selected="false"
+                                    >
+                                      By Customer Type
+                                    </a>
+                                  </li>
+                                  <li className="nav-item">
+                                    <a
+                                      className="nav-link"
+                                      data-toggle="tab"
+                                      href="#ticket-tab"
+                                      role="tab"
+                                      aria-controls="ticket-tab"
+                                      aria-selected="false"
+                                    >
+                                      By Ticket Type
+                                    </a>
+                                  </li>
+                                  <li className="nav-item">
+                                    <a
+                                      className="nav-link"
+                                      data-toggle="tab"
+                                      href="#category-tab"
+                                      role="tab"
+                                      aria-controls="category-tab"
+                                      aria-selected="false"
+                                    >
+                                      By Category
+                                    </a>
+                                  </li>
+                                  <li className="nav-item">
+                                    <a
+                                      className="nav-link"
+                                      data-toggle="tab"
+                                      href="#all-tab"
+                                      role="tab"
+                                      aria-controls="all-tab"
+                                      aria-selected="false"
+                                    >
+                                      All
+                                    </a>
+                                  </li>
+                                </ul>
+                                <div className="save-view-search">
+                                  <button onClick={this.onOpenModal}>
+                                    Save Search
+                                  </button>
+                                  <button className="btn-inv">
+                                    View Search
+                                  </button>
+                                </div>
+                              </div>
+                              <Modal
+                                open={this.state.open}
+                                onClose={this.onCloseModal}
+                                center
+                                modalId="save-search-popup"
+                                overlayId="save-search-ovrly"
+                              >
+                                <div className="save-search">
+                                  <p>SAVE SEARCH</p>
+                                </div>
+                                <div className="search-name">
+                                  <input
+                                    type="search"
+                                    placeholder="Give name to your search"
+                                  />
+                                  <button className="butn">Save</button>
+                                </div>
+                                <div className="search-names">
+                                  <div className="names-title">
+                                    <p>Search Name</p>
+                                    <p className="mar-comp">Action</p>
+                                  </div>
+                                  <ul>
+                                    <li>
+                                      <p>Open tickets with high priority</p>
+                                      <div>
+                                        <a href={Demo.BLANK_LINK}>APPLY</a>
+                                        <a
+                                          href={Demo.BLANK_LINK}
+                                          className="m-0"
+                                        >
+                                          <img
+                                            src={DelSearch}
+                                            alt="del-search"
+                                          />
+                                        </a>
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <p>Open tickets with high priority</p>
+                                      <div>
+                                        <a href={Demo.BLANK_LINK}>APPLY</a>
+                                        <a
+                                          href={Demo.BLANK_LINK}
+                                          className="m-0"
+                                        >
+                                          <img
+                                            src={DelSearch}
+                                            alt="del-search"
+                                          />
+                                        </a>
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <p>Open tickets with high priority</p>
+                                      <div>
+                                        <a href={Demo.BLANK_LINK}>APPLY</a>
+                                        <a
+                                          href={Demo.BLANK_LINK}
+                                          className="m-0"
+                                        >
+                                          <img
+                                            src={DelSearch}
+                                            alt="del-search"
+                                          />
+                                        </a>
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <p>Open tickets with high priority</p>
+                                      <div>
+                                        <a href={Demo.BLANK_LINK}>APPLY</a>
+                                        <a
+                                          href={Demo.BLANK_LINK}
+                                          className="m-0"
+                                        >
+                                          <img
+                                            src={DelSearch}
+                                            alt="del-search"
+                                          />
+                                        </a>
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <p>Open tickets with high priority</p>
+                                      <div>
+                                        <a href={Demo.BLANK_LINK}>APPLY</a>
+                                        <a
+                                          href={Demo.BLANK_LINK}
+                                          className="m-0"
+                                        >
+                                          <img
+                                            src={DelSearch}
+                                            alt="del-search"
+                                          />
+                                        </a>
+                                      </div>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </Modal>
+                              <div className="tab-content p-0">
+                                <div
+                                  className="tab-pane fade show active"
+                                  id="date-tab"
+                                  role="tabpanel"
+                                  aria-labelledby="date-tab"
+                                >
+                                  <div className="container-fluid">
+                                    <div className="row">
+                                      <div className="col-md-3 col-sm-6">
+                                        <DatePicker
+                                          selected={this.state.ByDateCreatDate}
+                                          onChange={this.handleByDateCreate.bind(
+                                            this
+                                          )}
+                                          placeholderText="Creation Date"
+                                          showMonthDropdown
+                                          showYearDropdown
+                                          // className="form-control"
+                                        />
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <DatePicker
+                                          selected={this.state.ByDateSelectDate}
+                                          onChange={this.handleChangeSelectDate.bind(
+                                            this
+                                          )}
+                                          placeholderText="Last Updated Date"
+                                          showMonthDropdown
+                                          showYearDropdown
+                                          // className="form-control"
+                                        />
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <select>
+                                          <option>SLA Due</option>
+                                        </select>
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <select>
+                                          <option>Ticket Status</option>
+                                        </select>
+                                      </div>
+                                    </div>
+                                    <div className="row justify-content-between">
+                                      <div className="col-auto d-flex align-items-center">
+                                        <p className="font-weight-bold mr-3">
+                                          <span className="blue-clr">04</span>{" "}
+                                          Results
+                                        </p>
+                                        <p className="blue-clr fs-14">
+                                          CLEAR SEARCH
+                                        </p>
+                                      </div>
+                                      <div className="col-auto mob-mar-btm">
+                                        <button>
+                                          <img
+                                            className="position-relative csv-icon"
+                                            src={csv}
+                                            alt="csv-icon"
+                                          />
+                                          CSV
+                                        </button>
+                                        <button
+                                          type="button"
+                                          onClick={this.ScheduleOpenModel}
+                                        >
+                                          <img
+                                            className="sch-icon"
+                                            src={Schedule}
+                                            alt="schedule-icon"
+                                          />
+                                          Schedule
+                                        </button>
+                                        <Modal
+                                          onClose={this.ScheduleCloseModel}
+                                          open={this.state.Schedule}
+                                          modalId="ScheduleModel"
+                                          overlayId="logout-ovrly"
+                                        >
+                                          <div>
+                                            <label>
+                                              <b>Schedule date to</b>
+                                            </label>
+                                            <div>
+                                              <select
+                                                id="inputState"
+                                                className="form-control dropdown-setting ScheduleDate-to"
+                                              >
+                                                <option>Team Member</option>
+                                              </select>
+                                              <select
+                                                id="inputState"
+                                                className="form-control dropdown-setting ScheduleDate-to"
+                                              >
+                                                <option>Monthly</option>
+                                              </select>
+                                              <select
+                                                id="inputState"
+                                                className="form-control dropdown-setting ScheduleDate-to"
+                                              >
+                                                <option>First day</option>
+                                                <option>Last day</option>
+                                              </select>
+                                              <input
+                                                type="text"
+                                                className="txt-1 txt1Place"
+                                                placeholder="Time"
+                                              />
+                                              <div>
+                                                <button className="scheduleBtn">
+                                                  <label className="addLable">
+                                                    SCHEDULE
+                                                  </label>
+                                                </button>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </Modal>
+                                        <button
+                                          className={
+                                            this.state.TicketTabIndex ===
+                                            "nav-link active"
+                                              ? "btn-inv btn-dis"
+                                              : "btn-inv"
+                                          }
+                                          onClick={
+                                            this.state.TicketTabIndex !==
+                                            "nav-link active"
+                                              ? this.handleAssignModalOpen.bind(
+                                                  this
+                                                )
+                                              : null
+                                          }
+                                        >
+                                          <img
+                                            src={Assign}
+                                            className="assign-icon"
+                                            alt="assign-icon"
+                                          />
+                                          Assign
+                                        </button>
+                                        <Modal
+                                          onClose={this.handleAssignModalClose.bind(
+                                            this
+                                          )}
+                                          open={this.state.AssignModal}
+                                          modalId="AssignPop-up"
+                                        >
+                                          <div className="assign-modal-headerDashboard">
+                                            <img
+                                              src={BlackLeftArrow}
+                                              alt="black-left-arrow-icon"
+                                              className="black-left-arrow"
+                                              onClick={this.handleAssignModalClose.bind(
+                                                this
+                                              )}
+                                            />
+                                            <label className="claim-details">
+                                              Assign Tickets To
+                                            </label>
+                                            <img
+                                              src={SearchBlackImg}
+                                              alt="SearchBlack"
+                                              className="black-left-arrow srch-mleft-spc"
+                                            />
+                                          </div>
+                                          <div className="assign-modal-div">
+                                            <input
+                                              type="text"
+                                              className="txt-1 txt-btmSpace"
+                                              placeholder="First Name"
+                                            />
+                                            <input
+                                              type="text"
+                                              className="txt-1 txt-btmSpace"
+                                              placeholder="Last Name"
+                                            />
+                                            <input
+                                              type="text"
+                                              className="txt-1 txt-btmSpace"
+                                              placeholder="Email"
+                                            />
+                                            <div className="txt-btmSpace">
+                                              <select
+                                                id="inputState"
+                                                className="form-control dropdown-setting"
+                                              >
+                                                <option>Select</option>
+                                                <option>Designation</option>
+                                              </select>
+                                            </div>
+                                            <button
+                                              className="butn assign-btn"
+                                              type="button"
+                                            >
+                                              SEARCH
+                                            </button>
+                                            <a
+                                              href="#!"
+                                              className="anchorTag-clear"
+                                            >
+                                              CLEAR
+                                            </a>
+                                          </div>
+                                          <div className="assign-modal-body">
+                                            <table>
+                                              <thead>
+                                                <tr>
+                                                  <th>Agent</th>
+                                                  <th>Designation</th>
+                                                  <th>Email</th>
+                                                </tr>
+                                              </thead>
+                                              <tbody>
+                                                <tr>
+                                                  <td>
+                                                    <img
+                                                      src={Headphone2Img}
+                                                      alt="headphone"
+                                                      className="oval-55 assign-hdphone"
+                                                    />
+                                                    Naman.R
+                                                  </td>
+                                                  <td>Supply</td>
+                                                  <td>naman@flipkart.com</td>
+                                                </tr>
+                                                <tr>
+                                                  <td>
+                                                    <img
+                                                      src={Headphone2Img}
+                                                      alt="headphone"
+                                                      className="oval-55 assign-hdphone"
+                                                    />
+                                                    Nidhi.J
+                                                  </td>
+                                                  <td>Supply</td>
+                                                  <td>naman@flipkart.com</td>
+                                                </tr>
+                                                <tr>
+                                                  <td>
+                                                    <img
+                                                      src={Headphone2Img}
+                                                      alt="headphone"
+                                                      className="oval-55 assign-hdphone"
+                                                    />
+                                                    Rashmi.C
+                                                  </td>
+                                                  <td>Supply</td>
+                                                  <td>naman@flipkart.com</td>
+                                                </tr>
+                                                <tr>
+                                                  <td>
+                                                    <img
+                                                      src={Headphone2Img}
+                                                      alt="headphone"
+                                                      className="oval-55 assign-hdphone"
+                                                    />
+                                                    Juhi.H
+                                                  </td>
+                                                  <td>Supply</td>
+                                                  <td>naman@flipkart.com</td>
+                                                </tr>
+                                              </tbody>
+                                            </table>
+                                            <textarea
+                                              className="assign-modal-textArea"
+                                              placeholder="Add Remarks"
+                                            ></textarea>
+                                            <button
+                                              className="assign-butn btn-assign-tikcet"
+                                              type="button"
+                                            >
+                                              ASSIGN TICKETS
+                                            </button>
+                                          </div>
+                                        </Modal>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div
+                                  className="tab-pane fade"
+                                  id="customer-tab"
+                                  role="tabpanel"
+                                  aria-labelledby="customer-tab"
+                                >
+                                  <div className="container-fluid">
+                                    <div className="row">
+                                      <div className="col-md-3 col-sm-6">
+                                        <input
+                                          className="no-bg"
+                                          type="text"
+                                          placeholder="Customer Mobile No"
+                                        />
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <input
+                                          type="text"
+                                          className="no-bg"
+                                          placeholder="Customer Email ID"
+                                        />
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <input
+                                          type="text"
+                                          className="no-bg"
+                                          placeholder="Ticket ID"
+                                        />
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <select>
+                                          <option>Ticket Status</option>
+                                        </select>
+                                      </div>
+                                    </div>
+                                    <div className="row justify-content-between">
+                                      <div className="col-auto d-flex align-items-center">
+                                        <p className="font-weight-bold mr-3">
+                                          <span className="blue-clr">04</span>{" "}
+                                          Results
+                                        </p>
+                                        <p className="blue-clr fs-14">
+                                          CLEAR SEARCH
+                                        </p>
+                                      </div>
+                                      <div className="col-auto mob-mar-btm">
+                                        <button>
+                                          <img
+                                            className="position-relative csv-icon"
+                                            src={csv}
+                                            alt="csv-icon"
+                                          />
+                                          CSV
+                                        </button>
+                                        <button>
+                                          <img
+                                            className="sch-icon"
+                                            src={Schedule}
+                                            alt="schedule-icon"
+                                          />
+                                          Schedule
+                                        </button>
+                                        <button className="btn-inv btn-dis">
+                                          <img
+                                            src={Assign}
+                                            className="assign-icon"
+                                            alt="assign-icon"
+                                          />
+                                          Assign
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div
+                                  className="tab-pane fade"
+                                  id="ticket-tab"
+                                  role="tabpanel"
+                                  aria-labelledby="ticket-tab"
+                                >
+                                  <div className="container-fluid">
+                                    <div className="row">
+                                      <div className="col-md-3 col-sm-6">
+                                        <select>
+                                          <option>Priority</option>
+                                        </select>
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <select>
+                                          <option>Ticket Status</option>
+                                        </select>
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <select>
+                                          <option>Channel Of Purchase</option>
+                                        </select>
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <select>
+                                          <option>Ticket action Type</option>
+                                        </select>
+                                      </div>
+                                    </div>
+                                    <div className="row justify-content-between">
+                                      <div className="col-auto d-flex align-items-center">
+                                        <p className="font-weight-bold mr-3">
+                                          <span className="blue-clr">04</span>{" "}
+                                          Results
+                                        </p>
+                                        <p className="blue-clr fs-14">
+                                          CLEAR SEARCH
+                                        </p>
+                                      </div>
+                                      <div className="col-auto mob-mar-btm">
+                                        <button>
+                                          <img
+                                            className="position-relative csv-icon"
+                                            src={csv}
+                                            alt="csv-icon"
+                                          />
+                                          CSV
+                                        </button>
+                                        <button>
+                                          <img
+                                            className="sch-icon"
+                                            src={Schedule}
+                                            alt="schedule-icon"
+                                          />
+                                          Schedule
+                                        </button>
+                                        <button className="btn-inv btn-dis">
+                                          <img
+                                            src={Assign}
+                                            className="assign-icon"
+                                            alt="assign-icon"
+                                          />
+                                          Assign
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div
+                                  className="tab-pane fade"
+                                  id="category-tab"
+                                  role="tabpanel"
+                                  aria-labelledby="category-tab"
+                                >
+                                  <div className="container-fluid">
+                                    <div className="row">
+                                      <div className="col-md-3 col-sm-6">
+                                        <select>
+                                          <option>Category</option>
+                                        </select>
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <select>
+                                          <option>Sub Category</option>
+                                        </select>
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <select>
+                                          <option>Issue Type</option>
+                                        </select>
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <select>
+                                          <option>Ticket Status</option>
+                                        </select>
+                                      </div>
+                                    </div>
+                                    <div className="row justify-content-between">
+                                      <div className="col-auto d-flex align-items-center">
+                                        <p className="font-weight-bold mr-3">
+                                          <span className="blue-clr">04</span>{" "}
+                                          Results
+                                        </p>
+                                        <p className="blue-clr fs-14">
+                                          CLEAR SEARCH
+                                        </p>
+                                      </div>
+                                      <div className="col-auto mob-mar-btm">
+                                        <button>
+                                          <img
+                                            className="position-relative csv-icon"
+                                            src={csv}
+                                            alt="csv-icon"
+                                          />
+                                          CSV
+                                        </button>
+                                        <button>
+                                          <img
+                                            className="sch-icon"
+                                            src={Schedule}
+                                            alt="schedule-icon"
+                                          />
+                                          Schedule
+                                        </button>
+                                        <button className="btn-inv btn-dis">
+                                          <img
+                                            src={Assign}
+                                            className="assign-icon"
+                                            alt="assign-icon"
+                                          />
+                                          Assign
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div
+                                  className="tab-pane fade"
+                                  id="all-tab"
+                                  role="tabpanel"
+                                  aria-labelledby="all-tab"
+                                >
+                                  <div className="container-fluid">
+                                    <div className="row">
+                                      <div className="col-md-3 col-sm-6 allspc">
+                                        <DatePicker
+                                          selected={this.state.ByAllCreateDate}
+                                          onChange={this.handleAllCreateDate.bind(
+                                            this
+                                          )}
+                                          placeholderText="Creation Date"
+                                          showMonthDropdown
+                                          showYearDropdown
+                                          // className="form-control"
+                                        />
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <select>
+                                          <option>Ticket Source</option>
+                                        </select>
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <input
+                                          className="no-bg"
+                                          type="text"
+                                          placeholder="Claim ID"
+                                        />
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <input
+                                          className="no-bg"
+                                          type="text"
+                                          placeholder="Email"
+                                        />
+                                      </div>
+                                      <div className="col-md-3 col-sm-6 allspc">
+                                        <DatePicker
+                                          selected={this.state.ByAllLastDate}
+                                          onChange={this.handleAllLastDate.bind(
+                                            this
+                                          )}
+                                          placeholderText="Last Updated Date"
+                                          showMonthDropdown
+                                          showYearDropdown
+                                          // className="form-control"
+                                        />
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <select>
+                                          <option>Ticket Id/Title</option>
+                                        </select>
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <input
+                                          className="no-bg"
+                                          type="text"
+                                          placeholder="Invoice Number/Sub Order No"
+                                        />
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <input
+                                          className="no-bg"
+                                          type="text"
+                                          placeholder="Mobile"
+                                        />
+                                      </div>
+                                      <div className="col-md-3 col-sm-6 allspc">
+                                        <select>
+                                          <option>Category</option>
+                                        </select>
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <select>
+                                          <option>Ticket Priority</option>
+                                        </select>
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <input
+                                          className="no-bg"
+                                          type="text"
+                                          placeholder="Item ID"
+                                        />
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <select>
+                                          <option>Assigned To</option>
+                                        </select>
+                                      </div>
+                                      <div className="col-md-3 col-sm-6 allspc">
+                                        <select>
+                                          <option>Sub Category</option>
+                                        </select>
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <select>
+                                          <option>Ticket Status</option>
+                                        </select>
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <select>
+                                          <option>Did Visit Store : Yes</option>
+                                        </select>
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <input
+                                          className="no-bg"
+                                          type="text"
+                                          placeholder="Purchase Store Code/Address"
+                                        />
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <select>
+                                          <option>Issue Type</option>
+                                        </select>
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <select>
+                                          <option>SLA Status</option>
+                                        </select>
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <select>
+                                          <option>
+                                            Want to Visit Store : Yes
+                                          </option>
+                                        </select>
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <input
+                                          className="no-bg"
+                                          type="text"
+                                          placeholder="Want to visit Store Code/Address"
+                                        />
+                                      </div>
+                                    </div>
+                                    <div className="row p-0">
+                                      <div className="col-md-6">
+                                        <div className="row allspc">
+                                          <div className="col-sm-6 m-b-25">
+                                            <select>
+                                              <option>With Claim</option>
+                                            </select>
+                                          </div>
+                                          <div className="col-sm-6">
+                                            <select>
+                                              <option>With Task</option>
+                                            </select>
+                                          </div>
+                                          <div className="col-sm-6 m-b-25">
+                                            <select>
+                                              <option>Claim Status</option>
+                                            </select>
+                                          </div>
+                                          <div className="col-sm-6">
+                                            <select>
+                                              <option>Task Status</option>
+                                            </select>
+                                          </div>
+                                          <div className="col-sm-6 m-b-25">
+                                            <select>
+                                              <option>Claim Category</option>
+                                            </select>
+                                          </div>
+                                          <div className="col-sm-6">
+                                            <select>
+                                              <option>Task Department</option>
+                                            </select>
+                                          </div>
+                                          <div className="col-sm-6 m-b-25">
+                                            <select>
+                                              <option>
+                                                Claim Sub Category
+                                              </option>
+                                            </select>
+                                          </div>
+                                          <div className="col-sm-6">
+                                            <select>
+                                              <option>Task Function</option>
+                                            </select>
+                                          </div>
+                                          <div className="col-sm-6">
+                                            <select>
+                                              <option>Claim Issue Type</option>
+                                            </select>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="row justify-content-between">
+                                      <div className="col-auto d-flex align-items-center">
+                                        <p className="font-weight-bold mr-3">
+                                          <span className="blue-clr">04</span>{" "}
+                                          Results
+                                        </p>
+                                        <p className="blue-clr fs-14">
+                                          CLEAR SEARCH
+                                        </p>
+                                      </div>
+                                      <div className="col-auto mob-mar-btm">
+                                        <button>
+                                          <img
+                                            className="position-relative csv-icon"
+                                            src={csv}
+                                            alt="csv-icon"
+                                          />
+                                          CSV
+                                        </button>
+                                        <button>
+                                          <img
+                                            className="sch-icon"
+                                            src={Schedule}
+                                            alt="schedule-icon"
+                                          />
+                                          Schedule
+                                        </button>
+                                        <button className="btn-inv btn-dis">
+                                          <img
+                                            src={Assign}
+                                            className="assign-icon"
+                                            alt="assign-icon"
+                                          />
+                                          Assign
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </CardBody>
+                        </Card>
+                      </Collapse>
+                    </div>
+                    <div className="MyTicketListReact">
+                      <ReactTable
+                        data={dataDash}
+                        columns={columnsDash}
+                        // resizable={false}
+                        defaultPageSize={10}
+                        showPagination={false}
+                        getTrProps={this.HandleRowClickPage}
                       />
                     </div>
+                    <div className="float-search" onClick={this.toggleSearch}>
+                      <small>{TitleChange}</small>
+                      {ImgChange}
+                    </div>
+
                   </div>
                 </div>
               </div>
@@ -1424,7 +1875,7 @@ class MyTicketList extends Component {
                 role="tabpanel"
                 aria-labelledby="Closed-tab"
               >
-                <MyTicketClosed/>
+                <MyTicketClosed />
               </div>
 
               <div
@@ -1433,7 +1884,7 @@ class MyTicketList extends Component {
                 role="tabpanel"
                 aria-labelledby="All-tab"
               >
-              <MyTicketAll/>
+                <MyTicketAll />
               </div>
 
               <div
@@ -1442,7 +1893,7 @@ class MyTicketList extends Component {
                 role="tabpanel"
                 aria-labelledby="Follow-tab"
               >
-                <MyTicketFollowUp/>
+                <MyTicketFollowUp />
               </div>
 
               <div
@@ -1451,201 +1902,12 @@ class MyTicketList extends Component {
                 role="tabpanel"
                 aria-labelledby="Draft-tab"
               >
-                <MyTicketDraft/>
-                </div>
-                {/* <div className="container-fluid">
-                  <div className="table-cntr mt-3">
-                    <table className="draft">
-                      <thead>
-                        <tr>
-                          <th>Ticket Title</th>
-                          <th>Ticket Detail</th>
-                          <th>
-                            Category <img src={TableArr} alt="table-arr" />
-                          </th>
-                          <th>
-                            Draft Creation Date{" "}
-                            <img src={TableArr} alt="table-arr" />
-                          </th>
-                        </tr>
-                      </thead>
-
-                      <tbody>
-                        <tr onClick={this.hanleChange_MyTicket}>
-                          <td>Need to change my shipping addres</td>
-                          <td>
-                            Need to change my shipping addres Need to change my
-                            shipping addres
-                          </td>
-                          <td>
-                            Defective article{" "}
-                            <img
-                              className="info-icon"
-                              src={InfoIcon}
-                              alt="info-icon"
-                            />
-                          </td>
-                          <td>12 March 2018 </td>
-                        </tr>
-
-                        <tr onClick={this.hanleChange_MyTicket}>
-                          <td>Need to change my shipping addres</td>
-                          <td>
-                            Need to change my shipping address Need to change my
-                            shipping addres
-                          </td>
-                          <td>
-                            Defective article{" "}
-                            <img
-                              className="info-icon"
-                              src={InfoIcon}
-                              alt="info-icon"
-                            />
-                          </td>
-                          <td>12 March 2018 </td>
-                        </tr>
-
-                        <tr onClick={this.hanleChange_MyTicket}>
-                          <td>Need to change my shipping addres</td>
-                          <td>
-                            Need to change my shipping addres Need to change my
-                            shipping addres
-                          </td>
-                          <td>
-                            Defective article{" "}
-                            <img
-                              className="info-icon"
-                              src={InfoIcon}
-                              alt="info-icon"
-                            />
-                          </td>
-                          <td>12 March 2018 </td>
-                        </tr>
-
-                        <tr onClick={this.hanleChange_MyTicket}>
-                          <td>Need to change my shipping addres</td>
-                          <td>
-                            Need to change my shipping address Need to change my
-                            shipping addres
-                          </td>
-                          <td>
-                            Defective article{" "}
-                            <img
-                              className="info-icon"
-                              src={InfoIcon}
-                              alt="info-icon"
-                            />
-                          </td>
-                          <td>12 March 2018 </td>
-                        </tr>
-
-                        <tr onClick={this.hanleChange_MyTicket}>
-                          <td>Need to change my shipping addres</td>
-                          <td>
-                            Need to change my shipping addres Need to change my
-                            shipping addres
-                          </td>
-                          <td>
-                            Defective article{" "}
-                            <img
-                              className="info-icon"
-                              src={InfoIcon}
-                              alt="info-icon"
-                            />
-                          </td>
-                          <td>12 March 2018 </td>
-                        </tr>
-                        <tr onClick={this.hanleChange_MyTicket}>
-                          <td>Need to change my shipping addres</td>
-                          <td>
-                            Need to change my shipping address Need to change my
-                            shipping addres
-                          </td>
-                          <td>
-                            Defective article{" "}
-                            <img
-                              className="info-icon"
-                              src={InfoIcon}
-                              alt="info-icon"
-                            />
-                          </td>
-                          <td>12 March 2018 </td>
-                        </tr>
-
-                        <tr onClick={this.hanleChange_MyTicket}>
-                          <td>Need to change my shipping addres</td>
-                          <td>
-                            Need to change my shipping addres Need to change my
-                            shipping addres
-                          </td>
-                          <td>
-                            Defective article{" "}
-                            <img
-                              className="info-icon"
-                              src={InfoIcon}
-                              alt="info-icon"
-                            />
-                          </td>
-                          <td>12 March 2018 </td>
-                        </tr>
-
-                        <tr onClick={this.hanleChange_MyTicket}>
-                          <td>Need to change my shipping addres</td>
-                          <td>
-                            Need to change my shipping address Need to change my
-                            shipping addres
-                          </td>
-                          <td>
-                            Defective article{" "}
-                            <img
-                              className="info-icon"
-                              src={InfoIcon}
-                              alt="info-icon"
-                            />
-                          </td>
-                          <td>12 March 2018 </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <div className="pagi">
-                      <ul>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&lt;</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>1</a>
-                        </li>
-                        <li className="active">
-                          <a href={Demo.BLANK_LINK}>2</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>3</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>4</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>5</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>6</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>7</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&gt;</a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div> */}
-              
+                <MyTicketDraft />
+              </div>
             </div>
           </div>
-         
         </div>
-        <Modal
+        {/* <Modal
           size="lg"
           show={this.state.AssignModal}
           onHide={this.handleAssignModalClose.bind(this)}
@@ -1769,7 +2031,7 @@ class MyTicketList extends Component {
               </button>
             </div>
           </Modal.Body>
-        </Modal>
+        </Modal> */}
       </Fragment>
     );
   }

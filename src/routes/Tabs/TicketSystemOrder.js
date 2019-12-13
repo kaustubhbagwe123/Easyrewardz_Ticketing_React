@@ -5,6 +5,7 @@ import NotFoundImg from "./../../assets/Images/notFound.png";
 import Modal from "react-responsive-modal";
 import ReactTable from "react-table";
 import MinusImg from "./../../assets/Images/minus.png";
+import DatePicker from "react-datepicker";
 
 class TicketSystemOrder extends Component {
   constructor(props) {
@@ -15,7 +16,8 @@ class TicketSystemOrder extends Component {
       AddManualOrderHideShow: false,
       OrderTable: false,
       AddManuallyData: false,
-      AddManualSaveTbl: false
+      AddManualSaveTbl: false,
+      ByDateCreatDate: "",
     };
     this.handleOrderTableOpen = this.handleOrderTableOpen.bind(this);
     this.handleOrderTableClose = this.handleOrderTableClose.bind(this);
@@ -26,7 +28,9 @@ class TicketSystemOrder extends Component {
   handleOrderTableClose() {
     this.setState({ OrderTable: false });
   }
-
+  handleByDateCreate(date) {
+    this.setState({ ByDateCreatDate: date });
+  }
   // handleShowAddManualOrder() {
   //   this.setState({
   //     AddManualOrderHideShow: !this.state.AddManualOrderHideShow
@@ -309,240 +313,274 @@ class TicketSystemOrder extends Component {
             />
           </div>
         </Modal>
-        {this.state.AddManuallyData === false? (
-        <div>
-          <div className="row">
-            <div
-              className="col-md-11"
-              style={{ marginLeft: "25px", marginTop: "20px" }}
-            >
-              <input
-                type="text"
-                className="systemordersearch"
-                placeholder="BB3736289940"
-              />
-              <img
-                src={SearchBlackImg}
-                alt="Search"
-                className="systemorder-imgsearch"
-                onClick={this.handleShowSearchOrderDetails.bind(this)}
-              />
-            </div>
-          </div>
-
-          {this.state.SearchOrderDetails ? (
-            <div>
-              <div className="div-notFound">
-                <img
-                  src={NotFoundImg}
-                  alt="Not Found"
-                  className="notFound-addSrch"
+        {this.state.AddManuallyData === false ? (
+          <div>
+            <div className="row">
+              <div
+                className="col-md-11"
+                style={{ marginLeft: "25px", marginTop: "20px" }}
+              >
+                <input
+                  type="text"
+                  className="systemordersearch"
+                  placeholder="BB3736289940"
                 />
-                <br />
-                <label className="lbl-count-foundData">
-                  We couldn't find the order details with
-                  <br /> <span> this order Id</span>
-                </label>
-              </div>
-              <div className="addmanualbtn">
-                <button
-                  type="button"
-                  className="addmanual"
-                  onClick={this.handleChangeToggle.bind(this)}
-                >
-                  Add Manually
-                </button>
+                <img
+                  src={SearchBlackImg}
+                  alt="Search"
+                  className="systemorder-imgsearch"
+                  onClick={this.handleShowSearchOrderDetails.bind(this)}
+                />
               </div>
             </div>
-          ) : null}
-        </div>
-        ) : (
-          null
-        )}
+
+            {this.state.SearchOrderDetails ? (
+              <div>
+                <div className="div-notFound">
+                  <img
+                    src={NotFoundImg}
+                    alt="Not Found"
+                    className="notFound-addSrch"
+                  />
+                  <br />
+                  <label className="lbl-count-foundData">
+                    We couldn't find the order details with
+                    <br /> <span> this order Id</span>
+                  </label>
+                </div>
+                <div className="addmanualbtn">
+                  <button
+                    type="button"
+                    className="addmanual"
+                    onClick={this.handleChangeToggle.bind(this)}
+                  >
+                    Add Manually
+                  </button>
+                </div>
+              </div>
+            ) : null}
+          </div>
+        ) : null}
         {this.state.AddManuallyData ? (
           <div>
             {this.state.AddManualSaveTbl === false ? (
-          <div>
-            
-            <div className="row m-b-10 m-l-10 m-r-10 m-t-10">
-              <div className="col-md-6">
-                <label className="addmanuallytext">Add Manually</label>
-              </div>
-            </div>
-            <div className="row m-b-10 m-l-10 m-r-10">
-              <div className="col-md-6">
-                <input
-                  type="text"
-                  className="addmanuallytext1"
-                  placeholder="Order ID"
-                />
-              </div>
-              <div className="col-md-6">
-                <input
-                  type="text"
-                  className="addmanuallytext1"
-                  placeholder="Bill ID"
-                />
-              </div>
-            </div>
+              <div>
+                <div className="row m-b-10 m-l-10 m-r-10 m-t-10">
+                  <div className="col-md-6">
+                    <label className="addmanuallytext">Add Manually</label>
+                  </div>
+                </div>
+                <div className="row m-b-10 m-l-10 m-r-10">
+                  <div className="col-md-6">
+                    <input
+                      type="text"
+                      className="addmanuallytext1"
+                      placeholder="Order ID"
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <input
+                      type="text"
+                      className="addmanuallytext1"
+                      placeholder="Bill ID"
+                    />
+                  </div>
+                </div>
 
-            <div className="row m-b-10 m-l-10 m-r-10">
-              <div className="col-md-6">
-                <input
-                  type="text"
-                  className="addmanuallytext1"
-                  placeholder="Product Bar Code"
-                />
-              </div>
-              <div className="col-md-6">
-                <input
-                  type="text"
-                  className="addmanuallytext1"
-                  placeholder="Sources"
-                />
-              </div>
-            </div>
+                <div className="row m-b-10 m-l-10 m-r-10">
+                  <div className="col-md-6">
+                    <input
+                      type="text"
+                      className="addmanuallytext1"
+                      placeholder="Product Bar Code"
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <input
+                      type="text"
+                      className="addmanuallytext1"
+                      placeholder="Sources"
+                    />
+                  </div>
+                </div>
 
-            <div className="row m-b-10 m-l-10 m-r-10">
-              <div className="col-md-6">
-                <input
-                  type="text"
-                  className="addmanuallytext1"
-                  placeholder="Mode Of Payment"
-                />
-              </div>
-              <div className="col-md-6">
-                <input
+                <div className="row m-b-10 m-l-10 m-r-10">
+                  <div className="col-md-6">
+                    <input
+                      type="text"
+                      className="addmanuallytext1"
+                      placeholder="Mode Of Payment"
+                    />
+                  </div>
+                  <div className="col-md-6 dapic">
+                    <DatePicker
+                      selected={this.state.ByDateCreatDate}
+                      onChange={this.handleByDateCreate.bind(this)}
+                      placeholderText="Date"
+                      showMonthDropdown
+                      showYearDropdown
+                      className="addmanuallytext1"
+                      // className="form-control"
+                    />
+                    {/* <input
                   type="text"
                   className="addmanuallytext1"
                   placeholder="Date"
-                />
-              </div>
-            </div>
-
-            <div className="row m-b-10 m-l-10 m-r-10">
-              <div className="col-md-6">
-                <input
-                  type="text"
-                  className="addmanuallytext1"
-                  placeholder="MRP"
-                />
-              </div>
-              <div className="col-md-6">
-                <input
-                  type="text"
-                  className="addmanuallytext1"
-                  placeholder="Price Paid"
-                />
-              </div>
-            </div>
-
-            <div className="row m-b-10 m-l-10 m-r-10">
-              <div className="col-md-6">
-                <input
-                  type="text"
-                  className="addmanuallytext1"
-                  placeholder="Discount"
-                />
-              </div>
-              <div className="col-md-6">
-                <input
-                  type="text"
-                  className="addmanuallytext1"
-                  placeholder="Size"
-                />
-              </div>
-            </div>
-
-            <div className="row m-b-10 m-l-10 m-r-10">
-              <div className="col-md-6">
-                <input
-                  type="text"
-                  className="addmanuallytext1"
-                  placeholder="Required Size"
-                />
-              </div>
-              <div className="col-md-6">
-                <input
-                  type="text"
-                  className="addmanuallytext1"
-                  placeholder="Purchase from Store name"
-                />
-              </div>
-            </div>
-
-            <div className="row m-b-10 m-l-10 m-r-10">
-              <div className="col-md-6">
-                <input
-                  type="text"
-                  className="addmanuallytext1"
-                  placeholder="Purchase from Store Addres"
-                />
-              </div>
-            </div>
-
-            <div className="row m-b-10 m-l-10 m-r-10">
-              <div className="col-md-6">
-                <button className="addmanual m-t-15"
-                onClick={this.handleChangeSaveManualTbl.bind(this)}>SAVE</button>
-              </div>
-            </div>
-            </div>
-            ): (
-
-            
-          <div className="reacttableordermodal">
-
-              <div className="row m-b-10">
-                <div className="col-md-11"
-                  style={{ marginLeft: "25px", marginTop: "20px" }}
-                >
-                  <input type="text" className="systemordersearch" placeholder="BB3736289940" />
-                  <img src={SearchBlackImg} alt="Search" className="systemorder-imgsearch" />
-                </div>
-              </div>
-              <span className="linestore2"></span>
-              <div
-            className="row m-t-10 m-b-10"
-            style={{ marginLeft: "0", marginRight: "0" }}
-          >
-            <div className="col-md-9">
-              <label className="orderdetailpopup" style={{marginTop:"3px"}}>Order Details</label>
-            </div>
-            <div className="col-md-3">
-              <div style={{ float: "right", display: "flex" }}>
-                <label className="orderdetailpopup " style={{marginTop:"3px"}}>Order</label>
-                <div className="orderswitch orderswitchitem">
-                  <div className="switch switch-primary d-inline">
-                    <input type="checkbox" id="editTasks-p-2" />
-                    <label htmlFor="editTasks-p-2" className="cr ord"></label>
+                /> */}
                   </div>
                 </div>
-                <label className="orderdetailpopup" style={{marginTop:"3px"}}>Item</label>
-              </div>
-            </div>
-            </div>
-            <span className="linestore2"></span>
-            <ReactTable
-              data={dataOrder}
-              columns={columnsOrder}
-              //resizable={false}
-              defaultPageSize={3}
-              showPagination={false}
-              SubComponent={row => {
-                return (
-                  <div style={{ padding: "20px" }}>
-                    <ReactTable
-                      data={dataOrder1}
-                      columns={columnsOrder1}
-                      defaultPageSize={2}
-                      showPagination={false}
+
+                <div className="row m-b-10 m-l-10 m-r-10">
+                  <div className="col-md-6">
+                    <input
+                      type="text"
+                      className="addmanuallytext1"
+                      placeholder="MRP"
                     />
                   </div>
-                );
-              }}
-            />
-          </div>
+                  <div className="col-md-6">
+                    <input
+                      type="text"
+                      className="addmanuallytext1"
+                      placeholder="Price Paid"
+                    />
+                  </div>
+                </div>
+
+                <div className="row m-b-10 m-l-10 m-r-10">
+                  <div className="col-md-6">
+                    <input
+                      type="text"
+                      className="addmanuallytext1"
+                      placeholder="Discount"
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <input
+                      type="text"
+                      className="addmanuallytext1"
+                      placeholder="Size"
+                    />
+                  </div>
+                </div>
+
+                <div className="row m-b-10 m-l-10 m-r-10">
+                  <div className="col-md-6">
+                    <input
+                      type="text"
+                      className="addmanuallytext1"
+                      placeholder="Required Size"
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <input
+                      type="text"
+                      className="addmanuallytext1"
+                      placeholder="Purchase from Store name"
+                    />
+                  </div>
+                </div>
+
+                <div className="row m-b-10 m-l-10 m-r-10">
+                  <div className="col-md-6">
+                    <input
+                      type="text"
+                      className="addmanuallytext1"
+                      placeholder="Purchase from Store Addres"
+                    />
+                  </div>
+                </div>
+
+                <div className="row m-b-10 m-l-10 m-r-10">
+                  <div className="col-md-6">
+                    <button
+                      className="addmanual m-t-15"
+                      onClick={this.handleChangeSaveManualTbl.bind(this)}
+                    >
+                      SAVE
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="reacttableordermodal">
+                <div className="row m-b-10">
+                  <div
+                    className="col-md-11"
+                    style={{ marginLeft: "25px", marginTop: "20px" }}
+                  >
+                    <input
+                      type="text"
+                      className="systemordersearch"
+                      placeholder="BB3736289940"
+                    />
+                    <img
+                      src={SearchBlackImg}
+                      alt="Search"
+                      className="systemorder-imgsearch"
+                    />
+                  </div>
+                </div>
+                <span className="linestore2"></span>
+                <div
+                  className="row m-t-10 m-b-10"
+                  style={{ marginLeft: "0", marginRight: "0" }}
+                >
+                  <div className="col-md-9">
+                    <label
+                      className="orderdetailpopup"
+                      style={{ marginTop: "3px" }}
+                    >
+                      Order Details
+                    </label>
+                  </div>
+                  <div className="col-md-3">
+                    <div style={{ float: "right", display: "flex" }}>
+                      <label
+                        className="orderdetailpopup "
+                        style={{ marginTop: "3px" }}
+                      >
+                        Order
+                      </label>
+                      <div className="orderswitch orderswitchitem">
+                        <div className="switch switch-primary d-inline">
+                          <input type="checkbox" id="editTasks-p-2" />
+                          <label
+                            htmlFor="editTasks-p-2"
+                            className="cr ord"
+                          ></label>
+                        </div>
+                      </div>
+                      <label
+                        className="orderdetailpopup"
+                        style={{ marginTop: "3px" }}
+                      >
+                        Item
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <span className="linestore2"></span>
+                <ReactTable
+                  data={dataOrder}
+                  columns={columnsOrder}
+                  //resizable={false}
+                  defaultPageSize={3}
+                  showPagination={false}
+                  SubComponent={row => {
+                    return (
+                      <div style={{ padding: "20px" }}>
+                        <ReactTable
+                          data={dataOrder1}
+                          columns={columnsOrder1}
+                          defaultPageSize={2}
+                          showPagination={false}
+                        />
+                      </div>
+                    );
+                  }}
+                />
+              </div>
             )}
           </div>
         ) : null}

@@ -12,7 +12,12 @@ import TicketSystemOrder from "./Tabs/TicketSystemOrder";
 import TicketSystemTask from "./Tabs/TicketSystemTask";
 import TicketSystemStore from "./Tabs/TicketSystemStore";
 import Modal from "react-responsive-modal";
-import CKEditor from 'ckeditor4-react';
+import CKEditor from "ckeditor4-react";
+import FileUpload from "./../assets/Images/file.png";
+import ThumbTick from "./../assets/Images/thumbticket.png";
+
+import { Radio } from "antd";
+import DatePicker from "react-datepicker";
 
 class TicketSystem extends Component {
   constructor() {
@@ -20,11 +25,30 @@ class TicketSystem extends Component {
     this.state = {
       showAddNote: false,
       SubmitBtnReopn: false,
+      EditCustomer: false,
+      startDate: "",
       TabIconColor: "nav-link active"
     };
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
+  handleEditCustomerOpen() {
+    this.setState({ EditCustomer: true });
+  }
+  handleEditCustomerClose() {
+    this.setState({ EditCustomer: false });
+  }
+  onChange = e => {
+    this.setState({
+      value: e.target.value
+    });
+  };
+  handleChange(date) {
+    this.setState({
+      startDate: date
+    });
+  }
   showAddNoteFuncation() {
     const { showAddNote } = this.state;
     this.setState({
@@ -70,21 +94,23 @@ class TicketSystem extends Component {
 
                 <td className="tdtextnew" style={{ padding: "5px" }}>
                   <label className="save-as-a-draft">SAVE AS DRAFT</label>
-                  <button className="rectanglecreateticket"
-                  onClick={this.handleSubmitReopnModalOpen.bind(this)}>
+                  <button
+                    className="rectanglecreateticket"
+                    onClick={this.handleSubmitReopnModalOpen.bind(this)}
+                  >
                     <label className="create-ticket">CREACT TICKET</label>
                   </button>
                   <Modal
-            open={this.state.SubmitBtnReopn}
-            onClose={this.handleSubmitReopnModalClose.bind(this)}
-            closeIconId="close"
-            modalId="CreateTicket1-popup"
-            overlayId="logout-ovrly"
-          >
-            <div>
-              <label>Submit As Solved</label>
-            </div>
-          </Modal>
+                    open={this.state.SubmitBtnReopn}
+                    onClose={this.handleSubmitReopnModalClose.bind(this)}
+                    closeIconId="close"
+                    modalId="CreateTicket1-popup"
+                    overlayId="logout-ovrly"
+                  >
+                    <div>
+                      <label>Submit As Solved</label>
+                    </div>
+                  </Modal>
                 </td>
               </tr>
             </tbody>
@@ -232,75 +258,174 @@ class TicketSystem extends Component {
                     </select>
                   </div>
                 </div>
+                <div className="row my-3 mx-1">
+              <img src={ThumbTick} alt="thumb" className="thumbtick" />
+              <img src={ThumbTick} alt="thumb" className="thumbtick" />
+            </div>
                 <div>
+                  
                   <CKEditor
-                  config={{
-                    toolbar: [
-                    {
-                      name: 'basicstyles',
-                      items: ['Bold', 'Italic','Strike']
-                    },
-                    {
-                      name: 'styles',
-                      items: ['Styles', 'Format']
-                    },
-                    {
-                      name: 'paragraph',
-                      items: ['NumberedList', 'BulletedList']
-                    },
-                    {
-                      name: 'links',
-                      items: ['Link', 'Unlink']
-                    },
-                    {
-                      name: 'insert',
-                      items: ['Image', 'Table']
-                    },
-                    {
-                      name: 'tools',
-                      items: ['Maximize']
-                    },
-                    {
-                      name: 'editing',
-                      items: ['Scayt']
-                    }
-                  ],
-                  }}
-                />
-                    </div>
+                    config={{
+                      toolbar: [
+                        {
+                          name: "basicstyles",
+                          items: ["Bold", "Italic", "Strike"]
+                        },
+                        {
+                          name: "styles",
+                          items: ["Styles", "Format"]
+                        },
+                        {
+                          name: "paragraph",
+                          items: ["NumberedList", "BulletedList"]
+                        },
+                        {
+                          name: "links",
+                          items: ["Link", "Unlink"]
+                        },
+                        {
+                          name: "insert",
+                          items: ["Image", "Table"]
+                        },
+                        {
+                          name: "tools",
+                          items: ["Maximize"]
+                        },
+                        {
+                          name: "editing",
+                          items: ["Scayt"]
+                        }
+                      ]
+                    }}
+                  />
+                  <div className="row colladrowa" style={{bottom:"100px"}}>
+                    <div className="col-md-11 colladrow">
+                      <ul className="m-l-20">
+                        <li className="diwamargin">
+                          <label>To: diwarkar@gmail.com</label>
+                        </li>
+                        <li>
+                          <div className="filter-checkbox">
+                            <input
+                              type="checkbox"
+                              id="fil-open"
+                              name="filter-type"
+                              style={{ display: "none" }}
+                            />
+                            <label
+                              htmlFor="fil-open"
+                              style={{ paddingLeft: "25px" }}
+                            >
+                              <span>Inform Store Note</span>
+                            </label>
+                          </div>
+                        </li>
+                        <li>
+                          <span>
+                            <input
+                              id="file-upload"
+                              className="file-upload1 d-none"
+                              type="file"
+                              onChange={this.fileUpload}
+                            />
+                            <label
+                              htmlFor="file-upload"
+                              onDrop={this.fileDrop}
+                              onDragOver={this.fileDragOver}
+                              onDragEnter={this.fileDragEnter}
+                            >
+                              <img
+                                src={FileUpload}
+                                alt="file-upload"
+                                className="fileup"
+                              />
+                            </label>
+                          </span>
+                          <label style={{ color: "#2561a8" }}>3 files</label>
+                        </li>
+                        <li>
+                          <label className="diwamargin">
+                            <input
+                              type="text"
+                              className="CCdi"
+                              placeholder="CC: diwarkar@gmail.com"
+                            />
 
+                            <span className="one">+1</span>
+                          </label>
+                        </li>
+                        <li>
+                          <label className="diwamargin">
+                            <input
+                              type="text"
+                              className="CCdi"
+                              placeholder="BCC: diwarkar@gmail.com"
+                            />
+                            <span className="one">+1</span>
+                          </label>
+                        </li>
+                        
+                        <li style={{float:"right",marginRight:"22px"}}>
+                          <button className="sav">Save As Draft</button>
+                          <button className="send">Send</button>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+               
                 <div className="row m-b-10 m-t-10">
+                  <div className="col-md-4">
                   <div
                     className="filter-checkbox"
                     style={{ marginLeft: "15px" }}
                   >
                     <input
                       type="checkbox"
-                      id="fil-open"
+                      id="fil-add"
                       name="filter-type"
                       style={{ display: "none" }}
                       onChange={() => this.showAddNoteFuncation()}
                     />
-                    <label htmlFor="fil-open" style={{ paddingLeft: "25px" }}>
+                    <label htmlFor="fil-add" style={{ paddingLeft: "25px" }}>
                       <span className="add-note">Add Note</span>
                     </label>
+                  </div>
+                  </div>
+                  <div className="col-md-8">
+                  <div
+                    className="filter-checkbox"
+                    style={{ marginLeft: "15px" }}
+                  >
+                    <input
+                      type="checkbox"
+                      id="fil-add1"
+                      name="filter-type"
+                      style={{ display: "none" }}
+                    />
+                    <label htmlFor="fil-add1" style={{ paddingLeft: "25px" }}>
+                      <span className="add-note">Instant Escalation to High level</span>
+                    </label>
+                  </div>
                   </div>
                 </div>
                 {this.state.showAddNote ? (
                   <div>
-                  <div className="row m-b-10">
-                    <div className="col-md-12">
-                      <textarea
-                        className="addNote-textarea-system"
-                        placeholder="Write your note here"
-                      ></textarea>
+                    <div className="row m-b-10">
+                      <div className="col-md-12">
+                        <textarea
+                          className="addNote-textarea-system"
+                          placeholder="Write your note here"
+                        ></textarea>
+                      </div>
                     </div>
                   </div>
-                  
-                  </div>
                 ) : null}
+                
               </div>
+              
             </div>
+            
             <div className="column ticketSycard">
               <div className="tab-content tabpaddingsystem">
                 <div
@@ -363,11 +488,102 @@ class TicketSystem extends Component {
                     </div>
                     <div className="row">
                       <button className="systemeditbutton">
-                        <label className="systemeditbutton-text">EDIT</label>
+                        <label
+                          className="systemeditbutton-text"
+                          onClick={this.handleEditCustomerOpen.bind(this)}
+                        >
+                          EDIT
+                        </label>
                       </button>
                     </div>
                   </div>
                 </div>
+                <Modal
+                  onClose={this.handleEditCustomerClose.bind(this)}
+                  open={this.state.EditCustomer}
+                  modalId="AddSearchModel"
+                  overlayId="logout-ovrly"
+                >
+                  <div className="pop-upAddSearchPD">
+                    <label className="lbl-popup-title">Edit Customer</label>
+                    <hr />
+                    <div className="row row-margin1">
+                      <div className="col-md-6">
+                        <input
+                          type="text"
+                          className="txt-1"
+                          placeholder="Full Name"
+                        />
+                      </div>
+                      <div className="col-md-6">
+                        <input
+                          type="text"
+                          className="txt-1"
+                          placeholder="Mobile Number"
+                        />
+                      </div>
+                    </div>
+                    <div className="row row-margin1">
+                      <div className="col-md-6">
+                        <input
+                          type="text"
+                          className="txt-1"
+                          placeholder="Email ID"
+                        />
+                      </div>
+                      <div className="col-md-6 radio-btn-margin">
+                        <Radio.Group
+                          onChange={this.onChange}
+                          value={this.state.value}
+                        >
+                          <Radio value={1}>Male</Radio>
+                          <Radio value={2}>Female</Radio>
+                        </Radio.Group>
+                      </div>
+                    </div>
+                    <div className="row row-margin1">
+                      <div className="col-md-6 addcustdate">
+                        <DatePicker
+                          selected={this.state.startDate}
+                          onChange={date => this.handleChange(date)}
+                          placeholderText="DOB"
+                          showMonthDropdown
+                          showYearDropdown
+                          className="txt-1"
+                        />
+                      </div>
+                    </div>
+                    <hr />
+                    <div className="row row-margin1">
+                      <div className="col-md-6">
+                        <input
+                          type="text"
+                          className="txt-1"
+                          placeholder="Alternate Number"
+                        />
+                      </div>
+                      <div className="col-md-6">
+                        <input
+                          type="text"
+                          className="txt-1"
+                          placeholder="Alternate Email"
+                        />
+                      </div>
+                    </div>
+                    <div className="btn-float">
+                      <a
+                        href="#!"
+                        className="cancel-btn-A"
+                        onClick={this.handleAddCustomerClose}
+                      >
+                        CANCEL
+                      </a>
+                      <a href="ticketsystem">
+                        <button className="butn">SAVE</button>
+                      </a>
+                    </div>
+                  </div>
+                </Modal>
 
                 <div
                   className="tab-pane fade"

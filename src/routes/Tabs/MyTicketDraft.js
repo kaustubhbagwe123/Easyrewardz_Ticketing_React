@@ -3,6 +3,7 @@ import ReactTable from "react-table";
 import InfoIcon from "./../../assets/Images/info-icon.png";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Popover } from "antd";
 
 class MyTicketDraft extends Component {
     render() {
@@ -68,8 +69,10 @@ class MyTicketDraft extends Component {
                 accessor: "categoryNew",
                         Cell:props =>
                             <span>
-                                <label>Defective article{" "}</label>
-                                <img className="info-icon" src={InfoIcon} alt="info-icon" />
+                               <label>Defective article </label>
+            <Popover content={DefArti} placement="bottom">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
                             </span>
             },
             {
@@ -81,7 +84,24 @@ class MyTicketDraft extends Component {
                         </span>
             },
           ];
-
+          const DefArti = (
+            <div className="dash-creation-popup-cntr">
+              <ul className="dash-category-popup dashnewpopup">
+                <li>
+                  <p>Category</p>
+                  <p>Defective article</p>
+                </li>
+                <li>
+                  <p>Sub Category</p>
+                  <p>Customer wants refund</p>
+                </li>
+                <li>
+                  <p>Type</p>
+                  <p>Delivery</p>
+                </li>
+              </ul>
+            </div>
+          );
         return (
             <Fragment>
                  <div className="newReact"> 

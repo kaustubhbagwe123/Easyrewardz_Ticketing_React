@@ -144,7 +144,7 @@ class Dashboard extends Component {
   render() {
     const DefArti = (
       <div className="dash-creation-popup-cntr">
-        <ul className="dash-category-popup">
+        <ul className="dash-category-popup dashnewpopup">
           <li>
             <p>Category</p>
             <p>Defective article</p>
@@ -730,12 +730,16 @@ class Dashboard extends Component {
               <span>Brand : </span>
               <select>
                 <option>All</option>
+                <option>1</option>
+                <option>2</option>
               </select>
             </div>
             <div>
               <span>Agent : </span>
               <select>
-                <option>All</option>
+              <option>All</option>
+                <option>1</option>
+                <option>2</option>
               </select>
             </div>
           </div>

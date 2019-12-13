@@ -6753,11 +6753,11 @@ table tr th:last-child {
   z-index: 1;
 }
 .table-expandable-sctn .react-datepicker__navigation--previous {
-  left: -70px;
+  min-width: auto;
   border-right-color: #ccc;
 }
 .table-expandable-sctn .react-datepicker__navigation--next {
-  right: -70px;
+  min-width: auto;
   border-left-color: #ccc;
 }
 .table-expandable-sctn .react-datepicker-wrapper {
@@ -7456,6 +7456,7 @@ table tr th:last-child {
 }
 .paddingsystem {
   padding: 40px;
+  position: relative;
 }
 .ticket-details-system {
   color: #9b9b9b;
@@ -8527,12 +8528,12 @@ table tr th:last-child {
   width: 100%;
 }
 .addcustdate .react-datepicker__navigation--next {
-  right: -75px;
+  min-width: auto;
   border-left-color: #ccc;
 }
 .addcustdate .react-datepicker__navigation--previous {
-  left: -75px;
-  border-left-color: #ccc;
+  min-width: auto;
+  border-right-color: #ccc;
 }
 .colladrow label{
   font-family: lato;
@@ -8838,7 +8839,7 @@ table tr th:last-child {
   width: 25%;
 }
 .newReact .ReactTable .rt-thead .rt-th.-cursor-pointer, .ReactTable .rt-thead .rt-td.-cursor-pointer {
-  padding: 20px 12px !important;
+  padding: 20px 10px !important;
 }
 /* MyTicket Bottom Header Css Start Kalpesh */
 .TicketTabs {
@@ -8895,4 +8896,145 @@ table tr th:last-child {
   height: 11px;
 }
 /* MyTicket Bottom Header Css End Kalpesh */
+.dashnewpopup li p {
+  margin-bottom: 0;
+}
+.dashnewpopup {
+  padding: 0px 10px;
+  font-size: 14px;
+  border-radius: 8px;
+  white-space: initial;
+}
+.myticlist-expand-sect .nav-tabs .nav-link {
+  padding: 20px;
+  background: transparent;
+  color: #4a4a4a;
+  font-weight: 700;
+  border: 0;
+  margin-right: 0;
+}
+.myticlist-expand-sect .nav-tabs .nav-link.active {
+  color: #2561a8;
+  border-bottom: 2px solid #2561a8;
+  box-shadow: none;
+  font-weight: 700;
+  background-color: transparent;
+  padding: 20px;
+  border-radius: 0;
+}
+.myticlist-expand-sect {
+  background: #ecf2f4;
+}
+.myticlist-expand-sect .nav-tabs {
+  border-color: #dae2e5;
+  position: relative;
+  border-bottom: 1px solid #dae2e5;;
+}
+.myticlist-expand-sect .nav-tabs .nav-item {
+  margin-bottom: -1px;
+  margin-right: 0;
+}
+.myticlist-expand-sect .save-view-search {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-51%);
+}
+.myticlist-expand-sect .save-view-search button {
+  padding-right: 25px;
+  padding-left: 25px;
+}
+.myticlist-expand-sect button {
+  background-color: #fff;
+  margin-right: 15px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+.myticlist-expand-sect .save-view-search button.btn-inv {
+  padding-right: 45px;
+  padding-left: 45px;
+}
+.myticlist-expand-sect button.btn-inv {
+  color: #fff;
+  background-color: #2561a8;
+}
+.myticlist-expand-sect .tab-content .row {
+  padding: 20px 0;
+  border-bottom: 1px solid #dae2e5;
+  margin-bottom: 0 !important;
+}
+.myticlist-expand-sect input[type="text"] {
+  width: 100%;
+  border-radius: 4px;
+  padding: 10px 50px 10px 20px;
+  border: 0;
+  background: #fff url("./../Images/calendar-black.svg") no-repeat right 15px
+    center;
+  color: #4a4a4a;
+}
+.myticlist-expand-sect input[type="text"].no-bg {
+  background: #fff none;
+  padding: 10px 20px;
+}
+.myticlist-expand-sect input::placeholder {
+  font-size: 16px;
+  padding: 0;
+  color: #a7a7a7;
+  font-weight: 400;
+}
+.myticlist-expand-sect select {
+  width: 100%;
+  border-radius: 4px;
+  padding: 10px 45px 10px 20px;
+  border: 0;
+  background: #fff url("./../Images//table-arr.png") no-repeat right 20px center;
+  background-size: 13px;
+  color: #a7a7a7;
+}
+.myticlist-expand-sect .react-datepicker button {
+  padding-top: 0;
+  padding-bottom: 0;
+  background: transparent;
+  margin-right: 0;
+}
+.myticlist-expand-sect .react-datepicker-wrapper {
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  width: 100%;
+}
+.myticlist-expand-sect .react-datepicker__navigation {
+  text-align: center;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  padding: 0;
+  border: 0.55rem solid transparent;
+  z-index: 1;
+}
+.myticlist-expand-sect .react-datepicker__navigation--previous {
+  min-width: auto;
+  border-right-color: #ccc;
+}
+.myticlist-expand-sect .react-datepicker__navigation--next {
+  min-width: auto;
+  border-left-color: #ccc;
+}
+.dapic .react-datepicker-wrapper {
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  width: 100%;
+}
+.dapic .react-datepicker__navigation--previous {
+  min-width: auto;
+  border-right-color: #ccc;
+}
+.dapic .react-datepicker__navigation--next {
+  min-width: auto;
+  border-left-color: #ccc;
+}
+.diwamargin {
+  margin-bottom: 15px;
+}
 /* ****************End css ************************/

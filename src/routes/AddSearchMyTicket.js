@@ -144,7 +144,7 @@ class AddSearchMyTicket extends Component {
                 <div className="row row-margin1">
                   <div className="col-md-6 addcustdate">
                     <DatePicker
-                      date ={this.state.startDate}
+                      selected ={this.state.startDate}
                       onChange={date => this.handleChange(date)}
                       placeholderText="DOB"
                       showMonthDropdown
