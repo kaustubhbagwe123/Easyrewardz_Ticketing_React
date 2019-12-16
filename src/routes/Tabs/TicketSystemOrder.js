@@ -201,7 +201,8 @@ class TicketSystemOrder extends Component {
     ];
 
     return (
-      <div>
+      <div className="ticketSycard">
+      <div className="ticketSycard1">
         <div className="row storemainrow">
           <div className="col-12 col-lg-7 col-xl-8">
             <label className="systemstordercustomer">
@@ -587,6 +588,7 @@ class TicketSystemOrder extends Component {
         {/* {this.state.AddManualSaveTbl === false ? (
           
         ):( null )} */}
+      </div>
       </div>
     );
   }

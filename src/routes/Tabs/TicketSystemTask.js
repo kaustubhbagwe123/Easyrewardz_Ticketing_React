@@ -48,12 +48,14 @@ class TicketSystemTask extends Component {
     ];
     return (
       <Fragment>
+        <div className="ticketSycard">
+      <div className="ticketSycard1">
         <div id="accordion">
           <div className="">
             <div className="card-header collapsetask" id="headingOne">
-              <h5 className="mb-8">
+              <h5 className="mb-8 drop">
                 <label
-                  className="btn btn-link"
+                  className="btn btn-link drop1"
                   data-toggle="collapse"
                   data-target="#collapseOne"
                   aria-expanded="true"
@@ -134,9 +136,9 @@ class TicketSystemTask extends Component {
           </div>
           <div className="">
             <div className="card-header collapsetask" id="headingTwo">
-              <h5 className="mb-0">
+              <h5 className="mb-0 drop">
                 <label
-                  className="btn btn-link collapsed"
+                  className="btn btn-link collapsed drop1"
                   data-toggle="collapse"
                   data-target="#collapseTwo"
                   aria-expanded="false"
@@ -163,6 +165,8 @@ class TicketSystemTask extends Component {
               </div>
             </div>
           </div>
+        </div>
+        </div>
         </div>
       </Fragment>
     );

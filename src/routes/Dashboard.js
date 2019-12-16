@@ -34,6 +34,13 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ReactTable from "react-table";
 import { Popover } from "antd";
+import DatetimeRangePicker from 'react-bootstrap-datetimerangepicker';
+import moment from 'moment';
+
+
+import {
+  Button,
+} from 'react-bootstrap';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -52,15 +59,35 @@ class Dashboard extends Component {
       ByAllCreateDate: "",
       ByAllLastDate: "",
       TotalNoOfChatShow: true,
-      date: [new Date(), new Date()]
+      date: [new Date(), new Date()],
+      startDate: moment().subtract(29, 'days'),
+      endDate: moment(),
+      ranges: {
+        'Today': [moment(), moment()],
+        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+        'This Month': [moment().startOf('month'), moment().endOf('month')],
+        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+      },
+      range: "",
     };
+    this.handleApply = this.handleApply.bind(this);
     this.toggle = this.toggle.bind(this);
     this.toggleSearch = this.toggleSearch.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
     // this.toggleHoverState = this.toggleHoverState.bind(this);
   }
-
+  handleApply(event, picker) {
+    this.setState({
+      startDate: picker.startDate,
+      endDate: picker.endDate,
+    });
+  }
+  handleDateRange(date) {
+    this.setState({range:date});
+  }
   handleByDateCreate(date) {
     this.setState({ ByDateCreatDate: date });
   }
@@ -142,6 +169,12 @@ class Dashboard extends Component {
     this.setState({ TotalNoOfChatShow: !this.state.TotalNoOfChatShow });
   }
   render() {
+    let start = this.state.startDate.format('YYYY-MM-DD');
+    let end = this.state.endDate.format('YYYY-MM-DD');
+    let label = start + ' - ' + end;
+    if (start === end) {
+      label = start;
+    }
     const DefArti = (
       <div className="dash-creation-popup-cntr">
         <ul className="dash-category-popup dashnewpopup">
@@ -725,19 +758,60 @@ class Dashboard extends Component {
           </Modal>
         </div>
         <div className="container-fluid dash-dropdowns">
-          <div className="d-flex">
+          <div className="d-flex dashallbrand1">
             <div>
-              <span>Brand : </span>
-              <select>
+              <span>
+                Brand :
+                <div className="dropdown">
+                  <button
+                    className="dropdown-toggle dashallbrand"
+                    type="button"
+                    data-toggle="dropdown"
+                    
+                  >
+                    <span className="EMFCText">All</span>
+                  </button>
+                  <ul className="dropdown-menu">
+                    <li>
+                      <div className="filter-type pink1">
+                        <div className="filter-checkbox pink2 pinkmargin">
+                          <input type="checkbox" id="fil-ab1" />
+                          <label htmlFor="fil-a1"></label>
+                          <span>abc</span>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div className="filter-type pink1">
+                        <div className="filter-checkbox pink2 pinkmargin">
+                          <input type="checkbox" id="fil-ab2" />
+                          <label htmlFor="fil-a2"></label>
+                          <span>abc</span>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div className="filter-type pink1">
+                        <div className="filter-checkbox pink2 pinkmargin">
+                          <input type="checkbox" id="fil-ab1" />
+                          <label htmlFor="fil-a1"></label>
+                          <span>abc</span>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </span>
+              {/* <select>
                 <option>All</option>
                 <option>1</option>
                 <option>2</option>
-              </select>
+              </select> */}
             </div>
             <div>
               <span>Agent : </span>
               <select>
-              <option>All</option>
+                <option>All</option>
                 <option>1</option>
                 <option>2</option>
               </select>
@@ -746,6 +820,22 @@ class Dashboard extends Component {
           <div>
             <div>
               <span>Date Range : </span>
+              {/* <DatetimeRangePicker
+            startDate={this.state.startDate}
+            endDate={this.state.endDate}
+            onApply={this.handleApply}
+          >
+            <div className="input-group">
+              <input type="text" className="form-control" value={label}/>
+                <span className="input-group-btn">
+                    <Button className="default date-range-toggle"
+                   
+                    >
+                      <i className="fa fa-calendar"/>
+                    </Button>
+                </span>
+            </div>
+          </DatetimeRangePicker> */}
               <label>
                 Last 7 days
                 <img
@@ -754,7 +844,6 @@ class Dashboard extends Component {
                   className="datePicketArrow"
                 />
               </label>
-              {/*  </DatetimeRangePicker> */}
             </div>
           </div>
         </div>

@@ -15,6 +15,17 @@ import Modal from "react-responsive-modal";
 import CKEditor from "ckeditor4-react";
 import FileUpload from "./../assets/Images/file.png";
 import ThumbTick from "./../assets/Images/thumbticket.png";
+import AutoSave from "./../assets/Images/AutoSave.png";
+import { faCalculator } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import KnowledgeLogo from "./../assets/Images/knowledge.png";
+import CancelImg from "./../assets/Images/cancel.png";
+import { Collapse, CardBody, Card } from "reactstrap";
+import DownArrowIcon from "./../assets/Images/down-1.png";
+import CopyBlue from "./../assets/Images/copyblue.png";
+import ViewBlue from "./../assets/Images/viewblue.png";
+import Up1Img from "./../assets/Images/up-1.png";
+import Down1Img from "./../assets/Images/down-1.png";
 
 import { Radio } from "antd";
 import DatePicker from "react-datepicker";
@@ -27,12 +38,25 @@ class TicketSystem extends Component {
       SubmitBtnReopn: false,
       EditCustomer: false,
       startDate: "",
+      KbLink: false,
+      collapseUp:false,
       TabIconColor: "nav-link active"
     };
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
-
+  handleUpOpen() {
+    this.setState({ collapseUp: true });
+  }
+  handleUpClose() {
+    this.setState({ collapseUp: false });
+  }
+  HandleKbLinkModalOpen() {
+    this.setState({ KbLink: true });
+  }
+  HandleKbLinkModalClose() {
+    this.setState({ KbLink: false });
+  }
   handleEditCustomerOpen() {
     this.setState({ EditCustomer: true });
   }
@@ -66,6 +90,21 @@ class TicketSystem extends Component {
     this.setState({ SubmitBtnReopn: false });
   }
   render() {
+    const HidecollapsUpKbLink = this.state.collapseUp ? (
+      <img
+        src={Up1Img}
+        alt="up"
+        className="down-icon-kb1"
+        onClick={this.handleUpClose.bind(this)}
+      />
+    ) : (
+      <img
+        src={Down1Img}
+        alt="up"
+        className="down-icon-kb1"
+        onClick={this.handleUpOpen.bind(this)}
+      />
+    );
     return (
       <div>
         <div className="rectanglesystem">
@@ -118,7 +157,7 @@ class TicketSystem extends Component {
         </div>
         <div className="mask-ticket-system">
           <div className="row marginsystem">
-            <div className="column">
+            <div className="column marginsystem1">
               <div className="paddingsystem">
                 <div className="row m-b-10">
                   <div className="col-md-12">
@@ -259,12 +298,11 @@ class TicketSystem extends Component {
                   </div>
                 </div>
                 <div className="row my-3 mx-1">
-              <img src={ThumbTick} alt="thumb" className="thumbtick" />
-              <img src={ThumbTick} alt="thumb" className="thumbtick" />
-            </div>
+                  <img src={ThumbTick} alt="thumb" className="thumbtick" />
+                  <img src={ThumbTick} alt="thumb" className="thumbtick" />
+                </div>
                 <div>
-                  
-                  <CKEditor
+                  <CKEditor style={{height:"400px"}}
                     config={{
                       toolbar: [
                         {
@@ -298,9 +336,9 @@ class TicketSystem extends Component {
                       ]
                     }}
                   />
-                  <div className="row colladrowa" style={{bottom:"100px"}}>
+                  <div className="row colladrowa" style={{ bottom: "100px" }}>
                     <div className="col-md-11 colladrow">
-                      <ul className="m-l-20">
+                      <ul className="m-l-30">
                         <li className="diwamargin">
                           <label>To: diwarkar@gmail.com</label>
                         </li>
@@ -347,7 +385,7 @@ class TicketSystem extends Component {
                           <label className="diwamargin">
                             <input
                               type="text"
-                              className="CCdi"
+                              className="CCdi1"
                               placeholder="CC: diwarkar@gmail.com"
                             />
 
@@ -358,55 +396,57 @@ class TicketSystem extends Component {
                           <label className="diwamargin">
                             <input
                               type="text"
-                              className="CCdi"
+                              className="CCdi1"
                               placeholder="BCC: diwarkar@gmail.com"
                             />
                             <span className="one">+1</span>
                           </label>
                         </li>
-                        
-                        <li style={{float:"right",marginRight:"22px"}}>
-                          <button className="sav">Save As Draft</button>
-                          <button className="send">Send</button>
+
+                        <li style={{ float: "right", marginRight: "22px" }}>
+                          <button className="sav1">Save As Draft</button>
+                          <button className="send1">Send</button>
                         </li>
                       </ul>
                     </div>
                   </div>
                 </div>
-               
+
                 <div className="row m-b-10 m-t-10">
                   <div className="col-md-4">
-                  <div
-                    className="filter-checkbox"
-                    style={{ marginLeft: "15px" }}
-                  >
-                    <input
-                      type="checkbox"
-                      id="fil-add"
-                      name="filter-type"
-                      style={{ display: "none" }}
-                      onChange={() => this.showAddNoteFuncation()}
-                    />
-                    <label htmlFor="fil-add" style={{ paddingLeft: "25px" }}>
-                      <span className="add-note">Add Note</span>
-                    </label>
-                  </div>
+                    <div
+                      className="filter-checkbox"
+                      style={{ marginLeft: "15px" }}
+                    >
+                      <input
+                        type="checkbox"
+                        id="fil-add"
+                        name="filter-type"
+                        style={{ display: "none" }}
+                        onChange={() => this.showAddNoteFuncation()}
+                      />
+                      <label htmlFor="fil-add" style={{ paddingLeft: "25px" }}>
+                        <span className="add-note">Add Note</span>
+                      </label>
+                    </div>
                   </div>
                   <div className="col-md-8">
-                  <div
-                    className="filter-checkbox"
-                    style={{ marginLeft: "15px" }}
-                  >
-                    <input
-                      type="checkbox"
-                      id="fil-add1"
-                      name="filter-type"
-                      style={{ display: "none" }}
-                    />
-                    <label htmlFor="fil-add1" style={{ paddingLeft: "25px" }}>
-                      <span className="add-note">Instant Escalation to High level</span>
-                    </label>
-                  </div>
+                    <div
+                      className="filter-checkbox"
+                      style={{ marginLeft: "15px" }}
+                    >
+                      <input
+                        type="checkbox"
+                        id="fil-add1"
+                        name="filter-type"
+                        style={{ display: "none" }}
+                      />
+                      <label htmlFor="fil-add1" style={{ paddingLeft: "25px" }}>
+                        <span className="add-note">
+                          Instant Escalation to High level
+                        </span>
+                      </label>
+                    </div>
                   </div>
                 </div>
                 {this.state.showAddNote ? (
@@ -414,19 +454,18 @@ class TicketSystem extends Component {
                     <div className="row m-b-10">
                       <div className="col-md-12">
                         <textarea
-                          className="addNote-textarea-system"
+                          className="addNote-textarea-system-new"
                           placeholder="Write your note here"
                         ></textarea>
                       </div>
                     </div>
                   </div>
                 ) : null}
-                
               </div>
-              
             </div>
-            
-            <div className="column ticketSycard">
+
+            <div className="column">
+              <div className="">
               <div className="tab-content tabpaddingsystem">
                 <div
                   className="tab-pane fade show active"
@@ -610,6 +649,7 @@ class TicketSystem extends Component {
                   <TicketSystemTask />
                 </div>
               </div>
+              </div>
             </div>
             <div className="column1">
               <div className="myticketlist-header-system">
@@ -715,7 +755,303 @@ class TicketSystem extends Component {
                 </div>
               </div>
             </div>
+            {/* <div
+            className="row ticketsystemeditor"
+            style={{ position: "relative",width:"100%",margin:"0" }}
+          >
+            <div className="col-md-12">
+              <label className="kblink-auto1">
+                <img src={AutoSave} alt="Auto" className="autosavekb" />
+                Auto Save
+              </label>
+
+              <a href="#!" className="kblink">
+                <img
+                  src={KnowledgeLogo}
+                  alt="KnowledgeLogo"
+                  className="knoim"
+                  onClick={this.HandleKbLinkModalOpen.bind(this)}
+                />
+                <label onClick={this.HandleKbLinkModalOpen.bind(this)}>Kb Link</label>
+              </a>
+
+              <div
+                className="dropdown collapbtn"
+                style={{ display: "inherit", marginTop: "-35px" }}
+              >
+                <button
+                  className="dropdown-toggle my-tic-email"
+                  type="button"
+                  data-toggle="dropdown"
+                >
+                  <FontAwesomeIcon icon={faCalculator} /> Template
+                </button>
+                <ul className="dropdown-menu">
+                  <li>
+                    <a href="#!">Template 1</a>
+                  </li>
+                  <li>
+                    <a href="#!">Template 2</a>
+                  </li>
+                  <li>
+                    <a href="#!">Template 3</a>
+                  </li>
+                  <li>
+                    <a href="#!">Template 4</a>
+                  </li>
+                </ul>
+              </div>
+              <CKEditor
+                config={{
+                  toolbar: [
+                    {
+                      name: "basicstyles",
+                      items: ["Bold", "Italic", "Strike"]
+                    },
+                    {
+                      name: "styles",
+                      items: ["Styles", "Format"]
+                    },
+                    {
+                      name: "paragraph",
+                      items: ["NumberedList", "BulletedList"]
+                    },
+                    {
+                      name: "links",
+                      items: ["Link", "Unlink"]
+                    },
+                    {
+                      name: "insert",
+                      items: ["Image", "Table"]
+                    },
+                    {
+                      name: "tools",
+                      items: ["Maximize"]
+                    },
+                    {
+                      name: "editing",
+                      items: ["Scayt"]
+                    }
+                  ]
+                }}
+              />
+            </div>
+            <div>
+              <Modal
+                open={this.state.KbLink}
+                onClose={this.HandleKbLinkModalClose.bind(this)}
+                modalId="KbLink-popup"
+                overlayId="logout-ovrlykb"
+              >
+                <div className="row" style={{ margin: "0" }}>
+                  <div className="col-md-7" style={{ padding: "0" }}>
+                    <div className="knokb">
+                      <h5>
+                        <img
+                          src={KnowledgeLogo}
+                          alt="KnowledgeLogo"
+                          className="knoim1"
+                        />
+                        KNOWLEGE BASE
+                      </h5>
+                      <p>Message</p>
+                      <div className="textkb">
+                        <p className="table-details-data-modal">
+                          Can I purchase a domain through Google?
+                        </p>
+                        {HidecollapsUpKbLink}
+                        
+                        <Collapse isOpen={this.state.collapseUp}>
+                          <Card>
+                            <CardBody>
+                              <p>
+                                Google can help you purchase a domain through
+                                one of our domain host partners. During sign up,
+                                just select the option to 'buy a new
+                                domain.'We'll then guide you through the process
+                                to help you set up G suite for your new domain.
+                              </p>
+                              <img
+                                src={CopyBlue}
+                                alt=""
+                                className="copyblue-kb"
+                              />
+                              <a href="#!" className="copyblue-kbtext">
+                                Copy
+                              </a>
+                            </CardBody>
+                          </Card>
+                        </Collapse>
+                      </div>
+
+                      <div className="textkb">
+                        <p className="table-details-data-modal">
+                          Can I still use the previous version of Sites ?
+                        </p>
+
+                        <img
+                          src={DownArrowIcon}
+                          alt="down-arrow-icon"
+                          className="down-icon-kb1"
+                        />
+                      </div>
+                      <div className="textkb">
+                        <p className="table-details-data-modal">
+                          Can I still use the previous version of Sites ?
+                        </p>
+                        <img
+                          src={DownArrowIcon}
+                          alt="down-arrow-icon"
+                          className="down-icon-kb1"
+                        />
+                      </div>
+                      <div className="textkb">
+                        <p className="table-details-data-modal">
+                          Can I still use the previous version of Sites ?
+                        </p>
+                        <img
+                          src={DownArrowIcon}
+                          alt="down-arrow-icon"
+                          className="down-icon-kb1"
+                        />
+                      </div>
+                      <div className="textkb">
+                        <p className="table-details-data-modal">
+                          Can I still use the previous version of Sites ?
+                        </p>
+                        <img
+                          src={DownArrowIcon}
+                          alt="down-arrow-icon"
+                          className="down-icon-kb1"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-md-5 kblinkright">
+                    <div className="knokb-a">
+                      <img
+                        src={CancelImg}
+                        alt="cancelImg"
+                        className="cancalImg-kb"
+                        onClick={this.HandleKbLinkModalClose.bind(this)}
+                      />
+                      <h5>KB TEMPLATE</h5>
+                      <div className="form-group">
+                        <select className="kblinkrectangle-9 select-category-placeholderkblink">
+                          <option>Type</option>
+                          <option>Type-a</option>
+                          <option>Type-b</option>
+                        </select>
+                      </div>
+
+                      <div className="form-group">
+                        <select className="kblinkrectangle-9 select-category-placeholderkblink">
+                          <option>Category</option>
+                          <option>Category-a</option>
+                          <option>Category-b</option>
+                        </select>
+                      </div>
+                      <div className="form-group">
+                        <select className="kblinkrectangle-9 select-category-placeholderkblink">
+                          <option>Sub-Category</option>
+                          <option>Category-a</option>
+                          <option>Category-b</option>
+                        </select>
+                      </div>
+                      <div>
+                        <button className="kblink-search">SEARCH</button>
+                      </div>
+                      <div style={{ marginTop: "275px" }}>
+                        <a href="#!" className="copyblue-kbtext">
+                          VIEW POLICY
+                        </a>
+                        <img
+                          src={ViewBlue}
+                          alt="viewpolicy"
+                          className="viewpolicy-kb"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Modal>
+            </div>
+            <div className="row colladrowa">
+              <div className="col-md-12 colladrow">
+                <ul style={{ padding: "0 15px" }}>
+                  <li>
+                    <label>To: diwarkar@gmail.com</label>
+                  </li>
+                  <li>
+                    <label className="">
+                      <input
+                        type="text"
+                        className="CCdi"
+                        placeholder="CC: diwarkar@gmail.com"
+                      />
+                      <span className="one">+1</span>
+                    </label>
+                  </li>
+                  <li>
+                    <label className="">
+                      <input
+                        type="text"
+                        className="CCdi"
+                        placeholder="BCC: diwarkar@gmail.com"
+                      />
+                      <span className="one">+1</span>
+                    </label>
+                  </li>
+                  <li>
+                    <div className="filter-checkbox">
+                      <input
+                        type="checkbox"
+                        id="fil-open1"
+                        name="filter-type"
+                        style={{ display: "none" }}
+                      />
+                      <label
+                        htmlFor="fil-open1"
+                        style={{ paddingLeft: "25px" }}
+                      >
+                        <span>Inform Store Note</span>
+                      </label>
+                    </div>
+                  </li>
+                  <li>
+                    <span>
+                      <input
+                        id="file-upload"
+                        className="file-upload1 d-none"
+                        type="file"
+                        onChange={this.fileUpload}
+                      />
+                      <label
+                        htmlFor="file-upload"
+                        onDrop={this.fileDrop}
+                        onDragOver={this.fileDragOver}
+                        onDragEnter={this.fileDragEnter}
+                      >
+                        <img
+                          src={FileUpload}
+                          alt="file-upload"
+                          className="fileup"
+                        />
+                      </label>
+                    </span>
+                    <label style={{ color: "#2561a8" }}>3 files</label>
+                  </li>
+                  <li style={{ float: "right" }}>
+                    <button className="sav">Save As Draft</button>
+                    <button className="send">Send</button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div> */}
           </div>
+
+          
         </div>
       </div>
     );

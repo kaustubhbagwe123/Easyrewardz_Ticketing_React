@@ -7452,7 +7452,7 @@ table tr th:last-child {
 .column1 {
   width: 7%;
   height: auto;
-  background-color: #ecf2f4;
+  background-color: #f5f8f9;
 }
 .paddingsystem {
   padding: 40px;
@@ -7557,9 +7557,9 @@ table tr th:last-child {
   padding: 10px;
 }
 .myticketlist-header-system {
-  background-color: #ecf2f4;
+  background-color: #f5f8f9;
   width: auto;
-  height: 620px;
+  /* height: 620px; */
 }
 .system .nav-tabs .nav-link.active {
   border: none;
@@ -8545,6 +8545,13 @@ table tr th:last-child {
   border: 1px solid #9b9b9b;
   padding: 7px 5px;
   width: 210px;
+  font-size: 13px;
+}
+.CCdi1 {
+  border: 1px solid #9b9b9b;
+  padding: 0px 7px;
+  width: 213px;
+  height: 30px;
 }
 .colladrow .fileup {
   width: 14px;
@@ -8568,6 +8575,31 @@ table tr th:last-child {
   font-size: 14px;
   height: 40px;
   width: 115px;
+  border-radius: 5px;
+  margin-right: 10px;
+  border: 1px solid #2561a8;
+  cursor: pointer;
+}
+.colladrow .send1{
+  background: #2561a8;
+  color: #fff;
+  font-size: 13px;
+  height: 30px;
+  padding: 0;
+  line-height: 0;
+  width: 75px;
+  border-radius: 5px;
+  border: 1px solid #2561a8;
+  cursor: pointer;
+}
+.colladrow .sav1{
+  background: #fff;
+  color: #2561a8;
+  font-size: 13px;
+  padding: 0;
+  line-height: 0;
+  height: 30px;
+  width: 75px;
   border-radius: 5px;
   margin-right: 10px;
   border: 1px solid #2561a8;
@@ -9036,5 +9068,89 @@ table tr th:last-child {
 }
 .diwamargin {
   margin-bottom: 15px;
+}
+.ticketsystemeditor .cke_bottom {
+  display: none !important;
+}
+.ticketsystemeditor .kblink {
+  position: absolute;
+  top: 7px;
+  right: 113px;
+  z-index: 1;
+  padding: 5px 8px 5px 5px;
+  border: 1px solid #d1d1d1;
+  border-top: 0;
+  color: #333;
+  border-right: 0;
+  border-bottom: 0;
+}
+.ticketsystemeditor .kblink-auto1 {
+  position: absolute;
+  top: 7px;
+  right: 16px;
+  z-index: 1;
+  padding: 5px 8px 5px 5px;
+  border: 1px solid #d1d1d1;
+  border-top: 0;
+  color: #333;
+  border-right: 0;
+  border-bottom: 0;
+}
+.dashallbrand {
+  border: 0;
+  border-radius: 5px;
+  padding: 5px 0;
+  cursor: pointer;
+  font-weight: 500;
+  margin: 0 7px;
+  width: 100px;
+  font-size: 14px;
+  background: #dbe4e7 url("../Images//table-arr.png") no-repeat right 12px center;
+  background-size: 14px;
+  text-align: left;
+}
+.dashallbrand::after {
+  display: none;
+}
+.dashallbrand1 .dropdown-menu.show:before {
+  display: none;
+}
+.dashallbrand1 .dropdown {
+  background: transparent !important;
+  display: inherit;
+}
+.ticketSycard {
+  padding-left: 10px;
+  background-color: #f5f8f9;
+}
+.ticketSycard1 {
+  height: 1192px;
+  background-color: #ffffff;
+  border: 1px solid #EBEBEB;
+  border-radius: 8px;
+}
+.marginsystem1 {
+  border-radius: 8px;
+  height: auto;
+}
+.addNote-textarea-system-new {
+  background-color: #ecf2f4;
+  border-radius: 4px;
+  width: 95%;
+  position: absolute;
+  height: 123px;
+  border: none;
+  resize: none;
+  padding: 10px;
+}
+.collapsetask .drop {
+  background: url("./../Images//down-1.png") no-repeat right 20px center;
+  background-size: 13px;
+  color: #a7a7a7;
+  cursor: pointer;
+}
+.drop .drop1 {
+  width: 100%;
+  text-align: left;
 }
 /* ****************End css ************************/

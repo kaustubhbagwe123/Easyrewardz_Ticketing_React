@@ -113,6 +113,8 @@ class TicketSystemStore extends Component {
     ];
     return (
       <Fragment>
+        <div className="ticketSycard">
+      <div className="ticketSycard1">
         <div className="row storemainrow">
           <div className="col-12 col-lg-7 col-xl-8">
             <select className="systemstoredropdown">
@@ -477,6 +479,8 @@ class TicketSystemStore extends Component {
             
           </div>
         )} */}
+        </div>
+        </div>
       </Fragment>
     );
   }
