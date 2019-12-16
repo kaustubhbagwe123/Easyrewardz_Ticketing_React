@@ -165,6 +165,7 @@ export class App extends Component {
         <Route exact path={`${match.url}/qAAuditParameters`} component={QaAuditParameters} />
         <Route exact path={`${match.url}/historicalChat`} component={HistoricalChat} />
         <Route exact path={`${match.url}/userProfile`} component={UserProfile} />
+        
       </Layout>
     );
   }
