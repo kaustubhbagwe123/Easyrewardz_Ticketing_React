@@ -3,7 +3,6 @@ import React, { Component, Fragment } from "react";
 import { ProgressBar } from "react-bootstrap";
 import Modal from "react-responsive-modal";
 import SearchIcon from "./../assets/Images/search-icon.png";
-import TableArr from "./../assets/Images/table-arr.png";
 import Dash from "./../assets/Images/dash.png";
 import InfoIcon from "./../assets/Images/info-icon.png";
 import TaskIconBlue from "./../assets/Images/task-icon-blue.png";
@@ -48,7 +47,7 @@ import DateTimeRangeContainer from "react-advanced-datetimerange-picker";
 import { FormControl } from "react-bootstrap";
 // import DatetimeRangePicker from 'react-bootstrap-datetimerangepicker';
 import moment from "moment";
-import { Grid, Row, Col } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 
 
 >>>>>>> 2c20e405710aef2e231a1415d854c39ee77e3444
@@ -204,7 +203,7 @@ class Dashboard extends Component {
       format: "DD-MM-YYYY",
       sundayFirst: false
     };
-    let maxDate = moment(start).add(24, "hour");
+    // let maxDate = moment(start).add(24, "hour");
     // let start = this.state.startDate.format('YYYY-MM-DD');
     // let end = this.state.endDate.format('YYYY-MM-DD');
     // let label = start + ' - ' + end;

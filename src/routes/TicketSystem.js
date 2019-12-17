@@ -520,6 +520,8 @@ class TicketSystem extends Component {
                   role="tabpanel"
                   aria-labelledby="customer-tab"
                 >
+                  <div className="ticketSycard">
+      <div className="ticketSycard1">
                   <div className="paddingsystem">
                     <div className="row">
                       <div className="col-md-4">
@@ -582,6 +584,8 @@ class TicketSystem extends Component {
                         </label>
                       </button>
                     </div>
+                  </div>
+                  </div>
                   </div>
                 </div>
                 <Modal
