@@ -33,16 +33,6 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ReactTable from "react-table";
 import { Popover } from "antd";
-<<<<<<< HEAD
-// import DatetimeRangePicker from 'react-bootstrap-datetimerangepicker';
-import moment from 'moment';
-
-
-// import {
-//   Button,
-// } from 'react-bootstrap';
-
-=======
 import DateTimeRangeContainer from "react-advanced-datetimerange-picker";
 import { FormControl } from "react-bootstrap";
 // import DatetimeRangePicker from 'react-bootstrap-datetimerangepicker';
@@ -50,7 +40,6 @@ import moment from "moment";
 import { Row, Col } from "react-bootstrap";
 
 
->>>>>>> 2c20e405710aef2e231a1415d854c39ee77e3444
 class Dashboard extends Component {
   constructor(props) {
     super(props);
