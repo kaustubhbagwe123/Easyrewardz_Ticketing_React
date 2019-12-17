@@ -9,6 +9,7 @@ import BlackLeftArrow from "./../assets/Images/black-left-arrow.png";
 import SearchBlackImg from "./../assets/Images/searchBlack.png";
 import Headphone2Img from "./../assets/Images/headphone2.png";
 import Demo from "../store/Hashtag.js";
+import Sorting from "./../assets/Images/sorting.png";
 import DelSearch from "./../assets/Images/del-search.png";
 // import Modal from "react-bootstrap/Modal";
 import Modal from "react-responsive-modal";
@@ -45,11 +46,20 @@ class MyTicketList extends Component {
       ByAllCreateDate: "",
       ByAllLastDate: "",
       open: false,
-      Schedule: false
+      Schedule: false,
+      StatusModel: false
     };
     this.toggleSearch = this.toggleSearch.bind(this);
+    this.StatusOpenModel = this.StatusOpenModel.bind(this);
+    this.StatusCloseModel = this.StatusCloseModel.bind(this);
   }
 
+  StatusOpenModel() {
+    this.setState({ StatusModel: true });
+  }
+  StatusCloseModel() {
+    this.setState({ StatusModel: false });
+  }
   toggleSearch() {
     this.setState(state => ({ collapseSearch: !state.collapseSearch }));
   }
@@ -763,6 +773,79 @@ class MyTicketList extends Component {
 
     return (
       <Fragment>
+         <div className="position-relative d-inline-block">
+          <Modal
+            onClose={this.StatusCloseModel}
+            open={this.state.StatusModel}
+            modalId="Status-popup"
+            overlayId="logout-ovrly"
+          >
+            <div className="status-drop-down">
+              <div className="sort-sctn">
+                <div className="d-flex">
+                  <a href={Demo.BLANK_LINK} className="sorting-icon">
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY A TO Z</p>
+                </div>
+                <div className="d-flex">
+                  <a href={Demo.BLANK_LINK} className="sorting-icon">
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY Z TO A</p>
+                </div>
+              </div>
+              <div className="filter-type">
+                <p>FILTER BY TYPE</p>
+                <div className="filter-checkbox">
+                  <input type="checkbox" id="fil-open" name="filter-type" />
+                  <label htmlFor="fil-open">
+                    <span className="table-btn table-blue-btn">Open</span>
+                  </label>
+                </div>
+                <div className="filter-checkbox">
+                  <input type="checkbox" id="fil-new" name="filter-type" />
+                  <label htmlFor="fil-new">
+                    <span className="table-btn table-yellow-btn">New</span>
+                  </label>
+                </div>
+                <div className="filter-checkbox">
+                  <input type="checkbox" id="fil-solved" name="filter-type" />
+                  <label htmlFor="fil-solved">
+                    <span className="table-btn table-green-btn">Solved</span>
+                  </label>
+                </div>
+              </div>
+              <div className="filter-type filter-color">
+                <p>FILTER BY COLOR</p>
+                <div className="filter-checkbox">
+                  <input type="checkbox" id="fil-red" name="filter-color" />
+                  <label htmlFor="fil-red">
+                    <span className="fil-color-red fil-color-bg"></span>
+                  </label>
+                </div>
+                <div className="filter-checkbox">
+                  <input type="checkbox" id="fil-orange" name="filter-color" />
+                  <label htmlFor="fil-orange">
+                    <span className="fil-color-orange fil-color-bg"></span>
+                  </label>
+                </div>
+                <div className="filter-checkbox">
+                  <input type="checkbox" id="fil-white" name="filter-color" />
+                  <label htmlFor="fil-white">
+                    <span className="fil-color-white fil-color-bg"></span>
+                  </label>
+                </div>
+                <div className="filter-checkbox">
+                  <input type="checkbox" id="fil-green" name="filter-color" />
+                  <label htmlFor="fil-green">
+                    <span className="fil-color-green fil-color-bg"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </Modal>
+        </div>
         <div className="myticketlist-header">
           <div className="setting-tabs esc esc1">
             <ul

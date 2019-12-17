@@ -34,6 +34,7 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ReactTable from "react-table";
 import { Popover } from "antd";
+<<<<<<< HEAD
 // import DatetimeRangePicker from 'react-bootstrap-datetimerangepicker';
 import moment from 'moment';
 
@@ -42,10 +43,28 @@ import moment from 'moment';
 //   Button,
 // } from 'react-bootstrap';
 
+=======
+import DateTimeRangeContainer from "react-advanced-datetimerange-picker";
+import { FormControl } from "react-bootstrap";
+// import DatetimeRangePicker from 'react-bootstrap-datetimerangepicker';
+import moment from "moment";
+import { Grid, Row, Col } from "react-bootstrap";
+
+
+>>>>>>> 2c20e405710aef2e231a1415d854c39ee77e3444
 class Dashboard extends Component {
   constructor(props) {
     super(props);
+    let now = new Date();
+    let start = moment(
+      new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0)
+    );
+    let end = moment(start)
+      .add(1, "days")
+      .subtract(1, "seconds");
     this.state = {
+      start: start,
+      end: end,
       collapse: true,
       collapseSearch: false,
       modalIsOpen: false,
@@ -60,33 +79,30 @@ class Dashboard extends Component {
       ByAllLastDate: "",
       TotalNoOfChatShow: true,
       date: [new Date(), new Date()],
-      startDate: moment().subtract(29, 'days'),
-      endDate: moment(),
-      ranges: {
-        'Today': [moment(), moment()],
-        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-        'This Month': [moment().startOf('month'), moment().endOf('month')],
-        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-      },
-      range: "",
+      range: ""
     };
-    this.handleApply = this.handleApply.bind(this);
+    this.applyCallback = this.applyCallback.bind(this);
+    // this.handleApply = this.handleApply.bind(this);
     this.toggle = this.toggle.bind(this);
     this.toggleSearch = this.toggleSearch.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
     // this.toggleHoverState = this.toggleHoverState.bind(this);
   }
-  handleApply(event, picker) {
+  // handleApply(event, picker) {
+  //   this.setState({
+  //     startDate: picker.startDate,
+  //     endDate: picker.endDate,
+  //   });
+  // }
+  applyCallback(startDate, endDate) {
     this.setState({
-      startDate: picker.startDate,
-      endDate: picker.endDate,
+      start: startDate,
+      end: endDate
     });
   }
   handleDateRange(date) {
-    this.setState({range:date});
+    this.setState({ range: date });
   }
   handleByDateCreate(date) {
     this.setState({ ByDateCreatDate: date });
@@ -169,12 +185,32 @@ class Dashboard extends Component {
     this.setState({ TotalNoOfChatShow: !this.state.TotalNoOfChatShow });
   }
   render() {
-    let start = this.state.startDate.format('YYYY-MM-DD');
-    let end = this.state.endDate.format('YYYY-MM-DD');
-    let label = start + ' - ' + end;
-    if (start === end) {
-      label = start;
-    }
+    let now = new Date();
+    let start = moment(
+      new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0)
+    );
+    let end = moment(start)
+      .add(1, "days")
+      .subtract(1, "seconds");
+    let ranges = {
+      "Today Only": [moment(start), moment(end)],
+      "Yesterday Only": [
+        moment(start).subtract(1, "days"),
+        moment(end).subtract(1, "days")
+      ],
+      "3 Days": [moment(start).subtract(3, "days"), moment(end)]
+    };
+    let local = {
+      format: "DD-MM-YYYY",
+      sundayFirst: false
+    };
+    let maxDate = moment(start).add(24, "hour");
+    // let start = this.state.startDate.format('YYYY-MM-DD');
+    // let end = this.state.endDate.format('YYYY-MM-DD');
+    // let label = start + ' - ' + end;
+    // if (start === end) {
+    //   label = start;
+    // }
     const DefArti = (
       <div className="dash-creation-popup-cntr">
         <ul className="dash-category-popup dashnewpopup">
@@ -682,6 +718,10 @@ class Dashboard extends Component {
       }
     ];
 
+    let value = `${this.state.start.format(
+      "DD-MM-YYYY HH:mm"
+    )} - ${this.state.end.format("DD-MM-YYYY HH:mm")}`;
+    let disabled = false;
     return (
       <Fragment>
         <div className="position-relative d-inline-block">
@@ -767,7 +807,6 @@ class Dashboard extends Component {
                     className="dropdown-toggle dashallbrand"
                     type="button"
                     data-toggle="dropdown"
-                    
                   >
                     <span className="EMFCText">All</span>
                   </button>
@@ -775,8 +814,8 @@ class Dashboard extends Component {
                     <li>
                       <div className="filter-type pink1">
                         <div className="filter-checkbox pink2 pinkmargin">
-                          <input type="checkbox" id="fil-ab1" />
-                          <label htmlFor="fil-a1"></label>
+                          <input type="checkbox" id="fil-ch1" />
+                          <label htmlFor="fil-ch1"></label>
                           <span>abc</span>
                         </div>
                       </div>
@@ -784,8 +823,8 @@ class Dashboard extends Component {
                     <li>
                       <div className="filter-type pink1">
                         <div className="filter-checkbox pink2 pinkmargin">
-                          <input type="checkbox" id="fil-ab2" />
-                          <label htmlFor="fil-a2"></label>
+                          <input type="checkbox" id="fil-ch2" />
+                          <label htmlFor="fil-ch2"></label>
                           <span>abc</span>
                         </div>
                       </div>
@@ -793,8 +832,8 @@ class Dashboard extends Component {
                     <li>
                       <div className="filter-type pink1">
                         <div className="filter-checkbox pink2 pinkmargin">
-                          <input type="checkbox" id="fil-ab1" />
-                          <label htmlFor="fil-a1"></label>
+                          <input type="checkbox" id="fil-ch3" />
+                          <label htmlFor="fil-ch3"></label>
                           <span>abc</span>
                         </div>
                       </div>
@@ -809,17 +848,103 @@ class Dashboard extends Component {
               </select> */}
             </div>
             <div>
-              <span>Agent : </span>
-              <select>
+              <span>
+                Agent :
+                <div className="dropdown">
+                  <button
+                    className="dropdown-toggle dashallbrand"
+                    type="button"
+                    data-toggle="dropdown"
+                  >
+                    <span className="EMFCText">All</span>
+                  </button>
+                  <ul className="dropdown-menu">
+                    <li>
+                      <div className="filter-type pink1">
+                        <div className="filter-checkbox pink2 pinkmargin">
+                          <input type="checkbox" id="fil-ch4" />
+                          <label htmlFor="fil-ch4"></label>
+                          <span>abc</span>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div className="filter-type pink1">
+                        <div className="filter-checkbox pink2 pinkmargin">
+                          <input type="checkbox" id="fil-ch5" />
+                          <label htmlFor="fil-ch5"></label>
+                          <span>abc</span>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div className="filter-type pink1">
+                        <div className="filter-checkbox pink2 pinkmargin">
+                          <input type="checkbox" id="fil-ch6" />
+                          <label htmlFor="fil-ch6"></label>
+                          <span>abc</span>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </span>
+              {/* <select>
                 <option>All</option>
                 <option>1</option>
                 <option>2</option>
-              </select>
+              </select> */}
             </div>
           </div>
           <div>
-            <div>
+            <div className="d-flex">
               <span>Date Range : </span>
+              <div className="DashTimeRange">
+              <Row className="show-grid" style={{ textAlign: "center" }}>
+                {/* <Col xs={3} /> */}
+                <Col xs={6} md={12} id="DateTimeRangeContainerNoMobileMode">
+                  <DateTimeRangeContainer
+                    ranges={ranges}
+                    start={this.state.start}
+                    end={this.state.end}
+                    local={local}
+                    applyCallback={this.applyCallback}
+                    smartMode
+                    leftMode
+                    // forceMobileMode
+                    noMobileMode
+                  >
+                    <FormControl
+                      id="formControlsTextB"
+                      type="text"
+                      label="Text"
+                      placeholder="Enter text"
+                      style={{ cursor: "pointer" }}
+                      disabled={disabled}
+                      value={value}
+                    />
+                  </DateTimeRangeContainer>
+                </Col>
+                {/* <Col xs={3} md={4} /> */}
+              </Row>
+              </div>
+              {/* <div>
+                    <DateTimeRangeContainer 
+                        ranges={ranges}
+                        start={this.state.start}
+                        end={this.state.end}
+                        local={local}
+                        maxDate={maxDate}
+                        applyCallback={this.applyCallback}
+                    >    
+                        <FormControl
+                        id="formControlsTextB"
+                        type="text"
+                        label="Text"
+                        placeholder="Enter text"
+                        /> 
+                    </DateTimeRangeContainer>
+                </div> */}
               {/* <DatetimeRangePicker
             startDate={this.state.startDate}
             endDate={this.state.endDate}
@@ -836,14 +961,14 @@ class Dashboard extends Component {
                 </span>
             </div>
           </DatetimeRangePicker> */}
-              <label>
+              {/* <label>
                 Last 7 days
                 <img
                   src={TableArr}
                   alt="table-arr"
                   className="datePicketArrow"
                 />
-              </label>
+              </label> */}
             </div>
           </div>
         </div>

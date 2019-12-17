@@ -106,7 +106,7 @@ class TicketSystem extends Component {
       />
     );
     return (
-      <div>
+      <div style={{backgroundColor:"#f5f8f9",paddingBottom:"2px"}}>
         <div className="rectanglesystem">
           <table className="table">
             <tbody>
@@ -300,6 +300,53 @@ class TicketSystem extends Component {
                 <div className="row my-3 mx-1">
                   <img src={ThumbTick} alt="thumb" className="thumbtick" />
                   <img src={ThumbTick} alt="thumb" className="thumbtick" />
+                </div>
+                <div className="row" style={{position:"absolute"}}>
+                <div
+                  className="dropdown collapbtn1"
+                  style={{ display: "inherit"}}
+                >
+                  <button
+                    className="dropdown-toggle my-tic-email"
+                    type="button"
+                    data-toggle="dropdown"
+                  >
+                    <FontAwesomeIcon icon={faCalculator} /> Template
+                  </button>
+                  <ul className="dropdown-menu">
+                    <li>
+                      <a href="#!">Template 1</a>
+                    </li>
+                    <li>
+                      <a href="#!">Template 2</a>
+                    </li>
+                    <li>
+                      <a href="#!">Template 3</a>
+                    </li>
+                    <li>
+                      <a href="#!">Template 4</a>
+                    </li>
+                  </ul>
+                </div>
+                
+                <a href="#!" className="kblink1">
+                  {/* <FontAwesomeIcon icon={faBrain} /> Kb Link */}
+                  <img
+                    src={KnowledgeLogo}
+                    alt="KnowledgeLogo"
+                    className="knoim"
+                    onClick={this.HandleKbLinkModalOpen.bind(this)}
+                  />
+                  <label onClick={this.HandleKbLinkModalOpen.bind(this)}>
+                    Kb Link</label>
+                </a>
+                
+                <div>
+                  <label className="kblink-auto2">
+                    <img src={AutoSave} alt="Auto" className="autosavekb" />
+                    Auto Save
+                  </label>
+                </div>
                 </div>
                 <div>
                   <CKEditor style={{height:"400px"}}
@@ -755,87 +802,8 @@ class TicketSystem extends Component {
                 </div>
               </div>
             </div>
-            {/* <div
-            className="row ticketsystemeditor"
-            style={{ position: "relative",width:"100%",margin:"0" }}
-          >
-            <div className="col-md-12">
-              <label className="kblink-auto1">
-                <img src={AutoSave} alt="Auto" className="autosavekb" />
-                Auto Save
-              </label>
-
-              <a href="#!" className="kblink">
-                <img
-                  src={KnowledgeLogo}
-                  alt="KnowledgeLogo"
-                  className="knoim"
-                  onClick={this.HandleKbLinkModalOpen.bind(this)}
-                />
-                <label onClick={this.HandleKbLinkModalOpen.bind(this)}>Kb Link</label>
-              </a>
-
-              <div
-                className="dropdown collapbtn"
-                style={{ display: "inherit", marginTop: "-35px" }}
-              >
-                <button
-                  className="dropdown-toggle my-tic-email"
-                  type="button"
-                  data-toggle="dropdown"
-                >
-                  <FontAwesomeIcon icon={faCalculator} /> Template
-                </button>
-                <ul className="dropdown-menu">
-                  <li>
-                    <a href="#!">Template 1</a>
-                  </li>
-                  <li>
-                    <a href="#!">Template 2</a>
-                  </li>
-                  <li>
-                    <a href="#!">Template 3</a>
-                  </li>
-                  <li>
-                    <a href="#!">Template 4</a>
-                  </li>
-                </ul>
-              </div>
-              <CKEditor
-                config={{
-                  toolbar: [
-                    {
-                      name: "basicstyles",
-                      items: ["Bold", "Italic", "Strike"]
-                    },
-                    {
-                      name: "styles",
-                      items: ["Styles", "Format"]
-                    },
-                    {
-                      name: "paragraph",
-                      items: ["NumberedList", "BulletedList"]
-                    },
-                    {
-                      name: "links",
-                      items: ["Link", "Unlink"]
-                    },
-                    {
-                      name: "insert",
-                      items: ["Image", "Table"]
-                    },
-                    {
-                      name: "tools",
-                      items: ["Maximize"]
-                    },
-                    {
-                      name: "editing",
-                      items: ["Scayt"]
-                    }
-                  ]
-                }}
-              />
-            </div>
+            
+           
             <div>
               <Modal
                 open={this.state.KbLink}
@@ -976,7 +944,7 @@ class TicketSystem extends Component {
                 </div>
               </Modal>
             </div>
-            <div className="row colladrowa">
+            {/* <div className="row colladrowa">
               <div className="col-md-12 colladrow">
                 <ul style={{ padding: "0 15px" }}>
                   <li>
@@ -1047,8 +1015,8 @@ class TicketSystem extends Component {
                   </li>
                 </ul>
               </div>
-            </div>
-          </div> */}
+            </div> */}
+          
           </div>
 
           

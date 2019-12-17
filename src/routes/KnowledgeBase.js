@@ -514,12 +514,12 @@ class KnowledgeBase extends Component {
               <br />
 
               <div className="row">
-                <div>
+                <div className="col-md-6">
                   <select className="add-select-category">
                     <option>Select Category</option>
                   </select>
                 </div>
-                <div>
+                <div className="col-md-6">
                   <select className="add-select-category">
                     <option>Select Subcategory</option>
                   </select>
@@ -527,14 +527,17 @@ class KnowledgeBase extends Component {
               </div>
 
               <div className="row">
+                <div className="col-md-12">
                 <input
                   type="text"
                   className="addkb-subject"
                   placeholder=" Write subject here"
                 />
+                </div>
               </div>
               <br />
-              <div className="row KBase">
+              <div className="row">
+                <div className="col-md-12 KBas">
                 <CKEditor
                   config={{
                     toolbar: [
@@ -569,9 +572,10 @@ class KnowledgeBase extends Component {
                   ],
                   }}
                 />
+                </div>
               </div>
               <br />
-              <div className="row" style={{ marginLeft: "59%" }}>
+              <div className="row" style={{ float:"right"}}>
                 <label
                   className="cancel-button-modal"
                   onClick={this.closeAddNewKBModal.bind(this)}

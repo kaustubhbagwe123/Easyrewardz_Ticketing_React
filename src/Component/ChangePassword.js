@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import logo from "../assets/Images/logo.jpg";
+<<<<<<< HEAD
 // import {Link} from 'react-router-dom'
+=======
+// import {Link} from 'react-router-dom';
+>>>>>>> 2c20e405710aef2e231a1415d854c39ee77e3444
 
 export class ChangePassword extends Component {
     render() {
@@ -35,7 +39,7 @@ export class ChangePassword extends Component {
                 </label>
               </div>
               <div className="input-group mb-3">
-                <input type="email" placeholder="Enter New Password" className="program-code-textbox" />
+                <input type="password" placeholder="Enter New Password" className="program-code-textbox" />
               </div>
               <div className="input-group sb-2">
                 <label
@@ -50,7 +54,7 @@ export class ChangePassword extends Component {
                 </label>
               </div>
               <div className="input-group mb-3">
-                <input type="email" placeholder="Enter Confirm Password" className="program-code-textbox" />
+                <input type="password" placeholder="Enter Confirm Password" className="program-code-textbox" />
               </div>
               <div className="input-group mb-3">
                 <button
