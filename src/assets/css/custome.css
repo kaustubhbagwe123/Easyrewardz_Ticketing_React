@@ -3973,6 +3973,14 @@ font-weight: normal;
   border-bottom: 0;
   border-right: 0;
 }
+.collapbtn1 {
+  margin: 40px 0 0 65px;
+  z-index: 1;
+  border: 1px solid #d1d1d1;
+  border-top: 0;
+  border-bottom: 0;
+  border-right: 0;
+}
 .collapbtn button {
   background: none;
   width: auto;
@@ -3988,6 +3996,16 @@ font-weight: normal;
   color: #333;
   border-right: 0;
   border-bottom: 0;
+}
+.kblink1 {
+  z-index: 1;
+  padding: 5px 8px 5px 5px;
+  border: 1px solid #d1d1d1;
+  border-top: 0;
+  color: #333;
+  border-right: 0;
+  border-bottom: 0;
+  margin: 40px 0 0 0;
 }
 .floatingtabs {
   position: absolute;
@@ -5150,7 +5168,7 @@ font-weight: normal;
 }
 
 .kb-Model-mp {
-  margin: 40px 0px 0px 40px;
+  margin: 40px 40px 0px 40px;
 }
 
 .back-button-left {
@@ -5186,7 +5204,7 @@ font-weight: normal;
   margin-top: 4.5%;
   margin-left: 27%;
   display: inline-block;
-  height: 496px;
+  height: auto;
   width: 609px;
 }
 #addkb-modal-ovrly {
@@ -5201,11 +5219,11 @@ font-weight: normal;
   background: #ecf2f4 url("../Images//table-arr.png") no-repeat right 7% center;
   background-size: 20px;
   border-radius: 4px;
-  width: 258px;
+  width: 100%;
   height: 43px;
   border: none;
   padding-left: 10px;
-  margin-left: 18px;
+  
   cursor: pointer;
 }
 
@@ -5224,10 +5242,10 @@ font-weight: normal;
 .addkb-subject {
   background-color: #ecf2f4;
   border-radius: 4px;
-  width: 530px;
+  width: 100%;
   height: 43px;
   border: none;
-  margin-left: 17px;
+  /* margin-left: 17px; */
   margin-top: 15px;
   padding: 10px;
 }
@@ -5258,6 +5276,8 @@ font-weight: normal;
   width: 128px;
   height: 43px;
   cursor: pointer;
+  margin-bottom: 10px;
+  margin-right: 15px;
 }
 .add-kb-button-text-modal {
   color: #ffffff;
@@ -6148,10 +6168,10 @@ table thead tr {
 #cke_editor1 {
   border-radius: 3px;
 }
-#cke_editor1 {
+/* #cke_editor1 {
   margin-left: 0 !important;
   width: 100% !important;
-}
+} */
 #cke_24 {
   display: none;
 }
@@ -6356,14 +6376,15 @@ table thead tr {
   margin-right: 20px;
 }
 /* css End */
-.KBase .cke_browser_webkit {
-  margin-left: 17px !important;
+/* .KBase .cke_browser_webkit {
+  margin-left: 0px !important;
   width: 530px !important;
-}
-.KBase .cke_contents {
+} */
+.KBas .cke_contents {
   height: 160px !important;
+  width: auto !important;
 }
-.KBase .cke_bottom {
+.KBas .cke_bottom {
   display: none !important;
 }
 .KBase .cke_combo_text {
@@ -8625,6 +8646,16 @@ table tr th:last-child {
   border-right: 0;
   border-bottom: 0;
 }
+.kblink-auto2 {
+  margin: 40px 0 0 0;
+  z-index: 1;
+  padding: 5px 8px 5px 5px;
+  border: 1px solid #d1d1d1;
+  border-top: 0;
+  color: #333;
+  border-right: 0;
+  border-bottom: 0;
+}
 .myTicketCommentCollapse .cke_bottom {
   display: none;
 }
@@ -9103,7 +9134,9 @@ table tr th:last-child {
   cursor: pointer;
   font-weight: 500;
   margin: 0 7px;
-  width: 100px;
+  min-width: 65px;
+  height: 30px;
+  line-height: 1px;
   font-size: 14px;
   background: #dbe4e7 url("../Images//table-arr.png") no-repeat right 12px center;
   background-size: 14px;
@@ -9152,5 +9185,70 @@ table tr th:last-child {
 .drop .drop1 {
   width: 100%;
   text-align: left;
+}
+.DashTimeRange .form-control {
+  padding: 3px;
+}
+.DashTimeRange .timeContainer {
+  display: none;
+}
+.DashTimeRange .dateTimeLabel {
+  display: none;
+}
+.DashTimeRange .activeNotifier {
+  display: none;
+}
+.DashTimeRange .fromDateHourContainer {
+  position: absolute;
+  bottom: 0;
+}
+.DashTimeRange .fromDateTimeContainer {
+  height: 295px;
+}
+.DashTimeRange .buttonContainer {
+  position: absolute;
+  display: flex;
+  bottom: 0;
+  right: 0;
+  margin-right: 13px;
+  margin-left: 13px;
+  margin-bottom: 5px;
+  margin-top: 10px;
+}
+.DashTimeRange .input-group-addon {
+  display: none;
+}
+.DashTimeRange .applyButton {
+  background-color: #2561a8 !important;
+  color: #fff;
+  font-size: 12px;
+  border-radius: 3px;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-right: 4px;
+  border: 1px solid #2561a8;
+}
+.DashTimeRange .cancelButton {
+    background-color: #fff;
+    color: #333;
+    font-size: 12px;
+    border-radius: 3px;
+    padding: 5px 10px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+}
+.DashTimeRange .rangecontainer {
+  border-right: 1px solid #eeeeee;
+}
+.DashTimeRange .glyphicon {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-family: 'Glyphicons Halflings';
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 /* ****************End css ************************/
