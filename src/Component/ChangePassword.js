@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import logo from "../assets/Images/logo.jpg";
-import {Link} from 'react-router-dom'
+// import {Link} from 'react-router-dom'
 
 export class ChangePassword extends Component {
     render() {
