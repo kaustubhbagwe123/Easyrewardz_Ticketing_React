@@ -8570,9 +8570,9 @@ table tr th:last-child {
 }
 .CCdi1 {
   border: 1px solid #9b9b9b;
-  padding: 0px 7px;
-  width: 213px;
-  height: 30px;
+    padding: 0px 0px;
+    width: 196px;
+    height: 30px;
 }
 .colladrow .fileup {
   width: 14px;
