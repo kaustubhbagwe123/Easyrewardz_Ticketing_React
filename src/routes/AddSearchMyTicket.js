@@ -7,6 +7,7 @@ import NotFoundImg from "./../assets/Images/notFound.png";
 import Modal from "react-responsive-modal";
 import { Radio } from "antd";
 import DatePicker from "react-datepicker";
+import { Link } from "react-router-dom";
 
 class AddSearchMyTicket extends Component {
   constructor(props) {
@@ -49,7 +50,7 @@ class AddSearchMyTicket extends Component {
             className="arrowImg-addSearch"
           />
           <label className="label-addsearch">Source</label>
-          <img src={HeadphoneImg} alt="HeadphoneImg" className="headphone" />
+          <img src={HeadphoneImg} alt="HeadphoneImg" className="headphonered" />
           <label className="mobile-noAddsearch">+91-9873470074</label>
           <img src={PasteImg} alt="PasteImage" className="paste-addSearch" />
         </div>
@@ -179,6 +180,13 @@ class AddSearchMyTicket extends Component {
                   </div>
                 </div>
                 <div className="btn-float">
+                  <button className="cancel-btn-A"
+                  onClick={this.handleAddCustomerClose}>CANCEL</button>
+                  <Link to="ticketsystem">
+                    <button className="butn">SAVE</button>
+                  </Link>
+                </div>
+                {/* <div className="btn-float">
                   <a
                     href="#!"
                     className="cancel-btn-A"
@@ -189,7 +197,7 @@ class AddSearchMyTicket extends Component {
                   <a href="ticketsystem">
                     <button className="butn">SAVE</button>
                   </a>
-                </div>
+                </div> */}
               </div>
             </Modal>
           </div>

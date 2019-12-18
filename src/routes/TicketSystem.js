@@ -160,6 +160,16 @@ class TicketSystem extends Component {
             <div className="column marginsystem1">
               <div className="paddingsystem">
                 <div className="row m-b-10">
+                    <div className="col-md-12">
+                    <label className="category">Ticket Title</label>
+                    <select className="category-select-system dropdown-label">
+                      <option className="select-category-placeholder dropdown-label">
+                        Suggestion
+                      </option>
+                    </select>
+                    </div>
+                </div>
+                {/* <div className="row m-b-10">
                   <div className="col-md-12">
                     <label className="category">Ticket Title</label>
                   </div>
@@ -172,8 +182,8 @@ class TicketSystem extends Component {
                       </option>
                     </select>
                   </div>
-                </div>
-                <div className="row m-b-10">
+                </div> */}
+                {/* <div className="row m-b-10">
                   <div className="col-md-12">
                     <label className="category">Ticket Details</label>
                   </div>
@@ -186,8 +196,36 @@ class TicketSystem extends Component {
                       placeholder="Write your title here"
                     ></textarea>
                   </div>
-                </div>
+                </div> */}
                 <div className="row m-b-10">
+                    <div className="col-md-12">
+                    <label className="category">Ticket Details</label>
+                    <textarea
+                      className="ticket-details-textarea-system"
+                      placeholder="Write your title here"
+                    ></textarea>
+                    </div>
+                </div>
+
+                <div className="row m-b-10">
+                    <div className="col-md-6">
+                    <label className="category">Brand</label>
+                    <select className="category-select-system dropdown-label">
+                      <option className="select-category-placeholder dropdown-label">
+                        Select Brand
+                      </option>
+                    </select>
+                    </div>
+                    <div className="col-md-6">
+                    <label className="sub-category">Category</label>
+                    <select className="category-select-system dropdown-label">
+                      <option className="select-category-placeholder dropdown-label">
+                        Select Brand
+                      </option>
+                    </select>
+                    </div>
+                </div>
+                {/* <div className="row m-b-10">
                   <div className="col-md-6">
                     <label className="category">Brand</label>
                   </div>
@@ -210,11 +248,29 @@ class TicketSystem extends Component {
                       </option>
                     </select>
                   </div>
-                </div>
-
+                </div> */}
                 <div className="row m-b-10">
+                    <div className="col-md-6">
+                    <label className="category">Sub Category</label>
+                    <select className="category-select-system dropdown-label">
+                      <option className="select-category-placeholder dropdown-label">
+                        Select Sub Category
+                      </option>
+                    </select>
+                    </div>
+                    <div className="col-md-6">
+                    <label className="sub-category">Issue Type</label> 
+                    <select className="category-select-system dropdown-label">
+                      <option className="select-sub-category-placeholder">
+                        Select Type
+                      </option>
+                    </select>
+                    </div>
+                </div>
+                {/* <div className="row m-b-10">
                   <div className="col-md-6">
                     <label className="category">Sub Category</label>
+
                   </div>
                   <div className="col-md-6">
                     <label className="sub-category">Issue Type</label>
@@ -236,9 +292,47 @@ class TicketSystem extends Component {
                       </option>
                     </select>
                   </div>
-                </div>
+                </div> */}
 
                 <div className="row m-b-10">
+                    <div className="col-md-6">
+                    <label className="category">Ticket Priority</label>
+                    <div className="row">
+                      <div className="col-md-4 High">
+                        <button className="">
+                          <label className="high-button-text">High</label>
+                        </button>
+                      </div>
+                      <div className="col-md-4 Medium">
+                        <button className="">
+                          <label className="medium-button-text">Medium</label>
+                        </button>
+                      </div>
+                      <div className="col-md-4 Low">
+                        <button className="low-button">
+                          <label className="low-button-text">Low</label>
+                        </button>
+                      </div>
+                    </div>
+                    </div>
+                    <div className="col-md-6">
+                    <label className="sub-category">Ticket Action Type</label>
+                    <div className="row">
+                      <div className="col-md-6 Qc">
+                        <button className="low-button">
+                          <label className="Qc-button-text">QC</label>
+                        </button>
+                      </div>
+                      <div className="col-md-6 Etc">
+                        <button className="">
+                          <label className="Etb-button-text">ETB</label>
+                        </button>
+                      </div>
+                    </div>
+                    </div>
+                </div>
+
+                {/* <div className="row m-b-10">
                   <div className="col-md-6">
                     <label className="category">Ticket Priority</label>
                   </div>
@@ -281,8 +375,18 @@ class TicketSystem extends Component {
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> */}
                 <div className="row m-b-10">
+                    <div className="col-md-6">
+                    <label className="category">Channel Of Purchase</label>
+                    <select className="category-select-system dropdown-label">
+                      <option className="select-category-placeholder dropdown-label">
+                        Select Type
+                      </option>
+                    </select>
+                    </div>
+                </div>
+                {/* <div className="row m-b-10">
                   <div className="col-md-6">
                     <label className="category">Channel Of Purchase</label>
                   </div>
@@ -296,7 +400,7 @@ class TicketSystem extends Component {
                       </option>
                     </select>
                   </div>
-                </div>
+                </div> */}
                 <div className="row my-3 mx-1">
                   <img src={ThumbTick} alt="thumb" className="thumbtick" />
                   <img src={ThumbTick} alt="thumb" className="thumbtick" />
@@ -577,11 +681,9 @@ class TicketSystem extends Component {
                       </div>
                     </div>
                     <div className="row">
-                      <button className="systemeditbutton">
-                        <label
-                          className="systemeditbutton-text"
-                          onClick={this.handleEditCustomerOpen.bind(this)}
-                        >
+                      <button className="systemeditbutton"
+                      onClick={this.handleEditCustomerOpen.bind(this)}>
+                        <label className="systemeditbutton-text">
                           EDIT
                         </label>
                       </button>
@@ -663,6 +765,13 @@ class TicketSystem extends Component {
                       </div>
                     </div>
                     <div className="btn-float">
+                  <button className="cancel-btn-A"
+                  onClick={this.handleEditCustomerClose.bind(this)}>CANCEL</button>
+                  <a href="#!">
+                    <button className="butn">SAVE</button>
+                  </a>
+                </div>
+                    {/* <div className="btn-float">
                       <a
                         href="#!"
                         className="cancel-btn-A"
@@ -673,7 +782,7 @@ class TicketSystem extends Component {
                       <a href="ticketsystem">
                         <button className="butn">SAVE</button>
                       </a>
-                    </div>
+                    </div> */}
                   </div>
                 </Modal>
 

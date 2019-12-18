@@ -399,6 +399,11 @@ a {
   margin-right: 9px;
   vertical-align: initial;
 }
+.headphonered {
+  width: 23px;
+  height: 23px;
+  margin-right: 9px;
+}
 .loading-rectangle {
   background-color: #ecf2f4;
   border: 1px solid #2561a8;
@@ -3254,7 +3259,7 @@ table tr th:last-child {
 
 /* -------------Deepka Savani-------------- */
 
-.High button {
+/* .High button {
   background-color: #ffffff;
   border: 1px solid #d02139;
   border-radius: 4px;
@@ -3279,9 +3284,9 @@ table tr th:last-child {
   border-radius: 4px;
   min-width: 68px;
   height: 43px;
-  margin-left: 15px;
+  margin-left: -15px;
   cursor: pointer;
-}
+} */
 
 /* ----------------------------------- */
 
@@ -6374,6 +6379,12 @@ table thead tr {
 }
 .cancel-btn-A {
   margin-right: 20px;
+  border:none;
+  background: transparent;
+  cursor: pointer;
+  color: #2561a8;
+  font-family: lato;
+  font-weight: 400;
 }
 /* css End */
 /* .KBase .cke_browser_webkit {
@@ -7528,7 +7539,7 @@ table tr th:last-child {
   border-radius: 4px;
   min-width: 68px;
   height: 43px;
-  margin-left: -10px;
+  margin-left: -15px;
   cursor: pointer;
 }
 .Qc button {
@@ -9175,6 +9186,9 @@ table tr th:last-child {
   border: none;
   resize: none;
   padding: 10px;
+}
+.paddingsystem .cke_bottom {
+  display: none !important;
 }
 .collapsetask .drop {
   background: url("./../Images//down-1.png") no-repeat right 20px center;
