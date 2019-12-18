@@ -348,7 +348,8 @@ class TicketSystem extends Component {
                   </label>
                 </div>
                 </div>
-                <div>
+                <div className="row">
+                <div className="col-md-12">
                   <CKEditor style={{height:"400px"}}
                     config={{
                       toolbar: [
@@ -383,8 +384,8 @@ class TicketSystem extends Component {
                       ]
                     }}
                   />
-                  <div className="row colladrowa" style={{ bottom: "100px" }}>
-                    <div className="col-md-11 colladrow">
+                  <div className="row colladrowa" style={{ bottom: "15px" }}>
+                    <div className="col-md-12 colladrow">
                       <ul className="m-l-30">
                         <li className="diwamargin">
                           <label>To: diwarkar@gmail.com</label>
@@ -457,6 +458,7 @@ class TicketSystem extends Component {
                       </ul>
                     </div>
                   </div>
+                </div>
                 </div>
 
                 <div className="row m-b-10 m-t-10">

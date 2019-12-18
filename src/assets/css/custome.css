@@ -9169,8 +9169,8 @@ table tr th:last-child {
 .addNote-textarea-system-new {
   background-color: #ecf2f4;
   border-radius: 4px;
-  width: 95%;
-  position: absolute;
+  width: 100%;
+  /* position: absolute; */
   height: 123px;
   border: none;
   resize: none;
