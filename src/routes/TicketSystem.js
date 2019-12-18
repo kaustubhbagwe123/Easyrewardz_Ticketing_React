@@ -199,7 +199,7 @@ class TicketSystem extends Component {
                   <div className="col-md-6">
                     <select className="category-select-system dropdown-label">
                       <option className="select-category-placeholder dropdown-label">
-                        Select Category
+                        Select Brand
                       </option>
                     </select>
                   </div>

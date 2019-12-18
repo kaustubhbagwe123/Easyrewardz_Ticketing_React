@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import 'react-app-polyfill/ie9';
 import 'react-app-polyfill/ie11';
-// import '../assets/css/style.css';
 import "./../assets/css/custome.css";
 import Logo from "./../assets/Images/logo.jpg";
 import {Link} from 'react-router-dom'
+// import {config} from './../helpers';
 
 class SingIn extends Component {
     hanleChange = () => {
