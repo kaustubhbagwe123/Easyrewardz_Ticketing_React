@@ -300,7 +300,7 @@ class MyTicketList extends Component {
           <span>
             <label>12 March 2018</label>
 
-            <Popover content={InsertPlaceholder} placement="bottom">
+            <Popover content={InsertPlaceholder} placement="left">
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
             </Popover>
           </span>

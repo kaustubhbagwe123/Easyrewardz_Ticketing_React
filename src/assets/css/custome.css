@@ -1411,15 +1411,15 @@ table {
   text-align: left;
 }
 
-.high-button {
+/* .high-button {
   background-color: #ffffff;
   border: 1px solid #d02139;
   border-radius: 4px;
   width: 58px;
   height: 43px;
-}
+} */
 
-.high-button-text {
+/* .high-button-text {
   color: #ba505d;
   font-family: Lato;
   font-size: 14px;
@@ -1427,18 +1427,18 @@ table {
   line-height: 17px;
   text-align: left;
   text-transform: capitalize;
-}
+} */
 
-.medium-button {
+/* .medium-button {
   background-color: #f5a623;
   border: 1px solid #f5a623;
   border-radius: 4px;
   width: 78px;
   height: 43px;
-}
+} */
 
-.medium-button-text {
-  color: #ffffff;
+/* .medium-button-text {
+  color: #f5a623;
   font-family: Lato;
   font-size: 14px;
   font-weight: 700;
@@ -1446,17 +1446,17 @@ table {
   text-align: left;
   text-transform: capitalize;
   cursor: pointer;
-}
+} */
 
-.low-button {
+/* .low-button {
   background-color: #ffffff;
   border: 1px solid #5aa805;
   border-radius: 4px;
   width: 58px;
   height: 43px;
-}
+} */
 
-.low-button-text {
+/* .low-button-text {
   color: #61ad0f;
   font-family: Lato;
   font-size: 14px;
@@ -1465,7 +1465,7 @@ table {
   text-align: left;
   text-transform: capitalize;
   cursor: pointer;
-}
+} */
 
 .screen-shot-2018-04-17-at-4-39-16-pm {
   width: 18px;
@@ -3287,7 +3287,6 @@ table tr th:last-child {
   margin-left: -15px;
   cursor: pointer;
 } */
-
 /* ----------------------------------- */
 
 /* .mask table {
@@ -3981,7 +3980,7 @@ font-weight: normal;
 .collapbtn1 {
   margin: 40px 0 0 65px;
   z-index: 1;
-  border: 1px solid #d1d1d1;
+  /* border: 1px solid #d1d1d1; */
   border-top: 0;
   border-bottom: 0;
   border-right: 0;
@@ -4005,7 +4004,7 @@ font-weight: normal;
 .kblink1 {
   z-index: 1;
   padding: 5px 8px 5px 5px;
-  border: 1px solid #d1d1d1;
+  /* border: 1px solid #d1d1d1; */
   border-top: 0;
   color: #333;
   border-right: 0;
@@ -4879,6 +4878,7 @@ font-weight: normal;
 
 .aprove-button {
   background-color: #2561a8;
+  border: 1px solid #2561a8;
   border-radius: 4px;
   width: 74px;
   height: 27px;
@@ -5094,6 +5094,7 @@ font-weight: normal;
 
 .aprove-button {
   background-color: #2561a8;
+  border: 1px solid #2561a8;
   border-radius: 4px;
   width: 74px;
   height: 27px;
@@ -7489,6 +7490,7 @@ table tr th:last-child {
 .paddingsystem {
   padding: 40px;
   position: relative;
+  height: 1192px;
 }
 .ticket-details-system {
   color: #9b9b9b;
@@ -7523,6 +7525,31 @@ table tr th:last-child {
   min-width: 60px;
   /* margin-left: 22px; */
   cursor: pointer;
+  color: #d02139;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+}
+.High button:focus {
+  background-color: #d02139;
+  border: 1px solid #d02139;
+  border-radius: 4px;
+  height: 43px;
+  min-width: 60px;
+  cursor: pointer;
+  color: #fff;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+}
+.high-button-text:focus {
+  color: #ffffff;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
 }
 .Low button {
   background-color: #ffffff;
@@ -7532,8 +7559,48 @@ table tr th:last-child {
   height: 43px;
   margin-left: -8px;
   cursor: pointer;
+  color: #5aa805;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+}
+.Low button:focus {
+  background-color: #5aa805;
+  border: 1px solid #5aa805;
+  border-radius: 4px;
+  min-width: 60px;
+  height: 43px;
+  margin-left: -8px;
+  cursor: pointer;
+  color: #fff;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+}
+.low-button-text:focus {
+  color: #fff;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
 }
 .Medium button {
+  background-color: #fff;
+  border: 1px solid #f5a623;
+  border-radius: 4px;
+  min-width: 68px;
+  height: 43px;
+  margin-left: -15px;
+  cursor: pointer;
+  color: #f5a623;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+}
+.Medium button:focus {
   background-color: #f5a623;
   border: 1px solid #f5a623;
   border-radius: 4px;
@@ -7541,16 +7608,44 @@ table tr th:last-child {
   height: 43px;
   margin-left: -15px;
   cursor: pointer;
+  color: #fff;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+}
+.medium-button-text:focus {
+  color: #fff;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
 }
 .Qc button {
+  /* background-color: #ffffff;
+  border: 1px solid #2561a8; */
   background-color: #ffffff;
-  border: 1px solid #2561a8;
+  border: 1px solid #f4f4f4;
   border-radius: 4px;
   min-width: 60px;
   height: 43px;
-
   cursor: pointer;
+  /* color: #2561a8; */
+  color: #000;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
 }
+.Qc button:focus {
+  border: 1px solid #2561a8;
+  color: #2561a8;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+}
+
 .Etc button {
   background-color: #ffffff;
   border: 1px solid #f4f4f4;
@@ -7558,8 +7653,22 @@ table tr th:last-child {
   height: 43px;
   margin-left: -50px;
   cursor: pointer;
+  color: #000;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
 }
-.Qc-button-text {
+.Etc button:focus {
+  border: 1px solid #2561a8;
+  color: #2561a8;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+}
+
+/* .Qc-button-text {
   color: #2561a8;
   font-family: Lato;
   font-size: 14px;
@@ -7568,8 +7677,8 @@ table tr th:last-child {
   text-align: left;
   text-transform: capitalize;
   cursor: pointer;
-}
-.Etb-button-text {
+} */
+/* .Etb-button-text {
   color: #000;
   font-family: Lato;
   font-size: 14px;
@@ -7578,7 +7687,7 @@ table tr th:last-child {
   text-align: left;
   text-transform: capitalize;
   cursor: pointer;
-}
+} */
 .addNote-textarea-system {
   background-color: #ecf2f4;
   border-radius: 4px;
@@ -9164,8 +9273,9 @@ table tr th:last-child {
   display: inherit;
 }
 .ticketSycard {
-  padding-left: 10px;
+  padding: 0 0 15px 10px;
   background-color: #f5f8f9;
+  height: 1190px;
 }
 .ticketSycard1 {
   height: 1192px;
@@ -9182,7 +9292,7 @@ table tr th:last-child {
   border-radius: 4px;
   width: 100%;
   /* position: absolute; */
-  height: 123px;
+  height: 90px;
   border: none;
   resize: none;
   padding: 10px;
@@ -9264,5 +9374,37 @@ table tr th:last-child {
   line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+.DashTimeRange .glyphicon-chevron-left{
+  border-right: 7px solid transparent;
+  border-left: 7px solid transparent;
+  border-bottom: 10px solid rgba(0, 0, 0, 0.15);
+  position: absolute;
+  top: 10px;
+  transform: rotate(270deg);
+}
+.DashTimeRange .glyphicon-chevron-right{
+  border-right: 7px solid transparent;
+  border-left: 7px solid transparent;
+  border-bottom: 10px solid rgba(0, 0, 0, 0.15);
+  position: absolute;
+  top: 10px;
+  transform: rotate(90deg);
+}
+.dashallbrand1 .ch1 {
+  width: 15px;
+  height: 15px;
+  position: relative;
+  top: 2px;
+}
+.dashallbrand1 .ch1-text {
+  font-size: 16px;
+  font-weight: 600;
+  color: #4A4A4A;
+  font-family: lato;
+  margin: 0 5px;
+}
+.dashallbrand1 .dropdown-menu.show {
+  min-width: 115px;
 }
 /* ****************End css ************************/

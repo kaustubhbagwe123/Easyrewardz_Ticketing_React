@@ -445,12 +445,12 @@ class TicketSystem extends Component {
                     Kb Link</label>
                 </a>
                 
-                <div>
+                
                   <label className="kblink-auto2">
                     <img src={AutoSave} alt="Auto" className="autosavekb" />
                     Auto Save
                   </label>
-                </div>
+                
                 </div>
                 <div className="row">
                 <div className="col-md-12">
@@ -1058,80 +1058,7 @@ class TicketSystem extends Component {
                   </div>
                 </div>
               </Modal>
-            </div>
-            {/* <div className="row colladrowa">
-              <div className="col-md-12 colladrow">
-                <ul style={{ padding: "0 15px" }}>
-                  <li>
-                    <label>To: diwarkar@gmail.com</label>
-                  </li>
-                  <li>
-                    <label className="">
-                      <input
-                        type="text"
-                        className="CCdi"
-                        placeholder="CC: diwarkar@gmail.com"
-                      />
-                      <span className="one">+1</span>
-                    </label>
-                  </li>
-                  <li>
-                    <label className="">
-                      <input
-                        type="text"
-                        className="CCdi"
-                        placeholder="BCC: diwarkar@gmail.com"
-                      />
-                      <span className="one">+1</span>
-                    </label>
-                  </li>
-                  <li>
-                    <div className="filter-checkbox">
-                      <input
-                        type="checkbox"
-                        id="fil-open1"
-                        name="filter-type"
-                        style={{ display: "none" }}
-                      />
-                      <label
-                        htmlFor="fil-open1"
-                        style={{ paddingLeft: "25px" }}
-                      >
-                        <span>Inform Store Note</span>
-                      </label>
-                    </div>
-                  </li>
-                  <li>
-                    <span>
-                      <input
-                        id="file-upload"
-                        className="file-upload1 d-none"
-                        type="file"
-                        onChange={this.fileUpload}
-                      />
-                      <label
-                        htmlFor="file-upload"
-                        onDrop={this.fileDrop}
-                        onDragOver={this.fileDragOver}
-                        onDragEnter={this.fileDragEnter}
-                      >
-                        <img
-                          src={FileUpload}
-                          alt="file-upload"
-                          className="fileup"
-                        />
-                      </label>
-                    </span>
-                    <label style={{ color: "#2561a8" }}>3 files</label>
-                  </li>
-                  <li style={{ float: "right" }}>
-                    <button className="sav">Save As Draft</button>
-                    <button className="send">Send</button>
-                  </li>
-                </ul>
-              </div>
-            </div> */}
-          
+            </div>          
           </div>
 
           

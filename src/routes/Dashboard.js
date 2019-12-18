@@ -39,7 +39,6 @@ import { FormControl } from "react-bootstrap";
 import moment from "moment";
 import { Row, Col } from "react-bootstrap";
 
-
 class Dashboard extends Component {
   constructor(props) {
     super(props);
@@ -83,6 +82,7 @@ class Dashboard extends Component {
   //     endDate: picker.endDate,
   //   });
   // }
+
   applyCallback(startDate, endDate) {
     this.setState({
       start: startDate,
@@ -800,45 +800,72 @@ class Dashboard extends Component {
                   </button>
                   <ul className="dropdown-menu">
                     <li>
-                      <div className="filter-type pink1">
-                        <div className="filter-checkbox pink2 pinkmargin">
-                          <input type="checkbox" id="fil-ch1" />
-                          <label htmlFor="fil-ch1"></label>
-                          <span>abc</span>
-                        </div>
-                      </div>
+                      <label for="one">
+                        <input type="checkbox" id="one" className="ch1"/>
+                        <span className="ch1-text">Bata 1</span>
+                      </label>
                     </li>
                     <li>
-                      <div className="filter-type pink1">
-                        <div className="filter-checkbox pink2 pinkmargin">
-                          <input type="checkbox" id="fil-ch2" />
-                          <label htmlFor="fil-ch2"></label>
-                          <span>abc</span>
-                        </div>
-                      </div>
+                      <label for="two">
+                        <input type="checkbox" id="two" className="ch1" />
+                        <span className="ch1-text">Bata 2</span>
+                      </label>
                     </li>
                     <li>
-                      <div className="filter-type pink1">
-                        <div className="filter-checkbox pink2 pinkmargin">
-                          <input type="checkbox" id="fil-ch3" />
-                          <label htmlFor="fil-ch3"></label>
-                          <span>abc</span>
-                        </div>
-                      </div>
+                      <label for="three">
+                        <input type="checkbox" id="three" className="ch1"/>
+                        <span className="ch1-text">Bata 3</span>
+                      </label>
+                    </li>
+                    <li>
+                    <label for="four">
+                        <input type="checkbox" id="four" className="ch1"/>
+                        <span className="ch1-text">Bata 4</span>
+                      </label>
                     </li>
                   </ul>
                 </div>
               </span>
-              {/* <select>
-                <option>All</option>
-                <option>1</option>
-                <option>2</option>
-              </select> */}
             </div>
             <div>
               <span>
                 Agent :
                 <div className="dropdown">
+                  <button
+                    className="dropdown-toggle dashallbrand"
+                    type="button"
+                    data-toggle="dropdown"
+                  >
+                    <span className="EMFCText">All</span>
+                  </button>
+                  <ul className="dropdown-menu">
+                    <li>
+                      <label for="one">
+                        <input type="checkbox" id="one" className="ch1"/>
+                        <span className="ch1-text">Bata 1</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label for="two">
+                        <input type="checkbox" id="two" className="ch1" />
+                        <span className="ch1-text">Bata 2</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label for="three">
+                        <input type="checkbox" id="three" className="ch1"/>
+                        <span className="ch1-text">Bata 3</span>
+                      </label>
+                    </li>
+                    <li>
+                    <label for="four">
+                        <input type="checkbox" id="four" className="ch1"/>
+                        <span className="ch1-text">Bata 4</span>
+                      </label>
+                    </li>
+                  </ul>
+                </div>
+                {/* <div className="dropdown">
                   <button
                     className="dropdown-toggle dashallbrand"
                     type="button"
@@ -875,46 +902,42 @@ class Dashboard extends Component {
                       </div>
                     </li>
                   </ul>
-                </div>
+                </div> */}
               </span>
-              {/* <select>
-                <option>All</option>
-                <option>1</option>
-                <option>2</option>
-              </select> */}
+              
             </div>
           </div>
           <div>
             <div className="d-flex">
               <span>Date Range : </span>
               <div className="DashTimeRange">
-              <Row className="show-grid" style={{ textAlign: "center" }}>
-                {/* <Col xs={3} /> */}
-                <Col xs={6} md={12} id="DateTimeRangeContainerNoMobileMode">
-                  <DateTimeRangeContainer
-                    ranges={ranges}
-                    start={this.state.start}
-                    end={this.state.end}
-                    local={local}
-                    applyCallback={this.applyCallback}
-                    smartMode
-                    leftMode
-                    // forceMobileMode
-                    noMobileMode
-                  >
-                    <FormControl
-                      id="formControlsTextB"
-                      type="text"
-                      label="Text"
-                      placeholder="Enter text"
-                      style={{ cursor: "pointer" }}
-                      disabled={disabled}
-                      value={value}
-                    />
-                  </DateTimeRangeContainer>
-                </Col>
-                {/* <Col xs={3} md={4} /> */}
-              </Row>
+                <Row className="show-grid" style={{ textAlign: "center" }}>
+                  {/* <Col xs={3} /> */}
+                  <Col xs={6} md={12} id="DateTimeRangeContainerNoMobileMode">
+                    <DateTimeRangeContainer
+                      ranges={ranges}
+                      start={this.state.start}
+                      end={this.state.end}
+                      local={local}
+                      applyCallback={this.applyCallback}
+                      smartMode
+                      leftMode
+                      // forceMobileMode
+                      noMobileMode
+                    >
+                      <FormControl
+                        id="formControlsTextB"
+                        type="text"
+                        label="Text"
+                        placeholder="Enter text"
+                        style={{ cursor: "pointer" }}
+                        disabled={disabled}
+                        value={value}
+                      />
+                    </DateTimeRangeContainer>
+                  </Col>
+                  {/* <Col xs={3} md={4} /> */}
+                </Row>
               </div>
               {/* <div>
                     <DateTimeRangeContainer 

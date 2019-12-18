@@ -149,7 +149,7 @@ class CategoryMaster extends Component {
       {
         Header: (
           <span>
-            Sub Category
+            Sub Cat
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
