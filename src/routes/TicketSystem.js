@@ -44,7 +44,10 @@ class TicketSystem extends Component {
       BrandData: [],
       KbLink: false,
       collapseUp: false,
-      TabIconColor: "nav-link active"
+      TabIconColor: "nav-link active",
+      selectedBrand: "",
+      BrandData: [],
+      tenantID: 1
     };
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -98,21 +101,25 @@ class TicketSystem extends Component {
 
   handleGetBrandList() {
     debugger;
-    let self = this;
-    axios({
-      method: "post",
-      url: `${config.apiUrl}/Brand/GetBrandList`,
-      data: {
-        TenantID: 1
-      },
-      headers: {
+    const requestOptions = {
+      method: "POST",
+      header: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*"
+        "Access-Control-Allow-Methods": "*"
+      },
+      body: ""
+    };
+    let self = this;
+
+    axios(config.apiUrl + "/Brand/GetBrandList", requestOptions, {
+      params: {
+        TenantID: this.state.tenantID
       }
-    }).then(function(response) {
+    }).then(function(res) {
+      console.log(JSON.stringify(res.data.responseData));
       debugger;
-      var BrandData = response.data;
-      self.setState({ BrandData }); ///problem not working setstat undefined
+      let BrandData = res.data.responseData;
+      self.setState({ BrandData: BrandData }); ///problem not working setstat undefined
     });
   }
 
@@ -136,6 +143,8 @@ class TicketSystem extends Component {
         onClick={this.handleUpOpen.bind(this)}
       />
     );
+    console.log(this.state.BrandData);
+
     return (
       <div style={{ backgroundColor: "#f5f8f9", paddingBottom: "2px" }}>
         <div className="rectanglesystem">
@@ -245,9 +254,7 @@ class TicketSystem extends Component {
                       className="category-select-system dropdown-label"
                       value={this.state.selectedBrand}
                     >
-                      <option className="select-category-placeholder dropdown-label">
-                        Select Brand
-                      </option>
+                      <option>Select Brand</option>
                       {this.state.BrandData.map((item, i) => (
                         <option key={i} value={item.brandName}>
                           {item.brandName}

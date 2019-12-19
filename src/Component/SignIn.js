@@ -38,14 +38,9 @@ class SingIn extends Component {
               <button
                 type="button"
                 className="program-code-button"
-                style={{
-                  backgroundColor: "#2561A8",
-                  borderColor: "#2561A8",
-                  letterSpacing: "0.5px"
-                }}
                 onClick={this.hanleChange}
-              >
-                <label className="program-code-button-text"> LOGIN</label>
+              >LOGIN
+                
               </button>
 
               <div>

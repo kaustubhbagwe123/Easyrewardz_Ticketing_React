@@ -3419,10 +3419,6 @@ progress::-webkit-progress-bar {
   background: linear-gradient(to right, #ff8363 42%, #ff631d 50%);
   border-radius: 20px;
 }
-/* .ticket-progress::-moz-progress-bar {
-  background-color: #d8d8d8;
-  border-radius: 20px;
-} */
 .prog-indi-1 {
   width: 100%;
   text-align: center;
