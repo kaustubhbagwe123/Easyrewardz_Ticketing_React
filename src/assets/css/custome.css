@@ -3899,14 +3899,21 @@ progress::-moz-progress-bar {
 /* #endregion */
 
 /* Deepak Savani for Program Code Page add CSS  */
-
 .program-code-button {
   background-color: #2561a8;
+  border-color: #2561a8;
+  letter-spacing: 0.5px;
   border-radius: 4px;
   width: 100%;
   height: 43px;
   margin-right: 10px;
   cursor: pointer;
+  color: #ffffff;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  text-align: center;
 }
 
 .program-code-button-text {
