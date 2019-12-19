@@ -97,37 +97,32 @@ class TicketSystem extends Component {
   }
 
   handleGetBrandList() {
-    debugger;
-    const requestOptions = {
-      method: 'POST',
-      header: {
-          'Content-Type': 'application/json',
-          "Access-Control-Allow-Methods": "*"
-      },
-      body: ''
-  };
-    // let self = this;
-    // axios({
-    //   method: "post",
-    //   url: `${config.apiUrl}/Brand/GetBrandList`,
-    //   data: {
-    //     TenantID: this.state.tenantID
-    //   }
-    // })
-    axios(config.apiUrl + '/Brand/GetBrandList', requestOptions, {
-      params: {
-        TenantID: this.state.tenantID
-      }
-  }).then(function(res) {
-    debugger
-    console.log(JSON.stringify(res))
-      debugger;
-      let BrandData = res.Data.responseData;
-      this.setState({ BrandData }); ///problem not working setstat undefined
-    });
+                         debugger;
+                         const requestOptions = {
+                           method: "POST",
+                           header: {
+                             "Content-Type": "application/json",
+                             "Access-Control-Allow-Methods": "*"
+                           },
+                           body: ""
+                         };
+                         let self = this;
 
-   
-  }
+                         axios(
+                           config.apiUrl + "/Brand/GetBrandList",
+                           requestOptions,
+                           {
+                             params: {
+                               TenantID: this.state.tenantID
+                             }
+                           }
+                         ).then(function(res) {
+                           console.log(JSON.stringify(res.data.responseData));
+                           debugger;
+                           let BrandData = res.data.responseData;
+                           self.setState({ BrandData: BrandData }); ///problem not working setstat undefined
+                         });
+                       }
 
   componentDidMount() {
     this.handleGetBrandList();
@@ -148,6 +143,8 @@ class TicketSystem extends Component {
         onClick={this.handleUpOpen.bind(this)}
       />
     );
+    console.log(this.state.BrandData);
+    
     return (
       <div style={{ backgroundColor: "#f5f8f9", paddingBottom: "2px" }}>
         <div className="rectanglesystem">
@@ -255,9 +252,9 @@ class TicketSystem extends Component {
                     <label className="category">Brand</label>
                     <select className="category-select-system dropdown-label"
                     value={this.state.selectedBrand}>
-                      {/* <option >
+                      <option >
                         Select Brand
-                      </option> */}
+                      </option>
                       {this.state.BrandData.map((item, i) => (
                             <option key={i} value={item.brandName}>
                               {item.brandName}
