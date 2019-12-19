@@ -3390,8 +3390,8 @@ progress {
   width: 290px;
   height: 8px;
   border-radius: 20px;
-  background-color: #777;
-  color: rgb(20, 240, 221);
+  /* background-color: #777; */
+  color: #ff6d33;
 }
 .responseProgress {
   color: #4a4a4a;
@@ -3406,15 +3406,23 @@ progress::-webkit-progress-bar {
   border-radius: 20px;
 }
 
-progress::-webkit-progress-value {
+.ticket-progress::-webkit-progress-value {
   background: linear-gradient(to right, #ff8363 42%, #ff631d 50%);
+  border-radius: 20px;
+}
+.ticket-progress::-webkit-progress-bar {
+  background-color: #d8d8d8;
   border-radius: 20px;
 }
 
-progress::-moz-progress-bar {
+.ticket-progress::-moz-progress-bar {
   background: linear-gradient(to right, #ff8363 42%, #ff631d 50%);
   border-radius: 20px;
 }
+/* .ticket-progress::-moz-progress-bar {
+  background-color: #d8d8d8;
+  border-radius: 20px;
+} */
 .prog-indi-1 {
   width: 100%;
   text-align: center;

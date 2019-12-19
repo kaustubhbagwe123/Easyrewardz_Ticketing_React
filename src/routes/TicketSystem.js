@@ -26,10 +26,11 @@ import CopyBlue from "./../assets/Images/copyblue.png";
 import ViewBlue from "./../assets/Images/viewblue.png";
 import Up1Img from "./../assets/Images/up-1.png";
 import Down1Img from "./../assets/Images/down-1.png";
-import axios from "axios";
-
+import { config } from "./../helpers/config";
 import { Radio } from "antd";
 import DatePicker from "react-datepicker";
+import ApiTicketSystem from "./APIService/ApiTicketSystem";
+import axios from "axios";
 
 class TicketSystem extends Component {
   constructor() {
@@ -39,12 +40,16 @@ class TicketSystem extends Component {
       SubmitBtnReopn: false,
       EditCustomer: false,
       startDate: "",
+      selectedBrand: "",
+      BrandData: [],
       KbLink: false,
       collapseUp: false,
       TabIconColor: "nav-link active"
     };
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.ApiTicket = new ApiTicketSystem();
+    this.handleGetBrandList = this.handleGetBrandList.bind(this);
   }
   handleUpOpen() {
     this.setState({ collapseUp: true });
@@ -90,6 +95,31 @@ class TicketSystem extends Component {
   handleSubmitReopnModalClose() {
     this.setState({ SubmitBtnReopn: false });
   }
+
+  handleGetBrandList() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: `${config.apiUrl}/Brand/GetBrandList`,
+      data: {
+        TenantID: 1
+      },
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
+      }
+    }).then(function(response) {
+      debugger;
+      var BrandData = response.data;
+      self.setState({ BrandData }); ///problem not working setstat undefined
+    });
+  }
+
+  componentDidMount() {
+    this.handleGetBrandList();
+  }
+
   render() {
     const HidecollapsUpKbLink = this.state.collapseUp ? (
       <img
@@ -211,10 +241,18 @@ class TicketSystem extends Component {
                 <div className="row m-b-10">
                   <div className="col-md-6">
                     <label className="category">Brand</label>
-                    <select className="category-select-system dropdown-label">
+                    <select
+                      className="category-select-system dropdown-label"
+                      value={this.state.selectedBrand}
+                    >
                       <option className="select-category-placeholder dropdown-label">
                         Select Brand
                       </option>
+                      {this.state.BrandData.map((item, i) => (
+                        <option key={i} value={item.brandName}>
+                          {item.brandName}
+                        </option>
+                      ))}
                     </select>
                   </div>
                   <div className="col-md-6">

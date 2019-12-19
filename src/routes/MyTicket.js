@@ -925,6 +925,7 @@ class MyTicket extends Component {
                     </label>
                   </div>
                   <progress
+                    className="ticket-progress"
                     style={{ width: "100%" }}
                     value="50"
                     max="100"
@@ -1808,12 +1809,12 @@ class MyTicket extends Component {
                           </label>
 
                           <a href="#!" className="kblink">
-                          <img
-                    src={KnowledgeLogo}
-                    alt="KnowledgeLogo"
-                    className="knoim"
-                    onClick={this.HandleKbLinkModalOpen.bind(this)}
-                  />
+                            <img
+                              src={KnowledgeLogo}
+                              alt="KnowledgeLogo"
+                              className="knoim"
+                              onClick={this.HandleKbLinkModalOpen.bind(this)}
+                            />
                             Kb Link
                           </a>
 
