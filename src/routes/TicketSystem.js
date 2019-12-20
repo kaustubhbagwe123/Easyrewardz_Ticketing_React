@@ -704,13 +704,14 @@ class TicketSystem extends Component {
             </div>
 
             <div className="column">
-              <div className="">
+              <div className="" style={{ height: "100%" }}>
                 <div className="tab-content tabpaddingsystem">
                   <div
                     className="tab-pane fade show active"
                     id="customer-tab"
                     role="tabpanel"
                     aria-labelledby="customer-tab"
+                    style={{ height: "100%" }}
                   >
                     <div className="ticketSycard">
                       <div className="ticketSycard1">
@@ -891,6 +892,7 @@ class TicketSystem extends Component {
                     id="order-tab"
                     role="tabpanel"
                     aria-labelledby="order-tab"
+                    style={{ height: "100%" }}
                   >
                     <TicketSystemOrder />
                   </div>
@@ -899,6 +901,7 @@ class TicketSystem extends Component {
                     id="store-tab"
                     role="tabpanel"
                     aria-labelledby="store-tab"
+                    style={{ height: "100%" }}
                   >
                     <TicketSystemStore />
                   </div>
@@ -907,6 +910,7 @@ class TicketSystem extends Component {
                     id="task-tab"
                     role="tabpanel"
                     aria-labelledby="task-tab"
+                    style={{ height: "100%" }}
                   >
                     <TicketSystemTask />
                   </div>

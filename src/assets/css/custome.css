@@ -2996,7 +2996,7 @@ table tr th:last-child {
   padding-right: 35px;
   width: 151px;
   font-size: 14px;
-  background: #dbe4e7 url("../Images/down-1.png") no-repeat right 12px center;
+  background: #fff url("../Images/down-1.png") no-repeat right 12px center;
   background-size: 16px;
   text-align: left;
 }
@@ -3982,7 +3982,7 @@ font-weight: normal;
   border-right: 0;
 }
 .collapbtn1 {
-  margin: 40px 0 0 65px;
+  margin: 45px 0 0 18px;
   z-index: 1;
   /* border: 1px solid #d1d1d1; */
   border-top: 0;
@@ -4013,7 +4013,7 @@ font-weight: normal;
   color: #333;
   border-right: 0;
   border-bottom: 0;
-  margin: 40px 0 0 0;
+  margin: 45px 0 0 0;
 }
 .floatingtabs {
   position: absolute;
@@ -7494,7 +7494,7 @@ table tr th:last-child {
 .paddingsystem {
   padding: 40px;
   position: relative;
-  height: 1192px;
+  height: auto;
 }
 .ticket-details-system {
   color: #9b9b9b;
@@ -7747,6 +7747,7 @@ table tr th:last-child {
   padding: 0;
   box-shadow: none;
   background: initial;
+  height: 100%;
 }
 .category2 {
   color: #9b9b9b;
@@ -8771,7 +8772,7 @@ table tr th:last-child {
   border-bottom: 0;
 }
 .kblink-auto2 {
-  margin: 40px 0 0 0;
+  margin: 45px 0 0 0;
   z-index: 1;
   padding: 5px 8px 5px 5px;
   border: 1px solid #d1d1d1;
@@ -8816,11 +8817,24 @@ table tr th:last-child {
 .marginimg {
   margin-left: -20px;
 }
+.DashBoarReact .ReactTable .rt-thead.-header .pinkmargin {
+  margin-left: 5px;
+}
+
 .pinkmargin input + label {
   padding-left: 25px;
 }
 .DashBoarReact .ReactTable .rt-thead .rt-resizable-header-content {
   font-size: 12px;
+}
+.MyTicketListReact .ReactTable .rt-thead.-header .pinkmargin {
+  margin-left: 5px;
+}
+.newReact .rt-tbody .pinkmargin {
+  margin-left: 5px;
+}
+.newReact .pink1 {
+  padding: 0;
 }
 /* MyTicket KbLink Css Start Kalpesh */
 .knoim {
@@ -8971,6 +8985,9 @@ table tr th:last-child {
   left: 50%;
   top: initial !important;
   bottom: 34px;
+}
+.DashBoarReact .pink1 {
+  padding: 0;
 }
 .DashBoarReact .ReactTable .rt-tbody .rt-tr-group:nth-child(1) {
   background-color: #ffdfdf;
@@ -9277,12 +9294,12 @@ table tr th:last-child {
   display: inherit;
 }
 .ticketSycard {
-  padding: 0 0 15px 10px;
+  padding: 0 0 0 10px;
   background-color: #f5f8f9;
-  height: 1190px;
+  height: 100%;
 }
 .ticketSycard1 {
-  height: 1192px;
+  height: 100%;
   background-color: #ffffff;
   border: 1px solid #EBEBEB;
   border-radius: 8px;
@@ -9296,7 +9313,7 @@ table tr th:last-child {
   border-radius: 4px;
   width: 100%;
   /* position: absolute; */
-  height: 90px;
+  height: 120px;
   border: none;
   resize: none;
   padding: 10px;
@@ -9410,5 +9427,8 @@ table tr th:last-child {
 }
 .dashallbrand1 .dropdown-menu.show {
   min-width: 115px;
+}
+.DashTimeRange .inputDate form-control {
+  margin: 0 0 0 100px;
 }
 /* ****************End css ************************/
