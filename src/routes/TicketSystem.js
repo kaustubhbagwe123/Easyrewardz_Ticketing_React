@@ -26,7 +26,7 @@ import CopyBlue from "./../assets/Images/copyblue.png";
 import ViewBlue from "./../assets/Images/viewblue.png";
 import Up1Img from "./../assets/Images/up-1.png";
 import Down1Img from "./../assets/Images/down-1.png";
-import { config } from "./../helpers/config";
+import config from "./../helpers/config";
 import { Radio } from "antd";
 import DatePicker from "react-datepicker";
 import ApiTicketSystem from "./APIService/ApiTicketSystem";
@@ -42,17 +42,18 @@ class TicketSystem extends Component {
       startDate: "",
       selectedBrand: "",
       BrandData: [],
+      CategoryData: [],
       KbLink: false,
       collapseUp: false,
       TabIconColor: "nav-link active",
       selectedBrand: "",
-      BrandData: [],
       tenantID: 1
     };
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.ApiTicket = new ApiTicketSystem();
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
+    this.handleGetCategoryList = this.handleGetCategoryList.bind(this);
   }
   handleUpOpen() {
     this.setState({ collapseUp: true });
@@ -119,12 +120,36 @@ class TicketSystem extends Component {
       console.log(JSON.stringify(res.data.responseData));
       debugger;
       let BrandData = res.data.responseData;
-      self.setState({ BrandData: BrandData }); ///problem not working setstat undefined
+      self.setState({ BrandData: BrandData });
+    });
+  }
+  handleGetCategoryList() {
+    debugger;
+    const requestOptions = {
+      method: "POST",
+      header: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      body: ""
+    };
+    let self = this;
+
+    axios(config.apiUrl + "/Category/GetCategoryList", requestOptions, {
+      params: {
+        TenantID: this.state.tenantID
+      }
+    }).then(function(res) {
+      console.log(JSON.stringify(res.data.responseData));
+      debugger;
+      let CategoryData = res.data;
+      self.setState({ CategoryData: CategoryData });
     });
   }
 
   componentDidMount() {
     this.handleGetBrandList();
+    this.handleGetCategoryList();
   }
 
   render() {
@@ -254,9 +279,15 @@ class TicketSystem extends Component {
                       className="category-select-system dropdown-label"
                       value={this.state.selectedBrand}
                     >
-                      <option>Select Brand</option>
+                      <option className="select-category-placeholder">
+                        Select Brand
+                      </option>
                       {this.state.BrandData.map((item, i) => (
-                        <option key={i} value={item.brandName}>
+                        <option
+                          key={i}
+                          value={item.brandName}
+                          className="select-category-placeholder"
+                        >
                           {item.brandName}
                         </option>
                       ))}
@@ -265,9 +296,18 @@ class TicketSystem extends Component {
                   <div className="col-md-6">
                     <label className="sub-category">Category</label>
                     <select className="category-select-system dropdown-label">
-                      <option className="select-category-placeholder dropdown-label">
-                        Select Brand
+                      <option className="select-category-placeholder">
+                        Select Category
                       </option>
+                      {this.state.CategoryData.map((item, i) => (
+                        <option
+                          key={i}
+                          value={item.categoryName}
+                          className="select-category-placeholder"
+                        >
+                          {item.categoryName}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>
