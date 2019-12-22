@@ -1,9 +1,46 @@
 import React, { Component } from "react";
 // import '../assets/css/style.css'
 import logo from "../assets/Images/logo.jpg";
-import {Link} from 'react-router-dom'
+import { Link } from "react-router-dom";
+import axios from "axios";
+import config from "../helpers/config";
 
 class ForgotPassword extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      emailId: ""
+    };
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+  handleSubmit(event) {
+    event.preventDefault();
+    const { emailId } = this.state;
+
+    const requestOptions = {
+      method: "POST",
+      header: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      body: ""
+    };
+    let self = this;
+    axios.post(config.apiUrl + "/Account/ForgetPassword?EmailId="+emailId,
+    requestOptions).then(function(response) {
+      debugger;
+      let BrandData = response;
+      self.setState({ BrandData: BrandData }); 
+    });
+
+  }
+  hanleChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  }
+
   render() {
     return (
       <div className="auth-wrapper">
@@ -23,32 +60,35 @@ class ForgotPassword extends Component {
                   </label>
                 </h3>
               </div>
-              <div className="input-group sb-2">
-                <label
-                  className="col-mb-3 col-form-label col-form-label pt-0 "
-                  style={{
-                    fontWeight: "bold",
-                    color: "#a5a5a5",
-                    marginBottom: "5px"
-                  }}
-                >
-                  Enter Email ID
-                </label>
-              </div>
-              <div className="input-group mb-3">
-                <input type="email" className="program-code-textbox" />
-              </div>
-              <div className="input-group mb-3">
-                <button
-                  type="button"
-                  className="recovery-pass-button"
-                  title=""
-                  data-toggle="tooltip"
-                  data-original-title="btn btn-primary"
-                >
-                <label className="program-code-button-text">RECOVER PASSWORD</label>  
-                </button>
-              </div>
+              <form name="form" onSubmit={this.handleSubmit}>
+                <div className="input-group sb-2">
+                  <label
+                    className="col-mb-3 col-form-label col-form-label pt-0 "
+                    style={{
+                      fontWeight: "bold",
+                      color: "#a5a5a5",
+                      marginBottom: "5px"
+                    }}
+                  >
+                    Enter Email ID
+                  </label>
+                </div>
+                <div className="input-group mb-3">
+                  <input
+                    type="text"
+                    className="program-code-textbox"
+                    name="emailId"
+                    autoComplete="off"
+                    value={this.state.emailId}
+                    onChange={this.hanleChange.bind(this)}
+                  />
+                </div>
+                <div className="input-group mb-3">
+                  <button type="submit" className="program-code-button">
+                    RECOVER PASSWORD
+                  </button>
+                </div>
+              </form>
 
               <div style={{ paddingTop: "10px" }}>
                 <p className="mb-0 text-muted">

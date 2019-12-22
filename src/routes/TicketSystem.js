@@ -30,7 +30,7 @@ import axios from "axios";
 
 import { Radio } from "antd";
 import DatePicker from "react-datepicker";
-import config  from "./../helpers/config";
+import config from "./../helpers/config";
 
 class TicketSystem extends Component {
   constructor() {
@@ -45,7 +45,7 @@ class TicketSystem extends Component {
       TabIconColor: "nav-link active",
       selectedBrand: "",
       BrandData: [],
-      tenantID:1
+      tenantID: 1
     };
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -97,32 +97,28 @@ class TicketSystem extends Component {
   }
 
   handleGetBrandList() {
-                         debugger;
-                         const requestOptions = {
-                           method: "POST",
-                           header: {
-                             "Content-Type": "application/json",
-                             "Access-Control-Allow-Methods": "*"
-                           },
-                           body: ""
-                         };
-                         let self = this;
+    debugger;
+    const requestOptions = {
+      method: "POST",
+      header: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      body: ""
+    };
+    let self = this;
 
-                         axios(
-                           config.apiUrl + "/Brand/GetBrandList",
-                           requestOptions,
-                           {
-                             params: {
-                               TenantID: this.state.tenantID
-                             }
-                           }
-                         ).then(function(res) {
-                           console.log(JSON.stringify(res.data.responseData));
-                           debugger;
-                           let BrandData = res.data.responseData;
-                           self.setState({ BrandData: BrandData }); ///problem not working setstat undefined
-                         });
-                       }
+    axios(config.apiUrl + "/Brand/GetBrandList", requestOptions, {
+      params: {
+        TenantID: this.state.tenantID
+      }
+    }).then(function(res) {
+      console.log(JSON.stringify(res.data.responseData));
+      debugger;
+      let BrandData = res.data.responseData;
+      self.setState({ BrandData: BrandData }); ///problem not working setstat undefined
+    });
+  }
 
   componentDidMount() {
     this.handleGetBrandList();
@@ -144,7 +140,7 @@ class TicketSystem extends Component {
       />
     );
     console.log(this.state.BrandData);
-    
+
     return (
       <div style={{ backgroundColor: "#f5f8f9", paddingBottom: "2px" }}>
         <div className="rectanglesystem">
@@ -250,16 +246,16 @@ class TicketSystem extends Component {
                 <div className="row m-b-10">
                   <div className="col-md-6">
                     <label className="category">Brand</label>
-                    <select className="category-select-system dropdown-label"
-                    value={this.state.selectedBrand}>
-                      <option >
-                        Select Brand
-                      </option>
+                    <select
+                      className="category-select-system dropdown-label"
+                      value={this.state.selectedBrand}
+                    >
+                      <option>Select Brand</option>
                       {this.state.BrandData.map((item, i) => (
-                            <option key={i} value={item.brandName}>
-                              {item.brandName}
-                            </option>
-                          ))}
+                        <option key={i} value={item.brandName}>
+                          {item.brandName}
+                        </option>
+                      ))}
                     </select>
                   </div>
                   <div className="col-md-6">

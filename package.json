@@ -17,6 +17,7 @@
     "bootstrap-select": "^1.13.11",
     "browserslist": "^4.7.0",
     "ckeditor4-react": "^1.0.0",
+    "crypto-js": "^3.1.9-1",
     "fusioncharts": "^3.14.0-sr.1",
     "history": "^4.10.1",
     "jquery": "^3.4.1",
