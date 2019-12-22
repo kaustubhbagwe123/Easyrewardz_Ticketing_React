@@ -2996,7 +2996,7 @@ table tr th:last-child {
   padding-right: 35px;
   width: 151px;
   font-size: 14px;
-  background: #dbe4e7 url("../Images/down-1.png") no-repeat right 12px center;
+  background: #fff url("../Images/down-1.png") no-repeat right 12px center;
   background-size: 16px;
   text-align: left;
 }
@@ -3021,6 +3021,96 @@ table tr th:last-child {
   padding: 15px 0;
 }
 /* extra css end */
+
+/* ticket system starts */
+.ticket-title-select .css-yk16xz-control, .ticket-title-select .css-1pahdxg-control {
+  background-color: #ecf2f4;
+  min-height: 42px;
+  border-color: transparent;
+  box-shadow: none;
+}
+.ticket-title-select .css-yk16xz-control:hover, .ticket-title-select .css-1pahdxg-control:hover {
+  border-color: transparent;
+  box-shadow: none;
+}
+.ticket-title-select .css-1g48xl4-IndicatorsContainer {
+  display: none;
+}
+.ticket-title-select .css-1wa3eu0-placeholder {
+  color: #9b9b9b;
+  font-family: Lato;
+  font-weight: 700;
+}
+.ticket-title-select .css-1uccc91-singleValue, .ticket-title-select .css-w8afj7-Input input {
+  color: #000 !important;
+  font-family: Lato;
+  font-weight: 700;
+}
+.ticket-title-select .css-1ml51p6-MenuList {
+  padding: 12px;
+}
+.ticket-title-select .css-26l3qy-menu {
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
+  margin: 0;
+}
+.ticket-title-select .css-1n7v3ny-option, .ticket-title-select .css-yt9ioa-option {
+  color: #9B9B9B;
+  font-family: Lato;
+}
+.ticket-title-select .css-9gakcf-option {
+  font-family: Lato;
+  background-color: #2561A8;
+}
+.ticket-title-select .css-1ml51p6-MenuList div {
+  display: inline-block;
+  width: auto;
+  border: 1px solid #2561A8;
+  border-radius: 8px;
+  padding: 5px 10px;
+  margin: 7px;
+  cursor: pointer;
+}
+.priority-butns label {
+  border-radius: 4px;
+  font-weight: 700;
+  font-family: Lato;
+  padding: 10px 15px;
+  margin-right: 8px;
+  cursor: pointer;
+  border: 1px solid;
+  margin-bottom: 7px;
+}
+.priority-butns {
+  display: inline-block;
+}
+.priority-butns-cntr .priority-butns:nth-child(3n + 1) label {
+  border-color: #d02139;
+  color: #d02139;
+}
+.priority-butns-cntr .priority-butns:nth-child(3n + 1) input:checked + label {
+  background: #d02139;
+  color: #fff;
+}
+.priority-butns-cntr .priority-butns:nth-child(3n + 2) label {
+  border-color: #f5a623;
+  color: #f5a623;
+}
+.priority-butns-cntr .priority-butns:nth-child(3n + 2) input:checked + label {
+  background: #f5a623;
+  color: #fff;
+}
+.priority-butns-cntr .priority-butns:nth-child(3n) label {
+  border-color: #5aa805;
+  color: #5aa805;
+}
+.priority-butns-cntr .priority-butns:nth-child(3n) input:checked + label {
+  background: #5aa805;
+  color: #fff;
+}
+.priority-butns-cntr .priority-butns:last-child label {
+  margin-right: 0;
+}
+/* ticket system ends */
 
 /* chetan css end */
 /******************************************************/
@@ -3390,8 +3480,8 @@ progress {
   width: 290px;
   height: 8px;
   border-radius: 20px;
-  background-color: #777;
-  color: rgb(20, 240, 221);
+  /* background-color: #777; */
+  color: #ff6d33;
 }
 .responseProgress {
   color: #4a4a4a;
@@ -3406,12 +3496,16 @@ progress::-webkit-progress-bar {
   border-radius: 20px;
 }
 
-progress::-webkit-progress-value {
+.ticket-progress::-webkit-progress-value {
   background: linear-gradient(to right, #ff8363 42%, #ff631d 50%);
   border-radius: 20px;
 }
+.ticket-progress::-webkit-progress-bar {
+  background-color: #d8d8d8;
+  border-radius: 20px;
+}
 
-progress::-moz-progress-bar {
+.ticket-progress::-moz-progress-bar {
   background: linear-gradient(to right, #ff8363 42%, #ff631d 50%);
   border-radius: 20px;
 }
@@ -3899,21 +3993,14 @@ progress::-moz-progress-bar {
 /* #endregion */
 
 /* Deepak Savani for Program Code Page add CSS  */
+
 .program-code-button {
   background-color: #2561a8;
-  border-color: #2561a8;
-  letter-spacing: 0.5px;
   border-radius: 4px;
   width: 100%;
   height: 43px;
   margin-right: 10px;
   cursor: pointer;
-  color: #ffffff;
-  font-family: Lato;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 17px;
-  text-align: center;
 }
 
 .program-code-button-text {
@@ -3985,7 +4072,7 @@ font-weight: normal;
   border-right: 0;
 }
 .collapbtn1 {
-  margin: 40px 0 0 65px;
+  margin: 45px 0 0 18px;
   z-index: 1;
   /* border: 1px solid #d1d1d1; */
   border-top: 0;
@@ -4016,7 +4103,7 @@ font-weight: normal;
   color: #333;
   border-right: 0;
   border-bottom: 0;
-  margin: 40px 0 0 0;
+  margin: 45px 0 0 0;
 }
 .floatingtabs {
   position: absolute;
@@ -7497,7 +7584,7 @@ table tr th:last-child {
 .paddingsystem {
   padding: 40px;
   position: relative;
-  height: 1192px;
+  height: auto;
 }
 .ticket-details-system {
   color: #9b9b9b;
@@ -7750,6 +7837,7 @@ table tr th:last-child {
   padding: 0;
   box-shadow: none;
   background: initial;
+  height: 100%;
 }
 .category2 {
   color: #9b9b9b;
@@ -8774,7 +8862,7 @@ table tr th:last-child {
   border-bottom: 0;
 }
 .kblink-auto2 {
-  margin: 40px 0 0 0;
+  margin: 45px 0 0 0;
   z-index: 1;
   padding: 5px 8px 5px 5px;
   border: 1px solid #d1d1d1;
@@ -8819,11 +8907,24 @@ table tr th:last-child {
 .marginimg {
   margin-left: -20px;
 }
+.DashBoarReact .ReactTable .rt-thead.-header .pinkmargin {
+  margin-left: 5px;
+}
+
 .pinkmargin input + label {
   padding-left: 25px;
 }
 .DashBoarReact .ReactTable .rt-thead .rt-resizable-header-content {
   font-size: 12px;
+}
+.MyTicketListReact .ReactTable .rt-thead.-header .pinkmargin {
+  margin-left: 5px;
+}
+.newReact .rt-tbody .pinkmargin {
+  margin-left: 5px;
+}
+.newReact .pink1 {
+  padding: 0;
 }
 /* MyTicket KbLink Css Start Kalpesh */
 .knoim {
@@ -8974,6 +9075,9 @@ table tr th:last-child {
   left: 50%;
   top: initial !important;
   bottom: 34px;
+}
+.DashBoarReact .pink1 {
+  padding: 0;
 }
 .DashBoarReact .ReactTable .rt-tbody .rt-tr-group:nth-child(1) {
   background-color: #ffdfdf;
@@ -9280,12 +9384,12 @@ table tr th:last-child {
   display: inherit;
 }
 .ticketSycard {
-  padding: 0 0 15px 10px;
+  padding: 0 0 0 10px;
   background-color: #f5f8f9;
-  height: 1190px;
+  height: 100%;
 }
 .ticketSycard1 {
-  height: 1192px;
+  height: 100%;
   background-color: #ffffff;
   border: 1px solid #EBEBEB;
   border-radius: 8px;
@@ -9299,7 +9403,7 @@ table tr th:last-child {
   border-radius: 4px;
   width: 100%;
   /* position: absolute; */
-  height: 90px;
+  height: 120px;
   border: none;
   resize: none;
   padding: 10px;
@@ -9413,5 +9517,8 @@ table tr th:last-child {
 }
 .dashallbrand1 .dropdown-menu.show {
   min-width: 115px;
+}
+.DashTimeRange .inputDate form-control {
+  margin: 0 0 0 100px;
 }
 /* ****************End css ************************/
