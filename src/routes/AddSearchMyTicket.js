@@ -11,6 +11,11 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import config from "./../helpers/config";
 import moment from "moment";
+import SimpleReactValidator from "simple-react-validator";
+import {
+  NotificationContainer,
+  NotificationManager
+} from "react-notifications";
 import { authHeader } from "../helpers/authHeader";
 
 class AddSearchMyTicket extends Component {
@@ -21,7 +26,7 @@ class AddSearchMyTicket extends Component {
       fullName: "",
       mobileNumber: "",
       emailId: "",
-      genderId: "",
+      genderId: 1,
       dob: "",
       alternateNumber: "",
       alternateEmailId: "",
@@ -31,6 +36,7 @@ class AddSearchMyTicket extends Component {
     this.handleAddCustomerClose = this.handleAddCustomerClose.bind(this);
     this.handleAddCustomerSave = this.handleAddCustomerSave.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.validator = new SimpleReactValidator();
   }
   handleAddCustomerOpen() {
     this.setState({ AddCustomer: true });
@@ -40,36 +46,72 @@ class AddSearchMyTicket extends Component {
   }
   handleAddCustomerSave() {
     debugger;
-    const requestOptions = {
-      // method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
-      body: JSON.stringify({
-        TenantID: this.state.tenantID,
-        CustomerName: this.state.fullName,
-        CustomerPhoneNumber: this.state.mobileNumber,
-        CustomerEmailId: this.state.emailId,
-        GenderID: this.state.genderId,
-        AltNumber: this.state.alternateNumber,
-        AltEmailID: this.state.alternateEmailId,
-        DateOfBirth: moment(this.state.dob).format("L"),
-        IsActive: 1,
-        CreatedBy: "abc",
-        ModifyBy: 1,
-        ModifiedDate: "20/12/2019"
-      })
-    };
+
+    if (this.validator.allValid()) {
+      // const requestOptions = {
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     "Access-Control-Allow-Methods": "*"
+      //   },
+      //   body: JSON.stringify({
+      //     TenantID: this.state.tenantID,
+      //     CustomerName: this.state.fullName,
+      //     CustomerPhoneNumber: this.state.mobileNumber,
+      //     CustomerEmailId: this.state.emailId,
+      //     GenderID: this.state.genderId,
+      //     AltNumber: this.state.alternateNumber,
+      //     AltEmailID: this.state.alternateEmailId,
+      //     DateOfBirth: moment(this.state.dob).format("L") + " 00:00:00",
+      //     IsActive: 1,
+      //     CreatedBy: 1,
+      //     ModifyBy: 1,
+      //     ModifiedDate: "2019-12-17 16:13:58"
+      //   })
+      // };
+      axios({
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Methods": "*"
+        },
+        url: config.apiUrl + "/Customer/createCustomer",
+        data: {
+          TenantID: this.state.tenantID,
+          CustomerName: this.state.fullName,
+          CustomerPhoneNumber: this.state.mobileNumber,
+          CustomerEmailId: this.state.emailId,
+          GenderID: this.state.genderId,
+          AltNumber: this.state.alternateNumber,
+          AltEmailID: this.state.alternateEmailId,
+          DateOfBirth: moment(this.state.dob).format("L"),
+          IsActive: 1,
+          CreatedBy: 1,
+          ModifyBy: 1,
+          ModifiedDate: "2019-12-17"
+        }
+      }).then(function(res) {
+        debugger;
+        console.log(JSON.stringify(res.data.message));
+        let responseMessage = res.data.message;
+        if (responseMessage === "Success") {
+          this.props.history.push({
+            pathname: "ticketsystem",
+            state: this.state
+          });
+          NotificationManager.success("New Customer added successfully.");
+          setTimeout(function() {
+            window.location.href = "ticketsystem";
+          }, 2000);
+        }
+      });
+    } else {
+      this.validator.showMessages();
+      // rerender to show messages for the first time
+      // you can use the autoForceUpdate option to do this automatically`
+      this.forceUpdate();
+    }
 
     // axios.post(config.apiUrl + "/Customer/createCustomer", requestOptions)
-    axios.post(config.apiUrl + "/Customer/createCustomer", requestOptions).then(function(res) {
-        debugger;
-        console.log(JSON.stringify(res.data.responseData));
-        debugger;
-        // let ChannelOfPurchaseData = res.data.responseData;
-        // self.setState({ ChannelOfPurchaseData: ChannelOfPurchaseData });
-      });
   }
   genderSelect = e => {
     this.setState({
@@ -90,6 +132,7 @@ class AddSearchMyTicket extends Component {
   render() {
     return (
       <Fragment>
+        <NotificationContainer />
         <div className="addSearch-header">
           <img
             src={ArrowCircleImg}
@@ -165,6 +208,11 @@ class AddSearchMyTicket extends Component {
                       value={this.state.fullName}
                       onChange={this.addCustomerData}
                     />
+                    {this.validator.message(
+                      "Full Name",
+                      this.state.fullName,
+                      "required|alpha_space"
+                    )}
                   </div>
                   <div className="col-md-6">
                     <input
@@ -175,6 +223,11 @@ class AddSearchMyTicket extends Component {
                       value={this.state.mobileNumber}
                       onChange={this.addCustomerData}
                     />
+                    {this.validator.message(
+                      "Mobile Number",
+                      this.state.mobileNumber,
+                      "required|integer|size:10"
+                    )}
                   </div>
                 </div>
                 <div className="row row-margin1">
@@ -187,6 +240,11 @@ class AddSearchMyTicket extends Component {
                       value={this.state.emailId}
                       onChange={this.addCustomerData}
                     />
+                    {this.validator.message(
+                      "Email Id",
+                      this.state.emailId,
+                      "required|email"
+                    )}
                   </div>
                   <div className="col-md-6 radio-btn-margin">
                     <Radio.Group
@@ -209,6 +267,11 @@ class AddSearchMyTicket extends Component {
                       showYearDropdown
                       className="txt-1"
                     />
+                    {this.validator.message(
+                      "Date of Birth",
+                      this.state.dob,
+                      "required"
+                    )}
                     {/* <ModernDatepicker
                       date={this.state.startDate}
                       format={"DD-MM-YYYY"}
@@ -230,6 +293,11 @@ class AddSearchMyTicket extends Component {
                       value={this.state.alternateNumber}
                       onChange={this.addCustomerData}
                     />
+                    {this.validator.message(
+                      "Alternate Number",
+                      this.state.alternateNumber,
+                      "integer|size:10"
+                    )}
                   </div>
                   <div className="col-md-6">
                     <input
@@ -240,6 +308,11 @@ class AddSearchMyTicket extends Component {
                       value={this.state.alternateEmailId}
                       onChange={this.addCustomerData}
                     />
+                    {this.validator.message(
+                      "Alternate Email Id",
+                      this.state.alternateEmailId,
+                      "email"
+                    )}
                   </div>
                 </div>
                 <div className="btn-float">

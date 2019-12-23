@@ -79,7 +79,8 @@
     "reactstrap": "^8.0.1",
     "recharts": "^1.7.1",
     "rsuite": "^4.0.1",
-    "select2": "^4.0.12"
+    "select2": "^4.0.12",
+    "simple-react-validator": "^1.4.0"
   },
   "scripts": {
     "start": "node ./node_modules/react-scripts/bin/react-scripts.js start",

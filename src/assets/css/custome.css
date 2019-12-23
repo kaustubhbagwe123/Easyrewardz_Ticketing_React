@@ -3112,6 +3112,13 @@ table tr th:last-child {
 }
 /* ticket system ends */
 
+/* add search my ticket starts */
+.srv-validation-message {
+  color: #f00;
+  margin-top: 5px;
+}
+/* add search my ticket ends */
+
 /* chetan css end */
 /******************************************************/
 
