@@ -26,13 +26,12 @@ import CopyBlue from "./../assets/Images/copyblue.png";
 import ViewBlue from "./../assets/Images/viewblue.png";
 import Up1Img from "./../assets/Images/up-1.png";
 import Down1Img from "./../assets/Images/down-1.png";
-// import axios from "axios";
-
 import config from "./../helpers/config";
 import { Radio } from "antd";
 import DatePicker from "react-datepicker";
 import ApiTicketSystem from "./APIService/ApiTicketSystem";
 import axios from "axios";
+import Select from "react-select";
 
 class TicketSystem extends Component {
   constructor() {
@@ -42,19 +41,52 @@ class TicketSystem extends Component {
       SubmitBtnReopn: false,
       EditCustomer: false,
       startDate: "",
-      selectedBrand: "",
+      TicketTitleData: [],
       BrandData: [],
+      CategoryData: [],
+      SubCategoryData: [],
+      IssueTypeData: [],
+      TicketPriorityData: [],
+      ChannelOfPurchaseData: [],
       KbLink: false,
       collapseUp: false,
       TabIconColor: "nav-link active",
-      selectedBrand: "",
-      BrandData: [],
-      tenantID: 1
+      selectedBrand: 0,
+      selectedCategory: 0,
+      selectedSubCategory: 0,
+      selectedIssueType: 0,
+      selectedTicketPriority: 0,
+      selectedChannelOfPurchase: 0,
+      tenantID: 1,
+      SpacialEqmt: [
+        {
+          department: 25
+        },
+        {
+          department: 30
+        },
+        {
+          department: 50
+        },
+        {
+          department: 90
+        }
+      ]
     };
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.ApiTicket = new ApiTicketSystem();
+    this.handleGetTicketTitleList = this.handleGetTicketTitleList.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
+    this.handleGetCategoryList = this.handleGetCategoryList.bind(this);
+    this.handleGetSubCategoryList = this.handleGetSubCategoryList.bind(this);
+    this.handleGetIssueTypeList = this.handleGetIssueTypeList.bind(this);
+    this.handleGetChannelOfPurchaseList = this.handleGetChannelOfPurchaseList.bind(
+      this
+    );
+    this.handleGetTicketPriorityList = this.handleGetTicketPriorityList.bind(
+      this
+    );
   }
   handleUpOpen() {
     this.setState({ collapseUp: true });
@@ -101,6 +133,29 @@ class TicketSystem extends Component {
     this.setState({ SubmitBtnReopn: false });
   }
 
+  handleGetTicketTitleList() {
+    debugger;
+    const requestOptions = {
+      method: "POST",
+      header: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      body: ""
+    };
+    let self = this;
+
+    axios(config.apiUrl + "/Ticketing/gettitlesuggestions", requestOptions, {
+      params: {
+        TikcketTitle: "TestTicket"
+      }
+    }).then(function(res) {
+      console.log(JSON.stringify(res.data.responseData));
+      debugger;
+      let TicketTitleData = res.data.responseData;
+      self.setState({ TicketTitleData: TicketTitleData });
+    });
+  }
   handleGetBrandList() {
     debugger;
     const requestOptions = {
@@ -121,13 +176,180 @@ class TicketSystem extends Component {
       console.log(JSON.stringify(res.data.responseData));
       debugger;
       let BrandData = res.data.responseData;
-      self.setState({ BrandData: BrandData }); ///problem not working setstat undefined
+      self.setState({ BrandData: BrandData });
+    });
+  }
+  handleGetCategoryList() {
+    debugger;
+    const requestOptions = {
+      method: "POST",
+      header: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      body: ""
+    };
+    let self = this;
+
+    axios(config.apiUrl + "/Category/GetCategoryList", requestOptions, {
+      params: {
+        TenantID: this.state.tenantID
+      }
+    }).then(function(res) {
+      console.log(JSON.stringify(res.data.responseData));
+      debugger;
+      let CategoryData = res.data;
+      self.setState({ CategoryData: CategoryData });
+    });
+  }
+  handleGetSubCategoryList() {
+    debugger;
+    const requestOptions = {
+      method: "POST",
+      header: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      body: ""
+    };
+    let self = this;
+
+    axios(
+      config.apiUrl + "/SubCategory/GetSubCategoryByCategoryID",
+      requestOptions,
+      {
+        params: {
+          CategoryID: this.state.selectedCategory
+        }
+      }
+    ).then(function(res) {
+      console.log(JSON.stringify(res.data.responseData));
+      debugger;
+      let SubCategoryData = res.data.responseData;
+      self.setState({ SubCategoryData: SubCategoryData });
+    });
+  }
+  handleGetIssueTypeList() {
+    debugger;
+    const requestOptions = {
+      method: "POST",
+      header: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      body: ""
+    };
+    let self = this;
+
+    axios(config.apiUrl + "/IssueType/GetIssueTypeList", requestOptions, {
+      params: {
+        TenantID: this.state.tenantID,
+        SubCategoryID: this.state.selectedSubCategory
+      }
+    }).then(function(res) {
+      console.log(JSON.stringify(res.data.responseData));
+      debugger;
+      let IssueTypeData = res.data.responseData;
+      self.setState({ IssueTypeData: IssueTypeData });
+    });
+  }
+  handleGetTicketPriorityList() {
+    debugger;
+    const requestOptions = {
+      method: "POST",
+      header: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      body: ""
+    };
+    let self = this;
+
+    axios(config.apiUrl + "/Priority/GetPriorityList", requestOptions, {
+      params: {
+        TenantID: this.state.tenantID
+      }
+    }).then(function(res) {
+      console.log(JSON.stringify(res.data.responseData));
+      debugger;
+      let TicketPriorityData = res.data.responseData;
+      self.setState({ TicketPriorityData: TicketPriorityData });
+    });
+  }
+  handleGetChannelOfPurchaseList() {
+    debugger;
+    const requestOptions = {
+      method: "POST",
+      header: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      body: ""
+    };
+    let self = this;
+
+    axios(config.apiUrl + "/Master/GetChannelOfPurchaseList", requestOptions, {
+      params: {
+        TenantID: this.state.tenantID
+      }
+    }).then(function(res) {
+      console.log(JSON.stringify(res.data.responseData));
+      debugger;
+      let ChannelOfPurchaseData = res.data.responseData;
+      self.setState({ ChannelOfPurchaseData: ChannelOfPurchaseData });
     });
   }
 
   componentDidMount() {
+    this.handleGetTicketTitleList();
     this.handleGetBrandList();
+    this.handleGetCategoryList();
+    this.handleGetChannelOfPurchaseList();
+    this.handleGetTicketPriorityList();
   }
+
+  setBrandValue = e => {
+    debugger;
+    let brandValue = e.currentTarget.value;
+    this.setState({ selectedBrand: brandValue });
+  };
+  setIssueTypeValue = e => {
+    debugger;
+    let issueTypeValue = e.currentTarget.value;
+    this.setState({ selectedIssueType: issueTypeValue });
+  };
+  setTicketPriorityValue = e => {
+    debugger;
+    let ticketPriorityValue = e.currentTarget.id;
+    this.setState({ selectedTicketPriority: ticketPriorityValue });
+  };
+  setCategoryValue = e => {
+    debugger;
+    let categoryValue = e.currentTarget.value;
+    this.setState({ selectedCategory: categoryValue });
+    setTimeout(() => {
+      debugger;
+      if (this.state.selectedCategory) {
+        this.handleGetSubCategoryList();
+      }
+    }, 1);
+  };
+  setSubCategoryValue = e => {
+    debugger;
+    let subCategoryValue = e.currentTarget.value;
+    this.setState({ selectedSubCategory: subCategoryValue });
+    setTimeout(() => {
+      debugger;
+      if (this.state.selectedSubCategory) {
+        this.handleGetIssueTypeList();
+      }
+    }, 1);
+  };
+  setChannelOfPurchaseValue = e => {
+    debugger;
+    let channelOfPurchaseValue = e.currentTarget.value;
+    this.setState({ selectedChannelOfPurchase: channelOfPurchaseValue });
+  };
 
   render() {
     const HidecollapsUpKbLink = this.state.collapseUp ? (
@@ -204,11 +426,24 @@ class TicketSystem extends Component {
                 <div className="row m-b-10">
                   <div className="col-md-12">
                     <label className="category">Ticket Title</label>
-                    <select className="category-select-system dropdown-label">
+                    {/* <select className="category-select-system dropdown-label">
                       <option className="select-category-placeholder dropdown-label">
                         Suggestion
                       </option>
-                    </select>
+                    </select> */}
+                    <div className="ticket-title-select">
+                      <Select
+                        // className="rate-dropdown"
+                        getOptionLabel={option => option.department}
+                        getOptionValue={option => option.department}
+                        options={this.state.SpacialEqmt}
+                        placeholder="Suggestion"
+                        menuIsOpen={true}
+                        // onChange={this.specEquipChange}
+                        // value={thi.state.spEqtSelect}
+                        // showNewOptionAtTop={false}
+                      />
+                    </div>
                   </div>
                 </div>
                 {/* <div className="row m-b-10">
@@ -255,21 +490,43 @@ class TicketSystem extends Component {
                     <select
                       className="category-select-system dropdown-label"
                       value={this.state.selectedBrand}
+                      onChange={this.setBrandValue}
                     >
-                      <option>Select Brand</option>
-                      {this.state.BrandData.map((item, i) => (
-                        <option key={i} value={item.brandName}>
-                          {item.brandName}
-                        </option>
-                      ))}
+                      <option className="select-category-placeholder">
+                        Select Brand
+                      </option>
+                      {this.state.BrandData !== null &&
+                        this.state.BrandData.map((item, i) => (
+                          <option
+                            key={i}
+                            value={item.brandID}
+                            className="select-category-placeholder"
+                          >
+                            {item.brandName}
+                          </option>
+                        ))}
                     </select>
                   </div>
                   <div className="col-md-6">
                     <label className="sub-category">Category</label>
-                    <select className="category-select-system dropdown-label">
-                      <option className="select-category-placeholder dropdown-label">
-                        Select Brand
+                    <select
+                      value={this.state.selectedCategory}
+                      onChange={this.setCategoryValue}
+                      className="category-select-system dropdown-label"
+                    >
+                      <option className="select-category-placeholder">
+                        Select Category
                       </option>
+                      {this.state.CategoryData !== null &&
+                        this.state.CategoryData.map((item, i) => (
+                          <option
+                            key={i}
+                            value={item.categoryID}
+                            className="select-category-placeholder"
+                          >
+                            {item.categoryName}
+                          </option>
+                        ))}
                     </select>
                   </div>
                 </div>
@@ -300,18 +557,46 @@ class TicketSystem extends Component {
                 <div className="row m-b-10">
                   <div className="col-md-6">
                     <label className="category">Sub Category</label>
-                    <select className="category-select-system dropdown-label">
-                      <option className="select-category-placeholder dropdown-label">
+                    <select
+                      value={this.state.selectedSubCategory}
+                      onChange={this.setSubCategoryValue}
+                      className="category-select-system dropdown-label"
+                    >
+                      <option className="select-category-placeholder">
                         Select Sub Category
                       </option>
+                      {this.state.SubCategoryData !== null &&
+                        this.state.SubCategoryData.map((item, i) => (
+                          <option
+                            key={i}
+                            value={item.subCategoryID}
+                            className="select-category-placeholder"
+                          >
+                            {item.subCategoryName}
+                          </option>
+                        ))}
                     </select>
                   </div>
                   <div className="col-md-6">
                     <label className="sub-category">Issue Type</label>
-                    <select className="category-select-system dropdown-label">
+                    <select
+                      value={this.state.selectedIssueType}
+                      onChange={this.setIssueTypeValue}
+                      className="category-select-system dropdown-label"
+                    >
                       <option className="select-sub-category-placeholder">
-                        Select Type
+                        Select Issue Type
                       </option>
+                      {this.state.IssueTypeData !== null &&
+                        this.state.IssueTypeData.map((item, i) => (
+                          <option
+                            key={i}
+                            value={item.issueTypeID}
+                            className="select-category-placeholder"
+                          >
+                            {item.issueTypeName}
+                          </option>
+                        ))}
                     </select>
                   </div>
                 </div>
@@ -345,7 +630,7 @@ class TicketSystem extends Component {
                 <div className="row m-b-10">
                   <div className="col-md-6">
                     <label className="category">Ticket Priority</label>
-                    <div className="row">
+                    {/* <div className="row">
                       <div className="col-md-4 High">
                         <button className="">
                           <label className="high-button-text">High</label>
@@ -361,6 +646,22 @@ class TicketSystem extends Component {
                           <label className="low-button-text">Low</label>
                         </button>
                       </div>
+                    </div> */}
+                    <div className="priority-butns-cntr">
+                      {this.state.TicketPriorityData !== null &&
+                        this.state.TicketPriorityData.map((item, i) => (
+                          <div key={i} className="priority-butns">
+                            <input
+                              type="radio"
+                              name="ticket-priority"
+                              id={item.priortyName}
+                              onChange={this.setTicketPriorityValue}
+                            />
+                            <label htmlFor={item.priortyName}>
+                              {item.priortyName}
+                            </label>
+                          </div>
+                        ))}
                     </div>
                   </div>
                   <div className="col-md-6">
@@ -427,10 +728,24 @@ class TicketSystem extends Component {
                 <div className="row m-b-10">
                   <div className="col-md-6">
                     <label className="category">Channel Of Purchase</label>
-                    <select className="category-select-system dropdown-label">
-                      <option className="select-category-placeholder dropdown-label">
-                        Select Type
+                    <select
+                      value={this.state.selectedChannelOfPurchase}
+                      onChange={this.setChannelOfPurchaseValue}
+                      className="category-select-system dropdown-label"
+                    >
+                      <option className="select-category-placeholder">
+                        Select Channel Of Purchase
                       </option>
+                      {this.state.ChannelOfPurchaseData !== null &&
+                        this.state.ChannelOfPurchaseData.map((item, i) => (
+                          <option
+                            key={i}
+                            value={item.channelOfPurchaseID}
+                            className="select-category-placeholder"
+                          >
+                            {item.nameOfChannel}
+                          </option>
+                        ))}
                     </select>
                   </div>
                 </div>

@@ -8,17 +8,27 @@ import Modal from "react-responsive-modal";
 import { Radio } from "antd";
 import DatePicker from "react-datepicker";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import config from "./../helpers/config";
+import moment from "moment";
 
 class AddSearchMyTicket extends Component {
   constructor(props) {
     super(props);
     this.state = {
       AddCustomer: false,
-      value: "",
-      startDate: ""
+      fullName: "",
+      mobileNumber: "",
+      emailId: "",
+      genderId: "",
+      dob: "",
+      alternateNumber: "",
+      alternateEmailId: "",
+      tenantID: 1
     };
     this.handleAddCustomerOpen = this.handleAddCustomerOpen.bind(this);
     this.handleAddCustomerClose = this.handleAddCustomerClose.bind(this);
+    this.handleAddCustomerSave = this.handleAddCustomerSave.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
   handleAddCustomerOpen() {
@@ -27,18 +37,59 @@ class AddSearchMyTicket extends Component {
   handleAddCustomerClose() {
     this.setState({ AddCustomer: false });
   }
-  onChange = e => {
+  handleAddCustomerSave() {
+    debugger;
+    const requestOptions = {
+      method: "POST",
+      header: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      body: ""
+    };
+    let self = this;
+
+    axios(config.apiUrl + "/Customer/createCustomer", requestOptions, {
+      params: {
+        CustomerID: 0,
+        TenantID: this.state.tenantID,
+        CustomerName: this.state.fullName,
+        CustomerPhoneNumber: this.state.mobileNumber,
+        CustomerEmailId: this.state.emailId,
+        GenderID: this.state.genderId,
+        AltNumber: this.state.alternateNumber,
+        AltEmailID: this.state.alternateEmailId,
+        dob: moment(this.state.dob).format("L"),
+        IsActive: 1,
+        CreatedBy: "abc",
+        ModifyBy: 1,
+        ModifiedDate: "20/12/2019"
+      }
+    }).then(function(res) {
+      console.log(JSON.stringify(res.data.responseData));
+      debugger;
+      // let ChannelOfPurchaseData = res.data.responseData;
+      // self.setState({ ChannelOfPurchaseData: ChannelOfPurchaseData });
+    });
+  }
+  genderSelect = e => {
+    debugger;
     this.setState({
-      value: e.target.value
+      genderId: e.target.value
     });
   };
   handleChange(date) {
+    debugger;
     this.setState({
-      startDate: date
+      dob: date
     });
   }
   handleRedirect = () => {
     this.props.history.push("/admin/ticketsystem");
+  };
+  addCustomerData = e => {
+    debugger;
+    this.setState({ [e.currentTarget.name]: e.currentTarget.value });
   };
   render() {
     return (
@@ -114,6 +165,9 @@ class AddSearchMyTicket extends Component {
                       type="text"
                       className="txt-1"
                       placeholder="Full Name"
+                      name="fullName"
+                      value={this.state.fullName}
+                      onChange={this.addCustomerData}
                     />
                   </div>
                   <div className="col-md-6">
@@ -121,6 +175,9 @@ class AddSearchMyTicket extends Component {
                       type="text"
                       className="txt-1"
                       placeholder="Mobile Number"
+                      name="mobileNumber"
+                      value={this.state.mobileNumber}
+                      onChange={this.addCustomerData}
                     />
                   </div>
                 </div>
@@ -130,12 +187,15 @@ class AddSearchMyTicket extends Component {
                       type="text"
                       className="txt-1"
                       placeholder="Email ID"
+                      name="emailId"
+                      value={this.state.emailId}
+                      onChange={this.addCustomerData}
                     />
                   </div>
                   <div className="col-md-6 radio-btn-margin">
                     <Radio.Group
-                      onChange={this.onChange}
-                      value={this.state.value}
+                      onChange={this.genderSelect}
+                      value={this.state.genderId}
                     >
                       <Radio value={1}>Male</Radio>
                       <Radio value={2}>Female</Radio>
@@ -145,9 +205,10 @@ class AddSearchMyTicket extends Component {
                 <div className="row row-margin1">
                   <div className="col-md-6 addcustdate">
                     <DatePicker
-                      selected ={this.state.startDate}
+                      selected={this.state.dob}
                       onChange={date => this.handleChange(date)}
                       placeholderText="DOB"
+                      value={this.state.dob}
                       showMonthDropdown
                       showYearDropdown
                       className="txt-1"
@@ -169,6 +230,9 @@ class AddSearchMyTicket extends Component {
                       type="text"
                       className="txt-1"
                       placeholder="Alternate Number"
+                      name="alternateNumber"
+                      value={this.state.alternateNumber}
+                      onChange={this.addCustomerData}
                     />
                   </div>
                   <div className="col-md-6">
@@ -176,13 +240,20 @@ class AddSearchMyTicket extends Component {
                       type="text"
                       className="txt-1"
                       placeholder="Alternate Email"
+                      name="alternateEmailId"
+                      value={this.state.alternateEmailId}
+                      onChange={this.addCustomerData}
                     />
                   </div>
                 </div>
                 <div className="btn-float">
-                  <button className="cancel-btn-A"
-                  onClick={this.handleAddCustomerClose}>CANCEL</button>
-                  <Link to="ticketsystem">
+                  <button
+                    className="cancel-btn-A"
+                    onClick={this.handleAddCustomerClose}
+                  >
+                    CANCEL
+                  </button>
+                  <Link onClick={this.handleAddCustomerSave} to="ticketsystem">
                     <button className="butn">SAVE</button>
                   </Link>
                 </div>

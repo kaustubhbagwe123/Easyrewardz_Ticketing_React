@@ -3022,6 +3022,96 @@ table tr th:last-child {
 }
 /* extra css end */
 
+/* ticket system starts */
+.ticket-title-select .css-yk16xz-control, .ticket-title-select .css-1pahdxg-control {
+  background-color: #ecf2f4;
+  min-height: 42px;
+  border-color: transparent;
+  box-shadow: none;
+}
+.ticket-title-select .css-yk16xz-control:hover, .ticket-title-select .css-1pahdxg-control:hover {
+  border-color: transparent;
+  box-shadow: none;
+}
+.ticket-title-select .css-1g48xl4-IndicatorsContainer {
+  display: none;
+}
+.ticket-title-select .css-1wa3eu0-placeholder {
+  color: #9b9b9b;
+  font-family: Lato;
+  font-weight: 700;
+}
+.ticket-title-select .css-1uccc91-singleValue, .ticket-title-select .css-w8afj7-Input input {
+  color: #000 !important;
+  font-family: Lato;
+  font-weight: 700;
+}
+.ticket-title-select .css-1ml51p6-MenuList {
+  padding: 12px;
+}
+.ticket-title-select .css-26l3qy-menu {
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
+  margin: 0;
+}
+.ticket-title-select .css-1n7v3ny-option, .ticket-title-select .css-yt9ioa-option {
+  color: #9B9B9B;
+  font-family: Lato;
+}
+.ticket-title-select .css-9gakcf-option {
+  font-family: Lato;
+  background-color: #2561A8;
+}
+.ticket-title-select .css-1ml51p6-MenuList div {
+  display: inline-block;
+  width: auto;
+  border: 1px solid #2561A8;
+  border-radius: 8px;
+  padding: 5px 10px;
+  margin: 7px;
+  cursor: pointer;
+}
+.priority-butns label {
+  border-radius: 4px;
+  font-weight: 700;
+  font-family: Lato;
+  padding: 10px 15px;
+  margin-right: 8px;
+  cursor: pointer;
+  border: 1px solid;
+  margin-bottom: 7px;
+}
+.priority-butns {
+  display: inline-block;
+}
+.priority-butns-cntr .priority-butns:nth-child(3n + 1) label {
+  border-color: #d02139;
+  color: #d02139;
+}
+.priority-butns-cntr .priority-butns:nth-child(3n + 1) input:checked + label {
+  background: #d02139;
+  color: #fff;
+}
+.priority-butns-cntr .priority-butns:nth-child(3n + 2) label {
+  border-color: #f5a623;
+  color: #f5a623;
+}
+.priority-butns-cntr .priority-butns:nth-child(3n + 2) input:checked + label {
+  background: #f5a623;
+  color: #fff;
+}
+.priority-butns-cntr .priority-butns:nth-child(3n) label {
+  border-color: #5aa805;
+  color: #5aa805;
+}
+.priority-butns-cntr .priority-butns:nth-child(3n) input:checked + label {
+  background: #5aa805;
+  color: #fff;
+}
+.priority-butns-cntr .priority-butns:last-child label {
+  margin-right: 0;
+}
+/* ticket system ends */
+
 /* chetan css end */
 /******************************************************/
 
