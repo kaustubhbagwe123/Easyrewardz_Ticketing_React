@@ -450,6 +450,44 @@ class ChatLanguage extends Component {
                     defaultPageSize={15}
                     showPagination={false}
                   />
+                  <div className="position-relative1">
+                    <div className="pagi">
+                      <ul>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>&lt;</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>1</a>
+                        </li>
+                        <li className="active">
+                          <a href={Demo.BLANK_LINK}>2</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>3</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>4</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>5</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>6</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>&gt;</a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="item-selection">
+                      <select>
+                        <option>30</option>
+                        <option>50</option>
+                        <option>100</option>
+                      </select>
+                      <p>Items per page</p>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className="col-md-4">
@@ -482,7 +520,7 @@ class ChatLanguage extends Component {
                           Language_Icon.png
                         </label>
                       </div>
-                      
+
                     </div>
                     <div className="btnSpace">
                       <button className="CreateADDBtn">

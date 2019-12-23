@@ -173,39 +173,59 @@ class StoreMaster extends Component {
     );
     const ActionEditBtn = (
       <div className="edtpadding">
-        <label className="Create-store-text">CREATE STORE</label>
-        <div className="div-padding-1">
-          <label className="designation-name">Brand</label>
-          <select className="store-create-select">
+        <div className="">
+          <label className="popover-header-text">EDIT STORE</label>
+        </div>
+        <div className="pop-over-div">
+          <label className="edit-label-1">Brand</label>
+          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
             <option>Bata</option>
+            <option>2</option>
+            <option>3</option>
           </select>
         </div>
-        <div className="div-padding-1">
-          <label className="designation-name">Store Code</label>
-          <input type="text" className="txt-1" placeholder="Enter Store Code" />
+        <div className="pop-over-div">
+          <label className="edit-label-1">Store Code</label>
+          <input
+            type="text"
+            className="txt-edit-popover"
+            placeholder="Enter Store Code"
+          />
         </div>
-        <div className="div-padding-1">
-          <label className="designation-name">Store Name</label>
-          <input type="text" className="txt-1" placeholder="Enter Bata Code" />
+        <div className="pop-over-div">
+          <label className="edit-label-1">Store Name</label>
+          <input
+            type="text"
+            className="txt-edit-popover"
+            placeholder="Enter Store Name"
+          />
         </div>
-        <div className="div-padding-1">
-          <label className="designation-name">State</label>
-          <select className="store-create-select">
+        <div className="pop-over-div">
+          <label className="edit-label-1">State</label>
+          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
             <option>Delhi</option>
+            <option>2</option>
+            <option>3</option>
           </select>
         </div>
-        <div className="div-padding-1">
-          <label className="designation-name">City</label>
-          <select className="store-create-select">
+        <div className="pop-over-div">
+          <label className="edit-label-1">City</label>
+          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
             <option>Delhi</option>
+            <option>2</option>
+            <option>3</option>
           </select>
         </div>
-        <div className="div-padding-1">
-          <label className="designation-name">Pin Code</label>
-          <input type="text" className="txt-1" placeholder="Enter Pin Code" />
+        <div className="pop-over-div">
+          <label className="edit-label-1">Pin Code</label>
+          <input
+            type="text"
+            className="txt-edit-popover"
+            placeholder="Enter Pin Code"
+          />
         </div>
-        <div className="div-padding-1">
-          <label className="designation-name">Address</label>
+        <div className="pop-over-div">
+          <label className="edit-label-1">Address</label>
           <textarea
             cols="31"
             rows="3"
@@ -213,39 +233,54 @@ class StoreMaster extends Component {
             placeholder="Near Palm Court Bulilding,Sector 14 Gurgaon,Haryan"
           ></textarea>
         </div>
-        <div className="div-padding-1">
-          <label className="designation-name">Region</label>
-          <select className="store-create-select">
+        <div className="pop-over-div">
+          <label className="edit-label-1">Region</label>
+          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
             <option>Delhi</option>
+            <option>2</option>
+            <option>3</option>
           </select>
         </div>
-        <div className="div-padding-1">
-          <label className="designation-name">Zone</label>
-          <select className="store-create-select">
+        <div className="pop-over-div">
+          <label className="edit-label-1">Zone</label>
+          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
             <option>North</option>
+            <option>2</option>
+            <option>3</option>
           </select>
         </div>
-        <div className="div-padding-1">
-          <label className="designation-name">Store Type</label>
-          <select className="store-create-select">
+        <div className="pop-over-div">
+          <label className="edit-label-1">Store Type</label>
+          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
             <option>Retail</option>
+            <option>2</option>
+            <option>3</option>
           </select>
         </div>
-        <div className="div-padding-1">
-          <label className="designation-name">Contact Details:Email</label>
-          <input type="text" className="txt-1" placeholder="Enter Email Id" />
+        <div className="pop-over-div">
+          <label className="edit-label-1">Contact Details:Email</label>
+          <input
+            type="text"
+            className="txt-edit-popover"
+            placeholder="Enter Email Id"
+          />
         </div>
-        <div className="div-padding-1">
-          <label className="designation-name">Contact Details:Phone</label>
-          <input type="text" className="txt-1" placeholder="Enter Phone no" />
+        <div className="pop-over-div">
+          <label className="edit-label-1">Contact Details:Phone</label>
+          <input
+            type="text"
+            className="txt-edit-popover"
+            placeholder="Enter Phone No"
+          />
         </div>
-        <div className="div-padding-1">
-          <label className="designation-name">Status</label>
-          <select className="store-create-select">
-            <option>Active</option>
+        <div className="pop-over-div">
+          <label className="edit-label-1">Status</label>
+          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
+            <option>Status</option>
             <option>Inactive</option>
           </select>
         </div>
+        <br />
         <div>
           <label className="pop-over-cancle">CANCEL</label>
           <button className="pop-over-button">
@@ -258,11 +293,11 @@ class StoreMaster extends Component {
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
-          <Link to="settings">Settings</Link>
+          <Link to="settings" className="header-path">Settings</Link>
           <span>&gt;</span>
-          <Link to={Demo.BLANK_LINK}>Ticketing</Link>
+          <Link to={Demo.BLANK_LINK} className="header-path">Ticketing</Link>
           <span>&gt;</span>
-          <Link to={Demo.BLANK_LINK} className="active">
+          <Link to={Demo.BLANK_LINK} className="header-path active">
             Store Master
           </Link>
         </div>
@@ -276,8 +311,46 @@ class StoreMaster extends Component {
                     columns={columnsTickStore}
                     // resizable={false}
                     defaultPageSize={5}
-                    showPagination={true}
+                    showPagination={false}
                   />
+                  <div className="position-relative">
+                    <div className="pagi">
+                      <ul>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>&lt;</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>1</a>
+                        </li>
+                        <li className="active">
+                          <a href={Demo.BLANK_LINK}>2</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>3</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>4</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>5</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>6</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>&gt;</a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="item-selection">
+                      <select>
+                        <option>30</option>
+                        <option>50</option>
+                        <option>100</option>
+                      </select>
+                      <p>Items per page</p>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className="col-md-4">

@@ -452,7 +452,7 @@ class ChatElements extends Component {
     const ChatEdit = (
       <>
         <div className="">
-          <label className="create-department">Edit Element</label>
+          <label className="create-department">EDIT ELEMENT</label>
           <div className="div-padding-1">
             <label className="designation-name">Element Code</label>
             <input
@@ -471,20 +471,20 @@ class ChatElements extends Component {
               />
             </div>
           </div>
-          <div className="" style={{marginBottom: "15px"}}>
+          <div className="" style={{ marginBottom: "15px" }}>
             <label className="reports-to">Element Icon</label>
             <div class="custom-file">
               <input type="file" className="custom-file-input" />
               <label className="custom-file-label">Element_Icon.png</label>
             </div>
-            
+
           </div>
           <div>
-          <label className="pop-over-cancle">CANCEL</label>
-          <button className="pop-over-button">
-            <label className="pop-over-btnsave-text">SAVE</label>
-          </button>
-        </div>
+            <label className="pop-over-cancle">CANCEL</label>
+            <button className="pop-over-button">
+              <label className="pop-over-btnsave-text">SAVE</label>
+            </button>
+          </div>
         </div>
       </>
     );
@@ -516,6 +516,44 @@ class ChatElements extends Component {
                     defaultPageSize={15}
                     showPagination={false}
                   />
+                  <div className="position-relative1">
+                    <div className="pagi">
+                      <ul>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>&lt;</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>1</a>
+                        </li>
+                        <li className="active">
+                          <a href={Demo.BLANK_LINK}>2</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>3</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>4</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>5</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>6</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>&gt;</a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="item-selection">
+                      <select>
+                        <option>30</option>
+                        <option>50</option>
+                        <option>100</option>
+                      </select>
+                      <p>Items per page</p>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className="col-md-4">
@@ -540,7 +578,7 @@ class ChatElements extends Component {
                         />
                       </div>
                     </div>
-                    <div className="" style={{marginBottom: "15px"}}>
+                    <div className="" style={{ marginBottom: "15px" }}>
                       <label className="reports-to">Element Icon</label>
                       <div class="custom-file">
                         <input type="file" className="custom-file-input" />

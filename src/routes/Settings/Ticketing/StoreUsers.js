@@ -190,221 +190,46 @@ class StoreUsers extends Component {
                     columns={columnsStorUser}
                     // resizable={false}
                     defaultPageSize={5}
-                    showPagination={true}
+                    showPagination={false}
                   />
-                  {/* <table>
-                    <thead>
-                      <tr>
-                        <th>
-                          Brand Name <img src={TableArr} alt="table-arr" />
-                        </th>
-                        <th>
-                          Store Code <img src={TableArr} alt="table-arr" />
-                        </th>
-                        <th>
-                          UserName <img src={TableArr} alt="table-arr" />
-                        </th>
-                        <th>
-                          Reportee Name <img src={TableArr} alt="table-arr" />
-                        </th>
-                        <th>
-                          Department <img src={TableArr} alt="table-arr" />
-                        </th>
-                        <th>
-                          Function <img src={TableArr} alt="table-arr" />
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>Bata 1</td>
-                        <td>1234</td>
-                        <td>Vikas
-                        <img
-                            className="info-icon"
-                            src={InfoIcon}
-                            alt="info-icon"
-                            
-                          />
-                        </td>
-                        <td>
-                          Naman
-                          <img
-                            className="info-icon"
-                            src={InfoIcon}
-                            alt="info-icon"
-                            id="desig1"
-                          />
-                          <UncontrolledPopover
-                            trigger="hover"
-                            placement="auto"
-                            target="desig1"
-                            className="general-popover created-popover users-popover"
-                          >
-                            <PopoverBody>
-                              <div>
-                                <p className="sub-title">
-                                  Reportee Designation
-                                </p>
-                                <p className="title">HOD</p>
-                              </div>
-                              <div>
-                                <p className="sub-title">Issue Type</p>
-                                <p className="title">Payments</p>
-                              </div>
-                              <div>
-                                <p className="sub-title">Report To</p>
-                                <p className="title">HOD</p>
-                              </div>
-                              <div>
-                                <p className="sub-title">CRM Role</p>
-                                <p className="title">Manager</p>
-                              </div>
-                              <div>
-                                <p className="sub-title">Brand</p>
-                                <p className="title">Bata</p>
-                              </div>
-                              <div>
-                                <p className="sub-title">Copy Escalation</p>
-                                <p className="title">Yes</p>
-                              </div>
-                              <div>
-                                <p className="sub-title">Categories</p>
-                                <p className="title">Compliant</p>
-                              </div>
-                              <div>
-                                <p className="sub-title">Assign Escalation</p>
-                                <p className="title">Agent</p>
-                              </div>
-                              <div>
-                                <p className="sub-title">Sub Categories</p>
-                                <p className="title">Payments</p>
-                              </div>
-                              <div>
-                                <p className="sub-title">Agent Name</p>
-                                <p className="title">Amit Singh</p>
-                              </div>
-                              <div>
-                                <p className="sub-title">Created By</p>
-                                <p className="title">Admin</p>
-                              </div>
-                              <div>
-                                <p className="sub-title">Updated By</p>
-                                <p className="title">Manager</p>
-                              </div>
-                              <div>
-                                <p className="sub-title">Created Date</p>
-                                <p className="title">06-03-2019</p>
-                              </div>
-                              <div>
-                                <p className="sub-title">Updated Date</p>
-                                <p className="title">06-03-2019</p>
-                              </div>
-                            </PopoverBody>
-                          </UncontrolledPopover>
-                        </td>
-                        <td>
-                           IT
-                        </td>
-                        <td>
-                           Infra
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Bata1</td>
-                        <td>1234</td>
-                        <td>Vikas
-                        <img
-                            className="info-icon"
-                            src={InfoIcon}
-                            alt="info-icon"
-                          />
-                        </td>
-                        <td>
-                          Naman
-                          <img
-                            className="info-icon"
-                            src={InfoIcon}
-                            alt="info-icon"
-                            id="desig2"
-                          />
-                          <UncontrolledPopover
-                            trigger="hover"
-                            placement="auto"
-                            target="desig2"
-                            className="general-popover created-popover users-popover"
-                          >
-                            <PopoverBody>
-                              <div>
-                                <p className="sub-title">
-                                  Reportee Designation
-                                </p>
-                                <p className="title">HOD</p>
-                              </div>
-                              <div>
-                                <p className="sub-title">Issue Type</p>
-                                <p className="title">Payments</p>
-                              </div>
-                              <div>
-                                <p className="sub-title">Report To</p>
-                                <p className="title">HOD</p>
-                              </div>
-                              <div>
-                                <p className="sub-title">CRM Role</p>
-                                <p className="title">Manager</p>
-                              </div>
-                              <div>
-                                <p className="sub-title">Brand</p>
-                                <p className="title">Bata</p>
-                              </div>
-                              <div>
-                                <p className="sub-title">Copy Escalation</p>
-                                <p className="title">Yes</p>
-                              </div>
-                              <div>
-                                <p className="sub-title">Categories</p>
-                                <p className="title">Compliant</p>
-                              </div>
-                              <div>
-                                <p className="sub-title">Assign Escalation</p>
-                                <p className="title">Agent</p>
-                              </div>
-                              <div>
-                                <p className="sub-title">Sub Categories</p>
-                                <p className="title">Payments</p>
-                              </div>
-                              <div>
-                                <p className="sub-title">Agent Name</p>
-                                <p className="title">Amit Singh</p>
-                              </div>
-                              <div>
-                                <p className="sub-title">Created By</p>
-                                <p className="title">Admin</p>
-                              </div>
-                              <div>
-                                <p className="sub-title">Updated By</p>
-                                <p className="title">Manager</p>
-                              </div>
-                              <div>
-                                <p className="sub-title">Created Date</p>
-                                <p className="title">06-03-2019</p>
-                              </div>
-                              <div>
-                                <p className="sub-title">Updated Date</p>
-                                <p className="title">06-03-2019</p>
-                              </div>
-                            </PopoverBody>
-                          </UncontrolledPopover>
-                        </td>
-                        <td>
-                         IT
-                        </td>
-                        <td>
-                         Infra
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table> */}
+                 <div className="position-relative">
+                    <div className="pagi">
+                      <ul>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>&lt;</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>1</a>
+                        </li>
+                        <li className="active">
+                          <a href={Demo.BLANK_LINK}>2</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>3</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>4</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>5</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>6</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>&gt;</a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="item-selection">
+                      <select>
+                        <option>30</option>
+                        <option>50</option>
+                        <option>100</option>
+                      </select>
+                      <p>Items per page</p>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className="col-md-4">

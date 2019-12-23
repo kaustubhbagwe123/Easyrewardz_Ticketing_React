@@ -23,7 +23,7 @@ class ProgramCodeSignIn extends Component {
               >
                 SIGN IN
               </h3>
-              <div style={{marginRight:"10px"}}>
+              <div>
                 <input
                   type="email"
                   className="program-code-textbox"
@@ -36,8 +36,8 @@ class ProgramCodeSignIn extends Component {
                 type="button"
                 className="program-code-button"                 
                 onClick={this.hanleChange}
-              >
-                <label className="program-code-button-text">SUBMIT</label>
+              >SUBMIT
+                {/* <label className="program-code-button-text"></label> */}
               </button>
             </div>
           </div>

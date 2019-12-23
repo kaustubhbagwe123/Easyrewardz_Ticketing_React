@@ -1193,6 +1193,9 @@
   text-align: left;
   padding-bottom: 10px;
 }
+.reports-dis {
+  display: block;
+}
 .txt-1 {
   background-color: #ecf2f4;
   border-radius: 4px;
@@ -1689,7 +1692,7 @@
   background-color: #ffffff;
   border-radius: 4px;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.05);
-  height: 870px;
+  height: auto;
   margin-left: 35px;
   margin-right: 35px;
   margin-top: -10px;
@@ -1897,7 +1900,7 @@
 
 .item-selection {
   position: absolute;
-  top: 50%;
+  top: 47%;
   transform: translateY(-50%);
   left: 30px;
 }

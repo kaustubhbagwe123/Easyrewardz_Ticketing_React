@@ -197,7 +197,7 @@ class TicketHierarchy extends Component {
     const ActionEditBtn = (
       <div className="edtpadding">
         <div className="">
-          <label className="popover-header-text">CREATE HIERARCHY</label>
+          <label className="popover-header-text">EDIT HIERARCHY</label>
         </div>
         <div className="pop-over-div">
           <label className="edit-label-1">Designation Name</label>
@@ -235,11 +235,11 @@ class TicketHierarchy extends Component {
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
-          <Link to="settings">Settings</Link>
+          <Link to="settings" className="header-path">Settings</Link>
           <span>&gt;</span>
-          <a href={Demo.BLANK_LINK}>Ticketing</a>
+          <a href={Demo.BLANK_LINK} className="header-path">Ticketing</a>
           <span>&gt;</span>
-          <a href={Demo.BLANK_LINK} className="active">
+          <a href={Demo.BLANK_LINK} className="header-path active">
             Hierarchy
           </a>
         </div>
@@ -253,11 +253,50 @@ class TicketHierarchy extends Component {
                     columns={columnsTickHier}
                     // resizable={false}
                     defaultPageSize={5}
-                    showPagination={true}
+                    showPagination={false}
                   />
-                  
+                  <div className="position-relative">
+                    <div className="pagi">
+                      <ul>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>&lt;</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>1</a>
+                        </li>
+                        <li className="active">
+                          <a href={Demo.BLANK_LINK}>2</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>3</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>4</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>5</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>6</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>&gt;</a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="item-selection">
+                      <select>
+                        <option>30</option>
+                        <option>50</option>
+                        <option>100</option>
+                      </select>
+                      <p>Items per page</p>
+                    </div>
+                  </div>
                 </div>
+
               </div>
+
               <div className="col-md-4">
                 <div className="createHierarchyMask">
                   <div className="createSpace">
