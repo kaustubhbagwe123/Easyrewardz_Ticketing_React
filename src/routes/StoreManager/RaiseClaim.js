@@ -110,6 +110,7 @@ class RaiseClaim extends Component {
                               </label>
                             </div>
                             <div className="col-md-6">
+                            
                               <input
                                 type="text"
                                 className="searchtext"

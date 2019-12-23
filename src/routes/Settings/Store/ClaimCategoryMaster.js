@@ -263,7 +263,7 @@ class ClaimCategoryMaster extends Component {
     const ActionEditBtn = (
       <div className="edtpadding">
         <div className="">
-          <label className="popover-header-text">EDIT Claim CATEGORY</label>
+          <label className="popover-header-text">EDIT CLAIM CATEGORY</label>
         </div>
         <div className=" pop-over-div">
           <label className="pop-over-lbl-text">Brand Name</label>
@@ -383,7 +383,7 @@ class ClaimCategoryMaster extends Component {
                       </select>
                     </div>
                     <div className="dropDrownSpace">
-                      <label className="reports-to">Claim Category</label>
+                      <label className="reports-to reports-dis">Claim Category</label>
                       <Select
                         showSearch={true}
                         value={list1Value}
@@ -436,7 +436,7 @@ class ClaimCategoryMaster extends Component {
                     </div>
 
                     <div className="dropDrownSpace">
-                      <label className="reports-to">Claim Sub Category</label>
+                      <label className="reports-to reports-dis">Claim Sub Category</label>
                       <Select
                         showSearch={true}
                         value={ListOfSubCate}

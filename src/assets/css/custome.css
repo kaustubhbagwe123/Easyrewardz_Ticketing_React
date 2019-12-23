@@ -3909,10 +3909,15 @@ progress::-webkit-progress-bar {
   border-radius: 4px;
   width: 100%;
   height: 43px;
-  margin-right: 10px;
+  /* margin-right: 10px; */
   cursor: pointer;
+  color: #fff;
 }
-
+.chpass {
+  font-weight: bold;
+  color: #a5a5a5;
+  margin-bottom: 5px;
+}
 .program-code-button-text {
   color: #ffffff;
   font-family: Lato;
@@ -7872,7 +7877,7 @@ table tr th:last-child {
   margin-top: 20px;
 }
 .addmanual {
-  width: 118px;
+  width: 142px;
   height: 30px;
   background-color: transparent;
   border: 1px solid #2561a8;
@@ -8758,6 +8763,7 @@ table tr th:last-child {
 .EMFCText {
   margin: 0 15px;
   color: #000;
+  text-transform: capitalize
 }
 .kblink-auto1 {
   position: absolute;

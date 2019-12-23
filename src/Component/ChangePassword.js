@@ -24,13 +24,7 @@ export class ChangePassword extends Component {
               </div>
               <div className="input-group sb-2">
                 <label
-                  className="col-mb-3 col-form-label col-form-label pt-0 "
-                  style={{
-                    fontWeight: "bold",
-                    color: "#a5a5a5",
-                    marginBottom: "5px"
-                  }}
-                >
+                  className="col-mb-3 col-form-label col-form-label pt-0 chpass">
                   Enter New Password
                 </label>
               </div>
@@ -39,13 +33,7 @@ export class ChangePassword extends Component {
               </div>
               <div className="input-group sb-2">
                 <label
-                  className="col-mb-3 col-form-label col-form-label pt-0 "
-                  style={{
-                    fontWeight: "bold",
-                    color: "#a5a5a5",
-                    marginBottom: "5px"
-                  }}
-                >
+                  className="col-mb-3 col-form-label col-form-label pt-0 chpass">
                   Enter Confirm Password
                 </label>
               </div>
@@ -55,25 +43,15 @@ export class ChangePassword extends Component {
               <div className="input-group mb-3">
                 <button
                   type="button"
-                  className="recovery-pass-button"
+                  className="program-code-button"
                   title=""
                   data-toggle="tooltip"
                   data-original-title="btn btn-primary"
-                >
-                <label className="program-code-button-text">SET PASSWORD</label>  
+                >SET PASSWORD
+                {/* <label className="program-code-button-text">SET PASSWORD</label>   */}
                 </button>
               </div>
 
-              {/* <div style={{ paddingTop: "10px" }}>
-                <p className="mb-0 text-muted">
-                  <Link
-                    to="SignIn"
-                    style={{ color: "#246ec3", letterSpacing: "0.5px" }}
-                  >
-                    TRY LOGIN AGAIN
-                  </Link>
-                </p>
-              </div> */}
             </div>
           </div>
         </div>

@@ -28,7 +28,7 @@ import Up1Img from "./../assets/Images/up-1.png";
 import Down1Img from "./../assets/Images/down-1.png";
 // import axios from "axios";
 
-import { config } from "./../helpers/config";
+import config from "./../helpers/config";
 import { Radio } from "antd";
 import DatePicker from "react-datepicker";
 import ApiTicketSystem from "./APIService/ApiTicketSystem";

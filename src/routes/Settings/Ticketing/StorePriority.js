@@ -334,11 +334,11 @@ class StorePriority extends Component {
         return (
             <Fragment>
                  <div className="container-fluid setting-title setting-breadcrumb">
-          <Link to="settings">Settings</Link>
+          <Link to="settings" className="header-path">Settings</Link>
           <span>&gt;</span>
-          <Link to={Demo.BLANK_LINK}>Store</Link>
+          <Link to={Demo.BLANK_LINK} className="header-path">Store</Link>
           <span>&gt;</span>
-          <Link to={Demo.BLANK_LINK} className="active">
+          <Link to={Demo.BLANK_LINK} className="header-path active">
             Priority
           </Link>
         </div>

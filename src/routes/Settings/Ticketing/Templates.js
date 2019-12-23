@@ -223,11 +223,11 @@ class Templates extends Component {
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
-          <Link to="settings">Settings</Link>
+          <Link to="settings" className="header-path">Settings</Link>
           <span>&gt;</span>
-          <Link to={Demo.BLANK_LINK}>Ticketing</Link>
+          <Link to={Demo.BLANK_LINK} className="header-path">Ticketing</Link>
           <span>&gt;</span>
-          <Link to={Demo.BLANK_LINK} className="active">
+          <Link to={Demo.BLANK_LINK} className="header-path active">
             Templates
           </Link>
         </div>
@@ -241,7 +241,7 @@ class Templates extends Component {
                     columns={columns}
                     // resizable={false}
                     defaultPageSize={5}
-                    showPagination={true}
+                    showPagination={false}
                   />
                   <div className="position-relative1">
                     <div className="pagi">

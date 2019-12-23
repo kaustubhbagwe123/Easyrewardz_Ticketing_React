@@ -41,12 +41,12 @@ class ForgotPassword extends Component {
               <div className="input-group mb-3">
                 <button
                   type="button"
-                  className="recovery-pass-button"
+                  className="program-code-button"
                   title=""
                   data-toggle="tooltip"
                   data-original-title="btn btn-primary"
-                >
-                <label className="program-code-button-text">RECOVER PASSWORD</label>  
+                >RECOVER PASSWORD
+                {/* <label className="program-code-button-text">RECOVER PASSWORD</label>   */}
                 </button>
               </div>
 
