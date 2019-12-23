@@ -48,26 +48,6 @@ class AddSearchMyTicket extends Component {
     debugger;
 
     if (this.validator.allValid()) {
-      // const requestOptions = {
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     "Access-Control-Allow-Methods": "*"
-      //   },
-      //   body: JSON.stringify({
-      //     TenantID: this.state.tenantID,
-      //     CustomerName: this.state.fullName,
-      //     CustomerPhoneNumber: this.state.mobileNumber,
-      //     CustomerEmailId: this.state.emailId,
-      //     GenderID: this.state.genderId,
-      //     AltNumber: this.state.alternateNumber,
-      //     AltEmailID: this.state.alternateEmailId,
-      //     DateOfBirth: moment(this.state.dob).format("L") + " 00:00:00",
-      //     IsActive: 1,
-      //     CreatedBy: 1,
-      //     ModifyBy: 1,
-      //     ModifiedDate: "2019-12-17 16:13:58"
-      //   })
-      // };
       axios({
         method: "post",
         headers: {
@@ -94,10 +74,10 @@ class AddSearchMyTicket extends Component {
         console.log(JSON.stringify(res.data.message));
         let responseMessage = res.data.message;
         if (responseMessage === "Success") {
-          this.props.history.push({
-            pathname: "ticketsystem",
-            state: this.state
-          });
+          // this.props.history.push({
+          //   pathname: "ticketsystem",
+          //   state: this.state
+          // });
           NotificationManager.success("New Customer added successfully.");
           setTimeout(function() {
             window.location.href = "ticketsystem";
