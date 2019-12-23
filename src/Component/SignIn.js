@@ -4,7 +4,7 @@ import "react-app-polyfill/ie11";
 import "./../assets/css/custome.css";
 import Logo from "./../assets/Images/logo.jpg";
 import { Link } from "react-router-dom";
-// import { encryption } from "../helpers/encryption";
+import { encryption } from "../helpers/encryption";
 import axios from "axios";
 import config from "../helpers/config";
 // import { authHeader } from "../helpers/authHeader";
@@ -34,48 +34,20 @@ class SingIn extends Component {
   handleSubmit(event) {
     event.preventDefault()
     debugger;
-    let self = this;
+    
     const { emailID, password } = this.state;
-    // let X_Authorized_userId = encryption(emailID, "enc");
-    // let X_Authorized_password = encryption(password, "enc");
-     let X_Authorized_userId = emailID;
-    let X_Authorized_password = password;
-    let X_Authorized_Domainname = "voliqaC/GVZrMPMiNdEMcDbNfN8hVKjSX6awi0r1SzY=";
-    let X_Authorized_Programcode = "Aj3zce2TzWs=";
-    let X_Authorized_applicationid = "jT5O3HHf34vv7C71OZxNXQ==";
+    var X_Authorized_userId = encryption(emailID, "enc");
+    
+    // let DescryptUserID=encryption(X_Authorized_userId, "desc");
+    let X_Authorized_password = encryption(password, "enc");
+    //  let X_Authorized_userId = emailID;
+    // let X_Authorized_password = password;
+    let X_Authorized_Domainname = "rZbZUcWTDjEk+qIvay9BFe/7Izx/T+YkIhbRa/mL0W0=";
+    let X_Authorized_Programcode = "XDdjhgH1ixe3Rm70smc/jA==";
+    let X_Authorized_applicationid = "lVWgnuY01lDMJBCSewbQ8g==";
 
     if (X_Authorized_userId !== "" && X_Authorized_password !== "") {
-       
-      // axios.post(config.apiUrl + "/Account/authenticate", requestOptions)
-        // axios.post({
-        //   method: "POST",
-        //   url: `${config.apiUrl}/Account/authenticate`,
-        //   data: {
-        //     X_Authorized_Programcode: programCode,
-        //           X_Authorized_Domainname: domainName,
-        //           X_Authorized_applicationid: AppId,
-        //           X_Authorized_userId: EncryptEmail,
-        //           X_Authorized_password: EncryptPass
-        //   },
-        //   headers: authHeader("no")
-        // })
-        // const requestOptions = {
-        //     header: authHeader("no"),
-        //     body: ''
-        // };
-        // axios.post(
-        //   config.apiUrl + "/Testing/Authenticate",
-        //   requestOptions,
-        //   {
-        //     params: {
-        //       X_Authorized_Programcode: programCode,
-        //       X_Authorized_Domainname: domainName,
-        //       X_Authorized_applicationid: AppId,
-        //       X_Authorized_userId: EncryptEmail,
-        //       X_Authorized_password: EncryptPass
-        //     }
-        //   }
-        // )
+      let self = this;
        
         const requestOptions = {
           // method: 'POST',
