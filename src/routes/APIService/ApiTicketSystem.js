@@ -1,5 +1,5 @@
-import axios from "axios";
-import { config } from "../../helpers/config";
+// import axios from "axios";
+// import { config } from "../../helpers/config";
 
 export default class ApiTicketSystem {
   //    Create function here

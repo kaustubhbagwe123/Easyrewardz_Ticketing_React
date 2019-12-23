@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import config from "./../helpers/config";
 import moment from "moment";
+import { authHeader } from "../helpers/authHeader";
 
 class AddSearchMyTicket extends Component {
   constructor(props) {
@@ -40,18 +41,12 @@ class AddSearchMyTicket extends Component {
   handleAddCustomerSave() {
     debugger;
     const requestOptions = {
-      method: "POST",
-      header: {
+      // method: "POST",
+      headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Methods": "*"
       },
-      body: ""
-    };
-    let self = this;
-
-    axios(config.apiUrl + "/Customer/createCustomer", requestOptions, {
-      params: {
-        CustomerID: 0,
+      body: JSON.stringify({
         TenantID: this.state.tenantID,
         CustomerName: this.state.fullName,
         CustomerPhoneNumber: this.state.mobileNumber,
@@ -59,36 +54,37 @@ class AddSearchMyTicket extends Component {
         GenderID: this.state.genderId,
         AltNumber: this.state.alternateNumber,
         AltEmailID: this.state.alternateEmailId,
-        dob: moment(this.state.dob).format("L"),
+        DateOfBirth: moment(this.state.dob).format("L"),
         IsActive: 1,
         CreatedBy: "abc",
         ModifyBy: 1,
         ModifiedDate: "20/12/2019"
-      }
-    }).then(function(res) {
-      console.log(JSON.stringify(res.data.responseData));
-      debugger;
-      // let ChannelOfPurchaseData = res.data.responseData;
-      // self.setState({ ChannelOfPurchaseData: ChannelOfPurchaseData });
-    });
+      })
+    };
+
+    // axios.post(config.apiUrl + "/Customer/createCustomer", requestOptions)
+    axios.post(config.apiUrl + "/Customer/createCustomer", requestOptions).then(function(res) {
+        debugger;
+        console.log(JSON.stringify(res.data.responseData));
+        debugger;
+        // let ChannelOfPurchaseData = res.data.responseData;
+        // self.setState({ ChannelOfPurchaseData: ChannelOfPurchaseData });
+      });
   }
   genderSelect = e => {
-    debugger;
     this.setState({
       genderId: e.target.value
     });
   };
   handleChange(date) {
-    debugger;
     this.setState({
       dob: date
     });
   }
-  handleRedirect = () => {
-    this.props.history.push("/admin/ticketsystem");
-  };
+  // handleRedirect = () => {
+  //   this.props.history.push("/admin/ticketsystem");
+  // };
   addCustomerData = e => {
-    debugger;
     this.setState({ [e.currentTarget.name]: e.currentTarget.value });
   };
   render() {
@@ -253,9 +249,15 @@ class AddSearchMyTicket extends Component {
                   >
                     CANCEL
                   </button>
-                  <Link onClick={this.handleAddCustomerSave} to="ticketsystem">
-                    <button className="butn">SAVE</button>
-                  </Link>
+                  {/* <Link onClick={this.handleAddCustomerSave}> */}
+                  <button
+                    type="button"
+                    className="butn"
+                    onClick={this.handleAddCustomerSave}
+                  >
+                    SAVE
+                  </button>
+                  {/* </Link> */}
                 </div>
                 {/* <div className="btn-float">
                   <a
