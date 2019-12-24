@@ -7,7 +7,7 @@ import NotFoundImg from "./../assets/Images/notFound.png";
 import Modal from "react-responsive-modal";
 import { Radio } from "antd";
 import DatePicker from "react-datepicker";
-// import { Link } from "react-router-dom";
+import ReactAutocomplete from "react-autocomplete";
 import axios from "axios";
 import config from "./../helpers/config";
 import moment from "moment";
@@ -38,6 +38,7 @@ class AddSearchMyTicket extends Component {
     this.handleAddCustomerOpen = this.handleAddCustomerOpen.bind(this);
     this.handleAddCustomerClose = this.handleAddCustomerClose.bind(this);
     this.handleAddCustomerSave = this.handleAddCustomerSave.bind(this);
+    this.handleSearchCustomer = this.handleSearchCustomer.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.validator = new SimpleReactValidator();
   }
@@ -53,9 +54,31 @@ class AddSearchMyTicket extends Component {
       genderId: 1,
       dob: "",
       alternateNumber: "",
-      alternateEmailId: ""
+      alternateEmailId: "",
+      SrchEmailPhone: "",
     });
     this.validator.hideMessages();
+  }
+  handleSearchCustomer() {
+    debugger
+    let self = this;
+    axios({
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      url: config.apiUrl + "/Customer/searchCustomer",
+      data: {
+        Email: this.state.SrchEmailPhone,
+        Phoneno: this.state.SrchEmailPhone
+      }
+    }).then(function(res) {
+      debugger;
+      // console.log(JSON.stringify(res.data.message));
+      let responseMessage = res.data.message;
+    
+    });
   }
   handleAddCustomerSave() {
     debugger;
@@ -98,18 +121,14 @@ class AddSearchMyTicket extends Component {
           NotificationManager.success("New Customer added successfully.");
           setTimeout(function() {
             // window.location.href = "ticketsystem";
-            self.props.history.push("ticketsystem")
+            self.props.history.push("ticketsystem");
           }, 1000);
         }
       });
     } else {
       this.validator.showMessages();
-      // rerender to show messages for the first time
-      // you can use the autoForceUpdate option to do this automatically`
       this.forceUpdate();
     }
-
-    // axios.post(config.apiUrl + "/Customer/createCustomer", requestOptions)
   }
   genderSelect = e => {
     this.setState({
@@ -121,9 +140,7 @@ class AddSearchMyTicket extends Component {
       dob: date
     });
   }
-  // handleRedirect = () => {
-  //   this.props.history.push("/admin/ticketsystem");
-  // };
+
   addCustomerData = e => {
     this.setState({ [e.currentTarget.name]: e.currentTarget.value });
   };
@@ -152,17 +169,46 @@ class AddSearchMyTicket extends Component {
                   <span className="span-color">*</span>
                 </label>
               </label>
-              <input
+              {/* <input
                 type="text"
                 className="search-customerAddSrch"
                 placeholder="Search Customer"
+                name="SrchEmailPhone"
+                value={this.state.SrchEmailPhone}
+                onChange={this.addCustomerData}
+              /> */}
+              <ReactAutocomplete
+                items={[
+                  { id: "foo", label: "foo" },
+                  { id: "bar", label: "bar" },
+                  { id: "baz", label: "baz" }
+                ]}
+                shouldItemRender={(item, value) =>
+                  item.label.toLowerCase().indexOf(value.toLowerCase()) > -1
+                }
+                getItemValue={item => item.label}
+                renderItem={(item, highlighted) => (
+                  <div
+                    key={item.id}
+                    style={{
+                      backgroundColor: highlighted ? "#eee" : "transparent"
+                    }}
+                  >
+                    {item.label}
+                  </div>
+                )}
+                value={this.state.value}
+                className="search-customerAddSrch"
+                autoComplete="off"
+                onChange={e => this.setState({ value: e.target.value })}
+                onSelect={value => this.setState({ value })}
               />
               <div className="seacrh-img-addsearch">
                 <img
                   src={SearchBlueImg}
                   alt="SearchBlueImg"
                   className="srch-imge"
-                  onClick={this.handleRedirect}
+                  onClick={this.handleSearchCustomer}
                 />
               </div>
               <div className="div-notFoundaddseacr">
