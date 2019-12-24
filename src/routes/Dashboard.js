@@ -868,25 +868,25 @@ class Dashboard extends Component {
                   </button>
                   <ul className="dropdown-menu">
                     <li>
-                      <label for="one">
+                      <label htmlFor="one">
                         <input type="checkbox" id="one" className="ch1" />
                         <span className="ch1-text">Bata 1</span>
                       </label>
                     </li>
                     <li>
-                      <label for="two">
+                      <label htmlFor="two">
                         <input type="checkbox" id="two" className="ch1" />
                         <span className="ch1-text">Bata 2</span>
                       </label>
                     </li>
                     <li>
-                      <label for="three">
+                      <label htmlFor="three">
                         <input type="checkbox" id="three" className="ch1" />
                         <span className="ch1-text">Bata 3</span>
                       </label>
                     </li>
                     <li>
-                      <label for="four">
+                      <label htmlFor="four">
                         <input type="checkbox" id="four" className="ch1" />
                         <span className="ch1-text">Bata 4</span>
                       </label>
@@ -966,47 +966,6 @@ class Dashboard extends Component {
                   {/* <Col xs={3} md={4} /> */}
                 </Row>
               </div>
-              {/* <div>
-                    <DateTimeRangeContainer 
-                        ranges={ranges}
-                        start={this.state.start}
-                        end={this.state.end}
-                        local={local}
-                        maxDate={maxDate}
-                        applyCallback={this.applyCallback}
-                    >    
-                        <FormControl
-                        id="formControlsTextB"
-                        type="text"
-                        label="Text"
-                        placeholder="Enter text"
-                        /> 
-                    </DateTimeRangeContainer>
-                </div> */}
-              {/* <DatetimeRangePicker
-            startDate={this.state.startDate}
-            endDate={this.state.endDate}
-            onApply={this.handleApply}
-          >
-            <div className="input-group">
-              <input type="text" className="form-control" value={label}/>
-                <span className="input-group-btn">
-                    <Button className="default date-range-toggle"
-                   
-                    >
-                      <i className="fa fa-calendar"/>
-                    </Button>
-                </span>
-            </div>
-          </DatetimeRangePicker> */}
-              {/* <label>
-                Last 7 days
-                <img
-                  src={TableArr}
-                  alt="table-arr"
-                  className="datePicketArrow"
-                />
-              </label> */}
             </div>
           </div>
         </div>
