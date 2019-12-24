@@ -438,7 +438,7 @@ class TicketSystem extends Component {
                         getOptionValue={option => option.department}
                         options={this.state.SpacialEqmt}
                         placeholder="Suggestion"
-                        menuIsOpen={true}
+                        // menuIsOpen={true}
                         // onChange={this.specEquipChange}
                         // value={thi.state.spEqtSelect}
                         // showNewOptionAtTop={false}

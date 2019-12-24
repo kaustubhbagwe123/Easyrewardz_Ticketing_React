@@ -11,6 +11,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import config from "./../helpers/config";
 import moment from "moment";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import SimpleReactValidator from "simple-react-validator";
 import {
   NotificationContainer,
@@ -30,6 +32,7 @@ class AddSearchMyTicket extends Component {
       dob: "",
       alternateNumber: "",
       alternateEmailId: "",
+      loading: false,
       tenantID: 1
     };
     this.handleAddCustomerOpen = this.handleAddCustomerOpen.bind(this);
@@ -56,6 +59,7 @@ class AddSearchMyTicket extends Component {
   }
   handleAddCustomerSave() {
     debugger;
+    let self = this;
 
     if (this.validator.allValid()) {
       axios({
@@ -83,6 +87,9 @@ class AddSearchMyTicket extends Component {
         debugger;
         console.log(JSON.stringify(res.data.message));
         let responseMessage = res.data.message;
+        self.setState({
+          loading: true
+        });
         if (responseMessage === "Success") {
           // this.props.history.push({
           //   pathname: "ticketsystem",
@@ -315,10 +322,20 @@ class AddSearchMyTicket extends Component {
                   {/* <Link onClick={this.handleAddCustomerSave}> */}
                   <button
                     type="button"
-                    className="butn"
+                    className="butn add-cust-butn"
                     onClick={this.handleAddCustomerSave}
+                    disabled={this.state.loading}
                   >
-                    SAVE
+                    {this.state.loading ? (
+                      <FontAwesomeIcon
+                        className="circular-loader"
+                        icon={faCircleNotch}
+                        spin
+                      />
+                    ) : (
+                      ""
+                    )}
+                    {this.state.loading ? "Please Wait ..." : "SAVE"}
                   </button>
                   {/* </Link> */}
                 </div>

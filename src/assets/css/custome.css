@@ -3117,6 +3117,15 @@ table tr th:last-child {
   color: #f00;
   margin-top: 5px;
 }
+.circular-loader {
+  width: 15px !important;
+  margin-right: 8px !important;
+  color: #fff !important;
+}
+.add-cust-butn:disabled {
+  opacity: 0.7;
+  pointer-events: none;
+}
 /* add search my ticket ends */
 
 /* chetan css end */
