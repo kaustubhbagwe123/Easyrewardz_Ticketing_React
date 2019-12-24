@@ -8,6 +8,7 @@ import {
   NotificationManager
 } from "react-notifications";
 import "react-notifications/lib/notifications.css";
+import SimpleReactValidator from "simple-react-validator";
 
 export class ChangePassword extends Component {
   constructor(props) {
@@ -20,6 +21,7 @@ export class ChangePassword extends Component {
     this.handleCheckPassword = this.handleCheckPassword.bind(this);
     this.handlechange = this.handlechange.bind(this);
     this.handleChangePassword = this.handleChangePassword.bind(this);
+    this.validator = new SimpleReactValidator();
   }
   handlechange(e) {
     this.setState({
@@ -30,13 +32,21 @@ export class ChangePassword extends Component {
   handleCheckPassword(e) {
     debugger;
     e.preventDefault();
-    const { newPassword, confimPassword } = this.state;
-    if (newPassword === confimPassword) {
-      this.handleChangePassword(newPassword);
+
+    if (this.validator.allValid()) {
+      const { newPassword, confimPassword } = this.state;
+      if (newPassword === confimPassword) {
+        this.handleChangePassword(newPassword);
+      } else {
+        NotificationManager.error(
+          "The new password and confirm password do not match."
+        );
+      }
     } else {
-      NotificationManager.error(
-        "The new password and confirm password do not match."
-      );
+      this.validator.showMessages();
+      // rerender to show messages for the first time
+      // you can use the autoForceUpdate option to do this automatically`
+      this.forceUpdate();
     }
   }
   handleChangePassword(newPassword) {
@@ -94,6 +104,11 @@ export class ChangePassword extends Component {
                     className="program-code-textbox"
                     onChange={this.handlechange}
                   />
+                  {this.validator.message(
+                    "New Password",
+                    this.state.newPassword,
+                    "required"
+                  )}
                 </div>
                 <div className="input-group sb-2">
                   <label className="col-mb-3 col-form-label col-form-label pt-0 chpass">
@@ -108,6 +123,11 @@ export class ChangePassword extends Component {
                     className="program-code-textbox"
                     onChange={this.handlechange}
                   />
+                  {this.validator.message(
+                    "Confirm Password",
+                    this.state.confimPassword,
+                    "required"
+                  )}
                 </div>
                 <div className="input-group mb-3">
                   <button

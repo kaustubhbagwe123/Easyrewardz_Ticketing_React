@@ -91,14 +91,12 @@ class AddSearchMyTicket extends Component {
           loading: true
         });
         if (responseMessage === "Success") {
-          self.props.history.push({
-            pathname: "ticketsystem",
-            state: self.state
-          });
           NotificationManager.success("New Customer added successfully.");
           setTimeout(function() {
-            // window.location.href = "ticketsystem";
-            self.props.history.push("ticketsystem")
+            self.props.history.push({
+              pathname: "ticketsystem",
+              state: self.state
+            });
           }, 1000);
         }
       });

@@ -58,6 +58,7 @@ class TicketSystem extends Component {
       selectedTicketPriority: 0,
       selectedChannelOfPurchase: 0,
       tenantID: 1,
+      customerData: {},
       SpacialEqmt: [
         {
           department: 25
@@ -147,7 +148,8 @@ class TicketSystem extends Component {
 
     axios(config.apiUrl + "/Ticketing/gettitlesuggestions", requestOptions, {
       params: {
-        TikcketTitle: "TestTicket"
+        TikcketTitle: ""
+        // TenantID: this.state.tenantID
       }
     }).then(function(res) {
       console.log(JSON.stringify(res.data.responseData));
@@ -279,6 +281,10 @@ class TicketSystem extends Component {
   }
 
   componentDidMount() {
+    var customerData = this.props.location.state;
+    this.setState({ customerData });
+    console.log(customerData);
+
     this.handleGetTicketTitleList();
     this.handleGetBrandList();
     this.handleGetCategoryList();
@@ -360,7 +366,9 @@ class TicketSystem extends Component {
                     alt="headphone"
                     className="bitmapheadpone"
                   />
-                  <label className="a91-9873470074">+91-9873470074</label>
+                  <label className="a91-9873470074">
+                    {this.state.customerData.mobileNumber}
+                  </label>
                   <img
                     src={CopyIcon}
                     alt="Copy-Icon"
@@ -407,9 +415,9 @@ class TicketSystem extends Component {
                     <div className="ticket-title-select">
                       <Select
                         // className="rate-dropdown"
-                        getOptionLabel={option => option.department}
-                        getOptionValue={option => option.department}
-                        options={this.state.SpacialEqmt}
+                        getOptionLabel={option => option.ticket_title}
+                        getOptionValue={option => option.ticket_title}
+                        options={this.state.TicketTitleData}
                         placeholder="Suggestion"
                         // menuIsOpen={true}
                         // onChange={this.specEquipChange}
@@ -981,17 +989,17 @@ class TicketSystem extends Component {
                           <div className="row" style={{ marginBottom: "20px" }}>
                             <div className="col-md-4">
                               <label className="category1">
-                                Alankrit Kumar
+                                {this.state.customerData.fullName}
                               </label>
                             </div>
                             <div className="col-md-4">
                               <label className="category1">
-                                +91-9873470074
+                                {this.state.customerData.mobileNumber}
                               </label>
                             </div>
                             <div className="col-md-4">
                               <label className="category1">
-                                alankrit@easyrewardz.com
+                                {this.state.customerData.emailId}
                               </label>
                             </div>
                           </div>
@@ -1014,14 +1022,21 @@ class TicketSystem extends Component {
 
                           <div className="row" style={{ marginBottom: "20px" }}>
                             <div className="col-md-4">
-                              <label className="category1">Male</label>
-                            </div>
-                            <div className="col-md-4">
-                              <label className="category1">-NA-</label>
+                              <label className="category1">
+                                {this.state.customerData.genderId === 1
+                                  ? "Male"
+                                  : "Female"}
+                              </label>
                             </div>
                             <div className="col-md-4">
                               <label className="category1">
-                                alankrit@easyrewardz.com
+                                {/* -NA- */}
+                                {this.state.customerData.alternateNumber}
+                              </label>
+                            </div>
+                            <div className="col-md-4">
+                              <label className="category1">
+                                {this.state.customerData.alternateEmailId}
                               </label>
                             </div>
                           </div>
