@@ -85,7 +85,7 @@ class AddSearchMyTicket extends Component {
         }
       }).then(function(res) {
         debugger;
-        console.log(JSON.stringify(res.data.message));
+        // console.log(JSON.stringify(res.data.message));
         let responseMessage = res.data.message;
         self.setState({
           loading: true
