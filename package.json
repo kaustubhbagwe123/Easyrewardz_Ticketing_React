@@ -58,6 +58,7 @@
     "react-modal-bootstrap": "^1.1.1",
     "react-modern-datepicker": "^1.1.0",
     "react-native-fusioncharts": "^4.1.0",
+    "react-notifications": "^1.4.3",
     "react-nvd3": "^0.5.7",
     "react-power-tooltip": "^1.0.2",
     "react-rangeslider": "^2.2.0",
@@ -78,7 +79,8 @@
     "reactstrap": "^8.0.1",
     "recharts": "^1.7.1",
     "rsuite": "^4.0.1",
-    "select2": "^4.0.12"
+    "select2": "^4.0.12",
+    "simple-react-validator": "^1.4.0"
   },
   "scripts": {
     "start": "node ./node_modules/react-scripts/bin/react-scripts.js start",

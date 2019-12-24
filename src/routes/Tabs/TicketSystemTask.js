@@ -1,8 +1,101 @@
 import React, { Component, Fragment } from "react";
 import ReactTable from "react-table";
 import DeleteIcon from "./../../assets/Images/red-delete-icon.png";
+import SimpleReactValidator from "simple-react-validator";
+import axios from "axios";
+import config from "./../../helpers/config";
 
 class TicketSystemTask extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      taskTitle: "",
+      taskDesc: "",
+      DepartmentData: [],
+      selectedDepartment: 0,
+      tenantID: 1
+    };
+    this.handleCreateTask = this.handleCreateTask.bind(this);
+    this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
+    this.validator = new SimpleReactValidator();
+  }
+
+  checkTaskTitDesc = e => {
+    this.setState({ [e.currentTarget.name]: e.currentTarget.value });
+  };
+
+  componentDidMount() {
+    this.handleGetDepartmentList();
+  }
+
+  handleGetDepartmentList() {
+    debugger;
+    const requestOptions = {
+      method: "POST",
+      header: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      body: ""
+    };
+    let self = this;
+
+    axios(config.apiUrl + "/Master/getDepartmentList", requestOptions, {
+      params: {
+        TenantID: this.state.tenantID
+      }
+    }).then(function(res) {
+      console.log(JSON.stringify(res.data.responseData));
+      debugger;
+      let DepartmentData = res.data.responseData;
+      self.setState({ DepartmentData: DepartmentData });
+    });
+  }
+
+  setDepartmentValue = e => {
+    debugger;
+    let departmentValue = e.currentTarget.value;
+    this.setState({ selectedDepartment: departmentValue });
+  };
+
+  handleCreateTask() {
+    debugger;
+
+    if (this.validator.allValid()) {
+      // axios({
+      //   method: "post",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     "Access-Control-Allow-Methods": "*"
+      //   },
+      //   url: config.apiUrl + "/Customer/createCustomer",
+      //   data: {
+      //     TenantID: this.state.tenantID,
+      //     CustomerName: this.state.fullName,
+      //     CustomerPhoneNumber: this.state.mobileNumber,
+      //     CustomerEmailId: this.state.emailId,
+      //     GenderID: this.state.genderId,
+      //     AltNumber: this.state.alternateNumber,
+      //     AltEmailID: this.state.alternateEmailId,
+      //     DateOfBirth: moment(this.state.dob).format("L"),
+      //     IsActive: 1,
+      //     CreatedBy: 1,
+      //     ModifyBy: 1,
+      //     ModifiedDate: "2019-12-17"
+      //   }
+      // }).then(function(res) {
+      //   debugger;
+      //   console.log(JSON.stringify(res.data.responseData));
+      // });
+      alert("Success");
+    } else {
+      this.validator.showMessages();
+      this.forceUpdate();
+    }
+
+    // axios.post(config.apiUrl + "/Customer/createCustomer", requestOptions)
+  }
+
   render() {
     const datatask = [
       {
@@ -84,7 +177,14 @@ class TicketSystemTask extends Component {
                           type="text"
                           className="txt-1"
                           placeholder="Task Title"
+                          name="taskTitle"
+                          onChange={this.checkTaskTitDesc}
                         />
+                        {this.validator.message(
+                          "Task Title",
+                          this.state.taskTitle,
+                          "required"
+                        )}
                       </div>
                     </div>
                     <div className="row m-b-10">
@@ -92,15 +192,36 @@ class TicketSystemTask extends Component {
                         <textarea
                           className="addNote-textarea-system"
                           placeholder="Task Description"
+                          name="taskDesc"
+                          onChange={this.checkTaskTitDesc}
                         ></textarea>
+                        {this.validator.message(
+                          "Task Description",
+                          this.state.taskDesc,
+                          "required"
+                        )}
                       </div>
                     </div>
                     <div className="row m-b-10">
                       <div className="col-md-6">
-                        <select className="category-select-system dropdown-label">
-                          <option className="select-category-placeholder dropdown-label">
+                        <select
+                          className="category-select-system dropdown-label"
+                          value={this.state.selectedDepartment}
+                          onChange={this.setDepartmentValue}
+                        >
+                          <option className="select-category-placeholder">
                             Department
                           </option>
+                          {this.state.DepartmentData !== null &&
+                            this.state.DepartmentData.map((item, i) => (
+                              <option
+                                key={i}
+                                value={item.departmentID}
+                                className="select-category-placeholder"
+                              >
+                                {item.departmentName}
+                              </option>
+                            ))}
                         </select>
                       </div>
                       <div className="col-md-6">
@@ -129,7 +250,11 @@ class TicketSystemTask extends Component {
                     </div>
                     <div className="row m-b-10">
                       <div className="col-md-6">
-                        <button type="button" className="createtasksystem">
+                        <button
+                          type="button"
+                          className="createtasksystem"
+                          onClick={this.handleCreateTask}
+                        >
                           <label className="createtasksystem-text">
                             CREATE TASK
                           </label>
