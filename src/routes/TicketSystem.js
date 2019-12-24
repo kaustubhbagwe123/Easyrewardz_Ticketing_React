@@ -158,22 +158,20 @@ class TicketSystem extends Component {
   }
   handleGetBrandList() {
     debugger;
-    const requestOptions = {
-      method: "POST",
-      header: {
+    let self = this;
+    axios({
+      method: "post",
+      headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Methods": "*"
       },
-      body: ""
-    };
-    let self = this;
-
-    axios(config.apiUrl + "/Brand/GetBrandList", requestOptions, {
+      url: config.apiUrl + '/Brand/GetBrandList',
       params: {
-        TenantID: this.state.tenantID
+        TenantID: this.state.tenantID,
+       
       }
     }).then(function(res) {
-      console.log(JSON.stringify(res.data.responseData));
+      // console.log(JSON.stringify(res.data.responseData));
       debugger;
       let BrandData = res.data.responseData;
       self.setState({ BrandData: BrandData });
@@ -181,22 +179,20 @@ class TicketSystem extends Component {
   }
   handleGetCategoryList() {
     debugger;
-    const requestOptions = {
-      method: "POST",
-      header: {
+  
+    let self = this;
+    axios({
+      method: "post",
+      headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Methods": "*"
       },
-      body: ""
-    };
-    let self = this;
-
-    axios(config.apiUrl + "/Category/GetCategoryList", requestOptions, {
+      url: config.apiUrl + '/Category/GetCategoryList',
       params: {
-        TenantID: this.state.tenantID
+        TenantID: this.state.tenantID,
+       
       }
     }).then(function(res) {
-      console.log(JSON.stringify(res.data.responseData));
       debugger;
       let CategoryData = res.data;
       self.setState({ CategoryData: CategoryData });
@@ -204,25 +200,20 @@ class TicketSystem extends Component {
   }
   handleGetSubCategoryList() {
     debugger;
-    const requestOptions = {
-      method: "POST",
-      header: {
+   
+    let self = this;
+    axios({
+      method: "post",
+      headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Methods": "*"
       },
-      body: ""
-    };
-    let self = this;
-
-    axios(
-      config.apiUrl + "/SubCategory/GetSubCategoryByCategoryID",
-      requestOptions,
-      {
-        params: {
-          CategoryID: this.state.selectedCategory
-        }
+      url: config.apiUrl + '/SubCategory/GetSubCategoryByCategoryID',
+      params: {
+        CategoryID: this.state.selectedCategory,
+       
       }
-    ).then(function(res) {
+    }).then(function(res) {
       console.log(JSON.stringify(res.data.responseData));
       debugger;
       let SubCategoryData = res.data.responseData;
@@ -231,23 +222,19 @@ class TicketSystem extends Component {
   }
   handleGetIssueTypeList() {
     debugger;
-    const requestOptions = {
-      method: "POST",
-      header: {
+    let self = this;
+    axios({
+      method: "post",
+      headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Methods": "*"
       },
-      body: ""
-    };
-    let self = this;
-
-    axios(config.apiUrl + "/IssueType/GetIssueTypeList", requestOptions, {
+      url: config.apiUrl + "/IssueType/GetIssueTypeList",
       params: {
         TenantID: this.state.tenantID,
         SubCategoryID: this.state.selectedSubCategory
       }
     }).then(function(res) {
-      console.log(JSON.stringify(res.data.responseData));
       debugger;
       let IssueTypeData = res.data.responseData;
       self.setState({ IssueTypeData: IssueTypeData });
@@ -255,22 +242,19 @@ class TicketSystem extends Component {
   }
   handleGetTicketPriorityList() {
     debugger;
-    const requestOptions = {
-      method: "POST",
-      header: {
+    
+    let self = this;
+    axios({
+      method: "post",
+      headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Methods": "*"
       },
-      body: ""
-    };
-    let self = this;
-
-    axios(config.apiUrl + "/Priority/GetPriorityList", requestOptions, {
+      url: config.apiUrl + "/Priority/GetPriorityList",
       params: {
-        TenantID: this.state.tenantID
+        TenantID: this.state.tenantID,
       }
     }).then(function(res) {
-      console.log(JSON.stringify(res.data.responseData));
       debugger;
       let TicketPriorityData = res.data.responseData;
       self.setState({ TicketPriorityData: TicketPriorityData });
@@ -278,22 +262,19 @@ class TicketSystem extends Component {
   }
   handleGetChannelOfPurchaseList() {
     debugger;
-    const requestOptions = {
-      method: "POST",
-      header: {
+  
+    let self = this;
+    axios({
+      method: "post",
+      headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Methods": "*"
       },
-      body: ""
-    };
-    let self = this;
-
-    axios(config.apiUrl + "/Master/GetChannelOfPurchaseList", requestOptions, {
+      url: config.apiUrl + "/Master/GetChannelOfPurchaseList",
       params: {
-        TenantID: this.state.tenantID
+        TenantID: this.state.tenantID,
       }
     }).then(function(res) {
-      console.log(JSON.stringify(res.data.responseData));
       debugger;
       let ChannelOfPurchaseData = res.data.responseData;
       self.setState({ ChannelOfPurchaseData: ChannelOfPurchaseData });
@@ -309,22 +290,18 @@ class TicketSystem extends Component {
   }
 
   setBrandValue = e => {
-    debugger;
     let brandValue = e.currentTarget.value;
     this.setState({ selectedBrand: brandValue });
   };
   setIssueTypeValue = e => {
-    debugger;
     let issueTypeValue = e.currentTarget.value;
     this.setState({ selectedIssueType: issueTypeValue });
   };
   setTicketPriorityValue = e => {
-    debugger;
     let ticketPriorityValue = e.currentTarget.id;
     this.setState({ selectedTicketPriority: ticketPriorityValue });
   };
   setCategoryValue = e => {
-    debugger;
     let categoryValue = e.currentTarget.value;
     this.setState({ selectedCategory: categoryValue });
     setTimeout(() => {
@@ -335,11 +312,10 @@ class TicketSystem extends Component {
     }, 1);
   };
   setSubCategoryValue = e => {
-    debugger;
     let subCategoryValue = e.currentTarget.value;
     this.setState({ selectedSubCategory: subCategoryValue });
+    
     setTimeout(() => {
-      debugger;
       if (this.state.selectedSubCategory) {
         this.handleGetIssueTypeList();
       }
@@ -774,7 +750,7 @@ class TicketSystem extends Component {
                     style={{ display: "inherit" }}
                   >
                     <button
-                      className="dropdown-toggle my-tic-email"
+                      className="dropdown-toggle my-tic-email1"
                       type="button"
                       data-toggle="dropdown"
                     >

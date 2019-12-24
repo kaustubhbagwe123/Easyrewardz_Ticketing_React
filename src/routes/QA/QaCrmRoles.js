@@ -200,89 +200,86 @@ class QaCrmRoles extends Component {
     );
 
     const QaCrmEdit = (
-      <div>
-        <div className="store-col-2">
-          <div className="createSpace">
-            <label className="create-department">EDIT CRM ROLE</label>
-            <div className="div-padding-1">
-              <label className="designation-name">Role Name</label>
-              <input
-                type="text"
-                className="txt-1"
-                placeholder="Enter Role Name"
-              />
-            </div>
-            <div className="crm-margin-div crm-padding-div">
-              <div className="switch switch-primary d-inline m-r-10">
-                <label className="storeRole-name-text">Dashboard</label>
-                <input type="checkbox" id="Dashboard-p-1" />
-                <label
-                  htmlFor="Dashboard-p-1"
-                  className="cr cr-float-auto"
-                ></label>
-              </div>
-            </div>
-            <div className="crm-margin-div crm-padding-div">
-              <div className="switch switch-primary d-inline m-r-10">
-                <label className="storeRole-name-text">My Tickets</label>
-                <input type="checkbox" id="Tasks-p-2" />
-                <label htmlFor="Tasks-p-2" className="cr cr-float-auto"></label>
-              </div>
-            </div>
-            <div className="crm-margin-div crm-padding-div">
-              <div className="switch switch-primary d-inline m-r-10">
-                <label className="storeRole-name-text">Ticket Audit Page</label>
-                <input type="checkbox" id="Claim-p-3" />
-                <label htmlFor="Claim-p-3" className="cr cr-float-auto"></label>
-              </div>
-            </div>
-            <div className="crm-margin-div crm-padding-div">
-              <div className="switch switch-primary d-inline m-r-10">
-                <label className="storeRole-name-text">Notification</label>
-                <input type="checkbox" id="Notification-p-5" />
-                <label
-                  htmlFor="Notification-p-5"
-                  className="cr cr-float-auto"
-                ></label>
-              </div>
-            </div>
-            <div className="crm-margin-div crm-padding-div">
-              <div className="switch switch-primary d-inline m-r-10">
-                <label className="storeRole-name-text">Settings</label>
-                <input type="checkbox" id="Notification-p-4" />
-                <label
-                  htmlFor="Notification-p-4"
-                  className="cr cr-float-auto"
-                ></label>
-              </div>
-            </div>
+      <div className="edtpadding">
+      <div className="">
+        <label className="popover-header-text">EDIT CRM ROLE</label>
+      </div>
+      <div className="pop-over-div">
+        <label className="edit-label-1">Role Name</label>
+        <input
+          type="text"
+          className="txt-edit-popover"
+          placeholder="Enter Role Name"
+        />
+      </div>
 
-            <div className="crm-margin-div crm-padding-div">
-              <div className="switch switch-primary d-inline m-r-10">
-                <label className="storeRole-name-text">Knowledge Base</label>
-                <input type="checkbox" id="Reports-p-6" />
-                <label
-                  htmlFor="Reports-p-6"
-                  className="cr cr-float-auto"
-                ></label>
-              </div>
-            </div>
-            <div className="dropDrownSpace">
-              <label className="reports-to">Status</label>
-              <select id="inputState" className="form-control dropdown-setting">
-                <option>select</option>
-                <option>Active</option>
-                <option>Deactive</option>
-              </select>
-            </div>
-            <div className="btnSpace">
-              <button className="addBtn-ticket-hierarchy">
-                <label className="addLable">ADD</label>
-              </button>
-            </div>
-          </div>
+      <div className="crm-margin-div">
+        <div className="switch switch-primary d-inline m-r-10">
+          <label className="storeRole-name-text">Dashboard</label>
+          <input type="checkbox" id="Dashboard-po-1" />
+          <label
+            htmlFor="Dashboard-po-1"
+            className="cr cr-float-auto"
+          ></label>
         </div>
       </div>
+      <div className="crm-margin-div">
+        <div className="switch switch-primary d-inline m-r-10">
+          <label className="storeRole-name-text">My Tickets</label>
+          <input type="checkbox" id="Tickets-po-2" />
+          <label htmlFor="Tickets-po-2" className="cr cr-float-auto"></label>
+        </div>
+      </div>
+      <div className="crm-margin-div">
+        <div className="switch switch-primary d-inline m-r-10">
+          <label className="storeRole-name-text">Ticket Audit Page</label>
+          <input type="checkbox" id="Knowledge-po-3" />
+          <label
+            htmlFor="Knowledge-po-3"
+            className="cr cr-float-auto"
+          ></label>
+        </div>
+      </div>
+      <div className="crm-margin-div">
+        <div className="switch switch-primary d-inline m-r-10">
+          <label className="storeRole-name-text">Notification</label>
+          <input type="checkbox" id="Claim-po-3" />
+          <label htmlFor="Claim-po-3" className="cr cr-float-auto"></label>
+        </div>
+      </div>
+      <div className="crm-margin-div">
+        <div className="switch switch-primary d-inline m-r-10">
+          <label className="storeRole-name-text">Settings</label>
+          <input type="checkbox" id="Chat-po-5" />
+          <label htmlFor="Chat-po-5" className="cr cr-float-auto"></label>
+        </div>
+      </div>
+      <div className="crm-margin-div">
+        <div className="switch switch-primary d-inline m-r-10">
+          <label className="storeRole-name-text">Knowledge Base</label>
+          <input type="checkbox" id="Notification-po-4" />
+          <label
+            htmlFor="Notification-po-4"
+            className="cr cr-float-auto"
+          ></label>
+        </div>
+      </div>
+
+      <div className="pop-over-div">
+        <label className="edit-label-1">Status</label>
+        <select id="inputStatus" className="edit-dropDwon dropdown-setting">
+          <option>Status</option>
+          <option>Inactive</option>
+        </select>
+      </div>
+      <br />
+      <div>
+        <label className="pop-over-cancle">CANCEL</label>
+        <button className="pop-over-button">
+          <label className="pop-over-btnsave-text">SAVE</label>
+        </button>
+      </div>
+    </div>
     );
     return (
       <Fragment>

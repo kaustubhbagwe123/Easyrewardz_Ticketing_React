@@ -4,12 +4,14 @@ import { Link } from "react-router-dom";
 import ReactTable from "react-table";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
-import InfoImg from "./../../assets/Images/icons8-info.svg";
-import DeleteIcon from "./../../assets/Images/red-delete-icon.png";
 import DownExcel from "./../../assets/Images/black-Dld.png";
 import Modal from "react-responsive-modal";
 import CancelImg from "./../../assets/Images/Circle-cancel.png";
 import DatePicker from "react-datepicker";
+import { Popover } from "antd";
+import BlackInfoIcon from "./../../assets/Images/Info-black.png";
+import RedDeleteIcon from "./../../assets/Images/red-delete-icon.png";
+import DelBigIcon from "./../../assets/Images/del-big.png";
 
 class QAReports extends Component {
   constructor(props) {
@@ -66,53 +68,21 @@ class QAReports extends Component {
       {
         nameReport: "QA Score - QA Lead",
         scheduleReport: "Daily",
-        createdReport: (
-          <span>
-            <label>
-              Admin
-              <img src={InfoImg} className="info-icon" alt="Info" />
-            </label>
-          </span>
-        ),
         statusReport: "Active"
       },
       {
         nameReport: "QA Score - Agent",
         scheduleReport: "Weekly",
-        createdReport: (
-          <span>
-            <label>
-              Admin
-              <img src={InfoImg} className="info-icon" alt="Info" />
-            </label>
-          </span>
-        ),
         statusReport: "Inactive"
       },
       {
         nameReport: "QA Done Tickets",
         scheduleReport: "Monthly",
-        createdReport: (
-          <span>
-            <label>
-              Admin
-              <img src={InfoImg} className="info-icon" alt="Info" />
-            </label>
-          </span>
-        ),
         statusReport: "Active"
       },
       {
         nameReport: "Pending QA Tickets",
         scheduleReport: "Daily",
-        createdReport: (
-          <span>
-            <label>
-              Admin
-              <img src={InfoImg} className="info-icon" alt="Info" />
-            </label>
-          </span>
-        ),
         statusReport: "Inactive"
       }
     ];
@@ -143,7 +113,25 @@ class QAReports extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "createdReport"
+        accessor: "createdReport",
+        Cell: row => {
+          var ids = row.original["id"];
+          return (
+            <div>
+              <span>
+                Admin
+                <Popover content={popoverData} placement="bottom">
+                  <img
+                    className="info-icon-cp"
+                    src={BlackInfoIcon}
+                    alt="info-icon"
+                    id={ids}
+                  />
+                </Popover>
+              </span>
+            </div>
+          );
+        }
       },
       {
         Header: (
@@ -164,7 +152,14 @@ class QAReports extends Component {
               alt="download icon"
               className="downloadaction"
             />
-            <img src={DeleteIcon} alt="del-icon" className="downloadaction" />
+           <Popover content={ActionDelete} placement="bottom" trigger="click">
+                  <img
+                    src={RedDeleteIcon}
+                    alt="del-icon"
+                    className="del-btn"
+                    
+                  />
+                </Popover>
             <button className="react-tabel-button" id="p-edit-pop-2">
               <label className="Table-action-edit-button-text">EDIT</label>
             </button>
@@ -172,7 +167,39 @@ class QAReports extends Component {
         )
       }
     ];
-
+    const popoverData = (
+      <>
+        <div>
+          <b>
+            <p className="title">Created By: Admin</p>
+          </b>
+          <p className="sub-title">Created Date: 12 March 2018</p>
+        </div>
+        <div>
+          <b>
+            <p className="title">Updated By: Manager</p>
+          </b>
+          <p className="sub-title">Updated Date: 12 March 2018</p>
+        </div>
+      </>
+    );
+    const ActionDelete = (
+      <div className="d-flex general-popover popover-body">
+        <div className="del-big-icon">
+          <img src={DelBigIcon} alt="del-icon" />
+        </div>
+        <div>
+          <p className="font-weight-bold blak-clr">Delete file?</p>
+          <p className="mt-1 fs-12">
+            Are you sure you want to delete this file?
+          </p>
+          <div className="del-can">
+            <a href={Demo.BLANK_LINK}>CANCEL</a>
+            <button className="butn">Delete</button>
+          </div>
+        </div>
+      </div>
+    );
     return (
       <Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
@@ -418,6 +445,7 @@ class QAReports extends Component {
         </div>
         <div className="container-fluid">
           <div className="store-settings-cntr QAreports">
+          <div style={{backgroundColor:"#FFF"}}>
             <ReactTable
               data={datareport}
               columns={columnsreport}
@@ -462,6 +490,7 @@ class QAReports extends Component {
                       </select>
                       <p>Items per page</p>
                     </div>
+                  </div>
                   </div>
           </div>
         </div>

@@ -28,14 +28,14 @@ export function encryption(plainText, type = "enc") {
     //   window.location.href = "./SignIn";
     // }
 
-    var ciphertext = CryptoJS.AES.decrypt(CryptoJS.enc.Utf8.parse(plainText), key,
+    var Decrpttext = CryptoJS.AES.decrypt(CryptoJS.enc.Utf8.parse(plainText), key,
     {
         keySize: 128 / 8,
         iv: iv,
         mode: CryptoJS.mode.CBC,
         padding: CryptoJS.pad.Pkcs7
     });
-    return ciphertext;
+    return Decrpttext;
   }
 }
 

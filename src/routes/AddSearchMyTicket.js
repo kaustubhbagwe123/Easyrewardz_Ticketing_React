@@ -7,7 +7,7 @@ import NotFoundImg from "./../assets/Images/notFound.png";
 import Modal from "react-responsive-modal";
 import { Radio } from "antd";
 import DatePicker from "react-datepicker";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import axios from "axios";
 import config from "./../helpers/config";
 import moment from "moment";
@@ -18,7 +18,7 @@ import {
   NotificationContainer,
   NotificationManager
 } from "react-notifications";
-import { authHeader } from "../helpers/authHeader";
+// import { authHeader } from "../helpers/authHeader";
 
 class AddSearchMyTicket extends Component {
   constructor(props) {

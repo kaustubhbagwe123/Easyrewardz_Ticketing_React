@@ -255,7 +255,7 @@ class MyTicketClaim extends Component {
                     columns={columnsTicketClaim}
                     // resizable={false}
                     defaultPageSize={3}
-                    showPagination={true}
+                    showPagination={false}
                     getTrProps={this.HandleRowClickDraw} 
                 />
         </div>

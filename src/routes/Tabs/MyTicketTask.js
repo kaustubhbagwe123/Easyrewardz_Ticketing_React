@@ -397,7 +397,7 @@ class MyTicketTask extends Component {
                     columns={columnsTicketTask}
                     // resizable={false}
                     defaultPageSize={3}
-                    showPagination={true}
+                    showPagination={false}
                     getTrProps={this.HandleRowClickDraw}
                 />
           {/* <table>

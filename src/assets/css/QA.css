@@ -1094,6 +1094,12 @@ padding: 5px 40px;
 }
 /* Qa CrmRoles Css End By Kalpesh */
 /* QA Reports page css Start by Shlok */
+.qAReport .react-datepicker__navigation--previous {
+  min-width: auto;
+}
+.qAReport .react-datepicker__navigation--next {
+  min-width: auto;
+}
 .QAreports .ReactTable {
   border: none;
 }
@@ -1131,18 +1137,13 @@ padding: 5px 40px;
   line-height: 25px;
   display: block;
 }
-.Qadate .react-datepicker__navigation--next {
-  right: -70px !important;
-  border-left-color: #ccc;
-}
-.Qadate .react-datepicker__navigation--previous {
-  left: -70px !important;
-  border-right-color: #ccc;
-}
 /* QA Reports page css End by Shlok */
 /* Qa UserMaster css start Kalpesh */
 .qausermasterreact .ReactTable {
   border: none;
+}
+.qausermasterreact .ReactTable .rt-thead .rt-th.-cursor-pointer, .ReactTable .rt-thead .rt-td.-cursor-pointer {
+  padding: 20px 10px !important;
 }
 .qausermasterreact {
   border-left: 1px solid rgb(0, 0, 0, 0.1);
@@ -1312,5 +1313,39 @@ padding: 5px 40px;
 .padqa {
   padding: 0 0 0 20px;
 }
-
+.TicketCategoyMasReact svg:not(:root).svg-inline--fa {
+  overflow: visible;
+  color:#a7aaad;
+  width: 20px;
+  height: 18px;
+  margin: -3px 0;
+ }
+ .qacrmroles svg:not(:root).svg-inline--fa {
+  overflow: visible;
+  color:#a7aaad;
+  width: 20px;
+  height: 18px;
+  margin: -3px 0;
+ }
+ .QAreports svg:not(:root).svg-inline--fa {
+  overflow: visible;
+  color:#a7aaad;
+  width: 20px;
+  height: 18px;
+  margin: -3px 0;
+ }
+ .qausermasterreact svg:not(:root).svg-inline--fa {
+  overflow: visible;
+  color:#a7aaad;
+  width: 20px;
+  height: 18px;
+  margin: -3px 0;
+ }
+ .QahierarReact svg:not(:root).svg-inline--fa {
+  overflow: visible;
+  color:#a7aaad;
+  width: 20px;
+  height: 18px;
+  margin: -3px 0;
+ }
 /* QA AuditParameters css end by Shlok */

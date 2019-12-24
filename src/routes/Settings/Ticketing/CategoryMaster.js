@@ -378,7 +378,7 @@ class CategoryMaster extends Component {
                         <Select
                           showSearch={true}
                           value={list1Value}
-                          style={{ width: 293 }}
+                          style={{ width: "100%" }}
                           onChange={this.onChangeList1}
                         >
                           {list1SelectOptions}
@@ -437,7 +437,7 @@ class CategoryMaster extends Component {
                         <Select
                           showSearch={true}
                           value={ListOfSubCate}
-                          style={{ width: 293 }}
+                          style={{ width: "100%" }}
                           onChange={this.onChangeListSubCate}
                         >
                           {listSubCategory}
