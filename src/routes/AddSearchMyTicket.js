@@ -42,7 +42,17 @@ class AddSearchMyTicket extends Component {
     this.setState({ AddCustomer: true });
   }
   handleAddCustomerClose() {
-    this.setState({ AddCustomer: false });
+    this.setState({
+      AddCustomer: false,
+      fullName: "",
+      mobileNumber: "",
+      emailId: "",
+      genderId: 1,
+      dob: "",
+      alternateNumber: "",
+      alternateEmailId: ""
+    });
+    this.validator.hideMessages();
   }
   handleAddCustomerSave() {
     debugger;
@@ -81,7 +91,7 @@ class AddSearchMyTicket extends Component {
           NotificationManager.success("New Customer added successfully.");
           setTimeout(function() {
             window.location.href = "ticketsystem";
-          }, 2000);
+          }, 1000);
         }
       });
     } else {
