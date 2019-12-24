@@ -50,7 +50,7 @@ class SingIn extends Component {
     let X_Authorized_Programcode = "XDdjhgH1ixe3Rm70smc/jA==";
     let X_Authorized_applicationid = "lVWgnuY01lDMJBCSewbQ8g==";
 
-    if (X_Authorized_userId !== "" && X_Authorized_password !== "") {
+    if (X_Authorized_userId !== null && X_Authorized_password !== null) {
       let self = this;
        
         const requestOptions = {
@@ -78,7 +78,8 @@ class SingIn extends Component {
           {
             NotificationManager.success("Login Successfull.");
             setTimeout(function() {
-              window.location.href = "Admin/dashboard";
+              // window.location.href = "Admin/dashboard";
+              self.props.history.push("Admin/dashboard")
             }, 2000);
           }
           else{

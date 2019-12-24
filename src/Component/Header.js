@@ -117,7 +117,7 @@ class Header extends Component {
   closeModal = () => {
     this.setState({ modalIsOpen: false });
   };
-
+ 
   componentDidMount() {
     let pageName, lastOne, lastValue, arr;
     arr = [...this.state.cont];
@@ -768,8 +768,11 @@ class Header extends Component {
             </div>
             <div className="md-6 new-tickets-assigned">
               <label>
-                <span style={{fontSize:"17px",fontWeight:"bold"}}>New Tickets</span> assigned to you
-                </label>
+                <span style={{ fontSize: "17px", fontWeight: "bold" }}>
+                  New Tickets
+                </span>{" "}
+                assigned to you
+              </label>
             </div>
             <div className="viewticketspeadding">
               <a href="{#}">
@@ -783,7 +786,11 @@ class Header extends Component {
             </div>
             <div className="md-6 new-tickets-assigned">
               <label>
-              <span style={{fontSize:"17px",fontWeight:"bold"}}>Update</span> happened to your tickets</label>
+                <span style={{ fontSize: "17px", fontWeight: "bold" }}>
+                  Update
+                </span>{" "}
+                happened to your tickets
+              </label>
             </div>
             <div className="viewticketspeadding">
               <a href="{#}">
@@ -797,7 +804,11 @@ class Header extends Component {
             </div>
             <div className="md-6 new-tickets-assigned">
               <label>
-              <span style={{fontSize:"17px",fontWeight:"bold"}}>Escalation</span> in your ticket</label>
+                <span style={{ fontSize: "17px", fontWeight: "bold" }}>
+                  Escalation
+                </span>{" "}
+                in your ticket
+              </label>
             </div>
             <div className="viewticketspeadding">
               <a href="{#}">
@@ -825,11 +836,13 @@ class Header extends Component {
                   </p>
                   <p className="mail-id">naman@fabindia.com</p>
                 </div>
-                <button className="logout">LOGOUT</button>
+                <Link to="/SignIn">
+                  <button className="logout">LOGOUT</button>
+                </Link>
               </div>
               <div className="status-sctn alignradio">
                 <div className="d-flex align-items-center">
-                  <div className="logout-status" style={{marginTop:"10px"}}>
+                  <div className="logout-status" style={{ marginTop: "10px" }}>
                     <img src={StatusLogo} alt="status" />
                   </div>
                   <p className="logout-label chat-status">CHAT STATUS :</p>
@@ -857,11 +870,21 @@ class Header extends Component {
                 <div className="d-flex justify-content-between">
                   <div>
                     <p className="logout-label">Login Time</p>
-                    <p className="font-weight-bold" style={{fontSize: "16px"}}>9:30 AM</p>
+                    <p
+                      className="font-weight-bold"
+                      style={{ fontSize: "16px" }}
+                    >
+                      9:30 AM
+                    </p>
                   </div>
                   <div>
                     <p className="logout-label">Logout Time</p>
-                    <p className="font-weight-bold" style={{fontSize: "16px" , float: "right" }}>6:30 PM</p>
+                    <p
+                      className="font-weight-bold"
+                      style={{ fontSize: "16px", float: "right" }}
+                    >
+                      6:30 PM
+                    </p>
                   </div>
                 </div>
                 <ProgressBar className="logout-progress" now={60} />
