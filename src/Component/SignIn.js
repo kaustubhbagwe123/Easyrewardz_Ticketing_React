@@ -7,6 +7,10 @@ import { Link } from "react-router-dom";
 import { encryption } from "../helpers/encryption";
 import axios from "axios";
 import config from "../helpers/config";
+import {
+  NotificationContainer,
+  NotificationManager
+} from "react-notifications";
 // import { authHeader } from "../helpers/authHeader";
 // import {config} from './../helpers';
 
@@ -67,10 +71,20 @@ class SingIn extends Component {
         X_Authorized_Domainname,}
       })
       // return fetch(config.apiUrl + '/Testing/Authenticate', requestOptions)
-        .then(function(response) {
+        .then(function(res) {
           debugger;
-          let BrandData = response;
-          self.setState({ BrandData: BrandData }); 
+          let resValid = res.data.responseData.message;
+          if(resValid === "Valid login")
+          {
+            NotificationManager.success("Login Successfull.");
+            setTimeout(function() {
+              window.location.href = "Admin/dashboard";
+            }, 2000);
+          }
+          else{
+
+          }
+          
         });
     }
   }
@@ -79,6 +93,7 @@ class SingIn extends Component {
     return (
       <div className="auth-wrapper">
         <div className="auth-content">
+        <NotificationContainer />
           <div className="card">
             <div className="card-body text-center">
               <div className="mb-4">

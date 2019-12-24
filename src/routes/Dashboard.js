@@ -800,26 +800,26 @@ class Dashboard extends Component {
                   </button>
                   <ul className="dropdown-menu">
                     <li>
-                      <label for="one">
-                        <input type="checkbox" id="one" className="ch1"/>
+                      <label htmlFor="one">
+                        <input type="checkbox" id="one" className="ch1" />
                         <span className="ch1-text">Bata 1</span>
                       </label>
                     </li>
                     <li>
-                      <label for="two">
+                      <label htmlFor="two">
                         <input type="checkbox" id="two" className="ch1" />
                         <span className="ch1-text">Bata 2</span>
                       </label>
                     </li>
                     <li>
-                      <label for="three">
-                        <input type="checkbox" id="three" className="ch1"/>
+                      <label htmlFor="three">
+                        <input type="checkbox" id="three" className="ch1" />
                         <span className="ch1-text">Bata 3</span>
                       </label>
                     </li>
                     <li>
-                    <label for="four">
-                        <input type="checkbox" id="four" className="ch1"/>
+                      <label htmlFor="four">
+                        <input type="checkbox" id="four" className="ch1" />
                         <span className="ch1-text">Bata 4</span>
                       </label>
                     </li>
@@ -841,7 +841,7 @@ class Dashboard extends Component {
                   <ul className="dropdown-menu">
                     <li>
                       <label for="one">
-                        <input type="checkbox" id="one" className="ch1"/>
+                        <input type="checkbox" id="one" className="ch1" />
                         <span className="ch1-text">Bata 1</span>
                       </label>
                     </li>
@@ -853,13 +853,13 @@ class Dashboard extends Component {
                     </li>
                     <li>
                       <label for="three">
-                        <input type="checkbox" id="three" className="ch1"/>
+                        <input type="checkbox" id="three" className="ch1" />
                         <span className="ch1-text">Bata 3</span>
                       </label>
                     </li>
                     <li>
-                    <label for="four">
-                        <input type="checkbox" id="four" className="ch1"/>
+                      <label for="four">
+                        <input type="checkbox" id="four" className="ch1" />
                         <span className="ch1-text">Bata 4</span>
                       </label>
                     </li>
@@ -904,7 +904,6 @@ class Dashboard extends Component {
                   </ul>
                 </div> */}
               </span>
-              
             </div>
           </div>
           <div>
