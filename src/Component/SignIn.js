@@ -11,6 +11,7 @@ import {
   NotificationContainer,
   NotificationManager
 } from "react-notifications";
+import SimpleReactValidator from "simple-react-validator";
 // import { authHeader } from "../helpers/authHeader";
 // import {config} from './../helpers';
 
@@ -24,6 +25,7 @@ class SingIn extends Component {
     };
     this.hanleChange = this.hanleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.validator = new SimpleReactValidator();
   }
   hanleChange(e) {
     this.setState({
@@ -36,26 +38,27 @@ class SingIn extends Component {
   // };
 
   handleSubmit(event) {
-    event.preventDefault()
+    event.preventDefault();
     debugger;
-    
-    const { emailID, password } = this.state;
-    var X_Authorized_userId = encryption(emailID, "enc");
-    
-    // let DescryptUserID=encryption(X_Authorized_userId, "desc");
-    let X_Authorized_password = encryption(password, "enc");
-    //  let X_Authorized_userId = emailID;
-    // let X_Authorized_password = password;
-    let X_Authorized_Domainname = "rZbZUcWTDjEk+qIvay9BFe/7Izx/T+YkIhbRa/mL0W0=";
-    let X_Authorized_Programcode = "XDdjhgH1ixe3Rm70smc/jA==";
-    let X_Authorized_applicationid = "lVWgnuY01lDMJBCSewbQ8g==";
+    if (this.validator.allValid()) {
+      const { emailID, password } = this.state;
+      var X_Authorized_userId = encryption(emailID, "enc");
 
-    if (X_Authorized_userId !== "" && X_Authorized_password !== "") {
-      let self = this;
-       
+      // let DescryptUserID=encryption(X_Authorized_userId, "desc");
+      let X_Authorized_password = encryption(password, "enc");
+      //  let X_Authorized_userId = emailID;
+      // let X_Authorized_password = password;
+      let X_Authorized_Domainname =
+        "rZbZUcWTDjEk+qIvay9BFe/7Izx/T+YkIhbRa/mL0W0=";
+      let X_Authorized_Programcode = "XDdjhgH1ixe3Rm70smc/jA==";
+      let X_Authorized_applicationid = "lVWgnuY01lDMJBCSewbQ8g==";
+
+      if (X_Authorized_userId !== "" && X_Authorized_password !== "") {
+        let self = this;
+
         const requestOptions = {
           // method: 'POST',
-          mode:'cors',
+          mode: "cors",
           headers: {
             "Content-Type": "application/json",
             "Access-Control-Allow-Methods": "*"
@@ -63,29 +66,34 @@ class SingIn extends Component {
           // body:JSON.stringify({ EmailID, Password ,AppId})
           body: ""
         };
-      axios.post(config.apiUrl + "/Account/authenticate", requestOptions,{ params:{
-        X_Authorized_userId, 
-        X_Authorized_password,
-        X_Authorized_applicationid,
-        X_Authorized_Programcode,
-        X_Authorized_Domainname,}
-      })
-      // return fetch(config.apiUrl + '/Testing/Authenticate', requestOptions)
-        .then(function(res) {
-          debugger;
-          let resValid = res.data.responseData.message;
-          if(resValid === "Valid login")
-          {
-            NotificationManager.success("Login Successfull.");
-            setTimeout(function() {
-              window.location.href = "Admin/dashboard";
-            }, 2000);
-          }
-          else{
-
-          }
-          
-        });
+        axios
+          .post(config.apiUrl + "/Account/authenticate", requestOptions, {
+            params: {
+              X_Authorized_userId,
+              X_Authorized_password,
+              X_Authorized_applicationid,
+              X_Authorized_Programcode,
+              X_Authorized_Domainname
+            }
+          })
+          // return fetch(config.apiUrl + '/Testing/Authenticate', requestOptions)
+          .then(function(res) {
+            debugger;
+            let resValid = res.data.responseData.message;
+            if (resValid === "Valid login") {
+              NotificationManager.success("Login Successfull.");
+              setTimeout(function() {
+                window.location.href = "Admin/dashboard";
+              }, 2000);
+            } else {
+            }
+          });
+      }
+    } else {
+      this.validator.showMessages();
+      // rerender to show messages for the first time
+      // you can use the autoForceUpdate option to do this automatically`
+      this.forceUpdate();
     }
   }
 
@@ -93,7 +101,7 @@ class SingIn extends Component {
     return (
       <div className="auth-wrapper">
         <div className="auth-content">
-        <NotificationContainer />
+          <NotificationContainer />
           <div className="card">
             <div className="card-body text-center">
               <div className="mb-4">
@@ -111,6 +119,11 @@ class SingIn extends Component {
                     value={this.state.emailId}
                     autoComplete="off"
                   />
+                  {this.validator.message(
+                    "Email ID",
+                    this.state.emailID,
+                    "required|email"
+                  )}
                 </div>
                 <div className="input-group mb-3">
                   <input
@@ -122,6 +135,11 @@ class SingIn extends Component {
                     value={this.state.password}
                     autoComplete="off"
                   />
+                  {this.validator.message(
+                    "Password",
+                    this.state.password,
+                    "required"
+                  )}
                 </div>
                 <button
                   type="submit"

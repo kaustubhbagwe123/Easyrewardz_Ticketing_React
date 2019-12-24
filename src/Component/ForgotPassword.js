@@ -4,6 +4,7 @@ import logo from "../assets/Images/logo.jpg";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import config from "../helpers/config";
+import SimpleReactValidator from "simple-react-validator";
 
 class ForgotPassword extends Component {
   constructor(props) {
@@ -13,10 +14,11 @@ class ForgotPassword extends Component {
       emailId: ""
     };
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.validator = new SimpleReactValidator();
   }
   handleSubmit(event) {
     event.preventDefault();
-    debugger
+    debugger;
     // const { emailId } = this.state;
 
     // const requestOptions = {
@@ -30,25 +32,34 @@ class ForgotPassword extends Component {
     // let self = this;
     // axios.post(config.apiUrl + "/Account/ForgetPassword?EmailId="+emailId,
     // requestOptions)
-    const requestOptions = {
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
-      // body:JSON.stringify({ EmailID, Password ,AppId})
-      body: ""
-    };
-    axios.post(config.apiUrl + "/Account/ForgetPassword", requestOptions, {
-        params: {
-          EmailId: this.state.emailId
-        }
-      })
 
-      .then(function(response) {
-        debugger;
-        // let BrandData = response;
-        // self.setState({ BrandData: BrandData });
-      });
+    if (this.validator.allValid()) {
+      const requestOptions = {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Methods": "*"
+        },
+        // body:JSON.stringify({ EmailID, Password ,AppId})
+        body: ""
+      };
+      axios
+        .post(config.apiUrl + "/Account/ForgetPassword", requestOptions, {
+          params: {
+            EmailId: this.state.emailId
+          }
+        })
+
+        .then(function(response) {
+          debugger;
+          // let BrandData = response;
+          // self.setState({ BrandData: BrandData });
+        });
+    } else {
+      this.validator.showMessages();
+      // rerender to show messages for the first time
+      // you can use the autoForceUpdate option to do this automatically`
+      this.forceUpdate();
+    }
   }
   hanleChange(e) {
     this.setState({
@@ -77,8 +88,7 @@ class ForgotPassword extends Component {
               </div>
               <form name="form" onSubmit={this.handleSubmit}>
                 <div className="input-group sb-2">
-                  <label
-                    className="col-mb-3 col-form-label col-form-label pt-0 chpass">
+                  <label className="col-mb-3 col-form-label col-form-label pt-0 chpass">
                     Enter Email ID
                   </label>
                 </div>
@@ -91,6 +101,11 @@ class ForgotPassword extends Component {
                     value={this.state.emailId}
                     onChange={this.hanleChange.bind(this)}
                   />
+                  {this.validator.message(
+                    "Email Id",
+                    this.state.emailId,
+                    "required|email"
+                  )}
                 </div>
                 <div className="input-group mb-3">
                   <button type="submit" className="program-code-button">
