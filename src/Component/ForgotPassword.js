@@ -63,13 +63,7 @@ class ForgotPassword extends Component {
               <form name="form" onSubmit={this.handleSubmit}>
                 <div className="input-group sb-2">
                   <label
-                    className="col-mb-3 col-form-label col-form-label pt-0 "
-                    style={{
-                      fontWeight: "bold",
-                      color: "#a5a5a5",
-                      marginBottom: "5px"
-                    }}
-                  >
+                    className="col-mb-3 col-form-label col-form-label pt-0 chpass">
                     Enter Email ID
                   </label>
                 </div>

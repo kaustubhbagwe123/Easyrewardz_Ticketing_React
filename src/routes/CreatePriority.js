@@ -492,7 +492,7 @@ class CreatePriority extends Component {
                   </UncontrolledPopover>
                   <UncontrolledPopover
                     trigger="legacy"
-                    placement="auto"
+                    placement="bottom"
                     target="p-edit-pop-2"
                     className="general-popover delete-popover"
                     // delay={tooltipDelay}
@@ -535,7 +535,7 @@ class CreatePriority extends Component {
                   </UncontrolledPopover>
                   <UncontrolledPopover
                     trigger="legacy"
-                    placement="auto"
+                    placement="bottom"
                     target="p-edit-pop-3"
                     className="general-popover delete-popover"
                     // delay={tooltipDelay}
@@ -578,7 +578,7 @@ class CreatePriority extends Component {
                   </UncontrolledPopover>
                   <UncontrolledPopover
                     trigger="legacy"
-                    placement="auto"
+                    placement="bottom"
                     target="p-edit-pop-4"
                     className="general-popover delete-popover"
                     // delay={tooltipDelay}
@@ -621,7 +621,7 @@ class CreatePriority extends Component {
                   </UncontrolledPopover>
                   <UncontrolledPopover
                     trigger="legacy"
-                    placement="auto"
+                    placement="bottom"
                     target="p-edit-pop-5"
                     className="general-popover delete-popover"
                     // delay={tooltipDelay}

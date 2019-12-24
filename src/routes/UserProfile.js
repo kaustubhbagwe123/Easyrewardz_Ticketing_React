@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import ProfileImg from "./../assets/Images/profileimg.png";
+import ProfileImg from "./../assets/Images/UserIcon.png";
 import Modal from "react-responsive-modal";
 import CancelImg from "./../assets/Images/Circle-cancel.png";
 // import ProfileImg1 from "./../assets/Images/changeprofile.png";
@@ -79,7 +79,7 @@ class UserProfile extends Component {
                     </div>
                   </div>
 
-                  <div className="centerprofile col-md-6">
+                  <div className="centerprofile col-md-5">
                     <div className="divSpace">
                       <div className="">
                         <label className="designation-name">Name</label>
@@ -125,7 +125,8 @@ class UserProfile extends Component {
 
                     <div className="chatconfigbtn">
                       <button className="CreateADDBtn">
-                        <label className="addLable">SAVE</label>
+                      SAVE
+                        {/* <label className="addLable">SAVE</label> */}
                       </button>
                     </div>
                   </div>

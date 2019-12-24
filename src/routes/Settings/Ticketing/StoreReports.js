@@ -4,12 +4,14 @@ import { Link } from "react-router-dom";
 import ReactTable from "react-table";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
-import InfoImg from "./../../../assets/Images/icons8-info.svg";
-import DeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import DownExcel from "./../../../assets/Images/black-Dld.png";
 import Modal from "react-responsive-modal";
 import CancelImg from "./../../../assets/Images/Circle-cancel.png";
-// import DatePicker from "react-datepicker";
+import { Popover } from "antd";
+import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
+import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
+import DelBigIcon from "./../../../assets/Images/del-big.png";
+import DatePicker from "react-datepicker";
 
 class StoreReports extends Component {
   constructor(props) {
@@ -52,66 +54,26 @@ class StoreReports extends Component {
       {
         nameReport: "Open Tickets",
         scheduleReport: "Daily",
-        createdReport: (
-          <span>
-            <label>
-              Admin
-              <img src={InfoImg} className="info-icon" alt="Info" />
-            </label>
-          </span>
-        ),
         statusReport: "Active"
       },
       {
         nameReport: "Escalated Tickets",
         scheduleReport: "Weekly",
-        createdReport: (
-          <span>
-            <label>
-              Admin
-              <img src={InfoImg} className="info-icon" alt="Info" />
-            </label>
-          </span>
-        ),
         statusReport: "Inactive"
       },
       {
         nameReport: "Resolved Tickets",
         scheduleReport: "Monthly",
-        createdReport: (
-          <span>
-            <label>
-              Admin
-              <img src={InfoImg} className="info-icon" alt="Info" />
-            </label>
-          </span>
-        ),
         statusReport: "Active"
       },
       {
         nameReport: "Tickets with task",
         scheduleReport: "Daily",
-        createdReport: (
-          <span>
-            <label>
-              Admin
-              <img src={InfoImg} className="info-icon" alt="Info" />
-            </label>
-          </span>
-        ),
         statusReport: "Inactive"
       },
       {
         nameReport: "Categorywise open tickets",
         scheduleReport: "Weekly",
-        createdReport: (
-          <span>
-            <label>
-              Admin
-              <img src={InfoImg} className="info-icon" alt="Info" />
-            </label>
-          </span>
-        ),
         statusReport: "Active"
       }
     ];
@@ -142,7 +104,25 @@ class StoreReports extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "createdReport"
+        accessor: "createdReport",
+        Cell: row => {
+          var ids = row.original["id"];
+          return (
+            <div>
+              <span>
+                Admin
+                <Popover content={popoverData} placement="bottom">
+                  <img
+                    className="info-icon-cp"
+                    src={BlackInfoIcon}
+                    alt="info-icon"
+                    id={ids}
+                  />
+                </Popover>
+              </span>
+            </div>
+          );
+        }
       },
       {
         Header: (
@@ -163,7 +143,14 @@ class StoreReports extends Component {
               alt="download icon"
               className="downloadaction"
             />
-            <img src={DeleteIcon} alt="del-icon" className="downloadaction" />
+            <Popover content={ActionDelete} placement="bottom" trigger="click">
+                  <img
+                    src={RedDeleteIcon}
+                    alt="del-icon"
+                    className="del-btn"
+                    
+                  />
+                </Popover>
             <button className="react-tabel-button" id="p-edit-pop-2">
               <label className="Table-action-edit-button-text">EDIT</label>
             </button>
@@ -171,6 +158,39 @@ class StoreReports extends Component {
         )
       }
     ];
+    const ActionDelete = (
+      <div className="d-flex general-popover popover-body">
+        <div className="del-big-icon">
+          <img src={DelBigIcon} alt="del-icon" />
+        </div>
+        <div>
+          <p className="font-weight-bold blak-clr">Delete file?</p>
+          <p className="mt-1 fs-12">
+            Are you sure you want to delete this file?
+          </p>
+          <div className="del-can">
+            <a href={Demo.BLANK_LINK}>CANCEL</a>
+            <button className="butn">Delete</button>
+          </div>
+        </div>
+      </div>
+    );
+    const popoverData = (
+      <>
+        <div>
+          <b>
+            <p className="title">Created By: Admin</p>
+          </b>
+          <p className="sub-title">Created Date: 12 March 2018</p>
+        </div>
+        <div>
+          <b>
+            <p className="title">Updated By: Manager</p>
+          </b>
+          <p className="sub-title">Updated Date: 12 March 2018</p>
+        </div>
+      </>
+    );
 
     return (
       <Fragment>
@@ -282,11 +302,21 @@ class StoreReports extends Component {
                     </div>
                     <div className="col-md-4 ticketstrReport">
                       <label>Task Creation On</label>
-                      <input
+                      <div className="ticketreportdat">
+                      <DatePicker
+                        selected={this.state.ReportCreateDate}
+                        onChange={this.handleReportCreateDate.bind(this)}
+                        placeholderText="Creation Date"
+                        showMonthDropdown
+                        showYearDropdown
+                        // className="form-control"
+                      />
+                      </div>
+                      {/* <input
                         className="no-bg"
                         type="text"
                         placeholder="Enter Task Creation On"
-                      />
+                      /> */}
                     </div>
                   </div>
                   <div className="row mdl-row">
@@ -383,7 +413,16 @@ class StoreReports extends Component {
                     </div>
                     <div className="col-md-4 ticketstrReport">
                       <label>Claim Creation On</label>
-                      <input className="no-bg" type="text" />
+                      <div className="ticketreportdat">
+                      <DatePicker
+                        selected={this.state.ReportCreateDate}
+                        onChange={this.handleReportCreateDate.bind(this)}
+                        placeholderText="Creation Date"
+                        showMonthDropdown
+                        showYearDropdown
+                        // className="form-control"
+                      />
+                      </div>
                     </div>
                   </div>
                   <div className="row mdl-row">
@@ -556,6 +595,7 @@ class StoreReports extends Component {
         </div>
         <div className="container-fluid">
           <div className="store-settings-cntr reactreport">
+          <div style={{backgroundColor:"#fff"}}>
             <ReactTable
               data={datareport}
               columns={columnsreport}
@@ -563,6 +603,45 @@ class StoreReports extends Component {
               defaultPageSize={5}
               showPagination={false}
             />
+             <div className="position-relative">
+                    <div className="pagi">
+                      <ul>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>&lt;</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>1</a>
+                        </li>
+                        <li className="active">
+                          <a href={Demo.BLANK_LINK}>2</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>3</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>4</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>5</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>6</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>&gt;</a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="item-selection">
+                      <select>
+                        <option>30</option>
+                        <option>50</option>
+                        <option>100</option>
+                      </select>
+                      <p>Items per page</p>
+                    </div>
+                  </div>
+                  </div>
           </div>
         </div>
       </Fragment>

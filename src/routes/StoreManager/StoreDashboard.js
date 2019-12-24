@@ -40,18 +40,87 @@ class StoreDashboard extends Component {
     return (
       <div>
          <div className="container-fluid dash-dropdowns">
-          <div className="d-flex">
-            <div>
-              <span>Brand : </span>
-              <select>
-                <option>All</option>
-              </select>
+          <div className="d-flex dashallbrand1">
+          <div>
+              <span>
+                Brand :
+                <div className="dropdown">
+                  <button
+                    className="dropdown-toggle dashallbrand"
+                    type="button"
+                    data-toggle="dropdown"
+                  >
+                    <span className="EMFCText">All</span>
+                  </button>
+                  <ul className="dropdown-menu">
+                    <li>
+                      <label for="one">
+                        <input type="checkbox" id="one" className="ch1"/>
+                        <span className="ch1-text">Bata 1</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label for="two">
+                        <input type="checkbox" id="two" className="ch1" />
+                        <span className="ch1-text">Bata 2</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label for="three">
+                        <input type="checkbox" id="three" className="ch1"/>
+                        <span className="ch1-text">Bata 3</span>
+                      </label>
+                    </li>
+                    <li>
+                    <label for="four">
+                        <input type="checkbox" id="four" className="ch1"/>
+                        <span className="ch1-text">Bata 4</span>
+                      </label>
+                    </li>
+                  </ul>
+                </div>
+              </span>
             </div>
             <div>
-              <span>Agent : </span>
-              <select>
-                <option>All</option>
-              </select>
+              <span>
+                Agent :
+                <div className="dropdown">
+                  <button
+                    className="dropdown-toggle dashallbrand"
+                    type="button"
+                    data-toggle="dropdown"
+                  >
+                    <span className="EMFCText">All</span>
+                  </button>
+                  <ul className="dropdown-menu">
+                    <li>
+                      <label for="one">
+                        <input type="checkbox" id="one" className="ch1"/>
+                        <span className="ch1-text">Bata 1</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label for="two">
+                        <input type="checkbox" id="two" className="ch1" />
+                        <span className="ch1-text">Bata 2</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label for="three">
+                        <input type="checkbox" id="three" className="ch1"/>
+                        <span className="ch1-text">Bata 3</span>
+                      </label>
+                    </li>
+                    <li>
+                    <label for="four">
+                        <input type="checkbox" id="four" className="ch1"/>
+                        <span className="ch1-text">Bata 4</span>
+                      </label>
+                    </li>
+                  </ul>
+                </div>
+              </span>
+              
             </div>
           </div>
           <div>
@@ -112,6 +181,7 @@ class StoreDashboard extends Component {
                 <div className="dash-top-cards">
                   <p className="card-head">Claim</p>
                   <span className="card-value red-clr">40</span>
+                  <small>Over-due</small>
                 </div>
               </div>
               <div className="col-12 col-xs-6 col-sm-4 col-md-2">

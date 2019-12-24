@@ -1202,7 +1202,7 @@
   width: 100%;
   height: 43px;
   border: none;
-  padding: 10px;
+  padding: 13px;
 }
 .createSpace {
   padding: 0px 40px 40px;
@@ -2658,10 +2658,10 @@
 .noti-button1 {
   background-color: transparent;
   border-radius: 4px;
-  width: 148px;
+  width: 160px;
   height: 43px;
   cursor: pointer;
-  margin-right: 60px;
+  margin-right: 35px;
 }
 .noti-button-text1 {
   color: #2561a8;
@@ -2675,10 +2675,10 @@
 .noti-button2 {
   background-color: transparent;
   border-radius: 4px;
-  width: 148px;
+  width: 160px;
   height: 43px;
   cursor: pointer;
-  margin-right: 20px;
+  margin-right: 35px;
 }
 .noti-button-text2 {
   color: #2561a8;
@@ -2692,7 +2692,7 @@
 .noti-button3 {
   background-color: #2561a8;
   border-radius: 4px;
-  width: 148px;
+  width: 160px;
   height: 43px;
   cursor: pointer;
 }
@@ -2765,18 +2765,53 @@
 .insertpop1 {
   padding: 20px;
 }
-
+.ticketreport .ticketreportdat  input[type=text] {
+  width: 100%;
+  border-radius: 4px;
+  padding: 10px 50px 10px 10px;
+  border: 0;
+  background: #ecf2f4 url(/static/media/calendar-black.d0d589e5.svg) no-repeat right 15px center;
+  color: #4a4a4a;
+}
+.ticketreport .react-datepicker-wrapper {
+  width: 100%;
+}
+.ticketstrReport .ticketreportdat  input[type=text] {
+  width: 100%;
+  border-radius: 4px;
+  padding: 10px 50px 10px 10px;
+  border: 0;
+  background: #ecf2f4 url(/static/media/calendar-black.d0d589e5.svg) no-repeat right 15px center;
+  color: #4a4a4a;
+}
+.ticketstrReport .react-datepicker-wrapper {
+  width: 100%;
+}
+.ticketstrReport .react-datepicker__navigation--previous {
+  min-width: auto;
+}
+.ticketstrReport .react-datepicker__navigation--next {
+  min-width: auto;
+}
 .ticketreport .react-datepicker__navigation--previous {
-  left: -70px;
+  min-width: auto;
 }
 .ticketreport .react-datepicker__navigation--next {
-  right: -70px;
+  min-width: auto;
+}
+.reportpad .borderbottom {
+  border-bottom: 1px solid #ecf2f4;
+  margin: 10px -40px;
 }
 .setmainscreen {
   font-weight:  bold !important;
   font-size: 19px;
   color: #000;
 } 
+.QaAudit .tab-content {
+  padding-top: 0;
+} 
+
 .alignradio .status-options input + label::before {
   content: "";
   position: absolute;
@@ -2825,5 +2860,82 @@
 .StoreUserReact .ReactTable .rt-thead .rt-th.-cursor-pointer, .ReactTable .rt-thead .rt-td.-cursor-pointer {
   padding: 20px 7px !important;
 }
+.TicketBrandReact svg:not(:root).svg-inline--fa {
+  overflow: visible;
+  color:#a7aaad;
+  width: 20px;
+  height: 18px;
+  margin: -3px 0;
+ }
+ .TicketCrmRoleReact svg:not(:root).svg-inline--fa {
+  overflow: visible;
+  color:#a7aaad;
+  width: 20px;
+  height: 18px;
+  margin: -3px 0;
+ }
+ .reactreport svg:not(:root).svg-inline--fa {
+  overflow: visible;
+  color:#a7aaad;
+  width: 20px;
+  height: 18px;
+  margin: -3px 0;
+ }
+ .modulereact svg:not(:root).svg-inline--fa {
+  overflow: visible;
+  color:#a7aaad;
+  width: 20px;
+  height: 18px;
+  margin: -3px 0;
+ }
+ .StorCrmRoleReact svg:not(:root).svg-inline--fa {
+  overflow: visible;
+  color:#a7aaad;
+  width: 20px;
+  height: 18px;
+  margin: -3px 0;
+ }
+ .StoreHierarchyReact svg:not(:root).svg-inline--fa {
+  overflow: visible;
+  color:#a7aaad;
+  width: 20px;
+  height: 18px;
+  margin: -3px 0;
+ }
+ .TicketFileUploadReact svg:not(:root).svg-inline--fa {
+  overflow: visible;
+  color:#a7aaad;
+  width: 20px;
+  height: 18px;
+  margin: -3px 0;
+ }
+ .deptMaster svg:not(:root).svg-inline--fa {
+  overflow: visible;
+  color:#a7aaad;
+  width: 20px;
+  height: 18px;
+  margin: -3px 0;
+ }
+ .StoreUserReact svg:not(:root).svg-inline--fa {
+  overflow: visible;
+  color:#a7aaad;
+  width: 20px;
+  height: 18px;
+  margin: -3px 0;
+ }
+ .slatempreact svg:not(:root).svg-inline--fa {
+  overflow: visible;
+  color:#a7aaad;
+  width: 20px;
+  height: 18px;
+  margin: -3px 0;
+ }
+ .StoreItemMasterReact svg:not(:root).svg-inline--fa {
+  overflow: visible;
+  color:#a7aaad;
+  width: 20px;
+  height: 18px;
+  margin: -3px 0;
+ }
 /* Setting ReactTable Css Start Kalpesh */
 

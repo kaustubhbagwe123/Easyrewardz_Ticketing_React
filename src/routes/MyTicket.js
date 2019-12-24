@@ -28,6 +28,7 @@ import CancelImg from "./../assets/Images/cancel.png";
 import { Collapse, CardBody, Card } from "reactstrap";
 import { Drawer } from "antd";
 import CustomerIcon from "./../assets/Images/customer-icon.png";
+import UserIcon from "./../assets/Images/UserIcon.png";
 import CrossIcon from "./../assets/Images/cancel.png";
 import TikcetSystemStoreModal from "./../routes/TicketSystemStoreModal";
 import StoreIcon from "./../assets/Images/store.png";
@@ -50,6 +51,7 @@ import Call1 from "./../assets/Images/call.png";
 import Ticket from "./../assets/Images/TicketGrey.png";
 import MoreUp from "./../assets/Images/table-arr-up.png";
 import CancelImgGrey from "./../assets/Images/CancelGrey.png";
+import Order from "./../assets/Images/order.png";
 
 class MyTicket extends Component {
   constructor(props) {
@@ -651,7 +653,7 @@ class MyTicket extends Component {
                   <img
                     src={EyeImg}
                     alt="eye"
-                    className="eyeImg"
+                    className="eyeImg1"
                     onClick={this.HandleProfileModalOpen.bind(this)}
                   />
                   <Modal
@@ -744,9 +746,9 @@ class MyTicket extends Component {
                         <div className="col-md-5">
                           <div className="customerBill">
                             <img
-                              src={CustomerIcon}
+                              src={UserIcon}
                               alt="customer-icon"
-                              style={{ marginTop: "-10px" }}
+                              className="usericon"
                             />
                             <label className="customer-text">CUSTOMER</label>
                           </div>
@@ -771,25 +773,26 @@ class MyTicket extends Component {
                         </div>
 
                         <div className="col-md-7 xyz">
+                        <img
+                                  src={CrossIcon}
+                                  alt="cross-icon"
+                                  className="cross"
+                                  onClick={this.handleBillImgModalClose.bind(
+                                    this
+                                  )}
+                                />
                           {this.state.HistOrderShow ? (
                             <div>
                               <div className="histo">
                                 <img
-                                  src={CustomerIcon}
+                                  src={Order}
                                   alt="customer-icon"
                                   style={{ marginTop: "-10px" }}
                                 />
                                 <label className="customer-text">
                                   HISTORICAL ORDER
                                 </label>
-                                <img
-                                  src={CrossIcon}
-                                  alt="cross-icon"
-                                  style={{ float: "right" }}
-                                  onClick={this.handleBillImgModalClose.bind(
-                                    this
-                                  )}
-                                />
+                                
                               </div>
                               <div className="col-md-6">
                                 <input
@@ -838,13 +841,13 @@ class MyTicket extends Component {
                             <div>
                               <div className="row histo">
                                 <div className="col-md-7">
+                                <img
+                              src={UserIcon}
+                              alt="customer-icon"
+                              className="usericon"
+                            />
                                   <img
-                                    src={CustomerIcon}
-                                    alt="customer-icon"
-                                    style={{ marginTop: "-10px" }}
-                                  />
-                                  <img
-                                    src={DownImg}
+                                    src={Up1Img}
                                     alt="down"
                                     className="down-header"
                                   />
@@ -1065,13 +1068,13 @@ class MyTicket extends Component {
             <div className="row">
               <label className="ticket-title-where">Ticket Title:</label>
             </div>
-            <div className="row">
+            <div className="row" style={{marginTop:"0"}}>
               <label className="label-2">Where can I see my reward?</label>
             </div>
             <div className="row">
               <label className="ticket-title-where">Ticket Details:</label>
             </div>
-            <div className="row">
+            <div className="row" style={{marginTop:"0"}}>
               <label className="label-3">
                 Where I can see details of my rewards in the ‘Rewards’ tab
                 within the ‘Refer and Earn Rewards’ screen.You will also get

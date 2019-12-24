@@ -767,7 +767,9 @@ class Header extends Component {
               <label className="labledata">05</label>
             </div>
             <div className="md-6 new-tickets-assigned">
-              <label>New Tickets assigned to you</label>
+              <label>
+                <span style={{fontSize:"17px",fontWeight:"bold"}}>New Tickets</span> assigned to you
+                </label>
             </div>
             <div className="viewticketspeadding">
               <a href="{#}">
@@ -780,7 +782,8 @@ class Header extends Component {
               <label className="labledata">05</label>
             </div>
             <div className="md-6 new-tickets-assigned">
-              <label>Update happened to your tickets</label>
+              <label>
+              <span style={{fontSize:"17px",fontWeight:"bold"}}>Update</span> happened to your tickets</label>
             </div>
             <div className="viewticketspeadding">
               <a href="{#}">
@@ -793,7 +796,8 @@ class Header extends Component {
               <label className="labledata">05</label>
             </div>
             <div className="md-6 new-tickets-assigned">
-              <label>Escalation in your ticket</label>
+              <label>
+              <span style={{fontSize:"17px",fontWeight:"bold"}}>Escalation</span> in your ticket</label>
             </div>
             <div className="viewticketspeadding">
               <a href="{#}">
@@ -821,14 +825,14 @@ class Header extends Component {
                   </p>
                   <p className="mail-id">naman@fabindia.com</p>
                 </div>
-                <button style={{ cursor: "pointer" }}>LOGOUT</button>
+                <button className="logout">LOGOUT</button>
               </div>
               <div className="status-sctn alignradio">
                 <div className="d-flex align-items-center">
                   <div className="logout-status" style={{marginTop:"10px"}}>
                     <img src={StatusLogo} alt="status" />
                   </div>
-                  <p className="logout-label chat-status">Chat Status :</p>
+                  <p className="logout-label chat-status">CHAT STATUS :</p>
                 </div>
                 <div className="status-options">
                   <input type="radio" name="logout-status" id="online" />

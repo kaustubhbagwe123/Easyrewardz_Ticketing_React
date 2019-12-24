@@ -317,14 +317,14 @@ class Dashboard extends Component {
         ),
         subjectDash: (
           <div>
-            Need to change my shipping address <br></br>
-            <span>Hope this help, Please rate us</span>
+            Need to change my shipping address 
+            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
           </div>
         ),
         creationNew: (
           <span>
             <label>2 Hour Ago</label>
-            <Popover content={InsertPlaceholder} placement="bottom">
+            <Popover content={InsertPlaceholder} placement="left">
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
             </Popover>
           </span>
@@ -359,14 +359,14 @@ class Dashboard extends Component {
         ),
         subjectDash: (
           <div>
-            Need to change my shipping address <br></br>
-            <span>Hope this help, Please rate us</span>
+            Need to change my shipping address 
+            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
           </div>
         ),
         creationNew: (
           <span>
             <label>12 March 2018</label>
-            <Popover content={InsertPlaceholder} placement="bottom">
+            <Popover content={InsertPlaceholder} placement="left">
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
             </Popover>
           </span>
@@ -399,28 +399,39 @@ class Dashboard extends Component {
             <label>New</label>
           </span>
         ),
-        subjectDash: (
+        Img : (
           <div>
             <Popover content={TaskBlue} placement="bottom">
+              <img
+                className="task-icon-1"
+                src={TaskIconBlue}
+                alt="task-icon-blue"
+              />
+            </Popover>
+            </div>
+        ),
+        subjectDash: (
+          <div>
+            {/* <Popover content={TaskBlue} placement="bottom">
               <img
                 className="task-icon-1 marginimg"
                 src={TaskIconBlue}
                 alt="task-icon-blue"
               />
-            </Popover>
+            </Popover> */}
             {/* <img
               className="task-icon-1 marginimg"
               src={TaskIconBlue}
               alt="task-icon-blue"
             /> */}
-            Need to change my shipping address <br></br>
-            <span>Hope this help, Please rate us</span>
+            Need to change my shipping address 
+            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
           </div>
         ),
         creationNew: (
           <span>
             <label>12 March 2018</label>
-            <Popover content={InsertPlaceholder} placement="bottom">
+            <Popover content={InsertPlaceholder} placement="left">
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
             </Popover>
           </span>
@@ -453,21 +464,28 @@ class Dashboard extends Component {
             <label>New</label>
           </span>
         ),
-        subjectDash: (
-          <div>
-            <img
-              className="task-icon-1 marginimg"
+        Img :(
+          <img
+              className="task-icon-1"
               src={TaskIconGray}
               alt="task-icon-gray"
             />
-            Need to change my shipping address <br></br>
-            <span>Hope this help, Please rate us</span>
+        ),
+        subjectDash: (
+          <div>
+            {/* <img
+              className="task-icon-1 marginimg"
+              src={TaskIconGray}
+              alt="task-icon-gray"
+            /> */}
+            Need to change my shipping address 
+            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
           </div>
         ),
         creationNew: (
           <span>
             <label>12 March 2018</label>
-            <Popover content={InsertPlaceholder} placement="bottom">
+            <Popover content={InsertPlaceholder} placement="left">
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
             </Popover>
           </span>
@@ -500,7 +518,7 @@ class Dashboard extends Component {
             <label>Solved</label>
           </span>
         ),
-        subjectDash: (
+        Img: (
           <div>
             <Popover content={ClaimBlue} placement="bottom">
               <img
@@ -509,26 +527,35 @@ class Dashboard extends Component {
                 alt="cliam-icon-blue"
               />
             </Popover>
+              <span style={{marginLeft:"20px"}}><img
+                className="task-icon-1 marginimg"
+                src={TaskIconGray}
+                alt="task-icon-gray"
+              /></span>
+          </div>
+        ),
+        subjectDash: (
+          <div>
+            {/* <Popover content={ClaimBlue} placement="bottom">
+              <img
+                className="claim-icon marginimg"
+                src={CliamIconBlue}
+                alt="cliam-icon-blue"
+              />
+            </Popover> */}
             {/* <img
               className="claim-icon marginimg"
               src={CliamIconBlue}
               alt="cliam-icon-blue"
             /> */}
-            Need to change my shipping address <br></br>
-            <span>
-              <img
-                className="task-icon-1 marginimg"
-                src={TaskIconGray}
-                alt="task-icon-gray"
-              />
-              Hope this help, Please rate us
-            </span>
+            Need to change my shipping address 
+            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
           </div>
         ),
         creationNew: (
           <span>
             <label>12 March 2018</label>
-            <Popover content={InsertPlaceholder} placement="bottom">
+            <Popover content={InsertPlaceholder} placement="left">
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
             </Popover>
           </span>
@@ -563,14 +590,14 @@ class Dashboard extends Component {
         ),
         subjectDash: (
           <div>
-            Need to change my shipping address <br></br>
-            <span>Hope this help, Please rate us</span>
+            Need to change my shipping address 
+            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
           </div>
         ),
         creationNew: (
           <span>
             <label>12 March 2018</label>
-            <Popover content={InsertPlaceholder} placement="bottom">
+            <Popover content={InsertPlaceholder} placement="left">
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
             </Popover>
           </span>
@@ -605,14 +632,14 @@ class Dashboard extends Component {
         ),
         subjectDash: (
           <div>
-            Need to change my shipping address <br></br>
-            <span>Hope this help, Please rate us</span>
+            Need to change my shipping address 
+            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
           </div>
         ),
         creationNew: (
           <span>
             <label>12 March 2018</label>
-            <Popover content={InsertPlaceholder} placement="bottom">
+            <Popover content={InsertPlaceholder} placement="left">
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
             </Popover>
           </span>
@@ -647,10 +674,11 @@ class Dashboard extends Component {
         ),
         accessor: "statusDash"
       },
-      // {
-      //   Header: <span></span>,
-      //   accessor: "Img"
-      // },
+      {
+        Header: <span></span>,
+        accessor: "Img",
+        width:45,
+      },
       {
         Header: (
           <label>
@@ -785,7 +813,7 @@ class Dashboard extends Component {
             </div>
           </Modal>
         </div>
-        <div className="container-fluid dash-dropdowns">
+        <div className="container-fluid dash-dropdowns" style={{ marginTop: "-21px" }}>
           <div className="d-flex dashallbrand1">
             <div>
               <span>

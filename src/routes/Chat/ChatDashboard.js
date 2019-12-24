@@ -188,7 +188,7 @@ class ChatDashboard extends Component {
                     </span>
                     <br />
                     <small className="response-card-content-text">
-                      WITE IN QUEUE
+                      WAIT IN QUEUE
                     </small>
                   </div>
                 </div>

@@ -774,7 +774,7 @@ class TicketSystem extends Component {
                     style={{ display: "inherit" }}
                   >
                     <button
-                      className="dropdown-toggle my-tic-email"
+                      className="dropdown-toggle my-tic-email1"
                       type="button"
                       data-toggle="dropdown"
                     >

@@ -349,10 +349,10 @@ a {
   height: 220px;
 }
 .new-tickets-assigned {
-  color: #000000;
+  color: #4a4a4a;
   font-family: Lato-Light;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 50px;
   width: 243px;
   text-align: left;
@@ -362,7 +362,7 @@ a {
   color: #2561a8;
   font-family: Lato;
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 600;
   line-height: 50px;
   width: 121px;
   text-align: left;
@@ -806,6 +806,15 @@ table tr th:last-child {
   border: 1px solid #2561a8;
   border-radius: 5px;
   width: auto;
+  height: 20px;
+  padding: 4px;
+  cursor: pointer;
+}
+.eyeImg1 {
+  background-color: #ecf2f4;
+  border: 1px solid #2561a8;
+  border-radius: 5px;
+  width: 22px;
   height: 20px;
   padding: 4px;
   cursor: pointer;
@@ -1968,6 +1977,7 @@ button {
 }
 .card-head {
   font-weight: 700;
+  font-size: 16px;
   text-align: left;
   margin-bottom: 15px;
   margin-left: 20px;
@@ -2455,7 +2465,7 @@ table tr th:last-child {
   border-radius: 8px;
 }
 .logout-block > div {
-  padding: 15px 15px 10px 15px;
+  padding: 22px 22px 20px 22px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -2463,6 +2473,19 @@ table tr th:last-child {
 }
 .logout-block > div:first-child {
   border-top: none;
+}
+#logout-popup .logout {
+  background-color: #ECF2F4;
+  border: 1px solid #2561A8;
+  border-radius: 5px;
+  width: 100px;
+  height: 38px;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  color: #2561a8;
+  cursor: pointer;
 }
 .mail-id {
   color: #6e6e6e;
@@ -2996,11 +3019,27 @@ table tr th:last-child {
   padding-right: 35px;
   width: 151px;
   font-size: 14px;
-  background: #fff url("../Images/down-1.png") no-repeat right 12px center;
+  background: #dbe4e7  url("../Images/down-1.png") no-repeat right 12px center;
   background-size: 16px;
   text-align: left;
 }
 .my-tic-email::after {
+  display: none;
+}
+.my-tic-email1 {
+  border: 0;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-weight: 500;
+  padding-right: 35px;
+  width: 151px;
+  font-size: 14px;
+  background: #fff url("../Images/down-1.png") no-repeat right 12px center;
+  background-size: 16px;
+  text-align: left;
+}
+.my-tic-email1::after {
   display: none;
 }
 .mail-mask .dropdown-menu.show:before {
@@ -5580,7 +5619,7 @@ font-weight: normal;
 .alternumber {
   border: 0;
   border-radius: 5px;
-  padding-left: 7px;
+  padding: 10px;
   width: 171px;
   height: 40px;
   font-size: 14px;
@@ -6440,6 +6479,7 @@ table thead tr {
   padding-top: 5px !important;
   margin-top: 15px;
 }
+
 .lbl-popup-title {
   font-size: 18px;
   font-weight: 500;
@@ -6904,6 +6944,38 @@ table tr th:last-child {
   padding: 20px 0 0 20px;
   margin-bottom: 20px;
 }
+#BillInvoice-popup .customer-text {
+  color: #4a4a4a;
+  font-family: Lato;
+  font-size: 18px !important;
+  font-weight: bold;
+  line-height: 19px;
+  text-align: left;
+  padding-top: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+#BillInvoice-popup .cross {
+  float: right;
+  margin-top: 15px;
+  cursor: pointer;
+}
+#BillInvoice-popup .down-header {
+  width: 24px;
+  height: 10px;
+  padding-left: 10px;
+  cursor: pointer;
+  transform: rotate(90deg);
+  margin-top: -15px;
+}
+#BillInvoice-popup .switch.switch-primary input[type="checkbox"]:checked + .cr:before {
+  background: #1ab394;
+}
+#BillInvoice-popup .usericon {
+  width: 22px;
+  height: 22px;
+  margin-top: -10px;
+}
 .customer-text {
   color: #4a4a4a;
   font-family: Lato;
@@ -6915,6 +6987,7 @@ table tr th:last-child {
   padding-left: 15px;
   padding-right: 15px;
 }
+
 .namepad {
   padding: 0 0 0 35px;
   margin-bottom: 20px;
@@ -7208,8 +7281,7 @@ table tr th:last-child {
   border-radius: 4px;
   width: 100%;
   height: 35px;
-  padding-left: 8px;
-  padding-right: 40px;
+  padding: 10px;
   border-color: #ecf2f4;
   background: #ecf2f4;
   /* background-size: 13px; */
@@ -7237,13 +7309,6 @@ table tr th:last-child {
   text-align: left;
   line-height: 25px;
   display: block;
-}
-.ticketreport .react-datepicker-wrapper {
-  border-radius: 4px;
-  border: 0;
-  background: #fff url(/static/media/calendar-black.d0d589e5.svg) no-repeat
-    right 15px center;
-  color: #4a4a4a;
 }
 #addreport-popup {
   border-radius: 8px;
@@ -7396,8 +7461,7 @@ table tr th:last-child {
   border-radius: 4px;
   width: 100%;
   height: 37px;
-  padding-left: 8px;
-  padding-right: 40px;
+  padding: 10px;
   border-color: #ecf2f4;
   background: #ecf2f4;
   /* background-size: 13px; */
@@ -8254,7 +8318,7 @@ table tr th:last-child {
 .half-circle::before {
   position: absolute;
     content: "";
-    height: 200px;
+    height: 210px;
     width: 100%;
     background-color: #2561a8;
     border-left: 0;
@@ -8291,7 +8355,7 @@ table tr th:last-child {
   padding-bottom: 15px;
   margin: 0 auto;
   position: relative;
-  top: 10px;
+  top: 35px;
   box-shadow: 0px 5px 4px 0px #ddd;
 }
 #ProfileForgot-popup {
@@ -9149,6 +9213,7 @@ table tr th:last-child {
   padding: 0 5px;
   position: fixed;
   bottom: 0;
+  width: 100%;
 }
 .TicketTabs li {
   padding: 15px 0;
@@ -9157,13 +9222,13 @@ table tr th:last-child {
   border-top: 3px solid #2561a8;
 }
 .TicketTabs .Sub {
-  margin: 0 24px;
+  margin: 0 25px;
 }
 .TicketTabs .SubR {
-  margin-right: 12px;
+  margin: 0 12px;
 }
 .TicketTabs .SubL {
-  margin-left: 12px;
+  margin: 0 12px;
 }
 .TicketTabs .Ticket{
   width: 22px;
@@ -9526,5 +9591,29 @@ table tr th:last-child {
 }
 .DashTimeRange .inputDate form-control {
   margin: 0 0 0 100px;
+}
+.centerprofile .txt-1 {
+  background-color: #ecf2f4;
+  border-radius: 4px;
+  width: 100%;
+  height: 47px;
+  border: none;
+  padding: 15px;
+}
+.centerprofile .CreateADDBtn {
+  background-color: #2561a8;
+  border-radius: 4px;
+  width: 100%;
+  height: 47px;
+  cursor: pointer;
+  color: #ffffff;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+}
+.im {
+  flex: 20 0 auto !important;
+  width: 20px !important;
 }
 /* ****************End css ************************/
