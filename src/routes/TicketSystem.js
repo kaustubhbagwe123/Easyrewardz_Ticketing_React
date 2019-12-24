@@ -165,10 +165,9 @@ class TicketSystem extends Component {
         "Content-Type": "application/json",
         "Access-Control-Allow-Methods": "*"
       },
-      url: config.apiUrl + '/Brand/GetBrandList',
+      url: config.apiUrl + "/Brand/GetBrandList",
       params: {
-        TenantID: this.state.tenantID,
-       
+        TenantID: this.state.tenantID
       }
     }).then(function(res) {
       // console.log(JSON.stringify(res.data.responseData));
@@ -179,7 +178,7 @@ class TicketSystem extends Component {
   }
   handleGetCategoryList() {
     debugger;
-  
+
     let self = this;
     axios({
       method: "post",
@@ -187,10 +186,9 @@ class TicketSystem extends Component {
         "Content-Type": "application/json",
         "Access-Control-Allow-Methods": "*"
       },
-      url: config.apiUrl + '/Category/GetCategoryList',
+      url: config.apiUrl + "/Category/GetCategoryList",
       params: {
-        TenantID: this.state.tenantID,
-       
+        TenantID: this.state.tenantID
       }
     }).then(function(res) {
       debugger;
@@ -200,7 +198,7 @@ class TicketSystem extends Component {
   }
   handleGetSubCategoryList() {
     debugger;
-   
+
     let self = this;
     axios({
       method: "post",
@@ -208,10 +206,9 @@ class TicketSystem extends Component {
         "Content-Type": "application/json",
         "Access-Control-Allow-Methods": "*"
       },
-      url: config.apiUrl + '/SubCategory/GetSubCategoryByCategoryID',
+      url: config.apiUrl + "/SubCategory/GetSubCategoryByCategoryID",
       params: {
-        CategoryID: this.state.selectedCategory,
-       
+        CategoryID: this.state.selectedCategory
       }
     }).then(function(res) {
       console.log(JSON.stringify(res.data.responseData));
@@ -242,7 +239,7 @@ class TicketSystem extends Component {
   }
   handleGetTicketPriorityList() {
     debugger;
-    
+
     let self = this;
     axios({
       method: "post",
@@ -252,7 +249,7 @@ class TicketSystem extends Component {
       },
       url: config.apiUrl + "/Priority/GetPriorityList",
       params: {
-        TenantID: this.state.tenantID,
+        TenantID: this.state.tenantID
       }
     }).then(function(res) {
       debugger;
@@ -262,7 +259,7 @@ class TicketSystem extends Component {
   }
   handleGetChannelOfPurchaseList() {
     debugger;
-  
+
     let self = this;
     axios({
       method: "post",
@@ -272,7 +269,7 @@ class TicketSystem extends Component {
       },
       url: config.apiUrl + "/Master/GetChannelOfPurchaseList",
       params: {
-        TenantID: this.state.tenantID,
+        TenantID: this.state.tenantID
       }
     }).then(function(res) {
       debugger;
@@ -314,7 +311,7 @@ class TicketSystem extends Component {
   setSubCategoryValue = e => {
     let subCategoryValue = e.currentTarget.value;
     this.setState({ selectedSubCategory: subCategoryValue });
-    
+
     setTimeout(() => {
       if (this.state.selectedSubCategory) {
         this.handleGetIssueTypeList();
@@ -792,7 +789,7 @@ class TicketSystem extends Component {
                 </div>
                 <div className="row">
                   <div className="col-md-12">
-                    <CKEditor
+                    {/* <CKEditor
                       style={{ height: "400px" }}
                       config={{
                         toolbar: [
@@ -826,7 +823,7 @@ class TicketSystem extends Component {
                           }
                         ]
                       }}
-                    />
+                    /> */}
                     <div className="row colladrowa" style={{ bottom: "15px" }}>
                       <div className="col-md-12 colladrow">
                         <ul className="m-l-30">
