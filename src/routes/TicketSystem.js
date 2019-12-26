@@ -13,6 +13,7 @@ import TicketSystemTask from "./Tabs/TicketSystemTask";
 import TicketSystemStore from "./Tabs/TicketSystemStore";
 import Modal from "react-responsive-modal";
 import CKEditor from "ckeditor4-react";
+import moment from "moment";
 import FileUpload from "./../assets/Images/file.png";
 import ThumbTick from "./../assets/Images/thumbticket.png";
 import AutoSave from "./../assets/Images/AutoSave.png";
@@ -40,7 +41,7 @@ class TicketSystem extends Component {
       showAddNote: false,
       SubmitBtnReopn: false,
       EditCustomer: false,
-      startDate: "",
+
       TicketTitleData: [],
       BrandData: [],
       CategoryData: [],
@@ -51,6 +52,13 @@ class TicketSystem extends Component {
       KbLink: false,
       collapseUp: false,
       TabIconColor: "nav-link active",
+      fullName: "",
+      mobileNumber: "",
+      emailId: "",
+      genderId: 1,
+      dob: "",
+      alternateNumber: "",
+      alternateEmailId: "",
       selectedBrand: 0,
       selectedCategory: 0,
       selectedSubCategory: 0,
@@ -82,6 +90,7 @@ class TicketSystem extends Component {
     this.handleGetCategoryList = this.handleGetCategoryList.bind(this);
     this.handleGetSubCategoryList = this.handleGetSubCategoryList.bind(this);
     this.handleGetIssueTypeList = this.handleGetIssueTypeList.bind(this);
+    // this.handleOnChangeData = this.handleOnChangeData.bind(this);
     this.handleGetChannelOfPurchaseList = this.handleGetChannelOfPurchaseList.bind(
       this
     );
@@ -114,7 +123,7 @@ class TicketSystem extends Component {
   };
   handleChange(date) {
     this.setState({
-      startDate: date
+      dob: date
     });
   }
   showAddNoteFuncation() {
@@ -123,6 +132,19 @@ class TicketSystem extends Component {
       showAddNote: !showAddNote
     });
   }
+
+  handleOnChangeData = e => {
+    const { name, value } = e.target;
+    // const value =e.target.value;
+
+    let customerData = this.state.customerData;
+    customerData[name] = value; 
+    return this.setState({customerData});
+    // this.state.customerData[name] = value;
+    // this.setState({
+    //   customerData: this.state.customerData
+    // });
+  };
   handlechangebtntab(e) {
     var idIndex = e.target.className;
     this.setState({ TabIconColor: idIndex });
@@ -133,9 +155,37 @@ class TicketSystem extends Component {
   handleSubmitReopnModalClose() {
     this.setState({ SubmitBtnReopn: false });
   }
-
-  handleGetTicketTitleList() {
+  handleUpdateCustomer() {
     debugger;
+    let self = this;
+    var Dob = moment(this.state.customerData.dob).format("L");
+    axios({
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      url: config.apiUrl + "/Customer/updateCustomer",
+      data: {
+        TenantID: this.state.customerData.tenantID,
+        CustomerName: this.state.customerData.fullName,
+        CustomerPhoneNumber: this.state.customerData.mobileNumber,
+        CustomerEmailId: this.state.customerData.emailId,
+        GenderID: this.state.customerData.genderId,
+        AltNumber: this.state.customerData.alternateNumber,
+        AltEmailID: this.state.customerData.alternateEmailId,
+        // DateOfBirth: moment(this.state.customerData.dob).format("L"),
+        DateOfBirth: Dob,
+        IsActive: 1
+      }
+    }).then(function(res) {
+      debugger;
+      self.handleEditCustomerClose.bind(self);
+      let SearchData = res.data.responseData;
+      self.setState({ SearchData: SearchData });
+    });
+  }
+  handleGetTicketTitleList() {
     const requestOptions = {
       method: "POST",
       header: {
@@ -152,14 +202,13 @@ class TicketSystem extends Component {
         // TenantID: this.state.tenantID
       }
     }).then(function(res) {
-      console.log(JSON.stringify(res.data.responseData));
+      // console.log(JSON.stringify(res.data.responseData));
       debugger;
       let TicketTitleData = res.data.responseData;
       self.setState({ TicketTitleData: TicketTitleData });
     });
   }
   handleGetBrandList() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -213,14 +262,12 @@ class TicketSystem extends Component {
         CategoryID: this.state.selectedCategory
       }
     }).then(function(res) {
-      console.log(JSON.stringify(res.data.responseData));
       debugger;
       let SubCategoryData = res.data.responseData;
       self.setState({ SubCategoryData: SubCategoryData });
     });
   }
   handleGetIssueTypeList() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -240,8 +287,6 @@ class TicketSystem extends Component {
     });
   }
   handleGetTicketPriorityList() {
-    debugger;
-
     let self = this;
     axios({
       method: "post",
@@ -260,8 +305,6 @@ class TicketSystem extends Component {
     });
   }
   handleGetChannelOfPurchaseList() {
-    debugger;
-
     let self = this;
     axios({
       method: "post",
@@ -281,15 +324,19 @@ class TicketSystem extends Component {
   }
 
   componentDidMount() {
+    debugger;
     var customerData = this.props.location.state;
-    this.setState({ customerData });
-    console.log(customerData);
+    if (customerData) {
+      this.setState({ customerData });
 
-    this.handleGetTicketTitleList();
-    this.handleGetBrandList();
-    this.handleGetCategoryList();
-    this.handleGetChannelOfPurchaseList();
-    this.handleGetTicketPriorityList();
+      this.handleGetTicketTitleList();
+      this.handleGetBrandList();
+      this.handleGetCategoryList();
+      this.handleGetChannelOfPurchaseList();
+      this.handleGetTicketPriorityList();
+    } else {
+      this.props.history.push("addSearchMyTicket");
+    }
   }
 
   setBrandValue = e => {
@@ -308,7 +355,6 @@ class TicketSystem extends Component {
     let categoryValue = e.currentTarget.value;
     this.setState({ selectedCategory: categoryValue });
     setTimeout(() => {
-      debugger;
       if (this.state.selectedCategory) {
         this.handleGetSubCategoryList();
       }
@@ -325,7 +371,6 @@ class TicketSystem extends Component {
     }, 1);
   };
   setChannelOfPurchaseValue = e => {
-    debugger;
     let channelOfPurchaseValue = e.currentTarget.value;
     this.setState({ selectedChannelOfPurchase: channelOfPurchaseValue });
   };
@@ -346,7 +391,6 @@ class TicketSystem extends Component {
         onClick={this.handleUpOpen.bind(this)}
       />
     );
-    console.log(this.state.BrandData);
 
     return (
       <div style={{ backgroundColor: "#f5f8f9", paddingBottom: "2px" }}>
@@ -367,6 +411,7 @@ class TicketSystem extends Component {
                     className="bitmapheadpone"
                   />
                   <label className="a91-9873470074">
+                    {/* {this.state.customerData.mobileNumber} */}
                     {this.state.customerData.mobileNumber}
                   </label>
                   <img
@@ -407,11 +452,7 @@ class TicketSystem extends Component {
                 <div className="row m-b-10">
                   <div className="col-md-12">
                     <label className="category">Ticket Title</label>
-                    {/* <select className="category-select-system dropdown-label">
-                      <option className="select-category-placeholder dropdown-label">
-                        Suggestion
-                      </option>
-                    </select> */}
+
                     <div className="ticket-title-select">
                       <Select
                         // className="rate-dropdown"
@@ -427,34 +468,7 @@ class TicketSystem extends Component {
                     </div>
                   </div>
                 </div>
-                {/* <div className="row m-b-10">
-                  <div className="col-md-12">
-                    <label className="category">Ticket Title</label>
-                  </div>
-                </div>
-                <div className="row m-b-10">
-                  <div className="col-md-12">
-                    <select className="category-select-system dropdown-label">
-                      <option className="select-category-placeholder dropdown-label">
-                        Suggestion
-                      </option>
-                    </select>
-                  </div>
-                </div> */}
-                {/* <div className="row m-b-10">
-                  <div className="col-md-12">
-                    <label className="category">Ticket Details</label>
-                  </div>
-                </div>
 
-                <div className="row m-b-10">
-                  <div className="col-md-12">
-                    <textarea
-                      className="ticket-details-textarea-system"
-                      placeholder="Write your title here"
-                    ></textarea>
-                  </div>
-                </div> */}
                 <div className="row m-b-10">
                   <div className="col-md-12">
                     <label className="category">Ticket Details</label>
@@ -511,30 +525,7 @@ class TicketSystem extends Component {
                     </select>
                   </div>
                 </div>
-                {/* <div className="row m-b-10">
-                  <div className="col-md-6">
-                    <label className="category">Brand</label>
-                  </div>
-                  <div className="col-md-6">
-                    <label className="sub-category">Category</label>
-                  </div>
-                </div>
-                <div className="row m-b-10">
-                  <div className="col-md-6">
-                    <select className="category-select-system dropdown-label">
-                      <option className="select-category-placeholder dropdown-label">
-                        Select Brand
-                      </option>
-                    </select>
-                  </div>
-                  <div className="col-md-6">
-                    <select className="category-select-system dropdown-label">
-                      <option className="select-sub-category-placeholder">
-                        Select Sub Category
-                      </option>
-                    </select>
-                  </div>
-                </div> */}
+
                 <div className="row m-b-10">
                   <div className="col-md-6">
                     <label className="category">Sub Category</label>
@@ -581,53 +572,10 @@ class TicketSystem extends Component {
                     </select>
                   </div>
                 </div>
-                {/* <div className="row m-b-10">
-                  <div className="col-md-6">
-                    <label className="category">Sub Category</label>
-
-                  </div>
-                  <div className="col-md-6">
-                    <label className="sub-category">Issue Type</label>
-                  </div>
-                </div>
-
-                <div className="row m-b-10">
-                  <div className="col-md-6">
-                    <select className="category-select-system dropdown-label">
-                      <option className="select-category-placeholder dropdown-label">
-                        Select Sub Category
-                      </option>
-                    </select>
-                  </div>
-                  <div className="col-md-6">
-                    <select className="category-select-system dropdown-label">
-                      <option className="select-sub-category-placeholder">
-                        Select Type
-                      </option>
-                    </select>
-                  </div>
-                </div> */}
 
                 <div className="row m-b-10">
                   <div className="col-md-6">
                     <label className="category">Ticket Priority</label>
-                    {/* <div className="row">
-                      <div className="col-md-4 High">
-                        <button className="">
-                          <label className="high-button-text">High</label>
-                        </button>
-                      </div>
-                      <div className="col-md-4 Medium">
-                        <button className="">
-                          <label className="medium-button-text">Medium</label>
-                        </button>
-                      </div>
-                      <div className="col-md-4 Low">
-                        <button className="low-button">
-                          <label className="low-button-text">Low</label>
-                        </button>
-                      </div>
-                    </div> */}
                     <div className="priority-butns-cntr">
                       {this.state.TicketPriorityData !== null &&
                         this.state.TicketPriorityData.map((item, i) => (
@@ -662,50 +610,6 @@ class TicketSystem extends Component {
                   </div>
                 </div>
 
-                {/* <div className="row m-b-10">
-                  <div className="col-md-6">
-                    <label className="category">Ticket Priority</label>
-                  </div>
-                  <div className="col-md-6">
-                    <label className="sub-category">Ticket Action Type</label>
-                  </div>
-                </div>
-
-                <div className="row m-b-10">
-                  <div className="col-md-6">
-                    <div className="row">
-                      <div className="col-md-4 High">
-                        <button className="">
-                          <label className="high-button-text">High</label>
-                        </button>
-                      </div>
-                      <div className="col-md-4 Medium">
-                        <button className="">
-                          <label className="medium-button-text">Medium</label>
-                        </button>
-                      </div>
-                      <div className="col-md-4 Low">
-                        <button className="low-button">
-                          <label className="low-button-text">Low</label>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="row">
-                      <div className="col-md-6 Qc">
-                        <button className="low-button">
-                          <label className="Qc-button-text">QC</label>
-                        </button>
-                      </div>
-                      <div className="col-md-6 Etc">
-                        <button className="">
-                          <label className="Etb-button-text">ETB</label>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div> */}
                 <div className="row m-b-10">
                   <div className="col-md-6">
                     <label className="category">Channel Of Purchase</label>
@@ -730,21 +634,7 @@ class TicketSystem extends Component {
                     </select>
                   </div>
                 </div>
-                {/* <div className="row m-b-10">
-                  <div className="col-md-6">
-                    <label className="category">Channel Of Purchase</label>
-                  </div>
-                </div>
 
-                <div className="row m-b-10">
-                  <div className="col-md-6">
-                    <select className="category-select-system dropdown-label">
-                      <option className="select-category-placeholder dropdown-label">
-                        Select Type
-                      </option>
-                    </select>
-                  </div>
-                </div> */}
                 <div className="row my-3 mx-1">
                   <img src={ThumbTick} alt="thumb" className="thumbtick" />
                   <img src={ThumbTick} alt="thumb" className="thumbtick" />
@@ -1030,7 +920,6 @@ class TicketSystem extends Component {
                             </div>
                             <div className="col-md-4">
                               <label className="category1">
-                                {/* -NA- */}
                                 {this.state.customerData.alternateNumber}
                               </label>
                             </div>
@@ -1069,6 +958,9 @@ class TicketSystem extends Component {
                             type="text"
                             className="txt-1"
                             placeholder="Full Name"
+                            name="fullName"
+                            value={this.state.customerData.fullName}
+                            onChange={this.handleOnChangeData}
                           />
                         </div>
                         <div className="col-md-6">
@@ -1076,6 +968,9 @@ class TicketSystem extends Component {
                             type="text"
                             className="txt-1"
                             placeholder="Mobile Number"
+                            name="mobileNumber"
+                            value={this.state.customerData.mobileNumber}
+                            onChange={this.handleOnChangeData}
                           />
                         </div>
                       </div>
@@ -1085,12 +980,15 @@ class TicketSystem extends Component {
                             type="text"
                             className="txt-1"
                             placeholder="Email ID"
+                            name="emailId"
+                            value={this.state.customerData.emailId}
+                            onChange={this.handleOnChangeData}
                           />
                         </div>
                         <div className="col-md-6 radio-btn-margin">
                           <Radio.Group
                             onChange={this.onChange}
-                            value={this.state.value}
+                            value={this.state.customerData.genderId}
                           >
                             <Radio value={1}>Male</Radio>
                             <Radio value={2}>Female</Radio>
@@ -1100,9 +998,10 @@ class TicketSystem extends Component {
                       <div className="row row-margin1">
                         <div className="col-md-6 addcustdate">
                           <DatePicker
-                            selected={this.state.startDate}
+                            selected={this.state.dob}
                             onChange={date => this.handleChange(date)}
                             placeholderText="DOB"
+                            value={this.state.customerData.dob}
                             showMonthDropdown
                             showYearDropdown
                             className="txt-1"
@@ -1116,6 +1015,9 @@ class TicketSystem extends Component {
                             type="text"
                             className="txt-1"
                             placeholder="Alternate Number"
+                            name="alternateNumber"
+                            value={this.state.customerData.alternateNumber}
+                            onChange={this.handleOnChangeData}
                           />
                         </div>
                         <div className="col-md-6">
@@ -1123,6 +1025,9 @@ class TicketSystem extends Component {
                             type="text"
                             className="txt-1"
                             placeholder="Alternate Email"
+                            name="alternateEmailId"
+                            value={this.state.customerData.alternateEmailId}
+                            onChange={this.handleOnChangeData}
                           />
                         </div>
                       </div>
@@ -1133,22 +1038,14 @@ class TicketSystem extends Component {
                         >
                           CANCEL
                         </button>
-                        <a href="#!">
-                          <button className="butn">SAVE</button>
-                        </a>
+                        <button
+                          type="button"
+                          className="butn"
+                          onClick={this.handleUpdateCustomer.bind(this)}
+                        >
+                          SAVE
+                        </button>
                       </div>
-                      {/* <div className="btn-float">
-                      <a
-                        href="#!"
-                        className="cancel-btn-A"
-                        onClick={this.handleAddCustomerClose}
-                      >
-                        CANCEL
-                      </a>
-                      <a href="ticketsystem">
-                        <button className="butn">SAVE</button>
-                      </a>
-                    </div> */}
                     </div>
                   </Modal>
 

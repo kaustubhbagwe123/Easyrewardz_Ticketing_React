@@ -65,7 +65,7 @@ export class ChangePassword extends Component {
       },
       headers: authHeader("no")
     }).then(function(response) {
-      let data = response;
+      // let data = response;
     });
   }
   render() {

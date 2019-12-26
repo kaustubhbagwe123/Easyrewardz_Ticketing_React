@@ -45,7 +45,6 @@ class TicketSystemTask extends Component {
         TenantID: this.state.tenantID
       }
     }).then(function(res) {
-      console.log(JSON.stringify(res.data.responseData));
       debugger;
       let DepartmentData = res.data.responseData;
       self.setState({ DepartmentData: DepartmentData });

@@ -34,26 +34,42 @@ class ForgotPassword extends Component {
     // requestOptions)
 
     if (this.validator.allValid()) {
-      const requestOptions = {
+      // const requestOptions = {
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     "Access-Control-Allow-Methods": "*"
+      //   },
+      //   // body:JSON.stringify({ EmailID, Password ,AppId})
+      //   body: ""
+      // };
+      // axios
+      //   .post(config.apiUrl + "/Account/ForgetPassword", requestOptions, {
+      //     params: {
+      //       EmailId: this.state.emailId
+      //     }
+      //   })
+
+      //   .then(function(response) {
+      //     debugger;
+      //     // let BrandData = response;
+      //     // self.setState({ BrandData: BrandData });
+      //   });
+      let self = this;
+      axios({
+        method: "post",
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Methods": "*"
         },
-        // body:JSON.stringify({ EmailID, Password ,AppId})
-        body: ""
-      };
-      axios
-        .post(config.apiUrl + "/Account/ForgetPassword", requestOptions, {
-          params: {
-            EmailId: this.state.emailId
-          }
-        })
-
-        .then(function(response) {
-          debugger;
-          // let BrandData = response;
-          // self.setState({ BrandData: BrandData });
-        });
+        url: config.apiUrl + "/Account/ForgetPassword",
+        params: {
+          EmailId: this.state.emailId
+        }
+      }).then(function(res) {
+        debugger;
+        let SearchData = res.data.responseData;
+        self.setState({ SearchData: SearchData });
+      });
     } else {
       this.validator.showMessages();
       // rerender to show messages for the first time

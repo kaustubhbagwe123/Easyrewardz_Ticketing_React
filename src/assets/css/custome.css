@@ -6467,6 +6467,7 @@ table thead tr {
 }
 .srch-imge {
   margin-top: -5px;
+  cursor: pointer;
 }
 .notFound-addSrch {
   width: 35px;
