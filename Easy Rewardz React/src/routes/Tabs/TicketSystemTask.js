@@ -12,14 +12,11 @@ class TicketSystemTask extends Component {
       taskTitle: "",
       taskDesc: "",
       DepartmentData: [],
-      FunctionData: [],
       selectedDepartment: 0,
-      selectedFunction: 0,
       tenantID: 1
     };
     this.handleCreateTask = this.handleCreateTask.bind(this);
     this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
-    this.handleGetFunctionList = this.handleGetFunctionList.bind(this);
     this.validator = new SimpleReactValidator();
   }
 
@@ -33,43 +30,25 @@ class TicketSystemTask extends Component {
 
   handleGetDepartmentList() {
     debugger;
-    let self = this;
-    axios({
-      method: "post",
-      headers: {
+    const requestOptions = {
+      method: "POST",
+      header: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Methods": "*"
       },
-      url: config.apiUrl + "/Master/getDepartmentList",
+      body: ""
+    };
+    let self = this;
+
+    axios(config.apiUrl + "/Master/getDepartmentList", requestOptions, {
       params: {
         TenantID: this.state.tenantID
       }
     }).then(function(res) {
+      console.log(JSON.stringify(res.data.responseData));
       debugger;
       let DepartmentData = res.data.responseData;
       self.setState({ DepartmentData: DepartmentData });
-    });
-  }
-  handleGetFunctionList() {
-    debugger;
-
-    let self = this;
-    axios({
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
-      url: config.apiUrl + "/Master/getFunctionNameByDepartmentId",
-      params: {
-        DepartmentId: 1,
-        TenantID: this.state.tenantID
-        // DepartmentId: this.state.selectedDepartment
-      }
-    }).then(function(res) {
-      debugger;
-      let FunctionData = res.data.responseData;
-      self.setState({ FunctionData: FunctionData });
     });
   }
 
@@ -77,16 +56,6 @@ class TicketSystemTask extends Component {
     debugger;
     let departmentValue = e.currentTarget.value;
     this.setState({ selectedDepartment: departmentValue });
-
-    setTimeout(() => {
-      if (this.state.selectedDepartment) {
-        this.handleGetFunctionList();
-      }
-    }, 1);
-  };
-  setFunctionValue = e => {
-    let functionValue = e.currentTarget.value;
-    this.setState({ selectedFunction: functionValue });
   };
 
   handleCreateTask() {
@@ -154,15 +123,18 @@ class TicketSystemTask extends Component {
     const columnstask = [
       {
         Header: <span>Task Title</span>,
-        accessor: "taskTitle"
+        accessor: "taskTitle",
+        width: 240
       },
       {
         Header: <span>Assign To</span>,
-        accessor: "assignTo"
+        accessor: "assignTo",
+        width: 200
       },
       {
         Header: <span>Actions</span>,
         accessor: "actionReport",
+       
         Cell: row => (
           <span>
             <img src={DeleteIcon} alt="del-icon" className="downloadaction" />
@@ -256,24 +228,10 @@ class TicketSystemTask extends Component {
                         </select>
                       </div>
                       <div className="col-md-6">
-                        <select
-                          className="category-select-system dropdown-label"
-                          value={this.state.selectedFunction}
-                          onChange={this.setFunctionValue}
-                        >
+                        <select className="category-select-system dropdown-label">
                           <option className="select-sub-category-placeholder">
                             Function
                           </option>
-                          {this.state.FunctionData !== null &&
-                            this.state.FunctionData.map((item, i) => (
-                              <option
-                                key={i}
-                                value={item.functionID}
-                                className="select-category-placeholder"
-                              >
-                                {item.funcationName}
-                              </option>
-                            ))}
                         </select>
                       </div>
                     </div>
