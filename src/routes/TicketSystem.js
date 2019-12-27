@@ -61,7 +61,7 @@ class TicketSystem extends Component {
       customerPhoneNumber: "",
       customerName: "",
       selectedBrand: 0,
-      createdBy:6,
+      createdBy: 6,
       selectedCategory: 0,
       selectedSubCategory: 0,
       selectedIssueType: 0,
@@ -70,6 +70,8 @@ class TicketSystem extends Component {
       tenantID: 1,
       customerData: {},
       CustData: {},
+      // isOrderClick: false,
+      custId:0,
       SpacialEqmt: [
         {
           department: 25
@@ -143,7 +145,7 @@ class TicketSystem extends Component {
   }
 
   handleOnChangeData = e => {
-    debugger
+    debugger;
     const { name, value } = e.target;
     // const value =e.target.value;
 
@@ -374,8 +376,10 @@ class TicketSystem extends Component {
   componentDidMount() {
     debugger;
     var customerData = this.props.location.state;
-    var custId = customerData.customerId;
-    if (custId !== null) {
+
+    if (customerData) {
+      var custId = customerData.customerId;
+      this.setState({custId})
       this.setState({ customerData });
       this.handleGetCustomerData(custId);
       this.handleGetTicketTitleList();
@@ -387,7 +391,10 @@ class TicketSystem extends Component {
       this.props.history.push("addSearchMyTicket");
     }
   }
-
+  // hanleRedirectpage() {
+  //   debugger
+  //   this.setState({ isOrderClick: true });
+  // }
   setBrandValue = e => {
     let brandValue = e.currentTarget.value;
     this.setState({ selectedBrand: brandValue });
@@ -441,8 +448,9 @@ class TicketSystem extends Component {
       />
     );
 
-    let CustId = this.state.customerData.customerId;
+    var CustId = this.state.customerData.customerId;
     var CustNumber = this.state.CustData.customerPhoneNumber;
+    
     return (
       <div style={{ backgroundColor: "#f5f8f9", paddingBottom: "2px" }}>
         <div className="rectanglesystem">
@@ -1017,6 +1025,7 @@ class TicketSystem extends Component {
                           <input
                             type="text"
                             className="txt-1"
+                            maxLength={10}
                             placeholder="Mobile Number"
                             name="customerPhoneNumber"
                             value={this.state.CustData.customerPhoneNumber}
@@ -1043,7 +1052,6 @@ class TicketSystem extends Component {
                             <Radio value={1}>Male</Radio>
                             <Radio value={2}>Female</Radio>
                           </Radio.Group>
-                          
                         </div>
                       </div>
                       <div className="row row-margin1">
@@ -1065,6 +1073,7 @@ class TicketSystem extends Component {
                           <input
                             type="text"
                             className="txt-1"
+                            maxLength={10}
                             placeholder="Alternate Number"
                             name="altNumber"
                             value={this.state.CustData.altNumber}
@@ -1106,8 +1115,13 @@ class TicketSystem extends Component {
                     role="tabpanel"
                     aria-labelledby="order-tab"
                     style={{ height: "100%" }}
+                    // onChange={this.hanleRedirectpage.bind(this)}
                   >
-                    <TicketSystemOrder />
+                    {/* {this.state.isOrderClick === true ? ( */}
+                      <TicketSystemOrder
+                        custDetails={CustId}
+                      />
+                    {/* ) : null} */}
                   </div>
                   <div
                     className="tab-pane fade"
