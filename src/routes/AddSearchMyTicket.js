@@ -319,6 +319,7 @@ class AddSearchMyTicket extends Component {
                       className="txt-1"
                       placeholder="Mobile Number"
                       name="customerPhoneNumber"
+                      maxLength={10}
                       value={this.state.customerPhoneNumber}
                       onChange={this.addCustomerData}
                     />
@@ -389,6 +390,7 @@ class AddSearchMyTicket extends Component {
                       className="txt-1"
                       placeholder="Alternate Number"
                       name="altNumber"
+                      maxLength={10}
                       value={this.state.altNumber}
                       onChange={this.addCustomerData}
                     />
