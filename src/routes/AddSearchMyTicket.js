@@ -188,6 +188,7 @@ class AddSearchMyTicket extends Component {
     });
   };
   handleChange(date) {
+    debugger;
     this.setState({
       dob: date
     });
@@ -366,6 +367,7 @@ class AddSearchMyTicket extends Component {
                       showMonthDropdown
                       showYearDropdown
                       className="txt-1"
+                      dateFormat="dd/MM/yyyy"
                     />
                     {this.validator.message(
                       "Date of Birth",
