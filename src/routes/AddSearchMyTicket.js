@@ -25,18 +25,19 @@ class AddSearchMyTicket extends Component {
     super(props);
     this.state = {
       AddCustomer: false,
-      fullName: "",
-      mobileNumber: "",
-      emailId: "",
-      genderId: 1,
+      customerName: "",
+      customerPhoneNumber: "",
+      customerEmailId: "",
+      genderID: 1,
       dob: "",
       customerId: 0,
-      alternateNumber: "",
-      alternateEmailId: "",
+      altNumber: "",
+      altEmailID: "",
       loading: false,
       SrchEmailPhone: "",
       // searchEmailPhone: {},
-      tenantID: 1
+      tenantID: 1,
+      createdBy: 6
       // SearchItem: []
     };
     this.handleAddCustomerOpen = this.handleAddCustomerOpen.bind(this);
@@ -52,13 +53,13 @@ class AddSearchMyTicket extends Component {
   handleAddCustomerClose() {
     this.setState({
       AddCustomer: false,
-      fullName: "",
-      mobileNumber: "",
-      emailId: "",
-      genderId: 1,
+      customerName: "",
+      customerPhoneNumber: "",
+      customerEmailId: "",
+      genderID: 1,
       dob: "",
-      alternateNumber: "",
-      alternateEmailId: ""
+      altNumber: "",
+      altEmailID: ""
     });
     this.validator.hideMessages();
   }
@@ -144,21 +145,22 @@ class AddSearchMyTicket extends Component {
         url: config.apiUrl + "/Customer/createCustomer",
         data: {
           TenantID: this.state.tenantID,
-          CustomerName: this.state.fullName,
-          CustomerPhoneNumber: this.state.mobileNumber,
-          CustomerEmailId: this.state.emailId,
-          GenderID: this.state.genderId,
-          AltNumber: this.state.alternateNumber,
-          AltEmailID: this.state.alternateEmailId,
+          CustomerName: this.state.customerName,
+          CustomerPhoneNumber: this.state.customerPhoneNumber,
+          CustomerEmailId: this.state.customerEmailId,
+          GenderID: this.state.genderID,
+          AltNumber: this.state.altNumber,
+          AltEmailID: this.state.altEmailID,
           DateOfBirth: moment(this.state.dob).format("L"),
           IsActive: 1,
-          CreatedBy: 1,
+          CreatedBy: this.state.createdBy,
           ModifyBy: 1,
           ModifiedDate: "2019-12-17"
         }
       }).then(function(res) {
         debugger;
         let responseMessage = res.data.message;
+        let custId = res.data.responseData;
         self.setState({
           loading: true
         });
@@ -170,6 +172,9 @@ class AddSearchMyTicket extends Component {
               state: self.state
             });
           }, 500);
+          self.setState({
+            customerId: custId
+          });
         }
       });
     } else {
@@ -179,7 +184,7 @@ class AddSearchMyTicket extends Component {
   }
   genderSelect = e => {
     this.setState({
-      genderId: e.target.value
+      genderID: e.target.value
     });
   };
   handleChange(date) {
@@ -297,13 +302,13 @@ class AddSearchMyTicket extends Component {
                       type="text"
                       className="txt-1"
                       placeholder="Full Name"
-                      name="fullName"
-                      value={this.state.fullName}
+                      name="customerName"
+                      value={this.state.customerName}
                       onChange={this.addCustomerData}
                     />
                     {this.validator.message(
                       "Full Name",
-                      this.state.fullName,
+                      this.state.customerName,
                       "required|alpha_space"
                     )}
                   </div>
@@ -312,13 +317,14 @@ class AddSearchMyTicket extends Component {
                       type="text"
                       className="txt-1"
                       placeholder="Mobile Number"
-                      name="mobileNumber"
-                      value={this.state.mobileNumber}
+                      name="customerPhoneNumber"
+                      maxLength={10}
+                      value={this.state.customerPhoneNumber}
                       onChange={this.addCustomerData}
                     />
                     {this.validator.message(
                       "Mobile Number",
-                      this.state.mobileNumber,
+                      this.state.customerPhoneNumber,
                       "required|integer|size:10"
                     )}
                   </div>
@@ -329,20 +335,20 @@ class AddSearchMyTicket extends Component {
                       type="text"
                       className="txt-1"
                       placeholder="Email ID"
-                      name="emailId"
-                      value={this.state.emailId}
+                      name="customerEmailId"
+                      value={this.state.customerEmailId}
                       onChange={this.addCustomerData}
                     />
                     {this.validator.message(
                       "Email Id",
-                      this.state.emailId,
+                      this.state.customerEmailId,
                       "required|email"
                     )}
                   </div>
                   <div className="col-md-6 radio-btn-margin">
                     <Radio.Group
                       onChange={this.genderSelect}
-                      value={this.state.genderId}
+                      value={this.state.genderID}
                     >
                       <Radio value={1}>Male</Radio>
                       <Radio value={2}>Female</Radio>
@@ -383,13 +389,14 @@ class AddSearchMyTicket extends Component {
                       type="text"
                       className="txt-1"
                       placeholder="Alternate Number"
-                      name="alternateNumber"
-                      value={this.state.alternateNumber}
+                      name="altNumber"
+                      maxLength={10}
+                      value={this.state.altNumber}
                       onChange={this.addCustomerData}
                     />
                     {this.validator.message(
                       "Alternate Number",
-                      this.state.alternateNumber,
+                      this.state.altNumber,
                       "integer|size:10"
                     )}
                   </div>
@@ -398,13 +405,13 @@ class AddSearchMyTicket extends Component {
                       type="text"
                       className="txt-1"
                       placeholder="Alternate Email"
-                      name="alternateEmailId"
-                      value={this.state.alternateEmailId}
+                      name="altEmailID"
+                      value={this.state.altEmailID}
                       onChange={this.addCustomerData}
                     />
                     {this.validator.message(
                       "Alternate Email Id",
-                      this.state.alternateEmailId,
+                      this.state.altEmailID,
                       "email"
                     )}
                   </div>

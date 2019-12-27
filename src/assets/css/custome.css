@@ -7950,16 +7950,17 @@ table tr th:last-child {
   line-height: 0;
   height: 31.32px;
   cursor: pointer;
+  text-align: center;
 }
 .systemeditbutton-text {
   color: #2561a8;
   font-family: Lato;
   font-size: 10px;
   font-weight: 700;
-  line-height: 12px;
+  /* line-height: 12px;
   width: 23.07px;
   text-align: left;
-  cursor: pointer;
+  cursor: pointer; */
 }
 .collapsetask {
   padding: 0;
