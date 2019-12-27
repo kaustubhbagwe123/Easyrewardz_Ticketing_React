@@ -248,8 +248,10 @@ class MyTicketList extends Component {
         ),
         subjectDash: (
           <div>
-            Need to change my shipping address 
-            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
+            Need to change my shipping address
+            <span style={{ display: "block", fontSize: "11px" }}>
+              Hope this help, Please rate us
+            </span>
           </div>
         ),
         creationNew: (
@@ -292,8 +294,10 @@ class MyTicketList extends Component {
         ),
         subjectDash: (
           <div>
-            Need to change my shipping address 
-            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
+            Need to change my shipping address
+            <span style={{ display: "block", fontSize: "11px" }}>
+              Hope this help, Please rate us
+            </span>
           </div>
         ),
         creationNew: (
@@ -336,11 +340,11 @@ class MyTicketList extends Component {
         ),
         Img: (
           <Popover content={TaskBlue} placement="bottom">
-              <img
-                className="task-icon-1 marginimg"
-                src={TaskIconBlue}
-                alt="task-icon-blue"
-              />
+            <img
+              className="task-icon-1 marginimg"
+              src={TaskIconBlue}
+              alt="task-icon-blue"
+            />
           </Popover>
         ),
         subjectDash: (
@@ -352,8 +356,10 @@ class MyTicketList extends Component {
                 alt="task-icon-blue"
               />
             </Popover> */}
-            Need to change my shipping address 
-            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
+            Need to change my shipping address
+            <span style={{ display: "block", fontSize: "11px" }}>
+              Hope this help, Please rate us
+            </span>
           </div>
         ),
         creationNew: (
@@ -396,10 +402,10 @@ class MyTicketList extends Component {
         ),
         Img: (
           <img
-          className="task-icon-1 marginimg"
-          src={TaskIconGray}
-          alt="task-icon-gray"
-        />
+            className="task-icon-1 marginimg"
+            src={TaskIconGray}
+            alt="task-icon-gray"
+          />
         ),
         subjectDash: (
           <div>
@@ -408,8 +414,10 @@ class MyTicketList extends Component {
               src={TaskIconGray}
               alt="task-icon-gray"
             /> */}
-            Need to change my shipping address 
-            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
+            Need to change my shipping address
+            <span style={{ display: "block", fontSize: "11px" }}>
+              Hope this help, Please rate us
+            </span>
           </div>
         ),
         creationNew: (
@@ -452,19 +460,21 @@ class MyTicketList extends Component {
         ),
         Img: (
           <div>
-          <Popover content={ClaimBlue} placement="bottom">
+            <Popover content={ClaimBlue} placement="bottom">
               <img
                 className="claim-icon marginimg"
                 src={CliamIconBlue}
                 alt="cliam-icon-blue"
               />
             </Popover>
-            <span style={{marginLeft:"20px"}}><img
+            <span style={{ marginLeft: "20px" }}>
+              <img
                 className="task-icon-1 marginimg"
                 src={TaskIconGray}
                 alt="task-icon-gray"
-              /></span>
-            </div> 
+              />
+            </span>
+          </div>
         ),
         subjectDash: (
           <div>
@@ -475,15 +485,15 @@ class MyTicketList extends Component {
                 alt="cliam-icon-blue"
               />
             </Popover> */}
-            Need to change my shipping address 
-            
-              {/* <img
+            Need to change my shipping address
+            {/* <img
                 className="task-icon-1 marginimg"
                 src={TaskIconGray}
                 alt="task-icon-gray"
               /> */}
-              <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
-            
+            <span style={{ display: "block", fontSize: "11px" }}>
+              Hope this help, Please rate us
+            </span>
           </div>
         ),
         creationNew: (
@@ -526,8 +536,10 @@ class MyTicketList extends Component {
         ),
         subjectDash: (
           <div>
-            Need to change my shipping address 
-            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
+            Need to change my shipping address
+            <span style={{ display: "block", fontSize: "11px" }}>
+              Hope this help, Please rate us
+            </span>
           </div>
         ),
         creationNew: (
@@ -570,8 +582,10 @@ class MyTicketList extends Component {
         ),
         subjectDash: (
           <div>
-            Need to change my shipping address 
-            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
+            Need to change my shipping address
+            <span style={{ display: "block", fontSize: "11px" }}>
+              Hope this help, Please rate us
+            </span>
           </div>
         ),
         creationNew: (
@@ -614,8 +628,10 @@ class MyTicketList extends Component {
         ),
         subjectDash: (
           <div>
-            Need to change my shipping address 
-            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
+            Need to change my shipping address
+            <span style={{ display: "block", fontSize: "11px" }}>
+              Hope this help, Please rate us
+            </span>
           </div>
         ),
         creationNew: (
@@ -658,8 +674,10 @@ class MyTicketList extends Component {
         ),
         subjectDash: (
           <div>
-            Need to change my shipping address 
-            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
+            Need to change my shipping address
+            <span style={{ display: "block", fontSize: "11px" }}>
+              Hope this help, Please rate us
+            </span>
           </div>
         ),
         creationNew: (
@@ -702,8 +720,10 @@ class MyTicketList extends Component {
         ),
         subjectDash: (
           <div>
-            Need to change my shipping address 
-            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
+            Need to change my shipping address
+            <span style={{ display: "block", fontSize: "11px" }}>
+              Hope this help, Please rate us
+            </span>
           </div>
         ),
         creationNew: (
@@ -751,7 +771,7 @@ class MyTicketList extends Component {
       {
         Header: <span></span>,
         accessor: "Img",
-        width:45,
+        width: 45
       },
       {
         Header: (
@@ -810,7 +830,7 @@ class MyTicketList extends Component {
 
     return (
       <Fragment>
-         <div className="position-relative d-inline-block">
+        <div className="position-relative d-inline-block">
           <Modal
             onClose={this.StatusCloseModel}
             open={this.state.StatusModel}
@@ -883,7 +903,7 @@ class MyTicketList extends Component {
             </div>
           </Modal>
         </div>
-        <div className="myticketlist-header" style={{marginTop:"-21px"}}>
+        <div className="myticketlist-header" style={{ marginTop: "-21px" }}>
           <div className="setting-tabs esc esc1">
             <ul
               className="nav nav-tabs es"
@@ -1944,51 +1964,49 @@ class MyTicketList extends Component {
                         showPagination={false}
                         getTrProps={this.HandleRowClickPage}
                       />
-                       <div className="position-relative">
-                    <div className="pagi">
-                      <ul>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&lt;</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>1</a>
-                        </li>
-                        <li className="active">
-                          <a href={Demo.BLANK_LINK}>2</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>3</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>4</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>5</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>6</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&gt;</a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="item-selection">
-                      <select>
-                        <option>30</option>
-                        <option>50</option>
-                        <option>100</option>
-                      </select>
-                      <p>Items per page</p>
-                    </div>
-                  </div>
-
+                      <div className="position-relative">
+                        <div className="pagi">
+                          <ul>
+                            <li>
+                              <a href={Demo.BLANK_LINK}>&lt;</a>
+                            </li>
+                            <li>
+                              <a href={Demo.BLANK_LINK}>1</a>
+                            </li>
+                            <li className="active">
+                              <a href={Demo.BLANK_LINK}>2</a>
+                            </li>
+                            <li>
+                              <a href={Demo.BLANK_LINK}>3</a>
+                            </li>
+                            <li>
+                              <a href={Demo.BLANK_LINK}>4</a>
+                            </li>
+                            <li>
+                              <a href={Demo.BLANK_LINK}>5</a>
+                            </li>
+                            <li>
+                              <a href={Demo.BLANK_LINK}>6</a>
+                            </li>
+                            <li>
+                              <a href={Demo.BLANK_LINK}>&gt;</a>
+                            </li>
+                          </ul>
+                        </div>
+                        <div className="item-selection">
+                          <select>
+                            <option>30</option>
+                            <option>50</option>
+                            <option>100</option>
+                          </select>
+                          <p>Items per page</p>
+                        </div>
+                      </div>
                     </div>
                     <div className="float-search" onClick={this.toggleSearch}>
                       <small>{TitleChange}</small>
                       {ImgChange}
                     </div>
-
                   </div>
                 </div>
               </div>

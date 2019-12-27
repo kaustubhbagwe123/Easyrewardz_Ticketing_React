@@ -33,6 +33,8 @@ import csv from "./../assets/Images/csv.png";
 import Schedule from "./../assets/Images/schedule.png";
 import Assign from "./../assets/Images/assign.png";
 import DatePicker from "react-datepicker";
+import axios from "axios";
+import config from "./../helpers/config";
 
 class MyTicketList extends Component {
   constructor(props) {
@@ -45,14 +47,198 @@ class MyTicketList extends Component {
       ByDateSelectDate: "",
       ByAllCreateDate: "",
       ByAllLastDate: "",
+      TicketPriorityData: [],
+      ChannelOfPurchaseData: [],
+      CategoryData: [],
+      CategoryDataAll: [],
+      SubCategoryData: [],
+      SubCategoryAllData: [],
+      IssueTypeData: [],
+      tenantID: 1,
       open: false,
       Schedule: false,
-      StatusModel: false
+      StatusModel: false,
+      selectedPriority: 0,
+      selectedChannelOfPurchase: 0,
+      selectedCategory: 0,
+      selectedCategoryAll: 0,
+      selectedSubCategory: 0,
+      selectedSubCategoryAll: 0,
+      selectedIssueType: 0
     };
     this.toggleSearch = this.toggleSearch.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
+    this.handleGetCategoryList = this.handleGetCategoryList.bind(this);
+    this.handleGetSubCategoryList = this.handleGetSubCategoryList.bind(this);
+    this.handleGetIssueTypeList = this.handleGetIssueTypeList.bind(this);
+    this.handleGetTicketPriorityList = this.handleGetTicketPriorityList.bind(
+      this
+    );
+    this.handleGetChannelOfPurchaseList = this.handleGetChannelOfPurchaseList.bind(
+      this
+    );
   }
+
+  componentDidMount() {
+    debugger;
+    this.handleGetTicketPriorityList();
+    this.handleGetChannelOfPurchaseList();
+    this.handleGetCategoryList();
+  }
+
+  handleGetTicketPriorityList() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      url: config.apiUrl + "/Priority/GetPriorityList",
+      params: {
+        TenantID: this.state.tenantID
+      }
+    }).then(function(res) {
+      debugger;
+      let TicketPriorityData = res.data.responseData;
+      self.setState({ TicketPriorityData: TicketPriorityData });
+    });
+  }
+  handleGetChannelOfPurchaseList() {
+    let self = this;
+    axios({
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      url: config.apiUrl + "/Master/GetChannelOfPurchaseList",
+      params: {
+        TenantID: this.state.tenantID
+      }
+    }).then(function(res) {
+      debugger;
+      let ChannelOfPurchaseData = res.data.responseData;
+      self.setState({ ChannelOfPurchaseData: ChannelOfPurchaseData });
+    });
+  }
+  handleGetCategoryList() {
+    debugger;
+
+    let self = this;
+    axios({
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      url: config.apiUrl + "/Category/GetCategoryList",
+      params: {
+        TenantID: this.state.tenantID
+      }
+    }).then(function(res) {
+      debugger;
+      let CategoryData = res.data;
+      let CategoryDataAll = res.data;
+      self.setState({
+        CategoryData: CategoryData,
+        CategoryDataAll: CategoryDataAll
+      });
+    });
+  }
+  handleGetSubCategoryList() {
+    debugger;
+
+    let self = this;
+    axios({
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      url: config.apiUrl + "/SubCategory/GetSubCategoryByCategoryID",
+      params: {
+        CategoryID: this.state.selectedCategory
+      }
+    }).then(function(res) {
+      debugger;
+      let SubCategoryData = res.data.responseData;
+      let SubCategoryAllData = res.data.responseData;
+      self.setState({ SubCategoryData: SubCategoryData, SubCategoryAllData: SubCategoryAllData });
+    });
+  }
+  handleGetIssueTypeList() {
+    let self = this;
+    axios({
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      url: config.apiUrl + "/IssueType/GetIssueTypeList",
+      params: {
+        TenantID: this.state.tenantID,
+        SubCategoryID: this.state.selectedSubCategory
+      }
+    }).then(function(res) {
+      debugger;
+      let IssueTypeData = res.data.responseData;
+      self.setState({ IssueTypeData: IssueTypeData });
+    });
+  }
+
+  setPriorityValue = e => {
+    let priorityValue = e.currentTarget.value;
+    this.setState({ selectedPriority: priorityValue });
+  };
+  setChannelOfPurchaseValue = e => {
+    let channelOfPurchaseValue = e.currentTarget.value;
+    this.setState({ selectedChannelOfPurchase: channelOfPurchaseValue });
+  };
+  setCategoryValue = e => {
+    let categoryValue = e.currentTarget.value;
+    this.setState({ selectedCategory: categoryValue });
+    setTimeout(() => {
+      if (this.state.selectedCategory) {
+        this.handleGetSubCategoryList();
+      }
+    }, 1);
+  };
+  setCategoryAllValue = e => {
+    let categoryAllValue = e.currentTarget.value;
+    this.setState({ selectedCategoryAll: categoryAllValue });
+    setTimeout(() => {
+      if (this.state.selectedCategoryAll) {
+        this.handleGetSubCategoryList();
+      }
+    }, 1);
+  };
+  setSubCategoryValue = e => {
+    let subCategoryValue = e.currentTarget.value;
+    this.setState({ selectedSubCategory: subCategoryValue });
+
+    setTimeout(() => {
+      if (this.state.selectedSubCategory) {
+        this.handleGetIssueTypeList();
+      }
+    }, 1);
+  };
+  setSubCategoryAllValue = e => {
+    let subCategoryAllValue = e.currentTarget.value;
+    this.setState({ selectedSubCategoryAll: subCategoryAllValue });
+
+    // setTimeout(() => {
+    //   if (this.state.selectedSubCategory) {
+    //     this.handleGetIssueTypeList();
+    //   }
+    // }, 1);
+  };
+  setIssueTypeValue = e => {
+    let issueTypeValue = e.currentTarget.value;
+    this.setState({ selectedIssueType: issueTypeValue });
+  };
 
   StatusOpenModel() {
     this.setState({ StatusModel: true });
@@ -248,8 +434,10 @@ class MyTicketList extends Component {
         ),
         subjectDash: (
           <div>
-            Need to change my shipping address 
-            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
+            Need to change my shipping address
+            <span style={{ display: "block", fontSize: "11px" }}>
+              Hope this help, Please rate us
+            </span>
           </div>
         ),
         creationNew: (
@@ -292,8 +480,10 @@ class MyTicketList extends Component {
         ),
         subjectDash: (
           <div>
-            Need to change my shipping address 
-            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
+            Need to change my shipping address
+            <span style={{ display: "block", fontSize: "11px" }}>
+              Hope this help, Please rate us
+            </span>
           </div>
         ),
         creationNew: (
@@ -336,11 +526,11 @@ class MyTicketList extends Component {
         ),
         Img: (
           <Popover content={TaskBlue} placement="bottom">
-              <img
-                className="task-icon-1 marginimg"
-                src={TaskIconBlue}
-                alt="task-icon-blue"
-              />
+            <img
+              className="task-icon-1 marginimg"
+              src={TaskIconBlue}
+              alt="task-icon-blue"
+            />
           </Popover>
         ),
         subjectDash: (
@@ -352,8 +542,10 @@ class MyTicketList extends Component {
                 alt="task-icon-blue"
               />
             </Popover> */}
-            Need to change my shipping address 
-            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
+            Need to change my shipping address
+            <span style={{ display: "block", fontSize: "11px" }}>
+              Hope this help, Please rate us
+            </span>
           </div>
         ),
         creationNew: (
@@ -396,10 +588,10 @@ class MyTicketList extends Component {
         ),
         Img: (
           <img
-          className="task-icon-1 marginimg"
-          src={TaskIconGray}
-          alt="task-icon-gray"
-        />
+            className="task-icon-1 marginimg"
+            src={TaskIconGray}
+            alt="task-icon-gray"
+          />
         ),
         subjectDash: (
           <div>
@@ -408,8 +600,10 @@ class MyTicketList extends Component {
               src={TaskIconGray}
               alt="task-icon-gray"
             /> */}
-            Need to change my shipping address 
-            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
+            Need to change my shipping address
+            <span style={{ display: "block", fontSize: "11px" }}>
+              Hope this help, Please rate us
+            </span>
           </div>
         ),
         creationNew: (
@@ -452,19 +646,21 @@ class MyTicketList extends Component {
         ),
         Img: (
           <div>
-          <Popover content={ClaimBlue} placement="bottom">
+            <Popover content={ClaimBlue} placement="bottom">
               <img
                 className="claim-icon marginimg"
                 src={CliamIconBlue}
                 alt="cliam-icon-blue"
               />
             </Popover>
-            <span style={{marginLeft:"20px"}}><img
+            <span style={{ marginLeft: "20px" }}>
+              <img
                 className="task-icon-1 marginimg"
                 src={TaskIconGray}
                 alt="task-icon-gray"
-              /></span>
-            </div> 
+              />
+            </span>
+          </div>
         ),
         subjectDash: (
           <div>
@@ -475,15 +671,15 @@ class MyTicketList extends Component {
                 alt="cliam-icon-blue"
               />
             </Popover> */}
-            Need to change my shipping address 
-            
-              {/* <img
+            Need to change my shipping address
+            {/* <img
                 className="task-icon-1 marginimg"
                 src={TaskIconGray}
                 alt="task-icon-gray"
               /> */}
-              <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
-            
+            <span style={{ display: "block", fontSize: "11px" }}>
+              Hope this help, Please rate us
+            </span>
           </div>
         ),
         creationNew: (
@@ -526,8 +722,10 @@ class MyTicketList extends Component {
         ),
         subjectDash: (
           <div>
-            Need to change my shipping address 
-            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
+            Need to change my shipping address
+            <span style={{ display: "block", fontSize: "11px" }}>
+              Hope this help, Please rate us
+            </span>
           </div>
         ),
         creationNew: (
@@ -570,8 +768,10 @@ class MyTicketList extends Component {
         ),
         subjectDash: (
           <div>
-            Need to change my shipping address 
-            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
+            Need to change my shipping address
+            <span style={{ display: "block", fontSize: "11px" }}>
+              Hope this help, Please rate us
+            </span>
           </div>
         ),
         creationNew: (
@@ -614,8 +814,10 @@ class MyTicketList extends Component {
         ),
         subjectDash: (
           <div>
-            Need to change my shipping address 
-            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
+            Need to change my shipping address
+            <span style={{ display: "block", fontSize: "11px" }}>
+              Hope this help, Please rate us
+            </span>
           </div>
         ),
         creationNew: (
@@ -658,8 +860,10 @@ class MyTicketList extends Component {
         ),
         subjectDash: (
           <div>
-            Need to change my shipping address 
-            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
+            Need to change my shipping address
+            <span style={{ display: "block", fontSize: "11px" }}>
+              Hope this help, Please rate us
+            </span>
           </div>
         ),
         creationNew: (
@@ -702,8 +906,10 @@ class MyTicketList extends Component {
         ),
         subjectDash: (
           <div>
-            Need to change my shipping address 
-            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
+            Need to change my shipping address
+            <span style={{ display: "block", fontSize: "11px" }}>
+              Hope this help, Please rate us
+            </span>
           </div>
         ),
         creationNew: (
@@ -751,7 +957,7 @@ class MyTicketList extends Component {
       {
         Header: <span></span>,
         accessor: "Img",
-        width:45,
+        width: 45
       },
       {
         Header: (
@@ -810,7 +1016,7 @@ class MyTicketList extends Component {
 
     return (
       <Fragment>
-         <div className="position-relative d-inline-block">
+        <div className="position-relative d-inline-block">
           <Modal
             onClose={this.StatusCloseModel}
             open={this.state.StatusModel}
@@ -883,7 +1089,7 @@ class MyTicketList extends Component {
             </div>
           </Modal>
         </div>
-        <div className="myticketlist-header" style={{marginTop:"-21px"}}>
+        <div className="myticketlist-header" style={{ marginTop: "-21px" }}>
           <div className="setting-tabs esc esc1">
             <ul
               className="nav nav-tabs es"
@@ -1571,8 +1777,23 @@ class MyTicketList extends Component {
                                   <div className="container-fluid">
                                     <div className="row">
                                       <div className="col-md-3 col-sm-6">
-                                        <select>
+                                        <select
+                                          value={this.state.selectedPriority}
+                                          onChange={this.setPriorityValue}
+                                        >
                                           <option>Priority</option>
+                                          {this.state.TicketPriorityData !==
+                                            null &&
+                                            this.state.TicketPriorityData.map(
+                                              (item, i) => (
+                                                <option
+                                                  key={i}
+                                                  value={item.priorityID}
+                                                >
+                                                  {item.priortyName}
+                                                </option>
+                                              )
+                                            )}
                                         </select>
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -1581,8 +1802,29 @@ class MyTicketList extends Component {
                                         </select>
                                       </div>
                                       <div className="col-md-3 col-sm-6">
-                                        <select>
+                                        <select
+                                          value={
+                                            this.state.selectedChannelOfPurchase
+                                          }
+                                          onChange={
+                                            this.setChannelOfPurchaseValue
+                                          }
+                                        >
                                           <option>Channel Of Purchase</option>
+                                          {this.state.ChannelOfPurchaseData !==
+                                            null &&
+                                            this.state.ChannelOfPurchaseData.map(
+                                              (item, i) => (
+                                                <option
+                                                  key={i}
+                                                  value={
+                                                    item.channelOfPurchaseID
+                                                  }
+                                                >
+                                                  {item.nameOfChannel}
+                                                </option>
+                                              )
+                                            )}
                                         </select>
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -1639,18 +1881,61 @@ class MyTicketList extends Component {
                                   <div className="container-fluid">
                                     <div className="row">
                                       <div className="col-md-3 col-sm-6">
-                                        <select>
+                                        <select
+                                          value={this.state.selectedCategory}
+                                          onChange={this.setCategoryValue}
+                                        >
                                           <option>Category</option>
+                                          {this.state.CategoryData !== null &&
+                                            this.state.CategoryData.map(
+                                              (item, i) => (
+                                                <option
+                                                  key={i}
+                                                  value={item.categoryID}
+                                                >
+                                                  {item.categoryName}
+                                                </option>
+                                              )
+                                            )}
                                         </select>
                                       </div>
                                       <div className="col-md-3 col-sm-6">
-                                        <select>
+                                        <select
+                                          value={this.state.selectedSubCategory}
+                                          onChange={this.setSubCategoryValue}
+                                        >
                                           <option>Sub Category</option>
+                                          {this.state.SubCategoryData !==
+                                            null &&
+                                            this.state.SubCategoryData.map(
+                                              (item, i) => (
+                                                <option
+                                                  key={i}
+                                                  value={item.subCategoryID}
+                                                >
+                                                  {item.subCategoryName}
+                                                </option>
+                                              )
+                                            )}
                                         </select>
                                       </div>
                                       <div className="col-md-3 col-sm-6">
-                                        <select>
+                                        <select
+                                          value={this.state.selectedIssueType}
+                                          onChange={this.setIssueTypeValue}
+                                        >
                                           <option>Issue Type</option>
+                                          {this.state.IssueTypeData !== null &&
+                                            this.state.IssueTypeData.map(
+                                              (item, i) => (
+                                                <option
+                                                  key={i}
+                                                  value={item.issueTypeID}
+                                                >
+                                                  {item.issueTypeName}
+                                                </option>
+                                              )
+                                            )}
                                         </select>
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -1769,8 +2054,23 @@ class MyTicketList extends Component {
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6 allspc">
-                                        <select>
+                                        <select
+                                          value={this.state.selectedCategoryAll}
+                                          onChange={this.setCategoryAllValue}
+                                        >
                                           <option>Category</option>
+                                          {this.state.CategoryDataAll !==
+                                            null &&
+                                            this.state.CategoryDataAll.map(
+                                              (item, i) => (
+                                                <option
+                                                  key={i}
+                                                  value={item.categoryID}
+                                                >
+                                                  {item.categoryName}
+                                                </option>
+                                              )
+                                            )}
                                         </select>
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -1791,8 +2091,26 @@ class MyTicketList extends Component {
                                         </select>
                                       </div>
                                       <div className="col-md-3 col-sm-6 allspc">
-                                        <select>
+                                        {/* <select>
                                           <option>Sub Category</option>
+                                        </select> */}
+                                        <select
+                                          value={this.state.selectedSubCategoryAll}
+                                          onChange={this.setSubCategoryAllValue}
+                                        >
+                                          <option>Sub Category</option>
+                                          {this.state.SubCategoryAllData !==
+                                            null &&
+                                            this.state.SubCategoryAllData.map(
+                                              (item, i) => (
+                                                <option
+                                                  key={i}
+                                                  value={item.subCategoryID}
+                                                >
+                                                  {item.subCategoryName}
+                                                </option>
+                                              )
+                                            )}
                                         </select>
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -1813,8 +2131,25 @@ class MyTicketList extends Component {
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6">
-                                        <select>
+                                        {/* <select>
                                           <option>Issue Type</option>
+                                        </select> */}
+                                        <select
+                                          value={this.state.selectedIssueType}
+                                          onChange={this.setIssueTypeValue}
+                                        >
+                                          <option>Issue Type</option>
+                                          {this.state.IssueTypeData !== null &&
+                                            this.state.IssueTypeData.map(
+                                              (item, i) => (
+                                                <option
+                                                  key={i}
+                                                  value={item.issueTypeID}
+                                                >
+                                                  {item.issueTypeName}
+                                                </option>
+                                              )
+                                            )}
                                         </select>
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -1944,51 +2279,49 @@ class MyTicketList extends Component {
                         showPagination={false}
                         getTrProps={this.HandleRowClickPage}
                       />
-                       <div className="position-relative">
-                    <div className="pagi">
-                      <ul>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&lt;</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>1</a>
-                        </li>
-                        <li className="active">
-                          <a href={Demo.BLANK_LINK}>2</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>3</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>4</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>5</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>6</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&gt;</a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="item-selection">
-                      <select>
-                        <option>30</option>
-                        <option>50</option>
-                        <option>100</option>
-                      </select>
-                      <p>Items per page</p>
-                    </div>
-                  </div>
-
+                      <div className="position-relative">
+                        <div className="pagi">
+                          <ul>
+                            <li>
+                              <a href={Demo.BLANK_LINK}>&lt;</a>
+                            </li>
+                            <li>
+                              <a href={Demo.BLANK_LINK}>1</a>
+                            </li>
+                            <li className="active">
+                              <a href={Demo.BLANK_LINK}>2</a>
+                            </li>
+                            <li>
+                              <a href={Demo.BLANK_LINK}>3</a>
+                            </li>
+                            <li>
+                              <a href={Demo.BLANK_LINK}>4</a>
+                            </li>
+                            <li>
+                              <a href={Demo.BLANK_LINK}>5</a>
+                            </li>
+                            <li>
+                              <a href={Demo.BLANK_LINK}>6</a>
+                            </li>
+                            <li>
+                              <a href={Demo.BLANK_LINK}>&gt;</a>
+                            </li>
+                          </ul>
+                        </div>
+                        <div className="item-selection">
+                          <select>
+                            <option>30</option>
+                            <option>50</option>
+                            <option>100</option>
+                          </select>
+                          <p>Items per page</p>
+                        </div>
+                      </div>
                     </div>
                     <div className="float-search" onClick={this.toggleSearch}>
                       <small>{TitleChange}</small>
                       {ImgChange}
                     </div>
-
                   </div>
                 </div>
               </div>
