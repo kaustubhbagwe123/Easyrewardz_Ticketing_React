@@ -30,9 +30,12 @@ import Down1Img from "./../assets/Images/down-1.png";
 import config from "./../helpers/config";
 import { Radio } from "antd";
 import DatePicker from "react-datepicker";
-import ApiTicketSystem from "./APIService/ApiTicketSystem";
 import axios from "axios";
 import Select from "react-select";
+import {
+  NotificationContainer,
+  NotificationManager
+} from "react-notifications";
 
 class TicketSystem extends Component {
   constructor() {
@@ -52,14 +55,13 @@ class TicketSystem extends Component {
       KbLink: false,
       collapseUp: false,
       TabIconColor: "nav-link active",
-      fullName: "",
-      mobileNumber: "",
-      emailId: "",
-      genderId: 1,
-      dob: "",
-      alternateNumber: "",
-      alternateEmailId: "",
+      altEmailID: "",
+      altNumber: "",
+      customerEmailId: "",
+      customerPhoneNumber: "",
+      customerName: "",
       selectedBrand: 0,
+      createdBy:6,
       selectedCategory: 0,
       selectedSubCategory: 0,
       selectedIssueType: 0,
@@ -67,6 +69,7 @@ class TicketSystem extends Component {
       selectedChannelOfPurchase: 0,
       tenantID: 1,
       customerData: {},
+      CustData: {},
       SpacialEqmt: [
         {
           department: 25
@@ -84,13 +87,12 @@ class TicketSystem extends Component {
     };
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.ApiTicket = new ApiTicketSystem();
     this.handleGetTicketTitleList = this.handleGetTicketTitleList.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
     this.handleGetCategoryList = this.handleGetCategoryList.bind(this);
     this.handleGetSubCategoryList = this.handleGetSubCategoryList.bind(this);
     this.handleGetIssueTypeList = this.handleGetIssueTypeList.bind(this);
-    // this.handleOnChangeData = this.handleOnChangeData.bind(this);
+    this.handleEditCustomerOpen = this.handleEditCustomerOpen.bind(this);
     this.handleGetChannelOfPurchaseList = this.handleGetChannelOfPurchaseList.bind(
       this
     );
@@ -116,14 +118,21 @@ class TicketSystem extends Component {
   handleEditCustomerClose() {
     this.setState({ EditCustomer: false });
   }
-  onChange = e => {
-    this.setState({
-      value: e.target.value
-    });
+  GenderonChange = e => {
+    debugger;
+    // this.setState({
+    //   genderID: e.target.value
+    // });
+
+    const value = e.target.value;
+
+    let CustData = this.state.CustData;
+    CustData = value;
+    this.setState({ CustData });
   };
   handleChange(date) {
     this.setState({
-      dob: date
+      dateOfBirth: date
     });
   }
   showAddNoteFuncation() {
@@ -134,12 +143,13 @@ class TicketSystem extends Component {
   }
 
   handleOnChangeData = e => {
+    debugger
     const { name, value } = e.target;
     // const value =e.target.value;
 
-    let customerData = this.state.customerData;
-    customerData[name] = value; 
-    return this.setState({customerData});
+    let details = this.state.CustData;
+    details[name] = value;
+    return this.setState({ details });
     // this.state.customerData[name] = value;
     // this.setState({
     //   customerData: this.state.customerData
@@ -158,7 +168,7 @@ class TicketSystem extends Component {
   handleUpdateCustomer() {
     debugger;
     let self = this;
-    var Dob = moment(this.state.customerData.dob).format("L");
+    var Dob = moment(this.state.CustData.dateOfBirth).format("L");
     axios({
       method: "post",
       headers: {
@@ -167,23 +177,32 @@ class TicketSystem extends Component {
       },
       url: config.apiUrl + "/Customer/updateCustomer",
       data: {
-        TenantID: this.state.customerData.tenantID,
-        CustomerName: this.state.customerData.fullName,
-        CustomerPhoneNumber: this.state.customerData.mobileNumber,
-        CustomerEmailId: this.state.customerData.emailId,
-        GenderID: this.state.customerData.genderId,
-        AltNumber: this.state.customerData.alternateNumber,
-        AltEmailID: this.state.customerData.alternateEmailId,
-        // DateOfBirth: moment(this.state.customerData.dob).format("L"),
+        CustomerID: this.state.CustData.customerID,
+        TenantID: this.state.CustData.tenantID,
+        CustomerName: this.state.CustData.customerName,
+        CustomerPhoneNumber: this.state.CustData.customerPhoneNumber,
+        CustomerEmailId: this.state.CustData.customerEmailId,
+        GenderID: this.state.CustData.genderID,
+        AltNumber: this.state.CustData.altNumber,
+        AltEmailID: this.state.CustData.altEmailID,
+        CreatedBy: this.state.createdBy,
+        // DateOfBirth: moment(this.state.CustData.dob).format("L"),
         DateOfBirth: Dob,
         IsActive: 1
       }
     }).then(function(res) {
       debugger;
-      self.handleEditCustomerClose.bind(self);
-      let SearchData = res.data.responseData;
-      self.setState({ SearchData: SearchData });
+      let Message = res.data.message;
+      if (Message === "Success") {
+        NotificationManager.success("Record updated Successfull.");
+
+        self.componentDidMount();
+
+        // self.setState({ SearchData: SearchData });
+      }
     });
+
+    this.handleEditCustomerClose.bind(this);
   }
   handleGetTicketTitleList() {
     const requestOptions = {
@@ -323,12 +342,42 @@ class TicketSystem extends Component {
     });
   }
 
+  handleGetCustomerData(CustId, mode) {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      url: config.apiUrl + "/Customer/getcustomerdetailsbyid",
+      params: {
+        CustomerID: CustId
+      }
+    }).then(function(res) {
+      var CustMsg = res.data.message;
+      var CustData = res.data.responseData;
+      if (CustMsg === "Success") {
+        // var customerEmailId=CustDatacustomerEmailId;
+        debugger;
+        self.setState({ CustData: CustData });
+        self.handleEditCustomerClose();
+      }
+      if (mode === "Edit") {
+        self.handleEditCustomerOpen();
+        self.setState({ CustData: CustData });
+      }
+    });
+  }
+
   componentDidMount() {
     debugger;
     var customerData = this.props.location.state;
-    if (customerData) {
+    var custId = customerData.customerId;
+    if (custId !== null) {
       this.setState({ customerData });
-
+      this.handleGetCustomerData(custId);
       this.handleGetTicketTitleList();
       this.handleGetBrandList();
       this.handleGetCategoryList();
@@ -392,6 +441,8 @@ class TicketSystem extends Component {
       />
     );
 
+    let CustId = this.state.customerData.customerId;
+    var CustNumber = this.state.CustData.customerPhoneNumber;
     return (
       <div style={{ backgroundColor: "#f5f8f9", paddingBottom: "2px" }}>
         <div className="rectanglesystem">
@@ -410,10 +461,7 @@ class TicketSystem extends Component {
                     alt="headphone"
                     className="bitmapheadpone"
                   />
-                  <label className="a91-9873470074">
-                    {/* {this.state.customerData.mobileNumber} */}
-                    {this.state.customerData.mobileNumber}
-                  </label>
+                  <label className="a91-9873470074">{CustNumber}</label>
                   <img
                     src={CopyIcon}
                     alt="Copy-Icon"
@@ -879,17 +927,17 @@ class TicketSystem extends Component {
                           <div className="row" style={{ marginBottom: "20px" }}>
                             <div className="col-md-4">
                               <label className="category1">
-                                {this.state.customerData.fullName}
+                                {this.state.CustData.customerName}
                               </label>
                             </div>
                             <div className="col-md-4">
                               <label className="category1">
-                                {this.state.customerData.mobileNumber}
+                                {this.state.CustData.customerPhoneNumber}
                               </label>
                             </div>
                             <div className="col-md-4">
                               <label className="category1">
-                                {this.state.customerData.emailId}
+                                {this.state.CustData.customerEmailId}
                               </label>
                             </div>
                           </div>
@@ -913,30 +961,32 @@ class TicketSystem extends Component {
                           <div className="row" style={{ marginBottom: "20px" }}>
                             <div className="col-md-4">
                               <label className="category1">
-                                {this.state.customerData.genderId === 1
+                                {this.state.CustData.genderID === 1
                                   ? "Male"
                                   : "Female"}
                               </label>
                             </div>
                             <div className="col-md-4">
                               <label className="category1">
-                                {this.state.customerData.alternateNumber}
+                                {this.state.CustData.altNumber}
                               </label>
                             </div>
                             <div className="col-md-4">
                               <label className="category1">
-                                {this.state.customerData.alternateEmailId}
+                                {this.state.CustData.altEmailID}
                               </label>
                             </div>
                           </div>
                           <div className="row">
                             <button
-                              className="systemeditbutton"
-                              onClick={this.handleEditCustomerOpen.bind(this)}
+                              className="systemeditbutton systemeditbutton-text"
+                              onClick={this.handleGetCustomerData.bind(
+                                this,
+                                CustId,
+                                "Edit"
+                              )}
                             >
-                              <label className="systemeditbutton-text">
-                                EDIT
-                              </label>
+                              EDIT
                             </button>
                           </div>
                         </div>
@@ -958,8 +1008,8 @@ class TicketSystem extends Component {
                             type="text"
                             className="txt-1"
                             placeholder="Full Name"
-                            name="fullName"
-                            value={this.state.customerData.fullName}
+                            name="customerName"
+                            value={this.state.CustData.customerName}
                             onChange={this.handleOnChangeData}
                           />
                         </div>
@@ -968,8 +1018,8 @@ class TicketSystem extends Component {
                             type="text"
                             className="txt-1"
                             placeholder="Mobile Number"
-                            name="mobileNumber"
-                            value={this.state.customerData.mobileNumber}
+                            name="customerPhoneNumber"
+                            value={this.state.CustData.customerPhoneNumber}
                             onChange={this.handleOnChangeData}
                           />
                         </div>
@@ -980,28 +1030,29 @@ class TicketSystem extends Component {
                             type="text"
                             className="txt-1"
                             placeholder="Email ID"
-                            name="emailId"
-                            value={this.state.customerData.emailId}
+                            name="customerEmailId"
+                            value={this.state.CustData.customerEmailId}
                             onChange={this.handleOnChangeData}
                           />
                         </div>
                         <div className="col-md-6 radio-btn-margin">
                           <Radio.Group
-                            onChange={this.onChange}
-                            value={this.state.customerData.genderId}
+                            onChange={this.GenderonChange}
+                            value={this.state.CustData.genderID}
                           >
                             <Radio value={1}>Male</Radio>
                             <Radio value={2}>Female</Radio>
                           </Radio.Group>
+                          
                         </div>
                       </div>
                       <div className="row row-margin1">
                         <div className="col-md-6 addcustdate">
                           <DatePicker
-                            selected={this.state.dob}
+                            selected={this.state.dateOfBirth}
                             onChange={date => this.handleChange(date)}
                             placeholderText="DOB"
-                            value={this.state.customerData.dob}
+                            value={this.state.CustData.dateOfBirth}
                             showMonthDropdown
                             showYearDropdown
                             className="txt-1"
@@ -1015,8 +1066,8 @@ class TicketSystem extends Component {
                             type="text"
                             className="txt-1"
                             placeholder="Alternate Number"
-                            name="alternateNumber"
-                            value={this.state.customerData.alternateNumber}
+                            name="altNumber"
+                            value={this.state.CustData.altNumber}
                             onChange={this.handleOnChangeData}
                           />
                         </div>
@@ -1025,8 +1076,8 @@ class TicketSystem extends Component {
                             type="text"
                             className="txt-1"
                             placeholder="Alternate Email"
-                            name="alternateEmailId"
-                            value={this.state.customerData.alternateEmailId}
+                            name="altEmailID"
+                            value={this.state.CustData.altEmailID}
                             onChange={this.handleOnChangeData}
                           />
                         </div>
@@ -1323,6 +1374,7 @@ class TicketSystem extends Component {
                   </div>
                 </div>
               </Modal>
+              <NotificationContainer />
             </div>
           </div>
         </div>
