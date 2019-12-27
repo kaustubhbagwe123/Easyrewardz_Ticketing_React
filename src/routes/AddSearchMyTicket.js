@@ -30,13 +30,13 @@ class AddSearchMyTicket extends Component {
       emailId: "",
       genderId: 1,
       dob: "",
-      customerId:0,
+      customerId: 0,
       alternateNumber: "",
       alternateEmailId: "",
       loading: false,
-      SrchEmailPhone:"",
+      SrchEmailPhone: "",
       // searchEmailPhone: {},
-      tenantID: 1,
+      tenantID: 1
       // SearchItem: []
     };
     this.handleAddCustomerOpen = this.handleAddCustomerOpen.bind(this);
@@ -62,8 +62,8 @@ class AddSearchMyTicket extends Component {
     });
     this.validator.hideMessages();
   }
-  handleSearchCustomer(){
-    debugger
+  handleSearchCustomer() {
+    debugger;
     let self = this;
     axios({
       method: "post",
@@ -121,7 +121,7 @@ class AddSearchMyTicket extends Component {
   //   debugger;
   //   let SearchData = this.state.SearchData;
   //    SearchData[field] = value;
- 
+
   //   var customerID = id.customerID;
   //   var customerName = id.customerName;
   //   this.setState({
@@ -356,6 +356,7 @@ class AddSearchMyTicket extends Component {
                       onChange={date => this.handleChange(date)}
                       placeholderText="DOB"
                       value={this.state.dob}
+                      maxDate={new Date()}
                       showMonthDropdown
                       showYearDropdown
                       className="txt-1"
