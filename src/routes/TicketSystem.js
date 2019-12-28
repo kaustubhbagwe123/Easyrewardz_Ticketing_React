@@ -66,12 +66,15 @@ class TicketSystem extends Component {
       selectedSubCategory: 0,
       selectedIssueType: 0,
       selectedTicketPriority: 0,
+      selectedTicketActionType: "200",
       selectedChannelOfPurchase: 0,
       tenantID: 1,
       customerData: {},
       CustData: {},
-      // isOrderClick: false,
-      custId:0,
+      customerDetails: {},
+      // custmrId: '',
+      details: {},
+      editDOB: "",
       SpacialEqmt: [
         {
           department: 25
@@ -88,7 +91,7 @@ class TicketSystem extends Component {
       ]
     };
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    // this.handleChange = this.handleChange.bind(this);
     this.handleGetTicketTitleList = this.handleGetTicketTitleList.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
     this.handleGetCategoryList = this.handleGetCategoryList.bind(this);
@@ -121,7 +124,7 @@ class TicketSystem extends Component {
     this.setState({ EditCustomer: false });
   }
   GenderonChange = e => {
-    debugger;
+    // debugger;
     // this.setState({
     //   genderID: e.target.value
     // });
@@ -129,12 +132,21 @@ class TicketSystem extends Component {
     const value = e.target.value;
 
     let CustData = this.state.CustData;
-    CustData = value;
+    CustData.genderID = value;
     this.setState({ CustData });
   };
-  handleChange(date) {
+  handleChange=(date)=> {
+    debugger;
+    // let CustData = this.state.CustData;
+    // let editDOB = date;
+    // CustData.dateOfBirth = date;
+
+    // this.setState({
+    //   CustData,
+    //   editDOB
+    // });
     this.setState({
-      dateOfBirth: date
+      editDOB: date
     });
   }
   showAddNoteFuncation() {
@@ -145,13 +157,12 @@ class TicketSystem extends Component {
   }
 
   handleOnChangeData = e => {
-    debugger;
     const { name, value } = e.target;
     // const value =e.target.value;
 
     let details = this.state.CustData;
     details[name] = value;
-    return this.setState({ details });
+    this.setState({ details });
     // this.state.customerData[name] = value;
     // this.setState({
     //   customerData: this.state.customerData
@@ -170,7 +181,7 @@ class TicketSystem extends Component {
   handleUpdateCustomer() {
     debugger;
     let self = this;
-    var Dob = moment(this.state.CustData.dateOfBirth).format("L");
+    var Dob= moment(this.state.CustData.editDOB).format("DD/MM/YYYY");
     axios({
       method: "post",
       headers: {
@@ -181,30 +192,30 @@ class TicketSystem extends Component {
       data: {
         CustomerID: this.state.CustData.customerID,
         TenantID: this.state.CustData.tenantID,
-        CustomerName: this.state.CustData.customerName,
-        CustomerPhoneNumber: this.state.CustData.customerPhoneNumber,
-        CustomerEmailId: this.state.CustData.customerEmailId,
+        CustomerName: this.state.CustData.customername,
+        CustomerPhoneNumber: this.state.CustData.customerPhone,
+        CustomerEmailId: this.state.CustData.custEmailId,
         GenderID: this.state.CustData.genderID,
-        AltNumber: this.state.CustData.altNumber,
-        AltEmailID: this.state.CustData.altEmailID,
+        AltNumber: this.state.CustData.altNo,
+        AltEmailID: this.state.CustData.altEmail,
         CreatedBy: this.state.createdBy,
-        // DateOfBirth: moment(this.state.CustData.dob).format("L"),
+        // DateOfBirth: moment(this.state.CustData.editDOB).format("DD/MM/YYYY"),
         DateOfBirth: Dob,
         IsActive: 1
       }
     }).then(function(res) {
-      debugger;
+      // debugger;
       let Message = res.data.message;
       if (Message === "Success") {
         NotificationManager.success("Record updated Successfull.");
 
         self.componentDidMount();
 
-        // self.setState({ SearchData: SearchData });
+        self.handleEditCustomerClose.bind(this);
       }
     });
 
-    this.handleEditCustomerClose.bind(this);
+   
   }
   handleGetTicketTitleList() {
     const requestOptions = {
@@ -224,7 +235,7 @@ class TicketSystem extends Component {
       }
     }).then(function(res) {
       // console.log(JSON.stringify(res.data.responseData));
-      debugger;
+      // debugger;
       let TicketTitleData = res.data.responseData;
       self.setState({ TicketTitleData: TicketTitleData });
     });
@@ -345,7 +356,6 @@ class TicketSystem extends Component {
   }
 
   handleGetCustomerData(CustId, mode) {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -358,29 +368,36 @@ class TicketSystem extends Component {
         CustomerID: CustId
       }
     }).then(function(res) {
+      debugger;
       var CustMsg = res.data.message;
+      var customerData = res.data.responseData;
       var CustData = res.data.responseData;
+      CustData.customerPhone = CustData.customerPhoneNumber;
+      CustData.customername = CustData.customerName;
+      CustData.custEmailId = CustData.customerEmailId;
+      CustData.altNo = CustData.altNumber;
+      CustData.altEmail = CustData.altEmailID;
+      CustData.editDOB = CustData.dob;
+
       if (CustMsg === "Success") {
-        // var customerEmailId=CustDatacustomerEmailId;
-        debugger;
-        self.setState({ CustData: CustData });
+        self.setState({ customerData: customerData });
         self.handleEditCustomerClose();
       }
       if (mode === "Edit") {
+        // var editDOB = moment(customerData.dateOfBirth).format("DD/MM/YYYY");
         self.handleEditCustomerOpen();
-        self.setState({ CustData: CustData });
+        self.setState({ customerData: customerData, CustData });
       }
     });
   }
 
   componentDidMount() {
-    debugger;
-    var customerData = this.props.location.state;
+    // debugger;
+    var customerDetails = this.props.location.state;
 
-    if (customerData) {
-      var custId = customerData.customerId;
-      this.setState({custId})
-      this.setState({ customerData });
+    if (customerDetails) {
+      var custId = customerDetails.customerId;
+      this.setState({ customerDetails, custId });
       this.handleGetCustomerData(custId);
       this.handleGetTicketTitleList();
       this.handleGetBrandList();
@@ -391,10 +408,7 @@ class TicketSystem extends Component {
       this.props.history.push("addSearchMyTicket");
     }
   }
-  // hanleRedirectpage() {
-  //   debugger
-  //   this.setState({ isOrderClick: true });
-  // }
+
   setBrandValue = e => {
     let brandValue = e.currentTarget.value;
     this.setState({ selectedBrand: brandValue });
@@ -406,6 +420,11 @@ class TicketSystem extends Component {
   setTicketPriorityValue = e => {
     let ticketPriorityValue = e.currentTarget.id;
     this.setState({ selectedTicketPriority: ticketPriorityValue });
+  };
+  setTicketActionTypeValue = e => {
+    // debugger;
+    let ticketActionTypeValue = e.currentTarget.value;
+    this.setState({ selectedTicketActionType: ticketActionTypeValue });
   };
   setCategoryValue = e => {
     let categoryValue = e.currentTarget.value;
@@ -432,6 +451,7 @@ class TicketSystem extends Component {
   };
 
   render() {
+    // var editDOBRender = this.state.editDOB;
     const HidecollapsUpKbLink = this.state.collapseUp ? (
       <img
         src={Up1Img}
@@ -448,9 +468,9 @@ class TicketSystem extends Component {
       />
     );
 
-    var CustId = this.state.customerData.customerId;
-    var CustNumber = this.state.CustData.customerPhoneNumber;
-    
+    var CustomerId = this.state.customerDetails.customerId;
+    // var DOB = moment(this.state.CustData.editDOB).format("DD/MM/YYYY");
+    var CustNumber = this.state.customerData.customerPhoneNumber;
     return (
       <div style={{ backgroundColor: "#f5f8f9", paddingBottom: "2px" }}>
         <div className="rectanglesystem">
@@ -493,7 +513,11 @@ class TicketSystem extends Component {
                     overlayId="logout-ovrly"
                   >
                     <div>
-                      <label>Submit As Solved</label>
+                      <label>
+                        {this.state.selectedTicketActionType === "200"
+                          ? "Submit As Solved"
+                          : "Create Ticket"}
+                      </label>
                     </div>
                   </Modal>
                 </td>
@@ -651,7 +675,7 @@ class TicketSystem extends Component {
                   </div>
                   <div className="col-md-6">
                     <label className="sub-category">Ticket Action Type</label>
-                    <div className="row">
+                    {/* <div className="row">
                       <div className="col-md-6 Qc">
                         <button className="low-button">
                           <label className="Qc-button-text">QC</label>
@@ -661,6 +685,34 @@ class TicketSystem extends Component {
                         <button className="">
                           <label className="Etb-button-text">ETB</label>
                         </button>
+                      </div>
+                    </div> */}
+                    <div className="action-type-butns-cntr">
+                      <div className="action-type-butns">
+                        <input
+                          type="radio"
+                          name="ticket-action-type"
+                          id="qc"
+                          value="200"
+                          onChange={this.setTicketActionTypeValue}
+                          checked={
+                            this.state.selectedTicketActionType === "200"
+                          }
+                        />
+                        <label htmlFor="qc">QC</label>
+                      </div>
+                      <div className="action-type-butns">
+                        <input
+                          type="radio"
+                          name="ticket-action-type"
+                          id="etb"
+                          value="201"
+                          onChange={this.setTicketActionTypeValue}
+                          checked={
+                            this.state.selectedTicketActionType === "201"
+                          }
+                        />
+                        <label htmlFor="etb">ETB</label>
                       </div>
                     </div>
                   </div>
@@ -935,17 +987,17 @@ class TicketSystem extends Component {
                           <div className="row" style={{ marginBottom: "20px" }}>
                             <div className="col-md-4">
                               <label className="category1">
-                                {this.state.CustData.customerName}
+                                {this.state.customerData.customerName}
                               </label>
                             </div>
                             <div className="col-md-4">
                               <label className="category1">
-                                {this.state.CustData.customerPhoneNumber}
+                                {this.state.customerData.customerPhoneNumber}
                               </label>
                             </div>
                             <div className="col-md-4">
                               <label className="category1">
-                                {this.state.CustData.customerEmailId}
+                                {this.state.customerData.customerEmailId}
                               </label>
                             </div>
                           </div>
@@ -969,19 +1021,19 @@ class TicketSystem extends Component {
                           <div className="row" style={{ marginBottom: "20px" }}>
                             <div className="col-md-4">
                               <label className="category1">
-                                {this.state.CustData.genderID === 1
+                                {this.state.customerData.genderID === 1
                                   ? "Male"
                                   : "Female"}
                               </label>
                             </div>
                             <div className="col-md-4">
                               <label className="category1">
-                                {this.state.CustData.altNumber}
+                                {this.state.customerData.altNumber}
                               </label>
                             </div>
                             <div className="col-md-4">
                               <label className="category1">
-                                {this.state.CustData.altEmailID}
+                                {this.state.customerData.altEmailID}
                               </label>
                             </div>
                           </div>
@@ -990,7 +1042,7 @@ class TicketSystem extends Component {
                               className="systemeditbutton systemeditbutton-text"
                               onClick={this.handleGetCustomerData.bind(
                                 this,
-                                CustId,
+                                CustomerId,
                                 "Edit"
                               )}
                             >
@@ -1016,8 +1068,8 @@ class TicketSystem extends Component {
                             type="text"
                             className="txt-1"
                             placeholder="Full Name"
-                            name="customerName"
-                            value={this.state.CustData.customerName}
+                            name="customername"
+                            value={this.state.CustData.customername}
                             onChange={this.handleOnChangeData}
                           />
                         </div>
@@ -1027,8 +1079,8 @@ class TicketSystem extends Component {
                             className="txt-1"
                             maxLength={10}
                             placeholder="Mobile Number"
-                            name="customerPhoneNumber"
-                            value={this.state.CustData.customerPhoneNumber}
+                            name="customerPhone"
+                            value={this.state.CustData.customerPhone}
                             onChange={this.handleOnChangeData}
                           />
                         </div>
@@ -1039,8 +1091,8 @@ class TicketSystem extends Component {
                             type="text"
                             className="txt-1"
                             placeholder="Email ID"
-                            name="customerEmailId"
-                            value={this.state.CustData.customerEmailId}
+                            name="custEmailId"
+                            value={this.state.CustData.custEmailId}
                             onChange={this.handleOnChangeData}
                           />
                         </div>
@@ -1057,13 +1109,15 @@ class TicketSystem extends Component {
                       <div className="row row-margin1">
                         <div className="col-md-6 addcustdate">
                           <DatePicker
-                            selected={this.state.dateOfBirth}
-                            onChange={date => this.handleChange(date)}
+                            className="txt-1"
                             placeholderText="DOB"
-                            value={this.state.CustData.dateOfBirth}
+                            name="editDOB"
+                            maxDate={new Date()}
                             showMonthDropdown
                             showYearDropdown
-                            className="txt-1"
+                            selected={this.state.editDOB}
+                            value={this.state.CustData.editDOB}
+                            onChange={this.handleChange}
                           />
                         </div>
                       </div>
@@ -1075,8 +1129,8 @@ class TicketSystem extends Component {
                             className="txt-1"
                             maxLength={10}
                             placeholder="Alternate Number"
-                            name="altNumber"
-                            value={this.state.CustData.altNumber}
+                            name="altNo"
+                            value={this.state.CustData.altNo}
                             onChange={this.handleOnChangeData}
                           />
                         </div>
@@ -1085,8 +1139,8 @@ class TicketSystem extends Component {
                             type="text"
                             className="txt-1"
                             placeholder="Alternate Email"
-                            name="altEmailID"
-                            value={this.state.CustData.altEmailID}
+                            name="altEmail"
+                            value={this.state.CustData.altEmail}
                             onChange={this.handleOnChangeData}
                           />
                         </div>
@@ -1118,9 +1172,7 @@ class TicketSystem extends Component {
                     // onChange={this.hanleRedirectpage.bind(this)}
                   >
                     {/* {this.state.isOrderClick === true ? ( */}
-                      <TicketSystemOrder
-                        custDetails={CustId}
-                      />
+                    <TicketSystemOrder custDetails={CustomerId} />
                     {/* ) : null} */}
                   </div>
                   <div

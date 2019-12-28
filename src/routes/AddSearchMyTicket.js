@@ -30,14 +30,14 @@ class AddSearchMyTicket extends Component {
       customerEmailId: "",
       genderID: 1,
       dob: "",
-      customerId:0,
+      customerId: 0,
       altNumber: "",
       altEmailID: "",
       loading: false,
-      SrchEmailPhone:"",
+      SrchEmailPhone: "",
       // searchEmailPhone: {},
       tenantID: 1,
-      createdBy:6,
+      createdBy: 6
       // SearchItem: []
     };
     this.handleAddCustomerOpen = this.handleAddCustomerOpen.bind(this);
@@ -63,8 +63,8 @@ class AddSearchMyTicket extends Component {
     });
     this.validator.hideMessages();
   }
-  handleSearchCustomer(){
-    debugger
+  handleSearchCustomer() {
+    debugger;
     let self = this;
     axios({
       method: "post",
@@ -122,7 +122,7 @@ class AddSearchMyTicket extends Component {
   //   debugger;
   //   let SearchData = this.state.SearchData;
   //    SearchData[field] = value;
- 
+
   //   var customerID = id.customerID;
   //   var customerName = id.customerName;
   //   this.setState({
@@ -160,12 +160,11 @@ class AddSearchMyTicket extends Component {
       }).then(function(res) {
         debugger;
         let responseMessage = res.data.message;
-        let custId=res.data.responseData;
+        let custId = res.data.responseData;
         self.setState({
           loading: true
         });
         if (responseMessage === "Success") {
-
           NotificationManager.success("New Customer added successfully.");
           setTimeout(function() {
             self.props.history.push({
@@ -174,7 +173,7 @@ class AddSearchMyTicket extends Component {
             });
           }, 500);
           self.setState({
-            customerId:custId
+            customerId: custId
           });
         }
       });
@@ -189,6 +188,7 @@ class AddSearchMyTicket extends Component {
     });
   };
   handleChange(date) {
+    debugger;
     this.setState({
       dob: date
     });
@@ -363,9 +363,11 @@ class AddSearchMyTicket extends Component {
                       onChange={date => this.handleChange(date)}
                       placeholderText="DOB"
                       value={this.state.dob}
+                      maxDate={new Date()}
                       showMonthDropdown
                       showYearDropdown
                       className="txt-1"
+                      dateFormat="dd/MM/yyyy"
                     />
                     {this.validator.message(
                       "Date of Birth",

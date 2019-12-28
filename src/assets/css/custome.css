@@ -3109,7 +3109,7 @@ table tr th:last-child {
   margin: 7px;
   cursor: pointer;
 }
-.priority-butns label {
+.priority-butns label, .action-type-butns label {
   border-radius: 4px;
   font-weight: 700;
   font-family: Lato;
@@ -3119,7 +3119,14 @@ table tr th:last-child {
   border: 1px solid;
   margin-bottom: 7px;
 }
-.priority-butns {
+.action-type-butns label {
+  border-color: #f4f4f4;
+}
+.action-type-butns-cntr .action-type-butns input:checked + label {
+  border-color: #2561a8;
+  color: #2561a8;
+}
+.priority-butns, .action-type-butns {
   display: inline-block;
 }
 .priority-butns-cntr .priority-butns:nth-child(3n + 1) label {
@@ -3146,7 +3153,7 @@ table tr th:last-child {
   background: #5aa805;
   color: #fff;
 }
-.priority-butns-cntr .priority-butns:last-child label {
+.priority-butns-cntr .priority-butns:last-child label, .action-type-butns-cntr .action-type-butns:last-child label {
   margin-right: 0;
 }
 /* ticket system ends */

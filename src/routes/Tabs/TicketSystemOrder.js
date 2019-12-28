@@ -8,6 +8,10 @@ import MinusImg from "./../../assets/Images/minus.png";
 import DatePicker from "react-datepicker";
 import axios from "axios";
 import config from "./../../helpers/config";
+import {
+  NotificationContainer,
+  NotificationManager
+} from "react-notifications";
 
 class TicketSystemOrder extends Component {
   constructor(props) {
@@ -21,14 +25,15 @@ class TicketSystemOrder extends Component {
       AddManualSaveTbl: false,
       OrderCreatDate: "",
       orderId:0,
+      tenantID: 1,
       billId:'',
-      productCode:'',
+      productBarCode:'',
       sources:'',
-      orderMrp:'',
+      orderMRP:'',
       pricePaid:'',
       discount:'',
-      size:'',
-      requiredSize:'',
+      size:0,
+      requiredSize:0,
       purchaseFrmStorName:'',
       purchaseFrmStorAddress:'',
       modeOfPayment:[],
@@ -38,6 +43,7 @@ class TicketSystemOrder extends Component {
     this.handleOrderTableOpen = this.handleOrderTableOpen.bind(this);
     this.handleOrderTableClose = this.handleOrderTableClose.bind(this);
     this.handleModeOfPaymentDropDown = this.handleModeOfPaymentDropDown.bind(this);
+    this.handleGetManuallyTableData=this.handleGetManuallyTableData.bind(this);
   }
   handleOrderTableOpen() {
     this.setState({ OrderTable: true });
@@ -59,8 +65,8 @@ class TicketSystemOrder extends Component {
     });
   }
   setModePaymentValue = e => {
-    let brandValue = e.currentTarget.value;
-    this.setState({ selectedBrand: brandValue });
+    let dataValue = e.currentTarget.value;
+    this.setState({ modeOfPayment: dataValue });
   }
   handleChangeToggle() {
     this.setState({
@@ -71,6 +77,70 @@ class TicketSystemOrder extends Component {
     this.setState({
       AddManualSaveTbl: !this.state.AddManualSaveTbl
     });
+  }
+  handleManuallyOnchange = e =>{
+    this.setState({[e.currentTarget.name]:e.currentTarget.value});
+  }
+  handleGetManuallyTableData(){
+    debugger
+    let self = this;
+    axios({
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      url: config.apiUrl + "/Master/getPaymentMode"
+      // params: {
+      //   TenantID: this.state.tenantID
+      // }
+    }).then(function(res) {
+      debugger
+      let finalData = res.data.data;
+      self.setState({ finalData: finalData });
+    });
+  }
+  hadleAddManuallyOrderData(){
+    debugger
+    let self=this;
+    var CustID=this.props.custDetails;
+    axios({
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      url: config.apiUrl + "/Order/createOrder",
+      data: {
+        TenantID: this.state.tenantID,
+        ProductBarCode: this.state.productBarCode,
+        OrderNumber: this.state.orderId,
+        BillID: this.state.billId,
+        TicketSourceID: this.state.sources,
+        ModeOfPaymentID: this.state.modeOfPayment,
+        TransactionDate: this.state.OrderCreatDate,
+        InvoiceNumber: "Inv123",
+        InvoiceDate: this.state.OrderCreatDate,
+        OrderPrice: this.state.orderMRP,
+        PricePaid: this.state.pricePaid,
+        CustomerID: CustID,
+        PurchaseFromStoreId:this.state.PurchaseFromStoreId,
+        Discount:this.state.discount,
+        Size:this.state.size,
+        RequireSize:this.state.requiredSize,
+        CreatedBy:6
+      }
+    }).then(function(res) {
+      debugger;
+      let responseMessage = res.data.message;
+     
+      if (responseMessage === "Success") {
+        NotificationManager.success("New Order add successfully.");
+        self.handleGetManuallyTableData()
+        self.handleChangeSaveManualTbl();
+      }
+    });
+
   }
   handleModeOfPaymentDropDown(){
     let self = this;
@@ -85,8 +155,6 @@ class TicketSystemOrder extends Component {
       //   TenantID: this.state.tenantID
       // }
     }).then(function(res) {
-      // console.log(JSON.stringify(res.data.responseData));
-      debugger;
       let modeData = res.data.responseData;
       self.setState({ modeData: modeData });
     });
@@ -120,61 +188,61 @@ class TicketSystemOrder extends Component {
       }
     ];
 
-    const columnsOrder = [
-      {
-        Header: <span>Invoice Number</span>,
-        accessor: "invoiceNumber",
-        Cell: row => (
-          <div className="filter-checkbox" style={{ marginLeft: "15px" }}>
-            <input
-              type="checkbox"
-              id="fil-number1"
-              name="filter-type"
-              style={{ display: "none" }}
-              //   onChange={() => this.showAddNoteFuncation()}
-            />
-            <label htmlFor="fil-number1" style={{ paddingLeft: "25px" }}>
-              <span className="add-note">BB332398</span>
-            </label>
-          </div>
-        )
-      },
-      {
-        Header: <span>Invoice Date</span>,
-        accessor: "invoiceDate",
-        Cell: row => <label>12 Jan 2019</label>
-      },
-      {
-        Header: <span>Item Count</span>,
-        accessor: "itemCount",
-        Cell: row => <label>02</label>
-      },
-      {
-        Header: <span>Item Price</span>,
-        accessor: "itemPrice",
-        Cell: row => <label>2999</label>
-      },
-      {
-        Header: <span>Price Paid</span>,
-        accessor: "pricePaid",
-        Cell: row => <label>2999</label>
-      },
-      {
-        Header: <span>Store Code</span>,
-        accessor: "storeCode",
-        Cell: row => <label>SB221</label>
-      },
-      {
-        Header: <span>Store Addres</span>,
-        accessor: "storeAddres",
-        Cell: row => <label>UNIT D-338,| SECOND FLOOR SECTOR 14</label>
-      },
-      {
-        Header: <span>Discount</span>,
-        accessor: "discount",
-        Cell: row => <label>25%</label>
-      }
-    ];
+    // const columnsOrder = [
+    //   {
+    //     Header: <span>Invoice Number</span>,
+    //     accessor: "invoiceNumber",
+    //     Cell: row => (
+    //       <div className="filter-checkbox" style={{ marginLeft: "15px" }}>
+    //         <input
+    //           type="checkbox"
+    //           id="fil-number1"
+    //           name="filter-type"
+    //           style={{ display: "none" }}
+    //           //   onChange={() => this.showAddNoteFuncation()}
+    //         />
+    //         <label htmlFor="fil-number1" style={{ paddingLeft: "25px" }}>
+    //           <span className="add-note">BB332398</span>
+    //         </label>
+    //       </div>
+    //     )
+    //   },
+    //   {
+    //     Header: <span>Invoice Date</span>,
+    //     accessor: "invoiceDate",
+    //     Cell: row => <label>12 Jan 2019</label>
+    //   },
+    //   {
+    //     Header: <span>Item Count</span>,
+    //     accessor: "itemCount",
+    //     Cell: row => <label>02</label>
+    //   },
+    //   {
+    //     Header: <span>Item Price</span>,
+    //     accessor: "itemPrice",
+    //     Cell: row => <label>2999</label>
+    //   },
+    //   {
+    //     Header: <span>Price Paid</span>,
+    //     accessor: "pricePaid",
+    //     Cell: row => <label>2999</label>
+    //   },
+    //   {
+    //     Header: <span>Store Code</span>,
+    //     accessor: "storeCode",
+    //     Cell: row => <label>SB221</label>
+    //   },
+    //   {
+    //     Header: <span>Store Addres</span>,
+    //     accessor: "storeAddres",
+    //     Cell: row => <label>UNIT D-338,| SECOND FLOOR SECTOR 14</label>
+    //   },
+    //   {
+    //     Header: <span>Discount</span>,
+    //     accessor: "discount",
+    //     Cell: row => <label>25%</label>
+    //   }
+    // ];
     const dataOrder1 = [
       {
         taskTitle: "Store door are not working",
@@ -243,7 +311,6 @@ class TicketSystemOrder extends Component {
         Cell: row => <label>SB221</label>
       }
     ];
-    // alert(this.props.custDetails)
     console.log(this.props.custDetails,"done-----------");
     
     return (
@@ -341,7 +408,62 @@ class TicketSystemOrder extends Component {
             <div className="reacttableordermodal">
               <ReactTable
                 data={dataOrder}
-                columns={columnsOrder}
+                // columns={columnsOrder}
+                columns={[
+                  {
+                    Header: <span>Invoice Number</span>,
+                    accessor: "invoiceNumber",
+                    Cell: row => (
+                      <div className="filter-checkbox" style={{ marginLeft: "15px" }}>
+                        <input
+                          type="checkbox"
+                          id="fil-number1"
+                          name="filter-type"
+                          style={{ display: "none" }}
+                          //   onChange={() => this.showAddNoteFuncation()}
+                        />
+                        <label htmlFor="fil-number1" style={{ paddingLeft: "25px" }}>
+                          <span className="add-note">BB332398</span>
+                        </label>
+                      </div>
+                    )
+                  },
+                  {
+                    Header: <span>Invoice Date</span>,
+                    accessor: "invoiceDate",
+                    Cell: row => <label>12 Jan 2019</label>
+                  },
+                  {
+                    Header: <span>Item Count</span>,
+                    accessor: "itemCount",
+                    Cell: row => <label>02</label>
+                  },
+                  {
+                    Header: <span>Item Price</span>,
+                    accessor: "itemPrice",
+                    Cell: row => <label>2999</label>
+                  },
+                  {
+                    Header: <span>Price Paid</span>,
+                    accessor: "pricePaid",
+                    Cell: row => <label>2999</label>
+                  },
+                  {
+                    Header: <span>Store Code</span>,
+                    accessor: "storeCode",
+                    Cell: row => <label>SB221</label>
+                  },
+                  {
+                    Header: <span>Store Addres</span>,
+                    accessor: "storeAddres",
+                    Cell: row => <label>UNIT D-338,| SECOND FLOOR SECTOR 14</label>
+                  },
+                  {
+                    Header: <span>Discount</span>,
+                    accessor: "discount",
+                    Cell: row => <label>25%</label>
+                  }
+                ]}
                 //resizable={false}
                 defaultPageSize={3}
                 showPagination={false}
@@ -423,6 +545,9 @@ class TicketSystemOrder extends Component {
                         type="text"
                         className="addmanuallytext1"
                         placeholder="Order ID"
+                        name="orderId"
+                        value={this.state.orderId}
+                        onChange={this.handleManuallyOnchange}
                       />
                     </div>
                     <div className="col-md-6">
@@ -430,6 +555,9 @@ class TicketSystemOrder extends Component {
                         type="text"
                         className="addmanuallytext1"
                         placeholder="Bill ID"
+                        name="billId"
+                        value={this.state.billId}
+                        onChange={this.handleManuallyOnchange}
                       />
                     </div>
                   </div>
@@ -440,6 +568,9 @@ class TicketSystemOrder extends Component {
                         type="text"
                         className="addmanuallytext1"
                         placeholder="Product Bar Code"
+                        name="productBarCode"
+                        value={this.state.productBarCode}
+                        onChange={this.handleManuallyOnchange}
                       />
                     </div>
                     <div className="col-md-6">
@@ -447,6 +578,9 @@ class TicketSystemOrder extends Component {
                         type="text"
                         className="addmanuallytext1"
                         placeholder="Sources"
+                        name="sources"
+                        value={this.state.sources}
+                        onChange={this.handleManuallyOnchange}
                       />
                     </div>
                   </div>
@@ -456,7 +590,7 @@ class TicketSystemOrder extends Component {
                      
                       <select
                         className="category-select-system dropdown-label"
-                        value={this.state.selectedFunction}
+                        value={this.state.modeOfPayment}
                         onChange={this.setModePaymentValue}
                       >
                         <option className="select-sub-category-placeholder">
@@ -484,11 +618,7 @@ class TicketSystemOrder extends Component {
                         className="addmanuallytext1"
                         // className="form-control"
                       />
-                      {/* <input
-                  type="text"
-                  className="addmanuallytext1"
-                  placeholder="Date"
-                /> */}
+                    
                     </div>
                   </div>
 
@@ -498,6 +628,9 @@ class TicketSystemOrder extends Component {
                         type="text"
                         className="addmanuallytext1"
                         placeholder="MRP"
+                        name="orderMRP"
+                        value={this.state.orderMRP}
+                        onChange={this.handleManuallyOnchange}
                       />
                     </div>
                     <div className="col-md-6">
@@ -505,6 +638,9 @@ class TicketSystemOrder extends Component {
                         type="text"
                         className="addmanuallytext1"
                         placeholder="Price Paid"
+                        name="pricePaid"
+                        value={this.state.pricePaid}
+                        onChange={this.handleManuallyOnchange}
                       />
                     </div>
                   </div>
@@ -515,6 +651,9 @@ class TicketSystemOrder extends Component {
                         type="text"
                         className="addmanuallytext1"
                         placeholder="Discount"
+                        name="discount"
+                        value={this.state.discount}
+                        onChange={this.handleManuallyOnchange}
                       />
                     </div>
                     <div className="col-md-6">
@@ -522,6 +661,9 @@ class TicketSystemOrder extends Component {
                         type="text"
                         className="addmanuallytext1"
                         placeholder="Size"
+                        name="size"
+                        value={this.state.size}
+                        onChange={this.handleManuallyOnchange}
                       />
                     </div>
                   </div>
@@ -532,6 +674,9 @@ class TicketSystemOrder extends Component {
                         type="text"
                         className="addmanuallytext1"
                         placeholder="Required Size"
+                        name="requiredSize"
+                        value={this.state.requiredSize}
+                        onChange={this.handleManuallyOnchange}
                       />
                     </div>
                     <div className="col-md-6">
@@ -539,6 +684,9 @@ class TicketSystemOrder extends Component {
                         type="text"
                         className="addmanuallytext1"
                         placeholder="Purchase from Store name"
+                        name="purchaseFrmStorName"
+                        value={this.state.purchaseFrmStorName}
+                        onChange={this.handleManuallyOnchange}
                       />
                     </div>
                   </div>
@@ -549,6 +697,9 @@ class TicketSystemOrder extends Component {
                         type="text"
                         className="addmanuallytext1"
                         placeholder="Purchase from Store Addres"
+                        name="purchaseFrmStorAddress"
+                        value={this.state.purchaseFrmStorAddress}
+                        onChange={this.handleManuallyOnchange}
                       />
                     </div>
                   </div>
@@ -556,8 +707,9 @@ class TicketSystemOrder extends Component {
                   <div className="row m-b-10 m-l-10 m-r-10">
                     <div className="col-md-6">
                       <button
+                        type="button"
                         className="addmanual m-t-15"
-                        onClick={this.handleChangeSaveManualTbl.bind(this)}
+                        onClick={this.hadleAddManuallyOrderData.bind(this)}
                       >
                         SAVE
                       </button>
@@ -625,7 +777,62 @@ class TicketSystemOrder extends Component {
                   <span className="linestore2"></span>
                   <ReactTable
                     data={dataOrder}
-                    columns={columnsOrder}
+                    // columns={columnsOrder}
+                    columns={[
+                      {
+                        Header: <span>Invoice Number</span>,
+                        accessor: "invoiceNumber",
+                        Cell: row => (
+                          <div className="filter-checkbox" style={{ marginLeft: "15px" }}>
+                            <input
+                              type="checkbox"
+                              id="fil-number1"
+                              name="filter-type"
+                              style={{ display: "none" }}
+                              //   onChange={() => this.showAddNoteFuncation()}
+                            />
+                            <label htmlFor="fil-number1" style={{ paddingLeft: "25px" }}>
+                              <span className="add-note">BB332398</span>
+                            </label>
+                          </div>
+                        )
+                      },
+                      {
+                        Header: <span>Invoice Date</span>,
+                        accessor: "invoiceDate",
+                        Cell: row => <label>12 Jan 2019</label>
+                      },
+                      {
+                        Header: <span>Item Count</span>,
+                        accessor: "itemCount",
+                        Cell: row => <label>02</label>
+                      },
+                      {
+                        Header: <span>Item Price</span>,
+                        accessor: "itemPrice",
+                        Cell: row => <label>2999</label>
+                      },
+                      {
+                        Header: <span>Price Paid</span>,
+                        accessor: "pricePaid",
+                        Cell: row => <label>2999</label>
+                      },
+                      {
+                        Header: <span>Store Code</span>,
+                        accessor: "storeCode",
+                        Cell: row => <label>SB221</label>
+                      },
+                      {
+                        Header: <span>Store Addres</span>,
+                        accessor: "storeAddres",
+                        Cell: row => <label>UNIT D-338,| SECOND FLOOR SECTOR 14</label>
+                      },
+                      {
+                        Header: <span>Discount</span>,
+                        accessor: "discount",
+                        Cell: row => <label>25%</label>
+                      }
+                    ]}
                     //resizable={false}
                     defaultPageSize={3}
                     showPagination={false}
@@ -650,6 +857,7 @@ class TicketSystemOrder extends Component {
           
         ):( null )} */}
         </div>
+        <NotificationContainer />
       </div>
     );
   }
