@@ -37,8 +37,8 @@ class AddSearchMyTicket extends Component {
       SrchEmailPhone: "",
       // searchEmailPhone: {},
       tenantID: 1,
-      createdBy: 6
-      // SearchItem: []
+      createdBy: 6,
+       SearchData: []
     };
     this.handleAddCustomerOpen = this.handleAddCustomerOpen.bind(this);
     this.handleAddCustomerClose = this.handleAddCustomerClose.bind(this);
@@ -78,10 +78,31 @@ class AddSearchMyTicket extends Component {
       }
     }).then(function(res) {
       debugger;
-      let SearchData = res.data.responseData;
-      var GetCustId=SearchData.customerID;
-      self.setState({ SearchData: SearchData });
+      let SearchData = res.data.responseData[0];
+      let GetCustId = SearchData.customerID;
+      if(GetCustId !== null){
+        // self.props.history.push({
+        //   pathname: "ticketsystem",
+        //   state: self.state
+        // });
+        // self.setState({
+        //   customerId: GetCustId
+        // });
+        setTimeout(function() {
+          self.props.history.push({
+            pathname: "ticketsystem",
+            state: self.state
+          });
+        }, 500);
+        self.setState({
+          customerId: GetCustId
+        });
+       
+      }
+      
+      // self.setState({ SearchData: SearchData });
     });
+
   }
   // handleSearchCustomer(field, e) {
   //   debugger;

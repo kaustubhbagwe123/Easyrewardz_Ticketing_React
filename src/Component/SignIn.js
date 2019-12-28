@@ -21,7 +21,8 @@ class SingIn extends Component {
 
     this.state = {
       emailID: "",
-      password: ""
+      password: "",
+      programCode:""
     };
     this.hanleChange = this.hanleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -33,9 +34,13 @@ class SingIn extends Component {
     });
   }
 
-  // hanleChangePage = () => {
-  //   this.props.history.push("/admin/dashboard");
-  // };
+ componentDidMount(){
+   debugger
+   var finalEncProgramCode=this.props.location.state;
+   this.setState({
+     programCode: finalEncProgramCode
+   });
+ }
 
   handleSubmit(event) {
     event.preventDefault();
@@ -50,7 +55,8 @@ class SingIn extends Component {
       // let X_Authorized_password = password;
       let X_Authorized_Domainname =
         "rZbZUcWTDjEk+qIvay9BFe/7Izx/T+YkIhbRa/mL0W0=";
-      let X_Authorized_Programcode = "XDdjhgH1ixe3Rm70smc/jA==";
+        let ProCode=this.state.programCode
+      let X_Authorized_Programcode =  ProCode.programCode;
       let X_Authorized_applicationid = "lVWgnuY01lDMJBCSewbQ8g==";
 
       if (X_Authorized_userId !== null && X_Authorized_password !== null) {
