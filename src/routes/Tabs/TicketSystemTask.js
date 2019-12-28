@@ -13,13 +13,21 @@ class TicketSystemTask extends Component {
       taskDescription: "",
       DepartmentData: [],
       FunctionData: [],
+      AssignToData: [],
+      TicketPriorityData: [],
       selectedDepartment: 0,
       selectedFunction: 0,
+      selectedAssignTo: 0,
+      selectedPriority: 0,
       tenantID: 1
     };
     this.handleCreateTask = this.handleCreateTask.bind(this);
     this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
     this.handleGetFunctionList = this.handleGetFunctionList.bind(this);
+    this.handleGetAssignToList = this.handleGetAssignToList.bind(this);
+    this.handleGetTicketPriorityList = this.handleGetTicketPriorityList.bind(
+      this
+    );
     this.validator = new SimpleReactValidator();
   }
 
@@ -29,6 +37,7 @@ class TicketSystemTask extends Component {
 
   componentDidMount() {
     this.handleGetDepartmentList();
+    this.handleGetTicketPriorityList();
   }
 
   handleGetDepartmentList() {
@@ -64,12 +73,50 @@ class TicketSystemTask extends Component {
       params: {
         DepartmentId: this.state.selectedDepartment,
         TenantID: this.state.tenantID
-        // DepartmentId: this.state.selectedDepartment
       }
     }).then(function(res) {
       debugger;
       let FunctionData = res.data.responseData;
       self.setState({ FunctionData: FunctionData });
+    });
+  }
+  handleGetAssignToList() {
+    debugger;
+
+    let self = this;
+    axios({
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      url: config.apiUrl + "/Task/getassignedto",
+      params: {
+        Function_ID: this.state.selectedFunction
+      }
+    }).then(function(res) {
+      debugger;
+      let AssignToData = res.data.responseData;
+      self.setState({ AssignToData: AssignToData });
+    });
+  }
+  handleGetTicketPriorityList() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      url: config.apiUrl + "/Priority/GetPriorityList",
+      params: {
+        TenantID: this.state.tenantID
+      }
+    }).then(function(res) {
+      debugger;
+      let TicketPriorityData = res.data.responseData;
+      self.setState({ TicketPriorityData: TicketPriorityData });
     });
   }
 
@@ -82,11 +129,25 @@ class TicketSystemTask extends Component {
       if (this.state.selectedDepartment) {
         this.handleGetFunctionList();
       }
-    }, 100);
+    }, 1);
   };
   setFunctionValue = e => {
     let functionValue = e.currentTarget.value;
     this.setState({ selectedFunction: functionValue });
+
+    setTimeout(() => {
+      if (this.state.selectedFunction) {
+        this.handleGetAssignToList();
+      }
+    }, 1);
+  };
+  setAssignToValue = e => {
+    let assignToValue = e.currentTarget.value;
+    this.setState({ selectedAssignTo: assignToValue });
+  };
+  setPriorityValue = e => {
+    let priorityValue = e.currentTarget.value;
+    this.setState({ selectedPriority: priorityValue });
   };
 
   handleCreateTask() {
@@ -281,17 +342,45 @@ class TicketSystemTask extends Component {
                     </div>
                     <div className="row m-b-10">
                       <div className="col-md-6">
-                        <select className="category-select-system dropdown-label">
-                          <option className="select-category-placeholder dropdown-label">
+                        <select
+                          value={this.state.selectedAssignTo}
+                          onChange={this.setAssignToValue}
+                          className="category-select-system dropdown-label"
+                        >
+                          <option className="select-category-placeholder">
                             Assign To
                           </option>
+                          {this.state.AssignToData !== null &&
+                            this.state.AssignToData.map((item, i) => (
+                              <option
+                                key={i}
+                                value={item.userID}
+                                className="select-category-placeholder"
+                              >
+                                {item.userName}
+                              </option>
+                            ))}
                         </select>
                       </div>
                       <div className="col-md-6">
-                        <select className="category-select-system dropdown-label">
+                        <select
+                          value={this.state.selectedPriority}
+                          onChange={this.setPriorityValue}
+                          className="category-select-system dropdown-label"
+                        >
                           <option className="select-sub-category-placeholder">
                             Priority
                           </option>
+                          {this.state.TicketPriorityData !== null &&
+                            this.state.TicketPriorityData.map((item, i) => (
+                              <option
+                                key={i}
+                                value={item.priorityID}
+                                className="select-sub-category-placeholder"
+                              >
+                                {item.priortyName}
+                              </option>
+                            ))}
                         </select>
                       </div>
                     </div>

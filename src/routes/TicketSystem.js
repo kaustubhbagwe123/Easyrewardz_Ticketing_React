@@ -46,6 +46,7 @@ class TicketSystem extends Component {
       EditCustomer: false,
 
       TicketTitleData: [],
+      KbPopupData: [],
       BrandData: [],
       CategoryData: [],
       SubCategoryData: [],
@@ -65,7 +66,9 @@ class TicketSystem extends Component {
       selectedCategory: 0,
       selectedCategoryKB: 0,
       selectedSubCategory: 0,
+      selectedSubCategoryKB: 0,
       selectedIssueType: 0,
+      selectedIssueTypeKB: 0,
       selectedTicketPriority: 0,
       selectedTicketActionType: "200",
       selectedChannelOfPurchase: 0,
@@ -94,6 +97,7 @@ class TicketSystem extends Component {
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
     // this.handleChange = this.handleChange.bind(this);
     this.handleGetTicketTitleList = this.handleGetTicketTitleList.bind(this);
+    this.handleKbLinkPopupSearch = this.handleKbLinkPopupSearch.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
     this.handleGetCategoryList = this.handleGetCategoryList.bind(this);
     this.handleGetSubCategoryList = this.handleGetSubCategoryList.bind(this);
@@ -234,6 +238,26 @@ class TicketSystem extends Component {
       self.setState({ TicketTitleData: TicketTitleData });
     });
   }
+  handleKbLinkPopupSearch() {
+    let self = this;
+    axios({
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      url: config.apiUrl + "/KnowledgeBase/searchbycategory",
+      params: {
+        Type_ID: this.state.selectedIssueTypeKB,
+        Category_ID: this.state.selectedCategoryKB,
+        SubCategor_ID: this.state.selectedSubCategoryKB
+      }
+    }).then(function(res) {
+      debugger;
+      let KbPopupData = res.data.responseData;
+      self.setState({ KbPopupData: KbPopupData });
+    });
+  }
   handleGetBrandList() {
     let self = this;
     axios({
@@ -277,6 +301,9 @@ class TicketSystem extends Component {
     debugger;
 
     let self = this;
+    let cateId = this.state.KbLink
+      ? this.state.selectedCategoryKB
+      : this.state.selectedCategory;
     axios({
       method: "post",
       headers: {
@@ -285,7 +312,8 @@ class TicketSystem extends Component {
       },
       url: config.apiUrl + "/SubCategory/GetSubCategoryByCategoryID",
       params: {
-        CategoryID: this.state.selectedCategory
+        CategoryID: cateId
+        // CategoryID: this.state.selectedCategory
       }
     }).then(function(res) {
       debugger;
@@ -296,6 +324,9 @@ class TicketSystem extends Component {
   handleGetIssueTypeList() {
     debugger;
     let self = this;
+    let subCateId = this.state.KbLink
+      ? this.state.selectedSubCategoryKB
+      : this.state.selectedSubCategory;
     axios({
       method: "post",
       headers: {
@@ -305,7 +336,8 @@ class TicketSystem extends Component {
       url: config.apiUrl + "/IssueType/GetIssueTypeList",
       params: {
         TenantID: this.state.tenantID,
-        SubCategoryID: this.state.selectedSubCategory
+        SubCategoryID: subCateId
+        // SubCategoryID: this.state.selectedSubCategory
       }
     }).then(function(res) {
       debugger;
@@ -413,6 +445,10 @@ class TicketSystem extends Component {
     let issueTypeValue = e.currentTarget.value;
     this.setState({ selectedIssueType: issueTypeValue });
   };
+  setIssueTypeValueKB = e => {
+    let issueTypeValue = e.currentTarget.value;
+    this.setState({ selectedIssueTypeKB: issueTypeValue });
+  };
   setTicketPriorityValue = e => {
     let ticketPriorityValue = e.currentTarget.id;
     this.setState({ selectedTicketPriority: ticketPriorityValue });
@@ -434,11 +470,11 @@ class TicketSystem extends Component {
   setCategoryValueKB = e => {
     let categoryValue = e.currentTarget.value;
     this.setState({ selectedCategoryKB: categoryValue });
-    // setTimeout(() => {
-    //   if (this.state.selectedCategory) {
-    //     this.handleGetSubCategoryList();
-    //   }
-    // }, 1);
+    setTimeout(() => {
+      if (this.state.selectedCategoryKB) {
+        this.handleGetSubCategoryList();
+      }
+    }, 1);
   };
   setSubCategoryValue = e => {
     debugger;
@@ -450,6 +486,21 @@ class TicketSystem extends Component {
         this.handleGetIssueTypeList();
       }
     }, 1);
+  };
+  setSubCategoryValueKB = e => {
+    debugger;
+    let subCategoryValue = e.currentTarget.value;
+    this.setState({ selectedSubCategoryKB: subCategoryValue });
+
+    setTimeout(() => {
+      if (this.state.selectedSubCategoryKB) {
+        this.handleGetIssueTypeList();
+      }
+    }, 1);
+  };
+  setChannelOfPurchaseValue = e => {
+    let channelOfPurchaseValue = e.currentTarget.value;
+    this.setState({ selectedChannelOfPurchase: channelOfPurchaseValue });
   };
   setChannelOfPurchaseValue = e => {
     let channelOfPurchaseValue = e.currentTarget.value;
@@ -1423,21 +1474,42 @@ class TicketSystem extends Component {
                         </select>
                       </div>
                       <div className="form-group">
-                        <select className="kblinkrectangle-9 select-category-placeholderkblink">
+                        <select
+                          value={this.state.selectedSubCategoryKB}
+                          onChange={this.setSubCategoryValueKB}
+                          className="kblinkrectangle-9 select-category-placeholderkblink"
+                        >
                           <option>Sub-Category</option>
-                          <option>Category-a</option>
-                          <option>Category-b</option>
+                          {this.state.SubCategoryData !== null &&
+                            this.state.SubCategoryData.map((item, i) => (
+                              <option key={i} value={item.subCategoryID}>
+                                {item.subCategoryName}
+                              </option>
+                            ))}
                         </select>
                       </div>
                       <div className="form-group">
-                        <select className="kblinkrectangle-9 select-category-placeholderkblink">
+                        <select
+                          value={this.state.selectedIssueTypeKB}
+                          onChange={this.setIssueTypeValueKB}
+                          className="kblinkrectangle-9 select-category-placeholderkblink"
+                        >
                           <option>Type</option>
-                          <option>Type-a</option>
-                          <option>Type-b</option>
+                          {this.state.IssueTypeData !== null &&
+                            this.state.IssueTypeData.map((item, i) => (
+                              <option key={i} value={item.issueTypeID}>
+                                {item.issueTypeName}
+                              </option>
+                            ))}
                         </select>
                       </div>
                       <div>
-                        <button className="kblink-search">SEARCH</button>
+                        <button
+                          onClick={this.handleKbLinkPopupSearch}
+                          className="kblink-search"
+                        >
+                          SEARCH
+                        </button>
                       </div>
                       <div style={{ marginTop: "275px" }}>
                         <a href="#!" className="copyblue-kbtext">
