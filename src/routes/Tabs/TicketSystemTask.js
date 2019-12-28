@@ -10,7 +10,7 @@ class TicketSystemTask extends Component {
     super(props);
     this.state = {
       taskTitle: "",
-      taskDesc: "",
+      taskDescription: "",
       DepartmentData: [],
       FunctionData: [],
       selectedDepartment: 0,
@@ -209,6 +209,7 @@ class TicketSystemTask extends Component {
                           className="txt-1"
                           placeholder="Task Title"
                           name="taskTitle"
+                          value={this.state.taskTitle}
                           onChange={this.checkTaskTitDesc}
                         />
                         {this.validator.message(
@@ -223,12 +224,13 @@ class TicketSystemTask extends Component {
                         <textarea
                           className="addNote-textarea-system"
                           placeholder="Task Description"
-                          name="taskDesc"
+                          name="taskDescription"
+                          value={this.state.taskDescription}
                           onChange={this.checkTaskTitDesc}
                         ></textarea>
                         {this.validator.message(
                           "Task Description",
-                          this.state.taskDesc,
+                          this.state.taskDescription,
                           "required"
                         )}
                       </div>
