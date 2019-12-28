@@ -63,6 +63,7 @@ class TicketSystem extends Component {
       selectedBrand: 0,
       createdBy: 6,
       selectedCategory: 0,
+      selectedCategoryKB: 0,
       selectedSubCategory: 0,
       selectedIssueType: 0,
       selectedTicketPriority: 0,
@@ -433,6 +434,15 @@ class TicketSystem extends Component {
       }
     }, 1);
   };
+  setCategoryValueKB = e => {
+    let categoryValue = e.currentTarget.value;
+    this.setState({ selectedCategoryKB: categoryValue });
+    // setTimeout(() => {
+    //   if (this.state.selectedCategory) {
+    //     this.handleGetSubCategoryList();
+    //   }
+    // }, 1);
+  };
   setSubCategoryValue = e => {
     let subCategoryValue = e.currentTarget.value;
     this.setState({ selectedSubCategory: subCategoryValue });
@@ -793,7 +803,7 @@ class TicketSystem extends Component {
                 </div>
                 <div className="row">
                   <div className="col-md-12">
-                    {/* <CKEditor
+                    <CKEditor
                       style={{ height: "400px" }}
                       config={{
                         toolbar: [
@@ -827,7 +837,7 @@ class TicketSystem extends Component {
                           }
                         ]
                       }}
-                    /> */}
+                    />
                     <div className="row colladrowa" style={{ bottom: "15px" }}>
                       <div className="col-md-12 colladrow">
                         <ul className="m-l-30">
@@ -1395,18 +1405,18 @@ class TicketSystem extends Component {
                       />
                       <h5>KB TEMPLATE</h5>
                       <div className="form-group">
-                        <select className="kblinkrectangle-9 select-category-placeholderkblink">
-                          <option>Type</option>
-                          <option>Type-a</option>
-                          <option>Type-b</option>
-                        </select>
-                      </div>
-
-                      <div className="form-group">
-                        <select className="kblinkrectangle-9 select-category-placeholderkblink">
+                        <select
+                          value={this.state.selectedCategoryKB}
+                          onChange={this.setCategoryValueKB}
+                          className="kblinkrectangle-9 select-category-placeholderkblink"
+                        >
                           <option>Category</option>
-                          <option>Category-a</option>
-                          <option>Category-b</option>
+                          {this.state.CategoryData !== null &&
+                            this.state.CategoryData.map((item, i) => (
+                              <option key={i} value={item.categoryID}>
+                                {item.categoryName}
+                              </option>
+                            ))}
                         </select>
                       </div>
                       <div className="form-group">
@@ -1414,6 +1424,13 @@ class TicketSystem extends Component {
                           <option>Sub-Category</option>
                           <option>Category-a</option>
                           <option>Category-b</option>
+                        </select>
+                      </div>
+                      <div className="form-group">
+                        <select className="kblinkrectangle-9 select-category-placeholderkblink">
+                          <option>Type</option>
+                          <option>Type-a</option>
+                          <option>Type-b</option>
                         </select>
                       </div>
                       <div>

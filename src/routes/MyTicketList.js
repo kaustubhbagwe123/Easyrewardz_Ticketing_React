@@ -35,6 +35,7 @@ import Assign from "./../assets/Images/assign.png";
 import DatePicker from "react-datepicker";
 import axios from "axios";
 import config from "./../helpers/config";
+import TicketStatus from "./TicketStatus";
 
 class MyTicketList extends Component {
   constructor(props) {
@@ -54,12 +55,18 @@ class MyTicketList extends Component {
       SubCategoryData: [],
       SubCategoryAllData: [],
       IssueTypeData: [],
+      TicketStatusData: TicketStatus(),
       tenantID: 1,
       open: false,
       Schedule: false,
       StatusModel: false,
       selectedPriority: 0,
       selectedChannelOfPurchase: 0,
+      selectedTicketStatusByDate: 0,
+      selectedTicketStatusByCustomer: 0,
+      selectedTicketStatusByTicket: 0,
+      selectedTicketStatusByCategory: 0,
+      selectedTicketStatusAll: 0,
       selectedCategory: 0,
       selectedCategoryAll: 0,
       selectedSubCategory: 0,
@@ -166,7 +173,10 @@ class MyTicketList extends Component {
       debugger;
       let SubCategoryData = res.data.responseData;
       let SubCategoryAllData = res.data.responseData;
-      self.setState({ SubCategoryData: SubCategoryData, SubCategoryAllData: SubCategoryAllData });
+      self.setState({
+        SubCategoryData: SubCategoryData,
+        SubCategoryAllData: SubCategoryAllData
+      });
     });
   }
   handleGetIssueTypeList() {
@@ -196,6 +206,26 @@ class MyTicketList extends Component {
   setChannelOfPurchaseValue = e => {
     let channelOfPurchaseValue = e.currentTarget.value;
     this.setState({ selectedChannelOfPurchase: channelOfPurchaseValue });
+  };
+  handleTicketStatusByDate = e => {
+    let ticketStatusValue = e.currentTarget.value;
+    this.setState({ selectedTicketStatusByDate: ticketStatusValue });
+  };
+  handleTicketStatusByCustomer = e => {
+    let ticketStatusValue = e.currentTarget.value;
+    this.setState({ selectedTicketStatusByCustomer: ticketStatusValue });
+  };
+  handleTicketStatusByTicket = e => {
+    let ticketStatusValue = e.currentTarget.value;
+    this.setState({ selectedTicketStatusByTicket: ticketStatusValue });
+  };
+  handleTicketStatusByCategory = e => {
+    let ticketStatusValue = e.currentTarget.value;
+    this.setState({ selectedTicketStatusByCategory: ticketStatusValue });
+  };
+  handleTicketStatusAll = e => {
+    let ticketStatusValue = e.currentTarget.value;
+    this.setState({ selectedTicketStatusAll: ticketStatusValue });
   };
   setCategoryValue = e => {
     let categoryValue = e.currentTarget.value;
@@ -1431,6 +1461,7 @@ class MyTicketList extends Component {
                                           placeholderText="Creation Date"
                                           showMonthDropdown
                                           showYearDropdown
+                                          dateFormat="dd/MM/yyyy"
                                           // className="form-control"
                                         />
                                       </div>
@@ -1443,6 +1474,7 @@ class MyTicketList extends Component {
                                           placeholderText="Last Updated Date"
                                           showMonthDropdown
                                           showYearDropdown
+                                          dateFormat="dd/MM/yyyy"
                                           // className="form-control"
                                         />
                                       </div>
@@ -1452,8 +1484,28 @@ class MyTicketList extends Component {
                                         </select>
                                       </div>
                                       <div className="col-md-3 col-sm-6">
-                                        <select>
+                                        <select
+                                          value={
+                                            this.state
+                                              .selectedTicketStatusByDate
+                                          }
+                                          onChange={
+                                            this.handleTicketStatusByDate
+                                          }
+                                        >
                                           <option>Ticket Status</option>
+                                          {this.state.TicketStatusData !==
+                                            null &&
+                                            this.state.TicketStatusData.map(
+                                              (item, i) => (
+                                                <option
+                                                  key={i}
+                                                  value={item.ticketStatusID}
+                                                >
+                                                  {item.ticketStatusName}
+                                                </option>
+                                              )
+                                            )}
                                         </select>
                                       </div>
                                     </div>
@@ -1724,8 +1776,28 @@ class MyTicketList extends Component {
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6">
-                                        <select>
+                                        <select
+                                          value={
+                                            this.state
+                                              .selectedTicketStatusByCustomer
+                                          }
+                                          onChange={
+                                            this.handleTicketStatusByCustomer
+                                          }
+                                        >
                                           <option>Ticket Status</option>
+                                          {this.state.TicketStatusData !==
+                                            null &&
+                                            this.state.TicketStatusData.map(
+                                              (item, i) => (
+                                                <option
+                                                  key={i}
+                                                  value={item.ticketStatusID}
+                                                >
+                                                  {item.ticketStatusName}
+                                                </option>
+                                              )
+                                            )}
                                         </select>
                                       </div>
                                     </div>
@@ -1797,8 +1869,28 @@ class MyTicketList extends Component {
                                         </select>
                                       </div>
                                       <div className="col-md-3 col-sm-6">
-                                        <select>
+                                        <select
+                                          value={
+                                            this.state
+                                              .selectedTicketStatusByTicket
+                                          }
+                                          onChange={
+                                            this.handleTicketStatusByTicket
+                                          }
+                                        >
                                           <option>Ticket Status</option>
+                                          {this.state.TicketStatusData !==
+                                            null &&
+                                            this.state.TicketStatusData.map(
+                                              (item, i) => (
+                                                <option
+                                                  key={i}
+                                                  value={item.ticketStatusID}
+                                                >
+                                                  {item.ticketStatusName}
+                                                </option>
+                                              )
+                                            )}
                                         </select>
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -1939,8 +2031,28 @@ class MyTicketList extends Component {
                                         </select>
                                       </div>
                                       <div className="col-md-3 col-sm-6">
-                                        <select>
+                                        <select
+                                          value={
+                                            this.state
+                                              .selectedTicketStatusByCategory
+                                          }
+                                          onChange={
+                                            this.handleTicketStatusByCategory
+                                          }
+                                        >
                                           <option>Ticket Status</option>
+                                          {this.state.TicketStatusData !==
+                                            null &&
+                                            this.state.TicketStatusData.map(
+                                              (item, i) => (
+                                                <option
+                                                  key={i}
+                                                  value={item.ticketStatusID}
+                                                >
+                                                  {item.ticketStatusName}
+                                                </option>
+                                              )
+                                            )}
                                         </select>
                                       </div>
                                     </div>
@@ -2095,7 +2207,9 @@ class MyTicketList extends Component {
                                           <option>Sub Category</option>
                                         </select> */}
                                         <select
-                                          value={this.state.selectedSubCategoryAll}
+                                          value={
+                                            this.state.selectedSubCategoryAll
+                                          }
                                           onChange={this.setSubCategoryAllValue}
                                         >
                                           <option>Sub Category</option>
@@ -2114,13 +2228,31 @@ class MyTicketList extends Component {
                                         </select>
                                       </div>
                                       <div className="col-md-3 col-sm-6">
-                                        <select>
+                                        <select
+                                          value={
+                                            this.state.selectedTicketStatusAll
+                                          }
+                                          onChange={this.handleTicketStatusAll}
+                                        >
                                           <option>Ticket Status</option>
+                                          {this.state.TicketStatusData !==
+                                            null &&
+                                            this.state.TicketStatusData.map(
+                                              (item, i) => (
+                                                <option
+                                                  key={i}
+                                                  value={item.ticketStatusID}
+                                                >
+                                                  {item.ticketStatusName}
+                                                </option>
+                                              )
+                                            )}
                                         </select>
                                       </div>
                                       <div className="col-md-3 col-sm-6">
                                         <select>
                                           <option>Did Visit Store : Yes</option>
+                                          <option>Did Visit Store : No</option>
                                         </select>
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -2161,6 +2293,9 @@ class MyTicketList extends Component {
                                         <select>
                                           <option>
                                             Want to Visit Store : Yes
+                                          </option>
+                                          <option>
+                                            Want to Visit Store : No
                                           </option>
                                         </select>
                                       </div>
