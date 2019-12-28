@@ -79,6 +79,7 @@ class AddSearchMyTicket extends Component {
     }).then(function(res) {
       debugger;
       let SearchData = res.data.responseData;
+      var GetCustId=SearchData.customerID;
       self.setState({ SearchData: SearchData });
     });
   }
