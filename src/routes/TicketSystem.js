@@ -36,6 +36,7 @@ import {
   NotificationContainer,
   NotificationManager
 } from "react-notifications";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 class TicketSystem extends Component {
   constructor() {
@@ -46,6 +47,7 @@ class TicketSystem extends Component {
       EditCustomer: false,
 
       TicketTitleData: [],
+      CkEditorTemplateData: [],
       KbPopupData: [],
       BrandData: [],
       CategoryData: [],
@@ -79,6 +81,7 @@ class TicketSystem extends Component {
       // custmrId: '',
       details: {},
       editDOB: "",
+      copied: false,
       SpacialEqmt: [
         {
           department: 25
@@ -97,6 +100,7 @@ class TicketSystem extends Component {
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
     // this.handleChange = this.handleChange.bind(this);
     this.handleGetTicketTitleList = this.handleGetTicketTitleList.bind(this);
+    this.handleCkEditorTemplate = this.handleCkEditorTemplate.bind(this);
     this.handleKbLinkPopupSearch = this.handleKbLinkPopupSearch.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
     this.handleGetCategoryList = this.handleGetCategoryList.bind(this);
@@ -241,6 +245,25 @@ class TicketSystem extends Component {
       // debugger;
       let TicketTitleData = res.data.responseData;
       self.setState({ TicketTitleData: TicketTitleData });
+    });
+  }
+  handleCkEditorTemplate() {
+    let self = this;
+    axios({
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      url: config.apiUrl + "/Template/getListOfTemplateForNote",
+      params: {
+        IssueTypeID: this.state.selectedIssueType,
+        TenantID: this.state.tenantID
+      }
+    }).then(function(res) {
+      debugger;
+      let CkEditorTemplateData = res.data.responseData;
+      self.setState({ CkEditorTemplateData: CkEditorTemplateData });
     });
   }
   handleKbLinkPopupSearch() {
@@ -437,6 +460,7 @@ class TicketSystem extends Component {
       this.handleGetCategoryList();
       this.handleGetChannelOfPurchaseList();
       this.handleGetTicketPriorityList();
+      this.handleCkEditorTemplate();
     } else {
       this.props.history.push("addSearchMyTicket");
     }
@@ -447,6 +471,7 @@ class TicketSystem extends Component {
     this.setState({ selectedBrand: brandValue });
   };
   setIssueTypeValue = e => {
+    debugger;
     let issueTypeValue = e.currentTarget.value;
     this.setState({ selectedIssueType: issueTypeValue });
   };
@@ -822,7 +847,7 @@ class TicketSystem extends Component {
                       <FontAwesomeIcon icon={faCalculator} /> Template
                     </button>
                     <ul className="dropdown-menu">
-                      <li>
+                      {/* <li>
                         <a href="#!">Template 1</a>
                       </li>
                       <li>
@@ -833,7 +858,14 @@ class TicketSystem extends Component {
                       </li>
                       <li>
                         <a href="#!">Template 4</a>
-                      </li>
+                      </li> */}
+
+                      {this.state.CkEditorTemplateData !== null &&
+                        this.state.CkEditorTemplateData.map((item, i) => (
+                          <li key={i} value={item.templateID}>
+                            <a href="#!">{item.templateName}</a>
+                          </li>
+                        ))}
                     </ul>
                   </div>
 
@@ -858,7 +890,7 @@ class TicketSystem extends Component {
                 <div className="row">
                   <div className="col-md-12">
                     <CKEditor
-                      style={{ height: "400px" }}
+                      // style={{ height: "400px" }}
                       config={{
                         toolbar: [
                           {
@@ -1382,7 +1414,7 @@ class TicketSystem extends Component {
                         KNOWLEGE BASE
                       </h5>
                       <p>Message</p>
-                      <div className="textkb">
+                      {/* <div className="textkb">
                         <p className="table-details-data-modal">
                           Can I purchase a domain through Google?
                         </p>
@@ -1409,9 +1441,9 @@ class TicketSystem extends Component {
                             </CardBody>
                           </Card>
                         </Collapse>
-                      </div>
+                      </div> */}
 
-                      <div className="textkb">
+                      {/* <div className="textkb">
                         <p className="table-details-data-modal">
                           Can I still use the previous version of Sites ?
                         </p>
@@ -1431,8 +1463,8 @@ class TicketSystem extends Component {
                           alt="down-arrow-icon"
                           className="down-icon-kb1"
                         />
-                      </div>
-                      <div className="textkb">
+                      </div> */}
+                      {/* <div className="textkb">
                         <p className="table-details-data-modal">
                           Can I still use the previous version of Sites ?
                         </p>
@@ -1451,6 +1483,93 @@ class TicketSystem extends Component {
                           alt="down-arrow-icon"
                           className="down-icon-kb1"
                         />
+                      </div> */}
+
+                      {/* {this.state.CategoryData !== null &&
+                        this.state.CategoryData.map((item, i) => (
+                          <option key={i} value={item.categoryID}>
+                            {item.categoryName}
+                          </option>
+                        ))} */}
+
+                      <div id="kb-accordion">
+                        {this.state.KbPopupData !== null &&
+                          this.state.KbPopupData.map((item, i) => (
+                            <div key={i} className="kb-acc-cntr">
+                              <p
+                                className="table-details-data-modal"
+                                data-toggle="collapse"
+                                data-target={"#collapse" + i}
+                                aria-expanded={i === 0 ? "true" : "false"}
+                                aria-controls={"collapse" + i}
+                                onClick={() => this.setState({ copied: false })}
+                              >
+                                {item.subject}
+                              </p>
+                              <div
+                                id={"collapse" + i}
+                                className={
+                                  i === 0 ? "collapse show" : "collapse"
+                                }
+                                data-parent="#kb-accordion"
+                              >
+                                <p className="mb-0">{item.description}</p>
+                                <CopyToClipboard
+                                  text={item.description}
+                                  onCopy={() => this.setState({ copied: true })}
+                                >
+                                  <a href="#!" className="copyblue-kbtext">
+                                    <img
+                                      src={CopyBlue}
+                                      alt=""
+                                      className="copyblue-kb"
+                                    />
+                                    Copy
+                                  </a>
+                                </CopyToClipboard>
+                                {this.state.copied ? (
+                                  <span
+                                    className="ml-2"
+                                    style={{ color: "red" }}
+                                  >
+                                    Copied.
+                                  </span>
+                                ) : null}
+                              </div>
+                            </div>
+                          ))}
+                        {/* <div className="kb-acc-cntr">
+                          <p
+                            className="table-details-data-modal"
+                            data-toggle="collapse"
+                            data-target="#collapseTwo"
+                            aria-expanded="false"
+                            aria-controls="collapseTwo"
+                          >
+                            Can I still use the previous version of Sites ?
+                          </p>
+                          <div
+                            id="collapseTwo"
+                            className="collapse"
+                            data-parent="#kb-accordion"
+                          >
+                            <p>
+                              Google can help you purchase a domain through one
+                              of our domain host partners. During sign up, just
+                              select the option to 'buy a new domain.'We'll then
+                              guide you through the process to help you set up G
+                              suite for your new domain.
+                            </p>
+                            <img
+                              src={CopyBlue}
+                              alt=""
+                              className="copyblue-kb"
+                            />
+                            <a href="#!" className="copyblue-kbtext">
+                              Copy
+                            </a>
+                          </div>
+                        </div> */}
                       </div>
                     </div>
                   </div>
