@@ -136,7 +136,7 @@ class TicketSystem extends Component {
     CustData.genderID = value;
     this.setState({ CustData });
   };
-  handleChange=(date)=> {
+  handleChange = date => {
     debugger;
     // let CustData = this.state.CustData;
     // let editDOB = date;
@@ -149,7 +149,7 @@ class TicketSystem extends Component {
     this.setState({
       editDOB: date
     });
-  }
+  };
   showAddNoteFuncation() {
     const { showAddNote } = this.state;
     this.setState({
@@ -182,7 +182,7 @@ class TicketSystem extends Component {
   handleUpdateCustomer() {
     debugger;
     let self = this;
-    var Dob= moment(this.state.CustData.editDOB).format("DD/MM/YYYY");
+    var Dob = moment(this.state.CustData.editDOB).format("DD/MM/YYYY");
     axios({
       method: "post",
       headers: {
@@ -215,8 +215,6 @@ class TicketSystem extends Component {
         self.handleEditCustomerClose.bind(this);
       }
     });
-
-   
   }
   handleGetTicketTitleList() {
     const requestOptions = {
@@ -301,6 +299,7 @@ class TicketSystem extends Component {
     });
   }
   handleGetIssueTypeList() {
+    debugger;
     let self = this;
     axios({
       method: "post",
@@ -446,6 +445,7 @@ class TicketSystem extends Component {
     // }, 1);
   };
   setSubCategoryValue = e => {
+    debugger;
     let subCategoryValue = e.currentTarget.value;
     this.setState({ selectedSubCategory: subCategoryValue });
 
