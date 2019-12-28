@@ -3156,6 +3156,23 @@ table tr th:last-child {
 .priority-butns-cntr .priority-butns:last-child label, .action-type-butns-cntr .action-type-butns:last-child label {
   margin-right: 0;
 }
+.kb-acc-cntr {
+  border-bottom: 1px solid #ecf2f4;
+}
+.kb-acc-cntr .table-details-data-modal {
+  cursor: pointer;
+  width: 100%;
+  background: url("./../Images//down-1.png") no-repeat right top 6px;
+  background-size: 13px;
+  padding-right: 25px;
+}
+.kb-acc-cntr .table-details-data-modal[aria-expanded="true"] {
+  background-image: url("./../Images//up-1.png");
+}
+.kb-acc-cntr .copyblue-kbtext {
+  display: inline-block;
+  margin: 10px 0 12px;
+}
 /* ticket system ends */
 
 /* add search my ticket starts */

@@ -48,6 +48,7 @@ class MyTicketList extends Component {
       ByDateSelectDate: "",
       ByAllCreateDate: "",
       ByAllLastDate: "",
+      DesignationData: [],
       TicketPriorityData: [],
       ChannelOfPurchaseData: [],
       CategoryData: [],
@@ -60,6 +61,7 @@ class MyTicketList extends Component {
       open: false,
       Schedule: false,
       StatusModel: false,
+      selectedDesignation: 0,
       selectedPriority: 0,
       selectedChannelOfPurchase: 0,
       selectedTicketStatusByDate: 0,
@@ -82,6 +84,7 @@ class MyTicketList extends Component {
     this.handleGetCategoryList = this.handleGetCategoryList.bind(this);
     this.handleGetSubCategoryList = this.handleGetSubCategoryList.bind(this);
     this.handleGetIssueTypeList = this.handleGetIssueTypeList.bind(this);
+    this.handleGetDesignationList = this.handleGetDesignationList.bind(this);
     this.handleGetTicketPriorityList = this.handleGetTicketPriorityList.bind(
       this
     );
@@ -93,6 +96,7 @@ class MyTicketList extends Component {
 
   componentDidMount() {
     debugger;
+    this.handleGetDesignationList();
     this.handleGetTicketPriorityList();
     this.handleGetChannelOfPurchaseList();
     this.handleGetCategoryList();
@@ -120,6 +124,25 @@ class MyTicketList extends Component {
     });
   }
 
+  handleGetDesignationList() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      url: config.apiUrl + "/Designation/GetDesignationList",
+      params: {
+        TenantID: this.state.tenantID
+      }
+    }).then(function(res) {
+      debugger;
+      let DesignationData = res.data.responseData;
+      self.setState({ DesignationData: DesignationData });
+    });
+  }
   handleGetTicketPriorityList() {
     debugger;
     let self = this;
@@ -225,6 +248,10 @@ class MyTicketList extends Component {
     });
   }
 
+  setDesignationValue = e => {
+    let designationValue = e.currentTarget.value;
+    this.setState({ selectedDesignation: designationValue });
+  };
   setPriorityValue = e => {
     let priorityValue = e.currentTarget.value;
     this.setState({ selectedPriority: priorityValue });
@@ -1685,9 +1712,29 @@ class MyTicketList extends Component {
                                               <select
                                                 id="inputState"
                                                 className="form-control dropdown-setting"
+                                                value={
+                                                  this.state.selectedDesignation
+                                                }
+                                                onChange={
+                                                  this.setDesignationValue
+                                                }
                                               >
-                                                <option>Select</option>
+                                                {/* <option>Select</option> */}
                                                 <option>Designation</option>
+                                                {this.state.DesignationData !==
+                                                  null &&
+                                                  this.state.DesignationData.map(
+                                                    (item, i) => (
+                                                      <option
+                                                        key={i}
+                                                        value={
+                                                          item.designationID
+                                                        }
+                                                      >
+                                                        {item.designationName}
+                                                      </option>
+                                                    )
+                                                  )}
                                               </select>
                                             </div>
                                             <button
