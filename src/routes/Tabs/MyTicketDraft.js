@@ -5,8 +5,8 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Popover } from "antd";
 import Demo from "./../../store/Hashtag.js";
-import axios from "axios";
-import config from "./../../helpers/config";
+// import axios from "axios";
+// import config from "./../../helpers/config";
 import moment from "moment";
 
 class MyTicketDraft extends Component {
@@ -19,25 +19,7 @@ class MyTicketDraft extends Component {
   render() {
     debugger;
     var dataDraft = this.props.draftData;
-    // var abc = dataDraft[0].categoryName;
-    const DefArti = (
-      <div className="dash-creation-popup-cntr">
-        <ul className="dash-category-popup dashnewpopup">
-          <li>
-            <p>Category</p>
-            {/* <p>{abc}</p> */}
-          </li>
-          <li>
-            <p>Sub Category</p>
-            <p>Customer wants refund</p>
-          </li>
-          <li>
-            <p>Type</p>
-            <p>Delivery</p>
-          </li>
-        </ul>
-      </div>
-    );
+   
     return (
       <Fragment>
         <div className="newReact">
@@ -47,21 +29,12 @@ class MyTicketDraft extends Component {
               {
                 Header: <span>TicketTitle</span>,
                 accessor: "ticketTitle"
-                // Cell: props => (
-                //   <span>
-                //     <label>Need to change my shipping address</label>
-                //   </span>
-                // )
+                
               },
               {
                 Header: <span>TicketDetail</span>,
                 accessor: "ticketDescription"
-                // Cell: props => (
-                //   <label>
-                //     Need to change my shipping address Need to change my
-                //     shipping address
-                //   </label>
-                // )
+                
               },
               {
                 Header: (
@@ -115,11 +88,7 @@ class MyTicketDraft extends Component {
                   </span>
                 ),
                 accessor: "createdDate",
-                // Cell: props => (
-                //   <span>
-                //     <label>13 May 2049</label>
-                //   </span>
-                // )
+                
                 Cell: props => (
                   <span>
                     <label>
