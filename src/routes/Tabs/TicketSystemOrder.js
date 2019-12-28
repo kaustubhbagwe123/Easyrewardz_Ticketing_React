@@ -8,6 +8,7 @@ import MinusImg from "./../../assets/Images/minus.png";
 import DatePicker from "react-datepicker";
 import axios from "axios";
 import config from "./../../helpers/config";
+import ReactAutocomplete from "react-autocomplete";
 import {
   NotificationContainer,
   NotificationManager
@@ -16,7 +17,7 @@ import {
 class TicketSystemOrder extends Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       SearchOrderDetails: false,
       AddManualOrderHideShow: false,
@@ -24,26 +25,32 @@ class TicketSystemOrder extends Component {
       AddManuallyData: false,
       AddManualSaveTbl: false,
       OrderCreatDate: "",
-      orderId:0,
+      orderId: 0,
       tenantID: 1,
-      billId:'',
-      productBarCode:'',
-      sources:'',
-      orderMRP:'',
-      pricePaid:'',
-      discount:'',
-      size:0,
-      requiredSize:0,
-      purchaseFrmStorName:'',
-      purchaseFrmStorAddress:'',
-      modeOfPayment:[],
-      customerdetails:{},
-      modeData:{},
+      billId: "",
+      productBarCode: "",
+      sources: "",
+      orderMRP: "",
+      pricePaid: "",
+      discount: "",
+      size: 0,
+      requiredSize: 0,
+      purchaseFrmStorAddress: "",
+      modeOfPayment: [],
+      SearchItem: [],
+      StorAddress: {},
+      purchaseFrmStorName: {},
+      customerdetails: {},
+      modeData: {}
     };
     this.handleOrderTableOpen = this.handleOrderTableOpen.bind(this);
     this.handleOrderTableClose = this.handleOrderTableClose.bind(this);
-    this.handleModeOfPaymentDropDown = this.handleModeOfPaymentDropDown.bind(this);
-    this.handleGetManuallyTableData=this.handleGetManuallyTableData.bind(this);
+    this.handleModeOfPaymentDropDown = this.handleModeOfPaymentDropDown.bind(
+      this
+    );
+    this.handleGetManuallyTableData = this.handleGetManuallyTableData.bind(
+      this
+    );
   }
   handleOrderTableOpen() {
     this.setState({ OrderTable: true });
@@ -67,7 +74,7 @@ class TicketSystemOrder extends Component {
   setModePaymentValue = e => {
     let dataValue = e.currentTarget.value;
     this.setState({ modeOfPayment: dataValue });
-  }
+  };
   handleChangeToggle() {
     this.setState({
       AddManuallyData: !this.state.AddManuallyData
@@ -78,11 +85,11 @@ class TicketSystemOrder extends Component {
       AddManualSaveTbl: !this.state.AddManualSaveTbl
     });
   }
-  handleManuallyOnchange = e =>{
-    this.setState({[e.currentTarget.name]:e.currentTarget.value});
-  }
-  handleGetManuallyTableData(){
-    debugger
+  handleManuallyOnchange = e => {
+    this.setState({ [e.currentTarget.name]: e.currentTarget.value });
+  };
+  handleGetManuallyTableData() {
+    debugger;
     let self = this;
     axios({
       method: "post",
@@ -95,15 +102,15 @@ class TicketSystemOrder extends Component {
       //   TenantID: this.state.tenantID
       // }
     }).then(function(res) {
-      debugger
+      debugger;
       let finalData = res.data.data;
       self.setState({ finalData: finalData });
     });
   }
-  hadleAddManuallyOrderData(){
-    debugger
-    let self=this;
-    var CustID=this.props.custDetails;
+  hadleAddManuallyOrderData() {
+    debugger;
+    let self = this;
+    var CustID = this.props.custDetails;
     axios({
       method: "post",
       headers: {
@@ -124,25 +131,74 @@ class TicketSystemOrder extends Component {
         OrderPrice: this.state.orderMRP,
         PricePaid: this.state.pricePaid,
         CustomerID: CustID,
-        PurchaseFromStoreId:this.state.PurchaseFromStoreId,
-        Discount:this.state.discount,
-        Size:this.state.size,
-        RequireSize:this.state.requiredSize,
-        CreatedBy:6
+        PurchaseFromStoreId: this.state.PurchaseFromStoreId,
+        Discount: this.state.discount,
+        Size: this.state.size,
+        RequireSize: this.state.requiredSize,
+        CreatedBy: 6
       }
     }).then(function(res) {
       debugger;
       let responseMessage = res.data.message;
-     
+
       if (responseMessage === "Success") {
         NotificationManager.success("New Order add successfully.");
-        self.handleGetManuallyTableData()
+        self.handleGetManuallyTableData();
         self.handleChangeSaveManualTbl();
       }
     });
-
   }
-  handleModeOfPaymentDropDown(){
+  handlePurchaseStoreName(field, e) {
+    debugger;
+    let self = this;
+    let SearchData = this.state.purchaseFrmStorName;
+    SearchData[field] = e.target.value;
+
+    if (SearchData[field].length > 3) {
+      axios({
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Methods": "*"
+        },
+        url: config.apiUrl + "/Store/getStores",
+        params: {
+          SearchText: SearchData[field],
+          tenantID: 1
+        }
+      }).then(function(res) {
+        debugger;
+
+        var SearchItem = res.data.responseData;
+        if (SearchItem.length > 0) {
+          self.setState({
+            SearchItem
+          });
+        } else {
+          self.setState({ SearchItem: [] });
+        }
+      });
+    } else {
+      self.setState({
+        SearchData
+        // polpodData: []
+      });
+    }
+  }
+  HandleSelectdata(e, field, value, id) {
+    debugger;
+    let SearchData = this.state.SearchData;
+    SearchData[field] = value;
+
+    var StorAddress = this.state.StorAddress;
+    StorAddress["address"] = id.address;
+
+    this.setState({
+      SearchData,
+      StorAddress
+    });
+  }
+  handleModeOfPaymentDropDown() {
     let self = this;
     axios({
       method: "post",
@@ -160,7 +216,7 @@ class TicketSystemOrder extends Component {
     });
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.handleModeOfPaymentDropDown();
   }
 
@@ -188,61 +244,6 @@ class TicketSystemOrder extends Component {
       }
     ];
 
-    // const columnsOrder = [
-    //   {
-    //     Header: <span>Invoice Number</span>,
-    //     accessor: "invoiceNumber",
-    //     Cell: row => (
-    //       <div className="filter-checkbox" style={{ marginLeft: "15px" }}>
-    //         <input
-    //           type="checkbox"
-    //           id="fil-number1"
-    //           name="filter-type"
-    //           style={{ display: "none" }}
-    //           //   onChange={() => this.showAddNoteFuncation()}
-    //         />
-    //         <label htmlFor="fil-number1" style={{ paddingLeft: "25px" }}>
-    //           <span className="add-note">BB332398</span>
-    //         </label>
-    //       </div>
-    //     )
-    //   },
-    //   {
-    //     Header: <span>Invoice Date</span>,
-    //     accessor: "invoiceDate",
-    //     Cell: row => <label>12 Jan 2019</label>
-    //   },
-    //   {
-    //     Header: <span>Item Count</span>,
-    //     accessor: "itemCount",
-    //     Cell: row => <label>02</label>
-    //   },
-    //   {
-    //     Header: <span>Item Price</span>,
-    //     accessor: "itemPrice",
-    //     Cell: row => <label>2999</label>
-    //   },
-    //   {
-    //     Header: <span>Price Paid</span>,
-    //     accessor: "pricePaid",
-    //     Cell: row => <label>2999</label>
-    //   },
-    //   {
-    //     Header: <span>Store Code</span>,
-    //     accessor: "storeCode",
-    //     Cell: row => <label>SB221</label>
-    //   },
-    //   {
-    //     Header: <span>Store Addres</span>,
-    //     accessor: "storeAddres",
-    //     Cell: row => <label>UNIT D-338,| SECOND FLOOR SECTOR 14</label>
-    //   },
-    //   {
-    //     Header: <span>Discount</span>,
-    //     accessor: "discount",
-    //     Cell: row => <label>25%</label>
-    //   }
-    // ];
     const dataOrder1 = [
       {
         taskTitle: "Store door are not working",
@@ -311,8 +312,8 @@ class TicketSystemOrder extends Component {
         Cell: row => <label>SB221</label>
       }
     ];
-    console.log(this.props.custDetails,"done-----------");
-    
+    console.log(this.props.custDetails, "done-----------");
+
     return (
       <div className="ticketSycard">
         <div className="ticketSycard1">
@@ -414,7 +415,10 @@ class TicketSystemOrder extends Component {
                     Header: <span>Invoice Number</span>,
                     accessor: "invoiceNumber",
                     Cell: row => (
-                      <div className="filter-checkbox" style={{ marginLeft: "15px" }}>
+                      <div
+                        className="filter-checkbox"
+                        style={{ marginLeft: "15px" }}
+                      >
                         <input
                           type="checkbox"
                           id="fil-number1"
@@ -422,7 +426,10 @@ class TicketSystemOrder extends Component {
                           style={{ display: "none" }}
                           //   onChange={() => this.showAddNoteFuncation()}
                         />
-                        <label htmlFor="fil-number1" style={{ paddingLeft: "25px" }}>
+                        <label
+                          htmlFor="fil-number1"
+                          style={{ paddingLeft: "25px" }}
+                        >
                           <span className="add-note">BB332398</span>
                         </label>
                       </div>
@@ -456,7 +463,9 @@ class TicketSystemOrder extends Component {
                   {
                     Header: <span>Store Addres</span>,
                     accessor: "storeAddres",
-                    Cell: row => <label>UNIT D-338,| SECOND FLOOR SECTOR 14</label>
+                    Cell: row => (
+                      <label>UNIT D-338,| SECOND FLOOR SECTOR 14</label>
+                    )
                   },
                   {
                     Header: <span>Discount</span>,
@@ -587,25 +596,24 @@ class TicketSystemOrder extends Component {
 
                   <div className="row m-b-10 m-l-10 m-r-10">
                     <div className="col-md-6">
-                     
                       <select
                         className="category-select-system dropdown-label"
                         value={this.state.modeOfPayment}
                         onChange={this.setModePaymentValue}
                       >
                         <option className="select-sub-category-placeholder">
-                        Mode Of Payment
+                          Mode Of Payment
                         </option>
                         {this.state.modeData !== null &&
-                            this.state.modeData.map((item, i) => (
-                              <option
-                                key={i}
-                                value={item.paymentModeID}
-                                className="select-category-placeholder"
-                              >
-                                {item.paymentModename}
-                              </option>
-                            ))}
+                          this.state.modeData.map((item, i) => (
+                            <option
+                              key={i}
+                              value={item.paymentModeID}
+                              className="select-category-placeholder"
+                            >
+                              {item.paymentModename}
+                            </option>
+                          ))}
                       </select>
                     </div>
                     <div className="col-md-6 dapic">
@@ -618,7 +626,6 @@ class TicketSystemOrder extends Component {
                         className="addmanuallytext1"
                         // className="form-control"
                       />
-                    
                     </div>
                   </div>
 
@@ -680,13 +687,47 @@ class TicketSystemOrder extends Component {
                       />
                     </div>
                     <div className="col-md-6">
-                      <input
+                      {/* <input
                         type="text"
                         className="addmanuallytext1"
                         placeholder="Purchase from Store name"
                         name="purchaseFrmStorName"
                         value={this.state.purchaseFrmStorName}
                         onChange={this.handleManuallyOnchange}
+                      /> */}
+                      <ReactAutocomplete
+                        getItemValue={item => item.storeName}
+                        items={this.state.SearchItem}
+                        renderItem={(item, isHighlighted) => (
+                          <div
+                            style={{
+                              background: isHighlighted ? "lightgray" : "white"
+                            }}
+                            value={item.storeID}
+                          >
+                            {item.storeName}
+                          </div>
+                        )}
+                        renderInput={function(props) {
+                          return (
+                            <input
+                              placeholder="Purchase from Store name"
+                              className="addmanuallytext1"
+                              type="text"
+                              {...props}
+                            />
+                          );
+                        }}
+                        onChange={this.handlePurchaseStoreName.bind(
+                          this,
+                          "store"
+                        )}
+                        onSelect={this.HandleSelectdata.bind(
+                          this,
+                          item => item.storeID,
+                          "store"
+                        )}
+                        value={this.state.purchaseFrmStorName["store"]}
                       />
                     </div>
                   </div>
@@ -698,8 +739,9 @@ class TicketSystemOrder extends Component {
                         className="addmanuallytext1"
                         placeholder="Purchase from Store Addres"
                         name="purchaseFrmStorAddress"
-                        value={this.state.purchaseFrmStorAddress}
-                        onChange={this.handleManuallyOnchange}
+                        value={this.state.StorAddress.address}
+                        // onChange={this.handleManuallyOnchange}
+                        readOnly
                       />
                     </div>
                   </div>
@@ -783,7 +825,10 @@ class TicketSystemOrder extends Component {
                         Header: <span>Invoice Number</span>,
                         accessor: "invoiceNumber",
                         Cell: row => (
-                          <div className="filter-checkbox" style={{ marginLeft: "15px" }}>
+                          <div
+                            className="filter-checkbox"
+                            style={{ marginLeft: "15px" }}
+                          >
                             <input
                               type="checkbox"
                               id="fil-number1"
@@ -791,7 +836,10 @@ class TicketSystemOrder extends Component {
                               style={{ display: "none" }}
                               //   onChange={() => this.showAddNoteFuncation()}
                             />
-                            <label htmlFor="fil-number1" style={{ paddingLeft: "25px" }}>
+                            <label
+                              htmlFor="fil-number1"
+                              style={{ paddingLeft: "25px" }}
+                            >
                               <span className="add-note">BB332398</span>
                             </label>
                           </div>
@@ -825,7 +873,9 @@ class TicketSystemOrder extends Component {
                       {
                         Header: <span>Store Addres</span>,
                         accessor: "storeAddres",
-                        Cell: row => <label>UNIT D-338,| SECOND FLOOR SECTOR 14</label>
+                        Cell: row => (
+                          <label>UNIT D-338,| SECOND FLOOR SECTOR 14</label>
+                        )
                       },
                       {
                         Header: <span>Discount</span>,

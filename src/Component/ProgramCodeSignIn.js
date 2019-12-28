@@ -51,6 +51,11 @@ class ProgramCodeSignIn extends Component {
               <h3 className="sign-in">SIGN IN</h3>
               <form name="form" onSubmit={this.hanleChange}>
                 <div>
+                {this.validator.message(
+                    "Program Code",
+                    this.state.programCode,
+                    "required"
+                  )}
                   <input
                     type="text"
                     className="program-code-textbox"
@@ -60,11 +65,7 @@ class ProgramCodeSignIn extends Component {
                     value={this.state.programCode}
                     onChange={this.handleProgramCode}
                   />
-                  {this.validator.message(
-                    "Program Code",
-                    this.state.programCode,
-                    "required"
-                  )}
+                  
                 </div>
                 <br />
                 <button
