@@ -4,6 +4,10 @@ import DeleteIcon from "./../../assets/Images/red-delete-icon.png";
 import SimpleReactValidator from "simple-react-validator";
 import axios from "axios";
 import config from "./../../helpers/config";
+import {
+  NotificationContainer,
+  NotificationManager
+} from "react-notifications";
 
 class TicketSystemTask extends Component {
   constructor(props) {
@@ -11,6 +15,8 @@ class TicketSystemTask extends Component {
     this.state = {
       taskTitle: "",
       taskDescription: "",
+      taskfield: {},
+      taskData: [],
       DepartmentData: [],
       FunctionData: [],
       AssignToData: [],
@@ -21,7 +27,6 @@ class TicketSystemTask extends Component {
       selectedPriority: 0,
       tenantID: 1
     };
-    this.handleCreateTask = this.handleCreateTask.bind(this);
     this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
     this.handleGetFunctionList = this.handleGetFunctionList.bind(this);
     this.handleGetAssignToList = this.handleGetAssignToList.bind(this);
@@ -31,13 +36,21 @@ class TicketSystemTask extends Component {
     this.validator = new SimpleReactValidator();
   }
 
-  checkTaskTitDesc = e => {
-    this.setState({ [e.currentTarget.name]: e.currentTarget.value });
-  };
-
   componentDidMount() {
     this.handleGetDepartmentList();
     this.handleGetTicketPriorityList();
+  }
+
+  checkTaskTitDesc(filed, e) {
+    debugger;
+    var taskfield = this.state.taskfield;
+    taskfield[filed] = e.target.value;
+
+    if (filed === "taskTitle") {
+      this.setState({ taskfield });
+    } else {
+      this.setState({ taskfield });
+    }
   }
 
   handleGetDepartmentList() {
@@ -121,9 +134,10 @@ class TicketSystemTask extends Component {
   }
 
   setDepartmentValue = e => {
-    debugger;
     let departmentValue = e.currentTarget.value;
-    this.setState({ selectedDepartment: departmentValue });
+    var taskfield = this.state.taskfield;
+    taskfield[e.currentTarget.name] = e.target.selectedOptions[0].text;
+    this.setState({ selectedDepartment: departmentValue, taskfield });
 
     setTimeout(() => {
       if (this.state.selectedDepartment) {
@@ -133,7 +147,9 @@ class TicketSystemTask extends Component {
   };
   setFunctionValue = e => {
     let functionValue = e.currentTarget.value;
-    this.setState({ selectedFunction: functionValue });
+    var taskfield = this.state.taskfield;
+    taskfield[e.currentTarget.name] = e.target.selectedOptions[0].text;
+    this.setState({ selectedFunction: functionValue, taskfield });
 
     setTimeout(() => {
       if (this.state.selectedFunction) {
@@ -143,94 +159,59 @@ class TicketSystemTask extends Component {
   };
   setAssignToValue = e => {
     let assignToValue = e.currentTarget.value;
-    this.setState({ selectedAssignTo: assignToValue });
+    var taskfield = this.state.taskfield;
+    taskfield[e.currentTarget.name] = e.target.selectedOptions[0].text;
+    this.setState({ selectedAssignTo: assignToValue, taskfield });
   };
   setPriorityValue = e => {
     let priorityValue = e.currentTarget.value;
-    this.setState({ selectedPriority: priorityValue });
+    var taskfield = this.state.taskfield;
+    taskfield[e.currentTarget.name] = e.target.selectedOptions[0].text;
+    this.setState({ selectedPriority: priorityValue, taskfield });
   };
-
+  
   handleCreateTask() {
     debugger;
 
     if (this.validator.allValid()) {
-      // axios({
-      //   method: "post",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     "Access-Control-Allow-Methods": "*"
-      //   },
-      //   url: config.apiUrl + "/Customer/createCustomer",
-      //   data: {
-      //     TenantID: this.state.tenantID,
-      //     CustomerName: this.state.fullName,
-      //     CustomerPhoneNumber: this.state.mobileNumber,
-      //     CustomerEmailId: this.state.emailId,
-      //     GenderID: this.state.genderId,
-      //     AltNumber: this.state.alternateNumber,
-      //     AltEmailID: this.state.alternateEmailId,
-      //     DateOfBirth: moment(this.state.dob).format("L"),
-      //     IsActive: 1,
-      //     CreatedBy: 1,
-      //     ModifyBy: 1,
-      //     ModifiedDate: "2019-12-17"
-      //   }
-      // }).then(function(res) {
-      //   debugger;
-      //   console.log(JSON.stringify(res.data.responseData));
-      // });
-      alert("Success");
+      if (this.state.taskfield) {
+        var taskData = [];
+        taskData = this.state.taskData;
+
+        this.state.taskfield["ID"] = taskData.length + 1;
+        taskData.push(this.state.taskfield);
+        this.setState({
+          taskData,
+          taskfield: {
+            ID:0,
+            taskTitle: "",
+            taskDescription: "",
+            Department: "",
+            Funcation: "",
+            Priority: "",
+            AssignTo: ""
+          },
+          selectedDepartment: 0,
+          selectedFunction: 0,
+          selectedAssignTo: 0,
+          selectedPriority: 0
+        });
+
+        NotificationManager.success("Task created successfully.");
+      }
     } else {
       this.validator.showMessages();
       this.forceUpdate();
     }
-
-    // axios.post(config.apiUrl + "/Customer/createCustomer", requestOptions)
   }
-
+  handleTaskDelete(i){
+    debugger
+    let taskData = [...this.state.taskData];
+    taskData.splice(i,1);
+     this.setState({ taskData });
+  }
   render() {
-    const datatask = [
-      {
-        taskTitle: "Store door are not working",
-        assignTo: "G.Bansal"
-      },
-      {
-        taskTitle: "Supplies are not coming on time",
-        assignTo: "A.Bansal"
-      },
-      {
-        taskTitle: "Supplies are not coming on time",
-        assignTo: "G.Bansal"
-      },
-      {
-        taskTitle: "Supplies are not coming on time",
-        assignTo: "A.Bansal"
-      },
-      {
-        taskTitle: "Supplies are not coming on time",
-        assignTo: "A.Bansal"
-      }
-    ];
-
-    const columnstask = [
-      {
-        Header: <span>Task Title</span>,
-        accessor: "taskTitle"
-      },
-      {
-        Header: <span>Assign To</span>,
-        accessor: "assignTo"
-      },
-      {
-        Header: <span>Actions</span>,
-        accessor: "actionReport",
-        Cell: row => (
-          <span>
-            <img src={DeleteIcon} alt="del-icon" className="downloadaction" />
-          </span>
-        )
-      }
-    ];
+    const { taskData } = this.state;
     return (
       <Fragment>
         <div className="ticketSycard">
@@ -260,22 +241,20 @@ class TicketSystemTask extends Component {
                   <div className="card-body">
                     <div className="row m-b-10">
                       <div className="col-md-12">
-                        {/* <select className="category-select-system">
-                      <option className="select-category-placeholder">
-                        Department
-                      </option>
-                    </select> */}
                         <input
                           type="text"
                           className="txt-1"
                           placeholder="Task Title"
                           name="taskTitle"
-                          value={this.state.taskTitle}
-                          onChange={this.checkTaskTitDesc}
+                          value={this.state.taskfield.taskTitle}
+                          onChange={this.checkTaskTitDesc.bind(
+                            this,
+                            "taskTitle"
+                          )}
                         />
                         {this.validator.message(
                           "Task Title",
-                          this.state.taskTitle,
+                          this.state.taskfield.taskTitle,
                           "required"
                         )}
                       </div>
@@ -286,12 +265,15 @@ class TicketSystemTask extends Component {
                           className="addNote-textarea-system"
                           placeholder="Task Description"
                           name="taskDescription"
-                          value={this.state.taskDescription}
-                          onChange={this.checkTaskTitDesc}
+                          value={this.state.taskfield.taskDescription}
+                          onChange={this.checkTaskTitDesc.bind(
+                            this,
+                            "taskDescription"
+                          )}
                         ></textarea>
                         {this.validator.message(
                           "Task Description",
-                          this.state.taskDescription,
+                          this.state.taskfield.taskDescription,
                           "required"
                         )}
                       </div>
@@ -299,6 +281,7 @@ class TicketSystemTask extends Component {
                     <div className="row m-b-10">
                       <div className="col-md-6">
                         <select
+                          name="Department"
                           className="category-select-system dropdown-label"
                           value={this.state.selectedDepartment}
                           onChange={this.setDepartmentValue}
@@ -320,6 +303,7 @@ class TicketSystemTask extends Component {
                       </div>
                       <div className="col-md-6">
                         <select
+                          name="Function"
                           className="category-select-system dropdown-label"
                           value={this.state.selectedFunction}
                           onChange={this.setFunctionValue}
@@ -343,6 +327,7 @@ class TicketSystemTask extends Component {
                     <div className="row m-b-10">
                       <div className="col-md-6">
                         <select
+                          name="AssignTo"
                           value={this.state.selectedAssignTo}
                           onChange={this.setAssignToValue}
                           className="category-select-system dropdown-label"
@@ -364,6 +349,7 @@ class TicketSystemTask extends Component {
                       </div>
                       <div className="col-md-6">
                         <select
+                          name="Priority"
                           value={this.state.selectedPriority}
                           onChange={this.setPriorityValue}
                           className="category-select-system dropdown-label"
@@ -388,12 +374,10 @@ class TicketSystemTask extends Component {
                       <div className="col-md-6">
                         <button
                           type="button"
-                          className="createtasksystem"
-                          onClick={this.handleCreateTask}
+                          className="createtasksystem createtasksystem-text"
+                          onClick={this.handleCreateTask.bind(this)}
                         >
-                          <label className="createtasksystem-text">
-                            CREATE TASK
-                          </label>
+                          CREATE TASK
                         </button>
                       </div>
                     </div>
@@ -410,7 +394,7 @@ class TicketSystemTask extends Component {
                       aria-expanded="false"
                       aria-controls="collapseTwo"
                     >
-                      05 Task Created
+                      {this.state.taskData.length} Task Created
                     </label>
                   </h5>
                 </div>
@@ -422,8 +406,31 @@ class TicketSystemTask extends Component {
                 >
                   <div className="card-body systemtaskreact">
                     <ReactTable
-                      data={datatask}
-                      columns={columnstask}
+                      data={taskData}
+                      columns={[
+                        {
+                          Header: <span>Task Title</span>,
+                          accessor: "taskTitle"
+                        },
+                        {
+                          Header: <span>Assign To</span>,
+                          accessor: "AssignTo"
+                        },
+                        {
+                          Header: <span>Actions</span>,
+                          accessor: "actionReport",
+                          Cell: row => (
+                            <span>
+                              <img
+                                src={DeleteIcon}
+                                alt="del-icon"
+                                className="downloadaction"
+                                onClick={this.handleTaskDelete.bind(this,row.original.ID)}
+                              />
+                            </span>
+                          )
+                        }
+                      ]}
                       // resizable={false}
                       defaultPageSize={5}
                       showPagination={false}
@@ -434,6 +441,7 @@ class TicketSystemTask extends Component {
             </div>
           </div>
         </div>
+        <NotificationContainer />
       </Fragment>
     );
   }

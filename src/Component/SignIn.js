@@ -63,13 +63,11 @@ class SingIn extends Component {
         let self = this;
 
         const requestOptions = {
-          // method: 'POST',
           mode: "cors",
           headers: {
             "Content-Type": "application/json",
             "Access-Control-Allow-Methods": "*"
           },
-          // body:JSON.stringify({ EmailID, Password ,AppId})
           body: ""
         };
         axios
@@ -82,7 +80,6 @@ class SingIn extends Component {
               X_Authorized_Domainname
             }
           })
-          // return fetch(config.apiUrl + '/Testing/Authenticate', requestOptions)
           .then(function(res) {
             debugger;
             let resValid = res.data.responseData.message;

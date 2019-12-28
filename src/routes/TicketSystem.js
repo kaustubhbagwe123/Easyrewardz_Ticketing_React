@@ -852,7 +852,7 @@ class TicketSystem extends Component {
                 </div>
                 <div className="row">
                   <div className="col-md-12">
-                    <CKEditor
+                    {/* <CKEditor
                       style={{ height: "400px" }}
                       config={{
                         toolbar: [
@@ -886,7 +886,7 @@ class TicketSystem extends Component {
                           }
                         ]
                       }}
-                    />
+                    /> */}
                     <div className="row colladrowa" style={{ bottom: "15px" }}>
                       <div className="col-md-12 colladrow">
                         <ul className="m-l-30">
