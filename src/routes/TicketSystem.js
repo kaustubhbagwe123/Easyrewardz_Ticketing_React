@@ -133,10 +133,6 @@ class TicketSystem extends Component {
     this.setState({ EditCustomer: false });
   }
   GenderonChange = e => {
-    // debugger;
-    // this.setState({
-    //   genderID: e.target.value
-    // });
 
     const value = e.target.value;
 
@@ -241,7 +237,6 @@ class TicketSystem extends Component {
         // TenantID: this.state.tenantID
       }
     }).then(function(res) {
-      // console.log(JSON.stringify(res.data.responseData));
       // debugger;
       let TicketTitleData = res.data.responseData;
       self.setState({ TicketTitleData: TicketTitleData });
