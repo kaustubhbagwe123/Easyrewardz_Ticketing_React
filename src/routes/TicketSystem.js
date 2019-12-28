@@ -21,8 +21,8 @@ import { faCalculator } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import KnowledgeLogo from "./../assets/Images/knowledge.png";
 import CancelImg from "./../assets/Images/cancel.png";
-import { Collapse, CardBody, Card } from "reactstrap";
-import DownArrowIcon from "./../assets/Images/down-1.png";
+// import { Collapse, CardBody, Card } from "reactstrap";
+// import DownArrowIcon from "./../assets/Images/down-1.png";
 import CopyBlue from "./../assets/Images/copyblue.png";
 import ViewBlue from "./../assets/Images/viewblue.png";
 import Up1Img from "./../assets/Images/up-1.png";
@@ -884,13 +884,8 @@ class TicketSystem extends Component {
                 </div>
                 <div className="row">
                   <div className="col-md-12">
-<<<<<<< HEAD
-                    {/* <CKEditor
-                      style={{ height: "400px" }}
-=======
                     <CKEditor
                       // style={{ height: "400px" }}
->>>>>>> 2214cfdbc6745e1b11a426c0e436d50199fa4abd
                       config={{
                         toolbar: [
                           {
@@ -923,7 +918,7 @@ class TicketSystem extends Component {
                           }
                         ]
                       }}
-                    /> */}
+                    /> 
                     <div className="row colladrowa" style={{ bottom: "15px" }}>
                       <div className="col-md-12 colladrow">
                         <ul className="m-l-30">
