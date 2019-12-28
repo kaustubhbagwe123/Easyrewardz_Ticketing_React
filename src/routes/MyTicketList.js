@@ -71,7 +71,10 @@ class MyTicketList extends Component {
       selectedCategoryAll: 0,
       selectedSubCategory: 0,
       selectedSubCategoryAll: 0,
-      selectedIssueType: 0
+      selectedIssueType: 0,
+      userID: 6,
+      DraftDetails: [],
+      draftCountStatus: 0
     };
     this.toggleSearch = this.toggleSearch.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
@@ -85,6 +88,7 @@ class MyTicketList extends Component {
     this.handleGetChannelOfPurchaseList = this.handleGetChannelOfPurchaseList.bind(
       this
     );
+    this.handleGetDraftDetails = this.handleGetDraftDetails.bind(this);
   }
 
   componentDidMount() {
@@ -92,6 +96,28 @@ class MyTicketList extends Component {
     this.handleGetTicketPriorityList();
     this.handleGetChannelOfPurchaseList();
     this.handleGetCategoryList();
+    this.handleGetDraftDetails();
+  }
+
+  handleGetDraftDetails() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      url: config.apiUrl + "/Ticketing/GetDraftDetails",
+      params: {
+        UserID: this.state.userID
+      }
+    }).then(function(res) {
+      debugger;
+      let DraftDetails = res.data.responseData;
+      let draftCountStatus = DraftDetails.length;
+      self.setState({ DraftDetails: DraftDetails, draftCountStatus });
+    });
   }
 
   handleGetTicketPriorityList() {
@@ -345,6 +371,7 @@ class MyTicketList extends Component {
     };
   };
   render() {
+    const { DraftDetails } = this.state;
     const DefArti = (
       <div className="dash-creation-popup-cntr">
         <ul className="dash-category-popup dashnewpopup">
@@ -1231,8 +1258,14 @@ class MyTicketList extends Component {
                   role="tab"
                   aria-controls="Draft-tab"
                   aria-selected="false"
+                  onClick={this.handleGetDraftDetails}
                 >
-                  Draft: <span className="myTciket-tab-span">05</span>
+                  Draft:{" "}
+                  <span className="myTciket-tab-span">
+                    {this.state.draftCountStatus < 9
+                      ? "0" + this.state.draftCountStatus
+                      : this.state.draftCountStatus}
+                  </span>
                 </a>
               </li>
             </ul>
@@ -2529,7 +2562,7 @@ class MyTicketList extends Component {
                 role="tabpanel"
                 aria-labelledby="Draft-tab"
               >
-                <MyTicketDraft />
+                <MyTicketDraft draftData={DraftDetails} />
               </div>
             </div>
           </div>

@@ -62,7 +62,7 @@ class TicketSystemTask extends Component {
       },
       url: config.apiUrl + "/Master/getFunctionNameByDepartmentId",
       params: {
-        DepartmentId: 1,
+        DepartmentId: this.state.selectedDepartment,
         TenantID: this.state.tenantID
         // DepartmentId: this.state.selectedDepartment
       }
@@ -82,7 +82,7 @@ class TicketSystemTask extends Component {
       if (this.state.selectedDepartment) {
         this.handleGetFunctionList();
       }
-    }, 1);
+    }, 100);
   };
   setFunctionValue = e => {
     let functionValue = e.currentTarget.value;
