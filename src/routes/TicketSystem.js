@@ -13,7 +13,7 @@ import TicketSystemTask from "./Tabs/TicketSystemTask";
 import TicketSystemStore from "./Tabs/TicketSystemStore";
 import Modal from "react-responsive-modal";
 import CKEditor from "ckeditor4-react";
-import moment from "moment";
+// import moment from "moment";
 import FileUpload from "./../assets/Images/file.png";
 import ThumbTick from "./../assets/Images/thumbticket.png";
 import AutoSave from "./../assets/Images/AutoSave.png";
@@ -182,7 +182,7 @@ class TicketSystem extends Component {
   handleUpdateCustomer() {
     debugger;
     let self = this;
-    var Dob = moment(this.state.CustData.editDOB).format("DD/MM/YYYY");
+    // var Dob= moment(this.state.CustData.editDOB).format("DD/MM/YYYY");
     axios({
       method: "post",
       headers: {
@@ -201,7 +201,7 @@ class TicketSystem extends Component {
         AltEmailID: this.state.CustData.altEmail,
         CreatedBy: this.state.createdBy,
         // DateOfBirth: moment(this.state.CustData.editDOB).format("DD/MM/YYYY"),
-        DateOfBirth: Dob,
+        // DateOfBirth: Dob,
         IsActive: 1
       }
     }).then(function(res) {
@@ -392,8 +392,9 @@ class TicketSystem extends Component {
   }
 
   componentDidMount() {
-    // debugger;
+    debugger;
     var customerDetails = this.props.location.state;
+    // var custDetailsId=this.props.location.state;
 
     if (customerDetails) {
       var custId = customerDetails.customerId;
