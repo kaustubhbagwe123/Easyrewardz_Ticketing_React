@@ -51,8 +51,7 @@ class SingIn extends Component {
 
       // let DescryptUserID=encryption(X_Authorized_userId, "desc");
       let X_Authorized_password = encryption(password, "enc");
-      //  let X_Authorized_userId = emailID;
-      // let X_Authorized_password = password;
+      
       let X_Authorized_Domainname =
         "rZbZUcWTDjEk+qIvay9BFe/7Izx/T+YkIhbRa/mL0W0=";
         let ProCode=this.state.programCode

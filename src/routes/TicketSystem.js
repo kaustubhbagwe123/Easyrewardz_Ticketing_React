@@ -25,8 +25,6 @@ import CancelImg from "./../assets/Images/cancel.png";
 // import DownArrowIcon from "./../assets/Images/down-1.png";
 import CopyBlue from "./../assets/Images/copyblue.png";
 import ViewBlue from "./../assets/Images/viewblue.png";
-import Up1Img from "./../assets/Images/up-1.png";
-import Down1Img from "./../assets/Images/down-1.png";
 import config from "./../helpers/config";
 import { Radio } from "antd";
 import DatePicker from "react-datepicker";
@@ -56,7 +54,7 @@ class TicketSystem extends Component {
       TicketPriorityData: [],
       ChannelOfPurchaseData: [],
       KbLink: false,
-      collapseUp: false,
+      // collapseUp: false,
       TabIconColor: "nav-link active",
       altEmailID: "",
       altNumber: "",
@@ -113,12 +111,6 @@ class TicketSystem extends Component {
     this.handleGetTicketPriorityList = this.handleGetTicketPriorityList.bind(
       this
     );
-  }
-  handleUpOpen() {
-    this.setState({ collapseUp: true });
-  }
-  handleUpClose() {
-    this.setState({ collapseUp: false });
   }
   HandleKbLinkModalOpen() {
     this.setState({ KbLink: true });
@@ -533,22 +525,6 @@ class TicketSystem extends Component {
   };
 
   render() {
-    // var editDOBRender = this.state.editDOB;
-    const HidecollapsUpKbLink = this.state.collapseUp ? (
-      <img
-        src={Up1Img}
-        alt="up"
-        className="down-icon-kb1"
-        onClick={this.handleUpClose.bind(this)}
-      />
-    ) : (
-      <img
-        src={Down1Img}
-        alt="up"
-        className="down-icon-kb1"
-        onClick={this.handleUpOpen.bind(this)}
-      />
-    );
 
     var CustomerId = this.state.customerDetails.customerId;
     // var DOB = moment(this.state.CustData.editDOB).format("DD/MM/YYYY");
