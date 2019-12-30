@@ -210,7 +210,7 @@ class TicketSystemTask extends Component {
   handleTaskDelete(i){
     debugger
     let taskData = [...this.state.taskData];
-    taskData.splice(i,1);
+    taskData.splice((i-1),1);
      this.setState({ taskData });
   }
   render() {

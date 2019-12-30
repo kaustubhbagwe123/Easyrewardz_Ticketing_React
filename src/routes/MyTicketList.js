@@ -25,10 +25,10 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ReactTable from "react-table";
 import { Popover } from "antd";
-import Chat from "./../assets/Images/chat.png";
 import { ProgressBar } from "react-bootstrap";
-import CancalImg from "./../assets/Images/cancal blue.png";
 import { Collapse, CardBody, Card } from "reactstrap";
+import CancalImg from "./../assets/Images/cancal blue.png";
+import Chat from "./../assets/Images/chat.png";
 import csv from "./../assets/Images/csv.png";
 import Schedule from "./../assets/Images/schedule.png";
 import Assign from "./../assets/Images/assign.png";
@@ -48,6 +48,10 @@ class MyTicketList extends Component {
       ByDateSelectDate: "",
       ByAllCreateDate: "",
       ByAllLastDate: "",
+      assignFirstName: "",
+      assignLastName: "",
+      assignEmail: "",
+      selectedDesignation: 0,
       DesignationData: [],
       TicketPriorityData: [],
       ChannelOfPurchaseData: [],
@@ -61,6 +65,7 @@ class MyTicketList extends Component {
       open: false,
       Schedule: false,
       StatusModel: false,
+      CheckBoxChecked: false,
       selectedDesignation: 0,
       selectedPriority: 0,
       selectedChannelOfPurchase: 0,
@@ -92,6 +97,7 @@ class MyTicketList extends Component {
       this
     );
     this.handleGetDraftDetails = this.handleGetDraftDetails.bind(this);
+    this.handelAssignOnchange = this.handelAssignOnchange.bind(this);
   }
 
   componentDidMount() {
@@ -206,7 +212,6 @@ class MyTicketList extends Component {
   }
   handleGetSubCategoryList() {
     debugger;
-
     let self = this;
     axios({
       method: "post",
@@ -245,6 +250,32 @@ class MyTicketList extends Component {
       debugger;
       let IssueTypeData = res.data.responseData;
       self.setState({ IssueTypeData: IssueTypeData });
+    });
+  }
+  handleAssignSearchData() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      url: config.apiUrl + "/Ticketing/searchAgent",
+      params: {
+        FirstName: this.state.assignFirstName.trim(),
+        LastName: this.state.assignLastName.trim(),
+        Email: this.state.assignEmail.trim(),
+        DesignationID: this.state.selectedDesignation
+      }
+    }).then(function(res) {
+      debugger;
+      let SearchAssignData = res.data.responseData;
+      self.setState({ SearchAssignData: SearchAssignData ,
+        assignFirstName:'',
+        assignLastName:'',
+        assignEmail:'',
+        selectedDesignation:0});
     });
   }
 
@@ -372,6 +403,11 @@ class MyTicketList extends Component {
   clickCheckbox(evt) {
     evt.stopPropagation();
   }
+  handelCheckBoxCheckedChange = () => {
+    this.setState({
+      CheckBoxChecked: !this.state.CheckBoxChecked
+    });
+  };
 
   checkAllCheckbox(event) {
     const allCheckboxChecked = event.target.checked;
@@ -390,6 +426,11 @@ class MyTicketList extends Component {
       }
     }
   }
+  handelAssignOnchange(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  }
   HandleRowClickPage = () => {
     return {
       onClick: e => {
@@ -398,7 +439,7 @@ class MyTicketList extends Component {
     };
   };
   render() {
-    const { DraftDetails } = this.state;
+    const { DraftDetails,SearchAssignData } = this.state;
     const DefArti = (
       <div className="dash-creation-popup-cntr">
         <ul className="dash-category-popup dashnewpopup">
@@ -498,6 +539,8 @@ class MyTicketList extends Component {
                   type="checkbox"
                   id="fil-ab1"
                   name="MyTicketListcheckbox[]"
+                  checked={this.state.CheckBoxChecked}
+                  onChange={this.handelCheckBoxCheckedChange}
                 />
                 <label htmlFor="fil-ab1">
                   <img
@@ -544,6 +587,8 @@ class MyTicketList extends Component {
                   type="checkbox"
                   id="fil-ab2"
                   name="MyTicketListcheckbox[]"
+                  checked={this.state.CheckBoxChecked}
+                  onChange={this.handelCheckBoxCheckedChange}
                 />
                 <label htmlFor="fil-ab2">
                   <img
@@ -619,13 +664,6 @@ class MyTicketList extends Component {
         ),
         subjectDash: (
           <div>
-            {/* <Popover content={TaskBlue} placement="bottom">
-              <img
-                className="task-icon-1 marginimg"
-                src={TaskIconBlue}
-                alt="task-icon-blue"
-              />
-            </Popover> */}
             Need to change my shipping address
             <span style={{ display: "block", fontSize: "11px" }}>
               Hope this help, Please rate us
@@ -679,11 +717,6 @@ class MyTicketList extends Component {
         ),
         subjectDash: (
           <div>
-            {/* <img
-              className="task-icon-1 marginimg"
-              src={TaskIconGray}
-              alt="task-icon-gray"
-            /> */}
             Need to change my shipping address
             <span style={{ display: "block", fontSize: "11px" }}>
               Hope this help, Please rate us
@@ -748,19 +781,7 @@ class MyTicketList extends Component {
         ),
         subjectDash: (
           <div>
-            {/* <Popover content={ClaimBlue} placement="bottom">
-              <img
-                className="claim-icon marginimg"
-                src={CliamIconBlue}
-                alt="cliam-icon-blue"
-              />
-            </Popover> */}
             Need to change my shipping address
-            {/* <img
-                className="task-icon-1 marginimg"
-                src={TaskIconGray}
-                alt="task-icon-gray"
-              /> */}
             <span style={{ display: "block", fontSize: "11px" }}>
               Hope this help, Please rate us
             </span>
@@ -1019,6 +1040,7 @@ class MyTicketList extends Component {
                   type="checkbox"
                   id="fil-aball"
                   name="MyTicketListcheckbox[]"
+                  // checked={this.state.CheckBoxChecked}
                   onChange={this.checkAllCheckbox.bind(this)}
                 />
                 <label htmlFor="fil-aball" className="ticketid">
@@ -1646,14 +1668,12 @@ class MyTicketList extends Component {
                                         </Modal>
                                         <button
                                           className={
-                                            this.state.TicketTabIndex ===
-                                            "nav-link active"
-                                              ? "btn-inv btn-dis"
-                                              : "btn-inv"
+                                            this.state.CheckBoxChecked
+                                              ? "btn-inv"
+                                              : "dis-btn"
                                           }
                                           onClick={
-                                            this.state.TicketTabIndex !==
-                                            "nav-link active"
+                                            this.state.CheckBoxChecked
                                               ? this.handleAssignModalOpen.bind(
                                                   this
                                                 )
@@ -1697,16 +1717,31 @@ class MyTicketList extends Component {
                                               type="text"
                                               className="txt-1 txt-btmSpace"
                                               placeholder="First Name"
+                                              name="assignFirstName"
+                                              value={this.state.assignFirstName}
+                                              onChange={
+                                                this.handelAssignOnchange
+                                              }
                                             />
                                             <input
                                               type="text"
                                               className="txt-1 txt-btmSpace"
                                               placeholder="Last Name"
+                                              name="assignLastName"
+                                              value={this.state.assignLastName}
+                                              onChange={
+                                                this.handelAssignOnchange
+                                              }
                                             />
                                             <input
                                               type="text"
                                               className="txt-1 txt-btmSpace"
                                               placeholder="Email"
+                                              name="assignEmail"
+                                              value={this.state.assignEmail}
+                                              onChange={
+                                                this.handelAssignOnchange
+                                              }
                                             />
                                             <div className="txt-btmSpace">
                                               <select
@@ -1740,6 +1775,9 @@ class MyTicketList extends Component {
                                             <button
                                               className="butn assign-btn"
                                               type="button"
+                                              onClick={this.handleAssignSearchData.bind(
+                                                this
+                                              )}
                                             >
                                               SEARCH
                                             </button>
@@ -1751,65 +1789,50 @@ class MyTicketList extends Component {
                                             </a>
                                           </div>
                                           <div className="assign-modal-body">
-                                            <table>
-                                              <thead>
-                                                <tr>
-                                                  <th>Agent</th>
-                                                  <th>Designation</th>
-                                                  <th>Email</th>
-                                                </tr>
-                                              </thead>
-                                              <tbody>
-                                                <tr>
-                                                  <td>
-                                                    <img
-                                                      src={Headphone2Img}
-                                                      alt="headphone"
-                                                      className="oval-55 assign-hdphone"
-                                                    />
-                                                    Naman.R
-                                                  </td>
-                                                  <td>Supply</td>
-                                                  <td>naman@flipkart.com</td>
-                                                </tr>
-                                                <tr>
-                                                  <td>
-                                                    <img
-                                                      src={Headphone2Img}
-                                                      alt="headphone"
-                                                      className="oval-55 assign-hdphone"
-                                                    />
-                                                    Nidhi.J
-                                                  </td>
-                                                  <td>Supply</td>
-                                                  <td>naman@flipkart.com</td>
-                                                </tr>
-                                                <tr>
-                                                  <td>
-                                                    <img
-                                                      src={Headphone2Img}
-                                                      alt="headphone"
-                                                      className="oval-55 assign-hdphone"
-                                                    />
-                                                    Rashmi.C
-                                                  </td>
-                                                  <td>Supply</td>
-                                                  <td>naman@flipkart.com</td>
-                                                </tr>
-                                                <tr>
-                                                  <td>
-                                                    <img
-                                                      src={Headphone2Img}
-                                                      alt="headphone"
-                                                      className="oval-55 assign-hdphone"
-                                                    />
-                                                    Juhi.H
-                                                  </td>
-                                                  <td>Supply</td>
-                                                  <td>naman@flipkart.com</td>
-                                                </tr>
-                                              </tbody>
-                                            </table>
+                                            <ReactTable
+                                              data={SearchAssignData}
+                                              columns={[
+                                                {
+                                                  Header: <span>Agent</span>,
+                                                  accessor: "agent",
+                                                  Cell: row => {
+                                                    var ids =
+                                                      row.original["user_ID"];
+                                                    return (
+                                                      <div>
+                                                        <span>
+                                                          <img
+                                                            src={Headphone2Img}
+                                                            alt="headphone"
+                                                            className="oval-55 assign-hdphone"
+                                                            id={ids}
+                                                          />
+                                                          {
+                                                            row.original[
+                                                              "agentName"
+                                                            ]
+                                                          }
+                                                        </span>
+                                                      </div>
+                                                    );
+                                                  }
+                                                },
+                                                {
+                                                  Header: (
+                                                    <span>Designation</span>
+                                                  ),
+                                                  accessor: "designation"
+                                                },
+                                                {
+                                                  Header: <span>Email</span>,
+                                                  accessor: "email"
+                                                }
+                                              ]}
+                                              // resizable={false}
+                                              defaultPageSize={5}
+                                              showPagination={false}
+                                            />
+
                                             <textarea
                                               className="assign-modal-textArea"
                                               placeholder="Add Remarks"
@@ -2614,131 +2637,6 @@ class MyTicketList extends Component {
             </div>
           </div>
         </div>
-        {/* <Modal
-          size="lg"
-          show={this.state.AssignModal}
-          onHide={this.handleAssignModalClose.bind(this)}
-          className="assign-modal-KBase"
-        >
-          <Modal.Header>
-            <div className="assign-modal-header">
-              <img
-                src={BlackLeftArrow}
-                alt="black-left-arrow-icon"
-                className="black-left-arrow"
-                onClick={this.handleAssignModalClose.bind(this)}
-              />
-              <label className="claim-details">Assign Tickets To</label>
-              <img
-                src={SearchBlackImg}
-                alt="SearchBlack"
-                className="black-left-arrow srch-mleft-spc"
-              />
-            </div>
-          </Modal.Header>
-          <Modal.Body>
-            <div className="assign-modal-div">
-              <input
-                type="text"
-                className="txt-1 txt-btmSpace"
-                placeholder="First Name"
-              />
-              <input
-                type="text"
-                className="txt-1 txt-btmSpace"
-                placeholder="Last Name"
-              />
-              <input
-                type="text"
-                className="txt-1 txt-btmSpace"
-                placeholder="Email"
-              />
-              <div className="txt-btmSpace">
-                <select
-                  id="inputState"
-                  className="form-control dropdown-setting"
-                >
-                  <option>Select</option>
-                  <option>Designation</option>
-                </select>
-              </div>
-              <button className="butn assign-btn" type="button">
-                SEARCH
-              </button>
-              <a href="#!" className="anchorTag-clear">
-                CLEAR
-              </a>
-            </div>
-            <div className="assign-modal-body">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Agent</th>
-                    <th>Designation</th>
-                    <th>Email</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      <img
-                        src={Headphone2Img}
-                        alt="headphone"
-                        className="oval-55 assign-hdphone"
-                      />
-                      Naman.R
-                    </td>
-                    <td>Supply</td>
-                    <td>naman@flipkart.com</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <img
-                        src={Headphone2Img}
-                        alt="headphone"
-                        className="oval-55 assign-hdphone"
-                      />
-                      Nidhi.J
-                    </td>
-                    <td>Supply</td>
-                    <td>naman@flipkart.com</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <img
-                        src={Headphone2Img}
-                        alt="headphone"
-                        className="oval-55 assign-hdphone"
-                      />
-                      Rashmi.C
-                    </td>
-                    <td>Supply</td>
-                    <td>naman@flipkart.com</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <img
-                        src={Headphone2Img}
-                        alt="headphone"
-                        className="oval-55 assign-hdphone"
-                      />
-                      Juhi.H
-                    </td>
-                    <td>Supply</td>
-                    <td>naman@flipkart.com</td>
-                  </tr>
-                </tbody>
-              </table>
-              <textarea
-                className="assign-modal-textArea"
-                placeholder="Add Remarks"
-              ></textarea>
-              <button className="assign-butn btn-assign-tikcet" type="button">
-                ASSIGN TICKETS
-              </button>
-            </div>
-          </Modal.Body>
-        </Modal> */}
       </Fragment>
     );
   }

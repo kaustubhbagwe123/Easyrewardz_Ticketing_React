@@ -35,7 +35,7 @@ class AddSearchMyTicket extends Component {
       altEmailID: "",
       loading: false,
       SrchEmailPhone: "",
-      // searchEmailPhone: {},
+      message: "",
       tenantID: 1,
       createdBy: 6,
       SearchData: []
@@ -43,7 +43,7 @@ class AddSearchMyTicket extends Component {
     this.handleAddCustomerOpen = this.handleAddCustomerOpen.bind(this);
     this.handleAddCustomerClose = this.handleAddCustomerClose.bind(this);
     this.handleAddCustomerSave = this.handleAddCustomerSave.bind(this);
-  
+
     this.handleSearchCustomer = this.handleSearchCustomer.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.validator = new SimpleReactValidator();
@@ -89,8 +89,11 @@ class AddSearchMyTicket extends Component {
           });
         }, 500);
         self.setState({
-          customerId: GetCustId
+          customerId: GetCustId,
+          message: res.data.message
         });
+      } else {
+        NotificationManager.error(res.data.message);
       }
     });
   }
@@ -129,12 +132,7 @@ class AddSearchMyTicket extends Component {
   handleAddCustomerSave() {
     debugger;
     let self = this;
-    // var CustEmail=this.state.customerEmailId;
-    // var CustPhoneNo=this.state.customerPhoneNumber;
-    // self.CheckValidCustomerEmailPhoneNo(CustEmail,CustPhoneNo)
 
-    // if (this.validator.allValid()) {
-    // self.CheckValidCustomerEmailPhoneNo(CustEmail,CustPhoneNo)
     axios({
       method: "post",
       headers: {
@@ -176,10 +174,6 @@ class AddSearchMyTicket extends Component {
         });
       }
     });
-    // } else {
-    //   this.validator.showMessages();
-    //   this.forceUpdate();
-    // }
   }
   genderSelect = e => {
     this.setState({
@@ -238,27 +232,31 @@ class AddSearchMyTicket extends Component {
                   onClick={this.handleSearchCustomer}
                 />
               </div>
-              <div className="div-notFoundaddseacr">
-                <img
-                  src={NotFoundImg}
-                  alt="Not Found"
-                  className="notFound-addSrch"
-                />
-                <br />
-                <label className="lbl-count-foundData">
-                  We couldn't find the customer with this
-                  <br /> <span>Phone number, Email Id</span>
-                </label>
+              {this.state.message !== "Success" ? null : (
+                <div>
+                <div className="div-notFoundaddseacr">
+                  <img
+                    src={NotFoundImg}
+                    alt="Not Found"
+                    className="notFound-addSrch"
+                  />
+                  <br />
+                  <label className="lbl-count-foundData">
+                    We couldn't find the customer with this
+                    <br /> <span>Phone number, Email Id</span>
+                  </label>
+                </div>
+                <div style={{ width: "90%", textAlign: "center" }}>
+                  <button
+                    type="button"
+                    className="btn btn-addCustomer"
+                    onClick={this.handleAddCustomerOpen}
+                  >
+                    Add Customer
+                  </button>
+                </div>
               </div>
-              <div style={{ width: "90%", textAlign: "center" }}>
-                <button
-                  type="button"
-                  className="btn btn-addCustomer"
-                  onClick={this.handleAddCustomerOpen}
-                >
-                  Add Customer
-                </button>
-              </div>
+              )}
             </div>
             <Modal
               onClose={this.handleAddCustomerClose}
@@ -417,18 +415,6 @@ class AddSearchMyTicket extends Component {
                   </button>
                   {/* </Link> */}
                 </div>
-                {/* <div className="btn-float">
-                  <a
-                    href="#!"
-                    className="cancel-btn-A"
-                    onClick={this.handleAddCustomerClose}
-                  >
-                    CANCEL
-                  </a>
-                  <a href="ticketsystem">
-                    <button className="butn">SAVE</button>
-                  </a>
-                </div> */}
               </div>
             </Modal>
           </div>

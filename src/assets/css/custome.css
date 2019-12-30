@@ -2576,6 +2576,11 @@ table tr th:last-child {
 #logout-popup .styles_closeButton__20ID4 {
   display: none;
 }
+.dis-btn{
+  background-color: #2561a8 !important;
+  color: #fff;
+  opacity: 0.4;
+}
 /* logout block ends */
 
 /* save search popup starts */
@@ -6462,6 +6467,7 @@ table thead tr {
 }
 .addSearchCard {
   padding: 50px 270px;
+  height: 100vh;
 }
 .label1-AddSearch {
   font-size: 16px;
