@@ -38,6 +38,8 @@ import config from "./../helpers/config";
 import TicketStatus from "./TicketStatus";
 import SlaDue from "./SlaDue";
 import TicketActionType from "./TicketActionType";
+import ClaimStatus from "./ClaimStatus";
+import TaskStatus from "./TaskStatus";
 // import moment from "moment";
 import Select from "react-select";
 
@@ -59,16 +61,23 @@ class MyTicketList extends Component {
       DesignationData: [],
       TicketPriorityData: [],
       ChannelOfPurchaseData: [],
+      SlaStatusData: [],
       CategoryData: [],
       // CategoryDataAll: [],
       SubCategoryData: [],
+      ClaimSubCategoryData: [],
       SubCategoryAllData: [],
       IssueTypeData: [],
+      ClaimIssueTypeData: [],
       IssueTypeAllData: [],
       TicketStatusData: TicketStatus(),
       SlaDueData: SlaDue(),
       TicketSourceData: [],
+      DepartmentData: [],
+      FunctionData: [],
       TicketActionTypeData: TicketActionType(),
+      ClaimStatusData: ClaimStatus(),
+      TaskStatusData: TaskStatus(),
       tenantID: 1,
       open: false,
       Schedule: false,
@@ -80,20 +89,31 @@ class MyTicketList extends Component {
       selectedTicketActionType: [],
       selectedTicketStatusByDate: 0,
       selectedSlaDueByDate: 0,
+      selectedClaimStatus: 0,
+      selectedTaskStatus: 0,
       selectedTicketStatusByCustomer: 0,
       selectedTicketStatusByTicket: 0,
       selectedTicketStatusByCategory: 0,
       selectedTicketStatusAll: 0,
+      selectedWithClaimAll: "no",
+      selectedWithTaskAll: "no",
       selectedVisitStoreAll: "yes",
       selectedWantToVisitStoreAll: "yes",
       selectedTicketSource: 0,
       selectedPurchaseStoreCodeAddressAll: "",
+      selectedVisitStoreCodeAddressAll: "",
+      selectedSlaStatus: 0,
       selectedCategory: 0,
+      selectedClaimCategory: 0,
       selectedCategoryAll: 0,
       selectedSubCategory: 0,
+      selectedClaimSubCategory: 0,
       selectedSubCategoryAll: 0,
       selectedIssueType: 0,
+      selectedClaimIssueType: 0,
       selectedIssueTypeAll: 0,
+      selectedDepartment: 0,
+      selectedFunction: 0,
       selectedMobileNoByCustType: "",
       selectedEmailIdByCustType: "",
       selectedClaimIdAll: "",
@@ -133,8 +153,15 @@ class MyTicketList extends Component {
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
     this.handleGetTicketSourceList = this.handleGetTicketSourceList.bind(this);
     this.handleGetCategoryList = this.handleGetCategoryList.bind(this);
+    this.handleGetSlaStatusList = this.handleGetSlaStatusList.bind(this);
     this.handleGetSubCategoryList = this.handleGetSubCategoryList.bind(this);
+    this.handleGetClaimSubCategoryList = this.handleGetClaimSubCategoryList.bind(
+      this
+    );
     this.handleGetIssueTypeList = this.handleGetIssueTypeList.bind(this);
+    this.handleGetClaimIssueTypeList = this.handleGetClaimIssueTypeList.bind(
+      this
+    );
     this.handleGetDesignationList = this.handleGetDesignationList.bind(this);
     this.handleGetTicketPriorityList = this.handleGetTicketPriorityList.bind(
       this
@@ -144,6 +171,8 @@ class MyTicketList extends Component {
     );
     this.handleGetDraftDetails = this.handleGetDraftDetails.bind(this);
     this.handelAssignOnchange = this.handelAssignOnchange.bind(this);
+    this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
+    this.handleGetFunctionList = this.handleGetFunctionList.bind(this);
   }
 
   componentDidMount() {
@@ -153,7 +182,9 @@ class MyTicketList extends Component {
     this.handleGetChannelOfPurchaseList();
     this.handleGetTicketSourceList();
     this.handleGetCategoryList();
+    this.handleGetSlaStatusList();
     this.handleGetDraftDetails();
+    this.handleGetDepartmentList();
   }
 
   handleAdvSearchFlag(e) {
@@ -219,6 +250,46 @@ class MyTicketList extends Component {
       let DraftDetails = res.data.responseData;
       let draftCountStatus = DraftDetails.length;
       self.setState({ DraftDetails: DraftDetails, draftCountStatus });
+    });
+  }
+  handleGetDepartmentList() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      url: config.apiUrl + "/Master/getDepartmentList",
+      params: {
+        TenantID: this.state.tenantID
+      }
+    }).then(function(res) {
+      debugger;
+      let DepartmentData = res.data.responseData;
+      self.setState({ DepartmentData: DepartmentData });
+    });
+  }
+  handleGetFunctionList() {
+    debugger;
+
+    let self = this;
+    axios({
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      url: config.apiUrl + "/Master/getFunctionNameByDepartmentId",
+      params: {
+        DepartmentId: this.state.selectedDepartment,
+        TenantID: this.state.tenantID
+      }
+    }).then(function(res) {
+      debugger;
+      let FunctionData = res.data.responseData;
+      self.setState({ FunctionData: FunctionData });
     });
   }
 
@@ -300,6 +371,28 @@ class MyTicketList extends Component {
       });
     });
   }
+  handleGetSlaStatusList() {
+    debugger;
+
+    let self = this;
+    axios({
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      url: config.apiUrl + "/SLAMaster/getListofSLA",
+      params: {
+        // TenantID: this.state.tenantID
+      }
+    }).then(function(res) {
+      debugger;
+      let SlaStatusData = res.data.responseData;
+      self.setState({
+        SlaStatusData: SlaStatusData
+      });
+    });
+  }
   handleGetCategoryList() {
     debugger;
 
@@ -321,6 +414,28 @@ class MyTicketList extends Component {
       self.setState({
         CategoryData: CategoryData
         // CategoryDataAll: CategoryDataAll
+      });
+    });
+  }
+  handleGetClaimSubCategoryList() {
+    debugger;
+    let self = this;
+
+    axios({
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      url: config.apiUrl + "/SubCategory/GetSubCategoryByCategoryID",
+      params: {
+        CategoryID: this.state.selectedClaimCategory
+      }
+    }).then(function(res) {
+      debugger;
+      let ClaimSubCategoryData = res.data.responseData;
+      self.setState({
+        ClaimSubCategoryData: ClaimSubCategoryData
       });
     });
   }
@@ -355,6 +470,26 @@ class MyTicketList extends Component {
           SubCategoryAllData: SubCategoryAllData
         });
       }
+    });
+  }
+  handleGetClaimIssueTypeList() {
+    let self = this;
+
+    axios({
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      url: config.apiUrl + "/IssueType/GetIssueTypeList",
+      params: {
+        TenantID: this.state.tenantID,
+        SubCategoryID: this.state.selectedClaimSubCategory
+      }
+    }).then(function(res) {
+      debugger;
+      let ClaimIssueTypeData = res.data.responseData;
+      self.setState({ ClaimIssueTypeData: ClaimIssueTypeData });
     });
   }
   handleGetIssueTypeList() {
@@ -421,6 +556,26 @@ class MyTicketList extends Component {
     });
   }
 
+  setDepartmentValue = e => {
+    let departmentValue = e.currentTarget.value;
+    this.setState({ selectedDepartment: departmentValue });
+
+    setTimeout(() => {
+      if (this.state.selectedDepartment) {
+        this.handleGetFunctionList();
+      }
+    }, 1);
+  };
+  setFunctionValue = e => {
+    let functionValue = e.currentTarget.value;
+    this.setState({ selectedFunction: functionValue });
+
+    // setTimeout(() => {
+    //   if (this.state.selectedFunction) {
+    //     this.handleGetAssignToList();
+    //   }
+    // }, 1);
+  };
   setDesignationValue = e => {
     let designationValue = e.currentTarget.value;
     this.setState({ selectedDesignation: designationValue });
@@ -502,6 +657,16 @@ class MyTicketList extends Component {
     let slaDueValue = e.currentTarget.value;
     this.setState({ selectedSlaDueByDate: slaDueValue });
   };
+  handleClaimStatus = e => {
+    debugger;
+    let claimStatusValue = e.currentTarget.value;
+    this.setState({ selectedClaimStatus: claimStatusValue });
+  };
+  handleTaskStatus = e => {
+    debugger;
+    let taskStatusValue = e.currentTarget.value;
+    this.setState({ selectedTaskStatus: taskStatusValue });
+  };
   handleTicketStatusByCustomer = e => {
     let ticketStatusValue = e.currentTarget.value;
     this.setState({ selectedTicketStatusByCustomer: ticketStatusValue });
@@ -523,6 +688,16 @@ class MyTicketList extends Component {
     let visitStoreAllValue = e.currentTarget.value;
     this.setState({ selectedVisitStoreAll: visitStoreAllValue });
   };
+  handleWithClaimAll = e => {
+    debugger;
+    let withClaimAllValue = e.currentTarget.value;
+    this.setState({ selectedWithClaimAll: withClaimAllValue });
+  };
+  handleWithTaskAll = e => {
+    debugger;
+    let withTaskAllValue = e.currentTarget.value;
+    this.setState({ selectedWithTaskAll: withTaskAllValue });
+  };
   handleWantToVisitStoreAll = e => {
     debugger;
     let wantToVisitStoreAllValue = e.currentTarget.value;
@@ -535,9 +710,20 @@ class MyTicketList extends Component {
       selectedPurchaseStoreCodeAddressAll: purchaseStoreCodeAddressAllValue
     });
   };
+  handleVisitStoreCodeAddressAll = e => {
+    debugger;
+    let visitStoreCodeAddressAllValue = e.currentTarget.value;
+    this.setState({
+      selectedVisitStoreCodeAddressAll: visitStoreCodeAddressAllValue
+    });
+  };
   setTicketSourceValue = e => {
     let ticketSourceValue = e.currentTarget.value;
     this.setState({ selectedTicketSource: ticketSourceValue });
+  };
+  setSlaStatusValue = e => {
+    let slaStatusValue = e.currentTarget.value;
+    this.setState({ selectedSlaStatus: slaStatusValue });
   };
   setCategoryValue = e => {
     let categoryValue = e.currentTarget.value;
@@ -545,6 +731,15 @@ class MyTicketList extends Component {
     setTimeout(() => {
       if (this.state.selectedCategory) {
         this.handleGetSubCategoryList();
+      }
+    }, 1);
+  };
+  setClaimCategoryValue = e => {
+    let claimCategoryValue = e.currentTarget.value;
+    this.setState({ selectedClaimCategory: claimCategoryValue });
+    setTimeout(() => {
+      if (this.state.selectedClaimCategory) {
+        this.handleGetClaimSubCategoryList();
       }
     }, 1);
   };
@@ -567,6 +762,16 @@ class MyTicketList extends Component {
       }
     }, 1);
   };
+  setClaimSubCategoryValue = e => {
+    let claimSubCategoryValue = e.currentTarget.value;
+    this.setState({ selectedClaimSubCategory: claimSubCategoryValue });
+
+    setTimeout(() => {
+      if (this.state.selectedClaimSubCategory) {
+        this.handleGetClaimIssueTypeList();
+      }
+    }, 1);
+  };
   setSubCategoryAllValue = e => {
     let subCategoryAllValue = e.currentTarget.value;
     this.setState({ selectedSubCategoryAll: subCategoryAllValue });
@@ -580,6 +785,10 @@ class MyTicketList extends Component {
   setIssueTypeValue = e => {
     let issueTypeValue = e.currentTarget.value;
     this.setState({ selectedIssueType: issueTypeValue });
+  };
+  setClaimIssueTypeValue = e => {
+    let claimIssueTypeValue = e.currentTarget.value;
+    this.setState({ selectedClaimIssueType: claimIssueTypeValue });
   };
   setIssueTypeAllValue = e => {
     let issueTypeAllValue = e.currentTarget.value;
@@ -2798,8 +3007,25 @@ class MyTicketList extends Component {
                                         </select>
                                       </div>
                                       <div className="col-md-3 col-sm-6">
-                                        <select>
-                                          <option>SLA Status</option>
+                                        <select
+                                          value={this.state.selectedSlaStatus}
+                                          onChange={this.setSlaStatusValue}
+                                        >
+                                          <option>
+                                            SLA Status : Response / Resolution
+                                          </option>
+                                          {this.state.SlaStatusData !== null &&
+                                            this.state.SlaStatusData.map(
+                                              (item, i) => (
+                                                <option
+                                                  key={i}
+                                                  value={item.SLAId}
+                                                >
+                                                  {item.SLAResponseTime} /
+                                                  {item.SLARequestTime}
+                                                </option>
+                                              )
+                                            )}
                                         </select>
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -2825,6 +3051,13 @@ class MyTicketList extends Component {
                                           className="no-bg"
                                           type="text"
                                           placeholder="Want to visit Store Code/Address"
+                                          value={
+                                            this.state
+                                              .selectedVisitStoreCodeAddressAll
+                                          }
+                                          onChange={
+                                            this.handleVisitStoreCodeAddressAll
+                                          }
                                         />
                                       </div>
                                     </div>
@@ -2832,50 +3065,198 @@ class MyTicketList extends Component {
                                       <div className="col-md-6">
                                         <div className="row allspc">
                                           <div className="col-sm-6 m-b-25">
-                                            <select>
-                                              <option>With Claim</option>
-                                            </select>
-                                          </div>
-                                          <div className="col-sm-6">
-                                            <select>
-                                              <option>With Task</option>
-                                            </select>
-                                          </div>
-                                          <div className="col-sm-6 m-b-25">
-                                            <select>
-                                              <option>Claim Status</option>
-                                            </select>
-                                          </div>
-                                          <div className="col-sm-6">
-                                            <select>
-                                              <option>Task Status</option>
-                                            </select>
-                                          </div>
-                                          <div className="col-sm-6 m-b-25">
-                                            <select>
-                                              <option>Claim Category</option>
-                                            </select>
-                                          </div>
-                                          <div className="col-sm-6">
-                                            <select>
-                                              <option>Task Department</option>
-                                            </select>
-                                          </div>
-                                          <div className="col-sm-6 m-b-25">
-                                            <select>
-                                              <option>
-                                                Claim Sub Category
+                                            <select
+                                              value={
+                                                this.state.selectedWithClaimAll
+                                              }
+                                              onChange={this.handleWithClaimAll}
+                                            >
+                                              <option value="no">
+                                                With Claim : No
+                                              </option>
+                                              <option value="yes">
+                                                With Claim : Yes
                                               </option>
                                             </select>
                                           </div>
                                           <div className="col-sm-6">
-                                            <select>
-                                              <option>Task Function</option>
+                                            <select
+                                              value={
+                                                this.state.selectedWithTaskAll
+                                              }
+                                              onChange={this.handleWithTaskAll}
+                                            >
+                                              <option value="no">
+                                                With Task : No
+                                              </option>
+                                              <option value="yes">
+                                                With Task : Yes
+                                              </option>
+                                            </select>
+                                          </div>
+                                          <div className="col-sm-6 m-b-25">
+                                            <select
+                                              value={
+                                                this.state.selectedClaimStatus
+                                              }
+                                              onChange={this.handleClaimStatus}
+                                            >
+                                              <option>Claim Status</option>
+                                              {this.state.ClaimStatusData !==
+                                                null &&
+                                                this.state.ClaimStatusData.map(
+                                                  (item, i) => (
+                                                    <option
+                                                      key={i}
+                                                      value={item.claimStatusID}
+                                                    >
+                                                      {item.claimStatusName}
+                                                    </option>
+                                                  )
+                                                )}
                                             </select>
                                           </div>
                                           <div className="col-sm-6">
-                                            <select>
+                                            <select
+                                              value={
+                                                this.state.selectedTaskStatus
+                                              }
+                                              onChange={this.handleTaskStatus}
+                                            >
+                                              <option>Task Status</option>
+                                              {this.state.TaskStatusData !==
+                                                null &&
+                                                this.state.TaskStatusData.map(
+                                                  (item, i) => (
+                                                    <option
+                                                      key={i}
+                                                      value={item.taskStatusID}
+                                                    >
+                                                      {item.taskStatusName}
+                                                    </option>
+                                                  )
+                                                )}
+                                            </select>
+                                          </div>
+                                          <div className="col-sm-6 m-b-25">
+                                            <select
+                                              value={
+                                                this.state.selectedClaimCategory
+                                              }
+                                              onChange={
+                                                this.setClaimCategoryValue
+                                              }
+                                            >
+                                              <option>Claim Category</option>
+                                              {this.state.CategoryData !==
+                                                null &&
+                                                this.state.CategoryData.map(
+                                                  (item, i) => (
+                                                    <option
+                                                      key={i}
+                                                      value={item.categoryID}
+                                                    >
+                                                      {item.categoryName}
+                                                    </option>
+                                                  )
+                                                )}
+                                            </select>
+                                          </div>
+                                          <div className="col-sm-6">
+                                            <select
+                                              value={
+                                                this.state.selectedDepartment
+                                              }
+                                              onChange={this.setDepartmentValue}
+                                            >
+                                              <option>Task Department</option>
+                                              {this.state.DepartmentData !==
+                                                null &&
+                                                this.state.DepartmentData.map(
+                                                  (item, i) => (
+                                                    <option
+                                                      key={i}
+                                                      value={item.departmentID}
+                                                    >
+                                                      {item.departmentName}
+                                                    </option>
+                                                  )
+                                                )}
+                                            </select>
+                                          </div>
+                                          <div className="col-sm-6 m-b-25">
+                                            <select
+                                              value={
+                                                this.state
+                                                  .selectedClaimSubCategory
+                                              }
+                                              onChange={
+                                                this.setClaimSubCategoryValue
+                                              }
+                                            >
+                                              <option>
+                                                Claim Sub Category
+                                              </option>
+                                              {this.state
+                                                .ClaimSubCategoryData !==
+                                                null &&
+                                                this.state.ClaimSubCategoryData.map(
+                                                  (item, i) => (
+                                                    <option
+                                                      key={i}
+                                                      value={item.subCategoryID}
+                                                    >
+                                                      {item.subCategoryName}
+                                                    </option>
+                                                  )
+                                                )}
+                                            </select>
+                                          </div>
+                                          <div className="col-sm-6">
+                                            <select
+                                              value={
+                                                this.state.selectedFunction
+                                              }
+                                              onChange={this.setFunctionValue}
+                                            >
+                                              <option>Task Function</option>
+                                              {this.state.FunctionData !==
+                                                null &&
+                                                this.state.FunctionData.map(
+                                                  (item, i) => (
+                                                    <option
+                                                      key={i}
+                                                      value={item.functionID}
+                                                    >
+                                                      {item.funcationName}
+                                                    </option>
+                                                  )
+                                                )}
+                                            </select>
+                                          </div>
+                                          <div className="col-sm-6">
+                                            <select
+                                              value={
+                                                this.state
+                                                  .selectedClaimIssueType
+                                              }
+                                              onChange={
+                                                this.setClaimIssueTypeValue
+                                              }
+                                            >
                                               <option>Claim Issue Type</option>
+                                              {this.state.ClaimIssueTypeData !==
+                                                null &&
+                                                this.state.ClaimIssueTypeData.map(
+                                                  (item, i) => (
+                                                    <option
+                                                      key={i}
+                                                      value={item.issueTypeID}
+                                                    >
+                                                      {item.issueTypeName}
+                                                    </option>
+                                                  )
+                                                )}
                                             </select>
                                           </div>
                                         </div>
