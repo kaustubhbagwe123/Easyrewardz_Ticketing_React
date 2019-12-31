@@ -35,6 +35,8 @@ import {
   NotificationManager
 } from "react-notifications";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import { authHeader } from "../helpers/authHeader";
+import { encryption } from "../helpers/encryption";
 
 class TicketSystem extends Component {
   constructor() {
@@ -125,7 +127,6 @@ class TicketSystem extends Component {
     this.setState({ EditCustomer: false });
   }
   GenderonChange = e => {
-
     const value = e.target.value;
 
     let CustData = this.state.CustData;
@@ -274,17 +275,21 @@ class TicketSystem extends Component {
     });
   }
   handleGetBrandList() {
+    debugger;
     let self = this;
+    var _token = window.localStorage.getItem("token");
     axios({
       method: "post",
+      url: config.apiUrl + "/Brand/GetBrandList",
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
-      url: config.apiUrl + "/Brand/GetBrandList",
-      params: {
-        TenantID: this.state.tenantID
+        "Access-Control-Allow-Methods": "*",
+        "X-Authorized-Token": _token
       }
+      // headers: authHeader(),
+      // params: {
+      //   TenantID: this.state.tenantID
+      // }
     }).then(function(res) {
       // console.log(JSON.stringify(res.data.responseData));
       debugger;
@@ -525,7 +530,6 @@ class TicketSystem extends Component {
   };
 
   render() {
-
     var CustomerId = this.state.customerDetails.customerId;
     // var DOB = moment(this.state.CustData.editDOB).format("DD/MM/YYYY");
     var CustNumber = this.state.customerData.customerPhoneNumber;
@@ -894,7 +898,7 @@ class TicketSystem extends Component {
                           }
                         ]
                       }}
-                    /> 
+                    />
                     <div className="row colladrowa" style={{ bottom: "15px" }}>
                       <div className="col-md-12 colladrow">
                         <ul className="m-l-30">

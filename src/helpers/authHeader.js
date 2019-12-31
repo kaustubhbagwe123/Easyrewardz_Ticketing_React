@@ -13,7 +13,7 @@ else {
     // var token=window.localStorage.getItem('token');
      
       var tokenValue = encryption(window.localStorage.getItem("token"), "desc");
-      return { Authorization: tokenValue, "Content-Type": "application/json" };
+      return { 'X-Authorized-Token': tokenValue, "Content-Type": "application/json" };
      
   }
 }

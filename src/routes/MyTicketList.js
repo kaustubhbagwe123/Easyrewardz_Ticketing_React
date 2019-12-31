@@ -66,7 +66,6 @@ class MyTicketList extends Component {
       Schedule: false,
       StatusModel: false,
       CheckBoxChecked: false,
-      selectedDesignation: 0,
       selectedPriority: 0,
       selectedChannelOfPurchase: 0,
       selectedTicketStatusByDate: 0,
