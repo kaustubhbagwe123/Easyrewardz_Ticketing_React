@@ -38,7 +38,7 @@ import config from "./../helpers/config";
 import TicketStatus from "./TicketStatus";
 import SlaDue from "./SlaDue";
 import TicketActionType from "./TicketActionType";
-import moment from "moment";
+// import moment from "moment";
 import Select from "react-select";
 
 class MyTicketList extends Component {

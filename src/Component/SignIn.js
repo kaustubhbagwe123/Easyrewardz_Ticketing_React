@@ -79,7 +79,7 @@ class SingIn extends Component {
             NotificationManager.success("Login Successfull.");
             window.localStorage.setItem(
               "token",
-              encryption(res.data.responseData.token, "enc")
+              (res.data.responseData.token)
             );
             setTimeout(function() {
               self.props.history.push("Admin/dashboard");

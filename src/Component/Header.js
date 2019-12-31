@@ -24,6 +24,13 @@ import AmitSinghLogo from "./../assets/Images/amitsingh.png";
 import LogoutImg from "./../assets/Images/logout.png";
 import TakeBreak from "./../assets/Images/takebreak.png";
 import { Popover } from "antd";
+import { authHeader } from "../helpers/authHeader";
+import config from "../helpers/config";
+import axios from "axios";
+import {
+  NotificationContainer,
+  NotificationManager
+} from "react-notifications";
 
 class Header extends Component {
   constructor(props) {
@@ -117,7 +124,24 @@ class Header extends Component {
   closeModal = () => {
     this.setState({ modalIsOpen: false });
   };
- 
+  handleLogoutMethod() {
+    debugger;
+    // let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Account/Logout",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      var logout = res.data.message;
+      if (logout === "Logout Successfully!") {
+        NotificationManager.success(res.data.message);
+        localStorage.clear();
+        window.location.href = "/";
+      }
+    });
+  }
+
   componentDidMount() {
     let pageName, lastOne, lastValue, arr;
     arr = [...this.state.cont];
@@ -299,36 +323,7 @@ class Header extends Component {
                   <label className="amitsinghtext">Amit Singh</label>
                 </div>
               </div>
-              {/* <div className="row amitsinghcenter">
-                <div className="col-md-12">
-                <div className="status1">
-                  <input type="radio" name="logout-status" id="online" />
-                  <label htmlFor="online" className="logout-label" style={{marginRight:"25px"}}>
-                    Online
-                  </label>
-                
-                
-                  <input type="radio" name="logout-status" id="away" />
-                  <label htmlFor="away" className="logout-label">
-                    Offline
-                  </label>
-                </div>
-                                
-                </div>
-              </div>
-              <div className="row amitnextrow">
-                <div className="col-md-12">
-                  <button className="loginbtnagent"
-                  onClick={this.handleNextButtonShow.bind(this)}
-                  >Next</button>
-                </div>
-              </div>
-              <div className="row amitnextrow">
-                  <div className="col-md-12">
-                  <img src={LogoutImg} alt="logo" className="logoutImg"/>
-                    <span className="logouttamitsingh">Logout</span> 
-                  </div>
-                </div> */}
+
               {this.state.NextButton === true ? (
                 <div>
                   <div className="row amitsinghcenter1">
@@ -469,40 +464,6 @@ class Header extends Component {
                       >
                         <button className="tranferbtn">Transfer Call</button>
                       </Popover>
-                      {/* <UncontrolledPopover
-                        trigger="hover"
-                        placement="bottom"
-                        target="transfercallto"
-                        className="general-popover created-popover"
-                      >
-                        <PopoverBody>
-                          <div>
-                            <div className="row tooltiptransfercallrow">
-                              <div className="col-md-8">
-                                <label className="agentidtext">
-                                  Enter Agent ID
-                                </label>
-                              </div>
-                            </div>
-                            <div className="row agenttextrow">
-                              <div className="col-md-12">
-                                <input
-                                  type="text"
-                                  className="agenttext"
-                                  placeholder="9876543210"
-                                />
-                              </div>
-                            </div>
-                            <div className="row agenttextrow">
-                              <div className="col-md-12">
-                                <button className="loginbtnagent">
-                                  Connenting
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        </PopoverBody>
-                      </UncontrolledPopover> */}
                     </div>
                   </div>
 
@@ -836,9 +797,13 @@ class Header extends Component {
                   </p>
                   <p className="mail-id">naman@fabindia.com</p>
                 </div>
-                <Link to="/">
-                  <button className="logout">LOGOUT</button>
-                </Link>
+                <button
+                  type="button"
+                  className="logout"
+                  onClick={this.handleLogoutMethod.bind(this)}
+                >
+                  LOGOUT
+                </button>
               </div>
               <div className="status-sctn alignradio">
                 <div className="d-flex align-items-center">
@@ -908,6 +873,7 @@ class Header extends Component {
               </div>
             </div>
           </Modal>
+          <NotificationContainer />
         </div>
       </React.Fragment>
     );

@@ -36,7 +36,6 @@ import {
 } from "react-notifications";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { authHeader } from "../helpers/authHeader";
-import { encryption } from "../helpers/encryption";
 
 class TicketSystem extends Component {
   constructor() {
@@ -304,19 +303,10 @@ class TicketSystem extends Component {
   handleGetBrandList() {
     debugger;
     let self = this;
-    var _token = window.localStorage.getItem("token");
     axios({
       method: "post",
       url: config.apiUrl + "/Brand/GetBrandList",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*",
-        "X-Authorized-Token": _token
-      }
-      // headers: authHeader(),
-      // params: {
-      //   TenantID: this.state.tenantID
-      // }
+      headers: authHeader()
     }).then(function(res) {
       // console.log(JSON.stringify(res.data.responseData));
       debugger;
