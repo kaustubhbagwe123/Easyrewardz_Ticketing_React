@@ -836,7 +836,7 @@ class Header extends Component {
                   </p>
                   <p className="mail-id">naman@fabindia.com</p>
                 </div>
-                <Link to="/SignIn">
+                <Link to="/">
                   <button className="logout">LOGOUT</button>
                 </Link>
               </div>

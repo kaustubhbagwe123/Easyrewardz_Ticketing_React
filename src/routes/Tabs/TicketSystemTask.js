@@ -15,6 +15,7 @@ class TicketSystemTask extends Component {
     this.state = {
       taskTitle: "",
       taskDescription: "",
+      taskId:0,
       taskfield: {},
       taskData: [],
       DepartmentData: [],
@@ -178,10 +179,12 @@ class TicketSystemTask extends Component {
         var taskData = [];
         taskData = this.state.taskData;
 
-        this.state.taskfield["ID"] = taskData.length + 1;
+      this.state.taskfield["ID"] = taskData.length + 1;
+      //  var taskId= this.state.taskfield["ID"];
         taskData.push(this.state.taskfield);
         this.setState({
           taskData,
+        //  taskId : taskData.length + 1,
           taskfield: {
             ID:0,
             taskTitle: "",
@@ -207,7 +210,7 @@ class TicketSystemTask extends Component {
   handleTaskDelete(i){
     debugger
     let taskData = [...this.state.taskData];
-    taskData.splice(i,1);
+    taskData.splice((i-1),1);
      this.setState({ taskData });
   }
   render() {
