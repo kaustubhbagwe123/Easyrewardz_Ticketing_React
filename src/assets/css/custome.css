@@ -3061,6 +3061,59 @@ table tr th:last-child {
 }
 /* extra css end */
 
+/* my ticket list starts */
+.normal-dropdown .css-yk16xz-control, .normal-dropdown .css-1pahdxg-control {
+  min-height: 41px;
+  border-color: transparent;
+  box-shadow: none;
+}
+.normal-dropdown .css-yk16xz-control:hover, .normal-dropdown .css-1pahdxg-control:hover {
+  border-color: transparent;
+  box-shadow: none;
+}
+.normal-dropdown .css-1n7v3ny-option, .normal-dropdown .css-yt9ioa-option, .normal-dropdown .css-9gakcf-option {
+  padding: 6px 19px;
+}
+.normal-dropdown .css-w8afj7-Input {
+  margin: 0;
+  padding: 0;
+}
+.normal-dropdown .css-26l3qy-menu {
+  margin: 0;
+  box-shadow: none;
+  border-radius: 0;
+  border: 1px solid #7b9cd3;
+}
+.normal-dropdown .css-1ml51p6-MenuList {
+  padding: 0;
+}
+.normal-dropdown .css-yt9ioa-option, .normal-dropdown .css-1uccc91-singleValue, .normal-dropdown .css-1wa3eu0-placeholder {
+  color: #a7a7a7;
+}
+.normal-dropdown .css-1wa3eu0-placeholder {
+  margin: 0;
+}
+.normal-dropdown .css-1n7v3ny-option {
+  color: #fff;
+  background-color: #2684FF;
+}
+.normal-dropdown .css-1g48xl4-IndicatorsContainer {
+  display: none;
+}
+.normal-dropdown .css-yt9ioa-option:active {
+  background-color: #fff;
+}
+.normal-dropdown .css-1n7v3ny-option:active {
+  background-color: #2684FF;
+}
+.normal-dropdown .css-1hwfws3 {
+  padding-right: 44px;
+  padding-left: 19px;
+  background: url("./../Images//table-arr.png") no-repeat right 20px center;
+  background-size: 13px;
+}
+/* my ticket list ends */
+
 /* ticket system starts */
 .ticket-title-select .css-yk16xz-control, .ticket-title-select .css-1pahdxg-control {
   background-color: #ecf2f4;
@@ -3190,6 +3243,10 @@ table tr th:last-child {
   pointer-events: none;
 }
 /* add search my ticket ends */
+
+/* .cke_editable {
+  margin: 0px !important;
+} */
 
 /* chetan css end */
 /******************************************************/
