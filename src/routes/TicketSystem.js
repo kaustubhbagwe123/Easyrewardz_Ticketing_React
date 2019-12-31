@@ -35,6 +35,7 @@ import {
   NotificationManager
 } from "react-notifications";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import SimpleReactValidator from "simple-react-validator";
 import { authHeader } from "../helpers/authHeader";
 
 class TicketSystem extends Component {
@@ -98,6 +99,8 @@ class TicketSystem extends Component {
         }
       ]
     };
+    this.validator = new SimpleReactValidator();
+    // this.handleOnChangeData = this.handleOnChangeData.bind(this);
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
     // this.handleChange = this.handleChange.bind(this);
     this.handleGetTicketTitleList = this.handleGetTicketTitleList.bind(this);
@@ -128,7 +131,17 @@ class TicketSystem extends Component {
     this.setState({ EditCustomer: true });
   }
   handleEditCustomerClose() {
-    this.setState({ EditCustomer: false });
+    this.setState({
+      EditCustomer: false,
+      customerName: "",
+      customerPhoneNumber: "",
+      customerEmailId: "",
+      genderID: 1,
+      dob: "",
+      altNumber: "",
+      altEmailID: ""
+    });
+    this.validator.hideMessages();
   }
   GenderonChange = e => {
     const value = e.target.value;
@@ -157,7 +170,6 @@ class TicketSystem extends Component {
       showAddNote: !showAddNote
     });
   }
-
   handleOnChangeData = e => {
     const { name, value } = e.target;
     // const value =e.target.value;
@@ -184,6 +196,7 @@ class TicketSystem extends Component {
     debugger;
     let self = this;
     // var Dob= moment(this.state.CustData.editDOB).format("DD/MM/YYYY");
+    if (this.validator.allValid()) {
     axios({
       method: "post",
       headers: {
@@ -216,7 +229,11 @@ class TicketSystem extends Component {
         self.handleEditCustomerClose.bind(this);
       }
     });
+  } else {
+    this.validator.showMessages();
+    this.forceUpdate();
   }
+}
   handleGetTicketTitleList() {
     const requestOptions = {
       method: "POST",
@@ -1209,6 +1226,11 @@ class TicketSystem extends Component {
                             value={this.state.CustData.customername}
                             onChange={this.handleOnChangeData}
                           />
+                          {this.validator.message(
+                            "Full Name",
+                          this.state.customerName,
+                            "required|alpha_space"
+                          )}
                         </div>
                         <div className="col-md-6">
                           <input
@@ -1220,6 +1242,11 @@ class TicketSystem extends Component {
                             value={this.state.CustData.customerPhone}
                             onChange={this.handleOnChangeData}
                           />
+                          {this.validator.message(
+                            "Mobile Number",
+                           this.state.customerPhoneNumber,
+                             "required|integer|size:10"
+                          )}
                         </div>
                       </div>
                       <div className="row row-margin1">
@@ -1232,6 +1259,11 @@ class TicketSystem extends Component {
                             value={this.state.CustData.custEmailId}
                             onChange={this.handleOnChangeData}
                           />
+                          {this.validator.message(
+                            "Email Id",
+                          this.state.customerEmailId,
+                            "required|email"
+                          )}
                         </div>
                         <div className="col-md-6 radio-btn-margin">
                           <Radio.Group
@@ -1256,6 +1288,11 @@ class TicketSystem extends Component {
                             value={this.state.CustData.editDOB}
                             onChange={this.handleChange}
                           />
+                          {this.validator.message(
+                            "Date of Birth",
+                          this.state.dob,
+                            "required"
+                          )}
                         </div>
                       </div>
                       <hr />
@@ -1270,6 +1307,11 @@ class TicketSystem extends Component {
                             value={this.state.CustData.altNo}
                             onChange={this.handleOnChangeData}
                           />
+                          {this.validator.message(
+                            "Alternate Number",
+                          this.state.altNumber,
+                            "integer|size:10"
+                          )}
                         </div>
                         <div className="col-md-6">
                           <input
@@ -1280,6 +1322,11 @@ class TicketSystem extends Component {
                             value={this.state.CustData.altEmail}
                             onChange={this.handleOnChangeData}
                           />
+                           {this.validator.message(
+                            "Alternate Email Id",
+                           this.state.altEmailID,
+                            "email"
+                           )}
                         </div>
                       </div>
                       <div className="btn-float">

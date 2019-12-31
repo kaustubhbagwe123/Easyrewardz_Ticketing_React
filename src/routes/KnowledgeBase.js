@@ -576,12 +576,12 @@ class KnowledgeBase extends Component {
               </div>
               <br />
               <div className="row" style={{ float:"right"}}>
-                <label
-                  className="cancel-button-modal"
+                <button type="button"
+                  className="cancel-button-modalk"
                   onClick={this.closeAddNewKBModal.bind(this)}
                 >
                   CANCEL
-                </label>
+                </button>
                 <button className="add-kb-button-modal">
                   <label className="add-kb-button-text-modal">SAVE</label>
                 </button>
@@ -611,12 +611,12 @@ class KnowledgeBase extends Component {
               </div>
               <br />
               <div className="row">
-                <div>
+                <div className="col-md-6">
                   <select className="add-select-category">
                     <option>defective article</option>
                   </select>
                 </div>
-                <div>
+                <div className="col-md-6">
                   <select className="add-select-category">
                     <option>pain in feet/knee/leg</option>
                   </select>
@@ -624,14 +624,17 @@ class KnowledgeBase extends Component {
               </div>
 
               <div className="row">
+               <div className="col-md-12">
                 <input
                   type="text"
                   className="addkb-subject"
                   placeholder="Can I purchase a domain through Google?"
                 />
+                </div>
               </div>
               <br />
               <div className="row KBase">
+              <div className="col-md-12">
               <CKEditor
                   config={{
                     toolbar: [
@@ -666,18 +669,21 @@ class KnowledgeBase extends Component {
                   ],
                   }}
                 />
+                </div>
               </div>
               <br />
-              <div className="row" style={{ marginLeft: "59%" }}>
-                <label
-                  className="cancel-button-modal"
+              <div className="row" style={{float:"right"}}>
+               <div className="col-md-12">
+                <button type="button"
+                  className="cancel-button-modalk"
                   onClick={this.closeEditAproveModal.bind(this)}
                 >
                   CANCEL
-                </label>
+                </button>
                 <button className="add-kb-button-modal">
                   <label className="add-kb-button-text-modal">APPROVE</label>
                 </button>
+                </div>
               </div>
             </div>
           </div>

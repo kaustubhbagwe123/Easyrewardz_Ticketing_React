@@ -5,6 +5,7 @@ import { Popover } from "antd";
 import ReactTable from "react-table";
 import InfoIcon from "./../../assets/Images/info-icon.png";
 import HeadphoneImg from "./../../assets/Images/headphone3.png";
+import Demo from "./../../store/Hashtag";
 
 class Claim extends Component {
   constructor(props) {
@@ -286,10 +287,48 @@ class Claim extends Component {
                   data={dataStoreRaise}
                   columns={columnsStoreRaise}
                   // resizable={false}
-                  defaultPageSize={10}
-                  showPagination={true}
+                  defaultPageSize={8}
+                  showPagination={false}
                   getTrProps={this.HandleRowClickPage}
                 />
+                <div className="position-relative">
+                    <div className="pagi">
+                      <ul>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>&lt;</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>1</a>
+                        </li>
+                        <li className="active">
+                          <a href={Demo.BLANK_LINK}>2</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>3</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>4</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>5</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>6</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>&gt;</a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="item-selection">
+                      <select>
+                        <option>30</option>
+                        <option>50</option>
+                        <option>100</option>
+                      </select>
+                      <p>Items per page</p>
+                    </div>
+                  </div>
               </div>
             </div>
           </div>
@@ -305,9 +344,47 @@ class Claim extends Component {
                   data={dataStoreRaise}
                   columns={columnsStoreRaise}
                   // resizable={false}
-                  defaultPageSize={10}
-                  showPagination={true}
+                  defaultPageSize={8}
+                  showPagination={false}
                 />
+                 <div className="position-relative">
+                    <div className="pagi">
+                      <ul>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>&lt;</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>1</a>
+                        </li>
+                        <li className="active">
+                          <a href={Demo.BLANK_LINK}>2</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>3</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>4</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>5</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>6</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>&gt;</a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="item-selection">
+                      <select>
+                        <option>30</option>
+                        <option>50</option>
+                        <option>100</option>
+                      </select>
+                      <p>Items per page</p>
+                    </div>
+                  </div>
               </div>
             </div>
           </div>

@@ -20,7 +20,7 @@ class CampaignTable1 extends Component {
   render() {
     return (
       <div>
-        <table>
+        <table className="camp-datepick">
           <thead style={{ color: "#F0F0F0" }}>
             <tr>
               <th>Customer Name</th>
@@ -28,7 +28,7 @@ class CampaignTable1 extends Component {
               <th style={{ paddingLeft: "8px" }}>Status</th>
               <th style={{ padding: "0px" }}>Responce</th>
               <th style={{ padding: "0px" }}>Call Recheduled To</th>
-              <th style={{ textAlign: "left" }}>Actions</th>
+              <th style={{ textAlign: "left",float:"right" }}>Actions</th>
             </tr>
           </thead>
           <tbody>

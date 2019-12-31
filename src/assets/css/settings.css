@@ -1229,6 +1229,18 @@
   border: none;
   cursor: pointer;
 }
+.dropdown-setting1 {
+  color: #9b9b9b;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: left;
+  padding: 10px;
+  background: #ecf2f4 url("../Images/dropDown.png") no-repeat right 5px center;
+  border: none;
+  cursor: pointer;
+}
 .CreateADDBtn {
   background-color: #2561a8;
   border-radius: 4px;
@@ -2494,7 +2506,7 @@
 .moduleswitchtext {
   color: #4a4a4a;
   font-family: Lato;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
   line-height: 42px;
   width: 180px;
@@ -2504,7 +2516,7 @@
 .moduleswitchtext-main {
   color: #4a4a4a;
   font-family: Lato;
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 600;
   line-height: 42px;
   width: 180px;
@@ -2931,6 +2943,24 @@
   margin: -3px 0;
  }
  .StoreItemMasterReact svg:not(:root).svg-inline--fa {
+  overflow: visible;
+  color:#a7aaad;
+  width: 20px;
+  height: 18px;
+  margin: -3px 0;
+ }
+ .modulereactShortcut .goodby {
+   background-color: #F3F3F3;
+   padding: 3px 5px;
+ }
+ .modulereactShortcut svg:not(:root).svg-inline--fa {
+  overflow: visible;
+  color:#a7aaad;
+  width: 20px;
+  height: 18px;
+  margin: -3px 0;
+ }
+ .StoreRaiseReact svg:not(:root).svg-inline--fa {
   overflow: visible;
   color:#a7aaad;
   width: 20px;

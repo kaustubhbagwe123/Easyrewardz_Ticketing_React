@@ -36,6 +36,7 @@ import DatePicker from "react-datepicker";
 import axios from "axios";
 import config from "./../helpers/config";
 import TicketStatus from "./TicketStatus";
+// import { Checkbox } from "antd";
 import SlaDue from "./SlaDue";
 import TicketActionType from "./TicketActionType";
 // import moment from "moment";
@@ -46,6 +47,7 @@ class MyTicketList extends Component {
     super(props);
 
     this.state = {
+      
       AssignModal: false,
       collapseSearch: false,
       ByDateCreatDate: "",
@@ -64,8 +66,10 @@ class MyTicketList extends Component {
       SubCategoryData: [],
       SubCategoryAllData: [],
       IssueTypeData: [],
+      IssueTypeAllData: [],
       TicketStatusData: TicketStatus(),
       SlaDueData: SlaDue(),
+      TicketSourceData: [],
       TicketActionTypeData: TicketActionType(),
       tenantID: 1,
       open: false,
@@ -73,6 +77,7 @@ class MyTicketList extends Component {
       StatusModel: false,
       CheckBoxChecked: false,
       selectedPriority: 0,
+      selectedPriorityAll: 0,
       selectedChannelOfPurchase: [],
       selectedTicketActionType: [],
       selectedTicketStatusByDate: 0,
@@ -81,11 +86,16 @@ class MyTicketList extends Component {
       selectedTicketStatusByTicket: 0,
       selectedTicketStatusByCategory: 0,
       selectedTicketStatusAll: 0,
+      selectedVisitStoreAll: "yes",
+      selectedWantToVisitStoreAll: "yes",
+      selectedTicketSource: 0,
+      selectedPurchaseStoreCodeAddressAll: "",
       selectedCategory: 0,
       selectedCategoryAll: 0,
       selectedSubCategory: 0,
       selectedSubCategoryAll: 0,
       selectedIssueType: 0,
+      selectedIssueTypeAll: 0,
       selectedMobileNoByCustType: "",
       selectedEmailIdByCustType: "",
       selectedClaimIdAll: "",
@@ -93,6 +103,8 @@ class MyTicketList extends Component {
       selectedTicketIdTitleAll: "",
       selectedInvoiceSubOrderAll: "",
       selectedMobileAll: "",
+      selectedItemIdAll: "",
+      selectedAssignedToAll: "",
       selectedTicketIdByCustType: "",
       userID: 6,
       DraftDetails: [],
@@ -121,6 +133,7 @@ class MyTicketList extends Component {
     this.toggleSearch = this.toggleSearch.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
+    this.handleGetTicketSourceList = this.handleGetTicketSourceList.bind(this);
     this.handleGetCategoryList = this.handleGetCategoryList.bind(this);
     this.handleGetSubCategoryList = this.handleGetSubCategoryList.bind(this);
     this.handleGetIssueTypeList = this.handleGetIssueTypeList.bind(this);
@@ -135,11 +148,13 @@ class MyTicketList extends Component {
     this.handelAssignOnchange = this.handelAssignOnchange.bind(this);
   }
 
+  
   componentDidMount() {
     debugger;
     this.handleGetDesignationList();
     this.handleGetTicketPriorityList();
     this.handleGetChannelOfPurchaseList();
+    this.handleGetTicketSourceList();
     this.handleGetCategoryList();
     this.handleGetDraftDetails();
   }
@@ -266,6 +281,28 @@ class MyTicketList extends Component {
       self.setState({ ChannelOfPurchaseData: ChannelOfPurchaseData });
     });
   }
+  handleGetTicketSourceList() {
+    debugger;
+
+    let self = this;
+    axios({
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      url: config.apiUrl + "/Master/getTicketSources",
+      params: {
+        // TenantID: this.state.tenantID
+      }
+    }).then(function(res) {
+      debugger;
+      let TicketSourceData = res.data.responseData;
+      self.setState({
+        TicketSourceData: TicketSourceData
+      });
+    });
+  }
   handleGetCategoryList() {
     debugger;
 
@@ -325,6 +362,11 @@ class MyTicketList extends Component {
   }
   handleGetIssueTypeList() {
     let self = this;
+    let subCateId =
+      this.state.byCategoryFlag === 1
+        ? this.state.selectedSubCategory
+        : this.state.selectedSubCategoryAll;
+
     axios({
       method: "post",
       headers: {
@@ -334,12 +376,23 @@ class MyTicketList extends Component {
       url: config.apiUrl + "/IssueType/GetIssueTypeList",
       params: {
         TenantID: this.state.tenantID,
-        SubCategoryID: this.state.selectedSubCategory
+        SubCategoryID: subCateId
       }
     }).then(function(res) {
       debugger;
-      let IssueTypeData = res.data.responseData;
-      self.setState({ IssueTypeData: IssueTypeData });
+      // let IssueTypeData = res.data.responseData;
+      // self.setState({ IssueTypeData: IssueTypeData });
+      if (self.state.byCategoryFlag === 1) {
+        var IssueTypeData = res.data.responseData;
+        self.setState({
+          IssueTypeData: IssueTypeData
+        });
+      } else if (self.state.allFlag === 1) {
+        var IssueTypeAllData = res.data.responseData;
+        self.setState({
+          IssueTypeAllData: IssueTypeAllData
+        });
+      }
     });
   }
   handleAssignSearchData() {
@@ -361,11 +414,13 @@ class MyTicketList extends Component {
     }).then(function(res) {
       debugger;
       let SearchAssignData = res.data.responseData;
-      self.setState({ SearchAssignData: SearchAssignData ,
-        assignFirstName:'',
-        assignLastName:'',
-        assignEmail:'',
-        selectedDesignation:0});
+      self.setState({
+        SearchAssignData: SearchAssignData,
+        assignFirstName: "",
+        assignLastName: "",
+        assignEmail: "",
+        selectedDesignation: 0
+      });
     });
   }
 
@@ -376,6 +431,10 @@ class MyTicketList extends Component {
   setPriorityValue = e => {
     let priorityValue = e.currentTarget.value;
     this.setState({ selectedPriority: priorityValue });
+  };
+  setPriorityAllValue = e => {
+    let priorityAllValue = e.currentTarget.value;
+    this.setState({ selectedPriorityAll: priorityAllValue });
   };
   handleMobileNoByCustType = e => {
     debugger;
@@ -406,6 +465,16 @@ class MyTicketList extends Component {
     debugger;
     let invoiceSubOrderAllValue = e.currentTarget.value;
     this.setState({ selectedInvoiceSubOrderAll: invoiceSubOrderAllValue });
+  };
+  handleAssignedToAll = e => {
+    debugger;
+    let assignedToAllValue = e.currentTarget.value;
+    this.setState({ selectedAssignedToAll: assignedToAllValue });
+  };
+  handleItemIdAll = e => {
+    debugger;
+    let itemIdAllValue = e.currentTarget.value;
+    this.setState({ selectedItemIdAll: itemIdAllValue });
   };
   handleMobileAll = e => {
     debugger;
@@ -449,8 +518,29 @@ class MyTicketList extends Component {
     this.setState({ selectedTicketStatusByCategory: ticketStatusValue });
   };
   handleTicketStatusAll = e => {
-    let ticketStatusValue = e.currentTarget.value;
-    this.setState({ selectedTicketStatusAll: ticketStatusValue });
+    let ticketStatusAllValue = e.currentTarget.value;
+    this.setState({ selectedTicketStatusAll: ticketStatusAllValue });
+  };
+  handleVisitStoreAll = e => {
+    debugger;
+    let visitStoreAllValue = e.currentTarget.value;
+    this.setState({ selectedVisitStoreAll: visitStoreAllValue });
+  };
+  handleWantToVisitStoreAll = e => {
+    debugger;
+    let wantToVisitStoreAllValue = e.currentTarget.value;
+    this.setState({ selectedWantToVisitStoreAll: wantToVisitStoreAllValue });
+  };
+  handlePurchaseStoreCodeAddressAll = e => {
+    debugger;
+    let purchaseStoreCodeAddressAllValue = e.currentTarget.value;
+    this.setState({
+      selectedPurchaseStoreCodeAddressAll: purchaseStoreCodeAddressAllValue
+    });
+  };
+  setTicketSourceValue = e => {
+    let ticketSourceValue = e.currentTarget.value;
+    this.setState({ selectedTicketSource: ticketSourceValue });
   };
   setCategoryValue = e => {
     let categoryValue = e.currentTarget.value;
@@ -484,15 +574,19 @@ class MyTicketList extends Component {
     let subCategoryAllValue = e.currentTarget.value;
     this.setState({ selectedSubCategoryAll: subCategoryAllValue });
 
-    // setTimeout(() => {
-    //   if (this.state.selectedSubCategory) {
-    //     this.handleGetIssueTypeList();
-    //   }
-    // }, 1);
+    setTimeout(() => {
+      if (this.state.selectedSubCategoryAll) {
+        this.handleGetIssueTypeList();
+      }
+    }, 1);
   };
   setIssueTypeValue = e => {
     let issueTypeValue = e.currentTarget.value;
     this.setState({ selectedIssueType: issueTypeValue });
+  };
+  setIssueTypeAllValue = e => {
+    let issueTypeAllValue = e.currentTarget.value;
+    this.setState({ selectedIssueTypeAll: issueTypeAllValue });
   };
 
   StatusOpenModel() {
@@ -581,7 +675,7 @@ class MyTicketList extends Component {
     };
   };
   render() {
-    const { DraftDetails,SearchAssignData } = this.state;
+    const { DraftDetails, SearchAssignData } = this.state;
     const DefArti = (
       <div className="dash-creation-popup-cntr">
         <ul className="dash-category-popup dashnewpopup">
@@ -1517,6 +1611,7 @@ class MyTicketList extends Component {
                                       role="tab"
                                       aria-controls="customer-tab"
                                       aria-selected="false"
+                                      onClick={this.handleAdvSearchFlag}
                                     >
                                       By Customer Type
                                     </a>
@@ -1529,6 +1624,7 @@ class MyTicketList extends Component {
                                       role="tab"
                                       aria-controls="ticket-tab"
                                       aria-selected="false"
+                                      onClick={this.handleAdvSearchFlag}
                                     >
                                       By Ticket Type
                                     </a>
@@ -1541,6 +1637,7 @@ class MyTicketList extends Component {
                                       role="tab"
                                       aria-controls="category-tab"
                                       aria-selected="false"
+                                      onClick={this.handleAdvSearchFlag}
                                     >
                                       By Category
                                     </a>
@@ -1553,6 +1650,7 @@ class MyTicketList extends Component {
                                       role="tab"
                                       aria-controls="all-tab"
                                       aria-selected="false"
+                                      onClick={this.handleAdvSearchFlag}
                                     >
                                       All
                                     </a>
@@ -1786,7 +1884,7 @@ class MyTicketList extends Component {
                                           modalId="ScheduleModel"
                                           overlayId="logout-ovrly"
                                         >
-                                          <div>
+                                        <div>
                                             <label>
                                               <b>Schedule date to</b>
                                             </label>
@@ -1824,6 +1922,151 @@ class MyTicketList extends Component {
                                               </div>
                                             </div>
                                           </div>
+                                          {/* <div>
+                                            <label>
+                                              <b>Schedule date to</b>
+                                            </label>
+                                            <div>
+                                              <select
+                                                id="inputState"
+                                                className="form-control dropdown-setting1 ScheduleDate-to"
+                                              >
+                                                <option>Team Member</option>
+                                                <option>Team Member 1</option>
+                                              </select>
+                                              <select
+                                                id="inputState"
+                                                className="form-control dropdown-setting1 ScheduleDate-to"
+                                                 >
+                                                <option value="1">Monthly</option>
+                                                <option value="2">Weekly</option>
+                                                <option value="3">Same day each month</option>
+                                                <option value="4">Same week each month</option>
+                                                <option value="5">Same day each year</option>
+                                                <option value="6">Same week each year</option>
+                                              </select>
+
+                                             <div className="ScheduleDate-to">
+                                               <span>
+                                                 <label className="every1">Every</label>
+                                                 <input type="text" className="Every" placeholder="1" />
+                                                 <label className="every1">Day</label>
+                                               </span>
+                                             </div>
+
+                                              <div className="ScheduleDate-to">
+                                               <span>
+                                                 <label className="every1">Every</label>
+                                                 <input type="text" className="Every" placeholder="1" />
+                                                 <label className="every1">Week on</label>
+                                               </span>
+                                               <div style={{marginTop:"10px"}}>
+                                                <Checkbox>Mon</Checkbox>
+                                                <Checkbox>Tue</Checkbox>
+                                                <Checkbox>Wed</Checkbox>
+                                                <Checkbox>Thu</Checkbox>
+                                                <Checkbox>Fri</Checkbox>
+                                                <Checkbox>Sat</Checkbox>
+                                                <Checkbox>Sun</Checkbox>
+                                               </div>
+                                             </div> 
+
+                                             <div className="ScheduleDate-to">
+                                               <span>
+                                                 <label className="every1">Day</label>
+                                                 <input type="text" className="Every" placeholder="9" />
+                                                 <label className="every1">of every</label>
+                                                 <input type="text" className="Every" placeholder="1" />
+                                                 <label className="every1">months</label>
+                                               </span>
+                                             </div>
+
+                                             <div className="ScheduleDate-to">
+                                               <span>
+                                                 <label className="every1">Every</label>
+                                                 <input type="text" className="Every" placeholder="1" />
+                                                 <label className="every1">month on the</label>
+                                               </span>
+                                               <div className="row mt-3">
+                                               <div className="col-md-6">
+                                                <select id="inputState" className="form-control dropdown-setting1">
+                                                <option>Second</option>
+                                                <option>Four</option>
+                                              </select>
+                                              </div>
+                                              <div className="col-md-6">
+                                               <select id="inputState" className="form-control dropdown-setting1">
+                                                <option>Sunday</option>
+                                                <option>Monday</option>
+                                              </select>
+                                              </div>
+                                               </div>
+                                             </div>
+
+                                              <div className="ScheduleDate-to"> 
+                                               <div className="row m-0">
+                                               <label className="every1" style={{lineHeight:"40px"}}>on</label>
+                                               <div className="col-md-7">
+                                                <select id="inputState" className="form-control dropdown-setting1">
+                                                <option>Septmber</option>
+                                                <option>Octomber</option>
+                                              </select>
+                                              </div>
+                                                <input type="text" className="Every" placeholder="1" />
+                                               </div> 
+                                             </div>
+
+                                               <div className="ScheduleDate-to">
+                                               <span>
+                                               <div className="row m-0">
+                                               <label className="every1" style={{lineHeight:"40px"}}>on the</label>
+                                               <div className="col-md-7">
+                                                <select id="inputState" className="form-control dropdown-setting1">
+                                                <option>Second</option>
+                                                <option>Four</option>
+                                              </select>
+                                               </div>
+                                               </div>
+                                             
+                                                 
+                                                 
+                                               </span>
+                                               <div className="row mt-3">
+                                               <div className="col-md-5">
+                                                <select id="inputState" className="form-control dropdown-setting1" style={{width:"100px"}}>
+                                                <option>Sunday</option>
+                                                <option>Monday</option>
+                                              </select>
+                                              </div>
+                                              <label className="every1" style={{lineHeight:"40px",marginLeft:"14px"}}>to</label>
+                                              <div className="col-md-5">
+                                               <select id="inputState" className="form-control dropdown-setting1" style={{width:"100px"}}>
+                                                <option>Septmber</option>
+                                                <option>Octomber</option>
+                                              </select>
+                                              </div>
+                                               </div>
+                                             </div>
+                                              
+                                              <input
+                                                type="text"
+                                                className="txt-1 txt1Place txt1Time"
+                                                placeholder="11AM"
+                                              />
+                                              <div>
+                                                <button className="scheduleBtn">
+                                                  <label className="addLable">
+                                                    SCHEDULE
+                                                  </label>
+                                                </button>
+                                              </div>
+                                              <div>
+                                                <button type="button" className="scheduleBtncancel">
+                                                    CANCEL 
+                                                </button>
+                                              </div>
+                                            </div>
+                                          </div> */}
                                         </Modal>
                                         <button
                                           className={
@@ -2449,8 +2692,25 @@ class MyTicketList extends Component {
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6">
-                                        <select>
+                                        <select
+                                          value={
+                                            this.state.selectedTicketSource
+                                          }
+                                          onChange={this.setTicketSourceValue}
+                                        >
                                           <option>Ticket Source</option>
+                                          {this.state.TicketSourceData !==
+                                            null &&
+                                            this.state.TicketSourceData.map(
+                                              (item, i) => (
+                                                <option
+                                                  key={i}
+                                                  value={item.ticketSourceId}
+                                                >
+                                                  {item.ticketSourceName}
+                                                </option>
+                                              )
+                                            )}
                                         </select>
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -2541,8 +2801,23 @@ class MyTicketList extends Component {
                                         </select>
                                       </div>
                                       <div className="col-md-3 col-sm-6">
-                                        <select>
+                                        <select
+                                          value={this.state.selectedPriorityAll}
+                                          onChange={this.setPriorityAllValue}
+                                        >
                                           <option>Ticket Priority</option>
+                                          {this.state.TicketPriorityData !==
+                                            null &&
+                                            this.state.TicketPriorityData.map(
+                                              (item, i) => (
+                                                <option
+                                                  key={i}
+                                                  value={item.priorityID}
+                                                >
+                                                  {item.priortyName}
+                                                </option>
+                                              )
+                                            )}
                                         </select>
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -2550,12 +2825,23 @@ class MyTicketList extends Component {
                                           className="no-bg"
                                           type="text"
                                           placeholder="Item ID"
+                                          value={this.state.selectedItemIdAll}
+                                          onChange={this.handleItemIdAll}
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6">
-                                        <select>
+                                        {/* <select>
                                           <option>Assigned To</option>
-                                        </select>
+                                        </select> */}
+                                        <input
+                                          className="no-bg"
+                                          type="text"
+                                          placeholder="Assigned To"
+                                          value={
+                                            this.state.selectedAssignedToAll
+                                          }
+                                          onChange={this.handleAssignedToAll}
+                                        />
                                       </div>
                                       <div className="col-md-3 col-sm-6 allspc">
                                         {/* <select>
@@ -2605,9 +2891,18 @@ class MyTicketList extends Component {
                                         </select>
                                       </div>
                                       <div className="col-md-3 col-sm-6">
-                                        <select>
-                                          <option>Did Visit Store : Yes</option>
-                                          <option>Did Visit Store : No</option>
+                                        <select
+                                          value={
+                                            this.state.selectedVisitStoreAll
+                                          }
+                                          onChange={this.handleVisitStoreAll}
+                                        >
+                                          <option value="yes">
+                                            Did Visit Store : Yes
+                                          </option>
+                                          <option value="no">
+                                            Did Visit Store : No
+                                          </option>
                                         </select>
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -2615,6 +2910,14 @@ class MyTicketList extends Component {
                                           className="no-bg"
                                           type="text"
                                           placeholder="Purchase Store Code/Address"
+                                          value={
+                                            this.state
+                                              .selectedPurchaseStoreCodeAddressAll
+                                          }
+                                          onChange={
+                                            this
+                                              .handlePurchaseStoreCodeAddressAll
+                                          }
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -2622,12 +2925,15 @@ class MyTicketList extends Component {
                                           <option>Issue Type</option>
                                         </select> */}
                                         <select
-                                          value={this.state.selectedIssueType}
-                                          onChange={this.setIssueTypeValue}
+                                          value={
+                                            this.state.selectedIssueTypeAll
+                                          }
+                                          onChange={this.setIssueTypeAllValue}
                                         >
                                           <option>Issue Type</option>
-                                          {this.state.IssueTypeData !== null &&
-                                            this.state.IssueTypeData.map(
+                                          {this.state.IssueTypeAllData !==
+                                            null &&
+                                            this.state.IssueTypeAllData.map(
                                               (item, i) => (
                                                 <option
                                                   key={i}
@@ -2645,11 +2951,19 @@ class MyTicketList extends Component {
                                         </select>
                                       </div>
                                       <div className="col-md-3 col-sm-6">
-                                        <select>
-                                          <option>
+                                        <select
+                                          value={
+                                            this.state
+                                              .selectedWantToVisitStoreAll
+                                          }
+                                          onChange={
+                                            this.handleWantToVisitStoreAll
+                                          }
+                                        >
+                                          <option value="yes">
                                             Want to Visit Store : Yes
                                           </option>
-                                          <option>
+                                          <option value="no">
                                             Want to Visit Store : No
                                           </option>
                                         </select>

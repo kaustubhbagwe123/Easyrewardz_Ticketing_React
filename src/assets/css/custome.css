@@ -2862,7 +2862,7 @@ table tr th:last-child {
   height: 43px;
   padding: 0;
   margin-left: 8px;
-  font-size: 20px;
+  font-size: 30px;
 }
 .top-tab-act .nav-tabs .nav-link {
   padding: 20px;
@@ -5540,7 +5540,21 @@ font-weight: normal;
   text-align: left;
   cursor: pointer;
 }
-
+.cancel-button-modalk {
+  background-color: #FFF;
+  border-radius: 4px;
+  border: none;
+  width: 128px;
+  height: 43px;
+  cursor: pointer;
+  margin-right: 0;
+  color: #2561a8;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 25px;
+  text-align: center;
+}
 .cancel-button-modal {
   color: #2561a8;
   font-family: Lato;
@@ -9725,5 +9739,55 @@ table tr th:last-child {
 .im {
   flex: 20 0 auto !important;
   width: 20px !important;
+}
+#ScheduleModel .scheduleBtncancel {
+  background-color: #FFF;
+  border-radius: 4px;
+  width: 245px;
+  height: 43px;
+  color: #2561A8;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  text-align: center;
+  border: none;
+}
+#ScheduleModel .txt1Time {
+  background: #ecf2f4 url("../Images/Time.png") no-repeat right 12px center; 
+  background-size: 17px;
+}
+.Every {
+  width: 35px;
+  height: 40px;
+  background-color: #ecf2f4;
+  border: none;
+  padding: 0 8px;
+  margin: 0 8px;
+  border-radius: 5px;
+  color: #6E6E6E;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  text-align: center; 
+}
+.ScheduleDate-to .every1 {
+  color: #A7A7A7;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  text-align: left;
+}
+#ScheduleModel .ant-checkbox + span {
+  padding: 0 9px 0 5px !important;
+  color: #a7a7a7;
+}
+#ScheduleModel .ant-checkbox-wrapper {
+  width: 60px;
+}
+#ScheduleModel .ant-checkbox-wrapper + .ant-checkbox-wrapper {
+  margin: 0;
 }
 /* ****************End css ************************/
