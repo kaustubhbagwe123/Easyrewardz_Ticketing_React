@@ -474,6 +474,41 @@ class TicketSystem extends Component {
     }
   }
 
+  // handleCREATE_TICKET(){
+  //   debugger;
+  //   let self = this;
+
+  //   axios({
+  //     method: "post",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       "Access-Control-Allow-Methods": "*"
+  //     },
+  //     url: config.apiUrl + "/Customer/createCustomer",
+  //     data: {
+  //       TenantID: ,
+  //       CustomerName: ,
+  //       CustomerPhoneNumber: ,
+  //       CustomerEmailId: ,
+  //       GenderID: ,
+  //       AltNumber: ,
+  //       AltEmailID: ,
+  //       DateOfBirth:,
+  //       IsActive: ,
+  //       CreatedBy: ,
+  //       ModifyBy: ,
+  //       ModifiedDate: 
+  //     }
+  //   }).then(function(res) {
+  //     debugger;
+  //     let responseMessage = res.data.message;
+     
+  //     if (responseMessage === "Success") {
+  //       NotificationManager.success("New Customer added successfully.");
+  //     }
+  //   });
+  // }
+
   setBrandValue = e => {
     let brandValue = e.currentTarget.value;
     this.setState({ selectedBrand: brandValue });
@@ -584,10 +619,10 @@ class TicketSystem extends Component {
                 <td className="tdtextnew" style={{ padding: "5px" }}>
                   <label className="save-as-a-draft">SAVE AS DRAFT</label>
                   <button
-                    className="rectanglecreateticket"
+                    className="rectanglecreateticket create-ticket"
                     onClick={this.handleSubmitReopnModalOpen.bind(this)}
                   >
-                    <label className="create-ticket">CREACT TICKET</label>
+                    CREACT TICKET
                   </button>
                   <Modal
                     open={this.state.SubmitBtnReopn}
@@ -597,11 +632,11 @@ class TicketSystem extends Component {
                     overlayId="logout-ovrly"
                   >
                     <div>
-                      <label>
+                      <button className="btnMdlSubmit" onClick={this.handleCREATE_TICKET.bind(this)}>
                         {this.state.selectedTicketActionType === "200"
                           ? "Submit As Solved"
                           : "Create Ticket"}
-                      </label>
+                      </button>
                     </div>
                   </Modal>
                 </td>
