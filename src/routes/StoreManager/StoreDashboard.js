@@ -5,7 +5,7 @@ import "./../../../node_modules/bootstrap/dist/js/bootstrap.js"
 import Demo from './../../store/Hashtag'
 import SearchIcon from './../../assets/Images/search-icon.png'
 import InfoIcon from './../../assets/Images/info-icon.png';
-import TableArr from './../../assets/Images/table-arr.png'
+// import TableArr from './../../assets/Images/table-arr.png'
 import TaskDepartment from "./Charts/TaskDepartment.js";
 import TaskByPriority from "./Charts/TaskByPriority.js";
 import ClaimVsInvoice from "./Charts/ClaimVsInvoice.js";
@@ -15,6 +15,10 @@ import OpenCompaign from "./Charts/OpenCompaign.js";
 import InvoiceAmountPie from "./Charts/InvoiceAmountPie.js";
 import { Collapse, CardBody, Card } from "reactstrap";
 import Modal from "react-responsive-modal";
+import { Popover } from "antd";
+import ReactTable from "react-table";
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 class StoreDashboard extends Component {
   constructor(props){
@@ -36,7 +40,289 @@ class StoreDashboard extends Component {
   StatusCloseModel() {
     this.setState({ StatusModel: false });
   }
+  
   render() {
+    const DefArti = (
+      <div className="dash-creation-popup-cntr">
+        <ul className="dash-category-popup dashnewpopup">
+          <li>
+            <p>Category</p>
+            <p>Defective article</p>
+          </li>
+          <li>
+            <p>Sub Category</p>
+            <p>Customer wants refund</p>
+          </li>
+          <li>
+            <p>Type</p>
+            <p>Delivery</p>
+          </li>
+        </ul>
+      </div>
+    );
+
+    const dataStDash = [
+      {
+        statusNew: (
+          <span className="table-btn table-blue-btn">
+            <label>Open</label>
+          </span>
+        ),
+        TaskTitle: (
+          <label>Wifi is not working from 5 Hrs</label>
+        ),
+        DeptName:(
+          <span>
+          <label>Internet</label>
+          <Popover content={DefArti} placement="bottom">
+            <img className="info-icon" src={InfoIcon} alt="info-icon" />
+          </Popover>
+        </span>
+        ),
+        StName: (
+          <label>Bata1</label>
+        ),
+      },
+      {  
+        statusNew: (
+          <span className="table-btn table-blue-btn">
+            <label>Open</label>
+          </span>
+        ),
+        TaskTitle: (
+          <label>Store door are not working</label>
+        ),
+        DeptName:(
+          <span>
+          <label>Hardware</label>
+          <Popover content={DefArti} placement="bottom">
+            <img className="info-icon" src={InfoIcon} alt="info-icon" />
+          </Popover>
+        </span>
+        ),
+        StName: (
+          <label>Bata2</label>
+        ),
+      },
+      {
+        statusNew: (
+          <span className="table-btn table-green-btn">
+            <label>Solved</label>
+          </span>
+        ),
+        TaskTitle: (
+          <label>Supplies are not coming on time</label>
+        ),
+        DeptName:(
+          <span>
+          <label>Supply</label>
+          <Popover content={DefArti} placement="bottom">
+            <img className="info-icon" src={InfoIcon} alt="info-icon" />
+          </Popover>
+        </span>
+        ),
+        StName: (
+          <label>Bata3</label>
+        ),
+      },
+
+     
+      {
+        statusNew: (
+          <span className="table-btn table-blue-btn">
+            <label>Open</label>
+          </span>
+        ),
+        TaskTitle: (
+          <label>Wifi is not working from 5 Hrs</label>
+        ),
+        DeptName:(
+          <span>
+          <label>Internet</label>
+          <Popover content={DefArti} placement="bottom">
+            <img className="info-icon" src={InfoIcon} alt="info-icon" />
+          </Popover>
+        </span>
+        ),
+        StName: (
+          <label>Bata1</label>
+        ),
+      },
+      {
+        statusNew: (
+          <span className="table-btn table-blue-btn">
+            <label>Open</label>
+          </span>
+        ),
+        TaskTitle: (
+          <label>Store door are not working</label>
+        ),
+        DeptName:(
+          <span>
+          <label>Hardware</label>
+          <Popover content={DefArti} placement="bottom">
+            <img className="info-icon" src={InfoIcon} alt="info-icon" />
+          </Popover>
+        </span>
+        ),
+        StName: (
+          <label>Bata2</label>
+        ),
+      },
+      { 
+        statusNew: (
+          <span className="table-btn table-green-btn">
+            <label>Solved</label>
+          </span>
+        ),
+        TaskTitle: (
+          <label>Store door are not working</label>
+        ),
+        DeptName:(
+          <span>
+          <label>Supply</label>
+          <Popover content={DefArti} placement="bottom">
+            <img className="info-icon" src={InfoIcon} alt="info-icon" />
+          </Popover>
+        </span>
+        ),
+        StName: (
+          <label>Bata3</label>
+        ),
+      },
+      { 
+        statusNew: (
+          <span className="table-btn table-blue-btn">
+            <label>open</label>
+          </span>
+        ),
+        TaskTitle: (
+          <label>Supplies are not coming on time</label>
+        ),
+        DeptName:(
+          <span>
+          <label>Hardwares</label>
+          <Popover content={DefArti} placement="bottom">
+            <img className="info-icon" src={InfoIcon} alt="info-icon" />
+          </Popover>
+        </span>
+        ),
+        StName: (
+          <label>Bata3</label>
+        ),
+      }
+    ];
+
+    const columnsStDash = [
+      {
+        Header: (
+          <span>
+           ID
+          </span>
+        ),
+        accessor: "idClose",
+        Cell: props => ( 
+          <label>
+            ABCD123
+          </label>
+        ),
+      },
+      {
+        Header: (
+          <span onClick={this.StatusOpenModel}>
+            Status <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "statusNew"
+      },
+      {
+        Header: (
+          <span>
+           Task Title
+          </span>
+        ),
+        accessor: "TaskTitle",
+      },
+      {
+        Header: (
+          <span>
+            Department <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "DeptName",
+      },
+      {
+        Header: (
+          <span>
+            Store Name <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "StName",
+      },
+      {
+        Header: (
+          <span>
+            Creation On <FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "creationNew",
+        Cell: props => (
+          <span>
+            <label>12 March 2018</label>
+
+            <Popover content={InsertPlaceholder} placement="left">
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
+        )
+      },
+      {
+        Header: (
+          <span>
+            Assign to<FontAwesomeIcon icon={faCaretDown} />
+          </span>
+        ),
+        accessor: "assignToNew",
+        Cell: props => (
+          <span>
+            <label>A, Bansal</label>
+          </span>
+        )
+      }
+    ];
+    
+    const InsertPlaceholder = (
+      <div className="insertpop1">
+        <ul className="dash-creation-popup">
+          <li className="title">Creation details</li>
+          <li>
+            <p>Naman Created</p>
+            <p>2 Hrs ago</p>
+          </li>
+          <li>
+            <p>Assigned to Vikas</p>
+            <p>1.5 Hrs ago</p>
+          </li>
+          <li>
+            <p>Vikas updated</p>
+            <p>1 Hr ago</p>
+          </li>
+          <li>
+            <p>Response time remaining by</p>
+            <p>30 mins</p>
+          </li>
+          <li>
+            <p>Response overdue by</p>
+            <p>1 Hr</p>
+          </li>
+          <li>
+            <p>Resolution overdue by</p>
+            <p>2 Hrs</p>
+          </li>
+        </ul>
+      </div>
+    );
+
     return (
       <div>
          <div className="container-fluid dash-dropdowns">
@@ -435,7 +721,164 @@ class StoreDashboard extends Component {
                   </Card>
                 </Collapse>
                 <div className="table-responsive tickhierpad">
-                  <table className="table-responsive stinlitab">
+                <ReactTable
+                data={dataStDash}
+                columns={columnsStDash}
+                // resizable={false}
+                defaultPageSize={8}
+                showPagination={false}
+                
+              />
+               <div className="position-relative">
+                        <div className="pagi">
+                          <ul>
+                            <li>
+                              <a href={Demo.BLANK_LINK}>&lt;</a>
+                            </li>
+                            <li>
+                              <a href={Demo.BLANK_LINK}>1</a>
+                            </li>
+                            <li className="active">
+                              <a href={Demo.BLANK_LINK}>2</a>
+                            </li>
+                            <li>
+                              <a href={Demo.BLANK_LINK}>3</a>
+                            </li>
+                            <li>
+                              <a href={Demo.BLANK_LINK}>4</a>
+                            </li>
+                            <li>
+                              <a href={Demo.BLANK_LINK}>5</a>
+                            </li>
+                            <li>
+                              <a href={Demo.BLANK_LINK}>6</a>
+                            </li>
+                            <li>
+                              <a href={Demo.BLANK_LINK}>&gt;</a>
+                            </li>
+                          </ul>
+                        </div>
+                        <div className="item-selection">
+                          <select>
+                            <option>30</option>
+                            <option>50</option>
+                            <option>100</option>
+                          </select>
+                          <p>Items per page</p>
+                        </div>
+                      </div>
+                      <Modal
+                          onClose={this.StatusCloseModel}
+                          open={this.state.StatusModel}
+                          modalId="Status-popup"
+                          overlayId="logout-ovrly"
+                        >
+                          <div className="status-drop-down">
+                            <div className="sort-sctn">
+                              <div className="d-flex">
+                                <a
+                                  href={Demo.BLANK_LINK}
+                                  className="sorting-icon"
+                                >
+                                  <img src={Sorting} alt="sorting-icon" />
+                                </a>
+                                <p>SORT BY A TO Z</p>
+                              </div>
+                              <div className="d-flex">
+                                <a
+                                  href={Demo.BLANK_LINK}
+                                  className="sorting-icon"
+                                >
+                                  <img src={Sorting} alt="sorting-icon" />
+                                </a>
+                                <p>SORT BY Z TO A</p>
+                              </div>
+                            </div>
+                            <div className="filter-type">
+                              <p>FILTER BY TYPE</p>
+                              <div className="filter-checkbox">
+                                <input
+                                  type="checkbox"
+                                  id="fil-open"
+                                  name="filter-type"
+                                />
+                                <label htmlFor="fil-open">
+                                  <span className="table-btn table-blue-btn">
+                                    Open
+                                  </span>
+                                </label>
+                              </div>
+                              <div className="filter-checkbox">
+                                <input
+                                  type="checkbox"
+                                  id="fil-new"
+                                  name="filter-type"
+                                />
+                                <label htmlFor="fil-new">
+                                  <span className="table-btn table-yellow-btn">
+                                    New
+                                  </span>
+                                </label>
+                              </div>
+                              <div className="filter-checkbox">
+                                <input
+                                  type="checkbox"
+                                  id="fil-solved"
+                                  name="filter-type"
+                                />
+                                <label htmlFor="fil-solved">
+                                  <span className="table-btn table-green-btn">
+                                    Solved
+                                  </span>
+                                </label>
+                              </div>
+                            </div>
+                            <div className="filter-type filter-color">
+                              <p>FILTER BY COLOR</p>
+                              <div className="filter-checkbox">
+                                <input
+                                  type="checkbox"
+                                  id="fil-red"
+                                  name="filter-color"
+                                />
+                                <label htmlFor="fil-red">
+                                  <span className="fil-color-red fil-color-bg"></span>
+                                </label>
+                              </div>
+                              <div className="filter-checkbox">
+                                <input
+                                  type="checkbox"
+                                  id="fil-orange"
+                                  name="filter-color"
+                                />
+                                <label htmlFor="fil-orange">
+                                  <span className="fil-color-orange fil-color-bg"></span>
+                                </label>
+                              </div>
+                              <div className="filter-checkbox">
+                                <input
+                                  type="checkbox"
+                                  id="fil-white"
+                                  name="filter-color"
+                                />
+                                <label htmlFor="fil-white">
+                                  <span className="fil-color-white fil-color-bg"></span>
+                                </label>
+                              </div>
+                              <div className="filter-checkbox">
+                                <input
+                                  type="checkbox"
+                                  id="fil-green"
+                                  name="filter-color"
+                                />
+                                <label htmlFor="fil-green">
+                                  <span className="fil-color-green fil-color-bg"></span>
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                        </Modal>
+                  {/* <table className="table-responsive stinlitab">
                   <thead>
                     <tr>
                       <th>ID</th>
@@ -895,39 +1338,9 @@ class StoreDashboard extends Component {
                       <td>G. Bansal</td>
                     </tr>
                   </tbody>
-                </table>
+                </table> */}
                 </div>
-                <div className="pagi">
-                  <ul>
-                    <li>
-                      <a href={Demo.BLANK_LINK}>&lt;</a>
-                    </li>
-                    <li>
-                      <a href={Demo.BLANK_LINK}>1</a>
-                    </li>
-                    <li className="active">
-                      <a href={Demo.BLANK_LINK}>2</a>
-                    </li>
-                    <li>
-                      <a href={Demo.BLANK_LINK}>3</a>
-                    </li>
-                    <li>
-                      <a href={Demo.BLANK_LINK}>4</a>
-                    </li>
-                    <li>
-                      <a href={Demo.BLANK_LINK}>5</a>
-                    </li>
-                    <li>
-                      <a href={Demo.BLANK_LINK}>6</a>
-                    </li>
-                    <li>
-                      <a href={Demo.BLANK_LINK}>7</a>
-                    </li>
-                    <li>
-                      <a href={Demo.BLANK_LINK}>&gt;</a>
-                    </li>
-                  </ul>
-                </div>
+               
                 <div
                   className="float-search"
                   onClick={this.handleFilterCollapse}

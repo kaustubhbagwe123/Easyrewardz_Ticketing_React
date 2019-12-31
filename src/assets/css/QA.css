@@ -1348,4 +1348,48 @@ padding: 5px 40px;
   height: 18px;
   margin: -3px 0;
  }
+ .QaAudit .nav-tabs .nav-item {
+   margin-bottom: 0;
+ }
+ .QaAudit .module-tabs .nav-tabs {
+  border-bottom: 1px solid #ececec;
+ }
+ .QcFromDate1 .QcFromDate input[type=text] {
+  width: 100%;
+  border-radius: 4px;
+  padding: 10px 50px 10px 10px;
+  border: 0;
+  background: #ecf2f4 url(/static/media/calendar-black.d0d589e5.svg) no-repeat right 15px center;
+  color: #4a4a4a;
+}
+.QcFromDate .react-datepicker-wrapper {
+  width: 100%;
+}
+.QcFromDate .react-datepicker__navigation--next {
+  min-width: auto;
+}
+.QcFromDate .react-datepicker__navigation--previous {
+  min-width: auto;
+}
+.resolutiondate input[type=text] {
+  display: block;
+  width: 100%;
+  border-radius: 4px;
+  padding: 10px 50px 10px 10px;
+  border: 0;
+  background: #fff url(/static/media/calendar-black.d0d589e5.svg) no-repeat right 15px center;
+  color: #4a4a4a;
+}
+.resolutiondate .react-datepicker-wrapper{
+  width: 100%;
+}
+.resolutiondate .react-datepicker__navigation--next {
+  min-width: auto;
+}
+.resolutiondate .react-datepicker__navigation--previous {
+  min-width: auto;
+}
+.table-expandable-sctn2 .tab-content .row.all-row .resolutiondate div {
+  margin-bottom: 0;
+}
 /* QA AuditParameters css end by Shlok */

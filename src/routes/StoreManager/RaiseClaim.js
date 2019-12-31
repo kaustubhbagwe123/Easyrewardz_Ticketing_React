@@ -7,6 +7,7 @@ import ArrowImg from "./../../assets/Images/arrow.png";
 import PlusImg from "./../../assets/Images/plus.png";
 import Headphone2Img from "./../../assets/Images/headphone2.png";
 import SearchBlackImg from "./../../assets/Images/searchBlack.png";
+import ReactTable from "react-table";
 
 class RaiseClaim extends Component {
   constructor(props) {
@@ -26,6 +27,99 @@ class RaiseClaim extends Component {
     });
   }
   render() {
+
+    const dataOrder = [
+      {
+        taskTitle: "Store door are not working",
+        assignTo: "G.Bansal"
+      },
+      {
+        taskTitle: "Supplies are not coming on time",
+        assignTo: "A.Bansal"
+      },
+      {
+        taskTitle: "Supplies are not coming on time",
+        assignTo: "G.Bansal"
+      },
+      {
+        taskTitle: "Supplies are not coming on time",
+        assignTo: "A.Bansal"
+      },
+      {
+        taskTitle: "Supplies are not coming on time",
+        assignTo: "A.Bansal"
+      }
+    ];
+
+    const dataOrder1 = [
+      {
+        taskTitle: "Store door are not working",
+        assignTo: "G.Bansal"
+      },
+      {
+        taskTitle: "Supplies are not coming on time",
+        assignTo: "A.Bansal"
+      },
+      {
+        taskTitle: "Supplies are not coming on time",
+        assignTo: "G.Bansal"
+      },
+      {
+        taskTitle: "Supplies are not coming on time",
+        assignTo: "A.Bansal"
+      },
+      {
+        taskTitle: "Supplies are not coming on time",
+        assignTo: "A.Bansal"
+      }
+    ];
+
+    const columnsOrder1 = [
+      {
+        Header: <span>SKU</span>,
+        accessor: "Sku",
+        Cell: row => (
+          <div className="filter-checkbox" style={{ marginLeft: "15px" }}>
+            <input
+              type="checkbox"
+              id="fil-number12"
+              name="filter-type"
+              style={{ display: "none" }}
+              //   onChange={() => this.showAddNoteFuncation()}
+            />
+            <label htmlFor="fil-number12" style={{ paddingLeft: "25px" }}>
+              <span className="add-note">BB332398</span>
+            </label>
+          </div>
+        )
+      },
+      {
+        Header: <span>Product Name</span>,
+        accessor: "ProName",
+        Cell: row => <label>Paper Bag Big</label>
+      },
+      {
+        Header: <span>Price</span>,
+        accessor: "Price",
+        Cell: row => <label>2999</label>
+      },
+      {
+        Header: <span>Price Paid</span>,
+        accessor: "pricePa1",
+        Cell: row => <label>2999</label>
+      },
+      {
+        Header: <span>Discount</span>,
+        accessor: "dis1",
+        Cell: row => <label>0.00</label>
+      },
+      {
+        Header: <span>MOP</span>,
+        accessor: "reqSiz",
+        Cell: row => <label>Cash</label>
+      }
+    ];
+
     return (
       <Fragment>
         <div className="raiseclaim">
@@ -100,7 +194,7 @@ class RaiseClaim extends Component {
                       </div>
                     </div>
 
-                    <Collapse isOpen={this.state.collapse} style={{width:'100%'}}>
+                    <Collapse isOpen={this.state.collapse} style={{width:'100%',border:"1px solid #eee",borderRadius:"5px"}}>
                       <Card>
                         <CardBody style={{padding:"15px 0 0"}}>
                           <div className="row">
@@ -126,8 +220,93 @@ class RaiseClaim extends Component {
                             </div>
                           </div>
                           {this.state.SearchDetails ? (
-                            <div>
-                              <TableDemo />
+                            <div style={{borderTop:"1px solid #EEE",marginTop:"12px"}}>
+                              <div className="reacttableordermodal">
+              <ReactTable
+                data={dataOrder}
+                // columns={columnsOrder}
+                columns={[
+                  {
+                    Header: <span>Invoice Number</span>,
+                    accessor: "invoiceNumber",
+                    Cell: row => (
+                      <div
+                        className="filter-checkbox"
+                        style={{ marginLeft: "15px" }}
+                      >
+                        <input
+                          type="checkbox"
+                          id="fil-number1"
+                          name="filter-type"
+                          style={{ display: "none" }}
+                          //   onChange={() => this.showAddNoteFuncation()}
+                        />
+                        <label
+                          htmlFor="fil-number1"
+                          style={{ paddingLeft: "25px" }}
+                        >
+                          <span className="add-note">BB332398</span>
+                        </label>
+                      </div>
+                    )
+                  },
+                  {
+                    Header: <span>Invoice Date</span>,
+                    accessor: "invoiceDate",
+                    Cell: row => <label>12 Jan 2019</label>
+                  },
+                  {
+                    Header: <span>Item Count</span>,
+                    accessor: "itemCount",
+                    Cell: row => <label>02</label>
+                  },
+                  {
+                    Header: <span>Item Price</span>,
+                    accessor: "itemPrice",
+                    Cell: row => <label>2999</label>
+                  },
+                  {
+                    Header: <span>Price Paid</span>,
+                    accessor: "pricePaid",
+                    Cell: row => <label>2999</label>
+                  },
+                  {
+                    Header: <span>Store Code</span>,
+                    accessor: "storeCode",
+                    Cell: row => <label>SB221</label>
+                  },
+                  {
+                    Header: <span>Store Addres</span>,
+                    accessor: "storeAddres",
+                    Cell: row => (
+                      <label>UNIT D-338,| SECOND FLOOR SECTOR 14</label>
+                    )
+                  },
+                  // {
+                  //   Header: <span>Discount</span>,
+                  //   accessor: "discount",
+                  //   Cell: row => <label>25%</label>
+                  // }
+                ]}
+                //resizable={false}
+                defaultPageSize={3}
+                showPagination={false}
+                SubComponent={row => {
+                  return (
+                    <div className="reactstoreclaim" style={{ padding: "20px" }}>
+                      <ReactTable
+                        data={dataOrder1}
+                        columns={columnsOrder1}
+                        defaultPageSize={2}
+                        showPagination={false}
+                      />
+                    </div>
+                  );
+                }}
+              />
+            </div>
+
+                              
                             </div>
                           ) : (
                             <div className="uploadsearch">

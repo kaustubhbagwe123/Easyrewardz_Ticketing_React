@@ -9,15 +9,28 @@ import SearchIcon from "./../../assets/Images/search-icon.png";
 import { Collapse, CardBody, Card } from "reactstrap";
 import csv from "./../../assets/Images/csv.png";
 import Assign from "./../../assets/Images/Assign1.png";
+import DatePicker from "react-datepicker";
 
 class QADashboard extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      QASearch: false
+      QASearch: false,
+      QcFromDate: "",
+      QcToDate: "",
+      ResolutionDate: ""
     };
     this.handleToggleSearch = this.handleToggleSearch.bind(this);
+  }
+  handleResolutionDate(date) {
+    this.setState({ ResolutionDate: date });
+  }
+  handleQcFromDate(date) {
+    this.setState({ QcFromDate: date });
+  }
+  handleQcToDate(date) {
+    this.setState({ QcToDate: date });
   }
   handleToggleSearch() {
     this.setState(state => ({ QASearch: !state.QASearch }));
@@ -39,12 +52,46 @@ class QADashboard extends Component {
     return (
       <div>
         <div className="container-fluid dash-dropdowns">
-          <div className="d-flex">
+          <div className="d-flex dashallbrand1">
             <div>
-              <span>Agent : </span>
-              <select>
-                <option>All</option>
-              </select>
+              <span>
+                Brand :
+                <div className="dropdown">
+                  <button
+                    className="dropdown-toggle dashallbrand"
+                    type="button"
+                    data-toggle="dropdown"
+                  >
+                    <span className="EMFCText">All</span>
+                  </button>
+                  <ul className="dropdown-menu">
+                    <li>
+                      <label htmlFor="one">
+                        <input type="checkbox" id="one" className="ch1" />
+                        <span className="ch1-text">Bata 1</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label htmlFor="two">
+                        <input type="checkbox" id="two" className="ch1" />
+                        <span className="ch1-text">Bata 2</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label htmlFor="three">
+                        <input type="checkbox" id="three" className="ch1" />
+                        <span className="ch1-text">Bata 3</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label htmlFor="four">
+                        <input type="checkbox" id="four" className="ch1" />
+                        <span className="ch1-text">Bata 4</span>
+                      </label>
+                    </li>
+                  </ul>
+                </div>
+              </span>
             </div>
           </div>
           <div>
@@ -155,21 +202,41 @@ class QADashboard extends Component {
                         <option>Vikash</option>
                       </select>
                     </div>
-                    <div className="col-12 col-sm-6 col-md-6 col-lg dropDwonWidth">
+                    <div className="col-12 col-sm-6 col-md-6 col-lg dropDwonWidth QcFromDate1">
                       <label className="label-6">QC from date</label>
-                      <input
+                      <div className="QcFromDate">
+                      <DatePicker
+                        selected={this.state.QcFromDate}
+                        onChange={this.handleQcFromDate.bind(this)}
+                        placeholderText="From Date"
+                        showMonthDropdown
+                        showYearDropdown
+                        // className="form-control"
+                      />
+                      </div>
+                      {/* <input
                         type="text"
                         placeholder="From Date"
                         className="form-control txtQA"
-                      />
+                      /> */}
                     </div>
-                    <div className="col-12 col-sm-6 col-md-6 col-lg dropDwonWidth">
+                    <div className="col-12 col-sm-6 col-md-6 col-lg dropDwonWidth QcFromDate1">
                       <label className="label-6">QC to date</label>
-                      <input
+                      <div className="QcFromDate">
+                      <DatePicker
+                        selected={this.state.QcToDate}
+                        onChange={this.handleQcToDate.bind(this)}
+                        placeholderText="To Date"
+                        showMonthDropdown
+                        showYearDropdown
+                        // className="form-control"
+                      />
+                      </div>
+                      {/* <input
                         type="text"
                         placeholder="To Date"
                         className="form-control txtQA"
-                      />
+                      /> */}
                     </div>
                     <div className="col-12 col-xs-2 col-lg">
                     <button className="btnSearchQa" type="button">
@@ -366,12 +433,22 @@ class QADashboard extends Component {
                                   </select>
                                 </div>
                                 <div className="col-md-3">
-                                  <input
+                                 <div className="resolutiondate">
+                                  <DatePicker
+                                       selected={this.state.ResolutionDate}
+                                       onChange={this.handleResolutionDate.bind(this)}
+                                       placeholderText="Ticket Resolution Date"
+                                       showMonthDropdown
+                                       showYearDropdown
+                                       // className="form-control"
+                                   />
+                                  </div>
+                                  {/* <input
                                     type="text"
                                     className="txtQASearch"
                                     placeholder="Ticket Resolution Date"
                                     style={{display:'block'}}
-                                  />
+                                  /> */}
                                 </div>
                               </div>
                               <div className="row all-row">

@@ -36,12 +36,14 @@ import DatePicker from "react-datepicker";
 import axios from "axios";
 import config from "./../helpers/config";
 import TicketStatus from "./TicketStatus";
+import { Checkbox } from "antd";
 
 class MyTicketList extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      
       AssignModal: false,
       collapseSearch: false,
       BysDateCreatDate: "",
@@ -78,6 +80,7 @@ class MyTicketList extends Component {
       DraftDetails: [],
       draftCountStatus: 0
     };
+    
     this.toggleSearch = this.toggleSearch.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
@@ -94,6 +97,7 @@ class MyTicketList extends Component {
     this.handleGetDraftDetails = this.handleGetDraftDetails.bind(this);
   }
 
+  
   componentDidMount() {
     debugger;
     this.handleGetDesignationList();
@@ -1605,7 +1609,7 @@ class MyTicketList extends Component {
                                           modalId="ScheduleModel"
                                           overlayId="logout-ovrly"
                                         >
-                                          <div>
+                                        <div>
                                             <label>
                                               <b>Schedule date to</b>
                                             </label>
@@ -1643,6 +1647,151 @@ class MyTicketList extends Component {
                                               </div>
                                             </div>
                                           </div>
+                                          {/* <div>
+                                            <label>
+                                              <b>Schedule date to</b>
+                                            </label>
+                                            <div>
+                                              <select
+                                                id="inputState"
+                                                className="form-control dropdown-setting1 ScheduleDate-to"
+                                              >
+                                                <option>Team Member</option>
+                                                <option>Team Member 1</option>
+                                              </select>
+                                              <select
+                                                id="inputState"
+                                                className="form-control dropdown-setting1 ScheduleDate-to"
+                                                 >
+                                                <option value="1">Monthly</option>
+                                                <option value="2">Weekly</option>
+                                                <option value="3">Same day each month</option>
+                                                <option value="4">Same week each month</option>
+                                                <option value="5">Same day each year</option>
+                                                <option value="6">Same week each year</option>
+                                              </select>
+
+                                             <div className="ScheduleDate-to">
+                                               <span>
+                                                 <label className="every1">Every</label>
+                                                 <input type="text" className="Every" placeholder="1" />
+                                                 <label className="every1">Day</label>
+                                               </span>
+                                             </div>
+
+                                              <div className="ScheduleDate-to">
+                                               <span>
+                                                 <label className="every1">Every</label>
+                                                 <input type="text" className="Every" placeholder="1" />
+                                                 <label className="every1">Week on</label>
+                                               </span>
+                                               <div style={{marginTop:"10px"}}>
+                                                <Checkbox>Mon</Checkbox>
+                                                <Checkbox>Tue</Checkbox>
+                                                <Checkbox>Wed</Checkbox>
+                                                <Checkbox>Thu</Checkbox>
+                                                <Checkbox>Fri</Checkbox>
+                                                <Checkbox>Sat</Checkbox>
+                                                <Checkbox>Sun</Checkbox>
+                                               </div>
+                                             </div> 
+
+                                             <div className="ScheduleDate-to">
+                                               <span>
+                                                 <label className="every1">Day</label>
+                                                 <input type="text" className="Every" placeholder="9" />
+                                                 <label className="every1">of every</label>
+                                                 <input type="text" className="Every" placeholder="1" />
+                                                 <label className="every1">months</label>
+                                               </span>
+                                             </div>
+
+                                             <div className="ScheduleDate-to">
+                                               <span>
+                                                 <label className="every1">Every</label>
+                                                 <input type="text" className="Every" placeholder="1" />
+                                                 <label className="every1">month on the</label>
+                                               </span>
+                                               <div className="row mt-3">
+                                               <div className="col-md-6">
+                                                <select id="inputState" className="form-control dropdown-setting1">
+                                                <option>Second</option>
+                                                <option>Four</option>
+                                              </select>
+                                              </div>
+                                              <div className="col-md-6">
+                                               <select id="inputState" className="form-control dropdown-setting1">
+                                                <option>Sunday</option>
+                                                <option>Monday</option>
+                                              </select>
+                                              </div>
+                                               </div>
+                                             </div>
+
+                                              <div className="ScheduleDate-to"> 
+                                               <div className="row m-0">
+                                               <label className="every1" style={{lineHeight:"40px"}}>on</label>
+                                               <div className="col-md-7">
+                                                <select id="inputState" className="form-control dropdown-setting1">
+                                                <option>Septmber</option>
+                                                <option>Octomber</option>
+                                              </select>
+                                              </div>
+                                                <input type="text" className="Every" placeholder="1" />
+                                               </div> 
+                                             </div>
+
+                                               <div className="ScheduleDate-to">
+                                               <span>
+                                               <div className="row m-0">
+                                               <label className="every1" style={{lineHeight:"40px"}}>on the</label>
+                                               <div className="col-md-7">
+                                                <select id="inputState" className="form-control dropdown-setting1">
+                                                <option>Second</option>
+                                                <option>Four</option>
+                                              </select>
+                                               </div>
+                                               </div>
+                                             
+                                                 
+                                                 
+                                               </span>
+                                               <div className="row mt-3">
+                                               <div className="col-md-5">
+                                                <select id="inputState" className="form-control dropdown-setting1" style={{width:"100px"}}>
+                                                <option>Sunday</option>
+                                                <option>Monday</option>
+                                              </select>
+                                              </div>
+                                              <label className="every1" style={{lineHeight:"40px",marginLeft:"14px"}}>to</label>
+                                              <div className="col-md-5">
+                                               <select id="inputState" className="form-control dropdown-setting1" style={{width:"100px"}}>
+                                                <option>Septmber</option>
+                                                <option>Octomber</option>
+                                              </select>
+                                              </div>
+                                               </div>
+                                             </div>
+                                              
+                                              <input
+                                                type="text"
+                                                className="txt-1 txt1Place txt1Time"
+                                                placeholder="11AM"
+                                              />
+                                              <div>
+                                                <button className="scheduleBtn">
+                                                  <label className="addLable">
+                                                    SCHEDULE
+                                                  </label>
+                                                </button>
+                                              </div>
+                                              <div>
+                                                <button type="button" className="scheduleBtncancel">
+                                                    CANCEL 
+                                                </button>
+                                              </div>
+                                            </div>
+                                          </div> */}
                                         </Modal>
                                         <button
                                           className={

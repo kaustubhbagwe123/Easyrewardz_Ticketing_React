@@ -539,21 +539,22 @@
   height: 20px;
 }
 .drawerchat .ant-drawer-content-wrapper {
-  height: 210px !important;
-  margin-left: 317px;
-  width: 74% !important;
+  height: 202px !important;
+  margin-left: 347px;
+  width: 72.5% !important;
   box-shadow: 0 0px 0px rgba(0, 0, 0, 0.15) !important;
+  border-radius: 5px;
 }
 .drawerchat .ant-drawer-mask {
   background: none;
 }
 .drawerchat .crossdrawer {
-  font-size: 25px;
+  font-size: 28px;
   float: right;
-  width: 20px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
   font-weight: 700;
-  margin-top: -7px;
+  margin-top: -11px;
 }
 .drawerchat .chaton {
   color: #4a4a4a;
