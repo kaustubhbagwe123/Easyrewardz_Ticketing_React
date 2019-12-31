@@ -48,6 +48,7 @@ class TicketSystem extends Component {
 
       TicketTitleData: [],
       CkEditorTemplateData: [],
+      CkEditorTemplateDetails: [],
       KbPopupData: [],
       BrandData: [],
       CategoryData: [],
@@ -78,6 +79,7 @@ class TicketSystem extends Component {
       customerData: {},
       CustData: {},
       customerDetails: {},
+      tempName: "",
       // custmrId: '',
       details: {},
       editDOB: "",
@@ -101,6 +103,9 @@ class TicketSystem extends Component {
     // this.handleChange = this.handleChange.bind(this);
     this.handleGetTicketTitleList = this.handleGetTicketTitleList.bind(this);
     this.handleCkEditorTemplate = this.handleCkEditorTemplate.bind(this);
+    // this.handleCkEditorTemplateData = this.handleCkEditorTemplateData.bind(
+    //   this
+    // );
     this.handleKbLinkPopupSearch = this.handleKbLinkPopupSearch.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
     this.handleGetCategoryList = this.handleGetCategoryList.bind(this);
@@ -252,6 +257,28 @@ class TicketSystem extends Component {
       debugger;
       let CkEditorTemplateData = res.data.responseData;
       self.setState({ CkEditorTemplateData: CkEditorTemplateData });
+    });
+  }
+  handleCkEditorTemplateData(tempId, tempName) {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      url: config.apiUrl + "/Template/getTemplateContent",
+      params: {
+        TemplateId: tempId
+      }
+    }).then(function(res) {
+      debugger;
+      let CkEditorTemplateDetails = res.data.responseData;
+      self.setState({
+        CkEditorTemplateDetails: CkEditorTemplateDetails,
+        tempName: tempName
+      });
     });
   }
   handleKbLinkPopupSearch() {
@@ -452,7 +479,6 @@ class TicketSystem extends Component {
       this.handleGetCategoryList();
       this.handleGetChannelOfPurchaseList();
       this.handleGetTicketPriorityList();
-      this.handleCkEditorTemplate();
     } else {
       this.props.history.push("addSearchMyTicket");
     }
@@ -466,6 +492,12 @@ class TicketSystem extends Component {
     debugger;
     let issueTypeValue = e.currentTarget.value;
     this.setState({ selectedIssueType: issueTypeValue });
+
+    setTimeout(() => {
+      if (this.state.selectedIssueType) {
+        this.handleCkEditorTemplate();
+      }
+    }, 1);
   };
   setIssueTypeValueKB = e => {
     let issueTypeValue = e.currentTarget.value;
@@ -594,7 +626,6 @@ class TicketSystem extends Component {
                 <div className="row m-b-10">
                   <div className="col-md-12">
                     <label className="category">Ticket Title</label>
-
                     <div className="ticket-title-select">
                       <Select
                         // className="rate-dropdown"
@@ -819,7 +850,10 @@ class TicketSystem extends Component {
                       type="button"
                       data-toggle="dropdown"
                     >
-                      <FontAwesomeIcon icon={faCalculator} /> Template
+                      <FontAwesomeIcon icon={faCalculator} />{" "}
+                      {this.state.tempName === ""
+                        ? "Template"
+                        : this.state.tempName}
                     </button>
                     <ul className="dropdown-menu">
                       {/* <li>
@@ -834,11 +868,19 @@ class TicketSystem extends Component {
                       <li>
                         <a href="#!">Template 4</a>
                       </li> */}
-
                       {this.state.CkEditorTemplateData !== null &&
                         this.state.CkEditorTemplateData.map((item, i) => (
                           <li key={i} value={item.templateID}>
-                            <a href="#!">{item.templateName}</a>
+                            <a
+                              onClick={this.handleCkEditorTemplateData.bind(
+                                this,
+                                item.templateID,
+                                item.templateName
+                              )}
+                              href="#!"
+                            >
+                              {item.templateName}
+                            </a>
                           </li>
                         ))}
                     </ul>
@@ -863,8 +905,9 @@ class TicketSystem extends Component {
                   </label>
                 </div>
                 <div className="row">
-                  <div className="col-md-12">
+                  <div className="col-md-12 ck-det-cntr">
                     <CKEditor
+                      data={this.state.CkEditorTemplateDetails.templateBody}
                       // style={{ height: "400px" }}
                       config={{
                         toolbar: [
