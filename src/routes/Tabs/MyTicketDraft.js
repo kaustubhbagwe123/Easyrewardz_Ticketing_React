@@ -17,9 +17,8 @@ class MyTicketDraft extends Component {
   }
 
   render() {
-    debugger;
     var dataDraft = this.props.draftData;
-   
+
     return (
       <Fragment>
         <div className="newReact">
@@ -29,12 +28,10 @@ class MyTicketDraft extends Component {
               {
                 Header: <span>TicketTitle</span>,
                 accessor: "ticketTitle"
-                
               },
               {
                 Header: <span>TicketDetail</span>,
                 accessor: "ticketDescription"
-                
               },
               {
                 Header: (
@@ -88,7 +85,7 @@ class MyTicketDraft extends Component {
                   </span>
                 ),
                 accessor: "createdDate",
-                
+
                 Cell: props => (
                   <span>
                     <label>

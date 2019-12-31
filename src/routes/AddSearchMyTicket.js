@@ -35,14 +35,15 @@ class AddSearchMyTicket extends Component {
       altEmailID: "",
       loading: false,
       SrchEmailPhone: "",
-      // searchEmailPhone: {},
+      message: "",
       tenantID: 1,
       createdBy: 6,
-       SearchData: []
+      SearchData: []
     };
     this.handleAddCustomerOpen = this.handleAddCustomerOpen.bind(this);
     this.handleAddCustomerClose = this.handleAddCustomerClose.bind(this);
-    // this.handleAddCustomerSave = this.handleAddCustomerSave.bind(this);
+    this.handleAddCustomerSave = this.handleAddCustomerSave.bind(this);
+
     this.handleSearchCustomer = this.handleSearchCustomer.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.validator = new SimpleReactValidator();
@@ -79,15 +80,9 @@ class AddSearchMyTicket extends Component {
     }).then(function(res) {
       debugger;
       let SearchData = res.data.responseData[0];
-      let GetCustId = SearchData.customerID;
-      if(GetCustId !== null){
-        // self.props.history.push({
-        //   pathname: "ticketsystem",
-        //   state: self.state
-        // });
-        // self.setState({
-        //   customerId: GetCustId
-        // });
+      // let GetCustId = SearchData.customerID;
+      if (SearchData) {
+        let GetCustId = SearchData.customerID;
         setTimeout(function() {
           self.props.history.push({
             pathname: "ticketsystem",
@@ -96,67 +91,19 @@ class AddSearchMyTicket extends Component {
         }, 500);
         self.setState({
           customerId: GetCustId
+          // message: res.data.message
         });
-       
+      } else {
+        self.setState({
+          message: res.data.message
+        });
+        NotificationManager.error(res.data.message);
       }
-      
-      // self.setState({ SearchData: SearchData });
     });
-
   }
-  // handleSearchCustomer(field, e) {
-  //   debugger;
-  //   let self = this;
-  //   let SearchData = this.state.searchEmailPhone;
-  //   SearchData[field] = e.target.value;
-
-  //   if (SearchData[field].length > 2) {
-  //     axios({
-  //       method: "post",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         "Access-Control-Allow-Methods": "*"
-  //       },
-  //       url: config.apiUrl + "/Customer/searchCustomer",
-  //       params: {
-  //         SearchText: SearchData[field]
-  //       }
-  //     }).then(function(res) {
-  //       debugger;
-
-  //       var SearchItem = res.data.responseData;
-  //       if (SearchItem.length > 0) {
-  //         self.setState({
-  //           SearchItem
-  //         });
-  //       } else {
-  //         self.setState({ SearchItem: [] });
-  //       }
-  //     });
-  //   } else {
-  //     self.setState({
-  //       SearchData
-  //       // polpodData: []
-  //     });
-  //   }
-  // }
-  // HandleSelectdata(e, field, value, id) {
-  //   debugger;
-  //   let SearchData = this.state.SearchData;
-  //    SearchData[field] = value;
-
-  //   var customerID = id.customerID;
-  //   var customerName = id.customerName;
-  //   this.setState({
-  //     customerID,
-  //     customerName,
-  //     SearchData
-  //   });
-  // }
-  handleAddCustomerSave() {
+  CheckValidCustomerEmailPhoneNo() {
     debugger;
     let self = this;
-
     if (this.validator.allValid()) {
       axios({
         method: "post",
@@ -164,45 +111,73 @@ class AddSearchMyTicket extends Component {
           "Content-Type": "application/json",
           "Access-Control-Allow-Methods": "*"
         },
-        url: config.apiUrl + "/Customer/createCustomer",
-        data: {
-          TenantID: this.state.tenantID,
-          CustomerName: this.state.customerName,
-          CustomerPhoneNumber: this.state.customerPhoneNumber,
-          CustomerEmailId: this.state.customerEmailId,
-          GenderID: this.state.genderID,
-          AltNumber: this.state.altNumber,
-          AltEmailID: this.state.altEmailID,
-          DateOfBirth: moment(this.state.dob).format("L"),
-          IsActive: 1,
-          CreatedBy: this.state.createdBy,
-          ModifyBy: 1,
-          ModifiedDate: "2019-12-17"
+        url: config.apiUrl + "/Customer/validateCustomerExist",
+        params: {
+          TenantId: 1,
+          Cust_EmailId: this.state.customerEmailId,
+          Cust_PhoneNumber: this.state.customerPhoneNumber
         }
       }).then(function(res) {
         debugger;
-        let responseMessage = res.data.message;
-        let custId = res.data.responseData;
-        self.setState({
-          loading: true
-        });
-        if (responseMessage === "Success") {
-          NotificationManager.success("New Customer added successfully.");
-          setTimeout(function() {
-            self.props.history.push({
-              pathname: "ticketsystem",
-              state: self.state
-            });
-          }, 500);
-          self.setState({
-            customerId: custId
-          });
+        let validCheck = res.data.responseData;
+        if (validCheck === "Not Exist") {
+          self.handleAddCustomerSave();
+        } else {
+          NotificationManager.error(res.data.responseData);
         }
+        // let GetCustId = SearchData.customerID;
       });
     } else {
       this.validator.showMessages();
       this.forceUpdate();
     }
+  }
+
+  handleAddCustomerSave() {
+    debugger;
+    let self = this;
+
+    axios({
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      url: config.apiUrl + "/Customer/createCustomer",
+      data: {
+        TenantID: this.state.tenantID,
+        CustomerName: this.state.customerName,
+        CustomerPhoneNumber: this.state.customerPhoneNumber,
+        CustomerEmailId: this.state.customerEmailId,
+        GenderID: this.state.genderID,
+        AltNumber: this.state.altNumber,
+        AltEmailID: this.state.altEmailID,
+        DateOfBirth: moment(this.state.dob).format("L"),
+        IsActive: 1,
+        CreatedBy: this.state.createdBy,
+        ModifyBy: 1,
+        ModifiedDate: "2019-12-17"
+      }
+    }).then(function(res) {
+      debugger;
+      let responseMessage = res.data.message;
+      let custId = res.data.responseData;
+      self.setState({
+        loading: true
+      });
+      if (responseMessage === "Success") {
+        NotificationManager.success("New Customer added successfully.");
+        setTimeout(function() {
+          self.props.history.push({
+            pathname: "ticketsystem",
+            state: self.state
+          });
+        }, 500);
+        self.setState({
+          customerId: custId
+        });
+      }
+    });
   }
   genderSelect = e => {
     this.setState({
@@ -245,33 +220,6 @@ class AddSearchMyTicket extends Component {
                 </label>
               </label>
 
-              {/* <ReactAutocomplete
-                getItemValue={item => item.customerName}
-                items={this.state.SearchItem}
-                renderItem={(item, isHighlighted) => (
-                  <div
-                    style={{
-                      background: isHighlighted ? "lightgray" : "white"
-                    }}
-                    value={item.customerID}
-                  >
-                    {item.customerName}
-                  </div>
-                )}
-                renderInput={function(props) {
-                  return (
-                    <input
-                      placeholder="Search Customer"
-                      className="search-customerAddSrch"
-                      type="text"
-                      {...props}
-                    />
-                  );
-                }}
-                onChange={this.handleSearchCustomer.bind(this, "customer")}
-                onSelect={this.HandleSelectdata.bind(this,item=>item.customerID, "customer")}
-                value={this.state.searchEmailPhone["customer"]}
-              /> */}
               <input
                 type="text"
                 className="search-customerAddSrch"
@@ -288,27 +236,31 @@ class AddSearchMyTicket extends Component {
                   onClick={this.handleSearchCustomer}
                 />
               </div>
-              <div className="div-notFoundaddseacr">
-                <img
-                  src={NotFoundImg}
-                  alt="Not Found"
-                  className="notFound-addSrch"
-                />
-                <br />
-                <label className="lbl-count-foundData">
-                  We couldn't find the customer with this
-                  <br /> <span>Phone number, Email Id</span>
-                </label>
-              </div>
-              <div style={{ width: "90%", textAlign: "center" }}>
-                <button
-                  type="button"
-                  className="btn btn-addCustomer"
-                  onClick={this.handleAddCustomerOpen}
-                >
-                  Add Customer
-                </button>
-              </div>
+              {this.state.message === "Record Not Found" ? (
+                <div>
+                  <div className="div-notFoundaddseacr">
+                    <img
+                      src={NotFoundImg}
+                      alt="Not Found"
+                      className="notFound-addSrch"
+                    />
+                    <br />
+                    <label className="lbl-count-foundData">
+                      We couldn't find the customer with this
+                      <br /> <span>Phone number, Email Id</span>
+                    </label>
+                  </div>
+                  <div style={{ width: "90%", textAlign: "center" }}>
+                    <button
+                      type="button"
+                      className="btn btn-addCustomer"
+                      onClick={this.handleAddCustomerOpen}
+                    >
+                      Add Customer
+                    </button>
+                  </div>
+                </div>
+              ) : null}
             </div>
             <Modal
               onClose={this.handleAddCustomerClose}
@@ -451,7 +403,7 @@ class AddSearchMyTicket extends Component {
                   <button
                     type="button"
                     className="butn add-cust-butn"
-                    onClick={this.handleAddCustomerSave.bind(this)}
+                    onClick={this.CheckValidCustomerEmailPhoneNo.bind(this)}
                     disabled={this.state.loading}
                   >
                     {this.state.loading ? (
@@ -467,18 +419,6 @@ class AddSearchMyTicket extends Component {
                   </button>
                   {/* </Link> */}
                 </div>
-                {/* <div className="btn-float">
-                  <a
-                    href="#!"
-                    className="cancel-btn-A"
-                    onClick={this.handleAddCustomerClose}
-                  >
-                    CANCEL
-                  </a>
-                  <a href="ticketsystem">
-                    <button className="butn">SAVE</button>
-                  </a>
-                </div> */}
               </div>
             </Modal>
           </div>

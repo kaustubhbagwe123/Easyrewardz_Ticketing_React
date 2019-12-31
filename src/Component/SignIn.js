@@ -12,7 +12,6 @@ import {
   NotificationManager
 } from "react-notifications";
 import SimpleReactValidator from "simple-react-validator";
-// import { authHeader } from "../helpers/authHeader";
 // import {config} from './../helpers';
 
 class SingIn extends Component {
@@ -22,7 +21,7 @@ class SingIn extends Component {
     this.state = {
       emailID: "",
       password: "",
-      programCode:""
+      programCode: ""
     };
     this.hanleChange = this.hanleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -34,13 +33,17 @@ class SingIn extends Component {
     });
   }
 
- componentDidMount(){
-   debugger
-   var finalEncProgramCode=this.props.location.state;
-   this.setState({
-     programCode: finalEncProgramCode
-   });
- }
+  componentDidMount() {
+    debugger;
+    var finalEncProgramCode = this.props.location.state;
+    if (finalEncProgramCode) {
+      this.setState({
+        programCode: finalEncProgramCode
+      });
+    } else {
+      this.props.history.push("/");
+    }
+  }
 
   handleSubmit(event) {
     event.preventDefault();
@@ -49,53 +52,45 @@ class SingIn extends Component {
       const { emailID, password } = this.state;
       var X_Authorized_userId = encryption(emailID, "enc");
 
-      // let DescryptUserID=encryption(X_Authorized_userId, "desc");
       let X_Authorized_password = encryption(password, "enc");
-      //  let X_Authorized_userId = emailID;
-      // let X_Authorized_password = password;
-      let X_Authorized_Domainname =
-        "rZbZUcWTDjEk+qIvay9BFe/7Izx/T+YkIhbRa/mL0W0=";
-        let ProCode=this.state.programCode
-      let X_Authorized_Programcode =  ProCode.programCode;
-      let X_Authorized_applicationid = "lVWgnuY01lDMJBCSewbQ8g==";
+
+      let X_Authorized_Domainname = encryption(window.location.origin, "enc");
+      let ProCode = this.state.programCode;
+      let X_Authorized_Programcode = ProCode.programCode;
 
       if (X_Authorized_userId !== null && X_Authorized_password !== null) {
         let self = this;
 
-        const requestOptions = {
-          mode: "cors",
+        axios({
+          method: "post",
+          url: config.apiUrl + "/Account/authenticateUser",
           headers: {
             "Content-Type": "application/json",
-            "Access-Control-Allow-Methods": "*"
-          },
-          body: ""
-        };
-        axios
-          .post(config.apiUrl + "/Account/authenticate", requestOptions, {
-            params: {
-              X_Authorized_userId,
-              X_Authorized_password,
-              X_Authorized_applicationid,
-              X_Authorized_Programcode,
-              X_Authorized_Domainname
-            }
-          })
-          .then(function(res) {
-            debugger;
-            let resValid = res.data.responseData.message;
-            if (resValid === "Valid login") {
-              NotificationManager.success("Login Successfull.");
-              setTimeout(function() {
-                self.props.history.push("Admin/dashboard");
-              }, 2000);
-            } else {
-            }
-          });
+            "Access-Control-Allow-Origin": "*",
+            "X-Authorized-Programcode": X_Authorized_Programcode,
+            "X-Authorized-userId": X_Authorized_userId,
+            "X-Authorized-password": X_Authorized_password,
+            "X-Authorized-Domainname": X_Authorized_Domainname
+          }
+        }).then(function(res) {
+          debugger;
+          let resValid = res.data.message;
+          if (resValid === "Valid Login") {
+            NotificationManager.success("Login Successfull.");
+            window.localStorage.setItem(
+              "token",
+              (res.data.responseData.token)
+            );
+            setTimeout(function() {
+              self.props.history.push("Admin/dashboard");
+            }, 2000);
+          } else {
+            NotificationManager.error("In-Valid Login.");
+          }
+        });
       }
     } else {
       this.validator.showMessages();
-      // rerender to show messages for the first time
-      // you can use the autoForceUpdate option to do this automatically`
       this.forceUpdate();
     }
   }

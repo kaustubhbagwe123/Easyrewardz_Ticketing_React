@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Collapse, CardBody, Card } from "reactstrap";
-import TableDemo from "../TableDemo";
+// import TableDemo from "../TableDemo";
 import BataShoes from "./../../assets/Images/Bata-shoes.jpg";
 import ArrowImg from "./../../assets/Images/arrow.png";
 import PlusImg from "./../../assets/Images/plus.png";

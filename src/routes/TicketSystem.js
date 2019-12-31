@@ -25,8 +25,6 @@ import CancelImg from "./../assets/Images/cancel.png";
 // import DownArrowIcon from "./../assets/Images/down-1.png";
 import CopyBlue from "./../assets/Images/copyblue.png";
 import ViewBlue from "./../assets/Images/viewblue.png";
-import Up1Img from "./../assets/Images/up-1.png";
-import Down1Img from "./../assets/Images/down-1.png";
 import config from "./../helpers/config";
 import { Radio } from "antd";
 import DatePicker from "react-datepicker";
@@ -38,6 +36,7 @@ import {
 } from "react-notifications";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import SimpleReactValidator from "simple-react-validator";
+import { authHeader } from "../helpers/authHeader";
 
 class TicketSystem extends Component {
   constructor() {
@@ -49,6 +48,7 @@ class TicketSystem extends Component {
 
       TicketTitleData: [],
       CkEditorTemplateData: [],
+      CkEditorTemplateDetails: [],
       KbPopupData: [],
       BrandData: [],
       CategoryData: [],
@@ -57,7 +57,7 @@ class TicketSystem extends Component {
       TicketPriorityData: [],
       ChannelOfPurchaseData: [],
       KbLink: false,
-      collapseUp: false,
+      // collapseUp: false,
       TabIconColor: "nav-link active",
       altEmailID: "",
       altNumber: "",
@@ -79,6 +79,7 @@ class TicketSystem extends Component {
       customerData: {},
       CustData: {},
       customerDetails: {},
+      tempName: "",
       // custmrId: '',
       details: {},
       editDOB: "",
@@ -104,6 +105,9 @@ class TicketSystem extends Component {
     // this.handleChange = this.handleChange.bind(this);
     this.handleGetTicketTitleList = this.handleGetTicketTitleList.bind(this);
     this.handleCkEditorTemplate = this.handleCkEditorTemplate.bind(this);
+    // this.handleCkEditorTemplateData = this.handleCkEditorTemplateData.bind(
+    //   this
+    // );
     this.handleKbLinkPopupSearch = this.handleKbLinkPopupSearch.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
     this.handleGetCategoryList = this.handleGetCategoryList.bind(this);
@@ -116,12 +120,6 @@ class TicketSystem extends Component {
     this.handleGetTicketPriorityList = this.handleGetTicketPriorityList.bind(
       this
     );
-  }
-  handleUpOpen() {
-    this.setState({ collapseUp: true });
-  }
-  handleUpClose() {
-    this.setState({ collapseUp: false });
   }
   HandleKbLinkModalOpen() {
     this.setState({ KbLink: true });
@@ -146,7 +144,6 @@ class TicketSystem extends Component {
     this.validator.hideMessages();
   }
   GenderonChange = e => {
-
     const value = e.target.value;
 
     let CustData = this.state.CustData;
@@ -278,6 +275,28 @@ class TicketSystem extends Component {
       self.setState({ CkEditorTemplateData: CkEditorTemplateData });
     });
   }
+  handleCkEditorTemplateData(tempId, tempName) {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      url: config.apiUrl + "/Template/getTemplateContent",
+      params: {
+        TemplateId: tempId
+      }
+    }).then(function(res) {
+      debugger;
+      let CkEditorTemplateDetails = res.data.responseData;
+      self.setState({
+        CkEditorTemplateDetails: CkEditorTemplateDetails,
+        tempName: tempName
+      });
+    });
+  }
   handleKbLinkPopupSearch() {
     let self = this;
     axios({
@@ -299,17 +318,12 @@ class TicketSystem extends Component {
     });
   }
   handleGetBrandList() {
+    debugger;
     let self = this;
     axios({
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
       url: config.apiUrl + "/Brand/GetBrandList",
-      params: {
-        TenantID: this.state.tenantID
-      }
+      headers: authHeader()
     }).then(function(res) {
       // console.log(JSON.stringify(res.data.responseData));
       debugger;
@@ -472,7 +486,6 @@ class TicketSystem extends Component {
       this.handleGetCategoryList();
       this.handleGetChannelOfPurchaseList();
       this.handleGetTicketPriorityList();
-      this.handleCkEditorTemplate();
     } else {
       this.props.history.push("addSearchMyTicket");
     }
@@ -486,6 +499,12 @@ class TicketSystem extends Component {
     debugger;
     let issueTypeValue = e.currentTarget.value;
     this.setState({ selectedIssueType: issueTypeValue });
+
+    setTimeout(() => {
+      if (this.state.selectedIssueType) {
+        this.handleCkEditorTemplate();
+      }
+    }, 1);
   };
   setIssueTypeValueKB = e => {
     let issueTypeValue = e.currentTarget.value;
@@ -550,23 +569,6 @@ class TicketSystem extends Component {
   };
 
   render() {
-    // var editDOBRender = this.state.editDOB;
-    const HidecollapsUpKbLink = this.state.collapseUp ? (
-      <img
-        src={Up1Img}
-        alt="up"
-        className="down-icon-kb1"
-        onClick={this.handleUpClose.bind(this)}
-      />
-    ) : (
-      <img
-        src={Down1Img}
-        alt="up"
-        className="down-icon-kb1"
-        onClick={this.handleUpOpen.bind(this)}
-      />
-    );
-
     var CustomerId = this.state.customerDetails.customerId;
     // var DOB = moment(this.state.CustData.editDOB).format("DD/MM/YYYY");
     var CustNumber = this.state.customerData.customerPhoneNumber;
@@ -631,7 +633,6 @@ class TicketSystem extends Component {
                 <div className="row m-b-10">
                   <div className="col-md-12">
                     <label className="category">Ticket Title</label>
-
                     <div className="ticket-title-select">
                       <Select
                         // className="rate-dropdown"
@@ -856,7 +857,10 @@ class TicketSystem extends Component {
                       type="button"
                       data-toggle="dropdown"
                     >
-                      <FontAwesomeIcon icon={faCalculator} /> Template
+                      <FontAwesomeIcon icon={faCalculator} />{" "}
+                      {this.state.tempName === ""
+                        ? "Template"
+                        : this.state.tempName}
                     </button>
                     <ul className="dropdown-menu">
                       {/* <li>
@@ -871,11 +875,19 @@ class TicketSystem extends Component {
                       <li>
                         <a href="#!">Template 4</a>
                       </li> */}
-
                       {this.state.CkEditorTemplateData !== null &&
                         this.state.CkEditorTemplateData.map((item, i) => (
                           <li key={i} value={item.templateID}>
-                            <a href="#!">{item.templateName}</a>
+                            <a
+                              onClick={this.handleCkEditorTemplateData.bind(
+                                this,
+                                item.templateID,
+                                item.templateName
+                              )}
+                              href="#!"
+                            >
+                              {item.templateName}
+                            </a>
                           </li>
                         ))}
                     </ul>
@@ -900,8 +912,9 @@ class TicketSystem extends Component {
                   </label>
                 </div>
                 <div className="row">
-                  <div className="col-md-12">
+                  <div className="col-md-12 ck-det-cntr">
                     <CKEditor
+                      data={this.state.CkEditorTemplateDetails.templateBody}
                       // style={{ height: "400px" }}
                       config={{
                         toolbar: [
@@ -935,7 +948,7 @@ class TicketSystem extends Component {
                           }
                         ]
                       }}
-                    /> 
+                    />
                     <div className="row colladrowa" style={{ bottom: "15px" }}>
                       <div className="col-md-12 colladrow">
                         <ul className="m-l-30">

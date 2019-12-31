@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import Campaign from "./Campaign";
-import TableArr from "../../assets/Images/table-arr.png";
 import InfoIcon from "../../assets/Images/info-icon.png";
 import Demo from "../../store/Hashtag";
-import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Popover } from "antd";

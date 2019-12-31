@@ -25,10 +25,10 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ReactTable from "react-table";
 import { Popover } from "antd";
-import Chat from "./../assets/Images/chat.png";
 import { ProgressBar } from "react-bootstrap";
-import CancalImg from "./../assets/Images/cancal blue.png";
 import { Collapse, CardBody, Card } from "reactstrap";
+import CancalImg from "./../assets/Images/cancal blue.png";
+import Chat from "./../assets/Images/chat.png";
 import csv from "./../assets/Images/csv.png";
 import Schedule from "./../assets/Images/schedule.png";
 import Assign from "./../assets/Images/assign.png";
@@ -36,7 +36,11 @@ import DatePicker from "react-datepicker";
 import axios from "axios";
 import config from "./../helpers/config";
 import TicketStatus from "./TicketStatus";
-import { Checkbox } from "antd";
+// import { Checkbox } from "antd";
+import SlaDue from "./SlaDue";
+import TicketActionType from "./TicketActionType";
+// import moment from "moment";
+import Select from "react-select";
 
 class MyTicketList extends Component {
   constructor(props) {
@@ -46,44 +50,90 @@ class MyTicketList extends Component {
       
       AssignModal: false,
       collapseSearch: false,
-      BysDateCreatDate: "",
+      ByDateCreatDate: "",
       ByDateSelectDate: "",
       ByAllCreateDate: "",
       ByAllLastDate: "",
+      assignFirstName: "",
+      assignLastName: "",
+      assignEmail: "",
+      selectedDesignation: 0,
       DesignationData: [],
       TicketPriorityData: [],
       ChannelOfPurchaseData: [],
       CategoryData: [],
-      CategoryDataAll: [],
+      // CategoryDataAll: [],
       SubCategoryData: [],
       SubCategoryAllData: [],
       IssueTypeData: [],
+      IssueTypeAllData: [],
       TicketStatusData: TicketStatus(),
+      SlaDueData: SlaDue(),
+      TicketSourceData: [],
+      TicketActionTypeData: TicketActionType(),
       tenantID: 1,
       open: false,
       Schedule: false,
       StatusModel: false,
-      selectedDesignation: 0,
+      CheckBoxChecked: false,
       selectedPriority: 0,
-      selectedChannelOfPurchase: 0,
+      selectedPriorityAll: 0,
+      selectedChannelOfPurchase: [],
+      selectedTicketActionType: [],
       selectedTicketStatusByDate: 0,
+      selectedSlaDueByDate: 0,
       selectedTicketStatusByCustomer: 0,
       selectedTicketStatusByTicket: 0,
       selectedTicketStatusByCategory: 0,
       selectedTicketStatusAll: 0,
+      selectedVisitStoreAll: "yes",
+      selectedWantToVisitStoreAll: "yes",
+      selectedTicketSource: 0,
+      selectedPurchaseStoreCodeAddressAll: "",
       selectedCategory: 0,
       selectedCategoryAll: 0,
       selectedSubCategory: 0,
       selectedSubCategoryAll: 0,
       selectedIssueType: 0,
+      selectedIssueTypeAll: 0,
+      selectedMobileNoByCustType: "",
+      selectedEmailIdByCustType: "",
+      selectedClaimIdAll: "",
+      selectedEmailAll: "",
+      selectedTicketIdTitleAll: "",
+      selectedInvoiceSubOrderAll: "",
+      selectedMobileAll: "",
+      selectedItemIdAll: "",
+      selectedAssignedToAll: "",
+      selectedTicketIdByCustType: "",
       userID: 6,
       DraftDetails: [],
-      draftCountStatus: 0
+      draftCountStatus: 0,
+      byDateFlag: 1,
+      byCustomerTypeFlag: 0,
+      byTicketTypeFlag: 0,
+      byCategoryFlag: 0,
+      allFlag: 0,
+      SpacialEqmt: [
+        {
+          department: 25000
+        },
+        {
+          department: 304545
+        },
+        {
+          department: 508499
+        },
+        {
+          department: "nub bus ushdus uhsfu"
+        }
+      ]
     };
-    
+    this.handleAdvSearchFlag = this.handleAdvSearchFlag.bind(this);
     this.toggleSearch = this.toggleSearch.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
+    this.handleGetTicketSourceList = this.handleGetTicketSourceList.bind(this);
     this.handleGetCategoryList = this.handleGetCategoryList.bind(this);
     this.handleGetSubCategoryList = this.handleGetSubCategoryList.bind(this);
     this.handleGetIssueTypeList = this.handleGetIssueTypeList.bind(this);
@@ -95,6 +145,7 @@ class MyTicketList extends Component {
       this
     );
     this.handleGetDraftDetails = this.handleGetDraftDetails.bind(this);
+    this.handelAssignOnchange = this.handelAssignOnchange.bind(this);
   }
 
   
@@ -103,10 +154,56 @@ class MyTicketList extends Component {
     this.handleGetDesignationList();
     this.handleGetTicketPriorityList();
     this.handleGetChannelOfPurchaseList();
+    this.handleGetTicketSourceList();
     this.handleGetCategoryList();
     this.handleGetDraftDetails();
   }
 
+  handleAdvSearchFlag(e) {
+    debugger;
+    let currentActive = e.currentTarget.innerText;
+    if (currentActive === "By Date") {
+      this.setState({
+        byDateFlag: 1,
+        byCustomerTypeFlag: 0,
+        byTicketTypeFlag: 0,
+        byCategoryFlag: 0,
+        allFlag: 0
+      });
+    } else if (currentActive === "By Customer Type") {
+      this.setState({
+        byDateFlag: 0,
+        byCustomerTypeFlag: 1,
+        byTicketTypeFlag: 0,
+        byCategoryFlag: 0,
+        allFlag: 0
+      });
+    } else if (currentActive === "By Ticket Type") {
+      this.setState({
+        byDateFlag: 0,
+        byCustomerTypeFlag: 0,
+        byTicketTypeFlag: 1,
+        byCategoryFlag: 0,
+        allFlag: 0
+      });
+    } else if (currentActive === "By Category") {
+      this.setState({
+        byDateFlag: 0,
+        byCustomerTypeFlag: 0,
+        byTicketTypeFlag: 0,
+        byCategoryFlag: 1,
+        allFlag: 0
+      });
+    } else if (currentActive === "All") {
+      this.setState({
+        byDateFlag: 0,
+        byCustomerTypeFlag: 0,
+        byTicketTypeFlag: 0,
+        byCategoryFlag: 0,
+        allFlag: 1
+      });
+    }
+  }
   handleGetDraftDetails() {
     debugger;
     let self = this;
@@ -184,6 +281,28 @@ class MyTicketList extends Component {
       self.setState({ ChannelOfPurchaseData: ChannelOfPurchaseData });
     });
   }
+  handleGetTicketSourceList() {
+    debugger;
+
+    let self = this;
+    axios({
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      url: config.apiUrl + "/Master/getTicketSources",
+      params: {
+        // TenantID: this.state.tenantID
+      }
+    }).then(function(res) {
+      debugger;
+      let TicketSourceData = res.data.responseData;
+      self.setState({
+        TicketSourceData: TicketSourceData
+      });
+    });
+  }
   handleGetCategoryList() {
     debugger;
 
@@ -201,17 +320,21 @@ class MyTicketList extends Component {
     }).then(function(res) {
       debugger;
       let CategoryData = res.data;
-      let CategoryDataAll = res.data;
+      // let CategoryDataAll = res.data;
       self.setState({
-        CategoryData: CategoryData,
-        CategoryDataAll: CategoryDataAll
+        CategoryData: CategoryData
+        // CategoryDataAll: CategoryDataAll
       });
     });
   }
   handleGetSubCategoryList() {
     debugger;
-
     let self = this;
+    let cateId =
+      this.state.byCategoryFlag === 1
+        ? this.state.selectedCategory
+        : this.state.selectedCategoryAll;
+
     axios({
       method: "post",
       headers: {
@@ -220,20 +343,30 @@ class MyTicketList extends Component {
       },
       url: config.apiUrl + "/SubCategory/GetSubCategoryByCategoryID",
       params: {
-        CategoryID: this.state.selectedCategory
+        CategoryID: cateId
       }
     }).then(function(res) {
       debugger;
-      let SubCategoryData = res.data.responseData;
-      let SubCategoryAllData = res.data.responseData;
-      self.setState({
-        SubCategoryData: SubCategoryData,
-        SubCategoryAllData: SubCategoryAllData
-      });
+      if (self.state.byCategoryFlag === 1) {
+        var SubCategoryData = res.data.responseData;
+        self.setState({
+          SubCategoryData: SubCategoryData
+        });
+      } else if (self.state.allFlag === 1) {
+        var SubCategoryAllData = res.data.responseData;
+        self.setState({
+          SubCategoryAllData: SubCategoryAllData
+        });
+      }
     });
   }
   handleGetIssueTypeList() {
     let self = this;
+    let subCateId =
+      this.state.byCategoryFlag === 1
+        ? this.state.selectedSubCategory
+        : this.state.selectedSubCategoryAll;
+
     axios({
       method: "post",
       headers: {
@@ -243,12 +376,51 @@ class MyTicketList extends Component {
       url: config.apiUrl + "/IssueType/GetIssueTypeList",
       params: {
         TenantID: this.state.tenantID,
-        SubCategoryID: this.state.selectedSubCategory
+        SubCategoryID: subCateId
       }
     }).then(function(res) {
       debugger;
-      let IssueTypeData = res.data.responseData;
-      self.setState({ IssueTypeData: IssueTypeData });
+      // let IssueTypeData = res.data.responseData;
+      // self.setState({ IssueTypeData: IssueTypeData });
+      if (self.state.byCategoryFlag === 1) {
+        var IssueTypeData = res.data.responseData;
+        self.setState({
+          IssueTypeData: IssueTypeData
+        });
+      } else if (self.state.allFlag === 1) {
+        var IssueTypeAllData = res.data.responseData;
+        self.setState({
+          IssueTypeAllData: IssueTypeAllData
+        });
+      }
+    });
+  }
+  handleAssignSearchData() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      url: config.apiUrl + "/Ticketing/searchAgent",
+      params: {
+        FirstName: this.state.assignFirstName.trim(),
+        LastName: this.state.assignLastName.trim(),
+        Email: this.state.assignEmail.trim(),
+        DesignationID: this.state.selectedDesignation
+      }
+    }).then(function(res) {
+      debugger;
+      let SearchAssignData = res.data.responseData;
+      self.setState({
+        SearchAssignData: SearchAssignData,
+        assignFirstName: "",
+        assignLastName: "",
+        assignEmail: "",
+        selectedDesignation: 0
+      });
     });
   }
 
@@ -260,13 +432,78 @@ class MyTicketList extends Component {
     let priorityValue = e.currentTarget.value;
     this.setState({ selectedPriority: priorityValue });
   };
+  setPriorityAllValue = e => {
+    let priorityAllValue = e.currentTarget.value;
+    this.setState({ selectedPriorityAll: priorityAllValue });
+  };
+  handleMobileNoByCustType = e => {
+    debugger;
+    let mobileNoByCustTypeValue = e.currentTarget.value;
+    this.setState({ selectedMobileNoByCustType: mobileNoByCustTypeValue });
+  };
+  handleEmailIdByCustType = e => {
+    debugger;
+    let emailIdByCustTypeValue = e.currentTarget.value;
+    this.setState({ selectedEmailIdByCustType: emailIdByCustTypeValue });
+  };
+  handleClaimIdAll = e => {
+    debugger;
+    let claimIdAllValue = e.currentTarget.value;
+    this.setState({ selectedClaimIdAll: claimIdAllValue });
+  };
+  handleEmailAll = e => {
+    debugger;
+    let emailAllValue = e.currentTarget.value;
+    this.setState({ selectedEmailAll: emailAllValue });
+  };
+  handleTicketIdTitleAll = e => {
+    debugger;
+    let ticketIdTitleAllValue = e.currentTarget.value;
+    this.setState({ selectedTicketIdTitleAll: ticketIdTitleAllValue });
+  };
+  handleInvoiceSubOrderAll = e => {
+    debugger;
+    let invoiceSubOrderAllValue = e.currentTarget.value;
+    this.setState({ selectedInvoiceSubOrderAll: invoiceSubOrderAllValue });
+  };
+  handleAssignedToAll = e => {
+    debugger;
+    let assignedToAllValue = e.currentTarget.value;
+    this.setState({ selectedAssignedToAll: assignedToAllValue });
+  };
+  handleItemIdAll = e => {
+    debugger;
+    let itemIdAllValue = e.currentTarget.value;
+    this.setState({ selectedItemIdAll: itemIdAllValue });
+  };
+  handleMobileAll = e => {
+    debugger;
+    let mobileAllValue = e.currentTarget.value;
+    this.setState({ selectedMobileAll: mobileAllValue });
+  };
+  handleTicketIdByCustType = e => {
+    debugger;
+    let ticketIdByCustTypeValue = e.currentTarget.value;
+    this.setState({ selectedTicketIdByCustType: ticketIdByCustTypeValue });
+  };
   setChannelOfPurchaseValue = e => {
-    let channelOfPurchaseValue = e.currentTarget.value;
-    this.setState({ selectedChannelOfPurchase: channelOfPurchaseValue });
+    debugger;
+    // let channelOfPurchaseValue = e.channelOfPurchaseID;
+    this.setState({ selectedChannelOfPurchase: e });
+  };
+  setTicketActionTypeValue = e => {
+    debugger;
+    // let channelOfPurchaseValue = e.channelOfPurchaseID;
+    this.setState({ selectedTicketActionType: e });
   };
   handleTicketStatusByDate = e => {
     let ticketStatusValue = e.currentTarget.value;
     this.setState({ selectedTicketStatusByDate: ticketStatusValue });
+  };
+  handleSlaDueByDate = e => {
+    debugger;
+    let slaDueValue = e.currentTarget.value;
+    this.setState({ selectedSlaDueByDate: slaDueValue });
   };
   handleTicketStatusByCustomer = e => {
     let ticketStatusValue = e.currentTarget.value;
@@ -281,8 +518,29 @@ class MyTicketList extends Component {
     this.setState({ selectedTicketStatusByCategory: ticketStatusValue });
   };
   handleTicketStatusAll = e => {
-    let ticketStatusValue = e.currentTarget.value;
-    this.setState({ selectedTicketStatusAll: ticketStatusValue });
+    let ticketStatusAllValue = e.currentTarget.value;
+    this.setState({ selectedTicketStatusAll: ticketStatusAllValue });
+  };
+  handleVisitStoreAll = e => {
+    debugger;
+    let visitStoreAllValue = e.currentTarget.value;
+    this.setState({ selectedVisitStoreAll: visitStoreAllValue });
+  };
+  handleWantToVisitStoreAll = e => {
+    debugger;
+    let wantToVisitStoreAllValue = e.currentTarget.value;
+    this.setState({ selectedWantToVisitStoreAll: wantToVisitStoreAllValue });
+  };
+  handlePurchaseStoreCodeAddressAll = e => {
+    debugger;
+    let purchaseStoreCodeAddressAllValue = e.currentTarget.value;
+    this.setState({
+      selectedPurchaseStoreCodeAddressAll: purchaseStoreCodeAddressAllValue
+    });
+  };
+  setTicketSourceValue = e => {
+    let ticketSourceValue = e.currentTarget.value;
+    this.setState({ selectedTicketSource: ticketSourceValue });
   };
   setCategoryValue = e => {
     let categoryValue = e.currentTarget.value;
@@ -316,15 +574,19 @@ class MyTicketList extends Component {
     let subCategoryAllValue = e.currentTarget.value;
     this.setState({ selectedSubCategoryAll: subCategoryAllValue });
 
-    // setTimeout(() => {
-    //   if (this.state.selectedSubCategory) {
-    //     this.handleGetIssueTypeList();
-    //   }
-    // }, 1);
+    setTimeout(() => {
+      if (this.state.selectedSubCategoryAll) {
+        this.handleGetIssueTypeList();
+      }
+    }, 1);
   };
   setIssueTypeValue = e => {
     let issueTypeValue = e.currentTarget.value;
     this.setState({ selectedIssueType: issueTypeValue });
+  };
+  setIssueTypeAllValue = e => {
+    let issueTypeAllValue = e.currentTarget.value;
+    this.setState({ selectedIssueTypeAll: issueTypeAllValue });
   };
 
   StatusOpenModel() {
@@ -337,6 +599,7 @@ class MyTicketList extends Component {
     this.setState(state => ({ collapseSearch: !state.collapseSearch }));
   }
   handleByDateCreate(date) {
+    debugger;
     this.setState({ ByDateCreatDate: date });
   }
   handleChangeSelectDate(date) {
@@ -376,6 +639,11 @@ class MyTicketList extends Component {
   clickCheckbox(evt) {
     evt.stopPropagation();
   }
+  handelCheckBoxCheckedChange = () => {
+    this.setState({
+      CheckBoxChecked: !this.state.CheckBoxChecked
+    });
+  };
 
   checkAllCheckbox(event) {
     const allCheckboxChecked = event.target.checked;
@@ -394,6 +662,11 @@ class MyTicketList extends Component {
       }
     }
   }
+  handelAssignOnchange(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  }
   HandleRowClickPage = () => {
     return {
       onClick: e => {
@@ -402,7 +675,7 @@ class MyTicketList extends Component {
     };
   };
   render() {
-    const { DraftDetails } = this.state;
+    const { DraftDetails, SearchAssignData } = this.state;
     const DefArti = (
       <div className="dash-creation-popup-cntr">
         <ul className="dash-category-popup dashnewpopup">
@@ -502,6 +775,8 @@ class MyTicketList extends Component {
                   type="checkbox"
                   id="fil-ab1"
                   name="MyTicketListcheckbox[]"
+                  checked={this.state.CheckBoxChecked}
+                  onChange={this.handelCheckBoxCheckedChange}
                 />
                 <label htmlFor="fil-ab1">
                   <img
@@ -548,6 +823,8 @@ class MyTicketList extends Component {
                   type="checkbox"
                   id="fil-ab2"
                   name="MyTicketListcheckbox[]"
+                  checked={this.state.CheckBoxChecked}
+                  onChange={this.handelCheckBoxCheckedChange}
                 />
                 <label htmlFor="fil-ab2">
                   <img
@@ -623,13 +900,6 @@ class MyTicketList extends Component {
         ),
         subjectDash: (
           <div>
-            {/* <Popover content={TaskBlue} placement="bottom">
-              <img
-                className="task-icon-1 marginimg"
-                src={TaskIconBlue}
-                alt="task-icon-blue"
-              />
-            </Popover> */}
             Need to change my shipping address
             <span style={{ display: "block", fontSize: "11px" }}>
               Hope this help, Please rate us
@@ -683,11 +953,6 @@ class MyTicketList extends Component {
         ),
         subjectDash: (
           <div>
-            {/* <img
-              className="task-icon-1 marginimg"
-              src={TaskIconGray}
-              alt="task-icon-gray"
-            /> */}
             Need to change my shipping address
             <span style={{ display: "block", fontSize: "11px" }}>
               Hope this help, Please rate us
@@ -752,19 +1017,7 @@ class MyTicketList extends Component {
         ),
         subjectDash: (
           <div>
-            {/* <Popover content={ClaimBlue} placement="bottom">
-              <img
-                className="claim-icon marginimg"
-                src={CliamIconBlue}
-                alt="cliam-icon-blue"
-              />
-            </Popover> */}
             Need to change my shipping address
-            {/* <img
-                className="task-icon-1 marginimg"
-                src={TaskIconGray}
-                alt="task-icon-gray"
-              /> */}
             <span style={{ display: "block", fontSize: "11px" }}>
               Hope this help, Please rate us
             </span>
@@ -1023,6 +1276,7 @@ class MyTicketList extends Component {
                   type="checkbox"
                   id="fil-aball"
                   name="MyTicketListcheckbox[]"
+                  // checked={this.state.CheckBoxChecked}
                   onChange={this.checkAllCheckbox.bind(this)}
                 />
                 <label htmlFor="fil-aball" className="ticketid">
@@ -1344,6 +1598,7 @@ class MyTicketList extends Component {
                                       role="tab"
                                       aria-controls="date-tab"
                                       aria-selected="true"
+                                      onClick={this.handleAdvSearchFlag}
                                     >
                                       By Date
                                     </a>
@@ -1356,6 +1611,7 @@ class MyTicketList extends Component {
                                       role="tab"
                                       aria-controls="customer-tab"
                                       aria-selected="false"
+                                      onClick={this.handleAdvSearchFlag}
                                     >
                                       By Customer Type
                                     </a>
@@ -1368,6 +1624,7 @@ class MyTicketList extends Component {
                                       role="tab"
                                       aria-controls="ticket-tab"
                                       aria-selected="false"
+                                      onClick={this.handleAdvSearchFlag}
                                     >
                                       By Ticket Type
                                     </a>
@@ -1380,6 +1637,7 @@ class MyTicketList extends Component {
                                       role="tab"
                                       aria-controls="category-tab"
                                       aria-selected="false"
+                                      onClick={this.handleAdvSearchFlag}
                                     >
                                       By Category
                                     </a>
@@ -1392,6 +1650,7 @@ class MyTicketList extends Component {
                                       role="tab"
                                       aria-controls="all-tab"
                                       aria-selected="false"
+                                      onClick={this.handleAdvSearchFlag}
                                     >
                                       All
                                     </a>
@@ -1543,8 +1802,24 @@ class MyTicketList extends Component {
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6">
-                                        <select>
+                                        <select
+                                          value={
+                                            this.state.selectedSlaDueByDate
+                                          }
+                                          onChange={this.handleSlaDueByDate}
+                                        >
                                           <option>SLA Due</option>
+                                          {this.state.SlaDueData !== null &&
+                                            this.state.SlaDueData.map(
+                                              (item, i) => (
+                                                <option
+                                                  key={i}
+                                                  value={item.slaDueID}
+                                                >
+                                                  {item.slaDueName}
+                                                </option>
+                                              )
+                                            )}
                                         </select>
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -1795,14 +2070,12 @@ class MyTicketList extends Component {
                                         </Modal>
                                         <button
                                           className={
-                                            this.state.TicketTabIndex ===
-                                            "nav-link active"
-                                              ? "btn-inv btn-dis"
-                                              : "btn-inv"
+                                            this.state.CheckBoxChecked
+                                              ? "btn-inv"
+                                              : "dis-btn"
                                           }
                                           onClick={
-                                            this.state.TicketTabIndex !==
-                                            "nav-link active"
+                                            this.state.CheckBoxChecked
                                               ? this.handleAssignModalOpen.bind(
                                                   this
                                                 )
@@ -1846,16 +2119,31 @@ class MyTicketList extends Component {
                                               type="text"
                                               className="txt-1 txt-btmSpace"
                                               placeholder="First Name"
+                                              name="assignFirstName"
+                                              value={this.state.assignFirstName}
+                                              onChange={
+                                                this.handelAssignOnchange
+                                              }
                                             />
                                             <input
                                               type="text"
                                               className="txt-1 txt-btmSpace"
                                               placeholder="Last Name"
+                                              name="assignLastName"
+                                              value={this.state.assignLastName}
+                                              onChange={
+                                                this.handelAssignOnchange
+                                              }
                                             />
                                             <input
                                               type="text"
                                               className="txt-1 txt-btmSpace"
                                               placeholder="Email"
+                                              name="assignEmail"
+                                              value={this.state.assignEmail}
+                                              onChange={
+                                                this.handelAssignOnchange
+                                              }
                                             />
                                             <div className="txt-btmSpace">
                                               <select
@@ -1889,6 +2177,9 @@ class MyTicketList extends Component {
                                             <button
                                               className="butn assign-btn"
                                               type="button"
+                                              onClick={this.handleAssignSearchData.bind(
+                                                this
+                                              )}
                                             >
                                               SEARCH
                                             </button>
@@ -1900,65 +2191,50 @@ class MyTicketList extends Component {
                                             </a>
                                           </div>
                                           <div className="assign-modal-body">
-                                            <table>
-                                              <thead>
-                                                <tr>
-                                                  <th>Agent</th>
-                                                  <th>Designation</th>
-                                                  <th>Email</th>
-                                                </tr>
-                                              </thead>
-                                              <tbody>
-                                                <tr>
-                                                  <td>
-                                                    <img
-                                                      src={Headphone2Img}
-                                                      alt="headphone"
-                                                      className="oval-55 assign-hdphone"
-                                                    />
-                                                    Naman.R
-                                                  </td>
-                                                  <td>Supply</td>
-                                                  <td>naman@flipkart.com</td>
-                                                </tr>
-                                                <tr>
-                                                  <td>
-                                                    <img
-                                                      src={Headphone2Img}
-                                                      alt="headphone"
-                                                      className="oval-55 assign-hdphone"
-                                                    />
-                                                    Nidhi.J
-                                                  </td>
-                                                  <td>Supply</td>
-                                                  <td>naman@flipkart.com</td>
-                                                </tr>
-                                                <tr>
-                                                  <td>
-                                                    <img
-                                                      src={Headphone2Img}
-                                                      alt="headphone"
-                                                      className="oval-55 assign-hdphone"
-                                                    />
-                                                    Rashmi.C
-                                                  </td>
-                                                  <td>Supply</td>
-                                                  <td>naman@flipkart.com</td>
-                                                </tr>
-                                                <tr>
-                                                  <td>
-                                                    <img
-                                                      src={Headphone2Img}
-                                                      alt="headphone"
-                                                      className="oval-55 assign-hdphone"
-                                                    />
-                                                    Juhi.H
-                                                  </td>
-                                                  <td>Supply</td>
-                                                  <td>naman@flipkart.com</td>
-                                                </tr>
-                                              </tbody>
-                                            </table>
+                                            <ReactTable
+                                              data={SearchAssignData}
+                                              columns={[
+                                                {
+                                                  Header: <span>Agent</span>,
+                                                  accessor: "agent",
+                                                  Cell: row => {
+                                                    var ids =
+                                                      row.original["user_ID"];
+                                                    return (
+                                                      <div>
+                                                        <span>
+                                                          <img
+                                                            src={Headphone2Img}
+                                                            alt="headphone"
+                                                            className="oval-55 assign-hdphone"
+                                                            id={ids}
+                                                          />
+                                                          {
+                                                            row.original[
+                                                              "agentName"
+                                                            ]
+                                                          }
+                                                        </span>
+                                                      </div>
+                                                    );
+                                                  }
+                                                },
+                                                {
+                                                  Header: (
+                                                    <span>Designation</span>
+                                                  ),
+                                                  accessor: "designation"
+                                                },
+                                                {
+                                                  Header: <span>Email</span>,
+                                                  accessor: "email"
+                                                }
+                                              ]}
+                                              // resizable={false}
+                                              defaultPageSize={5}
+                                              showPagination={false}
+                                            />
+
                                             <textarea
                                               className="assign-modal-textArea"
                                               placeholder="Add Remarks"
@@ -1988,6 +2264,13 @@ class MyTicketList extends Component {
                                           className="no-bg"
                                           type="text"
                                           placeholder="Customer Mobile No"
+                                          value={
+                                            this.state
+                                              .selectedMobileNoByCustType
+                                          }
+                                          onChange={
+                                            this.handleMobileNoByCustType
+                                          }
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -1995,6 +2278,12 @@ class MyTicketList extends Component {
                                           type="text"
                                           className="no-bg"
                                           placeholder="Customer Email ID"
+                                          value={
+                                            this.state.selectedEmailIdByCustType
+                                          }
+                                          onChange={
+                                            this.handleEmailIdByCustType
+                                          }
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -2002,6 +2291,13 @@ class MyTicketList extends Component {
                                           type="text"
                                           className="no-bg"
                                           placeholder="Ticket ID"
+                                          value={
+                                            this.state
+                                              .selectedTicketIdByCustType
+                                          }
+                                          onChange={
+                                            this.handleTicketIdByCustType
+                                          }
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -2123,7 +2419,7 @@ class MyTicketList extends Component {
                                         </select>
                                       </div>
                                       <div className="col-md-3 col-sm-6">
-                                        <select
+                                        {/* <select
                                           value={
                                             this.state.selectedChannelOfPurchase
                                           }
@@ -2146,12 +2442,62 @@ class MyTicketList extends Component {
                                                 </option>
                                               )
                                             )}
-                                        </select>
+                                        </select> */}
+                                        <div className="normal-dropdown">
+                                          <Select
+                                            getOptionLabel={option =>
+                                              option.nameOfChannel
+                                            }
+                                            getOptionValue={option =>
+                                              option.channelOfPurchaseID
+                                            }
+                                            options={
+                                              this.state.ChannelOfPurchaseData
+                                            }
+                                            placeholder="Channel Of Purchase"
+                                            // menuIsOpen={true}
+                                            closeMenuOnSelect={false}
+                                            onChange={this.setChannelOfPurchaseValue.bind(
+                                              this
+                                            )}
+                                            value={
+                                              this.state
+                                                .selectedChannelOfPurchase
+                                            }
+                                            // showNewOptionAtTop={false}
+                                            isMulti
+                                          />
+                                        </div>
                                       </div>
                                       <div className="col-md-3 col-sm-6">
-                                        <select>
+                                        {/* <select>
                                           <option>Ticket action Type</option>
-                                        </select>
+                                        </select> */}
+                                        <div className="normal-dropdown">
+                                          <Select
+                                            getOptionLabel={option =>
+                                              option.ticketActionTypeName
+                                            }
+                                            getOptionValue={option =>
+                                              option.ticketActionTypeID
+                                            }
+                                            options={
+                                              this.state.TicketActionTypeData
+                                            }
+                                            placeholder="Ticket Action Type"
+                                            // menuIsOpen={true}
+                                            closeMenuOnSelect={false}
+                                            onChange={this.setTicketActionTypeValue.bind(
+                                              this
+                                            )}
+                                            value={
+                                              this.state
+                                                .selectedTicketActionType
+                                            }
+                                            // showNewOptionAtTop={false}
+                                            isMulti
+                                          />
+                                        </div>
                                       </div>
                                     </div>
                                     <div className="row justify-content-between">
@@ -2341,12 +2687,30 @@ class MyTicketList extends Component {
                                           placeholderText="Creation Date"
                                           showMonthDropdown
                                           showYearDropdown
+                                          dateFormat="dd/MM/yyyy"
                                           // className="form-control"
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6">
-                                        <select>
+                                        <select
+                                          value={
+                                            this.state.selectedTicketSource
+                                          }
+                                          onChange={this.setTicketSourceValue}
+                                        >
                                           <option>Ticket Source</option>
+                                          {this.state.TicketSourceData !==
+                                            null &&
+                                            this.state.TicketSourceData.map(
+                                              (item, i) => (
+                                                <option
+                                                  key={i}
+                                                  value={item.ticketSourceId}
+                                                >
+                                                  {item.ticketSourceName}
+                                                </option>
+                                              )
+                                            )}
                                         </select>
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -2354,6 +2718,8 @@ class MyTicketList extends Component {
                                           className="no-bg"
                                           type="text"
                                           placeholder="Claim ID"
+                                          value={this.state.selectedClaimIdAll}
+                                          onChange={this.handleClaimIdAll}
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -2361,6 +2727,8 @@ class MyTicketList extends Component {
                                           className="no-bg"
                                           type="text"
                                           placeholder="Email"
+                                          value={this.state.selectedEmailAll}
+                                          onChange={this.handleEmailAll}
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6 allspc">
@@ -2372,19 +2740,36 @@ class MyTicketList extends Component {
                                           placeholderText="Last Updated Date"
                                           showMonthDropdown
                                           showYearDropdown
+                                          dateFormat="dd/MM/yyyy"
                                           // className="form-control"
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6">
-                                        <select>
+                                        {/* <select>
                                           <option>Ticket Id/Title</option>
-                                        </select>
+                                        </select> */}
+                                        <input
+                                          className="no-bg"
+                                          type="text"
+                                          placeholder="Ticket Id/Title"
+                                          value={
+                                            this.state.selectedTicketIdTitleAll
+                                          }
+                                          onChange={this.handleTicketIdTitleAll}
+                                        />
                                       </div>
                                       <div className="col-md-3 col-sm-6">
                                         <input
                                           className="no-bg"
                                           type="text"
                                           placeholder="Invoice Number/Sub Order No"
+                                          value={
+                                            this.state
+                                              .selectedInvoiceSubOrderAll
+                                          }
+                                          onChange={
+                                            this.handleInvoiceSubOrderAll
+                                          }
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -2392,6 +2777,8 @@ class MyTicketList extends Component {
                                           className="no-bg"
                                           type="text"
                                           placeholder="Mobile"
+                                          value={this.state.selectedMobileAll}
+                                          onChange={this.handleMobileAll}
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6 allspc">
@@ -2400,9 +2787,8 @@ class MyTicketList extends Component {
                                           onChange={this.setCategoryAllValue}
                                         >
                                           <option>Category</option>
-                                          {this.state.CategoryDataAll !==
-                                            null &&
-                                            this.state.CategoryDataAll.map(
+                                          {this.state.CategoryData !== null &&
+                                            this.state.CategoryData.map(
                                               (item, i) => (
                                                 <option
                                                   key={i}
@@ -2415,8 +2801,23 @@ class MyTicketList extends Component {
                                         </select>
                                       </div>
                                       <div className="col-md-3 col-sm-6">
-                                        <select>
+                                        <select
+                                          value={this.state.selectedPriorityAll}
+                                          onChange={this.setPriorityAllValue}
+                                        >
                                           <option>Ticket Priority</option>
+                                          {this.state.TicketPriorityData !==
+                                            null &&
+                                            this.state.TicketPriorityData.map(
+                                              (item, i) => (
+                                                <option
+                                                  key={i}
+                                                  value={item.priorityID}
+                                                >
+                                                  {item.priortyName}
+                                                </option>
+                                              )
+                                            )}
                                         </select>
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -2424,12 +2825,23 @@ class MyTicketList extends Component {
                                           className="no-bg"
                                           type="text"
                                           placeholder="Item ID"
+                                          value={this.state.selectedItemIdAll}
+                                          onChange={this.handleItemIdAll}
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6">
-                                        <select>
+                                        {/* <select>
                                           <option>Assigned To</option>
-                                        </select>
+                                        </select> */}
+                                        <input
+                                          className="no-bg"
+                                          type="text"
+                                          placeholder="Assigned To"
+                                          value={
+                                            this.state.selectedAssignedToAll
+                                          }
+                                          onChange={this.handleAssignedToAll}
+                                        />
                                       </div>
                                       <div className="col-md-3 col-sm-6 allspc">
                                         {/* <select>
@@ -2479,9 +2891,18 @@ class MyTicketList extends Component {
                                         </select>
                                       </div>
                                       <div className="col-md-3 col-sm-6">
-                                        <select>
-                                          <option>Did Visit Store : Yes</option>
-                                          <option>Did Visit Store : No</option>
+                                        <select
+                                          value={
+                                            this.state.selectedVisitStoreAll
+                                          }
+                                          onChange={this.handleVisitStoreAll}
+                                        >
+                                          <option value="yes">
+                                            Did Visit Store : Yes
+                                          </option>
+                                          <option value="no">
+                                            Did Visit Store : No
+                                          </option>
                                         </select>
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -2489,6 +2910,14 @@ class MyTicketList extends Component {
                                           className="no-bg"
                                           type="text"
                                           placeholder="Purchase Store Code/Address"
+                                          value={
+                                            this.state
+                                              .selectedPurchaseStoreCodeAddressAll
+                                          }
+                                          onChange={
+                                            this
+                                              .handlePurchaseStoreCodeAddressAll
+                                          }
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -2496,12 +2925,15 @@ class MyTicketList extends Component {
                                           <option>Issue Type</option>
                                         </select> */}
                                         <select
-                                          value={this.state.selectedIssueType}
-                                          onChange={this.setIssueTypeValue}
+                                          value={
+                                            this.state.selectedIssueTypeAll
+                                          }
+                                          onChange={this.setIssueTypeAllValue}
                                         >
                                           <option>Issue Type</option>
-                                          {this.state.IssueTypeData !== null &&
-                                            this.state.IssueTypeData.map(
+                                          {this.state.IssueTypeAllData !==
+                                            null &&
+                                            this.state.IssueTypeAllData.map(
                                               (item, i) => (
                                                 <option
                                                   key={i}
@@ -2519,11 +2951,19 @@ class MyTicketList extends Component {
                                         </select>
                                       </div>
                                       <div className="col-md-3 col-sm-6">
-                                        <select>
-                                          <option>
+                                        <select
+                                          value={
+                                            this.state
+                                              .selectedWantToVisitStoreAll
+                                          }
+                                          onChange={
+                                            this.handleWantToVisitStoreAll
+                                          }
+                                        >
+                                          <option value="yes">
                                             Want to Visit Store : Yes
                                           </option>
-                                          <option>
+                                          <option value="no">
                                             Want to Visit Store : No
                                           </option>
                                         </select>
@@ -2763,131 +3203,6 @@ class MyTicketList extends Component {
             </div>
           </div>
         </div>
-        {/* <Modal
-          size="lg"
-          show={this.state.AssignModal}
-          onHide={this.handleAssignModalClose.bind(this)}
-          className="assign-modal-KBase"
-        >
-          <Modal.Header>
-            <div className="assign-modal-header">
-              <img
-                src={BlackLeftArrow}
-                alt="black-left-arrow-icon"
-                className="black-left-arrow"
-                onClick={this.handleAssignModalClose.bind(this)}
-              />
-              <label className="claim-details">Assign Tickets To</label>
-              <img
-                src={SearchBlackImg}
-                alt="SearchBlack"
-                className="black-left-arrow srch-mleft-spc"
-              />
-            </div>
-          </Modal.Header>
-          <Modal.Body>
-            <div className="assign-modal-div">
-              <input
-                type="text"
-                className="txt-1 txt-btmSpace"
-                placeholder="First Name"
-              />
-              <input
-                type="text"
-                className="txt-1 txt-btmSpace"
-                placeholder="Last Name"
-              />
-              <input
-                type="text"
-                className="txt-1 txt-btmSpace"
-                placeholder="Email"
-              />
-              <div className="txt-btmSpace">
-                <select
-                  id="inputState"
-                  className="form-control dropdown-setting"
-                >
-                  <option>Select</option>
-                  <option>Designation</option>
-                </select>
-              </div>
-              <button className="butn assign-btn" type="button">
-                SEARCH
-              </button>
-              <a href="#!" className="anchorTag-clear">
-                CLEAR
-              </a>
-            </div>
-            <div className="assign-modal-body">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Agent</th>
-                    <th>Designation</th>
-                    <th>Email</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      <img
-                        src={Headphone2Img}
-                        alt="headphone"
-                        className="oval-55 assign-hdphone"
-                      />
-                      Naman.R
-                    </td>
-                    <td>Supply</td>
-                    <td>naman@flipkart.com</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <img
-                        src={Headphone2Img}
-                        alt="headphone"
-                        className="oval-55 assign-hdphone"
-                      />
-                      Nidhi.J
-                    </td>
-                    <td>Supply</td>
-                    <td>naman@flipkart.com</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <img
-                        src={Headphone2Img}
-                        alt="headphone"
-                        className="oval-55 assign-hdphone"
-                      />
-                      Rashmi.C
-                    </td>
-                    <td>Supply</td>
-                    <td>naman@flipkart.com</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <img
-                        src={Headphone2Img}
-                        alt="headphone"
-                        className="oval-55 assign-hdphone"
-                      />
-                      Juhi.H
-                    </td>
-                    <td>Supply</td>
-                    <td>naman@flipkart.com</td>
-                  </tr>
-                </tbody>
-              </table>
-              <textarea
-                className="assign-modal-textArea"
-                placeholder="Add Remarks"
-              ></textarea>
-              <button className="assign-butn btn-assign-tikcet" type="button">
-                ASSIGN TICKETS
-              </button>
-            </div>
-          </Modal.Body>
-        </Modal> */}
       </Fragment>
     );
   }
