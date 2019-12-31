@@ -1301,6 +1301,7 @@ table tr th:last-child {
   border: none;
   height: 0px;
   padding: 0px;
+  cursor: pointer;
 }
 
 .tdtext {

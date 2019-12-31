@@ -64,6 +64,8 @@ class TicketSystem extends Component {
       customerEmailId: "",
       customerPhoneNumber: "",
       customerName: "",
+      ticketDetails: "",
+      ticketSuggestion: "",
       selectedBrand: 0,
       createdBy: 6,
       selectedCategory: 0,
@@ -105,9 +107,7 @@ class TicketSystem extends Component {
     // this.handleChange = this.handleChange.bind(this);
     this.handleGetTicketTitleList = this.handleGetTicketTitleList.bind(this);
     this.handleCkEditorTemplate = this.handleCkEditorTemplate.bind(this);
-    // this.handleCkEditorTemplateData = this.handleCkEditorTemplateData.bind(
-    //   this
-    // );
+    this.handleTicketChange = this.handleTicketChange.bind(this);
     this.handleKbLinkPopupSearch = this.handleKbLinkPopupSearch.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
     this.handleGetCategoryList = this.handleGetCategoryList.bind(this);
@@ -192,48 +192,51 @@ class TicketSystem extends Component {
   handleSubmitReopnModalClose() {
     this.setState({ SubmitBtnReopn: false });
   }
+  handleTicketChange(e) {
+    this.setState({ [e.currentTarget.name]: e.currentTarget.value });
+  }
   handleUpdateCustomer() {
     debugger;
     let self = this;
     // var Dob= moment(this.state.CustData.editDOB).format("DD/MM/YYYY");
     if (this.validator.allValid()) {
-    axios({
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
-      url: config.apiUrl + "/Customer/updateCustomer",
-      data: {
-        CustomerID: this.state.CustData.customerID,
-        TenantID: this.state.CustData.tenantID,
-        CustomerName: this.state.CustData.customername,
-        CustomerPhoneNumber: this.state.CustData.customerPhone,
-        CustomerEmailId: this.state.CustData.custEmailId,
-        GenderID: this.state.CustData.genderID,
-        AltNumber: this.state.CustData.altNo,
-        AltEmailID: this.state.CustData.altEmail,
-        CreatedBy: this.state.createdBy,
-        // DateOfBirth: moment(this.state.CustData.editDOB).format("DD/MM/YYYY"),
-        // DateOfBirth: Dob,
-        IsActive: 1
-      }
-    }).then(function(res) {
-      // debugger;
-      let Message = res.data.message;
-      if (Message === "Success") {
-        NotificationManager.success("Record updated Successfull.");
+      axios({
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Methods": "*"
+        },
+        url: config.apiUrl + "/Customer/updateCustomer",
+        data: {
+          CustomerID: this.state.CustData.customerID,
+          TenantID: this.state.CustData.tenantID,
+          CustomerName: this.state.CustData.customername,
+          CustomerPhoneNumber: this.state.CustData.customerPhone,
+          CustomerEmailId: this.state.CustData.custEmailId,
+          GenderID: this.state.CustData.genderID,
+          AltNumber: this.state.CustData.altNo,
+          AltEmailID: this.state.CustData.altEmail,
+          CreatedBy: this.state.createdBy,
+          // DateOfBirth: moment(this.state.CustData.editDOB).format("DD/MM/YYYY"),
+          // DateOfBirth: Dob,
+          IsActive: 1
+        }
+      }).then(function(res) {
+        // debugger;
+        let Message = res.data.message;
+        if (Message === "Success") {
+          NotificationManager.success("Record updated Successfull.");
 
-        self.componentDidMount();
+          self.componentDidMount();
 
-        self.handleEditCustomerClose.bind(this);
-      }
-    });
-  } else {
-    this.validator.showMessages();
-    this.forceUpdate();
+          self.handleEditCustomerClose.bind(this);
+        }
+      });
+    } else {
+      this.validator.showMessages();
+      this.forceUpdate();
+    }
   }
-}
   handleGetTicketTitleList() {
     const requestOptions = {
       method: "POST",
@@ -251,7 +254,7 @@ class TicketSystem extends Component {
         // TenantID: this.state.tenantID
       }
     }).then(function(res) {
-      // debugger;
+      debugger;
       let TicketTitleData = res.data.responseData;
       self.setState({ TicketTitleData: TicketTitleData });
     });
@@ -475,7 +478,6 @@ class TicketSystem extends Component {
   componentDidMount() {
     debugger;
     var customerDetails = this.props.location.state;
-    // var custDetailsId=this.props.location.state;
 
     if (customerDetails) {
       var custId = customerDetails.customerId;
@@ -490,41 +492,72 @@ class TicketSystem extends Component {
       this.props.history.push("addSearchMyTicket");
     }
   }
+  handleTicketSuggestion = ticketSuggestion => {
+    this.setState({ ticketSuggestion });
+  };
 
-  // handleCREATE_TICKET(){
-  //   debugger;
-  //   let self = this;
+  handleCREATE_TICKET() {
+    debugger;
+    let self = this;
+    const ticketingMaster = {
+      //       TicketID:,
+      // TenantID:,
+      // Ticketnotes:,
+      // TicketSourceID:,
+      // TikcketTitle: this.state.ticketSuggestion,
+      // Ticketdescription: this.state.ticketDetails,
+      // BrandID: this.state.selectedBrand,
+      // CategoryID: this.state.selectedCategory,
+      // SubCategoryID: this.state.selectedSubCategory,
+      // IssueTypeID: this.state.selectedIssueType,
+      // PriorityID: this.state.TicketPriorityData,
+      // ChannelOfPurchaseID: this.state.selectedChannelOfPurchase
+      // CustomerID:,
+      // AssignedID:,
+      // TicketActionID:,
+      // IsInstantEscalateToHighLevel:,
+      // OrderMasterID:,
+      // CreatedBy:,
+      // CreatedDate:,
+      // UpdatedBy:,
+      // UpdatedDate:,
+      // StatusID:,
+      // IsWantToVisitedStore:,
+      // IsAlreadyVisitedStore:,
+      // IsWantToAttachOrder:,
+      // TicketTemplateID:,
+      // IsActive:,
+      // ModifiedBy:,
+      // ModifiedDate:,
+      // storeIds:,
+    };
 
-  //   axios({
-  //     method: "post",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       "Access-Control-Allow-Methods": "*"
-  //     },
-  //     url: config.apiUrl + "/Customer/createCustomer",
-  //     data: {
-  //       TenantID: ,
-  //       CustomerName: ,
-  //       CustomerPhoneNumber: ,
-  //       CustomerEmailId: ,
-  //       GenderID: ,
-  //       AltNumber: ,
-  //       AltEmailID: ,
-  //       DateOfBirth:,
-  //       IsActive: ,
-  //       CreatedBy: ,
-  //       ModifyBy: ,
-  //       ModifiedDate: 
-  //     }
-  //   }).then(function(res) {
-  //     debugger;
-  //     let responseMessage = res.data.message;
-     
-  //     if (responseMessage === "Success") {
-  //       NotificationManager.success("New Customer added successfully.");
-  //     }
-  //   });
-  // }
+    axios({
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      url: config.apiUrl + "/Ticketing/createTicket",
+      data: {
+        TikcketTitle: this.state.ticketSuggestion,
+        Ticketdescription: this.state.ticketDetails,
+        BrandID: this.state.selectedBrand,
+        CategoryID: this.state.selectedCategory,
+        SubCategoryID: this.state.selectedSubCategory,
+        IssueTypeID: this.state.selectedIssueType,
+        PriorityID: this.state.TicketPriorityData,
+        ChannelOfPurchaseID: this.state.selectedChannelOfPurchase
+      }
+    }).then(function(res) {
+      debugger;
+      let responseMessage = res.data.message;
+
+      // if (responseMessage === "Success") {
+      //   NotificationManager.success("New Customer added successfully.");
+      // }
+    });
+  }
 
   setBrandValue = e => {
     let brandValue = e.currentTarget.value;
@@ -649,7 +682,10 @@ class TicketSystem extends Component {
                     overlayId="logout-ovrly"
                   >
                     <div>
-                      <button className="btnMdlSubmit" onClick={this.handleCREATE_TICKET.bind(this)}>
+                      <button
+                        className="btnMdlSubmit"
+                        onClick={this.handleCREATE_TICKET.bind(this)}
+                      >
                         {this.state.selectedTicketActionType === "200"
                           ? "Submit As Solved"
                           : "Create Ticket"}
@@ -671,13 +707,13 @@ class TicketSystem extends Component {
                     <div className="ticket-title-select">
                       <Select
                         // className="rate-dropdown"
-                        getOptionLabel={option => option.ticket_title}
-                        getOptionValue={option => option.ticket_title}
+                        getOptionLabel={option => option.ticketTitle}
+                        getOptionValue={option => option.ticketTitle}
                         options={this.state.TicketTitleData}
                         placeholder="Suggestion"
-                        // menuIsOpen={true}
-                        // onChange={this.specEquipChange}
-                        // value={thi.state.spEqtSelect}
+                        value={this.state.ticketSuggestion}
+                        onChange={this.handleTicketSuggestion}
+                        // name="ticketSuggestion"
                         // showNewOptionAtTop={false}
                       />
                     </div>
@@ -690,6 +726,9 @@ class TicketSystem extends Component {
                     <textarea
                       className="ticket-details-textarea-system"
                       placeholder="Write your title here"
+                      name="ticketDetails"
+                      value={this.state.ticketDetails}
+                      onChange={this.handleTicketChange}
                     ></textarea>
                   </div>
                 </div>
@@ -810,18 +849,6 @@ class TicketSystem extends Component {
                   </div>
                   <div className="col-md-6">
                     <label className="sub-category">Ticket Action Type</label>
-                    {/* <div className="row">
-                      <div className="col-md-6 Qc">
-                        <button className="low-button">
-                          <label className="Qc-button-text">QC</label>
-                        </button>
-                      </div>
-                      <div className="col-md-6 Etc">
-                        <button className="">
-                          <label className="Etb-button-text">ETB</label>
-                        </button>
-                      </div>
-                    </div> */}
                     <div className="action-type-butns-cntr">
                       <div className="action-type-butns">
                         <input
@@ -898,18 +925,6 @@ class TicketSystem extends Component {
                         : this.state.tempName}
                     </button>
                     <ul className="dropdown-menu">
-                      {/* <li>
-                        <a href="#!">Template 1</a>
-                      </li>
-                      <li>
-                        <a href="#!">Template 2</a>
-                      </li>
-                      <li>
-                        <a href="#!">Template 3</a>
-                      </li>
-                      <li>
-                        <a href="#!">Template 4</a>
-                      </li> */}
                       {this.state.CkEditorTemplateData !== null &&
                         this.state.CkEditorTemplateData.map((item, i) => (
                           <li key={i} value={item.templateID}>
@@ -929,7 +944,6 @@ class TicketSystem extends Component {
                   </div>
 
                   <a href="#!" className="kblink1">
-                    {/* <FontAwesomeIcon icon={faBrain} /> Kb Link */}
                     <img
                       src={KnowledgeLogo}
                       alt="KnowledgeLogo"
@@ -1228,7 +1242,7 @@ class TicketSystem extends Component {
                           />
                           {this.validator.message(
                             "Full Name",
-                          this.state.customerName,
+                            this.state.customerName,
                             "required|alpha_space"
                           )}
                         </div>
@@ -1244,8 +1258,8 @@ class TicketSystem extends Component {
                           />
                           {this.validator.message(
                             "Mobile Number",
-                           this.state.customerPhoneNumber,
-                             "required|integer|size:10"
+                            this.state.customerPhoneNumber,
+                            "required|integer|size:10"
                           )}
                         </div>
                       </div>
@@ -1261,7 +1275,7 @@ class TicketSystem extends Component {
                           />
                           {this.validator.message(
                             "Email Id",
-                          this.state.customerEmailId,
+                            this.state.customerEmailId,
                             "required|email"
                           )}
                         </div>
@@ -1290,7 +1304,7 @@ class TicketSystem extends Component {
                           />
                           {this.validator.message(
                             "Date of Birth",
-                          this.state.dob,
+                            this.state.dob,
                             "required"
                           )}
                         </div>
@@ -1309,7 +1323,7 @@ class TicketSystem extends Component {
                           />
                           {this.validator.message(
                             "Alternate Number",
-                          this.state.altNumber,
+                            this.state.altNumber,
                             "integer|size:10"
                           )}
                         </div>
@@ -1322,11 +1336,11 @@ class TicketSystem extends Component {
                             value={this.state.CustData.altEmail}
                             onChange={this.handleOnChangeData}
                           />
-                           {this.validator.message(
+                          {this.validator.message(
                             "Alternate Email Id",
-                           this.state.altEmailID,
+                            this.state.altEmailID,
                             "email"
-                           )}
+                          )}
                         </div>
                       </div>
                       <div className="btn-float">
@@ -1407,16 +1421,7 @@ class TicketSystem extends Component {
                             className="customer-icon"
                           />
                         )}
-                        {/* <img
-                          src={AvatarBlackIcon}
-                          alt="customer-icon"
-                          className="customer-icon"
-                        /> */}
-                        {/* <img
-                          src={CustomreIcon}
-                          alt="customer-icon"
-                          className="customer-icon"
-                        /> */}
+
                         <span className="system-tab-span">CUSTOMER</span>
                       </a>
                     </li>
@@ -1504,83 +1509,6 @@ class TicketSystem extends Component {
                         KNOWLEGE BASE
                       </h5>
                       <p>Message</p>
-                      {/* <div className="textkb">
-                        <p className="table-details-data-modal">
-                          Can I purchase a domain through Google?
-                        </p>
-                        {HidecollapsUpKbLink}
-
-                        <Collapse isOpen={this.state.collapseUp}>
-                          <Card>
-                            <CardBody>
-                              <p>
-                                Google can help you purchase a domain through
-                                one of our domain host partners. During sign up,
-                                just select the option to 'buy a new
-                                domain.'We'll then guide you through the process
-                                to help you set up G suite for your new domain.
-                              </p>
-                              <img
-                                src={CopyBlue}
-                                alt=""
-                                className="copyblue-kb"
-                              />
-                              <a href="#!" className="copyblue-kbtext">
-                                Copy
-                              </a>
-                            </CardBody>
-                          </Card>
-                        </Collapse>
-                      </div> */}
-
-                      {/* <div className="textkb">
-                        <p className="table-details-data-modal">
-                          Can I still use the previous version of Sites ?
-                        </p>
-
-                        <img
-                          src={DownArrowIcon}
-                          alt="down-arrow-icon"
-                          className="down-icon-kb1"
-                        />
-                      </div>
-                      <div className="textkb">
-                        <p className="table-details-data-modal">
-                          Can I still use the previous version of Sites ?
-                        </p>
-                        <img
-                          src={DownArrowIcon}
-                          alt="down-arrow-icon"
-                          className="down-icon-kb1"
-                        />
-                      </div> */}
-                      {/* <div className="textkb">
-                        <p className="table-details-data-modal">
-                          Can I still use the previous version of Sites ?
-                        </p>
-                        <img
-                          src={DownArrowIcon}
-                          alt="down-arrow-icon"
-                          className="down-icon-kb1"
-                        />
-                      </div>
-                      <div className="textkb">
-                        <p className="table-details-data-modal">
-                          Can I still use the previous version of Sites ?
-                        </p>
-                        <img
-                          src={DownArrowIcon}
-                          alt="down-arrow-icon"
-                          className="down-icon-kb1"
-                        />
-                      </div> */}
-
-                      {/* {this.state.CategoryData !== null &&
-                        this.state.CategoryData.map((item, i) => (
-                          <option key={i} value={item.categoryID}>
-                            {item.categoryName}
-                          </option>
-                        ))} */}
 
                       <div id="kb-accordion">
                         {this.state.KbPopupData !== null &&
@@ -1628,38 +1556,6 @@ class TicketSystem extends Component {
                               </div>
                             </div>
                           ))}
-                        {/* <div className="kb-acc-cntr">
-                          <p
-                            className="table-details-data-modal"
-                            data-toggle="collapse"
-                            data-target="#collapseTwo"
-                            aria-expanded="false"
-                            aria-controls="collapseTwo"
-                          >
-                            Can I still use the previous version of Sites ?
-                          </p>
-                          <div
-                            id="collapseTwo"
-                            className="collapse"
-                            data-parent="#kb-accordion"
-                          >
-                            <p>
-                              Google can help you purchase a domain through one
-                              of our domain host partners. During sign up, just
-                              select the option to 'buy a new domain.'We'll then
-                              guide you through the process to help you set up G
-                              suite for your new domain.
-                            </p>
-                            <img
-                              src={CopyBlue}
-                              alt=""
-                              className="copyblue-kb"
-                            />
-                            <a href="#!" className="copyblue-kbtext">
-                              Copy
-                            </a>
-                          </div>
-                        </div> */}
                       </div>
                     </div>
                   </div>
