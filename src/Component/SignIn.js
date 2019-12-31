@@ -12,7 +12,6 @@ import {
   NotificationManager
 } from "react-notifications";
 import SimpleReactValidator from "simple-react-validator";
-import { authHeader } from "../helpers/authHeader";
 // import {config} from './../helpers';
 
 class SingIn extends Component {
@@ -80,7 +79,7 @@ class SingIn extends Component {
             NotificationManager.success("Login Successfull.");
             window.localStorage.setItem(
               "token",
-              encryption(res.data.responseData.token, "enc")
+              (res.data.responseData.token)
             );
             setTimeout(function() {
               self.props.history.push("Admin/dashboard");

@@ -80,8 +80,9 @@ class AddSearchMyTicket extends Component {
     }).then(function(res) {
       debugger;
       let SearchData = res.data.responseData[0];
-      let GetCustId = SearchData.customerID;
-      if (GetCustId !== null) {
+      // let GetCustId = SearchData.customerID;
+      if (SearchData) {
+        let GetCustId = SearchData.customerID;
         setTimeout(function() {
           self.props.history.push({
             pathname: "ticketsystem",
@@ -89,10 +90,13 @@ class AddSearchMyTicket extends Component {
           });
         }, 500);
         self.setState({
-          customerId: GetCustId,
-          message: res.data.message
+          customerId: GetCustId
+          // message: res.data.message
         });
       } else {
+        self.setState({
+          message: res.data.message
+        });
         NotificationManager.error(res.data.message);
       }
     });
@@ -232,31 +236,31 @@ class AddSearchMyTicket extends Component {
                   onClick={this.handleSearchCustomer}
                 />
               </div>
-              {this.state.message !== "Success" ? null : (
+              {this.state.message === "Record Not Found" ? (
                 <div>
-                <div className="div-notFoundaddseacr">
-                  <img
-                    src={NotFoundImg}
-                    alt="Not Found"
-                    className="notFound-addSrch"
-                  />
-                  <br />
-                  <label className="lbl-count-foundData">
-                    We couldn't find the customer with this
-                    <br /> <span>Phone number, Email Id</span>
-                  </label>
+                  <div className="div-notFoundaddseacr">
+                    <img
+                      src={NotFoundImg}
+                      alt="Not Found"
+                      className="notFound-addSrch"
+                    />
+                    <br />
+                    <label className="lbl-count-foundData">
+                      We couldn't find the customer with this
+                      <br /> <span>Phone number, Email Id</span>
+                    </label>
+                  </div>
+                  <div style={{ width: "90%", textAlign: "center" }}>
+                    <button
+                      type="button"
+                      className="btn btn-addCustomer"
+                      onClick={this.handleAddCustomerOpen}
+                    >
+                      Add Customer
+                    </button>
+                  </div>
                 </div>
-                <div style={{ width: "90%", textAlign: "center" }}>
-                  <button
-                    type="button"
-                    className="btn btn-addCustomer"
-                    onClick={this.handleAddCustomerOpen}
-                  >
-                    Add Customer
-                  </button>
-                </div>
-              </div>
-              )}
+              ) : null}
             </div>
             <Modal
               onClose={this.handleAddCustomerClose}

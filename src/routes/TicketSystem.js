@@ -35,6 +35,7 @@ import {
   NotificationManager
 } from "react-notifications";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import { authHeader } from "../helpers/authHeader";
 
 class TicketSystem extends Component {
   constructor() {
@@ -300,17 +301,12 @@ class TicketSystem extends Component {
     });
   }
   handleGetBrandList() {
+    debugger;
     let self = this;
     axios({
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
       url: config.apiUrl + "/Brand/GetBrandList",
-      params: {
-        TenantID: this.state.tenantID
-      }
+      headers: authHeader()
     }).then(function(res) {
       // console.log(JSON.stringify(res.data.responseData));
       debugger;

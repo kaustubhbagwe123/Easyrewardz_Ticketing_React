@@ -1,4 +1,4 @@
-import { encryption } from "./encryption";
+// import { encryption } from "./encryption";
 
 export function authHeader(token = "token") {
   debugger
@@ -10,10 +10,10 @@ export function authHeader(token = "token") {
     };
   } 
 else {
-    // var token=window.localStorage.getItem('token');
-     
-      var tokenValue = encryption(window.localStorage.getItem("token"), "desc");
-      return { Authorization: tokenValue, "Content-Type": "application/json" };
+    // Send token in server side with tenanID, ProgramCode, UserId, Password and Domain name
+      
+      var _token = window.localStorage.getItem("token");
+      return { 'X-Authorized-Token': _token, "Content-Type": "application/json" };
      
   }
 }

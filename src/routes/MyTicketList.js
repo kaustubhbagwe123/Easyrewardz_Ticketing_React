@@ -38,7 +38,7 @@ import config from "./../helpers/config";
 import TicketStatus from "./TicketStatus";
 import SlaDue from "./SlaDue";
 import TicketActionType from "./TicketActionType";
-import moment from "moment";
+// import moment from "moment";
 import Select from "react-select";
 
 class MyTicketList extends Component {
@@ -74,7 +74,6 @@ class MyTicketList extends Component {
       Schedule: false,
       StatusModel: false,
       CheckBoxChecked: false,
-      selectedDesignation: 0,
       selectedPriority: 0,
       selectedPriorityAll: 0,
       selectedChannelOfPurchase: [],
