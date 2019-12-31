@@ -22,6 +22,7 @@ class Reports extends Component {
       NextPopup: false,
       ReportCreateDate: "",
       ReportLastDate: "",
+      ChatDate: "",
       tabIndex:0
     };
 
@@ -48,6 +49,9 @@ class Reports extends Component {
   }
   handleReportLastDate(date) {
     this.setState({ ReportLastDate: date });
+  }
+  handleChatDate(date) {
+    this.setState({ ChatDate: date });
   }
   handleChangeTab(index){
     this.setState({
@@ -535,7 +539,17 @@ class Reports extends Component {
                   <div className="row">
                     <div className="col-md-4 ticketreport">
                       <label>Chat Date</label>
-                      <input className="no-bg" type="text" />
+                      <div className="ticketreportdat">
+                      <DatePicker
+                        selected={this.state.ChatDate}
+                        onChange={this.handleChatDate.bind(this)}
+                        placeholderText="Chat Date"
+                        showMonthDropdown
+                        showYearDropdown
+                        // className="form-control"
+                      />
+                      {/* <input className="no-bg" type="text" /> */}
+                      </div>
                     </div>
                     <div className="col-md-4 ticketreport">
                       <label>Ticket ID</label>

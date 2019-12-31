@@ -5,12 +5,13 @@ import { Tabs, Tab } from "react-bootstrap-tabs";
 import ReactTable from "react-table";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import DeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import MinusCircle from "./../../../assets/Images/minuscircle.png";
 import PlusCircle from "./../../../assets/Images/pluscircle.png";
 import Slider from "react-rangeslider";
 import "react-rangeslider/lib/index.css";
 import { Popover } from "antd";
+import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
+import DelBigIcon from "./../../../assets/Images/del-big.png";
 
 class Module extends Component {
   constructor(props) {
@@ -159,7 +160,11 @@ class Module extends Component {
     const dataShortcut = [
       {
         shortcutname: "Goodbye",
-        tagshortcut: "GoodBye_Survey",
+        tagshortcut: (
+          <span className="goodby">
+            GoodBye_Survey
+          </span>
+        ),
         messageshortcut: (
           <span>
             <label>
@@ -180,7 +185,11 @@ class Module extends Component {
       },
       {
         shortcutname: "Help",
-        tagshortcut: "Help_Survey",
+        tagshortcut: (
+          <span className="goodby">
+            Help_Survey
+          </span>
+        ), 
         messageshortcut: (
           <span>
             <label>Do you need any help?</label>
@@ -208,7 +217,11 @@ class Module extends Component {
       },
       {
         shortcutname: "Returning",
-        tagshortcut: "Returning",
+        tagshortcut: (
+          <span className="goodby">
+          Returning
+          </span>
+        ),
         messageshortcut: (
           <span>
             <label>Welcome back,how can we help you today?</label>
@@ -278,15 +291,71 @@ class Module extends Component {
         accessor: "actionshortcut",
         Cell: props => (
           <span>
-            <img src={DeleteIcon} alt="del-icon" className="downloadaction" />
-            <button className="react-tabel-button" id="p-edit-pop-2">
-              <label className="Table-action-edit-button-text">EDIT</label>
-            </button>
+            <Popover content={ActionDelete} placement="bottom" trigger="click" >
+                  <img src={RedDeleteIcon} alt="del-icon" className="del-btn" />
+            </Popover>
+            <Popover
+                  content={ActionEditBtn}
+                  placement="bottom"
+                  trigger="click"
+                >
+                  <button className="react-tabel-button" id="p-edit-pop-2">
+                    <label className="Table-action-edit-button-text">
+                      EDIT
+                    </label>
+                  </button>
+                </Popover>
           </span>
         )
       }
     ];
+    const ActionEditBtn = (
+      <div className="edtpadding">
+        <div className="">
+          <label className="popover-header-text">EDIT SHORTCUT</label>
+        </div>
+        <div className="pop-over-div">
+          <label className="edit-label-1">Shortcut</label>
+          <input
+            type="text"
+            className="txt-edit-popover"
+            placeholder="Enter Shortcut"
+          />
+        </div>
 
+        <div className="pop-over-div">
+          <label className="edit-label-1">Available for</label>
+          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
+            <option>Status</option>
+            <option>Inactive</option>
+          </select>
+        </div>
+        <br />
+        <div>
+          <label className="pop-over-cancle">CANCEL</label>
+          <button className="pop-over-button">
+            <label className="pop-over-btnsave-text">SAVE</label>
+          </button>
+        </div>
+      </div>
+    );
+    const ActionDelete = (
+      <div className="d-flex general-popover popover-body">
+        <div className="del-big-icon">
+          <img src={DelBigIcon} alt="del-icon" />
+        </div>
+        <div>
+          <p className="font-weight-bold blak-clr">Delete file?</p>
+          <p className="mt-1 fs-12">
+            Are you sure you want to delete this file?
+          </p>
+          <div className="del-can">
+            <a href={Demo.BLANK_LINK}>CANCEL</a>
+            <button className="butn">Delete</button>
+          </div>
+        </div>
+      </div>
+    );
     return (
       <Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
@@ -311,6 +380,7 @@ class Module extends Component {
                                     <label htmlFor="editDashboard-p-1" className="cr"></label> */}
                   </div>
 
+                  
                   <div className="switch switch-primary">
                     <label className="moduleswitchtext">Creation Date</label>
                     <input type="checkbox" id="module-s-1" />
@@ -578,9 +648,47 @@ class Module extends Component {
                                 data={dataShortcut}
                                 columns={columnsShortcut}
                                 // resizable={false}
-                                defaultPageSize={10}
+                                defaultPageSize={5}
                                 showPagination={false}
                               />
+                               <div className="position-relative">
+                    <div className="pagi">
+                      <ul>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>&lt;</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>1</a>
+                        </li>
+                        <li className="active">
+                          <a href={Demo.BLANK_LINK}>2</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>3</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>4</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>5</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>6</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>&gt;</a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="item-selection">
+                      <select>
+                        <option>30</option>
+                        <option>50</option>
+                        <option>100</option>
+                      </select>
+                      <p>Items per page</p>
+                    </div>
+                  </div>
                             </div>
                           </div>
                           <div className="col-md-4">

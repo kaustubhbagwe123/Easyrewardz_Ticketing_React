@@ -981,7 +981,7 @@ margin: 3px 0px 8px 12px;
 /* Raiseclaim search collapse css start kalpesh */
 .Searchline {
   border-bottom: 1px solid #E3E3E3;
-    width: 98%;
+    width: 100%;
     margin-top: 10px;
     margin-left: 0px;
     margin-right: 0px;
@@ -1160,6 +1160,28 @@ margin: 3px 0px 8px 12px;
     display: block;
     font-size: 10px;
   }
+  .camp-datepick .react-datepicker__navigation--previous {
+    min-width: auto;
+  }
+  .camp-datepick .react-datepicker__navigation--next {
+    min-width: auto;
+  }
+  .camp-datepick span {
+    display: grid;
+  }
+  .reactstoreclaim .ReactTable {
+    background-color: #F8F8F8;
+  }
+  .reacttableordermodal .ReactTable .rt-thead.-header {
+    background-color: #F8F8F8 !important;
+  }
+  .raisereactTable svg:not(:root).svg-inline--fa {
+    overflow: visible;
+    color:#a7aaad;
+    width: 20px;
+    height: 18px;
+    margin: -3px 0;
+   }
 /* ----------------------------------------------- */
 
 

@@ -4,6 +4,8 @@ import InfoIcon from "./../../../assets/Images/info-icon.png";
 import HeadPhone3 from "./../../../assets/Images/headphone3.png";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Demo from '../../../store/Hashtag';
+
 
 class QaAudit extends Component {
     render() {
@@ -143,8 +145,46 @@ class QaAudit extends Component {
                 columns={columnsaudit}
                 // resizable={false}
                 defaultPageSize={5}
-                showPagination={true}
+                showPagination={false}
             />
+             <div className="position-relative">
+                        <div className="pagi">
+                          <ul>
+                            <li>
+                              <a href={Demo.BLANK_LINK}>&lt;</a>
+                            </li>
+                            <li>
+                              <a href={Demo.BLANK_LINK}>1</a>
+                            </li>
+                            <li className="active">
+                              <a href={Demo.BLANK_LINK}>2</a>
+                            </li>
+                            <li>
+                              <a href={Demo.BLANK_LINK}>3</a>
+                            </li>
+                            <li>
+                              <a href={Demo.BLANK_LINK}>4</a>
+                            </li>
+                            <li>
+                              <a href={Demo.BLANK_LINK}>5</a>
+                            </li>
+                            <li>
+                              <a href={Demo.BLANK_LINK}>6</a>
+                            </li>
+                            <li>
+                              <a href={Demo.BLANK_LINK}>&gt;</a>
+                            </li>
+                          </ul>
+                        </div>
+                        <div className="item-selection">
+                          <select>
+                            <option>30</option>
+                            <option>50</option>
+                            <option>100</option>
+                          </select>
+                          <p>Items per page</p>
+                        </div>
+                      </div>
             </div>
             </Fragment>
         )

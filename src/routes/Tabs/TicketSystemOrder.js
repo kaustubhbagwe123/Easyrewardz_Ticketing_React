@@ -312,7 +312,6 @@ class TicketSystemOrder extends Component {
         Cell: row => <label>SB221</label>
       }
     ];
-    console.log(this.props.custDetails, "done-----------");
 
     return (
       <div className="ticketSycard">

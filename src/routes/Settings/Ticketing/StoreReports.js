@@ -20,6 +20,7 @@ class StoreReports extends Component {
       AddReportPopup: false,
       NextPopup: false,
       ReportCreateDate: "",
+      EndDate: "",
       tabIndex: 0
     };
 
@@ -43,6 +44,9 @@ class StoreReports extends Component {
   }
   handleReportCreateDate(date) {
     this.setState({ ReportCreateDate: date });
+  }
+  handleEndDate(date) {
+    this.setState({ EndDate : date });
   }
   handleChangeTab(index) {
     this.setState({
@@ -520,7 +524,17 @@ class StoreReports extends Component {
                     </div>
                     <div className="col-md-4 ticketstrReport">
                     <label>Campaign End Date</label>
-                      <input className="no-bg" type="text" />
+                    <div className="ticketreportdat">
+                      <DatePicker
+                        selected={this.state.EndDate}
+                        onChange={this.handleEndDate.bind(this)}
+                        placeholderText="End Date"
+                        showMonthDropdown
+                        showYearDropdown
+                        // className="form-control"
+                      />
+                      </div>
+                      {/* <input className="no-bg" type="text" /> */}
                     </div>
                   </div>
                   <div className="row mdl-row">
