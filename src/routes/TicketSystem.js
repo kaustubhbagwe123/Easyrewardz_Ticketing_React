@@ -1369,9 +1369,7 @@ class TicketSystem extends Component {
                     style={{ height: "100%" }}
                     // onChange={this.hanleRedirectpage.bind(this)}
                   >
-                    {/* {this.state.isOrderClick === true ? ( */}
                     <TicketSystemOrder custDetails={CustomerId} />
-                    {/* ) : null} */}
                   </div>
                   <div
                     className="tab-pane fade"

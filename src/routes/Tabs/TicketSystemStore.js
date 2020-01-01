@@ -4,15 +4,20 @@ import ArrowImg from "./../../assets/Images/arrow.png";
 import NotFoundImg from "./../../assets/Images/notFound.png";
 import Modal from "react-responsive-modal";
 import ReactTable from "react-table";
+import axios from "axios";
+import config from "../../helpers/config";
 
 class TicketSystemStore extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      SearchStoreDetails: false,
+      // SearchStoreDetails: false,
       OrderStoreTable: false,
-      AddSelectDetail: false
+      AddSelectDetail: false,
+      SrchStoreNameCode: "",
+      SearchData: [],
+      message: ""
     };
     this.handleOrderStoreTableOpen = this.handleOrderStoreTableOpen.bind(this);
     this.handleOrderStoreTableClose = this.handleOrderStoreTableClose.bind(
@@ -26,17 +31,46 @@ class TicketSystemStore extends Component {
   handleOrderStoreTableClose() {
     this.setState({ OrderStoreTable: false });
   }
-  handleShowSearchStoreDetails() {
-    this.setState({
-      SearchStoreDetails: !this.state.SearchStoreDetails
+  handleSearchStoreDetails() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Methods": "*"
+      },
+      url: config.apiUrl + "/Store/searchStoreDetail",
+      params: {
+        SearchText: this.state.SrchStoreNameCode.trim()
+      }
+    }).then(function(res) {
+      debugger;
+      let SearchData = res.data.responseData;
+      let Msg = res.data.message;
+      if (Msg === "Success") {
+        self.setState({ SearchData: SearchData });
+      } else {
+        self.setState({
+          message: res.data.message
+        });
+      }
     });
+
+    // this.setState({
+    //   SearchStoreDetails: !this.state.SearchStoreDetails
+    // });
   }
   handleShowSearchSelectDetails() {
     this.setState({
       AddSelectDetail: !this.state.AddSelectDetail
     });
   }
+  handleStoreChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
   render() {
+    const { SearchData } = this.state;
     const dataselectstore = [
       {
         taskTitle: "Store door are not working",
@@ -290,17 +324,120 @@ class TicketSystemStore extends Component {
                   type="text"
                   className="systemordersearch"
                   placeholder="Search By Store Name, Pin Code, Store Code"
+                  name="SrchStoreNameCode"
+                  value={this.state.SrchStoreNameCode}
+                  onChange={this.handleStoreChange}
                 />
                 <img
                   src={SearchBlackImg}
                   alt="Search"
                   className="systemorder-imgsearch"
-                  onClick={this.handleShowSearchStoreDetails.bind(this)}
+                  onClick={this.handleSearchStoreDetails.bind(this)}
                 />
               </div>
             </div>
             <span className="linestore3"></span>
-            {this.state.SearchStoreDetails ? (
+            {this.state.message === "Record Not Found" ? (
+              <div>
+                <div className="div-notFound">
+                  <img
+                    src={NotFoundImg}
+                    alt="Not Found"
+                    className="notFound-addSrch"
+                  />
+                  <br />
+                  <label
+                    className="lbl-count-foundData"
+                    style={{ fontSize: "22px" }}
+                  >
+                    We couldn't find the store details with
+                    <br /> <span> this store Id,Search another store</span>
+                  </label>
+                </div>
+              </div>
+            ) : (
+              <div>
+                <div
+                  className="row m-t-10 m-b-10"
+                  style={{ marginLeft: "0", marginRight: "0" }}
+                >
+                  <div className="col-md-9">
+                    <label
+                      className="orderdetailpopup"
+                      style={{ marginTop: "3px" }}
+                    >
+                      Store Details
+                    </label>
+                  </div>
+                </div>
+                <span className="linestore2"></span>
+                <div className="reactstoreselect">
+                  <ReactTable
+                    data={SearchData}
+                    columns={[
+                      {
+                        Header: <span>Purpose</span>,
+                        accessor: "invoiceNumber"
+                        // Cell: row => (
+                        //   <div className="filter-checkbox" style={{ marginLeft: "15px" }}>
+                        //     <input
+                        //       type="checkbox"
+                        //       id="fil-number16"
+                        //       name="filter-type"
+                        //       style={{ display: "none" }}
+                        //       //   onChange={() => this.showAddNoteFuncation()}
+                        //     />
+                        //     <label htmlFor="fil-number16" style={{ paddingLeft: "25px" }}>
+                        //       <span className="add-note">
+                        //         Customer Want <br></br>to visit store
+                        //       </span>
+                        //     </label>
+                        //   </div>
+                        // )
+                      },
+                      {
+                        Header: <span>Store Code</span>,
+                        accessor: "storeCode"
+                      },
+                      {
+                        Header: <span>Store Name</span>,
+                        accessor: "storeName"
+                      },
+                      {
+                        Header: <span>Store Pin Code</span>,
+                        accessor: "storeCode"
+                      },
+                      {
+                        Header: <span>Store Email ID</span>,
+                        accessor: "storeEmailID"
+                      },
+                      {
+                        Header: <span>Store Addres</span>,
+                        accessor: "address"
+                      },
+                      {
+                        Header: <span>Visit Date</span>,
+                        accessor: "visitDate",
+                        Cell: row => <label>23,Aug 2019</label>
+                      }
+                    ]}
+                    // resizable={false}
+                    defaultPageSize={5}
+                    showPagination={false}
+                  />
+                </div>
+                <div className="storedetailtabsbutton">
+                  <button
+                    type="button"
+                    className="addstoretabsbtn"
+                    onClick={this.handleShowSearchSelectDetails.bind(this)}
+                  >
+                    ADD STORE
+                  </button>
+                </div>
+              </div>
+            )}
+            {/* {this.state.SearchStoreDetails ? (
               <div>
                 {this.state.AddSelectDetail === false ? (
                   <div>
@@ -320,10 +457,56 @@ class TicketSystemStore extends Component {
                     <span className="linestore2"></span>
                     <div className="reactstoreselect">
                       <ReactTable
-                        data={dataselectstore}
-                        columns={columnsselectstore}
+                        data={SearchData}
+                        columns={[
+                          {
+                            Header: <span>Purpose</span>,
+                            accessor: "invoiceNumber"
+                            // Cell: row => (
+                            //   <div className="filter-checkbox" style={{ marginLeft: "15px" }}>
+                            //     <input
+                            //       type="checkbox"
+                            //       id="fil-number16"
+                            //       name="filter-type"
+                            //       style={{ display: "none" }}
+                            //       //   onChange={() => this.showAddNoteFuncation()}
+                            //     />
+                            //     <label htmlFor="fil-number16" style={{ paddingLeft: "25px" }}>
+                            //       <span className="add-note">
+                            //         Customer Want <br></br>to visit store
+                            //       </span>
+                            //     </label>
+                            //   </div>
+                            // )
+                          },
+                          {
+                            Header: <span>Store Code</span>,
+                            accessor: "storeCode"
+                          },
+                          {
+                            Header: <span>Store Name</span>,
+                            accessor: "storeName"
+                          },
+                          {
+                            Header: <span>Store Pin Code</span>,
+                            accessor: "storeCode"
+                          },
+                          {
+                            Header: <span>Store Email ID</span>,
+                            accessor: "storeEmailID"
+                          },
+                          {
+                            Header: <span>Store Addres</span>,
+                            accessor: "address"
+                          },
+                          {
+                            Header: <span>Visit Date</span>,
+                            accessor: "visitDate",
+                            Cell: row => <label>23,Aug 2019</label>
+                          }
+                        ]}
                         // resizable={false}
-                        defaultPageSize={3}
+                        defaultPageSize={5}
                         showPagination={false}
                       />
                     </div>
@@ -417,40 +600,6 @@ class TicketSystemStore extends Component {
                     </div>
                   </div>
                 )}
-                {/* <div>
-            <div
-              className="row m-t-10 m-b-10"
-              style={{ marginLeft: "0", marginRight: "0" }}
-            >
-              <div className="col-md-9">
-                <label
-                  className="orderdetailpopup"
-                  style={{ marginTop: "3px" }}
-                >
-                  Store Details
-                </label>
-              </div>
-            </div>
-            <span className="linestore2"></span>
-            <div className="reactstoreselect">
-              <ReactTable
-                data={dataselectstore}
-                columns={columnsselectstore}
-                // resizable={false}
-                defaultPageSize={3}
-                showPagination={false}
-              />
-            </div>
-            <div className="storedetailtabsbutton">
-              <button
-                type="button"
-                className="addstoretabsbtn"
-                onClick={this.handleShowSearchSelectDetails.bind(this)}
-              >
-                ADD STORE
-              </button>
-            </div>
-          </div> */}
               </div>
             ) : (
               <div>
@@ -470,18 +619,7 @@ class TicketSystemStore extends Component {
                   </label>
                 </div>
               </div>
-            )}
-
-            {/* {this.state.AddSelectDetail ? (
-            <div>
-
-            </div>
-        ) : (
-
-          <div>
-            
-          </div>
-        )} */}
+            )} */}
           </div>
         </div>
       </Fragment>
