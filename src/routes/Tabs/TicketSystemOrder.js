@@ -35,6 +35,7 @@ class TicketSystemOrder extends Component {
       discount: "",
       size: 0,
       requiredSize: 0,
+      custAttachOrder: 1,
       purchaseFrmStorAddress: "",
       modeOfPayment: [],
       SearchItem: [],
@@ -61,11 +62,7 @@ class TicketSystemOrder extends Component {
   handleByDateCreate(date) {
     this.setState({ OrderCreatDate: date });
   }
-  // handleShowAddManualOrder() {
-  //   this.setState({
-  //     AddManualOrderHideShow: !this.state.AddManualOrderHideShow
-  //   });
-  // }
+
   handleShowSearchOrderDetails() {
     this.setState({
       SearchOrderDetails: !this.state.SearchOrederDetails
@@ -87,6 +84,14 @@ class TicketSystemOrder extends Component {
   }
   handleManuallyOnchange = e => {
     this.setState({ [e.currentTarget.name]: e.currentTarget.value });
+  };
+  handleCheckOrder = () => {
+    this.setState({
+      custAttachOrder: 0
+    });
+    {
+      this.props.AttachOrder(this.state.custAttachOrder);
+    }
   };
   handleGetManuallyTableData() {
     debugger;
@@ -327,7 +332,12 @@ class TicketSystemOrder extends Component {
                 <label className="orderdetailpopup">Yes</label>
                 <div className="switchmargin">
                   <div className="switch switch-primary d-inline m-r-10">
-                    <input type="checkbox" id="editDashboard-p-1" />
+                    <input
+                      type="checkbox"
+                      id="editDashboard-p-1"
+                      value={this.state.custAttachOrder}
+                      onChange={this.handleCheckOrder}
+                    />
                     <label htmlFor="editDashboard-p-1" className="cr"></label>
                   </div>
                 </div>

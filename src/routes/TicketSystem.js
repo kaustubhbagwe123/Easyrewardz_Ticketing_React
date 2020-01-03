@@ -45,7 +45,6 @@ class TicketSystem extends Component {
       showAddNote: false,
       SubmitBtnReopn: false,
       EditCustomer: false,
-
       TicketTitleData: [],
       CkEditorTemplateData: [],
       CkEditorTemplateDetails: [],
@@ -57,15 +56,16 @@ class TicketSystem extends Component {
       TicketPriorityData: [],
       ChannelOfPurchaseData: [],
       KbLink: false,
-      // collapseUp: false,
       TabIconColor: "nav-link active",
       altEmailID: "",
       altNumber: "",
+      customer_Id: 0,
       customerEmailId: "",
       customerPhoneNumber: "",
       customerName: "",
       ticketDetails: "",
-      ticketSuggestion: "",
+      ticketSuggestion: {},
+      ticketNote: "",
       selectedBrand: 0,
       createdBy: 6,
       selectedCategory: 0,
@@ -75,17 +75,22 @@ class TicketSystem extends Component {
       selectedIssueType: 0,
       selectedIssueTypeKB: 0,
       selectedTicketPriority: 0,
+      customerAttachOrder: 0,
+      customerStoreStatus: 0,
       selectedTicketActionType: "200",
       selectedChannelOfPurchase: 0,
       tenantID: 1,
+      priorityId: 0,
+      escalationLevel: 0,
       customerData: {},
       CustData: {},
       customerDetails: {},
       tempName: "",
-      // custmrId: '',
       details: {},
       editDOB: "",
+      selectedFile: "",
       copied: false,
+      taskMaster: [],
       SpacialEqmt: [
         {
           department: 25
@@ -102,9 +107,7 @@ class TicketSystem extends Component {
       ]
     };
     this.validator = new SimpleReactValidator();
-    // this.handleOnChangeData = this.handleOnChangeData.bind(this);
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
-    // this.handleChange = this.handleChange.bind(this);
     this.handleGetTicketTitleList = this.handleGetTicketTitleList.bind(this);
     this.handleCkEditorTemplate = this.handleCkEditorTemplate.bind(this);
     this.handleTicketChange = this.handleTicketChange.bind(this);
@@ -114,6 +117,10 @@ class TicketSystem extends Component {
     this.handleGetSubCategoryList = this.handleGetSubCategoryList.bind(this);
     this.handleGetIssueTypeList = this.handleGetIssueTypeList.bind(this);
     this.handleEditCustomerOpen = this.handleEditCustomerOpen.bind(this);
+    this.handleCustomerStoreStatus = this.handleCustomerStoreStatus.bind(this);
+    this.handleCustomerAttachamentStatus = this.handleCustomerAttachamentStatus.bind(
+      this
+    );
     this.handleGetChannelOfPurchaseList = this.handleGetChannelOfPurchaseList.bind(
       this
     );
@@ -129,6 +136,21 @@ class TicketSystem extends Component {
   }
   handleEditCustomerOpen() {
     this.setState({ EditCustomer: true });
+  }
+  handleTaskMasterChange = taskData => {
+    this.setState({
+      taskMaster: taskData
+    });
+  };
+  handleCustomerAttachamentStatus(custAttachOrder) {
+    this.setState({
+      customerAttachOrder: custAttachOrder
+    });
+  }
+  handleCustomerStoreStatus(custStoreStatus) {
+    this.setState({
+      customerStoreStatus: custStoreStatus
+    });
   }
   handleEditCustomerClose() {
     this.setState({
@@ -182,6 +204,11 @@ class TicketSystem extends Component {
     //   customerData: this.state.customerData
     // });
   };
+  handleEscalationChange() {
+    this.setState({
+      escalationLevel: 1
+    });
+  }
   handlechangebtntab(e) {
     var idIndex = e.target.className;
     this.setState({ TabIconColor: idIndex });
@@ -403,6 +430,7 @@ class TicketSystem extends Component {
     });
   }
   handleGetTicketPriorityList() {
+    debugger;
     let self = this;
     axios({
       method: "post",
@@ -481,7 +509,7 @@ class TicketSystem extends Component {
 
     if (customerDetails) {
       var custId = customerDetails.customerId;
-      this.setState({ customerDetails, custId });
+      this.setState({ customerDetails, customer_Id: custId });
       this.handleGetCustomerData(custId);
       this.handleGetTicketTitleList();
       this.handleGetBrandList();
@@ -499,39 +527,7 @@ class TicketSystem extends Component {
   handleCREATE_TICKET() {
     debugger;
     let self = this;
-    const ticketingMaster = {
-      //       TicketID:,
-      // TenantID:,
-      // Ticketnotes:,
-      // TicketSourceID:,
-      // TikcketTitle: this.state.ticketSuggestion,
-      // Ticketdescription: this.state.ticketDetails,
-      // BrandID: this.state.selectedBrand,
-      // CategoryID: this.state.selectedCategory,
-      // SubCategoryID: this.state.selectedSubCategory,
-      // IssueTypeID: this.state.selectedIssueType,
-      // PriorityID: this.state.TicketPriorityData,
-      // ChannelOfPurchaseID: this.state.selectedChannelOfPurchase
-      // CustomerID:,
-      // AssignedID:,
-      // TicketActionID:,
-      // IsInstantEscalateToHighLevel:,
-      // OrderMasterID:,
-      // CreatedBy:,
-      // CreatedDate:,
-      // UpdatedBy:,
-      // UpdatedDate:,
-      // StatusID:,
-      // IsWantToVisitedStore:,
-      // IsAlreadyVisitedStore:,
-      // IsWantToAttachOrder:,
-      // TicketTemplateID:,
-      // IsActive:,
-      // ModifiedBy:,
-      // ModifiedDate:,
-      // storeIds:,
-    };
-
+    var ID = this.state.customerStoreStatus;
     axios({
       method: "post",
       headers: {
@@ -540,14 +536,22 @@ class TicketSystem extends Component {
       },
       url: config.apiUrl + "/Ticketing/createTicket",
       data: {
-        TikcketTitle: this.state.ticketSuggestion,
+        TicketTitle: this.state.ticketSuggestion.ticketTitle,
         Ticketdescription: this.state.ticketDetails,
+        CustomerID: this.state.customer_Id,
         BrandID: this.state.selectedBrand,
         CategoryID: this.state.selectedCategory,
         SubCategoryID: this.state.selectedSubCategory,
         IssueTypeID: this.state.selectedIssueType,
-        PriorityID: this.state.TicketPriorityData,
-        ChannelOfPurchaseID: this.state.selectedChannelOfPurchase
+        // PriorityID: ID,
+        ChannelOfPurchaseID: this.state.selectedChannelOfPurchase,
+        Ticketnotes: this.state.ticketNote,
+        taskMasters: this.state.taskMaster,
+        StatusID: this.state.selectedTicketActionType,
+        TicketActionID: this.state.selectedTicketActionType,
+        IsInstantEscalateToHighLevel: this.state.escalationLevel,
+        IsWantToAttachOrder: this.state.customerAttachOrder,
+        IsWantToVisitedStore: this.state.customerStoreStatus
       }
     }).then(function(res) {
       debugger;
@@ -556,6 +560,47 @@ class TicketSystem extends Component {
       // if (responseMessage === "Success") {
       //   NotificationManager.success("New Customer added successfully.");
       // }
+    });
+  }
+
+  onDocumentChangeHandler = event => {
+    this.setState({
+      selectedFile: event.target.files[0],
+      selectedFileName: event.target.files[0].name
+    });
+  };
+  onDocumentConsignee = event => {
+    this.setState({
+      // selectedFile: event.target.files[0],
+      consigneeFileName: event.target.files[0].name
+    });
+  };
+  handleSendData() {
+    const docData = new FormData();
+    var docName = document.getElementById("docName").value;
+    var docDesc = document.getElementById("docDesc").value;
+    if (docName === "") {
+      alert("Please enter document name");
+      return false;
+    }
+    if (docDesc === "") {
+      alert("Please enter document description");
+      return false;
+    }
+    debugger;
+    //docData.append();
+    // docData.append("ShipmentNumber", "BCM2453770");
+    docData.append("FileData", this.state.selectedFile);
+    // docData.append()
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Ticketing/createTicket",
+      data: docData,
+      headers: authHeader()
+    }).then(function(response) {
+      debugger;
+      alert(response.data[0].Result);
     });
   }
 
@@ -579,6 +624,7 @@ class TicketSystem extends Component {
     this.setState({ selectedIssueTypeKB: issueTypeValue });
   };
   setTicketPriorityValue = e => {
+    debugger;
     let ticketPriorityValue = e.currentTarget.id;
     this.setState({ selectedTicketPriority: ticketPriorityValue });
   };
@@ -631,10 +677,10 @@ class TicketSystem extends Component {
     let channelOfPurchaseValue = e.currentTarget.value;
     this.setState({ selectedChannelOfPurchase: channelOfPurchaseValue });
   };
-  setChannelOfPurchaseValue = e => {
-    let channelOfPurchaseValue = e.currentTarget.value;
-    this.setState({ selectedChannelOfPurchase: channelOfPurchaseValue });
-  };
+  // setChannelOfPurchaseValue = e => {
+  //   let channelOfPurchaseValue = e.currentTarget.value;
+  //   this.setState({ selectedChannelOfPurchase: channelOfPurchaseValue });
+  // };
 
   render() {
     var CustomerId = this.state.customerDetails.customerId;
@@ -838,6 +884,7 @@ class TicketSystem extends Component {
                               type="radio"
                               name="ticket-priority"
                               id={item.priortyName}
+                              // value={item.priortyID}
                               onChange={this.setTicketPriorityValue}
                             />
                             <label htmlFor={item.priortyName}>
@@ -919,7 +966,7 @@ class TicketSystem extends Component {
                       type="button"
                       data-toggle="dropdown"
                     >
-                      <FontAwesomeIcon icon={faCalculator} />{" "}
+                      <FontAwesomeIcon icon={faCalculator} />
                       {this.state.tempName === ""
                         ? "Template"
                         : this.state.tempName}
@@ -1101,8 +1148,10 @@ class TicketSystem extends Component {
                       <input
                         type="checkbox"
                         id="fil-add1"
-                        name="filter-type"
+                        name="escalationLevel"
+                        value={this.state.escalationLevel}
                         style={{ display: "none" }}
+                        onChange={this.handleEscalationChange.bind(this)}
                       />
                       <label htmlFor="fil-add1" style={{ paddingLeft: "25px" }}>
                         <span className="add-note">
@@ -1119,6 +1168,9 @@ class TicketSystem extends Component {
                         <textarea
                           className="addNote-textarea-system-new"
                           placeholder="Write your note here"
+                          name="ticketNote"
+                          value={this.state.ticketNote}
+                          onChange={this.handleTicketChange}
                         ></textarea>
                       </div>
                     </div>
@@ -1255,6 +1307,7 @@ class TicketSystem extends Component {
                             name="customerPhone"
                             value={this.state.CustData.customerPhone}
                             onChange={this.handleOnChangeData}
+                            disabled
                           />
                           {this.validator.message(
                             "Mobile Number",
@@ -1272,6 +1325,7 @@ class TicketSystem extends Component {
                             name="custEmailId"
                             value={this.state.CustData.custEmailId}
                             onChange={this.handleOnChangeData}
+                            disabled
                           />
                           {this.validator.message(
                             "Email Id",
@@ -1369,7 +1423,10 @@ class TicketSystem extends Component {
                     style={{ height: "100%" }}
                     // onChange={this.hanleRedirectpage.bind(this)}
                   >
-                    <TicketSystemOrder custDetails={CustomerId} />
+                    <TicketSystemOrder
+                      custDetails={CustomerId}
+                      AttachOrder={this.handleCustomerAttachamentStatus}
+                    />
                   </div>
                   <div
                     className="tab-pane fade"
@@ -1378,7 +1435,9 @@ class TicketSystem extends Component {
                     aria-labelledby="store-tab"
                     style={{ height: "100%" }}
                   >
-                    <TicketSystemStore />
+                    <TicketSystemStore
+                      CustStoreStatus={this.handleCustomerStoreStatus}
+                    />
                   </div>
                   <div
                     className="tab-pane fade"
@@ -1387,7 +1446,9 @@ class TicketSystem extends Component {
                     aria-labelledby="task-tab"
                     style={{ height: "100%" }}
                   >
-                    <TicketSystemTask />
+                    <TicketSystemTask
+                      taskMasterData={this.handleTaskMasterChange}
+                    />
                   </div>
                 </div>
               </div>

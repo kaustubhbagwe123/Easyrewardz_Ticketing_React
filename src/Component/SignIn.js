@@ -83,7 +83,7 @@ class SingIn extends Component {
             );
             setTimeout(function() {
               self.props.history.push("Admin/dashboard");
-            }, 2000);
+            }, 500);
           } else {
             NotificationManager.error("In-Valid Login.");
           }

@@ -17,12 +17,12 @@ class TicketSystemStore extends Component {
       AddSelectDetail: false,
       SrchStoreNameCode: "",
       SearchData: [],
-      message: ""
+      message: "",
+      custmerStoreStatus:"",
+      SwitchBtnStatus: 1,
     };
     this.handleOrderStoreTableOpen = this.handleOrderStoreTableOpen.bind(this);
-    this.handleOrderStoreTableClose = this.handleOrderStoreTableClose.bind(
-      this
-    );
+    this.handleOrderStoreTableClose = this.handleOrderStoreTableClose.bind(this);
   }
 
   handleOrderStoreTableOpen() {
@@ -31,6 +31,17 @@ class TicketSystemStore extends Component {
   handleOrderStoreTableClose() {
     this.setState({ OrderStoreTable: false });
   }
+  handleStoreStatus = () => {
+    debugger
+    this.setState({
+      SwitchBtnStatus: 0
+    });
+    console.log(this.state.SwitchBtnStatus,"SwitchBtn Status----------");
+    
+    // {
+    //   this.props.CustStoreStatus(this.state.SwitchBtnStatus);
+    // }
+  };
   handleSearchStoreDetails() {
     debugger;
     let self = this;
@@ -49,7 +60,7 @@ class TicketSystemStore extends Component {
       let SearchData = res.data.responseData;
       let Msg = res.data.message;
       if (Msg === "Success") {
-        self.setState({ SearchData: SearchData });
+        self.setState({ SearchData: SearchData, message: Msg });
       } else {
         self.setState({
           message: res.data.message
@@ -61,10 +72,21 @@ class TicketSystemStore extends Component {
     //   SearchStoreDetails: !this.state.SearchStoreDetails
     // });
   }
+  hanldeStatusChange(e){
+    console.log(e.target.value,"value---Store");
+    
+    this.setState({
+      custmerStoreStatus:e.target.value
+    })
+    console.log(this.state.custmerStoreStatus,"----------------StoreStatus---------");
+    
+  }
+
   handleShowSearchSelectDetails() {
     this.setState({
       AddSelectDetail: !this.state.AddSelectDetail
     });
+    
   }
   handleStoreChange = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -151,9 +173,13 @@ class TicketSystemStore extends Component {
           <div className="ticketSycard1">
             <div className="row storemainrow">
               <div className="col-12 col-lg-7 col-xl-8">
-                <select className="systemstoredropdown">
-                  <option>Customer Want to visit store</option>
-                  <option>Customer Already visited store</option>
+                <select
+                  className="systemstoredropdown"
+                  value={this.state.custmerStoreStatus}
+                  onChange={this.hanldeStatusChange.bind(this)}
+                >
+                  <option value="1">Customer Want to visit store</option>
+                  <option value="2">Customer Already visited store</option>
                 </select>
               </div>
               <div className="col-12 col-lg-3 col-xl-3">
@@ -161,7 +187,12 @@ class TicketSystemStore extends Component {
                   <label className="orderdetailpopup">Yes</label>
                   <div className="switchmargin">
                     <div className="switch switch-primary d-inline m-r-10">
-                      <input type="checkbox" id="editDashboard-p-18" />
+                      <input
+                        type="checkbox"
+                        id="editDashboard-p-18"
+                        value={this.state.SwitchBtnStatus}
+                        onChange={this.handleStoreStatus}
+                      />
                       <label
                         htmlFor="editDashboard-p-18"
                         className="cr"
@@ -288,8 +319,58 @@ class TicketSystemStore extends Component {
                 >
                   <div className="reactstoreselect">
                     <ReactTable
-                      data={dataselectstore}
-                      columns={columnsselectstore}
+                      data={SearchData}
+                      columns={[
+                        {
+                          Header: <span>Purpose</span>,
+                          accessor: "invoiceNumber",
+                          Cell: row => (
+                            <div
+                              className="filter-checkbox"
+                              style={{ marginLeft: "15px" }}
+                            >
+                              <input
+                                type="checkbox"
+                                id={row.original.storeID}
+                                name="filter-type"
+                                style={{ display: "none" }}
+                                //   onChange={() => this.showAddNoteFuncation()}
+                              />
+                              <label
+                                htmlFor={row.original.storeID}
+                                style={{ paddingLeft: "25px" }}
+                              >
+                                <span className="add-note">Demo</span>
+                              </label>
+                            </div>
+                          )
+                        },
+                        {
+                          Header: <span>Store Code</span>,
+                          accessor: "storeCode"
+                        },
+                        {
+                          Header: <span>Store Name</span>,
+                          accessor: "storeName"
+                        },
+                        {
+                          Header: <span>Store Pin Code</span>,
+                          accessor: "storeCode"
+                        },
+                        {
+                          Header: <span>Store Email ID</span>,
+                          accessor: "storeEmailID"
+                        },
+                        {
+                          Header: <span>Store Addres</span>,
+                          accessor: "address"
+                        },
+                        {
+                          Header: <span>Visit Date</span>,
+                          accessor: "visitDate",
+                          Cell: row => <label>23,Aug 2019</label>
+                        }
+                      ]}
                       // resizable={false}
                       defaultPageSize={5}
                       showPagination={false}
@@ -355,7 +436,8 @@ class TicketSystemStore extends Component {
                   </label>
                 </div>
               </div>
-            ) : (
+            ) : null}
+            {this.state.message === "Success" ? (
               <div>
                 <div
                   className="row m-t-10 m-b-10"
@@ -377,23 +459,27 @@ class TicketSystemStore extends Component {
                     columns={[
                       {
                         Header: <span>Purpose</span>,
-                        accessor: "invoiceNumber"
-                        // Cell: row => (
-                        //   <div className="filter-checkbox" style={{ marginLeft: "15px" }}>
-                        //     <input
-                        //       type="checkbox"
-                        //       id="fil-number16"
-                        //       name="filter-type"
-                        //       style={{ display: "none" }}
-                        //       //   onChange={() => this.showAddNoteFuncation()}
-                        //     />
-                        //     <label htmlFor="fil-number16" style={{ paddingLeft: "25px" }}>
-                        //       <span className="add-note">
-                        //         Customer Want <br></br>to visit store
-                        //       </span>
-                        //     </label>
-                        //   </div>
-                        // )
+                        accessor: "invoiceNumber",
+                        Cell: row => (
+                          <div
+                            className="filter-checkbox"
+                            style={{ marginLeft: "15px" }}
+                          >
+                            <input
+                              type="checkbox"
+                              id={row.original.storeID}
+                              name="filter-type"
+                              style={{ display: "none" }}
+                              //   onChange={() => this.showAddNoteFuncation()}
+                            />
+                            <label
+                              htmlFor={row.original.storeID}
+                              style={{ paddingLeft: "25px" }}
+                            >
+                              <span className="add-note">Demo</span>
+                            </label>
+                          </div>
+                        )
                       },
                       {
                         Header: <span>Store Code</span>,
@@ -436,7 +522,7 @@ class TicketSystemStore extends Component {
                   </button>
                 </div>
               </div>
-            )}
+            ) : null}
             {/* {this.state.SearchStoreDetails ? (
               <div>
                 {this.state.AddSelectDetail === false ? (

@@ -135,10 +135,11 @@ class TicketSystemTask extends Component {
   }
 
   setDepartmentValue = e => {
-    let departmentValue = e.currentTarget.value;
+    let departmentValue = e.target.value;
     var taskfield = this.state.taskfield;
-    taskfield[e.currentTarget.name] = e.target.selectedOptions[0].text;
-    this.setState({ selectedDepartment: departmentValue, taskfield });
+    taskfield[e.target.name] = e.target.selectedOptions[0].text;
+    taskfield["DepartmentId"] = departmentValue;
+    this.setState({ selectedDepartment: departmentValue, taskfield});
 
     setTimeout(() => {
       if (this.state.selectedDepartment) {
@@ -150,6 +151,7 @@ class TicketSystemTask extends Component {
     let functionValue = e.currentTarget.value;
     var taskfield = this.state.taskfield;
     taskfield[e.currentTarget.name] = e.target.selectedOptions[0].text;
+    taskfield["FunctionID"] =functionValue;
     this.setState({ selectedFunction: functionValue, taskfield });
 
     setTimeout(() => {
@@ -162,18 +164,20 @@ class TicketSystemTask extends Component {
     let assignToValue = e.currentTarget.value;
     var taskfield = this.state.taskfield;
     taskfield[e.currentTarget.name] = e.target.selectedOptions[0].text;
+    taskfield["AssignToID"] = assignToValue;
     this.setState({ selectedAssignTo: assignToValue, taskfield });
   };
   setPriorityValue = e => {
     let priorityValue = e.currentTarget.value;
     var taskfield = this.state.taskfield;
     taskfield[e.currentTarget.name] = e.target.selectedOptions[0].text;
+    taskfield["PriorityID"] = priorityValue;
     this.setState({ selectedPriority: priorityValue, taskfield });
   };
   
   handleCreateTask() {
     debugger;
-
+   
     if (this.validator.allValid()) {
       if (this.state.taskfield) {
         var taskData = [];
@@ -182,6 +186,7 @@ class TicketSystemTask extends Component {
       this.state.taskfield["ID"] = taskData.length + 1;
       //  var taskId= this.state.taskfield["ID"];
         taskData.push(this.state.taskfield);
+        {this.props.taskMasterData(taskData)}
         this.setState({
           taskData,
         //  taskId : taskData.length + 1,

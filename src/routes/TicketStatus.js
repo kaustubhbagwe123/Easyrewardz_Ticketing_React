@@ -10,4 +10,5 @@ function TicketStatus() {
     { ticketStatusID: 105, ticketStatusName: "ReOpened" }
   ];
 }
+
 export default TicketStatus;

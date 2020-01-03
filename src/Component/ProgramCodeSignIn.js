@@ -13,8 +13,8 @@ class ProgramCodeSignIn extends Component {
     this.validator = new SimpleReactValidator();
   }
 
-  hanleChange = (event) => {
-    event.preventDefault();
+  hanleChange(e){
+    e.preventDefault();
     debugger
     let self=this;
     if (this.validator.allValid()) {
@@ -36,7 +36,7 @@ class ProgramCodeSignIn extends Component {
     }
   };
   handleProgramCode = e => {
-    this.setState({ [e.currentTarget.name]: e.currentTarget.value });
+    this.setState({ [e.target.name]: e.target.value });
   };
 
   render() {
@@ -49,7 +49,7 @@ class ProgramCodeSignIn extends Component {
                 <img src={logo} style={{ width: "210px" }} alt="logo" />
               </div>
               <h3 className="sign-in">SIGN IN</h3>
-              <form name="form" onSubmit={this.hanleChange}>
+              <form name="form" onSubmit={this.hanleChange.bind(this)}>
                 <div>
                
                   <input

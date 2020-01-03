@@ -35,9 +35,10 @@ import ReactTable from "react-table";
 import { Popover } from "antd";
 import DateTimeRangeContainer from "react-advanced-datetimerange-picker";
 import { FormControl } from "react-bootstrap";
-// import DatetimeRangePicker from 'react-bootstrap-datetimerangepicker';
+import { Checkbox } from "antd";
 import moment from "moment";
 import { Row, Col } from "react-bootstrap";
+import ScheduleDateDropDown from "./ScheduleDateDropDown";
 
 class Dashboard extends Component {
   constructor(props) {
@@ -64,6 +65,8 @@ class Dashboard extends Component {
       ByDateSelectDate: "",
       ByAllCreateDate: "",
       ByAllLastDate: "",
+      selectScheduleDate: 0,
+      ScheduleOption: ScheduleDateDropDown(),
       TotalNoOfChatShow: true,
       date: [new Date(), new Date()],
       range: ""
@@ -172,6 +175,12 @@ class Dashboard extends Component {
   handleMouseHover() {
     this.setState({ TotalNoOfChatShow: !this.state.TotalNoOfChatShow });
   }
+  handleScheduleDateChange = e => {
+    let SelectData = e.currentTarget.value;
+    this.setState({
+      selectScheduleDate: SelectData
+    });
+  };
   render() {
     let now = new Date();
     let start = moment(
@@ -317,8 +326,10 @@ class Dashboard extends Component {
         ),
         subjectDash: (
           <div>
-            Need to change my shipping address 
-            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
+            Need to change my shipping address
+            <span style={{ display: "block", fontSize: "11px" }}>
+              Hope this help, Please rate us
+            </span>
           </div>
         ),
         creationNew: (
@@ -359,8 +370,10 @@ class Dashboard extends Component {
         ),
         subjectDash: (
           <div>
-            Need to change my shipping address 
-            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
+            Need to change my shipping address
+            <span style={{ display: "block", fontSize: "11px" }}>
+              Hope this help, Please rate us
+            </span>
           </div>
         ),
         creationNew: (
@@ -399,7 +412,7 @@ class Dashboard extends Component {
             <label>New</label>
           </span>
         ),
-        Img : (
+        Img: (
           <div>
             <Popover content={TaskBlue} placement="bottom">
               <img
@@ -408,7 +421,7 @@ class Dashboard extends Component {
                 alt="task-icon-blue"
               />
             </Popover>
-            </div>
+          </div>
         ),
         subjectDash: (
           <div>
@@ -424,8 +437,10 @@ class Dashboard extends Component {
               src={TaskIconBlue}
               alt="task-icon-blue"
             /> */}
-            Need to change my shipping address 
-            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
+            Need to change my shipping address
+            <span style={{ display: "block", fontSize: "11px" }}>
+              Hope this help, Please rate us
+            </span>
           </div>
         ),
         creationNew: (
@@ -464,12 +479,12 @@ class Dashboard extends Component {
             <label>New</label>
           </span>
         ),
-        Img :(
+        Img: (
           <img
-              className="task-icon-1"
-              src={TaskIconGray}
-              alt="task-icon-gray"
-            />
+            className="task-icon-1"
+            src={TaskIconGray}
+            alt="task-icon-gray"
+          />
         ),
         subjectDash: (
           <div>
@@ -478,8 +493,10 @@ class Dashboard extends Component {
               src={TaskIconGray}
               alt="task-icon-gray"
             /> */}
-            Need to change my shipping address 
-            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
+            Need to change my shipping address
+            <span style={{ display: "block", fontSize: "11px" }}>
+              Hope this help, Please rate us
+            </span>
           </div>
         ),
         creationNew: (
@@ -527,11 +544,13 @@ class Dashboard extends Component {
                 alt="cliam-icon-blue"
               />
             </Popover>
-              <span style={{marginLeft:"20px"}}><img
+            <span style={{ marginLeft: "20px" }}>
+              <img
                 className="task-icon-1 marginimg"
                 src={TaskIconGray}
                 alt="task-icon-gray"
-              /></span>
+              />
+            </span>
           </div>
         ),
         subjectDash: (
@@ -548,8 +567,10 @@ class Dashboard extends Component {
               src={CliamIconBlue}
               alt="cliam-icon-blue"
             /> */}
-            Need to change my shipping address 
-            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
+            Need to change my shipping address
+            <span style={{ display: "block", fontSize: "11px" }}>
+              Hope this help, Please rate us
+            </span>
           </div>
         ),
         creationNew: (
@@ -590,8 +611,10 @@ class Dashboard extends Component {
         ),
         subjectDash: (
           <div>
-            Need to change my shipping address 
-            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
+            Need to change my shipping address
+            <span style={{ display: "block", fontSize: "11px" }}>
+              Hope this help, Please rate us
+            </span>
           </div>
         ),
         creationNew: (
@@ -632,8 +655,10 @@ class Dashboard extends Component {
         ),
         subjectDash: (
           <div>
-            Need to change my shipping address 
-            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
+            Need to change my shipping address
+            <span style={{ display: "block", fontSize: "11px" }}>
+              Hope this help, Please rate us
+            </span>
           </div>
         ),
         creationNew: (
@@ -677,7 +702,7 @@ class Dashboard extends Component {
       {
         Header: <span></span>,
         accessor: "Img",
-        width:45,
+        width: 45
       },
       {
         Header: (
@@ -813,7 +838,10 @@ class Dashboard extends Component {
             </div>
           </Modal>
         </div>
-        <div className="container-fluid dash-dropdowns" style={{ marginTop: "-21px" }}>
+        <div
+          className="container-fluid dash-dropdowns"
+          style={{ marginTop: "-21px" }}
+        >
           <div className="d-flex dashallbrand1">
             <div>
               <span>
@@ -1370,6 +1398,262 @@ class Dashboard extends Component {
                                     <div>
                                       <select
                                         id="inputState"
+                                        className="form-control dropdown-setting1 ScheduleDate-to"
+                                      >
+                                        <option>Team Member</option>
+                                        <option>Team Member 1</option>
+                                      </select>
+                                      <select
+                                        id="inputState"
+                                        className="form-control dropdown-setting1 ScheduleDate-to"
+                                        value={this.state.selectScheduleDate}
+                                        onChange={this.handleScheduleDateChange}
+                                      >
+                                        {this.state.ScheduleOption !== null &&
+                                          this.state.ScheduleOption.map(
+                                            (item, i) => (
+                                              <option
+                                                key={i}
+                                                value={item.scheduleID}
+                                              >
+                                                {item.scheduleName}
+                                              </option>
+                                            )
+                                          )}
+                                      </select>
+                                      {this.state.selectScheduleDate ===
+                                      "111" ? (
+                                        <div className="ScheduleDate-to">
+                                          <span>
+                                            <label className="every1">
+                                              Every
+                                            </label>
+                                            <input
+                                              type="text"
+                                              className="Every"
+                                              placeholder="1"
+                                            />
+                                            <label className="every1">
+                                              Day
+                                            </label>
+                                          </span>
+                                        </div>
+                                      ) : null}
+                                      {this.state.selectScheduleDate ===
+                                      "222" ? (
+                                        <div className="ScheduleDate-to">
+                                          <span>
+                                            <label className="every1">
+                                              Every
+                                            </label>
+                                            <input
+                                              type="text"
+                                              className="Every"
+                                              placeholder="1"
+                                            />
+                                            <label className="every1">
+                                              Week on
+                                            </label>
+                                          </span>
+                                          <div
+                                            style={{
+                                              marginTop: "10px"
+                                            }}
+                                          >
+                                            <Checkbox>Mon</Checkbox>
+                                            <Checkbox>Tue</Checkbox>
+                                            <Checkbox>Wed</Checkbox>
+                                            <Checkbox>Thu</Checkbox>
+                                            <Checkbox>Fri</Checkbox>
+                                            <Checkbox>Sat</Checkbox>
+                                            <Checkbox>Sun</Checkbox>
+                                          </div>
+                                        </div>
+                                      ) : null}
+                                      {this.state.selectScheduleDate ===
+                                      "333" ? (
+                                        <div className="ScheduleDate-to">
+                                          <span>
+                                            <label className="every1">
+                                              Day
+                                            </label>
+                                            <input
+                                              type="text"
+                                              className="Every"
+                                              placeholder="9"
+                                            />
+                                            <label className="every1">
+                                              of every
+                                            </label>
+                                            <input
+                                              type="text"
+                                              className="Every"
+                                              placeholder="1"
+                                            />
+                                            <label className="every1">
+                                              months
+                                            </label>
+                                          </span>
+                                        </div>
+                                      ) : null}
+                                      {this.state.selectScheduleDate ===
+                                      "444" ? (
+                                        <div className="ScheduleDate-to">
+                                          <span>
+                                            <label className="every1">
+                                              Every
+                                            </label>
+                                            <input
+                                              type="text"
+                                              className="Every"
+                                              placeholder="1"
+                                            />
+                                            <label className="every1">
+                                              month on the
+                                            </label>
+                                          </span>
+                                          <div className="row mt-3">
+                                            <div className="col-md-6">
+                                              <select
+                                                id="inputState"
+                                                className="form-control dropdown-setting1"
+                                              >
+                                                <option>Second</option>
+                                                <option>Four</option>
+                                              </select>
+                                            </div>
+                                            <div className="col-md-6">
+                                              <select
+                                                id="inputState"
+                                                className="form-control dropdown-setting1"
+                                              >
+                                                <option>Sunday</option>
+                                                <option>Monday</option>
+                                              </select>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      ) : null}
+                                      {this.state.selectScheduleDate ===
+                                      "555" ? (
+                                        <div className="ScheduleDate-to">
+                                          <div className="row m-0">
+                                            <label
+                                              className="every1"
+                                              style={{
+                                                lineHeight: "40px"
+                                              }}
+                                            >
+                                              on
+                                            </label>
+                                            <div className="col-md-7">
+                                              <select
+                                                id="inputState"
+                                                className="form-control dropdown-setting1"
+                                              >
+                                                <option>Septmber</option>
+                                                <option>Octomber</option>
+                                              </select>
+                                            </div>
+                                            <input
+                                              type="text"
+                                              className="Every"
+                                              placeholder="1"
+                                            />
+                                          </div>
+                                        </div>
+                                      ) : null}
+                                      {this.state.selectScheduleDate ===
+                                      "666" ? (
+                                        <div className="ScheduleDate-to">
+                                          <span>
+                                            <div className="row m-0">
+                                              <label
+                                                className="every1"
+                                                style={{
+                                                  lineHeight: "40px"
+                                                }}
+                                              >
+                                                on the
+                                              </label>
+                                              <div className="col-md-7">
+                                                <select
+                                                  id="inputState"
+                                                  className="form-control dropdown-setting1"
+                                                >
+                                                  <option>Second</option>
+                                                  <option>Four</option>
+                                                </select>
+                                              </div>
+                                            </div>
+                                          </span>
+                                          <div className="row mt-3">
+                                            <div className="col-md-5">
+                                              <select
+                                                id="inputState"
+                                                className="form-control dropdown-setting1"
+                                                style={{
+                                                  width: "100px"
+                                                }}
+                                              >
+                                                <option>Sunday</option>
+                                                <option>Monday</option>
+                                              </select>
+                                            </div>
+                                            <label
+                                              className="every1"
+                                              style={{
+                                                lineHeight: "40px",
+                                                marginLeft: "14px"
+                                              }}
+                                            >
+                                              to
+                                            </label>
+                                            <div className="col-md-5">
+                                              <select
+                                                id="inputState"
+                                                className="form-control dropdown-setting1"
+                                                style={{
+                                                  width: "100px"
+                                                }}
+                                              >
+                                                <option>Septmber</option>
+                                                <option>Octomber</option>
+                                              </select>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      ) : null}
+
+                                      <input
+                                        type="text"
+                                        className="txt-1 txt1Place txt1Time"
+                                        placeholder="11AM"
+                                      />
+                                      <div>
+                                        <button className="scheduleBtn">
+                                          <label className="addLable">
+                                            SCHEDULE
+                                          </label>
+                                        </button>
+                                      </div>
+                                      <div>
+                                        <button
+                                          type="button"
+                                          className="scheduleBtncancel"
+                                        >
+                                          CANCEL
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  {/* <div>
+                                    <label>
+                                      <b>Schedule date to</b>
+                                    </label>
+                                    <div>
+                                      <select
+                                        id="inputState"
                                         className="form-control dropdown-setting ScheduleDate-to"
                                       >
                                         <option>Team Member</option>
@@ -1400,7 +1684,7 @@ class Dashboard extends Component {
                                         </button>
                                       </div>
                                     </div>
-                                  </div>
+                                  </div> */}
                                 </Modal>
                                 <button
                                   className={
