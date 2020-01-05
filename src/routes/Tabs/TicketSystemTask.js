@@ -8,6 +8,7 @@ import {
   NotificationContainer,
   NotificationManager
 } from "react-notifications";
+import { authHeader } from "../../helpers/authHeader";
 
 class TicketSystemTask extends Component {
   constructor(props) {
@@ -26,7 +27,6 @@ class TicketSystemTask extends Component {
       selectedFunction: 0,
       selectedAssignTo: 0,
       selectedPriority: 0,
-      tenantID: 1
     };
     this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
     this.handleGetFunctionList = this.handleGetFunctionList.bind(this);
@@ -59,14 +59,8 @@ class TicketSystemTask extends Component {
     let self = this;
     axios({
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
       url: config.apiUrl + "/Master/getDepartmentList",
-      params: {
-        TenantID: this.state.tenantID
-      }
+      headers: authHeader()
     }).then(function(res) {
       debugger;
       let DepartmentData = res.data.responseData;
@@ -79,14 +73,10 @@ class TicketSystemTask extends Component {
     let self = this;
     axios({
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
       url: config.apiUrl + "/Master/getFunctionNameByDepartmentId",
+      headers: authHeader(),
       params: {
         DepartmentId: this.state.selectedDepartment,
-        TenantID: this.state.tenantID
       }
     }).then(function(res) {
       debugger;
@@ -100,11 +90,8 @@ class TicketSystemTask extends Component {
     let self = this;
     axios({
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
       url: config.apiUrl + "/Task/getassignedto",
+      headers: authHeader(),
       params: {
         Function_ID: this.state.selectedFunction
       }
@@ -119,14 +106,8 @@ class TicketSystemTask extends Component {
     let self = this;
     axios({
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
       url: config.apiUrl + "/Priority/GetPriorityList",
-      params: {
-        TenantID: this.state.tenantID
-      }
+      headers: authHeader()
     }).then(function(res) {
       debugger;
       let TicketPriorityData = res.data.responseData;

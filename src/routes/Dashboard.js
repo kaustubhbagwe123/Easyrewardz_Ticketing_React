@@ -201,13 +201,7 @@ class Dashboard extends Component {
       format: "DD-MM-YYYY",
       sundayFirst: false
     };
-    // let maxDate = moment(start).add(24, "hour");
-    // let start = this.state.startDate.format('YYYY-MM-DD');
-    // let end = this.state.endDate.format('YYYY-MM-DD');
-    // let label = start + ' - ' + end;
-    // if (start === end) {
-    //   label = start;
-    // }
+   
     const DefArti = (
       <div className="dash-creation-popup-cntr">
         <ul className="dash-category-popup dashnewpopup">

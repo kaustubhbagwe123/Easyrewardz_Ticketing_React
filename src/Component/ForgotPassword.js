@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import config from "../helpers/config";
 import SimpleReactValidator from "simple-react-validator";
+import { authHeader } from "../helpers/authHeader";
 
 class ForgotPassword extends Component {
   constructor(props) {
@@ -57,11 +58,8 @@ class ForgotPassword extends Component {
       let self = this;
       axios({
         method: "post",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Methods": "*"
-        },
         url: config.apiUrl + "/Account/ForgetPassword",
+        headers: authHeader("no"),
         params: {
           EmailId: this.state.emailId
         }

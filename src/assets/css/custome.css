@@ -6080,7 +6080,7 @@ font-weight: normal;
   border-radius: 60px;
   cursor: pointer;
   z-index: 0;
-  top: 5px;
+  top: 10px;
   margin-left: 115px;
 }
 .switch input[type="checkbox"] + .cr:after,
@@ -6097,7 +6097,7 @@ font-weight: normal;
   height: 20px;
   width: 35px;
   border-radius: 30px;
-  background: #c9c9c9;
+  background: #c9c9c9 ;
 }
 .switch input[type="checkbox"] + .cr:after {
   -webkit-box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1),
@@ -6127,7 +6127,7 @@ font-weight: normal;
   cursor: not-allowed;
 }
 .switch.switch-primary input[type="checkbox"]:checked + .cr:before {
-  background: #51d663;
+  background: #50D462;
 }
 .switch.switch-danger input[type="checkbox"]:checked + .cr:before {
   background: #f44236;
@@ -6567,7 +6567,7 @@ table thead tr {
 .seacrh-img-addsearch {
   width: 4%;
   display: inline-block;
-  background: #ecf2f4;
+  background: #ECF2F4;
   padding-top: 11px;
   padding-bottom: 11px;
   border-radius: 4px;
@@ -9348,7 +9348,7 @@ table tr th:last-child {
   border-top: 3px solid #2561a8;
 }
 .TicketTabs .Sub {
-  margin: 0 25px;
+  margin: 0 20px;
 }
 .TicketTabs .SubR {
   margin: 0 12px;

@@ -1,7 +1,7 @@
 // import { encryption } from "./encryption";
 
 export function authHeader(token = "token") {
-  debugger
+  // debugger
   if (token === "no") {
     return {
       // Authorization: " TXlXYXlVc2VyOmRlbW8=",

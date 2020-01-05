@@ -18,6 +18,7 @@ import {
   NotificationContainer,
   NotificationManager
 } from "react-notifications";
+import { authHeader } from "../helpers/authHeader";
 // import { authHeader } from "../helpers/authHeader";
 
 class AddSearchMyTicket extends Component {
@@ -36,7 +37,6 @@ class AddSearchMyTicket extends Component {
       loading: false,
       SrchEmailPhone: "",
       message: "",
-      tenantID: 1,
       createdBy: 6,
       SearchData: []
     };
@@ -69,13 +69,10 @@ class AddSearchMyTicket extends Component {
     let self = this;
     axios({
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
       url: config.apiUrl + "/Customer/searchCustomer",
+      headers: authHeader(),
       params: {
-        SearchText: this.state.SrchEmailPhone
+        SearchText: this.state.SrchEmailPhone.trim()
       }
     }).then(function(res) {
       debugger;
@@ -107,15 +104,11 @@ class AddSearchMyTicket extends Component {
     if (this.validator.allValid()) {
       axios({
         method: "post",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Methods": "*"
-        },
         url: config.apiUrl + "/Customer/validateCustomerExist",
+        headers: authHeader(),
         params: {
-          TenantId: 1,
-          Cust_EmailId: this.state.customerEmailId,
-          Cust_PhoneNumber: this.state.customerPhoneNumber
+          Cust_EmailId: this.state.customerEmailId.trim(),
+          Cust_PhoneNumber: this.state.customerPhoneNumber.trim()
         }
       }).then(function(res) {
         debugger;
@@ -139,19 +132,15 @@ class AddSearchMyTicket extends Component {
 
     axios({
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
       url: config.apiUrl + "/Customer/createCustomer",
+      headers: authHeader(),
       data: {
-        TenantID: this.state.tenantID,
-        CustomerName: this.state.customerName,
-        CustomerPhoneNumber: this.state.customerPhoneNumber,
-        CustomerEmailId: this.state.customerEmailId,
+        CustomerName: this.state.customerName.trim(),
+        CustomerPhoneNumber: this.state.customerPhoneNumber.trim(),
+        CustomerEmailId: this.state.customerEmailId.trim(),
         GenderID: this.state.genderID,
-        AltNumber: this.state.altNumber,
-        AltEmailID: this.state.altEmailID,
+        AltNumber: this.state.altNumber.trim(),
+        AltEmailID: this.state.altEmailID.trim(),
         DateOfBirth: moment(this.state.dob).format("L"),
         IsActive: 1,
         CreatedBy: this.state.createdBy,

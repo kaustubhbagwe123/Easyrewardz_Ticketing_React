@@ -79,7 +79,7 @@ class TicketSystem extends Component {
       customerStoreStatus: 0,
       selectedTicketActionType: "200",
       selectedChannelOfPurchase: 0,
-      tenantID: 1,
+      selectedTemplateID:0,
       priorityId: 0,
       escalationLevel: 0,
       customerData: {},
@@ -90,7 +90,10 @@ class TicketSystem extends Component {
       editDOB: "",
       selectedFile: "",
       copied: false,
+      custVisit: 0,
+      AlreadycustVisit: 0,
       taskMaster: [],
+      file: [],
       SpacialEqmt: [
         {
           department: 25
@@ -147,9 +150,11 @@ class TicketSystem extends Component {
       customerAttachOrder: custAttachOrder
     });
   }
-  handleCustomerStoreStatus(custStoreStatus) {
+  handleCustomerStoreStatus(WantVisit, AlreadyCustomerVisit) {
+    debugger;
     this.setState({
-      customerStoreStatus: custStoreStatus
+      custVisit: WantVisit,
+      AlreadycustVisit: AlreadyCustomerVisit
     });
   }
   handleEditCustomerClose() {
@@ -229,14 +234,10 @@ class TicketSystem extends Component {
     if (this.validator.allValid()) {
       axios({
         method: "post",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Methods": "*"
-        },
         url: config.apiUrl + "/Customer/updateCustomer",
+        headers: authHeader(),
         data: {
           CustomerID: this.state.CustData.customerID,
-          TenantID: this.state.CustData.tenantID,
           CustomerName: this.state.CustData.customername,
           CustomerPhoneNumber: this.state.CustData.customerPhone,
           CustomerEmailId: this.state.CustData.custEmailId,
@@ -265,20 +266,14 @@ class TicketSystem extends Component {
     }
   }
   handleGetTicketTitleList() {
-    const requestOptions = {
-      method: "POST",
-      header: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
-      body: ""
-    };
+    debugger;
     let self = this;
-
-    axios(config.apiUrl + "/Ticketing/gettitlesuggestions", requestOptions, {
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Ticketing/gettitlesuggestions",
+      headers: authHeader(),
       params: {
         TikcketTitle: ""
-        // TenantID: this.state.tenantID
       }
     }).then(function(res) {
       debugger;
@@ -290,14 +285,10 @@ class TicketSystem extends Component {
     let self = this;
     axios({
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
       url: config.apiUrl + "/Template/getListOfTemplateForNote",
+      headers: authHeader(),
       params: {
-        IssueTypeID: this.state.selectedIssueType,
-        TenantID: this.state.tenantID
+        IssueTypeID: this.state.selectedIssueType
       }
     }).then(function(res) {
       debugger;
@@ -310,11 +301,8 @@ class TicketSystem extends Component {
     let self = this;
     axios({
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
       url: config.apiUrl + "/Template/getTemplateContent",
+      headers: authHeader(),
       params: {
         TemplateId: tempId
       }
@@ -331,11 +319,8 @@ class TicketSystem extends Component {
     let self = this;
     axios({
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
       url: config.apiUrl + "/KnowledgeBase/searchbycategory",
+      headers: authHeader(),
       params: {
         Type_ID: this.state.selectedIssueTypeKB,
         Category_ID: this.state.selectedCategoryKB,
@@ -355,7 +340,6 @@ class TicketSystem extends Component {
       url: config.apiUrl + "/Brand/GetBrandList",
       headers: authHeader()
     }).then(function(res) {
-      // console.log(JSON.stringify(res.data.responseData));
       debugger;
       let BrandData = res.data.responseData;
       self.setState({ BrandData: BrandData });
@@ -367,14 +351,8 @@ class TicketSystem extends Component {
     let self = this;
     axios({
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
       url: config.apiUrl + "/Category/GetCategoryList",
-      params: {
-        TenantID: this.state.tenantID
-      }
+      headers: authHeader()
     }).then(function(res) {
       debugger;
       let CategoryData = res.data;
@@ -390,11 +368,8 @@ class TicketSystem extends Component {
       : this.state.selectedCategory;
     axios({
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
       url: config.apiUrl + "/SubCategory/GetSubCategoryByCategoryID",
+      headers: authHeader(),
       params: {
         CategoryID: cateId
         // CategoryID: this.state.selectedCategory
@@ -413,15 +388,10 @@ class TicketSystem extends Component {
       : this.state.selectedSubCategory;
     axios({
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
       url: config.apiUrl + "/IssueType/GetIssueTypeList",
+      headers: authHeader(),
       params: {
-        TenantID: this.state.tenantID,
         SubCategoryID: subCateId
-        // SubCategoryID: this.state.selectedSubCategory
       }
     }).then(function(res) {
       debugger;
@@ -434,14 +404,8 @@ class TicketSystem extends Component {
     let self = this;
     axios({
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
       url: config.apiUrl + "/Priority/GetPriorityList",
-      params: {
-        TenantID: this.state.tenantID
-      }
+      headers: authHeader()
     }).then(function(res) {
       debugger;
       let TicketPriorityData = res.data.responseData;
@@ -452,14 +416,8 @@ class TicketSystem extends Component {
     let self = this;
     axios({
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
       url: config.apiUrl + "/Master/GetChannelOfPurchaseList",
-      params: {
-        TenantID: this.state.tenantID
-      }
+      headers: authHeader()
     }).then(function(res) {
       debugger;
       let ChannelOfPurchaseData = res.data.responseData;
@@ -471,11 +429,8 @@ class TicketSystem extends Component {
     let self = this;
     axios({
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
       url: config.apiUrl + "/Customer/getcustomerdetailsbyid",
+      headers: authHeader(),
       params: {
         CustomerID: CustId
       }
@@ -527,32 +482,37 @@ class TicketSystem extends Component {
   handleCREATE_TICKET() {
     debugger;
     let self = this;
-    var ID = this.state.customerStoreStatus;
+    var want = this.state.custVisit;
+    var Already = this.state.AlreadycustVisit;
+    var formData = new FormData();
+    var paramData = {
+      TicketTitle: this.state.ticketSuggestion.ticketTitle,
+      Ticketdescription: this.state.ticketDetails,
+      CustomerID: this.state.customer_Id,
+      BrandID: this.state.selectedBrand,
+      CategoryID: this.state.selectedCategory,
+      SubCategoryID: this.state.selectedSubCategory,
+      IssueTypeID: this.state.selectedIssueType,
+      PriorityID: this.state.selectedTicketPriority,
+      ChannelOfPurchaseID: this.state.selectedChannelOfPurchase,
+      Ticketnotes: this.state.ticketNote,
+      taskMasters: this.state.taskMaster,
+      StatusID: this.state.selectedTicketActionType,
+      TicketActionID: this.state.selectedTicketActionType,
+      IsInstantEscalateToHighLevel: this.state.escalationLevel,
+      IsWantToAttachOrder: this.state.customerAttachOrder,
+      IsWantToVisitedStore: want,
+      IsAlreadyVisitedStore: Already,
+      // TicketTemplateID:000000,
+      TicketSourceID:1,
+    };
+    formData.append("ticketingDetails", JSON.stringify(paramData));
+    formData.append("Form",  this.state.file[0]);
     axios({
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
       url: config.apiUrl + "/Ticketing/createTicket",
-      data: {
-        TicketTitle: this.state.ticketSuggestion.ticketTitle,
-        Ticketdescription: this.state.ticketDetails,
-        CustomerID: this.state.customer_Id,
-        BrandID: this.state.selectedBrand,
-        CategoryID: this.state.selectedCategory,
-        SubCategoryID: this.state.selectedSubCategory,
-        IssueTypeID: this.state.selectedIssueType,
-        // PriorityID: ID,
-        ChannelOfPurchaseID: this.state.selectedChannelOfPurchase,
-        Ticketnotes: this.state.ticketNote,
-        taskMasters: this.state.taskMaster,
-        StatusID: this.state.selectedTicketActionType,
-        TicketActionID: this.state.selectedTicketActionType,
-        IsInstantEscalateToHighLevel: this.state.escalationLevel,
-        IsWantToAttachOrder: this.state.customerAttachOrder,
-        IsWantToVisitedStore: this.state.customerStoreStatus
-      }
+      headers: authHeader(),
+      data: formData
     }).then(function(res) {
       debugger;
       let responseMessage = res.data.message;
@@ -563,53 +523,50 @@ class TicketSystem extends Component {
     });
   }
 
-  onDocumentChangeHandler = event => {
-    this.setState({
-      selectedFile: event.target.files[0],
-      selectedFileName: event.target.files[0].name
-    });
-  };
-  onDocumentConsignee = event => {
-    this.setState({
-      // selectedFile: event.target.files[0],
-      consigneeFileName: event.target.files[0].name
-    });
-  };
-  handleSendData() {
-    const docData = new FormData();
-    var docName = document.getElementById("docName").value;
-    var docDesc = document.getElementById("docDesc").value;
-    if (docName === "") {
-      alert("Please enter document name");
-      return false;
-    }
-    if (docDesc === "") {
-      alert("Please enter document description");
-      return false;
-    }
-    debugger;
-    //docData.append();
-    // docData.append("ShipmentNumber", "BCM2453770");
-    docData.append("FileData", this.state.selectedFile);
-    // docData.append()
+  // onDocumentChangeHandler = event => {
+  //   this.setState({
+  //     selectedFile: event.target.files[0],
+  //     selectedFileName: event.target.files[0].name
+  //   });
+  // };
+  // onDocumentConsignee = event => {
+  //   this.setState({
+  //     consigneeFileName: event.target.files[0].name
+  //   });
+  // };
+  // handleSendData() {
+  //   const docData = new FormData();
+  //   var docName = document.getElementById("docName").value;
+  //   var docDesc = document.getElementById("docDesc").value;
+  //   if (docName === "") {
+  //     alert("Please enter document name");
+  //     return false;
+  //   }
+  //   if (docDesc === "") {
+  //     alert("Please enter document description");
+  //     return false;
+  //   }
+  //   debugger;
+  //   //docData.append();
+  //   docData.append("FileData", this.state.selectedFile);
+  //   // docData.append()
 
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Ticketing/createTicket",
-      data: docData,
-      headers: authHeader()
-    }).then(function(response) {
-      debugger;
-      alert(response.data[0].Result);
-    });
-  }
+  //   axios({
+  //     method: "post",
+  //     headers: authHeader(),
+  //     url: config.apiUrl + "/Ticketing/createTicket",
+  //     data: docData,
+  //   }).then(function(response) {
+  //     debugger;
+  //     alert(response.data[0].Result);
+  //   });
+  // }
 
   setBrandValue = e => {
     let brandValue = e.currentTarget.value;
     this.setState({ selectedBrand: brandValue });
   };
   setIssueTypeValue = e => {
-    debugger;
     let issueTypeValue = e.currentTarget.value;
     this.setState({ selectedIssueType: issueTypeValue });
 
@@ -624,8 +581,7 @@ class TicketSystem extends Component {
     this.setState({ selectedIssueTypeKB: issueTypeValue });
   };
   setTicketPriorityValue = e => {
-    debugger;
-    let ticketPriorityValue = e.currentTarget.id;
+    let ticketPriorityValue = e.target.value;
     this.setState({ selectedTicketPriority: ticketPriorityValue });
   };
   setTicketActionTypeValue = e => {
@@ -677,10 +633,17 @@ class TicketSystem extends Component {
     let channelOfPurchaseValue = e.currentTarget.value;
     this.setState({ selectedChannelOfPurchase: channelOfPurchaseValue });
   };
-  // setChannelOfPurchaseValue = e => {
-  //   let channelOfPurchaseValue = e.currentTarget.value;
-  //   this.setState({ selectedChannelOfPurchase: channelOfPurchaseValue });
-  // };
+
+  handleFileUpload(e) {
+    this.state.file.push(e.target.files[0]);
+  }
+  // handleGetTemplateData(e){
+  //   debugger;
+  //   let getTemplatevalue=e.currentTarget.value;
+  //   this.setState({
+  //     selectedTemplateID:getTemplatevalue
+  //   })
+  // }
 
   render() {
     var CustomerId = this.state.customerDetails.customerId;
@@ -884,7 +847,7 @@ class TicketSystem extends Component {
                               type="radio"
                               name="ticket-priority"
                               id={item.priortyName}
-                              // value={item.priortyID}
+                              value={item.priorityID}
                               onChange={this.setTicketPriorityValue}
                             />
                             <label htmlFor={item.priortyName}>
@@ -965,6 +928,7 @@ class TicketSystem extends Component {
                       className="dropdown-toggle my-tic-email1"
                       type="button"
                       data-toggle="dropdown"
+                      // onChange={this.handleGetTemplateData.bind(this)}
                     >
                       <FontAwesomeIcon icon={faCalculator} />
                       {this.state.tempName === ""
@@ -1073,7 +1037,8 @@ class TicketSystem extends Component {
                                 id="file-upload"
                                 className="file-upload1 d-none"
                                 type="file"
-                                onChange={this.fileUpload}
+                                name="file"
+                                onChange={this.handleFileUpload.bind(this)}
                               />
                               <label
                                 htmlFor="file-upload"

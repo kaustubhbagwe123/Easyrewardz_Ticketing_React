@@ -44,6 +44,7 @@ import TaskStatus from "./TaskStatus";
 // import moment from "moment";
 import Select from "react-select";
 import ScheduleDateDropDown from "./ScheduleDateDropDown";
+import { authHeader } from "../helpers/authHeader";
 
 class MyTicketList extends Component {
   constructor(props) {
@@ -81,7 +82,6 @@ class MyTicketList extends Component {
       TicketActionTypeData: TicketActionType(),
       ClaimStatusData: ClaimStatus(),
       TaskStatusData: TaskStatus(),
-      tenantID: 1,
       open: false,
       Schedule: false,
       StatusModel: false,
@@ -241,14 +241,8 @@ class MyTicketList extends Component {
     let self = this;
     axios({
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
       url: config.apiUrl + "/Ticketing/GetDraftDetails",
-      params: {
-        UserID: this.state.userID
-      }
+      headers: authHeader(),
     }).then(function(res) {
       debugger;
       let DraftDetails = res.data.responseData;
@@ -261,14 +255,8 @@ class MyTicketList extends Component {
     let self = this;
     axios({
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
       url: config.apiUrl + "/Master/getDepartmentList",
-      params: {
-        TenantID: this.state.tenantID
-      }
+      headers: authHeader()
     }).then(function(res) {
       debugger;
       let DepartmentData = res.data.responseData;
@@ -281,14 +269,10 @@ class MyTicketList extends Component {
     let self = this;
     axios({
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
       url: config.apiUrl + "/Master/getFunctionNameByDepartmentId",
+      headers: authHeader(),
       params: {
         DepartmentId: this.state.selectedDepartment,
-        TenantID: this.state.tenantID
       }
     }).then(function(res) {
       debugger;
@@ -302,14 +286,8 @@ class MyTicketList extends Component {
     let self = this;
     axios({
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
       url: config.apiUrl + "/Designation/GetDesignationList",
-      params: {
-        TenantID: this.state.tenantID
-      }
+      headers: authHeader()
     }).then(function(res) {
       debugger;
       let DesignationData = res.data.responseData;
@@ -321,14 +299,8 @@ class MyTicketList extends Component {
     let self = this;
     axios({
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
       url: config.apiUrl + "/Priority/GetPriorityList",
-      params: {
-        TenantID: this.state.tenantID
-      }
+      headers: authHeader()  
     }).then(function(res) {
       debugger;
       let TicketPriorityData = res.data.responseData;
@@ -339,14 +311,8 @@ class MyTicketList extends Component {
     let self = this;
     axios({
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
       url: config.apiUrl + "/Master/GetChannelOfPurchaseList",
-      params: {
-        TenantID: this.state.tenantID
-      }
+      headers: authHeader()
     }).then(function(res) {
       debugger;
       let ChannelOfPurchaseData = res.data.responseData;
@@ -359,14 +325,8 @@ class MyTicketList extends Component {
     let self = this;
     axios({
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
       url: config.apiUrl + "/Master/getTicketSources",
-      params: {
-        // TenantID: this.state.tenantID
-      }
+      headers: authHeader()
     }).then(function(res) {
       debugger;
       let TicketSourceData = res.data.responseData;
@@ -381,14 +341,8 @@ class MyTicketList extends Component {
     let self = this;
     axios({
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
-      url: config.apiUrl + "/SLAMaster/getListofSLA",
-      params: {
-        // TenantID: this.state.tenantID
-      }
+      url: config.apiUrl + "/SLA/GetSLAStatusList",
+      headers: authHeader()
     }).then(function(res) {
       debugger;
       let SlaStatusData = res.data.responseData;
@@ -403,14 +357,8 @@ class MyTicketList extends Component {
     let self = this;
     axios({
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
       url: config.apiUrl + "/Category/GetCategoryList",
-      params: {
-        TenantID: this.state.tenantID
-      }
+      headers: authHeader()
     }).then(function(res) {
       debugger;
       let CategoryData = res.data;
@@ -427,11 +375,8 @@ class MyTicketList extends Component {
 
     axios({
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
       url: config.apiUrl + "/SubCategory/GetSubCategoryByCategoryID",
+      headers: authHeader(),
       params: {
         CategoryID: this.state.selectedClaimCategory
       }
@@ -453,11 +398,8 @@ class MyTicketList extends Component {
 
     axios({
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
       url: config.apiUrl + "/SubCategory/GetSubCategoryByCategoryID",
+      headers: authHeader(),
       params: {
         CategoryID: cateId
       }
@@ -481,13 +423,9 @@ class MyTicketList extends Component {
 
     axios({
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
       url: config.apiUrl + "/IssueType/GetIssueTypeList",
+      headers: authHeader(),
       params: {
-        TenantID: this.state.tenantID,
         SubCategoryID: this.state.selectedClaimSubCategory
       }
     }).then(function(res) {
@@ -505,13 +443,9 @@ class MyTicketList extends Component {
 
     axios({
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
       url: config.apiUrl + "/IssueType/GetIssueTypeList",
+      headers: authHeader(),
       params: {
-        TenantID: this.state.tenantID,
         SubCategoryID: subCateId
       }
     }).then(function(res) {
@@ -536,11 +470,8 @@ class MyTicketList extends Component {
     let self = this;
     axios({
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
       url: config.apiUrl + "/Ticketing/searchAgent",
+      headers:authHeader(),
       params: {
         FirstName: this.state.assignFirstName.trim(),
         LastName: this.state.assignLastName.trim(),

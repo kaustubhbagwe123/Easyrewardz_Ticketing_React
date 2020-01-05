@@ -6,6 +6,7 @@ import Modal from "react-responsive-modal";
 import ReactTable from "react-table";
 import axios from "axios";
 import config from "../../helpers/config";
+import { authHeader } from "../../helpers/authHeader";
 
 class TicketSystemStore extends Component {
   constructor(props) {
@@ -18,11 +19,14 @@ class TicketSystemStore extends Component {
       SrchStoreNameCode: "",
       SearchData: [],
       message: "",
-      custmerStoreStatus:"",
-      SwitchBtnStatus: 1,
+      WantVisit: 0,
+      AlreadyCustomerVisit: 0,
+      SwitchBtnStatus: false
     };
     this.handleOrderStoreTableOpen = this.handleOrderStoreTableOpen.bind(this);
-    this.handleOrderStoreTableClose = this.handleOrderStoreTableClose.bind(this);
+    this.handleOrderStoreTableClose = this.handleOrderStoreTableClose.bind(
+      this
+    );
   }
 
   handleOrderStoreTableOpen() {
@@ -31,15 +35,26 @@ class TicketSystemStore extends Component {
   handleOrderStoreTableClose() {
     this.setState({ OrderStoreTable: false });
   }
-  handleStoreStatus = () => {
-    debugger
+  handleStoreStatus = e => {
     this.setState({
-      SwitchBtnStatus: 0
+      SwitchBtnStatus: e.target.checked
     });
-    console.log(this.state.SwitchBtnStatus,"SwitchBtn Status----------");
-    
-    // {
-    //   this.props.CustStoreStatus(this.state.SwitchBtnStatus);
+    {
+      this.props.CustStoreStatus(
+        this.state.WantVisit,
+        this.state.AlreadyCustomerVisit
+      );
+    }
+    // if (this.state.SwitchBtnStatus === true) {
+    //   this.setState({
+    //     custVisit: 1,
+    //     AlreadyCustVisit: 0
+    //   });
+    // } else {
+    //   this.setState({
+    //     custVisit: 0,
+    //     AlreadyCustVisit: 0
+    //   });
     // }
   };
   handleSearchStoreDetails() {
@@ -47,11 +62,8 @@ class TicketSystemStore extends Component {
     let self = this;
     axios({
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
       url: config.apiUrl + "/Store/searchStoreDetail",
+      headers: authHeader(),
       params: {
         SearchText: this.state.SrchStoreNameCode.trim()
       }
@@ -67,26 +79,27 @@ class TicketSystemStore extends Component {
         });
       }
     });
-
-    // this.setState({
-    //   SearchStoreDetails: !this.state.SearchStoreDetails
-    // });
   }
-  hanldeStatusChange(e){
-    console.log(e.target.value,"value---Store");
-    
-    this.setState({
-      custmerStoreStatus:e.target.value
-    })
-    console.log(this.state.custmerStoreStatus,"----------------StoreStatus---------");
-    
+  hanldeStatusChange(e) {
+    debugger;
+    var SelectValue = e.target.value;
+    if (SelectValue === 1) {
+      this.setState({
+        WantVisit: 1,
+        AlreadyCustomerVisit: 0
+      });
+    } else {
+      this.setState({
+        WantVisit: 0,
+        AlreadyCustomerVisit: 1
+      });
+    }
   }
 
   handleShowSearchSelectDetails() {
     this.setState({
       AddSelectDetail: !this.state.AddSelectDetail
     });
-    
   }
   handleStoreChange = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -175,7 +188,7 @@ class TicketSystemStore extends Component {
               <div className="col-12 col-lg-7 col-xl-8">
                 <select
                   className="systemstoredropdown"
-                  value={this.state.custmerStoreStatus}
+                  // value={this.state.custmerStoreStatus}
                   onChange={this.hanldeStatusChange.bind(this)}
                 >
                   <option value="1">Customer Want to visit store</option>
@@ -395,28 +408,29 @@ class TicketSystemStore extends Component {
                 </div>
               </div>
             </Modal>
-
-            <div className="row">
-              <div
-                className="col-md-11 m-b-10 m-t-10"
-                style={{ marginLeft: "25px" }}
-              >
-                <input
-                  type="text"
-                  className="systemordersearch"
-                  placeholder="Search By Store Name, Pin Code, Store Code"
-                  name="SrchStoreNameCode"
-                  value={this.state.SrchStoreNameCode}
-                  onChange={this.handleStoreChange}
-                />
-                <img
-                  src={SearchBlackImg}
-                  alt="Search"
-                  className="systemorder-imgsearch"
-                  onClick={this.handleSearchStoreDetails.bind(this)}
-                />
+            <form onSubmit={this.handleSearchStoreDetails.bind(this)}>
+              <div className="row">
+                <div
+                  className="col-md-11 m-b-10 m-t-10"
+                  style={{ marginLeft: "25px" }}
+                >
+                  <input
+                    type="text"
+                    className="systemordersearch"
+                    placeholder="Search By Store Name, Pin Code, Store Code"
+                    name="SrchStoreNameCode"
+                    value={this.state.SrchStoreNameCode}
+                    onChange={this.handleStoreChange}
+                  />
+                  <img
+                    src={SearchBlackImg}
+                    alt="Search"
+                    className="systemorder-imgsearch"
+                    // onClick={this.handleSearchStoreDetails.bind(this)}
+                  />
+                </div>
               </div>
-            </div>
+            </form>
             <span className="linestore3"></span>
             {this.state.message === "Record Not Found" ? (
               <div>

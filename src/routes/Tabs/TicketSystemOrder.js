@@ -13,6 +13,7 @@ import {
   NotificationContainer,
   NotificationManager
 } from "react-notifications";
+import { authHeader } from "../../helpers/authHeader";
 
 class TicketSystemOrder extends Component {
   constructor(props) {
@@ -25,20 +26,24 @@ class TicketSystemOrder extends Component {
       AddManuallyData: false,
       AddManualSaveTbl: false,
       OrderCreatDate: "",
-      orderId: 0,
-      tenantID: 1,
+      orderId: "",
       billId: "",
       productBarCode: "",
-      sources: "",
       orderMRP: "",
       pricePaid: "",
       discount: "",
-      size: 0,
-      requiredSize: 0,
+      orderNumber: "",
+      message: "",
+      size: "",
+      requiredSize: "",
+      selectedTicketSource: 0,
       custAttachOrder: 1,
       purchaseFrmStorAddress: "",
+      TicketSourceData: [],
       modeOfPayment: [],
       SearchItem: [],
+      orderDetailsData: [],
+      OrderSubComponent: [],
       StorAddress: {},
       purchaseFrmStorName: {},
       customerdetails: {},
@@ -46,6 +51,7 @@ class TicketSystemOrder extends Component {
     };
     this.handleOrderTableOpen = this.handleOrderTableOpen.bind(this);
     this.handleOrderTableClose = this.handleOrderTableClose.bind(this);
+    this.handleGetTicketSourceList = this.handleGetTicketSourceList.bind(this);
     this.handleModeOfPaymentDropDown = this.handleModeOfPaymentDropDown.bind(
       this
     );
@@ -68,6 +74,11 @@ class TicketSystemOrder extends Component {
       SearchOrderDetails: !this.state.SearchOrederDetails
     });
   }
+  handleOrderChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  }
   setModePaymentValue = e => {
     let dataValue = e.currentTarget.value;
     this.setState({ modeOfPayment: dataValue });
@@ -85,6 +96,10 @@ class TicketSystemOrder extends Component {
   handleManuallyOnchange = e => {
     this.setState({ [e.currentTarget.name]: e.currentTarget.value });
   };
+  setTicketSourceValue = e => {
+    let ticketSourceValue = e.currentTarget.value;
+    this.setState({ selectedTicketSource: ticketSourceValue });
+  };
   handleCheckOrder = () => {
     this.setState({
       custAttachOrder: 0
@@ -93,23 +108,53 @@ class TicketSystemOrder extends Component {
       this.props.AttachOrder(this.state.custAttachOrder);
     }
   };
+  handleGetTicketSourceList() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Master/getTicketSources",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let TicketSourceData = res.data.responseData;
+      self.setState({
+        TicketSourceData: TicketSourceData
+      });
+    });
+  }
   handleGetManuallyTableData() {
     debugger;
     let self = this;
     axios({
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
+      headers: authHeader(),
       url: config.apiUrl + "/Master/getPaymentMode"
-      // params: {
-      //   TenantID: this.state.tenantID
-      // }
     }).then(function(res) {
       debugger;
       let finalData = res.data.data;
       self.setState({ finalData: finalData });
+    });
+  }
+  handleOrderSearchData() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Order/getOrderListWithItemDetails",
+      headers: authHeader(),
+      params: {
+        OrderNumber: this.state.orderNumber
+      }
+    }).then(function(res) {
+      debugger;
+      let Msg = res.data.message;
+      let mainData = res.data.responseData;
+      // let subData = res.data.responseData[0].orderItems;
+      self.setState({
+        message: Msg,
+        orderDetailsData: mainData
+        // OrderSubComponent: subData
+      });
     });
   }
   hadleAddManuallyOrderData() {
@@ -118,17 +163,13 @@ class TicketSystemOrder extends Component {
     var CustID = this.props.custDetails;
     axios({
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
       url: config.apiUrl + "/Order/createOrder",
+      headers: authHeader(),
       data: {
-        TenantID: this.state.tenantID,
         ProductBarCode: this.state.productBarCode,
         OrderNumber: this.state.orderId,
         BillID: this.state.billId,
-        TicketSourceID: this.state.sources,
+        TicketSourceID: this.state.selectedTicketSource,
         ModeOfPaymentID: this.state.modeOfPayment,
         TransactionDate: this.state.OrderCreatDate,
         InvoiceNumber: "Inv123",
@@ -139,8 +180,7 @@ class TicketSystemOrder extends Component {
         PurchaseFromStoreId: this.state.PurchaseFromStoreId,
         Discount: this.state.discount,
         Size: this.state.size,
-        RequireSize: this.state.requiredSize,
-        CreatedBy: 6
+        RequireSize: this.state.requiredSize
       }
     }).then(function(res) {
       debugger;
@@ -148,7 +188,6 @@ class TicketSystemOrder extends Component {
 
       if (responseMessage === "Success") {
         NotificationManager.success("New Order add successfully.");
-        self.handleGetManuallyTableData();
         self.handleChangeSaveManualTbl();
       }
     });
@@ -162,14 +201,10 @@ class TicketSystemOrder extends Component {
     if (SearchData[field].length > 3) {
       axios({
         method: "post",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Methods": "*"
-        },
         url: config.apiUrl + "/Store/getStores",
+        headers: authHeader(),
         params: {
-          SearchText: SearchData[field],
-          tenantID: 1
+          SearchText: SearchData[field]
         }
       }).then(function(res) {
         debugger;
@@ -186,7 +221,6 @@ class TicketSystemOrder extends Component {
     } else {
       self.setState({
         SearchData
-        // polpodData: []
       });
     }
   }
@@ -207,14 +241,8 @@ class TicketSystemOrder extends Component {
     let self = this;
     axios({
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Methods": "*"
-      },
-      url: config.apiUrl + "/Master/getPaymentMode"
-      // params: {
-      //   TenantID: this.state.tenantID
-      // }
+      url: config.apiUrl + "/Master/getPaymentMode",
+      headers: authHeader()
     }).then(function(res) {
       let modeData = res.data.responseData;
       self.setState({ modeData: modeData });
@@ -223,100 +251,11 @@ class TicketSystemOrder extends Component {
 
   componentDidMount() {
     this.handleModeOfPaymentDropDown();
+    this.handleGetTicketSourceList();
   }
 
   render() {
-    const dataOrder = [
-      {
-        taskTitle: "Store door are not working",
-        assignTo: "G.Bansal"
-      },
-      {
-        taskTitle: "Supplies are not coming on time",
-        assignTo: "A.Bansal"
-      },
-      {
-        taskTitle: "Supplies are not coming on time",
-        assignTo: "G.Bansal"
-      },
-      {
-        taskTitle: "Supplies are not coming on time",
-        assignTo: "A.Bansal"
-      },
-      {
-        taskTitle: "Supplies are not coming on time",
-        assignTo: "A.Bansal"
-      }
-    ];
-
-    const dataOrder1 = [
-      {
-        taskTitle: "Store door are not working",
-        assignTo: "G.Bansal"
-      },
-      {
-        taskTitle: "Supplies are not coming on time",
-        assignTo: "A.Bansal"
-      },
-      {
-        taskTitle: "Supplies are not coming on time",
-        assignTo: "G.Bansal"
-      },
-      {
-        taskTitle: "Supplies are not coming on time",
-        assignTo: "A.Bansal"
-      },
-      {
-        taskTitle: "Supplies are not coming on time",
-        assignTo: "A.Bansal"
-      }
-    ];
-
-    const columnsOrder1 = [
-      {
-        Header: <span>Article Number</span>,
-        accessor: "articleNum",
-        Cell: row => (
-          <div className="filter-checkbox" style={{ marginLeft: "15px" }}>
-            <input
-              type="checkbox"
-              id="fil-number12"
-              name="filter-type"
-              style={{ display: "none" }}
-              //   onChange={() => this.showAddNoteFuncation()}
-            />
-            <label htmlFor="fil-number12" style={{ paddingLeft: "25px" }}>
-              <span className="add-note">BB332398</span>
-            </label>
-          </div>
-        )
-      },
-      {
-        Header: <span>Article Size</span>,
-        accessor: "articleSize",
-        Cell: row => <label>Paper Bag Big</label>
-      },
-      {
-        Header: <span>Article MRP</span>,
-        accessor: "articleMrp",
-        Cell: row => <label>2999</label>
-      },
-      {
-        Header: <span>Price Paid</span>,
-        accessor: "pricePa1",
-        Cell: row => <label>2999</label>
-      },
-      {
-        Header: <span>Discount</span>,
-        accessor: "dis1",
-        Cell: row => <label>0.00</label>
-      },
-      {
-        Header: <span>Required Size</span>,
-        accessor: "reqSiz",
-        Cell: row => <label>SB221</label>
-      }
-    ];
+    const { orderDetailsData } = this.state;
 
     return (
       <div className="ticketSycard">
@@ -417,69 +356,56 @@ class TicketSystemOrder extends Component {
             </div>
             <div className="reacttableordermodal">
               <ReactTable
-                data={dataOrder}
-                // columns={columnsOrder}
+                data={orderDetailsData}
                 columns={[
                   {
                     Header: <span>Invoice Number</span>,
                     accessor: "invoiceNumber",
-                    Cell: row => (
-                      <div
-                        className="filter-checkbox"
-                        style={{ marginLeft: "15px" }}
-                      >
-                        <input
-                          type="checkbox"
-                          id="fil-number1"
-                          name="filter-type"
-                          style={{ display: "none" }}
-                          //   onChange={() => this.showAddNoteFuncation()}
-                        />
-                        <label
-                          htmlFor="fil-number1"
-                          style={{ paddingLeft: "25px" }}
+                    Cell: row => {
+                      debugger;
+                      return (
+                        <div
+                          className="filter-checkbox"
+                          style={{ marginLeft: "15px" }}
                         >
-                          <span className="add-note">BB332398</span>
-                        </label>
-                      </div>
-                    )
+                          <input
+                            type="checkbox"
+                            id={row.original.orderMasterID}
+                          />
+                          <label htmlFor={row.original.orderMasterID}>
+                            {row.original.invoiceNumber}
+                          </label>
+                        </div>
+                      );
+                    }
                   },
                   {
                     Header: <span>Invoice Date</span>,
-                    accessor: "invoiceDate",
-                    Cell: row => <label>12 Jan 2019</label>
+                    accessor: "dateFormat"
                   },
                   {
                     Header: <span>Item Count</span>,
-                    accessor: "itemCount",
-                    Cell: row => <label>02</label>
+                    accessor: "itemCount"
                   },
                   {
                     Header: <span>Item Price</span>,
-                    accessor: "itemPrice",
-                    Cell: row => <label>2999</label>
+                    accessor: "itemPrice"
                   },
                   {
                     Header: <span>Price Paid</span>,
-                    accessor: "pricePaid",
-                    Cell: row => <label>2999</label>
+                    accessor: "pricePaid"
                   },
                   {
                     Header: <span>Store Code</span>,
-                    accessor: "storeCode",
-                    Cell: row => <label>SB221</label>
+                    accessor: "storeCode"
                   },
                   {
                     Header: <span>Store Addres</span>,
-                    accessor: "storeAddres",
-                    Cell: row => (
-                      <label>UNIT D-338,| SECOND FLOOR SECTOR 14</label>
-                    )
+                    accessor: "storeAddress"
                   },
                   {
                     Header: <span>Discount</span>,
-                    accessor: "discount",
-                    Cell: row => <label>25%</label>
+                    accessor: "discount"
                   }
                 ]}
                 //resizable={false}
@@ -489,8 +415,50 @@ class TicketSystemOrder extends Component {
                   return (
                     <div style={{ padding: "20px" }}>
                       <ReactTable
-                        data={dataOrder1}
-                        columns={columnsOrder1}
+                        data={row.original.orderItems}
+                        columns={[
+                          {
+                            Header: <span>Article Number</span>,
+                            accessor: "invoiceNo",
+                            Cell: row => {
+                              return (
+                                <div
+                                  className="filter-checkbox"
+                                  style={{ marginLeft: "15px" }}
+                                >
+                                  <input
+                                    type="checkbox"
+                                    id={row.original.orderItemID}
+                                    // name="dashboardcheckbox[]"
+                                  />
+                                  <label htmlFor={row.original.orderItemID}>
+                                    {row.original.invoiceNo}
+                                  </label>
+                                </div>
+                              );
+                            }
+                          },
+                          {
+                            Header: <span>Article Size</span>,
+                            accessor: "size"
+                          },
+                          {
+                            Header: <span>Article MRP</span>,
+                            accessor: "itemPrice"
+                          },
+                          {
+                            Header: <span>Price Paid</span>,
+                            accessor: "pricePaid"
+                          },
+                          {
+                            Header: <span>Discount</span>,
+                            accessor: "discount"
+                          },
+                          {
+                            Header: <span>Required Size</span>,
+                            accessor: "requireSize"
+                          }
+                        ]}
                         defaultPageSize={2}
                         showPagination={false}
                       />
@@ -500,9 +468,9 @@ class TicketSystemOrder extends Component {
               />
             </div>
           </Modal>
-          {this.state.AddManuallyData === false ? (
+          {this.state.AddManuallyData === true ? null : (
             <div>
-              <div className="row">
+              <div className="row m-b-10">
                 <div
                   className="col-md-11"
                   style={{ marginLeft: "25px", marginTop: "20px" }}
@@ -510,18 +478,20 @@ class TicketSystemOrder extends Component {
                   <input
                     type="text"
                     className="systemordersearch"
-                    placeholder="BB3736289940"
+                    placeholder="Search Order By Order Number"
+                    name="orderNumber"
+                    value={this.state.orderNumber}
+                    onChange={this.handleOrderChange.bind(this)}
                   />
                   <img
                     src={SearchBlackImg}
                     alt="Search"
                     className="systemorder-imgsearch"
-                    onClick={this.handleShowSearchOrderDetails.bind(this)}
+                    onClick={this.handleOrderSearchData.bind(this)}
                   />
                 </div>
               </div>
-
-              {this.state.SearchOrderDetails ? (
+              {this.state.message === "Record Not Found" ? (
                 <div>
                   <div className="div-notFound">
                     <img
@@ -547,156 +517,160 @@ class TicketSystemOrder extends Component {
                 </div>
               ) : null}
             </div>
-          ) : null}
-          {this.state.AddManuallyData ? (
+          )}
+
+          {this.state.AddManuallyData === true ? (
             <div>
-              {this.state.AddManualSaveTbl === false ? (
-                <div>
-                  <div className="row m-b-10 m-l-10 m-r-10 m-t-10">
-                    <div className="col-md-6">
-                      <label className="addmanuallytext">Add Manually</label>
-                    </div>
-                  </div>
-                  <div className="row m-b-10 m-l-10 m-r-10">
-                    <div className="col-md-6">
-                      <input
-                        type="text"
-                        className="addmanuallytext1"
-                        placeholder="Order ID"
-                        name="orderId"
-                        value={this.state.orderId}
-                        onChange={this.handleManuallyOnchange}
-                      />
-                    </div>
-                    <div className="col-md-6">
-                      <input
-                        type="text"
-                        className="addmanuallytext1"
-                        placeholder="Bill ID"
-                        name="billId"
-                        value={this.state.billId}
-                        onChange={this.handleManuallyOnchange}
-                      />
-                    </div>
-                  </div>
+              <div className="row m-b-10 m-l-10 m-r-10 m-t-10">
+                <div className="col-md-6">
+                  <label className="addmanuallytext">Add Manually</label>
+                </div>
+              </div>
+              <div className="row m-b-10 m-l-10 m-r-10">
+                <div className="col-md-6">
+                  <input
+                    type="text"
+                    className="addmanuallytext1"
+                    placeholder="Order ID"
+                    name="orderId"
+                    value={this.state.orderId}
+                    onChange={this.handleManuallyOnchange}
+                  />
+                </div>
+                <div className="col-md-6">
+                  <input
+                    type="text"
+                    className="addmanuallytext1"
+                    placeholder="Bill ID"
+                    name="billId"
+                    value={this.state.billId}
+                    onChange={this.handleManuallyOnchange}
+                  />
+                </div>
+              </div>
 
-                  <div className="row m-b-10 m-l-10 m-r-10">
-                    <div className="col-md-6">
-                      <input
-                        type="text"
-                        className="addmanuallytext1"
-                        placeholder="Product Bar Code"
-                        name="productBarCode"
-                        value={this.state.productBarCode}
-                        onChange={this.handleManuallyOnchange}
-                      />
-                    </div>
-                    <div className="col-md-6">
-                      <input
-                        type="text"
-                        className="addmanuallytext1"
-                        placeholder="Sources"
-                        name="sources"
-                        value={this.state.sources}
-                        onChange={this.handleManuallyOnchange}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="row m-b-10 m-l-10 m-r-10">
-                    <div className="col-md-6">
-                      <select
-                        className="category-select-system dropdown-label"
-                        value={this.state.modeOfPayment}
-                        onChange={this.setModePaymentValue}
-                      >
-                        <option className="select-sub-category-placeholder">
-                          Mode Of Payment
+              <div className="row m-b-10 m-l-10 m-r-10">
+                <div className="col-md-6">
+                  <input
+                    type="text"
+                    className="addmanuallytext1"
+                    placeholder="Product Bar Code"
+                    name="productBarCode"
+                    value={this.state.productBarCode}
+                    onChange={this.handleManuallyOnchange}
+                  />
+                </div>
+                <div className="col-md-6">
+                  <select
+                    value={this.state.selectedTicketSource}
+                    onChange={this.setTicketSourceValue}
+                    className="category-select-system dropdown-label"
+                  >
+                    <option>Sources</option>
+                    {this.state.TicketSourceData !== null &&
+                      this.state.TicketSourceData.map((item, i) => (
+                        <option key={i} value={item.ticketSourceId}>
+                          {item.ticketSourceName}
                         </option>
-                        {this.state.modeData !== null &&
-                          this.state.modeData.map((item, i) => (
-                            <option
-                              key={i}
-                              value={item.paymentModeID}
-                              className="select-category-placeholder"
-                            >
-                              {item.paymentModename}
-                            </option>
-                          ))}
-                      </select>
-                    </div>
-                    <div className="col-md-6 dapic">
-                      <DatePicker
-                        selected={this.state.OrderCreatDate}
-                        onChange={this.handleByDateCreate.bind(this)}
-                        placeholderText="Date"
-                        showMonthDropdown
-                        showYearDropdown
-                        className="addmanuallytext1"
-                        // className="form-control"
-                      />
-                    </div>
-                  </div>
+                      ))}
+                  </select>
+                </div>
+              </div>
 
-                  <div className="row m-b-10 m-l-10 m-r-10">
-                    <div className="col-md-6">
-                      <input
-                        type="text"
-                        className="addmanuallytext1"
-                        placeholder="MRP"
-                        name="orderMRP"
-                        value={this.state.orderMRP}
-                        onChange={this.handleManuallyOnchange}
-                      />
-                    </div>
-                    <div className="col-md-6">
-                      <input
-                        type="text"
-                        className="addmanuallytext1"
-                        placeholder="Price Paid"
-                        name="pricePaid"
-                        value={this.state.pricePaid}
-                        onChange={this.handleManuallyOnchange}
-                      />
-                    </div>
-                  </div>
+              <div className="row m-b-10 m-l-10 m-r-10">
+                <div className="col-md-6">
+                  <select
+                    className="category-select-system dropdown-label"
+                    value={this.state.modeOfPayment}
+                    onChange={this.setModePaymentValue}
+                  >
+                    <option className="select-sub-category-placeholder">
+                      Mode Of Payment
+                    </option>
+                    {this.state.modeData !== null &&
+                      this.state.modeData.map((item, i) => (
+                        <option
+                          key={i}
+                          value={item.paymentModeID}
+                          className="select-category-placeholder"
+                        >
+                          {item.paymentModename}
+                        </option>
+                      ))}
+                  </select>
+                </div>
+                <div className="col-md-6 dapic">
+                  <DatePicker
+                    selected={this.state.OrderCreatDate}
+                    onChange={this.handleByDateCreate.bind(this)}
+                    placeholderText="Date"
+                    showMonthDropdown
+                    showYearDropdown
+                    className="addmanuallytext1"
+                    // className="form-control"
+                  />
+                </div>
+              </div>
 
-                  <div className="row m-b-10 m-l-10 m-r-10">
-                    <div className="col-md-6">
-                      <input
-                        type="text"
-                        className="addmanuallytext1"
-                        placeholder="Discount"
-                        name="discount"
-                        value={this.state.discount}
-                        onChange={this.handleManuallyOnchange}
-                      />
-                    </div>
-                    <div className="col-md-6">
-                      <input
-                        type="text"
-                        className="addmanuallytext1"
-                        placeholder="Size"
-                        name="size"
-                        value={this.state.size}
-                        onChange={this.handleManuallyOnchange}
-                      />
-                    </div>
-                  </div>
+              <div className="row m-b-10 m-l-10 m-r-10">
+                <div className="col-md-6">
+                  <input
+                    type="text"
+                    className="addmanuallytext1"
+                    placeholder="MRP"
+                    name="orderMRP"
+                    value={this.state.orderMRP}
+                    onChange={this.handleManuallyOnchange}
+                  />
+                </div>
+                <div className="col-md-6">
+                  <input
+                    type="text"
+                    className="addmanuallytext1"
+                    placeholder="Price Paid"
+                    name="pricePaid"
+                    value={this.state.pricePaid}
+                    onChange={this.handleManuallyOnchange}
+                  />
+                </div>
+              </div>
 
-                  <div className="row m-b-10 m-l-10 m-r-10">
-                    <div className="col-md-6">
-                      <input
-                        type="text"
-                        className="addmanuallytext1"
-                        placeholder="Required Size"
-                        name="requiredSize"
-                        value={this.state.requiredSize}
-                        onChange={this.handleManuallyOnchange}
-                      />
-                    </div>
-                    <div className="col-md-6">
-                      {/* <input
+              <div className="row m-b-10 m-l-10 m-r-10">
+                <div className="col-md-6">
+                  <input
+                    type="text"
+                    className="addmanuallytext1"
+                    placeholder="Discount"
+                    name="discount"
+                    value={this.state.discount}
+                    onChange={this.handleManuallyOnchange}
+                  />
+                </div>
+                <div className="col-md-6">
+                  <input
+                    type="text"
+                    className="addmanuallytext1"
+                    placeholder="Size"
+                    name="size"
+                    value={this.state.size}
+                    onChange={this.handleManuallyOnchange}
+                  />
+                </div>
+              </div>
+
+              <div className="row m-b-10 m-l-10 m-r-10">
+                <div className="col-md-6">
+                  <input
+                    type="text"
+                    className="addmanuallytext1"
+                    placeholder="Required Size"
+                    name="requiredSize"
+                    value={this.state.requiredSize}
+                    onChange={this.handleManuallyOnchange}
+                  />
+                </div>
+                <div className="col-md-6">
+                  {/* <input
                         type="text"
                         className="addmanuallytext1"
                         placeholder="Purchase from Store name"
@@ -704,217 +678,235 @@ class TicketSystemOrder extends Component {
                         value={this.state.purchaseFrmStorName}
                         onChange={this.handleManuallyOnchange}
                       /> */}
-                      <ReactAutocomplete
-                        getItemValue={item => item.storeName}
-                        items={this.state.SearchItem}
-                        renderItem={(item, isHighlighted) => (
-                          <div
-                            style={{
-                              background: isHighlighted ? "lightgray" : "white"
-                            }}
-                            value={item.storeID}
-                          >
-                            {item.storeName}
-                          </div>
-                        )}
-                        renderInput={function(props) {
-                          return (
-                            <input
-                              placeholder="Purchase from Store name"
-                              className="addmanuallytext1"
-                              type="text"
-                              {...props}
-                            />
-                          );
+                  <ReactAutocomplete
+                    getItemValue={item => item.storeName}
+                    items={this.state.SearchItem}
+                    renderItem={(item, isHighlighted) => (
+                      <div
+                        style={{
+                          background: isHighlighted ? "lightgray" : "white"
                         }}
-                        onChange={this.handlePurchaseStoreName.bind(
-                          this,
-                          "store"
-                        )}
-                        onSelect={this.HandleSelectdata.bind(
-                          this,
-                          item => item.storeID,
-                          "store"
-                        )}
-                        value={this.state.purchaseFrmStorName["store"]}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="row m-b-10 m-l-10 m-r-10">
-                    <div className="col-md-6">
-                      <input
-                        type="text"
-                        className="addmanuallytext1"
-                        placeholder="Purchase from Store Addres"
-                        name="purchaseFrmStorAddress"
-                        value={this.state.StorAddress.address}
-                        // onChange={this.handleManuallyOnchange}
-                        readOnly
-                      />
-                    </div>
-                  </div>
-
-                  <div className="row m-b-10 m-l-10 m-r-10">
-                    <div className="col-md-6">
-                      <button
-                        type="button"
-                        className="addmanual m-t-15"
-                        onClick={this.hadleAddManuallyOrderData.bind(this)}
+                        value={item.storeID}
                       >
-                        SAVE
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <div className="reacttableordermodal">
-                  <div className="row m-b-10">
-                    <div
-                      className="col-md-11"
-                      style={{ marginLeft: "25px", marginTop: "20px" }}
-                    >
-                      <input
-                        type="text"
-                        className="systemordersearch"
-                        placeholder="BB3736289940"
-                      />
-                      <img
-                        src={SearchBlackImg}
-                        alt="Search"
-                        className="systemorder-imgsearch"
-                      />
-                    </div>
-                  </div>
-                  <span className="linestore2"></span>
-                  <div
-                    className="row m-t-10 m-b-10"
-                    style={{ marginLeft: "0", marginRight: "0" }}
-                  >
-                    <div className="col-md-9">
-                      <label
-                        className="orderdetailpopup"
-                        style={{ marginTop: "3px" }}
-                      >
-                        Order Details
-                      </label>
-                    </div>
-                    <div className="col-md-3">
-                      <div style={{ float: "right", display: "flex" }}>
-                        <label
-                          className="orderdetailpopup "
-                          style={{ marginTop: "3px" }}
-                        >
-                          Order
-                        </label>
-                        <div className="orderswitch orderswitchitem">
-                          <div className="switch switch-primary d-inline">
-                            <input type="checkbox" id="editTasks-p-2" />
-                            <label
-                              htmlFor="editTasks-p-2"
-                              className="cr ord"
-                            ></label>
-                          </div>
-                        </div>
-                        <label
-                          className="orderdetailpopup"
-                          style={{ marginTop: "3px" }}
-                        >
-                          Item
-                        </label>
+                        {item.storeName}
                       </div>
-                    </div>
-                  </div>
-                  <span className="linestore2"></span>
-                  <ReactTable
-                    data={dataOrder}
-                    // columns={columnsOrder}
-                    columns={[
-                      {
-                        Header: <span>Invoice Number</span>,
-                        accessor: "invoiceNumber",
-                        Cell: row => (
-                          <div
-                            className="filter-checkbox"
-                            style={{ marginLeft: "15px" }}
-                          >
-                            <input
-                              type="checkbox"
-                              id="fil-number1"
-                              name="filter-type"
-                              style={{ display: "none" }}
-                              //   onChange={() => this.showAddNoteFuncation()}
-                            />
-                            <label
-                              htmlFor="fil-number1"
-                              style={{ paddingLeft: "25px" }}
-                            >
-                              <span className="add-note">BB332398</span>
-                            </label>
-                          </div>
-                        )
-                      },
-                      {
-                        Header: <span>Invoice Date</span>,
-                        accessor: "invoiceDate",
-                        Cell: row => <label>12 Jan 2019</label>
-                      },
-                      {
-                        Header: <span>Item Count</span>,
-                        accessor: "itemCount",
-                        Cell: row => <label>02</label>
-                      },
-                      {
-                        Header: <span>Item Price</span>,
-                        accessor: "itemPrice",
-                        Cell: row => <label>2999</label>
-                      },
-                      {
-                        Header: <span>Price Paid</span>,
-                        accessor: "pricePaid",
-                        Cell: row => <label>2999</label>
-                      },
-                      {
-                        Header: <span>Store Code</span>,
-                        accessor: "storeCode",
-                        Cell: row => <label>SB221</label>
-                      },
-                      {
-                        Header: <span>Store Addres</span>,
-                        accessor: "storeAddres",
-                        Cell: row => (
-                          <label>UNIT D-338,| SECOND FLOOR SECTOR 14</label>
-                        )
-                      },
-                      {
-                        Header: <span>Discount</span>,
-                        accessor: "discount",
-                        Cell: row => <label>25%</label>
-                      }
-                    ]}
-                    //resizable={false}
-                    defaultPageSize={3}
-                    showPagination={false}
-                    SubComponent={row => {
+                    )}
+                    renderInput={function(props) {
                       return (
-                        <div style={{ padding: "20px" }}>
-                          <ReactTable
-                            data={dataOrder1}
-                            columns={columnsOrder1}
-                            defaultPageSize={2}
-                            showPagination={false}
-                          />
-                        </div>
+                        <input
+                          placeholder="Purchase from Store name"
+                          className="addmanuallytext1"
+                          type="text"
+                          {...props}
+                        />
                       );
                     }}
+                    onChange={this.handlePurchaseStoreName.bind(this, "store")}
+                    onSelect={this.HandleSelectdata.bind(
+                      this,
+                      item => item.storeID,
+                      "store"
+                    )}
+                    value={this.state.purchaseFrmStorName["store"]}
                   />
                 </div>
-              )}
+              </div>
+
+              <div className="row m-b-10 m-l-10 m-r-10">
+                <div className="col-md-6">
+                  <input
+                    type="text"
+                    className="addmanuallytext1"
+                    placeholder="Purchase from Store Addres"
+                    name="purchaseFrmStorAddress"
+                    value={this.state.StorAddress.address}
+                    // onChange={this.handleManuallyOnchange}
+                    readOnly
+                  />
+                </div>
+              </div>
+
+              <div className="row m-b-10 m-l-10 m-r-10">
+                <div className="col-md-6">
+                  <button
+                    type="button"
+                    className="addmanual m-t-15"
+                    onClick={this.hadleAddManuallyOrderData.bind(this)}
+                  >
+                    SAVE
+                  </button>
+                </div>
+              </div>
             </div>
           ) : null}
-          {/* {this.state.AddManualSaveTbl === false ? (
-          
-        ):( null )} */}
+          {this.state.message === "Success" ? (
+            <div className="reacttableordermodal">
+              {/* <div className="row m-b-10">
+                <div
+                  className="col-md-11"
+                  style={{ marginLeft: "25px", marginTop: "20px" }}
+                >
+                  <input
+                    type="text"
+                    className="systemordersearch"
+                    placeholder="BB3736289940"
+                  />
+                  <img
+                    src={SearchBlackImg}
+                    alt="Search"
+                    className="systemorder-imgsearch"
+                  />
+                </div>
+              </div> */}
+              <span className="linestore2"></span>
+              <div
+                className="row m-t-10 m-b-10"
+                style={{ marginLeft: "0", marginRight: "0" }}
+              >
+                <div className="col-md-9">
+                  <label
+                    className="orderdetailpopup"
+                    style={{ marginTop: "3px" }}
+                  >
+                    Order Details
+                  </label>
+                </div>
+                <div className="col-md-3">
+                  <div style={{ float: "right", display: "flex" }}>
+                    <label
+                      className="orderdetailpopup "
+                      style={{ marginTop: "3px" }}
+                    >
+                      Order
+                    </label>
+                    <div className="orderswitch orderswitchitem">
+                      <div className="switch switch-primary d-inline">
+                        <input type="checkbox" id="editTasks-p-2" />
+                        <label
+                          htmlFor="editTasks-p-2"
+                          className="cr ord"
+                          style={{ top: 0 }}
+                        ></label>
+                      </div>
+                    </div>
+                    <label
+                      className="orderdetailpopup"
+                      style={{ marginTop: "3px" }}
+                    >
+                      Item
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <span className="linestore2"></span>
+              <ReactTable
+                data={orderDetailsData}
+                columns={[
+                  {
+                    Header: <span>Invoice Number</span>,
+                    accessor: "invoiceNumber",
+                    Cell: row => (
+                      <div
+                        className="filter-checkbox"
+                        style={{ marginLeft: "15px" }}
+                      >
+                        <input
+                          type="checkbox"
+                          id={row.original.orderMasterID}
+                        />
+                        <label htmlFor={row.original.orderMasterID}>
+                          {row.original.invoiceNumber}
+                        </label>
+                      </div>
+                    )
+                  },
+                  {
+                    Header: <span>Invoice Date</span>,
+                    accessor: "dateFormat"
+                  },
+                  {
+                    Header: <span>Item Count</span>,
+                    accessor: "itemCount"
+                  },
+                  {
+                    Header: <span>Item Price</span>,
+                    accessor: "itemPrice"
+                  },
+                  {
+                    Header: <span>Price Paid</span>,
+                    accessor: "pricePaid"
+                  },
+                  {
+                    Header: <span>Store Code</span>,
+                    accessor: "storeCode"
+                  },
+                  {
+                    Header: <span>Store Addres</span>,
+                    accessor: "storeAddress"
+                  },
+                  {
+                    Header: <span>Discount</span>,
+                    accessor: "discount"
+                  }
+                ]}
+                //resizable={false}
+                defaultPageSize={3}
+                showPagination={false}
+                SubComponent={row => {
+                  debugger;
+                  return (
+                    <div style={{ padding: "20px" }}>
+                      <ReactTable
+                        data={row.original.orderItems}
+                        columns={[
+                          {
+                            Header: <span>Article Number</span>,
+                            accessor: "invoiceNo",
+                            Cell: row => (
+                              <div
+                                className="filter-checkbox"
+                                style={{ marginLeft: "15px" }}
+                              >
+                                <input
+                                  type="checkbox"
+                                  id={row.original.orderItemID}
+                                />
+                                <label htmlFor={row.original.orderItemID}>
+                                  {row.original.invoiceNo}
+                                </label>
+                              </div>
+                            )
+                          },
+                          {
+                            Header: <span>Article Size</span>,
+                            accessor: "size"
+                          },
+                          {
+                            Header: <span>Article MRP</span>,
+                            accessor: "itemPrice"
+                          },
+                          {
+                            Header: <span>Price Paid</span>,
+                            accessor: "pricePaid"
+                          },
+                          {
+                            Header: <span>Discount</span>,
+                            accessor: "discount"
+                          },
+                          {
+                            Header: <span>Required Size</span>,
+                            accessor: "requireSize"
+                          }
+                        ]}
+                        defaultPageSize={2}
+                        showPagination={false}
+                      />
+                    </div>
+                  );
+                }}
+              />
+            </div>
+          ) : null}
         </div>
         <NotificationContainer />
       </div>
