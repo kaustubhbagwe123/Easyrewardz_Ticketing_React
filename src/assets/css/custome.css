@@ -4852,7 +4852,9 @@ font-weight: normal;
     display: block;
     margin-left: 10px;
   }
-
+.cr-pnt{
+  cursor: pointer;
+}
   /* dashboard starts */
   .dash-dropdowns {
     display: block;

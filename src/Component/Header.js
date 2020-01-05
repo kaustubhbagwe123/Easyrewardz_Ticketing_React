@@ -135,7 +135,7 @@ class Header extends Component {
       debugger;
       var logout = res.data.message;
       if (logout === "Logout Successfully!") {
-        NotificationManager.success(res.data.message);
+        NotificationManager.success(logout);
         localStorage.clear();
         window.location.href = "/";
       }

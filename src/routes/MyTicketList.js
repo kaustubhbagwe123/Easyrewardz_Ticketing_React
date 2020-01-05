@@ -43,6 +43,10 @@ import ClaimStatus from "./ClaimStatus";
 import TaskStatus from "./TaskStatus";
 // import moment from "moment";
 import Select from "react-select";
+import {
+  NotificationContainer,
+  NotificationManager
+} from "react-notifications";
 import ScheduleDateDropDown from "./ScheduleDateDropDown";
 import { authHeader } from "../helpers/authHeader";
 
@@ -118,18 +122,21 @@ class MyTicketList extends Component {
       selectedIssueTypeAll: 0,
       selectedDepartment: 0,
       selectedFunction: 0,
-      selectedMobileNoByCustType: "",
-      selectedEmailIdByCustType: "",
-      selectedClaimIdAll: "",
-      selectedEmailAll: "",
-      selectedTicketIdTitleAll: "",
-      selectedInvoiceSubOrderAll: "",
-      selectedMobileAll: "",
-      selectedItemIdAll: "",
+      selectSearchData:0,
+      MobileNoByCustType: "",
+      EmailIdByCustType: "",
+      ClaimIdByAll: "",
+      EmailByAll: "",
+      TicketIdTitleByAll: "",
+      InvoiceSubOrderByAll: "",
+      MobileByAll: "",
+      ItemIdByAll: "",
       selectedAssignedToAll: "",
-      selectedTicketIdByCustType: "",
+      TicketIdByCustType: "",
+      SearchName:"",
       userID: 6,
       DraftDetails: [],
+      SearchListData:[],
       draftCountStatus: 0,
       byDateFlag: 1,
       byCustomerTypeFlag: 0,
@@ -153,6 +160,7 @@ class MyTicketList extends Component {
     };
     this.handleAdvSearchFlag = this.handleAdvSearchFlag.bind(this);
     this.toggleSearch = this.toggleSearch.bind(this);
+    this.handleGetSaveSearchList=this.handleGetSaveSearchList.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
     this.handleGetTicketSourceList = this.handleGetTicketSourceList.bind(this);
@@ -174,7 +182,7 @@ class MyTicketList extends Component {
       this
     );
     this.handleGetDraftDetails = this.handleGetDraftDetails.bind(this);
-    this.handelAssignOnchange = this.handelAssignOnchange.bind(this);
+    this.handelOnchangeData = this.handelOnchangeData.bind(this);
     this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
     this.handleGetFunctionList = this.handleGetFunctionList.bind(this);
   }
@@ -491,6 +499,68 @@ class MyTicketList extends Component {
     });
   }
 
+  SaveSearchData(){
+    debugger
+    let self=this;
+    var paramData={
+      ByDate:this.state.byDateFlag,
+      creationDate:this.state.ByDateCreatDate,
+      lastUpdatedDate:this.state.ByDateSelectDate,
+      SLADue:this.state.selectedSlaDueByDate,
+      ticketStatus:this.state.selectedTicketStatusByDate,
+      ByCustomerType:this.state.byCustomerTypeFlag,
+      customerMob:this.state.MobileNoByCustType,
+      customerEmail:this.state.EmailIdByCustType,
+      TicketID:this.state.TicketIdByCustType,
+      ticketStatus:this.state.selectedTicketStatusByCustomer,
+      ByTicketType:this.state.byTicketTypeFlag,
+      Priority:this.state.selectedPriority,
+      ticketStatus:this.state.selectedTicketStatusByTicket,
+      chanelOfPurchase:this.state.selectedChannelOfPurchase,
+      ticketActionType:this.state.selectedTicketActionType,
+      ByCategory:this.state.byCategoryFlag,
+      Category:this.state.selectedCategory,
+      subCategory:this.state.selectedSubCategory,
+      issueType:this.state.selectedIssueType,
+      ticketStatus:this.state.selectedTicketStatusByCategory,
+      byAll:this.state.allFlag,
+
+    }
+    axios({
+      method:"post",
+      url:config.apiUrl + "/Ticketing/savesearch",
+      headers:authHeader(),
+      params:{
+        SearchSaveName:this.state.SearchName,
+        parameter:JSON.stringify(paramData)
+      }
+    }).then(function(res) {
+      debugger;
+      let Msg = res.data.message;
+      if(Msg==="Success")
+      {
+        NotificationManager.success("Save Search parameter successfully.");
+        self.handleGetSaveSearchList()
+      }
+      // self.setState({
+      //   SearchAssignData: Data,
+      // });
+    });
+  }
+  handleGetSaveSearchList() {
+    debugger
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Ticketing/listSavedSearch",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let SearchListData = res.data.responseData;
+      self.setState({ SearchListData: SearchListData });
+    });
+  }
+
   setDepartmentValue = e => {
     let departmentValue = e.currentTarget.value;
     this.setState({ selectedDepartment: departmentValue });
@@ -523,63 +593,46 @@ class MyTicketList extends Component {
     let priorityAllValue = e.currentTarget.value;
     this.setState({ selectedPriorityAll: priorityAllValue });
   };
-  handleMobileNoByCustType = e => {
-    debugger;
-    let mobileNoByCustTypeValue = e.currentTarget.value;
-    this.setState({ selectedMobileNoByCustType: mobileNoByCustTypeValue });
-  };
-  handleEmailIdByCustType = e => {
-    debugger;
-    let emailIdByCustTypeValue = e.currentTarget.value;
-    this.setState({ selectedEmailIdByCustType: emailIdByCustTypeValue });
-  };
-  handleClaimIdAll = e => {
-    debugger;
-    let claimIdAllValue = e.currentTarget.value;
-    this.setState({ selectedClaimIdAll: claimIdAllValue });
-  };
-  handleEmailAll = e => {
-    debugger;
-    let emailAllValue = e.currentTarget.value;
-    this.setState({ selectedEmailAll: emailAllValue });
-  };
-  handleTicketIdTitleAll = e => {
-    debugger;
-    let ticketIdTitleAllValue = e.currentTarget.value;
-    this.setState({ selectedTicketIdTitleAll: ticketIdTitleAllValue });
-  };
-  handleInvoiceSubOrderAll = e => {
-    debugger;
-    let invoiceSubOrderAllValue = e.currentTarget.value;
-    this.setState({ selectedInvoiceSubOrderAll: invoiceSubOrderAllValue });
-  };
+ 
+  // handleClaimIdAll = e => {
+  //   debugger;
+  //   let claimIdAllValue = e.currentTarget.value;
+  //   this.setState({ ClaimIdByAll: claimIdAllValue });
+  // };
+  // handleEmailAll = e => {
+  //   let emailAllValue = e.currentTarget.value;
+  //   this.setState({ EmailByAll: emailAllValue });
+  // };
+  // handleTicketIdTitleAll = e => {
+  //   let ticketIdTitleAllValue = e.currentTarget.value;
+  //   this.setState({ TicketIdTitleByAll: ticketIdTitleAllValue });
+  // };
+  // handleInvoiceSubOrderAll = e => {
+  //   let invoiceSubOrderAllValue = e.currentTarget.value;
+  //   this.setState({ InvoiceSubOrderByAll: invoiceSubOrderAllValue });
+  // };
   handleAssignedToAll = e => {
-    debugger;
     let assignedToAllValue = e.currentTarget.value;
     this.setState({ selectedAssignedToAll: assignedToAllValue });
   };
-  handleItemIdAll = e => {
-    debugger;
-    let itemIdAllValue = e.currentTarget.value;
-    this.setState({ selectedItemIdAll: itemIdAllValue });
-  };
-  handleMobileAll = e => {
-    debugger;
-    let mobileAllValue = e.currentTarget.value;
-    this.setState({ selectedMobileAll: mobileAllValue });
-  };
-  handleTicketIdByCustType = e => {
-    debugger;
-    let ticketIdByCustTypeValue = e.currentTarget.value;
-    this.setState({ selectedTicketIdByCustType: ticketIdByCustTypeValue });
-  };
+  // handleItemIdAll = e => {
+  //   let itemIdAllValue = e.currentTarget.value;
+  //   this.setState({ ItemIdByAll: itemIdAllValue });
+  // };
+  // handleMobileAll = e => {
+  //   let mobileAllValue = e.currentTarget.value;
+  //   this.setState({ MobileByAll: mobileAllValue });
+  // };
+  // handleTicketIdByCustType = e => {
+  //   let ticketIdByCustTypeValue = e.currentTarget.value;
+  //   this.setState({ selectedTicketIdByCustType: ticketIdByCustTypeValue });
+  // };
   setChannelOfPurchaseValue = e => {
-    debugger;
-    // let channelOfPurchaseValue = e.channelOfPurchaseID;
+    debugger
+    // let selectedChannelOfPurchase = e
     this.setState({ selectedChannelOfPurchase: e });
   };
   setTicketActionTypeValue = e => {
-    debugger;
     // let channelOfPurchaseValue = e.channelOfPurchaseID;
     this.setState({ selectedTicketActionType: e });
   };
@@ -588,7 +641,6 @@ class MyTicketList extends Component {
     this.setState({ selectedTicketStatusByDate: ticketStatusValue });
   };
   handleSlaDueByDate = e => {
-    debugger;
     let slaDueValue = e.currentTarget.value;
     this.setState({ selectedSlaDueByDate: slaDueValue });
   };
@@ -598,7 +650,6 @@ class MyTicketList extends Component {
     this.setState({ selectedClaimStatus: claimStatusValue });
   };
   handleTaskStatus = e => {
-    debugger;
     let taskStatusValue = e.currentTarget.value;
     this.setState({ selectedTaskStatus: taskStatusValue });
   };
@@ -619,34 +670,28 @@ class MyTicketList extends Component {
     this.setState({ selectedTicketStatusAll: ticketStatusAllValue });
   };
   handleVisitStoreAll = e => {
-    debugger;
     let visitStoreAllValue = e.currentTarget.value;
     this.setState({ selectedVisitStoreAll: visitStoreAllValue });
   };
   handleWithClaimAll = e => {
-    debugger;
     let withClaimAllValue = e.currentTarget.value;
     this.setState({ selectedWithClaimAll: withClaimAllValue });
   };
   handleWithTaskAll = e => {
-    debugger;
     let withTaskAllValue = e.currentTarget.value;
     this.setState({ selectedWithTaskAll: withTaskAllValue });
   };
   handleWantToVisitStoreAll = e => {
-    debugger;
     let wantToVisitStoreAllValue = e.currentTarget.value;
     this.setState({ selectedWantToVisitStoreAll: wantToVisitStoreAllValue });
   };
   handlePurchaseStoreCodeAddressAll = e => {
-    debugger;
     let purchaseStoreCodeAddressAllValue = e.currentTarget.value;
     this.setState({
       selectedPurchaseStoreCodeAddressAll: purchaseStoreCodeAddressAllValue
     });
   };
   handleVisitStoreCodeAddressAll = e => {
-    debugger;
     let visitStoreCodeAddressAllValue = e.currentTarget.value;
     this.setState({
       selectedVisitStoreCodeAddressAll: visitStoreCodeAddressAllValue
@@ -803,7 +848,7 @@ class MyTicketList extends Component {
       }
     }
   }
-  handelAssignOnchange(e) {
+  handelOnchangeData(e) {
     this.setState({
       [e.target.name]: e.target.value
     });
@@ -821,6 +866,7 @@ class MyTicketList extends Component {
       selectScheduleDate: SelectData
     });
   };
+  
   render() {
     const { DraftDetails, SearchAssignData } = this.state;
     const DefArti = (
@@ -1826,8 +1872,17 @@ class MyTicketList extends Component {
                                   <input
                                     type="search"
                                     placeholder="Give name to your search"
+                                    name="SearchName"
+                                    value={this.state.SearchName}
+                                    onChange={this.handelOnchangeData}
                                   />
-                                  <button className="butn">Save</button>
+                                  <button
+                                    className="butn"
+                                    type="button"
+                                    onClick={this.SaveSearchData.bind(this)}
+                                  >
+                                    Save
+                                  </button>
                                 </div>
                                 <div className="search-names">
                                   <div className="names-title">
@@ -1835,81 +1890,32 @@ class MyTicketList extends Component {
                                     <p className="mar-comp">Action</p>
                                   </div>
                                   <ul>
-                                    <li>
-                                      <p>Open tickets with high priority</p>
-                                      <div>
-                                        <a href={Demo.BLANK_LINK}>APPLY</a>
-                                        <a
-                                          href={Demo.BLANK_LINK}
-                                          className="m-0"
-                                        >
-                                          <img
-                                            src={DelSearch}
-                                            alt="del-search"
-                                          />
-                                        </a>
-                                      </div>
-                                    </li>
-                                    <li>
-                                      <p>Open tickets with high priority</p>
-                                      <div>
-                                        <a href={Demo.BLANK_LINK}>APPLY</a>
-                                        <a
-                                          href={Demo.BLANK_LINK}
-                                          className="m-0"
-                                        >
-                                          <img
-                                            src={DelSearch}
-                                            alt="del-search"
-                                          />
-                                        </a>
-                                      </div>
-                                    </li>
-                                    <li>
-                                      <p>Open tickets with high priority</p>
-                                      <div>
-                                        <a href={Demo.BLANK_LINK}>APPLY</a>
-                                        <a
-                                          href={Demo.BLANK_LINK}
-                                          className="m-0"
-                                        >
-                                          <img
-                                            src={DelSearch}
-                                            alt="del-search"
-                                          />
-                                        </a>
-                                      </div>
-                                    </li>
-                                    <li>
-                                      <p>Open tickets with high priority</p>
-                                      <div>
-                                        <a href={Demo.BLANK_LINK}>APPLY</a>
-                                        <a
-                                          href={Demo.BLANK_LINK}
-                                          className="m-0"
-                                        >
-                                          <img
-                                            src={DelSearch}
-                                            alt="del-search"
-                                          />
-                                        </a>
-                                      </div>
-                                    </li>
-                                    <li>
-                                      <p>Open tickets with high priority</p>
-                                      <div>
-                                        <a href={Demo.BLANK_LINK}>APPLY</a>
-                                        <a
-                                          href={Demo.BLANK_LINK}
-                                          className="m-0"
-                                        >
-                                          <img
-                                            src={DelSearch}
-                                            alt="del-search"
-                                          />
-                                        </a>
-                                      </div>
-                                    </li>
+                                    {/* <li> */}
+                                      {this.state.SearchListData !== null &&
+                                        this.state.SearchListData.map(
+                                          (item, i) => (
+                                            <li>
+                                              <label
+                                                key={i}
+                                                value={item.searchParamID}
+                                              >
+                                                {item.searchName}
+                                              </label>
+                                              <div>
+                                                <a href={Demo.BLANK_LINK}>
+                                                  APPLY
+                                                </a>
+                                                <img
+                                                  src={DelSearch}
+                                                  alt="del-search"
+                                                  className="cr-pnt"
+                                                />
+                                              </div>
+                                            </li>
+                                          )
+                                        )}
+                                     
+                                    {/* </li> */}
                                   </ul>
                                 </div>
                               </Modal>
@@ -1932,6 +1938,7 @@ class MyTicketList extends Component {
                                           showMonthDropdown
                                           showYearDropdown
                                           dateFormat="dd/MM/yyyy"
+                                          value={this.state.ByDateCreatDate}
                                           // className="form-control"
                                         />
                                       </div>
@@ -1945,6 +1952,8 @@ class MyTicketList extends Component {
                                           showMonthDropdown
                                           showYearDropdown
                                           dateFormat="dd/MM/yyyy"
+                                          value={this.state.ByDateSelectDate}
+                                          name="ByDateSelectDate"
                                           // className="form-control"
                                         />
                                       </div>
@@ -2356,9 +2365,7 @@ class MyTicketList extends Component {
                                               placeholder="First Name"
                                               name="assignFirstName"
                                               value={this.state.assignFirstName}
-                                              onChange={
-                                                this.handelAssignOnchange
-                                              }
+                                              onChange={this.handelOnchangeData}
                                             />
                                             <input
                                               type="text"
@@ -2366,9 +2373,7 @@ class MyTicketList extends Component {
                                               placeholder="Last Name"
                                               name="assignLastName"
                                               value={this.state.assignLastName}
-                                              onChange={
-                                                this.handelAssignOnchange
-                                              }
+                                              onChange={this.handelOnchangeData}
                                             />
                                             <input
                                               type="text"
@@ -2376,9 +2381,7 @@ class MyTicketList extends Component {
                                               placeholder="Email"
                                               name="assignEmail"
                                               value={this.state.assignEmail}
-                                              onChange={
-                                                this.handelAssignOnchange
-                                              }
+                                              onChange={this.handelOnchangeData}
                                             />
                                             <div className="txt-btmSpace">
                                               <select
@@ -2499,13 +2502,10 @@ class MyTicketList extends Component {
                                           className="no-bg"
                                           type="text"
                                           placeholder="Customer Mobile No"
-                                          value={
-                                            this.state
-                                              .selectedMobileNoByCustType
-                                          }
-                                          onChange={
-                                            this.handleMobileNoByCustType
-                                          }
+                                          name="MobileNoByCustType"
+                                          value={this.state.MobileNoByCustType}
+                                          onChange={this.handelOnchangeData}
+                                          maxLength={10}
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -2513,12 +2513,9 @@ class MyTicketList extends Component {
                                           type="text"
                                           className="no-bg"
                                           placeholder="Customer Email ID"
-                                          value={
-                                            this.state.selectedEmailIdByCustType
-                                          }
-                                          onChange={
-                                            this.handleEmailIdByCustType
-                                          }
+                                          name="EmailIdByCustType"
+                                          value={this.state.EmailIdByCustType}
+                                          onChange={this.handelOnchangeData}
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -2526,13 +2523,9 @@ class MyTicketList extends Component {
                                           type="text"
                                           className="no-bg"
                                           placeholder="Ticket ID"
-                                          value={
-                                            this.state
-                                              .selectedTicketIdByCustType
-                                          }
-                                          onChange={
-                                            this.handleTicketIdByCustType
-                                          }
+                                          name="TicketIdByCustType"
+                                          value={this.state.TicketIdByCustType}
+                                          onChange={this.handelOnchangeData}
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -2705,9 +2698,6 @@ class MyTicketList extends Component {
                                         </div>
                                       </div>
                                       <div className="col-md-3 col-sm-6">
-                                        {/* <select>
-                                          <option>Ticket action Type</option>
-                                        </select> */}
                                         <div className="normal-dropdown">
                                           <Select
                                             getOptionLabel={option =>
@@ -2916,13 +2906,14 @@ class MyTicketList extends Component {
                                       <div className="col-md-3 col-sm-6 allspc">
                                         <DatePicker
                                           selected={this.state.ByAllCreateDate}
-                                          onChange={this.handleAllCreateDate.bind(
-                                            this
-                                          )}
                                           placeholderText="Creation Date"
                                           showMonthDropdown
                                           showYearDropdown
                                           dateFormat="dd/MM/yyyy"
+                                          value={this.state.ByAllCreateDate}
+                                          onChange={this.handleAllCreateDate.bind(
+                                            this
+                                          )}
                                           // className="form-control"
                                         />
                                       </div>
@@ -2953,8 +2944,9 @@ class MyTicketList extends Component {
                                           className="no-bg"
                                           type="text"
                                           placeholder="Claim ID"
-                                          value={this.state.selectedClaimIdAll}
-                                          onChange={this.handleClaimIdAll}
+                                          value={this.state.ClaimIdByAll}
+                                          name="ClaimIdByAll"
+                                          onChange={this.handelOnchangeData}
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -2962,8 +2954,9 @@ class MyTicketList extends Component {
                                           className="no-bg"
                                           type="text"
                                           placeholder="Email"
-                                          value={this.state.selectedEmailAll}
-                                          onChange={this.handleEmailAll}
+                                          value={this.state.EmailByAll}
+                                          name="EmailByAll"
+                                          onChange={this.handelOnchangeData}
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6 allspc">
@@ -2976,21 +2969,18 @@ class MyTicketList extends Component {
                                           showMonthDropdown
                                           showYearDropdown
                                           dateFormat="dd/MM/yyyy"
+                                          value={this.state.ByAllLastDate}
                                           // className="form-control"
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6">
-                                        {/* <select>
-                                          <option>Ticket Id/Title</option>
-                                        </select> */}
                                         <input
                                           className="no-bg"
                                           type="text"
                                           placeholder="Ticket Id/Title"
-                                          value={
-                                            this.state.selectedTicketIdTitleAll
-                                          }
-                                          onChange={this.handleTicketIdTitleAll}
+                                          value={this.state.TicketIdTitleByAll}
+                                          name="TicketIdTitleByAll"
+                                          onChange={this.handelOnchangeData}
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -2999,12 +2989,10 @@ class MyTicketList extends Component {
                                           type="text"
                                           placeholder="Invoice Number/Sub Order No"
                                           value={
-                                            this.state
-                                              .selectedInvoiceSubOrderAll
+                                            this.state.InvoiceSubOrderByAll
                                           }
-                                          onChange={
-                                            this.handleInvoiceSubOrderAll
-                                          }
+                                          name="InvoiceSubOrderByAll"
+                                          onChange={this.handelOnchangeData}
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -3012,8 +3000,9 @@ class MyTicketList extends Component {
                                           className="no-bg"
                                           type="text"
                                           placeholder="Mobile"
-                                          value={this.state.selectedMobileAll}
-                                          onChange={this.handleMobileAll}
+                                          value={this.state.MobileByAll}
+                                          name="MobileByAll"
+                                          onChange={this.handelOnchangeData}
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6 allspc">
@@ -3060,14 +3049,12 @@ class MyTicketList extends Component {
                                           className="no-bg"
                                           type="text"
                                           placeholder="Item ID"
-                                          value={this.state.selectedItemIdAll}
-                                          onChange={this.handleItemIdAll}
+                                          value={this.state.ItemIdByAll}
+                                          name="ItemIdByAll"
+                                          onChange={this.handelOnchangeData}
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6">
-                                        {/* <select>
-                                          <option>Assigned To</option>
-                                        </select> */}
                                         <input
                                           className="no-bg"
                                           type="text"
@@ -3610,6 +3597,7 @@ class MyTicketList extends Component {
             </div>
           </div>
         </div>
+        <NotificationContainer />
       </Fragment>
     );
   }
