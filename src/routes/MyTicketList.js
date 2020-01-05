@@ -542,9 +542,7 @@ class MyTicketList extends Component {
         NotificationManager.success("Save Search parameter successfully.");
         self.handleGetSaveSearchList()
       }
-      // self.setState({
-      //   SearchAssignData: Data,
-      // });
+      
     });
   }
   handleGetSaveSearchList() {
@@ -558,6 +556,65 @@ class MyTicketList extends Component {
       debugger;
       let SearchListData = res.data.responseData;
       self.setState({ SearchListData: SearchListData });
+    });
+  }
+  hadleSearchDeleteData(searchDeletId){
+    debugger
+    let self = this;
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Ticketing/deletesavedsearch",
+      headers: authHeader(),
+      params: {
+        SearchParamID: searchDeletId
+      }
+    }).then(function(res) {
+      debugger;
+      let Msg = res.data.message;
+      if(Msg === "Success"){
+        NotificationManager.success("Saved search data deleted successfully.");
+        self.handleGetSaveSearchList()
+      }
+    });
+  }
+  ViewSearchData(){
+    debugger
+    let self=this;
+    var paramData={
+      ByDate:this.state.byDateFlag,
+      creationDate:this.state.ByDateCreatDate,
+      lastUpdatedDate:this.state.ByDateSelectDate,
+      SLADue:this.state.selectedSlaDueByDate,
+      ticketStatus:this.state.selectedTicketStatusByDate,
+      ByCustomerType:this.state.byCustomerTypeFlag,
+      customerMob:this.state.MobileNoByCustType,
+      customerEmail:this.state.EmailIdByCustType,
+      TicketID:this.state.TicketIdByCustType,
+      ticketStatus:this.state.selectedTicketStatusByCustomer,
+      ByTicketType:this.state.byTicketTypeFlag,
+      Priority:this.state.selectedPriority,
+      ticketStatus:this.state.selectedTicketStatusByTicket,
+      chanelOfPurchase:this.state.selectedChannelOfPurchase,
+      ticketActionType:this.state.selectedTicketActionType,
+      ByCategory:this.state.byCategoryFlag,
+      Category:this.state.selectedCategory,
+      subCategory:this.state.selectedSubCategory,
+      issueType:this.state.selectedIssueType,
+      ticketStatus:this.state.selectedTicketStatusByCategory,
+      // byAll:this.state.allFlag,
+
+    }
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Search/GetTicketSearchResult",
+      headers: authHeader(),
+      data: {
+        searchparams:paramData
+      }
+    }).then(function(res) {
+      debugger;
+      // let Msg = res.data.message;
     });
   }
 
@@ -575,11 +632,6 @@ class MyTicketList extends Component {
     let functionValue = e.currentTarget.value;
     this.setState({ selectedFunction: functionValue });
 
-    // setTimeout(() => {
-    //   if (this.state.selectedFunction) {
-    //     this.handleGetAssignToList();
-    //   }
-    // }, 1);
   };
   setDesignationValue = e => {
     let designationValue = e.currentTarget.value;
@@ -1853,7 +1905,7 @@ class MyTicketList extends Component {
                                   <button onClick={this.onOpenModal}>
                                     Save Search
                                   </button>
-                                  <button className="btn-inv">
+                                  <button type="button" className="btn-inv" onClick={this.ViewSearchData.bind(this)}>
                                     View Search
                                   </button>
                                 </div>
@@ -1909,6 +1961,7 @@ class MyTicketList extends Component {
                                                   src={DelSearch}
                                                   alt="del-search"
                                                   className="cr-pnt"
+                                                  onClick={this.hadleSearchDeleteData.bind(this,item.searchParamID)}
                                                 />
                                               </div>
                                             </li>
