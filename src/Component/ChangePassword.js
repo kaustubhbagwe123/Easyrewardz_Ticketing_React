@@ -103,6 +103,7 @@ export class ChangePassword extends Component {
                     placeholder="Enter New Password"
                     className="program-code-textbox"
                     onChange={this.handlechange}
+                    maxLength="25"
                   />
                   {this.validator.message(
                     "New Password",
@@ -122,6 +123,7 @@ export class ChangePassword extends Component {
                     placeholder="Enter Confirm Password"
                     className="program-code-textbox"
                     onChange={this.handlechange}
+                    maxLength="25"
                   />
                   {this.validator.message(
                     "Confirm Password",

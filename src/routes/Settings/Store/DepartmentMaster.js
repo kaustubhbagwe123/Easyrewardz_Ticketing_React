@@ -174,7 +174,7 @@ class DepartmentMaster extends Component {
           </div>
           <div className="div-cntrdept">
             <label>Function</label>
-            <input type="text" placeholder="Attendance" />
+            <input type="text" placeholder="Attendance" maxLength="25" />
           </div>
           <div className="div-cntrdept">
             <label>Status</label>
@@ -298,7 +298,7 @@ class DepartmentMaster extends Component {
                   </div>
                   <div className="div-cntr">
                     <label>Function</label>
-                    <input type="text" placeholder="Attendance" />
+                    <input type="text" placeholder="Attendance" maxLength="25" />
                   </div>
                   <div className="div-cntr">
                     <label>Status</label>

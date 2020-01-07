@@ -227,6 +227,7 @@ class StoreCRMRole extends Component {
             type="text"
             className="txt-edit-popover"
             placeholder="Enter Role Name"
+            maxLength="25"
           />
         </div>
 
@@ -384,6 +385,7 @@ class StoreCRMRole extends Component {
                         type="text"
                         className="txt-1"
                         placeholder="Enter Role Name"
+                        maxLength="25"
                       />
                     </div>
                     <div className="crm-margin-div crm-padding-div">

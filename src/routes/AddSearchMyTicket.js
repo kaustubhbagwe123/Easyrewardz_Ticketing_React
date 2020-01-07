@@ -20,6 +20,7 @@ import {
 } from "react-notifications";
 import { authHeader } from "../helpers/authHeader";
 // import { authHeader } from "../helpers/authHeader";
+import {CopyToClipboard} from 'react-copy-to-clipboard';
 
 class AddSearchMyTicket extends Component {
   constructor(props) {
@@ -38,7 +39,9 @@ class AddSearchMyTicket extends Component {
       SrchEmailPhone: "",
       message: "",
       createdBy: 6,
-      SearchData: []
+      SearchData: [],
+      value: '',
+      copied: false,
     };
     this.handleAddCustomerOpen = this.handleAddCustomerOpen.bind(this);
     this.handleAddCustomerClose = this.handleAddCustomerClose.bind(this);
@@ -97,6 +100,7 @@ class AddSearchMyTicket extends Component {
         NotificationManager.error(res.data.message);
       }
     });
+ 
   }
   CheckValidCustomerEmailPhoneNo() {
     debugger;
@@ -195,8 +199,17 @@ class AddSearchMyTicket extends Component {
           />
           <label className="label-addsearch">Source</label>
           <img src={HeadphoneImg} alt="HeadphoneImg" className="headphonered" />
-          <label className="mobile-noAddsearch">+91-9873470074</label>
-          <img src={PasteImg} alt="PasteImage" className="paste-addSearch" />
+         
+                  <label className="mobile-noAddsearch">+91-9873470074</label>
+           
+          <CopyToClipboard text={"Hello"} onCopy={() => this.setState({ copied: true })}>
+              <img src={PasteImg} alt="PasteImage" className="paste-addSearch" />  
+          </CopyToClipboard>
+          {this.state.copied ? (
+              <span className="ml-2" style={{ color: "red" }} >
+                   Copied.
+              </span>
+            ) : null}
         </div>
         <div className="addsearch-div">
           <div className="card">
@@ -216,7 +229,8 @@ class AddSearchMyTicket extends Component {
                 name="SrchEmailPhone"
                 value={this.state.SrchEmailPhone}
                 onChange={this.addCustomerData}
-              />
+                maxLength="100"
+              />   
               <div className="seacrh-img-addsearch">
                 <img
                   src={SearchBlueImg}
@@ -225,6 +239,7 @@ class AddSearchMyTicket extends Component {
                   onClick={this.handleSearchCustomer}
                 />
               </div>
+             
               {this.state.message === "Record Not Found" ? (
                 <div>
                   <div className="div-notFoundaddseacr">
