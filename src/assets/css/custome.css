@@ -3128,6 +3128,9 @@ table tr th:last-child {
   background: url("./../Images//table-arr.png") no-repeat right 20px center;
   background-size: 13px;
 }
+.common-adv-padd {
+  padding: 20px 0;
+}
 /* my ticket list ends */
 
 /* ticket system starts */

@@ -553,12 +553,20 @@ class TicketSystem extends Component {
       TicketTemplateID: this.state.selectTicketTemplateId,
       IsWantToVisitedStore: want,
       IsAlreadyVisitedStore: Already,
+<<<<<<< HEAD
       TicketSourceID: 1,
       ticketingMailerQues: mailData
     };
     formData.append("ticketingDetails", JSON.stringify(paramData));
     formData.append("Form", this.state.file);
 
+=======
+      // TicketTemplateID:000000,
+      TicketSourceID: 1
+    };
+    formData.append("ticketingDetails", JSON.stringify(paramData));
+    formData.append("Form", this.state.file[0]);
+>>>>>>> ddeb6c8b57afc047da95b0dd537e328e54ead5b7
     axios({
       method: "post",
       url: config.apiUrl + "/Ticketing/createTicket",
@@ -1281,7 +1289,7 @@ class TicketSystem extends Component {
                           />
                           {this.validator.message(
                             "Full Name",
-                            this.state.customerName,
+                            this.state.CustData.customername,
                             "required|alpha_space"
                           )}
                         </div>
@@ -1298,7 +1306,7 @@ class TicketSystem extends Component {
                           />
                           {this.validator.message(
                             "Mobile Number",
-                            this.state.customerPhoneNumber,
+                            this.state.CustData.customerPhone,
                             "required|integer|size:10"
                           )}
                         </div>
@@ -1316,7 +1324,7 @@ class TicketSystem extends Component {
                           />
                           {this.validator.message(
                             "Email Id",
-                            this.state.customerEmailId,
+                            this.state.CustData.custEmailId,
                             "required|email"
                           )}
                         </div>
@@ -1345,7 +1353,7 @@ class TicketSystem extends Component {
                           />
                           {this.validator.message(
                             "Date of Birth",
-                            this.state.dob,
+                            this.state.CustData.editDOB,
                             "required"
                           )}
                         </div>
@@ -1364,7 +1372,7 @@ class TicketSystem extends Component {
                           />
                           {this.validator.message(
                             "Alternate Number",
-                            this.state.altNumber,
+                            this.state.CustData.altNo,
                             "integer|size:10"
                           )}
                         </div>
@@ -1379,7 +1387,7 @@ class TicketSystem extends Component {
                           />
                           {this.validator.message(
                             "Alternate Email Id",
-                            this.state.altEmailID,
+                            this.state.CustData.altEmail,
                             "email"
                           )}
                         </div>
