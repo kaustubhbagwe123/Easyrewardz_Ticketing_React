@@ -1,12 +1,12 @@
 function ScheduleDateDropDown(){
     return[
       {scheduleID:'100',scheduleName:'Select'},
-      {scheduleID:'111',scheduleName:'Daily'},
-      {scheduleID:'222',scheduleName:'Weekly'},
-      {scheduleID:'333',scheduleName:'Same day each month'},
-      {scheduleID:'444',scheduleName:'Same week each month'},
-      {scheduleID:'555',scheduleName:'Same day each year'},
-      {scheduleID:'666',scheduleName:'Same week each year'},
+      {scheduleID:'230',scheduleName:'Daily'},
+      {scheduleID:'231',scheduleName:'Weekly'},
+      {scheduleID:'232',scheduleName:'Same day each month'},
+      {scheduleID:'233',scheduleName:'Same week each month'},
+      {scheduleID:'234',scheduleName:'Same day each year'},
+      {scheduleID:'235',scheduleName:'Same week each year'},
     ]
   }
   export default ScheduleDateDropDown;

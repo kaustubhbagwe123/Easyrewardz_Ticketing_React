@@ -3131,6 +3131,35 @@ table tr th:last-child {
 .common-adv-padd {
   padding: 20px 0;
 }
+.schedule-multi {
+  padding: 0;
+  border-radius: 5px;
+  margin-top: 15px;
+}
+.schedule-multi .css-yk16xz-control, .schedule-multi .css-1pahdxg-control {
+  min-height: 43px;
+  background: #ecf2f4;
+}
+.schedule-multi .css-1hwfws3 {
+  padding-right: 25px;
+  padding-left: 11px;
+  background-position: right 4px center;
+}
+.schedule-multi .css-1n7v3ny-option, .schedule-multi .css-yt9ioa-option, .schedule-multi .css-9gakcf-option {
+  padding: 6px 12px;
+}
+.schedule-multi .css-yt9ioa-option, .schedule-multi .css-1uccc91-singleValue {
+  color: #495057;
+}
+.schedule-multi .css-1ml51p6-MenuList {
+  font-weight: 400;
+}
+.schedule-multi .css-1wa3eu0-placeholder {
+  color: #9b9b9b;
+}
+.schedule-width {
+  max-width: 283px;
+}
 /* my ticket list ends */
 
 /* ticket system starts */
