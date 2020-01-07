@@ -45,6 +45,8 @@ class TicketSystem extends Component {
       showAddNote: false,
       SubmitBtnReopn: false,
       EditCustomer: false,
+      mailFiled: {},
+      mailData: [],
       TicketTitleData: [],
       CkEditorTemplateData: [],
       CkEditorTemplateDetails: [],
@@ -77,6 +79,7 @@ class TicketSystem extends Component {
       selectedTicketPriority: 0,
       customerAttachOrder: 0,
       customerStoreStatus: 0,
+      selectTicketTemplateId: 0,
       selectedTicketActionType: "200",
       selectedChannelOfPurchase: 0,
       selectedTemplateID: 0,
@@ -88,7 +91,10 @@ class TicketSystem extends Component {
       tempName: "",
       details: {},
       editDOB: "",
+      userCC: "",
+      userBCC: "",
       selectedFile: "",
+      saveAsDraft:"SaveAsDraft",
       copied: false,
       custVisit: 0,
       AlreadycustVisit: 0,
@@ -227,6 +233,17 @@ class TicketSystem extends Component {
   handleTicketChange(e) {
     this.setState({ [e.currentTarget.name]: e.currentTarget.value });
   }
+  handleMailOnChange(filed, e) {
+    debugger;
+    var mailFiled = this.state.mailFiled;
+    mailFiled[filed] = e.target.value;
+
+    if (filed === "userCC") {
+      this.setState({ mailFiled });
+    } else {
+      this.setState({ mailFiled });
+    }
+  }
   handleUpdateCustomer() {
     debugger;
     let self = this;
@@ -311,7 +328,8 @@ class TicketSystem extends Component {
       let CkEditorTemplateDetails = res.data.responseData;
       self.setState({
         CkEditorTemplateDetails: CkEditorTemplateDetails,
-        tempName: tempName
+        tempName: tempName,
+        selectTicketTemplateId: tempId
       });
     });
   }
@@ -478,13 +496,44 @@ class TicketSystem extends Component {
   handleTicketSuggestion = ticketSuggestion => {
     this.setState({ ticketSuggestion });
   };
+  handleFileUpload(e) {
+    debugger;
+    // var file = [];
+    // file = e.target.files;
+    // for (let i = 0; i < file.length; i++) {
+    //   // formData.append('file', fileData[i])
+    //   this.state.file.push(file[i]);
+    //   this.setState({
+    //     file: file
+    //   });
+    // }
+    // console.log(this.state.file, "fileUpload");
 
-  handleCREATE_TICKET() {
+    // var file = [];
+    // file = this.state.file;
+    // this.setState({
+    //   file
+    // });
+    this.state.file.push(e.target.files[0]);
+  }
+
+  handleCREATE_TICKET(saveAsDraft) {
     debugger;
     let self = this;
+    var actionId=this.state.selectedTicketActionType
+    var mailData = [];
+    mailData = this.state.mailData;
+    this.state.mailFiled["ToEmail"] = this.state.customerData.customerEmailId;
+    this.state.mailFiled["TikcketMailSubject"] = "Demo Subject";
+    this.state.mailFiled["TicketMailBody"] = this.state.tempName;
+    this.state.mailFiled["PriorityID"] = this.state.selectedTicketPriority;
+    mailData.push(this.state.mailFiled);
     var want = this.state.custVisit;
     var Already = this.state.AlreadycustVisit;
+    // var uploadFiles = [];
+    // uploadFiles = this.state.file;
     var formData = new FormData();
+
     var paramData = {
       TicketTitle: this.state.ticketSuggestion.ticketTitle,
       Ticketdescription: this.state.ticketDetails,
@@ -497,14 +546,15 @@ class TicketSystem extends Component {
       ChannelOfPurchaseID: this.state.selectedChannelOfPurchase,
       Ticketnotes: this.state.ticketNote,
       taskMasters: this.state.taskMaster,
-      StatusID: this.state.selectedTicketActionType,
+      StatusID: saveAsDraft,
       TicketActionID: this.state.selectedTicketActionType,
       IsInstantEscalateToHighLevel: this.state.escalationLevel,
       IsWantToAttachOrder: this.state.customerAttachOrder,
+      TicketTemplateID: this.state.selectTicketTemplateId,
       IsWantToVisitedStore: want,
       IsAlreadyVisitedStore: Already,
-      // TicketTemplateID:000000,
-      TicketSourceID: 1
+      TicketSourceID: 1,
+      ticketingMailerQues: mailData
     };
     formData.append("ticketingDetails", JSON.stringify(paramData));
     formData.append("Form", this.state.file[0]);
@@ -522,45 +572,6 @@ class TicketSystem extends Component {
       // }
     });
   }
-
-  // onDocumentChangeHandler = event => {
-  //   this.setState({
-  //     selectedFile: event.target.files[0],
-  //     selectedFileName: event.target.files[0].name
-  //   });
-  // };
-  // onDocumentConsignee = event => {
-  //   this.setState({
-  //     consigneeFileName: event.target.files[0].name
-  //   });
-  // };
-  // handleSendData() {
-  //   const docData = new FormData();
-  //   var docName = document.getElementById("docName").value;
-  //   var docDesc = document.getElementById("docDesc").value;
-  //   if (docName === "") {
-  //     alert("Please enter document name");
-  //     return false;
-  //   }
-  //   if (docDesc === "") {
-  //     alert("Please enter document description");
-  //     return false;
-  //   }
-  //   debugger;
-  //   //docData.append();
-  //   docData.append("FileData", this.state.selectedFile);
-  //   // docData.append()
-
-  //   axios({
-  //     method: "post",
-  //     headers: authHeader(),
-  //     url: config.apiUrl + "/Ticketing/createTicket",
-  //     data: docData,
-  //   }).then(function(response) {
-  //     debugger;
-  //     alert(response.data[0].Result);
-  //   });
-  // }
 
   setBrandValue = e => {
     let brandValue = e.currentTarget.value;
@@ -634,20 +645,8 @@ class TicketSystem extends Component {
     this.setState({ selectedChannelOfPurchase: channelOfPurchaseValue });
   };
 
-  handleFileUpload(e) {
-    this.state.file.push(e.target.files[0]);
-  }
-  // handleGetTemplateData(e){
-  //   debugger;
-  //   let getTemplatevalue=e.currentTarget.value;
-  //   this.setState({
-  //     selectedTemplateID:getTemplatevalue
-  //   })
-  // }
-
   render() {
     var CustomerId = this.state.customerDetails.customerId;
-    // var DOB = moment(this.state.CustData.editDOB).format("DD/MM/YYYY");
     var CustNumber = this.state.customerData.customerPhoneNumber;
     return (
       <div style={{ backgroundColor: "#f5f8f9", paddingBottom: "2px" }}>
@@ -676,7 +675,13 @@ class TicketSystem extends Component {
                 </td>
 
                 <td className="tdtextnew" style={{ padding: "5px" }}>
-                  <label className="save-as-a-draft">SAVE AS DRAFT</label>
+                  <button
+                    type="button"
+                    className="save-as-a-draft"
+                    onClick={this.handleCREATE_TICKET.bind(this,"100")}
+                  >
+                    SAVE AS DRAFT
+                  </button>
                   <button
                     className="rectanglecreateticket create-ticket"
                     onClick={this.handleSubmitReopnModalOpen.bind(this)}
@@ -928,7 +933,6 @@ class TicketSystem extends Component {
                       className="dropdown-toggle my-tic-email1"
                       type="button"
                       data-toggle="dropdown"
-                      // onChange={this.handleGetTemplateData.bind(this)}
                     >
                       <FontAwesomeIcon icon={faCalculator} />
                       {this.state.tempName === ""
@@ -1013,7 +1017,9 @@ class TicketSystem extends Component {
                       <div className="col-md-12 colladrow">
                         <ul className="m-l-30">
                           <li className="diwamargin">
-                            <label>To: diwarkar@gmail.com</label>
+                            <label>
+                              To: {this.state.customerData.customerEmailId}
+                            </label>
                           </li>
                           <li>
                             <div className="filter-checkbox">
@@ -1027,7 +1033,7 @@ class TicketSystem extends Component {
                                 htmlFor="fil-open"
                                 style={{ paddingLeft: "25px" }}
                               >
-                                <span>Inform Store Note</span>
+                                <span>Inform Store</span>
                               </label>
                             </div>
                           </li>
@@ -1039,6 +1045,7 @@ class TicketSystem extends Component {
                                 type="file"
                                 name="file"
                                 onChange={this.handleFileUpload.bind(this)}
+                                multiple
                               />
                               <label
                                 htmlFor="file-upload"
@@ -1053,7 +1060,9 @@ class TicketSystem extends Component {
                                 />
                               </label>
                             </span>
-                            <label style={{ color: "#2561a8" }}>3 files</label>
+                            <label style={{ color: "#2561a8" }}>
+                              {this.state.file.length} files
+                            </label>
                           </li>
                           <li>
                             <label className="diwamargin">
@@ -1061,6 +1070,12 @@ class TicketSystem extends Component {
                                 type="text"
                                 className="CCdi1"
                                 placeholder="CC: diwarkar@gmail.com"
+                                name="userCC"
+                                value={this.state.mailFiled.userCC}
+                                onChange={this.handleMailOnChange.bind(
+                                  this,
+                                  "userCC"
+                                )}
                               />
 
                               <span className="one">+1</span>
@@ -1072,6 +1087,12 @@ class TicketSystem extends Component {
                                 type="text"
                                 className="CCdi1"
                                 placeholder="BCC: diwarkar@gmail.com"
+                                name="userBCC"
+                                value={this.state.mailFiled.userBCC}
+                                onChange={this.handleMailOnChange.bind(
+                                  this,
+                                  "userBCC"
+                                )}
                               />
                               <span className="one">+1</span>
                             </label>
