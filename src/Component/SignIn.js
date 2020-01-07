@@ -114,6 +114,7 @@ class SingIn extends Component {
                     onChange={this.hanleChange}
                     value={this.state.emailId}
                     autoComplete="off"
+                    maxLength="100"
                   />
                   {this.validator.message(
                     "Email Id",
@@ -130,6 +131,7 @@ class SingIn extends Component {
                     onChange={this.hanleChange}
                     value={this.state.password}
                     autoComplete="off"
+                    maxLength="25"
                   />
                   {this.validator.message(
                     "Password",

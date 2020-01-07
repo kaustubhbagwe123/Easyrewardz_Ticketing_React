@@ -310,6 +310,7 @@ class EditDetails extends Component {
                             type="text"
                             className="txt-1"
                             placeholder="Support@looks32244.com"
+                            maxLength="100"
                           />
                         </div>
                       </div>

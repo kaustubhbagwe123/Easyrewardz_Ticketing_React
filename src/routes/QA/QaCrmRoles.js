@@ -119,7 +119,7 @@ class QaCrmRoles extends Component {
           var ids = row.original["id"];
           return (
             <div>
-              <Popover content={QaCrmDelete} placement="bottom">
+              <Popover content={QaCrmDelete} placement="bottom" trigger="click">
                 <img
                   src={DeleteIcon}
                   alt="del-icon"
@@ -127,7 +127,7 @@ class QaCrmRoles extends Component {
                   className="downloadaction"
                 />
               </Popover>
-              <Popover content={QaCrmEdit} placement="bottom">
+              <Popover content={QaCrmEdit} placement="bottom" trigger="click">
                 <button className="react-tabel-button" id={ids}>
                   <label className="Table-action-edit-button-text">EDIT</label>
                 </button>
@@ -210,6 +210,7 @@ class QaCrmRoles extends Component {
           type="text"
           className="txt-edit-popover"
           placeholder="Enter Role Name"
+          maxLength="25"
         />
       </div>
 
@@ -358,6 +359,7 @@ class QaCrmRoles extends Component {
                         type="text"
                         className="txt-1"
                         placeholder="Enter Role Name"
+                        maxLength="25"
                       />
                     </div>
                     <div className="crm-margin-div crm-padding-div">

@@ -6,6 +6,7 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MinusCircle from "./../../assets/Images/minuscircle.png";
 import PlusCircle from "./../../assets/Images/pluscircle.png";
+import { Popover } from "antd";
 
 class ChatRules extends Component {
   render() {
@@ -192,14 +193,59 @@ class ChatRules extends Component {
       {
         Header: <span>Actions</span>,
         accessor: "actiondept",
-        Cell: row => (
-          <button className="react-tabel-button">
-            <label className="Table-action-edit-button-text">EDIT</label>
-          </button>
-        )
+        // Cell: row => (
+        //   <button className="react-tabel-button">
+        //     <label className="Table-action-edit-button-text">EDIT</label>
+        //   </button>
+        // )
+        Cell: row => {
+          var ids = row.original["id"];
+          return (
+            <div>
+
+              <Popover content={ChatEdit} placement="bottom" trigger="click" >
+                <button className="react-tabel-button" id={ids}>
+                  <label className="Table-action-edit-button-text">EDIT</label>
+                </button>
+              </Popover>
+            </div>
+          );
+        }
       }
     ];
+    const ChatEdit = (
 
+      <div className="edtpadding">
+      <div className="">
+        <label className="popover-header-text">EDIT RULE</label>
+      </div>
+      <div className="pop-over-div">
+        <label className="edit-label-1">Rule Code</label>
+        <input
+          type="text"
+          className="txt-edit-popover"
+          placeholder="Enter Rule Code"
+          maxLength="10"
+        />
+      </div>
+      <div className="pop-over-div">
+        <label className="edit-label-1">Rule Name</label>
+        <input
+          type="text"
+          className="txt-edit-popover"
+          placeholder="Enter Rule Name"
+          maxLength="25"
+        />
+      </div>
+      <br />
+      <div>
+        <label className="pop-over-cancle">CANCEL</label>
+        <button className="pop-over-button">
+          <label className="pop-over-btnsave-text">SAVE</label>
+        </button>
+      </div>
+    </div>
+  );
     return (
       <Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
@@ -278,6 +324,7 @@ class ChatRules extends Component {
                         type="text"
                         className="txt-1"
                         placeholder="Enter Rule Code"
+                        maxLength="10"
                       />
                     </div>
                     <div className="divSpace">
@@ -287,6 +334,7 @@ class ChatRules extends Component {
                           type="text"
                           className="txt-1"
                           placeholder="Enter Rule Name"
+                          maxLength="25"
                         />
                       </div>
                     </div>

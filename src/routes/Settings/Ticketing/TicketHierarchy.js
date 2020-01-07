@@ -205,6 +205,7 @@ class TicketHierarchy extends Component {
             type="text"
             className="txt-edit-popover"
             placeholder="Enter Designation Name"
+            maxLength="25"
           />
         </div>
         <div className="pop-over-div">
@@ -311,6 +312,7 @@ class TicketHierarchy extends Component {
                         type="text"
                         className="txt-1"
                         placeholder="Enter Designation Name"
+                        maxLength="25"
                       />
                     </div>
                     <div className="divSpace">
