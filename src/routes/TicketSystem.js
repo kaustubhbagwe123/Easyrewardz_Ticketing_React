@@ -553,20 +553,11 @@ class TicketSystem extends Component {
       TicketTemplateID: this.state.selectTicketTemplateId,
       IsWantToVisitedStore: want,
       IsAlreadyVisitedStore: Already,
-<<<<<<< HEAD
       TicketSourceID: 1,
       ticketingMailerQues: mailData
     };
     formData.append("ticketingDetails", JSON.stringify(paramData));
-    formData.append("Form", this.state.file);
-
-=======
-      // TicketTemplateID:000000,
-      TicketSourceID: 1
-    };
-    formData.append("ticketingDetails", JSON.stringify(paramData));
     formData.append("Form", this.state.file[0]);
->>>>>>> ddeb6c8b57afc047da95b0dd537e328e54ead5b7
     axios({
       method: "post",
       url: config.apiUrl + "/Ticketing/createTicket",

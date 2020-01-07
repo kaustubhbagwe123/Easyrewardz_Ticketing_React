@@ -54,16 +54,8 @@ class SingIn extends Component {
 
       let X_Authorized_password = encryption(password, "enc");
 
-<<<<<<< HEAD
-      // let X_Authorized_Domainname = encryption(window.location.origin, "enc");
-      let X_Authorized_Domainname = encryption("http://easyrewardz.brainvire.net", "enc");
-=======
       let X_Authorized_Domainname = encryption(window.location.origin, "enc");
-      // let X_Authorized_Domainname = encryption(
-      //   "http://easyrewardz.brainvire.net",
-      //   "enc"
-      // );
->>>>>>> ddeb6c8b57afc047da95b0dd537e328e54ead5b7
+      // let X_Authorized_Domainname = encryption("http://easyrewardz.brainvire.net", "enc");
       let ProCode = this.state.programCode;
       let X_Authorized_Programcode = ProCode.programCode;
 
