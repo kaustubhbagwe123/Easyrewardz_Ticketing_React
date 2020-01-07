@@ -1280,6 +1280,7 @@ table tr th:last-child {
   text-align: left;
   margin-right: 22px;
   cursor: pointer;
+  border: none;
 }
 
 .rectanglecreateticket {
