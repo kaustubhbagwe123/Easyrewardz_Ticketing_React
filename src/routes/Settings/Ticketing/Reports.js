@@ -292,7 +292,7 @@ class Reports extends Component {
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Customer Email Id</label>
-                      <input className="no-bg" type="text" />
+                      <input className="no-bg" type="text" maxLength="100" />
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Creation Date</label>
@@ -317,7 +317,7 @@ class Reports extends Component {
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Customer Mobile No.</label>
-                      <input className="no-bg" type="text" />
+                      <input className="no-bg" type="text" maxLength="10" />
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Last Updated Date</label>
@@ -557,7 +557,7 @@ class Reports extends Component {
                     </div>
                     <div className="col-md-4 ticketreport">
                       <label>Customer Email ID</label>
-                      <input className="no-bg" type="text" />
+                      <input className="no-bg" type="text" maxLength="100" />
                     </div>
                   </div>
 
@@ -578,7 +578,7 @@ class Reports extends Component {
                     </div>
                     <div className="col-md-4 ticketreport">
                       <label>Customer Mobile No.</label>
-                      <input className="no-bg" type="text" />
+                      <input className="no-bg" type="text" maxLength="10" />
                     </div>
                   </div>
                   <div className="row nextbutton1">

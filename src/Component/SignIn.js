@@ -54,8 +54,11 @@ class SingIn extends Component {
 
       let X_Authorized_password = encryption(password, "enc");
 
-      // let X_Authorized_Domainname = encryption(window.location.origin, "enc");
-      let X_Authorized_Domainname = encryption("http://easyrewardz.brainvire.net", "enc");
+      let X_Authorized_Domainname = encryption(window.location.origin, "enc");
+      // let X_Authorized_Domainname = encryption(
+      //   "http://easyrewardz.brainvire.net",
+      //   "enc"
+      // );
       let ProCode = this.state.programCode;
       let X_Authorized_Programcode = ProCode.programCode;
 
@@ -114,6 +117,7 @@ class SingIn extends Component {
                     onChange={this.hanleChange}
                     value={this.state.emailId}
                     autoComplete="off"
+                    maxLength="100"
                   />
                   {this.validator.message(
                     "Email Id",
@@ -130,6 +134,7 @@ class SingIn extends Component {
                     onChange={this.hanleChange}
                     value={this.state.password}
                     autoComplete="off"
+                    maxLength="25"
                   />
                   {this.validator.message(
                     "Password",

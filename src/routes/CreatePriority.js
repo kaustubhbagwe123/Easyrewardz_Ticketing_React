@@ -469,6 +469,7 @@ class CreatePriority extends Component {
                             type="text"
                             className="pop-over-text"
                             placeholder="High"
+                            maxLength="25"
                           />
                         </div>
                         <div className=" pop-over-div">
@@ -832,6 +833,7 @@ class CreatePriority extends Component {
                         type="text"
                         className="txt-1"
                         placeholder="Enter Priority Name"
+                        maxLength="25"
                       />
                     </div>
                     <div className="dropDrownSpace">

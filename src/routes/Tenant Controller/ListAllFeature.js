@@ -19,7 +19,7 @@ class ListAllFeature extends Component {
           <div className="row">
             <div className="col-md-12">
               <label className="PlanName">Feature Name</label>
-              <input type="text" className="txt-1" placeholder="Phone Trees" />
+              <input type="text" className="txt-1" placeholder="Phone Trees" maxLength="25" />
             </div>
           </div>
           <div className="row m-t-10">
@@ -88,7 +88,7 @@ class ListAllFeature extends Component {
           <div className="row">
             <div className="col-md-12">
               <label className="PlanName">Feature Name</label>
-              <input type="text" className="txt-1" placeholder="Phone Trees" />
+              <input type="text" className="txt-1" placeholder="Phone Trees" maxLength="25" />
             </div>
           </div>
           <div className="row m-t-10">

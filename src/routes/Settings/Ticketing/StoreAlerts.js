@@ -290,6 +290,7 @@ class StoreAlerts extends Component {
             type="text"
             className="txt-edit-popover"
             placeholder="Enter Alert Type"
+            maxLength="25"
           />
         </div>
         {/* <div className="pop-over-div">
@@ -388,7 +389,7 @@ class StoreAlerts extends Component {
                   <h3>Create ALERTS</h3>
                   <div className="div-cntr">
                     <label>Alert Type</label>
-                    <input type="text" placeholder="Enter alert type" />
+                    <input type="text" placeholder="Enter alert type" maxLength="25" />
                   </div>
                   <h4>Communication Mode</h4>
                   <div className="div-cntr">

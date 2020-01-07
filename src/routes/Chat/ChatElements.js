@@ -439,7 +439,7 @@ class ChatElements extends Component {
           var ids = row.original["id"];
           return (
             <div>
-              <Popover content={ChatEdit} placement="bottom">
+              <Popover content={ChatEdit} placement="bottom" trigger="click">
                 <button className="react-tabel-button" id={ids}>
                   <label className="Table-action-edit-button-text">EDIT</label>
                 </button>
@@ -450,44 +450,47 @@ class ChatElements extends Component {
       }
     ];
     const ChatEdit = (
-      <>
-        <div className="">
-          <label className="create-department">EDIT ELEMENT</label>
-          <div className="div-padding-1">
-            <label className="designation-name">Element Code</label>
-            <input
-              type="text"
-              className="txt-1"
-              placeholder="Enter Element Code"
-            />
-          </div>
-          <div className="divSpace">
-            <div className="">
-              <label className="reports-to">Element Name</label>
-              <input
-                type="text"
-                className="txt-1"
-                placeholder="Enter Element Name"
-              />
-            </div>
-          </div>
-          <div className="" style={{ marginBottom: "15px" }}>
-            <label className="reports-to">Element Icon</label>
-            <div class="custom-file">
+
+      <div className="edtpadding">
+      <div className="">
+        <label className="popover-header-text">EDIT ELEMENT</label>
+      </div>
+      <div className="pop-over-div">
+        <label className="edit-label-1">Element Code</label>
+        <input
+          type="text"
+          className="txt-edit-popover"
+          placeholder="Enter Element Code"
+          maxLength="10"
+        />
+      </div>
+      <div className="pop-over-div">
+        <label className="edit-label-1">Element Name</label>
+        <input
+          type="text"
+          className="txt-edit-popover"
+          placeholder="Enter Element Name"
+          maxLength="25"
+        />
+      </div>
+      <div className="pop-over-div">
+        <label className="edit-label-1">Element Icon</label>
+        <div class="custom-file txt-edit-popover">
               <input type="file" className="custom-file-input" />
               <label className="custom-file-label">Element_Icon.png</label>
             </div>
+      </div>
+      <br />
+      <div>
+        <label className="pop-over-cancle">CANCEL</label>
+        <button className="pop-over-button">
+          <label className="pop-over-btnsave-text">SAVE</label>
+        </button>
+      </div>
+    </div>
+  );
 
-          </div>
-          <div>
-            <label className="pop-over-cancle">CANCEL</label>
-            <button className="pop-over-button">
-              <label className="pop-over-btnsave-text">SAVE</label>
-            </button>
-          </div>
-        </div>
-      </>
-    );
+     
     return (
       <Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
@@ -566,6 +569,7 @@ class ChatElements extends Component {
                         type="text"
                         className="txt-1"
                         placeholder="Enter Element Code"
+                        maxLength="10"
                       />
                     </div>
                     <div className="divSpace">
@@ -575,6 +579,7 @@ class ChatElements extends Component {
                           type="text"
                           className="txt-1"
                           placeholder="Enter Element Name"
+                          maxLength="25"
                         />
                       </div>
                     </div>

@@ -54,6 +54,7 @@ class ChatConfigureBrand extends Component {
                             type="text"
                             className="txt-1"
                             placeholder="Enter Brand Code"
+                            maxLength="10"
                           />
                         </div>
                       </div>
@@ -64,6 +65,7 @@ class ChatConfigureBrand extends Component {
                             type="text"
                             className="txt-1"
                             placeholder="Enter Brand Name"
+                            maxLength="25"
                           />
                         </div>
                       </div>
@@ -136,7 +138,7 @@ class ChatConfigureBrand extends Component {
                                 modalId="pluspopup"
                                 overlayId="logout-ovrly"
                               >
-                                <div className="chatconfigpadding">
+                                <div className="chatconfigpadding chatconfigpadd">
                                   <label className="create-department">
                                     ADD THEME
                                   </label>
@@ -149,6 +151,7 @@ class ChatConfigureBrand extends Component {
                                         type="text"
                                         className="txt-1"
                                         placeholder="Enter Brand Code"
+                                        maxLength="10"
                                       />
                                     </div>
                                   </div>
@@ -161,6 +164,7 @@ class ChatConfigureBrand extends Component {
                                         type="text"
                                         className="txt-1"
                                         placeholder="Enter Brand Name"
+                                        maxLength="25"
                                       />
                                     </div>
                                   </div>

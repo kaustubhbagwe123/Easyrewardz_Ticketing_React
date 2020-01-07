@@ -575,7 +575,7 @@ class CustomPlan extends Component {
                     defaultPageSize={22}
                     showPagination={false}
                   />
-                  <div className="row">
+                  <div className="row mt-3">
                   <div className="col-md-12">
                     <div className="savecancelenterprise">
                       <button className="Cancel">Cancel</button>

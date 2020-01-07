@@ -190,6 +190,7 @@ class QaUserMaster extends Component {
               type="text"
               className="txt-edit-popover"
               placeholder="Designation Name"
+              maxLength="25"
             />
           </div>
           <div className="pop-over-div">
@@ -198,6 +199,7 @@ class QaUserMaster extends Component {
               type="text"
               className="txt-edit-popover"
               placeholder="Brand Name"
+              maxLength="25"
             />
           </div>
           <div className="pop-over-div">
@@ -332,15 +334,15 @@ class QaUserMaster extends Component {
                     <div className="collapse multi-collapse" id="personal-details">
                       <div className="div-cntr">
                         <label>User Name</label>
-                        <input type="text" defaultValue="Ajay" />
+                        <input type="text" defaultValue="Ajay" maxLength="25" />
                       </div>
                       <div className="div-cntr">
                         <label>Mobile Number</label>
-                        <input type="text" defaultValue="9876543210" />
+                        <input type="text" defaultValue="9876543210" maxLength="10" />
                       </div>
                       <div className="div-cntr">
                         <label>Email ID</label>
-                        <input type="text" defaultValue="something@email.com" />
+                        <input type="text" defaultValue="something@email.com" maxLength="100" />
                       </div>
                       <div className="btn-coll">
                         <button
