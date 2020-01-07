@@ -6539,6 +6539,7 @@ table thead tr {
 .paste-addSearch {
   width: 18px;
   margin-left: 12px;
+  cursor: pointer;
 }
 .bck-AddSearch {
   background: #f5f8f9;
@@ -9639,7 +9640,8 @@ table tr th:last-child {
 }
 .DashTimeRange .fromDateHourContainer {
   position: absolute;
-  bottom: 0;
+  bottom: 5px;
+  border: none;
 }
 .DashTimeRange .fromDateTimeContainer {
   height: 295px;

@@ -116,7 +116,7 @@ class QaHierarchyMaster extends Component {
                 var ids = row.original["id"];
                 return (
                   <div>
-                    <Popover content={QaHmDelete} placement="bottom">
+                    <Popover content={QaHmDelete} placement="bottom" trigger="click">
                       <img
                         src={DeleteIcon}
                         alt="del-icon"
@@ -124,7 +124,7 @@ class QaHierarchyMaster extends Component {
                         className="downloadaction"
                       />
                     </Popover>
-                    <Popover content={QaHmEdit} placement="bottom">
+                    <Popover content={QaHmEdit} placement="bottom" trigger="click">
                       <button className="react-tabel-button" id={ids}>
                         <label className="Table-action-edit-button-text">EDIT</label>
                       </button>
@@ -173,12 +173,15 @@ class QaHierarchyMaster extends Component {
                   <div className="">
                     <label className="popover-header-text">EDIT USER</label>
                   </div>
-                  <div className=" pop-over-div">
-                    <label className="pop-over-lbl-text">Designation Name</label>
-                    <select className="pop-over-select">
-                      <option>Bata</option>
-                    </select>
-                  </div>
+                  <div className="pop-over-div">
+          <label className="edit-label-1">Designation Name</label>
+          <input
+            type="text"
+            className="txt-edit-popover"
+            placeholder="Enter Designation Name"
+            maxLength="25"
+          />
+        </div>
 
                   <div className="pop-over-div">
                     <label className="pop-over-lbl-text">Report To</label>
@@ -285,6 +288,7 @@ class QaHierarchyMaster extends Component {
                         type="text"
                         className="txt-1"
                         placeholder="Enter Designation Name"
+                        maxLength="25"
                       />
                     </div>
                     <div className="divSpace">

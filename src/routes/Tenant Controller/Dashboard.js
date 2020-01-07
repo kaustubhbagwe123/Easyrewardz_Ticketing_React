@@ -11,15 +11,39 @@ import LooksSmall from "./../../assets/Images/looks.png";
 import Smile from "./../../assets/Images/smile.png";
 import RblVlcc from "./../../assets/Images/rblvlcc.png";
 import SearchIcon from "./../../assets/Images/search-icon.png";
+import DateTimeRangeContainer from "react-advanced-datetimerange-picker";
+import moment from "moment";
+import { Row, Col } from "react-bootstrap";
+import { FormControl } from "react-bootstrap";
 
 class Dashboard extends Component {
   constructor(props) {
     super(props);
-
+    let now = new Date();
+    let start = moment(
+      new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0)
+    );
+    let end = moment(start)
+      .add(1, "days")
+      .subtract(1, "seconds");
     this.state = {
+      start: start,
+      end: end,
       AllAcount: false,
-      collapseSearch: false
+      collapseSearch: false,
+      date: [new Date(), new Date()],
+      range: ""
     };
+    this.applyCallback = this.applyCallback.bind(this);
+  }
+  applyCallback(startDate, endDate) {
+    this.setState({
+      start: startDate,
+      end: endDate
+    });
+  }
+  handleDateRange(date) {
+    this.setState({ range: date });
   }
   handleAccountAllOpen() {
     this.setState({ AllAcount: true });
@@ -32,6 +56,25 @@ class Dashboard extends Component {
   }
 
   render() {
+    let now = new Date();
+    let start = moment(
+      new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0)
+    );
+    let end = moment(start)
+      .add(1, "days")
+      .subtract(1, "seconds");
+    let ranges = {
+      "Today Only": [moment(start), moment(end)],
+      "Yesterday Only": [
+        moment(start).subtract(1, "days"),
+        moment(end).subtract(1, "days")
+      ],
+      "3 Days": [moment(start).subtract(3, "days"), moment(end)]
+    };
+    let local = {
+      format: "DD-MM-YYYY",
+      sundayFirst: false
+    };
     const data = [
       {
         Name: (
@@ -213,6 +256,10 @@ class Dashboard extends Component {
         )
       }
     ];
+    let value = `${this.state.start.format(
+      "DD-MM-YYYY HH:mm"
+    )} - ${this.state.end.format("DD-MM-YYYY HH:mm")}`;
+    let disabled = false;
     return (
       <Fragment>
         <div className="container-fluid dash-dropdowns">
@@ -260,8 +307,37 @@ class Dashboard extends Component {
               </Modal>
             </div>
             <div className="tenant-accounts-date">
-              <label className="tenant-accounts1">Date Range </label>
-              <label className="dropdown1">11Mar-12Apr</label>
+              <label className="tenant-accounts1">Date Range:</label>
+              <div className="DashTimeRange" style={{display:"inline-block"}}>
+                <Row className="show-grid" style={{ textAlign: "center"}}>
+                  {/* <Col xs={3} /> */}
+                  <Col xs={6} md={12} id="DateTimeRangeContainerNoMobileMode">
+                    <DateTimeRangeContainer
+                      ranges={ranges}
+                      start={this.state.start}
+                      end={this.state.end}
+                      local={local}
+                      applyCallback={this.applyCallback}
+                      smartMode
+                      leftMode
+                      // forceMobileMode
+                      noMobileMode
+                    >
+                      <FormControl
+                        id="formControlsTextB"
+                        type="text"
+                        label="Text"
+                        placeholder="Enter text"
+                        style={{ cursor: "pointer" }}
+                        disabled={disabled}
+                        value={value}
+                      />
+                    </DateTimeRangeContainer>
+                  </Col>
+                  {/* <Col xs={3} md={4} /> */}
+                </Row>
+              </div>
+              {/* <label className="dropdown1">11Mar-12Apr</label> */}
             </div>
           </div>
         </div>

@@ -22,6 +22,7 @@ class CreatePlan extends Component {
                           type="text"
                           className="txt-1"
                           placeholder="Enterprise"
+                          maxLength="25"
                         />
                       </div>
                     </div>

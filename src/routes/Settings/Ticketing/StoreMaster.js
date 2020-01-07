@@ -190,6 +190,7 @@ class StoreMaster extends Component {
             type="text"
             className="txt-edit-popover"
             placeholder="Enter Store Code"
+            maxLength="10"
           />
         </div>
         <div className="pop-over-div">
@@ -198,6 +199,7 @@ class StoreMaster extends Component {
             type="text"
             className="txt-edit-popover"
             placeholder="Enter Store Name"
+            maxLength="100"
           />
         </div>
         <div className="pop-over-div">
@@ -222,6 +224,7 @@ class StoreMaster extends Component {
             type="text"
             className="txt-edit-popover"
             placeholder="Enter Pin Code"
+            maxLength="11"
           />
         </div>
         <div className="pop-over-div">
@@ -231,6 +234,7 @@ class StoreMaster extends Component {
             rows="3"
             className="store-create-textarea"
             placeholder="Near Palm Court Bulilding,Sector 14 Gurgaon,Haryan"
+            maxLength="250"
           ></textarea>
         </div>
         <div className="pop-over-div">
@@ -263,6 +267,7 @@ class StoreMaster extends Component {
             type="text"
             className="txt-edit-popover"
             placeholder="Enter Email Id"
+            maxLength="100"
           />
         </div>
         <div className="pop-over-div">
@@ -271,6 +276,7 @@ class StoreMaster extends Component {
             type="text"
             className="txt-edit-popover"
             placeholder="Enter Phone No"
+            maxLength="10"
           />
         </div>
         <div className="pop-over-div">
@@ -369,6 +375,7 @@ class StoreMaster extends Component {
                         type="text"
                         className="txt-1"
                         placeholder="Enter Store Code"
+                        maxLength="10"
                       />
                     </div>
                     <div className="div-padding-1">
@@ -376,7 +383,8 @@ class StoreMaster extends Component {
                       <input
                         type="text"
                         className="txt-1"
-                        placeholder="Enter Bata Code"
+                        placeholder="Enter Store Name"
+                        maxLength="100"
                       />
                     </div>
                     <div className="div-padding-1">
@@ -397,6 +405,7 @@ class StoreMaster extends Component {
                         type="text"
                         className="txt-1"
                         placeholder="Enter Pin Code"
+                        maxLength="11"
                       />
                     </div>
                     <div className="div-padding-1">
@@ -406,6 +415,7 @@ class StoreMaster extends Component {
                         rows="3"
                         className="store-create-textarea"
                         placeholder="Near Palm Court Bulilding,Sector 14 Gurgaon,Haryan"
+                        maxLength="250"
                       ></textarea>
                     </div>
                     <div className="div-padding-1">
@@ -434,6 +444,7 @@ class StoreMaster extends Component {
                         type="text"
                         className="txt-1"
                         placeholder="Enter Email Id"
+                        maxLength="100"
                       />
                     </div>
                     <div className="div-padding-1">
@@ -444,6 +455,7 @@ class StoreMaster extends Component {
                         type="text"
                         className="txt-1"
                         placeholder="Enter Phone no"
+                        maxLength="10"
                       />
                     </div>
                     <div className="div-padding-1">

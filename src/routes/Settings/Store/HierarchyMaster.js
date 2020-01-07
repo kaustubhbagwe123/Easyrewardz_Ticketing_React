@@ -189,6 +189,7 @@ class HierarchyMaster extends Component {
             type="text"
             className="txt-edit-popover"
             placeholder="Enter Designation Name"
+            maxLength="25"
           />
         </div>
         <div className="pop-over-div">
@@ -284,7 +285,7 @@ class HierarchyMaster extends Component {
                   <h3>Create Hierarchy</h3>
                   <div className="div-cntr">
                     <label>Designation Name</label>
-                    <input type="text" defaultValue="Store Manager" />
+                    <input type="text" defaultValue="Store Manager" maxLength="25" />
                   </div>
                   <div className="div-cntr">
                     <label>Report To</label>

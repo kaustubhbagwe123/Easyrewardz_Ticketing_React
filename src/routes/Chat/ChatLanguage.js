@@ -5,6 +5,7 @@ import ReactTable from "react-table";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import storeSettings from "./../../assets/Images/store-settings.png";
+import { Popover } from "antd";
 
 class ChatLanguage extends Component {
   render() {
@@ -402,26 +403,66 @@ class ChatLanguage extends Component {
       {
         Header: <span>Actions</span>,
         accessor: "actiondept",
-        Cell: row => (
-          <button className="react-tabel-button">
-            <label className="Table-action-edit-button-text">EDIT</label>
-          </button>
-        )
-        //   Cell: row => {
-        //     var ids = row.original["id"];
-        //     return (
-        //       <div>
+        // Cell: row => (
+        //   <button className="react-tabel-button">
+        //     <label className="Table-action-edit-button-text">EDIT</label>
+        //   </button>
+        // )
+          Cell: row => {
+            var ids = row.original["id"];
+            return (
+              <div>
 
-        //         <Popover content={QaCrmEdit} placement="bottom">
-        //           <button className="react-tabel-button" id={ids}>
-        //             <label className="Table-action-edit-button-text">EDIT</label>
-        //           </button>
-        //         </Popover>
-        //       </div>
-        //     );
-        //   }
+                <Popover content={ChatEdit} placement="bottom" trigger="click" >
+                  <button className="react-tabel-button" id={ids}>
+                    <label className="Table-action-edit-button-text">EDIT</label>
+                  </button>
+                </Popover>
+              </div>
+            );
+          }
       }
     ];
+    const ChatEdit = (
+
+      <div className="edtpadding">
+      <div className="">
+        <label className="popover-header-text">EDIT Language</label>
+      </div>
+      <div className="pop-over-div">
+        <label className="edit-label-1">Language Code</label>
+        <input
+          type="text"
+          className="txt-edit-popover"
+          placeholder="Enter Language Code"
+          maxLength="10"
+        />
+      </div>
+      <div className="pop-over-div">
+        <label className="edit-label-1">Language Name</label>
+        <input
+          type="text"
+          className="txt-edit-popover"
+          placeholder="Enter Language Name"
+          maxLength="25"
+        />
+      </div>
+      <div className="pop-over-div">
+        <label className="edit-label-1">Language Icon</label>
+        <div class="custom-file txt-edit-popover">
+              <input type="file" className="custom-file-input" />
+              <label className="custom-file-label">Language_Icon.png</label>
+            </div>
+      </div>
+      <br />
+      <div>
+        <label className="pop-over-cancle">CANCEL</label>
+        <button className="pop-over-button">
+          <label className="pop-over-btnsave-text">SAVE</label>
+        </button>
+      </div>
+    </div>
+  );
     return (
       <Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
@@ -500,6 +541,7 @@ class ChatLanguage extends Component {
                         type="text"
                         className="txt-1"
                         placeholder="Enter Language Code"
+                        maxLength="10"
                       />
                     </div>
                     <div className="divSpace">
@@ -509,6 +551,7 @@ class ChatLanguage extends Component {
                           type="text"
                           className="txt-1"
                           placeholder="Enter Language Name"
+                          maxLength="25"
                         />
                       </div>
                     </div>
