@@ -96,6 +96,8 @@ class MyTicketList extends Component {
       selectedTicketActionType: [],
       selectedTicketStatusByDate: 0,
       selectScheduleDate: 0,
+      selectedNoOfDay: "",
+      selectedScheduleTime: 0,
       selectedSlaDueByDate: 0,
       selectedClaimStatus: 0,
       selectedTaskStatus: 0,
@@ -122,7 +124,7 @@ class MyTicketList extends Component {
       selectedIssueTypeAll: 0,
       selectedDepartment: 0,
       selectedFunction: 0,
-      selectSearchData:0,
+      selectSearchData: 0,
       MobileNoByCustType: "",
       EmailIdByCustType: "",
       ClaimIdByAll: "",
@@ -133,10 +135,10 @@ class MyTicketList extends Component {
       ItemIdByAll: "",
       selectedAssignedToAll: "",
       TicketIdByCustType: "",
-      SearchName:"",
+      SearchName: "",
       userID: 6,
       DraftDetails: [],
-      SearchListData:[],
+      SearchListData: [],
       draftCountStatus: 0,
       byDateFlag: 1,
       byCustomerTypeFlag: 0,
@@ -156,11 +158,16 @@ class MyTicketList extends Component {
         {
           department: "nub bus ushdus uhsfu"
         }
-      ]
+      ],
+      agentId: 0,
+      agentRemark: "",
+      ticketIds: "1,3",
+      selectedScheduleFor: "",
+      dailyDay: 0
     };
     this.handleAdvSearchFlag = this.handleAdvSearchFlag.bind(this);
     this.toggleSearch = this.toggleSearch.bind(this);
-    this.handleGetSaveSearchList=this.handleGetSaveSearchList.bind(this);
+    this.handleGetSaveSearchList = this.handleGetSaveSearchList.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
     this.handleGetTicketSourceList = this.handleGetTicketSourceList.bind(this);
@@ -185,6 +192,11 @@ class MyTicketList extends Component {
     this.handelOnchangeData = this.handelOnchangeData.bind(this);
     this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
     this.handleGetFunctionList = this.handleGetFunctionList.bind(this);
+    this.handleAssignRemark = this.handleAssignRemark.bind(this);
+    this.handleDailyDay = this.handleDailyDay.bind(this);
+    this.handleScheduleTime = this.handleScheduleTime.bind(this);
+    this.handleAssignTickets = this.handleAssignTickets.bind(this);
+    this.handleSchedulePopup = this.handleSchedulePopup.bind(this);
   }
 
   componentDidMount() {
@@ -197,6 +209,85 @@ class MyTicketList extends Component {
     this.handleGetSlaStatusList();
     this.handleGetDraftDetails();
     this.handleGetDepartmentList();
+  }
+
+  handleSchedulePopup() {
+    debugger;
+
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Ticketing/Schedule",
+      headers: authHeader(),
+      params: {
+        ScheduleFor: this.state.selectedScheduleFor,
+        ScheduleType: this.state.selectScheduleDate,
+        NoOfDay: this.state.selectedNoOfDay,
+        ScheduleTime: this.state.selectedScheduleTime,
+        IsDaily: 1
+      }
+    }).then(function(res) {
+      debugger;
+      // let messageData = res.data.message;
+      // if (messageData === "Success") {
+      //   self.handleAssignModalClose();
+      //   NotificationManager.success("Tickets assigned successfully.");
+      // }
+    });
+  }
+
+  handleTicketDetails = (rowInfo, column) => {
+    return {
+      onClick: e => {
+        debugger;
+        console.log(column.original["user_ID"]);
+        var agentId = column.original["user_ID"];
+        this.setState({ agentId });
+      }
+    };
+  };
+  handleAssignRemark(e) {
+    debugger;
+    this.setState({
+      agentRemark: e.currentTarget.value
+    });
+  }
+  handleDailyDay(e) {
+    debugger;
+    this.setState({
+      selectedNoOfDay: e.currentTarget.value
+    });
+  }
+  handleScheduleTime(e) {
+    debugger;
+    this.setState({
+      selectedScheduleTime: e.currentTarget.value
+    });
+  }
+  handleAssignTickets() {
+    debugger;
+
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Ticketing/AssignTickets",
+      headers: authHeader(),
+      params: {
+        TicketID: this.state.ticketIds,
+        AgentID: this.state.agentId,
+        Remark: this.state.agentRemark
+      }
+    }).then(function(res) {
+      debugger;
+      let messageData = res.data.message;
+      if (messageData === "Success") {
+        self.handleAssignModalClose();
+        NotificationManager.success("Tickets assigned successfully.");
+      }
+      // self.setState({
+      //   SlaStatusData: SlaStatusData
+      // });
+    });
   }
 
   handleAdvSearchFlag(e) {
@@ -250,7 +341,7 @@ class MyTicketList extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Ticketing/GetDraftDetails",
-      headers: authHeader(),
+      headers: authHeader()
     }).then(function(res) {
       debugger;
       let DraftDetails = res.data.responseData;
@@ -280,7 +371,7 @@ class MyTicketList extends Component {
       url: config.apiUrl + "/Master/getFunctionNameByDepartmentId",
       headers: authHeader(),
       params: {
-        DepartmentId: this.state.selectedDepartment,
+        DepartmentId: this.state.selectedDepartment
       }
     }).then(function(res) {
       debugger;
@@ -288,6 +379,11 @@ class MyTicketList extends Component {
       self.setState({ FunctionData: FunctionData });
     });
   }
+
+  setScheduleFor = e => {
+    let scheduleForValue = e.currentTarget.value;
+    this.setState({ selectedScheduleFor: scheduleForValue });
+  };
 
   handleGetDesignationList() {
     debugger;
@@ -308,7 +404,7 @@ class MyTicketList extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Priority/GetPriorityList",
-      headers: authHeader()  
+      headers: authHeader()
     }).then(function(res) {
       debugger;
       let TicketPriorityData = res.data.responseData;
@@ -479,7 +575,7 @@ class MyTicketList extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Ticketing/searchAgent",
-      headers:authHeader(),
+      headers: authHeader(),
       params: {
         FirstName: this.state.assignFirstName.trim(),
         LastName: this.state.assignLastName.trim(),
@@ -499,54 +595,51 @@ class MyTicketList extends Component {
     });
   }
 
-  SaveSearchData(){
-    debugger
-    let self=this;
-    var paramData={
-      ByDate:this.state.byDateFlag,
-      creationDate:this.state.ByDateCreatDate,
-      lastUpdatedDate:this.state.ByDateSelectDate,
-      SLADue:this.state.selectedSlaDueByDate,
-      ticketStatus:this.state.selectedTicketStatusByDate,
-      ByCustomerType:this.state.byCustomerTypeFlag,
-      customerMob:this.state.MobileNoByCustType,
-      customerEmail:this.state.EmailIdByCustType,
-      TicketID:this.state.TicketIdByCustType,
-      ticketStatus:this.state.selectedTicketStatusByCustomer,
-      ByTicketType:this.state.byTicketTypeFlag,
-      Priority:this.state.selectedPriority,
-      ticketStatus:this.state.selectedTicketStatusByTicket,
-      chanelOfPurchase:this.state.selectedChannelOfPurchase,
-      ticketActionType:this.state.selectedTicketActionType,
-      ByCategory:this.state.byCategoryFlag,
-      Category:this.state.selectedCategory,
-      subCategory:this.state.selectedSubCategory,
-      issueType:this.state.selectedIssueType,
-      ticketStatus:this.state.selectedTicketStatusByCategory,
-      byAll:this.state.allFlag,
-
-    }
+  SaveSearchData() {
+    debugger;
+    let self = this;
+    var paramData = {
+      ByDate: this.state.byDateFlag,
+      creationDate: this.state.ByDateCreatDate,
+      lastUpdatedDate: this.state.ByDateSelectDate,
+      SLADue: this.state.selectedSlaDueByDate,
+      ticketStatus: this.state.selectedTicketStatusByDate,
+      ByCustomerType: this.state.byCustomerTypeFlag,
+      customerMob: this.state.MobileNoByCustType,
+      customerEmail: this.state.EmailIdByCustType,
+      TicketID: this.state.TicketIdByCustType,
+      ticketStatus: this.state.selectedTicketStatusByCustomer,
+      ByTicketType: this.state.byTicketTypeFlag,
+      Priority: this.state.selectedPriority,
+      ticketStatus: this.state.selectedTicketStatusByTicket,
+      chanelOfPurchase: this.state.selectedChannelOfPurchase,
+      ticketActionType: this.state.selectedTicketActionType,
+      ByCategory: this.state.byCategoryFlag,
+      Category: this.state.selectedCategory,
+      subCategory: this.state.selectedSubCategory,
+      issueType: this.state.selectedIssueType,
+      ticketStatus: this.state.selectedTicketStatusByCategory,
+      byAll: this.state.allFlag
+    };
     axios({
-      method:"post",
-      url:config.apiUrl + "/Ticketing/savesearch",
-      headers:authHeader(),
-      params:{
-        SearchSaveName:this.state.SearchName,
-        parameter:JSON.stringify(paramData)
+      method: "post",
+      url: config.apiUrl + "/Ticketing/savesearch",
+      headers: authHeader(),
+      params: {
+        SearchSaveName: this.state.SearchName,
+        parameter: JSON.stringify(paramData)
       }
     }).then(function(res) {
       debugger;
       let Msg = res.data.message;
-      if(Msg==="Success")
-      {
+      if (Msg === "Success") {
         NotificationManager.success("Save Search parameter successfully.");
-        self.handleGetSaveSearchList()
+        self.handleGetSaveSearchList();
       }
-      
     });
   }
   handleGetSaveSearchList() {
-    debugger
+    debugger;
     let self = this;
     axios({
       method: "post",
@@ -558,8 +651,8 @@ class MyTicketList extends Component {
       self.setState({ SearchListData: SearchListData });
     });
   }
-  hadleSearchDeleteData(searchDeletId){
-    debugger
+  hadleSearchDeleteData(searchDeletId) {
+    debugger;
     let self = this;
 
     axios({
@@ -572,45 +665,44 @@ class MyTicketList extends Component {
     }).then(function(res) {
       debugger;
       let Msg = res.data.message;
-      if(Msg === "Success"){
+      if (Msg === "Success") {
         NotificationManager.success("Saved search data deleted successfully.");
-        self.handleGetSaveSearchList()
+        self.handleGetSaveSearchList();
       }
     });
   }
-  ViewSearchData(){
-    debugger
-    let self=this;
-    var paramData={
-      ByDate:this.state.byDateFlag,
-      creationDate:this.state.ByDateCreatDate,
-      lastUpdatedDate:this.state.ByDateSelectDate,
-      SLADue:this.state.selectedSlaDueByDate,
-      ticketStatus:this.state.selectedTicketStatusByDate,
-      ByCustomerType:this.state.byCustomerTypeFlag,
-      customerMob:this.state.MobileNoByCustType,
-      customerEmail:this.state.EmailIdByCustType,
-      TicketID:this.state.TicketIdByCustType,
-      ticketStatus:this.state.selectedTicketStatusByCustomer,
-      ByTicketType:this.state.byTicketTypeFlag,
-      Priority:this.state.selectedPriority,
-      ticketStatus:this.state.selectedTicketStatusByTicket,
-      chanelOfPurchase:this.state.selectedChannelOfPurchase,
-      ticketActionType:this.state.selectedTicketActionType,
-      ByCategory:this.state.byCategoryFlag,
-      Category:this.state.selectedCategory,
-      subCategory:this.state.selectedSubCategory,
-      issueType:this.state.selectedIssueType,
-      ticketStatus:this.state.selectedTicketStatusByCategory,
+  ViewSearchData() {
+    debugger;
+    let self = this;
+    var paramData = {
+      ByDate: this.state.byDateFlag,
+      creationDate: this.state.ByDateCreatDate,
+      lastUpdatedDate: this.state.ByDateSelectDate,
+      SLADue: this.state.selectedSlaDueByDate,
+      ticketStatus: this.state.selectedTicketStatusByDate,
+      ByCustomerType: this.state.byCustomerTypeFlag,
+      customerMob: this.state.MobileNoByCustType,
+      customerEmail: this.state.EmailIdByCustType,
+      TicketID: this.state.TicketIdByCustType,
+      ticketStatus: this.state.selectedTicketStatusByCustomer,
+      ByTicketType: this.state.byTicketTypeFlag,
+      Priority: this.state.selectedPriority,
+      ticketStatus: this.state.selectedTicketStatusByTicket,
+      chanelOfPurchase: this.state.selectedChannelOfPurchase,
+      ticketActionType: this.state.selectedTicketActionType,
+      ByCategory: this.state.byCategoryFlag,
+      Category: this.state.selectedCategory,
+      subCategory: this.state.selectedSubCategory,
+      issueType: this.state.selectedIssueType,
+      ticketStatus: this.state.selectedTicketStatusByCategory
       // byAll:this.state.allFlag,
-
-    }
+    };
     axios({
       method: "post",
       url: config.apiUrl + "/Search/GetTicketSearchResult",
       headers: authHeader(),
       data: {
-        searchparams:paramData
+        searchparams: paramData
       }
     }).then(function(res) {
       debugger;
@@ -631,7 +723,6 @@ class MyTicketList extends Component {
   setFunctionValue = e => {
     let functionValue = e.currentTarget.value;
     this.setState({ selectedFunction: functionValue });
-
   };
   setDesignationValue = e => {
     let designationValue = e.currentTarget.value;
@@ -645,7 +736,7 @@ class MyTicketList extends Component {
     let priorityAllValue = e.currentTarget.value;
     this.setState({ selectedPriorityAll: priorityAllValue });
   };
- 
+
   // handleClaimIdAll = e => {
   //   debugger;
   //   let claimIdAllValue = e.currentTarget.value;
@@ -680,7 +771,7 @@ class MyTicketList extends Component {
   //   this.setState({ selectedTicketIdByCustType: ticketIdByCustTypeValue });
   // };
   setChannelOfPurchaseValue = e => {
-    debugger
+    debugger;
     // let selectedChannelOfPurchase = e
     this.setState({ selectedChannelOfPurchase: e });
   };
@@ -918,7 +1009,7 @@ class MyTicketList extends Component {
       selectScheduleDate: SelectData
     });
   };
-  
+
   render() {
     const { DraftDetails, SearchAssignData } = this.state;
     const DefArti = (
@@ -1905,7 +1996,11 @@ class MyTicketList extends Component {
                                   <button onClick={this.onOpenModal}>
                                     Save Search
                                   </button>
-                                  <button type="button" className="btn-inv" onClick={this.ViewSearchData.bind(this)}>
+                                  <button
+                                    type="button"
+                                    className="btn-inv"
+                                    onClick={this.ViewSearchData.bind(this)}
+                                  >
                                     View Search
                                   </button>
                                 </div>
@@ -1943,31 +2038,34 @@ class MyTicketList extends Component {
                                   </div>
                                   <ul>
                                     {/* <li> */}
-                                      {this.state.SearchListData !== null &&
-                                        this.state.SearchListData.map(
-                                          (item, i) => (
-                                            <li>
-                                              <label
-                                                key={i}
-                                                value={item.searchParamID}
-                                              >
-                                                {item.searchName}
-                                              </label>
-                                              <div>
-                                                <a href={Demo.BLANK_LINK}>
-                                                  APPLY
-                                                </a>
-                                                <img
-                                                  src={DelSearch}
-                                                  alt="del-search"
-                                                  className="cr-pnt"
-                                                  onClick={this.hadleSearchDeleteData.bind(this,item.searchParamID)}
-                                                />
-                                              </div>
-                                            </li>
-                                          )
-                                        )}
-                                     
+                                    {this.state.SearchListData !== null &&
+                                      this.state.SearchListData.map(
+                                        (item, i) => (
+                                          <li>
+                                            <label
+                                              key={i}
+                                              value={item.searchParamID}
+                                            >
+                                              {item.searchName}
+                                            </label>
+                                            <div>
+                                              <a href={Demo.BLANK_LINK}>
+                                                APPLY
+                                              </a>
+                                              <img
+                                                src={DelSearch}
+                                                alt="del-search"
+                                                className="cr-pnt"
+                                                onClick={this.hadleSearchDeleteData.bind(
+                                                  this,
+                                                  item.searchParamID
+                                                )}
+                                              />
+                                            </div>
+                                          </li>
+                                        )
+                                      )}
+
                                     {/* </li> */}
                                   </ul>
                                 </div>
@@ -2057,7 +2155,7 @@ class MyTicketList extends Component {
                                         </select>
                                       </div>
                                     </div>
-                                    <div className="row justify-content-between">
+                                    {/* <div className="row justify-content-between">
                                       <div className="col-auto d-flex align-items-center">
                                         <p className="font-weight-bold mr-3">
                                           <span className="blue-clr">04</span>{" "}
@@ -2447,7 +2545,7 @@ class MyTicketList extends Component {
                                                   this.setDesignationValue
                                                 }
                                               >
-                                                {/* <option>Select</option> */}
+                                                
                                                 <option>Designation</option>
                                                 {this.state.DesignationData !==
                                                   null &&
@@ -2521,7 +2619,7 @@ class MyTicketList extends Component {
                                                   accessor: "email"
                                                 }
                                               ]}
-                                              // resizable={false}
+                                              
                                               defaultPageSize={5}
                                               showPagination={false}
                                             />
@@ -2540,6 +2638,7 @@ class MyTicketList extends Component {
                                         </Modal>
                                       </div>
                                     </div>
+                                   */}
                                   </div>
                                 </div>
                                 <div
@@ -2607,7 +2706,7 @@ class MyTicketList extends Component {
                                         </select>
                                       </div>
                                     </div>
-                                    <div className="row justify-content-between">
+                                    {/* <div className="row justify-content-between">
                                       <div className="col-auto d-flex align-items-center">
                                         <p className="font-weight-bold mr-3">
                                           <span className="blue-clr">04</span>{" "}
@@ -2644,6 +2743,7 @@ class MyTicketList extends Component {
                                         </button>
                                       </div>
                                     </div>
+                                   */}
                                   </div>
                                 </div>
                                 <div
@@ -2778,7 +2878,7 @@ class MyTicketList extends Component {
                                         </div>
                                       </div>
                                     </div>
-                                    <div className="row justify-content-between">
+                                    {/* <div className="row justify-content-between">
                                       <div className="col-auto d-flex align-items-center">
                                         <p className="font-weight-bold mr-3">
                                           <span className="blue-clr">04</span>{" "}
@@ -2815,6 +2915,7 @@ class MyTicketList extends Component {
                                         </button>
                                       </div>
                                     </div>
+                                   */}
                                   </div>
                                 </div>
                                 <div
@@ -2909,7 +3010,7 @@ class MyTicketList extends Component {
                                         </select>
                                       </div>
                                     </div>
-                                    <div className="row justify-content-between">
+                                    {/* <div className="row justify-content-between">
                                       <div className="col-auto d-flex align-items-center">
                                         <p className="font-weight-bold mr-3">
                                           <span className="blue-clr">04</span>{" "}
@@ -2946,6 +3047,7 @@ class MyTicketList extends Component {
                                         </button>
                                       </div>
                                     </div>
+                                   */}
                                   </div>
                                 </div>
                                 <div
@@ -2955,326 +3057,343 @@ class MyTicketList extends Component {
                                   aria-labelledby="all-tab"
                                 >
                                   <div className="container-fluid">
-                                    <div className="row">
-                                      <div className="col-md-3 col-sm-6 allspc">
-                                        <DatePicker
-                                          selected={this.state.ByAllCreateDate}
-                                          placeholderText="Creation Date"
-                                          showMonthDropdown
-                                          showYearDropdown
-                                          dateFormat="dd/MM/yyyy"
-                                          value={this.state.ByAllCreateDate}
-                                          onChange={this.handleAllCreateDate.bind(
-                                            this
-                                          )}
-                                          // className="form-control"
-                                        />
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <select
-                                          value={
-                                            this.state.selectedTicketSource
-                                          }
-                                          onChange={this.setTicketSourceValue}
-                                        >
-                                          <option>Ticket Source</option>
-                                          {this.state.TicketSourceData !==
-                                            null &&
-                                            this.state.TicketSourceData.map(
-                                              (item, i) => (
-                                                <option
-                                                  key={i}
-                                                  value={item.ticketSourceId}
-                                                >
-                                                  {item.ticketSourceName}
-                                                </option>
-                                              )
+                                    {this.state.selectedWithClaimAll ===
+                                    "yes" ? (
+                                      <div className="row">
+                                        <div className="col-md-3 col-sm-6 allspc">
+                                          <DatePicker
+                                            selected={
+                                              this.state.ByAllCreateDate
+                                            }
+                                            placeholderText="Creation Date"
+                                            showMonthDropdown
+                                            showYearDropdown
+                                            dateFormat="dd/MM/yyyy"
+                                            value={this.state.ByAllCreateDate}
+                                            onChange={this.handleAllCreateDate.bind(
+                                              this
                                             )}
-                                        </select>
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <input
-                                          className="no-bg"
-                                          type="text"
-                                          placeholder="Claim ID"
-                                          value={this.state.ClaimIdByAll}
-                                          name="ClaimIdByAll"
-                                          onChange={this.handelOnchangeData}
-                                        />
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <input
-                                          className="no-bg"
-                                          type="text"
-                                          placeholder="Email"
-                                          value={this.state.EmailByAll}
-                                          name="EmailByAll"
-                                          onChange={this.handelOnchangeData}
-                                        />
-                                      </div>
-                                      <div className="col-md-3 col-sm-6 allspc">
-                                        <DatePicker
-                                          selected={this.state.ByAllLastDate}
-                                          onChange={this.handleAllLastDate.bind(
-                                            this
-                                          )}
-                                          placeholderText="Last Updated Date"
-                                          showMonthDropdown
-                                          showYearDropdown
-                                          dateFormat="dd/MM/yyyy"
-                                          value={this.state.ByAllLastDate}
-                                          // className="form-control"
-                                        />
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <input
-                                          className="no-bg"
-                                          type="text"
-                                          placeholder="Ticket Id/Title"
-                                          value={this.state.TicketIdTitleByAll}
-                                          name="TicketIdTitleByAll"
-                                          onChange={this.handelOnchangeData}
-                                        />
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <input
-                                          className="no-bg"
-                                          type="text"
-                                          placeholder="Invoice Number/Sub Order No"
-                                          value={
-                                            this.state.InvoiceSubOrderByAll
-                                          }
-                                          name="InvoiceSubOrderByAll"
-                                          onChange={this.handelOnchangeData}
-                                        />
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <input
-                                          className="no-bg"
-                                          type="text"
-                                          placeholder="Mobile"
-                                          value={this.state.MobileByAll}
-                                          name="MobileByAll"
-                                          onChange={this.handelOnchangeData}
-                                        />
-                                      </div>
-                                      <div className="col-md-3 col-sm-6 allspc">
-                                        <select
-                                          value={this.state.selectedCategoryAll}
-                                          onChange={this.setCategoryAllValue}
-                                        >
-                                          <option>Category</option>
-                                          {this.state.CategoryData !== null &&
-                                            this.state.CategoryData.map(
-                                              (item, i) => (
-                                                <option
-                                                  key={i}
-                                                  value={item.categoryID}
-                                                >
-                                                  {item.categoryName}
-                                                </option>
-                                              )
+                                            // className="form-control"
+                                          />
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <select
+                                            value={
+                                              this.state.selectedTicketSource
+                                            }
+                                            onChange={this.setTicketSourceValue}
+                                          >
+                                            <option>Ticket Source</option>
+                                            {this.state.TicketSourceData !==
+                                              null &&
+                                              this.state.TicketSourceData.map(
+                                                (item, i) => (
+                                                  <option
+                                                    key={i}
+                                                    value={item.ticketSourceId}
+                                                  >
+                                                    {item.ticketSourceName}
+                                                  </option>
+                                                )
+                                              )}
+                                          </select>
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <input
+                                            className="no-bg"
+                                            type="text"
+                                            placeholder="Claim ID"
+                                            value={this.state.ClaimIdByAll}
+                                            name="ClaimIdByAll"
+                                            onChange={this.handelOnchangeData}
+                                          />
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <input
+                                            className="no-bg"
+                                            type="text"
+                                            placeholder="Email"
+                                            value={this.state.EmailByAll}
+                                            name="EmailByAll"
+                                            onChange={this.handelOnchangeData}
+                                          />
+                                        </div>
+                                        <div className="col-md-3 col-sm-6 allspc">
+                                          <DatePicker
+                                            selected={this.state.ByAllLastDate}
+                                            onChange={this.handleAllLastDate.bind(
+                                              this
                                             )}
-                                        </select>
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <select
-                                          value={this.state.selectedPriorityAll}
-                                          onChange={this.setPriorityAllValue}
-                                        >
-                                          <option>Ticket Priority</option>
-                                          {this.state.TicketPriorityData !==
-                                            null &&
-                                            this.state.TicketPriorityData.map(
-                                              (item, i) => (
-                                                <option
-                                                  key={i}
-                                                  value={item.priorityID}
-                                                >
-                                                  {item.priortyName}
-                                                </option>
-                                              )
-                                            )}
-                                        </select>
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <input
-                                          className="no-bg"
-                                          type="text"
-                                          placeholder="Item ID"
-                                          value={this.state.ItemIdByAll}
-                                          name="ItemIdByAll"
-                                          onChange={this.handelOnchangeData}
-                                        />
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <input
-                                          className="no-bg"
-                                          type="text"
-                                          placeholder="Assigned To"
-                                          value={
-                                            this.state.selectedAssignedToAll
-                                          }
-                                          onChange={this.handleAssignedToAll}
-                                        />
-                                      </div>
-                                      <div className="col-md-3 col-sm-6 allspc">
-                                        {/* <select>
+                                            placeholderText="Last Updated Date"
+                                            showMonthDropdown
+                                            showYearDropdown
+                                            dateFormat="dd/MM/yyyy"
+                                            value={this.state.ByAllLastDate}
+                                            // className="form-control"
+                                          />
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <input
+                                            className="no-bg"
+                                            type="text"
+                                            placeholder="Ticket Id/Title"
+                                            value={
+                                              this.state.TicketIdTitleByAll
+                                            }
+                                            name="TicketIdTitleByAll"
+                                            onChange={this.handelOnchangeData}
+                                          />
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <input
+                                            className="no-bg"
+                                            type="text"
+                                            placeholder="Invoice Number/Sub Order No"
+                                            value={
+                                              this.state.InvoiceSubOrderByAll
+                                            }
+                                            name="InvoiceSubOrderByAll"
+                                            onChange={this.handelOnchangeData}
+                                          />
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <input
+                                            className="no-bg"
+                                            type="text"
+                                            placeholder="Mobile"
+                                            value={this.state.MobileByAll}
+                                            name="MobileByAll"
+                                            onChange={this.handelOnchangeData}
+                                          />
+                                        </div>
+                                        <div className="col-md-3 col-sm-6 allspc">
+                                          <select
+                                            value={
+                                              this.state.selectedCategoryAll
+                                            }
+                                            onChange={this.setCategoryAllValue}
+                                          >
+                                            <option>Category</option>
+                                            {this.state.CategoryData !== null &&
+                                              this.state.CategoryData.map(
+                                                (item, i) => (
+                                                  <option
+                                                    key={i}
+                                                    value={item.categoryID}
+                                                  >
+                                                    {item.categoryName}
+                                                  </option>
+                                                )
+                                              )}
+                                          </select>
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <select
+                                            value={
+                                              this.state.selectedPriorityAll
+                                            }
+                                            onChange={this.setPriorityAllValue}
+                                          >
+                                            <option>Ticket Priority</option>
+                                            {this.state.TicketPriorityData !==
+                                              null &&
+                                              this.state.TicketPriorityData.map(
+                                                (item, i) => (
+                                                  <option
+                                                    key={i}
+                                                    value={item.priorityID}
+                                                  >
+                                                    {item.priortyName}
+                                                  </option>
+                                                )
+                                              )}
+                                          </select>
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <input
+                                            className="no-bg"
+                                            type="text"
+                                            placeholder="Item ID"
+                                            value={this.state.ItemIdByAll}
+                                            name="ItemIdByAll"
+                                            onChange={this.handelOnchangeData}
+                                          />
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <input
+                                            className="no-bg"
+                                            type="text"
+                                            placeholder="Assigned To"
+                                            value={
+                                              this.state.selectedAssignedToAll
+                                            }
+                                            onChange={this.handleAssignedToAll}
+                                          />
+                                        </div>
+                                        <div className="col-md-3 col-sm-6 allspc">
+                                          {/* <select>
                                           <option>Sub Category</option>
                                         </select> */}
-                                        <select
-                                          value={
-                                            this.state.selectedSubCategoryAll
-                                          }
-                                          onChange={this.setSubCategoryAllValue}
-                                        >
-                                          <option>Sub Category</option>
-                                          {this.state.SubCategoryAllData !==
-                                            null &&
-                                            this.state.SubCategoryAllData.map(
-                                              (item, i) => (
-                                                <option
-                                                  key={i}
-                                                  value={item.subCategoryID}
-                                                >
-                                                  {item.subCategoryName}
-                                                </option>
-                                              )
-                                            )}
-                                        </select>
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <select
-                                          value={
-                                            this.state.selectedTicketStatusAll
-                                          }
-                                          onChange={this.handleTicketStatusAll}
-                                        >
-                                          <option>Ticket Status</option>
-                                          {this.state.TicketStatusData !==
-                                            null &&
-                                            this.state.TicketStatusData.map(
-                                              (item, i) => (
-                                                <option
-                                                  key={i}
-                                                  value={item.ticketStatusID}
-                                                >
-                                                  {item.ticketStatusName}
-                                                </option>
-                                              )
-                                            )}
-                                        </select>
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <select
-                                          value={
-                                            this.state.selectedVisitStoreAll
-                                          }
-                                          onChange={this.handleVisitStoreAll}
-                                        >
-                                          <option value="yes">
-                                            Did Visit Store : Yes
-                                          </option>
-                                          <option value="no">
-                                            Did Visit Store : No
-                                          </option>
-                                        </select>
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <input
-                                          className="no-bg"
-                                          type="text"
-                                          placeholder="Purchase Store Code/Address"
-                                          value={
-                                            this.state
-                                              .selectedPurchaseStoreCodeAddressAll
-                                          }
-                                          onChange={
-                                            this
-                                              .handlePurchaseStoreCodeAddressAll
-                                          }
-                                        />
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        {/* <select>
+                                          <select
+                                            value={
+                                              this.state.selectedSubCategoryAll
+                                            }
+                                            onChange={
+                                              this.setSubCategoryAllValue
+                                            }
+                                          >
+                                            <option>Sub Category</option>
+                                            {this.state.SubCategoryAllData !==
+                                              null &&
+                                              this.state.SubCategoryAllData.map(
+                                                (item, i) => (
+                                                  <option
+                                                    key={i}
+                                                    value={item.subCategoryID}
+                                                  >
+                                                    {item.subCategoryName}
+                                                  </option>
+                                                )
+                                              )}
+                                          </select>
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <select
+                                            value={
+                                              this.state.selectedTicketStatusAll
+                                            }
+                                            onChange={
+                                              this.handleTicketStatusAll
+                                            }
+                                          >
+                                            <option>Ticket Status</option>
+                                            {this.state.TicketStatusData !==
+                                              null &&
+                                              this.state.TicketStatusData.map(
+                                                (item, i) => (
+                                                  <option
+                                                    key={i}
+                                                    value={item.ticketStatusID}
+                                                  >
+                                                    {item.ticketStatusName}
+                                                  </option>
+                                                )
+                                              )}
+                                          </select>
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <select
+                                            value={
+                                              this.state.selectedVisitStoreAll
+                                            }
+                                            onChange={this.handleVisitStoreAll}
+                                          >
+                                            <option value="yes">
+                                              Did Visit Store : Yes
+                                            </option>
+                                            <option value="no">
+                                              Did Visit Store : No
+                                            </option>
+                                          </select>
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <input
+                                            className="no-bg"
+                                            type="text"
+                                            placeholder="Purchase Store Code/Address"
+                                            value={
+                                              this.state
+                                                .selectedPurchaseStoreCodeAddressAll
+                                            }
+                                            onChange={
+                                              this
+                                                .handlePurchaseStoreCodeAddressAll
+                                            }
+                                          />
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          {/* <select>
                                           <option>Issue Type</option>
                                         </select> */}
-                                        <select
-                                          value={
-                                            this.state.selectedIssueTypeAll
-                                          }
-                                          onChange={this.setIssueTypeAllValue}
-                                        >
-                                          <option>Issue Type</option>
-                                          {this.state.IssueTypeAllData !==
-                                            null &&
-                                            this.state.IssueTypeAllData.map(
-                                              (item, i) => (
-                                                <option
-                                                  key={i}
-                                                  value={item.issueTypeID}
-                                                >
-                                                  {item.issueTypeName}
-                                                </option>
-                                              )
-                                            )}
-                                        </select>
+                                          <select
+                                            value={
+                                              this.state.selectedIssueTypeAll
+                                            }
+                                            onChange={this.setIssueTypeAllValue}
+                                          >
+                                            <option>Issue Type</option>
+                                            {this.state.IssueTypeAllData !==
+                                              null &&
+                                              this.state.IssueTypeAllData.map(
+                                                (item, i) => (
+                                                  <option
+                                                    key={i}
+                                                    value={item.issueTypeID}
+                                                  >
+                                                    {item.issueTypeName}
+                                                  </option>
+                                                )
+                                              )}
+                                          </select>
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <select
+                                            value={this.state.selectedSlaStatus}
+                                            onChange={this.setSlaStatusValue}
+                                          >
+                                            <option>
+                                              SLA Status : Response / Resolution
+                                            </option>
+                                            {this.state.SlaStatusData !==
+                                              null &&
+                                              this.state.SlaStatusData.map(
+                                                (item, i) => (
+                                                  <option
+                                                    key={i}
+                                                    value={item.SLAId}
+                                                  >
+                                                    {item.SLAResponseTime} /
+                                                    {item.SLARequestTime}
+                                                  </option>
+                                                )
+                                              )}
+                                          </select>
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <select
+                                            value={
+                                              this.state
+                                                .selectedWantToVisitStoreAll
+                                            }
+                                            onChange={
+                                              this.handleWantToVisitStoreAll
+                                            }
+                                          >
+                                            <option value="yes">
+                                              Want to Visit Store : Yes
+                                            </option>
+                                            <option value="no">
+                                              Want to Visit Store : No
+                                            </option>
+                                          </select>
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <input
+                                            className="no-bg"
+                                            type="text"
+                                            placeholder="Want to visit Store Code/Address"
+                                            value={
+                                              this.state
+                                                .selectedVisitStoreCodeAddressAll
+                                            }
+                                            onChange={
+                                              this
+                                                .handleVisitStoreCodeAddressAll
+                                            }
+                                          />
+                                        </div>
                                       </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <select
-                                          value={this.state.selectedSlaStatus}
-                                          onChange={this.setSlaStatusValue}
-                                        >
-                                          <option>
-                                            SLA Status : Response / Resolution
-                                          </option>
-                                          {this.state.SlaStatusData !== null &&
-                                            this.state.SlaStatusData.map(
-                                              (item, i) => (
-                                                <option
-                                                  key={i}
-                                                  value={item.SLAId}
-                                                >
-                                                  {item.SLAResponseTime} /
-                                                  {item.SLARequestTime}
-                                                </option>
-                                              )
-                                            )}
-                                        </select>
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <select
-                                          value={
-                                            this.state
-                                              .selectedWantToVisitStoreAll
-                                          }
-                                          onChange={
-                                            this.handleWantToVisitStoreAll
-                                          }
-                                        >
-                                          <option value="yes">
-                                            Want to Visit Store : Yes
-                                          </option>
-                                          <option value="no">
-                                            Want to Visit Store : No
-                                          </option>
-                                        </select>
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <input
-                                          className="no-bg"
-                                          type="text"
-                                          placeholder="Want to visit Store Code/Address"
-                                          value={
-                                            this.state
-                                              .selectedVisitStoreCodeAddressAll
-                                          }
-                                          onChange={
-                                            this.handleVisitStoreCodeAddressAll
-                                          }
-                                        />
-                                      </div>
-                                    </div>
+                                    ) : null}
                                     <div className="row p-0">
                                       <div className="col-md-6">
                                         <div className="row allspc">
@@ -3308,175 +3427,215 @@ class MyTicketList extends Component {
                                               </option>
                                             </select>
                                           </div>
-                                          <div className="col-sm-6 m-b-25">
-                                            <select
-                                              value={
-                                                this.state.selectedClaimStatus
-                                              }
-                                              onChange={this.handleClaimStatus}
-                                            >
-                                              <option>Claim Status</option>
-                                              {this.state.ClaimStatusData !==
-                                                null &&
-                                                this.state.ClaimStatusData.map(
-                                                  (item, i) => (
-                                                    <option
-                                                      key={i}
-                                                      value={item.claimStatusID}
-                                                    >
-                                                      {item.claimStatusName}
-                                                    </option>
-                                                  )
-                                                )}
-                                            </select>
-                                          </div>
-                                          <div className="col-sm-6">
-                                            <select
-                                              value={
-                                                this.state.selectedTaskStatus
-                                              }
-                                              onChange={this.handleTaskStatus}
-                                            >
-                                              <option>Task Status</option>
-                                              {this.state.TaskStatusData !==
-                                                null &&
-                                                this.state.TaskStatusData.map(
-                                                  (item, i) => (
-                                                    <option
-                                                      key={i}
-                                                      value={item.taskStatusID}
-                                                    >
-                                                      {item.taskStatusName}
-                                                    </option>
-                                                  )
-                                                )}
-                                            </select>
-                                          </div>
-                                          <div className="col-sm-6 m-b-25">
-                                            <select
-                                              value={
-                                                this.state.selectedClaimCategory
-                                              }
-                                              onChange={
-                                                this.setClaimCategoryValue
-                                              }
-                                            >
-                                              <option>Claim Category</option>
-                                              {this.state.CategoryData !==
-                                                null &&
-                                                this.state.CategoryData.map(
-                                                  (item, i) => (
-                                                    <option
-                                                      key={i}
-                                                      value={item.categoryID}
-                                                    >
-                                                      {item.categoryName}
-                                                    </option>
-                                                  )
-                                                )}
-                                            </select>
-                                          </div>
-                                          <div className="col-sm-6">
-                                            <select
-                                              value={
-                                                this.state.selectedDepartment
-                                              }
-                                              onChange={this.setDepartmentValue}
-                                            >
-                                              <option>Task Department</option>
-                                              {this.state.DepartmentData !==
-                                                null &&
-                                                this.state.DepartmentData.map(
-                                                  (item, i) => (
-                                                    <option
-                                                      key={i}
-                                                      value={item.departmentID}
-                                                    >
-                                                      {item.departmentName}
-                                                    </option>
-                                                  )
-                                                )}
-                                            </select>
-                                          </div>
-                                          <div className="col-sm-6 m-b-25">
-                                            <select
-                                              value={
-                                                this.state
-                                                  .selectedClaimSubCategory
-                                              }
-                                              onChange={
-                                                this.setClaimSubCategoryValue
-                                              }
-                                            >
-                                              <option>
-                                                Claim Sub Category
-                                              </option>
-                                              {this.state
-                                                .ClaimSubCategoryData !==
-                                                null &&
-                                                this.state.ClaimSubCategoryData.map(
-                                                  (item, i) => (
-                                                    <option
-                                                      key={i}
-                                                      value={item.subCategoryID}
-                                                    >
-                                                      {item.subCategoryName}
-                                                    </option>
-                                                  )
-                                                )}
-                                            </select>
-                                          </div>
-                                          <div className="col-sm-6">
-                                            <select
-                                              value={
-                                                this.state.selectedFunction
-                                              }
-                                              onChange={this.setFunctionValue}
-                                            >
-                                              <option>Task Function</option>
-                                              {this.state.FunctionData !==
-                                                null &&
-                                                this.state.FunctionData.map(
-                                                  (item, i) => (
-                                                    <option
-                                                      key={i}
-                                                      value={item.functionID}
-                                                    >
-                                                      {item.funcationName}
-                                                    </option>
-                                                  )
-                                                )}
-                                            </select>
-                                          </div>
-                                          <div className="col-sm-6">
-                                            <select
-                                              value={
-                                                this.state
-                                                  .selectedClaimIssueType
-                                              }
-                                              onChange={
-                                                this.setClaimIssueTypeValue
-                                              }
-                                            >
-                                              <option>Claim Issue Type</option>
-                                              {this.state.ClaimIssueTypeData !==
-                                                null &&
-                                                this.state.ClaimIssueTypeData.map(
-                                                  (item, i) => (
-                                                    <option
-                                                      key={i}
-                                                      value={item.issueTypeID}
-                                                    >
-                                                      {item.issueTypeName}
-                                                    </option>
-                                                  )
-                                                )}
-                                            </select>
-                                          </div>
+
+                                          {this.state.selectedWithClaimAll ===
+                                          "yes" ? (
+                                            <React.Fragment>
+                                              <div className="col-sm-6 m-b-25">
+                                                <select
+                                                  value={
+                                                    this.state
+                                                      .selectedClaimStatus
+                                                  }
+                                                  onChange={
+                                                    this.handleClaimStatus
+                                                  }
+                                                >
+                                                  <option>Claim Status</option>
+                                                  {this.state
+                                                    .ClaimStatusData !== null &&
+                                                    this.state.ClaimStatusData.map(
+                                                      (item, i) => (
+                                                        <option
+                                                          key={i}
+                                                          value={
+                                                            item.claimStatusID
+                                                          }
+                                                        >
+                                                          {item.claimStatusName}
+                                                        </option>
+                                                      )
+                                                    )}
+                                                </select>
+                                              </div>
+                                              <div className="col-sm-6">
+                                                <select
+                                                  value={
+                                                    this.state
+                                                      .selectedTaskStatus
+                                                  }
+                                                  onChange={
+                                                    this.handleTaskStatus
+                                                  }
+                                                >
+                                                  <option>Task Status</option>
+                                                  {this.state.TaskStatusData !==
+                                                    null &&
+                                                    this.state.TaskStatusData.map(
+                                                      (item, i) => (
+                                                        <option
+                                                          key={i}
+                                                          value={
+                                                            item.taskStatusID
+                                                          }
+                                                        >
+                                                          {item.taskStatusName}
+                                                        </option>
+                                                      )
+                                                    )}
+                                                </select>
+                                              </div>
+                                              <div className="col-sm-6 m-b-25">
+                                                <select
+                                                  value={
+                                                    this.state
+                                                      .selectedClaimCategory
+                                                  }
+                                                  onChange={
+                                                    this.setClaimCategoryValue
+                                                  }
+                                                >
+                                                  <option>
+                                                    Claim Category
+                                                  </option>
+                                                  {this.state.CategoryData !==
+                                                    null &&
+                                                    this.state.CategoryData.map(
+                                                      (item, i) => (
+                                                        <option
+                                                          key={i}
+                                                          value={
+                                                            item.categoryID
+                                                          }
+                                                        >
+                                                          {item.categoryName}
+                                                        </option>
+                                                      )
+                                                    )}
+                                                </select>
+                                              </div>
+                                              <div className="col-sm-6">
+                                                <select
+                                                  value={
+                                                    this.state
+                                                      .selectedDepartment
+                                                  }
+                                                  onChange={
+                                                    this.setDepartmentValue
+                                                  }
+                                                >
+                                                  <option>
+                                                    Task Department
+                                                  </option>
+                                                  {this.state.DepartmentData !==
+                                                    null &&
+                                                    this.state.DepartmentData.map(
+                                                      (item, i) => (
+                                                        <option
+                                                          key={i}
+                                                          value={
+                                                            item.departmentID
+                                                          }
+                                                        >
+                                                          {item.departmentName}
+                                                        </option>
+                                                      )
+                                                    )}
+                                                </select>
+                                              </div>
+                                              <div className="col-sm-6 m-b-25">
+                                                <select
+                                                  value={
+                                                    this.state
+                                                      .selectedClaimSubCategory
+                                                  }
+                                                  onChange={
+                                                    this
+                                                      .setClaimSubCategoryValue
+                                                  }
+                                                >
+                                                  <option>
+                                                    Claim Sub Category
+                                                  </option>
+                                                  {this.state
+                                                    .ClaimSubCategoryData !==
+                                                    null &&
+                                                    this.state.ClaimSubCategoryData.map(
+                                                      (item, i) => (
+                                                        <option
+                                                          key={i}
+                                                          value={
+                                                            item.subCategoryID
+                                                          }
+                                                        >
+                                                          {item.subCategoryName}
+                                                        </option>
+                                                      )
+                                                    )}
+                                                </select>
+                                              </div>
+                                              <div className="col-sm-6">
+                                                <select
+                                                  value={
+                                                    this.state.selectedFunction
+                                                  }
+                                                  onChange={
+                                                    this.setFunctionValue
+                                                  }
+                                                >
+                                                  <option>Task Function</option>
+                                                  {this.state.FunctionData !==
+                                                    null &&
+                                                    this.state.FunctionData.map(
+                                                      (item, i) => (
+                                                        <option
+                                                          key={i}
+                                                          value={
+                                                            item.functionID
+                                                          }
+                                                        >
+                                                          {item.funcationName}
+                                                        </option>
+                                                      )
+                                                    )}
+                                                </select>
+                                              </div>
+                                              <div className="col-sm-6">
+                                                <select
+                                                  value={
+                                                    this.state
+                                                      .selectedClaimIssueType
+                                                  }
+                                                  onChange={
+                                                    this.setClaimIssueTypeValue
+                                                  }
+                                                >
+                                                  <option>
+                                                    Claim Issue Type
+                                                  </option>
+                                                  {this.state
+                                                    .ClaimIssueTypeData !==
+                                                    null &&
+                                                    this.state.ClaimIssueTypeData.map(
+                                                      (item, i) => (
+                                                        <option
+                                                          key={i}
+                                                          value={
+                                                            item.issueTypeID
+                                                          }
+                                                        >
+                                                          {item.issueTypeName}
+                                                        </option>
+                                                      )
+                                                    )}
+                                                </select>
+                                              </div>
+                                            </React.Fragment>
+                                          ) : null}
                                         </div>
                                       </div>
                                     </div>
-                                    <div className="row justify-content-between">
+                                    {/* <div className="row justify-content-between">
                                       <div className="col-auto d-flex align-items-center">
                                         <p className="font-weight-bold mr-3">
                                           <span className="blue-clr">04</span>{" "}
@@ -3513,6 +3672,492 @@ class MyTicketList extends Component {
                                         </button>
                                       </div>
                                     </div>
+                                   */}
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="container-fluid myticlist-expand-sect">
+                                <div className="row common-adv-padd justify-content-between">
+                                  <div className="col-auto d-flex align-items-center">
+                                    <p className="font-weight-bold mr-3">
+                                      <span className="blue-clr">04</span>{" "}
+                                      Results
+                                    </p>
+                                    <p className="blue-clr fs-14">
+                                      CLEAR SEARCH
+                                    </p>
+                                  </div>
+                                  <div className="col-auto mob-mar-btm">
+                                    <button>
+                                      <img
+                                        className="position-relative csv-icon"
+                                        src={csv}
+                                        alt="csv-icon"
+                                      />
+                                      CSV
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={this.ScheduleOpenModel}
+                                    >
+                                      <img
+                                        className="sch-icon"
+                                        src={Schedule}
+                                        alt="schedule-icon"
+                                      />
+                                      Schedule
+                                    </button>
+                                    <Modal
+                                      onClose={this.ScheduleCloseModel}
+                                      open={this.state.Schedule}
+                                      modalId="ScheduleModel"
+                                      overlayId="logout-ovrly"
+                                    >
+                                      <div>
+                                        <label>
+                                          <b>Schedule date to</b>
+                                        </label>
+                                        <div>
+                                          <select
+                                            id="inputState"
+                                            className="form-control dropdown-setting1 ScheduleDate-to"
+                                            value={
+                                              this.state.selectedScheduleFor
+                                            }
+                                            onChange={this.setScheduleFor}
+                                          >
+                                            <option value="team-member">
+                                              Team Member
+                                            </option>
+                                            <option value="team-member-1">
+                                              Team Member 1
+                                            </option>
+                                          </select>
+                                          <select
+                                            id="inputState"
+                                            className="form-control dropdown-setting1 ScheduleDate-to"
+                                            value={
+                                              this.state.selectScheduleDate
+                                            }
+                                            onChange={
+                                              this.handleScheduleDateChange
+                                            }
+                                          >
+                                            {this.state.ScheduleOption !==
+                                              null &&
+                                              this.state.ScheduleOption.map(
+                                                (item, i) => (
+                                                  <option
+                                                    key={i}
+                                                    value={item.scheduleID}
+                                                  >
+                                                    {item.scheduleName}
+                                                  </option>
+                                                )
+                                              )}
+                                          </select>
+                                          {this.state.selectScheduleDate ===
+                                          "111" ? (
+                                            <div className="ScheduleDate-to">
+                                              <span>
+                                                <label className="every1">
+                                                  Every
+                                                </label>
+                                                <input
+                                                  type="text"
+                                                  className="Every"
+                                                  placeholder="1"
+                                                  onChange={this.handleDailyDay}
+                                                />
+                                                <label className="every1">
+                                                  Day
+                                                </label>
+                                              </span>
+                                            </div>
+                                          ) : null}
+                                          {this.state.selectScheduleDate ===
+                                          "222" ? (
+                                            <div className="ScheduleDate-to">
+                                              <span>
+                                                <label className="every1">
+                                                  Every
+                                                </label>
+                                                <input
+                                                  type="text"
+                                                  className="Every"
+                                                  placeholder="1"
+                                                />
+                                                <label className="every1">
+                                                  Week on
+                                                </label>
+                                              </span>
+                                              <div
+                                                style={{
+                                                  marginTop: "10px"
+                                                }}
+                                              >
+                                                <Checkbox>Mon</Checkbox>
+                                                <Checkbox>Tue</Checkbox>
+                                                <Checkbox>Wed</Checkbox>
+                                                <Checkbox>Thu</Checkbox>
+                                                <Checkbox>Fri</Checkbox>
+                                                <Checkbox>Sat</Checkbox>
+                                                <Checkbox>Sun</Checkbox>
+                                              </div>
+                                            </div>
+                                          ) : null}
+                                          {this.state.selectScheduleDate ===
+                                          "333" ? (
+                                            <div className="ScheduleDate-to">
+                                              <span>
+                                                <label className="every1">
+                                                  Day
+                                                </label>
+                                                <input
+                                                  type="text"
+                                                  className="Every"
+                                                  placeholder="9"
+                                                />
+                                                <label className="every1">
+                                                  of every
+                                                </label>
+                                                <input
+                                                  type="text"
+                                                  className="Every"
+                                                  placeholder="1"
+                                                />
+                                                <label className="every1">
+                                                  months
+                                                </label>
+                                              </span>
+                                            </div>
+                                          ) : null}
+                                          {this.state.selectScheduleDate ===
+                                          "444" ? (
+                                            <div className="ScheduleDate-to">
+                                              <span>
+                                                <label className="every1">
+                                                  Every
+                                                </label>
+                                                <input
+                                                  type="text"
+                                                  className="Every"
+                                                  placeholder="1"
+                                                />
+                                                <label className="every1">
+                                                  month on the
+                                                </label>
+                                              </span>
+                                              <div className="row mt-3">
+                                                <div className="col-md-6">
+                                                  <select
+                                                    id="inputState"
+                                                    className="form-control dropdown-setting1"
+                                                  >
+                                                    <option>Second</option>
+                                                    <option>Four</option>
+                                                  </select>
+                                                </div>
+                                                <div className="col-md-6">
+                                                  <select
+                                                    id="inputState"
+                                                    className="form-control dropdown-setting1"
+                                                  >
+                                                    <option>Sunday</option>
+                                                    <option>Monday</option>
+                                                  </select>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          ) : null}
+                                          {this.state.selectScheduleDate ===
+                                          "555" ? (
+                                            <div className="ScheduleDate-to">
+                                              <div className="row m-0">
+                                                <label
+                                                  className="every1"
+                                                  style={{
+                                                    lineHeight: "40px"
+                                                  }}
+                                                >
+                                                  on
+                                                </label>
+                                                <div className="col-md-7">
+                                                  <select
+                                                    id="inputState"
+                                                    className="form-control dropdown-setting1"
+                                                  >
+                                                    <option>Septmber</option>
+                                                    <option>Octomber</option>
+                                                  </select>
+                                                </div>
+                                                <input
+                                                  type="text"
+                                                  className="Every"
+                                                  placeholder="1"
+                                                />
+                                              </div>
+                                            </div>
+                                          ) : null}
+                                          {this.state.selectScheduleDate ===
+                                          "666" ? (
+                                            <div className="ScheduleDate-to">
+                                              <span>
+                                                <div className="row m-0">
+                                                  <label
+                                                    className="every1"
+                                                    style={{
+                                                      lineHeight: "40px"
+                                                    }}
+                                                  >
+                                                    on the
+                                                  </label>
+                                                  <div className="col-md-7">
+                                                    <select
+                                                      id="inputState"
+                                                      className="form-control dropdown-setting1"
+                                                    >
+                                                      <option>Second</option>
+                                                      <option>Four</option>
+                                                    </select>
+                                                  </div>
+                                                </div>
+                                              </span>
+                                              <div className="row mt-3">
+                                                <div className="col-md-5">
+                                                  <select
+                                                    id="inputState"
+                                                    className="form-control dropdown-setting1"
+                                                    style={{
+                                                      width: "100px"
+                                                    }}
+                                                  >
+                                                    <option>Sunday</option>
+                                                    <option>Monday</option>
+                                                  </select>
+                                                </div>
+                                                <label
+                                                  className="every1"
+                                                  style={{
+                                                    lineHeight: "40px",
+                                                    marginLeft: "14px"
+                                                  }}
+                                                >
+                                                  to
+                                                </label>
+                                                <div className="col-md-5">
+                                                  <select
+                                                    id="inputState"
+                                                    className="form-control dropdown-setting1"
+                                                    style={{
+                                                      width: "100px"
+                                                    }}
+                                                  >
+                                                    <option>Septmber</option>
+                                                    <option>Octomber</option>
+                                                  </select>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          ) : null}
+
+                                          <input
+                                            type="text"
+                                            className="txt-1 txt1Place txt1Time"
+                                            placeholder="11AM"
+                                            onChange={this.handleScheduleTime}
+                                          />
+                                          <div>
+                                            <button
+                                              className="scheduleBtn"
+                                              onClick={this.handleSchedulePopup}
+                                            >
+                                              <label className="addLable">
+                                                SCHEDULE
+                                              </label>
+                                            </button>
+                                          </div>
+                                          <div>
+                                            <button
+                                              type="button"
+                                              className="scheduleBtncancel"
+                                            >
+                                              CANCEL
+                                            </button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </Modal>
+                                    <button
+                                      className={
+                                        this.state.CheckBoxChecked
+                                          ? "btn-inv"
+                                          : "dis-btn"
+                                      }
+                                      onClick={
+                                        this.state.CheckBoxChecked
+                                          ? this.handleAssignModalOpen.bind(
+                                              this
+                                            )
+                                          : null
+                                      }
+                                    >
+                                      <img
+                                        src={Assign}
+                                        className="assign-icon"
+                                        alt="assign-icon"
+                                      />
+                                      Assign
+                                    </button>
+                                    <Modal
+                                      onClose={this.handleAssignModalClose.bind(
+                                        this
+                                      )}
+                                      open={this.state.AssignModal}
+                                      modalId="AssignPop-up"
+                                    >
+                                      <div className="assign-modal-headerDashboard">
+                                        <img
+                                          src={BlackLeftArrow}
+                                          alt="black-left-arrow-icon"
+                                          className="black-left-arrow"
+                                          onClick={this.handleAssignModalClose.bind(
+                                            this
+                                          )}
+                                        />
+                                        <label className="claim-details">
+                                          Assign Tickets To
+                                        </label>
+                                        <img
+                                          src={SearchBlackImg}
+                                          alt="SearchBlack"
+                                          className="black-left-arrow srch-mleft-spc"
+                                        />
+                                      </div>
+                                      <div className="assign-modal-div">
+                                        <input
+                                          type="text"
+                                          className="txt-1 txt-btmSpace"
+                                          placeholder="First Name"
+                                          name="assignFirstName"
+                                          value={this.state.assignFirstName}
+                                          onChange={this.handelOnchangeData}
+                                        />
+                                        <input
+                                          type="text"
+                                          className="txt-1 txt-btmSpace"
+                                          placeholder="Last Name"
+                                          name="assignLastName"
+                                          value={this.state.assignLastName}
+                                          onChange={this.handelOnchangeData}
+                                        />
+                                        <input
+                                          type="text"
+                                          className="txt-1 txt-btmSpace"
+                                          placeholder="Email"
+                                          name="assignEmail"
+                                          value={this.state.assignEmail}
+                                          onChange={this.handelOnchangeData}
+                                        />
+                                        <div className="txt-btmSpace">
+                                          <select
+                                            id="inputState"
+                                            className="form-control dropdown-setting"
+                                            value={
+                                              this.state.selectedDesignation
+                                            }
+                                            onChange={this.setDesignationValue}
+                                          >
+                                            {/* <option>Select</option> */}
+                                            <option>Designation</option>
+                                            {this.state.DesignationData !==
+                                              null &&
+                                              this.state.DesignationData.map(
+                                                (item, i) => (
+                                                  <option
+                                                    key={i}
+                                                    value={item.designationID}
+                                                  >
+                                                    {item.designationName}
+                                                  </option>
+                                                )
+                                              )}
+                                          </select>
+                                        </div>
+                                        <button
+                                          className="butn assign-btn"
+                                          type="button"
+                                          onClick={this.handleAssignSearchData.bind(
+                                            this
+                                          )}
+                                        >
+                                          SEARCH
+                                        </button>
+                                        <a
+                                          href="#!"
+                                          className="anchorTag-clear"
+                                        >
+                                          CLEAR
+                                        </a>
+                                      </div>
+                                      <div className="assign-modal-body">
+                                        <ReactTable
+                                          data={SearchAssignData}
+                                          columns={[
+                                            {
+                                              Header: <span>Agent</span>,
+                                              accessor: "agent",
+                                              Cell: row => {
+                                                var ids =
+                                                  row.original["user_ID"];
+                                                return (
+                                                  <div>
+                                                    <span>
+                                                      <img
+                                                        src={Headphone2Img}
+                                                        alt="headphone"
+                                                        className="oval-55 assign-hdphone"
+                                                        id={ids}
+                                                      />
+                                                      {
+                                                        row.original[
+                                                          "agentName"
+                                                        ]
+                                                      }
+                                                    </span>
+                                                  </div>
+                                                );
+                                              }
+                                            },
+                                            {
+                                              Header: <span>Designation</span>,
+                                              accessor: "designation"
+                                            },
+                                            {
+                                              Header: <span>Email</span>,
+                                              accessor: "email"
+                                            }
+                                          ]}
+                                          // resizable={false}
+                                          defaultPageSize={5}
+                                          showPagination={false}
+                                          getTrProps={this.handleTicketDetails}
+                                        />
+
+                                        <textarea
+                                          className="assign-modal-textArea"
+                                          placeholder="Add Remarks"
+                                          onChange={this.handleAssignRemark}
+                                        ></textarea>
+                                        <button
+                                          className="assign-butn btn-assign-tikcet"
+                                          type="button"
+                                          onClick={this.handleAssignTickets}
+                                        >
+                                          ASSIGN TICKETS
+                                        </button>
+                                      </div>
+                                    </Modal>
                                   </div>
                                 </div>
                               </div>
@@ -3521,6 +4166,7 @@ class MyTicketList extends Component {
                         </Card>
                       </Collapse>
                     </div>
+
                     <div className="MyTicketListReact">
                       <ReactTable
                         data={dataDash}

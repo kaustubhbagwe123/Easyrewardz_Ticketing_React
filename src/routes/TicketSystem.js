@@ -79,7 +79,7 @@ class TicketSystem extends Component {
       customerStoreStatus: 0,
       selectedTicketActionType: "200",
       selectedChannelOfPurchase: 0,
-      selectedTemplateID:0,
+      selectedTemplateID: 0,
       priorityId: 0,
       escalationLevel: 0,
       customerData: {},
@@ -504,10 +504,10 @@ class TicketSystem extends Component {
       IsWantToVisitedStore: want,
       IsAlreadyVisitedStore: Already,
       // TicketTemplateID:000000,
-      TicketSourceID:1,
+      TicketSourceID: 1
     };
     formData.append("ticketingDetails", JSON.stringify(paramData));
-    formData.append("Form",  this.state.file[0]);
+    formData.append("Form", this.state.file[0]);
     axios({
       method: "post",
       url: config.apiUrl + "/Ticketing/createTicket",
@@ -1259,7 +1259,7 @@ class TicketSystem extends Component {
                           />
                           {this.validator.message(
                             "Full Name",
-                            this.state.customerName,
+                            this.state.CustData.customername,
                             "required|alpha_space"
                           )}
                         </div>
@@ -1276,7 +1276,7 @@ class TicketSystem extends Component {
                           />
                           {this.validator.message(
                             "Mobile Number",
-                            this.state.customerPhoneNumber,
+                            this.state.CustData.customerPhone,
                             "required|integer|size:10"
                           )}
                         </div>
@@ -1294,7 +1294,7 @@ class TicketSystem extends Component {
                           />
                           {this.validator.message(
                             "Email Id",
-                            this.state.customerEmailId,
+                            this.state.CustData.custEmailId,
                             "required|email"
                           )}
                         </div>
@@ -1323,7 +1323,7 @@ class TicketSystem extends Component {
                           />
                           {this.validator.message(
                             "Date of Birth",
-                            this.state.dob,
+                            this.state.CustData.editDOB,
                             "required"
                           )}
                         </div>
@@ -1342,7 +1342,7 @@ class TicketSystem extends Component {
                           />
                           {this.validator.message(
                             "Alternate Number",
-                            this.state.altNumber,
+                            this.state.CustData.altNo,
                             "integer|size:10"
                           )}
                         </div>
@@ -1357,7 +1357,7 @@ class TicketSystem extends Component {
                           />
                           {this.validator.message(
                             "Alternate Email Id",
-                            this.state.altEmailID,
+                            this.state.CustData.altEmail,
                             "email"
                           )}
                         </div>
