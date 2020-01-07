@@ -26,7 +26,7 @@ class TicketSystemOrder extends Component {
       AddManuallyData: false,
       AddManualSaveTbl: false,
       OrderCreatDate: "",
-      orderId: "",
+      orderId: 0,
       billId: "",
       productBarCode: "",
       orderMRP: "",
@@ -44,6 +44,8 @@ class TicketSystemOrder extends Component {
       SearchItem: [],
       orderDetailsData: [],
       OrderSubComponent: [],
+      selectedDataRow: [],
+      CheckOrderID: {},
       StorAddress: {},
       purchaseFrmStorName: {},
       customerdetails: {},
@@ -100,12 +102,61 @@ class TicketSystemOrder extends Component {
     let ticketSourceValue = e.currentTarget.value;
     this.setState({ selectedTicketSource: ticketSourceValue });
   };
+  handleCheckOrderID(OrderItemId,rowData,e) {
+    debugger;
+    const newSelected = Object.assign({}, this.state.CheckOrderID);
+    newSelected[OrderItemId] = !this.state.CheckOrderID[OrderItemId];
+    this.setState({
+      CheckOrderID: OrderItemId ? newSelected : false
+    });
+    var selectedRow = [];
+
+    if (this.state.selectedDataRow.length == 0) {
+      selectedRow.push(rowData.original);
+      this.setState({
+        selectedDataRow: selectedRow
+      });
+    } else {
+      if (newSelected[OrderItemId] === true) {
+        for (var i = 0; i < this.state.selectedDataRow.length; i++) {
+          if (
+            this.state.selectedDataRow[i].OrderItemId === rowData.original.orderItemID
+          ) {
+            selectedRow.splice(i, 1);
+
+            break;
+          } else {
+            selectedRow = this.state.selectedDataRow;
+            selectedRow.push(rowData.original);
+            break;
+          }
+        }
+      } else {
+        for (var i = 0; i < this.state.selectedDataRow.length; i++) {
+          if (
+            this.state.selectedDataRow[i].OrderItemId === rowData.original.orderItemID
+          ) {
+            selectedRow = this.state.selectedDataRow;
+            selectedRow.splice(i, 1);
+            break;
+          }
+        }
+      }
+    }
+    this.setState({
+      selectedDataRow: selectedRow
+    });
+    {
+      this.props.getOrderId(this.state.selectedDataRow);
+    }
+  }
+
   handleCheckOrder = () => {
     this.setState({
       custAttachOrder: 0
     });
     {
-      this.props.AttachOrder(this.state.custAttachOrder);
+      this.props.AttachOrder(this.state.custAttachOrder,this.state.selectedDataRow);
     }
   };
   handleGetTicketSourceList() {
@@ -813,6 +864,15 @@ class TicketSystemOrder extends Component {
                         <input
                           type="checkbox"
                           id={row.original.orderMasterID}
+                          // checked={
+                          //   this.state.CheckOrderID[
+                          //     row.original.orderMasterID
+                          //   ] === true
+                          // }
+                          // onChange={this.handleCheckOrderID.bind(
+                          //   this,
+                          //   row.original.orderMasterID
+                          // )}
                         />
                         <label htmlFor={row.original.orderMasterID}>
                           {row.original.invoiceNumber}
@@ -870,6 +930,15 @@ class TicketSystemOrder extends Component {
                                 <input
                                   type="checkbox"
                                   id={row.original.orderItemID}
+                                  checked={
+                                    this.state.CheckOrderID[
+                                      row.original.orderItemID
+                                    ] === true
+                                  }
+                                  onChange={this.handleCheckOrderID.bind(
+                                    this,
+                                    row.original.orderItemID,row
+                                  )}
                                 />
                                 <label htmlFor={row.original.orderItemID}>
                                   {row.original.invoiceNo}

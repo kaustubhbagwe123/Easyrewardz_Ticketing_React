@@ -43,6 +43,7 @@ class TicketSystem extends Component {
     super();
     this.state = {
       showAddNote: false,
+      InformStore: false,
       SubmitBtnReopn: false,
       EditCustomer: false,
       mailFiled: {},
@@ -54,6 +55,7 @@ class TicketSystem extends Component {
       BrandData: [],
       CategoryData: [],
       SubCategoryData: [],
+      selectedDataRow: [],
       IssueTypeData: [],
       TicketPriorityData: [],
       ChannelOfPurchaseData: [],
@@ -94,7 +96,7 @@ class TicketSystem extends Component {
       userCC: "",
       userBCC: "",
       selectedFile: "",
-      saveAsDraft:"SaveAsDraft",
+      saveAsDraft: "SaveAsDraft",
       copied: false,
       custVisit: 0,
       AlreadycustVisit: 0,
@@ -156,6 +158,11 @@ class TicketSystem extends Component {
       customerAttachOrder: custAttachOrder
     });
   }
+  handleGetOrderId = selectedDataRow => {
+    this.setState({
+      selectedDataRow: selectedDataRow
+    });
+  };
   handleCustomerStoreStatus(WantVisit, AlreadyCustomerVisit) {
     debugger;
     this.setState({
@@ -203,6 +210,11 @@ class TicketSystem extends Component {
       showAddNote: !showAddNote
     });
   }
+  showInformStoreFuncation = () => {
+    this.setState({
+      InformStore: !this.state.InformStore
+    });
+  };
   handleOnChangeData = e => {
     const { name, value } = e.target;
     // const value =e.target.value;
@@ -517,19 +529,36 @@ class TicketSystem extends Component {
     this.state.file.push(e.target.files[0]);
   }
 
-  handleCREATE_TICKET(saveAsDraft) {
+  handleCREATE_TICKET(StatusID) {
     debugger;
     let self = this;
-    var actionId=this.state.selectedTicketActionType
+    // var OID = this.state.selectedDataRow;
+    var selectedRow = "";
+    for (var i = 0; i < this.state.selectedDataRow.length; i++) {
+      selectedRow += this.state.selectedDataRow[i]["orderItemID"] + ",";
+    }
+    var actionStatusId = 0;
+
+    // selectedRow.substring(",", selectedRow.length - 1);
+
+    if (StatusID === "200") {
+      actionStatusId = 103;
+    } else if (StatusID === "201") {
+      actionStatusId = 101;
+    } else {
+      actionStatusId = 100;
+    }
+    // var ItemID = selectedRow.substring(",", selectedRow.length - 1);
     var mailData = [];
     mailData = this.state.mailData;
     this.state.mailFiled["ToEmail"] = this.state.customerData.customerEmailId;
     this.state.mailFiled["TikcketMailSubject"] = "Demo Subject";
     this.state.mailFiled["TicketMailBody"] = this.state.tempName;
     this.state.mailFiled["PriorityID"] = this.state.selectedTicketPriority;
+    this.state.mailFiled["IsInforToStore"] = this.state.InformStore;
     mailData.push(this.state.mailFiled);
-    var want = this.state.custVisit;
-    var Already = this.state.AlreadycustVisit;
+    // var want = this.state.custVisit;
+    // var Already = this.state.AlreadycustVisit;
     // var uploadFiles = [];
     // uploadFiles = this.state.file;
     var formData = new FormData();
@@ -546,14 +575,15 @@ class TicketSystem extends Component {
       ChannelOfPurchaseID: this.state.selectedChannelOfPurchase,
       Ticketnotes: this.state.ticketNote,
       taskMasters: this.state.taskMaster,
-      StatusID: saveAsDraft,
+      StatusID: actionStatusId,
       TicketActionID: this.state.selectedTicketActionType,
       IsInstantEscalateToHighLevel: this.state.escalationLevel,
       IsWantToAttachOrder: this.state.customerAttachOrder,
       TicketTemplateID: this.state.selectTicketTemplateId,
-      IsWantToVisitedStore: want,
-      IsAlreadyVisitedStore: Already,
+      IsWantToVisitedStore: this.state.custVisit,
+      IsAlreadyVisitedStore: this.state.AlreadycustVisit,
       TicketSourceID: 1,
+      OrderItemID: selectedRow.substring(",", selectedRow.length - 1),
       ticketingMailerQues: mailData
     };
     formData.append("ticketingDetails", JSON.stringify(paramData));
@@ -565,11 +595,16 @@ class TicketSystem extends Component {
       data: formData
     }).then(function(res) {
       debugger;
-      let responseMessage = res.data.message;
+      let Msg = res.data.status;
 
-      // if (responseMessage === "Success") {
-      //   NotificationManager.success("New Customer added successfully.");
-      // }
+      if (Msg) {
+        NotificationManager.success(res.data.message);
+        setTimeout(function() {
+          self.props.history.push("myTicketlist");
+        }, 100);
+      } else {
+        NotificationManager.error(res.data.message);
+      }
     });
   }
 
@@ -678,7 +713,7 @@ class TicketSystem extends Component {
                   <button
                     type="button"
                     className="save-as-a-draft"
-                    onClick={this.handleCREATE_TICKET.bind(this,"100")}
+                    onClick={this.handleCREATE_TICKET.bind(this, "100")}
                   >
                     SAVE AS DRAFT
                   </button>
@@ -698,7 +733,10 @@ class TicketSystem extends Component {
                     <div>
                       <button
                         className="btnMdlSubmit"
-                        onClick={this.handleCREATE_TICKET.bind(this)}
+                        onClick={this.handleCREATE_TICKET.bind(
+                          this,
+                          this.state.selectedTicketActionType
+                        )}
                       >
                         {this.state.selectedTicketActionType === "200"
                           ? "Submit As Solved"
@@ -1028,6 +1066,7 @@ class TicketSystem extends Component {
                                 id="fil-open"
                                 name="filter-type"
                                 style={{ display: "none" }}
+                                onChange={() => this.showInformStoreFuncation()}
                               />
                               <label
                                 htmlFor="fil-open"
@@ -1412,6 +1451,7 @@ class TicketSystem extends Component {
                     <TicketSystemOrder
                       custDetails={CustomerId}
                       AttachOrder={this.handleCustomerAttachamentStatus}
+                      getOrderId={this.handleGetOrderId}
                     />
                   </div>
                   <div
