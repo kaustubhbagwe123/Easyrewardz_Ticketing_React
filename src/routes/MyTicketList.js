@@ -219,7 +219,7 @@ class MyTicketList extends Component {
       method: "post",
       url: config.apiUrl + "/Ticketing/Schedule",
       headers: authHeader(),
-      params: {
+      data: {
         ScheduleFor: this.state.selectedScheduleFor,
         ScheduleType: this.state.selectScheduleDate,
         NoOfDay: this.state.selectedNoOfDay,
