@@ -11,8 +11,14 @@ import CalSmallImg from "./../../assets/Images/cal-small.png";
 import StoreImg from "./../../assets/Images/store.png";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { Popover } from "antd";
+import axios from "axios";
+import config from "./../../helpers/config";
 import ReactTable from "react-table";
+import {
+  NotificationContainer,
+  NotificationManager
+} from "react-notifications";
+import { authHeader } from "../../helpers/authHeader";
 
 class MyTicketTask extends Component {
   constructor(props) {
@@ -20,8 +26,24 @@ class MyTicketTask extends Component {
 
     this.state = {
       AddTaskModal: false,
-      TaskDetailDrawer: false
+      TaskDetailDrawer: false,
+      taskTitle: "",
+      taskDescription: "",
+      DepartmentData: [],
+      FunctionData: [],
+      AssignToData: [],
+      TicketPriorityData: [],
+      selectedDepartment: 0,
+      selectedFunction: 0,
+      selectedAssignTo: 0,
+      selectedPriority: 0
     };
+    this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
+    this.handleGetFunctionList = this.handleGetFunctionList.bind(this);
+    this.handleGetAssignToList = this.handleGetAssignToList.bind(this);
+    this.handleGetTicketPriorityList = this.handleGetTicketPriorityList.bind(
+      this
+    );
   }
   handleAddTaskModalOpn() {
     this.setState({ AddTaskModal: true });
@@ -42,46 +64,139 @@ class MyTicketTask extends Component {
       }
     };
   };
-  render() {
-    // const popoverData1 = (
-    //   <>
-    //     <div>
-    //       <b>
-    //         <p className="title">Created By: Admin</p>
-    //       </b>
-    //       <p className="sub-title">Created Date: 12 March 2018</p>
-    //     </div>
-    //     <div>
-    //       <b>
-    //         <p className="title">Updated By: Manager</p>
-    //       </b>
-    //       <p className="sub-title">Updated Date: 12 March 2018</p>
-    //     </div>
-    //   </>
-    // );
+  handleTaskOnchangeData = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  };
+  handleGetDepartmentList() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Master/getDepartmentList",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let DepartmentData = res.data.responseData;
+      self.setState({ DepartmentData: DepartmentData });
+    });
+  }
+  handleGetFunctionList() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Master/getFunctionNameByDepartmentId",
+      headers: authHeader(),
+      params: {
+        DepartmentId: this.state.selectedDepartment
+      }
+    }).then(function(res) {
+      debugger;
+      let FunctionData = res.data.responseData;
+      self.setState({ FunctionData: FunctionData });
+    });
+  }
+  handleGetAssignToList() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Task/getassignedto",
+      headers: authHeader(),
+      params: {
+        Function_ID: this.state.selectedFunction
+      }
+    }).then(function(res) {
+      debugger;
+      let AssignToData = res.data.responseData;
+      self.setState({ AssignToData: AssignToData });
+    });
+  }
+  handleGetTicketPriorityList() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Priority/GetPriorityList",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let PriorityData = res.data.responseData;
+      self.setState({ TicketPriorityData: PriorityData });
+    });
+  }
+  setDepartmentValue = e => {
+    let DepartmentValue = e.target.value;
+    this.setState({ selectedDepartment: DepartmentValue });
+    setTimeout(() => {
+      if (this.state.selectedDepartment) {
+        this.handleGetFunctionList();
+      }
+    }, 1);
+  };
+  setFunctionValue = e => {
+    let FunctionValue = e.target.value;
+    this.setState({ selectedFunction: FunctionValue });
+    setTimeout(() => {
+      if (this.state.selectedFunction) {
+        this.handleGetAssignToList();
+      }
+    }, 1);
+  };
+  setAssignToValue = e => {
+    let AssignValue = e.target.value;
+    this.setState({ selectedAssignTo: AssignValue });
+  };
+  setPriorityValue = e => {
+    let PriorityValue = e.target.value;
+    this.setState({ selectedPriority: PriorityValue });
+  };
+  handleAddTaskTitle() {
+    debugger;
+    let self = this;
 
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Task/createTask",
+      headers: authHeader(),
+      data: {
+        TaskTitle: this.state.taskTitle.trim(),
+        TaskDescription: this.state.taskDescription.trim(),
+        DepartmentId: this.state.selectedDepartment,
+        FunctionID: this.state.selectedFunction,
+        AssignToID: this.state.selectedAssignTo,
+        PriorityID: this.state.selectedPriority,
+        TicketID:127
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.status;
+      if(status === true){
+        NotificationManager.success("Task created successfully.");
+        self.handleAddTaskModalCls()
+      }
+      else{
+        NotificationManager.error("Task not created.");
+      }
+    });
+  }
+
+  componentDidMount() {
+    this.handleGetDepartmentList();
+    this.handleGetTicketPriorityList();
+  }
+  render() {
     const dataTicketTask = [
       {
         id: "Ta1",
-        taskTitle: (
-          <label>
-            Wifi is not working from 5hrs
-          </label>
-        ),
-        status: (
-          <span className="table-btn table-blue-btn">Open</span>
-        ),
+        taskTitle: <label>Wifi is not working from 5hrs</label>,
+        status: <span className="table-btn table-blue-btn">Open</span>,
         dept: (
           <div>
-          <span>
-            Internet
-            <img
-                className="info-icon"
-                src={InfoIcon}
-                alt="info-icon"
-                
-              />
-            {/* <Popover content={popoverData1} placement="bottom">
+            <span>
+              Internet
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+              {/* <Popover content={popoverData1} placement="bottom">
               <img
                 className="info-icon"
                 src={InfoIcon}
@@ -89,179 +204,79 @@ class MyTicketTask extends Component {
                 
               />
             </Popover> */}
-          </span>
-        </div>
+            </span>
+          </div>
         ),
         creationOn: (
           <div>
-          <span>
-            2 Hour Ago
-            <img
-                className="info-icon"
-                src={InfoIcon}
-                alt="info-icon"
-                
-              />
-            {/* <Popover content={popoverData1} placement="bottom">
-              <img
-                className="info-icon"
-                src={InfoIcon}
-                alt="info-icon"
-                
-              />
-            </Popover> */}
-          </span>
-        </div>
-        ),
-      
+            <span>
+              2 Hour Ago
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </span>
+          </div>
+        )
       },
       {
         id: "Ta2",
-        taskTitle: (
-          <label>
-            Store door are not working
-          </label>
-        ),
-        status: (
-          <span className="table-btn table-blue-btn">Open</span>
-        ),
+        taskTitle: <label>Store door are not working</label>,
+        status: <span className="table-btn table-blue-btn">Open</span>,
         dept: (
           <div>
-          <span>
-            hardware
-            <img
-                className="info-icon"
-                src={InfoIcon}
-                alt="info-icon"
-                
-              />
-            {/* <Popover content={popoverData1} placement="bottom">
-              <img
-                className="info-icon"
-                src={InfoIcon}
-                alt="info-icon"
-                
-              />
-            </Popover> */}
-          </span>
-        </div>
+            <span>
+              hardware
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </span>
+          </div>
         ),
         creationOn: (
           <div>
-          <span>
-            12 March 2018
-            <img
-                className="info-icon"
-                src={InfoIcon}
-                alt="info-icon"
-                
-              />
-            {/* <Popover content={popoverData1} placement="bottom">
-              <img
-                className="info-icon"
-                src={InfoIcon}
-                alt="info-icon"
-                
-              />
-            </Popover> */}
-          </span>
-        </div>
-        ),
-       
+            <span>
+              12 March 2018
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </span>
+          </div>
+        )
       },
       {
         id: "Ta3",
-        taskTitle: (
-          <label>
-            Supplies are not coming on time
-          </label>
-        ),
-        status: (
-          <span className="table-btn table-green-btn">Solved</span>
-        ),
+        taskTitle: <label>Supplies are not coming on time</label>,
+        status: <span className="table-btn table-green-btn">Solved</span>,
         dept: (
           <div>
-          <span>
-            supply
-            <img
-                className="info-icon"
-                src={InfoIcon}
-                alt="info-icon"
-                
-              />
-            {/* <Popover content={popoverData1} placement="bottom">
-              <img
-                className="info-icon"
-                src={InfoIcon}
-                alt="info-icon"
-                
-              />
-            </Popover> */}
-          </span>
-        </div>
+            <span>
+              supply
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </span>
+          </div>
         ),
         creationOn: (
           <div>
-          <span>
-            12 March 2018
-            <img
-                className="info-icon"
-                src={InfoIcon}
-                alt="info-icon"
-                
-              />
-            {/* <Popover content={popoverData1} placement="bottom">
-              <img
-                className="info-icon"
-                src={InfoIcon}
-                alt="info-icon"
-                
-              />
-            </Popover> */}
-          </span>
-        </div>
-        ),
+            <span>
+              12 March 2018
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </span>
+          </div>
+        )
       }
-     
     ];
 
     const columnsTicketTask = [
       {
-        Header: (
-          <span>
-            ID
-            
-          </span>
-        ),
+        Header: <span>ID</span>,
         accessor: "id",
         Cell: row => (
           <span>
-            <img
-                src={HeadPhone3}
-                alt="HeadPhone"
-                className="headPhone3"
-            />
+            <img src={HeadPhone3} alt="HeadPhone" className="headPhone3" />
             ABC1234
           </span>
-        ),
+        )
       },
       {
-        Header: (
-          <span>
-            Status
-          
-          </span>
-        ),
-        accessor: "status",
-        
+        Header: <span>Status</span>,
+        accessor: "status"
       },
       {
-        Header: (
-          <span>
-            Task Title
-        
-          </span>
-        ),
+        Header: <span>Task Title</span>,
         accessor: "taskTitle"
       },
       {
@@ -281,9 +296,7 @@ class MyTicketTask extends Component {
           </span>
         ),
         accessor: "storeCode",
-        Cell: row => (
-          <label>2349</label>
-        ),
+        Cell: row => <label>2349</label>
       },
       {
         Header: (
@@ -293,9 +306,7 @@ class MyTicketTask extends Component {
           </span>
         ),
         accessor: "createdBy",
-        Cell: row => (
-          <label>N Rampal</label>
-        ),
+        Cell: row => <label>N Rampal</label>
       },
       {
         Header: (
@@ -314,13 +325,10 @@ class MyTicketTask extends Component {
           </span>
         ),
         accessor: "assignTo",
-        Cell: row => (
-          <label>A. Bansal</label>
-        ),
-      },
-    
+        Cell: row => <label>A. Bansal</label>
+      }
     ];
-    
+
     return (
       <div>
         <div className="claim-addTask-btn">
@@ -349,33 +357,111 @@ class MyTicketTask extends Component {
             />
           </div>
           <div style={{ padding: "20px 8px 0px 8px" }}>
-            <input type="text" class="txt-1" placeholder="Task Title" />
+            <input
+              type="text"
+              class="txt-1"
+              placeholder="Task Title"
+              name="taskTitle"
+              value={this.state.taskTitle}
+              onChange={this.handleTaskOnchangeData}
+            />
             <textarea
-              class="ClaimAddTadk-modal-textArea"
+              className="ClaimAddTadk-modal-textArea"
               placeholder="Task Description"
               rows="6"
+              name="taskDescription"
+              value={this.state.taskDescription}
+              onChange={this.handleTaskOnchangeData}
             ></textarea>
             <div className="row">
               <div className="col-md-6">
-                <select id="inputState" class="form-control dropdown-setting">
-                  <option>Department</option>
+                <select
+                  name="Department"
+                  className="category-select-system dropdown-label"
+                  value={this.state.selectedDepartment}
+                  onChange={this.setDepartmentValue}
+                >
+                  <option className="select-category-placeholder">
+                    Department
+                  </option>
+                  {this.state.DepartmentData !== null &&
+                    this.state.DepartmentData.map((item, i) => (
+                      <option
+                        key={i}
+                        value={item.departmentID}
+                        className="select-category-placeholder"
+                      >
+                        {item.departmentName}
+                      </option>
+                    ))}
                 </select>
               </div>
               <div className="col-md-6">
-                <select id="inputState" class="form-control dropdown-setting">
-                  <option>Task Priority</option>
+                <select
+                  name="Function"
+                  className="category-select-system dropdown-label"
+                  value={this.state.selectedFunction}
+                  onChange={this.setFunctionValue}
+                >
+                  <option className="select-sub-category-placeholder">
+                    Function
+                  </option>
+                  {this.state.FunctionData !== null &&
+                    this.state.FunctionData.map((item, i) => (
+                      <option
+                        key={i}
+                        value={item.functionID}
+                        className="select-category-placeholder"
+                      >
+                        {item.funcationName}
+                      </option>
+                    ))}
                 </select>
               </div>
             </div>
             <div className="row m-t-15">
               <div className="col-md-6">
-                <select id="inputState" class="form-control dropdown-setting">
-                  <option>Assign To</option>
+                <select
+                  name="AssignTo"
+                  value={this.state.selectedAssignTo}
+                  onChange={this.setAssignToValue}
+                  className="category-select-system dropdown-label"
+                >
+                  <option className="select-category-placeholder">
+                    Assign To
+                  </option>
+                  {this.state.AssignToData !== null &&
+                    this.state.AssignToData.map((item, i) => (
+                      <option
+                        key={i}
+                        value={item.userID}
+                        className="select-category-placeholder"
+                      >
+                        {item.userName}
+                      </option>
+                    ))}
                 </select>
               </div>
               <div className="col-md-6">
-                <select id="inputState" class="form-control dropdown-setting">
-                  <option>Function</option>
+                <select
+                  name="Priority"
+                  value={this.state.selectedPriority}
+                  onChange={this.setPriorityValue}
+                  className="category-select-system dropdown-label"
+                >
+                  <option className="select-sub-category-placeholder">
+                    Task Priority
+                  </option>
+                  {this.state.TicketPriorityData !== null &&
+                    this.state.TicketPriorityData.map((item, i) => (
+                      <option
+                        key={i}
+                        value={item.priorityID}
+                        className="select-sub-category-placeholder"
+                      >
+                        {item.priortyName}
+                      </option>
+                    ))}
                 </select>
               </div>
             </div>
@@ -384,7 +470,11 @@ class MyTicketTask extends Component {
                 <a href="#!" style={{ marginRight: "15px" }}>
                   CANCEL
                 </a>
-                <button className="butn" type="button">
+                <button
+                  className="butn"
+                  type="button"
+                  onClick={this.handleAddTaskTitle.bind(this)}
+                >
                   CREATE TASK
                 </button>
               </div>
@@ -392,125 +482,15 @@ class MyTicketTask extends Component {
           </div>
         </Modal>
         <div className="table-cntr mt-3 MyTicketTaskReact">
-                <ReactTable
-                    data={dataTicketTask}
-                    columns={columnsTicketTask}
-                    // resizable={false}
-                    defaultPageSize={3}
-                    showPagination={false}
-                    getTrProps={this.HandleRowClickDraw}
-                />
-          {/* <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Status</th>
-                <th className="table-img-cntr"></th>
-                <th>Task Title</th>
-                <th>
-                  Department
-                  <img src={TableArrowIcon} alt="table-arr-icon" />
-                </th>
-                <th>
-                  Store Code
-                  <img src={TableArrowIcon} alt="table-arr-icon" />
-                </th>
-                <th>
-                  Created By
-                  <img src={TableArrowIcon} alt="table-arr-icon" />
-                </th>
-                <th>
-                  Creation on
-                  <img src={TableArrowIcon} alt="table-arr-icon" />
-                </th>
-                <th>
-                  Assign to
-                  <img src={TableArrowIcon} alt="table-arr-icon" />
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr onClick={this.handleTaskDetailsDrawerOpn.bind(this)}>
-                <td>
-                  <img
-                    src={HeadPhone3}
-                    alt="HeadPhone"
-                    className="headPhone3"
-                  />
-                  ABC1234
-                </td>
-                <td>
-                  <span className="table-btn table-blue-btn">Open</span>
-                </td>
-                <td className="table-img-cntr"></td>
-                <td>Wifi is not working form 5hrs</td>
-                <td>
-                  Internet
-                  <img className="info-icon" src={InfoIcon} alt="info-icon" />
-                </td>
-                <td>2349</td>
-                <td>N Rampal</td>
-                <td>
-                  2 Hour Ago
-                  <img className="info-icon" src={InfoIcon} alt="info-icon" />
-                </td>
-                <td>A. Bansal</td>
-              </tr>
-              <tr>
-                <td>
-                  <img
-                    src={HeadPhone3}
-                    alt="HeadPhone"
-                    className="headPhone3"
-                  />
-                  ABC1234
-                </td>
-                <td>
-                  <span className="table-btn table-blue-btn">Open</span>
-                </td>
-                <td className="table-img-cntr"></td>
-                <td>Store door are not working</td>
-                <td>
-                  hardware
-                  <img className="info-icon" src={InfoIcon} alt="info-icon" />
-                </td>
-                <td>2349</td>
-                <td>N Rampal</td>
-
-                <td>
-                  12 March 2018
-                  <img className="info-icon" src={InfoIcon} alt="info-icon" />
-                </td>
-                <td>G. Bansal</td>
-              </tr>
-              <tr>
-                <td>
-                  <img
-                    src={HeadPhone3}
-                    alt="HeadPhone"
-                    className="headPhone3"
-                  />
-                  ABC1234
-                </td>
-                <td>
-                  <span className="table-btn table-green-btn">Solved</span>
-                </td>
-                <td className="table-img-cntr"></td>
-                <td>Supplies are not coming on time</td>
-                <td>
-                  supply
-                  <img className="info-icon" src={InfoIcon} alt="info-icon" />
-                </td>
-                <td>2349</td>
-                <td>N Rampal</td>
-                <td>
-                  12 March 2018
-                  <img className="info-icon" src={InfoIcon} alt="info-icon" />
-                </td>
-                <td>G. Bansal</td>
-              </tr>
-            </tbody>
-          </table> */}
+          <ReactTable
+            data={dataTicketTask}
+            columns={columnsTicketTask}
+            // resizable={false}
+            defaultPageSize={3}
+            showPagination={false}
+            getTrProps={this.HandleRowClickDraw}
+          />
+          
           <Drawer
             className="taskTab-drawerModal"
             placement={"right"}
@@ -595,12 +575,8 @@ class MyTicketTask extends Component {
               </button>
               <div className="row m-t-20">
                 <div className="col-xs-6">
-                <div className="storeImg-drawer">                  
-                  <img
-                    src={StoreImg}
-                    alt="headphone"
-                    className="storeImg"
-                  />
+                  <div className="storeImg-drawer">
+                    <img src={StoreImg} alt="headphone" className="storeImg" />
                   </div>
                   <label className="varun-taskDrawer">Varun Nagpal</label>
                   <span className="addTask-time-ago">2hr ago</span>
@@ -612,12 +588,8 @@ class MyTicketTask extends Component {
               </div>
               <div className="row m-t-20">
                 <div className="col-xs-6">
-                  <div className="storeImg-drawer">                  
-                  <img
-                    src={StoreImg}
-                    alt="headphone"
-                    className="storeImg"
-                  />
+                  <div className="storeImg-drawer">
+                    <img src={StoreImg} alt="headphone" className="storeImg" />
                   </div>
                   <label className="varun-taskDrawer">Varun Nagpal</label>
                   <span className="addTask-time-ago">2hr ago</span>
@@ -629,6 +601,7 @@ class MyTicketTask extends Component {
               </div>
             </div>
           </Drawer>
+          <NotificationContainer />
         </div>
       </div>
     );

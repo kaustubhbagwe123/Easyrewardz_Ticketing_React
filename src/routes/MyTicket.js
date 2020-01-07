@@ -73,6 +73,9 @@ class MyTicket extends Component {
       CommentCollapse2: false,
       Comment1Collapse: false,
       KbLink: false,
+      NotesTab: 0,
+      TaskTab: 0,
+      ClaimTab: 0,
       fileName: "",
       values: [
         {
@@ -85,6 +88,7 @@ class MyTicket extends Component {
       ]
     };
     this.toggleView = this.toggleView.bind(this);
+    this.handleGetTabsName = this.handleGetTabsName.bind(this);
   }
 
   fileUpload = e => {
@@ -194,6 +198,28 @@ class MyTicket extends Component {
   }
   handleSubmitForm(e) {
     e.preventDefault();
+  }
+  handleGetTabsName(e) {
+    let CurrentActive = e.target.name;
+    if (CurrentActive === "Task") {
+      this.setState({
+        TaskTab: 1,
+        NotesTab: 0,
+        ClaimTab: 0
+      });
+    } else if (CurrentActive === "Notes") {
+      this.setState({
+        TaskTab: 0,
+        NotesTab: 3,
+        ClaimTab: 0
+      });
+    } else if (CurrentActive === "Claim") {
+      this.setState({
+        TaskTab: 0,
+        NotesTab: 0,
+        ClaimTab: 2
+      });
+    }
   }
   handleAddNewForm() {
     this.setState(prevState => ({
@@ -773,14 +799,12 @@ class MyTicket extends Component {
                         </div>
 
                         <div className="col-md-7 xyz">
-                        <img
-                                  src={CrossIcon}
-                                  alt="cross-icon"
-                                  className="cross"
-                                  onClick={this.handleBillImgModalClose.bind(
-                                    this
-                                  )}
-                                />
+                          <img
+                            src={CrossIcon}
+                            alt="cross-icon"
+                            className="cross"
+                            onClick={this.handleBillImgModalClose.bind(this)}
+                          />
                           {this.state.HistOrderShow ? (
                             <div>
                               <div className="histo">
@@ -792,7 +816,6 @@ class MyTicket extends Component {
                                 <label className="customer-text">
                                   HISTORICAL ORDER
                                 </label>
-                                
                               </div>
                               <div className="col-md-6">
                                 <input
@@ -841,11 +864,11 @@ class MyTicket extends Component {
                             <div>
                               <div className="row histo">
                                 <div className="col-md-7">
-                                <img
-                              src={UserIcon}
-                              alt="customer-icon"
-                              className="usericon"
-                            />
+                                  <img
+                                    src={UserIcon}
+                                    alt="customer-icon"
+                                    className="usericon"
+                                  />
                                   <img
                                     src={Up1Img}
                                     alt="down"
@@ -1068,13 +1091,13 @@ class MyTicket extends Component {
             <div className="row">
               <label className="ticket-title-where">Ticket Title:</label>
             </div>
-            <div className="row" style={{marginTop:"0"}}>
+            <div className="row" style={{ marginTop: "0" }}>
               <label className="label-2">Where can I see my reward?</label>
             </div>
             <div className="row">
               <label className="ticket-title-where">Ticket Details:</label>
             </div>
-            <div className="row" style={{marginTop:"0"}}>
+            <div className="row" style={{ marginTop: "0" }}>
               <label className="label-3">
                 Where I can see details of my rewards in the ‘Rewards’ tab
                 within the ‘Refer and Earn Rewards’ screen.You will also get
@@ -1473,6 +1496,8 @@ class MyTicket extends Component {
                         role="tab"
                         aria-controls="Notes-tab"
                         aria-selected="false"
+                        name="Notes"
+                        onClick={this.handleGetTabsName}
                       >
                         Notes: 00
                       </a>
@@ -1485,6 +1510,8 @@ class MyTicket extends Component {
                         role="tab"
                         aria-controls="Task-tab"
                         aria-selected="false"
+                        name="Task"
+                        onClick={this.handleGetTabsName}
                       >
                         Task: 03
                       </a>
@@ -1497,6 +1524,8 @@ class MyTicket extends Component {
                         role="tab"
                         aria-controls="Claim-tab"
                         aria-selected="false"
+                        name="Claim"
+                        onClick={this.handleGetTabsName}
                       >
                         Claim: 00
                       </a>
