@@ -2428,10 +2428,10 @@ class MyTicket extends Component {
                       ADD COMMENT
                     </button>
                   </div>
-                  <div className="col-12 col-xs-12 col-sm-7">
+                  <div className="col-12 col-xs-12 col-sm-7 my-ticket-notes">
                     {this.state.Notesdetails !== null &&
                       this.state.Notesdetails.map((item, i) => (
-                        <div className="row" key={i}>
+                        <div className="row my-ticket-notes-row" key={i}>
                           <div className="col-md-1">
                             <div className="oval-5-1-new">
                               <img
@@ -2442,12 +2442,12 @@ class MyTicket extends Component {
                             </div>
                           </div>
                           <div className="col-md-11">
-                            <div className="row">
+                            <div className="row my-ticket-notes-created">
                               <label className="varun-nagpal">
                                 {item.createdByName}
                               </label>
                             </div>
-                            <div className="row">
+                            <div className="row my-ticket-notes-created">
                               <label className="hi-diwakar-i-really tab">
                                 {item.note}
                               </label>
