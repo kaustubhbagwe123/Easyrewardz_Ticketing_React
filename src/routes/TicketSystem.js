@@ -115,7 +115,9 @@ class TicketSystem extends Component {
         {
           department: 90
         }
-      ]
+      ],
+      titleSuggValue: "",
+      toggleTitle: false
     };
     this.validator = new SimpleReactValidator();
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
@@ -138,6 +140,12 @@ class TicketSystem extends Component {
     this.handleGetTicketPriorityList = this.handleGetTicketPriorityList.bind(
       this
     );
+    this.setWrapperRef = this.setWrapperRef.bind(this);
+    this.handleClickOutside = this.handleClickOutside.bind(this);
+  }
+  toggleTitleSuggestion() {
+    // this.setState({ toggleTitle: !this.state.toggleTitle });
+    this.setState({ toggleTitle: true });
   }
   HandleKbLinkModalOpen() {
     this.setState({ KbLink: true });
@@ -504,9 +512,35 @@ class TicketSystem extends Component {
     } else {
       this.props.history.push("addSearchMyTicket");
     }
+    document.addEventListener("mousedown", this.handleClickOutside);
+  }
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this.handleClickOutside);
+  }
+  setWrapperRef(node) {
+    this.wrapperRef = node;
+  }
+  handleClickOutside(event) {
+    if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+      this.setState({ toggleTitle: false });
+    }
   }
   handleTicketSuggestion = ticketSuggestion => {
     this.setState({ ticketSuggestion });
+  };
+  handleAppendTicketSuggestion = e => {
+    debugger;
+    this.setState({ toggleTitle: true });
+    let clickedInfo = e.currentTarget.innerText;
+    let titleSuggValue = this.state.titleSuggValue;
+    titleSuggValue += clickedInfo;
+    this.setState({ titleSuggValue });
+    this.searchInput.focus();
+  };
+  handleTicSugg = e => {
+    debugger;
+    let ticSugg = e.currentTarget.value;
+    this.setState({ titleSuggValue: ticSugg });
   };
   handleFileUpload(e) {
     debugger;
@@ -753,7 +787,7 @@ class TicketSystem extends Component {
                 <div className="row m-b-10">
                   <div className="col-md-12">
                     <label className="category">Ticket Title</label>
-                    <div className="ticket-title-select">
+                    {/* <div className="ticket-title-select">
                       <Select
                         // className="rate-dropdown"
                         getOptionLabel={option => option.ticketTitle}
@@ -762,9 +796,38 @@ class TicketSystem extends Component {
                         placeholder="Suggestion"
                         value={this.state.ticketSuggestion}
                         onChange={this.handleTicketSuggestion}
+                        // menuIsOpen={true}
                         // name="ticketSuggestion"
                         // showNewOptionAtTop={false}
                       />
+                    </div> */}
+                    <div
+                      className="custom-ticket-title"
+                      onClick={() => this.toggleTitleSuggestion()}
+                      ref={this.setWrapperRef}
+                    >
+                      <input
+                        placeholder="Suggestions"
+                        value={this.state.titleSuggValue}
+                        type="text"
+                        onChange={this.handleTicSugg}
+                        ref={input => {
+                          this.searchInput = input;
+                        }}
+                      />
+                      {this.state.toggleTitle && (
+                        <div className="custom-ticket-title-suggestions">
+                          {this.state.TicketTitleData !== null &&
+                            this.state.TicketTitleData.map((item, i) => (
+                              <span
+                                key={i}
+                                onClick={this.handleAppendTicketSuggestion}
+                              >
+                                {item.ticketTitle}
+                              </span>
+                            ))}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>

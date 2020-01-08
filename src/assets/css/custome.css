@@ -3274,6 +3274,58 @@ table tr th:last-child {
   display: inline-block;
   margin: 10px 0 12px;
 }
+
+.custom-ticket-title {
+  position: relative;
+}
+.custom-ticket-title input {
+  background-color: #ecf2f4;
+  border: 0;
+  width: 100%;
+  padding: 11px;
+  border-radius: 4px;
+}
+.custom-ticket-title-suggestions span {
+  display: inline-block;
+    width: auto;
+    border: 1px solid #2561A8;
+    border-radius: 8px;
+    padding: 5px 10px;
+    margin: 7px;
+    cursor: pointer;
+    color: #9b9b9b;
+    transition: all 0.2s linear;
+}
+.custom-ticket-title-suggestions span:hover {
+  background: #DEEBFF;
+}
+.custom-ticket-title-suggestions {
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  padding: 12px;
+  position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    z-index: 1;
+    max-height: 200px;
+    overflow: auto;
+}
+.custom-ticket-title-suggestions::-webkit-scrollbar {
+  width: 5px;
+}
+.custom-ticket-title-suggestions::-webkit-scrollbar-track {
+  background: #cac8c8;
+  border-radius: 10px;
+}
+.custom-ticket-title-suggestions::-webkit-scrollbar-thumb {
+  background: #5c5252;
+  border-radius: 10px;
+}
+.custom-ticket-title-suggestions::-webkit-scrollbar-thumb:hover {
+  background: #a5a3a3;
+}
 /* ticket system ends */
 
 /* add search my ticket starts */
