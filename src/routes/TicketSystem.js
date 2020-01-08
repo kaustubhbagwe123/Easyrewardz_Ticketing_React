@@ -38,7 +38,6 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import SimpleReactValidator from "simple-react-validator";
 import { authHeader } from "../helpers/authHeader";
 
-
 class TicketSystem extends Component {
   constructor() {
     super();
@@ -532,9 +531,18 @@ class TicketSystem extends Component {
   handleAppendTicketSuggestion = e => {
     debugger;
     this.setState({ toggleTitle: true });
+    var startPoint = document.getElementById("titleSuggestion").selectionStart;
+    var textLength = document.getElementById("titleSuggestion").value.length;
+    var textBefore = document
+      .getElementById("titleSuggestion")
+      .value.substring(0, startPoint);
+    var textAfter = document
+      .getElementById("titleSuggestion")
+      .value.substring(startPoint, textLength);
+    // alert(textBefore + "....." + textAfter);
     let clickedInfo = e.currentTarget.innerText;
     let titleSuggValue = this.state.titleSuggValue;
-    titleSuggValue += clickedInfo;
+    titleSuggValue = textBefore + " " + clickedInfo + " " + textAfter;
     this.setState({ titleSuggValue });
     this.searchInput.focus();
   };
@@ -738,15 +746,24 @@ class TicketSystem extends Component {
                     className="bitmapheadpone"
                   />
                   <label className="a91-9873470074">{CustNumber}</label>
-                  <CopyToClipboard text={CustNumber} onCopy={() => this.setState({ copied: true })}>
-                    <img src={CopyIcon} alt="Copy-Icon" className="bitmapheadpone" />  
+                  <CopyToClipboard
+                    text={CustNumber}
+                    onCopy={() => this.setState({ copied: true })}
+                  >
+                    <img
+                      src={CopyIcon}
+                      alt="Copy-Icon"
+                      className="bitmapheadpone"
+                    />
                   </CopyToClipboard>
                   {this.state.copied ? (
-                    <span className="ml-2" style={{ color: "red",display:"initial" }} >
-                        Copied.
+                    <span
+                      className="ml-2"
+                      style={{ color: "red", display: "initial" }}
+                    >
+                      Copied.
                     </span>
                   ) : null}
-                  
                 </td>
 
                 <td className="tdtextnew" style={{ padding: "5px" }}>
@@ -823,6 +840,7 @@ class TicketSystem extends Component {
                         ref={input => {
                           this.searchInput = input;
                         }}
+                        id="titleSuggestion"
                       />
                       {this.state.toggleTitle && (
                         <div className="custom-ticket-title-suggestions">
