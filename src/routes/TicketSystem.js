@@ -787,7 +787,8 @@ class TicketSystem extends Component {
                       name="ticketDetails"
                       value={this.state.ticketDetails}
                       onChange={this.handleTicketChange}
-                    ></textarea>
+                    >
+                    </textarea>
                   </div>
                 </div>
 
