@@ -349,11 +349,12 @@ class MyTicketTask extends Component {
             />
           </div>
           <div style={{ padding: "20px 8px 0px 8px" }}>
-            <input type="text" class="txt-1" placeholder="Task Title" />
+            <input type="text" class="txt-1" placeholder="Task Title" maxLength="100" />
             <textarea
               class="ClaimAddTadk-modal-textArea"
               placeholder="Task Description"
               rows="6"
+              maxLength="250"
             ></textarea>
             <div className="row">
               <div className="col-md-6">
@@ -381,9 +382,10 @@ class MyTicketTask extends Component {
             </div>
             <div className="row m-t-20" style={{ float: "right" }}>
               <div style={{ marginRight: "15px" }}>
-                <a href="#!" style={{ marginRight: "15px" }}>
-                  CANCEL
-                </a>
+                <button className="cancel" type="button"
+                  onClick={this.handleAddTaskModalCls.bind(this)}>
+                    CANCEL
+                </button>
                 <button className="butn" type="button">
                   CREATE TASK
                 </button>
@@ -593,8 +595,9 @@ class MyTicketTask extends Component {
               <button className="assign-butn btn-assign-tikcet" type="button">
                 ADD COMMENT
               </button>
-              <div className="row m-t-20">
-                <div className="col-xs-6">
+              <div className="varunoverflow">
+              <div className="row m-t-20 mx-0">
+                <div className="col-xs-6" style={{display:"contents"}}>
                 <div className="storeImg-drawer">                  
                   <img
                     src={StoreImg}
@@ -602,16 +605,17 @@ class MyTicketTask extends Component {
                     className="storeImg"
                   />
                   </div>
-                  <label className="varun-taskDrawer">Varun Nagpal</label>
-                  <span className="addTask-time-ago">2hr ago</span>
+                  <label className="varun-taskDrawer">Varun Nagpal 
+                    <span className="addTask-time-ago">2hr ago</span></label>
+                  
                   <label className="task-drawer-lnl">
                     Hi Diwakar, I really appreciate you joining us at
                     Voucherify! My top priority
                   </label>
                 </div>
               </div>
-              <div className="row m-t-20">
-                <div className="col-xs-6">
+              <div className="row m-t-20 mx-0">
+                <div className="col-xs-6" style={{display:"contents"}}>
                   <div className="storeImg-drawer">                  
                   <img
                     src={StoreImg}
@@ -619,13 +623,34 @@ class MyTicketTask extends Component {
                     className="storeImg"
                   />
                   </div>
-                  <label className="varun-taskDrawer">Varun Nagpal</label>
-                  <span className="addTask-time-ago">2hr ago</span>
+                  <label className="varun-taskDrawer">Varun Nagpal
+                    <span className="addTask-time-ago">2hr ago</span>
+                  </label>
+                  
                   <label className="task-drawer-lnl">
                     Hi Diwakar, I really appreciate you joining us at
                     Voucherify! My top priority
                   </label>
                 </div>
+              </div>
+              <div className="row m-t-20 mx-0">
+                <div className="col-xs-6" style={{display:"contents"}}>
+                <div className="storeImg-drawer">                  
+                  <img
+                    src={StoreImg}
+                    alt="headphone"
+                    className="storeImg"
+                  />
+                  </div>
+                  <label className="varun-taskDrawer">Varun Nagpal 
+                    <span className="addTask-time-ago">2hr ago</span></label>
+                  
+                  <label className="task-drawer-lnl">
+                    Hi Diwakar, I really appreciate you joining us at
+                    Voucherify! My top priority
+                  </label>
+                </div>
+              </div>
               </div>
             </div>
           </Drawer>

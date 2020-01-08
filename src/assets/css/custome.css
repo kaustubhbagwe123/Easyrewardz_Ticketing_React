@@ -1232,15 +1232,17 @@ table tr th:last-child {
   margin: 20px;
 }
 .bitmapback {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   margin-left: 10px;
+  cursor: pointer;
 }
 
 .bitmapheadpone {
   width: 30px;
   height: 20px;
   padding-left: 10px;
+  cursor: pointer;
 }
 
 .source {
@@ -7662,6 +7664,15 @@ table tr th:last-child {
   width: 588px;
   margin-left: -19px;
 }
+#ClaimAdd-taskPopup .cancel {
+  background-color: #fff;
+  color: #2561a8;
+  font-size: 14px;
+  font-family: lato;
+  margin-right: 1opx;
+  cursor: pointer;
+  border: none;
+}
 .claim-hdrMdl {
   font-weight: 700;
   font-size: 16px;
@@ -7730,11 +7741,30 @@ table tr th:last-child {
   resize: none;
   padding: 15px;
 }
+.varunoverflow {
+  max-height: 190px;
+  overflow-x: hidden;
+}
+.varunoverflow::-webkit-scrollbar{
+  width: 6px;
+}
+.varunoverflow::-webkit-scrollbar-track{
+  background: #ddd;
+  border-radius: 10px;
+}
+.varunoverflow::-webkit-scrollbar-thumb{
+  background: #888;
+  border-radius: 10px;
+}
+.varunoverflow::-webkit-scrollbar-thumb:hover{
+  background: #555;
+}
 .varun-taskDrawer {
   font-weight: bold;
   color: black;
   display: inline-block;
-  padding-left: 8px;
+  line-height: 30px;
+  padding: 0px 5px;
 }
 .addTask-time-ago {
   color: #9b9b9b;
@@ -7753,16 +7783,15 @@ table tr th:last-child {
   font-weight: 400;
   line-height: 23px;
   width: 343px;
-  text-align: left;
-  float: right;
-  margin-right: 3px;
+  padding: 0;
+  margin-left: 35px;
 }
 .storeImg-drawer {
   background-color: #f8e71c;
   border-radius: 100%;
   width: 30px;
   height: 30px;
-  margin-left: 14px;
+  /* margin-left: 14px; */
   padding: 6px;
 }
 .storeImg {

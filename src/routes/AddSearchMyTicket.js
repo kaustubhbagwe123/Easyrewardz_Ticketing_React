@@ -199,9 +199,7 @@ class AddSearchMyTicket extends Component {
           />
           <label className="label-addsearch">Source</label>
           <img src={HeadphoneImg} alt="HeadphoneImg" className="headphonered" />
-         
-                  <label className="mobile-noAddsearch">+91-9873470074</label>
-           
+          <label className="mobile-noAddsearch">+91-9873470074</label>
           <CopyToClipboard text={"Hello"} onCopy={() => this.setState({ copied: true })}>
               <img src={PasteImg} alt="PasteImage" className="paste-addSearch" />  
           </CopyToClipboard>

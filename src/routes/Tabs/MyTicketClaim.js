@@ -3,12 +3,12 @@ import InfoIcon from "./../../assets/Images/info-icon.png";
 import HeadPhone3 from "./../../assets/Images/headphone3.png";
 import BlackLeftArrow from "./../../assets/Images/black-left-arrow.png";
 import BataShoesIcon from "./../../assets/Images/bata.png";
-import StoreIcon from "./../../assets/Images/store.png";
 import { Drawer } from "antd";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { Popover } from "antd";
 import ReactTable from "react-table";
+import StoreImg from "./../../assets/Images/store.png";
 
 class MyTicketClaim extends Component {
   constructor(props) {
@@ -495,51 +495,64 @@ class MyTicketClaim extends Component {
                   placeholder="Add Comments"
                 ></textarea>
               </div>
-              <div className="col-md-7">
-                <div className="row">
-                  <div className="col-md-2">
-                    <div className="oval-5-1-new">
-                      <img
-                        src={StoreIcon}
-                        style={{ padding: "5px" }}
-                        alt="store-icon"
-                      />
-                    </div>
+              <div className="col-md-6">
+              <div className="varunoverflow">
+              <div className="row m-t-20 mx-0">
+                <div className="col-xs-6" style={{display:"contents"}}>
+                <div className="storeImg-drawer">                  
+                  <img
+                    src={StoreImg}
+                    alt="headphone"
+                    className="storeImg"
+                  />
                   </div>
-                  <div className="col-md-10">
-                    <div className="row">
-                      <label className="varun-nagpal">Varun Nagpal</label>
-                    </div>
-                    <div className="row">
-                      <label className="hi-diwakar-i-really">
-                        Hi Diwakar, I really appreciate you joining us at
-                        Voucherify! My top priority{" "}
-                      </label>
-                    </div>
-                  </div>
+                  <label className="varun-taskDrawer">Varun Nagpal 
+                    <span className="addTask-time-ago">2hr ago</span></label>
+                  
+                  <label className="task-drawer-lnl">
+                    Hi Diwakar, I really appreciate you joining us at
+                    Voucherify! My top priority
+                  </label>
                 </div>
-                <div className="row" style={{ marginTop: "20px" }}>
-                  <div className="col-md-2">
-                    <div className="oval-5-1-new">
-                      <img
-                        src={StoreIcon}
-                        style={{ padding: "5px" }}
-                        alt="store-icon"
-                      />
-                    </div>
+              </div>
+              <div className="row m-t-20 mx-0">
+                <div className="col-xs-6" style={{display:"contents"}}>
+                  <div className="storeImg-drawer">                  
+                  <img
+                    src={StoreImg}
+                    alt="headphone"
+                    className="storeImg"
+                  />
                   </div>
-                  <div className="col-md-10">
-                    <div className="row">
-                      <label className="varun-nagpal">Varun Nagpal</label>
-                    </div>
-                    <div className="row">
-                      <label className="hi-diwakar-i-really">
-                        Hi Diwakar, I really appreciate you joining us at
-                        Voucherify! My top priority{" "}
-                      </label>
-                    </div>
-                  </div>
+                  <label className="varun-taskDrawer">Varun Nagpal
+                    <span className="addTask-time-ago">2hr ago</span>
+                  </label>
+                  
+                  <label className="task-drawer-lnl">
+                    Hi Diwakar, I really appreciate you joining us at
+                    Voucherify! My top priority
+                  </label>
                 </div>
+              </div>
+              <div className="row m-t-20 mx-0">
+                <div className="col-xs-6" style={{display:"contents"}}>
+                <div className="storeImg-drawer">                  
+                  <img
+                    src={StoreImg}
+                    alt="headphone"
+                    className="storeImg"
+                  />
+                  </div>
+                  <label className="varun-taskDrawer">Varun Nagpal 
+                    <span className="addTask-time-ago">2hr ago</span></label>
+                  
+                  <label className="task-drawer-lnl">
+                    Hi Diwakar, I really appreciate you joining us at
+                    Voucherify! My top priority
+                  </label>
+                </div>
+              </div>
+              </div>
               </div>
             </div>
             <div

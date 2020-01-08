@@ -38,6 +38,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import SimpleReactValidator from "simple-react-validator";
 import { authHeader } from "../helpers/authHeader";
 
+
 class TicketSystem extends Component {
   constructor() {
     super();
@@ -702,11 +703,15 @@ class TicketSystem extends Component {
                     className="bitmapheadpone"
                   />
                   <label className="a91-9873470074">{CustNumber}</label>
-                  <img
-                    src={CopyIcon}
-                    alt="Copy-Icon"
-                    className="bitmapheadpone"
-                  />
+                  <CopyToClipboard text={"Hello"} onCopy={() => this.setState({ copied: true })}>
+                    <img src={CopyIcon} alt="Copy-Icon" className="bitmapheadpone" />  
+                  </CopyToClipboard>
+                  {this.state.copied ? (
+                    <span className="ml-2" style={{ color: "red",display:"initial" }} >
+                        Copied.
+                    </span>
+                  ) : null}
+                  
                 </td>
 
                 <td className="tdtextnew" style={{ padding: "5px" }}>
