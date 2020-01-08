@@ -38,7 +38,6 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import SimpleReactValidator from "simple-react-validator";
 import { authHeader } from "../helpers/authHeader";
 
-
 class TicketSystem extends Component {
   constructor() {
     super();
@@ -116,7 +115,9 @@ class TicketSystem extends Component {
         {
           department: 90
         }
-      ]
+      ],
+      titleSuggValue: "",
+      toggleTitle: false
     };
     this.validator = new SimpleReactValidator();
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
@@ -139,6 +140,12 @@ class TicketSystem extends Component {
     this.handleGetTicketPriorityList = this.handleGetTicketPriorityList.bind(
       this
     );
+    this.setWrapperRef = this.setWrapperRef.bind(this);
+    this.handleClickOutside = this.handleClickOutside.bind(this);
+  }
+  toggleTitleSuggestion() {
+    // this.setState({ toggleTitle: !this.state.toggleTitle });
+    this.setState({ toggleTitle: true });
   }
   HandleKbLinkModalOpen() {
     this.setState({ KbLink: true });
@@ -505,9 +512,44 @@ class TicketSystem extends Component {
     } else {
       this.props.history.push("addSearchMyTicket");
     }
+    document.addEventListener("mousedown", this.handleClickOutside);
+  }
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this.handleClickOutside);
+  }
+  setWrapperRef(node) {
+    this.wrapperRef = node;
+  }
+  handleClickOutside(event) {
+    if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+      this.setState({ toggleTitle: false });
+    }
   }
   handleTicketSuggestion = ticketSuggestion => {
     this.setState({ ticketSuggestion });
+  };
+  handleAppendTicketSuggestion = e => {
+    debugger;
+    this.setState({ toggleTitle: true });
+    var startPoint = document.getElementById("titleSuggestion").selectionStart;
+    var textLength = document.getElementById("titleSuggestion").value.length;
+    var textBefore = document
+      .getElementById("titleSuggestion")
+      .value.substring(0, startPoint);
+    var textAfter = document
+      .getElementById("titleSuggestion")
+      .value.substring(startPoint, textLength);
+    // alert(textBefore + "....." + textAfter);
+    let clickedInfo = e.currentTarget.innerText;
+    let titleSuggValue = this.state.titleSuggValue;
+    titleSuggValue = textBefore + " " + clickedInfo + " " + textAfter;
+    this.setState({ titleSuggValue });
+    this.searchInput.focus();
+  };
+  handleTicSugg = e => {
+    debugger;
+    let ticSugg = e.currentTarget.value;
+    this.setState({ titleSuggValue: ticSugg });
   };
   handleFileUpload(e) {
     debugger;
@@ -704,15 +746,24 @@ class TicketSystem extends Component {
                     className="bitmapheadpone"
                   />
                   <label className="a91-9873470074">{CustNumber}</label>
-                  <CopyToClipboard text={CustNumber} onCopy={() => this.setState({ copied: true })}>
-                    <img src={CopyIcon} alt="Copy-Icon" className="bitmapheadpone" />  
+                  <CopyToClipboard
+                    text={CustNumber}
+                    onCopy={() => this.setState({ copied: true })}
+                  >
+                    <img
+                      src={CopyIcon}
+                      alt="Copy-Icon"
+                      className="bitmapheadpone"
+                    />
                   </CopyToClipboard>
                   {this.state.copied ? (
-                    <span className="ml-2" style={{ color: "red",display:"initial" }} >
-                        Copied.
+                    <span
+                      className="ml-2"
+                      style={{ color: "red", display: "initial" }}
+                    >
+                      Copied.
                     </span>
                   ) : null}
-                  
                 </td>
 
                 <td className="tdtextnew" style={{ padding: "5px" }}>
@@ -762,7 +813,7 @@ class TicketSystem extends Component {
                 <div className="row m-b-10">
                   <div className="col-md-12">
                     <label className="category">Ticket Title</label>
-                    <div className="ticket-title-select">
+                    {/* <div className="ticket-title-select">
                       <Select
                         // className="rate-dropdown"
                         getOptionLabel={option => option.ticketTitle}
@@ -771,9 +822,39 @@ class TicketSystem extends Component {
                         placeholder="Suggestion"
                         value={this.state.ticketSuggestion}
                         onChange={this.handleTicketSuggestion}
+                        // menuIsOpen={true}
                         // name="ticketSuggestion"
                         // showNewOptionAtTop={false}
                       />
+                    </div> */}
+                    <div
+                      className="custom-ticket-title"
+                      onClick={() => this.toggleTitleSuggestion()}
+                      ref={this.setWrapperRef}
+                    >
+                      <input
+                        placeholder="Suggestions"
+                        value={this.state.titleSuggValue}
+                        type="text"
+                        onChange={this.handleTicSugg}
+                        ref={input => {
+                          this.searchInput = input;
+                        }}
+                        id="titleSuggestion"
+                      />
+                      {this.state.toggleTitle && (
+                        <div className="custom-ticket-title-suggestions">
+                          {this.state.TicketTitleData !== null &&
+                            this.state.TicketTitleData.map((item, i) => (
+                              <span
+                                key={i}
+                                onClick={this.handleAppendTicketSuggestion}
+                              >
+                                {item.ticketTitle}
+                              </span>
+                            ))}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
