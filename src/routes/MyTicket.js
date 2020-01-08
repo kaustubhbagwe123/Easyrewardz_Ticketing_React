@@ -76,19 +76,24 @@ class MyTicket extends Component {
       CommentCollapse2: false,
       Comment1Collapse: false,
       KbLink: false,
-      TicketPriorityData: [],
+      NotesTab: 0,
+      TaskTab: 0,
+      ClaimTab: 0,
       selectedPriority: 0,
-      BrandData: [],
       selectedBrand: 0,
-      CategoryData: [],
       selectedCategory: 0,
-      SubCategoryData: [],
       selectedSubCategory: 0,
-      IssueTypeData: [],
       selectedIssueType: 0,
-      ChannelOfPurchaseData: [],
       selectedChannelOfPurchase: 0,
+      Notesdetails:[],
+      TicketPriorityData: [],
+      BrandData: [],
+      CategoryData: [],
+      SubCategoryData: [],
+      IssueTypeData: [],
+      ChannelOfPurchaseData: [],
       fileName: "",
+      NoteAddComment: "",
       values: [
         {
           taskTitle: "",
@@ -100,18 +105,23 @@ class MyTicket extends Component {
       ]
     };
     this.toggleView = this.toggleView.bind(this);
+    this.handleGetTabsName = this.handleGetTabsName.bind(this);
+    this.handleGetNotesTabDetails = this.handleGetNotesTabDetails.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
     this.handleGetTicketPriorityList = this.handleGetTicketPriorityList.bind(
       this
     );
     this.handleGetCategoryList = this.handleGetCategoryList.bind(this);
     this.handleGetSubCategoryList = this.handleGetSubCategoryList.bind(this);
-    this.handleCkEditorTemplate = this.handleCkEditorTemplate.bind(this);
     this.handleGetChannelOfPurchaseList = this.handleGetChannelOfPurchaseList.bind(
       this
     );
   }
-
+  handleNoteOnChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  };
   fileUpload = e => {
     this.setState({ fileName: e.target.files[0].name });
   };
@@ -154,31 +164,12 @@ class MyTicket extends Component {
     let issueTypeValue = e.currentTarget.value;
     this.setState({ selectedIssueType: issueTypeValue });
 
-    setTimeout(() => {
-      if (this.state.selectedIssueType) {
-        this.handleCkEditorTemplate();
-      }
-    }, 1);
   };
-   setChannelOfPurchaseValue = e => {
+  setChannelOfPurchaseValue = e => {
     let channelOfPurchaseValue = e.currentTarget.value;
     this.setState({ selectedChannelOfPurchase: channelOfPurchaseValue });
   };
-  handleCkEditorTemplate() {
-    let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Template/getListOfTemplateForNote",
-      headers: authHeader(),
-      params: {
-        IssueTypeID: this.state.selectedIssueType
-      }
-    }).then(function(res) {
-      debugger;
-      let CkEditorTemplateData = res.data.responseData;
-      self.setState({ CkEditorTemplateData: CkEditorTemplateData });
-    });
-  }
+  
   handleGetBrandList() {
     debugger;
     let self = this;
@@ -369,6 +360,69 @@ class MyTicket extends Component {
   handleSubmitForm(e) {
     e.preventDefault();
   }
+  handleGetTabsName(e) {
+    let self=this;
+    let CurrentActive = e.target.name;
+    if (CurrentActive === "Task") {
+      this.setState({
+        TaskTab: 1,
+        NotesTab: 0,
+        ClaimTab: 0
+      });
+    } else if (CurrentActive === "Notes") {
+      this.setState({
+        TaskTab: 0,
+        NotesTab: 3,
+        ClaimTab: 0
+      });
+    } else if (CurrentActive === "Claim") {
+      this.setState({
+        TaskTab: 0,
+        NotesTab: 0,
+        ClaimTab: 2
+      });
+    }
+    setTimeout(function(){
+      self.props.history.push({
+        state:self.state
+      });
+    },100);
+  }
+  handleNoteAddComments() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Task/AddComment",
+      headers: authHeader(),
+      params: {
+        CommentForId: this.state.NotesTab,
+        Comment: this.state.NoteAddComment,
+        Id:127
+      }
+    }).then(function(res) {
+      debugger;
+      let Data = res.data.responseData;
+      // self.setState({ KbPopupData: Data });
+    });
+  }
+  handleGetNotesTabDetails() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Ticketing/getNotesByTicketId",
+      headers: authHeader(),
+      params: {
+        TicketId: 127
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.status;
+      let details=res.data.responseData
+      if(status === true){
+        self.setState({ Notesdetails: details });  
+      }
+    });
+  }
   handleAddNewForm() {
     this.setState(prevState => ({
       values: [
@@ -389,9 +443,8 @@ class MyTicket extends Component {
     this.handleGetTicketPriorityList();
     this.handleGetBrandList();
     this.handleGetCategoryList();
-    this.handleGetSubCategoryList();
-    this.handleCkEditorTemplate();
     this.handleGetChannelOfPurchaseList();
+    this.handleGetNotesTabDetails();
   }
   handleRemoveForm(i) {
     let values = [...this.state.values];
@@ -1759,6 +1812,8 @@ class MyTicket extends Component {
                         role="tab"
                         aria-controls="Notes-tab"
                         aria-selected="false"
+                        name="Notes"
+                        onClick={this.handleGetTabsName}
                       >
                         Notes: 00
                       </a>
@@ -1771,6 +1826,8 @@ class MyTicket extends Component {
                         role="tab"
                         aria-controls="Task-tab"
                         aria-selected="false"
+                        name="Task"
+                        onClick={this.handleGetTabsName}
                       >
                         Task: 03
                       </a>
@@ -1783,6 +1840,8 @@ class MyTicket extends Component {
                         role="tab"
                         aria-controls="Claim-tab"
                         aria-selected="false"
+                        name="Claim"
+                        onClick={this.handleGetTabsName}
                       >
                         Claim: 00
                       </a>
@@ -2349,13 +2408,23 @@ class MyTicket extends Component {
                     <textarea
                       className="Add-Notes-textarea"
                       placeholder="Add Notes"
+                      name="NoteAddComment"
+                      value={this.state.NoteAddComment}
+                      onChange={this.handleNoteOnChange}
                     ></textarea>
-                    <button type="button" className="notesbtn">
-                      <label className="notesbtn-text">ADD COMMENT</label>
+                    <button
+                      type="button"
+                      className="notesbtn notesbtn-text"
+                      onClick={this.handleNoteAddComments.bind(this)}
+                    >
+                      ADD COMMENT
                     </button>
                   </div>
                   <div className="col-12 col-xs-12 col-sm-7">
-                    <div className="row">
+                    {this.state.Notesdetails !== null &&
+                    this.state.Notesdetails.map((item,i)=>
+                    (
+                      <div className="row" key={i}>
                       <div className="col-md-1">
                         <div className="oval-5-1-new">
                           <img
@@ -2367,38 +2436,17 @@ class MyTicket extends Component {
                       </div>
                       <div className="col-md-11">
                         <div className="row">
-                          <label className="varun-nagpal">Varun Nagpal</label>
+                          <label className="varun-nagpal">{item.createdByName}</label>
                         </div>
                         <div className="row">
                           <label className="hi-diwakar-i-really tab">
-                            Hi Diwakar, I really appreciate you joining us at
-                            Voucherify! My top priority{" "}
+                           {item.note}
                           </label>
                         </div>
                       </div>
                     </div>
-                    <div className="row" style={{ marginTop: "20px" }}>
-                      <div className="col-md-1">
-                        <div className="oval-5-1-new">
-                          <img
-                            src={StoreIcon}
-                            style={{ padding: "5px" }}
-                            alt="store-icon"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-11">
-                        <div className="row">
-                          <label className="varun-nagpal">Varun Nagpal</label>
-                        </div>
-                        <div className="row">
-                          <label className="hi-diwakar-i-really tab">
-                            Hi Diwakar, I really appreciate you joining us at
-                            Voucherify! My top priority{" "}
-                          </label>
-                        </div>
-                      </div>
-                    </div>
+                    ))}
+                   
                   </div>
                 </div>
               </div>
@@ -2471,27 +2519,7 @@ class MyTicket extends Component {
             </div>
           </div>
         </Modal>
-        {/* -----------------------Store and product sreach modal-------------------- */}
-        {/* <Modal
-          open={this.state.storeproductsearch}
-          onClose={this.HandleStoreProductSearchModalClose.bind(this)}
-          modalId="storeproductsearchmodal"
-          overlayId="layout-storeproductsearchmodal"
-        >
-          <div className="profilemodalmaindiv">
-            <div style={{ float: "" }}>
-              <img
-                src={CrossIcon}
-                alt="cross-icon"
-                className="pro-cross-icn-1"
-                onClick={this.HandleStoreModalClose.bind(this)}
-              />
-            </div>
-            <TikcetSystemStoreModal />
-          </div>
-        </Modal> */}
-        {/* ---------------------------------------------------------- */}
-
+      
         <div className="row" style={{ margin: "0" }}>
           <div className="TicketTabs">
             <ul className="mb-0">

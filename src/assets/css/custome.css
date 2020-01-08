@@ -6834,7 +6834,7 @@ table thead tr {
   height: 198px;
   border: none;
   resize: none;
-  padding: 5px;
+  padding: 10px;
 }
 .tab {
   color: #505050;
@@ -6859,7 +6859,7 @@ table thead tr {
   font-weight: 400;
   line-height: 17px;
   text-align: center;
-  width: 100%;
+  /* width: 100%; */
   cursor: pointer;
 }
 .commentbt {

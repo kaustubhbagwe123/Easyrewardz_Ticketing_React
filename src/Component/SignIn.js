@@ -83,7 +83,7 @@ class SingIn extends Component {
             NotificationManager.success("Login Successfull.");
             window.localStorage.setItem("token", res.data.responseData.token);
             setTimeout(function() {
-              self.props.history.push("Admin/dashboard");
+              self.props.history.push("/admin/dashboard");
             }, 500);
           } else {
             NotificationManager.error("In-Valid Login.");

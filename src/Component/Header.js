@@ -133,9 +133,10 @@ class Header extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      var logout = res.data.message;
-      if (logout === "Logout Successfully!") {
-        NotificationManager.success(logout);
+      var status = res.data.status;
+      var Msg=res.data.message
+      if (status === true) {
+        NotificationManager.success(Msg);
         localStorage.clear();
         window.location.href = "/";
       }
