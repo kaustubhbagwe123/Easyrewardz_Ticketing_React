@@ -406,6 +406,7 @@ class MyTicket extends Component {
       debugger;
       let status = res.data.status;
       if (status === true) {
+        self.handleGetNotesTabDetails()
         NotificationManager.success("Comment added successfully.");
       } else {
         NotificationManager.error("Comment not added.");
