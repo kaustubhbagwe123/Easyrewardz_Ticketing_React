@@ -7797,7 +7797,7 @@ table tr th:last-child {
   overflow-x: hidden;
 }
 .varunoverflow::-webkit-scrollbar{
-  width: 6px;
+  width: 4px;
 }
 .varunoverflow::-webkit-scrollbar-track{
   background: #ddd;

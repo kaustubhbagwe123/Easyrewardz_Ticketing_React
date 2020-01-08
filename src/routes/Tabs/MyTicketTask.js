@@ -30,6 +30,8 @@ class MyTicketTask extends Component {
       taskTitle: "",
       taskDescription: "",
       taskAddComment: "",
+      // taskDetailsData:{},
+      Taskdetails: [],
       DepartmentData: [],
       FunctionData: [],
       AssignToData: [],
@@ -42,6 +44,7 @@ class MyTicketTask extends Component {
     this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
     this.handleGetFunctionList = this.handleGetFunctionList.bind(this);
     this.handleGetAssignToList = this.handleGetAssignToList.bind(this);
+    this.handleGetTaskTabDetails = this.handleGetTaskTabDetails.bind(this);
     this.handleGetTicketPriorityList = this.handleGetTicketPriorityList.bind(
       this
     );
@@ -70,6 +73,25 @@ class MyTicketTask extends Component {
       [e.target.name]: e.target.value
     });
   };
+  handleGetTaskTabDetails() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Task/gettaskdetailsbyid",
+      headers: authHeader(),
+      params: {
+        taskId: 3
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.status;
+      let details = res.data.responseData;
+      if (status === true) {
+        self.setState({ Taskdetails: details});
+      }
+    });
+    
+  }
   handleGetDepartmentList() {
     debugger;
     let self = this;
@@ -181,7 +203,7 @@ class MyTicketTask extends Component {
     });
   }
   handleTaskAddComments() {
-    debugger
+    debugger;
     var TaskData = this.props.taskData;
 
     let self = this;
@@ -197,12 +219,11 @@ class MyTicketTask extends Component {
     }).then(function(res) {
       debugger;
       let status = res.data.status;
-      if(status === true){
+      if (status === true) {
         NotificationManager.success("Comment added successfully.");
-      }
-      else{
-        NotificationManager.error("Comment not added."); 
-        
+        self.handleGetTaskTabDetails();
+      } else {
+        NotificationManager.error("Comment not added.");
       }
     });
   }
@@ -210,6 +231,7 @@ class MyTicketTask extends Component {
   componentDidMount() {
     this.handleGetDepartmentList();
     this.handleGetTicketPriorityList();
+    this.handleGetTaskTabDetails();
   }
   render() {
     const dataTicketTask = [
@@ -495,9 +517,12 @@ class MyTicketTask extends Component {
             </div>
             <div className="row m-t-20" style={{ float: "right" }}>
               <div style={{ marginRight: "15px" }}>
-                <button className="cancel" type="button"
-                  onClick={this.handleAddTaskModalCls.bind(this)}>
-                    CANCEL
+                <button
+                  className="cancel"
+                  type="button"
+                  onClick={this.handleAddTaskModalCls.bind(this)}
+                >
+                  CANCEL
                 </button>
                 <button className="butn" type="button">
                   CREATE TASK
@@ -606,61 +631,27 @@ class MyTicketTask extends Component {
                 ADD COMMENT
               </button>
               <div className="varunoverflow">
-              <div className="row m-t-20 mx-0">
-                <div className="col-xs-6" style={{display:"contents"}}>
-                <div className="storeImg-drawer">                  
-                  <img
-                    src={StoreImg}
-                    alt="headphone"
-                    className="storeImg"
-                  />
-                  </div>
-                  <label className="varun-taskDrawer">Varun Nagpal 
-                    <span className="addTask-time-ago">2hr ago</span></label>
-                  
-                  <label className="task-drawer-lnl">
-                    Hi Diwakar, I really appreciate you joining us at
-                    Voucherify! My top priority
-                  </label>
-                </div>
-              </div>
-              <div className="row m-t-20 mx-0">
-                <div className="col-xs-6" style={{display:"contents"}}>
-                  <div className="storeImg-drawer">                  
-                  <img
-                    src={StoreImg}
-                    alt="headphone"
-                    className="storeImg"
-                  />
-                  </div>
-                  <label className="varun-taskDrawer">Varun Nagpal
-                    <span className="addTask-time-ago">2hr ago</span>
-                  </label>
-                  
-                  <label className="task-drawer-lnl">
-                    Hi Diwakar, I really appreciate you joining us at
-                    Voucherify! My top priority
-                  </label>
-                </div>
-              </div>
-              <div className="row m-t-20 mx-0">
-                <div className="col-xs-6" style={{display:"contents"}}>
-                <div className="storeImg-drawer">                  
-                  <img
-                    src={StoreImg}
-                    alt="headphone"
-                    className="storeImg"
-                  />
-                  </div>
-                  <label className="varun-taskDrawer">Varun Nagpal 
-                    <span className="addTask-time-ago">2hr ago</span></label>
-                  
-                  <label className="task-drawer-lnl">
-                    Hi Diwakar, I really appreciate you joining us at
-                    Voucherify! My top priority
-                  </label>
-                </div>
-              </div>
+                {/* {this.state.Taskdetails !== null &&
+                  this.state.Taskdetails.map((item, i) => (
+                    <div className="row m-t-20 mx-0" key={i}>
+                      <div className="col-xs-6" style={{ display: "contents" }}>
+                        <div className="storeImg-drawer">
+                          <img
+                            src={StoreImg}
+                            alt="headphone"
+                            className="storeImg"
+                          />
+                        </div>
+                        <label className="varun-taskDrawer">
+                          {item.assignName}
+                          <span className="addTask-time-ago">2hr ago</span>
+                        </label>
+
+                        <label className="task-drawer-lnl">{item.taskDescription}</label>
+                      </div>
+                    </div>
+                  ))} */}
+
               </div>
             </div>
           </Drawer>
