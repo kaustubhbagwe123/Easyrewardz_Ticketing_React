@@ -52,6 +52,13 @@ import Ticket from "./../assets/Images/TicketGrey.png";
 import MoreUp from "./../assets/Images/table-arr-up.png";
 import CancelImgGrey from "./../assets/Images/CancelGrey.png";
 import Order from "./../assets/Images/order.png";
+import axios from "axios";
+import { authHeader } from "../helpers/authHeader";
+import config from "./../helpers/config";
+import {
+  NotificationContainer,
+  NotificationManager
+} from "react-notifications";
 
 class MyTicket extends Component {
   constructor(props) {
@@ -73,7 +80,24 @@ class MyTicket extends Component {
       CommentCollapse2: false,
       Comment1Collapse: false,
       KbLink: false,
+      NotesTab: 0,
+      TaskTab: 0,
+      ClaimTab: 0,
+      selectedPriority: 0,
+      selectedBrand: 0,
+      selectedCategory: 0,
+      selectedSubCategory: 0,
+      selectedIssueType: 0,
+      selectedChannelOfPurchase: 0,
+      Notesdetails: [],
+      TicketPriorityData: [],
+      BrandData: [],
+      CategoryData: [],
+      SubCategoryData: [],
+      IssueTypeData: [],
+      ChannelOfPurchaseData: [],
       fileName: "",
+      NoteAddComment: "",
       values: [
         {
           taskTitle: "",
@@ -85,8 +109,23 @@ class MyTicket extends Component {
       ]
     };
     this.toggleView = this.toggleView.bind(this);
+    this.handleGetTabsName = this.handleGetTabsName.bind(this);
+    this.handleGetNotesTabDetails = this.handleGetNotesTabDetails.bind(this);
+    this.handleGetBrandList = this.handleGetBrandList.bind(this);
+    this.handleGetTicketPriorityList = this.handleGetTicketPriorityList.bind(
+      this
+    );
+    this.handleGetCategoryList = this.handleGetCategoryList.bind(this);
+    this.handleGetSubCategoryList = this.handleGetSubCategoryList.bind(this);
+    this.handleGetChannelOfPurchaseList = this.handleGetChannelOfPurchaseList.bind(
+      this
+    );
   }
-
+  handleNoteOnChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  };
   fileUpload = e => {
     this.setState({ fileName: e.target.files[0].name });
   };
@@ -97,6 +136,135 @@ class MyTicket extends Component {
   fileDragOver = e => {
     e.preventDefault();
   };
+  setPriorityValue = e => {
+    let priorityValue = e.target.value;
+    this.setState({ selectedPriority: priorityValue });
+  };
+  setBrandValue = e => {
+    let brandValue = e.currentTarget.value;
+    this.setState({ selectedBrand: brandValue });
+  };
+  setCategoryValue = e => {
+    let categoryValue = e.currentTarget.value;
+    this.setState({ selectedCategory: categoryValue });
+    setTimeout(() => {
+      if (this.state.selectedCategory) {
+        this.handleGetSubCategoryList();
+      }
+    }, 1);
+  };
+  setSubCategoryValue = e => {
+    debugger;
+    let subCategoryValue = e.currentTarget.value;
+    this.setState({ selectedSubCategory: subCategoryValue });
+
+    setTimeout(() => {
+      if (this.state.selectedSubCategory) {
+        this.handleGetIssueTypeList();
+      }
+    }, 1);
+  };
+  setIssueTypeValue = e => {
+    let issueTypeValue = e.currentTarget.value;
+    this.setState({ selectedIssueType: issueTypeValue });
+  };
+  setChannelOfPurchaseValue = e => {
+    let channelOfPurchaseValue = e.currentTarget.value;
+    this.setState({ selectedChannelOfPurchase: channelOfPurchaseValue });
+  };
+
+  handleGetBrandList() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Brand/GetBrandList",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let BrandData = res.data.responseData;
+      self.setState({ BrandData: BrandData });
+    });
+  }
+  handleGetCategoryList() {
+    debugger;
+
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Category/GetCategoryList",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let CategoryData = res.data;
+      self.setState({ CategoryData: CategoryData });
+    });
+  }
+  handleGetTicketPriorityList() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Priority/GetPriorityList",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let TicketPriorityData = res.data.responseData;
+      self.setState({ TicketPriorityData: TicketPriorityData });
+    });
+  }
+  handleGetSubCategoryList() {
+    debugger;
+
+    let self = this;
+    let cateId = this.state.KbLink
+      ? this.state.selectedCategoryKB
+      : this.state.selectedCategory;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/SubCategory/GetSubCategoryByCategoryID",
+      headers: authHeader(),
+      params: {
+        CategoryID: cateId
+        // CategoryID: this.state.selectedCategory
+      }
+    }).then(function(res) {
+      debugger;
+      let SubCategoryData = res.data.responseData;
+      self.setState({ SubCategoryData: SubCategoryData });
+    });
+  }
+  handleGetIssueTypeList() {
+    debugger;
+    let self = this;
+    let subCateId = this.state.KbLink
+      ? this.state.selectedSubCategoryKB
+      : this.state.selectedSubCategory;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/IssueType/GetIssueTypeList",
+      headers: authHeader(),
+      params: {
+        SubCategoryID: subCateId
+      }
+    }).then(function(res) {
+      debugger;
+      let IssueTypeData = res.data.responseData;
+      self.setState({ IssueTypeData: IssueTypeData });
+    });
+  }
+  handleGetChannelOfPurchaseList() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Master/GetChannelOfPurchaseList",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let ChannelOfPurchaseData = res.data.responseData;
+      self.setState({ ChannelOfPurchaseData: ChannelOfPurchaseData });
+    });
+  }
   fileDragEnter = e => {
     e.preventDefault();
   };
@@ -195,6 +363,74 @@ class MyTicket extends Component {
   handleSubmitForm(e) {
     e.preventDefault();
   }
+  handleGetTabsName(e) {
+    let self = this;
+    let CurrentActive = e.target.name;
+    if (CurrentActive === "Task") {
+      this.setState({
+        TaskTab: 1,
+        NotesTab: 0,
+        ClaimTab: 0
+      });
+    } else if (CurrentActive === "Notes") {
+      this.setState({
+        TaskTab: 0,
+        NotesTab: 3,
+        ClaimTab: 0
+      });
+    } else if (CurrentActive === "Claim") {
+      this.setState({
+        TaskTab: 0,
+        NotesTab: 0,
+        ClaimTab: 2
+      });
+    }
+    setTimeout(function() {
+      self.props.history.push({
+        state: self.state
+      });
+    }, 100);
+  }
+  handleNoteAddComments() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Task/AddComment",
+      headers: authHeader(),
+      params: {
+        CommentForId: this.state.NotesTab,
+        Comment: this.state.NoteAddComment.trim(),
+        Id: 127
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.status;
+      if (status === true) {
+        self.handleGetNotesTabDetails()
+        NotificationManager.success("Comment added successfully.");
+      } else {
+        NotificationManager.error("Comment not added.");
+      }
+    });
+  }
+  handleGetNotesTabDetails() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Ticketing/getNotesByTicketId",
+      headers: authHeader(),
+      params: {
+        TicketId: 127
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.status;
+      let details = res.data.responseData;
+      if (status === true) {
+        self.setState({ Notesdetails: details });
+      }
+    });
+  }
   handleAddNewForm() {
     this.setState(prevState => ({
       values: [
@@ -209,8 +445,14 @@ class MyTicket extends Component {
       ]
     }));
   }
-  componentWillMount() {
+
+  componentDidMount() {
     this.setState({ HistOrderShow: true });
+    this.handleGetTicketPriorityList();
+    this.handleGetBrandList();
+    this.handleGetCategoryList();
+    this.handleGetChannelOfPurchaseList();
+    this.handleGetNotesTabDetails();
   }
   handleRemoveForm(i) {
     let values = [...this.state.values];
@@ -773,14 +1015,12 @@ class MyTicket extends Component {
                         </div>
 
                         <div className="col-md-7 xyz">
-                        <img
-                                  src={CrossIcon}
-                                  alt="cross-icon"
-                                  className="cross"
-                                  onClick={this.handleBillImgModalClose.bind(
-                                    this
-                                  )}
-                                />
+                          <img
+                            src={CrossIcon}
+                            alt="cross-icon"
+                            className="cross"
+                            onClick={this.handleBillImgModalClose.bind(this)}
+                          />
                           {this.state.HistOrderShow ? (
                             <div>
                               <div className="histo">
@@ -792,7 +1032,6 @@ class MyTicket extends Component {
                                 <label className="customer-text">
                                   HISTORICAL ORDER
                                 </label>
-                                
                               </div>
                               <div className="col-md-6">
                                 <input
@@ -841,11 +1080,11 @@ class MyTicket extends Component {
                             <div>
                               <div className="row histo">
                                 <div className="col-md-7">
-                                <img
-                              src={UserIcon}
-                              alt="customer-icon"
-                              className="usericon"
-                            />
+                                  <img
+                                    src={UserIcon}
+                                    alt="customer-icon"
+                                    className="usericon"
+                                  />
                                   <img
                                     src={Up1Img}
                                     alt="down"
@@ -952,48 +1191,156 @@ class MyTicket extends Component {
                     <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
                       <div className="form-group">
                         <label className="label-4">Priority</label>
-                        <select className="rectangle-9 select-category-placeholder">
+                        {/* <select className="rectangle-9 select-category-placeholder">
                           <option>Select</option>
+                        </select> */}
+                        <select
+                          className="rectangle-9 select-category-placeholder"
+                          value={this.state.selectedPriority}
+                          onChange={this.setPriorityValue}
+                        >
+                          <option>Priority</option>
+                          {this.state.TicketPriorityData !== null &&
+                            this.state.TicketPriorityData.map((item, i) => (
+                              <option key={i} value={item.priorityID}>
+                                {item.priortyName}
+                              </option>
+                            ))}
                         </select>
                       </div>
                     </div>
                     <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
                       <div className="form-group">
                         <label className="label-4">Brand</label>
-                        <select className="rectangle-9 select-category-placeholder">
+                        {/* <select className="rectangle-9 select-category-placeholder">
                           <option>Select</option>
+                        </select> */}
+                        <select
+                          className="rectangle-9 select-category-placeholder"
+                          value={this.state.selectedBrand}
+                          onChange={this.setBrandValue}
+                        >
+                          <option className="select-category-placeholder">
+                            Select Brand
+                          </option>
+                          {this.state.BrandData !== null &&
+                            this.state.BrandData.map((item, i) => (
+                              <option
+                                key={i}
+                                value={item.brandID}
+                                className="select-category-placeholder"
+                              >
+                                {item.brandName}
+                              </option>
+                            ))}
                         </select>
                       </div>
                     </div>
                     <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4">
                       <div className="form-group">
                         <label className="label-4">Category</label>
-                        <select className="rectangle-9 select-category-placeholder">
+                        {/* <select className="rectangle-9 select-category-placeholder">
                           <option>Select</option>
+                        </select> */}
+                        <select
+                          value={this.state.selectedCategory}
+                          onChange={this.setCategoryValue}
+                          className="rectangle-9 select-category-placeholder"
+                        >
+                          <option className="select-category-placeholder">
+                            Select Category
+                          </option>
+                          {this.state.CategoryData !== null &&
+                            this.state.CategoryData.map((item, i) => (
+                              <option
+                                key={i}
+                                value={item.categoryID}
+                                className="select-category-placeholder"
+                              >
+                                {item.categoryName}
+                              </option>
+                            ))}
                         </select>
                       </div>
                     </div>
                     <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
                       <div className="form-group">
                         <label className="label-4">Sub Category</label>
-                        <select className="rectangle-9 select-category-placeholder">
-                          <option>Select</option>
+                        <select
+                          value={this.state.selectedSubCategory}
+                          onChange={this.setSubCategoryValue}
+                          className="rectangle-9 select-category-placeholder"
+                        >
+                          <option className="select-category-placeholder">
+                            Select Sub Category
+                          </option>
+                          {this.state.SubCategoryData !== null &&
+                            this.state.SubCategoryData.map((item, i) => (
+                              <option
+                                key={i}
+                                value={item.subCategoryID}
+                                className="select-category-placeholder"
+                              >
+                                {item.subCategoryName}
+                              </option>
+                            ))}
                         </select>
+                        {/* <select className="rectangle-9 select-category-placeholder">
+                          <option>Select</option>
+                        </select> */}
                       </div>
                     </div>
                     <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
                       <div className="form-group">
                         <label className="label-4">Issue Type</label>
-                        <select className="rectangle-9 select-category-placeholder">
+                        {/* <select className="rectangle-9 select-category-placeholder">
                           <option>Select</option>
+                        </select> */}
+                        <select
+                          value={this.state.selectedIssueType}
+                          onChange={this.setIssueTypeValue}
+                          className="rectangle-9 select-category-placeholder"
+                        >
+                          <option className="select-sub-category-placeholder">
+                            Select Issue Type
+                          </option>
+                          {this.state.IssueTypeData !== null &&
+                            this.state.IssueTypeData.map((item, i) => (
+                              <option
+                                key={i}
+                                value={item.issueTypeID}
+                                className="select-category-placeholder"
+                              >
+                                {item.issueTypeName}
+                              </option>
+                            ))}
                         </select>
                       </div>
                     </div>
                     <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
                       <div className="form-group">
                         <label className="label-4">Channel Of Purchase</label>
-                        <select className="rectangle-9 select-category-placeholder">
+                        {/* <select className="rectangle-9 select-category-placeholder">
                           <option>Select</option>
+                        </select> */}
+                        <select
+                          value={this.state.selectedChannelOfPurchase}
+                          onChange={this.setChannelOfPurchaseValue}
+                          className="rectangle-9 select-category-placeholder"
+                        >
+                          <option className="select-category-placeholder">
+                            Select Channel Of Purchase
+                          </option>
+                          {this.state.ChannelOfPurchaseData !== null &&
+                            this.state.ChannelOfPurchaseData.map((item, i) => (
+                              <option
+                                key={i}
+                                value={item.channelOfPurchaseID}
+                                className="select-category-placeholder"
+                              >
+                                {item.nameOfChannel}
+                              </option>
+                            ))}
                         </select>
                       </div>
                     </div>
@@ -1068,13 +1415,13 @@ class MyTicket extends Component {
             <div className="row">
               <label className="ticket-title-where">Ticket Title:</label>
             </div>
-            <div className="row" style={{marginTop:"0"}}>
+            <div className="row" style={{ marginTop: "0" }}>
               <label className="label-2">Where can I see my reward?</label>
             </div>
             <div className="row">
               <label className="ticket-title-where">Ticket Details:</label>
             </div>
-            <div className="row" style={{marginTop:"0"}}>
+            <div className="row" style={{ marginTop: "0" }}>
               <label className="label-3">
                 Where I can see details of my rewards in the ‘Rewards’ tab
                 within the ‘Refer and Earn Rewards’ screen.You will also get
@@ -1473,6 +1820,8 @@ class MyTicket extends Component {
                         role="tab"
                         aria-controls="Notes-tab"
                         aria-selected="false"
+                        name="Notes"
+                        onClick={this.handleGetTabsName}
                       >
                         Notes: 00
                       </a>
@@ -1485,6 +1834,8 @@ class MyTicket extends Component {
                         role="tab"
                         aria-controls="Task-tab"
                         aria-selected="false"
+                        name="Task"
+                        onClick={this.handleGetTabsName}
                       >
                         Task: 03
                       </a>
@@ -1497,6 +1848,8 @@ class MyTicket extends Component {
                         role="tab"
                         aria-controls="Claim-tab"
                         aria-selected="false"
+                        name="Claim"
+                        onClick={this.handleGetTabsName}
                       >
                         Claim: 00
                       </a>
@@ -1512,7 +1865,7 @@ class MyTicket extends Component {
                 role="tabpanel"
                 aria-labelledby="Claim-tab"
               >
-                <MyTicketClaim />
+                <MyTicketClaim claimData={this.state} />
               </div>
               <div
                 className="tab-pane fade show active"
@@ -2050,7 +2403,7 @@ class MyTicket extends Component {
                 role="tabpanel"
                 aria-labelledby="Task-tab"
               >
-                <MyTicketTask />
+                <MyTicketTask taskData={this.state} />
               </div>
               <div
                 className="tab-pane fade"
@@ -2063,56 +2416,45 @@ class MyTicket extends Component {
                     <textarea
                       className="Add-Notes-textarea"
                       placeholder="Add Notes"
+                      name="NoteAddComment"
+                      value={this.state.NoteAddComment}
+                      onChange={this.handleNoteOnChange}
                     ></textarea>
-                    <button type="button" className="notesbtn">
-                      <label className="notesbtn-text">ADD COMMENT</label>
+                    <button
+                      type="button"
+                      className="notesbtn notesbtn-text"
+                      onClick={this.handleNoteAddComments.bind(this)}
+                    >
+                      ADD COMMENT
                     </button>
                   </div>
-                  <div className="col-12 col-xs-12 col-sm-7">
-                    <div className="row">
-                      <div className="col-md-1">
-                        <div className="oval-5-1-new">
-                          <img
-                            src={StoreIcon}
-                            style={{ padding: "5px" }}
-                            alt="store-icon"
-                          />
+                  <div className="col-12 col-xs-12 col-sm-7 my-ticket-notes">
+                    {this.state.Notesdetails !== null &&
+                      this.state.Notesdetails.map((item, i) => (
+                        <div className="row my-ticket-notes-row" key={i}>
+                          <div className="col-md-1">
+                            <div className="oval-5-1-new">
+                              <img
+                                src={StoreIcon}
+                                style={{ padding: "5px" }}
+                                alt="store-icon"
+                              />
+                            </div>
+                          </div>
+                          <div className="col-md-11">
+                            <div className="row my-ticket-notes-created">
+                              <label className="varun-nagpal">
+                                {item.createdByName}
+                              </label>
+                            </div>
+                            <div className="row my-ticket-notes-created">
+                              <label className="hi-diwakar-i-really tab">
+                                {item.note}
+                              </label>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-md-11">
-                        <div className="row">
-                          <label className="varun-nagpal">Varun Nagpal</label>
-                        </div>
-                        <div className="row">
-                          <label className="hi-diwakar-i-really tab">
-                            Hi Diwakar, I really appreciate you joining us at
-                            Voucherify! My top priority{" "}
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row" style={{ marginTop: "20px" }}>
-                      <div className="col-md-1">
-                        <div className="oval-5-1-new">
-                          <img
-                            src={StoreIcon}
-                            style={{ padding: "5px" }}
-                            alt="store-icon"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-11">
-                        <div className="row">
-                          <label className="varun-nagpal">Varun Nagpal</label>
-                        </div>
-                        <div className="row">
-                          <label className="hi-diwakar-i-really tab">
-                            Hi Diwakar, I really appreciate you joining us at
-                            Voucherify! My top priority{" "}
-                          </label>
-                        </div>
-                      </div>
-                    </div>
+                      ))}
                   </div>
                 </div>
               </div>
@@ -2185,26 +2527,6 @@ class MyTicket extends Component {
             </div>
           </div>
         </Modal>
-        {/* -----------------------Store and product sreach modal-------------------- */}
-        {/* <Modal
-          open={this.state.storeproductsearch}
-          onClose={this.HandleStoreProductSearchModalClose.bind(this)}
-          modalId="storeproductsearchmodal"
-          overlayId="layout-storeproductsearchmodal"
-        >
-          <div className="profilemodalmaindiv">
-            <div style={{ float: "" }}>
-              <img
-                src={CrossIcon}
-                alt="cross-icon"
-                className="pro-cross-icn-1"
-                onClick={this.HandleStoreModalClose.bind(this)}
-              />
-            </div>
-            <TikcetSystemStoreModal />
-          </div>
-        </Modal> */}
-        {/* ---------------------------------------------------------- */}
 
         <div className="row" style={{ margin: "0" }}>
           <div className="TicketTabs">
@@ -2257,6 +2579,7 @@ class MyTicket extends Component {
             </ul>
           </div>
         </div>
+        <NotificationContainer />
       </Fragment>
     );
   }

@@ -41,7 +41,7 @@ import SlaDue from "./SlaDue";
 import TicketActionType from "./TicketActionType";
 import ClaimStatus from "./ClaimStatus";
 import TaskStatus from "./TaskStatus";
-// import moment from "moment";
+import moment from "moment";
 import Select from "react-select";
 import {
   NotificationContainer,
@@ -93,6 +93,7 @@ class MyTicketList extends Component {
       selectedPriority: 0,
       selectedPriorityAll: 0,
       selectedChannelOfPurchase: [],
+      selectedTeamMember: [],
       selectedTicketActionType: [],
       selectedTicketStatusByDate: 0,
       selectScheduleDate: 0,
@@ -145,25 +146,30 @@ class MyTicketList extends Component {
       byTicketTypeFlag: 0,
       byCategoryFlag: 0,
       allFlag: 0,
-      SpacialEqmt: [
+      TeamMemberData: [
         {
-          department: 25000
+          department: "Team Member 1"
         },
         {
-          department: 304545
+          department: "Team Member 2"
         },
         {
-          department: 508499
+          department: "Team Member 3"
         },
         {
-          department: "nub bus ushdus uhsfu"
+          department: "Team Member 4"
         }
       ],
       agentId: 0,
       agentRemark: "",
       ticketIds: "1,3",
       selectedScheduleFor: "",
-      dailyDay: 0
+      dailyDay: 0,
+      isByStatus: true,
+      ticketStatusId: 100,
+      advPageSize: 30,
+      advPageNo: 1,
+      SearchTicketData: []
     };
     this.handleAdvSearchFlag = this.handleAdvSearchFlag.bind(this);
     this.toggleSearch = this.toggleSearch.bind(this);
@@ -197,6 +203,7 @@ class MyTicketList extends Component {
     this.handleScheduleTime = this.handleScheduleTime.bind(this);
     this.handleAssignTickets = this.handleAssignTickets.bind(this);
     this.handleSchedulePopup = this.handleSchedulePopup.bind(this);
+    this.handleSearchTicket = this.handleSearchTicket.bind(this);
   }
 
   componentDidMount() {
@@ -209,6 +216,27 @@ class MyTicketList extends Component {
     this.handleGetSlaStatusList();
     this.handleGetDraftDetails();
     this.handleGetDepartmentList();
+    this.handleSearchTicket();
+  }
+
+  handleSearchTicket() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Search/SearchTicket",
+      headers: authHeader(),
+      data: {
+        isByStatus: this.state.isByStatus,
+        ticketStatus: this.state.ticketStatusId,
+        pageSize: this.state.advPageSize,
+        pageNo: this.state.advPageNo
+      }
+    }).then(function(res) {
+      debugger;
+      let SearchTicketData = res.data.responseData;
+      self.setState({ SearchTicketData: SearchTicketData });
+    });
   }
 
   handleSchedulePopup() {
@@ -220,7 +248,7 @@ class MyTicketList extends Component {
       url: config.apiUrl + "/Ticketing/Schedule",
       headers: authHeader(),
       data: {
-        ScheduleFor: this.state.selectedScheduleFor,
+        ScheduleFor: this.state.selectedTeamMember,
         ScheduleType: this.state.selectScheduleDate,
         NoOfDay: this.state.selectedNoOfDay,
         ScheduleTime: this.state.selectedScheduleTime,
@@ -228,11 +256,11 @@ class MyTicketList extends Component {
       }
     }).then(function(res) {
       debugger;
-      // let messageData = res.data.message;
-      // if (messageData === "Success") {
-      //   self.handleAssignModalClose();
-      //   NotificationManager.success("Tickets assigned successfully.");
-      // }
+      let messageData = res.data.message;
+      if (messageData === "Success") {
+        self.ScheduleCloseModel();
+        NotificationManager.success("Scheduled successfully.");
+      }
     });
   }
 
@@ -775,6 +803,11 @@ class MyTicketList extends Component {
     // let selectedChannelOfPurchase = e
     this.setState({ selectedChannelOfPurchase: e });
   };
+  setTeamMember = e => {
+    debugger;
+    // let selectedChannelOfPurchase = e
+    this.setState({ selectedTeamMember: e });
+  };
   setTicketActionTypeValue = e => {
     // let channelOfPurchaseValue = e.channelOfPurchaseID;
     this.setState({ selectedTicketActionType: e });
@@ -1012,24 +1045,24 @@ class MyTicketList extends Component {
 
   render() {
     const { DraftDetails, SearchAssignData } = this.state;
-    const DefArti = (
-      <div className="dash-creation-popup-cntr">
-        <ul className="dash-category-popup dashnewpopup">
-          <li>
-            <p>Category</p>
-            <p>Defective article</p>
-          </li>
-          <li>
-            <p>Sub Category</p>
-            <p>Customer wants refund</p>
-          </li>
-          <li>
-            <p>Type</p>
-            <p>Delivery</p>
-          </li>
-        </ul>
-      </div>
-    );
+    // const DefArti = (
+    //   <div className="dash-creation-popup-cntr">
+    //     <ul className="dash-category-popup dashnewpopup">
+    //       <li>
+    //         <p>Category</p>
+    //         <p>Defective article</p>
+    //       </li>
+    //       <li>
+    //         <p>Sub Category</p>
+    //         <p>Customer wants refund</p>
+    //       </li>
+    //       <li>
+    //         <p>Type</p>
+    //         <p>Delivery</p>
+    //       </li>
+    //     </ul>
+    //   </div>
+    // );
 
     const InsertPlaceholder = (
       <div className="insertpop1">
@@ -1622,7 +1655,32 @@ class MyTicketList extends Component {
             </div>
           </span>
         ),
-        accessor: "idDash"
+        accessor: "ticketID",
+        Cell: row => {
+          return (
+            <span onClick={e => this.clickCheckbox(e)}>
+              <div className="filter-type pink1 pinkmyticket">
+                <div className="filter-checkbox pink2 pinkmargin">
+                  <input
+                    type="checkbox"
+                    id="fil-ab1"
+                    name="MyTicketListcheckbox[]"
+                    checked={this.state.CheckBoxChecked}
+                    onChange={this.handelCheckBoxCheckedChange}
+                  />
+                  <label htmlFor="fil-ab1">
+                    <img
+                      src={HeadPhone3}
+                      alt="HeadPhone"
+                      className="headPhone3"
+                    />
+                    {row.original.ticketID}
+                  </label>
+                </div>
+              </div>
+            </span>
+          );
+        }
       },
       {
         Header: (
@@ -1630,12 +1688,59 @@ class MyTicketList extends Component {
             Status <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "statusDash"
+        accessor: "ticketStatus",
+        Cell: row => {
+          return (
+            <span className="table-b table-blue-btn">
+              <label>{row.original.ticketStatus}</label>
+            </span>
+          );
+        }
       },
       {
         Header: <span></span>,
         accessor: "Img",
-        width: 45
+        width: 45,
+//         Cell: row => {
+//           <>
+//           return (
+//             if(row.original.taskStatus.split('/')[row.original.taskStatus.split('/').length - 1] === 0) {
+// <img
+//             className="task-icon-1 marginimg"
+//             src={TaskIconGray}
+//             alt="task-icon-gray"
+//           />
+//             } else {
+//             <Popover
+//               content={
+//                 <div className="dash-task-popup-new">
+//                   <div className="d-flex justify-content-between align-items-center">
+//                     <p className="m-b-0">
+//                       TASK: <span className="green-clr">02</span>/
+//                       <span className="task-red-clr">04</span>
+//                     </p>
+//                     <div className="d-flex align-items-center">
+//                       2 NEW
+//                       <div className="nw-chat">
+//                         <img src={Chat} alt="chat" />
+//                       </div>
+//                     </div>
+//                   </div>
+//                   <ProgressBar className="task-progress" now={70} />
+//                 </div>
+//               }
+//               placement="bottom"
+//             >
+//               <img
+//                 className="task-icon-1 marginimg"
+//                 src={TaskIconBlue}
+//                 alt="task-icon-blue"
+//               />
+//             </Popover>
+//             }
+//           );
+//           </>
+//         }
       },
       {
         Header: (
@@ -1646,7 +1751,17 @@ class MyTicketList extends Component {
             </span>
           </label>
         ),
-        accessor: "subjectDash"
+        accessor: "message",
+        Cell: row => {
+          return (
+            <div>
+              {row.original.message}
+              <span style={{ display: "block", fontSize: "11px" }}>
+                Hope this help, Please rate us
+              </span>
+            </div>
+          );
+        }
       },
       {
         Header: (
@@ -1654,12 +1769,32 @@ class MyTicketList extends Component {
             Category <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "categoryDash",
-        Cell: props => (
+        accessor: "category",
+        Cell: row => (
           <span>
-            <label>Defective article </label>
+            <label>{row.original.category} </label>
 
-            <Popover content={DefArti} placement="bottom">
+            <Popover
+              content={
+                <div className="dash-creation-popup-cntr">
+                  <ul className="dash-category-popup dashnewpopup">
+                    <li>
+                      <p>Category</p>
+                      <p>{row.original.category}</p>
+                    </li>
+                    <li>
+                      <p>Sub Category</p>
+                      <p>{row.original.subCategory}</p>
+                    </li>
+                    <li>
+                      <p>Type</p>
+                      <p>{row.original.issueType}</p>
+                    </li>
+                  </ul>
+                </div>
+              }
+              placement="bottom"
+            >
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
             </Popover>
           </span>
@@ -1671,8 +1806,8 @@ class MyTicketList extends Component {
             Priority <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "priorityDash",
-        Cell: props => <span>High</span>
+        accessor: "priority"
+        // Cell: props => <span>High</span>
       },
       {
         Header: (
@@ -1680,7 +1815,7 @@ class MyTicketList extends Component {
             Assignee <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "assigneeDash"
+        accessor: "assignee"
       },
       {
         Header: (
@@ -1688,7 +1823,52 @@ class MyTicketList extends Component {
             Creation On <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "creationNew"
+        accessor: "createdOn",
+        Cell: row => (
+          // <span>{moment(row.original.createdOn).format("DD MMMM YYYY")}</span>
+          <span>
+            <label>
+              {moment(row.original.createdOn).format("DD MMMM YYYY")}
+            </label>
+
+            <Popover
+              content={
+                <div className="insertpop1">
+                  <ul className="dash-creation-popup">
+                    <li className="title">Creation details</li>
+                    <li>
+                      <p>{row.original.createdBy} Created</p>
+                      <p>{row.original.createdago}</p>
+                    </li>
+                    <li>
+                      <p>Assigned to {row.original.assignedTo}</p>
+                      <p>{row.original.assignedago}</p>
+                    </li>
+                    <li>
+                      <p>{row.original.updatedBy} updated</p>
+                      <p>{row.original.updatedago}</p>
+                    </li>
+                    <li>
+                      <p>Response time remaining by</p>
+                      <p>{row.original.responseTimeRemainingBy}</p>
+                    </li>
+                    <li>
+                      <p>Response overdue by</p>
+                      <p>{row.original.responseOverdueBy}</p>
+                    </li>
+                    <li>
+                      <p>Resolution overdue by</p>
+                      <p>{row.original.resolutionOverdueBy}</p>
+                    </li>
+                  </ul>
+                </div>
+              }
+              placement="bottom"
+            >
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+            </Popover>
+          </span>
+        )
       }
     ];
 
@@ -3711,6 +3891,9 @@ class MyTicketList extends Component {
                                       onClose={this.ScheduleCloseModel}
                                       open={this.state.Schedule}
                                       modalId="ScheduleModel"
+                                      classNames={{
+                                        modal: "schedule-width"
+                                      }}
                                       overlayId="logout-ovrly"
                                     >
                                       <div>
@@ -3718,7 +3901,7 @@ class MyTicketList extends Component {
                                           <b>Schedule date to</b>
                                         </label>
                                         <div>
-                                          <select
+                                          {/* <select
                                             id="inputState"
                                             className="form-control dropdown-setting1 ScheduleDate-to"
                                             value={
@@ -3732,7 +3915,31 @@ class MyTicketList extends Component {
                                             <option value="team-member-1">
                                               Team Member 1
                                             </option>
-                                          </select>
+                                          </select> */}
+                                          <div className="normal-dropdown dropdown-setting1 schedule-multi">
+                                            <Select
+                                              getOptionLabel={option =>
+                                                option.department
+                                              }
+                                              getOptionValue={
+                                                option => option.department //id
+                                              }
+                                              options={
+                                                this.state.TeamMemberData
+                                              }
+                                              placeholder="Team Member"
+                                              // menuIsOpen={true}
+                                              closeMenuOnSelect={false}
+                                              onChange={this.setTeamMember.bind(
+                                                this
+                                              )}
+                                              value={
+                                                this.state.selectedTeamMember
+                                              }
+                                              // showNewOptionAtTop={false}
+                                              isMulti
+                                            />
+                                          </div>
                                           <select
                                             id="inputState"
                                             className="form-control dropdown-setting1 ScheduleDate-to"
@@ -3757,7 +3964,7 @@ class MyTicketList extends Component {
                                               )}
                                           </select>
                                           {this.state.selectScheduleDate ===
-                                          "111" ? (
+                                          "230" ? (
                                             <div className="ScheduleDate-to">
                                               <span>
                                                 <label className="every1">
@@ -3776,7 +3983,7 @@ class MyTicketList extends Component {
                                             </div>
                                           ) : null}
                                           {this.state.selectScheduleDate ===
-                                          "222" ? (
+                                          "231" ? (
                                             <div className="ScheduleDate-to">
                                               <span>
                                                 <label className="every1">
@@ -3807,7 +4014,7 @@ class MyTicketList extends Component {
                                             </div>
                                           ) : null}
                                           {this.state.selectScheduleDate ===
-                                          "333" ? (
+                                          "232" ? (
                                             <div className="ScheduleDate-to">
                                               <span>
                                                 <label className="every1">
@@ -3833,7 +4040,7 @@ class MyTicketList extends Component {
                                             </div>
                                           ) : null}
                                           {this.state.selectScheduleDate ===
-                                          "444" ? (
+                                          "233" ? (
                                             <div className="ScheduleDate-to">
                                               <span>
                                                 <label className="every1">
@@ -3871,7 +4078,7 @@ class MyTicketList extends Component {
                                             </div>
                                           ) : null}
                                           {this.state.selectScheduleDate ===
-                                          "555" ? (
+                                          "234" ? (
                                             <div className="ScheduleDate-to">
                                               <div className="row m-0">
                                                 <label
@@ -3900,7 +4107,7 @@ class MyTicketList extends Component {
                                             </div>
                                           ) : null}
                                           {this.state.selectScheduleDate ===
-                                          "666" ? (
+                                          "235" ? (
                                             <div className="ScheduleDate-to">
                                               <span>
                                                 <div className="row m-0">
@@ -4169,7 +4376,8 @@ class MyTicketList extends Component {
 
                     <div className="MyTicketListReact">
                       <ReactTable
-                        data={dataDash}
+                        // data={dataDash}
+                        data={this.state.SearchTicketData}
                         columns={columnsDash}
                         // resizable={false}
                         defaultPageSize={10}

@@ -540,8 +540,6 @@ class TicketSystem extends Component {
     }
     var actionStatusId = 0;
 
-    // selectedRow.substring(",", selectedRow.length - 1);
-
     if (StatusID === "200") {
       actionStatusId = 103;
     } else if (StatusID === "201") {
@@ -549,7 +547,6 @@ class TicketSystem extends Component {
     } else {
       actionStatusId = 100;
     }
-    // var ItemID = selectedRow.substring(",", selectedRow.length - 1);
     var mailData = [];
     mailData = this.state.mailData;
     this.state.mailFiled["ToEmail"] = this.state.customerData.customerEmailId;
@@ -726,7 +723,7 @@ class TicketSystem extends Component {
                     className="rectanglecreateticket create-ticket"
                     onClick={this.handleSubmitReopnModalOpen.bind(this)}
                   >
-                    CREACT TICKET
+                    CREAT TICKET
                   </button>
                   <Modal
                     open={this.state.SubmitBtnReopn}

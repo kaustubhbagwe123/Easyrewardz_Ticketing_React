@@ -54,8 +54,11 @@ class SingIn extends Component {
 
       let X_Authorized_password = encryption(password, "enc");
 
-      // let X_Authorized_Domainname = encryption(window.location.origin, "enc");
-      let X_Authorized_Domainname = encryption("http://easyrewardz.brainvire.net", "enc");
+      let X_Authorized_Domainname = encryption(window.location.origin, "enc");
+      // let X_Authorized_Domainname = encryption(
+      //   "http://easyrewardz.brainvire.net",
+      //   "enc"
+      // );
       let ProCode = this.state.programCode;
       let X_Authorized_Programcode = ProCode.programCode;
 
@@ -80,7 +83,7 @@ class SingIn extends Component {
             NotificationManager.success("Login Successfull.");
             window.localStorage.setItem("token", res.data.responseData.token);
             setTimeout(function() {
-              self.props.history.push("Admin/dashboard");
+              self.props.history.push("/admin/dashboard");
             }, 500);
           } else {
             NotificationManager.error("In-Valid Login.");

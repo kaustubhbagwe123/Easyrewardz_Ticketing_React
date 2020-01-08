@@ -6,16 +6,23 @@ import BataShoesIcon from "./../../assets/Images/bata.png";
 import { Drawer } from "antd";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { Popover } from "antd";
+import axios from "axios";
+import { authHeader } from "./../../helpers/authHeader";
+import config from "./../../helpers/config";
 import ReactTable from "react-table";
 import StoreImg from "./../../assets/Images/store.png";
+import {
+  NotificationContainer,
+  NotificationManager
+} from "react-notifications";
 
 class MyTicketClaim extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      ClaimDetailsModal: false
+      ClaimDetailsModal: false,
+      claimAddComment: ""
     };
   }
   handleClaimDetailsModalOpen() {
@@ -31,48 +38,55 @@ class MyTicketClaim extends Component {
       }
     };
   };
-  render() {
-     // const popoverData1 = (
-    //   <>
-    //     <div>
-    //       <b>
-    //         <p className="title">Created By: Admin</p>
-    //       </b>
-    //       <p className="sub-title">Created Date: 12 March 2018</p>
-    //     </div>
-    //     <div>
-    //       <b>
-    //         <p className="title">Updated By: Manager</p>
-    //       </b>
-    //       <p className="sub-title">Updated Date: 12 March 2018</p>
-    //     </div>
-    //   </>
-    // );
+  handleClaimOnChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  };
+  handleClaimAddComments() {
+    debugger;
+    var claimData = this.props.claimData;
 
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Task/AddComment",
+      headers: authHeader(),
+      params: {
+        CommentForId: claimData.ClaimTab,
+        Comment: this.state.claimAddComment.trim(),
+        Id: 1
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.status;
+      if (status === true) {
+        NotificationManager.success("Comment added successfully.");
+      } else {
+        NotificationManager.error("Comment not added.");
+      }
+    });
+  }
+  render() {
     const dataTicketClaim = [
       {
         id: "Ta1",
         claimIssue: (
           <label>
             Need to change my shipping address
-            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
+            <span style={{ display: "block", fontSize: "11px" }}>
+              Hope this help, Please rate us
+            </span>
           </label>
         ),
-        status: (
-          <span className="table-btn table-blue-btn">Open</span>
-        ),
-       
+        status: <span className="table-btn table-blue-btn">Open</span>,
+
         creationOn: (
           <div>
-          <span>
-            12 March 2018
-            <img
-                className="info-icon"
-                src={InfoIcon}
-                alt="info-icon"
-                
-              />
-            {/* <Popover content={popoverData1} placement="bottom">
+            <span>
+              12 March 2018
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+              {/* <Popover content={popoverData1} placement="bottom">
               <img
                 className="info-icon"
                 src={InfoIcon}
@@ -80,33 +94,27 @@ class MyTicketClaim extends Component {
                 
               />
             </Popover> */}
-          </span>
-        </div>
-        ),
-      
+            </span>
+          </div>
+        )
       },
       {
         id: "Ta2",
         claimIssue: (
           <label>
             Need to change my shipping address
-            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us(1 new comment)</span>
+            <span style={{ display: "block", fontSize: "11px" }}>
+              Hope this help, Please rate us(1 new comment)
+            </span>
           </label>
         ),
-        status: (
-          <span className="table-btn table-yellow-btn">New</span>
-        ),
+        status: <span className="table-btn table-yellow-btn">New</span>,
         creationOn: (
           <div>
-          <span>
-            12 March 2018
-            <img
-                className="info-icon"
-                src={InfoIcon}
-                alt="info-icon"
-                
-              />
-            {/* <Popover content={popoverData1} placement="bottom">
+            <span>
+              12 March 2018
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+              {/* <Popover content={popoverData1} placement="bottom">
               <img
                 className="info-icon"
                 src={InfoIcon}
@@ -114,33 +122,27 @@ class MyTicketClaim extends Component {
                 
               />
             </Popover> */}
-          </span>
-        </div>
-        ),
-       
+            </span>
+          </div>
+        )
       },
       {
         id: "Ta3",
         claimIssue: (
           <label>
             Need to change my shipping address
-            <span style={{display:"block",fontSize:"11px"}}>Hope this help, Please rate us</span>
+            <span style={{ display: "block", fontSize: "11px" }}>
+              Hope this help, Please rate us
+            </span>
           </label>
         ),
-        status: (
-          <span className="table-btn table-green-btn">Solved</span>
-        ),
+        status: <span className="table-btn table-green-btn">Solved</span>,
         creationOn: (
           <div>
-          <span>
-            12 March 2018
-            <img
-                className="info-icon"
-                src={InfoIcon}
-                alt="info-icon"
-                
-              />
-            {/* <Popover content={popoverData1} placement="bottom">
+            <span>
+              12 March 2018
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+              {/* <Popover content={popoverData1} placement="bottom">
               <img
                 className="info-icon"
                 src={InfoIcon}
@@ -148,50 +150,29 @@ class MyTicketClaim extends Component {
                 
               />
             </Popover> */}
-          </span>
-        </div>
-        ),
+            </span>
+          </div>
+        )
       }
-     
     ];
 
     const columnsTicketClaim = [
       {
-        Header: (
-          <span>
-            ID
-         
-          </span>
-        ),
+        Header: <span>ID</span>,
         accessor: "id",
         Cell: row => (
           <span>
-            <img
-                src={HeadPhone3}
-                alt="HeadPhone"
-                className="headPhone3"
-            />
+            <img src={HeadPhone3} alt="HeadPhone" className="headPhone3" />
             ABC1234
           </span>
-        ),
+        )
       },
       {
-        Header: (
-          <span>
-            Status
-           
-          </span>
-        ),
-        accessor: "status",
-        
+        Header: <span>Status</span>,
+        accessor: "status"
       },
       {
-        Header: (
-          <span>
-            Claim Issue Type
-           
-          </span>
-        ),
+        Header: <span>Claim Issue Type</span>,
         accessor: "claimIssue"
       },
       {
@@ -220,9 +201,7 @@ class MyTicketClaim extends Component {
           </span>
         ),
         accessor: "createdBy",
-        Cell: row => (
-          <label>N Rampal</label>
-        ),
+        Cell: row => <label>N Rampal</label>
       },
       {
         Header: (
@@ -241,23 +220,20 @@ class MyTicketClaim extends Component {
           </span>
         ),
         accessor: "assignTo",
-        Cell: row => (
-          <label>A. Bansal</label>
-        ),
-      },
-    
+        Cell: row => <label>A. Bansal</label>
+      }
     ];
     return (
       <Fragment>
         <div className="table-cntr mt-3 MyTicketClaimReact">
-        <ReactTable
-                    data={dataTicketClaim}
-                    columns={columnsTicketClaim}
-                    // resizable={false}
-                    defaultPageSize={3}
-                    showPagination={false}
-                    getTrProps={this.HandleRowClickDraw} 
-                />
+          <ReactTable
+            data={dataTicketClaim}
+            columns={columnsTicketClaim}
+            // resizable={false}
+            defaultPageSize={3}
+            showPagination={false}
+            getTrProps={this.HandleRowClickDraw}
+          />
         </div>
         <div className="DrawerModal">
           <Drawer
@@ -493,7 +469,21 @@ class MyTicketClaim extends Component {
                 <textarea
                   className="Add-Comments-textarea"
                   placeholder="Add Comments"
+                  name="claimAddComment"
+                  value={this.state.claimAddComment}
+                  onChange={this.handleClaimOnChange}
                 ></textarea>
+                <div className="row">
+                  <div className="col-md-5">
+                    <button
+                      className="add-comment-button add-comment-text"
+                      type="button"
+                      onClick={this.handleClaimAddComments.bind(this)}
+                    >
+                      ADD COMMENT
+                    </button>
+                  </div>
+                </div>
               </div>
               <div className="col-md-6">
               <div className="varunoverflow">
@@ -555,7 +545,7 @@ class MyTicketClaim extends Component {
               </div>
               </div>
             </div>
-            <div
+            {/* <div
               className="row"
               style={{ marginLeft: "5px", marginRight: "0px" }}
             >
@@ -564,9 +554,10 @@ class MyTicketClaim extends Component {
                   <label className="add-comment-text">ADD COMMENT</label>
                 </button>
               </div>
-            </div>
+            </div> */}
           </Drawer>
         </div>
+        <NotificationContainer />
       </Fragment>
     );
   }
