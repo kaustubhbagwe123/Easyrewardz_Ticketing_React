@@ -182,27 +182,32 @@ class MyTicketTask extends Component {
   }
   handleTaskAddComments() {
     debugger
-    // var TaskData = this.props.location.state;
+    var TaskData = this.props.taskData;
+
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Task/AddComment",
       headers: authHeader(),
       params: {
-        // CommentForId: TaskData.TaskTab,
-        Comment: this.state.taskAddComment,
+        CommentForId: TaskData.TaskTab,
+        Comment: this.state.taskAddComment.trim(),
         Id: 127
       }
     }).then(function(res) {
       debugger;
-      let Data = res.data.responseData;
-      // self.setState({ KbPopupData: Data });
+      let status = res.data.status;
+      if(status === true){
+        NotificationManager.success("Comment added successfully.");
+      }
+      else{
+        NotificationManager.error("Comment not added."); 
+        
+      }
     });
   }
 
   componentDidMount() {
-    debugger
-    // var TaskData = this.props.location.state;
     this.handleGetDepartmentList();
     this.handleGetTicketPriorityList();
   }

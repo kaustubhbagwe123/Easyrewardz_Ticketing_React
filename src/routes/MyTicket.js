@@ -55,6 +55,10 @@ import Order from "./../assets/Images/order.png";
 import axios from "axios";
 import { authHeader } from "../helpers/authHeader";
 import config from "./../helpers/config";
+import {
+  NotificationContainer,
+  NotificationManager
+} from "react-notifications";
 
 class MyTicket extends Component {
   constructor(props) {
@@ -85,7 +89,7 @@ class MyTicket extends Component {
       selectedSubCategory: 0,
       selectedIssueType: 0,
       selectedChannelOfPurchase: 0,
-      Notesdetails:[],
+      Notesdetails: [],
       TicketPriorityData: [],
       BrandData: [],
       CategoryData: [],
@@ -163,13 +167,12 @@ class MyTicket extends Component {
   setIssueTypeValue = e => {
     let issueTypeValue = e.currentTarget.value;
     this.setState({ selectedIssueType: issueTypeValue });
-
   };
   setChannelOfPurchaseValue = e => {
     let channelOfPurchaseValue = e.currentTarget.value;
     this.setState({ selectedChannelOfPurchase: channelOfPurchaseValue });
   };
-  
+
   handleGetBrandList() {
     debugger;
     let self = this;
@@ -361,7 +364,7 @@ class MyTicket extends Component {
     e.preventDefault();
   }
   handleGetTabsName(e) {
-    let self=this;
+    let self = this;
     let CurrentActive = e.target.name;
     if (CurrentActive === "Task") {
       this.setState({
@@ -382,11 +385,11 @@ class MyTicket extends Component {
         ClaimTab: 2
       });
     }
-    setTimeout(function(){
+    setTimeout(function() {
       self.props.history.push({
-        state:self.state
+        state: self.state
       });
-    },100);
+    }, 100);
   }
   handleNoteAddComments() {
     let self = this;
@@ -396,13 +399,17 @@ class MyTicket extends Component {
       headers: authHeader(),
       params: {
         CommentForId: this.state.NotesTab,
-        Comment: this.state.NoteAddComment,
-        Id:127
+        Comment: this.state.NoteAddComment.trim(),
+        Id: 127
       }
     }).then(function(res) {
       debugger;
-      let Data = res.data.responseData;
-      // self.setState({ KbPopupData: Data });
+      let status = res.data.status;
+      if (status === true) {
+        NotificationManager.success("Comment added successfully.");
+      } else {
+        NotificationManager.error("Comment not added.");
+      }
     });
   }
   handleGetNotesTabDetails() {
@@ -417,9 +424,9 @@ class MyTicket extends Component {
     }).then(function(res) {
       debugger;
       let status = res.data.status;
-      let details=res.data.responseData
-      if(status === true){
-        self.setState({ Notesdetails: details });  
+      let details = res.data.responseData;
+      if (status === true) {
+        self.setState({ Notesdetails: details });
       }
     });
   }
@@ -1857,7 +1864,7 @@ class MyTicket extends Component {
                 role="tabpanel"
                 aria-labelledby="Claim-tab"
               >
-                <MyTicketClaim />
+                <MyTicketClaim claimData={this.state} />
               </div>
               <div
                 className="tab-pane fade show active"
@@ -2395,7 +2402,7 @@ class MyTicket extends Component {
                 role="tabpanel"
                 aria-labelledby="Task-tab"
               >
-                <MyTicketTask />
+                <MyTicketTask taskData={this.state} />
               </div>
               <div
                 className="tab-pane fade"
@@ -2422,31 +2429,31 @@ class MyTicket extends Component {
                   </div>
                   <div className="col-12 col-xs-12 col-sm-7">
                     {this.state.Notesdetails !== null &&
-                    this.state.Notesdetails.map((item,i)=>
-                    (
-                      <div className="row" key={i}>
-                      <div className="col-md-1">
-                        <div className="oval-5-1-new">
-                          <img
-                            src={StoreIcon}
-                            style={{ padding: "5px" }}
-                            alt="store-icon"
-                          />
+                      this.state.Notesdetails.map((item, i) => (
+                        <div className="row" key={i}>
+                          <div className="col-md-1">
+                            <div className="oval-5-1-new">
+                              <img
+                                src={StoreIcon}
+                                style={{ padding: "5px" }}
+                                alt="store-icon"
+                              />
+                            </div>
+                          </div>
+                          <div className="col-md-11">
+                            <div className="row">
+                              <label className="varun-nagpal">
+                                {item.createdByName}
+                              </label>
+                            </div>
+                            <div className="row">
+                              <label className="hi-diwakar-i-really tab">
+                                {item.note}
+                              </label>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-md-11">
-                        <div className="row">
-                          <label className="varun-nagpal">{item.createdByName}</label>
-                        </div>
-                        <div className="row">
-                          <label className="hi-diwakar-i-really tab">
-                           {item.note}
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                    ))}
-                   
+                      ))}
                   </div>
                 </div>
               </div>
@@ -2519,7 +2526,7 @@ class MyTicket extends Component {
             </div>
           </div>
         </Modal>
-      
+
         <div className="row" style={{ margin: "0" }}>
           <div className="TicketTabs">
             <ul className="mb-0">
@@ -2571,6 +2578,7 @@ class MyTicket extends Component {
             </ul>
           </div>
         </div>
+        <NotificationContainer />
       </Fragment>
     );
   }

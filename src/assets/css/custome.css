@@ -3920,7 +3920,7 @@ progress::-webkit-progress-bar {
   height: 198px;
   border: none;
   resize: none;
-  padding: 5px;
+  padding: 10px;
 }
 
 /* ----- */
@@ -4078,10 +4078,6 @@ progress::-webkit-progress-bar {
   text-align: left;
 }
 
-/* 
-.ReactModal__Overlay{
-  overflow-y: auto;
-} */
 
 .add-comment-button {
   background-color: #2561a8;
@@ -4096,7 +4092,6 @@ progress::-webkit-progress-bar {
   font-size: 14px;
   font-weight: 400;
   line-height: 17px;
-  text-align: left;
 }
 
 .claim-status-table .table td {
