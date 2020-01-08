@@ -30,7 +30,8 @@ class MyTicketTask extends Component {
       taskTitle: "",
       taskDescription: "",
       taskAddComment: "",
-      // taskDetailsData:{},
+      taskDetailsData: {},
+      taskTableGrid:[],
       Taskdetails: [],
       DepartmentData: [],
       FunctionData: [],
@@ -45,9 +46,8 @@ class MyTicketTask extends Component {
     this.handleGetFunctionList = this.handleGetFunctionList.bind(this);
     this.handleGetAssignToList = this.handleGetAssignToList.bind(this);
     this.handleGetTaskTabDetails = this.handleGetTaskTabDetails.bind(this);
-    this.handleGetTicketPriorityList = this.handleGetTicketPriorityList.bind(
-      this
-    );
+    this.handleGetTicketPriorityList = this.handleGetTicketPriorityList.bind(this);
+    this.handleGetTaskTableGrid = this.handleGetTaskTableGrid.bind(this);
   }
   handleAddTaskModalOpn() {
     this.setState({ AddTaskModal: true });
@@ -73,6 +73,24 @@ class MyTicketTask extends Component {
       [e.target.name]: e.target.value
     });
   };
+  handleGetTaskTableGrid(){
+    let self=this;
+    axios({
+      method:"post",
+      url: config.apiUrl + "/Task/gettasklist",
+      headers: authHeader(),
+      params: {
+        TicketId: 127
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.status;
+      let data = res.data.responseData;
+      if (status === true) {
+        self.setState({ taskTableGrid: data });
+      }
+    });
+  }
   handleGetTaskTabDetails() {
     let self = this;
     axios({
@@ -85,12 +103,12 @@ class MyTicketTask extends Component {
     }).then(function(res) {
       debugger;
       let status = res.data.status;
-      let details = res.data.responseData;
+      let details = res.data.responseData.comments;
+      let data = res.data.responseData;
       if (status === true) {
-        self.setState({ Taskdetails: details});
+        self.setState({ Taskdetails: details, taskDetailsData: data });
       }
     });
-    
   }
   handleGetDepartmentList() {
     debugger;
@@ -229,154 +247,14 @@ class MyTicketTask extends Component {
   }
 
   componentDidMount() {
+    this.handleGetTaskTableGrid()
     this.handleGetDepartmentList();
     this.handleGetTicketPriorityList();
     this.handleGetTaskTabDetails();
   }
   render() {
-    const dataTicketTask = [
-      {
-        id: "Ta1",
-        taskTitle: <label>Wifi is not working from 5hrs</label>,
-        status: <span className="table-btn table-blue-btn">Open</span>,
-        dept: (
-          <div>
-            <span>
-              Internet
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-              {/* <Popover content={popoverData1} placement="bottom">
-              <img
-                className="info-icon"
-                src={InfoIcon}
-                alt="info-icon"
-                
-              />
-            </Popover> */}
-            </span>
-          </div>
-        ),
-        creationOn: (
-          <div>
-            <span>
-              2 Hour Ago
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </span>
-          </div>
-        )
-      },
-      {
-        id: "Ta2",
-        taskTitle: <label>Store door are not working</label>,
-        status: <span className="table-btn table-blue-btn">Open</span>,
-        dept: (
-          <div>
-            <span>
-              hardware
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </span>
-          </div>
-        ),
-        creationOn: (
-          <div>
-            <span>
-              12 March 2018
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </span>
-          </div>
-        )
-      },
-      {
-        id: "Ta3",
-        taskTitle: <label>Supplies are not coming on time</label>,
-        status: <span className="table-btn table-green-btn">Solved</span>,
-        dept: (
-          <div>
-            <span>
-              supply
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </span>
-          </div>
-        ),
-        creationOn: (
-          <div>
-            <span>
-              12 March 2018
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </span>
-          </div>
-        )
-      }
-    ];
-
-    const columnsTicketTask = [
-      {
-        Header: <span>ID</span>,
-        accessor: "id",
-        Cell: row => (
-          <span>
-            <img src={HeadPhone3} alt="HeadPhone" className="headPhone3" />
-            ABC1234
-          </span>
-        )
-      },
-      {
-        Header: <span>Status</span>,
-        accessor: "status"
-      },
-      {
-        Header: <span>Task Title</span>,
-        accessor: "taskTitle"
-      },
-      {
-        Header: (
-          <span>
-            Department
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "dept"
-      },
-      {
-        Header: (
-          <span>
-            Store Code
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "storeCode",
-        Cell: row => <label>2349</label>
-      },
-      {
-        Header: (
-          <span>
-            Created By
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "createdBy",
-        Cell: row => <label>N Rampal</label>
-      },
-      {
-        Header: (
-          <span>
-            Creation on
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "creationOn"
-      },
-      {
-        Header: (
-          <span>
-            Assign to
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "assignTo",
-        Cell: row => <label>A. Bansal</label>
-      }
-    ];
-
+    const {taskTableGrid}=this.state;
+   
     return (
       <div>
         <div className="claim-addTask-btn">
@@ -533,8 +411,72 @@ class MyTicketTask extends Component {
         </Modal>
         <div className="table-cntr mt-3 MyTicketTaskReact">
           <ReactTable
-            data={dataTicketTask}
-            columns={columnsTicketTask}
+            data={taskTableGrid}
+            columns={[
+              {
+                Header: <span>ID</span>,
+                accessor: "ticketingTaskID",
+                Cell: row => (
+                  <span>
+                    <img src={HeadPhone3} alt="HeadPhone" className="headPhone3" />
+                    {row.original.ticketingTaskID}
+                  </span>
+                )
+              },
+              {
+                Header: <span>Status</span>,
+                accessor: "taskStatus"
+              },
+              {
+                Header: <span>Task Title</span>,
+                accessor: "taskTitle"
+              },
+              {
+                Header: (
+                  <span>
+                    Department
+                    <FontAwesomeIcon icon={faCaretDown} />
+                  </span>
+                ),
+                accessor: "departmentName"
+              },
+              {
+                Header: (
+                  <span>
+                    Store Code
+                    <FontAwesomeIcon icon={faCaretDown} />
+                  </span>
+                ),
+                accessor: "storeCode",
+              },
+              {
+                Header: (
+                  <span>
+                    Created By
+                    <FontAwesomeIcon icon={faCaretDown} />
+                  </span>
+                ),
+                accessor: "createdBy",
+              },
+              {
+                Header: (
+                  <span>
+                    Creation on
+                    <FontAwesomeIcon icon={faCaretDown} />
+                  </span>
+                ),
+                accessor: "createdDate"
+              },
+              {
+                Header: (
+                  <span>
+                    Assign to
+                    <FontAwesomeIcon icon={faCaretDown} />
+                  </span>
+                ),
+                accessor: "assignName",
+              }
+            ]}
             // resizable={false}
             defaultPageSize={3}
             showPagination={false}
@@ -560,7 +502,7 @@ class MyTicketTask extends Component {
             <hr className="claimline" />
             <div className="">
               <label className="wifiLbl-drawer">
-                WIFI is not working from 5hrs
+                {this.state.taskDetailsData.taskTitle}
               </label>
               <div className="row m-b-15">
                 <div className="col-xs-3">
@@ -573,7 +515,9 @@ class MyTicketTask extends Component {
                 <div className="col-xs-9">
                   <label className="addTask-2-d-ago m-r-25">
                     ASSIGNED TO
-                    <span className="addTasklbl-name">Naman Rampal</span>
+                    <span className="addTasklbl-name">
+                      {this.state.taskDetailsData.assignName}
+                    </span>
                   </label>
                 </div>
                 <div className="col-xs-3">
@@ -586,7 +530,9 @@ class MyTicketTask extends Component {
                 <div className="col-xs-9">
                   <label className="addTask-2-d-ago m-r-25">
                     STATUS
-                    <span className="addTasklbl-name">Open</span>
+                    <span className="addTasklbl-name">
+                      {this.state.taskDetailsData.taskStatus}
+                    </span>
                   </label>
                 </div>
                 <div className="col-xs-3">
@@ -599,21 +545,14 @@ class MyTicketTask extends Component {
                 <div className="col-xs-9">
                   <label className="addTask-2-d-ago">
                     DUE DATE
-                    <span className="addTasklbl-name">Today</span>
+                    <span className="addTasklbl-name">
+                      {this.state.taskDetailsData.duedate}
+                    </span>
                   </label>
                 </div>
               </div>
               <p className="tasktasb-para">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                <br />
-                Sed interdum cursus nulla, a sagittis arcu dapibus vel.
-                <br />
-                Phasellus ut justo mauris. Nullam sed efficitur tellus, eget
-                sollicitudin tellus. Donec metus augue, auctor ac dignissim
-                suscipit, blandit vel libero. Fusce accumsan finibus nisi sed
-                sodales. Phasellus tincidunt nisl dictum ipsum pellentesque
-                dapibus. Mauris mollis magna vel arcu pretium, et lobortis ipsum
-                placerat. Maecenas mollis convallis felis vel posuere.
+               {this.state.taskDetailsData.taskDescription}
               </p>
               <hr className="claimline" />
               <textarea
@@ -631,7 +570,7 @@ class MyTicketTask extends Component {
                 ADD COMMENT
               </button>
               <div className="varunoverflow">
-                {/* {this.state.Taskdetails !== null &&
+                {this.state.Taskdetails !== null &&
                   this.state.Taskdetails.map((item, i) => (
                     <div className="row m-t-20 mx-0" key={i}>
                       <div className="col-xs-6" style={{ display: "contents" }}>
@@ -643,15 +582,18 @@ class MyTicketTask extends Component {
                           />
                         </div>
                         <label className="varun-taskDrawer">
-                          {item.assignName}
-                          <span className="addTask-time-ago">2hr ago</span>
+                          {item.name}
+                          <span className="addTask-time-ago">
+                            {item.datetime}
+                          </span>
                         </label>
 
-                        <label className="task-drawer-lnl">{item.taskDescription}</label>
+                        <label className="task-drawer-lnl">
+                          {item.comment}
+                        </label>
                       </div>
                     </div>
-                  ))} */}
-
+                  ))}
               </div>
             </div>
           </Drawer>
