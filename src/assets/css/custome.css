@@ -406,6 +406,7 @@ a {
   width: 23px;
   height: 23px;
   margin-right: 9px;
+  cursor: pointer;
 }
 .loading-rectangle {
   background-color: #ecf2f4;
@@ -6582,7 +6583,10 @@ table thead tr {
   font-size: 16px;
 }
 .arrowImg-addSearch {
-  margin-right: 15px;
+  margin-right: 12px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
 }
 .label-addsearch {
   font-size: 15px;
