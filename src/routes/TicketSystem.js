@@ -606,6 +606,9 @@ class TicketSystem extends Component {
     });
   }
 
+  handlebackprev() {
+    this.props.history.push("myTicketList");
+  }
   setBrandValue = e => {
     let brandValue = e.currentTarget.value;
     this.setState({ selectedBrand: brandValue });
@@ -692,6 +695,7 @@ class TicketSystem extends Component {
                     src={ArrowLeftCircleBlue}
                     alt="arrow-circle-left"
                     className="bitmapback"
+                    onClick={this.handlebackprev.bind(this)}
                   />
                   <label className="source">Source</label>
                   <img
@@ -700,7 +704,7 @@ class TicketSystem extends Component {
                     className="bitmapheadpone"
                   />
                   <label className="a91-9873470074">{CustNumber}</label>
-                  <CopyToClipboard text={"Hello"} onCopy={() => this.setState({ copied: true })}>
+                  <CopyToClipboard text={CustNumber} onCopy={() => this.setState({ copied: true })}>
                     <img src={CopyIcon} alt="Copy-Icon" className="bitmapheadpone" />  
                   </CopyToClipboard>
                   {this.state.copied ? (
