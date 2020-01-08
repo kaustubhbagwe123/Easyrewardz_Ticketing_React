@@ -88,7 +88,7 @@ class AddSearchMyTicket extends Component {
             pathname: "ticketsystem",
             state: self.state
           });
-        }, 500);
+        }, 100);
         self.setState({
           customerId: GetCustId
           // message: res.data.message

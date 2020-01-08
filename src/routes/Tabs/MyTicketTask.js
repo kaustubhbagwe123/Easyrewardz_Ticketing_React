@@ -29,6 +29,7 @@ class MyTicketTask extends Component {
       TaskDetailDrawer: false,
       taskTitle: "",
       taskDescription: "",
+      taskAddComment: "",
       DepartmentData: [],
       FunctionData: [],
       AssignToData: [],
@@ -166,22 +167,42 @@ class MyTicketTask extends Component {
         FunctionID: this.state.selectedFunction,
         AssignToID: this.state.selectedAssignTo,
         PriorityID: this.state.selectedPriority,
-        TicketID:127
+        TicketID: 127
       }
     }).then(function(res) {
       debugger;
       let status = res.data.status;
-      if(status === true){
+      if (status === true) {
         NotificationManager.success("Task created successfully.");
-        self.handleAddTaskModalCls()
-      }
-      else{
+        self.handleAddTaskModalCls();
+      } else {
         NotificationManager.error("Task not created.");
       }
     });
   }
+  handleTaskAddComments() {
+    debugger
+    // var TaskData = this.props.location.state;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Task/AddComment",
+      headers: authHeader(),
+      params: {
+        // CommentForId: TaskData.TaskTab,
+        Comment: this.state.taskAddComment,
+        Id: 127
+      }
+    }).then(function(res) {
+      debugger;
+      let Data = res.data.responseData;
+      // self.setState({ KbPopupData: Data });
+    });
+  }
 
   componentDidMount() {
+    debugger
+    // var TaskData = this.props.location.state;
     this.handleGetDepartmentList();
     this.handleGetTicketPriorityList();
   }
@@ -490,7 +511,7 @@ class MyTicketTask extends Component {
             showPagination={false}
             getTrProps={this.HandleRowClickDraw}
           />
-          
+
           <Drawer
             className="taskTab-drawerModal"
             placement={"right"}
@@ -569,8 +590,15 @@ class MyTicketTask extends Component {
               <textarea
                 className="task-drawerv-textArea"
                 placeholder="Add Comments"
+                name="taskAddComment"
+                value={this.state.taskAddComment}
+                onChange={this.handleTaskOnchangeData}
               ></textarea>
-              <button className="assign-butn btn-assign-tikcet" type="button">
+              <button
+                className="assign-butn btn-assign-tikcet"
+                type="button"
+                onClick={this.handleTaskAddComments.bind(this)}
+              >
                 ADD COMMENT
               </button>
               <div className="row m-t-20">
