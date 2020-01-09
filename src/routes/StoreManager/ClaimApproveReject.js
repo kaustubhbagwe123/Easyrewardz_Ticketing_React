@@ -86,7 +86,7 @@ class ClaimApproveReject extends Component {
               id="fil-number12"
               name="filter-type"
               style={{ display: "none" }}
-              //   onChange={() => this.showAddNoteFuncation()}
+            //   onChange={() => this.showAddNoteFuncation()}
             />
             <label htmlFor="fil-number12" style={{ paddingLeft: "25px" }}>
               <span className="add-note">BB332398</span>
@@ -159,7 +159,7 @@ class ClaimApproveReject extends Component {
             <div className="col-md-9" style={{ padding: "0" }}>
               <div className="card card-radius" style={{ padding: "45px 45px 30px", margin: "0 0 20px" }}>
                 <div className="search-customer-padding">
-                  <div className="" style={{border:"1px solid #EEE",borderRadius:"5px"}}>
+                  <div className="" style={{ border: "1px solid #EEE", borderRadius: "5px" }}>
                     <div className="claim-status-card">
                       <label>
                         <b>Claim Status: Open</b>
@@ -211,127 +211,127 @@ class ClaimApproveReject extends Component {
                             <span className="Searchline"> </span>
                           </div>
                           {this.state.SearchDetails ? (
-                             <div style={{borderTop:"1px solid #EEE",marginTop:"12px"}}>
-                             <div className="reacttableordermodal">
-             <ReactTable
-               data={dataOrder}
-               // columns={columnsOrder}
-               columns={[
-                 {
-                   Header: <span>Invoice Number</span>,
-                   accessor: "invoiceNumber",
-                   Cell: row => (
-                     <div
-                       className="filter-checkbox"
-                       style={{ marginLeft: "15px" }}
-                     >
-                       <input
-                         type="checkbox"
-                         id="fil-number1"
-                         name="filter-type"
-                         style={{ display: "none" }}
-                         //   onChange={() => this.showAddNoteFuncation()}
-                       />
-                       <label
-                         htmlFor="fil-number1"
-                         style={{ paddingLeft: "25px" }}
-                       >
-                         <span className="add-note">BB332398</span>
-                       </label>
-                     </div>
-                   )
-                 },
-                 {
-                   Header: <span>Invoice Date</span>,
-                   accessor: "invoiceDate",
-                   Cell: row => <label>12 Jan 2019</label>
-                 },
-                 {
-                   Header: <span>Item Count</span>,
-                   accessor: "itemCount",
-                   Cell: row => <label>02</label>
-                 },
-                 {
-                   Header: <span>Item Price</span>,
-                   accessor: "itemPrice",
-                   Cell: row => <label>2999</label>
-                 },
-                 {
-                   Header: <span>Price Paid</span>,
-                   accessor: "pricePaid",
-                   Cell: row => <label>2999</label>
-                 },
-                 {
-                   Header: <span>Store Code</span>,
-                   accessor: "storeCode",
-                   Cell: row => <label>SB221</label>
-                 },
-                 {
-                   Header: <span>Store Addres</span>,
-                   accessor: "storeAddres",
-                   Cell: row => (
-                     <label>UNIT D-338,| SECOND FLOOR SECTOR 14</label>
-                   )
-                 },
-                 // {
-                 //   Header: <span>Discount</span>,
-                 //   accessor: "discount",
-                 //   Cell: row => <label>25%</label>
-                 // }
-               ]}
-               //resizable={false}
-               defaultPageSize={3}
-               showPagination={false}
-               SubComponent={row => {
-                 return (
-                   <div className="reactstoreclaim" style={{ padding: "20px" }}>
-                     <ReactTable
-                       data={dataOrder1}
-                       columns={columnsOrder1}
-                       defaultPageSize={2}
-                       showPagination={false}
-                     />
-                   </div>
-                 );
-               }}
-             />
-           </div>
+                            <div style={{ borderTop: "1px solid #EEE", marginTop: "12px" }}>
+                              <div className="reacttableordermodal">
+                                <ReactTable
+                                  data={dataOrder}
+                                  // columns={columnsOrder}
+                                  columns={[
+                                    {
+                                      Header: <span>Invoice Number</span>,
+                                      accessor: "invoiceNumber",
+                                      Cell: row => (
+                                        <div
+                                          className="filter-checkbox"
+                                          style={{ marginLeft: "15px" }}
+                                        >
+                                          <input
+                                            type="checkbox"
+                                            id="fil-number1"
+                                            name="filter-type"
+                                            style={{ display: "none" }}
+                                          //   onChange={() => this.showAddNoteFuncation()}
+                                          />
+                                          <label
+                                            htmlFor="fil-number1"
+                                            style={{ paddingLeft: "25px" }}
+                                          >
+                                            <span className="add-note">BB332398</span>
+                                          </label>
+                                        </div>
+                                      )
+                                    },
+                                    {
+                                      Header: <span>Invoice Date</span>,
+                                      accessor: "invoiceDate",
+                                      Cell: row => <label>12 Jan 2019</label>
+                                    },
+                                    {
+                                      Header: <span>Item Count</span>,
+                                      accessor: "itemCount",
+                                      Cell: row => <label>02</label>
+                                    },
+                                    {
+                                      Header: <span>Item Price</span>,
+                                      accessor: "itemPrice",
+                                      Cell: row => <label>2999</label>
+                                    },
+                                    {
+                                      Header: <span>Price Paid</span>,
+                                      accessor: "pricePaid",
+                                      Cell: row => <label>2999</label>
+                                    },
+                                    {
+                                      Header: <span>Store Code</span>,
+                                      accessor: "storeCode",
+                                      Cell: row => <label>SB221</label>
+                                    },
+                                    {
+                                      Header: <span>Store Addres</span>,
+                                      accessor: "storeAddres",
+                                      Cell: row => (
+                                        <label>UNIT D-338,| SECOND FLOOR SECTOR 14</label>
+                                      )
+                                    },
+                                    // {
+                                    //   Header: <span>Discount</span>,
+                                    //   accessor: "discount",
+                                    //   Cell: row => <label>25%</label>
+                                    // }
+                                  ]}
+                                  //resizable={false}
+                                  defaultPageSize={3}
+                                  showPagination={false}
+                                  SubComponent={row => {
+                                    return (
+                                      <div className="reactstoreclaim" style={{ padding: "20px" }}>
+                                        <ReactTable
+                                          data={dataOrder1}
+                                          columns={columnsOrder1}
+                                          defaultPageSize={2}
+                                          showPagination={false}
+                                        />
+                                      </div>
+                                    );
+                                  }}
+                                />
+                              </div>
 
-                             
-                           </div>
-                          ) : (
-                            <div className="uploadsearch">
-                              <div className="row">
-                                <div className="col-md-12 uploadsechmargin">
-                                  <label className="uploadsearch-text">
-                                    No order found with this number
-                                  </label>
-                                </div>
-                              </div>
-                              <div className="row">
-                                <div className="col-md-12 uploadsechmargin">
-                                  <button
-                                    type="button"
-                                    className="uploadsearchbtn"
-                                  >
-                                    <label
-                                      for="file-upload"
-                                      className="uploadsearchbtn-text"
-                                    >
-                                      UPLOAD FILE
-                                    </label>
-                                  </button>
-                                </div>
-                              </div>
-                              <div className="row">
-                                <div className="col-md-12 uploadsechmargin">
-                                  <u>
-                                    <a href="#!">DOWNLOAD SAMPLE FILE</a>
-                                  </u>
-                                </div>
-                              </div>
+
                             </div>
-                          )}
+                          ) : (
+                              <div className="uploadsearch">
+                                <div className="row">
+                                  <div className="col-md-12 uploadsechmargin">
+                                    <label className="uploadsearch-text">
+                                      No order found with this number
+                                  </label>
+                                  </div>
+                                </div>
+                                <div className="row">
+                                  <div className="col-md-12 uploadsechmargin">
+                                    <button
+                                      type="button"
+                                      className="uploadsearchbtn"
+                                    >
+                                      <label
+                                        for="file-upload"
+                                        className="uploadsearchbtn-text"
+                                      >
+                                        UPLOAD FILE
+                                    </label>
+                                    </button>
+                                  </div>
+                                </div>
+                                <div className="row">
+                                  <div className="col-md-12 uploadsechmargin">
+                                    <u>
+                                      <a href="#!">DOWNLOAD SAMPLE FILE</a>
+                                    </u>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
                         </CardBody>
                       </Card>
                     </Collapse>
@@ -387,7 +387,7 @@ class ClaimApproveReject extends Component {
                       <select
                         id="inputState"
                         className="form-control dropdown-label"
-                        
+
                       >
                         <option>select</option>
                       </select>
@@ -486,7 +486,7 @@ class ClaimApproveReject extends Component {
                       <label className="label-6">Comments By Approval</label>
                       <hr></hr>
                     </div>
-                    <div className="" style={{display:"contents"}}>
+                    <div className="" style={{ display: "contents" }}>
                       <textarea
                         className="ticket-comments-textarea"
                         placeholder="Add your Comment here"

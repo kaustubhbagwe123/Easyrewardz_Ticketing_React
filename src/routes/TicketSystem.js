@@ -778,7 +778,7 @@ class TicketSystem extends Component {
                     className="rectanglecreateticket create-ticket"
                     onClick={this.handleSubmitReopnModalOpen.bind(this)}
                   >
-                    CREAT TICKET
+                    CREATE TICKET
                   </button>
                   <Modal
                     open={this.state.SubmitBtnReopn}
@@ -868,7 +868,8 @@ class TicketSystem extends Component {
                       name="ticketDetails"
                       value={this.state.ticketDetails}
                       onChange={this.handleTicketChange}
-                    ></textarea>
+                    >
+                    </textarea>
                   </div>
                 </div>
 

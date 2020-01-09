@@ -68,6 +68,100 @@ class MyTicketClaim extends Component {
     });
   }
   render() {
+
+    const dataOrder = [
+      {
+        taskTitle: "Store door are not working",
+        assignTo: "G.Bansal"
+      },
+      {
+        taskTitle: "Supplies are not coming on time",
+        assignTo: "A.Bansal"
+      },
+      {
+        taskTitle: "Supplies are not coming on time",
+        assignTo: "G.Bansal"
+      },
+      {
+        taskTitle: "Supplies are not coming on time",
+        assignTo: "A.Bansal"
+      },
+      {
+        taskTitle: "Supplies are not coming on time",
+        assignTo: "A.Bansal"
+      }
+    ];
+
+    const dataOrder1 = [
+      {
+        taskTitle: "Store door are not working",
+        assignTo: "G.Bansal"
+      },
+      {
+        taskTitle: "Supplies are not coming on time",
+        assignTo: "A.Bansal"
+      },
+      {
+        taskTitle: "Supplies are not coming on time",
+        assignTo: "G.Bansal"
+      },
+      {
+        taskTitle: "Supplies are not coming on time",
+        assignTo: "A.Bansal"
+      },
+      {
+        taskTitle: "Supplies are not coming on time",
+        assignTo: "A.Bansal"
+      }
+    ];
+
+    const columnsOrder1 = [
+      {
+        Header: <span>SKU</span>,
+        accessor: "Sku",
+        Cell: row => (
+          <span className="add-note">BB332398</span>
+          // <div className="filter-checkbox" style={{ marginLeft: "15px" }}>
+          //   <input
+          //     type="checkbox"
+          //     id="fil-number12"
+          //     name="filter-type"
+          //     style={{ display: "none" }}
+          //   //   onChange={() => this.showAddNoteFuncation()}
+          //   />
+          //   <label htmlFor="fil-number12" style={{ paddingLeft: "25px" }}>
+          //     <span className="add-note">BB332398</span>
+          //   </label>
+          // </div>
+        )
+      },
+      {
+        Header: <span>Product Name</span>,
+        accessor: "ProName",
+        Cell: row => <label>Paper Bag Big</label>
+      },
+      {
+        Header: <span>Price</span>,
+        accessor: "Price",
+        Cell: row => <label>2999</label>
+      },
+      {
+        Header: <span>Price Paid</span>,
+        accessor: "pricePa1",
+        Cell: row => <label>2999</label>
+      },
+      {
+        Header: <span>Discount</span>,
+        accessor: "dis1",
+        Cell: row => <label>0.00</label>
+      },
+      {
+        Header: <span>MOP</span>,
+        accessor: "reqSiz",
+        Cell: row => <label>Cash</label>
+      }
+    ];
+
     const dataTicketClaim = [
       {
         id: "Ta1",
@@ -340,7 +434,87 @@ class MyTicketClaim extends Component {
 
               <hr />
               <div className="borderless" style={{ marginLeft: "10px" }}>
-                <table className="table">
+
+                  <div className="reacttableclaimdrawer">
+                                <ReactTable
+                                  data={dataOrder}
+                                  // columns={columnsOrder}
+                                  columns={[
+                                    {
+                                      Header: <span>Invoice Number</span>,
+                                      accessor: "invoiceNumber",
+                                      Cell: row => (
+                                        <span className="add-note">BB332398</span>
+                                        // <div
+                                        //   className="filter-checkbox"
+                                        //   style={{ marginLeft: "15px" }}
+                                        // >
+                                        //   <input
+                                        //     type="checkbox"
+                                        //     id="fil-number1"
+                                        //     name="filter-type"
+                                        //     style={{ display: "none" }}
+                                        //   />
+                                        //   <label
+                                        //     htmlFor="fil-number1"
+                                        //     style={{ paddingLeft: "25px" }}
+                                        //   >
+                                        //     <span className="add-note">BB332398</span>
+                                        //   </label>
+                                        // </div>
+                                      )
+                                    },
+                                    {
+                                      Header: <span>Invoice Date</span>,
+                                      accessor: "invoiceDate",
+                                      Cell: row => <label>12 Jan 2019</label>
+                                    },
+                                    {
+                                      Header: <span>Item Count</span>,
+                                      accessor: "itemCount",
+                                      Cell: row => <label>02</label>
+                                    },
+                                    {
+                                      Header: <span>Item Price</span>,
+                                      accessor: "itemPrice",
+                                      Cell: row => <label>2999</label>
+                                    },
+                                    {
+                                      Header: <span>Price Paid</span>,
+                                      accessor: "pricePaid",
+                                      Cell: row => <label>2999</label>
+                                    },
+                                    {
+                                      Header: <span>Store Code</span>,
+                                      accessor: "storeCode",
+                                      Cell: row => <label>SB221</label>
+                                    },
+                                    {
+                                      Header: <span>Store Addres</span>,
+                                      accessor: "storeAddres",
+                                      Cell: row => (
+                                        <label>UNIT D-338,| SECOND FLOOR SECTOR 14</label>
+                                      )
+                                    },
+                                  ]}
+                                  //resizable={false}
+                                  defaultPageSize={3}
+                                  showPagination={false}
+                                  SubComponent={row => {
+                                    return (
+                                      <div className="reacttableclaimdrawe" style={{ padding: "20px" }}>
+                                        <ReactTable
+                                          data={dataOrder1}
+                                          columns={columnsOrder1}
+                                          defaultPageSize={2}
+                                          showPagination={false}
+                                        />
+                                      </div>
+                                    );
+                                  }}
+                                />
+                              </div>
+                {/* <table className="table">
                   <tbody>
                     <tr>
                       <td>
@@ -391,9 +565,9 @@ class MyTicketClaim extends Component {
                       </td>
                     </tr>
                   </tbody>
-                </table>
+                </table> */}
               </div>
-              <div className="row" style={{ marginLeft: "15px" }}>
+              {/* <div className="row" style={{ marginLeft: "15px" }}>
                 <div className="claim-SKU-details-table">
                   <table className="table borderless">
                     <tbody>
@@ -461,7 +635,7 @@ class MyTicketClaim extends Component {
                   </table>
                 </div>
                 <div className="claim-status-row"></div>
-              </div>
+              </div> */}
             </div>
             <br />
             <div className="row removemarg" style={{ marginLeft: "5px" }}>

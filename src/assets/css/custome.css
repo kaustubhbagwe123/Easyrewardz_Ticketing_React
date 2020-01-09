@@ -4016,7 +4016,8 @@ progress::-webkit-progress-bar {
   border-radius: 8px;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.03);
   width: 876px;
-  height: 350px;
+  min-height: 350px;
+  height: auto;
 }
 
 .claim-status-table-header {
@@ -4210,7 +4211,27 @@ progress::-webkit-progress-bar {
   width: 135px;
   height: 76px;
 }
-
+.reacttableclaimdrawer .ReactTable {
+  border: none;
+}
+.reacttableclaimdrawer .ReactTable .rt-thead .rt-th.-cursor-pointer, .ReactTable .rt-thead .rt-td.-cursor-pointer {
+  padding: 10px 7px !important;
+}
+.reacttableclaimdrawer .ReactTable .rt-tbody .rt-td {
+  padding: 10px 20px !important;
+}
+.reacttableclaimdrawe .ReactTable .rt-thead .rt-th.-cursor-pointer, .ReactTable .rt-thead .rt-td.-cursor-pointer {
+  padding: 10px 20px !important;
+}
+.reacttableclaimdrawe .ReactTable .rt-tbody .rt-td {
+  padding: 10px 20px !important;
+}
+.reacttableclaimdrawe .ReactTable {
+  background-color: #f8f8f8;
+}
+.reacttableclaimdrawe .ReactTable .rt-thead.-header {
+  background-color: #f8f8f8
+}
 .borderless table tr {
   border-bottom: none !important;
   border: none !important;
@@ -5155,7 +5176,7 @@ font-weight: normal;
   font-weight: 700;
   line-height: 19px;
   text-align: left;
-  padding-left: 75%;
+  padding-left: 0;
 }
 
 .table-id-data {
@@ -5350,7 +5371,7 @@ font-weight: normal;
   font-weight: 700;
   line-height: 19px;
   text-align: left;
-  padding-left: 75%;
+  padding-left: 0;
 }
 
 .table-id-data {

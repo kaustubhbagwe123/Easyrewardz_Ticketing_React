@@ -14,6 +14,7 @@ import {
   NotificationManager
 } from "react-notifications";
 import { authHeader } from "../../helpers/authHeader";
+import SimpleReactValidator from "simple-react-validator";
 
 class TicketSystemOrder extends Component {
   constructor(props) {
@@ -26,7 +27,7 @@ class TicketSystemOrder extends Component {
       AddManuallyData: false,
       AddManualSaveTbl: false,
       OrderCreatDate: "",
-      orderId: 0,
+      orderId: "",
       billId: "",
       productBarCode: "",
       orderMRP: "",
@@ -51,6 +52,7 @@ class TicketSystemOrder extends Component {
       customerdetails: {},
       modeData: {}
     };
+    this.validator = new SimpleReactValidator();
     this.handleOrderTableOpen = this.handleOrderTableOpen.bind(this);
     this.handleOrderTableClose = this.handleOrderTableClose.bind(this);
     this.handleGetTicketSourceList = this.handleGetTicketSourceList.bind(this);
@@ -210,6 +212,7 @@ class TicketSystemOrder extends Component {
   }
   hadleAddManuallyOrderData() {
     debugger;
+    if (this.validator.allValid()) {
     let self = this;
     var CustID = this.props.custDetails;
     axios({
@@ -242,6 +245,10 @@ class TicketSystemOrder extends Component {
         self.handleChangeSaveManualTbl();
       }
     });
+  } else {
+    this.validator.showMessages();
+    this.forceUpdate();
+  }
   }
   handlePurchaseStoreName(field, e) {
     debugger;
@@ -421,6 +428,7 @@ class TicketSystemOrder extends Component {
                         >
                           <input
                             type="checkbox"
+                            style={{display:"none"}}
                             id={row.original.orderMasterID}
                           />
                           <label htmlFor={row.original.orderMasterID}>
@@ -479,6 +487,7 @@ class TicketSystemOrder extends Component {
                                 >
                                   <input
                                     type="checkbox"
+                                    style={{display:"none"}}
                                     id={row.original.orderItemID}
                                     // name="dashboardcheckbox[]"
                                   />
@@ -587,6 +596,11 @@ class TicketSystemOrder extends Component {
                     value={this.state.orderId}
                     onChange={this.handleManuallyOnchange}
                   />
+                   {this.validator.message(
+                    "OrderId",
+                    this.state.orderId,
+                    "required"
+                  )}
                 </div>
                 <div className="col-md-6">
                   <input
@@ -597,6 +611,11 @@ class TicketSystemOrder extends Component {
                     value={this.state.billId}
                     onChange={this.handleManuallyOnchange}
                   />
+                  {this.validator.message(
+                    "BillId",
+                    this.state.billId,
+                    "required"
+                  )}
                 </div>
               </div>
 
@@ -610,6 +629,11 @@ class TicketSystemOrder extends Component {
                     value={this.state.productBarCode}
                     onChange={this.handleManuallyOnchange}
                   />
+                  {this.validator.message(
+                    "ProductBarCode",
+                    this.state.productBarCode,
+                    "required"
+                  )}
                 </div>
                 <div className="col-md-6">
                   <select
@@ -625,6 +649,11 @@ class TicketSystemOrder extends Component {
                         </option>
                       ))}
                   </select>
+                  {this.validator.message(
+                    "Source",
+                    this.state.selectedTicketSource,
+                    "required"
+                  )}
                 </div>
               </div>
 
@@ -649,6 +678,11 @@ class TicketSystemOrder extends Component {
                         </option>
                       ))}
                   </select>
+                  {this.validator.message(
+                    "ModeOfPayment",
+                    this.state.modeOfPayment,
+                    "required"
+                  )}
                 </div>
                 <div className="col-md-6 dapic">
                   <DatePicker
@@ -673,6 +707,11 @@ class TicketSystemOrder extends Component {
                     value={this.state.orderMRP}
                     onChange={this.handleManuallyOnchange}
                   />
+                   {this.validator.message(
+                    "mrp",
+                    this.state.orderMRP,
+                    "required"
+                  )}
                 </div>
                 <div className="col-md-6">
                   <input
@@ -683,6 +722,11 @@ class TicketSystemOrder extends Component {
                     value={this.state.pricePaid}
                     onChange={this.handleManuallyOnchange}
                   />
+                   {this.validator.message(
+                    "PricePaid",
+                    this.state.pricePaid,
+                    "required"
+                  )}
                 </div>
               </div>
 
@@ -696,6 +740,11 @@ class TicketSystemOrder extends Component {
                     value={this.state.discount}
                     onChange={this.handleManuallyOnchange}
                   />
+                   {this.validator.message(
+                    "Discount",
+                    this.state.discount,
+                    "required"
+                  )}
                 </div>
                 <div className="col-md-6">
                   <input
@@ -719,6 +768,11 @@ class TicketSystemOrder extends Component {
                     value={this.state.requiredSize}
                     onChange={this.handleManuallyOnchange}
                   />
+                   {this.validator.message(
+                    "RequiredSize",
+                    this.state.requiredSize,
+                    "required"
+                  )}
                 </div>
                 <div className="col-md-6">
                   {/* <input
@@ -730,6 +784,7 @@ class TicketSystemOrder extends Component {
                         onChange={this.handleManuallyOnchange}
                       /> */}
                   <ReactAutocomplete
+                    wrapperStyle={{display:"block"}} 
                     getItemValue={item => item.storeName}
                     items={this.state.SearchItem}
                     renderItem={(item, isHighlighted) => (
@@ -760,6 +815,11 @@ class TicketSystemOrder extends Component {
                     )}
                     value={this.state.purchaseFrmStorName["store"]}
                   />
+                   {this.validator.message(
+                    "PurchaseFrmStorAddress",
+                    this.state.purchaseFrmStorName["store"],
+                    "required"
+                  )}
                 </div>
               </div>
 
@@ -864,6 +924,7 @@ class TicketSystemOrder extends Component {
                         <input
                           type="checkbox"
                           id={row.original.orderMasterID}
+                          style={{display:"none"}}
                           // checked={
                           //   this.state.CheckOrderID[
                           //     row.original.orderMasterID
@@ -929,6 +990,7 @@ class TicketSystemOrder extends Component {
                               >
                                 <input
                                   type="checkbox"
+                                  style={{display:"none"}}
                                   id={row.original.orderItemID}
                                   checked={
                                     this.state.CheckOrderID[

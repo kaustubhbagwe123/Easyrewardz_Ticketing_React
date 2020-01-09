@@ -112,8 +112,8 @@ class KnowledgeBase extends Component {
                 Clear Search
               </small>
               </div>
-              <div className="col-md-6">
-              <label className="search-KB" onClick={this.opneSearchModal}>
+              <div className="col-md-6" style={{textAlign:"end"}}>
+              <label className="search-KB">
                 SEARCH
               </label>
               <img
@@ -288,10 +288,12 @@ class KnowledgeBase extends Component {
         >
           <div className="main-content-margin">
             <div className="row" style={{ padding: "35px 35px 10px 35px" }}>
+            <div className="col-md-6">
               <label className="main-conenet-point">02 ITEMS</label>
               <small className="clear-search">Clear Search</small>
-
-              <label className="search-KB" onClick={this.opneSearchModal}>
+              </div>
+              <div className="col-md-6" style={{textAlign:"end"}}>
+              <label className="search-KB">
                 SEARCH
               </label>
               <img
@@ -300,6 +302,7 @@ class KnowledgeBase extends Component {
                 className="searchicon"
                 onClick={this.opneSearchModal}
               />
+              </div>
             </div>
             <div className="kb-table" style={{ padding: "0px 30px 0px 20px" }}>
               <table className="table">
