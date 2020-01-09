@@ -106,6 +106,7 @@ class TicketSystemOrder extends Component {
   };
   handleCheckOrderID(OrderItemId,rowData,e) {
     debugger;
+    
     const newSelected = Object.assign({}, this.state.CheckOrderID);
     newSelected[OrderItemId] = !this.state.CheckOrderID[OrderItemId];
     this.setState({
@@ -113,7 +114,7 @@ class TicketSystemOrder extends Component {
     });
     var selectedRow = [];
 
-    if (this.state.selectedDataRow.length == 0) {
+    if (this.state.selectedDataRow.length === 0) {
       selectedRow.push(rowData.original);
       this.setState({
         selectedDataRow: selectedRow
@@ -134,12 +135,12 @@ class TicketSystemOrder extends Component {
           }
         }
       } else {
-        for (var i = 0; i < this.state.selectedDataRow.length; i++) {
+        for (var j = 0; j < this.state.selectedDataRow.length; j++) {
           if (
-            this.state.selectedDataRow[i].OrderItemId === rowData.original.orderItemID
+            this.state.selectedDataRow[j].OrderItemId === rowData.original.orderItemID
           ) {
             selectedRow = this.state.selectedDataRow;
-            selectedRow.splice(i, 1);
+            selectedRow.splice(j, 1);
             break;
           }
         }
@@ -241,7 +242,7 @@ class TicketSystemOrder extends Component {
       let responseMessage = res.data.message;
 
       if (responseMessage === "Success") {
-        NotificationManager.success("New Order add successfully.");
+        NotificationManager.success("New Order added successfully.");
         self.handleChangeSaveManualTbl();
       }
     });
@@ -924,20 +925,21 @@ class TicketSystemOrder extends Component {
                         <input
                           type="checkbox"
                           id={row.original.orderMasterID}
-                          style={{display:"none"}}
-                          // checked={
-                          //   this.state.CheckOrderID[
-                          //     row.original.orderMasterID
-                          //   ] === true
-                          // }
-                          // onChange={this.handleCheckOrderID.bind(
-                          //   this,
-                          //   row.original.orderMasterID
-                          // )}
+                          // style={{display:"none"}}
+                          checked={
+                            this.state.CheckOrderID[
+                              row.original.orderMasterID
+                            ] === true
+                          }
+                          onChange={this.handleCheckOrderID.bind(
+                            this,
+                            row.original.orderMasterID
+                          )}
                         />
                         <label htmlFor={row.original.orderMasterID}>
                           {row.original.invoiceNumber}
                         </label>
+
                       </div>
                     )
                   },
@@ -990,7 +992,8 @@ class TicketSystemOrder extends Component {
                               >
                                 <input
                                   type="checkbox"
-                                  style={{display:"none"}}
+                                  // style={{display:"none"}}
+                                  name={row.original.orderItemID}
                                   id={row.original.orderItemID}
                                   checked={
                                     this.state.CheckOrderID[

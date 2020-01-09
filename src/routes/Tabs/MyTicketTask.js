@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Modal from "react-responsive-modal";
 import { Drawer } from "antd";
-import InfoIcon from "./../../assets/Images/info-icon.png";
+// import InfoIcon from "./../../assets/Images/info-icon.png";
 import HeadPhone3 from "./../../assets/Images/headphone3.png";
 import BlackLeftArrow from "./../../assets/Images/black-left-arrow.png";
 import CancelImg from "./../../assets/Images/cancel.png";
@@ -471,7 +471,7 @@ class MyTicketTask extends Component {
                     <FontAwesomeIcon icon={faCaretDown} />
                   </span>
                 ),
-                accessor: "createdDate"
+                accessor: "dateFormat"
               },
               {
                 Header: (
@@ -552,7 +552,7 @@ class MyTicketTask extends Component {
                   <label className="addTask-2-d-ago">
                     DUE DATE
                     <span className="addTasklbl-name">
-                      {this.state.taskDetailsData.duedate}
+                      {this.state.taskDetailsData.dateFormat}
                     </span>
                   </label>
                 </div>

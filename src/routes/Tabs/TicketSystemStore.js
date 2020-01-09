@@ -408,7 +408,6 @@ class TicketSystemStore extends Component {
                 </div>
               </div>
             </Modal>
-            <form onSubmit={this.handleSearchStoreDetails.bind(this)}>
               <div className="row">
                 <div
                   className="col-md-11 m-b-10 m-t-10"
@@ -426,11 +425,10 @@ class TicketSystemStore extends Component {
                     src={SearchBlackImg}
                     alt="Search"
                     className="systemorder-imgsearch"
-                    // onClick={this.handleSearchStoreDetails.bind(this)}
+                    onClick={this.handleSearchStoreDetails.bind(this)}
                   />
                 </div>
               </div>
-            </form>
             <span className="linestore3"></span>
             {this.state.message === "Record Not Found" ? (
               <div>
