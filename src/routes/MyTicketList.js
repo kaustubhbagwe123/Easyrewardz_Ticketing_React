@@ -3,7 +3,7 @@ import SearchIcon from "./../assets/Images/search-icon.png";
 import InfoIcon from "./../assets/Images/info-icon.png";
 import TaskIconBlue from "./../assets/Images/task-icon-blue.png";
 import TaskIconGray from "./../assets/Images/task-icon-gray.png";
-import CliamIconBlue from "./../assets/Images/cliam-icon-blue.png";
+// import CliamIconBlue from "./../assets/Images/cliam-icon-blue.png";
 import HeadPhone3 from "./../assets/Images/headphone3.png";
 import BlackLeftArrow from "./../assets/Images/black-left-arrow.png";
 import SearchBlackImg from "./../assets/Images/searchBlack.png";
@@ -41,7 +41,6 @@ import SlaDue from "./SlaDue";
 import TicketActionType from "./TicketActionType";
 import ClaimStatus from "./ClaimStatus";
 import TaskStatus from "./TaskStatus";
-import moment from "moment";
 import Select from "react-select";
 import {
   NotificationContainer,
@@ -140,6 +139,14 @@ class MyTicketList extends Component {
       userID: 6,
       DraftDetails: [],
       SearchListData: [],
+      byEscalation: 1,
+      byNew: 0,
+      byOpen: 0,
+      byResolved: 0,
+      byReassigned: 0,
+      byClosed: 0,
+      byAll: 0,
+      byFollowUp: 0,
       draftCountStatus: 0,
       byDateFlag: 1,
       byCustomerTypeFlag: 0,
@@ -203,7 +210,8 @@ class MyTicketList extends Component {
     this.handleScheduleTime = this.handleScheduleTime.bind(this);
     this.handleAssignTickets = this.handleAssignTickets.bind(this);
     this.handleSchedulePopup = this.handleSchedulePopup.bind(this);
-    this.handleSearchTicket = this.handleSearchTicket.bind(this);
+    this.handleSearchTicketEscalation = this.handleSearchTicketEscalation.bind(this);
+    // this.handleAdvSearchHeaderFlag = this.handleAdvSearchHeaderFlag.bind(this);
   }
 
   componentDidMount() {
@@ -216,10 +224,62 @@ class MyTicketList extends Component {
     this.handleGetSlaStatusList();
     this.handleGetDraftDetails();
     this.handleGetDepartmentList();
-    this.handleSearchTicket();
+    this.handleSearchTicketEscalation();
+  }
+  handleSearchTicketEscalation(){
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Search/SearchTicket",
+      headers: authHeader(),
+      data: {
+        isByStatus: this.state.isByStatus,
+        pageSize: this.state.advPageSize,
+        pageNo: this.state.advPageNo,
+        isEscalation: 1,
+        // ticketStatus: ticketStatus
+      }
+    }).then(function(res) {
+      debugger;
+      let data = res.data.responseData;
+      let Status=res.data.message;
+      if (Status === "Record Not Found") {
+        self.setState({ SearchTicketData: [] });
+      } else {
+        self.setState({ SearchTicketData: data });
+      }
+    });
   }
 
-  handleSearchTicket() {
+  handleSearchTicket(TabId) {
+    debugger;
+    var ticketStatus = 0;
+    var isEscalation=0;
+    if (TabId === "Escalation") {
+      ticketStatus = 1;
+      isEscalation=1;
+    } else if (TabId === "New") {
+      ticketStatus = 101;
+      isEscalation=0;
+    } else if (TabId === "Open") {
+      isEscalation=0;
+      ticketStatus = 102;
+    } else if (TabId === "Resolved") {
+      isEscalation=0;
+      ticketStatus = 103;
+    } else if (TabId === "Closed") {
+      isEscalation=0;
+      ticketStatus = 104;
+    }else if(TabId === "Reassigned"){
+      isEscalation=0;
+      ticketStatus = 1;
+    }else if(TabId === "All"){
+      isEscalation=0;
+      ticketStatus = 1;
+    }else if(TabId === "FollowUp"){
+      isEscalation=0;
+      ticketStatus = 1;
+    }
     debugger;
     let self = this;
     axios({
@@ -228,14 +288,20 @@ class MyTicketList extends Component {
       headers: authHeader(),
       data: {
         isByStatus: this.state.isByStatus,
-        ticketStatus: this.state.ticketStatusId,
         pageSize: this.state.advPageSize,
-        pageNo: this.state.advPageNo
+        pageNo: this.state.advPageNo,
+        isEscalation: isEscalation,
+        ticketStatus: ticketStatus
       }
     }).then(function(res) {
       debugger;
-      let SearchTicketData = res.data.responseData;
-      self.setState({ SearchTicketData: SearchTicketData });
+      let data = res.data.responseData;
+      let Status=res.data.message;
+      if (Status === "Record Not Found") {
+        self.setState({ SearchTicketData: [] });
+      } else {
+        self.setState({ SearchTicketData: data });
+      }
     });
   }
 
@@ -316,7 +382,7 @@ class MyTicketList extends Component {
       // });
     });
   }
-
+  
   handleAdvSearchFlag(e) {
     debugger;
     let currentActive = e.currentTarget.innerText;
@@ -700,7 +766,7 @@ class MyTicketList extends Component {
   }
   ViewSearchData() {
     debugger;
-    let self = this;
+    // let self = this;
     var paramData = {
       ByDate: this.state.byDateFlag,
       creationDate: this.state.ByDateCreatDate,
@@ -1011,84 +1077,6 @@ class MyTicketList extends Component {
 
   render() {
     const { DraftDetails, SearchAssignData, SearchTicketData } = this.state;
-    // const DefArti = (
-    //   <div className="dash-creation-popup-cntr">
-    //     <ul className="dash-category-popup dashnewpopup">
-    //       <li>
-    //         <p>Category</p>
-    //         <p>Defective article</p>
-    //       </li>
-    //       <li>
-    //         <p>Sub Category</p>
-    //         <p>Customer wants refund</p>
-    //       </li>
-    //       <li>
-    //         <p>Type</p>
-    //         <p>Delivery</p>
-    //       </li>
-    //     </ul>
-    //   </div>
-    // );
-
-    const InsertPlaceholder = (
-      <div className="insertpop1">
-        <ul className="dash-creation-popup">
-          <li className="title">Creation details</li>
-          <li>
-            <p>Naman Created</p>
-            <p>2 Hrs ago</p>
-          </li>
-          <li>
-            <p>Assigned to Vikas</p>
-            <p>1.5 Hrs ago</p>
-          </li>
-          <li>
-            <p>Vikas updated</p>
-            <p>1 Hr ago</p>
-          </li>
-          <li>
-            <p>Response time remaining by</p>
-            <p>30 mins</p>
-          </li>
-          <li>
-            <p>Response overdue by</p>
-            <p>1 Hr</p>
-          </li>
-          <li>
-            <p>Resolution overdue by</p>
-            <p>2 Hrs</p>
-          </li>
-        </ul>
-      </div>
-    );
-    const TaskBlue = (
-      <div className="dash-task-popup-new">
-        <div className="d-flex justify-content-between align-items-center">
-          <p className="m-b-0">
-            TASK: <span className="green-clr">02</span>/
-            <span className="task-red-clr">04</span>
-          </p>
-          <div className="d-flex align-items-center">
-            2 NEW
-            <div className="nw-chat">
-              <img src={Chat} alt="chat" />
-            </div>
-          </div>
-        </div>
-        <ProgressBar className="task-progress" now={70} />
-      </div>
-    );
-    const ClaimBlue = (
-      <div className="dash-task-popup-new">
-        <div className="d-flex justify-content-between align-items-center">
-          <p>
-            CLAIM: <span className="green-clr">02</span>/
-            <span className="task-red-clr">01</span>
-          </p>
-        </div>
-        <ProgressBar className="task-progress" now={70} />
-      </div>
-    );
 
     const TitleChange = this.state.collapseSearch
       ? "Close Search"
@@ -1099,744 +1087,6 @@ class MyTicketList extends Component {
     ) : (
       <img className="search-icon" src={SearchIcon} alt="search-icon" />
     );
-
-    // const dataDash = [
-    //   {
-    //     idDash: (
-    //       <span onClick={e => this.clickCheckbox(e)}>
-    //         <div className="filter-type pink1 pinkmyticket">
-    //           <div className="filter-checkbox pink2 pinkmargin">
-    //             <input
-    //               type="checkbox"
-    //               id="fil-ab1"
-    //               name="MyTicketListcheckbox[]"
-    //               checked={this.state.CheckBoxChecked}
-    //               onChange={this.handelCheckBoxCheckedChange}
-    //             />
-    //             <label htmlFor="fil-ab1">
-    //               <img
-    //                 src={HeadPhone3}
-    //                 alt="HeadPhone"
-    //                 className="headPhone3"
-    //               />
-    //               ABC1234
-    //             </label>
-    //           </div>
-    //         </div>
-    //       </span>
-    //     ),
-    //     statusDash: (
-    //       <span className="table-b table-blue-btn">
-    //         <label>Open</label>
-    //       </span>
-    //     ),
-    //     subjectDash: (
-    //       <div>
-    //         Need to change my shipping address
-    //         <span style={{ display: "block", fontSize: "11px" }}>
-    //           Hope this help, Please rate us
-    //         </span>
-    //       </div>
-    //     ),
-    //     creationNew: (
-    //       <span>
-    //         <label>12 March 2018</label>
-
-    //         <Popover content={InsertPlaceholder} placement="bottom">
-    //           <img className="info-icon" src={InfoIcon} alt="info-icon" />
-    //         </Popover>
-    //       </span>
-    //     ),
-    //     assigneeDash: <span>Naman</span>
-    //   },
-    //   {
-    //     idDash: (
-    //       <span onClick={e => this.clickCheckbox(e)}>
-    //         <div className="filter-type pink1 pinkmyticket">
-    //           <div className="filter-checkbox pink2 pinkmargin">
-    //             <input
-    //               type="checkbox"
-    //               id="fil-ab2"
-    //               name="MyTicketListcheckbox[]"
-    //               checked={this.state.CheckBoxChecked}
-    //               onChange={this.handelCheckBoxCheckedChange}
-    //             />
-    //             <label htmlFor="fil-ab2">
-    //               <img
-    //                 src={HeadPhone3}
-    //                 alt="HeadPhone"
-    //                 className="headPhone3"
-    //               />
-    //               ABC1234
-    //             </label>
-    //           </div>
-    //         </div>
-    //       </span>
-    //     ),
-    //     statusDash: (
-    //       <span className="table-b table-yellow-btn">
-    //         <label>New</label>
-    //       </span>
-    //     ),
-    //     subjectDash: (
-    //       <div>
-    //         Need to change my shipping address
-    //         <span style={{ display: "block", fontSize: "11px" }}>
-    //           Hope this help, Please rate us
-    //         </span>
-    //       </div>
-    //     ),
-    //     creationNew: (
-    //       <span>
-    //         <label>12 March 2018</label>
-
-    //         <Popover content={InsertPlaceholder} placement="left">
-    //           <img className="info-icon" src={InfoIcon} alt="info-icon" />
-    //         </Popover>
-    //       </span>
-    //     ),
-    //     assigneeDash: <span>Rashmi</span>
-    //   },
-    //   {
-    //     idDash: (
-    //       <span onClick={e => this.clickCheckbox(e)}>
-    //         <div className="filter-type pink1 pinkmyticket">
-    //           <div className="filter-checkbox pink2 pinkmargin">
-    //             <input
-    //               type="checkbox"
-    //               id="fil-ab3"
-    //               name="MyTicketListcheckbox[]"
-    //             />
-    //             <label htmlFor="fil-ab3">
-    //               <img
-    //                 src={HeadPhone3}
-    //                 alt="HeadPhone"
-    //                 className="headPhone3"
-    //               />
-    //               ABC1234
-    //             </label>
-    //           </div>
-    //         </div>
-    //       </span>
-    //     ),
-    //     statusDash: (
-    //       <span className="table-b table-green-btn">
-    //         <label>Solved</label>
-    //       </span>
-    //     ),
-    //     Img: (
-    //       <Popover content={TaskBlue} placement="bottom">
-    //         <img
-    //           className="task-icon-1 marginimg"
-    //           src={TaskIconBlue}
-    //           alt="task-icon-blue"
-    //         />
-    //       </Popover>
-    //     ),
-    //     subjectDash: (
-    //       <div>
-    //         Need to change my shipping address
-    //         <span style={{ display: "block", fontSize: "11px" }}>
-    //           Hope this help, Please rate us
-    //         </span>
-    //       </div>
-    //     ),
-    //     creationNew: (
-    //       <span>
-    //         <label>12 March 2018</label>
-
-    //         <Popover content={InsertPlaceholder} placement="bottom">
-    //           <img className="info-icon" src={InfoIcon} alt="info-icon" />
-    //         </Popover>
-    //       </span>
-    //     ),
-    //     assigneeDash: <span>Shalini</span>
-    //   },
-    //   {
-    //     idDash: (
-    //       <span onClick={e => this.clickCheckbox(e)}>
-    //         <div className="filter-type pink1 pinkmyticket">
-    //           <div className="filter-checkbox pink2 pinkmargin">
-    //             <input
-    //               type="checkbox"
-    //               id="fil-ab4"
-    //               name="MyTicketListcheckbox[]"
-    //             />
-    //             <label htmlFor="fil-ab4">
-    //               <img
-    //                 src={HeadPhone3}
-    //                 alt="HeadPhone"
-    //                 className="headPhone3"
-    //               />
-    //               ABC1234
-    //             </label>
-    //           </div>
-    //         </div>
-    //       </span>
-    //     ),
-    //     statusDash: (
-    //       <span className="table-b table-blue-btn">
-    //         <label>Open</label>
-    //       </span>
-    //     ),
-    //     Img: (
-    //       <img
-    //         className="task-icon-1 marginimg"
-    //         src={TaskIconGray}
-    //         alt="task-icon-gray"
-    //       />
-    //     ),
-    //     subjectDash: (
-    //       <div>
-    //         Need to change my shipping address
-    //         <span style={{ display: "block", fontSize: "11px" }}>
-    //           Hope this help, Please rate us
-    //         </span>
-    //       </div>
-    //     ),
-    //     creationNew: (
-    //       <span>
-    //         <label>12 March 2018</label>
-
-    //         <Popover content={InsertPlaceholder} placement="bottom">
-    //           <img className="info-icon" src={InfoIcon} alt="info-icon" />
-    //         </Popover>
-    //       </span>
-    //     ),
-    //     assigneeDash: <span>Vikas</span>
-    //   },
-    //   {
-    //     idDash: (
-    //       <span onClick={e => this.clickCheckbox(e)}>
-    //         <div className="filter-type pink1 pinkmyticket">
-    //           <div className="filter-checkbox pink2 pinkmargin">
-    //             <input
-    //               type="checkbox"
-    //               id="fil-ab5"
-    //               name="MyTicketListcheckbox[]"
-    //             />
-    //             <label htmlFor="fil-ab5">
-    //               <img
-    //                 src={HeadPhone3}
-    //                 alt="HeadPhone"
-    //                 className="headPhone3"
-    //               />
-    //               ABC1234
-    //             </label>
-    //           </div>
-    //         </div>
-    //       </span>
-    //     ),
-    //     statusDash: (
-    //       <span className="table-b table-blue-btn">
-    //         <label>Open</label>
-    //       </span>
-    //     ),
-    //     Img: (
-    //       <div>
-    //         <Popover content={ClaimBlue} placement="bottom">
-    //           <img
-    //             className="claim-icon marginimg"
-    //             src={CliamIconBlue}
-    //             alt="cliam-icon-blue"
-    //           />
-    //         </Popover>
-    //         <span style={{ marginLeft: "20px" }}>
-    //           <img
-    //             className="task-icon-1 marginimg"
-    //             src={TaskIconGray}
-    //             alt="task-icon-gray"
-    //           />
-    //         </span>
-    //       </div>
-    //     ),
-    //     subjectDash: (
-    //       <div>
-    //         Need to change my shipping address
-    //         <span style={{ display: "block", fontSize: "11px" }}>
-    //           Hope this help, Please rate us
-    //         </span>
-    //       </div>
-    //     ),
-    //     creationNew: (
-    //       <span>
-    //         <label>12 March 2018</label>
-
-    //         <Popover content={InsertPlaceholder} placement="bottom">
-    //           <img className="info-icon" src={InfoIcon} alt="info-icon" />
-    //         </Popover>
-    //       </span>
-    //     ),
-    //     assigneeDash: <span>Nidhi</span>
-    //   },
-    //   {
-    //     idDash: (
-    //       <span onClick={e => this.clickCheckbox(e)}>
-    //         <div className="filter-type pink1 pinkmyticket">
-    //           <div className="filter-checkbox pink2 pinkmargin">
-    //             <input
-    //               type="checkbox"
-    //               id="fil-ab6"
-    //               name="MyTicketListcheckbox[]"
-    //             />
-    //             <label htmlFor="fil-ab6">
-    //               <img
-    //                 src={HeadPhone3}
-    //                 alt="HeadPhone"
-    //                 className="headPhone3"
-    //               />
-    //               ABC1234
-    //             </label>
-    //           </div>
-    //         </div>
-    //       </span>
-    //     ),
-    //     statusDash: (
-    //       <span className="table-b table-yellow-btn">
-    //         <label>New</label>
-    //       </span>
-    //     ),
-    //     subjectDash: (
-    //       <div>
-    //         Need to change my shipping address
-    //         <span style={{ display: "block", fontSize: "11px" }}>
-    //           Hope this help, Please rate us
-    //         </span>
-    //       </div>
-    //     ),
-    //     creationNew: (
-    //       <span>
-    //         <label>12 March 2018</label>
-
-    //         <Popover content={InsertPlaceholder} placement="bottom">
-    //           <img className="info-icon" src={InfoIcon} alt="info-icon" />
-    //         </Popover>
-    //       </span>
-    //     ),
-    //     assigneeDash: <span>Mansi</span>
-    //   },
-    //   {
-    //     idDash: (
-    //       <span onClick={e => this.clickCheckbox(e)}>
-    //         <div className="filter-type pink1 pinkmyticket">
-    //           <div className="filter-checkbox pink2 pinkmargin">
-    //             <input
-    //               type="checkbox"
-    //               id="fil-ab7"
-    //               name="MyTicketListcheckbox[]"
-    //             />
-    //             <label htmlFor="fil-ab7">
-    //               <img
-    //                 src={HeadPhone3}
-    //                 alt="HeadPhone"
-    //                 className="headPhone3"
-    //               />
-    //               ABC1234
-    //             </label>
-    //           </div>
-    //         </div>
-    //       </span>
-    //     ),
-    //     statusDash: (
-    //       <span className="table-b table-green-btn">
-    //         <label>Solved</label>
-    //       </span>
-    //     ),
-    //     subjectDash: (
-    //       <div>
-    //         Need to change my shipping address
-    //         <span style={{ display: "block", fontSize: "11px" }}>
-    //           Hope this help, Please rate us
-    //         </span>
-    //       </div>
-    //     ),
-    //     creationNew: (
-    //       <span>
-    //         <label>12 March 2018</label>
-
-    //         <Popover content={InsertPlaceholder} placement="bottom">
-    //           <img className="info-icon" src={InfoIcon} alt="info-icon" />
-    //         </Popover>
-    //       </span>
-    //     ),
-    //     assigneeDash: <span>Naman</span>
-    //   },
-    //   {
-    //     idDash: (
-    //       <span onClick={e => this.clickCheckbox(e)}>
-    //         <div className="filter-type pink1 pinkmyticket">
-    //           <div className="filter-checkbox pink2 pinkmargin">
-    //             <input
-    //               type="checkbox"
-    //               id="fil-ab8"
-    //               name="MyTicketListcheckbox[]"
-    //             />
-    //             <label htmlFor="fil-ab8">
-    //               <img
-    //                 src={HeadPhone3}
-    //                 alt="HeadPhone"
-    //                 className="headPhone3"
-    //               />
-    //               ABC1234
-    //             </label>
-    //           </div>
-    //         </div>
-    //       </span>
-    //     ),
-    //     statusDash: (
-    //       <span className="table-b table-blue-btn">
-    //         <label>Open</label>
-    //       </span>
-    //     ),
-    //     subjectDash: (
-    //       <div>
-    //         Need to change my shipping address
-    //         <span style={{ display: "block", fontSize: "11px" }}>
-    //           Hope this help, Please rate us
-    //         </span>
-    //       </div>
-    //     ),
-    //     creationNew: (
-    //       <span>
-    //         <label>12 March 2018</label>
-
-    //         <Popover content={InsertPlaceholder} placement="bottom">
-    //           <img className="info-icon" src={InfoIcon} alt="info-icon" />
-    //         </Popover>
-    //       </span>
-    //     ),
-    //     assigneeDash: <span>Akriti</span>
-    //   },
-    //   {
-    //     idDash: (
-    //       <span onClick={e => this.clickCheckbox(e)}>
-    //         <div className="filter-type pink1 pinkmyticket">
-    //           <div className="filter-checkbox pink2 pinkmargin">
-    //             <input
-    //               type="checkbox"
-    //               id="fil-ab9"
-    //               name="MyTicketListcheckbox[]"
-    //             />
-    //             <label htmlFor="fil-ab9">
-    //               <img
-    //                 src={HeadPhone3}
-    //                 alt="HeadPhone"
-    //                 className="headPhone3"
-    //               />
-    //               ABC1234
-    //             </label>
-    //           </div>
-    //         </div>
-    //       </span>
-    //     ),
-    //     statusDash: (
-    //       <span className="table-b table-blue-btn">
-    //         <label>Open</label>
-    //       </span>
-    //     ),
-    //     subjectDash: (
-    //       <div>
-    //         Need to change my shipping address
-    //         <span style={{ display: "block", fontSize: "11px" }}>
-    //           Hope this help, Please rate us
-    //         </span>
-    //       </div>
-    //     ),
-    //     creationNew: (
-    //       <span>
-    //         <label>12 March 2018</label>
-
-    //         <Popover content={InsertPlaceholder} placement="bottom">
-    //           <img className="info-icon" src={InfoIcon} alt="info-icon" />
-    //         </Popover>
-    //       </span>
-    //     ),
-    //     assigneeDash: <span>Juhi</span>
-    //   },
-    //   {
-    //     idDash: (
-    //       <span onClick={e => this.clickCheckbox(e)}>
-    //         <div className="filter-type pink1 pinkmyticket">
-    //           <div className="filter-checkbox pink2 pinkmargin">
-    //             <input
-    //               type="checkbox"
-    //               id="fil-ab10"
-    //               name="MyTicketListcheckbox[]"
-    //             />
-    //             <label htmlFor="fil-ab10">
-    //               <img
-    //                 src={HeadPhone3}
-    //                 alt="HeadPhone"
-    //                 className="headPhone3"
-    //               />
-    //               ABC1234
-    //             </label>
-    //           </div>
-    //         </div>
-    //       </span>
-    //     ),
-    //     statusDash: (
-    //       <span className="table-b table-yellow-btn">
-    //         <label>New</label>
-    //       </span>
-    //     ),
-    //     subjectDash: (
-    //       <div>
-    //         Need to change my shipping address
-    //         <span style={{ display: "block", fontSize: "11px" }}>
-    //           Hope this help, Please rate us
-    //         </span>
-    //       </div>
-    //     ),
-    //     creationNew: (
-    //       <span>
-    //         <label>12 March 2018</label>
-
-    //         <Popover content={InsertPlaceholder} placement="bottom">
-    //           <img className="info-icon" src={InfoIcon} alt="info-icon" />
-    //         </Popover>
-    //       </span>
-    //     ),
-    //     assigneeDash: <span>Shalini</span>
-    //   }
-    // ];
-
-    //     const columnsDash = [
-    //       {
-    //         Header: (
-    //           <span>
-    //             <div className="filter-type pink1 pinkmyticket">
-    //               <div className="filter-checkbox pink2 pinkmargin">
-    //                 <input
-    //                   type="checkbox"
-    //                   id="fil-aball"
-    //                   name="MyTicketListcheckbox[]"
-    //                   // checked={this.state.CheckBoxChecked}
-    //                   onChange={this.checkAllCheckbox.bind(this)}
-    //                 />
-    //                 <label htmlFor="fil-aball" className="ticketid">
-    //                   ID
-    //                 </label>
-    //               </div>
-    //             </div>
-    //           </span>
-    //         ),
-    //         accessor: "ticketID",
-    //         Cell: row => {
-    //           return (
-    //             <span onClick={e => this.clickCheckbox(e)}>
-    //               <div className="filter-type pink1 pinkmyticket">
-    //                 <div className="filter-checkbox pink2 pinkmargin">
-    //                   <input
-    //                     type="checkbox"
-    //                     id="fil-ab1"
-    //                     name="MyTicketListcheckbox[]"
-    //                     checked={this.state.CheckBoxChecked}
-    //                     onChange={this.handelCheckBoxCheckedChange}
-    //                   />
-    //                   <label htmlFor="fil-ab1">
-    //                     <img
-    //                       src={HeadPhone3}
-    //                       alt="HeadPhone"
-    //                       className="headPhone3"
-    //                     />
-    //                     {row.original.ticketID}
-    //                   </label>
-    //                 </div>
-    //               </div>
-    //             </span>
-    //           );
-    //         }
-    //       },
-    //       {
-    //         Header: (
-    //           <span onClick={this.StatusOpenModel}>
-    //             Status <FontAwesomeIcon icon={faCaretDown} />
-    //           </span>
-    //         ),
-    //         accessor: "ticketStatus",
-    //         Cell: row => {
-    //           return (
-    //             <span className="table-b table-blue-btn">
-    //               <label>{row.original.ticketStatus}</label>
-    //             </span>
-    //           );
-    //         }
-    //       },
-    //       {
-    //         Header: <span></span>,
-    //         accessor: "Img",
-    //         width: 45,
-    // //         Cell: row => {
-    // //           <>
-    // //           return (
-    // //             if(row.original.taskStatus.split('/')[row.original.taskStatus.split('/').length - 1] === 0) {
-    // // <img
-    // //             className="task-icon-1 marginimg"
-    // //             src={TaskIconGray}
-    // //             alt="task-icon-gray"
-    // //           />
-    // //             } else {
-    // //             <Popover
-    // //               content={
-    // //                 <div className="dash-task-popup-new">
-    // //                   <div className="d-flex justify-content-between align-items-center">
-    // //                     <p className="m-b-0">
-    // //                       TASK: <span className="green-clr">02</span>/
-    // //                       <span className="task-red-clr">04</span>
-    // //                     </p>
-    // //                     <div className="d-flex align-items-center">
-    // //                       2 NEW
-    // //                       <div className="nw-chat">
-    // //                         <img src={Chat} alt="chat" />
-    // //                       </div>
-    // //                     </div>
-    // //                   </div>
-    // //                   <ProgressBar className="task-progress" now={70} />
-    // //                 </div>
-    // //               }
-    // //               placement="bottom"
-    // //             >
-    // //               <img
-    // //                 className="task-icon-1 marginimg"
-    // //                 src={TaskIconBlue}
-    // //                 alt="task-icon-blue"
-    // //               />
-    // //             </Popover>
-    // //             }
-    // //           );
-    // //           </>
-    // //         }
-    //       },
-    //       {
-    //         Header: (
-    //           <label className="ticketid">
-    //             <span>Subject/</span>
-    //             <span style={{ fontWeight: "bold", fontSize: "11px !important" }}>
-    //               Lastest Message
-    //             </span>
-    //           </label>
-    //         ),
-    //         accessor: "message",
-    //         Cell: row => {
-    //           return (
-    //             <div>
-    //               {row.original.message}
-    //               <span style={{ display: "block", fontSize: "11px" }}>
-    //                 Hope this help, Please rate us
-    //               </span>
-    //             </div>
-    //           );
-    //         }
-    //       },
-    //       {
-    //         Header: (
-    //           <span className="ticketid">
-    //             Category <FontAwesomeIcon icon={faCaretDown} />
-    //           </span>
-    //         ),
-    //         accessor: "category",
-    //         Cell: row => (
-    //           <span>
-    //             <label>{row.original.category} </label>
-
-    //             <Popover
-    //               content={
-    //                 <div className="dash-creation-popup-cntr">
-    //                   <ul className="dash-category-popup dashnewpopup">
-    //                     <li>
-    //                       <p>Category</p>
-    //                       <p>{row.original.category}</p>
-    //                     </li>
-    //                     <li>
-    //                       <p>Sub Category</p>
-    //                       <p>{row.original.subCategory}</p>
-    //                     </li>
-    //                     <li>
-    //                       <p>Type</p>
-    //                       <p>{row.original.issueType}</p>
-    //                     </li>
-    //                   </ul>
-    //                 </div>
-    //               }
-    //               placement="bottom"
-    //             >
-    //               <img className="info-icon" src={InfoIcon} alt="info-icon" />
-    //             </Popover>
-    //           </span>
-    //         )
-    //       },
-    //       {
-    //         Header: (
-    //           <span className="ticketid">
-    //             Priority <FontAwesomeIcon icon={faCaretDown} />
-    //           </span>
-    //         ),
-    //         accessor: "priority"
-    //         // Cell: props => <span>High</span>
-    //       },
-    //       {
-    //         Header: (
-    //           <span className="ticketid">
-    //             Assignee <FontAwesomeIcon icon={faCaretDown} />
-    //           </span>
-    //         ),
-    //         accessor: "assignee"
-    //       },
-    //       {
-    //         Header: (
-    //           <span className="ticketid">
-    //             Creation On <FontAwesomeIcon icon={faCaretDown} />
-    //           </span>
-    //         ),
-    //         accessor: "createdOn",
-    //         Cell: row => (
-    //           // <span>{moment(row.original.createdOn).format("DD MMMM YYYY")}</span>
-    //           <span>
-    //             <label>
-    //               {moment(row.original.createdOn).format("DD MMMM YYYY")}
-    //             </label>
-
-    //             <Popover
-    //               content={
-    //                 <div className="insertpop1">
-    //                   <ul className="dash-creation-popup">
-    //                     <li className="title">Creation details</li>
-    //                     <li>
-    //                       <p>{row.original.createdBy} Created</p>
-    //                       <p>{row.original.createdago}</p>
-    //                     </li>
-    //                     <li>
-    //                       <p>Assigned to {row.original.assignedTo}</p>
-    //                       <p>{row.original.assignedago}</p>
-    //                     </li>
-    //                     <li>
-    //                       <p>{row.original.updatedBy} updated</p>
-    //                       <p>{row.original.updatedago}</p>
-    //                     </li>
-    //                     <li>
-    //                       <p>Response time remaining by</p>
-    //                       <p>{row.original.responseTimeRemainingBy}</p>
-    //                     </li>
-    //                     <li>
-    //                       <p>Response overdue by</p>
-    //                       <p>{row.original.responseOverdueBy}</p>
-    //                     </li>
-    //                     <li>
-    //                       <p>Resolution overdue by</p>
-    //                       <p>{row.original.resolutionOverdueBy}</p>
-    //                     </li>
-    //                   </ul>
-    //                 </div>
-    //               }
-    //               placement="bottom"
-    //             >
-    //               <img className="info-icon" src={InfoIcon} alt="info-icon" />
-    //             </Popover>
-    //           </span>
-    //         )
-    //       }
-    //     ];
 
     return (
       <Fragment>
@@ -1928,6 +1178,8 @@ class MyTicketList extends Component {
                   role="tab"
                   aria-controls="Escalation-tab"
                   aria-selected="true"
+                  name="Escalation"
+                  onClick={()=>{this.handleSearchTicket("Escalation")}}
                 >
                   Escalation: <span className="myTciket-tab-span">03</span>
                 </a>
@@ -1936,10 +1188,12 @@ class MyTicketList extends Component {
                 <a
                   className="nav-link"
                   data-toggle="tab"
-                  href="#New-tab"
+                  href="#Escalation-tab"
                   role="tab"
-                  aria-controls="New-tab"
+                  aria-controls="Escalation-tab"
                   aria-selected="false"
+                  name="New"
+                  onClick={()=>{this.handleSearchTicket("New")}}
                 >
                   New: <span className="myTciket-tab-span">09</span>
                 </a>
@@ -1948,10 +1202,12 @@ class MyTicketList extends Component {
                 <a
                   className="nav-link"
                   data-toggle="tab"
-                  href="#Open-tab"
+                  href="#Escalation-tab"
                   role="tab"
-                  aria-controls="Open-tab"
+                  aria-controls="Escalation-tab"
                   aria-selected="false"
+                  name="Open"
+                  onClick={()=>{this.handleSearchTicket("Open")}}
                 >
                   Open: <span className="myTciket-tab-span">10</span>
                 </a>
@@ -1960,10 +1216,12 @@ class MyTicketList extends Component {
                 <a
                   className="nav-link"
                   data-toggle="tab"
-                  href="#Resolved-tab"
+                  href="#Escalation-tab"
                   role="tab"
-                  aria-controls="Resolved-tab"
+                  aria-controls="Escalation-tab"
                   aria-selected="false"
+                  name="Resolved"
+                  onClick={()=>{this.handleSearchTicket("Resolved")}}
                 >
                   Resolved: <span className="myTciket-tab-span">15</span>
                 </a>
@@ -1972,12 +1230,14 @@ class MyTicketList extends Component {
                 <a
                   className="nav-link"
                   data-toggle="tab"
-                  href="#Reassigned-tab"
+                  href="#Escalation-tab"
                   role="tab"
-                  aria-controls="Reassigned-tab"
+                  aria-controls="Escalation-tab"
                   aria-selected="false"
+                  name="Reassigned"
+                  onClick={()=>{this.handleSearchTicket("Reassigned")}}
                 >
-                  Reassigned by me:{" "}
+                  Reassigned by me:
                   <span className="myTciket-tab-span">03</span>
                 </a>
               </li>
@@ -1985,10 +1245,12 @@ class MyTicketList extends Component {
                 <a
                   className="nav-link"
                   data-toggle="tab"
-                  href="#Closed-tab"
+                  href="#Escalation-tab"
                   role="tab"
-                  aria-controls="Closed-tab"
+                  aria-controls="Escalation-tab"
                   aria-selected="false"
+                  name="Closed"
+                  onClick={()=>{this.handleSearchTicket("Closed")}}
                 >
                   Closed: <span className="myTciket-tab-span">12</span>
                 </a>
@@ -1997,10 +1259,12 @@ class MyTicketList extends Component {
                 <a
                   className="nav-link"
                   data-toggle="tab"
-                  href="#All-tab"
+                  href="#Escalation-tab"
                   role="tab"
-                  aria-controls="All-tab"
+                  aria-controls="Escalation-tab"
                   aria-selected="false"
+                  name="All"
+                  onClick={()=>{this.handleSearchTicket("All")}}
                 >
                   All: <span className="myTciket-tab-span">56</span>
                 </a>
@@ -2009,10 +1273,12 @@ class MyTicketList extends Component {
                 <a
                   className="nav-link"
                   data-toggle="tab"
-                  href="#Follow-tab"
+                  href="#Escalation-tab"
                   role="tab"
-                  aria-controls="Follow-tab"
+                  aria-controls="Escalation-tab"
                   aria-selected="false"
+                  name="FollowUp"
+                  onClick={()=>{this.handleSearchTicket("FollowUp")}}
                 >
                   Follow Up: <span className="myTciket-tab-span">03</span>
                 </a>
@@ -2027,7 +1293,7 @@ class MyTicketList extends Component {
                   aria-selected="false"
                   onClick={this.handleGetDraftDetails}
                 >
-                  Draft:{" "}
+                  Draft:
                   <span className="myTciket-tab-span">
                     {this.state.draftCountStatus < 9
                       ? "0" + this.state.draftCountStatus
@@ -4313,7 +3579,7 @@ class MyTicketList extends Component {
                                           ]}
                                           // resizable={false}
                                           defaultPageSize={5}
-                                          showPagination={false}
+                                          showPagination={true}
                                           getTrProps={this.handleTicketDetails}
                                         />
 
@@ -4619,10 +3885,10 @@ class MyTicketList extends Component {
                         ]}
                         // resizable={false}
                         defaultPageSize={10}
-                        showPagination={false}
+                        showPagination={true}
                         getTrProps={this.HandleRowClickPage}
                       />
-                      <div className="position-relative">
+                      {/* <div className="position-relative">
                         <div className="pagi">
                           <ul>
                             <li>
@@ -4659,7 +3925,7 @@ class MyTicketList extends Component {
                           </select>
                           <p>Items per page</p>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                     <div className="float-search" onClick={this.toggleSearch}>
                       <small>{TitleChange}</small>
@@ -4668,13 +3934,13 @@ class MyTicketList extends Component {
                   </div>
                 </div>
               </div>
-              <div
+              {/* <div
                 className="tab-pane fade"
                 id="New-tab"
                 role="tabpanel"
                 aria-labelledby="New-tab"
               >
-                <MyTicketNew />
+                //  <MyTicketNew /> 
               </div>
 
               <div
@@ -4729,7 +3995,7 @@ class MyTicketList extends Component {
                 aria-labelledby="Follow-tab"
               >
                 <MyTicketFollowUp />
-              </div>
+              </div> */}
 
               <div
                 className="tab-pane fade"

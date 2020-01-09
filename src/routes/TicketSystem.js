@@ -29,7 +29,7 @@ import config from "./../helpers/config";
 import { Radio } from "antd";
 import DatePicker from "react-datepicker";
 import axios from "axios";
-import Select from "react-select";
+// import Select from "react-select";
 import {
   NotificationContainer,
   NotificationManager
