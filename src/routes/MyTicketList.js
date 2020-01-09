@@ -13,13 +13,13 @@ import Sorting from "./../assets/Images/sorting.png";
 import DelSearch from "./../assets/Images/del-search.png";
 // import Modal from "react-bootstrap/Modal";
 import Modal from "react-responsive-modal";
-import MyTicketNew from "./Tabs/MyTicketNew.js";
-import MyTicketOpen from "./Tabs/MyTicketOpen.js";
-import MyTicketResolved from "./Tabs/MyTicketResolved.js";
-import MyTicketReassign from "./Tabs/MyTicketReassign.js";
-import MyTicketClosed from "./Tabs/MyTicketClosed.js";
-import MyTicketAll from "./Tabs/MyTicketAll.js";
-import MyTicketFollowUp from "./Tabs/MyTicketFollowUp.js";
+// import MyTicketNew from "./Tabs/MyTicketNew.js";
+// import MyTicketOpen from "./Tabs/MyTicketOpen.js";
+// import MyTicketResolved from "./Tabs/MyTicketResolved.js";
+// import MyTicketReassign from "./Tabs/MyTicketReassign.js";
+// import MyTicketClosed from "./Tabs/MyTicketClosed.js";
+// import MyTicketAll from "./Tabs/MyTicketAll.js";
+// import MyTicketFollowUp from "./Tabs/MyTicketFollowUp.js";
 import MyTicketDraft from "./Tabs/MyTicketDraft.js";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -139,14 +139,14 @@ class MyTicketList extends Component {
       userID: 6,
       DraftDetails: [],
       SearchListData: [],
-      byEscalation: 1,
-      byNew: 0,
-      byOpen: 0,
-      byResolved: 0,
-      byReassigned: 0,
-      byClosed: 0,
-      byAll: 0,
-      byFollowUp: 0,
+      byEscalationCount: 0,
+      byNewCount: 0,
+      byOpenCount: 0,
+      byResolvedCount: 0,
+      byReassignedCount: 0,
+      byClosedCount: 0,
+      byAllCount: 0,
+      byFollowUpCount: 0,
       draftCountStatus: 0,
       byDateFlag: 1,
       byCustomerTypeFlag: 0,
@@ -210,12 +210,17 @@ class MyTicketList extends Component {
     this.handleScheduleTime = this.handleScheduleTime.bind(this);
     this.handleAssignTickets = this.handleAssignTickets.bind(this);
     this.handleSchedulePopup = this.handleSchedulePopup.bind(this);
-    this.handleSearchTicketEscalation = this.handleSearchTicketEscalation.bind(this);
-    // this.handleAdvSearchHeaderFlag = this.handleAdvSearchHeaderFlag.bind(this);
+    this.handleSearchTicketEscalation = this.handleSearchTicketEscalation.bind(
+      this
+    );
+    this.handleSearchTicketAllTabCount = this.handleSearchTicketAllTabCount.bind(
+      this
+    );
   }
 
   componentDidMount() {
     debugger;
+    this.handleSearchTicketAllTabCount();
     this.handleGetDesignationList();
     this.handleGetTicketPriorityList();
     this.handleGetChannelOfPurchaseList();
@@ -226,7 +231,41 @@ class MyTicketList extends Component {
     this.handleGetDepartmentList();
     this.handleSearchTicketEscalation();
   }
-  handleSearchTicketEscalation(){
+  handleSearchTicketAllTabCount() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Search/TicketStatusCount",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let data = res.data.responseData;
+      let Status = res.data.message;
+      if (Status === "Success") {
+        var EscalationCount = data[0].ticketCount;
+        var NewCount = data[1].ticketCount;
+        var OpenCount = data[2].ticketCount;
+        var ResolvedCount = data[3].ticketCount;
+        var ReassignedCount = data[4].ticketCount;
+        var ClosedCount = data[5].ticketCount;
+        var AllCount = data[6].ticketCount;
+        var FollowUpCount = data[7].ticketCount;
+        var draftCountStatus = data[8].ticketCount;
+        self.setState({
+          byEscalationCount: EscalationCount,
+          byNewCount: NewCount,
+          byOpenCount: OpenCount,
+          byResolvedCount: ResolvedCount,
+          byReassignedCount: ReassignedCount,
+          byClosedCount: ClosedCount,
+          byAllCount: AllCount,
+          byFollowUpCount: FollowUpCount,
+          draftCountStatus: draftCountStatus
+        });
+      }
+    });
+  }
+  handleSearchTicketEscalation() {
     let self = this;
     axios({
       method: "post",
@@ -236,13 +275,13 @@ class MyTicketList extends Component {
         isByStatus: this.state.isByStatus,
         pageSize: this.state.advPageSize,
         pageNo: this.state.advPageNo,
-        isEscalation: 1,
+        isEscalation: 1
         // ticketStatus: ticketStatus
       }
     }).then(function(res) {
       debugger;
       let data = res.data.responseData;
-      let Status=res.data.message;
+      let Status = res.data.message;
       if (Status === "Record Not Found") {
         self.setState({ SearchTicketData: [] });
       } else {
@@ -254,31 +293,31 @@ class MyTicketList extends Component {
   handleSearchTicket(TabId) {
     debugger;
     var ticketStatus = 0;
-    var isEscalation=0;
+    var isEscalation = 0;
     if (TabId === "Escalation") {
       ticketStatus = 1;
-      isEscalation=1;
+      isEscalation = 1;
     } else if (TabId === "New") {
       ticketStatus = 101;
-      isEscalation=0;
+      isEscalation = 0;
     } else if (TabId === "Open") {
-      isEscalation=0;
+      isEscalation = 0;
       ticketStatus = 102;
     } else if (TabId === "Resolved") {
-      isEscalation=0;
+      isEscalation = 0;
       ticketStatus = 103;
     } else if (TabId === "Closed") {
-      isEscalation=0;
+      isEscalation = 0;
       ticketStatus = 104;
-    }else if(TabId === "Reassigned"){
-      isEscalation=0;
-      ticketStatus = 1;
-    }else if(TabId === "All"){
-      isEscalation=0;
-      ticketStatus = 1;
-    }else if(TabId === "FollowUp"){
-      isEscalation=0;
-      ticketStatus = 1;
+    } else if (TabId === "Reassigned") {
+      isEscalation = 0;
+      ticketStatus = 106;
+    } else if (TabId === "All") {
+      isEscalation = 0;
+      ticketStatus = 107;
+    } else if (TabId === "FollowUp") {
+      isEscalation = 0;
+      ticketStatus = 108;
     }
     debugger;
     let self = this;
@@ -296,7 +335,7 @@ class MyTicketList extends Component {
     }).then(function(res) {
       debugger;
       let data = res.data.responseData;
-      let Status=res.data.message;
+      let Status = res.data.message;
       if (Status === "Record Not Found") {
         self.setState({ SearchTicketData: [] });
       } else {
@@ -382,7 +421,7 @@ class MyTicketList extends Component {
       // });
     });
   }
-  
+
   handleAdvSearchFlag(e) {
     debugger;
     let currentActive = e.currentTarget.innerText;
@@ -438,8 +477,8 @@ class MyTicketList extends Component {
     }).then(function(res) {
       debugger;
       let DraftDetails = res.data.responseData;
-      let draftCountStatus = DraftDetails.length;
-      self.setState({ DraftDetails: DraftDetails, draftCountStatus });
+      // let draftCountStatus = DraftDetails.length;
+      self.setState({ DraftDetails: DraftDetails });
     });
   }
   handleGetDepartmentList() {
@@ -1179,9 +1218,16 @@ class MyTicketList extends Component {
                   aria-controls="Escalation-tab"
                   aria-selected="true"
                   name="Escalation"
-                  onClick={()=>{this.handleSearchTicket("Escalation")}}
+                  onClick={() => {
+                    this.handleSearchTicket("Escalation");
+                  }}
                 >
-                  Escalation: <span className="myTciket-tab-span">03</span>
+                  Escalation:{" "}
+                  <span className="myTciket-tab-span">
+                    {this.state.byEscalationCount < 9
+                      ? "0" + this.state.byEscalationCount
+                      : this.state.byEscalationCount}
+                  </span>
                 </a>
               </li>
               <li className="nav-item">
@@ -1193,9 +1239,16 @@ class MyTicketList extends Component {
                   aria-controls="Escalation-tab"
                   aria-selected="false"
                   name="New"
-                  onClick={()=>{this.handleSearchTicket("New")}}
+                  onClick={() => {
+                    this.handleSearchTicket("New");
+                  }}
                 >
-                  New: <span className="myTciket-tab-span">09</span>
+                  New:{" "}
+                  <span className="myTciket-tab-span">
+                    {this.state.byNewCount < 9
+                      ? "0" + this.state.byNewCount
+                      : this.state.byNewCount}
+                  </span>
                 </a>
               </li>
               <li className="nav-item">
@@ -1207,9 +1260,16 @@ class MyTicketList extends Component {
                   aria-controls="Escalation-tab"
                   aria-selected="false"
                   name="Open"
-                  onClick={()=>{this.handleSearchTicket("Open")}}
+                  onClick={() => {
+                    this.handleSearchTicket("Open");
+                  }}
                 >
-                  Open: <span className="myTciket-tab-span">10</span>
+                  Open:{" "}
+                  <span className="myTciket-tab-span">
+                    {this.state.byOpenCount < 9
+                      ? "0" + this.state.byOpenCount
+                      : this.state.byOpenCount}
+                  </span>
                 </a>
               </li>
               <li className="nav-item">
@@ -1221,9 +1281,14 @@ class MyTicketList extends Component {
                   aria-controls="Escalation-tab"
                   aria-selected="false"
                   name="Resolved"
-                  onClick={()=>{this.handleSearchTicket("Resolved")}}
+                  onClick={() => {
+                    this.handleSearchTicket("Resolved");
+                  }}
                 >
-                  Resolved: <span className="myTciket-tab-span">15</span>
+                  Resolved: <span className="myTciket-tab-span">
+                    {this.state.byResolvedCount < 9
+                      ? "0" + this.state.byResolvedCount
+                      : this.state.byResolvedCount}</span>
                 </a>
               </li>
               <li className="nav-item">
@@ -1235,10 +1300,14 @@ class MyTicketList extends Component {
                   aria-controls="Escalation-tab"
                   aria-selected="false"
                   name="Reassigned"
-                  onClick={()=>{this.handleSearchTicket("Reassigned")}}
+                  onClick={() => {
+                    this.handleSearchTicket("Reassigned");
+                  }}
                 >
                   Reassigned by me:
-                  <span className="myTciket-tab-span">03</span>
+                  <span className="myTciket-tab-span">{this.state.byReassignedCount < 9
+                      ? "0" + this.state.byReassignedCount
+                      : this.state.byReassignedCount}</span>
                 </a>
               </li>
               <li className="nav-item">
@@ -1250,9 +1319,13 @@ class MyTicketList extends Component {
                   aria-controls="Escalation-tab"
                   aria-selected="false"
                   name="Closed"
-                  onClick={()=>{this.handleSearchTicket("Closed")}}
+                  onClick={() => {
+                    this.handleSearchTicket("Closed");
+                  }}
                 >
-                  Closed: <span className="myTciket-tab-span">12</span>
+                  Closed: <span className="myTciket-tab-span">{this.state.byClosedCount < 9
+                      ? "0" + this.state.byClosedCount
+                      : this.state.byClosedCount}</span>
                 </a>
               </li>
               <li className="nav-item">
@@ -1264,9 +1337,13 @@ class MyTicketList extends Component {
                   aria-controls="Escalation-tab"
                   aria-selected="false"
                   name="All"
-                  onClick={()=>{this.handleSearchTicket("All")}}
+                  onClick={() => {
+                    this.handleSearchTicket("All");
+                  }}
                 >
-                  All: <span className="myTciket-tab-span">56</span>
+                  All: <span className="myTciket-tab-span">{this.state.byAllCount < 9
+                      ? "0" + this.state.byAllCount
+                      : this.state.byAllCount}</span>
                 </a>
               </li>
               <li className="nav-item">
@@ -1278,9 +1355,13 @@ class MyTicketList extends Component {
                   aria-controls="Escalation-tab"
                   aria-selected="false"
                   name="FollowUp"
-                  onClick={()=>{this.handleSearchTicket("FollowUp")}}
+                  onClick={() => {
+                    this.handleSearchTicket("FollowUp");
+                  }}
                 >
-                  Follow Up: <span className="myTciket-tab-span">03</span>
+                  Follow Up: <span className="myTciket-tab-span">{this.state.byFollowUpCount < 9
+                      ? "0" + this.state.byFollowUpCount
+                      : this.state.byFollowUpCount}</span>
                 </a>
               </li>
               <li className="nav-item">
