@@ -420,7 +420,7 @@ class TicketSystemTask extends Component {
                           )
                         }
                       ]}
-                      // resizable={false}
+                      resizable={false}
                       defaultPageSize={5}
                       showPagination={false}
                     />
