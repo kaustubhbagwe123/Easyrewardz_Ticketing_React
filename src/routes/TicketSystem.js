@@ -892,6 +892,7 @@ class TicketSystem extends Component {
                       name="ticketDetails"
                       value={this.state.ticketDetails}
                       onChange={this.handleTicketChange}
+                      maxLength={250}
                     >
                     </textarea>
                     {this.validator.message(
@@ -1364,7 +1365,7 @@ class TicketSystem extends Component {
                   >
                     <div className="ticketSycard">
                       <div className="ticketSycard1">
-                        <div className="paddingsystem">
+                        <div className="paddingsystem" style={{borderBottom:"1px solid #EDEDED"}}>
                           <div className="row">
                             <div className="col-md-4">
                               <label className="category2">Customer Name</label>
