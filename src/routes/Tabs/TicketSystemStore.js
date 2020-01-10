@@ -7,6 +7,7 @@ import ReactTable from "react-table";
 import axios from "axios";
 import config from "../../helpers/config";
 import { authHeader } from "../../helpers/authHeader";
+import MinusImg from "./../../assets/Images/minus.png";
 
 class TicketSystemStore extends Component {
   constructor(props) {
@@ -216,13 +217,13 @@ class TicketSystemStore extends Component {
                 </div>
               </div>
               <div className="col-12 col-lg-2 col-xl-1">
-                <div className="storeplusline">
+                <div className="storeplusline"  onClick={this.handleOrderStoreTableOpen}>
                   <span className="plusline1"></span>
                   <img
                     src={ArrowImg}
                     alt="Arrow"
                     className="arrow-imgtask-1"
-                    onClick={this.handleOrderStoreTableOpen}
+                   
                   />
                 </div>
               </div>
@@ -257,14 +258,19 @@ class TicketSystemStore extends Component {
                   </div>
                 </div>
                 <div className="col-md-1">
-                  <div className="storeplusline">
-                    <span className="plusline1"></span>
+                  <div className="storeplusline13" onClick={this.handleOrderStoreTableClose}>
+                    <span className="plusline13"></span>
                     <img
+                    src={MinusImg}
+                    alt="Minus"
+                    className="minus-imgorder" 
+                  />
+                    {/* <img
                       src={ArrowImg}
                       alt="Arrow"
                       className="arrow-imgtask-1"
                       onClick={this.handleOrderStoreTableClose}
-                    />
+                    /> */}
                   </div>
                 </div>
               </div>

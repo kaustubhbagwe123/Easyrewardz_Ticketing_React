@@ -1595,13 +1595,14 @@ class MyTicket extends Component {
             </div>
             <div className="myTicketEmail">
               <Collapse isOpen={this.state.EmailCollapse}>
-                <a href="#!" className="kblink" style={{ top: "5px" }}>
+                <a href="#!" className="kblink" style={{ top: "5px" }} 
+                 onClick={this.HandleKbLinkModalOpen.bind(this)}>
                   {/* <FontAwesomeIcon icon={faBrain} /> Kb Link */}
                   <img
                     src={KnowledgeLogo}
                     alt="KnowledgeLogo"
                     className="knoim"
-                    onClick={this.HandleKbLinkModalOpen.bind(this)}
+                   
                   />
                   Kb Link
                 </a>
@@ -1630,12 +1631,6 @@ class MyTicket extends Component {
                       <a href="#!">Template 4</a>
                     </li>
                   </ul>
-                </div>
-                <div>
-                  <label className="kblink-auto">
-                    <img src={AutoSave} alt="Auto" className="autosavekb" />
-                    Auto Save
-                  </label>
                 </div>
                 <Card>
                   <CardBody>
@@ -1684,23 +1679,31 @@ class MyTicket extends Component {
                         </li>
                         <li>
                           <label className="">
+                          <div className="input-group" style={{ display: "block" }}>
+                                <span className="input-group-addon inputcc">CC:</span>
                             <input
                               type="text"
                               className="CCdi"
-                              placeholder="CC: diwarkar@gmail.com"
+                              placeholder="diwark@gmail.com"
                             />
 
-                            <span className="one">+1</span>
+                            <span className="input-group-addon inputcc-one">+1</span>
+                            </div>
                           </label>
                         </li>
                         <li>
                           <label className="">
+                          <div className="input-group" style={{ display: "block" }}>
+                                <span className="input-group-addon inputcc">BCC:</span>
                             <input
                               type="text"
                               className="CCdi"
-                              placeholder="BCC: diwarkar@gmail.com"
+                              placeholder="diwark@gmail.com"
                             />
-                            <span className="one">+1</span>
+                            <span className="input-group-addon inputcc-one">+1</span>
+                                
+                            {/* <span className="one">+1</span> */}
+                            </div>
                           </label>
                         </li>
                         <li>
@@ -1743,7 +1746,6 @@ class MyTicket extends Component {
                           <label style={{ color: "#2561a8" }}>3 files</label>
                         </li>
                         <li style={{ float: "right" }}>
-                          <button className="sav">Save As Draft</button>
                           <button className="send">Send</button>
                         </li>
                       </ul>
@@ -2264,15 +2266,6 @@ class MyTicket extends Component {
                             </ul>
                           </div>
 
-                          <label className="kblink-auto1">
-                            <img
-                              src={AutoSave}
-                              alt="Auto"
-                              className="autosavekb"
-                            />
-                            Auto Save
-                          </label>
-
                           <a href="#!" className="kblink">
                             <img
                               src={KnowledgeLogo}
@@ -2381,22 +2374,30 @@ class MyTicket extends Component {
                             </li>
                             <li>
                               <label className="">
+                              <div className="input-group" style={{ display: "block" }}>
+                                <span className="input-group-addon inputcc">CC:</span>
                                 <input
                                   type="text"
                                   className="CCdi"
-                                  placeholder="CC: diwarkar@gmail.com"
+                                  placeholder="diwark@gmail.com"
                                 />
-                                <span className="one">+1</span>
+                                <span className="input-group-addon inputcc-one">+1</span>
+                                </div>
+                                
                               </label>
                             </li>
                             <li>
                               <label className="">
+                              <div className="input-group" style={{ display: "block" }}>
+                                <span className="input-group-addon inputcc">BCC:</span>
                                 <input
                                   type="text"
                                   className="CCdi"
-                                  placeholder="BCC: diwarkar@gmail.com"
+                                  placeholder="diwark@gmail.com"
                                 />
-                                <span className="one">+1</span>
+                                 <span className="input-group-addon inputcc-one">+1</span>
+                                </div>
+                               
                               </label>
                             </li>
                             <li>
@@ -2441,7 +2442,6 @@ class MyTicket extends Component {
                               </label>
                             </li>
                             <li style={{ float: "right" }}>
-                              <button className="sav">Save As Draft</button>
                               <button className="send">Send</button>
                             </li>
                           </ul>

@@ -139,6 +139,12 @@ a {
   white-space: nowrap;
   flex: 1 0 100%;
 }
+/* .ordermainrow .ReactTable .rt-thead .rt-th.-cursor-pointer, .ReactTable .rt-thead .rt-td.-cursor-pointer {
+  width: auto !important;
+}
+.ordermainrow .ReactTable .rt-tbody .rt-td {
+  width: auto !important;
+} */
 .ordermainrow .rt-table::-webkit-scrollbar {
   height: 5px;
 }
@@ -4366,7 +4372,7 @@ font-weight: normal;
 }
 .collapbtn {
   position: absolute;
-  right: 17%;
+  right: 100px;
   top: 41px;
   z-index: 1;
   border: 1px solid #d1d1d1;
@@ -4389,7 +4395,7 @@ font-weight: normal;
 .kblink {
   position: absolute;
   top: 41px;
-  right: 90px;
+  right: 5px;
   z-index: 1;
   padding: 5px 8px 5px 5px;
   border: 1px solid #d1d1d1;
@@ -7041,11 +7047,23 @@ table thead tr {
 }
 .claimplus {
   float: right;
+  cursor: pointer;
+  height: 35px;
+}
+.plusline12 {
+  border: 1px solid #9b9b9b;
+  padding-top: 9px;
+  padding-bottom: 24px;
 }
 .plusline1 {
   border: 1px solid #9b9b9b;
+  padding-top: 15px;
+  padding-bottom: 18px;
+}
+.plusline13 {
+  border: 1px solid #9b9b9b;
   padding-top: 9px;
-  padding-bottom: 9px;
+  padding-bottom: 24px;
 }
 .plusline2 {
   border: 1px solid #9b9b9b;
@@ -7972,7 +7990,7 @@ table tr th:last-child {
   background-color: #f5f8f9;
 }
 .paddingsystem {
-  padding: 40px;
+  padding: 40px 30px 40px 40px;
   position: relative;
   height: auto;
 }
@@ -8323,12 +8341,12 @@ table tr th:last-child {
   background-color: #ecf2f4;
 }
 .arrow-imgtask-1 {
-  width: 15px;
-  height: 15px;
+  width: 18px;
+  height: 18px;
   /* float: right; */
   margin-right: 10px;
   margin-top: 0px;
-  margin-left: 10px;
+  margin-left: 15px;
   cursor: pointer;
 }
 .systemordersearch {
@@ -8432,16 +8450,16 @@ table tr th:last-child {
   margin-top: 8px;
 }
 .minus-imgorder {
-  width: 15px;
+  width: 21px;
   height: 2px;
   /* float: right; */
-  margin-right: 10px;
-  margin-top: 0px;
-  margin-left: 10px;
+  margin-right: 5px;
+  margin-top: 11px;
+  margin-left: 15px;
   cursor: pointer;
 }
 .orderswitchitem {
-  margin-top: 5px;
+  margin-top: 0px;
   margin-left: -106px;
   margin-right: 8px;
 }
@@ -8453,8 +8471,16 @@ table tr th:last-child {
   height: 54px;
 }
 .storeplusline {
+  cursor: pointer;
   float: right;
-  margin-top: 15px;
+  padding: 15px 0 0 0;
+  height: 54px;
+}
+.storeplusline13 {
+  cursor: pointer;
+  float: right;
+  padding: 9px 0 0 0;
+  height: 54px;
 }
 .systemstoredropdown {
   background-color: #dbe4e7;
@@ -9170,15 +9196,17 @@ table tr th:last-child {
 }
  .CCdi {
   border: 1px solid #9b9b9b;
-  padding: 7px 5px;
-  width: 210px;
-  font-size: 13px;
+  padding: 5px 5px;
+  width: 145px;
+  height: 30px;
+  border-right: none
 }
 .CCdi1 {
   border: 1px solid #9b9b9b;
     padding: 5px 5px;
-    width: 165px;
+    width: 145px;
     height: 30px;
+    border-right: none;
 }
 .colladrow .fileup {
   width: 14px;

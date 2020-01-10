@@ -331,7 +331,7 @@ class TicketSystemOrder extends Component {
               </label>
             </div>
             <div className="col-12 col-lg-3 col-xl-3">
-              <div style={{ display: "flex", marginTop: "7px" }}>
+              <div style={{ display: "flex", marginTop: "4px" }}>
                 <label className="orderdetailpopup">Yes</label>
                 <div className="switchmargin">
                   <div className="switch switch-primary d-inline m-r-10">
@@ -348,14 +348,16 @@ class TicketSystemOrder extends Component {
               </div>
             </div>
             <div className="col-12 col-lg-2 col-xl-1">
-              <div className="storeplusline">
+              <div className="storeplusline" onClick={this.handleOrderTableOpen}>
                 <span className="plusline1"></span>
+                
                 <img
                   src={ArrowImg}
                   alt="Arrow"
                   className="arrow-imgtask-1"
-                  onClick={this.handleOrderTableOpen}
+                  
                 />
+                
               </div>
             </div>
           </div>
@@ -369,20 +371,20 @@ class TicketSystemOrder extends Component {
               className="row"
               style={{ marginLeft: "0px", marginRight: "0px" }}
             >
-              <div className="col-md-12 claim-status-card">
-                <label>
+              <div className="col-md-12 claim-status-card" style={{height:"54px"}}>
+                <label style={{marginTop:"7px"}}>
                   <b>Customer Want to attach order</b>
                 </label>
-                <div className="claimplus">
-                  <span className="plusline1"></span>
-                  <img src={ArrowImg} alt="Arrow" className="arrow-imgtask-1" />
-                  <span className="plusline1"></span>
+                <div className="claimplus" onClick={this.handleOrderTableClose.bind(this)}>
+                  {/* <span className="plusline1"></span>
+                  <img src={ArrowImg} alt="Arrow" className="arrow-imgtask-1" /> */}
+                  <span className="plusline12"></span>
                   <span>
                   <img
                     src={MinusImg}
                     alt="Minus"
                     className="minus-imgorder"
-                    onClick={this.handleOrderTableClose.bind(this)}
+                   
                   />
                   </span>
                 </div>
@@ -904,7 +906,7 @@ class TicketSystemOrder extends Component {
                         <label
                           htmlFor="editTasks-p-2"
                           className="cr ord"
-                          style={{ top: 0 }}
+                          style={{ top: "5px" }}
                         ></label>
                       </div>
                     </div>
@@ -975,10 +977,10 @@ class TicketSystemOrder extends Component {
                   },
                   {
                     Header: <span>Discount</span>,
-                    accessor: "discount"
+                    accessor: "discount",
                   }
                 ]}
-                //resizable={false}
+                resizable={false}
                 defaultPageSize={3}
                 showPagination={false}
                 SubComponent={row => {

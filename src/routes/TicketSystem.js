@@ -304,7 +304,7 @@ class TicketSystem extends Component {
       url: config.apiUrl + "/Ticketing/gettitlesuggestions",
       headers: authHeader(),
       params: {
-        TikcketTitle: ""
+        TikcketTitle: this.state.titleSuggValue
       }
     }).then(function(res) {
       debugger;
@@ -510,7 +510,7 @@ class TicketSystem extends Component {
       var custId = customerDetails.customerId;
       this.setState({ customerDetails, customer_Id: custId });
       this.handleGetCustomerData(custId);
-      this.handleGetTicketTitleList();
+      // this.handleGetTicketTitleList();
       this.handleGetBrandList();
       this.handleGetCategoryList();
       this.handleGetChannelOfPurchaseList();
@@ -528,12 +528,14 @@ class TicketSystem extends Component {
   }
   handleClickOutside(event) {
     if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
-      this.setState({ toggleTitle: false });
+      // this.setState({ toggleTitle: false });
+      this.setState({ TicketTitleData: [] });
     }
   }
   handleTicketSuggestion = ticketSuggestion => {
     this.setState({ ticketSuggestion });
   };
+
   handleAppendTicketSuggestion = e => {
     debugger;
     this.setState({ toggleTitle: true });
@@ -556,6 +558,15 @@ class TicketSystem extends Component {
     debugger;
     let ticSugg = e.currentTarget.value;
     this.setState({ titleSuggValue: ticSugg });
+    setTimeout(() => {
+      if (this.state.titleSuggValue.length > 2) {
+        this.handleGetTicketTitleList();
+      } else {
+        this.setState({
+          TicketTitleData: []
+        });
+      }
+    }, 1);
   };
   handleFileUpload(e) {
     debugger;
@@ -611,7 +622,8 @@ class TicketSystem extends Component {
       var formData = new FormData();
 
       var paramData = {
-        TicketTitle: this.state.ticketSuggestion.ticketTitle,
+        // TicketTitle: this.state.ticketSuggestion.ticketTitle,
+        TicketTitle: this.state.titleSuggValue,
         Ticketdescription: this.state.ticketDetails,
         CustomerID: this.state.customer_Id,
         BrandID: this.state.selectedBrand,
@@ -865,25 +877,28 @@ class TicketSystem extends Component {
                           this.searchInput = input;
                         }}
                         id="titleSuggestion"
+                        autoComplete="off"
                       />
                       {this.validator.message(
                         "TicketTitle",
                         this.state.titleSuggValue,
                         "required"
                       )}
-                      {this.state.toggleTitle && (
-                        <div className="custom-ticket-title-suggestions">
-                          {this.state.TicketTitleData !== null &&
-                            this.state.TicketTitleData.map((item, i) => (
-                              <span
-                                key={i}
-                                onClick={this.handleAppendTicketSuggestion}
-                              >
-                                {item.ticketTitle}
-                              </span>
-                            ))}
-                        </div>
-                      )}
+                      {this.state.TicketTitleData !== null &&
+                        this.state.TicketTitleData.length > 0 &&
+                        this.state.titleSuggValue.length > 0 && (
+                          <div className="custom-ticket-title-suggestions">
+                            {this.state.TicketTitleData !== null &&
+                              this.state.TicketTitleData.map((item, i) => (
+                                <span
+                                  key={i}
+                                  onClick={this.handleAppendTicketSuggestion}
+                                >
+                                  {item.ticketTitle}
+                                </span>
+                              ))}
+                          </div>
+                        )}
                     </div>
                   </div>
                 </div>
@@ -897,6 +912,7 @@ class TicketSystem extends Component {
                       name="ticketDetails"
                       value={this.state.ticketDetails}
                       onChange={this.handleTicketChange}
+                      maxLength={250}
                     ></textarea>
                     {this.validator.message(
                       "ticketDetails",
@@ -1232,7 +1248,7 @@ class TicketSystem extends Component {
                                 <input
                                   type="text"
                                   className="CCdi1"
-                                  placeholder="diwarkar@gmail.com"
+                                  placeholder="diwark@gmail.com"
                                   name="userCC"
                                   value={this.state.mailFiled.userCC}
                                   onChange={this.handleMailOnChange.bind(
@@ -1241,7 +1257,7 @@ class TicketSystem extends Component {
                                   )}
                                 />
 
-                                <span className="one">+1</span>
+                                <span className="input-group-addon inputcc-one">+1</span>
                               </div>
                             </label>
                           </li>
@@ -1258,7 +1274,7 @@ class TicketSystem extends Component {
                                 <input
                                   type="text"
                                   className="CCdi1"
-                                  placeholder="BCC"
+                                  placeholder="diwark@gmail.com"
                                   name="userBCC"
                                   value={this.state.mailFiled.userBCC}
                                   onChange={this.handleMailOnChange.bind(
@@ -1266,7 +1282,7 @@ class TicketSystem extends Component {
                                     "userBCC"
                                   )}
                                 />
-                                <span className="one">+1</span>
+                               <span className="input-group-addon inputcc-one">+1</span>
                               </div>
                             </label>
                           </li>
@@ -1354,7 +1370,10 @@ class TicketSystem extends Component {
                   >
                     <div className="ticketSycard">
                       <div className="ticketSycard1">
-                        <div className="paddingsystem">
+                        <div
+                          className="paddingsystem"
+                          style={{ borderBottom: "1px solid #EDEDED" }}
+                        >
                           <div className="row">
                             <div className="col-md-4">
                               <label className="category2">Customer Name</label>
