@@ -576,7 +576,7 @@ class TicketSystem extends Component {
   handleCREATE_TICKET(StatusID) {
     debugger;
     let self = this;
-    // var OID = this.state.selectedDataRow;
+    // var OID = this.state.selectedTicketPriority;
     var selectedRow = "";
     for (var i = 0; i < this.state.selectedDataRow.length; i++) {
       selectedRow += this.state.selectedDataRow[i]["orderItemID"] + ",";
@@ -1203,7 +1203,7 @@ class TicketSystem extends Component {
                               <input
                                 type="text"
                                 className="CCdi1"
-                                placeholder="CC: diwarkar@gmail.com"
+                                placeholder="CC:"
                                 name="userCC"
                                 value={this.state.mailFiled.userCC}
                                 onChange={this.handleMailOnChange.bind(
@@ -1220,7 +1220,7 @@ class TicketSystem extends Component {
                               <input
                                 type="text"
                                 className="CCdi1"
-                                placeholder="BCC: diwarkar@gmail.com"
+                                placeholder="BCC:"
                                 name="userBCC"
                                 value={this.state.mailFiled.userBCC}
                                 onChange={this.handleMailOnChange.bind(
