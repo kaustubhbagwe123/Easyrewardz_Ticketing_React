@@ -753,7 +753,9 @@
     font-weight: 700;
     line-height: 19px;
     text-align: left;
-    border: 1px solid #9b9b9b;
+    border-top: 1px solid #9b9b9b;
+    border-bottom: 1px solid #9b9b9b;
+    border-left: 1px solid #9b9b9b;
 }
 .ListAllReacttable .ReactTable .rt-thead.-header {
     background-color: #E5E5E5;

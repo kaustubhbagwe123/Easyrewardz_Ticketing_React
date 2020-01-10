@@ -114,7 +114,7 @@ class ForgotPassword extends Component {
                     autoComplete="off"
                     value={this.state.emailId}
                     onChange={this.hanleChange.bind(this)}
-                    maxLength="100"
+                    maxLength={100}
                   />
                   {this.validator.message(
                     "Email Id",
