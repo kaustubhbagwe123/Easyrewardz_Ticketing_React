@@ -287,7 +287,7 @@ class TicketSystem extends Component {
           // DateOfBirth: Dob,
           IsActive: 1
         }
-      }).then(function (res) {
+      }).then(function(res) {
         // debugger;
         let Message = res.data.message;
         if (Message === "Success") {
@@ -311,9 +311,9 @@ class TicketSystem extends Component {
       url: config.apiUrl + "/Ticketing/gettitlesuggestions",
       headers: authHeader(),
       params: {
-        TikcketTitle: ""
+        TikcketTitle: this.state.titleSuggValue
       }
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       let TicketTitleData = res.data.responseData;
       self.setState({ TicketTitleData: TicketTitleData });
@@ -328,7 +328,7 @@ class TicketSystem extends Component {
       params: {
         IssueTypeID: this.state.selectedIssueType
       }
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       let CkEditorTemplateData = res.data.responseData;
       self.setState({ CkEditorTemplateData: CkEditorTemplateData });
@@ -344,7 +344,7 @@ class TicketSystem extends Component {
       params: {
         TemplateId: tempId
       }
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       let CkEditorTemplateDetails = res.data.responseData;
       self.setState({
@@ -365,7 +365,7 @@ class TicketSystem extends Component {
         Category_ID: this.state.selectedCategoryKB,
         SubCategor_ID: this.state.selectedSubCategoryKB
       }
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       let KbPopupData = res.data.responseData;
       if (KbPopupData.length === 0 || KbPopupData === null) {
@@ -381,7 +381,7 @@ class TicketSystem extends Component {
       method: "post",
       url: config.apiUrl + "/Brand/GetBrandList",
       headers: authHeader()
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       let BrandData = res.data.responseData;
       self.setState({ BrandData: BrandData });
@@ -395,7 +395,7 @@ class TicketSystem extends Component {
       method: "post",
       url: config.apiUrl + "/Category/GetCategoryList",
       headers: authHeader()
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       let CategoryData = res.data;
       self.setState({ CategoryData: CategoryData });
@@ -422,7 +422,7 @@ class TicketSystem extends Component {
         CategoryID: cateId
         // CategoryID: this.state.selectedCategory
       }
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       let SubCategoryData = res.data.responseData;
       self.setState({ SubCategoryData: SubCategoryData });
@@ -442,7 +442,7 @@ class TicketSystem extends Component {
       params: {
         SubCategoryID: subCateId
       }
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       let IssueTypeData = res.data.responseData;
       self.setState({ IssueTypeData: IssueTypeData });
@@ -455,7 +455,7 @@ class TicketSystem extends Component {
       method: "post",
       url: config.apiUrl + "/Priority/GetPriorityList",
       headers: authHeader()
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       let TicketPriorityData = res.data.responseData;
       self.setState({ TicketPriorityData: TicketPriorityData });
@@ -467,7 +467,7 @@ class TicketSystem extends Component {
       method: "post",
       url: config.apiUrl + "/Master/GetChannelOfPurchaseList",
       headers: authHeader()
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       let ChannelOfPurchaseData = res.data.responseData;
       self.setState({ ChannelOfPurchaseData: ChannelOfPurchaseData });
@@ -483,7 +483,7 @@ class TicketSystem extends Component {
       params: {
         CustomerID: CustId
       }
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       var CustMsg = res.data.message;
       var customerData = res.data.responseData;
@@ -515,7 +515,7 @@ class TicketSystem extends Component {
       var custId = customerDetails.customerId;
       this.setState({ customerDetails, customer_Id: custId });
       this.handleGetCustomerData(custId);
-      this.handleGetTicketTitleList();
+      // this.handleGetTicketTitleList();
       this.handleGetBrandList();
       this.handleGetCategoryList();
       this.handleGetChannelOfPurchaseList();
@@ -533,12 +533,14 @@ class TicketSystem extends Component {
   }
   handleClickOutside(event) {
     if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
-      this.setState({ toggleTitle: false });
+      // this.setState({ toggleTitle: false });
+      this.setState({ TicketTitleData: [] });
     }
   }
   handleTicketSuggestion = ticketSuggestion => {
     this.setState({ ticketSuggestion });
   };
+
   handleAppendTicketSuggestion = e => {
     debugger;
     this.setState({ toggleTitle: true });
@@ -561,6 +563,15 @@ class TicketSystem extends Component {
     debugger;
     let ticSugg = e.currentTarget.value;
     this.setState({ titleSuggValue: ticSugg });
+    setTimeout(() => {
+      if (this.state.titleSuggValue.length > 2) {
+        this.handleGetTicketTitleList();
+      } else {
+        this.setState({
+          TicketTitleData: []
+        });
+      }
+    }, 1);
   };
   handleFileUpload(e) {
     debugger;
@@ -584,6 +595,7 @@ class TicketSystem extends Component {
   }
 
   handleCREATE_TICKET(StatusID) {
+    debugger;
     if (this.validator.allValid()) {
       debugger;
       let self = this;
@@ -616,7 +628,8 @@ class TicketSystem extends Component {
       var formData = new FormData();
 
       var paramData = {
-        TicketTitle: this.state.ticketSuggestion.ticketTitle,
+        // TicketTitle: this.state.ticketSuggestion.ticketTitle,
+        TicketTitle: this.state.titleSuggValue,
         Ticketdescription: this.state.ticketDetails,
         CustomerID: this.state.customer_Id,
         BrandID: this.state.selectedBrand,
@@ -645,27 +658,24 @@ class TicketSystem extends Component {
         url: config.apiUrl + "/Ticketing/createTicket",
         headers: authHeader(),
         data: formData
-      }).then(function (res) {
+      }).then(function(res) {
         debugger;
         let Msg = res.data.status;
 
         if (Msg) {
           NotificationManager.success(res.data.message);
-          setTimeout(function () {
+          setTimeout(function() {
             self.props.history.push("myTicketlist");
           }, 100);
         } else {
           NotificationManager.error(res.data.message);
         }
       });
-    }
-    else {
+    } else {
       this.validator.showMessages();
       this.forceUpdate();
     }
   }
-
-
 
   handlebackprev() {
     this.props.history.push("myTicketList");
@@ -867,25 +877,28 @@ class TicketSystem extends Component {
                           this.searchInput = input;
                         }}
                         id="titleSuggestion"
+                        autoComplete="off"
                       />
                       {this.validator.message(
                         "TicketTitle",
                         this.state.titleSuggValue,
                         "required"
                       )}
-                      {this.state.toggleTitle && (
-                        <div className="custom-ticket-title-suggestions">
-                          {this.state.TicketTitleData !== null &&
-                            this.state.TicketTitleData.map((item, i) => (
-                              <span
-                                key={i}
-                                onClick={this.handleAppendTicketSuggestion}
-                              >
-                                {item.ticketTitle}
-                              </span>
-                            ))}
-                        </div>
-                      )}
+                      {this.state.TicketTitleData !== null &&
+                        this.state.TicketTitleData.length > 0 &&
+                        this.state.titleSuggValue.length > 0 && (
+                          <div className="custom-ticket-title-suggestions">
+                            {this.state.TicketTitleData !== null &&
+                              this.state.TicketTitleData.map((item, i) => (
+                                <span
+                                  key={i}
+                                  onClick={this.handleAppendTicketSuggestion}
+                                >
+                                  {item.ticketTitle}
+                                </span>
+                              ))}
+                          </div>
+                        )}
                     </div>
                   </div>
                 </div>
@@ -899,8 +912,7 @@ class TicketSystem extends Component {
                       name="ticketDetails"
                       value={this.state.ticketDetails}
                       onChange={this.handleTicketChange}
-                    >
-                    </textarea>
+                    ></textarea>
                     {this.validator.message(
                       "ticketDetails",
                       this.state.ticketDetails,
@@ -1131,7 +1143,6 @@ class TicketSystem extends Component {
                       Kb Link
                     </label>
                   </a>
-
                 </div>
                 <div className="row">
                   <div className="col-md-12 ck-det-cntr">
@@ -1225,8 +1236,13 @@ class TicketSystem extends Component {
                           </li>
                           <li>
                             <label className="diwamargin">
-                              <div className="input-group" style={{ display: "block" }}>
-                                <span className="input-group-addon inputcc">CC:</span>
+                              <div
+                                className="input-group"
+                                style={{ display: "block" }}
+                              >
+                                <span className="input-group-addon inputcc">
+                                  CC:
+                                </span>
                                 <input
                                   type="text"
                                   className="CCdi1"
@@ -1275,8 +1291,13 @@ class TicketSystem extends Component {
                           </li> */}
                           <li>
                             <label className="diwamargin">
-                              <div class="input-group" style={{ display: "block" }}>
-                                <span class="input-group-addon inputcc">BCC:</span>
+                              <div
+                                class="input-group"
+                                style={{ display: "block" }}
+                              >
+                                <span class="input-group-addon inputcc">
+                                  BCC:
+                                </span>
                                 <input
                                   type="text"
                                   className="CCdi1"
@@ -1290,7 +1311,6 @@ class TicketSystem extends Component {
                                 />
                                 <span className="one">+1</span>
                               </div>
-
                             </label>
                           </li>
                           <li>
@@ -1601,7 +1621,7 @@ class TicketSystem extends Component {
                     role="tabpanel"
                     aria-labelledby="order-tab"
                     style={{ height: "100%" }}
-                  // onChange={this.hanleRedirectpage.bind(this)}
+                    // onChange={this.hanleRedirectpage.bind(this)}
                   >
                     <TicketSystemOrder
                       custDetails={CustomerId}
@@ -1655,12 +1675,12 @@ class TicketSystem extends Component {
                             className="customer-icon"
                           />
                         ) : (
-                            <img
-                              src={AvatarBlackIcon}
-                              alt="customer-icon"
-                              className="customer-icon"
-                            />
-                          )}
+                          <img
+                            src={AvatarBlackIcon}
+                            alt="customer-icon"
+                            className="customer-icon"
+                          />
+                        )}
 
                         <span className="system-tab-span">CUSTOMER</span>
                       </a>
