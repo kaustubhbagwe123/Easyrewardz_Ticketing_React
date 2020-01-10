@@ -29,6 +29,7 @@ class TicketSystemTask extends Component {
       selectedPriority: 0,
     };
     this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
+    this.handleTaskDelete = this.handleTaskDelete.bind(this);
     this.handleGetFunctionList = this.handleGetFunctionList.bind(this);
     this.handleGetAssignToList = this.handleGetAssignToList.bind(this);
     this.handleGetTicketPriorityList = this.handleGetTicketPriorityList.bind(
@@ -414,13 +415,13 @@ class TicketSystemTask extends Component {
                                 src={DeleteIcon}
                                 alt="del-icon"
                                 className="downloadaction"
-                                onClick={this.handleTaskDelete.bind(this,row.original.ID)}
+                                onClick={this.handleTaskDelete(row.original.ID)}
                               />
                             </span>
                           )
                         }
                       ]}
-                      resizable={false}
+                      // resizable={false}
                       defaultPageSize={5}
                       showPagination={false}
                     />
