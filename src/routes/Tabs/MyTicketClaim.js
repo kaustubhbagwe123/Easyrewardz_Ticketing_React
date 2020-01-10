@@ -11,6 +11,7 @@ import { authHeader } from "./../../helpers/authHeader";
 import config from "./../../helpers/config";
 import ReactTable from "react-table";
 import StoreImg from "./../../assets/Images/store.png";
+import moment from "moment";
 import {
   NotificationContainer,
   NotificationManager
@@ -22,9 +23,36 @@ class MyTicketClaim extends Component {
 
     this.state = {
       ClaimDetailsModal: false,
-      claimAddComment: ""
+      claimAddComment: "",
+      claimDetailsData: []
     };
+
+    this.handleGetClaimTabDetails = this.handleGetClaimTabDetails.bind(this);
   }
+
+  componentDidMount() {
+    this.handleGetClaimTabDetails();
+  }
+
+  handleGetClaimTabDetails() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Task/getclaimlist",
+      headers: authHeader(),
+      params: {
+        TicketId: 13
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.status;
+      let data = res.data.responseData;
+      if (status === true) {
+        self.setState({ claimDetailsData: data });
+      }
+    });
+  }
+
   handleClaimDetailsModalOpen() {
     this.setState({ ClaimDetailsModal: true });
   }
@@ -68,7 +96,6 @@ class MyTicketClaim extends Component {
     });
   }
   render() {
-
     const dataOrder = [
       {
         taskTitle: "Store door are not working",
@@ -253,21 +280,39 @@ class MyTicketClaim extends Component {
     const columnsTicketClaim = [
       {
         Header: <span>ID</span>,
-        accessor: "id",
+        accessor: "ticketClaimID",
         Cell: row => (
           <span>
             <img src={HeadPhone3} alt="HeadPhone" className="headPhone3" />
-            ABC1234
+            {row.original.ticketClaimID}
           </span>
         )
       },
       {
         Header: <span>Status</span>,
-        accessor: "status"
+        accessor: "taskStatus",
+        Cell: row => {
+          // <span className="table-btn table-green-btn">
+          //   {row.original.taskStatus}
+          // </span>
+          if (row.original.taskStatus === "New") {
+            return (
+              <span className="table-btn table-yellow-btn">
+                {row.original.taskStatus}
+              </span>
+            );
+          } else if (row.original.taskStatus === "Resolved") {
+            return (
+              <span className="table-btn table-green-btn">
+                {row.original.taskStatus}
+              </span>
+            );
+          }
+        }
       },
       {
         Header: <span>Claim Issue Type</span>,
-        accessor: "claimIssue"
+        accessor: "claimIssueType"
       },
       {
         Header: (
@@ -276,10 +321,10 @@ class MyTicketClaim extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "cate",
+        accessor: "category",
         Cell: props => (
           <span>
-            <label>Defective article </label>
+            <label>{props.original.category} </label>
             <img className="info-icon" src={InfoIcon} alt="info-icon" />
             {/* <Popover content={} placement="bottom">
               <img className="info-icon" src={InfoIcon} alt="info-icon" />
@@ -294,8 +339,8 @@ class MyTicketClaim extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "createdBy",
-        Cell: row => <label>N Rampal</label>
+        accessor: "raisedBy"
+        // Cell: row => <label>N Rampal</label>
       },
       {
         Header: (
@@ -304,7 +349,23 @@ class MyTicketClaim extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "creationOn"
+        accessor: "dateformat",
+        Cell: props => (
+          <div>
+            <span>
+              {moment(props.original.creation_on).format("DD MMMM YYYY")}
+              <img className="info-icon" src={InfoIcon} alt="info-icon" />
+              {/* <Popover content={popoverData1} placement="bottom">
+              <img
+                className="info-icon"
+                src={InfoIcon}
+                alt="info-icon"
+                
+              />
+            </Popover> */}
+            </span>
+          </div>
+        )
       },
       {
         Header: (
@@ -313,15 +374,15 @@ class MyTicketClaim extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "assignTo",
-        Cell: row => <label>A. Bansal</label>
+        accessor: "assignName"
+        // Cell: row => <label>A. Bansal</label>
       }
     ];
     return (
       <Fragment>
         <div className="table-cntr mt-3 MyTicketClaimReact">
           <ReactTable
-            data={dataTicketClaim}
+            data={this.state.claimDetailsData}
             columns={columnsTicketClaim}
             // resizable={false}
             defaultPageSize={3}
@@ -434,86 +495,88 @@ class MyTicketClaim extends Component {
 
               <hr />
               <div className="borderless" style={{ marginLeft: "10px" }}>
-
-                  <div className="reacttableclaimdrawer">
-                                <ReactTable
-                                  data={dataOrder}
-                                  // columns={columnsOrder}
-                                  columns={[
-                                    {
-                                      Header: <span>Invoice Number</span>,
-                                      accessor: "invoiceNumber",
-                                      Cell: row => (
-                                        <span className="add-note">BB332398</span>
-                                        // <div
-                                        //   className="filter-checkbox"
-                                        //   style={{ marginLeft: "15px" }}
-                                        // >
-                                        //   <input
-                                        //     type="checkbox"
-                                        //     id="fil-number1"
-                                        //     name="filter-type"
-                                        //     style={{ display: "none" }}
-                                        //   />
-                                        //   <label
-                                        //     htmlFor="fil-number1"
-                                        //     style={{ paddingLeft: "25px" }}
-                                        //   >
-                                        //     <span className="add-note">BB332398</span>
-                                        //   </label>
-                                        // </div>
-                                      )
-                                    },
-                                    {
-                                      Header: <span>Invoice Date</span>,
-                                      accessor: "invoiceDate",
-                                      Cell: row => <label>12 Jan 2019</label>
-                                    },
-                                    {
-                                      Header: <span>Item Count</span>,
-                                      accessor: "itemCount",
-                                      Cell: row => <label>02</label>
-                                    },
-                                    {
-                                      Header: <span>Item Price</span>,
-                                      accessor: "itemPrice",
-                                      Cell: row => <label>2999</label>
-                                    },
-                                    {
-                                      Header: <span>Price Paid</span>,
-                                      accessor: "pricePaid",
-                                      Cell: row => <label>2999</label>
-                                    },
-                                    {
-                                      Header: <span>Store Code</span>,
-                                      accessor: "storeCode",
-                                      Cell: row => <label>SB221</label>
-                                    },
-                                    {
-                                      Header: <span>Store Addres</span>,
-                                      accessor: "storeAddres",
-                                      Cell: row => (
-                                        <label>UNIT D-338,| SECOND FLOOR SECTOR 14</label>
-                                      )
-                                    },
-                                  ]}
-                                  //resizable={false}
-                                  defaultPageSize={3}
-                                  showPagination={false}
-                                  SubComponent={row => {
-                                    return (
-                                      <div className="reacttableclaimdrawe" style={{ padding: "20px" }}>
-                                        <ReactTable
-                                          data={dataOrder1}
-                                          columns={columnsOrder1}
-                                          defaultPageSize={2}
-                                          showPagination={false}
-                                        />
-                                      </div>
-                                    );
-                                  }}
-                                />
-                              </div>
+                <div className="reacttableclaimdrawer">
+                  <ReactTable
+                    data={dataOrder}
+                    // columns={columnsOrder}
+                    columns={[
+                      {
+                        Header: <span>Invoice Number</span>,
+                        accessor: "invoiceNumber",
+                        Cell: row => (
+                          <span className="add-note">BB332398</span>
+                          // <div
+                          //   className="filter-checkbox"
+                          //   style={{ marginLeft: "15px" }}
+                          // >
+                          //   <input
+                          //     type="checkbox"
+                          //     id="fil-number1"
+                          //     name="filter-type"
+                          //     style={{ display: "none" }}
+                          //   />
+                          //   <label
+                          //     htmlFor="fil-number1"
+                          //     style={{ paddingLeft: "25px" }}
+                          //   >
+                          //     <span className="add-note">BB332398</span>
+                          //   </label>
+                          // </div>
+                        )
+                      },
+                      {
+                        Header: <span>Invoice Date</span>,
+                        accessor: "invoiceDate",
+                        Cell: row => <label>12 Jan 2019</label>
+                      },
+                      {
+                        Header: <span>Item Count</span>,
+                        accessor: "itemCount",
+                        Cell: row => <label>02</label>
+                      },
+                      {
+                        Header: <span>Item Price</span>,
+                        accessor: "itemPrice",
+                        Cell: row => <label>2999</label>
+                      },
+                      {
+                        Header: <span>Price Paid</span>,
+                        accessor: "pricePaid",
+                        Cell: row => <label>2999</label>
+                      },
+                      {
+                        Header: <span>Store Code</span>,
+                        accessor: "storeCode",
+                        Cell: row => <label>SB221</label>
+                      },
+                      {
+                        Header: <span>Store Addres</span>,
+                        accessor: "storeAddres",
+                        Cell: row => (
+                          <label>UNIT D-338,| SECOND FLOOR SECTOR 14</label>
+                        )
+                      }
+                    ]}
+                    //resizable={false}
+                    defaultPageSize={3}
+                    showPagination={false}
+                    SubComponent={row => {
+                      return (
+                        <div
+                          className="reacttableclaimdrawe"
+                          style={{ padding: "20px" }}
+                        >
+                          <ReactTable
+                            data={dataOrder1}
+                            columns={columnsOrder1}
+                            defaultPageSize={2}
+                            showPagination={false}
+                          />
+                        </div>
+                      );
+                    }}
+                  />
+                </div>
                 {/* <table className="table">
                   <tbody>
                     <tr>
@@ -660,63 +723,68 @@ class MyTicketClaim extends Component {
                 </div>
               </div>
               <div className="col-md-6">
-              <div className="varunoverflow">
-              <div className="row m-t-20 mx-0">
-                <div className="col-xs-6" style={{display:"contents"}}>
-                <div className="storeImg-drawer">                  
-                  <img
-                    src={StoreImg}
-                    alt="headphone"
-                    className="storeImg"
-                  />
+                <div className="varunoverflow">
+                  <div className="row m-t-20 mx-0">
+                    <div className="col-xs-6" style={{ display: "contents" }}>
+                      <div className="storeImg-drawer">
+                        <img
+                          src={StoreImg}
+                          alt="headphone"
+                          className="storeImg"
+                        />
+                      </div>
+                      <label className="varun-taskDrawer">
+                        Varun Nagpal
+                        <span className="addTask-time-ago">2hr ago</span>
+                      </label>
+
+                      <label className="task-drawer-lnl">
+                        Hi Diwakar, I really appreciate you joining us at
+                        Voucherify! My top priority
+                      </label>
+                    </div>
                   </div>
-                  <label className="varun-taskDrawer">Varun Nagpal 
-                    <span className="addTask-time-ago">2hr ago</span></label>
-                  
-                  <label className="task-drawer-lnl">
-                    Hi Diwakar, I really appreciate you joining us at
-                    Voucherify! My top priority
-                  </label>
-                </div>
-              </div>
-              <div className="row m-t-20 mx-0">
-                <div className="col-xs-6" style={{display:"contents"}}>
-                  <div className="storeImg-drawer">                  
-                  <img
-                    src={StoreImg}
-                    alt="headphone"
-                    className="storeImg"
-                  />
+                  <div className="row m-t-20 mx-0">
+                    <div className="col-xs-6" style={{ display: "contents" }}>
+                      <div className="storeImg-drawer">
+                        <img
+                          src={StoreImg}
+                          alt="headphone"
+                          className="storeImg"
+                        />
+                      </div>
+                      <label className="varun-taskDrawer">
+                        Varun Nagpal
+                        <span className="addTask-time-ago">2hr ago</span>
+                      </label>
+
+                      <label className="task-drawer-lnl">
+                        Hi Diwakar, I really appreciate you joining us at
+                        Voucherify! My top priority
+                      </label>
+                    </div>
                   </div>
-                  <label className="varun-taskDrawer">Varun Nagpal
-                    <span className="addTask-time-ago">2hr ago</span>
-                  </label>
-                  
-                  <label className="task-drawer-lnl">
-                    Hi Diwakar, I really appreciate you joining us at
-                    Voucherify! My top priority
-                  </label>
-                </div>
-              </div>
-              <div className="row m-t-20 mx-0">
-                <div className="col-xs-6" style={{display:"contents"}}>
-                <div className="storeImg-drawer">                  
-                  <img
-                    src={StoreImg}
-                    alt="headphone"
-                    className="storeImg"
-                  />
+                  <div className="row m-t-20 mx-0">
+                    <div className="col-xs-6" style={{ display: "contents" }}>
+                      <div className="storeImg-drawer">
+                        <img
+                          src={StoreImg}
+                          alt="headphone"
+                          className="storeImg"
+                        />
+                      </div>
+                      <label className="varun-taskDrawer">
+                        Varun Nagpal
+                        <span className="addTask-time-ago">2hr ago</span>
+                      </label>
+
+                      <label className="task-drawer-lnl">
+                        Hi Diwakar, I really appreciate you joining us at
+                        Voucherify! My top priority
+                      </label>
+                    </div>
                   </div>
-                  <label className="varun-taskDrawer">Varun Nagpal 
-                    <span className="addTask-time-ago">2hr ago</span></label>
-                  
-                  <label className="task-drawer-lnl">
-                    Hi Diwakar, I really appreciate you joining us at
-                    Voucherify! My top priority
-                  </label>
                 </div>
-              </div>
-              </div>
               </div>
             </div>
             {/* <div
