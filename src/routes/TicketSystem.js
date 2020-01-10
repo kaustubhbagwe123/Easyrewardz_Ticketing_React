@@ -397,6 +397,12 @@ class TicketSystem extends Component {
     debugger;
 
     let self = this;
+    self.setState({
+      SubCategoryData: [],
+      selectedSubCategory: 0,
+      IssueTypeData: [],
+      selectedIssueType: 0
+    });
     let cateId = this.state.KbLink
       ? this.state.selectedCategoryKB
       : this.state.selectedCategory;
@@ -417,6 +423,7 @@ class TicketSystem extends Component {
   handleGetIssueTypeList() {
     debugger;
     let self = this;
+    self.setState({ IssueTypeData: [], selectedIssueType: 0 });
     let subCateId = this.state.KbLink
       ? this.state.selectedSubCategoryKB
       : this.state.selectedSubCategory;
@@ -701,7 +708,7 @@ class TicketSystem extends Component {
     }, 1);
   };
   setSubCategoryValue = e => {
-    debugger;
+    // debugger;
     let subCategoryValue = e.currentTarget.value;
     this.setState({ selectedSubCategory: subCategoryValue });
 
