@@ -142,7 +142,11 @@ class MyTicket extends Component {
       debugger;
       let status = res.data.status;
       if (status === true) {
-        NotificationManager.success("The ticket has been resolved.");
+        if (ticStaId === 103) {
+          NotificationManager.success("The ticket has been resolved.");
+        } else if (ticStaId === 104) {
+          NotificationManager.success("The ticket has been closed.");
+        }
       }
     });
   }
@@ -944,7 +948,10 @@ class MyTicket extends Component {
                     </label>
                   </div>
                   <div className="row" style={{ marginTop: "8px" }}>
-                    <label className="modal-lbl">
+                    <label
+                      className="modal-lbl"
+                      onClick={() => this.handleUpdateTicketStatus(104)}
+                    >
                       Submit as <span className="modal-lbl-2">Closed</span>
                     </label>
                   </div>
