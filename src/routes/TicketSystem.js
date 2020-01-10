@@ -368,6 +368,9 @@ class TicketSystem extends Component {
     }).then(function(res) {
       debugger;
       let KbPopupData = res.data.responseData;
+      if (KbPopupData.length === 0 || KbPopupData === null) {
+        NotificationManager.success("No Record Found.");
+      }
       self.setState({ KbPopupData: KbPopupData });
     });
   }
