@@ -371,12 +371,14 @@ class TicketSystemOrder extends Component {
                   <span className="plusline1"></span>
                   <img src={ArrowImg} alt="Arrow" className="arrow-imgtask-1" />
                   <span className="plusline1"></span>
+                  <span>
                   <img
                     src={MinusImg}
                     alt="Minus"
                     className="minus-imgorder"
                     onClick={this.handleOrderTableClose.bind(this)}
                   />
+                  </span>
                 </div>
               </div>
             </div>
@@ -412,7 +414,7 @@ class TicketSystemOrder extends Component {
                 />
               </div>
             </div>
-            <div className="reacttableordermodal">
+            <div className="reacttableordermodal ordermainrow">
               <ReactTable
                 data={orderDetailsData}
                 columns={[
@@ -851,7 +853,7 @@ class TicketSystemOrder extends Component {
             </div>
           ) : null}
           {this.state.message === "Success" ? (
-            <div className="reacttableordermodal">
+            <div className="reacttableordermodal ordermainrow">
               {/* <div className="row m-b-10">
                 <div
                   className="col-md-11"

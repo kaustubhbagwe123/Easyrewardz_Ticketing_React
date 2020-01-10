@@ -43,7 +43,48 @@ class ChatDashboard extends Component {
         <div className="Chat-main-header">
           <div className="row" style={{padding: "15px 0"}}>
            <div className="col-md-6">
-             <div style={{display: "inline"}}>
+           <div className="d-flex dashallbrand1">
+           <div>
+              <span>
+                Brand :
+                <div className="dropdown">
+                  <button
+                    className="dropdown-toggle dashallbrand"
+                    type="button"
+                    data-toggle="dropdown"
+                  >
+                    <span className="EMFCText">All</span>
+                  </button>
+                  <ul className="dropdown-menu">
+                    <li>
+                      <label htmlFor="one">
+                        <input type="checkbox" id="one" className="ch1" />
+                        <span className="ch1-text">Bata 1</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label htmlFor="two">
+                        <input type="checkbox" id="two" className="ch1" />
+                        <span className="ch1-text">Bata 2</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label htmlFor="three">
+                        <input type="checkbox" id="three" className="ch1" />
+                        <span className="ch1-text">Bata 3</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label htmlFor="four">
+                        <input type="checkbox" id="four" className="ch1" />
+                        <span className="ch1-text">Bata 4</span>
+                      </label>
+                    </li>
+                  </ul>
+                </div>
+              </span>
+            </div>
+             {/* <div style={{display: "inline"}}>
               <label className="lable-text">
                 Brand :<b> All</b>
               </label>
@@ -52,8 +93,48 @@ class ChatDashboard extends Component {
                 alt="down-arrow"
                 className="sort-down-arrow"
               />
+            </div> */}
+             <div>
+              <span>
+                Agent :
+                <div className="dropdown">
+                  <button
+                    className="dropdown-toggle dashallbrand"
+                    type="button"
+                    data-toggle="dropdown"
+                  >
+                    <span className="EMFCText">All</span>
+                  </button>
+                  <ul className="dropdown-menu">
+                    <li>
+                      <label htmlFor="one">
+                        <input type="checkbox" id="one" className="ch1" />
+                        <span className="ch1-text">Bata 1</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label htmlFor="two">
+                        <input type="checkbox" id="two" className="ch1" />
+                        <span className="ch1-text">Bata 2</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label htmlFor="three">
+                        <input type="checkbox" id="three" className="ch1" />
+                        <span className="ch1-text">Bata 3</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label htmlFor="four">
+                        <input type="checkbox" id="four" className="ch1" />
+                        <span className="ch1-text">Bata 4</span>
+                      </label>
+                    </li>
+                  </ul>
+                </div>
+              </span>
             </div>
-             <div style={{display: "inline" , marginRight: "10px"}}>
+             {/* <div style={{display: "inline" , marginRight: "10px"}}>
               <label className="lable-text">
                 Agent :<b> All</b>
               </label>
@@ -62,6 +143,7 @@ class ChatDashboard extends Component {
                 alt="down-arrow"
                 className="sort-down-arrow"
               />
+            </div> */}
             </div>
            </div>
             <div className="col-md-6">

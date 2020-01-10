@@ -2046,6 +2046,9 @@ body.layout-1 .pcoded-navbar.hide-sidemenu .toggle-sidemenu i {
   position: relative;
   z-index: 5;
 }
+
+
+
 @media screen and (max-width: 1199px) {
   .assets-value .bg-img {
     background: none;
@@ -4572,4 +4575,3 @@ a.btn-theme.active {
   -webkit-box-shadow: none;
           box-shadow: none;
 }
-
