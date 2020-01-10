@@ -63,10 +63,12 @@ class MyTicketTask extends Component {
   handleTaskDetailsDrawerCls() {
     this.setState({ TaskDetailDrawer: false });
   }
-  HandleRowClickDraw = () => {
+  HandleRowClickDraw = (rowInfo, column) => {
     return {
       onClick: e => {
+        var taskId=column.original["ticketingTaskID"];
         this.handleTaskDetailsDrawerOpn();
+        this.handleGetTaskTabDetails(taskId);
       }
     };
   };
@@ -93,14 +95,15 @@ class MyTicketTask extends Component {
       }
     });
   }
-  handleGetTaskTabDetails() {
+  handleGetTaskTabDetails(ticketTaskId) {
+    debugger
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Task/gettaskdetailsbyid",
       headers: authHeader(),
       params: {
-        taskId: 3
+        taskId: ticketTaskId
       }
     }).then(function(res) {
       debugger;

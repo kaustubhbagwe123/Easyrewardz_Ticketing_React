@@ -93,6 +93,7 @@ class TicketSystem extends Component {
       userCC: "",
       userBCC: "",
       selectedFile: "",
+      mailBodyData:"",
       saveAsDraft: "SaveAsDraft",
       copied: false,
       custVisit: 0,
@@ -242,7 +243,7 @@ class TicketSystem extends Component {
     var idIndex = e.target.className;
     this.setState({ TabIconColor: idIndex });
   }
- 
+
   handleTicketChange(e) {
     this.setState({ [e.currentTarget.name]: e.currentTarget.value });
   }
@@ -279,7 +280,7 @@ class TicketSystem extends Component {
           // DateOfBirth: Dob,
           IsActive: 1
         }
-      }).then(function (res) {
+      }).then(function(res) {
         // debugger;
         let Message = res.data.message;
         if (Message === "Success") {
@@ -305,7 +306,7 @@ class TicketSystem extends Component {
       params: {
         TikcketTitle: ""
       }
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       let TicketTitleData = res.data.responseData;
       self.setState({ TicketTitleData: TicketTitleData });
@@ -320,7 +321,7 @@ class TicketSystem extends Component {
       params: {
         IssueTypeID: this.state.selectedIssueType
       }
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       let CkEditorTemplateData = res.data.responseData;
       self.setState({ CkEditorTemplateData: CkEditorTemplateData });
@@ -336,13 +337,15 @@ class TicketSystem extends Component {
       params: {
         TemplateId: tempId
       }
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       let CkEditorTemplateDetails = res.data.responseData;
+      let bodyData=res.data.responseData.templateBody
       self.setState({
         CkEditorTemplateDetails: CkEditorTemplateDetails,
         tempName: tempName,
-        selectTicketTemplateId: tempId
+        selectTicketTemplateId: tempId,
+        mailBodyData:bodyData
       });
     });
   }
@@ -357,11 +360,11 @@ class TicketSystem extends Component {
         Category_ID: this.state.selectedCategoryKB,
         SubCategor_ID: this.state.selectedSubCategoryKB
       }
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       let KbPopupData = res.data.responseData;
       if (KbPopupData.length === 0 || KbPopupData === null) {
-        NotificationManager.success("No Record Found.");
+        NotificationManager.error("No Record Found.");
       }
       self.setState({ KbPopupData: KbPopupData });
     });
@@ -373,7 +376,7 @@ class TicketSystem extends Component {
       method: "post",
       url: config.apiUrl + "/Brand/GetBrandList",
       headers: authHeader()
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       let BrandData = res.data.responseData;
       self.setState({ BrandData: BrandData });
@@ -387,7 +390,7 @@ class TicketSystem extends Component {
       method: "post",
       url: config.apiUrl + "/Category/GetCategoryList",
       headers: authHeader()
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       let CategoryData = res.data;
       self.setState({ CategoryData: CategoryData });
@@ -414,7 +417,7 @@ class TicketSystem extends Component {
         CategoryID: cateId
         // CategoryID: this.state.selectedCategory
       }
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       let SubCategoryData = res.data.responseData;
       self.setState({ SubCategoryData: SubCategoryData });
@@ -434,7 +437,7 @@ class TicketSystem extends Component {
       params: {
         SubCategoryID: subCateId
       }
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       let IssueTypeData = res.data.responseData;
       self.setState({ IssueTypeData: IssueTypeData });
@@ -447,7 +450,7 @@ class TicketSystem extends Component {
       method: "post",
       url: config.apiUrl + "/Priority/GetPriorityList",
       headers: authHeader()
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       let TicketPriorityData = res.data.responseData;
       self.setState({ TicketPriorityData: TicketPriorityData });
@@ -459,7 +462,7 @@ class TicketSystem extends Component {
       method: "post",
       url: config.apiUrl + "/Master/GetChannelOfPurchaseList",
       headers: authHeader()
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       let ChannelOfPurchaseData = res.data.responseData;
       self.setState({ ChannelOfPurchaseData: ChannelOfPurchaseData });
@@ -475,7 +478,7 @@ class TicketSystem extends Component {
       params: {
         CustomerID: CustId
       }
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       var CustMsg = res.data.message;
       var customerData = res.data.responseData;
@@ -576,8 +579,8 @@ class TicketSystem extends Component {
   }
 
   handleCREATE_TICKET(StatusID) {
+    debugger;
     if (this.validator.allValid()) {
-      debugger;
       let self = this;
       // var OID = this.state.selectedTicketPriority;
       var selectedRow = "";
@@ -637,27 +640,51 @@ class TicketSystem extends Component {
         url: config.apiUrl + "/Ticketing/createTicket",
         headers: authHeader(),
         data: formData
-      }).then(function (res) {
+      }).then(function(res) {
         debugger;
         let Msg = res.data.status;
 
         if (Msg) {
           NotificationManager.success(res.data.message);
-          setTimeout(function () {
+          setTimeout(function() {
             self.props.history.push("myTicketlist");
           }, 100);
         } else {
           NotificationManager.error(res.data.message);
         }
       });
-    }
-    else {
+    } else {
       this.validator.showMessages();
       this.forceUpdate();
     }
   }
-
-
+  handleSendMailData(){
+    debugger
+    var subject="Demo Mail"
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Ticketing/SendMail",
+      headers: authHeader(),
+      params: {
+        EmailID: this.state.customerData.customerEmailId,
+        Mailcc: this.state.mailFiled.userCC,
+        Mailbcc: this.state.mailFiled.userBCC,
+        Mailsubject:subject,
+        MailBody:this.state.mailBodyData,
+        informStore:this.state.InformStore,
+        storeID:""
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.status;
+      if(status === true){
+        NotificationManager.success(res.data.responseData);
+      }else{
+        NotificationManager.error(res.data.responseData);
+      }
+     
+    });
+  }
 
   handlebackprev() {
     this.props.history.push("myTicketList");
@@ -798,7 +825,6 @@ class TicketSystem extends Component {
                       ? "SUBMIT AS SOLVED"
                       : "CREATE TICKET"}
                   </button>
-                 
                 </td>
               </tr>
             </tbody>
@@ -871,8 +897,7 @@ class TicketSystem extends Component {
                       name="ticketDetails"
                       value={this.state.ticketDetails}
                       onChange={this.handleTicketChange}
-                    >
-                    </textarea>
+                    ></textarea>
                     {this.validator.message(
                       "ticketDetails",
                       this.state.ticketDetails,
@@ -1103,7 +1128,6 @@ class TicketSystem extends Component {
                       Kb Link
                     </label>
                   </a>
-
                 </div>
                 <div className="row">
                   <div className="col-md-12 ck-det-cntr">
@@ -1159,6 +1183,7 @@ class TicketSystem extends Component {
                                 name="filter-type"
                                 style={{ display: "none" }}
                                 onChange={() => this.showInformStoreFuncation()}
+                                disabled
                               />
                               <label
                                 htmlFor="fil-open"
@@ -1197,8 +1222,13 @@ class TicketSystem extends Component {
                           </li>
                           <li>
                             <label className="diwamargin">
-                              <div className="input-group" style={{ display: "block" }}>
-                                <span className="input-group-addon inputcc">CC:</span>
+                              <div
+                                className="input-group"
+                                style={{ display: "block" }}
+                              >
+                                <span className="input-group-addon inputcc">
+                                  CC:
+                                </span>
                                 <input
                                   type="text"
                                   className="CCdi1"
@@ -1215,11 +1245,16 @@ class TicketSystem extends Component {
                               </div>
                             </label>
                           </li>
-                          
+
                           <li>
                             <label className="diwamargin">
-                              <div className="input-group" style={{ display: "block" }}>
-                                <span className="input-group-addon inputcc">BCC:</span>
+                              <div
+                                className="input-group"
+                                style={{ display: "block" }}
+                              >
+                                <span className="input-group-addon inputcc">
+                                  BCC:
+                                </span>
                                 <input
                                   type="text"
                                   className="CCdi1"
@@ -1233,11 +1268,16 @@ class TicketSystem extends Component {
                                 />
                                 <span className="one">+1</span>
                               </div>
-
                             </label>
                           </li>
                           <li>
-                            <button className="send1">Send</button>
+                            <button
+                              className="send1"
+                              type="button"
+                              onClick={this.handleSendMailData.bind(this)}
+                            >
+                              Send
+                            </button>
                           </li>
                         </ul>
                       </div>
@@ -1544,7 +1584,7 @@ class TicketSystem extends Component {
                     role="tabpanel"
                     aria-labelledby="order-tab"
                     style={{ height: "100%" }}
-                  // onChange={this.hanleRedirectpage.bind(this)}
+                    // onChange={this.hanleRedirectpage.bind(this)}
                   >
                     <TicketSystemOrder
                       custDetails={CustomerId}
@@ -1598,12 +1638,12 @@ class TicketSystem extends Component {
                             className="customer-icon"
                           />
                         ) : (
-                            <img
-                              src={AvatarBlackIcon}
-                              alt="customer-icon"
-                              className="customer-icon"
-                            />
-                          )}
+                          <img
+                            src={AvatarBlackIcon}
+                            alt="customer-icon"
+                            className="customer-icon"
+                          />
+                        )}
 
                         <span className="system-tab-span">CUSTOMER</span>
                       </a>

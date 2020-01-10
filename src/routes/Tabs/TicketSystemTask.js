@@ -194,10 +194,10 @@ class TicketSystemTask extends Component {
       this.forceUpdate();
     }
   }
-  handleTaskDelete(id){
+  handleTaskDelete(i){
     debugger
     let taskData = [...this.state.taskData];
-    taskData.splice((id-1),1);
+    taskData.splice((i-1),1);
      this.setState({ taskData });
   }
   render() {
@@ -415,7 +415,7 @@ class TicketSystemTask extends Component {
                                 src={DeleteIcon}
                                 alt="del-icon"
                                 className="downloadaction"
-                                onClick={()=>{this.handleTaskDelete(row.original.ID)}}
+                                onClick={this.handleTaskDelete.bind(this,row.original.ID)}
                               />
                             </span>
                           )

@@ -54,7 +54,6 @@ class TicketSystemOrder extends Component {
     };
     this.validator = new SimpleReactValidator();
     this.handleOrderTableOpen = this.handleOrderTableOpen.bind(this);
-    this.handleCheckOrderID = this.handleCheckOrderID.bind(this);
     this.handleOrderTableClose = this.handleOrderTableClose.bind(this);
     this.handleGetTicketSourceList = this.handleGetTicketSourceList.bind(this);
     this.handleModeOfPaymentDropDown = this.handleModeOfPaymentDropDown.bind(
@@ -939,9 +938,10 @@ class TicketSystemOrder extends Component {
                               row.original.orderMasterID
                             ] === true
                           }
-                          onChange={()=>{this.handleCheckOrderID(
+                          onChange={this.handleCheckOrderID.bind(
+                            this,
                             row.original.orderMasterID
-                          )}}
+                          )}
                         />
                         <label htmlFor={"i" + row.original.orderMasterID}>
                           {row.original.invoiceNumber}
