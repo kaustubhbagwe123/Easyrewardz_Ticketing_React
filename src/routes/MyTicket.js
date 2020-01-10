@@ -59,7 +59,9 @@ import {
   NotificationContainer,
   NotificationManager
 } from "react-notifications";
-
+import TicketStatus from "./TicketStatus";
+import Select from "react-select";
+import TicketActionType from "./TicketActionType";
 class MyTicket extends Component {
   constructor(props) {
     super(props);
@@ -106,7 +108,10 @@ class MyTicket extends Component {
           type: "",
           assign: ""
         }
-      ]
+      ],
+      TicketStatusData: TicketStatus(),
+      selectedTicketActionType: [],
+      TicketActionTypeData: TicketActionType()
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -406,7 +411,7 @@ class MyTicket extends Component {
       debugger;
       let status = res.data.status;
       if (status === true) {
-        self.handleGetNotesTabDetails()
+        self.handleGetNotesTabDetails();
         NotificationManager.success("Comment added successfully.");
       } else {
         NotificationManager.error("Comment not added.");
@@ -541,6 +546,10 @@ class MyTicket extends Component {
     values[i] = { ...values[i], [name]: value };
     this.setState({ values });
   }
+
+  setTicketActionTypeValue = e => {
+    this.setState({ selectedTicketActionType: e });
+  };
   render() {
     const { open } = this.state;
     const HidecollapsUp = this.state.collapseUp ? (
@@ -1184,7 +1193,13 @@ class MyTicket extends Component {
                       <div className="form-group">
                         <label className="label-4">Status</label>
                         <select className="rectangle-9 select-category-placeholder">
-                          <option>Select</option>
+                          <option>Ticket Status</option>
+                          {this.state.TicketStatusData !== null &&
+                            this.state.TicketStatusData.map((item, i) => (
+                              <option key={i} value={item.ticketStatusID}>
+                                {item.ticketStatusName}
+                              </option>
+                            ))}
                         </select>
                       </div>
                     </div>
@@ -1347,9 +1362,18 @@ class MyTicket extends Component {
                     <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
                       <div className="form-group">
                         <label className="label-4">Ticket Action Type</label>
-                        <select className="rectangle-9 select-category-placeholder">
-                          <option>Select</option>
-                        </select>
+                        <Select
+                          getOptionLabel={option => option.ticketActionTypeName}
+                          getOptionValue={option => option.ticketActionTypeID}
+                          options={this.state.TicketActionTypeData}
+                          placeholder="Ticket Action Type"
+                          // menuIsOpen={true}
+                          closeMenuOnSelect={false}
+                          onChange={this.setTicketActionTypeValue.bind(this)}
+                          value={this.state.selectedTicketActionType}
+                          // showNewOptionAtTop={false}
+                          isMulti
+                        />
                       </div>
                     </div>
                   </div>
