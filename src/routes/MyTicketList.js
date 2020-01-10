@@ -1285,10 +1285,12 @@ class MyTicketList extends Component {
                     this.handleSearchTicket("Resolved");
                   }}
                 >
-                  Resolved: <span className="myTciket-tab-span">
+                  Resolved:{" "}
+                  <span className="myTciket-tab-span">
                     {this.state.byResolvedCount < 9
                       ? "0" + this.state.byResolvedCount
-                      : this.state.byResolvedCount}</span>
+                      : this.state.byResolvedCount}
+                  </span>
                 </a>
               </li>
               <li className="nav-item">
@@ -1305,9 +1307,11 @@ class MyTicketList extends Component {
                   }}
                 >
                   Reassigned by me:
-                  <span className="myTciket-tab-span">{this.state.byReassignedCount < 9
+                  <span className="myTciket-tab-span">
+                    {this.state.byReassignedCount < 9
                       ? "0" + this.state.byReassignedCount
-                      : this.state.byReassignedCount}</span>
+                      : this.state.byReassignedCount}
+                  </span>
                 </a>
               </li>
               <li className="nav-item">
@@ -1323,9 +1327,12 @@ class MyTicketList extends Component {
                     this.handleSearchTicket("Closed");
                   }}
                 >
-                  Closed: <span className="myTciket-tab-span">{this.state.byClosedCount < 9
+                  Closed:{" "}
+                  <span className="myTciket-tab-span">
+                    {this.state.byClosedCount < 9
                       ? "0" + this.state.byClosedCount
-                      : this.state.byClosedCount}</span>
+                      : this.state.byClosedCount}
+                  </span>
                 </a>
               </li>
               <li className="nav-item">
@@ -1341,9 +1348,12 @@ class MyTicketList extends Component {
                     this.handleSearchTicket("All");
                   }}
                 >
-                  All: <span className="myTciket-tab-span">{this.state.byAllCount < 9
+                  All:{" "}
+                  <span className="myTciket-tab-span">
+                    {this.state.byAllCount < 9
                       ? "0" + this.state.byAllCount
-                      : this.state.byAllCount}</span>
+                      : this.state.byAllCount}
+                  </span>
                 </a>
               </li>
               <li className="nav-item">
@@ -1359,9 +1369,12 @@ class MyTicketList extends Component {
                     this.handleSearchTicket("FollowUp");
                   }}
                 >
-                  Follow Up: <span className="myTciket-tab-span">{this.state.byFollowUpCount < 9
+                  Follow Up:{" "}
+                  <span className="myTciket-tab-span">
+                    {this.state.byFollowUpCount < 9
                       ? "0" + this.state.byFollowUpCount
-                      : this.state.byFollowUpCount}</span>
+                      : this.state.byFollowUpCount}
+                  </span>
                 </a>
               </li>
               <li className="nav-item">
@@ -2550,381 +2563,605 @@ class MyTicketList extends Component {
                                   aria-labelledby="all-tab"
                                 >
                                   <div className="container-fluid">
-                                    {this.state.selectedWithClaimAll ===
-                                    "yes" ? (
-                                      <div className="row">
-                                        <div className="col-md-3 col-sm-6 allspc">
-                                          <DatePicker
-                                            selected={
-                                              this.state.ByAllCreateDate
-                                            }
-                                            placeholderText="Creation Date"
-                                            showMonthDropdown
-                                            showYearDropdown
-                                            dateFormat="dd/MM/yyyy"
-                                            value={this.state.ByAllCreateDate}
-                                            onChange={this.handleAllCreateDate.bind(
-                                              this
+                                    <div className="row">
+                                      <div className="col-md-3 col-sm-6 allspc">
+                                        <DatePicker
+                                          selected={this.state.ByAllCreateDate}
+                                          placeholderText="Creation Date"
+                                          showMonthDropdown
+                                          showYearDropdown
+                                          dateFormat="dd/MM/yyyy"
+                                          value={this.state.ByAllCreateDate}
+                                          onChange={this.handleAllCreateDate.bind(
+                                            this
+                                          )}
+                                          // className="form-control"
+                                        />
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <select
+                                          value={
+                                            this.state.selectedTicketSource
+                                          }
+                                          onChange={this.setTicketSourceValue}
+                                        >
+                                          <option>Ticket Source</option>
+                                          {this.state.TicketSourceData !==
+                                            null &&
+                                            this.state.TicketSourceData.map(
+                                              (item, i) => (
+                                                <option
+                                                  key={i}
+                                                  value={item.ticketSourceId}
+                                                >
+                                                  {item.ticketSourceName}
+                                                </option>
+                                              )
                                             )}
-                                            // className="form-control"
-                                          />
-                                        </div>
-                                        <div className="col-md-3 col-sm-6">
-                                          <select
-                                            value={
-                                              this.state.selectedTicketSource
-                                            }
-                                            onChange={this.setTicketSourceValue}
-                                          >
-                                            <option>Ticket Source</option>
-                                            {this.state.TicketSourceData !==
-                                              null &&
-                                              this.state.TicketSourceData.map(
-                                                (item, i) => (
-                                                  <option
-                                                    key={i}
-                                                    value={item.ticketSourceId}
-                                                  >
-                                                    {item.ticketSourceName}
-                                                  </option>
-                                                )
-                                              )}
-                                          </select>
-                                        </div>
-                                        <div className="col-md-3 col-sm-6">
-                                          <input
-                                            className="no-bg"
-                                            type="text"
-                                            placeholder="Claim ID"
-                                            value={this.state.ClaimIdByAll}
-                                            name="ClaimIdByAll"
-                                            onChange={this.handelOnchangeData}
-                                          />
-                                        </div>
-                                        <div className="col-md-3 col-sm-6">
-                                          <input
-                                            className="no-bg"
-                                            type="text"
-                                            placeholder="Email"
-                                            value={this.state.EmailByAll}
-                                            name="EmailByAll"
-                                            onChange={this.handelOnchangeData}
-                                          />
-                                        </div>
-                                        <div className="col-md-3 col-sm-6 allspc">
-                                          <DatePicker
-                                            selected={this.state.ByAllLastDate}
-                                            onChange={this.handleAllLastDate.bind(
-                                              this
+                                        </select>
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <input
+                                          className="no-bg"
+                                          type="text"
+                                          placeholder="Claim ID"
+                                          value={this.state.ClaimIdByAll}
+                                          name="ClaimIdByAll"
+                                          onChange={this.handelOnchangeData}
+                                        />
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <input
+                                          className="no-bg"
+                                          type="text"
+                                          placeholder="Email"
+                                          value={this.state.EmailByAll}
+                                          name="EmailByAll"
+                                          onChange={this.handelOnchangeData}
+                                        />
+                                      </div>
+                                      <div className="col-md-3 col-sm-6 allspc">
+                                        <DatePicker
+                                          selected={this.state.ByAllLastDate}
+                                          onChange={this.handleAllLastDate.bind(
+                                            this
+                                          )}
+                                          placeholderText="Last Updated Date"
+                                          showMonthDropdown
+                                          showYearDropdown
+                                          dateFormat="dd/MM/yyyy"
+                                          value={this.state.ByAllLastDate}
+                                          // className="form-control"
+                                        />
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <input
+                                          className="no-bg"
+                                          type="text"
+                                          placeholder="Ticket Id/Title"
+                                          value={this.state.TicketIdTitleByAll}
+                                          name="TicketIdTitleByAll"
+                                          onChange={this.handelOnchangeData}
+                                        />
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <input
+                                          className="no-bg"
+                                          type="text"
+                                          placeholder="Invoice Number/Sub Order No"
+                                          value={
+                                            this.state.InvoiceSubOrderByAll
+                                          }
+                                          name="InvoiceSubOrderByAll"
+                                          onChange={this.handelOnchangeData}
+                                        />
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <input
+                                          className="no-bg"
+                                          type="text"
+                                          placeholder="Mobile"
+                                          value={this.state.MobileByAll}
+                                          name="MobileByAll"
+                                          onChange={this.handelOnchangeData}
+                                        />
+                                      </div>
+                                      <div className="col-md-3 col-sm-6 allspc">
+                                        <select
+                                          value={this.state.selectedCategoryAll}
+                                          onChange={this.setCategoryAllValue}
+                                        >
+                                          <option>Category</option>
+                                          {this.state.CategoryData !== null &&
+                                            this.state.CategoryData.map(
+                                              (item, i) => (
+                                                <option
+                                                  key={i}
+                                                  value={item.categoryID}
+                                                >
+                                                  {item.categoryName}
+                                                </option>
+                                              )
                                             )}
-                                            placeholderText="Last Updated Date"
-                                            showMonthDropdown
-                                            showYearDropdown
-                                            dateFormat="dd/MM/yyyy"
-                                            value={this.state.ByAllLastDate}
-                                            // className="form-control"
-                                          />
-                                        </div>
-                                        <div className="col-md-3 col-sm-6">
-                                          <input
-                                            className="no-bg"
-                                            type="text"
-                                            placeholder="Ticket Id/Title"
-                                            value={
-                                              this.state.TicketIdTitleByAll
-                                            }
-                                            name="TicketIdTitleByAll"
-                                            onChange={this.handelOnchangeData}
-                                          />
-                                        </div>
-                                        <div className="col-md-3 col-sm-6">
-                                          <input
-                                            className="no-bg"
-                                            type="text"
-                                            placeholder="Invoice Number/Sub Order No"
-                                            value={
-                                              this.state.InvoiceSubOrderByAll
-                                            }
-                                            name="InvoiceSubOrderByAll"
-                                            onChange={this.handelOnchangeData}
-                                          />
-                                        </div>
-                                        <div className="col-md-3 col-sm-6">
-                                          <input
-                                            className="no-bg"
-                                            type="text"
-                                            placeholder="Mobile"
-                                            value={this.state.MobileByAll}
-                                            name="MobileByAll"
-                                            onChange={this.handelOnchangeData}
-                                          />
-                                        </div>
-                                        <div className="col-md-3 col-sm-6 allspc">
-                                          <select
-                                            value={
-                                              this.state.selectedCategoryAll
-                                            }
-                                            onChange={this.setCategoryAllValue}
-                                          >
-                                            <option>Category</option>
-                                            {this.state.CategoryData !== null &&
-                                              this.state.CategoryData.map(
-                                                (item, i) => (
-                                                  <option
-                                                    key={i}
-                                                    value={item.categoryID}
-                                                  >
-                                                    {item.categoryName}
-                                                  </option>
-                                                )
-                                              )}
-                                          </select>
-                                        </div>
-                                        <div className="col-md-3 col-sm-6">
-                                          <select
-                                            value={
-                                              this.state.selectedPriorityAll
-                                            }
-                                            onChange={this.setPriorityAllValue}
-                                          >
-                                            <option>Ticket Priority</option>
-                                            {this.state.TicketPriorityData !==
-                                              null &&
-                                              this.state.TicketPriorityData.map(
-                                                (item, i) => (
-                                                  <option
-                                                    key={i}
-                                                    value={item.priorityID}
-                                                  >
-                                                    {item.priortyName}
-                                                  </option>
-                                                )
-                                              )}
-                                          </select>
-                                        </div>
-                                        <div className="col-md-3 col-sm-6">
-                                          <input
-                                            className="no-bg"
-                                            type="text"
-                                            placeholder="Item ID"
-                                            value={this.state.ItemIdByAll}
-                                            name="ItemIdByAll"
-                                            onChange={this.handelOnchangeData}
-                                          />
-                                        </div>
-                                        <div className="col-md-3 col-sm-6">
-                                          <input
-                                            className="no-bg"
-                                            type="text"
-                                            placeholder="Assigned To"
-                                            value={
-                                              this.state.selectedAssignedToAll
-                                            }
-                                            onChange={this.handleAssignedToAll}
-                                          />
-                                        </div>
-                                        <div className="col-md-3 col-sm-6 allspc">
-                                          {/* <select>
+                                        </select>
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <select
+                                          value={this.state.selectedPriorityAll}
+                                          onChange={this.setPriorityAllValue}
+                                        >
+                                          <option>Ticket Priority</option>
+                                          {this.state.TicketPriorityData !==
+                                            null &&
+                                            this.state.TicketPriorityData.map(
+                                              (item, i) => (
+                                                <option
+                                                  key={i}
+                                                  value={item.priorityID}
+                                                >
+                                                  {item.priortyName}
+                                                </option>
+                                              )
+                                            )}
+                                        </select>
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <input
+                                          className="no-bg"
+                                          type="text"
+                                          placeholder="Item ID"
+                                          value={this.state.ItemIdByAll}
+                                          name="ItemIdByAll"
+                                          onChange={this.handelOnchangeData}
+                                        />
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <input
+                                          className="no-bg"
+                                          type="text"
+                                          placeholder="Assigned To"
+                                          value={
+                                            this.state.selectedAssignedToAll
+                                          }
+                                          onChange={this.handleAssignedToAll}
+                                        />
+                                      </div>
+                                      <div className="col-md-3 col-sm-6 allspc">
+                                        {/* <select>
                                           <option>Sub Category</option>
                                         </select> */}
-                                          <select
-                                            value={
-                                              this.state.selectedSubCategoryAll
-                                            }
-                                            onChange={
-                                              this.setSubCategoryAllValue
-                                            }
-                                          >
-                                            <option>Sub Category</option>
-                                            {this.state.SubCategoryAllData !==
-                                              null &&
-                                              this.state.SubCategoryAllData.map(
-                                                (item, i) => (
-                                                  <option
-                                                    key={i}
-                                                    value={item.subCategoryID}
-                                                  >
-                                                    {item.subCategoryName}
-                                                  </option>
-                                                )
-                                              )}
-                                          </select>
-                                        </div>
-                                        <div className="col-md-3 col-sm-6">
-                                          <select
-                                            value={
-                                              this.state.selectedTicketStatusAll
-                                            }
-                                            onChange={
-                                              this.handleTicketStatusAll
-                                            }
-                                          >
-                                            <option>Ticket Status</option>
-                                            {this.state.TicketStatusData !==
-                                              null &&
-                                              this.state.TicketStatusData.map(
-                                                (item, i) => (
-                                                  <option
-                                                    key={i}
-                                                    value={item.ticketStatusID}
-                                                  >
-                                                    {item.ticketStatusName}
-                                                  </option>
-                                                )
-                                              )}
-                                          </select>
-                                        </div>
-                                        <div className="col-md-3 col-sm-6">
-                                          <select
-                                            value={
-                                              this.state.selectedVisitStoreAll
-                                            }
-                                            onChange={this.handleVisitStoreAll}
-                                          >
-                                            <option value="yes">
-                                              Did Visit Store : Yes
-                                            </option>
-                                            <option value="no">
-                                              Did Visit Store : No
-                                            </option>
-                                          </select>
-                                        </div>
-                                        <div className="col-md-3 col-sm-6">
-                                          <input
-                                            className="no-bg"
-                                            type="text"
-                                            placeholder="Purchase Store Code/Address"
-                                            value={
-                                              this.state
-                                                .selectedPurchaseStoreCodeAddressAll
-                                            }
-                                            onChange={
-                                              this
-                                                .handlePurchaseStoreCodeAddressAll
-                                            }
-                                          />
-                                        </div>
-                                        <div className="col-md-3 col-sm-6">
-                                          {/* <select>
+                                        <select
+                                          value={
+                                            this.state.selectedSubCategoryAll
+                                          }
+                                          onChange={this.setSubCategoryAllValue}
+                                        >
+                                          <option>Sub Category</option>
+                                          {this.state.SubCategoryAllData !==
+                                            null &&
+                                            this.state.SubCategoryAllData.map(
+                                              (item, i) => (
+                                                <option
+                                                  key={i}
+                                                  value={item.subCategoryID}
+                                                >
+                                                  {item.subCategoryName}
+                                                </option>
+                                              )
+                                            )}
+                                        </select>
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <select
+                                          value={
+                                            this.state.selectedTicketStatusAll
+                                          }
+                                          onChange={this.handleTicketStatusAll}
+                                        >
+                                          <option>Ticket Status</option>
+                                          {this.state.TicketStatusData !==
+                                            null &&
+                                            this.state.TicketStatusData.map(
+                                              (item, i) => (
+                                                <option
+                                                  key={i}
+                                                  value={item.ticketStatusID}
+                                                >
+                                                  {item.ticketStatusName}
+                                                </option>
+                                              )
+                                            )}
+                                        </select>
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <select
+                                          value={
+                                            this.state.selectedVisitStoreAll
+                                          }
+                                          onChange={this.handleVisitStoreAll}
+                                        >
+                                          <option value="yes">
+                                            Did Visit Store : Yes
+                                          </option>
+                                          <option value="no">
+                                            Did Visit Store : No
+                                          </option>
+                                        </select>
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <input
+                                          className="no-bg"
+                                          type="text"
+                                          placeholder="Purchase Store Code/Address"
+                                          value={
+                                            this.state
+                                              .selectedPurchaseStoreCodeAddressAll
+                                          }
+                                          onChange={
+                                            this
+                                              .handlePurchaseStoreCodeAddressAll
+                                          }
+                                        />
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        {/* <select>
                                           <option>Issue Type</option>
                                         </select> */}
-                                          <select
-                                            value={
-                                              this.state.selectedIssueTypeAll
-                                            }
-                                            onChange={this.setIssueTypeAllValue}
-                                          >
-                                            <option>Issue Type</option>
-                                            {this.state.IssueTypeAllData !==
-                                              null &&
-                                              this.state.IssueTypeAllData.map(
-                                                (item, i) => (
-                                                  <option
-                                                    key={i}
-                                                    value={item.issueTypeID}
-                                                  >
-                                                    {item.issueTypeName}
-                                                  </option>
-                                                )
-                                              )}
-                                          </select>
-                                        </div>
-                                        <div className="col-md-3 col-sm-6">
-                                          <select
-                                            value={this.state.selectedSlaStatus}
-                                            onChange={this.setSlaStatusValue}
-                                          >
-                                            <option>
-                                              SLA Status : Response / Resolution
-                                            </option>
-                                            {this.state.SlaStatusData !==
-                                              null &&
-                                              this.state.SlaStatusData.map(
-                                                (item, i) => (
-                                                  <option
-                                                    key={i}
-                                                    value={item.SLAId}
-                                                  >
-                                                    {item.SLAResponseTime} /
-                                                    {item.SLARequestTime}
-                                                  </option>
-                                                )
-                                              )}
-                                          </select>
-                                        </div>
-                                        <div className="col-md-3 col-sm-6">
-                                          <select
-                                            value={
-                                              this.state
-                                                .selectedWantToVisitStoreAll
-                                            }
-                                            onChange={
-                                              this.handleWantToVisitStoreAll
-                                            }
-                                          >
-                                            <option value="yes">
-                                              Want to Visit Store : Yes
-                                            </option>
-                                            <option value="no">
-                                              Want to Visit Store : No
-                                            </option>
-                                          </select>
-                                        </div>
-                                        <div className="col-md-3 col-sm-6">
-                                          <input
-                                            className="no-bg"
-                                            type="text"
-                                            placeholder="Want to visit Store Code/Address"
-                                            value={
-                                              this.state
-                                                .selectedVisitStoreCodeAddressAll
-                                            }
-                                            onChange={
-                                              this
-                                                .handleVisitStoreCodeAddressAll
-                                            }
-                                          />
-                                        </div>
+                                        <select
+                                          value={
+                                            this.state.selectedIssueTypeAll
+                                          }
+                                          onChange={this.setIssueTypeAllValue}
+                                        >
+                                          <option>Issue Type</option>
+                                          {this.state.IssueTypeAllData !==
+                                            null &&
+                                            this.state.IssueTypeAllData.map(
+                                              (item, i) => (
+                                                <option
+                                                  key={i}
+                                                  value={item.issueTypeID}
+                                                >
+                                                  {item.issueTypeName}
+                                                </option>
+                                              )
+                                            )}
+                                        </select>
                                       </div>
-                                    ) : null}
+                                      <div className="col-md-3 col-sm-6">
+                                        <select
+                                          value={this.state.selectedSlaStatus}
+                                          onChange={this.setSlaStatusValue}
+                                        >
+                                          <option>
+                                            SLA Status : Response / Resolution
+                                          </option>
+                                          {this.state.SlaStatusData !== null &&
+                                            this.state.SlaStatusData.map(
+                                              (item, i) => (
+                                                <option
+                                                  key={i}
+                                                  value={item.SLAId}
+                                                >
+                                                  {item.SLAResponseTime} /
+                                                  {item.SLARequestTime}
+                                                </option>
+                                              )
+                                            )}
+                                        </select>
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <select
+                                          value={
+                                            this.state
+                                              .selectedWantToVisitStoreAll
+                                          }
+                                          onChange={
+                                            this.handleWantToVisitStoreAll
+                                          }
+                                        >
+                                          <option value="yes">
+                                            Want to Visit Store : Yes
+                                          </option>
+                                          <option value="no">
+                                            Want to Visit Store : No
+                                          </option>
+                                        </select>
+                                      </div>
+                                      <div className="col-md-3 col-sm-6">
+                                        <input
+                                          className="no-bg"
+                                          type="text"
+                                          placeholder="Want to visit Store Code/Address"
+                                          value={
+                                            this.state
+                                              .selectedVisitStoreCodeAddressAll
+                                          }
+                                          onChange={
+                                            this.handleVisitStoreCodeAddressAll
+                                          }
+                                        />
+                                      </div>
+                                    </div>
                                     <div className="row p-0">
                                       <div className="col-md-6">
                                         <div className="row allspc">
-                                          <div className="col-sm-6 m-b-25">
-                                            <select
-                                              value={
-                                                this.state.selectedWithClaimAll
-                                              }
-                                              onChange={this.handleWithClaimAll}
-                                            >
-                                              <option value="no">
-                                                With Claim : No
-                                              </option>
-                                              <option value="yes">
-                                                With Claim : Yes
-                                              </option>
-                                            </select>
+                                          <div className="col-sm-6">
+                                            <div className="m-b-25">
+                                              <select
+                                                value={
+                                                  this.state
+                                                    .selectedWithClaimAll
+                                                }
+                                                onChange={
+                                                  this.handleWithClaimAll
+                                                }
+                                              >
+                                                <option value="no">
+                                                  With Claim : No
+                                                </option>
+                                                <option value="yes">
+                                                  With Claim : Yes
+                                                </option>
+                                              </select>
+                                            </div>
+                                            {this.state.selectedWithClaimAll ===
+                                            "yes" ? (
+                                              <React.Fragment>
+                                                <div className="m-b-25">
+                                                  <select
+                                                    value={
+                                                      this.state
+                                                        .selectedClaimStatus
+                                                    }
+                                                    onChange={
+                                                      this.handleClaimStatus
+                                                    }
+                                                  >
+                                                    <option>
+                                                      Claim Status
+                                                    </option>
+                                                    {this.state
+                                                      .ClaimStatusData !==
+                                                      null &&
+                                                      this.state.ClaimStatusData.map(
+                                                        (item, i) => (
+                                                          <option
+                                                            key={i}
+                                                            value={
+                                                              item.claimStatusID
+                                                            }
+                                                          >
+                                                            {
+                                                              item.claimStatusName
+                                                            }
+                                                          </option>
+                                                        )
+                                                      )}
+                                                  </select>
+                                                </div>
+
+                                                <div className="m-b-25">
+                                                  <select
+                                                    value={
+                                                      this.state
+                                                        .selectedClaimCategory
+                                                    }
+                                                    onChange={
+                                                      this.setClaimCategoryValue
+                                                    }
+                                                  >
+                                                    <option>
+                                                      Claim Category
+                                                    </option>
+                                                    {this.state.CategoryData !==
+                                                      null &&
+                                                      this.state.CategoryData.map(
+                                                        (item, i) => (
+                                                          <option
+                                                            key={i}
+                                                            value={
+                                                              item.categoryID
+                                                            }
+                                                          >
+                                                            {item.categoryName}
+                                                          </option>
+                                                        )
+                                                      )}
+                                                  </select>
+                                                </div>
+
+                                                <div className="m-b-25">
+                                                  <select
+                                                    value={
+                                                      this.state
+                                                        .selectedClaimSubCategory
+                                                    }
+                                                    onChange={
+                                                      this
+                                                        .setClaimSubCategoryValue
+                                                    }
+                                                  >
+                                                    <option>
+                                                      Claim Sub Category
+                                                    </option>
+                                                    {this.state
+                                                      .ClaimSubCategoryData !==
+                                                      null &&
+                                                      this.state.ClaimSubCategoryData.map(
+                                                        (item, i) => (
+                                                          <option
+                                                            key={i}
+                                                            value={
+                                                              item.subCategoryID
+                                                            }
+                                                          >
+                                                            {
+                                                              item.subCategoryName
+                                                            }
+                                                          </option>
+                                                        )
+                                                      )}
+                                                  </select>
+                                                </div>
+
+                                                <div className="">
+                                                  <select
+                                                    value={
+                                                      this.state
+                                                        .selectedClaimIssueType
+                                                    }
+                                                    onChange={
+                                                      this
+                                                        .setClaimIssueTypeValue
+                                                    }
+                                                  >
+                                                    <option>
+                                                      Claim Issue Type
+                                                    </option>
+                                                    {this.state
+                                                      .ClaimIssueTypeData !==
+                                                      null &&
+                                                      this.state.ClaimIssueTypeData.map(
+                                                        (item, i) => (
+                                                          <option
+                                                            key={i}
+                                                            value={
+                                                              item.issueTypeID
+                                                            }
+                                                          >
+                                                            {item.issueTypeName}
+                                                          </option>
+                                                        )
+                                                      )}
+                                                  </select>
+                                                </div>
+                                              </React.Fragment>
+                                            ) : null}
                                           </div>
                                           <div className="col-sm-6">
-                                            <select
-                                              value={
-                                                this.state.selectedWithTaskAll
-                                              }
-                                              onChange={this.handleWithTaskAll}
-                                            >
-                                              <option value="no">
-                                                With Task : No
-                                              </option>
-                                              <option value="yes">
-                                                With Task : Yes
-                                              </option>
-                                            </select>
+                                            <div className="m-b-25">
+                                              <select
+                                                value={
+                                                  this.state.selectedWithTaskAll
+                                                }
+                                                onChange={
+                                                  this.handleWithTaskAll
+                                                }
+                                              >
+                                                <option value="no">
+                                                  With Task : No
+                                                </option>
+                                                <option value="yes">
+                                                  With Task : Yes
+                                                </option>
+                                              </select>
+                                            </div>
+
+                                            {this.state.selectedWithTaskAll ===
+                                            "yes" ? (
+                                              <React.Fragment>
+                                                <div className="m-b-25">
+                                                  <select
+                                                    value={
+                                                      this.state
+                                                        .selectedTaskStatus
+                                                    }
+                                                    onChange={
+                                                      this.handleTaskStatus
+                                                    }
+                                                  >
+                                                    <option>Task Status</option>
+                                                    {this.state
+                                                      .TaskStatusData !==
+                                                      null &&
+                                                      this.state.TaskStatusData.map(
+                                                        (item, i) => (
+                                                          <option
+                                                            key={i}
+                                                            value={
+                                                              item.taskStatusID
+                                                            }
+                                                          >
+                                                            {
+                                                              item.taskStatusName
+                                                            }
+                                                          </option>
+                                                        )
+                                                      )}
+                                                  </select>
+                                                </div>
+
+                                                <div className="m-b-25">
+                                                  <select
+                                                    value={
+                                                      this.state
+                                                        .selectedDepartment
+                                                    }
+                                                    onChange={
+                                                      this.setDepartmentValue
+                                                    }
+                                                  >
+                                                    <option>
+                                                      Task Department
+                                                    </option>
+                                                    {this.state
+                                                      .DepartmentData !==
+                                                      null &&
+                                                      this.state.DepartmentData.map(
+                                                        (item, i) => (
+                                                          <option
+                                                            key={i}
+                                                            value={
+                                                              item.departmentID
+                                                            }
+                                                          >
+                                                            {
+                                                              item.departmentName
+                                                            }
+                                                          </option>
+                                                        )
+                                                      )}
+                                                  </select>
+                                                </div>
+
+                                                <div className="">
+                                                  <select
+                                                    value={
+                                                      this.state
+                                                        .selectedFunction
+                                                    }
+                                                    onChange={
+                                                      this.setFunctionValue
+                                                    }
+                                                  >
+                                                    <option>
+                                                      Task Function
+                                                    </option>
+                                                    {this.state.FunctionData !==
+                                                      null &&
+                                                      this.state.FunctionData.map(
+                                                        (item, i) => (
+                                                          <option
+                                                            key={i}
+                                                            value={
+                                                              item.functionID
+                                                            }
+                                                          >
+                                                            {item.funcationName}
+                                                          </option>
+                                                        )
+                                                      )}
+                                                  </select>
+                                                </div>
+                                              </React.Fragment>
+                                            ) : null}
                                           </div>
 
-                                          {this.state.selectedWithClaimAll ===
+                                          {/* {this.state.selectedWithClaimAll ===
                                           "yes" ? (
-                                            <React.Fragment>
-                                              <div className="col-sm-6 m-b-25">
+                                            <React.Fragment> */}
+                                          {/* <div className="col-sm-6 m-b-25">
                                                 <select
                                                   value={
                                                     this.state
@@ -2950,8 +3187,8 @@ class MyTicketList extends Component {
                                                       )
                                                     )}
                                                 </select>
-                                              </div>
-                                              <div className="col-sm-6">
+                                              </div> */}
+                                          {/* <div className="col-sm-6">
                                                 <select
                                                   value={
                                                     this.state
@@ -2977,8 +3214,8 @@ class MyTicketList extends Component {
                                                       )
                                                     )}
                                                 </select>
-                                              </div>
-                                              <div className="col-sm-6 m-b-25">
+                                              </div> */}
+                                          {/* <div className="col-sm-6 m-b-25">
                                                 <select
                                                   value={
                                                     this.state
@@ -3006,8 +3243,8 @@ class MyTicketList extends Component {
                                                       )
                                                     )}
                                                 </select>
-                                              </div>
-                                              <div className="col-sm-6">
+                                              </div> */}
+                                          {/* <div className="col-sm-6">
                                                 <select
                                                   value={
                                                     this.state
@@ -3035,8 +3272,8 @@ class MyTicketList extends Component {
                                                       )
                                                     )}
                                                 </select>
-                                              </div>
-                                              <div className="col-sm-6 m-b-25">
+                                              </div> */}
+                                          {/* <div className="col-sm-6 m-b-25">
                                                 <select
                                                   value={
                                                     this.state
@@ -3066,8 +3303,8 @@ class MyTicketList extends Component {
                                                       )
                                                     )}
                                                 </select>
-                                              </div>
-                                              <div className="col-sm-6">
+                                              </div> */}
+                                          {/* <div className="col-sm-6">
                                                 <select
                                                   value={
                                                     this.state.selectedFunction
@@ -3092,8 +3329,8 @@ class MyTicketList extends Component {
                                                       )
                                                     )}
                                                 </select>
-                                              </div>
-                                              <div className="col-sm-6">
+                                              </div> */}
+                                          {/* <div className="col-sm-6">
                                                 <select
                                                   value={
                                                     this.state
@@ -3122,9 +3359,9 @@ class MyTicketList extends Component {
                                                       )
                                                     )}
                                                 </select>
-                                              </div>
-                                            </React.Fragment>
-                                          ) : null}
+                                              </div> */}
+                                          {/* </React.Fragment>
+                                          ) : null} */}
                                         </div>
                                       </div>
                                     </div>
