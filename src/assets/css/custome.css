@@ -139,6 +139,20 @@ a {
   white-space: nowrap;
   flex: 1 0 100%;
 }
+.ordermainrow .rt-table::-webkit-scrollbar {
+  height: 5px;
+}
+.ordermainrow .rt-table::-webkit-scrollbar-track {
+  background: #e9e9e9;
+  border-radius: 10px;
+}
+.ordermainrow .rt-table::-webkit-scrollbar-thumb {
+  background: #cac8c8;
+  border-radius: 10px;
+}
+.ordermainrow .rt-table::-webkit-scrollbar-thumb:hover {
+  background: #a5a3a3;
+}  
 .headers-menu::-webkit-scrollbar {
   height: 5px;
 }
@@ -6796,6 +6810,21 @@ table thead tr {
   margin-left: 0px !important;
   width: 530px !important;
 } */
+.collapbtn1 svg:not(:root).svg-inline--fa {
+  overflow: visible;
+  color: #a7aaad;
+  width: 20px;
+  height: 18px;
+  margin: -2px 3px;
+}
+.ck-det-cntr iframe {
+  padding-top: 15px;
+}
+
+.ck-det-cntr .cke_inner {
+  min-height: 380px;
+  height: auto;
+}
 .KBas .cke_contents {
   height: 160px !important;
   width: auto !important;
@@ -9147,8 +9176,8 @@ table tr th:last-child {
 }
 .CCdi1 {
   border: 1px solid #9b9b9b;
-    padding: 0px 0px;
-    width: 196px;
+    padding: 5px 5px;
+    width: 165px;
     height: 30px;
 }
 .colladrow .fileup {
@@ -9185,10 +9214,13 @@ table tr th:last-child {
   height: 30px;
   padding: 0;
   line-height: 0;
-  width: 75px;
+  min-width: 65px;
   border-radius: 5px;
   border: 1px solid #2561a8;
   cursor: pointer;
+}
+.colladrowa .ticsys {
+  margin: 0 18px;
 }
 .colladrow .sav1{
   background: #fff;
@@ -9246,7 +9278,7 @@ table tr th:last-child {
 }
 .colladrow .one{
   color: #2561a8;
-  margin-left: -23px;
+  margin-left: -20px;
 }
 .myTicketEmail {
   position: relative;
@@ -9787,6 +9819,22 @@ table tr th:last-child {
 }
 .DashTimeRange .form-control {
   padding: 3px;
+  font-size: 14px;
+  font-weight: 600;
+  /* width: 120px; */
+}
+.DashTimeRange .form-control:focus {
+  background-color: none !important;
+  box-shadow: none !important;
+}
+.DashTimeRange #DateTimeInput_end {
+  width: 120px;
+  margin-left: -135px;
+  border: none;
+}
+.DashTimeRange #DateTimeInput_start {
+  width: 120px;
+  border: none;
 }
 .DashTimeRange .timeContainer {
   display: none;
@@ -9810,7 +9858,7 @@ table tr th:last-child {
   display: flex;
   bottom: 0;
   right: 0;
-  margin-right: 13px;
+  margin-right: 130px;
   margin-left: 13px;
   margin-bottom: 5px;
   margin-top: 10px;
@@ -9822,20 +9870,36 @@ table tr th:last-child {
   background-color: #2561a8 !important;
   color: #fff;
   font-size: 12px;
-  border-radius: 3px;
+  border-radius: 12px;
   padding: 5px 10px;
+  width: 88px;
   cursor: pointer;
   margin-right: 4px;
+  font-size: 14px;
+  font-weight: 600;
   border: 1px solid #2561a8;
+  text-transform: uppercase;
+}
+.DashTimeRange .applyButton:hover {
+  background-color: #fff !important;
+  color: #2561a8 !important;
+}
+.DashTimeRange .cancelButton:hover {
+  background-color: #2561a8 !important;
+  color: #FFF !important;
 }
 .DashTimeRange .cancelButton {
     background-color: #fff;
-    color: #333;
+    color: #2561a8;
     font-size: 12px;
-    border-radius: 3px;
+    width: 88px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 700;
     padding: 5px 10px;
     cursor: pointer;
-    border: 1px solid #ccc;
+    border: 1px solid #2561a8;
+    text-transform: uppercase;
 }
 .DashTimeRange .rangecontainer {
   border-right: 1px solid #eeeeee;

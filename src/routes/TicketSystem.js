@@ -287,7 +287,7 @@ class TicketSystem extends Component {
           // DateOfBirth: Dob,
           IsActive: 1
         }
-      }).then(function(res) {
+      }).then(function (res) {
         // debugger;
         let Message = res.data.message;
         if (Message === "Success") {
@@ -313,7 +313,7 @@ class TicketSystem extends Component {
       params: {
         TikcketTitle: ""
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let TicketTitleData = res.data.responseData;
       self.setState({ TicketTitleData: TicketTitleData });
@@ -328,7 +328,7 @@ class TicketSystem extends Component {
       params: {
         IssueTypeID: this.state.selectedIssueType
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let CkEditorTemplateData = res.data.responseData;
       self.setState({ CkEditorTemplateData: CkEditorTemplateData });
@@ -344,7 +344,7 @@ class TicketSystem extends Component {
       params: {
         TemplateId: tempId
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let CkEditorTemplateDetails = res.data.responseData;
       self.setState({
@@ -365,7 +365,7 @@ class TicketSystem extends Component {
         Category_ID: this.state.selectedCategoryKB,
         SubCategor_ID: this.state.selectedSubCategoryKB
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let KbPopupData = res.data.responseData;
       if (KbPopupData.length === 0 || KbPopupData === null) {
@@ -381,7 +381,7 @@ class TicketSystem extends Component {
       method: "post",
       url: config.apiUrl + "/Brand/GetBrandList",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let BrandData = res.data.responseData;
       self.setState({ BrandData: BrandData });
@@ -395,7 +395,7 @@ class TicketSystem extends Component {
       method: "post",
       url: config.apiUrl + "/Category/GetCategoryList",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let CategoryData = res.data;
       self.setState({ CategoryData: CategoryData });
@@ -422,7 +422,7 @@ class TicketSystem extends Component {
         CategoryID: cateId
         // CategoryID: this.state.selectedCategory
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let SubCategoryData = res.data.responseData;
       self.setState({ SubCategoryData: SubCategoryData });
@@ -442,7 +442,7 @@ class TicketSystem extends Component {
       params: {
         SubCategoryID: subCateId
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let IssueTypeData = res.data.responseData;
       self.setState({ IssueTypeData: IssueTypeData });
@@ -455,7 +455,7 @@ class TicketSystem extends Component {
       method: "post",
       url: config.apiUrl + "/Priority/GetPriorityList",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let TicketPriorityData = res.data.responseData;
       self.setState({ TicketPriorityData: TicketPriorityData });
@@ -467,7 +467,7 @@ class TicketSystem extends Component {
       method: "post",
       url: config.apiUrl + "/Master/GetChannelOfPurchaseList",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let ChannelOfPurchaseData = res.data.responseData;
       self.setState({ ChannelOfPurchaseData: ChannelOfPurchaseData });
@@ -483,7 +483,7 @@ class TicketSystem extends Component {
       params: {
         CustomerID: CustId
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       var CustMsg = res.data.message;
       var customerData = res.data.responseData;
@@ -584,80 +584,88 @@ class TicketSystem extends Component {
   }
 
   handleCREATE_TICKET(StatusID) {
-    debugger;
-    let self = this;
-    // var OID = this.state.selectedTicketPriority;
-    var selectedRow = "";
-    for (var i = 0; i < this.state.selectedDataRow.length; i++) {
-      selectedRow += this.state.selectedDataRow[i]["orderItemID"] + ",";
-    }
-    var actionStatusId = 0;
-
-    if (StatusID === "200") {
-      actionStatusId = 103;
-    } else if (StatusID === "201") {
-      actionStatusId = 101;
-    } else {
-      actionStatusId = 100;
-    }
-    var mailData = [];
-    mailData = this.state.mailData;
-    this.state.mailFiled["ToEmail"] = this.state.customerData.customerEmailId;
-    this.state.mailFiled["TikcketMailSubject"] = "Demo Subject";
-    this.state.mailFiled["TicketMailBody"] = this.state.tempName;
-    this.state.mailFiled["PriorityID"] = this.state.selectedTicketPriority;
-    this.state.mailFiled["IsInforToStore"] = this.state.InformStore;
-    mailData.push(this.state.mailFiled);
-    // var want = this.state.custVisit;
-    // var Already = this.state.AlreadycustVisit;
-    // var uploadFiles = [];
-    // uploadFiles = this.state.file;
-    var formData = new FormData();
-
-    var paramData = {
-      TicketTitle: this.state.ticketSuggestion.ticketTitle,
-      Ticketdescription: this.state.ticketDetails,
-      CustomerID: this.state.customer_Id,
-      BrandID: this.state.selectedBrand,
-      CategoryID: this.state.selectedCategory,
-      SubCategoryID: this.state.selectedSubCategory,
-      IssueTypeID: this.state.selectedIssueType,
-      PriorityID: this.state.selectedTicketPriority,
-      ChannelOfPurchaseID: this.state.selectedChannelOfPurchase,
-      Ticketnotes: this.state.ticketNote,
-      taskMasters: this.state.taskMaster,
-      StatusID: actionStatusId,
-      TicketActionID: this.state.selectedTicketActionType,
-      IsInstantEscalateToHighLevel: this.state.escalationLevel,
-      IsWantToAttachOrder: this.state.customerAttachOrder,
-      TicketTemplateID: this.state.selectTicketTemplateId,
-      IsWantToVisitedStore: this.state.custVisit,
-      IsAlreadyVisitedStore: this.state.AlreadycustVisit,
-      TicketSourceID: 1,
-      OrderItemID: selectedRow.substring(",", selectedRow.length - 1),
-      ticketingMailerQues: mailData
-    };
-    formData.append("ticketingDetails", JSON.stringify(paramData));
-    formData.append("Form", this.state.file[0]);
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Ticketing/createTicket",
-      headers: authHeader(),
-      data: formData
-    }).then(function(res) {
+    if (this.validator.allValid()) {
       debugger;
-      let Msg = res.data.status;
-
-      if (Msg) {
-        NotificationManager.success(res.data.message);
-        setTimeout(function() {
-          self.props.history.push("myTicketlist");
-        }, 100);
-      } else {
-        NotificationManager.error(res.data.message);
+      let self = this;
+      // var OID = this.state.selectedTicketPriority;
+      var selectedRow = "";
+      for (var i = 0; i < this.state.selectedDataRow.length; i++) {
+        selectedRow += this.state.selectedDataRow[i]["orderItemID"] + ",";
       }
-    });
+      var actionStatusId = 0;
+
+      if (StatusID === "200") {
+        actionStatusId = 103;
+      } else if (StatusID === "201") {
+        actionStatusId = 101;
+      } else {
+        actionStatusId = 100;
+      }
+      var mailData = [];
+      mailData = this.state.mailData;
+      this.state.mailFiled["ToEmail"] = this.state.customerData.customerEmailId;
+      this.state.mailFiled["TikcketMailSubject"] = "Demo Subject";
+      this.state.mailFiled["TicketMailBody"] = this.state.tempName;
+      this.state.mailFiled["PriorityID"] = this.state.selectedTicketPriority;
+      this.state.mailFiled["IsInforToStore"] = this.state.InformStore;
+      mailData.push(this.state.mailFiled);
+      // var want = this.state.custVisit;
+      // var Already = this.state.AlreadycustVisit;
+      // var uploadFiles = [];
+      // uploadFiles = this.state.file;
+      var formData = new FormData();
+
+      var paramData = {
+        TicketTitle: this.state.ticketSuggestion.ticketTitle,
+        Ticketdescription: this.state.ticketDetails,
+        CustomerID: this.state.customer_Id,
+        BrandID: this.state.selectedBrand,
+        CategoryID: this.state.selectedCategory,
+        SubCategoryID: this.state.selectedSubCategory,
+        IssueTypeID: this.state.selectedIssueType,
+        PriorityID: this.state.selectedTicketPriority,
+        ChannelOfPurchaseID: this.state.selectedChannelOfPurchase,
+        Ticketnotes: this.state.ticketNote,
+        taskMasters: this.state.taskMaster,
+        StatusID: actionStatusId,
+        TicketActionID: this.state.selectedTicketActionType,
+        IsInstantEscalateToHighLevel: this.state.escalationLevel,
+        IsWantToAttachOrder: this.state.customerAttachOrder,
+        TicketTemplateID: this.state.selectTicketTemplateId,
+        IsWantToVisitedStore: this.state.custVisit,
+        IsAlreadyVisitedStore: this.state.AlreadycustVisit,
+        TicketSourceID: 1,
+        OrderItemID: selectedRow.substring(",", selectedRow.length - 1),
+        ticketingMailerQues: mailData
+      };
+      formData.append("ticketingDetails", JSON.stringify(paramData));
+      formData.append("Form", this.state.file[0]);
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Ticketing/createTicket",
+        headers: authHeader(),
+        data: formData
+      }).then(function (res) {
+        debugger;
+        let Msg = res.data.status;
+
+        if (Msg) {
+          NotificationManager.success(res.data.message);
+          setTimeout(function () {
+            self.props.history.push("myTicketlist");
+          }, 100);
+        } else {
+          NotificationManager.error(res.data.message);
+        }
+      });
+    }
+    else {
+      this.validator.showMessages();
+      this.forceUpdate();
+    }
   }
+
+
 
   handlebackprev() {
     this.props.history.push("myTicketList");
@@ -860,6 +868,11 @@ class TicketSystem extends Component {
                         }}
                         id="titleSuggestion"
                       />
+                      {this.validator.message(
+                        "TicketTitle",
+                        this.state.titleSuggValue,
+                        "required"
+                      )}
                       {this.state.toggleTitle && (
                         <div className="custom-ticket-title-suggestions">
                           {this.state.TicketTitleData !== null &&
@@ -886,7 +899,13 @@ class TicketSystem extends Component {
                       name="ticketDetails"
                       value={this.state.ticketDetails}
                       onChange={this.handleTicketChange}
-                    ></textarea>
+                    >
+                    </textarea>
+                    {this.validator.message(
+                      "ticketDetails",
+                      this.state.ticketDetails,
+                      "required"
+                    )}
                   </div>
                 </div>
 
@@ -1113,10 +1132,6 @@ class TicketSystem extends Component {
                     </label>
                   </a>
 
-                  <label className="kblink-auto2">
-                    <img src={AutoSave} alt="Auto" className="autosavekb" />
-                    Auto Save
-                  </label>
                 </div>
                 <div className="row">
                   <div className="col-md-12 ck-det-cntr">
@@ -1146,19 +1161,19 @@ class TicketSystem extends Component {
                             items: ["Image", "Table"]
                           },
                           {
-                            name: "tools",
-                            items: ["Maximize"]
-                          },
-                          {
                             name: "editing",
                             items: ["Scayt"]
                           }
+                          // {
+                          //   name: "tools",
+                          //   items: ["Maximize"]
+                          // },
                         ]
                       }}
                     />
                     <div className="row colladrowa" style={{ bottom: "15px" }}>
                       <div className="col-md-12 colladrow">
-                        <ul className="m-l-30">
+                        <ul className="ticsys">
                           <li className="diwamargin">
                             <label>
                               To: {this.state.customerData.customerEmailId}
@@ -1210,7 +1225,24 @@ class TicketSystem extends Component {
                           </li>
                           <li>
                             <label className="diwamargin">
-                              <input
+                              <div className="input-group" style={{ display: "block" }}>
+                                <span className="input-group-addon inputcc">CC:</span>
+                                <input
+                                  type="text"
+                                  className="CCdi1"
+                                  placeholder="diwarkar@gmail.com"
+                                  name="userCC"
+                                  value={this.state.mailFiled.userCC}
+                                  onChange={this.handleMailOnChange.bind(
+                                    this,
+                                    "userCC"
+                                  )}
+                                />
+
+                                <span className="one">+1</span>
+                              </div>
+
+                              {/* <input
                                 type="text"
                                 className="CCdi1"
                                 placeholder="CC:"
@@ -1222,10 +1254,10 @@ class TicketSystem extends Component {
                                 )}
                               />
 
-                              <span className="one">+1</span>
+                              <span className="one">+1</span> */}
                             </label>
                           </li>
-                          <li>
+                          {/* <li>
                             <label className="diwamargin">
                               <input
                                 type="text"
@@ -1240,10 +1272,28 @@ class TicketSystem extends Component {
                               />
                               <span className="one">+1</span>
                             </label>
-                          </li>
+                          </li> */}
+                          <li>
+                            <label className="diwamargin">
+                              <div class="input-group" style={{ display: "block" }}>
+                                <span class="input-group-addon inputcc">BCC:</span>
+                                <input
+                                  type="text"
+                                  className="CCdi1"
+                                  placeholder="diwarkar@gmail.com"
+                                  name="userBCC"
+                                  value={this.state.mailFiled.userBCC}
+                                  onChange={this.handleMailOnChange.bind(
+                                    this,
+                                    "userBCC"
+                                  )}
+                                />
+                                <span className="one">+1</span>
+                              </div>
 
-                          <li style={{ float: "right", marginRight: "22px" }}>
-                            <button className="sav1">Save As Draft</button>
+                            </label>
+                          </li>
+                          <li>
                             <button className="send1">Send</button>
                           </li>
                         </ul>
@@ -1551,7 +1601,7 @@ class TicketSystem extends Component {
                     role="tabpanel"
                     aria-labelledby="order-tab"
                     style={{ height: "100%" }}
-                    // onChange={this.hanleRedirectpage.bind(this)}
+                  // onChange={this.hanleRedirectpage.bind(this)}
                   >
                     <TicketSystemOrder
                       custDetails={CustomerId}
@@ -1605,12 +1655,12 @@ class TicketSystem extends Component {
                             className="customer-icon"
                           />
                         ) : (
-                          <img
-                            src={AvatarBlackIcon}
-                            alt="customer-icon"
-                            className="customer-icon"
-                          />
-                        )}
+                            <img
+                              src={AvatarBlackIcon}
+                              alt="customer-icon"
+                              className="customer-icon"
+                            />
+                          )}
 
                         <span className="system-tab-span">CUSTOMER</span>
                       </a>
