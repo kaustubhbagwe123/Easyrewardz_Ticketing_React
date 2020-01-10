@@ -498,6 +498,8 @@ class MyTicketList extends Component {
     debugger;
 
     let self = this;
+    self.setState({ FunctionData: [], selectedFunction: 0 });
+
     axios({
       method: "post",
       url: config.apiUrl + "/Master/getFunctionNameByDepartmentId",
@@ -608,6 +610,12 @@ class MyTicketList extends Component {
   handleGetClaimSubCategoryList() {
     debugger;
     let self = this;
+    self.setState({
+      ClaimSubCategoryData: [],
+      selectedClaimSubCategory: 0,
+      ClaimIssueTypeData: [],
+      selectedClaimIssueType: 0
+    });
 
     axios({
       method: "post",
@@ -627,6 +635,16 @@ class MyTicketList extends Component {
   handleGetSubCategoryList() {
     debugger;
     let self = this;
+    self.setState({
+      SubCategoryData: [],
+      SubCategoryAllData: [],
+      selectedSubCategory: 0,
+      selectedSubCategoryAll: 0,
+      IssueTypeData: [],
+      IssueTypeAllData: [],
+      selectedIssueType: 0,
+      selectedIssueTypeAll: 0
+    });
     let cateId =
       this.state.byCategoryFlag === 1
         ? this.state.selectedCategory
@@ -656,6 +674,10 @@ class MyTicketList extends Component {
   }
   handleGetClaimIssueTypeList() {
     let self = this;
+    self.setState({
+      ClaimIssueTypeData: [],
+      selectedClaimIssueType: 0
+    });
 
     axios({
       method: "post",
@@ -672,6 +694,12 @@ class MyTicketList extends Component {
   }
   handleGetIssueTypeList() {
     let self = this;
+    self.setState({
+      IssueTypeData: [],
+      IssueTypeAllData: [],
+      selectedIssueType: 0,
+      selectedIssueTypeAll: 0
+    });
     let subCateId =
       this.state.byCategoryFlag === 1
         ? this.state.selectedSubCategory
