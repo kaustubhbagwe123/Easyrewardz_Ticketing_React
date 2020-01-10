@@ -215,7 +215,8 @@ class TicketSystem extends Component {
   showAddNoteFuncation() {
     const { showAddNote } = this.state;
     this.setState({
-      showAddNote: !showAddNote
+      showAddNote: !showAddNote,
+      ticketNote: ""
     });
   }
   showInformStoreFuncation = () => {
@@ -367,6 +368,9 @@ class TicketSystem extends Component {
     }).then(function(res) {
       debugger;
       let KbPopupData = res.data.responseData;
+      if (KbPopupData.length === 0 || KbPopupData === null) {
+        NotificationManager.success("No Record Found.");
+      }
       self.setState({ KbPopupData: KbPopupData });
     });
   }
@@ -776,11 +780,18 @@ class TicketSystem extends Component {
                   </button>
                   <button
                     className="rectanglecreateticket create-ticket"
-                    onClick={this.handleSubmitReopnModalOpen.bind(this)}
+                    // onClick={this.handleSubmitReopnModalOpen.bind(this)}
+                    onClick={this.handleCREATE_TICKET.bind(
+                      this,
+                      this.state.selectedTicketActionType
+                    )}
                   >
-                    CREATE TICKET
+                    {/* CREATE TICKET */}
+                    {this.state.selectedTicketActionType === "200"
+                      ? "SUBMIT AS SOLVED"
+                      : "CREATE TICKET"}
                   </button>
-                  <Modal
+                  {/* <Modal
                     open={this.state.SubmitBtnReopn}
                     onClose={this.handleSubmitReopnModalClose.bind(this)}
                     closeIconId="close"
@@ -800,7 +811,7 @@ class TicketSystem extends Component {
                           : "Create Ticket"}
                       </button>
                     </div>
-                  </Modal>
+                  </Modal> */}
                 </td>
               </tr>
             </tbody>
@@ -868,8 +879,7 @@ class TicketSystem extends Component {
                       name="ticketDetails"
                       value={this.state.ticketDetails}
                       onChange={this.handleTicketChange}
-                    >
-                    </textarea>
+                    ></textarea>
                   </div>
                 </div>
 

@@ -59,7 +59,9 @@ import {
   NotificationContainer,
   NotificationManager
 } from "react-notifications";
-
+import TicketStatus from "./TicketStatus";
+import Select from "react-select";
+import TicketActionType from "./TicketActionType";
 class MyTicket extends Component {
   constructor(props) {
     super(props);
@@ -107,6 +109,9 @@ class MyTicket extends Component {
           assign: ""
         }
       ],
+      TicketStatusData: TicketStatus(),
+      selectedTicketActionType: [],
+      TicketActionTypeData: TicketActionType(),
       taskTableGrid: [],
       claimDetailsData: []
     };
@@ -142,7 +147,11 @@ class MyTicket extends Component {
       debugger;
       let status = res.data.status;
       if (status === true) {
-        NotificationManager.success("The ticket has been resolved.");
+        if (ticStaId === 103) {
+          NotificationManager.success("The ticket has been resolved.");
+        } else if (ticStaId === 104) {
+          NotificationManager.success("The ticket has been closed.");
+        }
       }
     });
   }
@@ -607,6 +616,10 @@ class MyTicket extends Component {
     values[i] = { ...values[i], [name]: value };
     this.setState({ values });
   }
+
+  setTicketActionTypeValue = e => {
+    this.setState({ selectedTicketActionType: e });
+  };
   render() {
     const { open } = this.state;
     const HidecollapsUp = this.state.collapseUp ? (
@@ -944,7 +957,10 @@ class MyTicket extends Component {
                     </label>
                   </div>
                   <div className="row" style={{ marginTop: "8px" }}>
-                    <label className="modal-lbl">
+                    <label
+                      className="modal-lbl"
+                      onClick={() => this.handleUpdateTicketStatus(104)}
+                    >
                       Submit as <span className="modal-lbl-2">Closed</span>
                     </label>
                   </div>
@@ -1253,7 +1269,13 @@ class MyTicket extends Component {
                       <div className="form-group">
                         <label className="label-4">Status</label>
                         <select className="rectangle-9 select-category-placeholder">
-                          <option>Select</option>
+                          <option>Ticket Status</option>
+                          {this.state.TicketStatusData !== null &&
+                            this.state.TicketStatusData.map((item, i) => (
+                              <option key={i} value={item.ticketStatusID}>
+                                {item.ticketStatusName}
+                              </option>
+                            ))}
                         </select>
                       </div>
                     </div>
@@ -1416,9 +1438,18 @@ class MyTicket extends Component {
                     <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
                       <div className="form-group">
                         <label className="label-4">Ticket Action Type</label>
-                        <select className="rectangle-9 select-category-placeholder">
-                          <option>Select</option>
-                        </select>
+                        <Select
+                          getOptionLabel={option => option.ticketActionTypeName}
+                          getOptionValue={option => option.ticketActionTypeID}
+                          options={this.state.TicketActionTypeData}
+                          placeholder="Ticket Action Type"
+                          // menuIsOpen={true}
+                          closeMenuOnSelect={false}
+                          onChange={this.setTicketActionTypeValue.bind(this)}
+                          value={this.state.selectedTicketActionType}
+                          // showNewOptionAtTop={false}
+                          isMulti
+                        />
                       </div>
                     </div>
                   </div>

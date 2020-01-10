@@ -22,8 +22,8 @@ class SingIn extends Component {
       emailID: "",
       password: "",
       programCode: "",
-      fullUserName:'',
-      UserEmail:''
+      fullUserName: "",
+      UserEmail: ""
     };
     this.hanleChange = this.hanleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -56,11 +56,11 @@ class SingIn extends Component {
 
       let X_Authorized_password = encryption(password, "enc");
 
-      //let X_Authorized_Domainname = encryption(window.location.origin, "enc");
-      let X_Authorized_Domainname = encryption(
-        "http://easyrewardz.demo.brainvire.net",
-        "enc"
-      );
+       let X_Authorized_Domainname = encryption(window.location.origin, "enc");
+      // let X_Authorized_Domainname = encryption(
+      //   "http://easyrewardz.demo.brainvire.net",
+      //   "enc"
+      // );
       let ProCode = this.state.programCode;
       let X_Authorized_Programcode = ProCode.programCode;
 
@@ -80,15 +80,15 @@ class SingIn extends Component {
           }
         }).then(function(res) {
           debugger;
-          let data=res.data.responseData;
+          let data = res.data.responseData;
           let resValid = res.data.message;
           if (resValid === "Valid Login") {
-            debugger
+            debugger;
             NotificationManager.success("Login Successfull.");
             self.setState({
-              fullUserName:data.firstName + " " + data.lastName,
-              UserEmail:data.userEmailID
-            })
+              fullUserName: data.firstName + " " + data.lastName,
+              UserEmail: data.userEmailID
+            });
             window.localStorage.setItem("token", res.data.responseData.token);
             setTimeout(function() {
               self.props.history.push("/admin/dashboard");
@@ -102,11 +102,10 @@ class SingIn extends Component {
       this.validator.showMessages();
       this.forceUpdate();
     }
-    
   }
 
   render() {
-    const {fullUserName,UserEmail}=this.props;
+    const { fullUserName, UserEmail } = this.props;
     return (
       <div className="auth-wrapper">
         <div className="auth-content">
