@@ -16,13 +16,11 @@ import CKEditor from "ckeditor4-react";
 // import moment from "moment";
 import FileUpload from "./../assets/Images/file.png";
 import ThumbTick from "./../assets/Images/thumbticket.png";
-import AutoSave from "./../assets/Images/AutoSave.png";
 import { faCalculator } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import KnowledgeLogo from "./../assets/Images/knowledge.png";
 import CancelImg from "./../assets/Images/cancel.png";
 // import { Collapse, CardBody, Card } from "reactstrap";
-// import DownArrowIcon from "./../assets/Images/down-1.png";
 import CopyBlue from "./../assets/Images/copyblue.png";
 import ViewBlue from "./../assets/Images/viewblue.png";
 import config from "./../helpers/config";
@@ -44,7 +42,6 @@ class TicketSystem extends Component {
     this.state = {
       showAddNote: false,
       InformStore: false,
-      SubmitBtnReopn: false,
       EditCustomer: false,
       mailFiled: {},
       mailData: [],
@@ -245,12 +242,7 @@ class TicketSystem extends Component {
     var idIndex = e.target.className;
     this.setState({ TabIconColor: idIndex });
   }
-  handleSubmitReopnModalOpen() {
-    this.setState({ SubmitBtnReopn: true });
-  }
-  handleSubmitReopnModalClose() {
-    this.setState({ SubmitBtnReopn: false });
-  }
+ 
   handleTicketChange(e) {
     this.setState({ [e.currentTarget.name]: e.currentTarget.value });
   }
@@ -405,6 +397,12 @@ class TicketSystem extends Component {
     debugger;
 
     let self = this;
+    self.setState({
+      SubCategoryData: [],
+      selectedSubCategory: 0,
+      IssueTypeData: [],
+      selectedIssueType: 0
+    });
     let cateId = this.state.KbLink
       ? this.state.selectedCategoryKB
       : this.state.selectedCategory;
@@ -425,6 +423,7 @@ class TicketSystem extends Component {
   handleGetIssueTypeList() {
     debugger;
     let self = this;
+    self.setState({ IssueTypeData: [], selectedIssueType: 0 });
     let subCateId = this.state.KbLink
       ? this.state.selectedSubCategoryKB
       : this.state.selectedSubCategory;
@@ -709,7 +708,7 @@ class TicketSystem extends Component {
     }, 1);
   };
   setSubCategoryValue = e => {
-    debugger;
+    // debugger;
     let subCategoryValue = e.currentTarget.value;
     this.setState({ selectedSubCategory: subCategoryValue });
 
@@ -799,27 +798,7 @@ class TicketSystem extends Component {
                       ? "SUBMIT AS SOLVED"
                       : "CREATE TICKET"}
                   </button>
-                  {/* <Modal
-                    open={this.state.SubmitBtnReopn}
-                    onClose={this.handleSubmitReopnModalClose.bind(this)}
-                    closeIconId="close"
-                    modalId="CreateTicket1-popup"
-                    overlayId="logout-ovrly"
-                  >
-                    <div>
-                      <button
-                        className="btnMdlSubmit"
-                        onClick={this.handleCREATE_TICKET.bind(
-                          this,
-                          this.state.selectedTicketActionType
-                        )}
-                      >
-                        {this.state.selectedTicketActionType === "200"
-                          ? "Submit As Solved"
-                          : "Create Ticket"}
-                      </button>
-                    </div>
-                  </Modal> */}
+                 
                 </td>
               </tr>
             </tbody>
@@ -1235,46 +1214,17 @@ class TicketSystem extends Component {
 
                                 <span className="one">+1</span>
                               </div>
-
-                              {/* <input
-                                type="text"
-                                className="CCdi1"
-                                placeholder="CC:"
-                                name="userCC"
-                                value={this.state.mailFiled.userCC}
-                                onChange={this.handleMailOnChange.bind(
-                                  this,
-                                  "userCC"
-                                )}
-                              />
-
-                              <span className="one">+1</span> */}
                             </label>
                           </li>
-                          {/* <li>
-                            <label className="diwamargin">
-                              <input
-                                type="text"
-                                className="CCdi1"
-                                placeholder="BCC:"
-                                name="userBCC"
-                                value={this.state.mailFiled.userBCC}
-                                onChange={this.handleMailOnChange.bind(
-                                  this,
-                                  "userBCC"
-                                )}
-                              />
-                              <span className="one">+1</span>
-                            </label>
-                          </li> */}
+                          
                           <li>
                             <label className="diwamargin">
-                              <div class="input-group" style={{ display: "block" }}>
-                                <span class="input-group-addon inputcc">BCC:</span>
+                              <div className="input-group" style={{ display: "block" }}>
+                                <span className="input-group-addon inputcc">BCC:</span>
                                 <input
                                   type="text"
                                   className="CCdi1"
-                                  placeholder="diwarkar@gmail.com"
+                                  placeholder="BCC"
                                   name="userBCC"
                                   value={this.state.mailFiled.userBCC}
                                   onChange={this.handleMailOnChange.bind(

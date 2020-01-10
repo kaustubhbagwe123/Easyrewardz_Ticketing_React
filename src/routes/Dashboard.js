@@ -549,18 +549,6 @@ class Dashboard extends Component {
         ),
         subjectDash: (
           <div>
-            {/* <Popover content={ClaimBlue} placement="bottom">
-              <img
-                className="claim-icon marginimg"
-                src={CliamIconBlue}
-                alt="cliam-icon-blue"
-              />
-            </Popover> */}
-            {/* <img
-              className="claim-icon marginimg"
-              src={CliamIconBlue}
-              alt="cliam-icon-blue"
-            /> */}
             Need to change my shipping address
             <span style={{ display: "block", fontSize: "11px" }}>
               Hope this help, Please rate us
