@@ -29,7 +29,7 @@ import config from "./../helpers/config";
 import { Radio } from "antd";
 import DatePicker from "react-datepicker";
 import axios from "axios";
-import Select from "react-select";
+// import Select from "react-select";
 import {
   NotificationContainer,
   NotificationManager
@@ -215,7 +215,8 @@ class TicketSystem extends Component {
   showAddNoteFuncation() {
     const { showAddNote } = this.state;
     this.setState({
-      showAddNote: !showAddNote
+      showAddNote: !showAddNote,
+      ticketNote: ""
     });
   }
   showInformStoreFuncation = () => {
@@ -367,6 +368,9 @@ class TicketSystem extends Component {
     }).then(function(res) {
       debugger;
       let KbPopupData = res.data.responseData;
+      if (KbPopupData.length === 0 || KbPopupData === null) {
+        NotificationManager.success("No Record Found.");
+      }
       self.setState({ KbPopupData: KbPopupData });
     });
   }
@@ -575,7 +579,7 @@ class TicketSystem extends Component {
   handleCREATE_TICKET(StatusID) {
     debugger;
     let self = this;
-    // var OID = this.state.selectedDataRow;
+    // var OID = this.state.selectedTicketPriority;
     var selectedRow = "";
     for (var i = 0; i < this.state.selectedDataRow.length; i++) {
       selectedRow += this.state.selectedDataRow[i]["orderItemID"] + ",";
@@ -776,11 +780,18 @@ class TicketSystem extends Component {
                   </button>
                   <button
                     className="rectanglecreateticket create-ticket"
-                    onClick={this.handleSubmitReopnModalOpen.bind(this)}
+                    // onClick={this.handleSubmitReopnModalOpen.bind(this)}
+                    onClick={this.handleCREATE_TICKET.bind(
+                      this,
+                      this.state.selectedTicketActionType
+                    )}
                   >
-                    CREATE TICKET
+                    {/* CREATE TICKET */}
+                    {this.state.selectedTicketActionType === "200"
+                      ? "SUBMIT AS SOLVED"
+                      : "CREATE TICKET"}
                   </button>
-                  <Modal
+                  {/* <Modal
                     open={this.state.SubmitBtnReopn}
                     onClose={this.handleSubmitReopnModalClose.bind(this)}
                     closeIconId="close"
@@ -800,7 +811,7 @@ class TicketSystem extends Component {
                           : "Create Ticket"}
                       </button>
                     </div>
-                  </Modal>
+                  </Modal> */}
                 </td>
               </tr>
             </tbody>
@@ -868,8 +879,7 @@ class TicketSystem extends Component {
                       name="ticketDetails"
                       value={this.state.ticketDetails}
                       onChange={this.handleTicketChange}
-                    >
-                    </textarea>
+                    ></textarea>
                   </div>
                 </div>
 
@@ -1196,7 +1206,7 @@ class TicketSystem extends Component {
                               <input
                                 type="text"
                                 className="CCdi1"
-                                placeholder="CC: diwarkar@gmail.com"
+                                placeholder="CC:"
                                 name="userCC"
                                 value={this.state.mailFiled.userCC}
                                 onChange={this.handleMailOnChange.bind(
@@ -1213,7 +1223,7 @@ class TicketSystem extends Component {
                               <input
                                 type="text"
                                 className="CCdi1"
-                                placeholder="BCC: diwarkar@gmail.com"
+                                placeholder="BCC:"
                                 name="userBCC"
                                 value={this.state.mailFiled.userBCC}
                                 onChange={this.handleMailOnChange.bind(

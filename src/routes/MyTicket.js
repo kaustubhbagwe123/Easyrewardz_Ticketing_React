@@ -112,6 +112,8 @@ class MyTicket extends Component {
       TicketStatusData: TicketStatus(),
       selectedTicketActionType: [],
       TicketActionTypeData: TicketActionType()
+      taskTableGrid: [],
+      claimDetailsData: []
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -125,7 +127,73 @@ class MyTicket extends Component {
     this.handleGetChannelOfPurchaseList = this.handleGetChannelOfPurchaseList.bind(
       this
     );
+    this.handleGetTaskTableGrid = this.handleGetTaskTableGrid.bind(this);
+    this.handleGetClaimTabDetails = this.handleGetClaimTabDetails.bind(this);
+    this.handleUpdateTicketStatus = this.handleUpdateTicketStatus.bind(this);
   }
+
+  handleUpdateTicketStatus(ticStaId) {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Ticketing/Updateticketstatus",
+      headers: authHeader(),
+      params: {
+        TicketID: 13,
+        status: ticStaId
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.status;
+      if (status === true) {
+        if (ticStaId === 103) {
+          NotificationManager.success("The ticket has been resolved.");
+        } else if (ticStaId === 104) {
+          NotificationManager.success("The ticket has been closed.");
+        }
+      }
+    });
+  }
+
+  handleGetClaimTabDetails() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Task/getclaimlist",
+      headers: authHeader(),
+      params: {
+        TicketId: 13
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.status;
+      let data = res.data.responseData;
+      if (status === true) {
+        self.setState({ claimDetailsData: data });
+      }
+    });
+  }
+
+  handleGetTaskTableGrid() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Task/gettasklist",
+      headers: authHeader(),
+      params: {
+        TicketId: 127
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.status;
+      let data = res.data.responseData;
+      if (status === true) {
+        self.setState({ taskTableGrid: data });
+      }
+    });
+  }
+
   handleNoteOnChange = e => {
     this.setState({
       [e.target.name]: e.target.value
@@ -458,6 +526,8 @@ class MyTicket extends Component {
     this.handleGetCategoryList();
     this.handleGetChannelOfPurchaseList();
     this.handleGetNotesTabDetails();
+    this.handleGetTaskTableGrid();
+    this.handleGetClaimTabDetails();
   }
   handleRemoveForm(i) {
     let values = [...this.state.values];
@@ -879,12 +949,18 @@ class MyTicket extends Component {
               >
                 <div className="store-hdrtMdal">
                   <div className="row">
-                    <label className="modal-lbl">
+                    <label
+                      className="modal-lbl"
+                      onClick={() => this.handleUpdateTicketStatus(103)}
+                    >
                       Submit as <span className="modal-lbl-1">Solved</span>
                     </label>
                   </div>
                   <div className="row" style={{ marginTop: "8px" }}>
-                    <label className="modal-lbl">
+                    <label
+                      className="modal-lbl"
+                      onClick={() => this.handleUpdateTicketStatus(104)}
+                    >
                       Submit as <span className="modal-lbl-2">Closed</span>
                     </label>
                   </div>
@@ -1847,7 +1923,10 @@ class MyTicket extends Component {
                         name="Notes"
                         onClick={this.handleGetTabsName}
                       >
-                        Notes: 00
+                        Notes:{" "}
+                        {this.state.Notesdetails.length < 9
+                          ? "0" + this.state.Notesdetails.length
+                          : this.state.Notesdetails.length}
                       </a>
                     </li>
                     <li className="nav-item fo">
@@ -1861,7 +1940,10 @@ class MyTicket extends Component {
                         name="Task"
                         onClick={this.handleGetTabsName}
                       >
-                        Task: 03
+                        Task:{" "}
+                        {this.state.taskTableGrid.length < 9
+                          ? "0" + this.state.taskTableGrid.length
+                          : this.state.taskTableGrid.length}
                       </a>
                     </li>
                     <li className="nav-item fo">
@@ -1875,7 +1957,10 @@ class MyTicket extends Component {
                         name="Claim"
                         onClick={this.handleGetTabsName}
                       >
-                        Claim: 00
+                        Claim:{" "}
+                        {this.state.claimDetailsData.length < 9
+                          ? "0" + this.state.claimDetailsData.length
+                          : this.state.claimDetailsData.length}
                       </a>
                     </li>
                   </ul>

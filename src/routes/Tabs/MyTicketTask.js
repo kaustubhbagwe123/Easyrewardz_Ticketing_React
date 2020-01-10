@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Modal from "react-responsive-modal";
 import { Drawer } from "antd";
-import InfoIcon from "./../../assets/Images/info-icon.png";
+// import InfoIcon from "./../../assets/Images/info-icon.png";
 import HeadPhone3 from "./../../assets/Images/headphone3.png";
 import BlackLeftArrow from "./../../assets/Images/black-left-arrow.png";
 import CancelImg from "./../../assets/Images/cancel.png";
@@ -31,7 +31,7 @@ class MyTicketTask extends Component {
       taskDescription: "",
       taskAddComment: "",
       taskDetailsData: {},
-      taskTableGrid:[],
+      taskTableGrid: [],
       Taskdetails: [],
       DepartmentData: [],
       FunctionData: [],
@@ -46,7 +46,9 @@ class MyTicketTask extends Component {
     this.handleGetFunctionList = this.handleGetFunctionList.bind(this);
     this.handleGetAssignToList = this.handleGetAssignToList.bind(this);
     this.handleGetTaskTabDetails = this.handleGetTaskTabDetails.bind(this);
-    this.handleGetTicketPriorityList = this.handleGetTicketPriorityList.bind(this);
+    this.handleGetTicketPriorityList = this.handleGetTicketPriorityList.bind(
+      this
+    );
     this.handleGetTaskTableGrid = this.handleGetTaskTableGrid.bind(this);
   }
   handleAddTaskModalOpn() {
@@ -73,10 +75,10 @@ class MyTicketTask extends Component {
       [e.target.name]: e.target.value
     });
   };
-  handleGetTaskTableGrid(){
-    let self=this;
+  handleGetTaskTableGrid() {
+    let self = this;
     axios({
-      method:"post",
+      method: "post",
       url: config.apiUrl + "/Task/gettasklist",
       headers: authHeader(),
       params: {
@@ -247,14 +249,14 @@ class MyTicketTask extends Component {
   }
 
   componentDidMount() {
-    this.handleGetTaskTableGrid()
+    this.handleGetTaskTableGrid();
     this.handleGetDepartmentList();
     this.handleGetTicketPriorityList();
     this.handleGetTaskTabDetails();
   }
   render() {
-    const {taskTableGrid}=this.state;
-   
+    const { taskTableGrid } = this.state;
+
     return (
       <div>
         <div className="claim-addTask-btn">
@@ -418,7 +420,11 @@ class MyTicketTask extends Component {
                 accessor: "ticketingTaskID",
                 Cell: row => (
                   <span>
-                    <img src={HeadPhone3} alt="HeadPhone" className="headPhone3" />
+                    <img
+                      src={HeadPhone3}
+                      alt="HeadPhone"
+                      className="headPhone3"
+                    />
                     {row.original.ticketingTaskID}
                   </span>
                 )
@@ -447,7 +453,7 @@ class MyTicketTask extends Component {
                     <FontAwesomeIcon icon={faCaretDown} />
                   </span>
                 ),
-                accessor: "storeCode",
+                accessor: "storeCode"
               },
               {
                 Header: (
@@ -456,7 +462,7 @@ class MyTicketTask extends Component {
                     <FontAwesomeIcon icon={faCaretDown} />
                   </span>
                 ),
-                accessor: "createdBy",
+                accessor: "createdBy"
               },
               {
                 Header: (
@@ -465,7 +471,7 @@ class MyTicketTask extends Component {
                     <FontAwesomeIcon icon={faCaretDown} />
                   </span>
                 ),
-                accessor: "createdDate"
+                accessor: "dateFormat"
               },
               {
                 Header: (
@@ -474,11 +480,11 @@ class MyTicketTask extends Component {
                     <FontAwesomeIcon icon={faCaretDown} />
                   </span>
                 ),
-                accessor: "assignName",
+                accessor: "assignName"
               }
             ]}
             // resizable={false}
-            defaultPageSize={3}
+            defaultPageSize={10}
             showPagination={false}
             getTrProps={this.HandleRowClickDraw}
           />
@@ -546,13 +552,13 @@ class MyTicketTask extends Component {
                   <label className="addTask-2-d-ago">
                     DUE DATE
                     <span className="addTasklbl-name">
-                      {this.state.taskDetailsData.duedate}
+                      {this.state.taskDetailsData.dateFormat}
                     </span>
                   </label>
                 </div>
               </div>
               <p className="tasktasb-para">
-               {this.state.taskDetailsData.taskDescription}
+                {this.state.taskDetailsData.taskDescription}
               </p>
               <hr className="claimline" />
               <textarea

@@ -1300,7 +1300,9 @@ table tr th:last-child {
   font-size: 14px;
   font-weight: 400;
   line-height: 17px;
-  text-align: left;
+  width: auto;
+    min-width: 160px;
+    text-align: center;
 }
 
 .btnMdlSubmit{
