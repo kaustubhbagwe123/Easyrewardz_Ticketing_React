@@ -757,6 +757,21 @@
     border-bottom: 1px solid #9b9b9b;
     border-left: 1px solid #9b9b9b;
 }
+.inputcc-one {
+    padding: 6px 5px 5px !important;
+    border-left: none;
+    background-color: #fff;
+    color: #2561a8;
+    border-radius: 0;
+    font-family: Lato;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 19px;
+    text-align: left;
+    border-top: 1px solid #9b9b9b;
+    border-bottom: 1px solid #9b9b9b;
+    border-right: 1px solid #9b9b9b;
+}
 .ListAllReacttable .ReactTable .rt-thead.-header {
     background-color: #E5E5E5;
 }

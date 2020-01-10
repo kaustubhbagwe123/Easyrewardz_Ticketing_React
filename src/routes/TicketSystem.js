@@ -1203,7 +1203,7 @@ class TicketSystem extends Component {
                                 <input
                                   type="text"
                                   className="CCdi1"
-                                  placeholder="diwarkar@gmail.com"
+                                  placeholder="diwark@gmail.com"
                                   name="userCC"
                                   value={this.state.mailFiled.userCC}
                                   onChange={this.handleMailOnChange.bind(
@@ -1212,7 +1212,7 @@ class TicketSystem extends Component {
                                   )}
                                 />
 
-                                <span className="one">+1</span>
+                                <span className="input-group-addon inputcc-one">+1</span>
                               </div>
                             </label>
                           </li>
@@ -1224,7 +1224,7 @@ class TicketSystem extends Component {
                                 <input
                                   type="text"
                                   className="CCdi1"
-                                  placeholder="BCC"
+                                  placeholder="diwark@gmail.com"
                                   name="userBCC"
                                   value={this.state.mailFiled.userBCC}
                                   onChange={this.handleMailOnChange.bind(
@@ -1232,7 +1232,7 @@ class TicketSystem extends Component {
                                     "userBCC"
                                   )}
                                 />
-                                <span className="one">+1</span>
+                               <span className="input-group-addon inputcc-one">+1</span>
                               </div>
 
                             </label>

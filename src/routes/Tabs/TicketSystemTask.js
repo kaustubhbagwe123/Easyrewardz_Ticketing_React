@@ -255,6 +255,7 @@ class TicketSystemTask extends Component {
                           className="addNote-textarea-system"
                           placeholder="Task Description"
                           name="taskDescription"
+                          maxLength={250}
                           value={this.state.taskfield.taskDescription}
                           onChange={this.checkTaskTitDesc.bind(
                             this,

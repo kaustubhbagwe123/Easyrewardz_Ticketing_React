@@ -139,12 +139,12 @@ a {
   white-space: nowrap;
   flex: 1 0 100%;
 }
-.ordermainrow .ReactTable .rt-thead .rt-th.-cursor-pointer, .ReactTable .rt-thead .rt-td.-cursor-pointer {
+/* .ordermainrow .ReactTable .rt-thead .rt-th.-cursor-pointer, .ReactTable .rt-thead .rt-td.-cursor-pointer {
   width: auto !important;
 }
 .ordermainrow .ReactTable .rt-tbody .rt-td {
   width: auto !important;
-}
+} */
 .ordermainrow .rt-table::-webkit-scrollbar {
   height: 5px;
 }
@@ -4372,7 +4372,7 @@ font-weight: normal;
 }
 .collapbtn {
   position: absolute;
-  right: 17%;
+  right: 100px;
   top: 41px;
   z-index: 1;
   border: 1px solid #d1d1d1;
@@ -4395,7 +4395,7 @@ font-weight: normal;
 .kblink {
   position: absolute;
   top: 41px;
-  right: 90px;
+  right: 5px;
   z-index: 1;
   padding: 5px 8px 5px 5px;
   border: 1px solid #d1d1d1;
@@ -7990,7 +7990,7 @@ table tr th:last-child {
   background-color: #f5f8f9;
 }
 .paddingsystem {
-  padding: 40px;
+  padding: 40px 30px 40px 40px;
   position: relative;
   height: auto;
 }
@@ -9196,15 +9196,17 @@ table tr th:last-child {
 }
  .CCdi {
   border: 1px solid #9b9b9b;
-  padding: 7px 5px;
-  width: 210px;
-  font-size: 13px;
+  padding: 5px 5px;
+  width: 145px;
+  height: 30px;
+  border-right: none
 }
 .CCdi1 {
   border: 1px solid #9b9b9b;
     padding: 5px 5px;
-    width: 165px;
+    width: 145px;
     height: 30px;
+    border-right: none;
 }
 .colladrow .fileup {
   width: 14px;
