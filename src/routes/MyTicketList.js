@@ -178,6 +178,7 @@ class MyTicketList extends Component {
       advPageNo: 1,
       SearchTicketData: []
     };
+    this.clearSearch = this.clearSearch.bind(this);
     this.handleAdvSearchFlag = this.handleAdvSearchFlag.bind(this);
     this.toggleSearch = this.toggleSearch.bind(this);
     this.handleGetSaveSearchList = this.handleGetSaveSearchList.bind(this);
@@ -284,7 +285,7 @@ class MyTicketList extends Component {
       let Status = res.data.message;
       if (Status === "Record Not Found") {
         self.setState({ SearchTicketData: [] });
-      } else {
+      } else if (data !== null) {
         self.setState({ SearchTicketData: data });
       }
     });
@@ -420,6 +421,71 @@ class MyTicketList extends Component {
       //   SlaStatusData: SlaStatusData
       // });
     });
+  }
+
+  clearSearch() {
+    debugger;
+    if (this.state.byDateFlag === 1) {
+      this.setState({
+        ByDateCreatDate: "",
+        ByDateSelectDate: "",
+        selectedSlaDueByDate: 0,
+        selectedTicketStatusByDate: 0
+      });
+    } else if (this.state.byCustomerTypeFlag === 1) {
+      this.setState({
+        MobileNoByCustType: "",
+        EmailIdByCustType: "",
+        TicketIdByCustType: "",
+        selectedTicketStatusByCustomer: 0
+      });
+    } else if (this.state.byTicketTypeFlag === 1) {
+      this.setState({
+        selectedPriority: 0,
+        selectedTicketStatusByTicket: 0,
+        selectedChannelOfPurchase: [],
+        selectedTicketActionType: []
+      });
+    } else if (this.state.byCategoryFlag === 1) {
+      this.setState({
+        selectedCategory: 0,
+        selectedSubCategory: 0,
+        selectedIssueType: 0,
+        selectedTicketStatusByCategory: 0
+      });
+    } else if (this.state.allFlag === 1) {
+      this.setState({
+        ByAllCreateDate: "",
+        selectedTicketSource: 0,
+        ClaimIdByAll: "",
+        EmailByAll: "",
+        ByAllLastDate: "",
+        TicketIdTitleByAll: "",
+        InvoiceSubOrderByAll: "",
+        MobileByAll: "",
+        selectedCategoryAll: 0,
+        selectedPriorityAll: 0,
+        ItemIdByAll: "",
+        selectedAssignedToAll: "",
+        selectedSubCategoryAll: 0,
+        selectedTicketStatusAll: 0,
+        selectedVisitStoreAll: "yes",
+        selectedPurchaseStoreCodeAddressAll: "",
+        selectedIssueTypeAll: 0,
+        selectedSlaStatus: 0,
+        selectedWantToVisitStoreAll: "yes",
+        selectedVisitStoreCodeAddressAll: "",
+        selectedWithClaimAll: "no",
+        selectedClaimStatus: 0,
+        selectedClaimCategory: 0,
+        selectedClaimSubCategory: 0,
+        selectedClaimIssueType: 0,
+        selectedWithTaskAll: "no",
+        selectedTaskStatus: 0,
+        selectedDepartment: 0,
+        selectedFunction: 0
+      });
+    }
   }
 
   handleAdvSearchFlag(e) {
@@ -3441,7 +3507,10 @@ class MyTicketList extends Component {
                                       <span className="blue-clr">04</span>{" "}
                                       Results
                                     </p>
-                                    <p className="blue-clr fs-14">
+                                    <p
+                                      className="blue-clr fs-14"
+                                      onClick={this.clearSearch}
+                                    >
                                       CLEAR SEARCH
                                     </p>
                                   </div>
