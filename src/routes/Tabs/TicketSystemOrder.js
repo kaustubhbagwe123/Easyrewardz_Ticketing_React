@@ -348,16 +348,13 @@ class TicketSystemOrder extends Component {
               </div>
             </div>
             <div className="col-12 col-lg-2 col-xl-1">
-              <div className="storeplusline" onClick={this.handleOrderTableOpen}>
+              <div
+                className="storeplusline"
+                onClick={this.handleOrderTableOpen}
+              >
                 <span className="plusline1"></span>
-                
-                <img
-                  src={ArrowImg}
-                  alt="Arrow"
-                  className="arrow-imgtask-1"
-                  
-                />
-                
+
+                <img src={ArrowImg} alt="Arrow" className="arrow-imgtask-1" />
               </div>
             </div>
           </div>
@@ -371,21 +368,26 @@ class TicketSystemOrder extends Component {
               className="row"
               style={{ marginLeft: "0px", marginRight: "0px" }}
             >
-              <div className="col-md-12 claim-status-card" style={{height:"54px"}}>
-                <label style={{marginTop:"7px"}}>
+              <div
+                className="col-md-12 claim-status-card"
+                style={{ height: "54px" }}
+              >
+                <label style={{ marginTop: "7px" }}>
                   <b>Customer Want to attach order</b>
                 </label>
-                <div className="claimplus" onClick={this.handleOrderTableClose.bind(this)}>
+                <div
+                  className="claimplus"
+                  onClick={this.handleOrderTableClose.bind(this)}
+                >
                   {/* <span className="plusline1"></span>
                   <img src={ArrowImg} alt="Arrow" className="arrow-imgtask-1" /> */}
                   <span className="plusline12"></span>
                   <span>
-                  <img
-                    src={MinusImg}
-                    alt="Minus"
-                    className="minus-imgorder"
-                   
-                  />
+                    <img
+                      src={MinusImg}
+                      alt="Minus"
+                      className="minus-imgorder"
+                    />
                   </span>
                 </div>
               </div>
@@ -977,10 +979,10 @@ class TicketSystemOrder extends Component {
                   },
                   {
                     Header: <span>Discount</span>,
-                    accessor: "discount",
+                    accessor: "discount"
                   }
                 ]}
-                resizable={false}
+                // resizable={false}
                 defaultPageSize={3}
                 showPagination={false}
                 SubComponent={row => {

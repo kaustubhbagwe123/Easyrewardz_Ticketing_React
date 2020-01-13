@@ -3,7 +3,7 @@ import ReactTable from "react-table";
 import DeleteIcon from "./../../assets/Images/red-delete-icon.png";
 import SimpleReactValidator from "simple-react-validator";
 import axios from "axios";
-import config from "./../../helpers/config";
+import config from "../../helpers/config";
 import {
   NotificationContainer,
   NotificationManager
@@ -16,7 +16,7 @@ class TicketSystemTask extends Component {
     this.state = {
       taskTitle: "",
       taskDescription: "",
-      taskId:0,
+      taskId: 0,
       taskfield: {},
       taskData: [],
       DepartmentData: [],
@@ -26,7 +26,7 @@ class TicketSystemTask extends Component {
       selectedDepartment: 0,
       selectedFunction: 0,
       selectedAssignTo: 0,
-      selectedPriority: 0,
+      selectedPriority: 0
     };
     this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
     // this.handleTaskDelete = this.handleTaskDelete.bind(this);
@@ -77,7 +77,7 @@ class TicketSystemTask extends Component {
       url: config.apiUrl + "/Master/getFunctionNameByDepartmentId",
       headers: authHeader(),
       params: {
-        DepartmentId: this.state.selectedDepartment,
+        DepartmentId: this.state.selectedDepartment
       }
     }).then(function(res) {
       debugger;
@@ -121,7 +121,7 @@ class TicketSystemTask extends Component {
     var taskfield = this.state.taskfield;
     taskfield[e.target.name] = e.target.selectedOptions[0].text;
     taskfield["DepartmentId"] = departmentValue;
-    this.setState({ selectedDepartment: departmentValue, taskfield});
+    this.setState({ selectedDepartment: departmentValue, taskfield });
 
     setTimeout(() => {
       if (this.state.selectedDepartment) {
@@ -133,7 +133,7 @@ class TicketSystemTask extends Component {
     let functionValue = e.currentTarget.value;
     var taskfield = this.state.taskfield;
     taskfield[e.currentTarget.name] = e.target.selectedOptions[0].text;
-    taskfield["FunctionID"] =functionValue;
+    taskfield["FunctionID"] = functionValue;
     this.setState({ selectedFunction: functionValue, taskfield });
 
     setTimeout(() => {
@@ -156,24 +156,26 @@ class TicketSystemTask extends Component {
     taskfield["PriorityID"] = priorityValue;
     this.setState({ selectedPriority: priorityValue, taskfield });
   };
-  
+
   handleCreateTask() {
     debugger;
-   
+
     if (this.validator.allValid()) {
       if (this.state.taskfield) {
         var taskData = [];
         taskData = this.state.taskData;
 
-      this.state.taskfield["ID"] = taskData.length + 1;
-      //  var taskId= this.state.taskfield["ID"];
+        this.state.taskfield["ID"] = taskData.length + 1;
+        //  var taskId= this.state.taskfield["ID"];
         taskData.push(this.state.taskfield);
-        {this.props.taskMasterData(taskData)}
+        {
+          this.props.taskMasterData(taskData);
+        }
         this.setState({
           taskData,
-        //  taskId : taskData.length + 1,
+          //  taskId : taskData.length + 1,
           taskfield: {
-            ID:0,
+            ID: 0,
             taskTitle: "",
             taskDescription: "",
             Department: "",
@@ -194,12 +196,12 @@ class TicketSystemTask extends Component {
       this.forceUpdate();
     }
   }
-  handleTaskDelete(i){
-    debugger
+  handleTaskDelete = i => {
+    debugger;
     let taskData = [...this.state.taskData];
-    taskData.splice((i-1),1);
-     this.setState({ taskData });
-  }
+    taskData.splice(i - 1, 1);
+    this.setState({ taskData });
+  };
   render() {
     const { taskData } = this.state;
     return (
@@ -411,14 +413,18 @@ class TicketSystemTask extends Component {
                           Header: <span>Actions</span>,
                           accessor: "actionReport",
                           Cell: row => (
-                            <span>
+                            <div>
                               <img
                                 src={DeleteIcon}
                                 alt="del-icon"
                                 className="downloadaction"
-                                onClick={this.handleTaskDelete.bind(this,row.original.ID)}
+                                onClick={() => {
+                                  this.handleTaskDelete(
+                                    row.original.ID
+                                  );
+                                }}
                               />
-                            </span>
+                            </div>
                           )
                         }
                       ]}
@@ -439,3 +445,4 @@ class TicketSystemTask extends Component {
 }
 
 export default TicketSystemTask;
+
