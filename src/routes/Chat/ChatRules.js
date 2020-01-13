@@ -225,7 +225,7 @@ class ChatRules extends Component {
           type="text"
           className="txt-edit-popover"
           placeholder="Enter Rule Code"
-          maxLength="10"
+          maxLength={10}
         />
       </div>
       <div className="pop-over-div">
@@ -234,12 +234,12 @@ class ChatRules extends Component {
           type="text"
           className="txt-edit-popover"
           placeholder="Enter Rule Name"
-          maxLength="25"
+          maxLength={25}
         />
       </div>
       <br />
       <div>
-        <label className="pop-over-cancle">CANCEL</label>
+      <a className="pop-over-cancle" href={Demo.BLANK_LINK} >CANCEL</a>
         <button className="pop-over-button">
           <label className="pop-over-btnsave-text">SAVE</label>
         </button>

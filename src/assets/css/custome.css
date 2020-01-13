@@ -7051,19 +7051,19 @@ table thead tr {
   height: 35px;
 }
 .plusline12 {
-  border: 1px solid #9b9b9b;
-  padding-top: 9px;
+  border-left: 1px solid #9b9b9b;
+  padding-top: 10px;
   padding-bottom: 24px;
 }
 .plusline1 {
-  border: 1px solid #9b9b9b;
-  padding-top: 15px;
+  border-right: 1px solid #9b9b9b;
+  padding-top: 17px;
   padding-bottom: 18px;
 }
 .plusline13 {
-  border: 1px solid #9b9b9b;
-  padding-top: 9px;
-  padding-bottom: 24px;
+  border-right: 1px solid #9b9b9b;
+  padding-top: 8px;
+  padding-bottom: 27px;
 }
 .plusline2 {
   border: 1px solid #9b9b9b;
@@ -8454,7 +8454,7 @@ table tr th:last-child {
   height: 2px;
   /* float: right; */
   margin-right: 5px;
-  margin-top: 11px;
+  margin-top: 12px;
   margin-left: 15px;
   cursor: pointer;
 }
@@ -8479,7 +8479,7 @@ table tr th:last-child {
 .storeplusline13 {
   cursor: pointer;
   float: right;
-  padding: 9px 0 0 0;
+  padding: 0 0 0 0;
   height: 54px;
 }
 .systemstoredropdown {
@@ -10051,5 +10051,8 @@ table tr th:last-child {
 }
 #ScheduleModel .ant-checkbox-wrapper + .ant-checkbox-wrapper {
   margin: 0;
+}
+.pop-over-cancle:hover {
+  color: #2561a8 !important;
 }
 /* ****************End css ************************/

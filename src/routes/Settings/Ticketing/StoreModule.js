@@ -146,17 +146,18 @@ class StoreModule extends Component {
                   id={ids}
                 />
                 </Popover>
-                {/* <Popover content={ActionEditBtn} placement="bottom"> */}
+              <Popover content={ActionEditBtn} placement="bottom" trigger="click">
                 <button className="react-tabel-button" id="p-edit-pop-2">
                   <label className="Table-action-edit-button-text">EDIT</label>
                 </button>
-                {/* </Popover> */}
+                </Popover>
               </span>
             </>
           );
         }
       }
     ];
+
     const CampaignWish =(
         <div className="store-popDiv">
             <label className="storePop-lbl">Dear Mr./Mrs. We wish you <br/> Happy Birthday!</label>
@@ -194,6 +195,32 @@ class StoreModule extends Component {
             </div>
           </div>
         </div>
+      );
+      const ActionEditBtn = (
+        <div className="edtpadding">
+        <div className="">
+          <label className="popover-header-text">EDIT CAMPAIGN SCRIPT</label>
+        </div>
+        <div className=" pop-over-div">
+          <label className="pop-over-lbl-text"> Campaign Name</label>
+          <select className="pop-over-select">
+              <option>Birthday</option>
+              <option>Anniversary</option>
+          </select>
+        </div>
+        <div className="div-cntr">
+            <label className="pop-over-lbl-text">Script Details</label>
+              <textarea className="stort-textArea" rows="4"></textarea>
+        </div>
+
+        <br />
+        <div>
+        <a className="pop-over-cancle" href={Demo.BLANK_LINK} >CANCEL</a>
+          <button className="pop-over-button">
+            <label className="pop-over-btnsave-text">SAVE</label>
+          </button>
+        </div>
+      </div>
       );
     return (
       <Fragment>

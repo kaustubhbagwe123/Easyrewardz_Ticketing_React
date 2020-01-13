@@ -195,7 +195,7 @@ class Templates extends Component {
             type="text"
             className="txt-edit-popover"
             placeholder="Enter Name"
-            maxLength="25"
+            maxLength={25}
           />
         </div>
         <div className="pop-over-div">
@@ -214,7 +214,7 @@ class Templates extends Component {
         </div>
         <br />
         <div>
-          <label className="pop-over-cancle">CANCEL</label>
+        <a className="pop-over-cancle" href={Demo.BLANK_LINK}>CANCEL</a>
           <button className="pop-over-button">
             <label className="pop-over-btnsave-text">SAVE</label>
           </button>
@@ -296,7 +296,7 @@ class Templates extends Component {
                         type="text"
                         className="txt-1"
                         placeholder="Enter Name"
-                        maxLength="25"
+                        maxLength={25}
                       />
                     </div>
                     <div className="divSpace">

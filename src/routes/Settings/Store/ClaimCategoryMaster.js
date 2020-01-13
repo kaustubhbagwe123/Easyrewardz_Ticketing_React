@@ -299,7 +299,7 @@ class ClaimCategoryMaster extends Component {
         </div>
         <br />
         <div>
-          <label className="pop-over-cancle">CANCEL</label>
+        <a className="pop-over-cancle" href={Demo.BLANK_LINK} >CANCEL</a>
           <button className="pop-over-button">
             <label className="pop-over-btnsave-text">SAVE</label>
           </button>
@@ -387,7 +387,7 @@ class ClaimCategoryMaster extends Component {
                       <Select
                         showSearch={true}
                         value={list1Value}
-                        style={{ width: 293 }}
+                        style={{ width: "100%" }}
                         onChange={this.onChangeList1}
                       >
                         {list1SelectOptions}
@@ -440,7 +440,7 @@ class ClaimCategoryMaster extends Component {
                       <Select
                         showSearch={true}
                         value={ListOfSubCate}
-                        style={{ width: 293 }}
+                        style={{ width: "100%" }}
                         onChange={this.onChangeListSubCate}
                       >
                         {listSubCategory}

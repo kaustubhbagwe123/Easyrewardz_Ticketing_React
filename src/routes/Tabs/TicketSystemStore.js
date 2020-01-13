@@ -236,14 +236,14 @@ class TicketSystemStore extends Component {
               overlayId="logout-ovrly"
             >
               <div className="row storemainrow">
-                <div className="col-md-10">
+                <div className="col-md-12">
                   <select className="systemstoredropdown1">
                     <option>Customer Want to visit store</option>
                     <option>Customer Already visited store</option>
                   </select>
-                </div>
-                <div className="col-md-1">
-                  <div style={{ display: "flex", marginTop: "7px" }}>
+                {/* </div> */}
+                {/* <div className="col-md-2"> */}
+                  <div style={{ display: "flex", marginTop: "7px",float:"right" }}>
                     <label className="orderdetailpopup">Yes</label>
                     <div className="switchmargin">
                       <div className="switch switch-primary d-inline m-r-10">
@@ -255,9 +255,17 @@ class TicketSystemStore extends Component {
                       </div>
                     </div>
                     <label className="orderdetailpopup">No</label>
+                    <div className="storeplusline13" onClick={this.handleOrderStoreTableClose}>
+                    <span className="plusline13" style={{marginLeft:"10px"}}></span>
+                    <img
+                    src={MinusImg}
+                    alt="Minus"
+                    className="minus-imgorder" 
+                  />
                   </div>
-                </div>
-                <div className="col-md-1">
+                  </div>
+                
+                {/* <div className="col-md-1">
                   <div className="storeplusline13" onClick={this.handleOrderStoreTableClose}>
                     <span className="plusline13"></span>
                     <img
@@ -265,13 +273,8 @@ class TicketSystemStore extends Component {
                     alt="Minus"
                     className="minus-imgorder" 
                   />
-                    {/* <img
-                      src={ArrowImg}
-                      alt="Arrow"
-                      className="arrow-imgtask-1"
-                      onClick={this.handleOrderStoreTableClose}
-                    /> */}
                   </div>
+                </div> */}
                 </div>
               </div>
 

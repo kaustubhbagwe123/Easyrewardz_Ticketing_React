@@ -266,7 +266,7 @@ class ChatThemes extends Component {
           type="text"
           className="txt-edit-popover"
           placeholder="Enter Theme Code"
-          maxLength="10"
+          maxLength={10}
         />
       </div>
       <div className="pop-over-div">
@@ -275,7 +275,7 @@ class ChatThemes extends Component {
           type="text"
           className="txt-edit-popover"
           placeholder="Enter Theme Name"
-          maxLength="25"
+          maxLength={25}
         />
       </div>
       <div className="pop-over-div">
@@ -287,7 +287,7 @@ class ChatThemes extends Component {
       </div>
       <br />
       <div>
-        <label className="pop-over-cancle">CANCEL</label>
+      <a className="pop-over-cancle" href={Demo.BLANK_LINK} >CANCEL</a>
         <button className="pop-over-button">
           <label className="pop-over-btnsave-text">SAVE</label>
         </button>
@@ -372,7 +372,7 @@ class ChatThemes extends Component {
                         type="text"
                         className="txt-1"
                         placeholder="Enter Theme Code"
-                        maxLength="10"
+                        maxLength={10}
                       />
                     </div>
                     <div className="divSpace">
@@ -382,7 +382,7 @@ class ChatThemes extends Component {
                           type="text"
                           className="txt-1"
                           placeholder="Enter Theme Name"
-                          maxLength="25"
+                          maxLength={25}
                         />
                       </div>
                     </div>

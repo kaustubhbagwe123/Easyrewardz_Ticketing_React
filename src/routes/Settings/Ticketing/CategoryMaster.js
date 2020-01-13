@@ -236,36 +236,37 @@ class CategoryMaster extends Component {
         </div>
         <div className="pop-over-div">
           <label className="edit-label-1">Brand Name</label>
-          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
+           <select id="inputStatus" className="edit-dropDwon dropdown-setting">
+             <option>Bata</option>
+             <option>Bata1</option>
+             <option>Bata3</option>
+           </select>
+         </div>
+
+          <div className="pop-over-div">
+           <label className="edit-label-1">Category</label>
+           <select id="inputStatus" className="edit-dropDwon dropdown-setting">
             <option>Bata</option>
-            <option>Bata1</option>
+             <option>Bata1</option>
             <option>Bata3</option>
+          </select>
+         </div>
+         <div className="pop-over-div">
+           <label className="edit-label-1">Sub-Category</label>
+           <select id="inputStatus" className="edit-dropDwon dropdown-setting">
+            <option>Bata</option>
+             <option>Bata1</option>
+             <option>Bata3</option>
           </select>
         </div>
         <div className="pop-over-div">
-          <label className="edit-label-1">Category</label>
-          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
+           <label className="edit-label-1">Issue Type</label>
+           <select id="inputStatus" className="edit-dropDwon dropdown-setting">
             <option>Bata</option>
-            <option>Bata1</option>
+             <option>Bata1</option>
             <option>Bata3</option>
-          </select>
-        </div>
-        <div className="pop-over-div">
-          <label className="edit-label-1">Sub-Category</label>
-          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
-            <option>Bata</option>
-            <option>Bata1</option>
-            <option>Bata3</option>
-          </select>
-        </div>
-        <div className="pop-over-div">
-          <label className="edit-label-1">Issue Type</label>
-          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
-            <option>Bata</option>
-            <option>Bata1</option>
-            <option>Bata3</option>
-          </select>
-        </div>
+           </select>
+         </div>
         <div className="pop-over-div">
           <label className="edit-label-1">Status</label>
           <select id="inputStatus" className="edit-dropDwon dropdown-setting">
@@ -275,13 +276,14 @@ class CategoryMaster extends Component {
         </div>
         <br />
         <div>
-          <label className="pop-over-cancle">CANCEL</label>
+        <a className="pop-over-cancle" href={Demo.BLANK_LINK} style={{marginRight:"20px"}}>CANCEL</a>
           <button className="pop-over-button">
             <label className="pop-over-btnsave-text">SAVE</label>
           </button>
         </div>
       </div>
     );
+   
 
     const { list1Value, ListOfSubCate } = this.state;
     const list1SelectOptions = this.state.listOfCategory.map(o => (

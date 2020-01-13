@@ -289,7 +289,7 @@ class Alerts extends Component {
             type="text"
             className="txt-edit-popover"
             placeholder="Enter Alert Type"
-            maxLength="25"
+            maxLength={25}
           />
         </div>
         {/* <div className="pop-over-div">
@@ -308,7 +308,7 @@ class Alerts extends Component {
         </div>
         <br />
         <div>
-          <label className="pop-over-cancle">CANCEL</label>
+        <a className="pop-over-cancle" href={Demo.BLANK_LINK} >CANCEL</a>
           <button className="pop-over-button">
             <label className="pop-over-btnsave-text">SAVE</label>
           </button>
@@ -384,7 +384,7 @@ class Alerts extends Component {
                   <h3>Create ALERTS</h3>
                   <div className="div-cntr">
                     <label>Alert Type</label>
-                    <input type="text" placeholder="Enter alert type" maxLength="25" />
+                    <input type="text" placeholder="Enter alert type" maxLength={25} />
                   </div>
                   <h4>Communication Mode</h4>
                   <div className="div-cntr">

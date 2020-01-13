@@ -199,7 +199,7 @@ class Users extends Component {
             type="text"
             className="txt-edit-popover"
             placeholder="Enter Designation Name"
-            maxLength="25"
+            maxLength={25}
           />
         </div>
         <div className="pop-over-div">
@@ -219,7 +219,8 @@ class Users extends Component {
         </div>
         <br />
         <div>
-          <label className="pop-over-cancle">CANCEL</label>
+        <a className="pop-over-cancle" href={Demo.BLANK_LINK}>CANCEL</a>
+          {/* <label className="pop-over-cancle">CANCEL</label> */}
           <button className="pop-over-button">
             <label className="pop-over-btnsave-text">SAVE</label>
           </button>
@@ -307,15 +308,15 @@ class Users extends Component {
                     <div className="multi-collapse show" id="personal-details">
                       <div className="div-cntr">
                         <label>User Name</label>
-                        <input type="text" defaultValue="Ajay" maxLength="25" />
+                        <input type="text" defaultValue="Ajay" maxLength={25} />
                       </div>
                       <div className="div-cntr">
                         <label>Mobile Number</label>
-                        <input type="text" defaultValue="9876543210" maxLength="10" />
+                        <input type="text" defaultValue="9876543210" maxLength={10} />
                       </div>
                       <div className="div-cntr">
                         <label>Email ID</label>
-                        <input type="text" defaultValue="something@email.com" maxLength="100" />
+                        <input type="text" defaultValue="something@email.com" maxLength={100} />
                       </div>
                       <div className="btn-coll">
                         <button

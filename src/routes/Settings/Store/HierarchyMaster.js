@@ -189,7 +189,7 @@ class HierarchyMaster extends Component {
             type="text"
             className="txt-edit-popover"
             placeholder="Enter Designation Name"
-            maxLength="25"
+            maxLength={25}
           />
         </div>
         <div className="pop-over-div">
@@ -209,7 +209,7 @@ class HierarchyMaster extends Component {
         </div>
         <br />
         <div>
-          <label className="pop-over-cancle">CANCEL</label>
+        <a className="pop-over-cancle" href={Demo.BLANK_LINK} >CANCEL</a>
           <button className="pop-over-button">
             <label className="pop-over-btnsave-text">SAVE</label>
           </button>
@@ -285,7 +285,7 @@ class HierarchyMaster extends Component {
                   <h3>Create Hierarchy</h3>
                   <div className="div-cntr">
                     <label>Designation Name</label>
-                    <input type="text" defaultValue="Store Manager" maxLength="25" />
+                    <input type="text" defaultValue="Store Manager" maxLength={25} />
                   </div>
                   <div className="div-cntr">
                     <label>Report To</label>
