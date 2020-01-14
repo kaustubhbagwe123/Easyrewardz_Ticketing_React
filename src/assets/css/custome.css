@@ -4356,6 +4356,7 @@ progress::-webkit-progress-bar {
   width: 245px;
   height: 43px;
   margin-top: 25px;
+  cursor: pointer;
 }
 
 .obpml {
@@ -7936,6 +7937,28 @@ table tr th:last-child {
 .varunoverflow::-webkit-scrollbar-thumb:hover{
   background: #555;
 }
+.assign-modal-body-mytick .rt-table::-webkit-scrollbar{
+  height: 7px;
+}
+.assign-modal-body-mytick .rt-table::-webkit-scrollbar-track{
+  background: #ddd;
+  border-radius: 10px;
+}
+.assign-modal-body-mytick .rt-table::-webkit-scrollbar-thumb{
+  background: #888;
+  border-radius: 10px;
+}
+.assign-modal-body-mytick .rt-table::-webkit-scrollbar-thumb:hover{
+  background: #555;
+}
+.assign-modal-body-mytick .item-selection {
+  position: absolute;
+  top: 90%;
+  transform: translateY(-50%);
+  width: 100%;
+  left: 0;
+  text-align: center;
+}
 .varun-taskDrawer {
   font-weight: bold;
   color: black;
@@ -9667,6 +9690,7 @@ table tr th:last-child {
   margin-right: 15px;
   padding-top: 12px;
   padding-bottom: 12px;
+  cursor: pointer;
 }
 .myticlist-expand-sect .save-view-search button.btn-inv {
   padding-right: 45px;
@@ -10014,6 +10038,7 @@ table tr th:last-child {
   line-height: 17px;
   text-align: center;
   border: none;
+  cursor: pointer;
 }
 #ScheduleModel .txt1Time {
   background: #ecf2f4 url("../Images/Time.png") no-repeat right 12px center; 

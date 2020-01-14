@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 
 class Brands extends Component {
+  
   render() {
     const dataTickBrand = [
       {
@@ -181,6 +182,7 @@ class Brands extends Component {
             className="txt-edit-popover"
             placeholder="Enter Brand Code"
             maxLength={10}
+           
           />
         </div>
         <div className="pop-over-div">
@@ -190,6 +192,7 @@ class Brands extends Component {
             className="txt-edit-popover"
             placeholder="Enter Brand Name"
             maxLength={25}
+          
           />
         </div>
         <div className="pop-over-div">
@@ -288,6 +291,7 @@ class Brands extends Component {
                         className="txt-1"
                         placeholder="Enter Brand Code"
                         maxLength={10}
+                  
                       />
                     </div>
                     <div className="divSpace">
@@ -298,21 +302,23 @@ class Brands extends Component {
                           className="txt-1"
                           placeholder="Enter Brand Name"
                           maxLength={25}
+                     
                         />
                       </div>
                     </div>
                     <div className="dropDrownSpace">
                       <label className="reports-to">Status</label>
-                      <select
-                        id="inputState"
-                        className="form-control dropdown-setting"
-                      >
+                      <select id="inputState"
+                        className="form-control dropdown-setting">
+                    
+                    
                         <option>select</option>
                         <option>Active</option>
                         <option>Deactive</option>
                       </select>
                     </div>
                     <div className="btnSpace">
+                   
                       <button className="CreateADDBtn">
                         <label className="addLable">ADD</label>
                       </button>

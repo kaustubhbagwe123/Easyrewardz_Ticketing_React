@@ -3831,7 +3831,7 @@ class MyTicketList extends Component {
                                               </label>
                                             </button>
                                           </div>
-                                          <div>
+                                          <div  onClick={this.ScheduleCloseModel}>
                                             <button
                                               type="button"
                                               className="scheduleBtncancel"
@@ -3954,13 +3954,14 @@ class MyTicketList extends Component {
                                           CLEAR
                                         </a>
                                       </div>
-                                      <div className="assign-modal-body">
+                                      <div className="assign-modal-body assign-modal-body-mytick">
                                         <ReactTable
                                           data={SearchAssignData}
                                           columns={[
                                             {
                                               Header: <span>Agent</span>,
                                               accessor: "agent",
+                                              minWidth: 190,
                                               Cell: row => {
                                                 var ids =
                                                   row.original["user_ID"];
@@ -3985,19 +3986,60 @@ class MyTicketList extends Component {
                                             },
                                             {
                                               Header: <span>Designation</span>,
-                                              accessor: "designation"
+                                              accessor: "designation",
+                                              // width: 130,
                                             },
                                             {
                                               Header: <span>Email</span>,
-                                              accessor: "email"
+                                              accessor: "email",
+                                              minWidth: 250,
+                                              maxWidth: 'auto',
+                                              
                                             }
                                           ]}
-                                          // resizable={false}
+                                          resizable={false}
                                           defaultPageSize={5}
-                                          showPagination={true}
+                                          showPagination={false}
                                           getTrProps={this.handleTicketDetails}
                                         />
-
+                                           <div className="position-relative">
+                    <div className="pagi">
+                      <ul>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>&lt;</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>1</a>
+                        </li>
+                        <li className="active">
+                          <a href={Demo.BLANK_LINK}>2</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>3</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>4</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>5</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>6</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>&gt;</a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="item-selection">
+                      <select>
+                        <option>30</option>
+                        <option>50</option>
+                        <option>100</option>
+                      </select>
+                      <p>Items per page</p>
+                    </div>
+                  </div>
                                         <textarea
                                           className="assign-modal-textArea"
                                           placeholder="Add Remarks"
