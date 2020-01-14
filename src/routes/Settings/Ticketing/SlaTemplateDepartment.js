@@ -127,7 +127,7 @@ class SlaTemplateDepartment extends Component {
                   className="downloadaction"
                 />
               </Popover>
-              <Popover content={SlaEdit} placement="bottom">
+              <Popover content={SlaEdit} placement="bottom" trigger="click">
                 <button className="react-tabel-button" id={ids}>
                   <label className="Table-action-edit-button-text">EDIT</label>
                 </button>
@@ -197,7 +197,7 @@ class SlaTemplateDepartment extends Component {
       </div>
     );
     const SlaEdit = (
-      <div>
+      <div className="edtpadding">
         <div className="d-flex">
           <div>
             <div className="">
@@ -219,7 +219,7 @@ class SlaTemplateDepartment extends Component {
             </div>
             <br />
             <div>
-              <label className="pop-over-cancle">CANCEL</label>
+            <a className="pop-over-cancle" href={Demo.BLANK_LINK} >CANCEL</a>
               <button className="pop-over-button">
                 <label className="pop-over-btnsave-text">SAVE</label>
               </button>

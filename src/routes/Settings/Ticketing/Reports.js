@@ -288,11 +288,11 @@ class Reports extends Component {
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Invoice No/Sub Order No</label>
-                      <input className="no-bg" type="text" />
+                      <input className="no-bg" type="text" maxLength={25} />
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Customer Email Id</label>
-                      <input className="no-bg" type="text" maxLength="100" />
+                      <input className="no-bg" type="text" maxLength={100} />
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Creation Date</label>
@@ -309,15 +309,15 @@ class Reports extends Component {
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Ticket Id/title</label>
-                      <input className="no-bg" type="text" />
+                      <input className="no-bg" type="text" maxLength={11} />
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Item Id</label>
-                      <input className="no-bg" type="text" />
+                      <input className="no-bg" type="text" maxLength={11} />
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Customer Mobile No.</label>
-                      <input className="no-bg" type="text" maxLength="10" />
+                      <input className="no-bg" type="text" maxLength={10} />
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Last Updated Date</label>
@@ -407,7 +407,7 @@ class Reports extends Component {
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Claim ID</label>
-                      <input className="no-bg" type="text" />
+                      <input className="no-bg" type="text" maxLength={11} />
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Purchase Store</label>
@@ -446,7 +446,7 @@ class Reports extends Component {
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Task Status</label>
-                      <input className="no-bg" type="text" />
+                      <input className="no-bg" type="text" maxLength={25} />
                     </div>
                   </div>
 
@@ -519,7 +519,7 @@ class Reports extends Component {
                   <div className="row">
                     <div className="col-md-4 ticketreport">
                       <label>Chat Id</label>
-                      <input className="no-bg" type="text" />
+                      <input className="no-bg" type="text" maxLength={11} />
                     </div>
                     <div className="col-md-4 ticketreport">
                       <label>Chat Status Remark</label>
@@ -553,11 +553,11 @@ class Reports extends Component {
                     </div>
                     <div className="col-md-4 ticketreport">
                       <label>Ticket ID</label>
-                      <input className="no-bg" type="text" />
+                      <input className="no-bg" type="text" maxLength={11} />
                     </div>
                     <div className="col-md-4 ticketreport">
                       <label>Customer Email ID</label>
-                      <input className="no-bg" type="text" maxLength="100" />
+                      <input className="no-bg" type="text" maxLength={100} />
                     </div>
                   </div>
 
@@ -578,7 +578,7 @@ class Reports extends Component {
                     </div>
                     <div className="col-md-4 ticketreport">
                       <label>Customer Mobile No.</label>
-                      <input className="no-bg" type="text" maxLength="10" />
+                      <input className="no-bg" type="text" maxLength={10} />
                     </div>
                   </div>
                   <div className="row nextbutton1">
@@ -627,6 +627,7 @@ class Reports extends Component {
                       className="no-bg"
                       type="text"
                       placeholder="Open Tickets"
+                      maxLength={25}
                     />
                   </div>
                   <div className="buttonschdulesave">

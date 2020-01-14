@@ -332,7 +332,7 @@ class Module extends Component {
         </div>
         <br />
         <div>
-          <label className="pop-over-cancle">CANCEL</label>
+        <a className="pop-over-cancle" href={Demo.BLANK_LINK}>CANCEL</a>
           <button className="pop-over-button">
             <label className="pop-over-btnsave-text">SAVE</label>
           </button>
@@ -719,7 +719,10 @@ class Module extends Component {
                                 </div>
                                 <div className="dropDrownSpace">
                                   <label className="reports-to">Message</label>
-                                  <textarea className="shortcutarea" placeholder="Active"></textarea>
+                                  <textarea className="shortcutarea" 
+                                            placeholder="Active"
+                                            maxLength={250}>
+                                  </textarea>
                                   
                                 </div>
                                 

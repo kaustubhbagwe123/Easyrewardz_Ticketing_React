@@ -210,7 +210,7 @@ class QaCrmRoles extends Component {
           type="text"
           className="txt-edit-popover"
           placeholder="Enter Role Name"
-          maxLength="25"
+          maxLength={25}
         />
       </div>
 
@@ -275,7 +275,7 @@ class QaCrmRoles extends Component {
       </div>
       <br />
       <div>
-        <label className="pop-over-cancle">CANCEL</label>
+      <a className="pop-over-cancle" href={Demo.BLANK_LINK} >CANCEL</a>
         <button className="pop-over-button">
           <label className="pop-over-btnsave-text">SAVE</label>
         </button>
@@ -359,7 +359,7 @@ class QaCrmRoles extends Component {
                         type="text"
                         className="txt-1"
                         placeholder="Enter Role Name"
-                        maxLength="25"
+                        maxLength={25}
                       />
                     </div>
                     <div className="crm-margin-div crm-padding-div">

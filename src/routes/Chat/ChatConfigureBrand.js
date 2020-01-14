@@ -54,7 +54,7 @@ class ChatConfigureBrand extends Component {
                             type="text"
                             className="txt-1"
                             placeholder="Enter Brand Code"
-                            maxLength="10"
+                            maxLength={10}
                           />
                         </div>
                       </div>
@@ -65,7 +65,7 @@ class ChatConfigureBrand extends Component {
                             type="text"
                             className="txt-1"
                             placeholder="Enter Brand Name"
-                            maxLength="25"
+                            maxLength={25}
                           />
                         </div>
                       </div>
@@ -151,7 +151,7 @@ class ChatConfigureBrand extends Component {
                                         type="text"
                                         className="txt-1"
                                         placeholder="Enter Brand Code"
-                                        maxLength="10"
+                                        maxLength={10}
                                       />
                                     </div>
                                   </div>
@@ -164,7 +164,7 @@ class ChatConfigureBrand extends Component {
                                         type="text"
                                         className="txt-1"
                                         placeholder="Enter Brand Name"
-                                        maxLength="25"
+                                        maxLength={25}
                                       />
                                     </div>
                                   </div>

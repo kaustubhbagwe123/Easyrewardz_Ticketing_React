@@ -258,7 +258,7 @@ class StoreUsers extends Component {
                       </div>
                       <div className="div-cntr">
                         <label>Store Code</label>
-                        <input type="text" placeholder="Enter Store Code" maxLength="10" />
+                        <input type="text" placeholder="Enter Store Code" maxLength={10} />
                       </div>
                       <div className="btn-coll">
                         <button
@@ -288,15 +288,15 @@ class StoreUsers extends Component {
                     >
                       <div className="div-cntr">
                         <label>User Name</label>
-                        <input type="text" placeholder="Enter User Name" maxLength="25" />
+                        <input type="text" placeholder="Enter User Name" maxLength={25} />
                       </div>
                       <div className="div-cntr">
                         <label>Mobile Number</label>
-                        <input type="text" placeholder="Enter Mobile Number" maxLength="10" />
+                        <input type="text" placeholder="Enter Mobile Number" maxLength={10} />
                       </div>
                       <div className="div-cntr">
                         <label>Email ID</label>
-                        <input type="text" placeholder="Enter Email ID" maxLength="100" />
+                        <input type="text" placeholder="Enter Email ID" maxLength={100} />
                       </div>
                       <div className="btn-coll">
                         <button

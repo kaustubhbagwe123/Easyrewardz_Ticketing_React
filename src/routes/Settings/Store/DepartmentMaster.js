@@ -151,45 +151,55 @@ class DepartmentMaster extends Component {
       }
     ];
     const DepartEdit = (
-      <div>
-        <div className="right-sect-div right-sect-collapse editdeptpopover">
+      <div className="edtpadding">
+        <div className="">
           <label className="popover-header-text">Edit Department</label>
-          <div className="div-cntrdept">
-            <label>Brand</label>
-            <select>
-              <option>Bata</option>
-            </select>
-          </div>
-          <div className="div-cntrdept">
-            <label>Store Code</label>
-            <select>
-              <option>Select</option>
-            </select>
-          </div>
-          <div className="div-cntrdept">
-            <label>Department</label>
-            <select>
-              <option>Admin</option>
-            </select>
-          </div>
-          <div className="div-cntrdept">
-            <label>Function</label>
-            <input type="text" placeholder="Attendance" maxLength="25" />
-          </div>
-          <div className="div-cntrdept">
-            <label>Status</label>
-            <select>
-              <option>Active</option>
-              <option>Inactive</option>
-            </select>
-          </div>
         </div>
-        <div className="delcan-btn">
-          <a href={Demo.BLANK_LINK}>CANCEL</a>
-          <button className="butn">Save</button>
+        <div className="pop-over-div">
+          <label className="edit-label-1">Brand</label>
+          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
+            <option>Bata1</option>
+            <option>Bata2</option>
+          </select>
+        </div>
+        <div className="pop-over-div">
+          <label className="edit-label-1">Store Code</label>
+          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
+            <option>Code 1</option>
+            <option>Code 2</option>
+          </select>
+        </div>
+        <div className="pop-over-div">
+          <label className="edit-label-1">Department</label>
+          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
+            <option>Admin 1</option>
+          </select>
+        </div>
+        <div className="pop-over-div">
+            <label className="edit-label-1">Function</label>
+            <input type="text"  
+                   className="txt-edit-popover" 
+                   placeholder="Attendance" 
+                   maxLength={25} 
+            />
+          </div>
+        <div className="pop-over-div">
+          <label className="edit-label-1">Status</label>
+          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
+            <option>Active</option>
+            <option>Inactive</option>
+          </select>
+        </div>
+        <br />
+        <div>
+        <a className="pop-over-cancle" href={Demo.BLANK_LINK} >CANCEL</a>
+          <button className="pop-over-button">
+            <label className="pop-over-btnsave-text">SAVE</label>
+          </button>
         </div>
       </div>
     );
+  
     const ActionDelete = (
       <div className="d-flex general-popover popover-body">
         <div className="del-big-icon">
@@ -298,7 +308,7 @@ class DepartmentMaster extends Component {
                   </div>
                   <div className="div-cntr">
                     <label>Function</label>
-                    <input type="text" placeholder="Attendance" maxLength="25" />
+                    <input type="text" placeholder="Attendance" maxLength={25} />
                   </div>
                   <div className="div-cntr">
                     <label>Status</label>

@@ -296,6 +296,7 @@ class StoreReports extends Component {
                         className="no-bg"
                         type="text"
                         placeholder="Enter Task ID/ Title"
+                        maxLength={11}
                       />
                     </div>
                     <div className="col-md-4 ticketstrReport">
@@ -350,6 +351,7 @@ class StoreReports extends Component {
                         className="no-bg"
                         type="text"
                         placeholder="Enter Task ID/ Title"
+                        maxLength={11}
                       />
                     </div>
                     <div className="col-md-4 ticketstrReport">
@@ -380,7 +382,7 @@ class StoreReports extends Component {
                     </div>
                     <div className="col-md-4 ticketstrReport">
                       <label>Claim ID</label>
-                      <input className="no-bg" type="text" />
+                      <input className="no-bg" type="text" maxLength={11} />
                     </div>
                   </div>
                   <div className="row nextbutton1">
@@ -407,7 +409,7 @@ class StoreReports extends Component {
                   <div className="row mdl-row">
                     <div className="col-md-4 ticketstrReport">
                       <label>Claim ID</label>
-                      <input className="no-bg" type="text" />
+                      <input className="no-bg" type="text" maxLength={11} />
                     </div>
                     <div className="col-md-4 ticketstrReport">
                       <label>Claim Category</label>
@@ -453,7 +455,7 @@ class StoreReports extends Component {
                   <div className="row mdl-row">
                     <div className="col-md-4 ticketstrReport">
                       <label>Linked Ticket ID</label>
-                      <input className="no-bg" type="text" />
+                      <input className="no-bg" type="text" maxLength={11} />
                     </div>
                     <div className="col-md-4 ticketstrReport">
                       <label>Claim Issue Type</label>
@@ -486,7 +488,7 @@ class StoreReports extends Component {
                     </div>
                     <div className="col-md-4 ticketstrReport">
                       <label>Linked Task ID</label>
-                      <input className="no-bg" type="text" />
+                      <input className="no-bg" type="text" maxLength={11} />
                     </div>
                   </div>
                   <div className="row nextbutton1">
@@ -514,7 +516,7 @@ class StoreReports extends Component {
                   <div className="row mdl-row">
                     <div className="col-md-4 ticketstrReport">
                       <label>Campaign Name</label>
-                      <input className="no-bg" type="text" />
+                      <input className="no-bg" type="text" maxLength={25} />
                     </div>
                     <div className="col-md-4 ticketstrReport">
                       <label>Campaign Assigned To</label>
@@ -593,6 +595,7 @@ class StoreReports extends Component {
                       className="no-bg"
                       type="text"
                       placeholder="Open Tickets"
+                      maxLength={25}
                     />
                   </div>
                   <div className="buttonschdulesave">
