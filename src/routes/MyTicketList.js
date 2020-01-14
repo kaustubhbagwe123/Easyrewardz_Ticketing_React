@@ -3,7 +3,6 @@ import SearchIcon from "./../assets/Images/search-icon.png";
 import InfoIcon from "./../assets/Images/info-icon.png";
 import TaskIconBlue from "./../assets/Images/task-icon-blue.png";
 import TaskIconGray from "./../assets/Images/task-icon-gray.png";
-// import CliamIconBlue from "./../assets/Images/cliam-icon-blue.png";
 import HeadPhone3 from "./../assets/Images/headphone3.png";
 import BlackLeftArrow from "./../assets/Images/black-left-arrow.png";
 import SearchBlackImg from "./../assets/Images/searchBlack.png";
@@ -11,6 +10,7 @@ import Headphone2Img from "./../assets/Images/headphone2.png";
 import Demo from "../store/Hashtag.js";
 import Sorting from "./../assets/Images/sorting.png";
 import DelSearch from "./../assets/Images/del-search.png";
+import moment from "moment";
 // import Modal from "react-bootstrap/Modal";
 import Modal from "react-responsive-modal";
 // import MyTicketNew from "./Tabs/MyTicketNew.js";
@@ -176,7 +176,9 @@ class MyTicketList extends Component {
       ticketStatusId: 100,
       advPageSize: 30,
       advPageNo: 1,
-      SearchTicketData: []
+      SearchTicketData: [],
+      fieldByDate: {},
+      fieldByCustomerType:{}
     };
     this.clearSearch = this.clearSearch.bind(this);
     this.handleAdvSearchFlag = this.handleAdvSearchFlag.bind(this);
@@ -211,9 +213,7 @@ class MyTicketList extends Component {
     this.handleScheduleTime = this.handleScheduleTime.bind(this);
     this.handleAssignTickets = this.handleAssignTickets.bind(this);
     this.handleSchedulePopup = this.handleSchedulePopup.bind(this);
-    this.handleSearchTicketEscalation = this.handleSearchTicketEscalation.bind(
-      this
-    );
+    this.handleSearchTicket = this.handleSearchTicket.bind(this);
     this.handleSearchTicketAllTabCount = this.handleSearchTicketAllTabCount.bind(
       this
     );
@@ -222,6 +222,7 @@ class MyTicketList extends Component {
   componentDidMount() {
     debugger;
     this.handleSearchTicketAllTabCount();
+    this.handleSearchTicket();
     this.handleGetDesignationList();
     this.handleGetTicketPriorityList();
     this.handleGetChannelOfPurchaseList();
@@ -230,7 +231,6 @@ class MyTicketList extends Component {
     this.handleGetSlaStatusList();
     this.handleGetDraftDetails();
     this.handleGetDepartmentList();
-    this.handleSearchTicketEscalation();
   }
   handleSearchTicketAllTabCount() {
     let self = this;
@@ -266,72 +266,91 @@ class MyTicketList extends Component {
       }
     });
   }
-  handleSearchTicketEscalation() {
-    let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Search/SearchTicket",
-      headers: authHeader(),
-      data: {
-        isByStatus: this.state.isByStatus,
-        pageSize: this.state.advPageSize,
-        pageNo: this.state.advPageNo,
-        isEscalation: 1
-        // ticketStatus: ticketStatus
-      }
-    }).then(function(res) {
-      debugger;
-      let data = res.data.responseData;
-      let Status = res.data.message;
-      if (Status === "Record Not Found") {
-        self.setState({ SearchTicketData: [] });
-      } else if (data !== null) {
-        self.setState({ SearchTicketData: data });
-      }
-    });
-  }
+  // handleSearchTicketEscalation() {
+  //   let self = this;
+  //   axios({
+  //     method: "post",
+  //     url: config.apiUrl + "/Search/SearchTicket",
+  //     headers: authHeader(),
+  //     data: {
+  //       isByStatus: this.state.isByStatus,
+  //       pageSize: this.state.advPageSize,
+  //       pageNo: this.state.advPageNo,
+  //       isEscalation: 1
+  //       // ticketStatus: ticketStatus
+  //     }
+  //   }).then(function(res) {
+  //     debugger;
+  //     let data = res.data.responseData;
+  //     let Status = res.data.message;
+  //     if (Status === "Record Not Found") {
+  //       self.setState({ SearchTicketData: [] });
+  //     } else if (data !== null) {
+  //       self.setState({ SearchTicketData: data });
+  //     }
+  //   });
+  // }
 
   handleSearchTicket(TabId) {
     debugger;
     var ticketStatus = 0;
-    var isEscalation = 0;
-    if (TabId === "Escalation") {
-      ticketStatus = 1;
-      isEscalation = 1;
+    // if (TabId === "Escalation") {
+    //   ticketStatus = 1;
+    //   isEscalation = 1;
+    // } else if (TabId === "New") {
+    //   ticketStatus = 101;
+    //   isEscalation = 0;
+    // } else if (TabId === "Open") {
+    //   isEscalation = 0;
+    //   ticketStatus = 102;
+    // } else if (TabId === "Resolved") {
+    //   isEscalation = 0;
+    //   ticketStatus = 103;
+    // } else if (TabId === "Closed") {
+    //   isEscalation = 0;
+    //   ticketStatus = 104;
+    // } else if (TabId === "Reassigned") {
+    //   isEscalation = 0;
+    //   ticketStatus = 106;
+    // } else if (TabId === "All") {
+    //   isEscalation = 0;
+    //   ticketStatus = 107;
+    // } else if (TabId === "FollowUp") {
+    //   isEscalation = 0;
+    //   ticketStatus = 108;
+    // }
+    if (TabId === "Escalation" || TabId === undefined) {
+      ticketStatus = 1001;
     } else if (TabId === "New") {
       ticketStatus = 101;
-      isEscalation = 0;
     } else if (TabId === "Open") {
-      isEscalation = 0;
       ticketStatus = 102;
     } else if (TabId === "Resolved") {
-      isEscalation = 0;
       ticketStatus = 103;
     } else if (TabId === "Closed") {
-      isEscalation = 0;
       ticketStatus = 104;
     } else if (TabId === "Reassigned") {
-      isEscalation = 0;
-      ticketStatus = 106;
+      ticketStatus = 1004;
     } else if (TabId === "All") {
-      isEscalation = 0;
-      ticketStatus = 107;
+      ticketStatus = 1002;
     } else if (TabId === "FollowUp") {
-      isEscalation = 0;
-      ticketStatus = 108;
+      ticketStatus = 1003;
     }
+    var data = ticketStatus;
     debugger;
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/Search/SearchTicket",
+      // url: config.apiUrl + "/Search/SearchTicket",
+      url: config.apiUrl + "/Search/GetTicketsOnPageLoad",
       headers: authHeader(),
-      data: {
-        isByStatus: this.state.isByStatus,
-        pageSize: this.state.advPageSize,
-        pageNo: this.state.advPageNo,
-        isEscalation: isEscalation,
-        ticketStatus: ticketStatus
+      params: {
+        // isByStatus: this.state.isByStatus,
+        // pageSize: this.state.advPageSize,
+        // pageNo: this.state.advPageNo,
+        // isEscalation: isEscalation,
+        // ticketStatus: ticketStatus
+        HeaderStatusID: ticketStatus
       }
     }).then(function(res) {
       debugger;
@@ -502,7 +521,7 @@ class MyTicketList extends Component {
     } else if (currentActive === "By Customer Type") {
       this.setState({
         byDateFlag: 0,
-        byCustomerTypeFlag: 1,
+        byCustomerTypeFlag: 2,
         byTicketTypeFlag: 0,
         byCategoryFlag: 0,
         allFlag: 0
@@ -511,7 +530,7 @@ class MyTicketList extends Component {
       this.setState({
         byDateFlag: 0,
         byCustomerTypeFlag: 0,
-        byTicketTypeFlag: 1,
+        byTicketTypeFlag: 3,
         byCategoryFlag: 0,
         allFlag: 0
       });
@@ -520,7 +539,7 @@ class MyTicketList extends Component {
         byDateFlag: 0,
         byCustomerTypeFlag: 0,
         byTicketTypeFlag: 0,
-        byCategoryFlag: 1,
+        byCategoryFlag: 4,
         allFlag: 0
       });
     } else if (currentActive === "All") {
@@ -529,7 +548,7 @@ class MyTicketList extends Component {
         byCustomerTypeFlag: 0,
         byTicketTypeFlag: 0,
         byCategoryFlag: 0,
-        allFlag: 1
+        allFlag: 5
       });
     }
   }
@@ -897,38 +916,74 @@ class MyTicketList extends Component {
       }
     });
   }
-  ViewSearchData() {
+  ViewSearchData(TabId) {
     debugger;
+    var ticketStatus = 0;
+    // if (TabId === "Escalation" || TabId === undefined) {
+    //   ticketStatus = 1001;
+    // } else if (TabId === "New") {
+    //   ticketStatus = 101;
+    // } else if (TabId === "Open") {
+    //   ticketStatus = 102;
+    // } else if (TabId === "Resolved") {
+    //   ticketStatus = 103;
+    // } else if (TabId === "Closed") {
+    //   ticketStatus = 104;
+    // } else if (TabId === "Reassigned") {
+    //   ticketStatus = 1004;
+    // } else if (TabId === "All") {
+    //   ticketStatus = 1002;
+    // } else if (TabId === "FollowUp") {
+    //   ticketStatus = 1003;
+    // }
     // let self = this;
-    var paramData = {
-      ByDate: this.state.byDateFlag,
-      creationDate: this.state.ByDateCreatDate,
-      lastUpdatedDate: this.state.ByDateSelectDate,
-      SLADue: this.state.selectedSlaDueByDate,
-      ticketStatus: this.state.selectedTicketStatusByDate,
-      ByCustomerType: this.state.byCustomerTypeFlag,
-      customerMob: this.state.MobileNoByCustType,
-      customerEmail: this.state.EmailIdByCustType,
-      TicketID: this.state.TicketIdByCustType,
-      ticketStatus: this.state.selectedTicketStatusByCustomer,
-      ByTicketType: this.state.byTicketTypeFlag,
-      Priority: this.state.selectedPriority,
-      ticketStatus: this.state.selectedTicketStatusByTicket,
-      chanelOfPurchase: this.state.selectedChannelOfPurchase,
-      ticketActionType: this.state.selectedTicketActionType,
-      ByCategory: this.state.byCategoryFlag,
-      Category: this.state.selectedCategory,
-      subCategory: this.state.selectedSubCategory,
-      issueType: this.state.selectedIssueType,
-      ticketStatus: this.state.selectedTicketStatusByCategory
-      // byAll:this.state.allFlag,
-    };
+    // var paramData = {
+    //   HeaderStatusId: 1001,
+    //   ActiveTabId: this.state.byDateFlag,
+    //   Ticket_CreatedOn: moment(this.state.ByDateCreatDate).format("YYYY-MM-DD"),
+    //   Ticket_ModifiedOn: moment(this.state.ByDateSelectDate).format(
+    //     "YYYY-MM-DD"
+    //   ),
+    //   SLA_DueON: this.state.selectedSlaDueByDate,
+    //   Ticket_StatusID: this.state.selectedTicketStatusByDate
+    //   // ByCustomerType: this.state.byCustomerTypeFlag,
+    //   // customerMob: this.state.MobileNoByCustType,
+    //   // customerEmail: this.state.EmailIdByCustType,
+    //   // TicketID: this.state.TicketIdByCustType,
+    //   // ticketStatus: this.state.selectedTicketStatusByCustomer,
+    //   // ByTicketType: this.state.byTicketTypeFlag,
+    //   // Priority: this.state.selectedPriority,
+    //   // ticketStatus: this.state.selectedTicketStatusByTicket,
+    //   // chanelOfPurchase: this.state.selectedChannelOfPurchase,
+    //   // ticketActionType: this.state.selectedTicketActionType,
+    //   // ByCategory: this.state.byCategoryFlag,
+    //   // Category: this.state.selectedCategory,
+    //   // subCategory: this.state.selectedSubCategory,
+    //   // issueType: this.state.selectedIssueType,
+    //   // ticketStatus: this.state.selectedTicketStatusByCategory
+    //   // byAll:this.state.allFlag,
+    // };
+    // ---------------By Date tab---------------------
+    this.state.fieldByDate["Ticket_CreatedOn"] = moment(
+      this.state.ByDateCreatDate
+    ).format("YYYY-MM-DD");
+    this.state.fieldByDate["Ticket_ModifiedOn"] = moment(
+      this.state.ByDateSelectDate
+    ).format("YYYY-MM-DD");
+    this.state.fieldByDate["SLA_DueON"] = this.state.selectedSlaDueByDate;
+    this.state.fieldByDate[
+      "Ticket_StatusID"
+    ] = this.state.selectedTicketStatusByDate;
+    // --------------------By Customer Type Tab---------------
+    // this.state.fieldByCustomerType[""]
     axios({
       method: "post",
-      url: config.apiUrl + "/Search/GetTicketSearchResult",
+      url: config.apiUrl + "/Search/GetTicketsOnSearch",
       headers: authHeader(),
       data: {
-        searchparams: paramData
+        HeaderStatusId: 1001,
+        ActiveTabId: this.state.byDateFlag,
+        searchDataByDate: this.state.fieldByDate
       }
     }).then(function(res) {
       debugger;
