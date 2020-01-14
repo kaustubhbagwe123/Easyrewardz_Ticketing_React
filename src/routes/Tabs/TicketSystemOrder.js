@@ -107,6 +107,7 @@ class TicketSystemOrder extends Component {
   handleCheckOrderID(OrderItemId, rowData, e) {
     debugger;
 
+    e.stopPropagation();
     const newSelected = Object.assign({}, this.state.CheckOrderID);
     newSelected[OrderItemId] = !this.state.CheckOrderID[OrderItemId];
     this.setState({
@@ -937,6 +938,7 @@ class TicketSystemOrder extends Component {
                           type="checkbox"
                           id={"i" + row.original.orderMasterID}
                           style={{ display: "none" }}
+                          name="ticket-order"
                           checked={
                             this.state.CheckOrderID[
                               row.original.orderMasterID

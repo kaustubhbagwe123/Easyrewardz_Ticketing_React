@@ -184,7 +184,9 @@ class Dashboard extends Component {
       ticketStatusId: 100,
       advPageSize: 30,
       advPageNo: 1,
-      CheckBoxChecked: false
+      CheckBoxChecked: false,
+      BrandData: [],
+      AgentData: []
     };
     this.applyCallback = this.applyCallback.bind(this);
     // this.handleApply = this.handleApply.bind(this);
@@ -224,6 +226,8 @@ class Dashboard extends Component {
     this.handleAssignRemark = this.handleAssignRemark.bind(this);
     this.handleDailyDay = this.handleDailyDay.bind(this);
     this.handleScheduleTime = this.handleScheduleTime.bind(this);
+    this.handleGetBrandList = this.handleGetBrandList.bind(this);
+    this.handleGetAgentList = this.handleGetAgentList.bind(this);
     // this.toggleHoverState = this.toggleHoverState.bind(this);
   }
   // handleApply(event, picker) {
@@ -243,8 +247,36 @@ class Dashboard extends Component {
     this.handleGetDesignationList();
     this.handleGetTicketPriorityList();
     this.handleGetChannelOfPurchaseList();
+    this.handleGetBrandList();
+    this.handleGetAgentList();
   }
 
+  handleGetAgentList() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/User/GetUserList",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let AgentData = res.data.responseData;
+      self.setState({ AgentData: AgentData });
+    });
+  }
+  handleGetBrandList() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Brand/GetBrandList",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let BrandData = res.data.responseData;
+      self.setState({ BrandData: BrandData });
+    });
+  }
   handelCheckBoxCheckedChange = () => {
     this.setState({
       CheckBoxChecked: !this.state.CheckBoxChecked
@@ -1247,7 +1279,7 @@ class Dashboard extends Component {
                 />
                 <label htmlFor="fil-ab7">
                   <img
-                    src={HeadPhone3}  
+                    src={HeadPhone3}
                     alt="HeadPhone"
                     className="headPhone3"
                   />
@@ -1781,7 +1813,20 @@ class Dashboard extends Component {
                     <span className="EMFCText">All</span>
                   </button>
                   <ul className="dropdown-menu">
-                    <li>
+                    {this.state.BrandData !== null &&
+                      this.state.BrandData.map((item, i) => (
+                        <li key={i}>
+                          <label htmlFor={"i" + item.brandID}>
+                            <input
+                              type="checkbox"
+                              id={"i" + item.brandID}
+                              className="ch1"
+                            />
+                            <span className="ch1-text">{item.brandName}</span>
+                          </label>
+                        </li>
+                      ))}
+                    {/* <li>
                       <label htmlFor="one">
                         <input type="checkbox" id="one" className="ch1" />
                         <span className="ch1-text">Bata 1</span>
@@ -1804,7 +1849,7 @@ class Dashboard extends Component {
                         <input type="checkbox" id="four" className="ch1" />
                         <span className="ch1-text">Bata 4</span>
                       </label>
-                    </li>
+                    </li> */}
                   </ul>
                 </div>
               </span>
@@ -1821,7 +1866,20 @@ class Dashboard extends Component {
                     <span className="EMFCText">All</span>
                   </button>
                   <ul className="dropdown-menu">
-                    <li>
+                    {this.state.AgentData !== null &&
+                      this.state.AgentData.map((item, i) => (
+                        <li key={i}>
+                          <label htmlFor={"i" + item.reporteeID}>
+                            <input
+                              type="checkbox"
+                              id={"i" + item.reporteeID}
+                              className="ch1"
+                            />
+                            <span className="ch1-text">{item.fullName}</span>
+                          </label>
+                        </li>
+                      ))}
+                    {/* <li>
                       <label htmlFor="one">
                         <input type="checkbox" id="one" className="ch1" />
                         <span className="ch1-text">Bata 1</span>
@@ -1844,7 +1902,7 @@ class Dashboard extends Component {
                         <input type="checkbox" id="four" className="ch1" />
                         <span className="ch1-text">Bata 4</span>
                       </label>
-                    </li>
+                    </li> */}
                   </ul>
                 </div>
                 {/* <div className="dropdown">
