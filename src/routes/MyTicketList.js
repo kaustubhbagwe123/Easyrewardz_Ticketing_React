@@ -3,7 +3,6 @@ import SearchIcon from "./../assets/Images/search-icon.png";
 import InfoIcon from "./../assets/Images/info-icon.png";
 import TaskIconBlue from "./../assets/Images/task-icon-blue.png";
 import TaskIconGray from "./../assets/Images/task-icon-gray.png";
-// import CliamIconBlue from "./../assets/Images/cliam-icon-blue.png";
 import HeadPhone3 from "./../assets/Images/headphone3.png";
 import BlackLeftArrow from "./../assets/Images/black-left-arrow.png";
 import SearchBlackImg from "./../assets/Images/searchBlack.png";
@@ -11,6 +10,7 @@ import Headphone2Img from "./../assets/Images/headphone2.png";
 import Demo from "../store/Hashtag.js";
 import Sorting from "./../assets/Images/sorting.png";
 import DelSearch from "./../assets/Images/del-search.png";
+import moment from "moment";
 // import Modal from "react-bootstrap/Modal";
 import Modal from "react-responsive-modal";
 // import MyTicketNew from "./Tabs/MyTicketNew.js";
@@ -96,7 +96,7 @@ class MyTicketList extends Component {
       selectedTicketActionType: [],
       selectedTicketStatusByDate: 0,
       selectScheduleDate: 0,
-      selectedNoOfDay: "",
+      selectedNoOfDay: 0,
       selectedScheduleTime: 0,
       selectedSlaDueByDate: 0,
       selectedClaimStatus: 0,
@@ -167,6 +167,41 @@ class MyTicketList extends Component {
           department: "Team Member 4"
         }
       ],
+      NameOfDayForWeek: [
+        {
+          days: "Sunday"
+        },
+        {
+          days: "Monday"
+        }
+      ],
+      NameOfDayForYear: [
+        {
+          days: "Sunday"
+        },
+        {
+          days: "Monday"
+        }
+      ],
+      NameOfMonthForYear: [
+        {
+          month: "September"
+        },
+        {
+          month: "October"
+        }
+      ],
+      NameOfMonthForDailyYear: [
+        {
+          month: "September"
+        },
+        {
+          month: "October"
+        }
+      ],
+      selectedNameOfDayForWeek: [],
+      selectedNameOfMonthForYear: [],
+      selectedNameOfMonthForDailyYear: [],
       agentId: 0,
       agentRemark: "",
       ticketIds: "1,3",
@@ -176,7 +211,36 @@ class MyTicketList extends Component {
       ticketStatusId: 100,
       advPageSize: 30,
       advPageNo: 1,
-      SearchTicketData: []
+      SearchTicketData: [],
+      fieldByDate: {},
+      fieldByCustomerType:{},
+      selectedTeamMemberCommaSeperated: "",
+      selectedNameOfDayForWeekCommaSeperated: "",
+      selectedNameOfMonthForYearCommaSeperated: "",
+      selectedNameOfMonthForDailyYearCommaSeperated: "",
+      selectedNameOfDayForYearCommaSeperated: "",
+      IsDaily: 0,
+      IsWeekly: 0,
+      IsDailyForMonth: 0,
+      IsDailyForYear: 0,
+      IsWeeklyForMonth: 0,
+      IsWeeklyForYear: 0,
+      selectedNoOfWeek: 0,
+      selectedWeeklyDays: "",
+      Mon: "",
+      Tue: "",
+      Wed: "",
+      Thu: "",
+      Fri: "",
+      Sat: "",
+      Sun: "",
+      selectedNoOfDaysForMonth: 0,
+      selectedNoOfMonthForMonth: 0,
+      selectedNoOfMonthForWeek: 0,
+      selectedNoOfWeekForWeek: 0,
+      selectedNoOfDayForDailyYear: 0,
+      selectedNoOfWeekForYear: 0,
+      selectedNameOfMonthForDailyYear: ''
     };
     this.clearSearch = this.clearSearch.bind(this);
     this.handleAdvSearchFlag = this.handleAdvSearchFlag.bind(this);
@@ -208,12 +272,18 @@ class MyTicketList extends Component {
     this.handleGetFunctionList = this.handleGetFunctionList.bind(this);
     this.handleAssignRemark = this.handleAssignRemark.bind(this);
     this.handleDailyDay = this.handleDailyDay.bind(this);
+    this.handleDaysForMonth = this.handleDaysForMonth.bind(this);
+    this.handleMonthForMonth = this.handleMonthForMonth.bind(this);
+    this.handleWeekForWeek = this.handleWeekForWeek.bind(this);
+    this.handleWeekForYear = this.handleWeekForYear.bind(this);
+    this.handleDayForYear = this.handleDayForYear.bind(this);
+    this.handleMonthForWeek = this.handleMonthForWeek.bind(this);
+    this.handleWeekly = this.handleWeekly.bind(this);
+    this.handleWeeklyDays = this.handleWeeklyDays.bind(this);
     this.handleScheduleTime = this.handleScheduleTime.bind(this);
     this.handleAssignTickets = this.handleAssignTickets.bind(this);
     this.handleSchedulePopup = this.handleSchedulePopup.bind(this);
-    this.handleSearchTicketEscalation = this.handleSearchTicketEscalation.bind(
-      this
-    );
+    this.handleSearchTicket = this.handleSearchTicket.bind(this);
     this.handleSearchTicketAllTabCount = this.handleSearchTicketAllTabCount.bind(
       this
     );
@@ -222,6 +292,7 @@ class MyTicketList extends Component {
   componentDidMount() {
     debugger;
     this.handleSearchTicketAllTabCount();
+    this.handleSearchTicket();
     this.handleGetDesignationList();
     this.handleGetTicketPriorityList();
     this.handleGetChannelOfPurchaseList();
@@ -230,7 +301,6 @@ class MyTicketList extends Component {
     this.handleGetSlaStatusList();
     this.handleGetDraftDetails();
     this.handleGetDepartmentList();
-    this.handleSearchTicketEscalation();
   }
   handleSearchTicketAllTabCount() {
     let self = this;
@@ -266,72 +336,91 @@ class MyTicketList extends Component {
       }
     });
   }
-  handleSearchTicketEscalation() {
-    let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Search/SearchTicket",
-      headers: authHeader(),
-      data: {
-        isByStatus: this.state.isByStatus,
-        pageSize: this.state.advPageSize,
-        pageNo: this.state.advPageNo,
-        isEscalation: 1
-        // ticketStatus: ticketStatus
-      }
-    }).then(function(res) {
-      debugger;
-      let data = res.data.responseData;
-      let Status = res.data.message;
-      if (Status === "Record Not Found") {
-        self.setState({ SearchTicketData: [] });
-      } else if (data !== null) {
-        self.setState({ SearchTicketData: data });
-      }
-    });
-  }
+  // handleSearchTicketEscalation() {
+  //   let self = this;
+  //   axios({
+  //     method: "post",
+  //     url: config.apiUrl + "/Search/SearchTicket",
+  //     headers: authHeader(),
+  //     data: {
+  //       isByStatus: this.state.isByStatus,
+  //       pageSize: this.state.advPageSize,
+  //       pageNo: this.state.advPageNo,
+  //       isEscalation: 1
+  //       // ticketStatus: ticketStatus
+  //     }
+  //   }).then(function(res) {
+  //     debugger;
+  //     let data = res.data.responseData;
+  //     let Status = res.data.message;
+  //     if (Status === "Record Not Found") {
+  //       self.setState({ SearchTicketData: [] });
+  //     } else if (data !== null) {
+  //       self.setState({ SearchTicketData: data });
+  //     }
+  //   });
+  // }
 
   handleSearchTicket(TabId) {
     debugger;
     var ticketStatus = 0;
-    var isEscalation = 0;
-    if (TabId === "Escalation") {
-      ticketStatus = 1;
-      isEscalation = 1;
+    // if (TabId === "Escalation") {
+    //   ticketStatus = 1;
+    //   isEscalation = 1;
+    // } else if (TabId === "New") {
+    //   ticketStatus = 101;
+    //   isEscalation = 0;
+    // } else if (TabId === "Open") {
+    //   isEscalation = 0;
+    //   ticketStatus = 102;
+    // } else if (TabId === "Resolved") {
+    //   isEscalation = 0;
+    //   ticketStatus = 103;
+    // } else if (TabId === "Closed") {
+    //   isEscalation = 0;
+    //   ticketStatus = 104;
+    // } else if (TabId === "Reassigned") {
+    //   isEscalation = 0;
+    //   ticketStatus = 106;
+    // } else if (TabId === "All") {
+    //   isEscalation = 0;
+    //   ticketStatus = 107;
+    // } else if (TabId === "FollowUp") {
+    //   isEscalation = 0;
+    //   ticketStatus = 108;
+    // }
+    if (TabId === "Escalation" || TabId === undefined) {
+      ticketStatus = 1001;
     } else if (TabId === "New") {
       ticketStatus = 101;
-      isEscalation = 0;
     } else if (TabId === "Open") {
-      isEscalation = 0;
       ticketStatus = 102;
     } else if (TabId === "Resolved") {
-      isEscalation = 0;
       ticketStatus = 103;
     } else if (TabId === "Closed") {
-      isEscalation = 0;
       ticketStatus = 104;
     } else if (TabId === "Reassigned") {
-      isEscalation = 0;
-      ticketStatus = 106;
+      ticketStatus = 1004;
     } else if (TabId === "All") {
-      isEscalation = 0;
-      ticketStatus = 107;
+      ticketStatus = 1002;
     } else if (TabId === "FollowUp") {
-      isEscalation = 0;
-      ticketStatus = 108;
+      ticketStatus = 1003;
     }
+    var data = ticketStatus;
     debugger;
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/Search/SearchTicket",
+      // url: config.apiUrl + "/Search/SearchTicket",
+      url: config.apiUrl + "/Search/GetTicketsOnPageLoad",
       headers: authHeader(),
-      data: {
-        isByStatus: this.state.isByStatus,
-        pageSize: this.state.advPageSize,
-        pageNo: this.state.advPageNo,
-        isEscalation: isEscalation,
-        ticketStatus: ticketStatus
+      params: {
+        // isByStatus: this.state.isByStatus,
+        // pageSize: this.state.advPageSize,
+        // pageNo: this.state.advPageNo,
+        // isEscalation: isEscalation,
+        // ticketStatus: ticketStatus
+        HeaderStatusID: ticketStatus
       }
     }).then(function(res) {
       debugger;
@@ -354,11 +443,28 @@ class MyTicketList extends Component {
       url: config.apiUrl + "/Ticketing/Schedule",
       headers: authHeader(),
       data: {
-        ScheduleFor: this.state.selectedTeamMember,
+        ScheduleFor: this.state.selectedTeamMemberCommaSeperated,
         ScheduleType: this.state.selectScheduleDate,
         NoOfDay: this.state.selectedNoOfDay,
         ScheduleTime: this.state.selectedScheduleTime,
-        IsDaily: 1
+        IsDaily: this.state.IsDaily,
+        IsWeekly: this.state.IsWeekly,
+        NoOfWeek: this.state.selectedNoOfWeek,
+        DayIds: this.state.selectedWeeklyDays,
+        IsDailyForMonth: this.state.IsDailyForMonth,
+        NoOfDaysForMonth: this.state.selectedNoOfDaysForMonth,
+        NoOfMonthForMonth: this.state.selectedNoOfMonthForMonth,
+        IsWeeklyForMonth: this.state.IsWeeklyForMonth,
+        NoOfMonthForWeek: this.state.selectedNoOfMonthForWeek,
+        NoOfWeekForWeek: this.state.selectedNoOfWeekForWeek,
+        NameOfDayForWeek: this.state.selectedNameOfDayForWeekCommaSeperated,
+        IsDailyForYear: this.state.IsDailyForYear,
+        NoOfDayForDailyYear: this.state.selectedNoOfDayForDailyYear,
+        NameOfMonthForDailyYear: this.state.selectedNameOfMonthForYearCommaSeperated,
+        IsWeeklyForYear: this.state.IsWeeklyForYear,
+        NoOfWeekForYear: this.state.selectedNoOfWeekForYear,
+        NameOfDayForYear: this.state.selectedNameOfDayForYearCommaSeperated,
+        NameOfMonthForYear: this.state.selectedNameOfMonthForDailyYearCommaSeperated,
       }
     }).then(function(res) {
       debugger;
@@ -391,6 +497,149 @@ class MyTicketList extends Component {
       selectedNoOfDay: e.currentTarget.value
     });
   }
+  handleWeekly(e) {
+    debugger;
+    this.setState({
+      selectedNoOfWeek: e.currentTarget.value
+    });
+  }
+  handleDaysForMonth(e) {
+    debugger;
+    this.setState({
+      selectedNoOfDaysForMonth: e.currentTarget.value
+    });
+  }
+  handleMonthForMonth(e) {
+    debugger;
+    this.setState({
+      selectedNoOfMonthForMonth: e.currentTarget.value
+    });
+  }
+  handleWeekForWeek(e) {
+    debugger;
+    this.setState({
+      selectedNoOfWeekForWeek: e.currentTarget.value
+    });
+  }
+  handleWeekForYear(e) {
+    debugger;
+    this.setState({
+      selectedNoOfWeekForYear: e.currentTarget.value
+    });
+  }
+  handleDayForYear(e) {
+    debugger;
+    this.setState({
+      selectedNoOfDayForDailyYear: e.currentTarget.value
+    });
+  }
+  handleMonthForWeek(e) {
+    debugger;
+    this.setState({
+      selectedNoOfMonthForWeek: e.currentTarget.value
+    });
+  }
+  handleWeeklyDays = async e => {
+    debugger;
+    let check = e.target.checked;
+    let val = e.target.value;
+    let finalWeekList = "";
+    if (val === "Mon") {
+      if (check === true) {
+        await this.setState({
+          Mon: val
+        });
+      } else {
+        await this.setState({
+          Mon: ""
+        });
+      }
+    } else if (val === "Tue") {
+      if (check === true) {
+        await this.setState({
+          Tue: val
+        });
+      } else {
+        await this.setState({
+          Tue: ""
+        });
+      }
+    } else if (val === "Wed") {
+      if (check === true) {
+        await this.setState({
+          Wed: val
+        });
+      } else {
+        await this.setState({
+          Wed: ""
+        });
+      }
+    } else if (val === "Thu") {
+      if (check === true) {
+        await this.setState({
+          Thu: val
+        });
+      } else {
+        await this.setState({
+          Thu: ""
+        });
+      }
+    } else if (val === "Fri") {
+      if (check === true) {
+        await this.setState({
+          Fri: val
+        });
+      } else {
+        await this.setState({
+          Fri: ""
+        });
+      }
+    } else if (val === "Sat") {
+      if (check === true) {
+        await this.setState({
+          Sat: val
+        });
+      } else {
+        await this.setState({
+          Sat: ""
+        });
+      }
+    } else if (val === "Sun") {
+      if (check === true) {
+        await this.setState({
+          Sun: val
+        });
+      } else {
+        await this.setState({
+          Sun: ""
+        });
+      }
+    }
+    if (!(this.state.Mon === "")) {
+      finalWeekList += this.state.Mon + ",";
+    }
+    if (!(this.state.Tue === "")) {
+      finalWeekList += this.state.Tue + ",";
+    }
+    if (!(this.state.Wed === "")) {
+      finalWeekList += this.state.Wed + ",";
+    }
+    if (!(this.state.Thu === "")) {
+      finalWeekList += this.state.Thu + ",";
+    }
+    if (!(this.state.Fri === "")) {
+      finalWeekList += this.state.Fri + ",";
+    }
+    if (!(this.state.Sat === "")) {
+      finalWeekList += this.state.Sat + ",";
+    }
+    if (!(this.state.Sun === "")) {
+      finalWeekList += this.state.Sun + ",";
+    }
+    this.setState({
+      selectedWeeklyDays: finalWeekList
+    });
+  };
   handleScheduleTime(e) {
     debugger;
     this.setState({
@@ -502,7 +751,7 @@ class MyTicketList extends Component {
     } else if (currentActive === "By Customer Type") {
       this.setState({
         byDateFlag: 0,
-        byCustomerTypeFlag: 1,
+        byCustomerTypeFlag: 2,
         byTicketTypeFlag: 0,
         byCategoryFlag: 0,
         allFlag: 0
@@ -511,7 +760,7 @@ class MyTicketList extends Component {
       this.setState({
         byDateFlag: 0,
         byCustomerTypeFlag: 0,
-        byTicketTypeFlag: 1,
+        byTicketTypeFlag: 3,
         byCategoryFlag: 0,
         allFlag: 0
       });
@@ -520,7 +769,7 @@ class MyTicketList extends Component {
         byDateFlag: 0,
         byCustomerTypeFlag: 0,
         byTicketTypeFlag: 0,
-        byCategoryFlag: 1,
+        byCategoryFlag: 4,
         allFlag: 0
       });
     } else if (currentActive === "All") {
@@ -529,7 +778,7 @@ class MyTicketList extends Component {
         byCustomerTypeFlag: 0,
         byTicketTypeFlag: 0,
         byCategoryFlag: 0,
-        allFlag: 1
+        allFlag: 5
       });
     }
   }
@@ -897,38 +1146,74 @@ class MyTicketList extends Component {
       }
     });
   }
-  ViewSearchData() {
+  ViewSearchData(TabId) {
     debugger;
+    var ticketStatus = 0;
+    // if (TabId === "Escalation" || TabId === undefined) {
+    //   ticketStatus = 1001;
+    // } else if (TabId === "New") {
+    //   ticketStatus = 101;
+    // } else if (TabId === "Open") {
+    //   ticketStatus = 102;
+    // } else if (TabId === "Resolved") {
+    //   ticketStatus = 103;
+    // } else if (TabId === "Closed") {
+    //   ticketStatus = 104;
+    // } else if (TabId === "Reassigned") {
+    //   ticketStatus = 1004;
+    // } else if (TabId === "All") {
+    //   ticketStatus = 1002;
+    // } else if (TabId === "FollowUp") {
+    //   ticketStatus = 1003;
+    // }
     // let self = this;
-    var paramData = {
-      ByDate: this.state.byDateFlag,
-      creationDate: this.state.ByDateCreatDate,
-      lastUpdatedDate: this.state.ByDateSelectDate,
-      SLADue: this.state.selectedSlaDueByDate,
-      ticketStatus: this.state.selectedTicketStatusByDate,
-      ByCustomerType: this.state.byCustomerTypeFlag,
-      customerMob: this.state.MobileNoByCustType,
-      customerEmail: this.state.EmailIdByCustType,
-      TicketID: this.state.TicketIdByCustType,
-      ticketStatus: this.state.selectedTicketStatusByCustomer,
-      ByTicketType: this.state.byTicketTypeFlag,
-      Priority: this.state.selectedPriority,
-      ticketStatus: this.state.selectedTicketStatusByTicket,
-      chanelOfPurchase: this.state.selectedChannelOfPurchase,
-      ticketActionType: this.state.selectedTicketActionType,
-      ByCategory: this.state.byCategoryFlag,
-      Category: this.state.selectedCategory,
-      subCategory: this.state.selectedSubCategory,
-      issueType: this.state.selectedIssueType,
-      ticketStatus: this.state.selectedTicketStatusByCategory
-      // byAll:this.state.allFlag,
-    };
+    // var paramData = {
+    //   HeaderStatusId: 1001,
+    //   ActiveTabId: this.state.byDateFlag,
+    //   Ticket_CreatedOn: moment(this.state.ByDateCreatDate).format("YYYY-MM-DD"),
+    //   Ticket_ModifiedOn: moment(this.state.ByDateSelectDate).format(
+    //     "YYYY-MM-DD"
+    //   ),
+    //   SLA_DueON: this.state.selectedSlaDueByDate,
+    //   Ticket_StatusID: this.state.selectedTicketStatusByDate
+    //   // ByCustomerType: this.state.byCustomerTypeFlag,
+    //   // customerMob: this.state.MobileNoByCustType,
+    //   // customerEmail: this.state.EmailIdByCustType,
+    //   // TicketID: this.state.TicketIdByCustType,
+    //   // ticketStatus: this.state.selectedTicketStatusByCustomer,
+    //   // ByTicketType: this.state.byTicketTypeFlag,
+    //   // Priority: this.state.selectedPriority,
+    //   // ticketStatus: this.state.selectedTicketStatusByTicket,
+    //   // chanelOfPurchase: this.state.selectedChannelOfPurchase,
+    //   // ticketActionType: this.state.selectedTicketActionType,
+    //   // ByCategory: this.state.byCategoryFlag,
+    //   // Category: this.state.selectedCategory,
+    //   // subCategory: this.state.selectedSubCategory,
+    //   // issueType: this.state.selectedIssueType,
+    //   // ticketStatus: this.state.selectedTicketStatusByCategory
+    //   // byAll:this.state.allFlag,
+    // };
+    // ---------------By Date tab---------------------
+    this.state.fieldByDate["Ticket_CreatedOn"] = moment(
+      this.state.ByDateCreatDate
+    ).format("YYYY-MM-DD");
+    this.state.fieldByDate["Ticket_ModifiedOn"] = moment(
+      this.state.ByDateSelectDate
+    ).format("YYYY-MM-DD");
+    this.state.fieldByDate["SLA_DueON"] = this.state.selectedSlaDueByDate;
+    this.state.fieldByDate[
+      "Ticket_StatusID"
+    ] = this.state.selectedTicketStatusByDate;
+    // --------------------By Customer Type Tab---------------
+    // this.state.fieldByCustomerType[""]
     axios({
       method: "post",
-      url: config.apiUrl + "/Search/GetTicketSearchResult",
+      url: config.apiUrl + "/Search/GetTicketsOnSearch",
       headers: authHeader(),
       data: {
-        searchparams: paramData
+        HeaderStatusId: 1001,
+        ActiveTabId: this.state.byDateFlag,
+        searchDataByDate: this.state.fieldByDate
       }
     }).then(function(res) {
       debugger;
@@ -972,7 +1257,49 @@ class MyTicketList extends Component {
     this.setState({ selectedChannelOfPurchase: e });
   };
   setTeamMember = e => {
-    this.setState({ selectedTeamMember: e });
+    debugger;
+    if (e !== null) {
+      var selectedTeamMemberCommaSeperated = Array.prototype.map
+        .call(e, s => s.department)
+        .toString();
+    }
+    this.setState({ selectedTeamMember: e, selectedTeamMemberCommaSeperated });
+  };
+  setNameOfDayForWeek = e => {
+    debugger;
+    if (e !== null) {
+      var selectedNameOfDayForWeekCommaSeperated = Array.prototype.map
+        .call(e, s => s.days)
+        .toString();
+    }
+    this.setState({ selectedNameOfDayForWeek: e, selectedNameOfDayForWeekCommaSeperated });
+  };
+  setNameOfMonthForYear = e => {
+    debugger;
+    if (e !== null) {
+      var selectedNameOfMonthForYearCommaSeperated = Array.prototype.map
+        .call(e, s => s.month)
+        .toString();
+    }
+    this.setState({ selectedNameOfMonthForYear: e, selectedNameOfMonthForYearCommaSeperated });
+  };
+  setNameOfMonthForDailyYear = e => {
+    debugger;
+    if (e !== null) {
+      var selectedNameOfMonthForDailyYearCommaSeperated = Array.prototype.map
+        .call(e, s => s.month)
+        .toString();
+    }
+    this.setState({ selectedNameOfMonthForDailyYear: e, selectedNameOfMonthForDailyYearCommaSeperated });
+  };
+  setNameOfDayForYear = e => {
+    debugger;
+    if (e !== null) {
+      var selectedNameOfDayForYearCommaSeperated = Array.prototype.map
+        .call(e, s => s.days)
+        .toString();
+    }
+    this.setState({ selectedNameOfDayForYear: e, selectedNameOfDayForYearCommaSeperated });
   };
   setTicketActionTypeValue = e => {
     this.setState({ selectedTicketActionType: e });
@@ -1202,7 +1529,117 @@ class MyTicketList extends Component {
     };
   };
   handleScheduleDateChange = e => {
+    debugger;
     let SelectData = e.currentTarget.value;
+    if (SelectData === "230") {
+      this.setState({
+        IsDaily: 1,
+        IsWeekly: 0,
+        IsDailyForMonth: 0,
+        IsDailyForYear: 0,
+        IsWeeklyForMonth: 0,
+        IsWeeklyForYear: 0,
+        selectedNoOfWeek: 0,
+        selectedNoOfDaysForMonth: 0,
+        selectedNoOfMonthForMonth: 0,
+        selectedNoOfMonthForWeek: 0,
+        selectedNoOfWeekForWeek: 0,
+        selectedNoOfDayForDailyYear: 0,
+        selectedNoOfWeekForYear: 0,
+        selectedNameOfDayForWeekCommaSeperated: '',
+        selectedNameOfMonthForYearCommaSeperated: '',
+        selectedNameOfMonthForDailyYearCommaSeperated: '',
+        selectedNameOfDayForYearCommaSeperated: '',
+        selectedWeeklyDays: ''
+      });
+    } else if (SelectData === "231") {
+      this.setState({
+        IsWeekly: 1,
+        IsDaily: 0,
+        selectedNoOfDay: 0,
+        IsDailyForMonth: 0,
+        IsDailyForYear: 0,
+        IsWeeklyForMonth: 0,
+        IsWeeklyForYear: 0,
+        selectedNoOfDaysForMonth: 0,
+        selectedNoOfMonthForMonth: 0,
+        selectedNoOfMonthForWeek: 0,
+        selectedNoOfWeekForWeek: 0,
+        selectedNoOfDayForDailyYear: 0,
+        selectedNoOfWeekForYear: 0,
+        selectedNameOfDayForWeekCommaSeperated: '',
+        selectedNameOfMonthForYearCommaSeperated: '',
+        selectedNameOfMonthForDailyYearCommaSeperated: '',
+        selectedNameOfDayForYearCommaSeperated: '',
+      });
+    } else if (SelectData === "232") {
+      this.setState({
+        IsDailyForMonth: 1,
+        IsDaily: 0,
+        IsDailyForYear: 0,
+        IsWeeklyForMonth: 0,
+        IsWeeklyForYear: 0,
+        selectedNoOfDay: 0,
+        selectedNoOfWeek: 0,
+        IsWeekly: 0,
+        selectedNoOfMonthForWeek: 0,
+        selectedNoOfWeekForWeek: 0,
+        selectedNoOfDayForDailyYear: 0,
+        selectedNoOfWeekForYear: 0,
+        selectedNameOfDayForWeekCommaSeperated: '',
+        selectedNameOfMonthForYearCommaSeperated: '',
+        selectedNameOfMonthForDailyYearCommaSeperated: '',
+        selectedNameOfDayForYearCommaSeperated: '',
+        selectedWeeklyDays: ''
+      });
+    } else if (SelectData === "233") {
+      this.setState({
+        IsWeeklyForMonth: 1,
+        IsDaily: 0,
+        IsDailyForMonth: 0,
+        IsWeeklyForYear: 0,
+        selectedNoOfDay: 0,
+        selectedNoOfWeek: 0,
+        IsWeekly: 0,
+        IsDailyForYear: 0,
+        selectedNoOfDayForDailyYear: 0,
+        selectedNoOfWeekForYear: 0,
+        selectedNameOfDayForYearCommaSeperated: '',
+        selectedWeeklyDays: '',
+        selectedNoOfDaysForMonth: 0,
+        selectedNameOfMonthForYearCommaSeperated: ''
+      });
+    } else if (SelectData === "234") {
+      this.setState({
+        IsDailyForYear: 1,
+        IsDaily: 0,
+        IsDailyForMonth: 0,
+        selectedNoOfDay: 0,
+        selectedNoOfWeek: 0,
+        IsWeekly: 0,
+        IsWeeklyForMonth: 0,
+        IsWeeklyForYear: 0,
+        selectedNoOfWeekForYear: 0,
+        selectedNameOfDayForYearCommaSeperated: '',
+        selectedWeeklyDays: '',
+        selectedNoOfDaysForMonth: 0
+      });
+    } else if (SelectData === "235") {
+      this.setState({
+        IsWeeklyForYear: 1,
+        IsDaily: 0,
+        IsDailyForMonth: 0,
+        selectedNoOfDay: 0,
+        selectedNoOfWeek: 0,
+        IsWeekly: 0,
+        IsWeeklyForMonth: 0,
+        IsDailyForYear: 0,
+        selectedWeeklyDays: '',
+        selectedNoOfDaysForMonth: 0,
+        selectedNameOfMonthForYearCommaSeperated: '',
+        selectedNoOfDayForDailyYear: 0
+      });
+    }
     this.setState({
       selectScheduleDate: SelectData
     });
@@ -3640,6 +4077,7 @@ class MyTicketList extends Component {
                                                   type="text"
                                                   className="Every"
                                                   placeholder="1"
+                                                  onChange={this.handleWeekly}
                                                 />
                                                 <label className="every1">
                                                   Week on
@@ -3650,13 +4088,62 @@ class MyTicketList extends Component {
                                                   marginTop: "10px"
                                                 }}
                                               >
-                                                <Checkbox>Mon</Checkbox>
-                                                <Checkbox>Tue</Checkbox>
-                                                <Checkbox>Wed</Checkbox>
-                                                <Checkbox>Thu</Checkbox>
-                                                <Checkbox>Fri</Checkbox>
-                                                <Checkbox>Sat</Checkbox>
-                                                <Checkbox>Sun</Checkbox>
+                                                <Checkbox
+                                                  onChange={
+                                                    this.handleWeeklyDays
+                                                  }
+                                                  value="Mon"
+                                                >
+                                                  Mon
+                                                </Checkbox>
+                                                <Checkbox
+                                                  onChange={
+                                                    this.handleWeeklyDays
+                                                  }
+                                                  value="Tue"
+                                                >
+                                                  Tue
+                                                </Checkbox>
+                                                <Checkbox
+                                                  onChange={
+                                                    this.handleWeeklyDays
+                                                  }
+                                                  value="Wed"
+                                                >
+                                                  Wed
+                                                </Checkbox>
+                                                <Checkbox
+                                                  onChange={
+                                                    this.handleWeeklyDays
+                                                  }
+                                                  value="Thu"
+                                                >
+                                                  Thu
+                                                </Checkbox>
+                                                <Checkbox
+                                                  onChange={
+                                                    this.handleWeeklyDays
+                                                  }
+                                                  value="Fri"
+                                                >
+                                                  Fri
+                                                </Checkbox>
+                                                <Checkbox
+                                                  onChange={
+                                                    this.handleWeeklyDays
+                                                  }
+                                                  value="Sat"
+                                                >
+                                                  Sat
+                                                </Checkbox>
+                                                <Checkbox
+                                                  onChange={
+                                                    this.handleWeeklyDays
+                                                  }
+                                                  value="Sun"
+                                                >
+                                                  Sun
+                                                </Checkbox>
                                               </div>
                                             </div>
                                           ) : null}
@@ -3671,6 +4158,9 @@ class MyTicketList extends Component {
                                                   type="text"
                                                   className="Every"
                                                   placeholder="9"
+                                                  onChange={
+                                                    this.handleDaysForMonth
+                                                  }
                                                 />
                                                 <label className="every1">
                                                   of every
@@ -3679,6 +4169,9 @@ class MyTicketList extends Component {
                                                   type="text"
                                                   className="Every"
                                                   placeholder="1"
+                                                  onChange={
+                                                    this.handleMonthForMonth
+                                                  }
                                                 />
                                                 <label className="every1">
                                                   months
@@ -3697,6 +4190,7 @@ class MyTicketList extends Component {
                                                   type="text"
                                                   className="Every"
                                                   placeholder="1"
+                                                  onChange={this.handleMonthForWeek}
                                                 />
                                                 <label className="every1">
                                                   month on the
@@ -3707,19 +4201,48 @@ class MyTicketList extends Component {
                                                   <select
                                                     id="inputState"
                                                     className="form-control dropdown-setting1"
+                                                    onChange={this.handleWeekForWeek}
+                                                    value={
+                                              this.state.selectedNoOfWeekForWeek
+                                            }
                                                   >
-                                                    <option>Second</option>
-                                                    <option>Four</option>
+                                                    <option value="0">Select</option>
+                                                    <option value="2">Second</option>
+                                                    <option value="4">Four</option>
                                                   </select>
                                                 </div>
                                                 <div className="col-md-6">
-                                                  <select
+                                                <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                                                <Select
+                                              getOptionLabel={option =>
+                                                option.days
+                                              }
+                                              getOptionValue={
+                                                option => option.days //id
+                                              }
+                                              options={
+                                                this.state.NameOfDayForWeek
+                                              }
+                                              placeholder="Select"
+                                              // menuIsOpen={true}
+                                              closeMenuOnSelect={false}
+                                              onChange={this.setNameOfDayForWeek.bind(
+                                                this
+                                              )}
+                                              value={
+                                                this.state.selectedNameOfDayForWeek
+                                              }
+                                              // showNewOptionAtTop={false}
+                                              isMulti
+                                            />
+                                            </div>
+                                                  {/* <select
                                                     id="inputState"
                                                     className="form-control dropdown-setting1"
                                                   >
                                                     <option>Sunday</option>
                                                     <option>Monday</option>
-                                                  </select>
+                                                  </select> */}
                                                 </div>
                                               </div>
                                             </div>
@@ -3737,18 +4260,43 @@ class MyTicketList extends Component {
                                                   on
                                                 </label>
                                                 <div className="col-md-7">
-                                                  <select
+                                                  {/* <select
                                                     id="inputState"
                                                     className="form-control dropdown-setting1"
                                                   >
                                                     <option>Septmber</option>
                                                     <option>Octomber</option>
-                                                  </select>
+                                                  </select> */}
+                                                  <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                                                <Select
+                                              getOptionLabel={option =>
+                                                option.month
+                                              }
+                                              getOptionValue={
+                                                option => option.month //id
+                                              }
+                                              options={
+                                                this.state.NameOfMonthForYear
+                                              }
+                                              placeholder="Select"
+                                              // menuIsOpen={true}
+                                              closeMenuOnSelect={false}
+                                              onChange={this.setNameOfMonthForYear.bind(
+                                                this
+                                              )}
+                                              value={
+                                                this.state.selectedNameOfMonthForYear
+                                              }
+                                              // showNewOptionAtTop={false}
+                                              isMulti
+                                            />
+                                            </div>
                                                 </div>
                                                 <input
                                                   type="text"
                                                   className="Every"
                                                   placeholder="1"
+                                                  onChange={this.handleDayForYear}
                                                 />
                                               </div>
                                             </div>
@@ -3770,16 +4318,21 @@ class MyTicketList extends Component {
                                                     <select
                                                       id="inputState"
                                                       className="form-control dropdown-setting1"
+                                                      onChange={this.handleWeekForYear}
+                                                    value={
+                                              this.state.selectedNoOfWeekForYear
+                                            }
                                                     >
-                                                      <option>Second</option>
-                                                      <option>Four</option>
+                                                      <option value="0">Select</option>
+                                                      <option value="2">Second</option>
+                                                      <option value="4">Four</option>
                                                     </select>
                                                   </div>
                                                 </div>
                                               </span>
                                               <div className="row mt-3">
                                                 <div className="col-md-5">
-                                                  <select
+                                                  {/* <select
                                                     id="inputState"
                                                     className="form-control dropdown-setting1"
                                                     style={{
@@ -3788,7 +4341,31 @@ class MyTicketList extends Component {
                                                   >
                                                     <option>Sunday</option>
                                                     <option>Monday</option>
-                                                  </select>
+                                                  </select> */}
+                                                  <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                                                <Select
+                                              getOptionLabel={option =>
+                                                option.days
+                                              }
+                                              getOptionValue={
+                                                option => option.days //id
+                                              }
+                                              options={
+                                                this.state.NameOfDayForYear
+                                              }
+                                              placeholder="Select"
+                                              // menuIsOpen={true}
+                                              closeMenuOnSelect={false}
+                                              onChange={this.setNameOfDayForYear.bind(
+                                                this
+                                              )}
+                                              value={
+                                                this.state.selectedNameOfDayForYear
+                                              }
+                                              // showNewOptionAtTop={false}
+                                              isMulti
+                                            />
+                                            </div>
                                                 </div>
                                                 <label
                                                   className="every1"
@@ -3800,7 +4377,7 @@ class MyTicketList extends Component {
                                                   to
                                                 </label>
                                                 <div className="col-md-5">
-                                                  <select
+                                                  {/* <select
                                                     id="inputState"
                                                     className="form-control dropdown-setting1"
                                                     style={{
@@ -3809,7 +4386,31 @@ class MyTicketList extends Component {
                                                   >
                                                     <option>Septmber</option>
                                                     <option>Octomber</option>
-                                                  </select>
+                                                  </select> */}
+                                                  <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                                                <Select
+                                              getOptionLabel={option =>
+                                                option.month
+                                              }
+                                              getOptionValue={
+                                                option => option.month //id
+                                              }
+                                              options={
+                                                this.state.NameOfMonthForDailyYear
+                                              }
+                                              placeholder="Select"
+                                              // menuIsOpen={true}
+                                              closeMenuOnSelect={false}
+                                              onChange={this.setNameOfMonthForDailyYear.bind(
+                                                this
+                                              )}
+                                              value={
+                                                this.state.selectedNameOfMonthForDailyYear
+                                              }
+                                              // showNewOptionAtTop={false}
+                                              isMulti
+                                            />
+                                            </div>
                                                 </div>
                                               </div>
                                             </div>
