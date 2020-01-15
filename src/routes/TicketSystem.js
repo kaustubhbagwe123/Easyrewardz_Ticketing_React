@@ -146,12 +146,14 @@ class TicketSystem extends Component {
 
   handleCopyToaster() {
     debugger;
-    if (
-      this.state.copiedNumber &&
-      this.state.customerData.customerPhoneNumber
-    ) {
-      NotificationManager.success("Copied.");
-    }
+    setTimeout(() => {
+      if (
+        this.state.copiedNumber &&
+        this.state.customerData.customerPhoneNumber
+      ) {
+        NotificationManager.success("Copied.");
+      }
+    }, 100);
   }
 
   toggleTitleSuggestion() {
