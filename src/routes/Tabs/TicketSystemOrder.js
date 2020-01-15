@@ -107,7 +107,7 @@ class TicketSystemOrder extends Component {
   handleCheckOrderID(OrderItemId, rowData, e) {
     debugger;
 
-    e.stopPropagation();
+  //  e.stopPropagation();
     const newSelected = Object.assign({}, this.state.CheckOrderID);
     newSelected[OrderItemId] = !this.state.CheckOrderID[OrderItemId];
     this.setState({
