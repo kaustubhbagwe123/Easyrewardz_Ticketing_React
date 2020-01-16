@@ -186,7 +186,11 @@ class Dashboard extends Component {
       advPageNo: 1,
       CheckBoxChecked: false,
       BrandData: [],
-      AgentData: []
+      AgentData: [],
+      CheckBoxAllAgent: true,
+      DashboardNumberData: {},
+      DashboardGraphData: {},
+      DashboardBillGraphData: []
     };
     this.applyCallback = this.applyCallback.bind(this);
     // this.handleApply = this.handleApply.bind(this);
@@ -227,6 +231,12 @@ class Dashboard extends Component {
     this.handleDailyDay = this.handleDailyDay.bind(this);
     this.handleScheduleTime = this.handleScheduleTime.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
+    this.handleGetDashboardNumberData = this.handleGetDashboardNumberData.bind(
+      this
+    );
+    this.handleGetDashboardGraphData = this.handleGetDashboardGraphData.bind(
+      this
+    );
     this.handleGetAgentList = this.handleGetAgentList.bind(this);
     // this.toggleHoverState = this.toggleHoverState.bind(this);
   }
@@ -248,9 +258,72 @@ class Dashboard extends Component {
     this.handleGetTicketPriorityList();
     this.handleGetChannelOfPurchaseList();
     this.handleGetBrandList();
+    this.handleGetDashboardNumberData();
+    this.handleGetDashboardGraphData();
     this.handleGetAgentList();
   }
 
+  handleGetDashboardNumberData() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Ticketing/DashBoardCountData",
+      headers: authHeader(),
+      params: {
+        UserIds: "6,7,8",
+        fromdate: "2019-12-26",
+        todate: "2020-01-15"
+      }
+    }).then(function(res) {
+      debugger;
+      let DashboardNumberData = res.data.responseData;
+      self.setState({ DashboardNumberData: DashboardNumberData });
+    });
+  }
+  handleGetDashboardGraphData() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Ticketing/DashBoardGraphData",
+      headers: authHeader(),
+      params: {
+        UserIds: "6,7,8",
+        fromdate: "2019-12-26",
+        todate: "2020-01-15"
+      }
+    }).then(function(res) {
+      debugger;
+      let DashboardGraphData = res.data.responseData;
+      let DashboardBillGraphData = res.data.responseData.tickettoBillGraph;
+      self.setState({
+        DashboardGraphData: DashboardGraphData,
+        DashboardBillGraphData: DashboardBillGraphData
+      });
+    });
+  }
+
+  checkAllAgent(event) {
+    // this.setState({
+    //   CheckBoxAllAgent: !CheckBoxAllAgent
+    // });
+    const allCheckboxChecked = event.target.checked;
+    var checkboxes = document.getElementsByName("allAgent");
+    if (allCheckboxChecked) {
+      for (var i in checkboxes) {
+        if (checkboxes[i].checked === false) {
+          checkboxes[i].checked = true;
+        }
+      }
+    } else {
+      for (var J in checkboxes) {
+        if (checkboxes[J].checked === true) {
+          checkboxes[J].checked = false;
+        }
+      }
+    }
+  }
   handleGetAgentList() {
     debugger;
     let self = this;
@@ -1866,6 +1939,20 @@ class Dashboard extends Component {
                     <span className="EMFCText">All</span>
                   </button>
                   <ul className="dropdown-menu">
+                    <li>
+                      <label htmlFor="all-agent">
+                        <input
+                          type="checkbox"
+                          id="all-agent"
+                          className="ch1"
+                          onChange={this.checkAllAgent.bind(this)}
+                          checked={true}
+                          // checked={this.state.CheckBoxAllAgent}
+                          name="allAgent"
+                        />
+                        <span className="ch1-text">All</span>
+                      </label>
+                    </li>
                     {this.state.AgentData !== null &&
                       this.state.AgentData.map((item, i) => (
                         <li key={i}>
@@ -1874,6 +1961,8 @@ class Dashboard extends Component {
                               type="checkbox"
                               id={"i" + item.reporteeID}
                               className="ch1"
+                              name="allAgent"
+                              checked={true}
                             />
                             <span className="ch1-text">{item.fullName}</span>
                           </label>
@@ -1993,25 +2082,45 @@ class Dashboard extends Component {
                     <div className="col-md col-sm-4 col-6">
                       <div className="dash-top-cards">
                         <p className="card-head">All</p>
-                        <span className="card-value">16</span>
+                        <span className="card-value">
+                          {this.state.DashboardNumberData.all !== null &&
+                          this.state.DashboardNumberData.all < 9
+                            ? "0" + this.state.DashboardNumberData.all
+                            : this.state.DashboardNumberData.all}
+                        </span>
                       </div>
                     </div>
                     <div className="col-md col-sm-4 col-6">
                       <div className="dash-top-cards">
                         <p className="card-head">Open</p>
-                        <span className="card-value">06</span>
+                        <span className="card-value">
+                          {this.state.DashboardNumberData.open !== null &&
+                          this.state.DashboardNumberData.open < 9
+                            ? "0" + this.state.DashboardNumberData.open
+                            : this.state.DashboardNumberData.open}
+                        </span>
                       </div>
                     </div>
                     <div className="col-md col-sm-4 col-6">
                       <div className="dash-top-cards">
                         <p className="card-head">Due Today</p>
-                        <span className="card-value">11</span>
+                        <span className="card-value">
+                          {this.state.DashboardNumberData.dueToday !== null &&
+                          this.state.DashboardNumberData.dueToday < 9
+                            ? "0" + this.state.DashboardNumberData.dueToday
+                            : this.state.DashboardNumberData.dueToday}
+                        </span>
                       </div>
                     </div>
                     <div className="col-md col-sm-4 col-6">
                       <div className="dash-top-cards">
                         <p className="card-head">Over Due</p>
-                        <span className="card-value red-clr">07</span>
+                        <span className="card-value red-clr">
+                          {this.state.DashboardNumberData.overDue !== null &&
+                          this.state.DashboardNumberData.overDue < 9
+                            ? "0" + this.state.DashboardNumberData.overDue
+                            : this.state.DashboardNumberData.overDue}
+                        </span>
                       </div>
                     </div>
                     {this.state.TotalNoOfChatShow && (
@@ -2078,7 +2187,19 @@ class Dashboard extends Component {
                             <div className="row">
                               <div className="col-md-3">
                                 <ul className="bill-graph-list">
-                                  <li>
+                                  {this.state.DashboardBillGraphData !== null &&
+                                    this.state.DashboardBillGraphData.map(
+                                      (item, i) => (
+                                        <li key={i}>
+                                          {item.ticketSourceName} :{" "}
+                                          <b>
+                                            {item.ticketedBills}/
+                                            {item.totalBills}
+                                          </b>
+                                        </li>
+                                      )
+                                    )}
+                                  {/* <li>
                                     Offline : <b>20/100</b>
                                   </li>
                                   <li>
@@ -2086,7 +2207,7 @@ class Dashboard extends Component {
                                   </li>
                                   <li>
                                     Mobile : <b>5/100</b>
-                                  </li>
+                                  </li> */}
                                 </ul>
                               </div>
                               <div className="col-md-9 tic-bill-graph">
@@ -2146,11 +2267,19 @@ class Dashboard extends Component {
                         <p className="card-head">Task</p>
                         <div className="aside-cont">
                           <div>
-                            <span className="card-value">16</span>
+                            <span className="card-value">
+                              {this.state.DashboardNumberData.taskOpen < 9
+                                ? "0" + this.state.DashboardNumberData.taskOpen
+                                : this.state.DashboardNumberData.taskOpen}
+                            </span>
                             <small>Open</small>
                           </div>
                           <div>
-                            <span className="card-value">06</span>
+                            <span className="card-value">
+                              {this.state.DashboardNumberData.taskClose < 9
+                                ? "0" + this.state.DashboardNumberData.taskClose
+                                : this.state.DashboardNumberData.taskClose}
+                            </span>
                             <small>Pending</small>
                           </div>
                         </div>
@@ -2209,11 +2338,20 @@ class Dashboard extends Component {
                         <p className="card-head">Claim</p>
                         <div className="aside-cont">
                           <div>
-                            <span className="card-value">16</span>
+                            <span className="card-value">
+                              {this.state.DashboardNumberData.claimOpen < 9
+                                ? "0" + this.state.DashboardNumberData.claimOpen
+                                : this.state.DashboardNumberData.claimOpen}
+                            </span>
                             <small>Open</small>
                           </div>
                           <div>
-                            <span className="card-value">06</span>
+                            <span className="card-value">
+                              {this.state.DashboardNumberData.claimClose < 9
+                                ? "0" +
+                                  this.state.DashboardNumberData.claimClose
+                                : this.state.DashboardNumberData.claimClose}
+                            </span>
                             <small>Pending</small>
                           </div>
                         </div>
