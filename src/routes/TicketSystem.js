@@ -13,6 +13,7 @@ import TicketSystemTask from "./Tabs/TicketSystemTask";
 import TicketSystemStore from "./Tabs/TicketSystemStore";
 import Modal from "react-responsive-modal";
 import CKEditor from "ckeditor4-react";
+import PlusImg from "./../assets/Images/plus.png";
 // import moment from "moment";
 import FileUpload from "./../assets/Images/file.png";
 import ThumbTick from "./../assets/Images/thumbticket.png";
@@ -57,6 +58,7 @@ class TicketSystem extends Component {
       TicketPriorityData: [],
       ChannelOfPurchaseData: [],
       KbLink: false,
+      Plus: false,
       TabIconColor: "nav-link active",
       altEmailID: "",
       altNumber: "",
@@ -165,6 +167,12 @@ class TicketSystem extends Component {
   }
   HandleKbLinkModalClose() {
     this.setState({ KbLink: false });
+  }
+  handleThumbModalOpen() {
+    this.setState({ Plus: true });
+  }
+  handleThumbModalClose() {
+    this.setState({ Plus: false });
   }
   handleEditCustomerOpen() {
     this.setState({ EditCustomer: true });
@@ -1113,7 +1121,31 @@ class TicketSystem extends Component {
                 <div className="row my-3 mx-1">
                   <img src={ThumbTick} alt="thumb" className="thumbtick" />
                   <img src={ThumbTick} alt="thumb" className="thumbtick" />
+                  <img src={ThumbTick} alt="thumb" className="thumbtick" />
+                  <img src={ThumbTick} alt="thumb" className="thumbtick" />
+                  <img src={ThumbTick} alt="thumb" className="thumbtick" />
+                  <img src={PlusImg} alt="thumb" className="thumbtick-plus"
+                      onClick={this.handleThumbModalOpen.bind(this)} />
                 </div>
+                  <Modal
+                      open={this.state.Plus}
+                      onClose={this.handleThumbModalClose.bind(this)}
+                      modalId="thumb-modal-popup"
+                      overlayId="logout-ovrlykb"
+                  >
+                    <div>
+                      <div className="row my-3 mx-1">
+                          <img src={ThumbTick} alt="thumb" className="thumbtick" style={{marginBottom:"10px"}} />
+                          <img src={ThumbTick} alt="thumb" className="thumbtick" style={{marginBottom:"10px"}} />
+                          <img src={ThumbTick} alt="thumb" className="thumbtick" style={{marginBottom:"10px"}} />
+                          <img src={ThumbTick} alt="thumb" className="thumbtick" style={{marginBottom:"10px"}} />
+                          <img src={ThumbTick} alt="thumb" className="thumbtick" style={{marginBottom:"10px"}} />
+                          <img src={ThumbTick} alt="thumb" className="thumbtick" style={{marginBottom:"10px"}} />
+                          <img src={ThumbTick} alt="thumb" className="thumbtick" style={{marginBottom:"10px"}} />
+                          <img src={ThumbTick} alt="thumb" className="thumbtick" style={{marginBottom:"10px"}} />
+                      </div>
+                    </div>
+                  </Modal>
                 <div className="row" style={{ position: "absolute" }}>
                   <div
                     className="dropdown collapbtn1"

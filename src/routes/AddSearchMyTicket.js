@@ -49,7 +49,19 @@ class AddSearchMyTicket extends Component {
 
     this.handleSearchCustomer = this.handleSearchCustomer.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleCopyToaster = this.handleCopyToaster.bind(this);
     this.validator = new SimpleReactValidator();
+  }
+  handleCopyToaster() {
+    debugger;
+    setTimeout(() => {
+      if (
+        this.state.copied &&
+        this.state.copied
+      ) {
+        NotificationManager.success("Copied.");
+      }
+    }, 100);
   }
   handleAddCustomerOpen() {
     this.setState({ AddCustomer: true });
@@ -203,13 +215,11 @@ class AddSearchMyTicket extends Component {
             text={"Hello"}
             onCopy={() => this.setState({ copied: true })}
           >
-            <img src={PasteImg} alt="PasteImage" className="paste-addSearch" />
+            <img src={PasteImg} 
+              alt="PasteImage" 
+              className="paste-addSearch" 
+              onClick={this.handleCopyToaster} />
           </CopyToClipboard>
-          {this.state.copied ? (
-            <span className="ml-2" style={{ color: "red" }}>
-              Copied.
-            </span>
-          ) : null}
         </div>
         <div className="addsearch-div">
           <div className="card">
