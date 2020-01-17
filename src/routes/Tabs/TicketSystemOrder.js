@@ -198,12 +198,14 @@ class TicketSystemOrder extends Component {
   handleOrderSearchData() {
     debugger;
     let self = this;
+    var CustID = this.props.custDetails;
     axios({
       method: "post",
       url: config.apiUrl + "/Order/getOrderListWithItemDetails",
       headers: authHeader(),
       params: {
-        OrderNumber: this.state.orderNumber
+        OrderNumber: this.state.orderNumber,
+        CustomerID:CustID
       }
     }).then(function(res) {
       debugger;
