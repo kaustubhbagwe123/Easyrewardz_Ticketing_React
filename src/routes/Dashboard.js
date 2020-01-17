@@ -2089,9 +2089,9 @@ class Dashboard extends Component {
                         <p className="card-head">All</p>
                         <span className="card-value">
                           {this.state.DashboardNumberData.all !== null &&
-                          (this.state.DashboardNumberData.all < 9
+                          this.state.DashboardNumberData.all < 9
                             ? "0" + this.state.DashboardNumberData.all
-                            : this.state.DashboardNumberData.all)}
+                            : this.state.DashboardNumberData.all}
                         </span>
                       </div>
                     </div>
