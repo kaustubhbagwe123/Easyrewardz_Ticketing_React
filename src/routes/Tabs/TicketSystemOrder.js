@@ -988,7 +988,6 @@ class TicketSystemOrder extends Component {
                 defaultPageSize={3}
                 showPagination={false}
                 SubComponent={row => {
-                  debugger;
                   return (
                     <div style={{ padding: "20px" }}>
                       <ReactTable

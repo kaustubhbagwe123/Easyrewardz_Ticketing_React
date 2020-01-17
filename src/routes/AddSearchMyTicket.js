@@ -20,7 +20,7 @@ import {
 } from "react-notifications";
 import { authHeader } from "../helpers/authHeader";
 // import { authHeader } from "../helpers/authHeader";
-import {CopyToClipboard} from 'react-copy-to-clipboard';
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 class AddSearchMyTicket extends Component {
   constructor(props) {
@@ -40,8 +40,8 @@ class AddSearchMyTicket extends Component {
       message: "",
       createdBy: 6,
       SearchData: [],
-      value: '',
-      copied: false,
+      value: "",
+      copied: false
     };
     this.handleAddCustomerOpen = this.handleAddCustomerOpen.bind(this);
     this.handleAddCustomerClose = this.handleAddCustomerClose.bind(this);
@@ -49,7 +49,19 @@ class AddSearchMyTicket extends Component {
 
     this.handleSearchCustomer = this.handleSearchCustomer.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleCopyToaster = this.handleCopyToaster.bind(this);
     this.validator = new SimpleReactValidator();
+  }
+  handleCopyToaster() {
+    debugger;
+    setTimeout(() => {
+      if (
+        this.state.copied &&
+        this.state.copied
+      ) {
+        NotificationManager.success("Copied.");
+      }
+    }, 100);
   }
   handleAddCustomerOpen() {
     this.setState({ AddCustomer: true });
@@ -100,7 +112,6 @@ class AddSearchMyTicket extends Component {
         NotificationManager.error(res.data.message);
       }
     });
- 
   }
   CheckValidCustomerEmailPhoneNo() {
     debugger;
@@ -200,14 +211,15 @@ class AddSearchMyTicket extends Component {
           <label className="label-addsearch">Source</label>
           <img src={HeadphoneImg} alt="HeadphoneImg" className="headphonered" />
           <label className="mobile-noAddsearch">+91-9873470074</label>
-          <CopyToClipboard text={"Hello"} onCopy={() => this.setState({ copied: true })}>
-              <img src={PasteImg} alt="PasteImage" className="paste-addSearch" />  
+          <CopyToClipboard
+            text={"Hello"}
+            onCopy={() => this.setState({ copied: true })}
+          >
+            <img src={PasteImg} 
+              alt="PasteImage" 
+              className="paste-addSearch" 
+              onClick={this.handleCopyToaster} />
           </CopyToClipboard>
-          {this.state.copied ? (
-              <span className="ml-2" style={{ color: "red" }} >
-                   Copied.
-              </span>
-            ) : null}
         </div>
         <div className="addsearch-div">
           <div className="card">
@@ -228,7 +240,7 @@ class AddSearchMyTicket extends Component {
                 value={this.state.SrchEmailPhone}
                 onChange={this.addCustomerData}
                 maxLength="100"
-              />   
+              />
               <div className="seacrh-img-addsearch">
                 <img
                   src={SearchBlueImg}
@@ -237,7 +249,7 @@ class AddSearchMyTicket extends Component {
                   onClick={this.handleSearchCustomer}
                 />
               </div>
-             
+
               {this.state.message === "Record Not Found" ? (
                 <div>
                   <div className="div-notFoundaddseacr">

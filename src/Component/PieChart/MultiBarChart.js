@@ -1,5 +1,9 @@
-import React, { Component } from 'react'
-import Chart from 'react-apexcharts'
+import React, { Component } from 'react';
+import Chart from 'react-apexcharts';
+import { authHeader } from "./../../helpers/authHeader";
+import axios from "axios";
+import config from "./../../helpers/config";
+
 class MultiBarChart extends Component {
   constructor(props) {
     super(props);
@@ -10,19 +14,73 @@ class MultiBarChart extends Component {
           id: 'basic-bar'
         },
         xaxis: {
-          categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+          categories: []
         },
       },
       seriesMixedChart: [ {
         name: 'Total Tickets',
         type: 'column',
-        data: [2500, 2000, 1700, 1700, 1300, 1800, 2000]
+        data: []
       }, {
         name: 'Tickets with Task',
         type: 'column',
-        data: [1300, 1200, 1100, 1200, 1000, 1300, 1100]
+        data: []
       }],
-    }
+    };
+
+    this.handleGetDashboardGraphData = this.handleGetDashboardGraphData.bind(
+      this
+    );
+  }
+
+  componentDidMount() {
+    this.handleGetDashboardGraphData();
+  }
+
+  handleGetDashboardGraphData() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/DashBoard/DashBoardGraphData",
+      headers: authHeader(),
+      params: {
+        UserIds: "6,7,8",
+        fromdate: "2019-12-26",
+        todate: "2020-01-15",
+        BrandID: "26, 31"
+      }
+    }).then(function(res) {
+      debugger;
+      let categories = [],
+        totalTicketsData = [],
+        ticketedTaskData = [];
+      let DashboardBillGraphData = res.data.responseData.tickettoTaskGraph;
+      for (let i = 0; i < DashboardBillGraphData.length; i++) {
+        let day = DashboardBillGraphData[i].day;
+        categories.push(day);
+        let totalTickets = DashboardBillGraphData[i].totalTickets;
+        totalTicketsData.push(totalTickets);
+        let taskTickets = DashboardBillGraphData[i].taskTickets;
+        ticketedTaskData.push(taskTickets);
+      }
+
+      self.setState({
+        optionsMixedChart: {
+          xaxis: {
+            categories
+          }
+        },
+        seriesMixedChart: [
+          {
+            data: totalTicketsData
+          },
+          {
+            data: ticketedTaskData
+          }
+        ]
+      });
+    });
   }
   
   render() {

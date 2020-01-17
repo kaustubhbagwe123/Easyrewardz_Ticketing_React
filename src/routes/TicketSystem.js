@@ -13,6 +13,7 @@ import TicketSystemTask from "./Tabs/TicketSystemTask";
 import TicketSystemStore from "./Tabs/TicketSystemStore";
 import Modal from "react-responsive-modal";
 import CKEditor from "ckeditor4-react";
+import PlusImg from "./../assets/Images/plus.png";
 // import moment from "moment";
 import FileUpload from "./../assets/Images/file.png";
 import ThumbTick from "./../assets/Images/thumbticket.png";
@@ -57,6 +58,7 @@ class TicketSystem extends Component {
       TicketPriorityData: [],
       ChannelOfPurchaseData: [],
       KbLink: false,
+      Plus: false,
       TabIconColor: "nav-link active",
       altEmailID: "",
       altNumber: "",
@@ -93,9 +95,10 @@ class TicketSystem extends Component {
       userCC: "",
       userBCC: "",
       selectedFile: "",
-      mailBodyData:"",
+      mailBodyData: "",
       saveAsDraft: "SaveAsDraft",
       copied: false,
+      copiedNumber: false,
       custVisit: 0,
       AlreadycustVisit: 0,
       taskMaster: [],
@@ -140,7 +143,21 @@ class TicketSystem extends Component {
     );
     this.setWrapperRef = this.setWrapperRef.bind(this);
     this.handleClickOutside = this.handleClickOutside.bind(this);
+    this.handleCopyToaster = this.handleCopyToaster.bind(this);
   }
+
+  handleCopyToaster() {
+    debugger;
+    setTimeout(() => {
+      if (
+        this.state.copiedNumber &&
+        this.state.customerData.customerPhoneNumber
+      ) {
+        NotificationManager.success("Copied.");
+      }
+    }, 100);
+  }
+
   toggleTitleSuggestion() {
     // this.setState({ toggleTitle: !this.state.toggleTitle });
     this.setState({ toggleTitle: true });
@@ -150,6 +167,12 @@ class TicketSystem extends Component {
   }
   HandleKbLinkModalClose() {
     this.setState({ KbLink: false });
+  }
+  handleThumbModalOpen() {
+    this.setState({ Plus: true });
+  }
+  handleThumbModalClose() {
+    this.setState({ Plus: false });
   }
   handleEditCustomerOpen() {
     this.setState({ EditCustomer: true });
@@ -340,12 +363,12 @@ class TicketSystem extends Component {
     }).then(function(res) {
       debugger;
       let CkEditorTemplateDetails = res.data.responseData;
-      let bodyData=res.data.responseData.templateBody
+      let bodyData = res.data.responseData.templateBody;
       self.setState({
         CkEditorTemplateDetails: CkEditorTemplateDetails,
         tempName: tempName,
         selectTicketTemplateId: tempId,
-        mailBodyData:bodyData
+        mailBodyData: bodyData
       });
     });
   }
@@ -670,9 +693,9 @@ class TicketSystem extends Component {
       this.forceUpdate();
     }
   }
-  handleSendMailData(){
-    debugger
-    var subject="Demo Mail"
+  handleSendMailData() {
+    debugger;
+    var subject = "Demo Mail";
     axios({
       method: "post",
       url: config.apiUrl + "/Ticketing/SendMail",
@@ -681,20 +704,19 @@ class TicketSystem extends Component {
         EmailID: this.state.customerData.customerEmailId,
         Mailcc: this.state.mailFiled.userCC,
         Mailbcc: this.state.mailFiled.userBCC,
-        Mailsubject:subject,
-        MailBody:this.state.mailBodyData,
-        informStore:this.state.InformStore,
-        storeID:""
+        Mailsubject: subject,
+        MailBody: this.state.mailBodyData,
+        informStore: this.state.InformStore,
+        storeID: ""
       }
     }).then(function(res) {
       debugger;
       let status = res.data.status;
-      if(status === true){
+      if (status === true) {
         NotificationManager.success(res.data.responseData);
-      }else{
+      } else {
         NotificationManager.error(res.data.responseData);
       }
-     
     });
   }
 
@@ -798,22 +820,23 @@ class TicketSystem extends Component {
                   <label className="a91-9873470074">{CustNumber}</label>
                   <CopyToClipboard
                     text={CustNumber}
-                    onCopy={() => this.setState({ copied: true })}
+                    onCopy={() => this.setState({ copiedNumber: true })}
                   >
                     <img
                       src={CopyIcon}
                       alt="Copy-Icon"
                       className="bitmapheadpone"
+                      onClick={this.handleCopyToaster}
                     />
                   </CopyToClipboard>
-                  {this.state.copied ? (
+                  {/* {this.state.copiedNumber ? (
                     <span
                       className="ml-2"
                       style={{ color: "red", display: "initial" }}
                     >
                       Copied.
                     </span>
-                  ) : null}
+                  ) : null} */}
                 </td>
 
                 <td className="tdtextnew" style={{ padding: "5px" }}>
@@ -1098,7 +1121,31 @@ class TicketSystem extends Component {
                 <div className="row my-3 mx-1">
                   <img src={ThumbTick} alt="thumb" className="thumbtick" />
                   <img src={ThumbTick} alt="thumb" className="thumbtick" />
+                  <img src={ThumbTick} alt="thumb" className="thumbtick" />
+                  <img src={ThumbTick} alt="thumb" className="thumbtick" />
+                  <img src={ThumbTick} alt="thumb" className="thumbtick" />
+                  <img src={PlusImg} alt="thumb" className="thumbtick-plus"
+                      onClick={this.handleThumbModalOpen.bind(this)} />
                 </div>
+                  <Modal
+                      open={this.state.Plus}
+                      onClose={this.handleThumbModalClose.bind(this)}
+                      modalId="thumb-modal-popup"
+                      overlayId="logout-ovrlykb"
+                  >
+                    <div>
+                      <div className="row my-3 mx-1">
+                          <img src={ThumbTick} alt="thumb" className="thumbtick" style={{marginBottom:"10px"}} />
+                          <img src={ThumbTick} alt="thumb" className="thumbtick" style={{marginBottom:"10px"}} />
+                          <img src={ThumbTick} alt="thumb" className="thumbtick" style={{marginBottom:"10px"}} />
+                          <img src={ThumbTick} alt="thumb" className="thumbtick" style={{marginBottom:"10px"}} />
+                          <img src={ThumbTick} alt="thumb" className="thumbtick" style={{marginBottom:"10px"}} />
+                          <img src={ThumbTick} alt="thumb" className="thumbtick" style={{marginBottom:"10px"}} />
+                          <img src={ThumbTick} alt="thumb" className="thumbtick" style={{marginBottom:"10px"}} />
+                          <img src={ThumbTick} alt="thumb" className="thumbtick" style={{marginBottom:"10px"}} />
+                      </div>
+                    </div>
+                  </Modal>
                 <div className="row" style={{ position: "absolute" }}>
                   <div
                     className="dropdown collapbtn1"
@@ -1257,7 +1304,9 @@ class TicketSystem extends Component {
                                   )}
                                 />
 
-                                <span className="input-group-addon inputcc-one">+1</span>
+                                <span className="input-group-addon inputcc-one">
+                                  +1
+                                </span>
                               </div>
                             </label>
                           </li>
@@ -1282,7 +1331,9 @@ class TicketSystem extends Component {
                                     "userBCC"
                                   )}
                                 />
-                               <span className="input-group-addon inputcc-one">+1</span>
+                                <span className="input-group-addon inputcc-one">
+                                  +1
+                                </span>
                               </div>
                             </label>
                           </li>
