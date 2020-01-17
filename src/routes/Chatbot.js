@@ -465,6 +465,7 @@ class Chatbot extends Component {
                                     type="text"
                                     className="chat-txt1 txt-border"
                                     placeholder="Enter Name"
+                                    maxLength={25}
                                   />
                                 </div>
                                 <div className="col-md-4">
@@ -473,6 +474,7 @@ class Chatbot extends Component {
                                     type="text"
                                     className="chat-txt1 txt-border"
                                     placeholder="Enter Mobile No"
+                                    maxLength={10}
                                   />
                                 </div>
                                 <div className="col-md-4">
@@ -481,6 +483,7 @@ class Chatbot extends Component {
                                     type="text"
                                     className="chat-txt1 txt-border"
                                     placeholder="Enter Email Id"
+                                    maxLength={100}
                                   />
                                 </div>
                               </div>

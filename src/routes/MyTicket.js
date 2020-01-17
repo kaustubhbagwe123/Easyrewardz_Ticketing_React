@@ -705,19 +705,21 @@ class MyTicket extends Component {
       />
     );
     const EmailCollapseUpDown = this.state.EmailCollapse ? (
+      <div style={{height:"30px",cursor:"pointer"}}  onClick={this.HandleEmailCollapseOpen.bind(this)}>
       <img
         src={MinusImg}
         alt="Minus"
         className="minus-img"
-        onClick={this.HandleEmailCollapseOpen.bind(this)}
       />
+      </div>
     ) : (
+      <div style={{height:"30px",cursor:"pointer"}} onClick={this.HandleEmailCollapseOpen.bind(this)}>
       <img
         src={PlusImg}
         alt="Plush"
         className="plush-img"
-        onClick={this.HandleEmailCollapseOpen.bind(this)}
       />
+      </div>
     );
     const data = [
       {
@@ -1663,7 +1665,7 @@ class MyTicket extends Component {
 
                   <div
                     className="mob-float"
-                    style={{ display: "inline", float: "right" }}
+                    style={{ display: "flex", float: "right" }}
                   >
                     <img src={ArrowImg} alt="Arrow" className="arrow-img" />
                     <div className="line-1"></div>
@@ -2405,7 +2407,7 @@ class MyTicket extends Component {
                           </h3>
                           <div
                             className="mob-float"
-                            style={{ display: "inline", float: "right" }}
+                            style={{ display: "flex", float: "right" }}
                           >
                             <img
                               src={ArrowImg}
@@ -2413,12 +2415,13 @@ class MyTicket extends Component {
                               className="arrow-img"
                             />
                             <div className="line-1"></div>
+                            <div style={{height:"31",cursor:"pointer"}} onClick={this.hanldeCommentClose2.bind(this)}>
                             <img
                               src={MinusImg}
                               alt="Minus"
                               className="minus-img"
-                              onClick={this.hanldeCommentClose2.bind(this)}
                             />
+                            </div>
                           </div>
                         </div>
                       </div>

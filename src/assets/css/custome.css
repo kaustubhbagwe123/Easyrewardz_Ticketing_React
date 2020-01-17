@@ -4356,6 +4356,7 @@ progress::-webkit-progress-bar {
   width: 245px;
   height: 43px;
   margin-top: 25px;
+  cursor: pointer;
 }
 
 .obpml {
@@ -6253,7 +6254,7 @@ font-weight: normal;
   height: 20px;
   width: 35px;
   border-radius: 30px;
-  background: #c9c9c9 ;
+  background: #50D462 ;
 }
 .switch input[type="checkbox"] + .cr:after {
   -webkit-box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1),
@@ -6283,7 +6284,7 @@ font-weight: normal;
   cursor: not-allowed;
 }
 .switch.switch-primary input[type="checkbox"]:checked + .cr:before {
-  background: #50D462;
+  background: #c9c9c9;
 }
 .switch.switch-danger input[type="checkbox"]:checked + .cr:before {
   background: #f44236;
@@ -7936,6 +7937,28 @@ table tr th:last-child {
 .varunoverflow::-webkit-scrollbar-thumb:hover{
   background: #555;
 }
+.assign-modal-body-mytick .rt-table::-webkit-scrollbar{
+  height: 7px;
+}
+.assign-modal-body-mytick .rt-table::-webkit-scrollbar-track{
+  background: #ddd;
+  border-radius: 10px;
+}
+.assign-modal-body-mytick .rt-table::-webkit-scrollbar-thumb{
+  background: #888;
+  border-radius: 10px;
+}
+.assign-modal-body-mytick .rt-table::-webkit-scrollbar-thumb:hover{
+  background: #555;
+}
+.assign-modal-body-mytick .item-selection {
+  position: absolute;
+  top: 90%;
+  transform: translateY(-50%);
+  width: 100%;
+  left: 0;
+  text-align: center;
+}
 .varun-taskDrawer {
   font-weight: bold;
   color: black;
@@ -9385,6 +9408,15 @@ table tr th:last-child {
   border-radius: 5px;
   margin-right: 5px;
 }
+.thumbtick-plus {
+  border: 1px solid #ECF2F4;
+  border-radius: 5px;
+  margin-right: 5px;
+  margin: auto 0;
+  width: 32px;
+  height: 35px;
+  cursor: pointer;
+}
 .cancalImg-kb {
   width: 15px;
     height: 15px;
@@ -9667,6 +9699,7 @@ table tr th:last-child {
   margin-right: 15px;
   padding-top: 12px;
   padding-bottom: 12px;
+  cursor: pointer;
 }
 .myticlist-expand-sect .save-view-search button.btn-inv {
   padding-right: 45px;
@@ -10015,6 +10048,7 @@ table tr th:last-child {
   line-height: 17px;
   text-align: center;
   border: none;
+  cursor: pointer;
 }
 #ScheduleModel .txt1Time {
   background: #ecf2f4 url("../Images/Time.png") no-repeat right 12px center; 
@@ -10055,5 +10089,14 @@ table tr th:last-child {
 }
 .pop-over-cancle:hover {
   color: #2561a8 !important;
+}
+#thumb-modal-popup {
+  border-radius: 5px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+  padding: 10px;
+  margin: auto;
+  display: inline-block;
+  height: auto;
+  width: 634px;
 }
 /* ****************End css ************************/
