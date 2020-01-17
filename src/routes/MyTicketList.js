@@ -1603,7 +1603,7 @@ class MyTicketList extends Component {
         setTimeout(function() {
           self.props.history.push({
             pathname: "myticket",
-            state: self.state
+            ticketDetailID: Id
           });
         }, 100);
       }
