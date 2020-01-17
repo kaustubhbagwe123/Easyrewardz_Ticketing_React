@@ -56,14 +56,24 @@ class MyTicketTask extends Component {
 
   componentDidMount() {
     debugger;
-    var Id = this.props.taskData;
-    this.handleGetTaskTableGrid(Id);
-    this.handleGetDepartmentList();
-    this.handleGetTicketPriorityList();
-    this.handleGetTaskTabDetails();
-    this.setState({
-      tikcet_ID: Id
-    });
+    if(this.props.taskData.TicketData.TicketId !== 0){
+      var Id = this.props.taskData.TicketData.TicketId;
+      var GridData=this.props.taskData.TicketData.GridData;
+      this.handleGetTaskTableGrid(Id);
+      this.handleGetDepartmentList();
+      this.handleGetTicketPriorityList();
+      this.handleGetTaskTabDetails(Id);
+      this.setState({
+        tikcet_ID: Id,
+        taskTableGrid:GridData
+      });
+    }else if(this.props.taskData.TicketData.TicketId === 0){
+
+    }
+    else{
+      this.props.history.push("myTicketlist");
+    }
+    
   }
   handleAddTaskModalOpn() {
     this.setState({ AddTaskModal: true });
@@ -220,7 +230,7 @@ class MyTicketTask extends Component {
   handleAddTaskTitle() {
     debugger;
     let self = this;
-
+    let ticketId=this.state.tikcet_ID;
     axios({
       method: "post",
       url: config.apiUrl + "/Task/createTask",
@@ -240,6 +250,7 @@ class MyTicketTask extends Component {
       if (status === true) {
         NotificationManager.success("Task created successfully.");
         self.handleAddTaskModalCls();
+        self.handleGetTaskTableGrid(ticketId);
       } else {
         NotificationManager.error("Task not created.");
       }
@@ -305,7 +316,7 @@ class MyTicketTask extends Component {
           <div style={{ padding: "20px 8px 0px 8px" }}>
             <input
               type="text"
-              class="txt-1"
+              className="txt-1"
               placeholder="Task Title"
               name="taskTitle"
               value={this.state.taskTitle}
@@ -422,7 +433,7 @@ class MyTicketTask extends Component {
                 >
                   CANCEL
                 </button>
-                <button className="butn" type="button">
+                <button className="butn" type="button" onClick={this.handleAddTaskTitle.bind(this)}>
                   CREATE TASK
                 </button>
               </div>
@@ -501,6 +512,7 @@ class MyTicketTask extends Component {
                 accessor: "assignName"
               }
             ]}
+            minRows={1}
             // resizable={false}
             defaultPageSize={10}
             showPagination={false}

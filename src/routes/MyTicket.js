@@ -60,7 +60,7 @@ import {
   NotificationManager
 } from "react-notifications";
 import TicketStatus from "./TicketStatus";
-import Select from "react-select";
+// import Select from "react-select";
 import TicketActionType from "./TicketActionType";
 class MyTicket extends Component {
   constructor(props) {
@@ -99,8 +99,9 @@ class MyTicket extends Component {
       SubCategoryData: [],
       IssueTypeData: [],
       ChannelOfPurchaseData: [],
-      historicalDetails:[],
+      historicalDetails: [],
       ticketDetailsData: {},
+      tabCounts: {},
       fileName: "",
       NoteAddComment: "",
       values: [
@@ -116,7 +117,8 @@ class MyTicket extends Component {
       selectedTicketActionType: [],
       TicketActionTypeData: TicketActionType(),
       taskTableGrid: [],
-      claimDetailsData: []
+      claimDetailsData: [],
+      selectetedParameters: {}
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -130,25 +132,30 @@ class MyTicket extends Component {
     this.handleGetChannelOfPurchaseList = this.handleGetChannelOfPurchaseList.bind(
       this
     );
-    this.handleGetTaskTableGrid = this.handleGetTaskTableGrid.bind(this);
-    this.handleGetClaimTabDetails = this.handleGetClaimTabDetails.bind(this);
+    this.handleGetTaskTableCount = this.handleGetTaskTableCount.bind(this);
+    // this.handleGetClaimTabDetails = this.handleGetClaimTabDetails.bind(this);
     this.handleUpdateTicketStatus = this.handleUpdateTicketStatus.bind(this);
     this.handleGetTicketDetails = this.handleGetTicketDetails.bind(this);
+    this.handleGetCountOfTabs = this.handleGetCountOfTabs.bind(this);
   }
 
   componentDidMount() {
     debugger;
-    var data = this.props.location.state;
-    var Id = data.ticketDetailID;
-    this.setState({ HistOrderShow: true, ticket_Id: Id });
-    this.handleGetTicketPriorityList();
-    this.handleGetBrandList();
-    this.handleGetCategoryList();
-    this.handleGetChannelOfPurchaseList();
-    this.handleGetNotesTabDetails(Id);
-    this.handleGetTicketDetails(Id);
-    this.handleGetTaskTableGrid(Id);
-    this.handleGetClaimTabDetails(Id);
+    if (this.props.location.ticketDetailID) {
+      var ticketId = this.props.location.ticketDetailID;
+      this.setState({ HistOrderShow: true, ticket_Id: ticketId });
+      this.handleGetTicketPriorityList();
+      this.handleGetBrandList();
+      this.handleGetCategoryList();
+      this.handleGetChannelOfPurchaseList();
+      this.handleGetNotesTabDetails(ticketId);
+      this.handleGetTicketDetails(ticketId);
+      this.handleGetTaskTableCount(ticketId);
+      // this.handleGetClaimTabDetails(ticketId);
+      this.handleGetCountOfTabs(ticketId);
+    } else {
+      this.props.history.push("myTicketlist");
+    }
   }
 
   handleGetTicketDetails(ID) {
@@ -164,7 +171,13 @@ class MyTicket extends Component {
     }).then(function(res) {
       debugger;
       let data = res.data.responseData;
-      self.setState({ ticketDetailsData: data });
+      var ticketStatus = data.status;
+      var ticketPriority=data.priortyID;
+      var ticketBrand=data.brandID;
+      var ticketCagetory=data.categoryID;
+      var selectetedParameters = { ticketStatusID: ticketStatus,priorityID: ticketPriority,brandID:ticketBrand,categoryID:ticketCagetory};
+
+      self.setState({ ticketDetailsData: data, selectetedParameters });
     });
   }
 
@@ -191,29 +204,49 @@ class MyTicket extends Component {
       }
     });
   }
-
-  handleGetClaimTabDetails(ID) {
+  handleGetCountOfTabs(ID) {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/Task/getclaimlist",
+      url: config.apiUrl + "/Ticketing/GetCountByticketID",
       headers: authHeader(),
       params: {
-        TicketId: ID
+        ticketID: ID
       }
     }).then(function(res) {
       debugger;
       let status = res.data.message;
       let data = res.data.responseData;
-      if (status === "Record Not Found") {
-        self.setState({ claimDetailsData: [] });
+      if (status === "Success") {
+        self.setState({ tabCounts: data });
       } else {
-        self.setState({ claimDetailsData: data });
+        self.setState({ tabCounts: {} });
       }
     });
   }
+  // handleGetClaimTabDetails(ID) {
+  //   let self = this;
+  //   axios({
+  //     method: "post",
+  //     url: config.apiUrl + "/Task/getclaimlist",
+  //     headers: authHeader(),
+  //     params: {
+  //       TicketId: ID
+  //     }
+  //   }).then(function(res) {
+  //     debugger;
+  //     let status = res.data.message;
+  //     let data = res.data.responseData;
+  //     if (status === "Record Not Found") {
+  //       self.setState({ claimDetailsData: [] });
+  //     } else {
+  //       self.setState({ claimDetailsData: data });
+  //     }
+  //   });
+  // }
 
-  handleGetTaskTableGrid(ID) {
+  handleGetTaskTableCount(ID) {
+    debugger;
     let self = this;
     axios({
       method: "post",
@@ -248,8 +281,14 @@ class MyTicket extends Component {
     e.preventDefault();
   };
   setPriorityValue = e => {
-    let priorityValue = e.target.value;
-    this.setState({ selectedPriority: priorityValue });
+    let name=e.target.name;
+    let Value = e.target.value;
+    if(name=== "priority"){
+      this.setState({
+        selectetedParameters:{priorityID:Value}
+      })
+    }
+    // this.setState({ selectedPriority: priorityValue });
   };
   setBrandValue = e => {
     let brandValue = e.currentTarget.value;
@@ -671,9 +710,7 @@ class MyTicket extends Component {
     this.setState({ selectedTicketActionType: e });
   };
   render() {
-    debugger;
-    const { open, ticketDetailsData,historicalDetails } = this.state;
-    var TID = this.state.ticket_Id;
+    const { open, ticketDetailsData, historicalDetails } = this.state;
     const HidecollapsUp = this.state.collapseUp ? (
       <img
         src={Up1Img}
@@ -705,20 +742,18 @@ class MyTicket extends Component {
       />
     );
     const EmailCollapseUpDown = this.state.EmailCollapse ? (
-      <div style={{height:"30px",cursor:"pointer"}}  onClick={this.HandleEmailCollapseOpen.bind(this)}>
-      <img
-        src={MinusImg}
-        alt="Minus"
-        className="minus-img"
-      />
+      <div
+        style={{ height: "30px", cursor: "pointer" }}
+        onClick={this.HandleEmailCollapseOpen.bind(this)}
+      >
+        <img src={MinusImg} alt="Minus" className="minus-img" />
       </div>
     ) : (
-      <div style={{height:"30px",cursor:"pointer"}} onClick={this.HandleEmailCollapseOpen.bind(this)}>
-      <img
-        src={PlusImg}
-        alt="Plush"
-        className="plush-img"
-      />
+      <div
+        style={{ height: "30px", cursor: "pointer" }}
+        onClick={this.HandleEmailCollapseOpen.bind(this)}
+      >
+        <img src={PlusImg} alt="Plush" className="plush-img" />
       </div>
     );
     const data = [
@@ -1164,18 +1199,22 @@ class MyTicket extends Component {
                           <div className="row">
                             <div className="col-md-6 namepad">
                               <label className="fullna">Full Name</label>
-                              <label className="namedi">{ticketDetailsData.customerName}</label>
+                              <label className="namedi">
+                                {ticketDetailsData.customerName}
+                              </label>
                             </div>
                             <div className="col-md-6 namepad">
                               <label className="fullna">Mobile Number</label>
-                              <label className="namedi">{ticketDetailsData.customerPhoneNumber}</label>
+                              <label className="namedi">
+                                {ticketDetailsData.customerPhoneNumber}
+                              </label>
                             </div>
                           </div>
                           <div className="row">
                             <div className="col-md-6 namepad">
                               <label className="fullna">Email ID</label>
                               <label className="namedi">
-                              {ticketDetailsData.customerEmailId}
+                                {ticketDetailsData.customerEmailId}
                               </label>
                             </div>
                           </div>
@@ -1352,7 +1391,10 @@ class MyTicket extends Component {
                     <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4">
                       <div className="form-group">
                         <label className="label-4">Status</label>
-                        <select className="rectangle-9 select-category-placeholder">
+                        <select
+                          className="rectangle-9 select-category-placeholder"
+                          value={this.state.selectetedParameters.ticketStatusID}
+                        >
                           <option>Ticket Status</option>
                           {this.state.TicketStatusData !== null &&
                             this.state.TicketStatusData.map((item, i) => (
@@ -1366,13 +1408,11 @@ class MyTicket extends Component {
                     <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
                       <div className="form-group">
                         <label className="label-4">Priority</label>
-                        {/* <select className="rectangle-9 select-category-placeholder">
-                          <option>Select</option>
-                        </select> */}
                         <select
                           className="rectangle-9 select-category-placeholder"
-                          value={this.state.selectedPriority}
+                          value={this.state.selectetedParameters.priorityID}
                           onChange={this.setPriorityValue}
+                          name="priority"
                         >
                           <option>Priority</option>
                           {this.state.TicketPriorityData !== null &&
@@ -1387,12 +1427,9 @@ class MyTicket extends Component {
                     <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
                       <div className="form-group">
                         <label className="label-4">Brand</label>
-                        {/* <select className="rectangle-9 select-category-placeholder">
-                          <option>Select</option>
-                        </select> */}
                         <select
                           className="rectangle-9 select-category-placeholder"
-                          value={this.state.selectedBrand}
+                          value={this.state.selectetedParameters.brandID}
                           onChange={this.setBrandValue}
                         >
                           <option className="select-category-placeholder">
@@ -1414,11 +1451,8 @@ class MyTicket extends Component {
                     <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4">
                       <div className="form-group">
                         <label className="label-4">Category</label>
-                        {/* <select className="rectangle-9 select-category-placeholder">
-                          <option>Select</option>
-                        </select> */}
                         <select
-                          value={this.state.selectedCategory}
+                          value={this.state.selectetedParameters.categoryID}
                           onChange={this.setCategoryValue}
                           className="rectangle-9 select-category-placeholder"
                         >
@@ -1522,7 +1556,7 @@ class MyTicket extends Component {
                     <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
                       <div className="form-group">
                         <label className="label-4">Ticket Action Type</label>
-                        <Select
+                        {/* <Select
                           getOptionLabel={option => option.ticketActionTypeName}
                           getOptionValue={option => option.ticketActionTypeID}
                           options={this.state.TicketActionTypeData}
@@ -1533,7 +1567,26 @@ class MyTicket extends Component {
                           value={this.state.selectedTicketActionType}
                           // showNewOptionAtTop={false}
                           isMulti
-                        />
+                        /> */}
+                        <select
+                          value={this.state.selectedChannelOfPurchase}
+                          onChange={this.setChannelOfPurchaseValue}
+                          className="rectangle-9 select-category-placeholder"
+                        >
+                          <option className="select-category-placeholder">
+                            Select Ticket Action Type
+                          </option>
+                          {this.state.TicketActionTypeData !== null &&
+                            this.state.TicketActionTypeData.map((item, i) => (
+                              <option
+                                key={i}
+                                value={item.ticketActionTypeID}
+                                className="select-category-placeholder"
+                              >
+                                {item.ticketActionTypeName}
+                              </option>
+                            ))}
+                        </select>
                       </div>
                     </div>
                   </div>
@@ -2041,9 +2094,9 @@ class MyTicket extends Component {
                         onClick={this.handleGetTabsName}
                       >
                         Task:{" "}
-                        {this.state.taskTableGrid.length < 9
-                          ? "0" + this.state.taskTableGrid.length
-                          : this.state.taskTableGrid.length}
+                        {this.state.tabCounts.task < 9
+                          ? "0" + this.state.tabCounts.task
+                          : this.state.tabCounts.task}
                       </a>
                     </li>
                     <li className="nav-item fo">
@@ -2058,9 +2111,9 @@ class MyTicket extends Component {
                         onClick={this.handleGetTabsName}
                       >
                         Claim:{" "}
-                        {this.state.claimDetailsData.length < 9
-                          ? "0" + this.state.claimDetailsData.length
-                          : this.state.claimDetailsData.length}
+                        {this.state.tabCounts.claim < 9
+                          ? "0" + this.state.tabCounts.claim
+                          : this.state.tabCounts.claim}
                       </a>
                     </li>
                   </ul>
@@ -2074,7 +2127,18 @@ class MyTicket extends Component {
                 role="tabpanel"
                 aria-labelledby="Claim-tab"
               >
-                <MyTicketClaim claimData={TID} />
+                {this.state.ticket_Id > 0 ? (
+                  <MyTicketClaim
+                    claimData={{
+                      claimDeatils: {
+                        ticketId: this.state.ticket_Id,
+                        claimTabId: this.state.ClaimTab
+                      }
+                    }}
+                  />
+                ) : (
+                  ""
+                )}
               </div>
               <div
                 className="tab-pane fade show active"
@@ -2415,12 +2479,15 @@ class MyTicket extends Component {
                               className="arrow-img"
                             />
                             <div className="line-1"></div>
-                            <div style={{height:"31",cursor:"pointer"}} onClick={this.hanldeCommentClose2.bind(this)}>
-                            <img
-                              src={MinusImg}
-                              alt="Minus"
-                              className="minus-img"
-                            />
+                            <div
+                              style={{ height: "31", cursor: "pointer" }}
+                              onClick={this.hanldeCommentClose2.bind(this)}
+                            >
+                              <img
+                                src={MinusImg}
+                                alt="Minus"
+                                className="minus-img"
+                              />
                             </div>
                           </div>
                         </div>
@@ -2623,7 +2690,18 @@ class MyTicket extends Component {
                 role="tabpanel"
                 aria-labelledby="Task-tab"
               >
-                <MyTicketTask taskData={TID} />
+                {this.state.ticket_Id > 0 ? (
+                  <MyTicketTask
+                    taskData={{
+                      TicketData: {
+                        TicketId: this.state.ticket_Id,
+                        GridData: this.state.taskTableGrid
+                      }
+                    }}
+                  />
+                ) : (
+                  ""
+                )}
               </div>
               <div
                 className="tab-pane fade"

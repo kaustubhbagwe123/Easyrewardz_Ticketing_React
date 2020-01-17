@@ -24,6 +24,7 @@ class MyTicketClaim extends Component {
     this.state = {
       ClaimDetailsModal: false,
       claimAddComment: "",
+      ClaimTab: 0,
       claimDetailsData: []
     };
 
@@ -32,27 +33,38 @@ class MyTicketClaim extends Component {
 
   componentDidMount() {
     debugger;
-    var Id = this.props.claimData;
-    this.handleGetClaimTabDetails(Id.ticket_Id);
+    if (this.props.claimData.claimDeatils.ticketId !== 0) {
+      // var data = this.props.claimData;
+      var ticketId = this.props.claimData.claimDeatils.ticketId;
+      var tabId = this.props.claimData.claimDeatils.claimTabId;
+      this.handleGetClaimTabDetails(ticketId);
+      this.setState({
+        ClaimTab: tabId
+      });
+    } else if (this.props.claimData.claimDeatils.ticketId === 0) {
+    } else {
+      this.props.history.push("myTicketlist");
+    }
   }
 
-  handleGetClaimTabDetails(ticket_Id) {
+  handleGetClaimTabDetails(Id) {
+    debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Task/getclaimlist",
       headers: authHeader(),
       params: {
-        TicketId: ticket_Id
+        TicketId: Id
       }
     }).then(function(res) {
       debugger;
       let status = res.data.message;
       let data = res.data.responseData;
-      if (status === "Record Not Found") {
-        self.setState({ claimDetailsData: [] });
-      } else {
+      if (status !== "Record Not Found") {
         self.setState({ claimDetailsData: data });
+      } else {
+        self.setState({ claimDetailsData: [] });
       }
     });
   }
@@ -77,15 +89,13 @@ class MyTicketClaim extends Component {
   };
   handleClaimAddComments() {
     debugger;
-    var claimData = this.props.claimData;
-
-    let self = this;
+    // let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Task/AddComment",
       headers: authHeader(),
       params: {
-        CommentForId: claimData.ClaimTab,
+        CommentForId: this.state.ClaimTab,
         Comment: this.state.claimAddComment.trim(),
         Id: 1
       }
@@ -100,6 +110,7 @@ class MyTicketClaim extends Component {
     });
   }
   render() {
+    const { claimDetailsData } = this.state;
     const dataOrder = [
       {
         taskTitle: "Store door are not working",
@@ -193,203 +204,141 @@ class MyTicketClaim extends Component {
       }
     ];
 
-    const dataTicketClaim = [
-      {
-        id: "Ta1",
-        claimIssue: (
-          <label>
-            Need to change my shipping address
-            <span style={{ display: "block", fontSize: "11px" }}>
-              Hope this help, Please rate us
-            </span>
-          </label>
-        ),
-        status: <span className="table-btn table-blue-btn">Open</span>,
-
-        creationOn: (
-          <div>
-            <span>
-              12 March 2018
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-              {/* <Popover content={popoverData1} placement="bottom">
-              <img
-                className="info-icon"
-                src={InfoIcon}
-                alt="info-icon"
-                
-              />
-            </Popover> */}
-            </span>
-          </div>
-        )
-      },
-      {
-        id: "Ta2",
-        claimIssue: (
-          <label>
-            Need to change my shipping address
-            <span style={{ display: "block", fontSize: "11px" }}>
-              Hope this help, Please rate us(1 new comment)
-            </span>
-          </label>
-        ),
-        status: <span className="table-btn table-yellow-btn">New</span>,
-        creationOn: (
-          <div>
-            <span>
-              12 March 2018
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-              {/* <Popover content={popoverData1} placement="bottom">
-              <img
-                className="info-icon"
-                src={InfoIcon}
-                alt="info-icon"
-                
-              />
-            </Popover> */}
-            </span>
-          </div>
-        )
-      },
-      {
-        id: "Ta3",
-        claimIssue: (
-          <label>
-            Need to change my shipping address
-            <span style={{ display: "block", fontSize: "11px" }}>
-              Hope this help, Please rate us
-            </span>
-          </label>
-        ),
-        status: <span className="table-btn table-green-btn">Solved</span>,
-        creationOn: (
-          <div>
-            <span>
-              12 March 2018
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-              {/* <Popover content={popoverData1} placement="bottom">
-              <img
-                className="info-icon"
-                src={InfoIcon}
-                alt="info-icon"
-                
-              />
-            </Popover> */}
-            </span>
-          </div>
-        )
-      }
-    ];
-
-    const columnsTicketClaim = [
-      {
-        Header: <span>ID</span>,
-        accessor: "ticketClaimID",
-        Cell: row => (
-          <span>
-            <img src={HeadPhone3} alt="HeadPhone" className="headPhone3" />
-            {row.original.ticketClaimID}
-          </span>
-        )
-      },
-      {
-        Header: <span>Status</span>,
-        accessor: "taskStatus",
-        Cell: row => {
-          // <span className="table-btn table-green-btn">
-          //   {row.original.taskStatus}
-          // </span>
-          if (row.original.taskStatus === "New") {
-            return (
-              <span className="table-btn table-yellow-btn">
-                {row.original.taskStatus}
-              </span>
-            );
-          } else if (row.original.taskStatus === "Resolved") {
-            return (
-              <span className="table-btn table-green-btn">
-                {row.original.taskStatus}
-              </span>
-            );
-          }
-        }
-      },
-      {
-        Header: <span>Claim Issue Type</span>,
-        accessor: "claimIssueType"
-      },
-      {
-        Header: (
-          <span>
-            Category
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "category",
-        Cell: props => (
-          <span>
-            <label>{props.original.category} </label>
-            <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            {/* <Popover content={} placement="bottom">
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover> */}
-          </span>
-        )
-      },
-      {
-        Header: (
-          <span>
-            Raised By
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "raisedBy"
-        // Cell: row => <label>N Rampal</label>
-      },
-      {
-        Header: (
-          <span>
-            Creation on
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "dateformat",
-        Cell: props => (
-          <div>
-            <span>
-              {moment(props.original.creation_on).format("DD MMMM YYYY")}
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-              {/* <Popover content={popoverData1} placement="bottom">
-              <img
-                className="info-icon"
-                src={InfoIcon}
-                alt="info-icon"
-                
-              />
-            </Popover> */}
-            </span>
-          </div>
-        )
-      },
-      {
-        Header: (
-          <span>
-            Assign to
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "assignName"
-        // Cell: row => <label>A. Bansal</label>
-      }
-    ];
     return (
       <Fragment>
         <div className="table-cntr mt-3 MyTicketClaimReact">
           <ReactTable
-            data={this.state.claimDetailsData}
-            columns={columnsTicketClaim}
+            data={claimDetailsData}
+            columns={[
+              {
+                Header: <span>ID</span>,
+                accessor: "ticketClaimID",
+                Cell: row => {
+                  return (
+                    <span>
+                      <img
+                        src={HeadPhone3}
+                        alt="HeadPhone"
+                        className="headPhone3"
+                      />
+                      {row.original.ticketClaimID}
+                    </span>
+                  );
+                }
+              },
+              {
+                Header: <span>Status</span>,
+                accessor: "taskStatus",
+                Cell: row => {
+                  debugger;
+                  // <span className="table-btn table-green-btn">
+                  //   {row.original.taskStatus}
+                  // </span>
+                  if (row.original.taskStatus === "") {
+                    return (
+                      <span className="table-btn table-yellow-btn">
+                        {row.original.taskStatus}
+                      </span>
+                    );
+                  } else {
+                    if (row.original.taskStatus === "New") {
+                      return (
+                        <span className="table-btn table-yellow-btn">
+                          {row.original.taskStatus}
+                        </span>
+                      );
+                    } else if (row.original.taskStatus === "Resolved") {
+                      return (
+                        <span className="table-btn table-green-btn">
+                          {row.original.taskStatus}
+                        </span>
+                      );
+                    }else if (row.original.taskStatus === "Open/Pending") {
+                      return (
+                        <span className="table-btn table-green-btn">
+                          {row.original.taskStatus}
+                        </span>
+                      );
+                    }
+                  }
+                }
+              },
+              {
+                Header: <span>Claim Issue Type</span>,
+                accessor: "claimIssueType"
+              },
+              {
+                Header: (
+                  <span>
+                    Category
+                    <FontAwesomeIcon icon={faCaretDown} />
+                  </span>
+                ),
+                accessor: "category",
+                Cell: props => (
+                  <span>
+                    <label>{props.original.category} </label>
+                    <img className="info-icon" src={InfoIcon} alt="info-icon" />
+                    {/* <Popover content={} placement="bottom">
+                      <img className="info-icon" src={InfoIcon} alt="info-icon" />
+                    </Popover> */}
+                  </span>
+                )
+              },
+              {
+                Header: (
+                  <span>
+                    Raised By
+                    <FontAwesomeIcon icon={faCaretDown} />
+                  </span>
+                ),
+                accessor: "raisedBy"
+                // Cell: row => <label>N Rampal</label>
+              },
+              {
+                Header: (
+                  <span>
+                    Creation on
+                    <FontAwesomeIcon icon={faCaretDown} />
+                  </span>
+                ),
+                accessor: "dateformat",
+                Cell: props => (
+                  <div>
+                    <span>
+                      {moment(props.original.creation_on).format(
+                        "DD MMMM YYYY"
+                      )}
+                      <img
+                        className="info-icon"
+                        src={InfoIcon}
+                        alt="info-icon"
+                      />
+                      {/* <Popover content={popoverData1} placement="bottom">
+                      <img
+                        className="info-icon"
+                        src={InfoIcon}
+                        alt="info-icon"
+                        
+                      />
+                    </Popover> */}
+                    </span>
+                  </div>
+                )
+              },
+              {
+                Header: (
+                  <span>
+                    Assign to
+                    <FontAwesomeIcon icon={faCaretDown} />
+                  </span>
+                ),
+                accessor: "assignName"
+              }
+            ]}
             // resizable={false}
-            defaultPageSize={3}
+            minRows={1}
+            defaultPageSize={5}
             showPagination={false}
             getTrProps={this.HandleRowClickDraw}
           />
@@ -562,7 +511,8 @@ class MyTicketClaim extends Component {
                       }
                     ]}
                     //resizable={false}
-                    defaultPageSize={3}
+                    minRows={1}
+                    defaultPageSize={10}
                     showPagination={false}
                     SubComponent={row => {
                       return (
@@ -581,128 +531,7 @@ class MyTicketClaim extends Component {
                     }}
                   />
                 </div>
-                {/* <table className="table">
-                  <tbody>
-                    <tr>
-                      <td>
-                        <label className="invoice-number">Invoice number</label>
-                      </td>
-                      <td>
-                        <label className="invoice-date">Invoice Date</label>
-                      </td>
-                      <td>
-                        <label className="item-count">Item Count</label>
-                      </td>
-                      <td>
-                        <label className="item-price">Item Price</label>
-                      </td>
-                      <td>
-                        <label className="price-paid">Price Paid</label>
-                      </td>
-                      <td>
-                        <label className="store-code">Store Code</label>
-                      </td>
-                      <td>
-                        <label className="store-address">Store Address</label>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <label className="bb-332398">BB332398</label>
-                      </td>
-                      <td>
-                        <label className="bb-332398">12 Jan 2019</label>
-                      </td>
-                      <td>
-                        <label className="bb-332398">02</label>
-                      </td>
-                      <td>
-                        <label className="bb-332398">2999</label>
-                      </td>
-                      <td>
-                        <label className="bb-332398">2999</label>
-                      </td>
-                      <td>
-                        <label className="bb-332398">SB221</label>
-                      </td>
-                      <td>
-                        <label className="bb-332398">
-                          UNIT D-338, | SECOND FLO
-                        </label>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table> */}
               </div>
-              {/* <div className="row" style={{ marginLeft: "15px" }}>
-                <div className="claim-SKU-details-table">
-                  <table className="table borderless">
-                    <tbody>
-                      <tr>
-                        <td>
-                          <label className="invoice-number">SKU</label>
-                        </td>
-                        <td>
-                          <label className="invoice-number">Product Name</label>
-                        </td>
-                        <td>
-                          <label className="invoice-number">Price</label>
-                        </td>
-                        <td>
-                          <label className="invoice-number">Price Paid</label>
-                        </td>
-                        <td>
-                          <label className="invoice-number">Discount</label>
-                        </td>
-                        <td>
-                          <label className="invoice-number">MOP</label>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <label className="bb-332398">BB332398</label>
-                        </td>
-                        <td>
-                          <label className="bb-332398">Paper Bag Big</label>
-                        </td>
-                        <td>
-                          <label className="bb-332398">2999</label>
-                        </td>
-                        <td>
-                          <label className="bb-332398">2999</label>
-                        </td>
-                        <td>
-                          <label className="bb-332398">0.00</label>
-                        </td>
-                        <td>
-                          <label className="bb-332398">Cash</label>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <label className="bb-332398">BB332398</label>
-                        </td>
-                        <td>
-                          <label className="bb-332398">Paper Bag Big</label>
-                        </td>
-                        <td>
-                          <label className="bb-332398">03</label>
-                        </td>
-                        <td>
-                          <label className="bb-332398">03</label>
-                        </td>
-                        <td>
-                          <label className="bb-332398">0.00</label>
-                        </td>
-                        <td>
-                          <label className="bb-332398">Cash</label>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div className="claim-status-row"></div>
-              </div> */}
             </div>
             <br />
             <div className="row removemarg" style={{ marginLeft: "5px" }}>
@@ -791,16 +620,6 @@ class MyTicketClaim extends Component {
                 </div>
               </div>
             </div>
-            {/* <div
-              className="row"
-              style={{ marginLeft: "5px", marginRight: "0px" }}
-            >
-              <div className="col-md-5">
-                <button className="add-comment-button">
-                  <label className="add-comment-text">ADD COMMENT</label>
-                </button>
-              </div>
-            </div> */}
           </Drawer>
         </div>
         <NotificationContainer />
