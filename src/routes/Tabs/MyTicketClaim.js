@@ -31,23 +31,27 @@ class MyTicketClaim extends Component {
   }
 
   componentDidMount() {
-    this.handleGetClaimTabDetails();
+    debugger;
+    var Id = this.props.claimData;
+    this.handleGetClaimTabDetails(Id.ticket_Id);
   }
 
-  handleGetClaimTabDetails() {
+  handleGetClaimTabDetails(ticket_Id) {
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Task/getclaimlist",
       headers: authHeader(),
       params: {
-        TicketId: 13
+        TicketId: ticket_Id
       }
     }).then(function(res) {
       debugger;
-      let status = res.data.status;
+      let status = res.data.message;
       let data = res.data.responseData;
-      if (status === true) {
+      if (status === "Record Not Found") {
+        self.setState({ claimDetailsData: [] });
+      } else {
         self.setState({ claimDetailsData: data });
       }
     });

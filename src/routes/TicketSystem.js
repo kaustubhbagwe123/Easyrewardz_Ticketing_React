@@ -591,7 +591,7 @@ class TicketSystem extends Component {
 
   handleCREATE_TICKET(StatusID) {
     debugger;
-    if (this.validator.allValid()) {
+    // if (this.validator.allValid()) {
       let self = this;
       // var OID = this.state.selectedTicketPriority;
       var selectedRow = "";
@@ -665,10 +665,10 @@ class TicketSystem extends Component {
           NotificationManager.error(res.data.message);
         }
       });
-    } else {
-      this.validator.showMessages();
-      this.forceUpdate();
-    }
+    // } else {
+    //   this.validator.showMessages();
+    //   this.forceUpdate();
+    // }
   }
   handleSendMailData(){
     debugger

@@ -9675,6 +9675,7 @@ table tr th:last-child {
 .myticlist-expand-sect button.btn-inv {
   color: #fff;
   background-color: #2561a8;
+      cursor: pointer;
 }
 .myticlist-expand-sect .tab-content .row {
   padding: 20px 0;

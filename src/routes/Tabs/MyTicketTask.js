@@ -40,7 +40,9 @@ class MyTicketTask extends Component {
       selectedDepartment: 0,
       selectedFunction: 0,
       selectedAssignTo: 0,
-      selectedPriority: 0
+      selectedPriority: 0,
+      ticketTask_Id: 0,
+      tikcet_ID: 0
     };
     this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
     this.handleGetFunctionList = this.handleGetFunctionList.bind(this);
@@ -50,6 +52,18 @@ class MyTicketTask extends Component {
       this
     );
     this.handleGetTaskTableGrid = this.handleGetTaskTableGrid.bind(this);
+  }
+
+  componentDidMount() {
+    debugger;
+    var Id = this.props.taskData;
+    this.handleGetTaskTableGrid(Id);
+    this.handleGetDepartmentList();
+    this.handleGetTicketPriorityList();
+    this.handleGetTaskTabDetails();
+    this.setState({
+      tikcet_ID: Id
+    });
   }
   handleAddTaskModalOpn() {
     this.setState({ AddTaskModal: true });
@@ -66,7 +80,10 @@ class MyTicketTask extends Component {
   HandleRowClickDraw = (rowInfo, column) => {
     return {
       onClick: e => {
-        var taskId=column.original["ticketingTaskID"];
+        var taskId = column.original["ticketingTaskID"];
+        this.setState({
+          ticketTask_Id: taskId
+        });
         this.handleTaskDetailsDrawerOpn();
         this.handleGetTaskTabDetails(taskId);
       }
@@ -77,14 +94,15 @@ class MyTicketTask extends Component {
       [e.target.name]: e.target.value
     });
   };
-  handleGetTaskTableGrid() {
+  handleGetTaskTableGrid(Id) {
+    debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Task/gettasklist",
       headers: authHeader(),
       params: {
-        TicketId: 127
+        TicketId: Id
       }
     }).then(function(res) {
       debugger;
@@ -96,7 +114,7 @@ class MyTicketTask extends Component {
     });
   }
   handleGetTaskTabDetails(ticketTaskId) {
-    debugger
+    debugger;
     let self = this;
     axios({
       method: "post",
@@ -107,11 +125,13 @@ class MyTicketTask extends Component {
       }
     }).then(function(res) {
       debugger;
-      let status = res.data.status;
+      let status = res.data.message;
       let details = res.data.responseData.comments;
       let data = res.data.responseData;
-      if (status === true) {
+      if (status === "Success") {
         self.setState({ Taskdetails: details, taskDetailsData: data });
+      } else {
+        self.setState({ Taskdetails: [], taskDetailsData: [] });
       }
     });
   }
@@ -212,7 +232,7 @@ class MyTicketTask extends Component {
         FunctionID: this.state.selectedFunction,
         AssignToID: this.state.selectedAssignTo,
         PriorityID: this.state.selectedPriority,
-        TicketID: 127
+        TicketID: this.state.tikcet_ID
       }
     }).then(function(res) {
       debugger;
@@ -237,26 +257,21 @@ class MyTicketTask extends Component {
       params: {
         CommentForId: TaskData.TaskTab,
         Comment: this.state.taskAddComment.trim(),
-        Id: 127
+        Id: this.state.tikcet_ID
       }
     }).then(function(res) {
       debugger;
       let status = res.data.status;
+      let id = this.state.ticketTask_Id;
       if (status === true) {
         NotificationManager.success("Comment added successfully.");
-        self.handleGetTaskTabDetails();
+        self.handleGetTaskTabDetails(id);
       } else {
         NotificationManager.error("Comment not added.");
       }
     });
   }
 
-  componentDidMount() {
-    this.handleGetTaskTableGrid();
-    this.handleGetDepartmentList();
-    this.handleGetTicketPriorityList();
-    this.handleGetTaskTabDetails();
-  }
   render() {
     const { taskTableGrid } = this.state;
 

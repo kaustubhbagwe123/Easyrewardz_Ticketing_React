@@ -213,12 +213,15 @@ class MyTicketList extends Component {
       advPageNo: 1,
       SearchTicketData: [],
       fieldByDate: {},
-      fieldByCustomerType:{},
+      fieldByCustomerType: {},
+      fieldByTicketType: {},
+      fieldByCategory: {},
       selectedTeamMemberCommaSeperated: "",
       selectedNameOfDayForWeekCommaSeperated: "",
       selectedNameOfMonthForYearCommaSeperated: "",
       selectedNameOfMonthForDailyYearCommaSeperated: "",
       selectedNameOfDayForYearCommaSeperated: "",
+      ticketDetailID: 0,
       IsDaily: 0,
       IsWeekly: 0,
       IsDailyForMonth: 0,
@@ -240,7 +243,7 @@ class MyTicketList extends Component {
       selectedNoOfWeekForWeek: 0,
       selectedNoOfDayForDailyYear: 0,
       selectedNoOfWeekForYear: 0,
-      selectedNameOfMonthForDailyYear: ''
+      selectedNameOfMonthForDailyYear: ""
     };
     this.clearSearch = this.clearSearch.bind(this);
     this.handleAdvSearchFlag = this.handleAdvSearchFlag.bind(this);
@@ -460,11 +463,13 @@ class MyTicketList extends Component {
         NameOfDayForWeek: this.state.selectedNameOfDayForWeekCommaSeperated,
         IsDailyForYear: this.state.IsDailyForYear,
         NoOfDayForDailyYear: this.state.selectedNoOfDayForDailyYear,
-        NameOfMonthForDailyYear: this.state.selectedNameOfMonthForYearCommaSeperated,
+        NameOfMonthForDailyYear: this.state
+          .selectedNameOfMonthForYearCommaSeperated,
         IsWeeklyForYear: this.state.IsWeeklyForYear,
         NoOfWeekForYear: this.state.selectedNoOfWeekForYear,
         NameOfDayForYear: this.state.selectedNameOfDayForYearCommaSeperated,
-        NameOfMonthForYear: this.state.selectedNameOfMonthForDailyYearCommaSeperated,
+        NameOfMonthForYear: this.state
+          .selectedNameOfMonthForDailyYearCommaSeperated
       }
     }).then(function(res) {
       debugger;
@@ -791,9 +796,14 @@ class MyTicketList extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let DraftDetails = res.data.responseData;
-      // let draftCountStatus = DraftDetails.length;
-      self.setState({ DraftDetails: DraftDetails });
+      let details = res.data.responseData;
+      let status = res.data.message;
+      if(status === "Success"){
+        self.setState({ DraftDetails: details });
+      }
+      else{
+        self.setState({ DraftDetails: [] });
+      }
     });
   }
   handleGetDepartmentList() {
@@ -805,8 +815,13 @@ class MyTicketList extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let DepartmentData = res.data.responseData;
-      self.setState({ DepartmentData: DepartmentData });
+      let data = res.data.responseData;
+      let status = res.data.message;
+      if (status === "Success") {
+        self.setState({ DepartmentData: data });
+      } else {
+        self.setState({ DepartmentData: [] });
+      }
     });
   }
   handleGetFunctionList() {
@@ -843,8 +858,13 @@ class MyTicketList extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let DesignationData = res.data.responseData;
-      self.setState({ DesignationData: DesignationData });
+      let data = res.data.responseData;
+      let status = res.data.message;
+      if (status === "Success") {
+        self.setState({ DesignationData: data });
+      } else {
+        self.setState({ DesignationData: [] });
+      }
     });
   }
   handleGetTicketPriorityList() {
@@ -856,8 +876,13 @@ class MyTicketList extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let TicketPriorityData = res.data.responseData;
-      self.setState({ TicketPriorityData: TicketPriorityData });
+      let data = res.data.responseData;
+      let stastus=res.data.message;
+      if(stastus === "Success"){
+        self.setState({ TicketPriorityData: data });
+      }else{
+        self.setState({ TicketPriorityData: [] });
+      }
     });
   }
   handleGetChannelOfPurchaseList() {
@@ -882,10 +907,17 @@ class MyTicketList extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let TicketSourceData = res.data.responseData;
-      self.setState({
-        TicketSourceData: TicketSourceData
-      });
+      let data = res.data.responseData;
+      let status = res.data.message;
+      if (status === "Success") {
+        self.setState({
+          TicketSourceData: data
+        });
+      } else {
+        self.setState({
+          TicketSourceData: []
+        });
+      }
     });
   }
   handleGetSlaStatusList() {
@@ -1148,64 +1180,86 @@ class MyTicketList extends Component {
   }
   ViewSearchData(TabId) {
     debugger;
-    var ticketStatus = 0;
-    // if (TabId === "Escalation" || TabId === undefined) {
-    //   ticketStatus = 1001;
-    // } else if (TabId === "New") {
-    //   ticketStatus = 101;
-    // } else if (TabId === "Open") {
-    //   ticketStatus = 102;
-    // } else if (TabId === "Resolved") {
-    //   ticketStatus = 103;
-    // } else if (TabId === "Closed") {
-    //   ticketStatus = 104;
-    // } else if (TabId === "Reassigned") {
-    //   ticketStatus = 1004;
-    // } else if (TabId === "All") {
-    //   ticketStatus = 1002;
-    // } else if (TabId === "FollowUp") {
-    //   ticketStatus = 1003;
-    // }
     // let self = this;
-    // var paramData = {
-    //   HeaderStatusId: 1001,
-    //   ActiveTabId: this.state.byDateFlag,
-    //   Ticket_CreatedOn: moment(this.state.ByDateCreatDate).format("YYYY-MM-DD"),
-    //   Ticket_ModifiedOn: moment(this.state.ByDateSelectDate).format(
-    //     "YYYY-MM-DD"
-    //   ),
-    //   SLA_DueON: this.state.selectedSlaDueByDate,
-    //   Ticket_StatusID: this.state.selectedTicketStatusByDate
-    //   // ByCustomerType: this.state.byCustomerTypeFlag,
-    //   // customerMob: this.state.MobileNoByCustType,
-    //   // customerEmail: this.state.EmailIdByCustType,
-    //   // TicketID: this.state.TicketIdByCustType,
-    //   // ticketStatus: this.state.selectedTicketStatusByCustomer,
-    //   // ByTicketType: this.state.byTicketTypeFlag,
-    //   // Priority: this.state.selectedPriority,
-    //   // ticketStatus: this.state.selectedTicketStatusByTicket,
-    //   // chanelOfPurchase: this.state.selectedChannelOfPurchase,
-    //   // ticketActionType: this.state.selectedTicketActionType,
-    //   // ByCategory: this.state.byCategoryFlag,
-    //   // Category: this.state.selectedCategory,
-    //   // subCategory: this.state.selectedSubCategory,
-    //   // issueType: this.state.selectedIssueType,
-    //   // ticketStatus: this.state.selectedTicketStatusByCategory
-    //   // byAll:this.state.allFlag,
-    // };
+    var ticketStatus = 0;
+    if (TabId === "Escalation" || TabId === undefined) {
+      ticketStatus = 1001;
+    } else if (TabId === "New") {
+      ticketStatus = 101;
+    } else if (TabId === "Open") {
+      ticketStatus = 102;
+    } else if (TabId === "Resolved") {
+      ticketStatus = 103;
+    } else if (TabId === "Closed") {
+      ticketStatus = 104;
+    } else if (TabId === "Reassigned") {
+      ticketStatus = 1004;
+    } else if (TabId === "All") {
+      ticketStatus = 1002;
+    } else if (TabId === "FollowUp") {
+      ticketStatus = 1003;
+    }
+
     // ---------------By Date tab---------------------
-    this.state.fieldByDate["Ticket_CreatedOn"] = moment(
-      this.state.ByDateCreatDate
-    ).format("YYYY-MM-DD");
-    this.state.fieldByDate["Ticket_ModifiedOn"] = moment(
-      this.state.ByDateSelectDate
-    ).format("YYYY-MM-DD");
-    this.state.fieldByDate["SLA_DueON"] = this.state.selectedSlaDueByDate;
-    this.state.fieldByDate[
-      "Ticket_StatusID"
-    ] = this.state.selectedTicketStatusByDate;
+
+    // this.state.fieldByDate["Ticket_CreatedOn"] = moment(
+    //   this.state.ByDateCreatDate
+    // ).format("YYYY-MM-DD");
+    // this.state.fieldByDate["Ticket_ModifiedOn"] = moment(
+    //   this.state.ByDateSelectDate
+    // ).format("YYYY-MM-DD");
+    // this.state.fieldByDate["SLA_DueON"] = this.state.selectedSlaDueByDate;
+    // this.state.fieldByDate[
+    //   "Ticket_StatusID"
+    // ] = this.state.selectedTicketStatusByDate;
+    var dateTab = {};
+    dateTab["Ticket_CreatedOn"] = moment(this.state.ByDateCreatDate).format(
+      "YYYY-MM-DD"
+    );
+    dateTab["Ticket_ModifiedOn"] = moment(this.state.ByDateSelectDate).format(
+      "YYYY-MM-DD"
+    );
+    dateTab["SLA_DueON"] = this.state.selectedSlaDueByDate;
+    dateTab["Ticket_StatusID"] = this.state.selectedTicketStatusByDate;
+    // this.setState({
+    //   fieldByDate: dateTab
+    // });
     // --------------------By Customer Type Tab---------------
-    // this.state.fieldByCustomerType[""]
+    var customerType = {};
+
+    customerType["CustomerMobileNo"] = this.state.MobileNoByCustType;
+    customerType["CustomerEmailID"] = this.state.EmailIdByCustType;
+    customerType["TicketID"] = this.state.TicketIdByCustType;
+    customerType["TicketStatusID"] = this.state.selectedTicketStatusByCustomer;
+
+    // this.setState({
+    //   fieldByCustomerType: customerType
+    // });
+    // this.state.fieldByCustomerType["CustomerMobileNo"] = this.state.MobileNoByCustType;
+    // this.state.fieldByCustomerType["CustomerEmailID"] = this.state.EmailIdByCustType;
+    // this.state.fieldByCustomerType["TicketID"] = this.state.TicketIdByCustType;
+    // this.state.fieldByCustomerType["TicketStatusID"] = this.state.selectedTicketStatusByCustomer;
+    // --------------------By Ticket Type Tab-----------------
+    var ticketType = {};
+
+    ticketType["TicketPriorityID"] = this.state.selectedPriority;
+    ticketType["TicketStatusID"] = this.state.selectedTicketStatusByTicket;
+    ticketType["ChannelOfPurchaseIds"] = this.state.selectedChannelOfPurchase;
+    ticketType["ActionTypes"] = this.state.selectedTicketActionType;
+    // this.setState({
+    //   fieldByTicketType: tikcetType
+    // });
+    // --------------------By Category Tab-------------------
+    var categoryType = {};
+
+    categoryType["CategoryId"] = this.state.selectedCategory;
+    categoryType["SubCategoryId"] = this.state.selectedSubCategory;
+    categoryType["IssueTypeId"] = this.state.selectedIssueType;
+    categoryType["TicketStatusID"] = this.state.selectedTicketStatusByCategory;
+    // this.setState({
+    //   fieldByCategory: categoryType
+    // });
+
     axios({
       method: "post",
       url: config.apiUrl + "/Search/GetTicketsOnSearch",
@@ -1213,7 +1267,10 @@ class MyTicketList extends Component {
       data: {
         HeaderStatusId: 1001,
         ActiveTabId: this.state.byDateFlag,
-        searchDataByDate: this.state.fieldByDate
+        // searchDataByDate: dateTab,
+        searchDataByCustomerType: customerType
+        // searchDataByTicketType:ticketType,
+        // searchDataByCategoryType:categoryType
       }
     }).then(function(res) {
       debugger;
@@ -1272,7 +1329,10 @@ class MyTicketList extends Component {
         .call(e, s => s.days)
         .toString();
     }
-    this.setState({ selectedNameOfDayForWeek: e, selectedNameOfDayForWeekCommaSeperated });
+    this.setState({
+      selectedNameOfDayForWeek: e,
+      selectedNameOfDayForWeekCommaSeperated
+    });
   };
   setNameOfMonthForYear = e => {
     debugger;
@@ -1281,7 +1341,10 @@ class MyTicketList extends Component {
         .call(e, s => s.month)
         .toString();
     }
-    this.setState({ selectedNameOfMonthForYear: e, selectedNameOfMonthForYearCommaSeperated });
+    this.setState({
+      selectedNameOfMonthForYear: e,
+      selectedNameOfMonthForYearCommaSeperated
+    });
   };
   setNameOfMonthForDailyYear = e => {
     debugger;
@@ -1290,7 +1353,10 @@ class MyTicketList extends Component {
         .call(e, s => s.month)
         .toString();
     }
-    this.setState({ selectedNameOfMonthForDailyYear: e, selectedNameOfMonthForDailyYearCommaSeperated });
+    this.setState({
+      selectedNameOfMonthForDailyYear: e,
+      selectedNameOfMonthForDailyYearCommaSeperated
+    });
   };
   setNameOfDayForYear = e => {
     debugger;
@@ -1299,7 +1365,10 @@ class MyTicketList extends Component {
         .call(e, s => s.days)
         .toString();
     }
-    this.setState({ selectedNameOfDayForYear: e, selectedNameOfDayForYearCommaSeperated });
+    this.setState({
+      selectedNameOfDayForYear: e,
+      selectedNameOfDayForYearCommaSeperated
+    });
   };
   setTicketActionTypeValue = e => {
     this.setState({ selectedTicketActionType: e });
@@ -1521,10 +1590,22 @@ class MyTicketList extends Component {
       [e.target.name]: e.target.value
     });
   }
-  HandleRowClickPage = () => {
+  HandleRowClickPage = (rowInfo, column) => {
     return {
       onClick: e => {
-        this.props.history.push("myticket");
+        debugger;
+        let Id = column.original["ticketID"];
+        // this.props.history.push("myticket");
+        let self = this;
+        self.setState({
+          ticketDetailID: Id
+        });
+        setTimeout(function() {
+          self.props.history.push({
+            pathname: "myticket",
+            state: self.state
+          });
+        }, 100);
       }
     };
   };
@@ -1546,11 +1627,11 @@ class MyTicketList extends Component {
         selectedNoOfWeekForWeek: 0,
         selectedNoOfDayForDailyYear: 0,
         selectedNoOfWeekForYear: 0,
-        selectedNameOfDayForWeekCommaSeperated: '',
-        selectedNameOfMonthForYearCommaSeperated: '',
-        selectedNameOfMonthForDailyYearCommaSeperated: '',
-        selectedNameOfDayForYearCommaSeperated: '',
-        selectedWeeklyDays: ''
+        selectedNameOfDayForWeekCommaSeperated: "",
+        selectedNameOfMonthForYearCommaSeperated: "",
+        selectedNameOfMonthForDailyYearCommaSeperated: "",
+        selectedNameOfDayForYearCommaSeperated: "",
+        selectedWeeklyDays: ""
       });
     } else if (SelectData === "231") {
       this.setState({
@@ -1567,10 +1648,10 @@ class MyTicketList extends Component {
         selectedNoOfWeekForWeek: 0,
         selectedNoOfDayForDailyYear: 0,
         selectedNoOfWeekForYear: 0,
-        selectedNameOfDayForWeekCommaSeperated: '',
-        selectedNameOfMonthForYearCommaSeperated: '',
-        selectedNameOfMonthForDailyYearCommaSeperated: '',
-        selectedNameOfDayForYearCommaSeperated: '',
+        selectedNameOfDayForWeekCommaSeperated: "",
+        selectedNameOfMonthForYearCommaSeperated: "",
+        selectedNameOfMonthForDailyYearCommaSeperated: "",
+        selectedNameOfDayForYearCommaSeperated: ""
       });
     } else if (SelectData === "232") {
       this.setState({
@@ -1586,11 +1667,11 @@ class MyTicketList extends Component {
         selectedNoOfWeekForWeek: 0,
         selectedNoOfDayForDailyYear: 0,
         selectedNoOfWeekForYear: 0,
-        selectedNameOfDayForWeekCommaSeperated: '',
-        selectedNameOfMonthForYearCommaSeperated: '',
-        selectedNameOfMonthForDailyYearCommaSeperated: '',
-        selectedNameOfDayForYearCommaSeperated: '',
-        selectedWeeklyDays: ''
+        selectedNameOfDayForWeekCommaSeperated: "",
+        selectedNameOfMonthForYearCommaSeperated: "",
+        selectedNameOfMonthForDailyYearCommaSeperated: "",
+        selectedNameOfDayForYearCommaSeperated: "",
+        selectedWeeklyDays: ""
       });
     } else if (SelectData === "233") {
       this.setState({
@@ -1604,10 +1685,10 @@ class MyTicketList extends Component {
         IsDailyForYear: 0,
         selectedNoOfDayForDailyYear: 0,
         selectedNoOfWeekForYear: 0,
-        selectedNameOfDayForYearCommaSeperated: '',
-        selectedWeeklyDays: '',
+        selectedNameOfDayForYearCommaSeperated: "",
+        selectedWeeklyDays: "",
         selectedNoOfDaysForMonth: 0,
-        selectedNameOfMonthForYearCommaSeperated: ''
+        selectedNameOfMonthForYearCommaSeperated: ""
       });
     } else if (SelectData === "234") {
       this.setState({
@@ -1620,8 +1701,8 @@ class MyTicketList extends Component {
         IsWeeklyForMonth: 0,
         IsWeeklyForYear: 0,
         selectedNoOfWeekForYear: 0,
-        selectedNameOfDayForYearCommaSeperated: '',
-        selectedWeeklyDays: '',
+        selectedNameOfDayForYearCommaSeperated: "",
+        selectedWeeklyDays: "",
         selectedNoOfDaysForMonth: 0
       });
     } else if (SelectData === "235") {
@@ -1634,9 +1715,9 @@ class MyTicketList extends Component {
         IsWeekly: 0,
         IsWeeklyForMonth: 0,
         IsDailyForYear: 0,
-        selectedWeeklyDays: '',
+        selectedWeeklyDays: "",
         selectedNoOfDaysForMonth: 0,
-        selectedNameOfMonthForYearCommaSeperated: '',
+        selectedNameOfMonthForYearCommaSeperated: "",
         selectedNoOfDayForDailyYear: 0
       });
     }
@@ -4190,7 +4271,9 @@ class MyTicketList extends Component {
                                                   type="text"
                                                   className="Every"
                                                   placeholder="1"
-                                                  onChange={this.handleMonthForWeek}
+                                                  onChange={
+                                                    this.handleMonthForWeek
+                                                  }
                                                 />
                                                 <label className="every1">
                                                   month on the
@@ -4201,41 +4284,52 @@ class MyTicketList extends Component {
                                                   <select
                                                     id="inputState"
                                                     className="form-control dropdown-setting1"
-                                                    onChange={this.handleWeekForWeek}
+                                                    onChange={
+                                                      this.handleWeekForWeek
+                                                    }
                                                     value={
-                                              this.state.selectedNoOfWeekForWeek
-                                            }
+                                                      this.state
+                                                        .selectedNoOfWeekForWeek
+                                                    }
                                                   >
-                                                    <option value="0">Select</option>
-                                                    <option value="2">Second</option>
-                                                    <option value="4">Four</option>
+                                                    <option value="0">
+                                                      Select
+                                                    </option>
+                                                    <option value="2">
+                                                      Second
+                                                    </option>
+                                                    <option value="4">
+                                                      Four
+                                                    </option>
                                                   </select>
                                                 </div>
                                                 <div className="col-md-6">
-                                                <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                                                <Select
-                                              getOptionLabel={option =>
-                                                option.days
-                                              }
-                                              getOptionValue={
-                                                option => option.days //id
-                                              }
-                                              options={
-                                                this.state.NameOfDayForWeek
-                                              }
-                                              placeholder="Select"
-                                              // menuIsOpen={true}
-                                              closeMenuOnSelect={false}
-                                              onChange={this.setNameOfDayForWeek.bind(
-                                                this
-                                              )}
-                                              value={
-                                                this.state.selectedNameOfDayForWeek
-                                              }
-                                              // showNewOptionAtTop={false}
-                                              isMulti
-                                            />
-                                            </div>
+                                                  <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                                                    <Select
+                                                      getOptionLabel={option =>
+                                                        option.days
+                                                      }
+                                                      getOptionValue={
+                                                        option => option.days //id
+                                                      }
+                                                      options={
+                                                        this.state
+                                                          .NameOfDayForWeek
+                                                      }
+                                                      placeholder="Select"
+                                                      // menuIsOpen={true}
+                                                      closeMenuOnSelect={false}
+                                                      onChange={this.setNameOfDayForWeek.bind(
+                                                        this
+                                                      )}
+                                                      value={
+                                                        this.state
+                                                          .selectedNameOfDayForWeek
+                                                      }
+                                                      // showNewOptionAtTop={false}
+                                                      isMulti
+                                                    />
+                                                  </div>
                                                   {/* <select
                                                     id="inputState"
                                                     className="form-control dropdown-setting1"
@@ -4268,35 +4362,39 @@ class MyTicketList extends Component {
                                                     <option>Octomber</option>
                                                   </select> */}
                                                   <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                                                <Select
-                                              getOptionLabel={option =>
-                                                option.month
-                                              }
-                                              getOptionValue={
-                                                option => option.month //id
-                                              }
-                                              options={
-                                                this.state.NameOfMonthForYear
-                                              }
-                                              placeholder="Select"
-                                              // menuIsOpen={true}
-                                              closeMenuOnSelect={false}
-                                              onChange={this.setNameOfMonthForYear.bind(
-                                                this
-                                              )}
-                                              value={
-                                                this.state.selectedNameOfMonthForYear
-                                              }
-                                              // showNewOptionAtTop={false}
-                                              isMulti
-                                            />
-                                            </div>
+                                                    <Select
+                                                      getOptionLabel={option =>
+                                                        option.month
+                                                      }
+                                                      getOptionValue={
+                                                        option => option.month //id
+                                                      }
+                                                      options={
+                                                        this.state
+                                                          .NameOfMonthForYear
+                                                      }
+                                                      placeholder="Select"
+                                                      // menuIsOpen={true}
+                                                      closeMenuOnSelect={false}
+                                                      onChange={this.setNameOfMonthForYear.bind(
+                                                        this
+                                                      )}
+                                                      value={
+                                                        this.state
+                                                          .selectedNameOfMonthForYear
+                                                      }
+                                                      // showNewOptionAtTop={false}
+                                                      isMulti
+                                                    />
+                                                  </div>
                                                 </div>
                                                 <input
                                                   type="text"
                                                   className="Every"
                                                   placeholder="1"
-                                                  onChange={this.handleDayForYear}
+                                                  onChange={
+                                                    this.handleDayForYear
+                                                  }
                                                 />
                                               </div>
                                             </div>
@@ -4318,14 +4416,23 @@ class MyTicketList extends Component {
                                                     <select
                                                       id="inputState"
                                                       className="form-control dropdown-setting1"
-                                                      onChange={this.handleWeekForYear}
-                                                    value={
-                                              this.state.selectedNoOfWeekForYear
-                                            }
+                                                      onChange={
+                                                        this.handleWeekForYear
+                                                      }
+                                                      value={
+                                                        this.state
+                                                          .selectedNoOfWeekForYear
+                                                      }
                                                     >
-                                                      <option value="0">Select</option>
-                                                      <option value="2">Second</option>
-                                                      <option value="4">Four</option>
+                                                      <option value="0">
+                                                        Select
+                                                      </option>
+                                                      <option value="2">
+                                                        Second
+                                                      </option>
+                                                      <option value="4">
+                                                        Four
+                                                      </option>
                                                     </select>
                                                   </div>
                                                 </div>
@@ -4343,29 +4450,31 @@ class MyTicketList extends Component {
                                                     <option>Monday</option>
                                                   </select> */}
                                                   <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                                                <Select
-                                              getOptionLabel={option =>
-                                                option.days
-                                              }
-                                              getOptionValue={
-                                                option => option.days //id
-                                              }
-                                              options={
-                                                this.state.NameOfDayForYear
-                                              }
-                                              placeholder="Select"
-                                              // menuIsOpen={true}
-                                              closeMenuOnSelect={false}
-                                              onChange={this.setNameOfDayForYear.bind(
-                                                this
-                                              )}
-                                              value={
-                                                this.state.selectedNameOfDayForYear
-                                              }
-                                              // showNewOptionAtTop={false}
-                                              isMulti
-                                            />
-                                            </div>
+                                                    <Select
+                                                      getOptionLabel={option =>
+                                                        option.days
+                                                      }
+                                                      getOptionValue={
+                                                        option => option.days //id
+                                                      }
+                                                      options={
+                                                        this.state
+                                                          .NameOfDayForYear
+                                                      }
+                                                      placeholder="Select"
+                                                      // menuIsOpen={true}
+                                                      closeMenuOnSelect={false}
+                                                      onChange={this.setNameOfDayForYear.bind(
+                                                        this
+                                                      )}
+                                                      value={
+                                                        this.state
+                                                          .selectedNameOfDayForYear
+                                                      }
+                                                      // showNewOptionAtTop={false}
+                                                      isMulti
+                                                    />
+                                                  </div>
                                                 </div>
                                                 <label
                                                   className="every1"
@@ -4388,29 +4497,31 @@ class MyTicketList extends Component {
                                                     <option>Octomber</option>
                                                   </select> */}
                                                   <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                                                <Select
-                                              getOptionLabel={option =>
-                                                option.month
-                                              }
-                                              getOptionValue={
-                                                option => option.month //id
-                                              }
-                                              options={
-                                                this.state.NameOfMonthForDailyYear
-                                              }
-                                              placeholder="Select"
-                                              // menuIsOpen={true}
-                                              closeMenuOnSelect={false}
-                                              onChange={this.setNameOfMonthForDailyYear.bind(
-                                                this
-                                              )}
-                                              value={
-                                                this.state.selectedNameOfMonthForDailyYear
-                                              }
-                                              // showNewOptionAtTop={false}
-                                              isMulti
-                                            />
-                                            </div>
+                                                    <Select
+                                                      getOptionLabel={option =>
+                                                        option.month
+                                                      }
+                                                      getOptionValue={
+                                                        option => option.month //id
+                                                      }
+                                                      options={
+                                                        this.state
+                                                          .NameOfMonthForDailyYear
+                                                      }
+                                                      placeholder="Select"
+                                                      // menuIsOpen={true}
+                                                      closeMenuOnSelect={false}
+                                                      onChange={this.setNameOfMonthForDailyYear.bind(
+                                                        this
+                                                      )}
+                                                      value={
+                                                        this.state
+                                                          .selectedNameOfMonthForDailyYear
+                                                      }
+                                                      // showNewOptionAtTop={false}
+                                                      isMulti
+                                                    />
+                                                  </div>
                                                 </div>
                                               </div>
                                             </div>

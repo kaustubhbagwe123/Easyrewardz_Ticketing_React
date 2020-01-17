@@ -91,13 +91,13 @@ class TikcetSystemStoreModal extends Component {
                     <option>Select Cause</option>
                   </select>
                 </div>
-                <div className="row storemodal-row">
+                {/* <div className="row storemodal-row">
                   <input
                     type="text"
                     className="storemodal-text"
                     placeholder="Enter Area"
                   />
-                </div>
+                </div> */}
                 <div className="row storemodal-row-1">
                   <button
                     className="storemodal-search-btn"

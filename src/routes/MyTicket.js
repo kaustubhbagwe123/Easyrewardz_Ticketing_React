@@ -8,7 +8,7 @@ import HeadphoneImg from "./../assets/Images/headphone.png";
 import Headphone2Img from "./../assets/Images/headphone2.png";
 import BlackUserIcon from "./../assets/Images/avatar.png";
 import DownImg from "./../assets/Images/down.png";
-import DownWhiteImg from "./../assets/Images/down-white.png";
+// import DownWhiteImg from "./../assets/Images/down-white.png";
 import LoadingImg from "./../assets/Images/loading.png";
 import EyeImg from "./../assets/Images/eye.png";
 import BillInvoiceImg from "./../assets/Images/bill-Invoice.png";
@@ -72,7 +72,7 @@ class MyTicket extends Component {
       profilemodal: false,
       storemodal: false,
       storeproductsearch: false,
-      headPhoneTable: false,
+      // headPhoneTable: false,
       labelModal: false,
       EmailCollapse: false,
       CommentsDrawer: false,
@@ -82,6 +82,7 @@ class MyTicket extends Component {
       CommentCollapse2: false,
       Comment1Collapse: false,
       KbLink: false,
+      ticket_Id: 0,
       NotesTab: 0,
       TaskTab: 0,
       ClaimTab: 0,
@@ -98,6 +99,8 @@ class MyTicket extends Component {
       SubCategoryData: [],
       IssueTypeData: [],
       ChannelOfPurchaseData: [],
+      historicalDetails:[],
+      ticketDetailsData: {},
       fileName: "",
       NoteAddComment: "",
       values: [
@@ -130,6 +133,39 @@ class MyTicket extends Component {
     this.handleGetTaskTableGrid = this.handleGetTaskTableGrid.bind(this);
     this.handleGetClaimTabDetails = this.handleGetClaimTabDetails.bind(this);
     this.handleUpdateTicketStatus = this.handleUpdateTicketStatus.bind(this);
+    this.handleGetTicketDetails = this.handleGetTicketDetails.bind(this);
+  }
+
+  componentDidMount() {
+    debugger;
+    var data = this.props.location.state;
+    var Id = data.ticketDetailID;
+    this.setState({ HistOrderShow: true, ticket_Id: Id });
+    this.handleGetTicketPriorityList();
+    this.handleGetBrandList();
+    this.handleGetCategoryList();
+    this.handleGetChannelOfPurchaseList();
+    this.handleGetNotesTabDetails(Id);
+    this.handleGetTicketDetails(Id);
+    this.handleGetTaskTableGrid(Id);
+    this.handleGetClaimTabDetails(Id);
+  }
+
+  handleGetTicketDetails(ID) {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Ticketing/getTicketDetailsByTicketId",
+      headers: authHeader(),
+      params: {
+        ticketID: ID
+      }
+    }).then(function(res) {
+      debugger;
+      let data = res.data.responseData;
+      self.setState({ ticketDetailsData: data });
+    });
   }
 
   handleUpdateTicketStatus(ticStaId) {
@@ -140,7 +176,7 @@ class MyTicket extends Component {
       url: config.apiUrl + "/Ticketing/Updateticketstatus",
       headers: authHeader(),
       params: {
-        TicketID: 13,
+        TicketID: this.state.ticket_Id,
         status: ticStaId
       }
     }).then(function(res) {
@@ -156,33 +192,35 @@ class MyTicket extends Component {
     });
   }
 
-  handleGetClaimTabDetails() {
+  handleGetClaimTabDetails(ID) {
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Task/getclaimlist",
       headers: authHeader(),
       params: {
-        TicketId: 13
+        TicketId: ID
       }
     }).then(function(res) {
       debugger;
-      let status = res.data.status;
+      let status = res.data.message;
       let data = res.data.responseData;
-      if (status === true) {
+      if (status === "Record Not Found") {
+        self.setState({ claimDetailsData: [] });
+      } else {
         self.setState({ claimDetailsData: data });
       }
     });
   }
 
-  handleGetTaskTableGrid() {
+  handleGetTaskTableGrid(ID) {
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Task/gettasklist",
       headers: authHeader(),
       params: {
-        TicketId: 127
+        TicketId: ID
       }
     }).then(function(res) {
       debugger;
@@ -362,12 +400,12 @@ class MyTicket extends Component {
   HandleStoreProductSearchModalClose() {
     this.setState({ storeproductsearch: false });
   }
-  HandleHeadePhoneModalOpen() {
-    this.setState({ headPhoneTable: true });
-  }
-  HandleHeadePhoneModalClose() {
-    this.setState({ headPhoneTable: false });
-  }
+  // HandleHeadePhoneModalOpen() {
+  //   this.setState({ headPhoneTable: true });
+  // }
+  // HandleHeadePhoneModalClose() {
+  //   this.setState({ headPhoneTable: false });
+  // }
 
   HandleStoreModalOpen() {
     this.setState({ storemodal: true });
@@ -473,27 +511,49 @@ class MyTicket extends Component {
       params: {
         CommentForId: this.state.NotesTab,
         Comment: this.state.NoteAddComment.trim(),
-        Id: 127
+        Id: this.state.ticket_Id
       }
     }).then(function(res) {
       debugger;
       let status = res.data.status;
       if (status === true) {
-        self.handleGetNotesTabDetails();
+        var id = self.state.ticket_Id;
+        self.handleGetNotesTabDetails(id);
         NotificationManager.success("Comment added successfully.");
       } else {
         NotificationManager.error("Comment not added.");
       }
     });
   }
-  handleGetNotesTabDetails() {
+  handleGetHistoricalData() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Ticketing/gettickethistory",
+      headers: authHeader(),
+      params: {
+        TicketId: this.state.ticket_Id
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.status;
+      let details = res.data.responseData;
+      self.onOpenModal();
+      if (status === true) {
+        self.setState({ historicalDetails: details });
+      }
+    });
+  }
+  handleGetNotesTabDetails(ticket_Id) {
+    debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Ticketing/getNotesByTicketId",
       headers: authHeader(),
       params: {
-        TicketId: 127
+        TicketId: ticket_Id
       }
     }).then(function(res) {
       debugger;
@@ -519,16 +579,6 @@ class MyTicket extends Component {
     }));
   }
 
-  componentDidMount() {
-    this.setState({ HistOrderShow: true });
-    this.handleGetTicketPriorityList();
-    this.handleGetBrandList();
-    this.handleGetCategoryList();
-    this.handleGetChannelOfPurchaseList();
-    this.handleGetNotesTabDetails();
-    this.handleGetTaskTableGrid();
-    this.handleGetClaimTabDetails();
-  }
   handleRemoveForm(i) {
     let values = [...this.state.values];
     values.splice(i, 1);
@@ -621,7 +671,9 @@ class MyTicket extends Component {
     this.setState({ selectedTicketActionType: e });
   };
   render() {
-    const { open } = this.state;
+    debugger;
+    const { open, ticketDetailsData,historicalDetails } = this.state;
+    var TID = this.state.ticket_Id;
     const HidecollapsUp = this.state.collapseUp ? (
       <img
         src={Up1Img}
@@ -834,14 +886,16 @@ class MyTicket extends Component {
               <div className="col-12 col-xs-4 col-sm-4 col-md-3">
                 <img src={HeadphoneImg} alt="headphone" className="headphone" />
                 <label className="id-abc-1234">
-                  ID - ABC1234
-                  <span className="updated-2-d-ago">Updated 2d ago</span>
+                  ID - {ticketDetailsData.ticketID}
+                  <span className="updated-2-d-ago">
+                    {ticketDetailsData.updateDate}
+                  </span>
                 </label>
                 <img
                   src={LoadingImg}
                   alt="Loading"
                   className="loading-rectangle"
-                  onClick={this.onOpenModal.bind(this)}
+                  onClick={this.handleGetHistoricalData.bind(this)}
                 />
               </div>
 
@@ -860,7 +914,29 @@ class MyTicket extends Component {
                     className="cancalImg"
                     onClick={this.onCloseModal.bind(this)}
                   />
-                  <HistoricalTable />
+                  {/* <HistoricalTable /> */}
+                  <div className="table-scrolling historyTable remov">
+                    <ReactTable
+                      data={historicalDetails}
+                      columns={[
+                        {
+                          Header: <span>Name</span>,
+                          accessor: "name"
+                        },
+                        {
+                          Header: <span>Action</span>,
+                          accessor: "action"
+                        },
+                        {
+                          Header: <span>Time & Date</span>,
+                          accessor: "dateandTime"
+                        }
+                      ]}
+                      // resizable={false}
+                      defaultPageSize={5}
+                      showPagination={false}
+                    />
+                  </div>
                 </Modal>
               </div>
 
@@ -875,22 +951,22 @@ class MyTicket extends Component {
                     className="naman-r"
                     onClick={this.HandlelabelModalOpen.bind(this)}
                   >
-                    Naman.R
+                    {ticketDetailsData.username}
                   </label>
                   <img src={DownImg} alt="down" className="down-header" />
                   <button
                     type="button"
                     className="myticket-submit-solve-button"
-                    onClick={this.HandleHeadePhoneModalOpen.bind(this)}
+                    // onClick={this.HandleHeadePhoneModalOpen.bind(this)}
                   >
                     <label className="myticket-submit-solve-button-text">
-                      SUBMIT AS SOLVED
+                      SUBMIT
                     </label>
-                    <img
+                    {/* <img
                       src={DownWhiteImg}
                       alt="headphone"
                       className="down-white"
-                    />
+                    /> */}
                   </button>
                 </div>
               </div>
@@ -940,7 +1016,7 @@ class MyTicket extends Component {
                   </div>
                 </div>
               </Modal>
-              <Modal
+              {/* <Modal
                 open={this.state.headPhoneTable}
                 onClose={this.HandleHeadePhoneModalClose.bind(this)}
                 closeIconId="close"
@@ -965,7 +1041,7 @@ class MyTicket extends Component {
                     </label>
                   </div>
                 </div>
-              </Modal>
+              </Modal> */}
             </div>
           </div>
         </div>
@@ -976,7 +1052,9 @@ class MyTicket extends Component {
                 <div style={{ padding: "15px" }}>
                   <label className="mobile-number">Mobile Number</label>
                   <br />
-                  <label className="mobile-no">+91 9873470074</label>
+                  <label className="mobile-no">
+                    {ticketDetailsData.customerPhoneNumber}
+                  </label>
                   <img
                     src={EyeImg}
                     alt="eye"
@@ -1002,13 +1080,13 @@ class MyTicket extends Component {
                         <div className="col-md-6">
                           <label className="profilemodal-text">Name</label>
                           <label className="profilemodal-textval">
-                            Diwakar Monga
+                            {ticketDetailsData.customerName}
                           </label>
                         </div>
                         <div className="col-md-6">
                           <label className="profilemodal-text">Mobile</label>
                           <label className="profilemodal-textval">
-                            +91 9873470074
+                            {ticketDetailsData.customerPhoneNumber}
                           </label>
                         </div>
                       </div>
@@ -1016,21 +1094,23 @@ class MyTicket extends Component {
                         <div className="col-md-6">
                           <label className="profilemodal-text">Email</label>
                           <label className="profilemodal-textval">
-                            monga24@gmail.com
+                            {ticketDetailsData.customerEmailId}
                           </label>
                         </div>
+
                         <div className="col-md-6">
-                          <input
-                            type="text"
-                            className="alternumber"
-                            placeholder="Alternate Number"
-                          />
+                          <label className="profilemodal-text">
+                            Alternate Number
+                          </label>
+                          <label className="profilemodal-textval">
+                            {ticketDetailsData.altNumber}
+                          </label>
                         </div>
                       </div>
                       <div className="row" style={{ marginLeft: "15px" }}>
                         <div className="openticketbox profilemodalrow-1">
                           <label className="open-tickets-box-text">
-                            04
+                            {ticketDetailsData.openTicket}
                             <small className="open-tickets-box-textval">
                               Open Tickets
                             </small>
@@ -1038,7 +1118,7 @@ class MyTicket extends Component {
                         </div>
                         <div className="openticketbox-2 profilemodalrow-1">
                           <label className="open-tickets-box-text">
-                            11
+                            {ticketDetailsData.totalticket}
                             <small className="open-tickets-box-textval">
                               Total Tickets
                             </small>
@@ -1082,18 +1162,18 @@ class MyTicket extends Component {
                           <div className="row">
                             <div className="col-md-6 namepad">
                               <label className="fullna">Full Name</label>
-                              <label className="namedi">Diwakar Monga</label>
+                              <label className="namedi">{ticketDetailsData.customerName}</label>
                             </div>
                             <div className="col-md-6 namepad">
                               <label className="fullna">Mobile Number</label>
-                              <label className="namedi">+91 9873470074</label>
+                              <label className="namedi">{ticketDetailsData.customerPhoneNumber}</label>
                             </div>
                           </div>
                           <div className="row">
                             <div className="col-md-6 namepad">
                               <label className="fullna">Email ID</label>
                               <label className="namedi">
-                                diwakar@gmail.com
+                              {ticketDetailsData.customerEmailId}
                               </label>
                             </div>
                           </div>
@@ -1135,7 +1215,7 @@ class MyTicket extends Component {
                                 />
                               </div>
 
-                              <div className="row skipmar">
+                              {/* <div className="row skipmar">
                                 <div className="col-md-5">
                                   <label className="skiptext">
                                     SKIP ATTATCHING ORDER
@@ -1159,7 +1239,7 @@ class MyTicket extends Component {
                                     </button>
                                   </div>
                                 </div>
-                              </div>
+                              </div> */}
                             </div>
                           ) : (
                             <div>
@@ -1241,7 +1321,9 @@ class MyTicket extends Component {
                     <label className="target-closure-date">
                       Target Closure Date &nbsp;
                     </label>
-                    <label className="Date-target">28 March 19</label>
+                    <label className="Date-target">
+                      {ticketDetailsData.targetClouredate}
+                    </label>
                   </div>
                   <div className="mobilenumber-resp">
                     <span className="line-respo"></span>
@@ -1516,17 +1598,14 @@ class MyTicket extends Component {
               <label className="ticket-title-where">Ticket Title:</label>
             </div>
             <div className="row" style={{ marginTop: "0" }}>
-              <label className="label-2">Where can I see my reward?</label>
+              <label className="label-2">{ticketDetailsData.ticketTitle}</label>
             </div>
             <div className="row">
               <label className="ticket-title-where">Ticket Details:</label>
             </div>
             <div className="row" style={{ marginTop: "0" }}>
               <label className="label-3">
-                Where I can see details of my rewards in the ‘Rewards’ tab
-                within the ‘Refer and Earn Rewards’ screen.You will also get
-                details of which of your friends have joined, which friends have
-                transacted etc. on the same tab.
+                {ticketDetailsData.ticketdescription}
               </label>
             </div>
             <div className="row">
@@ -1595,14 +1674,17 @@ class MyTicket extends Component {
             </div>
             <div className="myTicketEmail">
               <Collapse isOpen={this.state.EmailCollapse}>
-                <a href="#!" className="kblink" style={{ top: "5px" }} 
-                 onClick={this.HandleKbLinkModalOpen.bind(this)}>
+                <a
+                  href="#!"
+                  className="kblink"
+                  style={{ top: "5px" }}
+                  onClick={this.HandleKbLinkModalOpen.bind(this)}
+                >
                   {/* <FontAwesomeIcon icon={faBrain} /> Kb Link */}
                   <img
                     src={KnowledgeLogo}
                     alt="KnowledgeLogo"
                     className="knoim"
-                   
                   />
                   Kb Link
                 </a>
@@ -1679,30 +1761,44 @@ class MyTicket extends Component {
                         </li>
                         <li>
                           <label className="">
-                          <div className="input-group" style={{ display: "block" }}>
-                                <span className="input-group-addon inputcc">CC:</span>
-                            <input
-                              type="text"
-                              className="CCdi"
-                              placeholder="diwark@gmail.com"
-                            />
+                            <div
+                              className="input-group"
+                              style={{ display: "block" }}
+                            >
+                              <span className="input-group-addon inputcc">
+                                CC:
+                              </span>
+                              <input
+                                type="text"
+                                className="CCdi"
+                                placeholder="diwark@gmail.com"
+                              />
 
-                            <span className="input-group-addon inputcc-one">+1</span>
+                              <span className="input-group-addon inputcc-one">
+                                +1
+                              </span>
                             </div>
                           </label>
                         </li>
                         <li>
                           <label className="">
-                          <div className="input-group" style={{ display: "block" }}>
-                                <span className="input-group-addon inputcc">BCC:</span>
-                            <input
-                              type="text"
-                              className="CCdi"
-                              placeholder="diwark@gmail.com"
-                            />
-                            <span className="input-group-addon inputcc-one">+1</span>
-                                
-                            {/* <span className="one">+1</span> */}
+                            <div
+                              className="input-group"
+                              style={{ display: "block" }}
+                            >
+                              <span className="input-group-addon inputcc">
+                                BCC:
+                              </span>
+                              <input
+                                type="text"
+                                className="CCdi"
+                                placeholder="diwark@gmail.com"
+                              />
+                              <span className="input-group-addon inputcc-one">
+                                +1
+                              </span>
+
+                              {/* <span className="one">+1</span> */}
                             </div>
                           </label>
                         </li>
@@ -1976,7 +2072,7 @@ class MyTicket extends Component {
                 role="tabpanel"
                 aria-labelledby="Claim-tab"
               >
-                <MyTicketClaim claimData={this.state} />
+                <MyTicketClaim claimData={TID} />
               </div>
               <div
                 className="tab-pane fade show active"
@@ -2374,30 +2470,42 @@ class MyTicket extends Component {
                             </li>
                             <li>
                               <label className="">
-                              <div className="input-group" style={{ display: "block" }}>
-                                <span className="input-group-addon inputcc">CC:</span>
-                                <input
-                                  type="text"
-                                  className="CCdi"
-                                  placeholder="diwark@gmail.com"
-                                />
-                                <span className="input-group-addon inputcc-one">+1</span>
+                                <div
+                                  className="input-group"
+                                  style={{ display: "block" }}
+                                >
+                                  <span className="input-group-addon inputcc">
+                                    CC:
+                                  </span>
+                                  <input
+                                    type="text"
+                                    className="CCdi"
+                                    placeholder="diwark@gmail.com"
+                                  />
+                                  <span className="input-group-addon inputcc-one">
+                                    +1
+                                  </span>
                                 </div>
-                                
                               </label>
                             </li>
                             <li>
                               <label className="">
-                              <div className="input-group" style={{ display: "block" }}>
-                                <span className="input-group-addon inputcc">BCC:</span>
-                                <input
-                                  type="text"
-                                  className="CCdi"
-                                  placeholder="diwark@gmail.com"
-                                />
-                                 <span className="input-group-addon inputcc-one">+1</span>
+                                <div
+                                  className="input-group"
+                                  style={{ display: "block" }}
+                                >
+                                  <span className="input-group-addon inputcc">
+                                    BCC:
+                                  </span>
+                                  <input
+                                    type="text"
+                                    className="CCdi"
+                                    placeholder="diwark@gmail.com"
+                                  />
+                                  <span className="input-group-addon inputcc-one">
+                                    +1
+                                  </span>
                                 </div>
-                               
                               </label>
                             </li>
                             <li>
@@ -2512,7 +2620,7 @@ class MyTicket extends Component {
                 role="tabpanel"
                 aria-labelledby="Task-tab"
               >
-                <MyTicketTask taskData={this.state} />
+                <MyTicketTask taskData={TID} />
               </div>
               <div
                 className="tab-pane fade"
@@ -2588,32 +2696,37 @@ class MyTicket extends Component {
             <div className="row profilemodalrow">
               <div className="col-md-6">
                 <label className="profilemodal-text">Name</label>
-                <label className="profilemodal-textval">Diwakar Monga</label>
+                <label className="profilemodal-textval">
+                  {ticketDetailsData.customerName}
+                </label>
               </div>
               <div className="col-md-6">
                 <label className="profilemodal-text">Mobile</label>
-                <label className="profilemodal-textval">+91 9873470074</label>
+                <label className="profilemodal-textval">
+                  {" "}
+                  {ticketDetailsData.customerPhoneNumber}
+                </label>
               </div>
             </div>
             <div className="row profilemodalrow-1">
               <div className="col-md-6">
                 <label className="profilemodal-text">Email</label>
                 <label className="profilemodal-textval">
-                  monga24@gmail.com
+                  {ticketDetailsData.customerEmailId}
                 </label>
               </div>
+
               <div className="col-md-6">
-                <input
-                  type="text"
-                  className="alternumber"
-                  placeholder="Alternate Number"
-                />
+                <label className="profilemodal-text">Alternate Number</label>
+                <label className="profilemodal-textval">
+                  {ticketDetailsData.altNumber}
+                </label>
               </div>
             </div>
             <div className="row" style={{ marginLeft: "15px" }}>
               <div className="openticketbox profilemodalrow-1">
                 <label className="open-tickets-box-text">
-                  04
+                  {ticketDetailsData.openTicket}
                   <small className="open-tickets-box-textval">
                     Open Tickets
                   </small>
@@ -2621,7 +2734,7 @@ class MyTicket extends Component {
               </div>
               <div className="openticketbox-2 profilemodalrow-1">
                 <label className="open-tickets-box-text">
-                  11
+                  {ticketDetailsData.totalticket}
                   <small className="open-tickets-box-textval">
                     Total Tickets
                   </small>

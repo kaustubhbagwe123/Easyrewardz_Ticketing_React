@@ -159,6 +159,7 @@ class AddSearchMyTicket extends Component {
         loading: true
       });
       if (responseMessage === "Success") {
+        debugger
         NotificationManager.success("New Customer added successfully.");
         setTimeout(function() {
           self.props.history.push({
