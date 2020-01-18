@@ -118,7 +118,8 @@ class TicketSystem extends Component {
         }
       ],
       titleSuggValue: "",
-      toggleTitle: false
+      toggleTitle: false,
+      loading:false
     };
     this.validator = new SimpleReactValidator();
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
@@ -493,6 +494,7 @@ class TicketSystem extends Component {
   }
 
   handleGetCustomerData(CustId, mode) {
+    this.setState({loading:true})
     let self = this;
     axios({
       method: "post",
@@ -514,7 +516,7 @@ class TicketSystem extends Component {
       CustData.editDOB = CustData.dob;
 
       if (CustMsg === "Success") {
-        self.setState({ customerData: customerData });
+        self.setState({ customerData: customerData,loading:false });
         self.handleEditCustomerClose();
       }
       if (mode === "Edit") {
@@ -614,6 +616,7 @@ class TicketSystem extends Component {
 
   handleCREATE_TICKET(StatusID) {
     debugger;
+    this.setState({loading:true})
     // if (this.validator.allValid()) {
       let self = this;
       // var OID = this.state.selectedTicketPriority;
@@ -678,7 +681,7 @@ class TicketSystem extends Component {
       }).then(function(res) {
         debugger;
         let Msg = res.data.status;
-
+        self.setState({loading:false})
         if (Msg) {
           NotificationManager.success(res.data.message);
           setTimeout(function() {
@@ -866,6 +869,7 @@ class TicketSystem extends Component {
           </table>
         </div>
         <div className="mask-ticket-system">
+        {this.state.loading===true?<div className="loader-icon"></div>:
           <div className="row marginsystem">
             <div className="column marginsystem1">
               <div className="paddingsystem">
@@ -1931,6 +1935,7 @@ class TicketSystem extends Component {
               <NotificationContainer />
             </div>
           </div>
+           }
         </div>
       </div>
     );

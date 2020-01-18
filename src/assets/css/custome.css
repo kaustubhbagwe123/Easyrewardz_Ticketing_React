@@ -10105,3 +10105,16 @@ table tr th:last-child {
 .autocomp div {
   background: red;
 }
+
+.loader-icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  /* height: 100vh; */
+  bottom: 0;
+  background:transparent url("../Images/loader.gif") no-repeat center
+    center;
+  background-size: 60px;
+  z-index: 5;
+}
