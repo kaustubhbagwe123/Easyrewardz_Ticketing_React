@@ -6,4 +6,5 @@ function TicketActionType() {
     { ticketActionTypeID: 201, ticketActionTypeName: "ETB" }
   ];
 }
+
 export default TicketActionType;
