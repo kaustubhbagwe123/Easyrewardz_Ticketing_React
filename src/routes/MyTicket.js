@@ -86,12 +86,6 @@ class MyTicket extends Component {
       NotesTab: 0,
       TaskTab: 0,
       ClaimTab: 0,
-      selectedPriority: 0,
-      selectedBrand: 0,
-      selectedCategory: 0,
-      selectedSubCategory: 0,
-      selectedIssueType: 0,
-      selectedChannelOfPurchase: 0,
       Notesdetails: [],
       TicketPriorityData: [],
       BrandData: [],
@@ -133,7 +127,6 @@ class MyTicket extends Component {
       this
     );
     this.handleGetTaskTableCount = this.handleGetTaskTableCount.bind(this);
-    // this.handleGetClaimTabDetails = this.handleGetClaimTabDetails.bind(this);
     this.handleUpdateTicketStatus = this.handleUpdateTicketStatus.bind(this);
     this.handleGetTicketDetails = this.handleGetTicketDetails.bind(this);
     this.handleGetCountOfTabs = this.handleGetCountOfTabs.bind(this);
@@ -146,7 +139,6 @@ class MyTicket extends Component {
       this.setState({ HistOrderShow: true, ticket_Id: ticketId });
       this.handleGetTicketPriorityList();
       this.handleGetBrandList();
-      this.handleGetCategoryList();
       this.handleGetChannelOfPurchaseList();
       this.handleGetNotesTabDetails(ticketId);
       this.handleGetTicketDetails(ticketId);
@@ -172,11 +164,29 @@ class MyTicket extends Component {
       debugger;
       let data = res.data.responseData;
       var ticketStatus = data.status;
-      var ticketPriority=data.priortyID;
-      var ticketBrand=data.brandID;
-      var ticketCagetory=data.categoryID;
-      var selectetedParameters = { ticketStatusID: ticketStatus,priorityID: ticketPriority,brandID:ticketBrand,categoryID:ticketCagetory};
+      var ticketPriority = data.priortyID;
+      var ticketBrand = data.brandID;
+      var ticketCagetory = data.categoryID;
+      var ticketSubGategory = data.subCategoryID;
+      var ticketChannelOfPurchaseID = data.channelOfPurchaseID;
+      var ticketActionType = data.ticketActionTypeID;
+      var ticketIssueTypeID = data.issueTypeID;
+      var selectetedParameters = {
+        ticketStatusID: ticketStatus,
+        priorityID: ticketPriority,
+        brandID: ticketBrand,
+        categoryID: ticketCagetory,
+        subCategoryID: ticketSubGategory,
+        channelOfPurchaseID: ticketChannelOfPurchaseID,
+        ticketActionTypeID: ticketActionType,
+        issueTypeID: ticketIssueTypeID
+      };
 
+      setTimeout(() => {
+        self.handleGetCategoryList();
+        self.handleGetSubCategoryList();
+        self.handleGetIssueTypeList();
+      }, 100);
       self.setState({ ticketDetailsData: data, selectetedParameters });
     });
   }
@@ -280,47 +290,65 @@ class MyTicket extends Component {
   fileDragOver = e => {
     e.preventDefault();
   };
-  setPriorityValue = e => {
-    let name=e.target.name;
-    let Value = e.target.value;
-    if(name=== "priority"){
-      this.setState({
-        selectetedParameters:{priorityID:Value}
-      })
-    }
-    // this.setState({ selectedPriority: priorityValue });
-  };
-  setBrandValue = e => {
-    let brandValue = e.currentTarget.value;
-    this.setState({ selectedBrand: brandValue });
-  };
-  setCategoryValue = e => {
-    let categoryValue = e.currentTarget.value;
-    this.setState({ selectedCategory: categoryValue });
-    setTimeout(() => {
-      if (this.state.selectedCategory) {
-        this.handleGetSubCategoryList();
-      }
-    }, 1);
-  };
-  setSubCategoryValue = e => {
+  handleDropDownChange = e => {
     debugger;
-    let subCategoryValue = e.currentTarget.value;
-    this.setState({ selectedSubCategory: subCategoryValue });
+    let name = e.target.name;
+    let Value = e.target.value;
+    if (name === "priorityID") {
+      this.setState({
+        selectetedParameters: { priorityID: Value }
+      });
+    } else if (name === "ticketStatusID") {
+      this.setState({
+        selectetedParameters: { ticketStatusID: Value }
+      });
+    } else if (name === "brandID") {
+      this.setState({
+        selectetedParameters: { brandID: Value },
+        CategoryData: [],
+        SubCategoryData: [],
+        IssueTypeData: []
+      });
+      setTimeout(() => {
+        if (this.state.selectetedParameters.brandID) {
+          this.handleGetCategoryList();
+        }
+      }, 1);
+    } else if (name === "categoryID") {
+      this.setState({
+        selectetedParameters: { categoryID: Value },
+        SubCategoryData: [],
+        IssueTypeData: []
+      });
+      setTimeout(() => {
+        if (this.state.selectetedParameters.categoryID) {
+          this.handleGetSubCategoryList();
+        }
+      }, 1);
+    } else if (name === "subCategoryID") {
+      this.setState({
+        selectetedParameters: { subCategoryID: Value },
+        IssueTypeData: []
+      });
 
-    setTimeout(() => {
-      if (this.state.selectedSubCategory) {
-        this.handleGetIssueTypeList();
-      }
-    }, 1);
-  };
-  setIssueTypeValue = e => {
-    let issueTypeValue = e.currentTarget.value;
-    this.setState({ selectedIssueType: issueTypeValue });
-  };
-  setChannelOfPurchaseValue = e => {
-    let channelOfPurchaseValue = e.currentTarget.value;
-    this.setState({ selectedChannelOfPurchase: channelOfPurchaseValue });
+      setTimeout(() => {
+        if (this.state.selectetedParameters.subCategoryID) {
+          this.handleGetIssueTypeList();
+        }
+      }, 1);
+    } else if (name === "channelOfPurchaseID") {
+      this.setState({
+        selectetedParameters: { channelOfPurchaseID: Value }
+      });
+    } else if (name === "issueTypeID") {
+      this.setState({
+        selectetedParameters: { issueTypeID: Value }
+      });
+    } else if (name === "ticketActionTypeID") {
+      this.setState({
+        selectetedParameters: { ticketActionTypeID: Value }
+      });
+    }
   };
 
   handleGetBrandList() {
@@ -343,11 +371,14 @@ class MyTicket extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Category/GetCategoryList",
-      headers: authHeader()
+      headers: authHeader(),
+      params: {
+        BrandID: this.state.selectetedParameters.brandID
+      }
     }).then(function(res) {
       debugger;
-      let CategoryData = res.data;
-      self.setState({ CategoryData: CategoryData });
+      let data = res.data;
+      self.setState({ CategoryData: data });
     });
   }
   handleGetTicketPriorityList() {
@@ -367,40 +398,40 @@ class MyTicket extends Component {
     debugger;
 
     let self = this;
-    let cateId = this.state.KbLink
-      ? this.state.selectedCategoryKB
-      : this.state.selectedCategory;
+    // let cateId = this.state.KbLink
+    //   ? this.state.selectedCategoryKB
+    //   : this.state.selectetedParameters.categoryID;
     axios({
       method: "post",
       url: config.apiUrl + "/SubCategory/GetSubCategoryByCategoryID",
       headers: authHeader(),
       params: {
-        CategoryID: cateId
-        // CategoryID: this.state.selectedCategory
+        CategoryID: this.state.selectetedParameters.categoryID
       }
     }).then(function(res) {
       debugger;
-      let SubCategoryData = res.data.responseData;
-      self.setState({ SubCategoryData: SubCategoryData });
+      let data = res.data.responseData;
+      self.setState({ SubCategoryData: data });
     });
   }
   handleGetIssueTypeList() {
     debugger;
     let self = this;
-    let subCateId = this.state.KbLink
-      ? this.state.selectedSubCategoryKB
-      : this.state.selectedSubCategory;
+    // let subCateId = this.state.KbLink
+    //   ? this.state.selectedSubCategoryKB
+    //   : this.state.selectetedParameters.subCategoryID;
+
     axios({
       method: "post",
       url: config.apiUrl + "/IssueType/GetIssueTypeList",
       headers: authHeader(),
       params: {
-        SubCategoryID: subCateId
+        SubCategoryID: this.state.selectetedParameters.subCategoryID
       }
     }).then(function(res) {
       debugger;
-      let IssueTypeData = res.data.responseData;
-      self.setState({ IssueTypeData: IssueTypeData });
+      let data = res.data.responseData;
+      self.setState({ IssueTypeData: data });
     });
   }
   handleGetChannelOfPurchaseList() {
@@ -1394,6 +1425,8 @@ class MyTicket extends Component {
                         <select
                           className="rectangle-9 select-category-placeholder"
                           value={this.state.selectetedParameters.ticketStatusID}
+                          onChange={this.handleDropDownChange}
+                          name="ticketStatusID"
                         >
                           <option>Ticket Status</option>
                           {this.state.TicketStatusData !== null &&
@@ -1411,8 +1444,8 @@ class MyTicket extends Component {
                         <select
                           className="rectangle-9 select-category-placeholder"
                           value={this.state.selectetedParameters.priorityID}
-                          onChange={this.setPriorityValue}
-                          name="priority"
+                          onChange={this.handleDropDownChange}
+                          name="priorityID"
                         >
                           <option>Priority</option>
                           {this.state.TicketPriorityData !== null &&
@@ -1430,7 +1463,8 @@ class MyTicket extends Component {
                         <select
                           className="rectangle-9 select-category-placeholder"
                           value={this.state.selectetedParameters.brandID}
-                          onChange={this.setBrandValue}
+                          onChange={this.handleDropDownChange}
+                          name="brandID"
                         >
                           <option className="select-category-placeholder">
                             Select Brand
@@ -1452,9 +1486,10 @@ class MyTicket extends Component {
                       <div className="form-group">
                         <label className="label-4">Category</label>
                         <select
-                          value={this.state.selectetedParameters.categoryID}
-                          onChange={this.setCategoryValue}
                           className="rectangle-9 select-category-placeholder"
+                          value={this.state.selectetedParameters.categoryID}
+                          onChange={this.handleDropDownChange}
+                          name="categoryID"
                         >
                           <option className="select-category-placeholder">
                             Select Category
@@ -1476,9 +1511,11 @@ class MyTicket extends Component {
                       <div className="form-group">
                         <label className="label-4">Sub Category</label>
                         <select
-                          value={this.state.selectedSubCategory}
-                          onChange={this.setSubCategoryValue}
                           className="rectangle-9 select-category-placeholder"
+                          value={this.state.selectetedParameters.subCategoryID}
+                          // onChange={this.setSubCategoryValue}
+                          onChange={this.handleDropDownChange}
+                          name="subCategoryID"
                         >
                           <option className="select-category-placeholder">
                             Select Sub Category
@@ -1494,21 +1531,20 @@ class MyTicket extends Component {
                               </option>
                             ))}
                         </select>
-                        {/* <select className="rectangle-9 select-category-placeholder">
-                          <option>Select</option>
-                        </select> */}
                       </div>
                     </div>
                     <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
                       <div className="form-group">
                         <label className="label-4">Issue Type</label>
-                        {/* <select className="rectangle-9 select-category-placeholder">
-                          <option>Select</option>
-                        </select> */}
+
                         <select
-                          value={this.state.selectedIssueType}
-                          onChange={this.setIssueTypeValue}
                           className="rectangle-9 select-category-placeholder"
+                          // value={this.state.selectedIssueType}
+                          // onChange={this.setIssueTypeValue}
+                          value={this.state.selectetedParameters.issueTypeID}
+                          // onChange={this.setSubCategoryValue}
+                          onChange={this.handleDropDownChange}
+                          name="issueTypeID"
                         >
                           <option className="select-sub-category-placeholder">
                             Select Issue Type
@@ -1529,13 +1565,15 @@ class MyTicket extends Component {
                     <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
                       <div className="form-group">
                         <label className="label-4">Channel Of Purchase</label>
-                        {/* <select className="rectangle-9 select-category-placeholder">
-                          <option>Select</option>
-                        </select> */}
                         <select
-                          value={this.state.selectedChannelOfPurchase}
-                          onChange={this.setChannelOfPurchaseValue}
                           className="rectangle-9 select-category-placeholder"
+                          value={
+                            this.state.selectetedParameters.channelOfPurchaseID
+                          }
+                          onChange={this.handleDropDownChange}
+                          name="channelOfPurchaseID"
+                          // value={this.state.selectedChannelOfPurchase}
+                          // onChange={this.setChannelOfPurchaseValue}
                         >
                           <option className="select-category-placeholder">
                             Select Channel Of Purchase
@@ -1556,22 +1594,13 @@ class MyTicket extends Component {
                     <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
                       <div className="form-group">
                         <label className="label-4">Ticket Action Type</label>
-                        {/* <Select
-                          getOptionLabel={option => option.ticketActionTypeName}
-                          getOptionValue={option => option.ticketActionTypeID}
-                          options={this.state.TicketActionTypeData}
-                          placeholder="Ticket Action Type"
-                          // menuIsOpen={true}
-                          closeMenuOnSelect={false}
-                          onChange={this.setTicketActionTypeValue.bind(this)}
-                          value={this.state.selectedTicketActionType}
-                          // showNewOptionAtTop={false}
-                          isMulti
-                        /> */}
                         <select
-                          value={this.state.selectedChannelOfPurchase}
-                          onChange={this.setChannelOfPurchaseValue}
                           className="rectangle-9 select-category-placeholder"
+                          value={
+                            this.state.selectetedParameters.ticketActionTypeID
+                          }
+                          onChange={this.handleDropDownChange}
+                          name="ticketActionTypeID"
                         >
                           <option className="select-category-placeholder">
                             Select Ticket Action Type

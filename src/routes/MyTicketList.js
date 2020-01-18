@@ -671,9 +671,6 @@ class MyTicketList extends Component {
         self.handleAssignModalClose();
         NotificationManager.success("Tickets assigned successfully.");
       }
-      // self.setState({
-      //   SlaStatusData: SlaStatusData
-      // });
     });
   }
 
@@ -930,9 +927,9 @@ class MyTicketList extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let SlaStatusData = res.data.responseData;
+      let data = res.data.responseData;
       self.setState({
-        SlaStatusData: SlaStatusData
+        SlaStatusData: data
       });
     });
   }

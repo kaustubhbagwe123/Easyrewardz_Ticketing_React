@@ -107,7 +107,7 @@ class TicketSystemOrder extends Component {
   handleCheckOrderID(OrderItemId, rowData, e) {
     debugger;
 
-  //  e.stopPropagation();
+    //  e.stopPropagation();
     const newSelected = Object.assign({}, this.state.CheckOrderID);
     newSelected[OrderItemId] = !this.state.CheckOrderID[OrderItemId];
     this.setState({
@@ -205,7 +205,7 @@ class TicketSystemOrder extends Component {
       headers: authHeader(),
       params: {
         OrderNumber: this.state.orderNumber,
-        CustomerID:CustID
+        CustomerID: CustID
       }
     }).then(function(res) {
       debugger;
@@ -437,18 +437,16 @@ class TicketSystemOrder extends Component {
                     Cell: row => {
                       debugger;
                       return (
-                        <div
-                          className="filter-checkbox"
-                          style={{ marginLeft: "15px" }}
-                        >
-                          <input
-                            type="checkbox"
-                            style={{ display: "none" }}
-                            id={row.original.orderMasterID}
-                          />
-                          <label htmlFor={row.original.orderMasterID}>
-                            {row.original.invoiceNumber}
-                          </label>
+                        <div className="filter-type pink1">
+                          <div className="filter-checkbox pink2 pinkmargin">
+                            <input
+                              type="checkbox"
+                              id="fil-ab1"
+                              name="dashboardcheckbox[]"
+                              // onChange={this.checkAllCheckbox.bind(this)}
+                            />
+                            <label htmlFor="fil-ab1">ID</label>
+                          </div>
                         </div>
                       );
                     }
