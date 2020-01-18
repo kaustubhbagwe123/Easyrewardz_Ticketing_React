@@ -11,7 +11,6 @@ import Demo from "../store/Hashtag.js";
 import Sorting from "./../assets/Images/sorting.png";
 import DelSearch from "./../assets/Images/del-search.png";
 import moment from "moment";
-// import Modal from "react-bootstrap/Modal";
 import Modal from "react-responsive-modal";
 // import MyTicketNew from "./Tabs/MyTicketNew.js";
 // import MyTicketOpen from "./Tabs/MyTicketOpen.js";

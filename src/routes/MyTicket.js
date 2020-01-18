@@ -112,7 +112,7 @@ class MyTicket extends Component {
       selectedTicketActionType: [],
       TicketActionTypeData: TicketActionType(),
       taskTableGrid: [],
-      claimDetailsData: [],
+      SearchAssignData:[],
       selectetedParameters: {}
     };
     this.toggleView = this.toggleView.bind(this);
@@ -131,6 +131,7 @@ class MyTicket extends Component {
     this.handleUpdateTicketStatus = this.handleUpdateTicketStatus.bind(this);
     this.handleGetTicketDetails = this.handleGetTicketDetails.bind(this);
     this.handleGetCountOfTabs = this.handleGetCountOfTabs.bind(this);
+    this.handleAssignDataList = this.handleAssignDataList.bind(this);
   }
 
   componentDidMount() {
@@ -140,11 +141,11 @@ class MyTicket extends Component {
       this.setState({ HistOrderShow: true, ticket_Id: ticketId });
       this.handleGetTicketPriorityList();
       this.handleGetBrandList();
+      this.handleAssignDataList();
       this.handleGetChannelOfPurchaseList();
       this.handleGetNotesTabDetails(ticketId);
       this.handleGetTicketDetails(ticketId);
       this.handleGetTaskTableCount(ticketId);
-      // this.handleGetClaimTabDetails(ticketId);
       this.handleGetCountOfTabs(ticketId);
     } else {
       this.props.history.push("myTicketlist");
@@ -182,19 +183,40 @@ class MyTicket extends Component {
         ticketActionTypeID: ticketActionType,
         issueTypeID: ticketIssueTypeID
       };
+      self.setState({ ticketDetailsData: data, selectetedParameters });
 
       setTimeout(() => {
         self.handleGetCategoryList();
         self.handleGetSubCategoryList();
         self.handleGetIssueTypeList();
       }, 100);
-      self.setState({ ticketDetailsData: data, selectetedParameters });
+    });
+  }
+  handleAssignDataList() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Ticketing/searchAgent",
+      headers: authHeader(),
+      params: {
+        FirstName: "",
+        LastName: "",
+        Email: "",
+        DesignationID: ""
+      }
+    }).then(function(res) {
+      debugger;
+      let data = res.data.responseData;
+      self.setState({
+        SearchAssignData: data
+      });
     });
   }
 
   handleUpdateTicketStatus(ticStaId) {
     debugger;
-    let self = this;
+    // let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Ticketing/Updateticketstatus",
@@ -235,26 +257,36 @@ class MyTicket extends Component {
       }
     });
   }
-  // handleGetClaimTabDetails(ID) {
-  //   let self = this;
-  //   axios({
-  //     method: "post",
-  //     url: config.apiUrl + "/Task/getclaimlist",
-  //     headers: authHeader(),
-  //     params: {
-  //       TicketId: ID
-  //     }
-  //   }).then(function(res) {
-  //     debugger;
-  //     let status = res.data.message;
-  //     let data = res.data.responseData;
-  //     if (status === "Record Not Found") {
-  //       self.setState({ claimDetailsData: [] });
-  //     } else {
-  //       self.setState({ claimDetailsData: data });
-  //     }
-  //   });
-  // }
+  handleUpdateTicketDetails() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Ticketing/Updateticketstatus",
+      headers: authHeader(),
+      data: {
+        TicketID: this.state.ticket_Id,
+        StatusID: this.state.selectetedParameters.ticketStatusID,
+        BrandID: this.state.selectetedParameters.brandID,
+        CategoryID: this.state.selectetedParameters.categoryID,
+        SubCategoryID: this.state.selectetedParameters.subCategoryID,
+        IssueTypeID: this.state.selectetedParameters.issueTypeID,
+        PriortyID: this.state.selectetedParameters.priorityID,
+        ChannelOfPurchaseID: this.state.selectetedParameters
+          .channelOfPurchaseID,
+        TicketActionID: this.state.selectetedParameters.ticketActionTypeID
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      if (status === "Success") {
+        NotificationManager.success("Ticket updated successfully.");
+        self.props.history.push("myticket");
+      } else {
+        NotificationManager.error("Ticket not update");
+      }
+    });
+  }
 
   handleGetTaskTableCount(ID) {
     debugger;
@@ -295,17 +327,21 @@ class MyTicket extends Component {
     debugger;
     let name = e.target.name;
     let Value = e.target.value;
+    var data = this.state.selectetedParameters;
     if (name === "priorityID") {
+      data[name] = Value;
       this.setState({
-        selectetedParameters: { priorityID: Value }
+        selectetedParameters: data
       });
     } else if (name === "ticketStatusID") {
+      data[name] = Value;
       this.setState({
-        selectetedParameters: { ticketStatusID: Value }
+        selectetedParameters: data
       });
     } else if (name === "brandID") {
+      data[name] = Value;
       this.setState({
-        selectetedParameters: { brandID: Value },
+        selectetedParameters: data,
         CategoryData: [],
         SubCategoryData: [],
         IssueTypeData: []
@@ -316,8 +352,9 @@ class MyTicket extends Component {
         }
       }, 1);
     } else if (name === "categoryID") {
+      data[name] = Value;
       this.setState({
-        selectetedParameters: { categoryID: Value },
+        selectetedParameters: data,
         SubCategoryData: [],
         IssueTypeData: []
       });
@@ -327,8 +364,9 @@ class MyTicket extends Component {
         }
       }, 1);
     } else if (name === "subCategoryID") {
+      data[name] = Value;
       this.setState({
-        selectetedParameters: { subCategoryID: Value },
+        selectetedParameters: data,
         IssueTypeData: []
       });
 
@@ -338,16 +376,19 @@ class MyTicket extends Component {
         }
       }, 1);
     } else if (name === "channelOfPurchaseID") {
+      data[name] = Value;
       this.setState({
-        selectetedParameters: { channelOfPurchaseID: Value }
+        selectetedParameters: data
       });
     } else if (name === "issueTypeID") {
+      data[name] = Value;
       this.setState({
-        selectetedParameters: { issueTypeID: Value }
+        selectetedParameters: data
       });
     } else if (name === "ticketActionTypeID") {
+      data[name] = Value;
       this.setState({
-        selectetedParameters: { ticketActionTypeID: Value }
+        selectetedParameters: data
       });
     }
   };
@@ -748,7 +789,7 @@ class MyTicket extends Component {
     this.setState({ selectedTicketActionType: e });
   };
   render() {
-    const { open, ticketDetailsData, historicalDetails } = this.state;
+    const { open, ticketDetailsData, historicalDetails,SearchAssignData } = this.state;
     const HidecollapsUp = this.state.collapseUp ? (
       <img
         src={Up1Img}
@@ -1032,11 +1073,10 @@ class MyTicket extends Component {
                   <button
                     type="button"
                     className="myticket-submit-solve-button"
+                    onClick={this.handleUpdateTicketDetails.bind(this)}
                     // onClick={this.HandleHeadePhoneModalOpen.bind(this)}
                   >
-                    <label className="myticket-submit-solve-button-text">
-                      SUBMIT
-                    </label>
+                    SUBMIT
                     {/* <img
                       src={DownWhiteImg}
                       alt="headphone"
@@ -1053,37 +1093,27 @@ class MyTicket extends Component {
                 overlayId="logout-ovrly"
               >
                 <div className="myTicket-table remov">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Emp Id</th>
-                        <th>Name</th>
-                        <th>Designation</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>9938</td>
-                        <td>Rashmi.C</td>
-                        <td>Agent</td>
-                      </tr>
-                      <tr>
-                        <td>3234</td>
-                        <td>Juhi.H</td>
-                        <td>Agent</td>
-                      </tr>
-                      <tr>
-                        <td>3234</td>
-                        <td>Nidhi.J</td>
-                        <td>Agent</td>
-                      </tr>
-                      <tr>
-                        <td>2343</td>
-                        <td>Abhishek.C</td>
-                        <td>Agent</td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <ReactTable
+                    data={SearchAssignData}
+                    columns={[
+                      {
+                        Header: <span>Emp Id</span>,
+                        accessor: "BrandCode"
+                      },
+                      {
+                        Header: <span>Name</span>,
+                        accessor: "BrandName"
+                      },
+                      {
+                        Header: <span>Designation</span>,
+                        accessor: "BrandAd"
+                      }
+                    ]}
+                    // resizable={false}
+                    minRows={1}
+                    defaultPageSize={5}
+                    showPagination={false}
+                  />
                   <div className="button-margin">
                     <button type="button" className="btn btn-outline-primary">
                       SELECT
@@ -1546,10 +1576,7 @@ class MyTicket extends Component {
 
                         <select
                           className="rectangle-9 select-category-placeholder"
-                          // value={this.state.selectedIssueType}
-                          // onChange={this.setIssueTypeValue}
                           value={this.state.selectetedParameters.issueTypeID}
-                          // onChange={this.setSubCategoryValue}
                           onChange={this.handleDropDownChange}
                           name="issueTypeID"
                         >
@@ -1705,34 +1732,79 @@ class MyTicket extends Component {
               <img src={ThumbTick} alt="thumb" className="thumbtick" />
               <img src={ThumbTick} alt="thumb" className="thumbtick" />
               <img src={ThumbTick} alt="thumb" className="thumbtick" />
-              <img src={PlusImg} alt="thumb" className="thumbtick-plus"
-                    onClick={this.handleThumbModalOpen.bind(this)} />
+              <img
+                src={PlusImg}
+                alt="thumb"
+                className="thumbtick-plus"
+                onClick={this.handleThumbModalOpen.bind(this)}
+              />
             </div>
             <Modal
-                  open={this.state.Plus}
-                  // onClose={this.handleThumbModalClose.bind(this)}
-                  modalId="thumb-modal-popup"
-                  overlayId="logout-ovrlykb"
-                >
-                
-                  <div>
-                      <div className="close">
-                        <img src={CrossIcon} alt="cross-icon"
-                         onClick={this.handleThumbModalClose.bind(this)}/>
-                      </div>
-                    <div className="row my-3 mx-1">
-
-                      <img src={ThumbTick} alt="thumb" className="thumbtick" style={{ marginBottom: "10px" }} />
-                      <img src={ThumbTick} alt="thumb" className="thumbtick" style={{ marginBottom: "10px" }} />
-                      <img src={ThumbTick} alt="thumb" className="thumbtick" style={{ marginBottom: "10px" }} />
-                      <img src={ThumbTick} alt="thumb" className="thumbtick" style={{ marginBottom: "10px" }} />
-                      <img src={ThumbTick} alt="thumb" className="thumbtick" style={{ marginBottom: "10px" }} />
-                      <img src={ThumbTick} alt="thumb" className="thumbtick" style={{ marginBottom: "10px" }} />
-                      <img src={ThumbTick} alt="thumb" className="thumbtick" style={{ marginBottom: "10px" }} />
-                      <img src={ThumbTick} alt="thumb" className="thumbtick" style={{ marginBottom: "10px" }} />
-                    </div>
-                  </div>
-                </Modal>
+              open={this.state.Plus}
+              // onClose={this.handleThumbModalClose.bind(this)}
+              modalId="thumb-modal-popup"
+              overlayId="logout-ovrlykb"
+            >
+              <div>
+                <div className="close">
+                  <img
+                    src={CrossIcon}
+                    alt="cross-icon"
+                    onClick={this.handleThumbModalClose.bind(this)}
+                  />
+                </div>
+                <div className="row my-3 mx-1">
+                  <img
+                    src={ThumbTick}
+                    alt="thumb"
+                    className="thumbtick"
+                    style={{ marginBottom: "10px" }}
+                  />
+                  <img
+                    src={ThumbTick}
+                    alt="thumb"
+                    className="thumbtick"
+                    style={{ marginBottom: "10px" }}
+                  />
+                  <img
+                    src={ThumbTick}
+                    alt="thumb"
+                    className="thumbtick"
+                    style={{ marginBottom: "10px" }}
+                  />
+                  <img
+                    src={ThumbTick}
+                    alt="thumb"
+                    className="thumbtick"
+                    style={{ marginBottom: "10px" }}
+                  />
+                  <img
+                    src={ThumbTick}
+                    alt="thumb"
+                    className="thumbtick"
+                    style={{ marginBottom: "10px" }}
+                  />
+                  <img
+                    src={ThumbTick}
+                    alt="thumb"
+                    className="thumbtick"
+                    style={{ marginBottom: "10px" }}
+                  />
+                  <img
+                    src={ThumbTick}
+                    alt="thumb"
+                    className="thumbtick"
+                    style={{ marginBottom: "10px" }}
+                  />
+                  <img
+                    src={ThumbTick}
+                    alt="thumb"
+                    className="thumbtick"
+                    style={{ marginBottom: "10px" }}
+                  />
+                </div>
+              </div>
+            </Modal>
             <div className="row">
               <div className="mask1">
                 <div className="mail-mask">
@@ -1889,10 +1961,7 @@ class MyTicket extends Component {
                               <span className="input-group-addon inputcc">
                                 CC:
                               </span>
-                              <input
-                                type="text"
-                                className="CCdi"
-                              />
+                              <input type="text" className="CCdi" />
                               <span className="input-group-addon inputcc-one">
                                 +1
                               </span>
@@ -1908,10 +1977,7 @@ class MyTicket extends Component {
                               <span className="input-group-addon inputcc">
                                 BCC:
                               </span>
-                              <input
-                                type="text"
-                                className="CCdi"
-                              />
+                              <input type="text" className="CCdi" />
                               <span className="input-group-addon inputcc-one">
                                 +1
                               </span>
@@ -2372,12 +2438,19 @@ class MyTicket extends Component {
                                 </div>
                                 <div>
                                   <span className="comment-line"></span>
-                                  <div style={{float:"right",cursor:"pointer",height:"30px",marginTop:"-33px"}}>
-                                  <img
-                                    src={MinusImg}
-                                    alt="Minus"
-                                    className="CommentMinus-img"
-                                  />
+                                  <div
+                                    style={{
+                                      float: "right",
+                                      cursor: "pointer",
+                                      height: "30px",
+                                      marginTop: "-33px"
+                                    }}
+                                  >
+                                    <img
+                                      src={MinusImg}
+                                      alt="Minus"
+                                      className="CommentMinus-img"
+                                    />
                                   </div>
                                 </div>
                                 <div className="commenttextmessage">
@@ -2491,14 +2564,15 @@ class MyTicket extends Component {
                             </ul>
                           </div>
 
-                          <a href="#!" 
-                              className="kblink"
-                              onClick={this.HandleKbLinkModalOpen.bind(this)}>
+                          <a
+                            href="#!"
+                            className="kblink"
+                            onClick={this.HandleKbLinkModalOpen.bind(this)}
+                          >
                             <img
                               src={KnowledgeLogo}
                               alt="KnowledgeLogo"
                               className="knoim"
-                              
                             />
                             Kb Link
                           </a>
@@ -2612,10 +2686,7 @@ class MyTicket extends Component {
                                   <span className="input-group-addon inputcc">
                                     CC:
                                   </span>
-                                  <input
-                                    type="text"
-                                    className="CCdi"
-                                  />
+                                  <input type="text" className="CCdi" />
                                   <span className="input-group-addon inputcc-one">
                                     +1
                                   </span>
@@ -2631,10 +2702,7 @@ class MyTicket extends Component {
                                   <span className="input-group-addon inputcc">
                                     BCC:
                                   </span>
-                                  <input
-                                    type="text"
-                                    className="CCdi"
-                                  />
+                                  <input type="text" className="CCdi" />
                                   <span className="input-group-addon inputcc-one">
                                     +1
                                   </span>

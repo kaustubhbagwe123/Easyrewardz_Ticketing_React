@@ -84,7 +84,7 @@ class SingIn extends Component {
           let resValid = res.data.message;
           if (resValid === "Valid Login") {
             debugger;
-            // NotificationManager.success("Login Successfull.");
+            NotificationManager.success("Login Successfull.");
             self.setState({
               fullUserName: data.firstName + " " + data.lastName,
               UserEmail: data.userEmailID

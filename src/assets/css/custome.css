@@ -591,6 +591,7 @@ table tr th:last-child {
   height: 43px;
   margin-left: 35px;
   cursor: pointer;
+  color: #FFFF;
 }
 
 .myticket-submit-solve-button-text {
@@ -2148,7 +2149,7 @@ table td span {
 }
 .table-btn {
   border-radius: 15px;
-  width: 76px;
+  width: 100px;
   display: inline-block;
   padding: 4px 10px;
   text-transform: uppercase;
