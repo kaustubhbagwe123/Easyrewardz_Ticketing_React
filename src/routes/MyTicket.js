@@ -33,6 +33,7 @@ import CrossIcon from "./../assets/Images/cancel.png";
 import TikcetSystemStoreModal from "./../routes/TicketSystemStoreModal";
 import StoreIcon from "./../assets/Images/store.png";
 // import SendEmail from "./../assets/Images/sendEmail.png";
+// import PlusImgTh from "./../assets/Images/plus.png";
 import MyTicketTask from "./Tabs/MyTicketTask";
 import MyTicketClaim from "./Tabs/MyTicketClaim";
 import FileUpload from "./../assets/Images/file.png";
@@ -62,6 +63,7 @@ import {
 import TicketStatus from "./TicketStatus";
 // import Select from "react-select";
 import TicketActionType from "./TicketActionType";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 class MyTicket extends Component {
   constructor(props) {
     super(props);
@@ -86,12 +88,6 @@ class MyTicket extends Component {
       NotesTab: 0,
       TaskTab: 0,
       ClaimTab: 0,
-      selectedPriority: 0,
-      selectedBrand: 0,
-      selectedCategory: 0,
-      selectedSubCategory: 0,
-      selectedIssueType: 0,
-      selectedChannelOfPurchase: 0,
       Notesdetails: [],
       TicketPriorityData: [],
       BrandData: [],
@@ -118,7 +114,11 @@ class MyTicket extends Component {
       TicketActionTypeData: TicketActionType(),
       taskTableGrid: [],
       claimDetailsData: [],
-      selectetedParameters: {}
+      selectetedParameters: {},
+      KbPopupData: [],
+      selectedIssueTypeKB: 0,
+      selectedCategoryKB: 0,
+      selectedSubCategoryKB: 0
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -133,10 +133,10 @@ class MyTicket extends Component {
       this
     );
     this.handleGetTaskTableCount = this.handleGetTaskTableCount.bind(this);
-    // this.handleGetClaimTabDetails = this.handleGetClaimTabDetails.bind(this);
     this.handleUpdateTicketStatus = this.handleUpdateTicketStatus.bind(this);
     this.handleGetTicketDetails = this.handleGetTicketDetails.bind(this);
     this.handleGetCountOfTabs = this.handleGetCountOfTabs.bind(this);
+    this.handleKbLinkPopupSearch = this.handleKbLinkPopupSearch.bind(this);
   }
 
   componentDidMount() {
@@ -146,7 +146,6 @@ class MyTicket extends Component {
       this.setState({ HistOrderShow: true, ticket_Id: ticketId });
       this.handleGetTicketPriorityList();
       this.handleGetBrandList();
-      this.handleGetCategoryList();
       this.handleGetChannelOfPurchaseList();
       this.handleGetNotesTabDetails(ticketId);
       this.handleGetTicketDetails(ticketId);
@@ -172,11 +171,29 @@ class MyTicket extends Component {
       debugger;
       let data = res.data.responseData;
       var ticketStatus = data.status;
-      var ticketPriority=data.priortyID;
-      var ticketBrand=data.brandID;
-      var ticketCagetory=data.categoryID;
-      var selectetedParameters = { ticketStatusID: ticketStatus,priorityID: ticketPriority,brandID:ticketBrand,categoryID:ticketCagetory};
+      var ticketPriority = data.priortyID;
+      var ticketBrand = data.brandID;
+      var ticketCagetory = data.categoryID;
+      var ticketSubGategory = data.subCategoryID;
+      var ticketChannelOfPurchaseID = data.channelOfPurchaseID;
+      var ticketActionType = data.ticketActionTypeID;
+      var ticketIssueTypeID = data.issueTypeID;
+      var selectetedParameters = {
+        ticketStatusID: ticketStatus,
+        priorityID: ticketPriority,
+        brandID: ticketBrand,
+        categoryID: ticketCagetory,
+        subCategoryID: ticketSubGategory,
+        channelOfPurchaseID: ticketChannelOfPurchaseID,
+        ticketActionTypeID: ticketActionType,
+        issueTypeID: ticketIssueTypeID
+      };
 
+      setTimeout(() => {
+        self.handleGetCategoryList();
+        self.handleGetSubCategoryList();
+        self.handleGetIssueTypeList();
+      }, 100);
       self.setState({ ticketDetailsData: data, selectetedParameters });
     });
   }
@@ -280,47 +297,65 @@ class MyTicket extends Component {
   fileDragOver = e => {
     e.preventDefault();
   };
-  setPriorityValue = e => {
-    let name=e.target.name;
-    let Value = e.target.value;
-    if(name=== "priority"){
-      this.setState({
-        selectetedParameters:{priorityID:Value}
-      })
-    }
-    // this.setState({ selectedPriority: priorityValue });
-  };
-  setBrandValue = e => {
-    let brandValue = e.currentTarget.value;
-    this.setState({ selectedBrand: brandValue });
-  };
-  setCategoryValue = e => {
-    let categoryValue = e.currentTarget.value;
-    this.setState({ selectedCategory: categoryValue });
-    setTimeout(() => {
-      if (this.state.selectedCategory) {
-        this.handleGetSubCategoryList();
-      }
-    }, 1);
-  };
-  setSubCategoryValue = e => {
+  handleDropDownChange = e => {
     debugger;
-    let subCategoryValue = e.currentTarget.value;
-    this.setState({ selectedSubCategory: subCategoryValue });
+    let name = e.target.name;
+    let Value = e.target.value;
+    if (name === "priorityID") {
+      this.setState({
+        selectetedParameters: { priorityID: Value }
+      });
+    } else if (name === "ticketStatusID") {
+      this.setState({
+        selectetedParameters: { ticketStatusID: Value }
+      });
+    } else if (name === "brandID") {
+      this.setState({
+        selectetedParameters: { brandID: Value },
+        CategoryData: [],
+        SubCategoryData: [],
+        IssueTypeData: []
+      });
+      setTimeout(() => {
+        if (this.state.selectetedParameters.brandID) {
+          this.handleGetCategoryList();
+        }
+      }, 1);
+    } else if (name === "categoryID") {
+      this.setState({
+        selectetedParameters: { categoryID: Value },
+        SubCategoryData: [],
+        IssueTypeData: []
+      });
+      setTimeout(() => {
+        if (this.state.selectetedParameters.categoryID) {
+          this.handleGetSubCategoryList();
+        }
+      }, 1);
+    } else if (name === "subCategoryID") {
+      this.setState({
+        selectetedParameters: { subCategoryID: Value },
+        IssueTypeData: []
+      });
 
-    setTimeout(() => {
-      if (this.state.selectedSubCategory) {
-        this.handleGetIssueTypeList();
-      }
-    }, 1);
-  };
-  setIssueTypeValue = e => {
-    let issueTypeValue = e.currentTarget.value;
-    this.setState({ selectedIssueType: issueTypeValue });
-  };
-  setChannelOfPurchaseValue = e => {
-    let channelOfPurchaseValue = e.currentTarget.value;
-    this.setState({ selectedChannelOfPurchase: channelOfPurchaseValue });
+      setTimeout(() => {
+        if (this.state.selectetedParameters.subCategoryID) {
+          this.handleGetIssueTypeList();
+        }
+      }, 1);
+    } else if (name === "channelOfPurchaseID") {
+      this.setState({
+        selectetedParameters: { channelOfPurchaseID: Value }
+      });
+    } else if (name === "issueTypeID") {
+      this.setState({
+        selectetedParameters: { issueTypeID: Value }
+      });
+    } else if (name === "ticketActionTypeID") {
+      this.setState({
+        selectetedParameters: { ticketActionTypeID: Value }
+      });
+    }
   };
 
   handleGetBrandList() {
@@ -343,11 +378,14 @@ class MyTicket extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/Category/GetCategoryList",
-      headers: authHeader()
+      headers: authHeader(),
+      params: {
+        BrandID: this.state.selectetedParameters.brandID
+      }
     }).then(function(res) {
       debugger;
-      let CategoryData = res.data;
-      self.setState({ CategoryData: CategoryData });
+      let data = res.data;
+      self.setState({ CategoryData: data });
     });
   }
   handleGetTicketPriorityList() {
@@ -367,40 +405,40 @@ class MyTicket extends Component {
     debugger;
 
     let self = this;
-    let cateId = this.state.KbLink
-      ? this.state.selectedCategoryKB
-      : this.state.selectedCategory;
+    // let cateId = this.state.KbLink
+    //   ? this.state.selectedCategoryKB
+    //   : this.state.selectetedParameters.categoryID;
     axios({
       method: "post",
       url: config.apiUrl + "/SubCategory/GetSubCategoryByCategoryID",
       headers: authHeader(),
       params: {
-        CategoryID: cateId
-        // CategoryID: this.state.selectedCategory
+        CategoryID: this.state.selectetedParameters.categoryID
       }
     }).then(function(res) {
       debugger;
-      let SubCategoryData = res.data.responseData;
-      self.setState({ SubCategoryData: SubCategoryData });
+      let data = res.data.responseData;
+      self.setState({ SubCategoryData: data });
     });
   }
   handleGetIssueTypeList() {
     debugger;
     let self = this;
-    let subCateId = this.state.KbLink
-      ? this.state.selectedSubCategoryKB
-      : this.state.selectedSubCategory;
+    // let subCateId = this.state.KbLink
+    //   ? this.state.selectedSubCategoryKB
+    //   : this.state.selectetedParameters.subCategoryID;
+
     axios({
       method: "post",
       url: config.apiUrl + "/IssueType/GetIssueTypeList",
       headers: authHeader(),
       params: {
-        SubCategoryID: subCateId
+        SubCategoryID: this.state.selectetedParameters.subCategoryID
       }
     }).then(function(res) {
       debugger;
-      let IssueTypeData = res.data.responseData;
-      self.setState({ IssueTypeData: IssueTypeData });
+      let data = res.data.responseData;
+      self.setState({ IssueTypeData: data });
     });
   }
   handleGetChannelOfPurchaseList() {
@@ -425,9 +463,6 @@ class MyTicket extends Component {
   }
   HandleKbLinkModalOpen() {
     this.setState({ KbLink: true });
-  }
-  HandleKbLinkModalClose() {
-    this.setState({ KbLink: false });
   }
 
   HandleClaimPageView() {
@@ -509,6 +544,12 @@ class MyTicket extends Component {
   }
   handleBillImgModalClose() {
     this.setState({ BillInvoiceModal: false });
+  }
+  handleThumbModalOpen() {
+    this.setState({ Plus: true });
+  }
+  handleThumbModalClose() {
+    this.setState({ Plus: false });
   }
   handleSubmitForm(e) {
     e.preventDefault();
@@ -708,6 +749,68 @@ class MyTicket extends Component {
 
   setTicketActionTypeValue = e => {
     this.setState({ selectedTicketActionType: e });
+  };
+  //KB Templete Pop up Search API
+  handleKbLinkPopupSearch() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/KnowledgeBase/searchbycategory",
+      headers: authHeader(),
+      params: {
+        Type_ID: self.state.selectedIssueTypeKB,
+        Category_ID: self.state.selectedCategoryKB,
+        SubCategor_ID: self.state.selectedSubCategoryKB
+      }
+    }).then(function(res) {
+      debugger;
+      let KbPopupData = res.data.responseData;
+      if (KbPopupData.length === 0 || KbPopupData === null) {
+        NotificationManager.error("No Record Found.");
+      }
+      self.setState({ KbPopupData: KbPopupData });
+    });
+  }
+
+  //Close funcation for KB Templete Search Modal
+  HandleKbLinkModalClose() {
+    this.setState({
+      KbLink: false,
+      selectedIssueTypeKB: 0,
+      selectedCategoryKB: 0,
+      selectedSubCategoryKB: 0,
+      KbPopupData:[]
+    });
+  }
+  //Category change funcation in KB Templete Modal
+  setCategoryValueKB = e => {
+    let categoryValue = e.currentTarget.value;
+    this.setState({ selectedCategoryKB: categoryValue });
+    setTimeout(() => {
+      if (this.state.selectedCategoryKB) {
+        this.handleGetSubCategoryList();
+      }
+    }, 1);
+  };
+
+  //Sub-Category change funcation in KB Templete Modal
+  setSubCategoryValueKB = e => {
+    debugger;
+    let subCategoryValue = e.currentTarget.value;
+    this.setState({ selectedSubCategoryKB: subCategoryValue });
+
+    setTimeout(() => {
+      if (this.state.selectedSubCategoryKB) {
+        this.handleGetIssueTypeList();
+      }
+    }, 1);
+  };
+
+  //Issue-Type change funcation in KB Templete Modal
+  setIssueTypeValueKB = e => {
+    let issueTypeValue = e.currentTarget.value;
+    this.setState({ selectedIssueTypeKB: issueTypeValue });
   };
   render() {
     const { open, ticketDetailsData, historicalDetails } = this.state;
@@ -952,7 +1055,7 @@ class MyTicket extends Component {
                     onClick={this.onCloseModal.bind(this)}
                   />
                   {/* <HistoricalTable /> */}
-                  <div className="table-scrolling historyTable remov">
+                  <div className="">
                     <ReactTable
                       data={historicalDetails}
                       columns={[
@@ -969,7 +1072,7 @@ class MyTicket extends Component {
                           accessor: "dateandTime"
                         }
                       ]}
-                      // resizable={false}
+                      resizable={false}
                       defaultPageSize={5}
                       showPagination={false}
                     />
@@ -1394,6 +1497,8 @@ class MyTicket extends Component {
                         <select
                           className="rectangle-9 select-category-placeholder"
                           value={this.state.selectetedParameters.ticketStatusID}
+                          onChange={this.handleDropDownChange}
+                          name="ticketStatusID"
                         >
                           <option>Ticket Status</option>
                           {this.state.TicketStatusData !== null &&
@@ -1411,8 +1516,8 @@ class MyTicket extends Component {
                         <select
                           className="rectangle-9 select-category-placeholder"
                           value={this.state.selectetedParameters.priorityID}
-                          onChange={this.setPriorityValue}
-                          name="priority"
+                          onChange={this.handleDropDownChange}
+                          name="priorityID"
                         >
                           <option>Priority</option>
                           {this.state.TicketPriorityData !== null &&
@@ -1430,7 +1535,8 @@ class MyTicket extends Component {
                         <select
                           className="rectangle-9 select-category-placeholder"
                           value={this.state.selectetedParameters.brandID}
-                          onChange={this.setBrandValue}
+                          onChange={this.handleDropDownChange}
+                          name="brandID"
                         >
                           <option className="select-category-placeholder">
                             Select Brand
@@ -1452,9 +1558,10 @@ class MyTicket extends Component {
                       <div className="form-group">
                         <label className="label-4">Category</label>
                         <select
-                          value={this.state.selectetedParameters.categoryID}
-                          onChange={this.setCategoryValue}
                           className="rectangle-9 select-category-placeholder"
+                          value={this.state.selectetedParameters.categoryID}
+                          onChange={this.handleDropDownChange}
+                          name="categoryID"
                         >
                           <option className="select-category-placeholder">
                             Select Category
@@ -1476,9 +1583,11 @@ class MyTicket extends Component {
                       <div className="form-group">
                         <label className="label-4">Sub Category</label>
                         <select
-                          value={this.state.selectedSubCategory}
-                          onChange={this.setSubCategoryValue}
                           className="rectangle-9 select-category-placeholder"
+                          value={this.state.selectetedParameters.subCategoryID}
+                          // onChange={this.setSubCategoryValue}
+                          onChange={this.handleDropDownChange}
+                          name="subCategoryID"
                         >
                           <option className="select-category-placeholder">
                             Select Sub Category
@@ -1494,21 +1603,20 @@ class MyTicket extends Component {
                               </option>
                             ))}
                         </select>
-                        {/* <select className="rectangle-9 select-category-placeholder">
-                          <option>Select</option>
-                        </select> */}
                       </div>
                     </div>
                     <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
                       <div className="form-group">
                         <label className="label-4">Issue Type</label>
-                        {/* <select className="rectangle-9 select-category-placeholder">
-                          <option>Select</option>
-                        </select> */}
+
                         <select
-                          value={this.state.selectedIssueType}
-                          onChange={this.setIssueTypeValue}
                           className="rectangle-9 select-category-placeholder"
+                          // value={this.state.selectedIssueType}
+                          // onChange={this.setIssueTypeValue}
+                          value={this.state.selectetedParameters.issueTypeID}
+                          // onChange={this.setSubCategoryValue}
+                          onChange={this.handleDropDownChange}
+                          name="issueTypeID"
                         >
                           <option className="select-sub-category-placeholder">
                             Select Issue Type
@@ -1529,13 +1637,15 @@ class MyTicket extends Component {
                     <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
                       <div className="form-group">
                         <label className="label-4">Channel Of Purchase</label>
-                        {/* <select className="rectangle-9 select-category-placeholder">
-                          <option>Select</option>
-                        </select> */}
                         <select
-                          value={this.state.selectedChannelOfPurchase}
-                          onChange={this.setChannelOfPurchaseValue}
                           className="rectangle-9 select-category-placeholder"
+                          value={
+                            this.state.selectetedParameters.channelOfPurchaseID
+                          }
+                          onChange={this.handleDropDownChange}
+                          name="channelOfPurchaseID"
+                          // value={this.state.selectedChannelOfPurchase}
+                          // onChange={this.setChannelOfPurchaseValue}
                         >
                           <option className="select-category-placeholder">
                             Select Channel Of Purchase
@@ -1556,22 +1666,13 @@ class MyTicket extends Component {
                     <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
                       <div className="form-group">
                         <label className="label-4">Ticket Action Type</label>
-                        {/* <Select
-                          getOptionLabel={option => option.ticketActionTypeName}
-                          getOptionValue={option => option.ticketActionTypeID}
-                          options={this.state.TicketActionTypeData}
-                          placeholder="Ticket Action Type"
-                          // menuIsOpen={true}
-                          closeMenuOnSelect={false}
-                          onChange={this.setTicketActionTypeValue.bind(this)}
-                          value={this.state.selectedTicketActionType}
-                          // showNewOptionAtTop={false}
-                          isMulti
-                        /> */}
                         <select
-                          value={this.state.selectedChannelOfPurchase}
-                          onChange={this.setChannelOfPurchaseValue}
                           className="rectangle-9 select-category-placeholder"
+                          value={
+                            this.state.selectetedParameters.ticketActionTypeID
+                          }
+                          onChange={this.handleDropDownChange}
+                          name="ticketActionTypeID"
                         >
                           <option className="select-category-placeholder">
                             Select Ticket Action Type
@@ -1666,7 +1767,82 @@ class MyTicket extends Component {
             <div className="row">
               <img src={ThumbTick} alt="thumb" className="thumbtick" />
               <img src={ThumbTick} alt="thumb" className="thumbtick" />
+              <img src={ThumbTick} alt="thumb" className="thumbtick" />
+              <img src={ThumbTick} alt="thumb" className="thumbtick" />
+              <img src={ThumbTick} alt="thumb" className="thumbtick" />
+              <img
+                src={PlusImg}
+                alt="thumb"
+                className="thumbtick-plus"
+                onClick={this.handleThumbModalOpen.bind(this)}
+              />
             </div>
+            <Modal
+              open={this.state.Plus}
+              // onClose={this.handleThumbModalClose.bind(this)}
+              modalId="thumb-modal-popup"
+              overlayId="logout-ovrlykb"
+            >
+              <div>
+                <div className="close">
+                  <img
+                    src={CrossIcon}
+                    alt="cross-icon"
+                    onClick={this.handleThumbModalClose.bind(this)}
+                  />
+                </div>
+                <div className="row my-3 mx-1">
+                  <img
+                    src={ThumbTick}
+                    alt="thumb"
+                    className="thumbtick"
+                    style={{ marginBottom: "10px" }}
+                  />
+                  <img
+                    src={ThumbTick}
+                    alt="thumb"
+                    className="thumbtick"
+                    style={{ marginBottom: "10px" }}
+                  />
+                  <img
+                    src={ThumbTick}
+                    alt="thumb"
+                    className="thumbtick"
+                    style={{ marginBottom: "10px" }}
+                  />
+                  <img
+                    src={ThumbTick}
+                    alt="thumb"
+                    className="thumbtick"
+                    style={{ marginBottom: "10px" }}
+                  />
+                  <img
+                    src={ThumbTick}
+                    alt="thumb"
+                    className="thumbtick"
+                    style={{ marginBottom: "10px" }}
+                  />
+                  <img
+                    src={ThumbTick}
+                    alt="thumb"
+                    className="thumbtick"
+                    style={{ marginBottom: "10px" }}
+                  />
+                  <img
+                    src={ThumbTick}
+                    alt="thumb"
+                    className="thumbtick"
+                    style={{ marginBottom: "10px" }}
+                  />
+                  <img
+                    src={ThumbTick}
+                    alt="thumb"
+                    className="thumbtick"
+                    style={{ marginBottom: "10px" }}
+                  />
+                </div>
+              </div>
+            </Modal>
             <div className="row">
               <div className="mask1">
                 <div className="mail-mask">
@@ -1720,7 +1896,7 @@ class MyTicket extends Component {
                     className="mob-float"
                     style={{ display: "flex", float: "right" }}
                   >
-                    <img src={ArrowImg} alt="Arrow" className="arrow-img" />
+                    {/* <img src={ArrowImg} alt="Arrow" className="arrow-img" /> */}
                     <div className="line-1"></div>
                     {EmailCollapseUpDown}
                   </div>
@@ -1818,17 +1994,12 @@ class MyTicket extends Component {
                           <label className="">
                             <div
                               className="input-group"
-                              style={{ display: "block" }}
+                              // style={{ display: "block" }}
                             >
                               <span className="input-group-addon inputcc">
                                 CC:
                               </span>
-                              <input
-                                type="text"
-                                className="CCdi"
-                                placeholder="diwark@gmail.com"
-                              />
-
+                              <input type="text" className="CCdi" />
                               <span className="input-group-addon inputcc-one">
                                 +1
                               </span>
@@ -1839,21 +2010,15 @@ class MyTicket extends Component {
                           <label className="">
                             <div
                               className="input-group"
-                              style={{ display: "block" }}
+                              // style={{ display: "block" }}
                             >
                               <span className="input-group-addon inputcc">
                                 BCC:
                               </span>
-                              <input
-                                type="text"
-                                className="CCdi"
-                                placeholder="diwark@gmail.com"
-                              />
+                              <input type="text" className="CCdi" />
                               <span className="input-group-addon inputcc-one">
                                 +1
                               </span>
-
-                              {/* <span className="one">+1</span> */}
                             </div>
                           </label>
                         </li>
@@ -1924,79 +2089,53 @@ class MyTicket extends Component {
                         KNOWLEGE BASE
                       </h5>
                       <p>Message</p>
-                      <div className="textkb">
-                        <p className="table-details-data-modal">
-                          Can I purchase a domain through Google?
-                        </p>
-                        {HidecollapsUpKbLink}
-                        {/* <img
-                          src={DownArrowIcon}
-                          alt="down-arrow-icon"
-                          className="down-icon-kb1"
-                        /> */}
-                        <Collapse isOpen={this.state.collapseUp}>
-                          <Card>
-                            <CardBody>
-                              <p>
-                                Google can help you purchase a domain through
-                                one of our domain host partners. During sign up,
-                                just select the option to 'buy a new
-                                domain.'We'll then guide you through the process
-                                to help you set up G suite for your new domain.
+
+                      <div id="kb-accordion">
+                        {this.state.KbPopupData !== null &&
+                          this.state.KbPopupData.map((item, i) => (
+                            <div key={i} className="kb-acc-cntr">
+                              <p
+                                className="table-details-data-modal"
+                                data-toggle="collapse"
+                                data-target={"#collapse" + i}
+                                aria-expanded={i === 0 ? "true" : "false"}
+                                aria-controls={"collapse" + i}
+                                onClick={() => this.setState({ copied: false })}
+                              >
+                                {item.subject}
                               </p>
-                              <img
-                                src={CopyBlue}
-                                alt=""
-                                className="copyblue-kb"
-                              />
-                              <a href="#!" className="copyblue-kbtext">
-                                Copy
-                              </a>
-                            </CardBody>
-                          </Card>
-                        </Collapse>
-                      </div>
-
-                      <div className="textkb">
-                        <p className="table-details-data-modal">
-                          Can I still use the previous version of Sites ?
-                        </p>
-
-                        <img
-                          src={DownArrowIcon}
-                          alt="down-arrow-icon"
-                          className="down-icon-kb1"
-                        />
-                      </div>
-                      <div className="textkb">
-                        <p className="table-details-data-modal">
-                          Can I still use the previous version of Sites ?
-                        </p>
-                        <img
-                          src={DownArrowIcon}
-                          alt="down-arrow-icon"
-                          className="down-icon-kb1"
-                        />
-                      </div>
-                      <div className="textkb">
-                        <p className="table-details-data-modal">
-                          Can I still use the previous version of Sites ?
-                        </p>
-                        <img
-                          src={DownArrowIcon}
-                          alt="down-arrow-icon"
-                          className="down-icon-kb1"
-                        />
-                      </div>
-                      <div className="textkb">
-                        <p className="table-details-data-modal">
-                          Can I still use the previous version of Sites ?
-                        </p>
-                        <img
-                          src={DownArrowIcon}
-                          alt="down-arrow-icon"
-                          className="down-icon-kb1"
-                        />
+                              <div
+                                id={"collapse" + i}
+                                className={
+                                  i === 0 ? "collapse show" : "collapse"
+                                }
+                                data-parent="#kb-accordion"
+                              >
+                                <p className="mb-0">{item.description}</p>
+                                <CopyToClipboard
+                                  text={item.description}
+                                  onCopy={() => this.setState({ copied: true })}
+                                >
+                                  <a href="#!" className="copyblue-kbtext">
+                                    <img
+                                      src={CopyBlue}
+                                      alt=""
+                                      className="copyblue-kb"
+                                    />
+                                    Copy
+                                  </a>
+                                </CopyToClipboard>
+                                {this.state.copied ? (
+                                  <span
+                                    className="ml-2"
+                                    style={{ color: "red" }}
+                                  >
+                                    Copied.
+                                  </span>
+                                ) : null}
+                              </div>
+                            </div>
+                          ))}
                       </div>
                     </div>
                   </div>
@@ -2010,29 +2149,57 @@ class MyTicket extends Component {
                       />
                       <h5>KB TEMPLATE</h5>
                       <div className="form-group">
-                        <select className="kblinkrectangle-9 select-category-placeholderkblink">
-                          <option>Type</option>
-                          <option>Type-a</option>
-                          <option>Type-b</option>
-                        </select>
-                      </div>
-
-                      <div className="form-group">
-                        <select className="kblinkrectangle-9 select-category-placeholderkblink">
+                        <select
+                          value={this.state.selectedCategoryKB}
+                          onChange={this.setCategoryValueKB}
+                          className="kblinkrectangle-9 select-category-placeholderkblink"
+                        >
                           <option>Category</option>
-                          <option>Category-a</option>
-                          <option>Category-b</option>
+                          {this.state.CategoryData !== null &&
+                            this.state.CategoryData.map((item, i) => (
+                              <option key={i} value={item.categoryID}>
+                                {item.categoryName}
+                              </option>
+                            ))}
                         </select>
                       </div>
                       <div className="form-group">
-                        <select className="kblinkrectangle-9 select-category-placeholderkblink">
+                        <select
+                          value={this.state.selectedSubCategoryKB}
+                          onChange={this.setSubCategoryValueKB}
+                          className="kblinkrectangle-9 select-category-placeholderkblink"
+                        >
                           <option>Sub-Category</option>
-                          <option>Category-a</option>
-                          <option>Category-b</option>
+                          {this.state.SubCategoryData !== null &&
+                            this.state.SubCategoryData.map((item, i) => (
+                              <option key={i} value={item.subCategoryID}>
+                                {item.subCategoryName}
+                              </option>
+                            ))}
+                        </select>
+                      </div>
+                      <div className="form-group">
+                        <select
+                          value={this.state.selectedIssueTypeKB}
+                          onChange={this.setIssueTypeValueKB}
+                          className="kblinkrectangle-9 select-category-placeholderkblink"
+                        >
+                          <option>Type</option>
+                          {this.state.IssueTypeData !== null &&
+                            this.state.IssueTypeData.map((item, i) => (
+                              <option key={i} value={item.issueTypeID}>
+                                {item.issueTypeName}
+                              </option>
+                            ))}
                         </select>
                       </div>
                       <div>
-                        <button className="kblink-search">SEARCH</button>
+                        <button
+                          onClick={this.handleKbLinkPopupSearch}
+                          className="kblink-search"
+                        >
+                          SEARCH
+                        </button>
                       </div>
                       <div style={{ marginTop: "275px" }}>
                         <a href="#!" className="copyblue-kbtext">
@@ -2311,11 +2478,20 @@ class MyTicket extends Component {
                                 </div>
                                 <div>
                                   <span className="comment-line"></span>
-                                  <img
-                                    src={MinusImg}
-                                    alt="Minus"
-                                    className="CommentMinus-img"
-                                  />
+                                  <div
+                                    style={{
+                                      float: "right",
+                                      cursor: "pointer",
+                                      height: "30px",
+                                      marginTop: "-33px"
+                                    }}
+                                  >
+                                    <img
+                                      src={MinusImg}
+                                      alt="Minus"
+                                      className="CommentMinus-img"
+                                    />
+                                  </div>
                                 </div>
                                 <div className="commenttextmessage">
                                   <label style={{ marginBottom: "10px" }}>
@@ -2428,12 +2604,15 @@ class MyTicket extends Component {
                             </ul>
                           </div>
 
-                          <a href="#!" className="kblink">
+                          <a
+                            href="#!"
+                            className="kblink"
+                            onClick={this.HandleKbLinkModalOpen.bind(this)}
+                          >
                             <img
                               src={KnowledgeLogo}
                               alt="KnowledgeLogo"
                               className="knoim"
-                              onClick={this.HandleKbLinkModalOpen.bind(this)}
                             />
                             Kb Link
                           </a>
@@ -2473,11 +2652,11 @@ class MyTicket extends Component {
                             className="mob-float"
                             style={{ display: "flex", float: "right" }}
                           >
-                            <img
+                            {/* <img
                               src={ArrowImg}
                               alt="Arrow"
                               className="arrow-img"
-                            />
+                            /> */}
                             <div className="line-1"></div>
                             <div
                               style={{ height: "31", cursor: "pointer" }}
@@ -2542,16 +2721,12 @@ class MyTicket extends Component {
                               <label className="">
                                 <div
                                   className="input-group"
-                                  style={{ display: "block" }}
+                                  // style={{ display: "block" }}
                                 >
                                   <span className="input-group-addon inputcc">
                                     CC:
                                   </span>
-                                  <input
-                                    type="text"
-                                    className="CCdi"
-                                    placeholder="diwark@gmail.com"
-                                  />
+                                  <input type="text" className="CCdi" />
                                   <span className="input-group-addon inputcc-one">
                                     +1
                                   </span>
@@ -2562,16 +2737,12 @@ class MyTicket extends Component {
                               <label className="">
                                 <div
                                   className="input-group"
-                                  style={{ display: "block" }}
+                                  // style={{ display: "block" }}
                                 >
                                   <span className="input-group-addon inputcc">
                                     BCC:
                                   </span>
-                                  <input
-                                    type="text"
-                                    className="CCdi"
-                                    placeholder="diwark@gmail.com"
-                                  />
+                                  <input type="text" className="CCdi" />
                                   <span className="input-group-addon inputcc-one">
                                     +1
                                   </span>
