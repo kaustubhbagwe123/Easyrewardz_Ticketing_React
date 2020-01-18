@@ -33,6 +33,7 @@ import CrossIcon from "./../assets/Images/cancel.png";
 import TikcetSystemStoreModal from "./../routes/TicketSystemStoreModal";
 import StoreIcon from "./../assets/Images/store.png";
 // import SendEmail from "./../assets/Images/sendEmail.png";
+// import PlusImgTh from "./../assets/Images/plus.png";
 import MyTicketTask from "./Tabs/MyTicketTask";
 import MyTicketClaim from "./Tabs/MyTicketClaim";
 import FileUpload from "./../assets/Images/file.png";
@@ -541,6 +542,12 @@ class MyTicket extends Component {
   handleBillImgModalClose() {
     this.setState({ BillInvoiceModal: false });
   }
+  handleThumbModalOpen() {
+    this.setState({ Plus: true });
+  }
+  handleThumbModalClose() {
+    this.setState({ Plus: false });
+  }
   handleSubmitForm(e) {
     e.preventDefault();
   }
@@ -983,7 +990,7 @@ class MyTicket extends Component {
                     onClick={this.onCloseModal.bind(this)}
                   />
                   {/* <HistoricalTable /> */}
-                  <div className="table-scrolling historyTable remov">
+                  <div className="">
                     <ReactTable
                       data={historicalDetails}
                       columns={[
@@ -1000,7 +1007,7 @@ class MyTicket extends Component {
                           accessor: "dateandTime"
                         }
                       ]}
-                      // resizable={false}
+                      resizable={false}
                       defaultPageSize={5}
                       showPagination={false}
                     />
@@ -1695,7 +1702,37 @@ class MyTicket extends Component {
             <div className="row">
               <img src={ThumbTick} alt="thumb" className="thumbtick" />
               <img src={ThumbTick} alt="thumb" className="thumbtick" />
+              <img src={ThumbTick} alt="thumb" className="thumbtick" />
+              <img src={ThumbTick} alt="thumb" className="thumbtick" />
+              <img src={ThumbTick} alt="thumb" className="thumbtick" />
+              <img src={PlusImg} alt="thumb" className="thumbtick-plus"
+                    onClick={this.handleThumbModalOpen.bind(this)} />
             </div>
+            <Modal
+                  open={this.state.Plus}
+                  // onClose={this.handleThumbModalClose.bind(this)}
+                  modalId="thumb-modal-popup"
+                  overlayId="logout-ovrlykb"
+                >
+                
+                  <div>
+                      <div className="close">
+                        <img src={CrossIcon} alt="cross-icon"
+                         onClick={this.handleThumbModalClose.bind(this)}/>
+                      </div>
+                    <div className="row my-3 mx-1">
+
+                      <img src={ThumbTick} alt="thumb" className="thumbtick" style={{ marginBottom: "10px" }} />
+                      <img src={ThumbTick} alt="thumb" className="thumbtick" style={{ marginBottom: "10px" }} />
+                      <img src={ThumbTick} alt="thumb" className="thumbtick" style={{ marginBottom: "10px" }} />
+                      <img src={ThumbTick} alt="thumb" className="thumbtick" style={{ marginBottom: "10px" }} />
+                      <img src={ThumbTick} alt="thumb" className="thumbtick" style={{ marginBottom: "10px" }} />
+                      <img src={ThumbTick} alt="thumb" className="thumbtick" style={{ marginBottom: "10px" }} />
+                      <img src={ThumbTick} alt="thumb" className="thumbtick" style={{ marginBottom: "10px" }} />
+                      <img src={ThumbTick} alt="thumb" className="thumbtick" style={{ marginBottom: "10px" }} />
+                    </div>
+                  </div>
+                </Modal>
             <div className="row">
               <div className="mask1">
                 <div className="mail-mask">
@@ -1749,7 +1786,7 @@ class MyTicket extends Component {
                     className="mob-float"
                     style={{ display: "flex", float: "right" }}
                   >
-                    <img src={ArrowImg} alt="Arrow" className="arrow-img" />
+                    {/* <img src={ArrowImg} alt="Arrow" className="arrow-img" /> */}
                     <div className="line-1"></div>
                     {EmailCollapseUpDown}
                   </div>
@@ -1847,7 +1884,7 @@ class MyTicket extends Component {
                           <label className="">
                             <div
                               className="input-group"
-                              style={{ display: "block" }}
+                              // style={{ display: "block" }}
                             >
                               <span className="input-group-addon inputcc">
                                 CC:
@@ -1855,9 +1892,7 @@ class MyTicket extends Component {
                               <input
                                 type="text"
                                 className="CCdi"
-                                placeholder="diwark@gmail.com"
                               />
-
                               <span className="input-group-addon inputcc-one">
                                 +1
                               </span>
@@ -1868,7 +1903,7 @@ class MyTicket extends Component {
                           <label className="">
                             <div
                               className="input-group"
-                              style={{ display: "block" }}
+                              // style={{ display: "block" }}
                             >
                               <span className="input-group-addon inputcc">
                                 BCC:
@@ -1876,13 +1911,10 @@ class MyTicket extends Component {
                               <input
                                 type="text"
                                 className="CCdi"
-                                placeholder="diwark@gmail.com"
                               />
                               <span className="input-group-addon inputcc-one">
                                 +1
                               </span>
-
-                              {/* <span className="one">+1</span> */}
                             </div>
                           </label>
                         </li>
@@ -2340,11 +2372,13 @@ class MyTicket extends Component {
                                 </div>
                                 <div>
                                   <span className="comment-line"></span>
+                                  <div style={{float:"right",cursor:"pointer",height:"30px",marginTop:"-33px"}}>
                                   <img
                                     src={MinusImg}
                                     alt="Minus"
                                     className="CommentMinus-img"
                                   />
+                                  </div>
                                 </div>
                                 <div className="commenttextmessage">
                                   <label style={{ marginBottom: "10px" }}>
@@ -2457,12 +2491,14 @@ class MyTicket extends Component {
                             </ul>
                           </div>
 
-                          <a href="#!" className="kblink">
+                          <a href="#!" 
+                              className="kblink"
+                              onClick={this.HandleKbLinkModalOpen.bind(this)}>
                             <img
                               src={KnowledgeLogo}
                               alt="KnowledgeLogo"
                               className="knoim"
-                              onClick={this.HandleKbLinkModalOpen.bind(this)}
+                              
                             />
                             Kb Link
                           </a>
@@ -2502,11 +2538,11 @@ class MyTicket extends Component {
                             className="mob-float"
                             style={{ display: "flex", float: "right" }}
                           >
-                            <img
+                            {/* <img
                               src={ArrowImg}
                               alt="Arrow"
                               className="arrow-img"
-                            />
+                            /> */}
                             <div className="line-1"></div>
                             <div
                               style={{ height: "31", cursor: "pointer" }}
@@ -2571,7 +2607,7 @@ class MyTicket extends Component {
                               <label className="">
                                 <div
                                   className="input-group"
-                                  style={{ display: "block" }}
+                                  // style={{ display: "block" }}
                                 >
                                   <span className="input-group-addon inputcc">
                                     CC:
@@ -2579,7 +2615,6 @@ class MyTicket extends Component {
                                   <input
                                     type="text"
                                     className="CCdi"
-                                    placeholder="diwark@gmail.com"
                                   />
                                   <span className="input-group-addon inputcc-one">
                                     +1
@@ -2591,7 +2626,7 @@ class MyTicket extends Component {
                               <label className="">
                                 <div
                                   className="input-group"
-                                  style={{ display: "block" }}
+                                  // style={{ display: "block" }}
                                 >
                                   <span className="input-group-addon inputcc">
                                     BCC:
@@ -2599,7 +2634,6 @@ class MyTicket extends Component {
                                   <input
                                     type="text"
                                     className="CCdi"
-                                    placeholder="diwark@gmail.com"
                                   />
                                   <span className="input-group-addon inputcc-one">
                                     +1
