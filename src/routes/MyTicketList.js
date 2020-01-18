@@ -242,7 +242,8 @@ class MyTicketList extends Component {
       selectedNoOfWeekForWeek: 0,
       selectedNoOfDayForDailyYear: 0,
       selectedNoOfWeekForYear: 0,
-      selectedNameOfMonthForDailyYear: ""
+      selectedNameOfMonthForDailyYear: "",
+      loading:false
     };
     this.clearSearch = this.clearSearch.bind(this);
     this.handleAdvSearchFlag = this.handleAdvSearchFlag.bind(this);
@@ -409,6 +410,7 @@ class MyTicketList extends Component {
       ticketStatus = 1003;
     }
     var data = ticketStatus;
+    this.setState({loading:true})
     debugger;
     let self = this;
     axios({
@@ -429,9 +431,9 @@ class MyTicketList extends Component {
       let data = res.data.responseData;
       let Status = res.data.message;
       if (Status === "Record Not Found") {
-        self.setState({ SearchTicketData: [] });
+        self.setState({ SearchTicketData: [],loading:false });
       } else {
-        self.setState({ SearchTicketData: data });
+        self.setState({ SearchTicketData: data ,loading:false});
       }
     });
   }
@@ -2021,6 +2023,7 @@ class MyTicketList extends Component {
                 <label className="add-tickets">ADD TICKETS</label>
               </button>
             </div>
+            {this.state.loading===true?<div className="loader-icon"></div>:
             <div className="tab-content">
               <div
                 className="tab-pane fade show active"
@@ -5171,6 +5174,7 @@ class MyTicketList extends Component {
                 <MyTicketDraft draftData={DraftDetails} />
               </div>
             </div>
+  }
           </div>
         </div>
         <NotificationContainer />

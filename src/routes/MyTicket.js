@@ -3,7 +3,7 @@ import Modal from "react-responsive-modal";
 // import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { faCalculator } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import HistoricalTable from "./HistoricalTable";
+// import HistoricalTable from "./HistoricalTable";
 import HeadphoneImg from "./../assets/Images/headphone.png";
 import Headphone2Img from "./../assets/Images/headphone2.png";
 import BlackUserIcon from "./../assets/Images/avatar.png";
@@ -14,7 +14,7 @@ import EyeImg from "./../assets/Images/eye.png";
 import BillInvoiceImg from "./../assets/Images/bill-Invoice.png";
 import MsgImg from "./../assets/Images/msg.png";
 import Down1Img from "./../assets/Images/down-1.png";
-import ArrowImg from "./../assets/Images/arrow.png";
+// import ArrowImg from "./../assets/Images/arrow.png";
 import PlusImg from "./../assets/Images/plus.png";
 import MinusImg from "./../assets/Images/minus.png";
 import RightImg from "./../assets/Images/right.png";
@@ -40,11 +40,10 @@ import FileUpload from "./../assets/Images/file.png";
 import CKEditor from "ckeditor4-react";
 import ReactTable from "react-table";
 import KnowledgeLogo from "./../assets/Images/knowledge.png";
-import DownArrowIcon from "./../assets/Images/down-1.png";
+// import DownArrowIcon from "./../assets/Images/down-1.png";
 import CopyBlue from "./../assets/Images/copyblue.png";
 import ViewBlue from "./../assets/Images/viewblue.png";
 import ThumbTick from "./../assets/Images/thumbticket.png";
-import AutoSave from "./../assets/Images/AutoSave.png";
 import Email1 from "./../assets/Images/SecuredLetter2.png";
 import Sms1 from "./../assets/Images/Sms.png";
 import Facebook1 from "./../assets/Images/facebook.png";
@@ -63,6 +62,7 @@ import {
 import TicketStatus from "./TicketStatus";
 // import Select from "react-select";
 import TicketActionType from "./TicketActionType";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 class MyTicket extends Component {
   constructor(props) {
     super(props);
@@ -113,7 +113,13 @@ class MyTicket extends Component {
       TicketActionTypeData: TicketActionType(),
       taskTableGrid: [],
       SearchAssignData:[],
-      selectetedParameters: {}
+      selectetedParameters: {},
+      claimDetailsData: [],
+      selectetedParameters: {},
+      KbPopupData: [],
+      selectedIssueTypeKB: 0,
+      selectedCategoryKB: 0,
+      selectedSubCategoryKB: 0
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -132,6 +138,7 @@ class MyTicket extends Component {
     this.handleGetTicketDetails = this.handleGetTicketDetails.bind(this);
     this.handleGetCountOfTabs = this.handleGetCountOfTabs.bind(this);
     this.handleAssignDataList = this.handleAssignDataList.bind(this);
+    this.handleKbLinkPopupSearch = this.handleKbLinkPopupSearch.bind(this);
   }
 
   componentDidMount() {
@@ -499,9 +506,6 @@ class MyTicket extends Component {
   HandleKbLinkModalOpen() {
     this.setState({ KbLink: true });
   }
-  HandleKbLinkModalClose() {
-    this.setState({ KbLink: false });
-  }
 
   HandleClaimPageView() {
     this.props.history.push("claimTabTicketView");
@@ -788,6 +792,68 @@ class MyTicket extends Component {
   setTicketActionTypeValue = e => {
     this.setState({ selectedTicketActionType: e });
   };
+  //KB Templete Pop up Search API
+  handleKbLinkPopupSearch() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/KnowledgeBase/searchbycategory",
+      headers: authHeader(),
+      params: {
+        Type_ID: self.state.selectedIssueTypeKB,
+        Category_ID: self.state.selectedCategoryKB,
+        SubCategor_ID: self.state.selectedSubCategoryKB
+      }
+    }).then(function(res) {
+      debugger;
+      let KbPopupData = res.data.responseData;
+      if (KbPopupData.length === 0 || KbPopupData === null) {
+        NotificationManager.error("No Record Found.");
+      }
+      self.setState({ KbPopupData: KbPopupData });
+    });
+  }
+
+  //Close funcation for KB Templete Search Modal
+  HandleKbLinkModalClose() {
+    this.setState({
+      KbLink: false,
+      selectedIssueTypeKB: 0,
+      selectedCategoryKB: 0,
+      selectedSubCategoryKB: 0,
+      KbPopupData:[]
+    });
+  }
+  //Category change funcation in KB Templete Modal
+  setCategoryValueKB = e => {
+    let categoryValue = e.currentTarget.value;
+    this.setState({ selectedCategoryKB: categoryValue });
+    setTimeout(() => {
+      if (this.state.selectedCategoryKB) {
+        this.handleGetSubCategoryList();
+      }
+    }, 1);
+  };
+
+  //Sub-Category change funcation in KB Templete Modal
+  setSubCategoryValueKB = e => {
+    debugger;
+    let subCategoryValue = e.currentTarget.value;
+    this.setState({ selectedSubCategoryKB: subCategoryValue });
+
+    setTimeout(() => {
+      if (this.state.selectedSubCategoryKB) {
+        this.handleGetIssueTypeList();
+      }
+    }, 1);
+  };
+
+  //Issue-Type change funcation in KB Templete Modal
+  setIssueTypeValueKB = e => {
+    let issueTypeValue = e.currentTarget.value;
+    this.setState({ selectedIssueTypeKB: issueTypeValue });
+  };
   render() {
     const { open, ticketDetailsData, historicalDetails,SearchAssignData } = this.state;
     const HidecollapsUp = this.state.collapseUp ? (
@@ -805,21 +871,21 @@ class MyTicket extends Component {
         onClick={this.handleUpOpen.bind(this)}
       />
     );
-    const HidecollapsUpKbLink = this.state.collapseUp ? (
-      <img
-        src={Up1Img}
-        alt="up"
-        className="down-icon-kb1"
-        onClick={this.handleUpClose.bind(this)}
-      />
-    ) : (
-      <img
-        src={Down1Img}
-        alt="up"
-        className="down-icon-kb1"
-        onClick={this.handleUpOpen.bind(this)}
-      />
-    );
+    // const HidecollapsUpKbLink = this.state.collapseUp ? (
+    //   <img
+    //     src={Up1Img}
+    //     alt="up"
+    //     className="down-icon-kb1"
+    //     onClick={this.handleUpClose.bind(this)}
+    //   />
+    // ) : (
+    //   <img
+    //     src={Down1Img}
+    //     alt="up"
+    //     className="down-icon-kb1"
+    //     onClick={this.handleUpOpen.bind(this)}
+    //   />
+    // );
     const EmailCollapseUpDown = this.state.EmailCollapse ? (
       <div
         style={{ height: "30px", cursor: "pointer" }}
@@ -2051,79 +2117,53 @@ class MyTicket extends Component {
                         KNOWLEGE BASE
                       </h5>
                       <p>Message</p>
-                      <div className="textkb">
-                        <p className="table-details-data-modal">
-                          Can I purchase a domain through Google?
-                        </p>
-                        {HidecollapsUpKbLink}
-                        {/* <img
-                          src={DownArrowIcon}
-                          alt="down-arrow-icon"
-                          className="down-icon-kb1"
-                        /> */}
-                        <Collapse isOpen={this.state.collapseUp}>
-                          <Card>
-                            <CardBody>
-                              <p>
-                                Google can help you purchase a domain through
-                                one of our domain host partners. During sign up,
-                                just select the option to 'buy a new
-                                domain.'We'll then guide you through the process
-                                to help you set up G suite for your new domain.
+
+                      <div id="kb-accordion">
+                        {this.state.KbPopupData !== null &&
+                          this.state.KbPopupData.map((item, i) => (
+                            <div key={i} className="kb-acc-cntr">
+                              <p
+                                className="table-details-data-modal"
+                                data-toggle="collapse"
+                                data-target={"#collapse" + i}
+                                aria-expanded={i === 0 ? "true" : "false"}
+                                aria-controls={"collapse" + i}
+                                onClick={() => this.setState({ copied: false })}
+                              >
+                                {item.subject}
                               </p>
-                              <img
-                                src={CopyBlue}
-                                alt=""
-                                className="copyblue-kb"
-                              />
-                              <a href="#!" className="copyblue-kbtext">
-                                Copy
-                              </a>
-                            </CardBody>
-                          </Card>
-                        </Collapse>
-                      </div>
-
-                      <div className="textkb">
-                        <p className="table-details-data-modal">
-                          Can I still use the previous version of Sites ?
-                        </p>
-
-                        <img
-                          src={DownArrowIcon}
-                          alt="down-arrow-icon"
-                          className="down-icon-kb1"
-                        />
-                      </div>
-                      <div className="textkb">
-                        <p className="table-details-data-modal">
-                          Can I still use the previous version of Sites ?
-                        </p>
-                        <img
-                          src={DownArrowIcon}
-                          alt="down-arrow-icon"
-                          className="down-icon-kb1"
-                        />
-                      </div>
-                      <div className="textkb">
-                        <p className="table-details-data-modal">
-                          Can I still use the previous version of Sites ?
-                        </p>
-                        <img
-                          src={DownArrowIcon}
-                          alt="down-arrow-icon"
-                          className="down-icon-kb1"
-                        />
-                      </div>
-                      <div className="textkb">
-                        <p className="table-details-data-modal">
-                          Can I still use the previous version of Sites ?
-                        </p>
-                        <img
-                          src={DownArrowIcon}
-                          alt="down-arrow-icon"
-                          className="down-icon-kb1"
-                        />
+                              <div
+                                id={"collapse" + i}
+                                className={
+                                  i === 0 ? "collapse show" : "collapse"
+                                }
+                                data-parent="#kb-accordion"
+                              >
+                                <p className="mb-0">{item.description}</p>
+                                <CopyToClipboard
+                                  text={item.description}
+                                  onCopy={() => this.setState({ copied: true })}
+                                >
+                                  <a href="#!" className="copyblue-kbtext">
+                                    <img
+                                      src={CopyBlue}
+                                      alt=""
+                                      className="copyblue-kb"
+                                    />
+                                    Copy
+                                  </a>
+                                </CopyToClipboard>
+                                {this.state.copied ? (
+                                  <span
+                                    className="ml-2"
+                                    style={{ color: "red" }}
+                                  >
+                                    Copied.
+                                  </span>
+                                ) : null}
+                              </div>
+                            </div>
+                          ))}
                       </div>
                     </div>
                   </div>
@@ -2137,29 +2177,57 @@ class MyTicket extends Component {
                       />
                       <h5>KB TEMPLATE</h5>
                       <div className="form-group">
-                        <select className="kblinkrectangle-9 select-category-placeholderkblink">
-                          <option>Type</option>
-                          <option>Type-a</option>
-                          <option>Type-b</option>
-                        </select>
-                      </div>
-
-                      <div className="form-group">
-                        <select className="kblinkrectangle-9 select-category-placeholderkblink">
+                        <select
+                          value={this.state.selectedCategoryKB}
+                          onChange={this.setCategoryValueKB}
+                          className="kblinkrectangle-9 select-category-placeholderkblink"
+                        >
                           <option>Category</option>
-                          <option>Category-a</option>
-                          <option>Category-b</option>
+                          {this.state.CategoryData !== null &&
+                            this.state.CategoryData.map((item, i) => (
+                              <option key={i} value={item.categoryID}>
+                                {item.categoryName}
+                              </option>
+                            ))}
                         </select>
                       </div>
                       <div className="form-group">
-                        <select className="kblinkrectangle-9 select-category-placeholderkblink">
+                        <select
+                          value={this.state.selectedSubCategoryKB}
+                          onChange={this.setSubCategoryValueKB}
+                          className="kblinkrectangle-9 select-category-placeholderkblink"
+                        >
                           <option>Sub-Category</option>
-                          <option>Category-a</option>
-                          <option>Category-b</option>
+                          {this.state.SubCategoryData !== null &&
+                            this.state.SubCategoryData.map((item, i) => (
+                              <option key={i} value={item.subCategoryID}>
+                                {item.subCategoryName}
+                              </option>
+                            ))}
+                        </select>
+                      </div>
+                      <div className="form-group">
+                        <select
+                          value={this.state.selectedIssueTypeKB}
+                          onChange={this.setIssueTypeValueKB}
+                          className="kblinkrectangle-9 select-category-placeholderkblink"
+                        >
+                          <option>Type</option>
+                          {this.state.IssueTypeData !== null &&
+                            this.state.IssueTypeData.map((item, i) => (
+                              <option key={i} value={item.issueTypeID}>
+                                {item.issueTypeName}
+                              </option>
+                            ))}
                         </select>
                       </div>
                       <div>
-                        <button className="kblink-search">SEARCH</button>
+                        <button
+                          onClick={this.handleKbLinkPopupSearch}
+                          className="kblink-search"
+                        >
+                          SEARCH
+                        </button>
                       </div>
                       <div style={{ marginTop: "275px" }}>
                         <a href="#!" className="copyblue-kbtext">
