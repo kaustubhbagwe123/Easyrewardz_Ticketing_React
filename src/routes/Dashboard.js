@@ -188,11 +188,14 @@ class Dashboard extends Component {
       BrandData: [],
       AgentData: [],
       CheckBoxAllAgent: true,
+      CheckBoxAllBrand: true,
       DashboardNumberData: {},
       DashboardGraphData: {},
       DashboardBillGraphData: [],
       DashboardSourceGraphData: [],
       AgentIds: '',
+      BrandIds: '',
+      ActiveTabId: 1
     };
     this.applyCallback = this.applyCallback.bind(this);
     // this.handleApply = this.handleApply.bind(this);
@@ -241,6 +244,7 @@ class Dashboard extends Component {
     );
     this.handleGetAgentList = this.handleGetAgentList.bind(this);
     this.checkAllAgentStart = this.checkAllAgentStart.bind(this);
+    this.checkAllBrandStart = this.checkAllBrandStart.bind(this);
     // this.toggleHoverState = this.toggleHoverState.bind(this);
   }
   // handleApply(event, picker) {
@@ -262,11 +266,11 @@ class Dashboard extends Component {
     this.handleGetChannelOfPurchaseList();
     this.handleGetBrandList();
     // this.handleGetDashboardNumberData();
-    this.handleGetDashboardGraphData();
+    // this.handleGetDashboardGraphData();
     this.handleGetAgentList();
   }
 
-  handleGetDashboardNumberData(AgentIds) {
+  handleGetDashboardNumberData() {
     debugger;
     let self = this;
     axios({
@@ -274,11 +278,14 @@ class Dashboard extends Component {
       url: config.apiUrl + "/DashBoard/DashBoardCountData",
       headers: authHeader(),
       params: {
-        UserIds: AgentIds,
+        UserIds: this.state.AgentIds,
         // UserIds: "6,7,8",
-        fromdate: "2019-12-26",
-        todate: "2020-01-15",
-        BrandID: "26, 31"
+        fromdate: this.state.start._d,
+        // fromdate: "2019-12-26",
+        todate: this.state.end._d,
+        // todate: "2020-01-15",
+        BrandID: this.state.BrandIds
+        // BrandID: "26, 31"
       }
     }).then(function(res) {
       debugger;
@@ -294,21 +301,27 @@ class Dashboard extends Component {
       url: config.apiUrl + "/DashBoard/DashBoardGraphData",
       headers: authHeader(),
       params: {
-        UserIds: "6,7,8",
-        fromdate: "2019-12-26",
-        todate: "2020-01-15",
-        BrandID: "26, 31"
+        // UserIds: "6,7,8",
+        // fromdate: "2019-12-26",
+        // todate: "2020-01-15",
+        // BrandID: "26, 31"
+        UserIds: this.state.AgentIds,
+        fromdate: this.state.start._d,
+        todate: this.state.end._d,
+        BrandID: this.state.BrandIds
       }
     }).then(function(res) {
       debugger;
-      let DashboardGraphData = res.data.responseData;
-      let DashboardBillGraphData = res.data.responseData.tickettoBillGraph;
-      let DashboardSourceGraphData = res.data.responseData.ticketSourceGraph;
-      self.setState({
-        DashboardGraphData: DashboardGraphData,
-        DashboardBillGraphData: DashboardBillGraphData,
-        DashboardSourceGraphData: DashboardSourceGraphData,
-      });
+      if (res.data.responseData !== null) {
+        let DashboardGraphData = res.data.responseData;
+        let DashboardBillGraphData = res.data.responseData.tickettoBillGraph;
+        let DashboardSourceGraphData = res.data.responseData.ticketSourceGraph;
+        self.setState({
+          DashboardGraphData: DashboardGraphData,
+          DashboardBillGraphData: DashboardBillGraphData,
+          DashboardSourceGraphData: DashboardSourceGraphData,
+        });
+      }
     });
   }
 
@@ -330,9 +343,35 @@ class Dashboard extends Component {
     this.setState({
       AgentIds: strAgentIds
     });
-    this.handleGetDashboardNumberData(strAgentIds);
+    if (this.state.AgentIds !== '' && this.state.BrandIds !== '') {
+      this.handleGetDashboardNumberData();
+      this.handleGetDashboardGraphData();
+    }
   }
-  checkIndividualAgent(event) {
+  checkAllBrandStart(event) {
+    debugger;
+    var checkboxes = document.getElementsByName("allBrand");
+    var strBrandIds="";
+    for (var i in checkboxes) {
+      if(isNaN(i)==false)
+      {
+        checkboxes[i].checked = true;
+         if(checkboxes[i].checked == true)
+         {
+          if (checkboxes[i].getAttribute('attrIds')!==null)
+            strBrandIds+=checkboxes[i].getAttribute('attrIds')+",";
+         }
+      }
+    }
+    this.setState({
+      BrandIds: strBrandIds
+    });
+    if (this.state.AgentIds !== '' && this.state.BrandIds !== '') {
+      this.handleGetDashboardNumberData();
+      this.handleGetDashboardGraphData();
+    }
+  }
+  checkIndividualAgent = event => {
     debugger;
     var checkboxes = document.getElementsByName("allAgent");
     var strAgentIds="";
@@ -348,17 +387,43 @@ class Dashboard extends Component {
     }
     this.setState({
       AgentIds: strAgentIds
+    }, ()=>{
+      this.handleGetDashboardNumberData();
+      this.handleGetDashboardGraphData();
     });
-    this.handleGetDashboardNumberData(strAgentIds);
   }
-  checkAllAgent(event) {
+  checkIndividualBrand = async event => {
+    debugger;
+    var checkboxes = document.getElementsByName("allBrand");
+    var strBrandIds="";
+    for (var i in checkboxes) {
+      if(isNaN(i)==false)
+      {
+         if(checkboxes[i].checked == true)
+         {
+          if (checkboxes[i].getAttribute('attrIds')!==null)
+            strBrandIds+=checkboxes[i].getAttribute('attrIds')+",";
+         }
+      }
+    }
+    await this.setState({
+      BrandIds: strBrandIds
+    });
+    this.handleGetDashboardNumberData();
+    this.handleGetDashboardGraphData();
+  }
+  checkAllAgent = async event => {
+    debugger;
     this.setState(state => ({ CheckBoxAllAgent: !state.CheckBoxAllAgent }));
+    var strAgentIds="";
     const allCheckboxChecked = event.target.checked;
     var checkboxes = document.getElementsByName("allAgent");
     if (allCheckboxChecked) {
       for (var i in checkboxes) {
         if (checkboxes[i].checked === false) {
           checkboxes[i].checked = true;
+          if (checkboxes[i].getAttribute('attrIds')!==null)
+            strAgentIds+=checkboxes[i].getAttribute('attrIds')+",";
         }
       }
     } else {
@@ -367,7 +432,41 @@ class Dashboard extends Component {
           checkboxes[J].checked = false;
         }
       }
+      strAgentIds="";
     }
+    await this.setState({
+      AgentIds: strAgentIds
+    });
+    this.handleGetDashboardNumberData();
+    this.handleGetDashboardGraphData();
+  }
+  checkAllBrand = async event => {
+    debugger;
+    this.setState(state => ({ CheckBoxAllBrand: !state.CheckBoxAllBrand }));
+    var strBrandIds="";
+    const allCheckboxChecked = event.target.checked;
+    var checkboxes = document.getElementsByName("allBrand");
+    if (allCheckboxChecked) {
+      for (var i in checkboxes) {
+        if (checkboxes[i].checked === false) {
+          checkboxes[i].checked = true;
+          if (checkboxes[i].getAttribute('attrIds')!==null)
+            strBrandIds+=checkboxes[i].getAttribute('attrIds')+",";
+        }
+      }
+    } else {
+      for (var J in checkboxes) {
+        if (checkboxes[J].checked === true) {
+          checkboxes[J].checked = false;
+        }
+      }
+      strBrandIds="";
+    }
+    await this.setState({
+      BrandIds: strBrandIds
+    });
+    this.handleGetDashboardNumberData();
+    this.handleGetDashboardGraphData();
   }
   handleGetAgentList() {
     debugger;
@@ -394,6 +493,7 @@ class Dashboard extends Component {
       debugger;
       let BrandData = res.data.responseData;
       self.setState({ BrandData: BrandData });
+      self.checkAllBrandStart();
     });
   }
   handelCheckBoxCheckedChange = () => {
@@ -440,11 +540,14 @@ class Dashboard extends Component {
     let ticketStatusValue = e.currentTarget.value;
     this.setState({ selectedTicketStatusByCategory: ticketStatusValue });
   };
-  applyCallback(startDate, endDate) {
-    this.setState({
+  applyCallback = async (startDate, endDate) =>  {
+    debugger;
+    await this.setState({
       start: startDate,
       end: endDate
     });
+    this.handleGetDashboardNumberData();
+    this.handleGetDashboardGraphData();
   }
   handleDateRange(date) {
     this.setState({ range: date });
@@ -553,31 +656,35 @@ class Dashboard extends Component {
         byCustomerTypeFlag: 0,
         byTicketTypeFlag: 0,
         byCategoryFlag: 0,
-        allFlag: 0
+        allFlag: 0,
+        ActiveTabId: 1
       });
     } else if (currentActive === "By Customer Type") {
       this.setState({
         byDateFlag: 0,
-        byCustomerTypeFlag: 1,
+        byCustomerTypeFlag: 2,
         byTicketTypeFlag: 0,
         byCategoryFlag: 0,
-        allFlag: 0
+        allFlag: 0,
+        ActiveTabId: 2
       });
     } else if (currentActive === "By Ticket Type") {
       this.setState({
         byDateFlag: 0,
         byCustomerTypeFlag: 0,
-        byTicketTypeFlag: 1,
+        byTicketTypeFlag: 3,
         byCategoryFlag: 0,
-        allFlag: 0
+        allFlag: 0,
+        ActiveTabId: 3
       });
     } else if (currentActive === "By Category") {
       this.setState({
         byDateFlag: 0,
         byCustomerTypeFlag: 0,
         byTicketTypeFlag: 0,
-        byCategoryFlag: 1,
-        allFlag: 0
+        byCategoryFlag: 4,
+        allFlag: 0,
+        ActiveTabId: 4
       });
     } else if (currentActive === "All") {
       this.setState({
@@ -585,7 +692,8 @@ class Dashboard extends Component {
         byCustomerTypeFlag: 0,
         byTicketTypeFlag: 0,
         byCategoryFlag: 0,
-        allFlag: 1
+        allFlag: 5,
+        ActiveTabId: 5
       });
     }
   }
@@ -926,7 +1034,7 @@ class Dashboard extends Component {
       selectedIssueTypeAll: 0
     });
     let subCateId =
-      this.state.byCategoryFlag === 1
+      this.state.byCategoryFlag === 4
         ? this.state.selectedSubCategory
         : this.state.selectedSubCategoryAll;
 
@@ -941,12 +1049,12 @@ class Dashboard extends Component {
       debugger;
       // let IssueTypeData = res.data.responseData;
       // self.setState({ IssueTypeData: IssueTypeData });
-      if (self.state.byCategoryFlag === 1) {
+      if (self.state.byCategoryFlag === 4) {
         var IssueTypeData = res.data.responseData;
         self.setState({
           IssueTypeData: IssueTypeData
         });
-      } else if (self.state.allFlag === 1) {
+      } else if (self.state.allFlag === 5) {
         var IssueTypeAllData = res.data.responseData;
         self.setState({
           IssueTypeAllData: IssueTypeAllData
@@ -1011,7 +1119,7 @@ class Dashboard extends Component {
       selectedIssueTypeAll: 0
     });
     let cateId =
-      this.state.byCategoryFlag === 1
+      this.state.byCategoryFlag === 4
         ? this.state.selectedCategory
         : this.state.selectedCategoryAll;
 
@@ -1024,12 +1132,12 @@ class Dashboard extends Component {
       }
     }).then(function(res) {
       debugger;
-      if (self.state.byCategoryFlag === 1) {
+      if (self.state.byCategoryFlag === 4) {
         var SubCategoryData = res.data.responseData;
         self.setState({
           SubCategoryData: SubCategoryData
         });
-      } else if (self.state.allFlag === 1) {
+      } else if (self.state.allFlag === 5) {
         var SubCategoryAllData = res.data.responseData;
         self.setState({
           SubCategoryAllData: SubCategoryAllData
@@ -1046,28 +1154,28 @@ class Dashboard extends Component {
         selectedSlaDueByDate: 0,
         selectedTicketStatusByDate: 0
       });
-    } else if (this.state.byCustomerTypeFlag === 1) {
+    } else if (this.state.byCustomerTypeFlag === 2) {
       this.setState({
         MobileNoByCustType: "",
         EmailIdByCustType: "",
         TicketIdByCustType: "",
         selectedTicketStatusByCustomer: 0
       });
-    } else if (this.state.byTicketTypeFlag === 1) {
+    } else if (this.state.byTicketTypeFlag === 3) {
       this.setState({
         selectedPriority: 0,
         selectedTicketStatusByTicket: 0,
         selectedChannelOfPurchase: [],
         selectedTicketActionType: []
       });
-    } else if (this.state.byCategoryFlag === 1) {
+    } else if (this.state.byCategoryFlag === 4) {
       this.setState({
         selectedCategory: 0,
         selectedSubCategory: 0,
         selectedIssueType: 0,
         selectedTicketStatusByCategory: 0
       });
-    } else if (this.state.allFlag === 1) {
+    } else if (this.state.allFlag === 5) {
       this.setState({
         ByAllCreateDate: "",
         selectedTicketSource: 0,
@@ -1103,40 +1211,82 @@ class Dashboard extends Component {
   }
   ViewSearchData() {
     debugger;
-    // let self = this;
-    var paramData = {
-      ByDate: this.state.byDateFlag,
-      creationDate: this.state.ByDateCreatDate,
-      lastUpdatedDate: this.state.ByDateSelectDate,
-      SLADue: this.state.selectedSlaDueByDate,
-      ticketStatus: this.state.selectedTicketStatusByDate,
-      ByCustomerType: this.state.byCustomerTypeFlag,
-      customerMob: this.state.MobileNoByCustType,
-      customerEmail: this.state.EmailIdByCustType,
-      TicketID: this.state.TicketIdByCustType,
-      ticketStatus: this.state.selectedTicketStatusByCustomer,
-      ByTicketType: this.state.byTicketTypeFlag,
-      Priority: this.state.selectedPriority,
-      ticketStatus: this.state.selectedTicketStatusByTicket,
-      chanelOfPurchase: this.state.selectedChannelOfPurchase,
-      ticketActionType: this.state.selectedTicketActionType,
-      ByCategory: this.state.byCategoryFlag,
-      Category: this.state.selectedCategory,
-      subCategory: this.state.selectedSubCategory,
-      issueType: this.state.selectedIssueType,
-      ticketStatus: this.state.selectedTicketStatusByCategory
-      // byAll:this.state.allFlag,
-    };
+    let self = this;
+
+    // ---------------By Date tab---------------------
+    var dateTab = {};
+    if (this.state.ActiveTabId === 1) {
+    dateTab["Ticket_CreatedOn"] = moment(this.state.ByDateCreatDate).format(
+      "YYYY-MM-DD"
+    );
+    dateTab["Ticket_ModifiedOn"] = moment(this.state.ByDateSelectDate).format(
+      "YYYY-MM-DD"
+    );
+    dateTab["SLA_DueON"] = this.state.selectedSlaDueByDate;
+    dateTab["Ticket_StatusID"] = this.state.selectedTicketStatusByDate;
+    } else {
+      dateTab = null
+    }
+
+    // --------------------By Customer Type Tab---------------
+    var customerType = {};
+    if (this.state.ActiveTabId === 2) {
+    customerType["CustomerMobileNo"] = this.state.MobileNoByCustType;
+    customerType["CustomerEmailID"] = this.state.EmailIdByCustType;
+    customerType["TicketID"] = this.state.TicketIdByCustType;
+    customerType["TicketStatusID"] = this.state.selectedTicketStatusByCustomer;
+  } else {
+    customerType = null
+  }
+
+    // --------------------By Ticket Type Tab-----------------
+    var ticketType = {};
+    if (this.state.ActiveTabId === 3) {
+    ticketType["TicketPriorityID"] = this.state.selectedPriority;
+    ticketType["TicketStatusID"] = this.state.selectedTicketStatusByTicket;
+    ticketType["ChannelOfPurchaseIds"] = this.state.selectedChannelOfPurchase;
+    ticketType["ActionTypes"] = this.state.selectedTicketActionType;
+  } else {
+    ticketType = null
+  }
+
+    // --------------------By Category Tab-------------------
+    var categoryType = {};
+    if (this.state.ActiveTabId === 4) {
+    categoryType["CategoryId"] = this.state.selectedCategory;
+    categoryType["SubCategoryId"] = this.state.selectedSubCategory;
+    categoryType["IssueTypeId"] = this.state.selectedIssueType;
+    categoryType["TicketStatusID"] = this.state.selectedTicketStatusByCategory;
+  } else {
+    categoryType = null
+  }
+
     axios({
       method: "post",
-      url: config.apiUrl + "/Search/GetTicketSearchResult",
+      url: config.apiUrl + "/DashBoard/DashBoardSearchTicket",
       headers: authHeader(),
       data: {
-        searchparams: paramData
+        AssigntoId: this.state.AgentIds,
+        BrandId: this.state.BrandIds,
+        ActiveTabId: this.state.ActiveTabId,
+        searchDataByDate: dateTab,
+        searchDataByCustomerType: customerType,
+        searchDataByTicketType:ticketType,
+        searchDataByCategoryType:categoryType
       }
     }).then(function(res) {
       debugger;
-      // let Msg = res.data.message;
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        self.setState({
+          SearchTicketData: data
+        });
+      } else {
+        self.setState({
+          SearchTicketData: []
+        });
+      }
     });
   }
   SaveSearchData() {
@@ -1932,6 +2082,19 @@ class Dashboard extends Component {
                     <span className="EMFCText">All</span>
                   </button>
                   <ul className="dropdown-menu">
+                  <li>
+                      <label htmlFor="all-brand">
+                        <input
+                          type="checkbox"
+                          id="all-brand"
+                          className="ch1"
+                          onChange={this.checkAllBrand.bind(this)}
+                          checked={this.state.CheckBoxAllBrand}
+                          name="allBrand"
+                        />
+                        <span className="ch1-text">All</span>
+                      </label>
+                    </li>
                     {this.state.BrandData !== null &&
                       this.state.BrandData.map((item, i) => (
                         <li key={i}>
@@ -1940,6 +2103,9 @@ class Dashboard extends Component {
                               type="checkbox"
                               id={"i" + item.brandID}
                               className="ch1"
+                              name="allBrand"
+                              attrIds={item.brandID}
+                              onChange={this.checkIndividualBrand.bind(this)}
                             />
                             <span className="ch1-text">{item.brandName}</span>
                           </label>
@@ -2129,10 +2295,10 @@ class Dashboard extends Component {
                       <div className="dash-top-cards">
                         <p className="card-head">All</p>
                         <span className="card-value">
-                          {this.state.DashboardNumberData.all !== null &&
+                          {this.state.DashboardNumberData !== null ? (this.state.DashboardNumberData.all !== null &&
                           this.state.DashboardNumberData.all < 9
                             ? "0" + this.state.DashboardNumberData.all
-                            : this.state.DashboardNumberData.all}
+                            : this.state.DashboardNumberData.all) : null}
                         </span>
                       </div>
                     </div>
@@ -2140,10 +2306,10 @@ class Dashboard extends Component {
                       <div className="dash-top-cards">
                         <p className="card-head">Open</p>
                         <span className="card-value">
-                          {this.state.DashboardNumberData.open !== null &&
+                          {this.state.DashboardNumberData !== null ? (this.state.DashboardNumberData.open !== null &&
                           this.state.DashboardNumberData.open < 9
                             ? "0" + this.state.DashboardNumberData.open
-                            : this.state.DashboardNumberData.open}
+                            : this.state.DashboardNumberData.open) : null}
                         </span>
                       </div>
                     </div>
@@ -2151,10 +2317,10 @@ class Dashboard extends Component {
                       <div className="dash-top-cards">
                         <p className="card-head">Due Today</p>
                         <span className="card-value">
-                          {this.state.DashboardNumberData.dueToday !== null &&
+                          {this.state.DashboardNumberData !== null ? (this.state.DashboardNumberData.dueToday !== null &&
                           this.state.DashboardNumberData.dueToday < 9
                             ? "0" + this.state.DashboardNumberData.dueToday
-                            : this.state.DashboardNumberData.dueToday}
+                            : this.state.DashboardNumberData.dueToday) : null}
                         </span>
                       </div>
                     </div>
@@ -2162,10 +2328,10 @@ class Dashboard extends Component {
                       <div className="dash-top-cards">
                         <p className="card-head">Over Due</p>
                         <span className="card-value red-clr">
-                          {this.state.DashboardNumberData.overDue !== null &&
+                          {this.state.DashboardNumberData !== null ? (this.state.DashboardNumberData.overDue !== null &&
                           this.state.DashboardNumberData.overDue < 9
                             ? "0" + this.state.DashboardNumberData.overDue
-                            : this.state.DashboardNumberData.overDue}
+                            : this.state.DashboardNumberData.overDue) : null}
                         </span>
                       </div>
                     </div>
@@ -2307,7 +2473,7 @@ class Dashboard extends Component {
                         onMouseLeave={this.handleMouseHover.bind(this)}
                       >
                         <p className="card-head">SLA</p>
-                        {Object.keys(this.state.DashboardNumberData).length > 0 ? <div className="resp-success">
+                        {this.state.DashboardNumberData !== null ? (Object.keys(this.state.DashboardNumberData).length > 0 ? <div className="resp-success">
                           <p className="card-head">Response {this.state.DashboardNumberData.isResponseSuccess === true ? 'Success' : 'Failure'}</p>
                           <span className="card-value">
                           <big>{this.state.DashboardNumberData.responseRate}</big>
@@ -2316,7 +2482,7 @@ class Dashboard extends Component {
                             Resolution {this.state.DashboardNumberData.isResolutionSuccess === true ? 'Success' : 'Failure'} :
                             <span className="font-weight-bold">{this.state.DashboardNumberData.resolutionRate}</span>
                           </p>
-                        </div> : null }
+                        </div> : null ) : null }
                       </div>
                     </div>
                     <div className="col-lg-3 col-sm-6">
@@ -2325,17 +2491,17 @@ class Dashboard extends Component {
                         <div className="aside-cont">
                           <div>
                             <span className="card-value">
-                              {this.state.DashboardNumberData.taskOpen < 9
+                              {this.state.DashboardNumberData !== null ? (this.state.DashboardNumberData.taskOpen < 9
                                 ? "0" + this.state.DashboardNumberData.taskOpen
-                                : this.state.DashboardNumberData.taskOpen}
+                                : this.state.DashboardNumberData.taskOpen) : null}
                             </span>
                             <small>Open</small>
                           </div>
                           <div>
                             <span className="card-value">
-                              {this.state.DashboardNumberData.taskClose < 9
+                              {this.state.DashboardNumberData !== null ? (this.state.DashboardNumberData.taskClose < 9
                                 ? "0" + this.state.DashboardNumberData.taskClose
-                                : this.state.DashboardNumberData.taskClose}
+                                : this.state.DashboardNumberData.taskClose) : null}
                             </span>
                             <small>Pending</small>
                           </div>
@@ -2377,7 +2543,7 @@ class Dashboard extends Component {
                             role="tabpanel"
                             aria-labelledby="task-tab"
                           >
-                            <MultiBarChart />
+                            {Object.keys(this.state.DashboardGraphData).length > 0 ? <MultiBarChart data={this.state.DashboardGraphData} /> : null}
                           </div>
                           <div
                             className="tab-pane fade"
@@ -2396,18 +2562,18 @@ class Dashboard extends Component {
                         <div className="aside-cont">
                           <div>
                             <span className="card-value">
-                              {this.state.DashboardNumberData.claimOpen < 9
+                              {this.state.DashboardNumberData !== null ? (this.state.DashboardNumberData.claimOpen < 9
                                 ? "0" + this.state.DashboardNumberData.claimOpen
-                                : this.state.DashboardNumberData.claimOpen}
+                                : this.state.DashboardNumberData.claimOpen) : null}
                             </span>
                             <small>Open</small>
                           </div>
                           <div>
                             <span className="card-value">
-                              {this.state.DashboardNumberData.claimClose < 9
+                              {this.state.DashboardNumberData !== null ? (this.state.DashboardNumberData.claimClose < 9
                                 ? "0" +
                                   this.state.DashboardNumberData.claimClose
-                                : this.state.DashboardNumberData.claimClose}
+                                : this.state.DashboardNumberData.claimClose) : null}
                             </span>
                             <small>Pending</small>
                           </div>

@@ -80,6 +80,7 @@ class TicketToClaimMultiBar extends Component {
           }
         ]
       });
+      
     });
   }
   
