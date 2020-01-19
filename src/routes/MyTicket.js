@@ -117,9 +117,11 @@ class MyTicket extends Component {
       claimDetailsData: [],
       selectetedParameters: {},
       KbPopupData: [],
+      orderDetails:[],
       selectedIssueTypeKB: 0,
       selectedCategoryKB: 0,
-      selectedSubCategoryKB: 0
+      selectedSubCategoryKB: 0,
+      custID:0
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -139,6 +141,7 @@ class MyTicket extends Component {
     this.handleGetCountOfTabs = this.handleGetCountOfTabs.bind(this);
     this.handleAssignDataList = this.handleAssignDataList.bind(this);
     this.handleKbLinkPopupSearch = this.handleKbLinkPopupSearch.bind(this);
+    this.handleGetOrderDetails=this.handleGetOrderDetails.bind(this)
   }
 
   componentDidMount() {
@@ -172,6 +175,7 @@ class MyTicket extends Component {
     }).then(function(res) {
       debugger;
       let data = res.data.responseData;
+      var customer_Id=data.customerID;
       var ticketStatus = data.status;
       var ticketPriority = data.priortyID;
       var ticketBrand = data.brandID;
@@ -190,7 +194,11 @@ class MyTicket extends Component {
         ticketActionTypeID: ticketActionType,
         issueTypeID: ticketIssueTypeID
       };
-      self.setState({ ticketDetailsData: data, selectetedParameters });
+      self.setState({
+        ticketDetailsData: data,
+        custID: customer_Id,
+        selectetedParameters
+      });
 
       setTimeout(() => {
         self.handleGetCategoryList();
@@ -241,6 +249,27 @@ class MyTicket extends Component {
         } else if (ticStaId === 104) {
           NotificationManager.success("The ticket has been closed.");
         }
+      }
+    });
+  }
+  handleGetOrderDetails() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Order/getorderdetailsbycustomerid",
+      headers: authHeader(),
+      params: {
+        CustomerID:this.state.custID
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        self.setState({ orderDetails: data });
+      } else {
+        self.setState({ orderDetails: [] });
       }
     });
   }
@@ -309,8 +338,10 @@ class MyTicket extends Component {
       debugger;
       let status = res.data.status;
       let data = res.data.responseData;
-      if (status === true) {
+      if (status === "Success") {
         self.setState({ taskTableGrid: data });
+      }else{
+        self.setState({ taskTableGrid: [] });
       }
     });
   }
@@ -409,8 +440,13 @@ class MyTicket extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let BrandData = res.data.responseData;
-      self.setState({ BrandData: BrandData });
+      let status = res.data.status;
+      let data = res.data.responseData;
+      if(status === "Success"){
+        self.setState({ BrandData: data });
+      }else{
+        self.setState({ BrandData: [] });
+      }
     });
   }
   handleGetCategoryList() {
@@ -582,6 +618,7 @@ class MyTicket extends Component {
     this.setState({ CommentsDrawer: false });
   }
   handleBillImgModalOpen() {
+    this.handleGetOrderDetails();
     this.setState({ BillInvoiceModal: true });
   }
   handleBillImgModalClose() {
@@ -855,7 +892,7 @@ class MyTicket extends Component {
     this.setState({ selectedIssueTypeKB: issueTypeValue });
   };
   render() {
-    const { open, ticketDetailsData, historicalDetails,SearchAssignData } = this.state;
+    const { open, ticketDetailsData, historicalDetails,SearchAssignData,orderDetails } = this.state;
     const HidecollapsUp = this.state.collapseUp ? (
       <img
         src={Up1Img}
@@ -901,79 +938,79 @@ class MyTicket extends Component {
         <img src={PlusImg} alt="Plush" className="plush-img" />
       </div>
     );
-    const data = [
-      {
-        orderNumber: "BB2213451123",
-        MobileNum: <span>9873470074</span>,
-        Amount: "13,500",
-        purDate: (
-          <span>
-            <label>23 May 2018</label>
-          </span>
-        )
-      },
-      {
-        orderNumber: "BB2213451123",
-        MobileNum: <span>9873470074</span>,
-        Amount: "12,500",
-        purDate: (
-          <span>
-            <label>13 May 2018</label>
-          </span>
-        )
-      },
-      {
-        orderNumber: "BB2213451123",
+    // const data = [
+    //   {
+    //     orderNumber: "BB2213451123",
+    //     MobileNum: <span>9873470074</span>,
+    //     Amount: "13,500",
+    //     purDate: (
+    //       <span>
+    //         <label>23 May 2018</label>
+    //       </span>
+    //     )
+    //   },
+    //   {
+    //     orderNumber: "BB2213451123",
+    //     MobileNum: <span>9873470074</span>,
+    //     Amount: "12,500",
+    //     purDate: (
+    //       <span>
+    //         <label>13 May 2018</label>
+    //       </span>
+    //     )
+    //   },
+    //   {
+    //     orderNumber: "BB2213451123",
 
-        MobileNum: <span>9873470074</span>,
-        Amount: "11,500",
-        purDate: (
-          <span>
-            <label>10 May 2019</label>
-          </span>
-        )
-      },
-      {
-        orderNumber: "BB2213451123",
-        MobileNum: <span>9873470074</span>,
-        Amount: "15,200",
-        purDate: (
-          <span>
-            <label>21 May 2015</label>
-          </span>
-        )
-      },
-      {
-        orderNumber: "BB2213451123",
-        MobileNum: <span>9873470074</span>,
-        Amount: "10,000",
-        purDate: (
-          <span>
-            <label>10 May 2017</label>
-          </span>
-        )
-      }
-    ];
+    //     MobileNum: <span>9873470074</span>,
+    //     Amount: "11,500",
+    //     purDate: (
+    //       <span>
+    //         <label>10 May 2019</label>
+    //       </span>
+    //     )
+    //   },
+    //   {
+    //     orderNumber: "BB2213451123",
+    //     MobileNum: <span>9873470074</span>,
+    //     Amount: "15,200",
+    //     purDate: (
+    //       <span>
+    //         <label>21 May 2015</label>
+    //       </span>
+    //     )
+    //   },
+    //   {
+    //     orderNumber: "BB2213451123",
+    //     MobileNum: <span>9873470074</span>,
+    //     Amount: "10,000",
+    //     purDate: (
+    //       <span>
+    //         <label>10 May 2017</label>
+    //       </span>
+    //     )
+    //   }
+    // ];
 
-    const columns = [
-      {
-        Header: <span className="historyTable-header">Order Number</span>,
-        accessor: "orderNumber"
-      },
-      {
-        id: "createdBy",
-        Header: <span className="historyTable-header">Mobile Number</span>,
-        accessor: "MobileNum"
-      },
-      {
-        Header: <span className="historyTable-header">Amount</span>,
-        accessor: "Amount"
-      },
-      {
-        Header: <span className="historyTable-header">Purchase Date</span>,
-        accessor: "purDate"
-      }
-    ];
+    // const columns = [
+    //   {
+    //     Header: <span className="historyTable-header">Order Number</span>,
+    //     accessor: "orderNumber"
+    //   },
+    //   {
+    //     id: "createdBy",
+    //     Header: <span className="historyTable-header">Mobile Number</span>,
+    //     accessor: "MobileNum"
+    //   },
+    //   {
+    //     Header: <span className="historyTable-header">Amount</span>,
+    //     accessor: "Amount"
+    //   },
+    //   {
+    //     Header: <span className="historyTable-header">Purchase Date</span>,
+    //     accessor: "purDate"
+    //   }
+    // ];
 
     const data1 = [
       {
@@ -1382,8 +1419,25 @@ class MyTicket extends Component {
                               </div>
                               <div className="tablehistrical">
                                 <ReactTable
-                                  data={data}
-                                  columns={columns}
+                                  data={orderDetails}
+                                  columns={[
+                                    {
+                                      Header: <span className="historyTable-header">Order Number</span>,
+                                      accessor: "orderNumber"
+                                    },
+                                    {
+                                      Header: <span className="historyTable-header">Mobile Number</span>,
+                                      accessor: "mobileNumber"
+                                    },
+                                    {
+                                      Header: <span className="historyTable-header">Amount</span>,
+                                      accessor: "itemPrice"
+                                    },
+                                    {
+                                      Header: <span className="historyTable-header">Purchase Date</span>,
+                                      accessor: "dateFormat"
+                                    }
+                                  ]}
                                   // resizable={false}
                                   defaultPageSize={5}
                                   showPagination={false}

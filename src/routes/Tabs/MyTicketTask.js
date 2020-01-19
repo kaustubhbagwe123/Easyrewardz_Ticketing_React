@@ -154,8 +154,13 @@ class MyTicketTask extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let DepartmentData = res.data.responseData;
-      self.setState({ DepartmentData: DepartmentData });
+      let status=res.data.message
+      let data = res.data.responseData;
+      if(status === "Success"){
+        self.setState({ DepartmentData: data });
+      }else{
+        self.setState({ DepartmentData: [] });
+      }
     });
   }
   handleGetFunctionList() {

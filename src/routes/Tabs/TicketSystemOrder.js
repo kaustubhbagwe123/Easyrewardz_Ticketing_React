@@ -320,6 +320,10 @@ class TicketSystemOrder extends Component {
     this.handleModeOfPaymentDropDown();
     this.handleGetTicketSourceList();
   }
+  onchangeDataClick(){
+    debugger
+    alert("Data 11233")
+  }
 
   render() {
     const { orderDetailsData } = this.state;
@@ -435,7 +439,7 @@ class TicketSystemOrder extends Component {
                     Header: <span>Invoice Number</span>,
                     accessor: "invoiceNumber",
                     Cell: row => {
-                      debugger;
+                      debugger
                       return (
                         <div className="filter-type pink1">
                           <div className="filter-checkbox pink2 pinkmargin">
@@ -448,6 +452,7 @@ class TicketSystemOrder extends Component {
                             <label htmlFor="fil-ab1">ID</label>
                           </div>
                         </div>
+                       
                       );
                     }
                   },
