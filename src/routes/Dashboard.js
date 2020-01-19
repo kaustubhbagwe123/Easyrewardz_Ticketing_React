@@ -317,10 +317,10 @@ class Dashboard extends Component {
     var checkboxes = document.getElementsByName("allAgent");
     var strAgentIds="";
     for (var i in checkboxes) {
-      if(isNaN(i)==false)
+      if(isNaN(i)===false)
       {
         checkboxes[i].checked = true;
-         if(checkboxes[i].checked == true)
+         if(checkboxes[i].checked === true)
          {
           if (checkboxes[i].getAttribute('attrIds')!==null)
             strAgentIds+=checkboxes[i].getAttribute('attrIds')+",";
@@ -337,9 +337,9 @@ class Dashboard extends Component {
     var checkboxes = document.getElementsByName("allAgent");
     var strAgentIds="";
     for (var i in checkboxes) {
-      if(isNaN(i)==false)
+      if(isNaN(i)===false)
       {
-         if(checkboxes[i].checked == true)
+         if(checkboxes[i].checked === true)
          {
           if (checkboxes[i].getAttribute('attrIds')!==null)
             strAgentIds+=checkboxes[i].getAttribute('attrIds')+",";
@@ -1385,456 +1385,456 @@ class Dashboard extends Component {
       <img className="search-icon" src={SearchIcon} alt="search-icon" />
     );
 
-    const dataDash = [
-      {
-        idDash: (
-          <span>
-            <div className="filter-type pink1">
-              <div className="filter-checkbox pink2 pinkmargin">
-                <input
-                  type="checkbox"
-                  id="fil-ab7"
-                  name="dashboardcheckbox[]"
-                />
-                <label htmlFor="fil-ab7">
-                  <img
-                    src={HeadPhone3}
-                    alt="HeadPhone"
-                    className="headPhone3"
-                  />
-                  ABC1234
-                </label>
-              </div>
-            </div>
-          </span>
-        ),
-        statusDash: (
-          <span className="table-b table-blue-btn">
-            <label>Open</label>
-          </span>
-        ),
-        subjectDash: (
-          <div>
-            Need to change my shipping address
-            <span style={{ display: "block", fontSize: "11px" }}>
-              Hope this help, Please rate us
-            </span>
-          </div>
-        ),
-        creationNew: (
-          <span>
-            <label>2 Hour Ago</label>
-            <Popover content={InsertPlaceholder} placement="left">
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover>
-          </span>
-        )
-      },
-      {
-        idDash: (
-          <span>
-            <div className="filter-type pink1">
-              <div className="filter-checkbox pink2 pinkmargin">
-                <input
-                  type="checkbox"
-                  id="fil-ab6"
-                  name="dashboardcheckbox[]"
-                />
-                <label htmlFor="fil-ab6">
-                  <img
-                    src={HeadPhone3}
-                    alt="HeadPhone"
-                    className="headPhone3"
-                  />
-                  ABC1234
-                </label>
-              </div>
-            </div>
-          </span>
-        ),
-        statusDash: (
-          <span className="table-b table-blue-btn">
-            <label>Open</label>
-          </span>
-        ),
-        subjectDash: (
-          <div>
-            Need to change my shipping address
-            <span style={{ display: "block", fontSize: "11px" }}>
-              Hope this help, Please rate us
-            </span>
-          </div>
-        ),
-        creationNew: (
-          <span>
-            <label>12 March 2018</label>
-            <Popover content={InsertPlaceholder} placement="left">
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover>
-          </span>
-        )
-      },
-      {
-        idDash: (
-          <span>
-            <div className="filter-type pink1">
-              <div className="filter-checkbox pink2 pinkmargin">
-                <input
-                  type="checkbox"
-                  id="fil-ab5"
-                  name="dashboardcheckbox[]"
-                />
-                <label htmlFor="fil-ab5">
-                  <img
-                    src={HeadPhone3}
-                    alt="HeadPhone"
-                    className="headPhone3"
-                  />
-                  ABC1234
-                </label>
-              </div>
-            </div>
-          </span>
-        ),
-        statusDash: (
-          <span className="table-b table-yellow-btn">
-            <label>New</label>
-          </span>
-        ),
-        Img: (
-          <div>
-            <Popover content={TaskBlue} placement="bottom">
-              <img
-                className="task-icon-1"
-                src={TaskIconBlue}
-                alt="task-icon-blue"
-              />
-            </Popover>
-          </div>
-        ),
-        subjectDash: (
-          <div>
-            {/* <Popover content={TaskBlue} placement="bottom">
-              <img
-                className="task-icon-1 marginimg"
-                src={TaskIconBlue}
-                alt="task-icon-blue"
-              />
-            </Popover> */}
-            {/* <img
-              className="task-icon-1 marginimg"
-              src={TaskIconBlue}
-              alt="task-icon-blue"
-            /> */}
-            Need to change my shipping address
-            <span style={{ display: "block", fontSize: "11px" }}>
-              Hope this help, Please rate us
-            </span>
-          </div>
-        ),
-        creationNew: (
-          <span>
-            <label>12 March 2018</label>
-            <Popover content={InsertPlaceholder} placement="left">
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover>
-          </span>
-        )
-      },
-      {
-        idDash: (
-          <span>
-            <div className="filter-type pink1">
-              <div className="filter-checkbox pink2 pinkmargin">
-                <input
-                  type="checkbox"
-                  id="fil-ab4"
-                  name="dashboardcheckbox[]"
-                />
-                <label htmlFor="fil-ab4">
-                  <img
-                    src={HeadPhone3}
-                    alt="HeadPhone"
-                    className="headPhone3"
-                  />
-                  ABC1234
-                </label>
-              </div>
-            </div>
-          </span>
-        ),
-        statusDash: (
-          <span className="table-b table-yellow-btn">
-            <label>New</label>
-          </span>
-        ),
-        Img: (
-          <img
-            className="task-icon-1"
-            src={TaskIconGray}
-            alt="task-icon-gray"
-          />
-        ),
-        subjectDash: (
-          <div>
-            {/* <img
-              className="task-icon-1 marginimg"
-              src={TaskIconGray}
-              alt="task-icon-gray"
-            /> */}
-            Need to change my shipping address
-            <span style={{ display: "block", fontSize: "11px" }}>
-              Hope this help, Please rate us
-            </span>
-          </div>
-        ),
-        creationNew: (
-          <span>
-            <label>12 March 2018</label>
-            <Popover content={InsertPlaceholder} placement="left">
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover>
-          </span>
-        )
-      },
-      {
-        idDash: (
-          <span>
-            <div className="filter-type pink1">
-              <div className="filter-checkbox pink2 pinkmargin">
-                <input
-                  type="checkbox"
-                  id="fil-ab3"
-                  name="dashboardcheckbox[]"
-                />
-                <label htmlFor="fil-ab3">
-                  <img
-                    src={HeadPhone3}
-                    alt="HeadPhone"
-                    className="headPhone3"
-                  />
-                  ABC1234
-                </label>
-              </div>
-            </div>
-          </span>
-        ),
-        statusDash: (
-          <span className="table-b table-green-btn">
-            <label>Solved</label>
-          </span>
-        ),
-        Img: (
-          <div>
-            <Popover content={ClaimBlue} placement="bottom">
-              <img
-                className="claim-icon marginimg"
-                src={CliamIconBlue}
-                alt="cliam-icon-blue"
-              />
-            </Popover>
-            <span style={{ marginLeft: "20px" }}>
-              <img
-                className="task-icon-1 marginimg"
-                src={TaskIconGray}
-                alt="task-icon-gray"
-              />
-            </span>
-          </div>
-        ),
-        subjectDash: (
-          <div>
-            Need to change my shipping address
-            <span style={{ display: "block", fontSize: "11px" }}>
-              Hope this help, Please rate us
-            </span>
-          </div>
-        ),
-        creationNew: (
-          <span>
-            <label>12 March 2018</label>
-            <Popover content={InsertPlaceholder} placement="left">
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover>
-          </span>
-        )
-      },
-      {
-        idDash: (
-          <span>
-            <div className="filter-type pink1">
-              <div className="filter-checkbox pink2 pinkmargin">
-                <input
-                  type="checkbox"
-                  id="fil-ab2"
-                  name="dashboardcheckbox[]"
-                />
-                <label htmlFor="fil-ab2">
-                  <img
-                    src={HeadPhone3}
-                    alt="HeadPhone"
-                    className="headPhone3"
-                  />
-                  ABC1234
-                </label>
-              </div>
-            </div>
-          </span>
-        ),
-        statusDash: (
-          <span className="table-b table-green-btn">
-            <label>Solved</label>
-          </span>
-        ),
-        subjectDash: (
-          <div>
-            Need to change my shipping address
-            <span style={{ display: "block", fontSize: "11px" }}>
-              Hope this help, Please rate us
-            </span>
-          </div>
-        ),
-        creationNew: (
-          <span>
-            <label>12 March 2018</label>
-            <Popover content={InsertPlaceholder} placement="left">
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover>
-          </span>
-        )
-      },
-      {
-        idDash: (
-          <span>
-            <div className="filter-type pink1">
-              <div className="filter-checkbox pink2 pinkmargin">
-                <input
-                  type="checkbox"
-                  id="fil-ab1"
-                  name="dashboardcheckbox[]"
-                />
-                <label htmlFor="fil-ab1">
-                  <img
-                    src={HeadPhone3}
-                    alt="HeadPhone"
-                    className="headPhone3"
-                  />
-                  ABC1234
-                </label>
-              </div>
-            </div>
-          </span>
-        ),
-        statusDash: (
-          <span className="table-b table-green-btn">
-            <label>Solved</label>
-          </span>
-        ),
-        subjectDash: (
-          <div>
-            Need to change my shipping address
-            <span style={{ display: "block", fontSize: "11px" }}>
-              Hope this help, Please rate us
-            </span>
-          </div>
-        ),
-        creationNew: (
-          <span>
-            <label>12 March 2018</label>
-            <Popover content={InsertPlaceholder} placement="left">
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover>
-          </span>
-        )
-      }
-    ];
+    // const dataDash = [
+    //   {
+    //     idDash: (
+    //       <span>
+    //         <div className="filter-type pink1">
+    //           <div className="filter-checkbox pink2 pinkmargin">
+    //             <input
+    //               type="checkbox"
+    //               id="fil-ab7"
+    //               name="dashboardcheckbox[]"
+    //             />
+    //             <label htmlFor="fil-ab7">
+    //               <img
+    //                 src={HeadPhone3}
+    //                 alt="HeadPhone"
+    //                 className="headPhone3"
+    //               />
+    //               ABC1234
+    //             </label>
+    //           </div>
+    //         </div>
+    //       </span>
+    //     ),
+    //     statusDash: (
+    //       <span className="table-b table-blue-btn">
+    //         <label>Open</label>
+    //       </span>
+    //     ),
+    //     subjectDash: (
+    //       <div>
+    //         Need to change my shipping address
+    //         <span style={{ display: "block", fontSize: "11px" }}>
+    //           Hope this help, Please rate us
+    //         </span>
+    //       </div>
+    //     ),
+    //     creationNew: (
+    //       <span>
+    //         <label>2 Hour Ago</label>
+    //         <Popover content={InsertPlaceholder} placement="left">
+    //           <img className="info-icon" src={InfoIcon} alt="info-icon" />
+    //         </Popover>
+    //       </span>
+    //     )
+    //   },
+    //   {
+    //     idDash: (
+    //       <span>
+    //         <div className="filter-type pink1">
+    //           <div className="filter-checkbox pink2 pinkmargin">
+    //             <input
+    //               type="checkbox"
+    //               id="fil-ab6"
+    //               name="dashboardcheckbox[]"
+    //             />
+    //             <label htmlFor="fil-ab6">
+    //               <img
+    //                 src={HeadPhone3}
+    //                 alt="HeadPhone"
+    //                 className="headPhone3"
+    //               />
+    //               ABC1234
+    //             </label>
+    //           </div>
+    //         </div>
+    //       </span>
+    //     ),
+    //     statusDash: (
+    //       <span className="table-b table-blue-btn">
+    //         <label>Open</label>
+    //       </span>
+    //     ),
+    //     subjectDash: (
+    //       <div>
+    //         Need to change my shipping address
+    //         <span style={{ display: "block", fontSize: "11px" }}>
+    //           Hope this help, Please rate us
+    //         </span>
+    //       </div>
+    //     ),
+    //     creationNew: (
+    //       <span>
+    //         <label>12 March 2018</label>
+    //         <Popover content={InsertPlaceholder} placement="left">
+    //           <img className="info-icon" src={InfoIcon} alt="info-icon" />
+    //         </Popover>
+    //       </span>
+    //     )
+    //   },
+    //   {
+    //     idDash: (
+    //       <span>
+    //         <div className="filter-type pink1">
+    //           <div className="filter-checkbox pink2 pinkmargin">
+    //             <input
+    //               type="checkbox"
+    //               id="fil-ab5"
+    //               name="dashboardcheckbox[]"
+    //             />
+    //             <label htmlFor="fil-ab5">
+    //               <img
+    //                 src={HeadPhone3}
+    //                 alt="HeadPhone"
+    //                 className="headPhone3"
+    //               />
+    //               ABC1234
+    //             </label>
+    //           </div>
+    //         </div>
+    //       </span>
+    //     ),
+    //     statusDash: (
+    //       <span className="table-b table-yellow-btn">
+    //         <label>New</label>
+    //       </span>
+    //     ),
+    //     Img: (
+    //       <div>
+    //         <Popover content={TaskBlue} placement="bottom">
+    //           <img
+    //             className="task-icon-1"
+    //             src={TaskIconBlue}
+    //             alt="task-icon-blue"
+    //           />
+    //         </Popover>
+    //       </div>
+    //     ),
+    //     subjectDash: (
+    //       <div>
+    //         {/* <Popover content={TaskBlue} placement="bottom">
+    //           <img
+    //             className="task-icon-1 marginimg"
+    //             src={TaskIconBlue}
+    //             alt="task-icon-blue"
+    //           />
+    //         </Popover> */}
+    //         {/* <img
+    //           className="task-icon-1 marginimg"
+    //           src={TaskIconBlue}
+    //           alt="task-icon-blue"
+    //         /> */}
+    //         Need to change my shipping address
+    //         <span style={{ display: "block", fontSize: "11px" }}>
+    //           Hope this help, Please rate us
+    //         </span>
+    //       </div>
+    //     ),
+    //     creationNew: (
+    //       <span>
+    //         <label>12 March 2018</label>
+    //         <Popover content={InsertPlaceholder} placement="left">
+    //           <img className="info-icon" src={InfoIcon} alt="info-icon" />
+    //         </Popover>
+    //       </span>
+    //     )
+    //   },
+    //   {
+    //     idDash: (
+    //       <span>
+    //         <div className="filter-type pink1">
+    //           <div className="filter-checkbox pink2 pinkmargin">
+    //             <input
+    //               type="checkbox"
+    //               id="fil-ab4"
+    //               name="dashboardcheckbox[]"
+    //             />
+    //             <label htmlFor="fil-ab4">
+    //               <img
+    //                 src={HeadPhone3}
+    //                 alt="HeadPhone"
+    //                 className="headPhone3"
+    //               />
+    //               ABC1234
+    //             </label>
+    //           </div>
+    //         </div>
+    //       </span>
+    //     ),
+    //     statusDash: (
+    //       <span className="table-b table-yellow-btn">
+    //         <label>New</label>
+    //       </span>
+    //     ),
+    //     Img: (
+    //       <img
+    //         className="task-icon-1"
+    //         src={TaskIconGray}
+    //         alt="task-icon-gray"
+    //       />
+    //     ),
+    //     subjectDash: (
+    //       <div>
+    //         {/* <img
+    //           className="task-icon-1 marginimg"
+    //           src={TaskIconGray}
+    //           alt="task-icon-gray"
+    //         /> */}
+    //         Need to change my shipping address
+    //         <span style={{ display: "block", fontSize: "11px" }}>
+    //           Hope this help, Please rate us
+    //         </span>
+    //       </div>
+    //     ),
+    //     creationNew: (
+    //       <span>
+    //         <label>12 March 2018</label>
+    //         <Popover content={InsertPlaceholder} placement="left">
+    //           <img className="info-icon" src={InfoIcon} alt="info-icon" />
+    //         </Popover>
+    //       </span>
+    //     )
+    //   },
+    //   {
+    //     idDash: (
+    //       <span>
+    //         <div className="filter-type pink1">
+    //           <div className="filter-checkbox pink2 pinkmargin">
+    //             <input
+    //               type="checkbox"
+    //               id="fil-ab3"
+    //               name="dashboardcheckbox[]"
+    //             />
+    //             <label htmlFor="fil-ab3">
+    //               <img
+    //                 src={HeadPhone3}
+    //                 alt="HeadPhone"
+    //                 className="headPhone3"
+    //               />
+    //               ABC1234
+    //             </label>
+    //           </div>
+    //         </div>
+    //       </span>
+    //     ),
+    //     statusDash: (
+    //       <span className="table-b table-green-btn">
+    //         <label>Solved</label>
+    //       </span>
+    //     ),
+    //     Img: (
+    //       <div>
+    //         <Popover content={ClaimBlue} placement="bottom">
+    //           <img
+    //             className="claim-icon marginimg"
+    //             src={CliamIconBlue}
+    //             alt="cliam-icon-blue"
+    //           />
+    //         </Popover>
+    //         <span style={{ marginLeft: "20px" }}>
+    //           <img
+    //             className="task-icon-1 marginimg"
+    //             src={TaskIconGray}
+    //             alt="task-icon-gray"
+    //           />
+    //         </span>
+    //       </div>
+    //     ),
+    //     subjectDash: (
+    //       <div>
+    //         Need to change my shipping address
+    //         <span style={{ display: "block", fontSize: "11px" }}>
+    //           Hope this help, Please rate us
+    //         </span>
+    //       </div>
+    //     ),
+    //     creationNew: (
+    //       <span>
+    //         <label>12 March 2018</label>
+    //         <Popover content={InsertPlaceholder} placement="left">
+    //           <img className="info-icon" src={InfoIcon} alt="info-icon" />
+    //         </Popover>
+    //       </span>
+    //     )
+    //   },
+    //   {
+    //     idDash: (
+    //       <span>
+    //         <div className="filter-type pink1">
+    //           <div className="filter-checkbox pink2 pinkmargin">
+    //             <input
+    //               type="checkbox"
+    //               id="fil-ab2"
+    //               name="dashboardcheckbox[]"
+    //             />
+    //             <label htmlFor="fil-ab2">
+    //               <img
+    //                 src={HeadPhone3}
+    //                 alt="HeadPhone"
+    //                 className="headPhone3"
+    //               />
+    //               ABC1234
+    //             </label>
+    //           </div>
+    //         </div>
+    //       </span>
+    //     ),
+    //     statusDash: (
+    //       <span className="table-b table-green-btn">
+    //         <label>Solved</label>
+    //       </span>
+    //     ),
+    //     subjectDash: (
+    //       <div>
+    //         Need to change my shipping address
+    //         <span style={{ display: "block", fontSize: "11px" }}>
+    //           Hope this help, Please rate us
+    //         </span>
+    //       </div>
+    //     ),
+    //     creationNew: (
+    //       <span>
+    //         <label>12 March 2018</label>
+    //         <Popover content={InsertPlaceholder} placement="left">
+    //           <img className="info-icon" src={InfoIcon} alt="info-icon" />
+    //         </Popover>
+    //       </span>
+    //     )
+    //   },
+    //   {
+    //     idDash: (
+    //       <span>
+    //         <div className="filter-type pink1">
+    //           <div className="filter-checkbox pink2 pinkmargin">
+    //             <input
+    //               type="checkbox"
+    //               id="fil-ab1"
+    //               name="dashboardcheckbox[]"
+    //             />
+    //             <label htmlFor="fil-ab1">
+    //               <img
+    //                 src={HeadPhone3}
+    //                 alt="HeadPhone"
+    //                 className="headPhone3"
+    //               />
+    //               ABC1234
+    //             </label>
+    //           </div>
+    //         </div>
+    //       </span>
+    //     ),
+    //     statusDash: (
+    //       <span className="table-b table-green-btn">
+    //         <label>Solved</label>
+    //       </span>
+    //     ),
+    //     subjectDash: (
+    //       <div>
+    //         Need to change my shipping address
+    //         <span style={{ display: "block", fontSize: "11px" }}>
+    //           Hope this help, Please rate us
+    //         </span>
+    //       </div>
+    //     ),
+    //     creationNew: (
+    //       <span>
+    //         <label>12 March 2018</label>
+    //         <Popover content={InsertPlaceholder} placement="left">
+    //           <img className="info-icon" src={InfoIcon} alt="info-icon" />
+    //         </Popover>
+    //       </span>
+    //     )
+    //   }
+    // ];
 
-    const columnsDash = [
-      {
-        Header: (
-          <span>
-            <div className="filter-type pink1">
-              <div className="filter-checkbox pink2 pinkmargin">
-                <input
-                  type="checkbox"
-                  id="fil-ab1"
-                  name="dashboardcheckbox[]"
-                  onChange={this.checkAllCheckbox.bind(this)}
-                />
-                <label htmlFor="fil-ab1">ID</label>
-              </div>
-            </div>
-          </span>
-        ),
-        accessor: "idDash"
-      },
-      {
-        Header: (
-          <span onClick={this.StatusOpenModel}>
-            Status <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "statusDash"
-      },
-      {
-        Header: <span></span>,
-        accessor: "Img",
-        width: 45
-      },
-      {
-        Header: (
-          <label>
-            <span style={{ fontWeight: "bold", fontSize: "13px !important" }}>
-              Subject/
-            </span>
-            <span>Lastest Message</span>
-          </label>
-        ),
-        accessor: "subjectDash"
-      },
-      {
-        Header: (
-          <span>
-            Category <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "categoryDash",
-        Cell: props => (
-          <span>
-            <label>Defective article </label>
-            <Popover content={DefArti} placement="bottom">
-              <img className="info-icon" src={InfoIcon} alt="info-icon" />
-            </Popover>
-          </span>
-        )
-      },
-      {
-        Header: (
-          <span>
-            Priority <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "priorityDash",
-        Cell: props => <span>High</span>
-      },
-      {
-        Header: (
-          <span>
-            Assigne <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "assigneeDash",
-        Cell: props => <span>N Rampal</span>
-      },
-      {
-        Header: (
-          <span>
-            Creation On <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "creationNew"
-      }
-    ];
+    // const columnsDash = [
+    //   {
+    //     Header: (
+    //       <span>
+    //         <div className="filter-type pink1">
+    //           <div className="filter-checkbox pink2 pinkmargin">
+    //             <input
+    //               type="checkbox"
+    //               id="fil-ab1"
+    //               name="dashboardcheckbox[]"
+    //               onChange={this.checkAllCheckbox.bind(this)}
+    //             />
+    //             <label htmlFor="fil-ab1">ID</label>
+    //           </div>
+    //         </div>
+    //       </span>
+    //     ),
+    //     accessor: "idDash"
+    //   },
+    //   {
+    //     Header: (
+    //       <span onClick={this.StatusOpenModel}>
+    //         Status <FontAwesomeIcon icon={faCaretDown} />
+    //       </span>
+    //     ),
+    //     accessor: "statusDash"
+    //   },
+    //   {
+    //     Header: <span></span>,
+    //     accessor: "Img",
+    //     width: 45
+    //   },
+    //   {
+    //     Header: (
+    //       <label>
+    //         <span style={{ fontWeight: "bold", fontSize: "13px !important" }}>
+    //           Subject/
+    //         </span>
+    //         <span>Lastest Message</span>
+    //       </label>
+    //     ),
+    //     accessor: "subjectDash"
+    //   },
+    //   {
+    //     Header: (
+    //       <span>
+    //         Category <FontAwesomeIcon icon={faCaretDown} />
+    //       </span>
+    //     ),
+    //     accessor: "categoryDash",
+    //     Cell: props => (
+    //       <span>
+    //         <label>Defective article </label>
+    //         <Popover content={DefArti} placement="bottom">
+    //           <img className="info-icon" src={InfoIcon} alt="info-icon" />
+    //         </Popover>
+    //       </span>
+    //     )
+    //   },
+    //   {
+    //     Header: (
+    //       <span>
+    //         Priority <FontAwesomeIcon icon={faCaretDown} />
+    //       </span>
+    //     ),
+    //     accessor: "priorityDash",
+    //     Cell: props => <span>High</span>
+    //   },
+    //   {
+    //     Header: (
+    //       <span>
+    //         Assigne <FontAwesomeIcon icon={faCaretDown} />
+    //       </span>
+    //     ),
+    //     accessor: "assigneeDash",
+    //     Cell: props => <span>N Rampal</span>
+    //   },
+    //   {
+    //     Header: (
+    //       <span>
+    //         Creation On <FontAwesomeIcon icon={faCaretDown} />
+    //       </span>
+    //     ),
+    //     accessor: "creationNew"
+    //   }
+    // ];
 
     let value = `${this.state.start.format(
       "DD-MM-YYYY HH:mm"
@@ -4779,7 +4779,7 @@ class Dashboard extends Component {
                       accessor: "ticketID",
                       Cell: row => {
                         return (
-                          <span onClick={e => this.clickCheckbox(e)}>
+                          <span>
                             <div className="filter-type pink1 pinkmyticket">
                               <div className="filter-checkbox pink2 pinkmargin">
                                 <input

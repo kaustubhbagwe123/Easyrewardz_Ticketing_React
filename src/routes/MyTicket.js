@@ -8,7 +8,7 @@ import HeadphoneImg from "./../assets/Images/headphone.png";
 import Headphone2Img from "./../assets/Images/headphone2.png";
 import BlackUserIcon from "./../assets/Images/avatar.png";
 import DownImg from "./../assets/Images/down.png";
-// import DownWhiteImg from "./../assets/Images/down-white.png";
+import SearchBlackImg from "./../assets/Images/searchBlack.png";
 import LoadingImg from "./../assets/Images/loading.png";
 import EyeImg from "./../assets/Images/eye.png";
 import BillInvoiceImg from "./../assets/Images/bill-Invoice.png";
@@ -30,7 +30,7 @@ import { Drawer } from "antd";
 import CustomerIcon from "./../assets/Images/customer-icon.png";
 import UserIcon from "./../assets/Images/UserIcon.png";
 import CrossIcon from "./../assets/Images/cancel.png";
-import TikcetSystemStoreModal from "./../routes/TicketSystemStoreModal";
+// import TikcetSystemStoreModal from "./../routes/TicketSystemStoreModal";
 import StoreIcon from "./../assets/Images/store.png";
 // import SendEmail from "./../assets/Images/sendEmail.png";
 // import PlusImgTh from "./../assets/Images/plus.png";
@@ -73,7 +73,7 @@ class MyTicket extends Component {
       profilemodal: false,
       storemodal: false,
       storeproductsearch: false,
-      // headPhoneTable: false,
+      OrderTable: false,
       labelModal: false,
       EmailCollapse: false,
       CommentsDrawer: false,
@@ -83,6 +83,7 @@ class MyTicket extends Component {
       CommentCollapse2: false,
       Comment1Collapse: false,
       KbLink: false,
+      CheckBoxChecked: false,
       ticket_Id: 0,
       NotesTab: 0,
       TaskTab: 0,
@@ -95,6 +96,8 @@ class MyTicket extends Component {
       IssueTypeData: [],
       ChannelOfPurchaseData: [],
       historicalDetails: [],
+      productDetails:[],
+      storeDetails:[],
       ticketDetailsData: {},
       tabCounts: {},
       fileName: "",
@@ -112,16 +115,16 @@ class MyTicket extends Component {
       selectedTicketActionType: [],
       TicketActionTypeData: TicketActionType(),
       taskTableGrid: [],
-      SearchAssignData:[],
+      SearchAssignData: [],
       selectetedParameters: {},
       claimDetailsData: [],
       selectetedParameters: {},
       KbPopupData: [],
-      orderDetails:[],
+      orderDetails: [],
       selectedIssueTypeKB: 0,
       selectedCategoryKB: 0,
       selectedSubCategoryKB: 0,
-      custID:0
+      custID: 0
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -141,7 +144,9 @@ class MyTicket extends Component {
     this.handleGetCountOfTabs = this.handleGetCountOfTabs.bind(this);
     this.handleAssignDataList = this.handleAssignDataList.bind(this);
     this.handleKbLinkPopupSearch = this.handleKbLinkPopupSearch.bind(this);
-    this.handleGetOrderDetails=this.handleGetOrderDetails.bind(this)
+    this.handleGetOrderDetails = this.handleGetOrderDetails.bind(this);
+    this.handleGetProductData = this.handleGetProductData.bind(this);
+    this.handleGetStoreDetails = this.handleGetStoreDetails.bind(this);
   }
 
   componentDidMount() {
@@ -175,7 +180,7 @@ class MyTicket extends Component {
     }).then(function(res) {
       debugger;
       let data = res.data.responseData;
-      var customer_Id=data.customerID;
+      var customer_Id = data.customerID;
       var ticketStatus = data.status;
       var ticketPriority = data.priortyID;
       var ticketBrand = data.brandID;
@@ -260,7 +265,7 @@ class MyTicket extends Component {
       url: config.apiUrl + "/Order/getorderdetailsbycustomerid",
       headers: authHeader(),
       params: {
-        CustomerID:this.state.custID
+        CustomerID: this.state.custID
       }
     }).then(function(res) {
       debugger;
@@ -270,6 +275,50 @@ class MyTicket extends Component {
         self.setState({ orderDetails: data });
       } else {
         self.setState({ orderDetails: [] });
+      }
+    });
+  }
+  handleGetProductData() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Order/getOrderListWithItemDetails",
+      headers: authHeader(),
+      params: {
+        OrderNumber: "test123",
+        CustomerID: this.state.custID
+      }
+    }).then(function(res) {
+      debugger;
+      let Msg = res.data.message;
+      let mainData = res.data.responseData;
+      self.setState({
+        message: Msg,
+        productDetails: mainData
+      });
+    });
+  }
+  handleGetStoreDetails() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Store/searchStoreDetail",
+      headers: authHeader(),
+      params: {
+        SearchText: "test"
+      }
+    }).then(function(res) {
+      debugger;
+      let data = res.data.responseData;
+      let Msg = res.data.message;
+      if (Msg === "Success") {
+        self.setState({ storeDetails: data});
+      } else {
+        self.setState({
+          storeDetails: []
+        });
       }
     });
   }
@@ -340,7 +389,7 @@ class MyTicket extends Component {
       let data = res.data.responseData;
       if (status === "Success") {
         self.setState({ taskTableGrid: data });
-      }else{
+      } else {
         self.setState({ taskTableGrid: [] });
       }
     });
@@ -442,9 +491,9 @@ class MyTicket extends Component {
       debugger;
       let status = res.data.status;
       let data = res.data.responseData;
-      if(status === "Success"){
+      if (status === "Success") {
         self.setState({ BrandData: data });
-      }else{
+      } else {
         self.setState({ BrandData: [] });
       }
     });
@@ -558,8 +607,16 @@ class MyTicket extends Component {
   // HandleHeadePhoneModalClose() {
   //   this.setState({ headPhoneTable: false });
   // }
+  handleOrderTableOpen() {
+    this.handleGetProductData()
+    this.setState({ OrderTable: true });
+  }
+  handleOrderTableClose() {
+    this.setState({ OrderTable: false });
+  }
 
   HandleStoreModalOpen() {
+    this.handleGetStoreDetails()
     this.setState({ storemodal: true });
   }
   HandleStoreModalClose() {
@@ -829,6 +886,11 @@ class MyTicket extends Component {
   setTicketActionTypeValue = e => {
     this.setState({ selectedTicketActionType: e });
   };
+  handelCheckBoxCheckedChange = () => {
+    this.setState({
+      CheckBoxChecked: !this.state.CheckBoxChecked
+    });
+  };
   //KB Templete Pop up Search API
   handleKbLinkPopupSearch() {
     debugger;
@@ -859,7 +921,7 @@ class MyTicket extends Component {
       selectedIssueTypeKB: 0,
       selectedCategoryKB: 0,
       selectedSubCategoryKB: 0,
-      KbPopupData:[]
+      KbPopupData: []
     });
   }
   //Category change funcation in KB Templete Modal
@@ -892,7 +954,15 @@ class MyTicket extends Component {
     this.setState({ selectedIssueTypeKB: issueTypeValue });
   };
   render() {
-    const { open, ticketDetailsData, historicalDetails,SearchAssignData,orderDetails } = this.state;
+    const {
+      open,
+      ticketDetailsData,
+      historicalDetails,
+      SearchAssignData,
+      orderDetails,
+      productDetails,
+      storeDetails
+    } = this.state;
     const HidecollapsUp = this.state.collapseUp ? (
       <img
         src={Up1Img}
@@ -1422,19 +1492,35 @@ class MyTicket extends Component {
                                   data={orderDetails}
                                   columns={[
                                     {
-                                      Header: <span className="historyTable-header">Order Number</span>,
+                                      Header: (
+                                        <span className="historyTable-header">
+                                          Order Number
+                                        </span>
+                                      ),
                                       accessor: "orderNumber"
                                     },
                                     {
-                                      Header: <span className="historyTable-header">Mobile Number</span>,
+                                      Header: (
+                                        <span className="historyTable-header">
+                                          Mobile Number
+                                        </span>
+                                      ),
                                       accessor: "mobileNumber"
                                     },
                                     {
-                                      Header: <span className="historyTable-header">Amount</span>,
+                                      Header: (
+                                        <span className="historyTable-header">
+                                          Amount
+                                        </span>
+                                      ),
                                       accessor: "itemPrice"
                                     },
                                     {
-                                      Header: <span className="historyTable-header">Purchase Date</span>,
+                                      Header: (
+                                        <span className="historyTable-header">
+                                          Purchase Date
+                                        </span>
+                                      ),
                                       accessor: "dateFormat"
                                     }
                                   ]}
@@ -1794,19 +1880,239 @@ class MyTicket extends Component {
                       <Modal
                         open={this.state.storemodal}
                         onClose={this.HandleStoreModalClose.bind(this)}
-                        modalId="ticket-store-modal"
-                        overlayId="layout-ticket-store-modal"
+                        modalId="addStoreTableModal"
+                        overlayId="logout-ovrly"
                       >
-                        <div className="profilemodalmaindiv">
-                          <div style={{ float: "" }}>
+                        <div className="row storemainrow">
+                          <div className="col-md-12">
+                            <select className="systemstoredropdown1">
+                              <option>Customer Want to visit store</option>
+                              <option>Customer Already visited store</option>
+                            </select>
+                            <div
+                              style={{
+                                display: "flex",
+                                marginTop: "7px",
+                                float: "right"
+                              }}
+                            >
+                              <label className="orderdetailpopup">Yes</label>
+                              <div className="switchmargin">
+                                <div className="switch switch-primary d-inline m-r-10">
+                                  <input
+                                    type="checkbox"
+                                    id="editDashboard-p-12"
+                                  />
+                                  <label
+                                    htmlFor="editDashboard-p-12"
+                                    className="cr"
+                                  ></label>
+                                </div>
+                              </div>
+                              <label className="orderdetailpopup">No</label>
+                              <div
+                                className="storeplusline13"
+                                onClick={this.HandleStoreModalClose.bind(this)}
+                              >
+                                <span
+                                  className="plusline13"
+                                  style={{ marginLeft: "10px" }}
+                                ></span>
+                                <img
+                                  src={MinusImg}
+                                  alt="Minus"
+                                  className="minus-imgorder"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="row">
+                          <div
+                            className="col-md-6 m-b-10 m-t-10"
+                            style={{ marginLeft: "25px" }}
+                          >
+                            <input
+                              type="text"
+                              className="systemordersearch"
+                              placeholder="Search By Store Name, Pin Code, Store Code"
+                            />
                             <img
-                              src={CrossIcon}
-                              alt="cross-icon"
-                              className="pro-cross-icn-1"
-                              onClick={this.HandleStoreModalClose.bind(this)}
+                              src={SearchBlackImg}
+                              alt="Search"
+                              className="systemorder-imgsearch"
                             />
                           </div>
-                          <TikcetSystemStoreModal />
+                        </div>
+                        <span className="linestore1"></span>
+                        <div className="newtabstore">
+                          <div className="tab-content tabcontentstore">
+                            <div className="">
+                              <ul
+                                className="nav alert-nav-tabs3 store-nav-tabs"
+                                role="tablist"
+                              >
+                                <li className="nav-item fo">
+                                  <a
+                                    className="nav-link active"
+                                    data-toggle="tab"
+                                    href="#storedetail-tab"
+                                    role="tab"
+                                    aria-controls="storedetail-tab"
+                                    aria-selected="true"
+                                  >
+                                    Store Details
+                                  </a>
+                                </li>
+                                <li className="nav-item fo">
+                                  <a
+                                    className="nav-link"
+                                    data-toggle="tab"
+                                    href="#selectedstore-tab"
+                                    role="tab"
+                                    aria-controls="selectedstore-tab"
+                                    aria-selected="false"
+                                  >
+                                    Selected Store
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                        <span className="linestore2"></span>
+                        <div className="tab-content p-0">
+                          <div
+                            className="tab-pane fade"
+                            id="storedetail-tab"
+                            role="tabpanel"
+                            aria-labelledby="storedetail-tab"
+                          >
+                            <div className="reactstoreselect">
+                              <ReactTable
+                                data={storeDetails}
+                                columns={[
+                                  {
+                                    Header: <span>Purpose</span>,
+                                    accessor: "invoiceNumber",
+                                    Cell: row => (
+                                      <div
+                                        className="filter-checkbox"
+                                        style={{ marginLeft: "15px" }}
+                                      >
+                                        <input
+                                          type="checkbox"
+                                          id={row.original.storeID}
+                                          name="filter-type"
+                                          style={{ display: "none" }}
+                                        />
+                                        <label
+                                          htmlFor={row.original.storeID}
+                                          style={{ paddingLeft: "25px" }}
+                                        >
+                                          <span className="add-note">demo</span>
+                                        </label>
+                                      </div>
+                                    )
+                                  },
+                                  {
+                                    Header: <span>Store Code</span>,
+                                    accessor: "storeCode"
+                                  },
+                                  {
+                                    Header: <span>Store Name</span>,
+                                    accessor: "storeName"
+                                  },
+                                  {
+                                    Header: <span>Store Pin Code</span>,
+                                    accessor: "storeCode"
+                                  },
+                                  {
+                                    Header: <span>Store Email ID</span>,
+                                    accessor: "storeEmailID"
+                                  },
+                                  {
+                                    Header: <span>Store Addres</span>,
+                                    accessor: "address"
+                                  },
+                                  {
+                                    Header: <span>Visit Date</span>,
+                                    accessor: "visitDate",
+                                    Cell: row => <label>23,Aug 2019</label>
+                                  }
+                                ]}
+                                // resizable={false}
+                                defaultPageSize={5}
+                                showPagination={false}
+                              />
+                            </div>
+                          </div>
+                          <div
+                            className="tab-pane fade show active"
+                            id="selectedstore-tab"
+                            role="tabpanel"
+                            aria-labelledby="selectedstore-tab"
+                          >
+                            <div className="reactstoreselect">
+                              <ReactTable
+                                 data={storeDetails}
+                                columns={[
+                                  {
+                                    Header: <span>Purpose</span>,
+                                    accessor: "invoiceNumber",
+                                    Cell: row => (
+                                      <div
+                                        className="filter-checkbox"
+                                        style={{ marginLeft: "15px" }}
+                                      >
+                                        <input
+                                          type="checkbox"
+                                          id={row.original.storeID}
+                                          name="filter-type"
+                                          style={{ display: "none" }}
+                                        />
+                                        <label
+                                          htmlFor={row.original.storeID}
+                                          style={{ paddingLeft: "25px" }}
+                                        >
+                                          <span className="add-note">demo</span>
+                                        </label>
+                                      </div>
+                                    )
+                                  },
+                                  {
+                                    Header: <span>Store Code</span>,
+                                    accessor: "storeCode"
+                                  },
+                                  {
+                                    Header: <span>Store Name</span>,
+                                    accessor: "storeName"
+                                  },
+                                  {
+                                    Header: <span>Store Pin Code</span>,
+                                    accessor: "storeCode"
+                                  },
+                                  {
+                                    Header: <span>Store Email ID</span>,
+                                    accessor: "storeEmailID"
+                                  },
+                                  {
+                                    Header: <span>Store Addres</span>,
+                                    accessor: "address"
+                                  },
+                                  {
+                                    Header: <span>Visit Date</span>,
+                                    accessor: "visitDate",
+                                    Cell: row => <label>23,Aug 2019</label>
+                                  }
+                                ]}
+                                // resizable={false}
+                                defaultPageSize={5}
+                                showPagination={false}
+                              />
+                            </div>
+                          </div>
                         </div>
                       </Modal>
                     </div>
@@ -1814,7 +2120,7 @@ class MyTicket extends Component {
                       <label className="label-4">Product</label>
                       <label
                         className="bata-rajouri-garden"
-                        onClick={this.HandleStoreModalOpen.bind(this)}
+                        onClick={this.handleOrderTableOpen.bind(this)}
                       >
                         Red Tennis Coca Cola White Monogr...&nbsp;
                         <img
@@ -1823,6 +2129,198 @@ class MyTicket extends Component {
                           className="pencilImg"
                         />
                       </label>
+                      <Modal
+                        onClose={this.handleOrderTableClose.bind(this)}
+                        open={this.state.OrderTable}
+                        modalId="addOrderTableModal"
+                        overlayId="logout-ovrly"
+                      >
+                        <div
+                          className="row"
+                          style={{ marginLeft: "0px", marginRight: "0px" }}
+                        >
+                          <div
+                            className="col-md-12 claim-status-card"
+                            style={{ height: "54px" }}
+                          >
+                            <label style={{ marginTop: "7px" }}>
+                              <b>Customer Want to attach order</b>
+                            </label>
+                            <div
+                              className="claimplus"
+                              onClick={this.handleOrderTableClose.bind(this)}
+                            >
+                              <span className="plusline12"></span>
+                              <span>
+                                <img
+                                  src={MinusImg}
+                                  alt="Minus"
+                                  className="minus-imgorder"
+                                />
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          className="row m-t-10 m-b-10"
+                          style={{ marginLeft: "0", marginRight: "0" }}
+                        >
+                          <div className="col-md-6">
+                            <label className="orderdetailpopup">
+                              Order Details
+                            </label>
+                          </div>
+                          <div className="col-md-3">
+                            <div style={{ float: "right", display: "flex" }}>
+                              <label className="orderdetailpopup">Order</label>
+                              <div className="orderswitch orderswitchitem">
+                                <div className="switch switch-primary d-inline">
+                                  <input type="checkbox" id="editTasks-p-2" />
+                                  <label
+                                    htmlFor="editTasks-p-2"
+                                    className="cr ord"
+                                  ></label>
+                                </div>
+                              </div>
+                              <label className="orderdetailpopup">Item</label>
+                            </div>
+                          </div>
+                          <div className="col-md-3">
+                            <input
+                              type="text"
+                              className="searchtextpopup"
+                              placeholder="Search Order"
+                            />
+                            <img
+                              src={SearchBlackImg}
+                              alt="Search"
+                              className="searchtextimgpopup"
+                            />
+                          </div>
+                        </div>
+                        <div className="reacttableordermodal ordermainrow">
+                          <ReactTable
+                            data={productDetails}
+                            columns={[
+                              {
+                                Header: <span>Invoice Number</span>,
+                                accessor: "invoiceNumber",
+                                Cell: row => {
+                                  return (
+                                    <span>
+                                      <div className="filter-type pink1 pinkmyticket">
+                                        <div className="filter-checkbox pink2 pinkmargin">
+                                          <input
+                                            type="checkbox"
+                                            id={row.original.orderMasterID}
+                                            checked={this.state.CheckBoxChecked}
+                                            onChange={this.handelCheckBoxCheckedChange}
+                                          />
+                                          <label htmlFor={row.original.orderMasterID}>
+                                            {row.original.invoiceNumber}
+                                          </label>
+                                        </div>
+                                      </div>
+                                    </span>
+                                  );
+                                }
+                              },
+                              {
+                                Header: <span>Invoice Date</span>,
+                                accessor: "dateFormat"
+                              },
+                              {
+                                Header: <span>Item Count</span>,
+                                accessor: "itemCount"
+                              },
+                              {
+                                Header: <span>Item Price</span>,
+                                accessor: "itemPrice"
+                              },
+                              {
+                                Header: <span>Price Paid</span>,
+                                accessor: "pricePaid"
+                              },
+                              {
+                                Header: <span>Store Code</span>,
+                                accessor: "storeCode"
+                              },
+                              {
+                                Header: <span>Store Addres</span>,
+                                accessor: "storeAddress"
+                              },
+                              {
+                                Header: <span>Discount</span>,
+                                accessor: "discount"
+                              }
+                            ]}
+                            //resizable={false}
+                            minRows={1}
+                            defaultPageSize={5}
+                            showPagination={false}
+                            SubComponent={row => {
+                              return (
+                                <div style={{ padding: "20px" }}>
+                                  <ReactTable
+                                    data={row.original.orderItems}
+                                    columns={[
+                                      {
+                                        Header: <span>Article Number</span>,
+                                        accessor: "invoiceNo",
+                                        Cell: row => {
+                                          return (
+                                            <div
+                                              className="filter-checkbox"
+                                              style={{ marginLeft: "15px" }}
+                                            >
+                                              <input
+                                                type="checkbox"
+                                                style={{ display: "none" }}
+                                                id={row.original.orderItemID}
+                                                // name="dashboardcheckbox[]"
+                                              />
+                                              <label
+                                                htmlFor={
+                                                  row.original.orderItemID
+                                                }
+                                              >
+                                                {row.original.invoiceNo}
+                                              </label>
+                                            </div>
+                                          );
+                                        }
+                                      },
+                                      {
+                                        Header: <span>Article Size</span>,
+                                        accessor: "size"
+                                      },
+                                      {
+                                        Header: <span>Article MRP</span>,
+                                        accessor: "itemPrice"
+                                      },
+                                      {
+                                        Header: <span>Price Paid</span>,
+                                        accessor: "pricePaid"
+                                      },
+                                      {
+                                        Header: <span>Discount</span>,
+                                        accessor: "discount"
+                                      },
+                                      {
+                                        Header: <span>Required Size</span>,
+                                        accessor: "requireSize"
+                                      }
+                                    ]}
+                                    defaultPageSize={2}
+                                    minRows={1}
+                                    showPagination={false}
+                                  />
+                                </div>
+                              );
+                            }}
+                          />
+                        </div>
+                      </Modal>
                     </div>
                   </div>
                 </div>

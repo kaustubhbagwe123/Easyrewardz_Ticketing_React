@@ -243,7 +243,7 @@ class MyTicketList extends Component {
       selectedNoOfDayForDailyYear: 0,
       selectedNoOfWeekForYear: 0,
       selectedNameOfMonthForDailyYear: "",
-      loading:false
+      loading: false
     };
     this.clearSearch = this.clearSearch.bind(this);
     this.handleAdvSearchFlag = this.handleAdvSearchFlag.bind(this);
@@ -410,7 +410,7 @@ class MyTicketList extends Component {
       ticketStatus = 1003;
     }
     var data = ticketStatus;
-    this.setState({loading:true})
+    this.setState({ loading: true });
     debugger;
     let self = this;
     axios({
@@ -431,9 +431,9 @@ class MyTicketList extends Component {
       let data = res.data.responseData;
       let Status = res.data.message;
       if (Status === "Record Not Found") {
-        self.setState({ SearchTicketData: [],loading:false });
+        self.setState({ SearchTicketData: [], loading: false });
       } else {
-        self.setState({ SearchTicketData: data ,loading:false});
+        self.setState({ SearchTicketData: data, loading: false });
       }
     });
   }
@@ -796,10 +796,9 @@ class MyTicketList extends Component {
       debugger;
       let details = res.data.responseData;
       let status = res.data.message;
-      if(status === "Success"){
+      if (status === "Success") {
         self.setState({ DraftDetails: details });
-      }
-      else{
+      } else {
         self.setState({ DraftDetails: [] });
       }
     });
@@ -875,10 +874,10 @@ class MyTicketList extends Component {
     }).then(function(res) {
       debugger;
       let data = res.data.responseData;
-      let stastus=res.data.message;
-      if(stastus === "Success"){
+      let stastus = res.data.message;
+      if (stastus === "Success") {
         self.setState({ TicketPriorityData: data });
-      }else{
+      } else {
         self.setState({ TicketPriorityData: [] });
       }
     });
@@ -1178,7 +1177,7 @@ class MyTicketList extends Component {
   }
   ViewSearchData(TabId) {
     debugger;
-    // let self = this;
+    let self = this;
     var ticketStatus = 0;
     if (TabId === "Escalation" || TabId === undefined) {
       ticketStatus = 1001;
@@ -1210,10 +1209,19 @@ class MyTicketList extends Component {
     // this.state.fieldByDate[
     //   "Ticket_StatusID"
     // ] = this.state.selectedTicketStatusByDate;
+   
     var dateTab = {};
-    dateTab["Ticket_CreatedOn"] = moment(this.state.ByDateCreatDate).format(
-      "YYYY-MM-DD"
-    );
+    var createDate=moment(this.state.ByDateCreatDate).format(
+      "YYYY-MM-DD");
+      if(createDate  === "Invalid date"){
+        this.setState({
+          createDate:""
+        })
+      }
+    // dateTab["Ticket_CreatedOn"] = moment(this.state.ByDateCreatDate).format(
+    //   "YYYY-MM-DD"
+    // );
+    dateTab["Ticket_CreatedOn"] = createDate;
     dateTab["Ticket_ModifiedOn"] = moment(this.state.ByDateSelectDate).format(
       "YYYY-MM-DD"
     );
@@ -1265,14 +1273,24 @@ class MyTicketList extends Component {
       data: {
         HeaderStatusId: 1001,
         ActiveTabId: this.state.byDateFlag,
-        // searchDataByDate: dateTab,
-        searchDataByCustomerType: customerType
+        searchDataByDate: dateTab,
+        //searchDataByCustomerType: customerType,
         // searchDataByTicketType:ticketType,
         // searchDataByCategoryType:categoryType
       }
     }).then(function(res) {
       debugger;
-      // let Msg = res.data.message;
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        self.setState({
+          SearchTicketData: data
+        });
+      } else {
+        self.setState({
+          SearchTicketData: []
+        });
+      }
     });
   }
 
@@ -2023,256 +2041,262 @@ class MyTicketList extends Component {
                 <label className="add-tickets">ADD TICKETS</label>
               </button>
             </div>
-            {this.state.loading===true?<div className="loader-icon"></div>:
-            <div className="tab-content">
-              <div
-                className="tab-pane fade show active"
-                id="Escalation-tab"
-                role="tabpanel"
-                aria-labelledby="Escalation-tab"
-              >
-                <div className="container-fluid">
-                  <div
-                    className="table-cntr mt-3 mtictab table-responsive"
-                    style={{ overflow: "initial" }}
-                  >
-                    <div>
-                      <Collapse isOpen={this.state.collapseSearch}>
-                        <Card>
-                          <CardBody>
-                            <div className="myticlist-expand-sect">
-                              <div className="position-relative">
-                                <ul className="nav nav-tabs" role="tablist">
-                                  <li className="nav-item">
-                                    <a
-                                      className="nav-link active"
-                                      data-toggle="tab"
-                                      href="#date-tab"
-                                      role="tab"
-                                      aria-controls="date-tab"
-                                      aria-selected="true"
-                                      onClick={this.handleAdvSearchFlag}
-                                    >
-                                      By Date
-                                    </a>
-                                  </li>
-                                  <li className="nav-item">
-                                    <a
-                                      className="nav-link"
-                                      data-toggle="tab"
-                                      href="#customer-tab"
-                                      role="tab"
-                                      aria-controls="customer-tab"
-                                      aria-selected="false"
-                                      onClick={this.handleAdvSearchFlag}
-                                    >
-                                      By Customer Type
-                                    </a>
-                                  </li>
-                                  <li className="nav-item">
-                                    <a
-                                      className="nav-link"
-                                      data-toggle="tab"
-                                      href="#ticket-tab"
-                                      role="tab"
-                                      aria-controls="ticket-tab"
-                                      aria-selected="false"
-                                      onClick={this.handleAdvSearchFlag}
-                                    >
-                                      By Ticket Type
-                                    </a>
-                                  </li>
-                                  <li className="nav-item">
-                                    <a
-                                      className="nav-link"
-                                      data-toggle="tab"
-                                      href="#category-tab"
-                                      role="tab"
-                                      aria-controls="category-tab"
-                                      aria-selected="false"
-                                      onClick={this.handleAdvSearchFlag}
-                                    >
-                                      By Category
-                                    </a>
-                                  </li>
-                                  <li className="nav-item">
-                                    <a
-                                      className="nav-link"
-                                      data-toggle="tab"
-                                      href="#all-tab"
-                                      role="tab"
-                                      aria-controls="all-tab"
-                                      aria-selected="false"
-                                      onClick={this.handleAdvSearchFlag}
-                                    >
-                                      All
-                                    </a>
-                                  </li>
-                                </ul>
-                                <div className="save-view-search">
-                                  <button onClick={this.onOpenModal}>
-                                    Save Search
-                                  </button>
-                                  <button
-                                    type="button"
-                                    className="btn-inv"
-                                    onClick={this.ViewSearchData.bind(this)}
-                                  >
-                                    View Search
-                                  </button>
-                                </div>
-                              </div>
-                              <Modal
-                                open={this.state.open}
-                                onClose={this.onCloseModal}
-                                center
-                                modalId="save-search-popup"
-                                overlayId="save-search-ovrly"
-                              >
-                                <div className="save-search">
-                                  <p>SAVE SEARCH</p>
-                                </div>
-                                <div className="search-name">
-                                  <input
-                                    type="search"
-                                    placeholder="Give name to your search"
-                                    name="SearchName"
-                                    value={this.state.SearchName}
-                                    onChange={this.handelOnchangeData}
-                                  />
-                                  <button
-                                    className="butn"
-                                    type="button"
-                                    onClick={this.SaveSearchData.bind(this)}
-                                  >
-                                    Save
-                                  </button>
-                                </div>
-                                <div className="search-names">
-                                  <div className="names-title">
-                                    <p>Search Name</p>
-                                    <p className="mar-comp">Action</p>
-                                  </div>
-                                  <ul>
-                                    {/* <li> */}
-                                    {this.state.SearchListData !== null &&
-                                      this.state.SearchListData.map(
-                                        (item, i) => (
-                                          <li>
-                                            <label
-                                              key={i}
-                                              value={item.searchParamID}
-                                            >
-                                              {item.searchName}
-                                            </label>
-                                            <div>
-                                              <a href={Demo.BLANK_LINK}>
-                                                APPLY
-                                              </a>
-                                              <img
-                                                src={DelSearch}
-                                                alt="del-search"
-                                                className="cr-pnt"
-                                                onClick={this.hadleSearchDeleteData.bind(
-                                                  this,
-                                                  item.searchParamID
-                                                )}
-                                              />
-                                            </div>
-                                          </li>
-                                        )
-                                      )}
-
-                                    {/* </li> */}
+            {this.state.loading === true ? (
+              <div className="loader-icon"></div>
+            ) : (
+              <div className="tab-content">
+                <div
+                  className="tab-pane fade show active"
+                  id="Escalation-tab"
+                  role="tabpanel"
+                  aria-labelledby="Escalation-tab"
+                >
+                  <div className="container-fluid">
+                    <div
+                      className="table-cntr mt-3 mtictab table-responsive"
+                      style={{ overflow: "initial" }}
+                    >
+                      <div>
+                        <Collapse isOpen={this.state.collapseSearch}>
+                          <Card>
+                            <CardBody>
+                              <div className="myticlist-expand-sect">
+                                <div className="position-relative">
+                                  <ul className="nav nav-tabs" role="tablist">
+                                    <li className="nav-item">
+                                      <a
+                                        className="nav-link active"
+                                        data-toggle="tab"
+                                        href="#date-tab"
+                                        role="tab"
+                                        aria-controls="date-tab"
+                                        aria-selected="true"
+                                        onClick={this.handleAdvSearchFlag}
+                                      >
+                                        By Date
+                                      </a>
+                                    </li>
+                                    <li className="nav-item">
+                                      <a
+                                        className="nav-link"
+                                        data-toggle="tab"
+                                        href="#customer-tab"
+                                        role="tab"
+                                        aria-controls="customer-tab"
+                                        aria-selected="false"
+                                        onClick={this.handleAdvSearchFlag}
+                                      >
+                                        By Customer Type
+                                      </a>
+                                    </li>
+                                    <li className="nav-item">
+                                      <a
+                                        className="nav-link"
+                                        data-toggle="tab"
+                                        href="#ticket-tab"
+                                        role="tab"
+                                        aria-controls="ticket-tab"
+                                        aria-selected="false"
+                                        onClick={this.handleAdvSearchFlag}
+                                      >
+                                        By Ticket Type
+                                      </a>
+                                    </li>
+                                    <li className="nav-item">
+                                      <a
+                                        className="nav-link"
+                                        data-toggle="tab"
+                                        href="#category-tab"
+                                        role="tab"
+                                        aria-controls="category-tab"
+                                        aria-selected="false"
+                                        onClick={this.handleAdvSearchFlag}
+                                      >
+                                        By Category
+                                      </a>
+                                    </li>
+                                    <li className="nav-item">
+                                      <a
+                                        className="nav-link"
+                                        data-toggle="tab"
+                                        href="#all-tab"
+                                        role="tab"
+                                        aria-controls="all-tab"
+                                        aria-selected="false"
+                                        onClick={this.handleAdvSearchFlag}
+                                      >
+                                        All
+                                      </a>
+                                    </li>
                                   </ul>
+                                  <div className="save-view-search">
+                                    <button onClick={this.onOpenModal}>
+                                      Save Search
+                                    </button>
+                                    <button
+                                      type="button"
+                                      className="btn-inv"
+                                      onClick={this.ViewSearchData.bind(this)}
+                                    >
+                                      View Search
+                                    </button>
+                                  </div>
                                 </div>
-                              </Modal>
-                              <div className="tab-content p-0">
-                                <div
-                                  className="tab-pane fade show active"
-                                  id="date-tab"
-                                  role="tabpanel"
-                                  aria-labelledby="date-tab"
+                                <Modal
+                                  open={this.state.open}
+                                  onClose={this.onCloseModal}
+                                  center
+                                  modalId="save-search-popup"
+                                  overlayId="save-search-ovrly"
                                 >
-                                  <div className="container-fluid">
-                                    <div className="row">
-                                      <div className="col-md-3 col-sm-6">
-                                        <DatePicker
-                                          selected={this.state.ByDateCreatDate}
-                                          onChange={this.handleByDateCreate.bind(
-                                            this
-                                          )}
-                                          placeholderText="Creation Date"
-                                          showMonthDropdown
-                                          showYearDropdown
-                                          dateFormat="dd/MM/yyyy"
-                                          value={this.state.ByDateCreatDate}
-                                          // className="form-control"
-                                        />
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <DatePicker
-                                          selected={this.state.ByDateSelectDate}
-                                          onChange={this.handleChangeSelectDate.bind(
-                                            this
-                                          )}
-                                          placeholderText="Last Updated Date"
-                                          showMonthDropdown
-                                          showYearDropdown
-                                          dateFormat="dd/MM/yyyy"
-                                          value={this.state.ByDateSelectDate}
-                                          name="ByDateSelectDate"
-                                          // className="form-control"
-                                        />
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <select
-                                          value={
-                                            this.state.selectedSlaDueByDate
-                                          }
-                                          onChange={this.handleSlaDueByDate}
-                                        >
-                                          <option>SLA Due</option>
-                                          {this.state.SlaDueData !== null &&
-                                            this.state.SlaDueData.map(
-                                              (item, i) => (
-                                                <option
-                                                  key={i}
-                                                  value={item.slaDueID}
-                                                >
-                                                  {item.slaDueName}
-                                                </option>
-                                              )
-                                            )}
-                                        </select>
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <select
-                                          value={
-                                            this.state
-                                              .selectedTicketStatusByDate
-                                          }
-                                          onChange={
-                                            this.handleTicketStatusByDate
-                                          }
-                                        >
-                                          <option>Ticket Status</option>
-                                          {this.state.TicketStatusData !==
-                                            null &&
-                                            this.state.TicketStatusData.map(
-                                              (item, i) => (
-                                                <option
-                                                  key={i}
-                                                  value={item.ticketStatusID}
-                                                >
-                                                  {item.ticketStatusName}
-                                                </option>
-                                              )
-                                            )}
-                                        </select>
-                                      </div>
+                                  <div className="save-search">
+                                    <p>SAVE SEARCH</p>
+                                  </div>
+                                  <div className="search-name">
+                                    <input
+                                      type="search"
+                                      placeholder="Give name to your search"
+                                      name="SearchName"
+                                      value={this.state.SearchName}
+                                      onChange={this.handelOnchangeData}
+                                    />
+                                    <button
+                                      className="butn"
+                                      type="button"
+                                      onClick={this.SaveSearchData.bind(this)}
+                                    >
+                                      Save
+                                    </button>
+                                  </div>
+                                  <div className="search-names">
+                                    <div className="names-title">
+                                      <p>Search Name</p>
+                                      <p className="mar-comp">Action</p>
                                     </div>
-                                    {/* <div className="row justify-content-between">
+                                    <ul>
+                                      {/* <li> */}
+                                      {this.state.SearchListData !== null &&
+                                        this.state.SearchListData.map(
+                                          (item, i) => (
+                                            <li>
+                                              <label
+                                                key={i}
+                                                value={item.searchParamID}
+                                              >
+                                                {item.searchName}
+                                              </label>
+                                              <div>
+                                                <a href={Demo.BLANK_LINK}>
+                                                  APPLY
+                                                </a>
+                                                <img
+                                                  src={DelSearch}
+                                                  alt="del-search"
+                                                  className="cr-pnt"
+                                                  onClick={this.hadleSearchDeleteData.bind(
+                                                    this,
+                                                    item.searchParamID
+                                                  )}
+                                                />
+                                              </div>
+                                            </li>
+                                          )
+                                        )}
+
+                                      {/* </li> */}
+                                    </ul>
+                                  </div>
+                                </Modal>
+                                <div className="tab-content p-0">
+                                  <div
+                                    className="tab-pane fade show active"
+                                    id="date-tab"
+                                    role="tabpanel"
+                                    aria-labelledby="date-tab"
+                                  >
+                                    <div className="container-fluid">
+                                      <div className="row">
+                                        <div className="col-md-3 col-sm-6">
+                                          <DatePicker
+                                            selected={
+                                              this.state.ByDateCreatDate
+                                            }
+                                            onChange={this.handleByDateCreate.bind(
+                                              this
+                                            )}
+                                            placeholderText="Creation Date"
+                                            showMonthDropdown
+                                            showYearDropdown
+                                            dateFormat="dd/MM/yyyy"
+                                            value={this.state.ByDateCreatDate}
+                                            // className="form-control"
+                                          />
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <DatePicker
+                                            selected={
+                                              this.state.ByDateSelectDate
+                                            }
+                                            onChange={this.handleChangeSelectDate.bind(
+                                              this
+                                            )}
+                                            placeholderText="Last Updated Date"
+                                            showMonthDropdown
+                                            showYearDropdown
+                                            dateFormat="dd/MM/yyyy"
+                                            value={this.state.ByDateSelectDate}
+                                            name="ByDateSelectDate"
+                                            // className="form-control"
+                                          />
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <select
+                                            value={
+                                              this.state.selectedSlaDueByDate
+                                            }
+                                            onChange={this.handleSlaDueByDate}
+                                          >
+                                            <option>SLA Due</option>
+                                            {this.state.SlaDueData !== null &&
+                                              this.state.SlaDueData.map(
+                                                (item, i) => (
+                                                  <option
+                                                    key={i}
+                                                    value={item.slaDueID}
+                                                  >
+                                                    {item.slaDueName}
+                                                  </option>
+                                                )
+                                              )}
+                                          </select>
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <select
+                                            value={
+                                              this.state
+                                                .selectedTicketStatusByDate
+                                            }
+                                            onChange={
+                                              this.handleTicketStatusByDate
+                                            }
+                                          >
+                                            <option>Ticket Status</option>
+                                            {this.state.TicketStatusData !==
+                                              null &&
+                                              this.state.TicketStatusData.map(
+                                                (item, i) => (
+                                                  <option
+                                                    key={i}
+                                                    value={item.ticketStatusID}
+                                                  >
+                                                    {item.ticketStatusName}
+                                                  </option>
+                                                )
+                                              )}
+                                          </select>
+                                        </div>
+                                      </div>
+                                      {/* <div className="row justify-content-between">
                                       <div className="col-auto d-flex align-items-center">
                                         <p className="font-weight-bold mr-3">
                                           <span className="blue-clr">04</span>{" "}
@@ -2756,74 +2780,78 @@ class MyTicketList extends Component {
                                       </div>
                                     </div>
                                    */}
-                                  </div>
-                                </div>
-                                <div
-                                  className="tab-pane fade"
-                                  id="customer-tab"
-                                  role="tabpanel"
-                                  aria-labelledby="customer-tab"
-                                >
-                                  <div className="container-fluid">
-                                    <div className="row">
-                                      <div className="col-md-3 col-sm-6">
-                                        <input
-                                          className="no-bg"
-                                          type="text"
-                                          placeholder="Customer Mobile No"
-                                          name="MobileNoByCustType"
-                                          value={this.state.MobileNoByCustType}
-                                          onChange={this.handelOnchangeData}
-                                          maxLength={10}
-                                        />
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <input
-                                          type="text"
-                                          className="no-bg"
-                                          placeholder="Customer Email ID"
-                                          name="EmailIdByCustType"
-                                          value={this.state.EmailIdByCustType}
-                                          onChange={this.handelOnchangeData}
-                                        />
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <input
-                                          type="text"
-                                          className="no-bg"
-                                          placeholder="Ticket ID"
-                                          name="TicketIdByCustType"
-                                          value={this.state.TicketIdByCustType}
-                                          onChange={this.handelOnchangeData}
-                                        />
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <select
-                                          value={
-                                            this.state
-                                              .selectedTicketStatusByCustomer
-                                          }
-                                          onChange={
-                                            this.handleTicketStatusByCustomer
-                                          }
-                                        >
-                                          <option>Ticket Status</option>
-                                          {this.state.TicketStatusData !==
-                                            null &&
-                                            this.state.TicketStatusData.map(
-                                              (item, i) => (
-                                                <option
-                                                  key={i}
-                                                  value={item.ticketStatusID}
-                                                >
-                                                  {item.ticketStatusName}
-                                                </option>
-                                              )
-                                            )}
-                                        </select>
-                                      </div>
                                     </div>
-                                    {/* <div className="row justify-content-between">
+                                  </div>
+                                  <div
+                                    className="tab-pane fade"
+                                    id="customer-tab"
+                                    role="tabpanel"
+                                    aria-labelledby="customer-tab"
+                                  >
+                                    <div className="container-fluid">
+                                      <div className="row">
+                                        <div className="col-md-3 col-sm-6">
+                                          <input
+                                            className="no-bg"
+                                            type="text"
+                                            placeholder="Customer Mobile No"
+                                            name="MobileNoByCustType"
+                                            value={
+                                              this.state.MobileNoByCustType
+                                            }
+                                            onChange={this.handelOnchangeData}
+                                            maxLength={10}
+                                          />
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <input
+                                            type="text"
+                                            className="no-bg"
+                                            placeholder="Customer Email ID"
+                                            name="EmailIdByCustType"
+                                            value={this.state.EmailIdByCustType}
+                                            onChange={this.handelOnchangeData}
+                                          />
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <input
+                                            type="text"
+                                            className="no-bg"
+                                            placeholder="Ticket ID"
+                                            name="TicketIdByCustType"
+                                            value={
+                                              this.state.TicketIdByCustType
+                                            }
+                                            onChange={this.handelOnchangeData}
+                                          />
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <select
+                                            value={
+                                              this.state
+                                                .selectedTicketStatusByCustomer
+                                            }
+                                            onChange={
+                                              this.handleTicketStatusByCustomer
+                                            }
+                                          >
+                                            <option>Ticket Status</option>
+                                            {this.state.TicketStatusData !==
+                                              null &&
+                                              this.state.TicketStatusData.map(
+                                                (item, i) => (
+                                                  <option
+                                                    key={i}
+                                                    value={item.ticketStatusID}
+                                                  >
+                                                    {item.ticketStatusName}
+                                                  </option>
+                                                )
+                                              )}
+                                          </select>
+                                        </div>
+                                      </div>
+                                      {/* <div className="row justify-content-between">
                                       <div className="col-auto d-flex align-items-center">
                                         <p className="font-weight-bold mr-3">
                                           <span className="blue-clr">04</span>{" "}
@@ -2861,63 +2889,63 @@ class MyTicketList extends Component {
                                       </div>
                                     </div>
                                    */}
+                                    </div>
                                   </div>
-                                </div>
-                                <div
-                                  className="tab-pane fade"
-                                  id="ticket-tab"
-                                  role="tabpanel"
-                                  aria-labelledby="ticket-tab"
-                                >
-                                  <div className="container-fluid">
-                                    <div className="row">
-                                      <div className="col-md-3 col-sm-6">
-                                        <select
-                                          value={this.state.selectedPriority}
-                                          onChange={this.setPriorityValue}
-                                        >
-                                          <option>Priority</option>
-                                          {this.state.TicketPriorityData !==
-                                            null &&
-                                            this.state.TicketPriorityData.map(
-                                              (item, i) => (
-                                                <option
-                                                  key={i}
-                                                  value={item.priorityID}
-                                                >
-                                                  {item.priortyName}
-                                                </option>
-                                              )
-                                            )}
-                                        </select>
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <select
-                                          value={
-                                            this.state
-                                              .selectedTicketStatusByTicket
-                                          }
-                                          onChange={
-                                            this.handleTicketStatusByTicket
-                                          }
-                                        >
-                                          <option>Ticket Status</option>
-                                          {this.state.TicketStatusData !==
-                                            null &&
-                                            this.state.TicketStatusData.map(
-                                              (item, i) => (
-                                                <option
-                                                  key={i}
-                                                  value={item.ticketStatusID}
-                                                >
-                                                  {item.ticketStatusName}
-                                                </option>
-                                              )
-                                            )}
-                                        </select>
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        {/* <select
+                                  <div
+                                    className="tab-pane fade"
+                                    id="ticket-tab"
+                                    role="tabpanel"
+                                    aria-labelledby="ticket-tab"
+                                  >
+                                    <div className="container-fluid">
+                                      <div className="row">
+                                        <div className="col-md-3 col-sm-6">
+                                          <select
+                                            value={this.state.selectedPriority}
+                                            onChange={this.setPriorityValue}
+                                          >
+                                            <option>Priority</option>
+                                            {this.state.TicketPriorityData !==
+                                              null &&
+                                              this.state.TicketPriorityData.map(
+                                                (item, i) => (
+                                                  <option
+                                                    key={i}
+                                                    value={item.priorityID}
+                                                  >
+                                                    {item.priortyName}
+                                                  </option>
+                                                )
+                                              )}
+                                          </select>
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <select
+                                            value={
+                                              this.state
+                                                .selectedTicketStatusByTicket
+                                            }
+                                            onChange={
+                                              this.handleTicketStatusByTicket
+                                            }
+                                          >
+                                            <option>Ticket Status</option>
+                                            {this.state.TicketStatusData !==
+                                              null &&
+                                              this.state.TicketStatusData.map(
+                                                (item, i) => (
+                                                  <option
+                                                    key={i}
+                                                    value={item.ticketStatusID}
+                                                  >
+                                                    {item.ticketStatusName}
+                                                  </option>
+                                                )
+                                              )}
+                                          </select>
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          {/* <select
                                           value={
                                             this.state.selectedChannelOfPurchase
                                           }
@@ -2941,61 +2969,61 @@ class MyTicketList extends Component {
                                               )
                                             )}
                                         </select> */}
-                                        <div className="normal-dropdown">
-                                          <Select
-                                            getOptionLabel={option =>
-                                              option.nameOfChannel
-                                            }
-                                            getOptionValue={option =>
-                                              option.channelOfPurchaseID
-                                            }
-                                            options={
-                                              this.state.ChannelOfPurchaseData
-                                            }
-                                            placeholder="Channel Of Purchase"
-                                            // menuIsOpen={true}
-                                            closeMenuOnSelect={false}
-                                            onChange={this.setChannelOfPurchaseValue.bind(
-                                              this
-                                            )}
-                                            value={
-                                              this.state
-                                                .selectedChannelOfPurchase
-                                            }
-                                            // showNewOptionAtTop={false}
-                                            isMulti
-                                          />
+                                          <div className="normal-dropdown">
+                                            <Select
+                                              getOptionLabel={option =>
+                                                option.nameOfChannel
+                                              }
+                                              getOptionValue={option =>
+                                                option.channelOfPurchaseID
+                                              }
+                                              options={
+                                                this.state.ChannelOfPurchaseData
+                                              }
+                                              placeholder="Channel Of Purchase"
+                                              // menuIsOpen={true}
+                                              closeMenuOnSelect={false}
+                                              onChange={this.setChannelOfPurchaseValue.bind(
+                                                this
+                                              )}
+                                              value={
+                                                this.state
+                                                  .selectedChannelOfPurchase
+                                              }
+                                              // showNewOptionAtTop={false}
+                                              isMulti
+                                            />
+                                          </div>
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <div className="normal-dropdown">
+                                            <Select
+                                              getOptionLabel={option =>
+                                                option.ticketActionTypeName
+                                              }
+                                              getOptionValue={option =>
+                                                option.ticketActionTypeID
+                                              }
+                                              options={
+                                                this.state.TicketActionTypeData
+                                              }
+                                              placeholder="Ticket Action Type"
+                                              // menuIsOpen={true}
+                                              closeMenuOnSelect={false}
+                                              onChange={this.setTicketActionTypeValue.bind(
+                                                this
+                                              )}
+                                              value={
+                                                this.state
+                                                  .selectedTicketActionType
+                                              }
+                                              // showNewOptionAtTop={false}
+                                              isMulti
+                                            />
+                                          </div>
                                         </div>
                                       </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <div className="normal-dropdown">
-                                          <Select
-                                            getOptionLabel={option =>
-                                              option.ticketActionTypeName
-                                            }
-                                            getOptionValue={option =>
-                                              option.ticketActionTypeID
-                                            }
-                                            options={
-                                              this.state.TicketActionTypeData
-                                            }
-                                            placeholder="Ticket Action Type"
-                                            // menuIsOpen={true}
-                                            closeMenuOnSelect={false}
-                                            onChange={this.setTicketActionTypeValue.bind(
-                                              this
-                                            )}
-                                            value={
-                                              this.state
-                                                .selectedTicketActionType
-                                            }
-                                            // showNewOptionAtTop={false}
-                                            isMulti
-                                          />
-                                        </div>
-                                      </div>
-                                    </div>
-                                    {/* <div className="row justify-content-between">
+                                      {/* <div className="row justify-content-between">
                                       <div className="col-auto d-flex align-items-center">
                                         <p className="font-weight-bold mr-3">
                                           <span className="blue-clr">04</span>{" "}
@@ -3033,101 +3061,104 @@ class MyTicketList extends Component {
                                       </div>
                                     </div>
                                    */}
-                                  </div>
-                                </div>
-                                <div
-                                  className="tab-pane fade"
-                                  id="category-tab"
-                                  role="tabpanel"
-                                  aria-labelledby="category-tab"
-                                >
-                                  <div className="container-fluid">
-                                    <div className="row">
-                                      <div className="col-md-3 col-sm-6">
-                                        <select
-                                          value={this.state.selectedCategory}
-                                          onChange={this.setCategoryValue}
-                                        >
-                                          <option>Category</option>
-                                          {this.state.CategoryData !== null &&
-                                            this.state.CategoryData.map(
-                                              (item, i) => (
-                                                <option
-                                                  key={i}
-                                                  value={item.categoryID}
-                                                >
-                                                  {item.categoryName}
-                                                </option>
-                                              )
-                                            )}
-                                        </select>
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <select
-                                          value={this.state.selectedSubCategory}
-                                          onChange={this.setSubCategoryValue}
-                                        >
-                                          <option>Sub Category</option>
-                                          {this.state.SubCategoryData !==
-                                            null &&
-                                            this.state.SubCategoryData.map(
-                                              (item, i) => (
-                                                <option
-                                                  key={i}
-                                                  value={item.subCategoryID}
-                                                >
-                                                  {item.subCategoryName}
-                                                </option>
-                                              )
-                                            )}
-                                        </select>
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <select
-                                          value={this.state.selectedIssueType}
-                                          onChange={this.setIssueTypeValue}
-                                        >
-                                          <option>Issue Type</option>
-                                          {this.state.IssueTypeData !== null &&
-                                            this.state.IssueTypeData.map(
-                                              (item, i) => (
-                                                <option
-                                                  key={i}
-                                                  value={item.issueTypeID}
-                                                >
-                                                  {item.issueTypeName}
-                                                </option>
-                                              )
-                                            )}
-                                        </select>
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <select
-                                          value={
-                                            this.state
-                                              .selectedTicketStatusByCategory
-                                          }
-                                          onChange={
-                                            this.handleTicketStatusByCategory
-                                          }
-                                        >
-                                          <option>Ticket Status</option>
-                                          {this.state.TicketStatusData !==
-                                            null &&
-                                            this.state.TicketStatusData.map(
-                                              (item, i) => (
-                                                <option
-                                                  key={i}
-                                                  value={item.ticketStatusID}
-                                                >
-                                                  {item.ticketStatusName}
-                                                </option>
-                                              )
-                                            )}
-                                        </select>
-                                      </div>
                                     </div>
-                                    {/* <div className="row justify-content-between">
+                                  </div>
+                                  <div
+                                    className="tab-pane fade"
+                                    id="category-tab"
+                                    role="tabpanel"
+                                    aria-labelledby="category-tab"
+                                  >
+                                    <div className="container-fluid">
+                                      <div className="row">
+                                        <div className="col-md-3 col-sm-6">
+                                          <select
+                                            value={this.state.selectedCategory}
+                                            onChange={this.setCategoryValue}
+                                          >
+                                            <option>Category</option>
+                                            {this.state.CategoryData !== null &&
+                                              this.state.CategoryData.map(
+                                                (item, i) => (
+                                                  <option
+                                                    key={i}
+                                                    value={item.categoryID}
+                                                  >
+                                                    {item.categoryName}
+                                                  </option>
+                                                )
+                                              )}
+                                          </select>
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <select
+                                            value={
+                                              this.state.selectedSubCategory
+                                            }
+                                            onChange={this.setSubCategoryValue}
+                                          >
+                                            <option>Sub Category</option>
+                                            {this.state.SubCategoryData !==
+                                              null &&
+                                              this.state.SubCategoryData.map(
+                                                (item, i) => (
+                                                  <option
+                                                    key={i}
+                                                    value={item.subCategoryID}
+                                                  >
+                                                    {item.subCategoryName}
+                                                  </option>
+                                                )
+                                              )}
+                                          </select>
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <select
+                                            value={this.state.selectedIssueType}
+                                            onChange={this.setIssueTypeValue}
+                                          >
+                                            <option>Issue Type</option>
+                                            {this.state.IssueTypeData !==
+                                              null &&
+                                              this.state.IssueTypeData.map(
+                                                (item, i) => (
+                                                  <option
+                                                    key={i}
+                                                    value={item.issueTypeID}
+                                                  >
+                                                    {item.issueTypeName}
+                                                  </option>
+                                                )
+                                              )}
+                                          </select>
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <select
+                                            value={
+                                              this.state
+                                                .selectedTicketStatusByCategory
+                                            }
+                                            onChange={
+                                              this.handleTicketStatusByCategory
+                                            }
+                                          >
+                                            <option>Ticket Status</option>
+                                            {this.state.TicketStatusData !==
+                                              null &&
+                                              this.state.TicketStatusData.map(
+                                                (item, i) => (
+                                                  <option
+                                                    key={i}
+                                                    value={item.ticketStatusID}
+                                                  >
+                                                    {item.ticketStatusName}
+                                                  </option>
+                                                )
+                                              )}
+                                          </select>
+                                        </div>
+                                      </div>
+                                      {/* <div className="row justify-content-between">
                                       <div className="col-auto d-flex align-items-center">
                                         <p className="font-weight-bold mr-3">
                                           <span className="blue-clr">04</span>{" "}
@@ -3165,614 +3196,642 @@ class MyTicketList extends Component {
                                       </div>
                                     </div>
                                    */}
-                                  </div>
-                                </div>
-                                <div
-                                  className="tab-pane fade"
-                                  id="all-tab"
-                                  role="tabpanel"
-                                  aria-labelledby="all-tab"
-                                >
-                                  <div className="container-fluid">
-                                    <div className="row">
-                                      <div className="col-md-3 col-sm-6 allspc">
-                                        <DatePicker
-                                          selected={this.state.ByAllCreateDate}
-                                          placeholderText="Creation Date"
-                                          showMonthDropdown
-                                          showYearDropdown
-                                          dateFormat="dd/MM/yyyy"
-                                          value={this.state.ByAllCreateDate}
-                                          onChange={this.handleAllCreateDate.bind(
-                                            this
-                                          )}
-                                          // className="form-control"
-                                        />
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <select
-                                          value={
-                                            this.state.selectedTicketSource
-                                          }
-                                          onChange={this.setTicketSourceValue}
-                                        >
-                                          <option>Ticket Source</option>
-                                          {this.state.TicketSourceData !==
-                                            null &&
-                                            this.state.TicketSourceData.map(
-                                              (item, i) => (
-                                                <option
-                                                  key={i}
-                                                  value={item.ticketSourceId}
-                                                >
-                                                  {item.ticketSourceName}
-                                                </option>
-                                              )
-                                            )}
-                                        </select>
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <input
-                                          className="no-bg"
-                                          type="text"
-                                          placeholder="Claim ID"
-                                          value={this.state.ClaimIdByAll}
-                                          name="ClaimIdByAll"
-                                          onChange={this.handelOnchangeData}
-                                        />
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <input
-                                          className="no-bg"
-                                          type="text"
-                                          placeholder="Email"
-                                          value={this.state.EmailByAll}
-                                          name="EmailByAll"
-                                          onChange={this.handelOnchangeData}
-                                        />
-                                      </div>
-                                      <div className="col-md-3 col-sm-6 allspc">
-                                        <DatePicker
-                                          selected={this.state.ByAllLastDate}
-                                          onChange={this.handleAllLastDate.bind(
-                                            this
-                                          )}
-                                          placeholderText="Last Updated Date"
-                                          showMonthDropdown
-                                          showYearDropdown
-                                          dateFormat="dd/MM/yyyy"
-                                          value={this.state.ByAllLastDate}
-                                          // className="form-control"
-                                        />
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <input
-                                          className="no-bg"
-                                          type="text"
-                                          placeholder="Ticket Id/Title"
-                                          value={this.state.TicketIdTitleByAll}
-                                          name="TicketIdTitleByAll"
-                                          onChange={this.handelOnchangeData}
-                                        />
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <input
-                                          className="no-bg"
-                                          type="text"
-                                          placeholder="Invoice Number/Sub Order No"
-                                          value={
-                                            this.state.InvoiceSubOrderByAll
-                                          }
-                                          name="InvoiceSubOrderByAll"
-                                          onChange={this.handelOnchangeData}
-                                        />
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <input
-                                          className="no-bg"
-                                          type="text"
-                                          placeholder="Mobile"
-                                          value={this.state.MobileByAll}
-                                          name="MobileByAll"
-                                          onChange={this.handelOnchangeData}
-                                        />
-                                      </div>
-                                      <div className="col-md-3 col-sm-6 allspc">
-                                        <select
-                                          value={this.state.selectedCategoryAll}
-                                          onChange={this.setCategoryAllValue}
-                                        >
-                                          <option>Category</option>
-                                          {this.state.CategoryData !== null &&
-                                            this.state.CategoryData.map(
-                                              (item, i) => (
-                                                <option
-                                                  key={i}
-                                                  value={item.categoryID}
-                                                >
-                                                  {item.categoryName}
-                                                </option>
-                                              )
-                                            )}
-                                        </select>
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <select
-                                          value={this.state.selectedPriorityAll}
-                                          onChange={this.setPriorityAllValue}
-                                        >
-                                          <option>Ticket Priority</option>
-                                          {this.state.TicketPriorityData !==
-                                            null &&
-                                            this.state.TicketPriorityData.map(
-                                              (item, i) => (
-                                                <option
-                                                  key={i}
-                                                  value={item.priorityID}
-                                                >
-                                                  {item.priortyName}
-                                                </option>
-                                              )
-                                            )}
-                                        </select>
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <input
-                                          className="no-bg"
-                                          type="text"
-                                          placeholder="Item ID"
-                                          value={this.state.ItemIdByAll}
-                                          name="ItemIdByAll"
-                                          onChange={this.handelOnchangeData}
-                                        />
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <input
-                                          className="no-bg"
-                                          type="text"
-                                          placeholder="Assigned To"
-                                          value={
-                                            this.state.selectedAssignedToAll
-                                          }
-                                          onChange={this.handleAssignedToAll}
-                                        />
-                                      </div>
-                                      <div className="col-md-3 col-sm-6 allspc">
-                                        {/* <select>
-                                          <option>Sub Category</option>
-                                        </select> */}
-                                        <select
-                                          value={
-                                            this.state.selectedSubCategoryAll
-                                          }
-                                          onChange={this.setSubCategoryAllValue}
-                                        >
-                                          <option>Sub Category</option>
-                                          {this.state.SubCategoryAllData !==
-                                            null &&
-                                            this.state.SubCategoryAllData.map(
-                                              (item, i) => (
-                                                <option
-                                                  key={i}
-                                                  value={item.subCategoryID}
-                                                >
-                                                  {item.subCategoryName}
-                                                </option>
-                                              )
-                                            )}
-                                        </select>
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <select
-                                          value={
-                                            this.state.selectedTicketStatusAll
-                                          }
-                                          onChange={this.handleTicketStatusAll}
-                                        >
-                                          <option>Ticket Status</option>
-                                          {this.state.TicketStatusData !==
-                                            null &&
-                                            this.state.TicketStatusData.map(
-                                              (item, i) => (
-                                                <option
-                                                  key={i}
-                                                  value={item.ticketStatusID}
-                                                >
-                                                  {item.ticketStatusName}
-                                                </option>
-                                              )
-                                            )}
-                                        </select>
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <select
-                                          value={
-                                            this.state.selectedVisitStoreAll
-                                          }
-                                          onChange={this.handleVisitStoreAll}
-                                        >
-                                          <option value="yes">
-                                            Did Visit Store : Yes
-                                          </option>
-                                          <option value="no">
-                                            Did Visit Store : No
-                                          </option>
-                                        </select>
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <input
-                                          className="no-bg"
-                                          type="text"
-                                          placeholder="Purchase Store Code/Address"
-                                          value={
-                                            this.state
-                                              .selectedPurchaseStoreCodeAddressAll
-                                          }
-                                          onChange={
-                                            this
-                                              .handlePurchaseStoreCodeAddressAll
-                                          }
-                                        />
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        {/* <select>
-                                          <option>Issue Type</option>
-                                        </select> */}
-                                        <select
-                                          value={
-                                            this.state.selectedIssueTypeAll
-                                          }
-                                          onChange={this.setIssueTypeAllValue}
-                                        >
-                                          <option>Issue Type</option>
-                                          {this.state.IssueTypeAllData !==
-                                            null &&
-                                            this.state.IssueTypeAllData.map(
-                                              (item, i) => (
-                                                <option
-                                                  key={i}
-                                                  value={item.issueTypeID}
-                                                >
-                                                  {item.issueTypeName}
-                                                </option>
-                                              )
-                                            )}
-                                        </select>
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <select
-                                          value={this.state.selectedSlaStatus}
-                                          onChange={this.setSlaStatusValue}
-                                        >
-                                          <option>
-                                            SLA Status : Response / Resolution
-                                          </option>
-                                          {this.state.SlaStatusData !== null &&
-                                            this.state.SlaStatusData.map(
-                                              (item, i) => (
-                                                <option
-                                                  key={i}
-                                                  value={item.SLAId}
-                                                >
-                                                  {item.SLAResponseTime} /
-                                                  {item.SLARequestTime}
-                                                </option>
-                                              )
-                                            )}
-                                        </select>
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <select
-                                          value={
-                                            this.state
-                                              .selectedWantToVisitStoreAll
-                                          }
-                                          onChange={
-                                            this.handleWantToVisitStoreAll
-                                          }
-                                        >
-                                          <option value="yes">
-                                            Want to Visit Store : Yes
-                                          </option>
-                                          <option value="no">
-                                            Want to Visit Store : No
-                                          </option>
-                                        </select>
-                                      </div>
-                                      <div className="col-md-3 col-sm-6">
-                                        <input
-                                          className="no-bg"
-                                          type="text"
-                                          placeholder="Want to visit Store Code/Address"
-                                          value={
-                                            this.state
-                                              .selectedVisitStoreCodeAddressAll
-                                          }
-                                          onChange={
-                                            this.handleVisitStoreCodeAddressAll
-                                          }
-                                        />
-                                      </div>
                                     </div>
-                                    <div className="row p-0">
-                                      <div className="col-md-6">
-                                        <div className="row allspc">
-                                          <div className="col-sm-6">
-                                            <div className="m-b-25">
-                                              <select
-                                                value={
-                                                  this.state
-                                                    .selectedWithClaimAll
-                                                }
-                                                onChange={
-                                                  this.handleWithClaimAll
-                                                }
-                                              >
-                                                <option value="no">
-                                                  With Claim : No
-                                                </option>
-                                                <option value="yes">
-                                                  With Claim : Yes
-                                                </option>
-                                              </select>
+                                  </div>
+                                  <div
+                                    className="tab-pane fade"
+                                    id="all-tab"
+                                    role="tabpanel"
+                                    aria-labelledby="all-tab"
+                                  >
+                                    <div className="container-fluid">
+                                      <div className="row">
+                                        <div className="col-md-3 col-sm-6 allspc">
+                                          <DatePicker
+                                            selected={
+                                              this.state.ByAllCreateDate
+                                            }
+                                            placeholderText="Creation Date"
+                                            showMonthDropdown
+                                            showYearDropdown
+                                            dateFormat="dd/MM/yyyy"
+                                            value={this.state.ByAllCreateDate}
+                                            onChange={this.handleAllCreateDate.bind(
+                                              this
+                                            )}
+                                            // className="form-control"
+                                          />
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <select
+                                            value={
+                                              this.state.selectedTicketSource
+                                            }
+                                            onChange={this.setTicketSourceValue}
+                                          >
+                                            <option>Ticket Source</option>
+                                            {this.state.TicketSourceData !==
+                                              null &&
+                                              this.state.TicketSourceData.map(
+                                                (item, i) => (
+                                                  <option
+                                                    key={i}
+                                                    value={item.ticketSourceId}
+                                                  >
+                                                    {item.ticketSourceName}
+                                                  </option>
+                                                )
+                                              )}
+                                          </select>
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <input
+                                            className="no-bg"
+                                            type="text"
+                                            placeholder="Claim ID"
+                                            value={this.state.ClaimIdByAll}
+                                            name="ClaimIdByAll"
+                                            onChange={this.handelOnchangeData}
+                                          />
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <input
+                                            className="no-bg"
+                                            type="text"
+                                            placeholder="Email"
+                                            value={this.state.EmailByAll}
+                                            name="EmailByAll"
+                                            onChange={this.handelOnchangeData}
+                                          />
+                                        </div>
+                                        <div className="col-md-3 col-sm-6 allspc">
+                                          <DatePicker
+                                            selected={this.state.ByAllLastDate}
+                                            onChange={this.handleAllLastDate.bind(
+                                              this
+                                            )}
+                                            placeholderText="Last Updated Date"
+                                            showMonthDropdown
+                                            showYearDropdown
+                                            dateFormat="dd/MM/yyyy"
+                                            value={this.state.ByAllLastDate}
+                                            // className="form-control"
+                                          />
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <input
+                                            className="no-bg"
+                                            type="text"
+                                            placeholder="Ticket Id/Title"
+                                            value={
+                                              this.state.TicketIdTitleByAll
+                                            }
+                                            name="TicketIdTitleByAll"
+                                            onChange={this.handelOnchangeData}
+                                          />
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <input
+                                            className="no-bg"
+                                            type="text"
+                                            placeholder="Invoice Number/Sub Order No"
+                                            value={
+                                              this.state.InvoiceSubOrderByAll
+                                            }
+                                            name="InvoiceSubOrderByAll"
+                                            onChange={this.handelOnchangeData}
+                                          />
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <input
+                                            className="no-bg"
+                                            type="text"
+                                            placeholder="Mobile"
+                                            value={this.state.MobileByAll}
+                                            name="MobileByAll"
+                                            onChange={this.handelOnchangeData}
+                                          />
+                                        </div>
+                                        <div className="col-md-3 col-sm-6 allspc">
+                                          <select
+                                            value={
+                                              this.state.selectedCategoryAll
+                                            }
+                                            onChange={this.setCategoryAllValue}
+                                          >
+                                            <option>Category</option>
+                                            {this.state.CategoryData !== null &&
+                                              this.state.CategoryData.map(
+                                                (item, i) => (
+                                                  <option
+                                                    key={i}
+                                                    value={item.categoryID}
+                                                  >
+                                                    {item.categoryName}
+                                                  </option>
+                                                )
+                                              )}
+                                          </select>
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <select
+                                            value={
+                                              this.state.selectedPriorityAll
+                                            }
+                                            onChange={this.setPriorityAllValue}
+                                          >
+                                            <option>Ticket Priority</option>
+                                            {this.state.TicketPriorityData !==
+                                              null &&
+                                              this.state.TicketPriorityData.map(
+                                                (item, i) => (
+                                                  <option
+                                                    key={i}
+                                                    value={item.priorityID}
+                                                  >
+                                                    {item.priortyName}
+                                                  </option>
+                                                )
+                                              )}
+                                          </select>
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <input
+                                            className="no-bg"
+                                            type="text"
+                                            placeholder="Item ID"
+                                            value={this.state.ItemIdByAll}
+                                            name="ItemIdByAll"
+                                            onChange={this.handelOnchangeData}
+                                          />
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <input
+                                            className="no-bg"
+                                            type="text"
+                                            placeholder="Assigned To"
+                                            value={
+                                              this.state.selectedAssignedToAll
+                                            }
+                                            onChange={this.handleAssignedToAll}
+                                          />
+                                        </div>
+                                        <div className="col-md-3 col-sm-6 allspc">
+                                          {/* <select>
+                                          <option>Sub Category</option>
+                                        </select> */}
+                                          <select
+                                            value={
+                                              this.state.selectedSubCategoryAll
+                                            }
+                                            onChange={
+                                              this.setSubCategoryAllValue
+                                            }
+                                          >
+                                            <option>Sub Category</option>
+                                            {this.state.SubCategoryAllData !==
+                                              null &&
+                                              this.state.SubCategoryAllData.map(
+                                                (item, i) => (
+                                                  <option
+                                                    key={i}
+                                                    value={item.subCategoryID}
+                                                  >
+                                                    {item.subCategoryName}
+                                                  </option>
+                                                )
+                                              )}
+                                          </select>
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <select
+                                            value={
+                                              this.state.selectedTicketStatusAll
+                                            }
+                                            onChange={
+                                              this.handleTicketStatusAll
+                                            }
+                                          >
+                                            <option>Ticket Status</option>
+                                            {this.state.TicketStatusData !==
+                                              null &&
+                                              this.state.TicketStatusData.map(
+                                                (item, i) => (
+                                                  <option
+                                                    key={i}
+                                                    value={item.ticketStatusID}
+                                                  >
+                                                    {item.ticketStatusName}
+                                                  </option>
+                                                )
+                                              )}
+                                          </select>
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <select
+                                            value={
+                                              this.state.selectedVisitStoreAll
+                                            }
+                                            onChange={this.handleVisitStoreAll}
+                                          >
+                                            <option value="yes">
+                                              Did Visit Store : Yes
+                                            </option>
+                                            <option value="no">
+                                              Did Visit Store : No
+                                            </option>
+                                          </select>
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <input
+                                            className="no-bg"
+                                            type="text"
+                                            placeholder="Purchase Store Code/Address"
+                                            value={
+                                              this.state
+                                                .selectedPurchaseStoreCodeAddressAll
+                                            }
+                                            onChange={
+                                              this
+                                                .handlePurchaseStoreCodeAddressAll
+                                            }
+                                          />
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          {/* <select>
+                                          <option>Issue Type</option>
+                                        </select> */}
+                                          <select
+                                            value={
+                                              this.state.selectedIssueTypeAll
+                                            }
+                                            onChange={this.setIssueTypeAllValue}
+                                          >
+                                            <option>Issue Type</option>
+                                            {this.state.IssueTypeAllData !==
+                                              null &&
+                                              this.state.IssueTypeAllData.map(
+                                                (item, i) => (
+                                                  <option
+                                                    key={i}
+                                                    value={item.issueTypeID}
+                                                  >
+                                                    {item.issueTypeName}
+                                                  </option>
+                                                )
+                                              )}
+                                          </select>
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <select
+                                            value={this.state.selectedSlaStatus}
+                                            onChange={this.setSlaStatusValue}
+                                          >
+                                            <option>
+                                              SLA Status : Response / Resolution
+                                            </option>
+                                            {this.state.SlaStatusData !==
+                                              null &&
+                                              this.state.SlaStatusData.map(
+                                                (item, i) => (
+                                                  <option
+                                                    key={i}
+                                                    value={item.SLAId}
+                                                  >
+                                                    {item.SLAResponseTime} /
+                                                    {item.SLARequestTime}
+                                                  </option>
+                                                )
+                                              )}
+                                          </select>
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <select
+                                            value={
+                                              this.state
+                                                .selectedWantToVisitStoreAll
+                                            }
+                                            onChange={
+                                              this.handleWantToVisitStoreAll
+                                            }
+                                          >
+                                            <option value="yes">
+                                              Want to Visit Store : Yes
+                                            </option>
+                                            <option value="no">
+                                              Want to Visit Store : No
+                                            </option>
+                                          </select>
+                                        </div>
+                                        <div className="col-md-3 col-sm-6">
+                                          <input
+                                            className="no-bg"
+                                            type="text"
+                                            placeholder="Want to visit Store Code/Address"
+                                            value={
+                                              this.state
+                                                .selectedVisitStoreCodeAddressAll
+                                            }
+                                            onChange={
+                                              this
+                                                .handleVisitStoreCodeAddressAll
+                                            }
+                                          />
+                                        </div>
+                                      </div>
+                                      <div className="row p-0">
+                                        <div className="col-md-6">
+                                          <div className="row allspc">
+                                            <div className="col-sm-6">
+                                              <div className="m-b-25">
+                                                <select
+                                                  value={
+                                                    this.state
+                                                      .selectedWithClaimAll
+                                                  }
+                                                  onChange={
+                                                    this.handleWithClaimAll
+                                                  }
+                                                >
+                                                  <option value="no">
+                                                    With Claim : No
+                                                  </option>
+                                                  <option value="yes">
+                                                    With Claim : Yes
+                                                  </option>
+                                                </select>
+                                              </div>
+                                              {this.state
+                                                .selectedWithClaimAll ===
+                                              "yes" ? (
+                                                <React.Fragment>
+                                                  <div className="m-b-25">
+                                                    <select
+                                                      value={
+                                                        this.state
+                                                          .selectedClaimStatus
+                                                      }
+                                                      onChange={
+                                                        this.handleClaimStatus
+                                                      }
+                                                    >
+                                                      <option>
+                                                        Claim Status
+                                                      </option>
+                                                      {this.state
+                                                        .ClaimStatusData !==
+                                                        null &&
+                                                        this.state.ClaimStatusData.map(
+                                                          (item, i) => (
+                                                            <option
+                                                              key={i}
+                                                              value={
+                                                                item.claimStatusID
+                                                              }
+                                                            >
+                                                              {
+                                                                item.claimStatusName
+                                                              }
+                                                            </option>
+                                                          )
+                                                        )}
+                                                    </select>
+                                                  </div>
+
+                                                  <div className="m-b-25">
+                                                    <select
+                                                      value={
+                                                        this.state
+                                                          .selectedClaimCategory
+                                                      }
+                                                      onChange={
+                                                        this
+                                                          .setClaimCategoryValue
+                                                      }
+                                                    >
+                                                      <option>
+                                                        Claim Category
+                                                      </option>
+                                                      {this.state
+                                                        .CategoryData !==
+                                                        null &&
+                                                        this.state.CategoryData.map(
+                                                          (item, i) => (
+                                                            <option
+                                                              key={i}
+                                                              value={
+                                                                item.categoryID
+                                                              }
+                                                            >
+                                                              {
+                                                                item.categoryName
+                                                              }
+                                                            </option>
+                                                          )
+                                                        )}
+                                                    </select>
+                                                  </div>
+
+                                                  <div className="m-b-25">
+                                                    <select
+                                                      value={
+                                                        this.state
+                                                          .selectedClaimSubCategory
+                                                      }
+                                                      onChange={
+                                                        this
+                                                          .setClaimSubCategoryValue
+                                                      }
+                                                    >
+                                                      <option>
+                                                        Claim Sub Category
+                                                      </option>
+                                                      {this.state
+                                                        .ClaimSubCategoryData !==
+                                                        null &&
+                                                        this.state.ClaimSubCategoryData.map(
+                                                          (item, i) => (
+                                                            <option
+                                                              key={i}
+                                                              value={
+                                                                item.subCategoryID
+                                                              }
+                                                            >
+                                                              {
+                                                                item.subCategoryName
+                                                              }
+                                                            </option>
+                                                          )
+                                                        )}
+                                                    </select>
+                                                  </div>
+
+                                                  <div className="">
+                                                    <select
+                                                      value={
+                                                        this.state
+                                                          .selectedClaimIssueType
+                                                      }
+                                                      onChange={
+                                                        this
+                                                          .setClaimIssueTypeValue
+                                                      }
+                                                    >
+                                                      <option>
+                                                        Claim Issue Type
+                                                      </option>
+                                                      {this.state
+                                                        .ClaimIssueTypeData !==
+                                                        null &&
+                                                        this.state.ClaimIssueTypeData.map(
+                                                          (item, i) => (
+                                                            <option
+                                                              key={i}
+                                                              value={
+                                                                item.issueTypeID
+                                                              }
+                                                            >
+                                                              {
+                                                                item.issueTypeName
+                                                              }
+                                                            </option>
+                                                          )
+                                                        )}
+                                                    </select>
+                                                  </div>
+                                                </React.Fragment>
+                                              ) : null}
                                             </div>
-                                            {this.state.selectedWithClaimAll ===
-                                            "yes" ? (
-                                              <React.Fragment>
-                                                <div className="m-b-25">
-                                                  <select
-                                                    value={
-                                                      this.state
-                                                        .selectedClaimStatus
-                                                    }
-                                                    onChange={
-                                                      this.handleClaimStatus
-                                                    }
-                                                  >
-                                                    <option>
-                                                      Claim Status
-                                                    </option>
-                                                    {this.state
-                                                      .ClaimStatusData !==
-                                                      null &&
-                                                      this.state.ClaimStatusData.map(
-                                                        (item, i) => (
-                                                          <option
-                                                            key={i}
-                                                            value={
-                                                              item.claimStatusID
-                                                            }
-                                                          >
-                                                            {
-                                                              item.claimStatusName
-                                                            }
-                                                          </option>
-                                                        )
-                                                      )}
-                                                  </select>
-                                                </div>
+                                            <div className="col-sm-6">
+                                              <div className="m-b-25">
+                                                <select
+                                                  value={
+                                                    this.state
+                                                      .selectedWithTaskAll
+                                                  }
+                                                  onChange={
+                                                    this.handleWithTaskAll
+                                                  }
+                                                >
+                                                  <option value="no">
+                                                    With Task : No
+                                                  </option>
+                                                  <option value="yes">
+                                                    With Task : Yes
+                                                  </option>
+                                                </select>
+                                              </div>
 
-                                                <div className="m-b-25">
-                                                  <select
-                                                    value={
-                                                      this.state
-                                                        .selectedClaimCategory
-                                                    }
-                                                    onChange={
-                                                      this.setClaimCategoryValue
-                                                    }
-                                                  >
-                                                    <option>
-                                                      Claim Category
-                                                    </option>
-                                                    {this.state.CategoryData !==
-                                                      null &&
-                                                      this.state.CategoryData.map(
-                                                        (item, i) => (
-                                                          <option
-                                                            key={i}
-                                                            value={
-                                                              item.categoryID
-                                                            }
-                                                          >
-                                                            {item.categoryName}
-                                                          </option>
-                                                        )
-                                                      )}
-                                                  </select>
-                                                </div>
+                                              {this.state
+                                                .selectedWithTaskAll ===
+                                              "yes" ? (
+                                                <React.Fragment>
+                                                  <div className="m-b-25">
+                                                    <select
+                                                      value={
+                                                        this.state
+                                                          .selectedTaskStatus
+                                                      }
+                                                      onChange={
+                                                        this.handleTaskStatus
+                                                      }
+                                                    >
+                                                      <option>
+                                                        Task Status
+                                                      </option>
+                                                      {this.state
+                                                        .TaskStatusData !==
+                                                        null &&
+                                                        this.state.TaskStatusData.map(
+                                                          (item, i) => (
+                                                            <option
+                                                              key={i}
+                                                              value={
+                                                                item.taskStatusID
+                                                              }
+                                                            >
+                                                              {
+                                                                item.taskStatusName
+                                                              }
+                                                            </option>
+                                                          )
+                                                        )}
+                                                    </select>
+                                                  </div>
 
-                                                <div className="m-b-25">
-                                                  <select
-                                                    value={
-                                                      this.state
-                                                        .selectedClaimSubCategory
-                                                    }
-                                                    onChange={
-                                                      this
-                                                        .setClaimSubCategoryValue
-                                                    }
-                                                  >
-                                                    <option>
-                                                      Claim Sub Category
-                                                    </option>
-                                                    {this.state
-                                                      .ClaimSubCategoryData !==
-                                                      null &&
-                                                      this.state.ClaimSubCategoryData.map(
-                                                        (item, i) => (
-                                                          <option
-                                                            key={i}
-                                                            value={
-                                                              item.subCategoryID
-                                                            }
-                                                          >
-                                                            {
-                                                              item.subCategoryName
-                                                            }
-                                                          </option>
-                                                        )
-                                                      )}
-                                                  </select>
-                                                </div>
+                                                  <div className="m-b-25">
+                                                    <select
+                                                      value={
+                                                        this.state
+                                                          .selectedDepartment
+                                                      }
+                                                      onChange={
+                                                        this.setDepartmentValue
+                                                      }
+                                                    >
+                                                      <option>
+                                                        Task Department
+                                                      </option>
+                                                      {this.state
+                                                        .DepartmentData !==
+                                                        null &&
+                                                        this.state.DepartmentData.map(
+                                                          (item, i) => (
+                                                            <option
+                                                              key={i}
+                                                              value={
+                                                                item.departmentID
+                                                              }
+                                                            >
+                                                              {
+                                                                item.departmentName
+                                                              }
+                                                            </option>
+                                                          )
+                                                        )}
+                                                    </select>
+                                                  </div>
 
-                                                <div className="">
-                                                  <select
-                                                    value={
-                                                      this.state
-                                                        .selectedClaimIssueType
-                                                    }
-                                                    onChange={
-                                                      this
-                                                        .setClaimIssueTypeValue
-                                                    }
-                                                  >
-                                                    <option>
-                                                      Claim Issue Type
-                                                    </option>
-                                                    {this.state
-                                                      .ClaimIssueTypeData !==
-                                                      null &&
-                                                      this.state.ClaimIssueTypeData.map(
-                                                        (item, i) => (
-                                                          <option
-                                                            key={i}
-                                                            value={
-                                                              item.issueTypeID
-                                                            }
-                                                          >
-                                                            {item.issueTypeName}
-                                                          </option>
-                                                        )
-                                                      )}
-                                                  </select>
-                                                </div>
-                                              </React.Fragment>
-                                            ) : null}
-                                          </div>
-                                          <div className="col-sm-6">
-                                            <div className="m-b-25">
-                                              <select
-                                                value={
-                                                  this.state.selectedWithTaskAll
-                                                }
-                                                onChange={
-                                                  this.handleWithTaskAll
-                                                }
-                                              >
-                                                <option value="no">
-                                                  With Task : No
-                                                </option>
-                                                <option value="yes">
-                                                  With Task : Yes
-                                                </option>
-                                              </select>
+                                                  <div className="">
+                                                    <select
+                                                      value={
+                                                        this.state
+                                                          .selectedFunction
+                                                      }
+                                                      onChange={
+                                                        this.setFunctionValue
+                                                      }
+                                                    >
+                                                      <option>
+                                                        Task Function
+                                                      </option>
+                                                      {this.state
+                                                        .FunctionData !==
+                                                        null &&
+                                                        this.state.FunctionData.map(
+                                                          (item, i) => (
+                                                            <option
+                                                              key={i}
+                                                              value={
+                                                                item.functionID
+                                                              }
+                                                            >
+                                                              {
+                                                                item.funcationName
+                                                              }
+                                                            </option>
+                                                          )
+                                                        )}
+                                                    </select>
+                                                  </div>
+                                                </React.Fragment>
+                                              ) : null}
                                             </div>
 
-                                            {this.state.selectedWithTaskAll ===
-                                            "yes" ? (
-                                              <React.Fragment>
-                                                <div className="m-b-25">
-                                                  <select
-                                                    value={
-                                                      this.state
-                                                        .selectedTaskStatus
-                                                    }
-                                                    onChange={
-                                                      this.handleTaskStatus
-                                                    }
-                                                  >
-                                                    <option>Task Status</option>
-                                                    {this.state
-                                                      .TaskStatusData !==
-                                                      null &&
-                                                      this.state.TaskStatusData.map(
-                                                        (item, i) => (
-                                                          <option
-                                                            key={i}
-                                                            value={
-                                                              item.taskStatusID
-                                                            }
-                                                          >
-                                                            {
-                                                              item.taskStatusName
-                                                            }
-                                                          </option>
-                                                        )
-                                                      )}
-                                                  </select>
-                                                </div>
-
-                                                <div className="m-b-25">
-                                                  <select
-                                                    value={
-                                                      this.state
-                                                        .selectedDepartment
-                                                    }
-                                                    onChange={
-                                                      this.setDepartmentValue
-                                                    }
-                                                  >
-                                                    <option>
-                                                      Task Department
-                                                    </option>
-                                                    {this.state
-                                                      .DepartmentData !==
-                                                      null &&
-                                                      this.state.DepartmentData.map(
-                                                        (item, i) => (
-                                                          <option
-                                                            key={i}
-                                                            value={
-                                                              item.departmentID
-                                                            }
-                                                          >
-                                                            {
-                                                              item.departmentName
-                                                            }
-                                                          </option>
-                                                        )
-                                                      )}
-                                                  </select>
-                                                </div>
-
-                                                <div className="">
-                                                  <select
-                                                    value={
-                                                      this.state
-                                                        .selectedFunction
-                                                    }
-                                                    onChange={
-                                                      this.setFunctionValue
-                                                    }
-                                                  >
-                                                    <option>
-                                                      Task Function
-                                                    </option>
-                                                    {this.state.FunctionData !==
-                                                      null &&
-                                                      this.state.FunctionData.map(
-                                                        (item, i) => (
-                                                          <option
-                                                            key={i}
-                                                            value={
-                                                              item.functionID
-                                                            }
-                                                          >
-                                                            {item.funcationName}
-                                                          </option>
-                                                        )
-                                                      )}
-                                                  </select>
-                                                </div>
-                                              </React.Fragment>
-                                            ) : null}
-                                          </div>
-
-                                          {/* {this.state.selectedWithClaimAll ===
+                                            {/* {this.state.selectedWithClaimAll ===
                                           "yes" ? (
                                             <React.Fragment> */}
-                                          {/* <div className="col-sm-6 m-b-25">
+                                            {/* <div className="col-sm-6 m-b-25">
                                                 <select
                                                   value={
                                                     this.state
@@ -3799,7 +3858,7 @@ class MyTicketList extends Component {
                                                     )}
                                                 </select>
                                               </div> */}
-                                          {/* <div className="col-sm-6">
+                                            {/* <div className="col-sm-6">
                                                 <select
                                                   value={
                                                     this.state
@@ -3826,7 +3885,7 @@ class MyTicketList extends Component {
                                                     )}
                                                 </select>
                                               </div> */}
-                                          {/* <div className="col-sm-6 m-b-25">
+                                            {/* <div className="col-sm-6 m-b-25">
                                                 <select
                                                   value={
                                                     this.state
@@ -3855,7 +3914,7 @@ class MyTicketList extends Component {
                                                     )}
                                                 </select>
                                               </div> */}
-                                          {/* <div className="col-sm-6">
+                                            {/* <div className="col-sm-6">
                                                 <select
                                                   value={
                                                     this.state
@@ -3884,7 +3943,7 @@ class MyTicketList extends Component {
                                                     )}
                                                 </select>
                                               </div> */}
-                                          {/* <div className="col-sm-6 m-b-25">
+                                            {/* <div className="col-sm-6 m-b-25">
                                                 <select
                                                   value={
                                                     this.state
@@ -3915,7 +3974,7 @@ class MyTicketList extends Component {
                                                     )}
                                                 </select>
                                               </div> */}
-                                          {/* <div className="col-sm-6">
+                                            {/* <div className="col-sm-6">
                                                 <select
                                                   value={
                                                     this.state.selectedFunction
@@ -3941,7 +4000,7 @@ class MyTicketList extends Component {
                                                     )}
                                                 </select>
                                               </div> */}
-                                          {/* <div className="col-sm-6">
+                                            {/* <div className="col-sm-6">
                                                 <select
                                                   value={
                                                     this.state
@@ -3971,12 +4030,12 @@ class MyTicketList extends Component {
                                                     )}
                                                 </select>
                                               </div> */}
-                                          {/* </React.Fragment>
+                                            {/* </React.Fragment>
                                           ) : null} */}
+                                          </div>
                                         </div>
                                       </div>
-                                    </div>
-                                    {/* <div className="row justify-content-between">
+                                      {/* <div className="row justify-content-between">
                                       <div className="col-auto d-flex align-items-center">
                                         <p className="font-weight-bold mr-3">
                                           <span className="blue-clr">04</span>{" "}
@@ -4014,58 +4073,58 @@ class MyTicketList extends Component {
                                       </div>
                                     </div>
                                    */}
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                              <div className="container-fluid myticlist-expand-sect">
-                                <div className="row common-adv-padd justify-content-between">
-                                  <div className="col-auto d-flex align-items-center">
-                                    <p className="font-weight-bold mr-3">
-                                      <span className="blue-clr">04</span>{" "}
-                                      Results
-                                    </p>
-                                    <p
-                                      className="blue-clr fs-14"
-                                      onClick={this.clearSearch}
-                                    >
-                                      CLEAR SEARCH
-                                    </p>
-                                  </div>
-                                  <div className="col-auto mob-mar-btm">
-                                    <button>
-                                      <img
-                                        className="position-relative csv-icon"
-                                        src={csv}
-                                        alt="csv-icon"
-                                      />
-                                      CSV
-                                    </button>
-                                    <button
-                                      type="button"
-                                      onClick={this.ScheduleOpenModel}
-                                    >
-                                      <img
-                                        className="sch-icon"
-                                        src={Schedule}
-                                        alt="schedule-icon"
-                                      />
-                                      Schedule
-                                    </button>
-                                    <Modal
-                                      onClose={this.ScheduleCloseModel}
-                                      open={this.state.Schedule}
-                                      modalId="ScheduleModel"
-                                      classNames={{
-                                        modal: "schedule-width"
-                                      }}
-                                      overlayId="logout-ovrly"
-                                    >
-                                      <div>
-                                        <label>
-                                          <b>Schedule date to</b>
-                                        </label>
+                                <div className="container-fluid myticlist-expand-sect">
+                                  <div className="row common-adv-padd justify-content-between">
+                                    <div className="col-auto d-flex align-items-center">
+                                      <p className="font-weight-bold mr-3">
+                                        <span className="blue-clr">04</span>{" "}
+                                        Results
+                                      </p>
+                                      <p
+                                        className="blue-clr fs-14"
+                                        onClick={this.clearSearch}
+                                      >
+                                        CLEAR SEARCH
+                                      </p>
+                                    </div>
+                                    <div className="col-auto mob-mar-btm">
+                                      <button>
+                                        <img
+                                          className="position-relative csv-icon"
+                                          src={csv}
+                                          alt="csv-icon"
+                                        />
+                                        CSV
+                                      </button>
+                                      <button
+                                        type="button"
+                                        onClick={this.ScheduleOpenModel}
+                                      >
+                                        <img
+                                          className="sch-icon"
+                                          src={Schedule}
+                                          alt="schedule-icon"
+                                        />
+                                        Schedule
+                                      </button>
+                                      <Modal
+                                        onClose={this.ScheduleCloseModel}
+                                        open={this.state.Schedule}
+                                        modalId="ScheduleModel"
+                                        classNames={{
+                                          modal: "schedule-width"
+                                        }}
+                                        overlayId="logout-ovrly"
+                                      >
                                         <div>
-                                          {/* <select
+                                          <label>
+                                            <b>Schedule date to</b>
+                                          </label>
+                                          <div>
+                                            {/* <select
                                             id="inputState"
                                             className="form-control dropdown-setting1 ScheduleDate-to"
                                             value={
@@ -4080,347 +4139,217 @@ class MyTicketList extends Component {
                                               Team Member 1
                                             </option>
                                           </select> */}
-                                          <div className="normal-dropdown dropdown-setting1 schedule-multi">
-                                            <Select
-                                              getOptionLabel={option =>
-                                                option.department
-                                              }
-                                              getOptionValue={
-                                                option => option.department //id
-                                              }
-                                              options={
-                                                this.state.TeamMemberData
-                                              }
-                                              placeholder="Team Member"
-                                              // menuIsOpen={true}
-                                              closeMenuOnSelect={false}
-                                              onChange={this.setTeamMember.bind(
-                                                this
-                                              )}
+                                            <div className="normal-dropdown dropdown-setting1 schedule-multi">
+                                              <Select
+                                                getOptionLabel={option =>
+                                                  option.department
+                                                }
+                                                getOptionValue={
+                                                  option => option.department //id
+                                                }
+                                                options={
+                                                  this.state.TeamMemberData
+                                                }
+                                                placeholder="Team Member"
+                                                // menuIsOpen={true}
+                                                closeMenuOnSelect={false}
+                                                onChange={this.setTeamMember.bind(
+                                                  this
+                                                )}
+                                                value={
+                                                  this.state.selectedTeamMember
+                                                }
+                                                // showNewOptionAtTop={false}
+                                                isMulti
+                                              />
+                                            </div>
+                                            <select
+                                              id="inputState"
+                                              className="form-control dropdown-setting1 ScheduleDate-to"
                                               value={
-                                                this.state.selectedTeamMember
+                                                this.state.selectScheduleDate
                                               }
-                                              // showNewOptionAtTop={false}
-                                              isMulti
-                                            />
-                                          </div>
-                                          <select
-                                            id="inputState"
-                                            className="form-control dropdown-setting1 ScheduleDate-to"
-                                            value={
-                                              this.state.selectScheduleDate
-                                            }
-                                            onChange={
-                                              this.handleScheduleDateChange
-                                            }
-                                          >
-                                            {this.state.ScheduleOption !==
-                                              null &&
-                                              this.state.ScheduleOption.map(
-                                                (item, i) => (
-                                                  <option
-                                                    key={i}
-                                                    value={item.scheduleID}
-                                                  >
-                                                    {item.scheduleName}
-                                                  </option>
-                                                )
-                                              )}
-                                          </select>
-                                          {this.state.selectScheduleDate ===
-                                          "230" ? (
-                                            <div className="ScheduleDate-to">
-                                              <span>
-                                                <label className="every1">
-                                                  Every
-                                                </label>
-                                                <input
-                                                  type="text"
-                                                  className="Every"
-                                                  placeholder="1"
-                                                  onChange={this.handleDailyDay}
-                                                />
-                                                <label className="every1">
-                                                  Day
-                                                </label>
-                                              </span>
-                                            </div>
-                                          ) : null}
-                                          {this.state.selectScheduleDate ===
-                                          "231" ? (
-                                            <div className="ScheduleDate-to">
-                                              <span>
-                                                <label className="every1">
-                                                  Every
-                                                </label>
-                                                <input
-                                                  type="text"
-                                                  className="Every"
-                                                  placeholder="1"
-                                                  onChange={this.handleWeekly}
-                                                />
-                                                <label className="every1">
-                                                  Week on
-                                                </label>
-                                              </span>
-                                              <div
-                                                style={{
-                                                  marginTop: "10px"
-                                                }}
-                                              >
-                                                <Checkbox
-                                                  onChange={
-                                                    this.handleWeeklyDays
-                                                  }
-                                                  value="Mon"
-                                                >
-                                                  Mon
-                                                </Checkbox>
-                                                <Checkbox
-                                                  onChange={
-                                                    this.handleWeeklyDays
-                                                  }
-                                                  value="Tue"
-                                                >
-                                                  Tue
-                                                </Checkbox>
-                                                <Checkbox
-                                                  onChange={
-                                                    this.handleWeeklyDays
-                                                  }
-                                                  value="Wed"
-                                                >
-                                                  Wed
-                                                </Checkbox>
-                                                <Checkbox
-                                                  onChange={
-                                                    this.handleWeeklyDays
-                                                  }
-                                                  value="Thu"
-                                                >
-                                                  Thu
-                                                </Checkbox>
-                                                <Checkbox
-                                                  onChange={
-                                                    this.handleWeeklyDays
-                                                  }
-                                                  value="Fri"
-                                                >
-                                                  Fri
-                                                </Checkbox>
-                                                <Checkbox
-                                                  onChange={
-                                                    this.handleWeeklyDays
-                                                  }
-                                                  value="Sat"
-                                                >
-                                                  Sat
-                                                </Checkbox>
-                                                <Checkbox
-                                                  onChange={
-                                                    this.handleWeeklyDays
-                                                  }
-                                                  value="Sun"
-                                                >
-                                                  Sun
-                                                </Checkbox>
-                                              </div>
-                                            </div>
-                                          ) : null}
-                                          {this.state.selectScheduleDate ===
-                                          "232" ? (
-                                            <div className="ScheduleDate-to">
-                                              <span>
-                                                <label className="every1">
-                                                  Day
-                                                </label>
-                                                <input
-                                                  type="text"
-                                                  className="Every"
-                                                  placeholder="9"
-                                                  onChange={
-                                                    this.handleDaysForMonth
-                                                  }
-                                                />
-                                                <label className="every1">
-                                                  of every
-                                                </label>
-                                                <input
-                                                  type="text"
-                                                  className="Every"
-                                                  placeholder="1"
-                                                  onChange={
-                                                    this.handleMonthForMonth
-                                                  }
-                                                />
-                                                <label className="every1">
-                                                  months
-                                                </label>
-                                              </span>
-                                            </div>
-                                          ) : null}
-                                          {this.state.selectScheduleDate ===
-                                          "233" ? (
-                                            <div className="ScheduleDate-to">
-                                              <span>
-                                                <label className="every1">
-                                                  Every
-                                                </label>
-                                                <input
-                                                  type="text"
-                                                  className="Every"
-                                                  placeholder="1"
-                                                  onChange={
-                                                    this.handleMonthForWeek
-                                                  }
-                                                />
-                                                <label className="every1">
-                                                  month on the
-                                                </label>
-                                              </span>
-                                              <div className="row mt-3">
-                                                <div className="col-md-6">
-                                                  <select
-                                                    id="inputState"
-                                                    className="form-control dropdown-setting1"
+                                              onChange={
+                                                this.handleScheduleDateChange
+                                              }
+                                            >
+                                              {this.state.ScheduleOption !==
+                                                null &&
+                                                this.state.ScheduleOption.map(
+                                                  (item, i) => (
+                                                    <option
+                                                      key={i}
+                                                      value={item.scheduleID}
+                                                    >
+                                                      {item.scheduleName}
+                                                    </option>
+                                                  )
+                                                )}
+                                            </select>
+                                            {this.state.selectScheduleDate ===
+                                            "230" ? (
+                                              <div className="ScheduleDate-to">
+                                                <span>
+                                                  <label className="every1">
+                                                    Every
+                                                  </label>
+                                                  <input
+                                                    type="text"
+                                                    className="Every"
+                                                    placeholder="1"
                                                     onChange={
-                                                      this.handleWeekForWeek
+                                                      this.handleDailyDay
                                                     }
-                                                    value={
-                                                      this.state
-                                                        .selectedNoOfWeekForWeek
-                                                    }
-                                                  >
-                                                    <option value="0">
-                                                      Select
-                                                    </option>
-                                                    <option value="2">
-                                                      Second
-                                                    </option>
-                                                    <option value="4">
-                                                      Four
-                                                    </option>
-                                                  </select>
-                                                </div>
-                                                <div className="col-md-6">
-                                                  <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                                                    <Select
-                                                      getOptionLabel={option =>
-                                                        option.days
-                                                      }
-                                                      getOptionValue={
-                                                        option => option.days //id
-                                                      }
-                                                      options={
-                                                        this.state
-                                                          .NameOfDayForWeek
-                                                      }
-                                                      placeholder="Select"
-                                                      // menuIsOpen={true}
-                                                      closeMenuOnSelect={false}
-                                                      onChange={this.setNameOfDayForWeek.bind(
-                                                        this
-                                                      )}
-                                                      value={
-                                                        this.state
-                                                          .selectedNameOfDayForWeek
-                                                      }
-                                                      // showNewOptionAtTop={false}
-                                                      isMulti
-                                                    />
-                                                  </div>
-                                                  {/* <select
-                                                    id="inputState"
-                                                    className="form-control dropdown-setting1"
-                                                  >
-                                                    <option>Sunday</option>
-                                                    <option>Monday</option>
-                                                  </select> */}
-                                                </div>
+                                                  />
+                                                  <label className="every1">
+                                                    Day
+                                                  </label>
+                                                </span>
                                               </div>
-                                            </div>
-                                          ) : null}
-                                          {this.state.selectScheduleDate ===
-                                          "234" ? (
-                                            <div className="ScheduleDate-to">
-                                              <div className="row m-0">
-                                                <label
-                                                  className="every1"
+                                            ) : null}
+                                            {this.state.selectScheduleDate ===
+                                            "231" ? (
+                                              <div className="ScheduleDate-to">
+                                                <span>
+                                                  <label className="every1">
+                                                    Every
+                                                  </label>
+                                                  <input
+                                                    type="text"
+                                                    className="Every"
+                                                    placeholder="1"
+                                                    onChange={this.handleWeekly}
+                                                  />
+                                                  <label className="every1">
+                                                    Week on
+                                                  </label>
+                                                </span>
+                                                <div
                                                   style={{
-                                                    lineHeight: "40px"
+                                                    marginTop: "10px"
                                                   }}
                                                 >
-                                                  on
-                                                </label>
-                                                <div className="col-md-7">
-                                                  {/* <select
-                                                    id="inputState"
-                                                    className="form-control dropdown-setting1"
+                                                  <Checkbox
+                                                    onChange={
+                                                      this.handleWeeklyDays
+                                                    }
+                                                    value="Mon"
                                                   >
-                                                    <option>Septmber</option>
-                                                    <option>Octomber</option>
-                                                  </select> */}
-                                                  <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                                                    <Select
-                                                      getOptionLabel={option =>
-                                                        option.month
-                                                      }
-                                                      getOptionValue={
-                                                        option => option.month //id
-                                                      }
-                                                      options={
-                                                        this.state
-                                                          .NameOfMonthForYear
-                                                      }
-                                                      placeholder="Select"
-                                                      // menuIsOpen={true}
-                                                      closeMenuOnSelect={false}
-                                                      onChange={this.setNameOfMonthForYear.bind(
-                                                        this
-                                                      )}
-                                                      value={
-                                                        this.state
-                                                          .selectedNameOfMonthForYear
-                                                      }
-                                                      // showNewOptionAtTop={false}
-                                                      isMulti
-                                                    />
-                                                  </div>
+                                                    Mon
+                                                  </Checkbox>
+                                                  <Checkbox
+                                                    onChange={
+                                                      this.handleWeeklyDays
+                                                    }
+                                                    value="Tue"
+                                                  >
+                                                    Tue
+                                                  </Checkbox>
+                                                  <Checkbox
+                                                    onChange={
+                                                      this.handleWeeklyDays
+                                                    }
+                                                    value="Wed"
+                                                  >
+                                                    Wed
+                                                  </Checkbox>
+                                                  <Checkbox
+                                                    onChange={
+                                                      this.handleWeeklyDays
+                                                    }
+                                                    value="Thu"
+                                                  >
+                                                    Thu
+                                                  </Checkbox>
+                                                  <Checkbox
+                                                    onChange={
+                                                      this.handleWeeklyDays
+                                                    }
+                                                    value="Fri"
+                                                  >
+                                                    Fri
+                                                  </Checkbox>
+                                                  <Checkbox
+                                                    onChange={
+                                                      this.handleWeeklyDays
+                                                    }
+                                                    value="Sat"
+                                                  >
+                                                    Sat
+                                                  </Checkbox>
+                                                  <Checkbox
+                                                    onChange={
+                                                      this.handleWeeklyDays
+                                                    }
+                                                    value="Sun"
+                                                  >
+                                                    Sun
+                                                  </Checkbox>
                                                 </div>
-                                                <input
-                                                  type="text"
-                                                  className="Every"
-                                                  placeholder="1"
-                                                  onChange={
-                                                    this.handleDayForYear
-                                                  }
-                                                />
                                               </div>
-                                            </div>
-                                          ) : null}
-                                          {this.state.selectScheduleDate ===
-                                          "235" ? (
-                                            <div className="ScheduleDate-to">
-                                              <span>
-                                                <div className="row m-0">
-                                                  <label
-                                                    className="every1"
-                                                    style={{
-                                                      lineHeight: "40px"
-                                                    }}
-                                                  >
-                                                    on the
+                                            ) : null}
+                                            {this.state.selectScheduleDate ===
+                                            "232" ? (
+                                              <div className="ScheduleDate-to">
+                                                <span>
+                                                  <label className="every1">
+                                                    Day
                                                   </label>
-                                                  <div className="col-md-7">
+                                                  <input
+                                                    type="text"
+                                                    className="Every"
+                                                    placeholder="9"
+                                                    onChange={
+                                                      this.handleDaysForMonth
+                                                    }
+                                                  />
+                                                  <label className="every1">
+                                                    of every
+                                                  </label>
+                                                  <input
+                                                    type="text"
+                                                    className="Every"
+                                                    placeholder="1"
+                                                    onChange={
+                                                      this.handleMonthForMonth
+                                                    }
+                                                  />
+                                                  <label className="every1">
+                                                    months
+                                                  </label>
+                                                </span>
+                                              </div>
+                                            ) : null}
+                                            {this.state.selectScheduleDate ===
+                                            "233" ? (
+                                              <div className="ScheduleDate-to">
+                                                <span>
+                                                  <label className="every1">
+                                                    Every
+                                                  </label>
+                                                  <input
+                                                    type="text"
+                                                    className="Every"
+                                                    placeholder="1"
+                                                    onChange={
+                                                      this.handleMonthForWeek
+                                                    }
+                                                  />
+                                                  <label className="every1">
+                                                    month on the
+                                                  </label>
+                                                </span>
+                                                <div className="row mt-3">
+                                                  <div className="col-md-6">
                                                     <select
                                                       id="inputState"
                                                       className="form-control dropdown-setting1"
                                                       onChange={
-                                                        this.handleWeekForYear
+                                                        this.handleWeekForWeek
                                                       }
                                                       value={
                                                         this.state
-                                                          .selectedNoOfWeekForYear
+                                                          .selectedNoOfWeekForWeek
                                                       }
                                                     >
                                                       <option value="0">
@@ -4434,11 +4363,147 @@ class MyTicketList extends Component {
                                                       </option>
                                                     </select>
                                                   </div>
+                                                  <div className="col-md-6">
+                                                    <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                                                      <Select
+                                                        getOptionLabel={option =>
+                                                          option.days
+                                                        }
+                                                        getOptionValue={
+                                                          option => option.days //id
+                                                        }
+                                                        options={
+                                                          this.state
+                                                            .NameOfDayForWeek
+                                                        }
+                                                        placeholder="Select"
+                                                        // menuIsOpen={true}
+                                                        closeMenuOnSelect={
+                                                          false
+                                                        }
+                                                        onChange={this.setNameOfDayForWeek.bind(
+                                                          this
+                                                        )}
+                                                        value={
+                                                          this.state
+                                                            .selectedNameOfDayForWeek
+                                                        }
+                                                        // showNewOptionAtTop={false}
+                                                        isMulti
+                                                      />
+                                                    </div>
+                                                    {/* <select
+                                                    id="inputState"
+                                                    className="form-control dropdown-setting1"
+                                                  >
+                                                    <option>Sunday</option>
+                                                    <option>Monday</option>
+                                                  </select> */}
+                                                  </div>
                                                 </div>
-                                              </span>
-                                              <div className="row mt-3">
-                                                <div className="col-md-5">
-                                                  {/* <select
+                                              </div>
+                                            ) : null}
+                                            {this.state.selectScheduleDate ===
+                                            "234" ? (
+                                              <div className="ScheduleDate-to">
+                                                <div className="row m-0">
+                                                  <label
+                                                    className="every1"
+                                                    style={{
+                                                      lineHeight: "40px"
+                                                    }}
+                                                  >
+                                                    on
+                                                  </label>
+                                                  <div className="col-md-7">
+                                                    {/* <select
+                                                    id="inputState"
+                                                    className="form-control dropdown-setting1"
+                                                  >
+                                                    <option>Septmber</option>
+                                                    <option>Octomber</option>
+                                                  </select> */}
+                                                    <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                                                      <Select
+                                                        getOptionLabel={option =>
+                                                          option.month
+                                                        }
+                                                        getOptionValue={
+                                                          option => option.month //id
+                                                        }
+                                                        options={
+                                                          this.state
+                                                            .NameOfMonthForYear
+                                                        }
+                                                        placeholder="Select"
+                                                        // menuIsOpen={true}
+                                                        closeMenuOnSelect={
+                                                          false
+                                                        }
+                                                        onChange={this.setNameOfMonthForYear.bind(
+                                                          this
+                                                        )}
+                                                        value={
+                                                          this.state
+                                                            .selectedNameOfMonthForYear
+                                                        }
+                                                        // showNewOptionAtTop={false}
+                                                        isMulti
+                                                      />
+                                                    </div>
+                                                  </div>
+                                                  <input
+                                                    type="text"
+                                                    className="Every"
+                                                    placeholder="1"
+                                                    onChange={
+                                                      this.handleDayForYear
+                                                    }
+                                                  />
+                                                </div>
+                                              </div>
+                                            ) : null}
+                                            {this.state.selectScheduleDate ===
+                                            "235" ? (
+                                              <div className="ScheduleDate-to">
+                                                <span>
+                                                  <div className="row m-0">
+                                                    <label
+                                                      className="every1"
+                                                      style={{
+                                                        lineHeight: "40px"
+                                                      }}
+                                                    >
+                                                      on the
+                                                    </label>
+                                                    <div className="col-md-7">
+                                                      <select
+                                                        id="inputState"
+                                                        className="form-control dropdown-setting1"
+                                                        onChange={
+                                                          this.handleWeekForYear
+                                                        }
+                                                        value={
+                                                          this.state
+                                                            .selectedNoOfWeekForYear
+                                                        }
+                                                      >
+                                                        <option value="0">
+                                                          Select
+                                                        </option>
+                                                        <option value="2">
+                                                          Second
+                                                        </option>
+                                                        <option value="4">
+                                                          Four
+                                                        </option>
+                                                      </select>
+                                                    </div>
+                                                  </div>
+                                                </span>
+                                                <div className="row mt-3">
+                                                  <div className="col-md-5">
+                                                    {/* <select
                                                     id="inputState"
                                                     className="form-control dropdown-setting1"
                                                     style={{
@@ -4448,44 +4513,46 @@ class MyTicketList extends Component {
                                                     <option>Sunday</option>
                                                     <option>Monday</option>
                                                   </select> */}
-                                                  <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                                                    <Select
-                                                      getOptionLabel={option =>
-                                                        option.days
-                                                      }
-                                                      getOptionValue={
-                                                        option => option.days //id
-                                                      }
-                                                      options={
-                                                        this.state
-                                                          .NameOfDayForYear
-                                                      }
-                                                      placeholder="Select"
-                                                      // menuIsOpen={true}
-                                                      closeMenuOnSelect={false}
-                                                      onChange={this.setNameOfDayForYear.bind(
-                                                        this
-                                                      )}
-                                                      value={
-                                                        this.state
-                                                          .selectedNameOfDayForYear
-                                                      }
-                                                      // showNewOptionAtTop={false}
-                                                      isMulti
-                                                    />
+                                                    <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                                                      <Select
+                                                        getOptionLabel={option =>
+                                                          option.days
+                                                        }
+                                                        getOptionValue={
+                                                          option => option.days //id
+                                                        }
+                                                        options={
+                                                          this.state
+                                                            .NameOfDayForYear
+                                                        }
+                                                        placeholder="Select"
+                                                        // menuIsOpen={true}
+                                                        closeMenuOnSelect={
+                                                          false
+                                                        }
+                                                        onChange={this.setNameOfDayForYear.bind(
+                                                          this
+                                                        )}
+                                                        value={
+                                                          this.state
+                                                            .selectedNameOfDayForYear
+                                                        }
+                                                        // showNewOptionAtTop={false}
+                                                        isMulti
+                                                      />
+                                                    </div>
                                                   </div>
-                                                </div>
-                                                <label
-                                                  className="every1"
-                                                  style={{
-                                                    lineHeight: "40px",
-                                                    marginLeft: "14px"
-                                                  }}
-                                                >
-                                                  to
-                                                </label>
-                                                <div className="col-md-5">
-                                                  {/* <select
+                                                  <label
+                                                    className="every1"
+                                                    style={{
+                                                      lineHeight: "40px",
+                                                      marginLeft: "14px"
+                                                    }}
+                                                  >
+                                                    to
+                                                  </label>
+                                                  <div className="col-md-5">
+                                                    {/* <select
                                                     id="inputState"
                                                     className="form-control dropdown-setting1"
                                                     style={{
@@ -4495,568 +4562,598 @@ class MyTicketList extends Component {
                                                     <option>Septmber</option>
                                                     <option>Octomber</option>
                                                   </select> */}
-                                                  <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                                                    <Select
-                                                      getOptionLabel={option =>
-                                                        option.month
-                                                      }
-                                                      getOptionValue={
-                                                        option => option.month //id
-                                                      }
-                                                      options={
-                                                        this.state
-                                                          .NameOfMonthForDailyYear
-                                                      }
-                                                      placeholder="Select"
-                                                      // menuIsOpen={true}
-                                                      closeMenuOnSelect={false}
-                                                      onChange={this.setNameOfMonthForDailyYear.bind(
-                                                        this
-                                                      )}
-                                                      value={
-                                                        this.state
-                                                          .selectedNameOfMonthForDailyYear
-                                                      }
-                                                      // showNewOptionAtTop={false}
-                                                      isMulti
-                                                    />
+                                                    <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                                                      <Select
+                                                        getOptionLabel={option =>
+                                                          option.month
+                                                        }
+                                                        getOptionValue={
+                                                          option => option.month //id
+                                                        }
+                                                        options={
+                                                          this.state
+                                                            .NameOfMonthForDailyYear
+                                                        }
+                                                        placeholder="Select"
+                                                        // menuIsOpen={true}
+                                                        closeMenuOnSelect={
+                                                          false
+                                                        }
+                                                        onChange={this.setNameOfMonthForDailyYear.bind(
+                                                          this
+                                                        )}
+                                                        value={
+                                                          this.state
+                                                            .selectedNameOfMonthForDailyYear
+                                                        }
+                                                        // showNewOptionAtTop={false}
+                                                        isMulti
+                                                      />
+                                                    </div>
                                                   </div>
                                                 </div>
                                               </div>
-                                            </div>
-                                          ) : null}
+                                            ) : null}
 
+                                            <input
+                                              type="text"
+                                              className="txt-1 txt1Place txt1Time"
+                                              placeholder="11AM"
+                                              onChange={this.handleScheduleTime}
+                                            />
+                                            <div>
+                                              <button
+                                                className="scheduleBtn"
+                                                onClick={
+                                                  this.handleSchedulePopup
+                                                }
+                                              >
+                                                <label className="addLable">
+                                                  SCHEDULE
+                                                </label>
+                                              </button>
+                                            </div>
+                                            <div
+                                              onClick={this.ScheduleCloseModel}
+                                            >
+                                              <button
+                                                type="button"
+                                                className="scheduleBtncancel"
+                                              >
+                                                CANCEL
+                                              </button>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </Modal>
+                                      <button
+                                        className={
+                                          this.state.CheckBoxChecked
+                                            ? "btn-inv"
+                                            : "dis-btn"
+                                        }
+                                        onClick={
+                                          this.state.CheckBoxChecked
+                                            ? this.handleAssignModalOpen.bind(
+                                                this
+                                              )
+                                            : null
+                                        }
+                                      >
+                                        <img
+                                          src={Assign}
+                                          className="assign-icon"
+                                          alt="assign-icon"
+                                        />
+                                        Assign
+                                      </button>
+                                      <Modal
+                                        onClose={this.handleAssignModalClose.bind(
+                                          this
+                                        )}
+                                        open={this.state.AssignModal}
+                                        modalId="AssignPop-up"
+                                      >
+                                        <div className="assign-modal-headerDashboard">
+                                          <img
+                                            src={BlackLeftArrow}
+                                            alt="black-left-arrow-icon"
+                                            className="black-left-arrow"
+                                            onClick={this.handleAssignModalClose.bind(
+                                              this
+                                            )}
+                                          />
+                                          <label className="claim-details">
+                                            Assign Tickets To
+                                          </label>
+                                          <img
+                                            src={SearchBlackImg}
+                                            alt="SearchBlack"
+                                            className="black-left-arrow srch-mleft-spc"
+                                          />
+                                        </div>
+                                        <div className="assign-modal-div">
                                           <input
                                             type="text"
-                                            className="txt-1 txt1Place txt1Time"
-                                            placeholder="11AM"
-                                            onChange={this.handleScheduleTime}
+                                            className="txt-1 txt-btmSpace"
+                                            placeholder="First Name"
+                                            name="assignFirstName"
+                                            value={this.state.assignFirstName}
+                                            onChange={this.handelOnchangeData}
                                           />
-                                          <div>
-                                            <button
-                                              className="scheduleBtn"
-                                              onClick={this.handleSchedulePopup}
-                                            >
-                                              <label className="addLable">
-                                                SCHEDULE
-                                              </label>
-                                            </button>
-                                          </div>
-                                          <div  onClick={this.ScheduleCloseModel}>
-                                            <button
-                                              type="button"
-                                              className="scheduleBtncancel"
-                                            >
-                                              CANCEL
-                                            </button>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </Modal>
-                                    <button
-                                      className={
-                                        this.state.CheckBoxChecked
-                                          ? "btn-inv"
-                                          : "dis-btn"
-                                      }
-                                      onClick={
-                                        this.state.CheckBoxChecked
-                                          ? this.handleAssignModalOpen.bind(
-                                              this
-                                            )
-                                          : null
-                                      }
-                                    >
-                                      <img
-                                        src={Assign}
-                                        className="assign-icon"
-                                        alt="assign-icon"
-                                      />
-                                      Assign
-                                    </button>
-                                    <Modal
-                                      onClose={this.handleAssignModalClose.bind(
-                                        this
-                                      )}
-                                      open={this.state.AssignModal}
-                                      modalId="AssignPop-up"
-                                    >
-                                      <div className="assign-modal-headerDashboard">
-                                        <img
-                                          src={BlackLeftArrow}
-                                          alt="black-left-arrow-icon"
-                                          className="black-left-arrow"
-                                          onClick={this.handleAssignModalClose.bind(
-                                            this
-                                          )}
-                                        />
-                                        <label className="claim-details">
-                                          Assign Tickets To
-                                        </label>
-                                        <img
-                                          src={SearchBlackImg}
-                                          alt="SearchBlack"
-                                          className="black-left-arrow srch-mleft-spc"
-                                        />
-                                      </div>
-                                      <div className="assign-modal-div">
-                                        <input
-                                          type="text"
-                                          className="txt-1 txt-btmSpace"
-                                          placeholder="First Name"
-                                          name="assignFirstName"
-                                          value={this.state.assignFirstName}
-                                          onChange={this.handelOnchangeData}
-                                        />
-                                        <input
-                                          type="text"
-                                          className="txt-1 txt-btmSpace"
-                                          placeholder="Last Name"
-                                          name="assignLastName"
-                                          value={this.state.assignLastName}
-                                          onChange={this.handelOnchangeData}
-                                        />
-                                        <input
-                                          type="text"
-                                          className="txt-1 txt-btmSpace"
-                                          placeholder="Email"
-                                          name="assignEmail"
-                                          value={this.state.assignEmail}
-                                          onChange={this.handelOnchangeData}
-                                        />
-                                        <div className="txt-btmSpace">
-                                          <select
-                                            id="inputState"
-                                            className="form-control dropdown-setting"
-                                            value={
-                                              this.state.selectedDesignation
-                                            }
-                                            onChange={this.setDesignationValue}
-                                          >
-                                            {/* <option>Select</option> */}
-                                            <option>Designation</option>
-                                            {this.state.DesignationData !==
-                                              null &&
-                                              this.state.DesignationData.map(
-                                                (item, i) => (
-                                                  <option
-                                                    key={i}
-                                                    value={item.designationID}
-                                                  >
-                                                    {item.designationName}
-                                                  </option>
-                                                )
-                                              )}
-                                          </select>
-                                        </div>
-                                        <button
-                                          className="butn assign-btn"
-                                          type="button"
-                                          onClick={this.handleAssignSearchData.bind(
-                                            this
-                                          )}
-                                        >
-                                          SEARCH
-                                        </button>
-                                        <a
-                                          href="#!"
-                                          className="anchorTag-clear"
-                                        >
-                                          CLEAR
-                                        </a>
-                                      </div>
-                                      <div className="assign-modal-body assign-modal-body-mytick">
-                                        <ReactTable
-                                          data={SearchAssignData}
-                                          columns={[
-                                            {
-                                              Header: <span>Agent</span>,
-                                              accessor: "agent",
-                                              minWidth: 190,
-                                              Cell: row => {
-                                                var ids =
-                                                  row.original["user_ID"];
-                                                return (
-                                                  <div>
-                                                    <span>
-                                                      <img
-                                                        src={Headphone2Img}
-                                                        alt="headphone"
-                                                        className="oval-55 assign-hdphone"
-                                                        id={ids}
-                                                      />
-                                                      {
-                                                        row.original[
-                                                          "agentName"
-                                                        ]
-                                                      }
-                                                    </span>
-                                                  </div>
-                                                );
+                                          <input
+                                            type="text"
+                                            className="txt-1 txt-btmSpace"
+                                            placeholder="Last Name"
+                                            name="assignLastName"
+                                            value={this.state.assignLastName}
+                                            onChange={this.handelOnchangeData}
+                                          />
+                                          <input
+                                            type="text"
+                                            className="txt-1 txt-btmSpace"
+                                            placeholder="Email"
+                                            name="assignEmail"
+                                            value={this.state.assignEmail}
+                                            onChange={this.handelOnchangeData}
+                                          />
+                                          <div className="txt-btmSpace">
+                                            <select
+                                              id="inputState"
+                                              className="form-control dropdown-setting"
+                                              value={
+                                                this.state.selectedDesignation
                                               }
-                                            },
-                                            {
-                                              Header: <span>Designation</span>,
-                                              accessor: "designation",
-                                              // width: 130,
-                                            },
-                                            {
-                                              Header: <span>Email</span>,
-                                              accessor: "email",
-                                              minWidth: 250,
-                                              maxWidth: 'auto',
-                                              
+                                              onChange={
+                                                this.setDesignationValue
+                                              }
+                                            >
+                                              {/* <option>Select</option> */}
+                                              <option>Designation</option>
+                                              {this.state.DesignationData !==
+                                                null &&
+                                                this.state.DesignationData.map(
+                                                  (item, i) => (
+                                                    <option
+                                                      key={i}
+                                                      value={item.designationID}
+                                                    >
+                                                      {item.designationName}
+                                                    </option>
+                                                  )
+                                                )}
+                                            </select>
+                                          </div>
+                                          <button
+                                            className="butn assign-btn"
+                                            type="button"
+                                            onClick={this.handleAssignSearchData.bind(
+                                              this
+                                            )}
+                                          >
+                                            SEARCH
+                                          </button>
+                                          <a
+                                            href="#!"
+                                            className="anchorTag-clear"
+                                          >
+                                            CLEAR
+                                          </a>
+                                        </div>
+                                        <div className="assign-modal-body assign-modal-body-mytick">
+                                          <ReactTable
+                                            data={SearchAssignData}
+                                            columns={[
+                                              {
+                                                Header: <span>Agent</span>,
+                                                accessor: "agent",
+                                                minWidth: 190,
+                                                Cell: row => {
+                                                  var ids =
+                                                    row.original["user_ID"];
+                                                  return (
+                                                    <div>
+                                                      <span>
+                                                        <img
+                                                          src={Headphone2Img}
+                                                          alt="headphone"
+                                                          className="oval-55 assign-hdphone"
+                                                          id={ids}
+                                                        />
+                                                        {
+                                                          row.original[
+                                                            "agentName"
+                                                          ]
+                                                        }
+                                                      </span>
+                                                    </div>
+                                                  );
+                                                }
+                                              },
+                                              {
+                                                Header: (
+                                                  <span>Designation</span>
+                                                ),
+                                                accessor: "designation"
+                                                // width: 130,
+                                              },
+                                              {
+                                                Header: <span>Email</span>,
+                                                accessor: "email",
+                                                minWidth: 250,
+                                                maxWidth: "auto"
+                                              }
+                                            ]}
+                                            resizable={false}
+                                            defaultPageSize={5}
+                                            showPagination={false}
+                                            getTrProps={
+                                              this.handleTicketDetails
                                             }
-                                          ]}
-                                          resizable={false}
-                                          defaultPageSize={5}
-                                          showPagination={false}
-                                          getTrProps={this.handleTicketDetails}
-                                        />
-                                           <div className="position-relative">
-                    <div className="pagi">
-                      <ul>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&lt;</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>1</a>
-                        </li>
-                        <li className="active">
-                          <a href={Demo.BLANK_LINK}>2</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>3</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>4</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>5</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>6</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&gt;</a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="item-selection">
-                      <select>
-                        <option>30</option>
-                        <option>50</option>
-                        <option>100</option>
-                      </select>
-                      <p>Items per page</p>
-                    </div>
-                  </div>
-                                        <textarea
-                                          className="assign-modal-textArea"
-                                          placeholder="Add Remarks"
-                                          onChange={this.handleAssignRemark}
-                                        ></textarea>
-                                        <button
-                                          className="assign-butn btn-assign-tikcet"
-                                          type="button"
-                                          onClick={this.handleAssignTickets}
-                                        >
-                                          ASSIGN TICKETS
-                                        </button>
-                                      </div>
-                                    </Modal>
+                                          />
+                                          <div className="position-relative">
+                                            <div className="pagi">
+                                              <ul>
+                                                <li>
+                                                  <a href={Demo.BLANK_LINK}>
+                                                    &lt;
+                                                  </a>
+                                                </li>
+                                                <li>
+                                                  <a href={Demo.BLANK_LINK}>
+                                                    1
+                                                  </a>
+                                                </li>
+                                                <li className="active">
+                                                  <a href={Demo.BLANK_LINK}>
+                                                    2
+                                                  </a>
+                                                </li>
+                                                <li>
+                                                  <a href={Demo.BLANK_LINK}>
+                                                    3
+                                                  </a>
+                                                </li>
+                                                <li>
+                                                  <a href={Demo.BLANK_LINK}>
+                                                    4
+                                                  </a>
+                                                </li>
+                                                <li>
+                                                  <a href={Demo.BLANK_LINK}>
+                                                    5
+                                                  </a>
+                                                </li>
+                                                <li>
+                                                  <a href={Demo.BLANK_LINK}>
+                                                    6
+                                                  </a>
+                                                </li>
+                                                <li>
+                                                  <a href={Demo.BLANK_LINK}>
+                                                    &gt;
+                                                  </a>
+                                                </li>
+                                              </ul>
+                                            </div>
+                                            <div className="item-selection">
+                                              <select>
+                                                <option>30</option>
+                                                <option>50</option>
+                                                <option>100</option>
+                                              </select>
+                                              <p>Items per page</p>
+                                            </div>
+                                          </div>
+                                          <textarea
+                                            className="assign-modal-textArea"
+                                            placeholder="Add Remarks"
+                                            onChange={this.handleAssignRemark}
+                                          ></textarea>
+                                          <button
+                                            className="assign-butn btn-assign-tikcet"
+                                            type="button"
+                                            onClick={this.handleAssignTickets}
+                                          >
+                                            ASSIGN TICKETS
+                                          </button>
+                                        </div>
+                                      </Modal>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                          </CardBody>
-                        </Card>
-                      </Collapse>
-                    </div>
+                            </CardBody>
+                          </Card>
+                        </Collapse>
+                      </div>
 
-                    <div className="MyTicketListReact">
-                      <ReactTable
-                        data={SearchTicketData}
-                        columns={[
-                          {
-                            Header: (
-                              <span>
-                                <div className="filter-type pink1 pinkmyticket">
-                                  <div className="filter-checkbox pink2 pinkmargin">
-                                    <input
-                                      type="checkbox"
-                                      id="fil-aball"
-                                      name="MyTicketListcheckbox[]"
-                                      // checked={this.state.CheckBoxChecked}
-                                      onChange={this.checkAllCheckbox.bind(
-                                        this
-                                      )}
-                                    />
-                                    <label
-                                      htmlFor="fil-aball"
-                                      className="ticketid"
-                                    >
-                                      ID
-                                    </label>
-                                  </div>
-                                </div>
-                              </span>
-                            ),
-                            accessor: "ticketID",
-                            Cell: row => {
-                              return (
-                                <span onClick={e => this.clickCheckbox(e)}>
+                      <div className="MyTicketListReact">
+                        <ReactTable
+                          data={SearchTicketData}
+                          columns={[
+                            {
+                              Header: (
+                                <span>
                                   <div className="filter-type pink1 pinkmyticket">
                                     <div className="filter-checkbox pink2 pinkmargin">
                                       <input
                                         type="checkbox"
-                                        id={row.original.ticketID}
+                                        id="fil-aball"
                                         name="MyTicketListcheckbox[]"
-                                        checked={this.state.CheckBoxChecked}
-                                        onChange={
-                                          this.handelCheckBoxCheckedChange
-                                        }
+                                        // checked={this.state.CheckBoxChecked}
+                                        onChange={this.checkAllCheckbox.bind(
+                                          this
+                                        )}
                                       />
-                                      <label htmlFor={row.original.ticketID}>
-                                        <img
-                                          src={HeadPhone3}
-                                          alt="HeadPhone"
-                                          className="headPhone3"
-                                        />
-                                        {row.original.ticketID}
+                                      <label
+                                        htmlFor="fil-aball"
+                                        className="ticketid"
+                                      >
+                                        ID
                                       </label>
                                     </div>
                                   </div>
                                 </span>
-                              );
-                            }
-                          },
-                          {
-                            Header: (
-                              <span onClick={this.StatusOpenModel}>
-                                Status <FontAwesomeIcon icon={faCaretDown} />
-                              </span>
-                            ),
-                            accessor: "ticketStatus",
-                            Cell: row => {
-                              return (
-                                <span className="table-b table-blue-btn">
-                                  <label>{row.original.ticketStatus}</label>
-                                </span>
-                              );
-                            }
-                          },
-                          {
-                            Header: <span></span>,
-                            accessor: "taskStatus",
-                            width: 45,
-                            Cell: row => {
-                              if (
-                                row.original.taskStatus === "0/0" &&
-                                row.original.taskStatus === null
-                              ) {
+                              ),
+                              accessor: "ticketID",
+                              Cell: row => {
                                 return (
-                                  <div>
-                                    <img
-                                      className="task-icon-1 marginimg"
-                                      src={TaskIconGray}
-                                      alt="task-icon-gray"
-                                    />
-                                  </div>
-                                );
-                              } else {
-                                return (
-                                  <div>
-                                    <Popover
-                                      content={
-                                        <div className="dash-task-popup-new">
-                                          <div className="d-flex justify-content-between align-items-center">
-                                            <p className="m-b-0">
-                                              TASK:{row.original.taskStatus}
-                                            </p>
-                                            <div className="d-flex align-items-center">
-                                              2 NEW
-                                              <div className="nw-chat">
-                                                <img src={Chat} alt="chat" />
-                                              </div>
-                                            </div>
-                                          </div>
-                                          <ProgressBar
-                                            className="task-progress"
-                                            now={70}
+                                  <span onClick={e => this.clickCheckbox(e)}>
+                                    <div className="filter-type pink1 pinkmyticket">
+                                      <div className="filter-checkbox pink2 pinkmargin">
+                                        <input
+                                          type="checkbox"
+                                          id={row.original.ticketID}
+                                          name="MyTicketListcheckbox[]"
+                                          checked={this.state.CheckBoxChecked}
+                                          onChange={
+                                            this.handelCheckBoxCheckedChange
+                                          }
+                                        />
+                                        <label htmlFor={row.original.ticketID}>
+                                          <img
+                                            src={HeadPhone3}
+                                            alt="HeadPhone"
+                                            className="headPhone3"
                                           />
-                                        </div>
-                                      }
-                                      placement="bottom"
-                                    >
-                                      <img
-                                        className="task-icon-1 marginimg"
-                                        src={TaskIconBlue}
-                                        alt="task-icon-blue"
-                                      />
-                                    </Popover>
-                                  </div>
+                                          {row.original.ticketID}
+                                        </label>
+                                      </div>
+                                    </div>
+                                  </span>
                                 );
                               }
-                            }
-                          },
-                          {
-                            Header: (
-                              <label className="ticketid">
-                                <span>Subject/</span>
-                                <span
-                                  style={{
-                                    fontWeight: "bold",
-                                    fontSize: "11px !important"
-                                  }}
-                                >
-                                  Lastest Message
+                            },
+                            {
+                              Header: (
+                                <span onClick={this.StatusOpenModel}>
+                                  Status <FontAwesomeIcon icon={faCaretDown} />
                                 </span>
-                              </label>
-                            ),
-                            accessor: "message",
-                            Cell: row => {
-                              return <div>{row.original.message}</div>;
+                              ),
+                              accessor: "ticketStatus",
+                              Cell: row => {
+                                return (
+                                  <span className="table-b table-blue-btn">
+                                    <label>{row.original.ticketStatus}</label>
+                                  </span>
+                                );
+                              }
+                            },
+                            {
+                              Header: <span></span>,
+                              accessor: "taskStatus",
+                              width: 45,
+                              Cell: row => {
+                                if (
+                                  row.original.taskStatus === "0/0" &&
+                                  row.original.taskStatus === null
+                                ) {
+                                  return (
+                                    <div>
+                                      <img
+                                        className="task-icon-1 marginimg"
+                                        src={TaskIconGray}
+                                        alt="task-icon-gray"
+                                      />
+                                    </div>
+                                  );
+                                } else {
+                                  return (
+                                    <div>
+                                      <Popover
+                                        content={
+                                          <div className="dash-task-popup-new">
+                                            <div className="d-flex justify-content-between align-items-center">
+                                              <p className="m-b-0">
+                                                TASK:{row.original.taskStatus}
+                                              </p>
+                                              <div className="d-flex align-items-center">
+                                                2 NEW
+                                                <div className="nw-chat">
+                                                  <img src={Chat} alt="chat" />
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <ProgressBar
+                                              className="task-progress"
+                                              now={70}
+                                            />
+                                          </div>
+                                        }
+                                        placement="bottom"
+                                      >
+                                        <img
+                                          className="task-icon-1 marginimg"
+                                          src={TaskIconBlue}
+                                          alt="task-icon-blue"
+                                        />
+                                      </Popover>
+                                    </div>
+                                  );
+                                }
+                              }
+                            },
+                            {
+                              Header: (
+                                <label className="ticketid">
+                                  <span>Subject/</span>
+                                  <span
+                                    style={{
+                                      fontWeight: "bold",
+                                      fontSize: "11px !important"
+                                    }}
+                                  >
+                                    Lastest Message
+                                  </span>
+                                </label>
+                              ),
+                              accessor: "message",
+                              Cell: row => {
+                                return <div>{row.original.message}</div>;
+                              }
+                            },
+                            {
+                              Header: (
+                                <span className="ticketid">
+                                  Category{" "}
+                                  <FontAwesomeIcon icon={faCaretDown} />
+                                </span>
+                              ),
+                              accessor: "category",
+                              Cell: row => (
+                                <span>
+                                  <label>{row.original.category} </label>
+
+                                  <Popover
+                                    content={
+                                      <div className="dash-creation-popup-cntr">
+                                        <ul className="dash-category-popup dashnewpopup">
+                                          <li>
+                                            <p>Category</p>
+                                            <p>{row.original.category}</p>
+                                          </li>
+                                          <li>
+                                            <p>Sub Category</p>
+                                            <p>{row.original.subCategory}</p>
+                                          </li>
+                                          <li>
+                                            <p>Type</p>
+                                            <p>{row.original.issueType}</p>
+                                          </li>
+                                        </ul>
+                                      </div>
+                                    }
+                                    placement="bottom"
+                                  >
+                                    <img
+                                      className="info-icon"
+                                      src={InfoIcon}
+                                      alt="info-icon"
+                                    />
+                                  </Popover>
+                                </span>
+                              )
+                            },
+                            {
+                              Header: (
+                                <span className="ticketid">
+                                  Priority{" "}
+                                  <FontAwesomeIcon icon={faCaretDown} />
+                                </span>
+                              ),
+                              accessor: "priority"
+                              // Cell: props => <span>High</span>
+                            },
+                            {
+                              Header: (
+                                <span className="ticketid">
+                                  Assignee{" "}
+                                  <FontAwesomeIcon icon={faCaretDown} />
+                                </span>
+                              ),
+                              accessor: "assignee"
+                            },
+                            {
+                              Header: (
+                                <span className="ticketid">
+                                  Creation On{" "}
+                                  <FontAwesomeIcon icon={faCaretDown} />
+                                </span>
+                              ),
+                              accessor: "createdOn",
+                              Cell: row => (
+                                <span>
+                                  <label>{row.original.createdOn}</label>
+
+                                  <Popover
+                                    content={
+                                      <div className="insertpop1">
+                                        <ul className="dash-creation-popup">
+                                          <li className="title">
+                                            Creation details
+                                          </li>
+                                          <li>
+                                            <p>
+                                              {row.original.createdBy} Created
+                                            </p>
+                                            <p>{row.original.createdago}</p>
+                                          </li>
+                                          <li>
+                                            <p>
+                                              Assigned to{" "}
+                                              {row.original.assignedTo}
+                                            </p>
+                                            <p>{row.original.assignedago}</p>
+                                          </li>
+                                          <li>
+                                            <p>
+                                              {row.original.updatedBy} updated
+                                            </p>
+                                            <p>{row.original.updatedago}</p>
+                                          </li>
+                                          <li>
+                                            <p>Response time remaining by</p>
+                                            <p>
+                                              {
+                                                row.original
+                                                  .responseTimeRemainingBy
+                                              }
+                                            </p>
+                                          </li>
+                                          <li>
+                                            <p>Response overdue by</p>
+                                            <p>
+                                              {row.original.responseOverdueBy}
+                                            </p>
+                                          </li>
+                                          <li>
+                                            <p>Resolution overdue by</p>
+                                            <p>
+                                              {row.original.resolutionOverdueBy}
+                                            </p>
+                                          </li>
+                                        </ul>
+                                      </div>
+                                    }
+                                    placement="bottom"
+                                  >
+                                    <img
+                                      className="info-icon"
+                                      src={InfoIcon}
+                                      alt="info-icon"
+                                    />
+                                  </Popover>
+                                </span>
+                              )
                             }
-                          },
-                          {
-                            Header: (
-                              <span className="ticketid">
-                                Category <FontAwesomeIcon icon={faCaretDown} />
-                              </span>
-                            ),
-                            accessor: "category",
-                            Cell: row => (
-                              <span>
-                                <label>{row.original.category} </label>
-
-                                <Popover
-                                  content={
-                                    <div className="dash-creation-popup-cntr">
-                                      <ul className="dash-category-popup dashnewpopup">
-                                        <li>
-                                          <p>Category</p>
-                                          <p>{row.original.category}</p>
-                                        </li>
-                                        <li>
-                                          <p>Sub Category</p>
-                                          <p>{row.original.subCategory}</p>
-                                        </li>
-                                        <li>
-                                          <p>Type</p>
-                                          <p>{row.original.issueType}</p>
-                                        </li>
-                                      </ul>
-                                    </div>
-                                  }
-                                  placement="bottom"
-                                >
-                                  <img
-                                    className="info-icon"
-                                    src={InfoIcon}
-                                    alt="info-icon"
-                                  />
-                                </Popover>
-                              </span>
-                            )
-                          },
-                          {
-                            Header: (
-                              <span className="ticketid">
-                                Priority <FontAwesomeIcon icon={faCaretDown} />
-                              </span>
-                            ),
-                            accessor: "priority"
-                            // Cell: props => <span>High</span>
-                          },
-                          {
-                            Header: (
-                              <span className="ticketid">
-                                Assignee <FontAwesomeIcon icon={faCaretDown} />
-                              </span>
-                            ),
-                            accessor: "assignee"
-                          },
-                          {
-                            Header: (
-                              <span className="ticketid">
-                                Creation On{" "}
-                                <FontAwesomeIcon icon={faCaretDown} />
-                              </span>
-                            ),
-                            accessor: "createdOn",
-                            Cell: row => (
-                              <span>
-                                <label>{row.original.createdOn}</label>
-
-                                <Popover
-                                  content={
-                                    <div className="insertpop1">
-                                      <ul className="dash-creation-popup">
-                                        <li className="title">
-                                          Creation details
-                                        </li>
-                                        <li>
-                                          <p>
-                                            {row.original.createdBy} Created
-                                          </p>
-                                          <p>{row.original.createdago}</p>
-                                        </li>
-                                        <li>
-                                          <p>
-                                            Assigned to{" "}
-                                            {row.original.assignedTo}
-                                          </p>
-                                          <p>{row.original.assignedago}</p>
-                                        </li>
-                                        <li>
-                                          <p>
-                                            {row.original.updatedBy} updated
-                                          </p>
-                                          <p>{row.original.updatedago}</p>
-                                        </li>
-                                        <li>
-                                          <p>Response time remaining by</p>
-                                          <p>
-                                            {
-                                              row.original
-                                                .responseTimeRemainingBy
-                                            }
-                                          </p>
-                                        </li>
-                                        <li>
-                                          <p>Response overdue by</p>
-                                          <p>
-                                            {row.original.responseOverdueBy}
-                                          </p>
-                                        </li>
-                                        <li>
-                                          <p>Resolution overdue by</p>
-                                          <p>
-                                            {row.original.resolutionOverdueBy}
-                                          </p>
-                                        </li>
-                                      </ul>
-                                    </div>
-                                  }
-                                  placement="bottom"
-                                >
-                                  <img
-                                    className="info-icon"
-                                    src={InfoIcon}
-                                    alt="info-icon"
-                                  />
-                                </Popover>
-                              </span>
-                            )
-                          }
-                        ]}
-                        // resizable={false}
-                        defaultPageSize={10}
-                        showPagination={true}
-                        getTrProps={this.HandleRowClickPage}
-                      />
-                      {/* <div className="position-relative">
+                          ]}
+                          // resizable={false}
+                          defaultPageSize={10}
+                          showPagination={true}
+                          getTrProps={this.HandleRowClickPage}
+                        />
+                        {/* <div className="position-relative">
                         <div className="pagi">
                           <ul>
                             <li>
@@ -5094,15 +5191,15 @@ class MyTicketList extends Component {
                           <p>Items per page</p>
                         </div>
                       </div> */}
-                    </div>
-                    <div className="float-search" onClick={this.toggleSearch}>
-                      <small>{TitleChange}</small>
-                      {ImgChange}
+                      </div>
+                      <div className="float-search" onClick={this.toggleSearch}>
+                        <small>{TitleChange}</small>
+                        {ImgChange}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              {/* <div
+                {/* <div
                 className="tab-pane fade"
                 id="New-tab"
                 role="tabpanel"
@@ -5165,16 +5262,16 @@ class MyTicketList extends Component {
                 <MyTicketFollowUp />
               </div> */}
 
-              <div
-                className="tab-pane fade"
-                id="Draft-tab"
-                role="tabpanel"
-                aria-labelledby="Draft-tab"
-              >
-                <MyTicketDraft draftData={DraftDetails} />
+                <div
+                  className="tab-pane fade"
+                  id="Draft-tab"
+                  role="tabpanel"
+                  aria-labelledby="Draft-tab"
+                >
+                  <MyTicketDraft draftData={DraftDetails} />
+                </div>
               </div>
-            </div>
-  }
+            )}
           </div>
         </div>
         <NotificationContainer />
