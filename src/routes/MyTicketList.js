@@ -148,6 +148,8 @@ class MyTicketList extends Component {
       byFollowUpCount: 0,
       draftCountStatus: 0,
       byDateFlag: 1,
+      ActiveTabId: 1,
+      headerActiveId: 1001,
       byCustomerTypeFlag: 0,
       byTicketTypeFlag: 0,
       byCategoryFlag: 0,
@@ -394,20 +396,44 @@ class MyTicketList extends Component {
     // }
     if (TabId === "Escalation" || TabId === undefined) {
       ticketStatus = 1001;
+      this.setState({
+        headerActiveId: 1001
+      });
     } else if (TabId === "New") {
       ticketStatus = 101;
+      this.setState({
+        headerActiveId: 101
+      });
     } else if (TabId === "Open") {
       ticketStatus = 102;
+      this.setState({
+        headerActiveId: 102
+      });
     } else if (TabId === "Resolved") {
       ticketStatus = 103;
+      this.setState({
+        headerActiveId: 103
+      });
     } else if (TabId === "Closed") {
       ticketStatus = 104;
+      this.setState({
+        headerActiveId: 104
+      });
     } else if (TabId === "Reassigned") {
       ticketStatus = 1004;
+      this.setState({
+        headerActiveId: 1004
+      });
     } else if (TabId === "All") {
       ticketStatus = 1002;
+      this.setState({
+        headerActiveId: 1002
+      });
     } else if (TabId === "FollowUp") {
       ticketStatus = 1003;
+      this.setState({
+        headerActiveId: 1003
+      });
     }
     var data = ticketStatus;
     this.setState({ loading: true });
@@ -684,28 +710,28 @@ class MyTicketList extends Component {
         selectedSlaDueByDate: 0,
         selectedTicketStatusByDate: 0
       });
-    } else if (this.state.byCustomerTypeFlag === 2) {
+    } else if (this.state.byCustomerTypeFlag === 1) {
       this.setState({
         MobileNoByCustType: "",
         EmailIdByCustType: "",
         TicketIdByCustType: "",
         selectedTicketStatusByCustomer: 0
       });
-    } else if (this.state.byTicketTypeFlag === 3) {
+    } else if (this.state.byTicketTypeFlag === 1) {
       this.setState({
         selectedPriority: 0,
         selectedTicketStatusByTicket: 0,
         selectedChannelOfPurchase: [],
         selectedTicketActionType: []
       });
-    } else if (this.state.byCategoryFlag === 4) {
+    } else if (this.state.byCategoryFlag === 1) {
       this.setState({
         selectedCategory: 0,
         selectedSubCategory: 0,
         selectedIssueType: 0,
         selectedTicketStatusByCategory: 0
       });
-    } else if (this.state.allFlag === 5) {
+    } else if (this.state.allFlag === 1) {
       this.setState({
         ByAllCreateDate: "",
         selectedTicketSource: 0,
@@ -749,7 +775,8 @@ class MyTicketList extends Component {
         byCustomerTypeFlag: 0,
         byTicketTypeFlag: 0,
         byCategoryFlag: 0,
-        allFlag: 0
+        allFlag: 0,
+        ActiveTabId: 1
       });
     } else if (currentActive === "By Customer Type") {
       this.setState({
@@ -757,7 +784,8 @@ class MyTicketList extends Component {
         byCustomerTypeFlag: 2,
         byTicketTypeFlag: 0,
         byCategoryFlag: 0,
-        allFlag: 0
+        allFlag: 0,
+        ActiveTabId: 2
       });
     } else if (currentActive === "By Ticket Type") {
       this.setState({
@@ -765,7 +793,8 @@ class MyTicketList extends Component {
         byCustomerTypeFlag: 0,
         byTicketTypeFlag: 3,
         byCategoryFlag: 0,
-        allFlag: 0
+        allFlag: 0,
+        ActiveTabId: 3
       });
     } else if (currentActive === "By Category") {
       this.setState({
@@ -773,7 +802,8 @@ class MyTicketList extends Component {
         byCustomerTypeFlag: 0,
         byTicketTypeFlag: 0,
         byCategoryFlag: 4,
-        allFlag: 0
+        allFlag: 0,
+        ActiveTabId: 4
       });
     } else if (currentActive === "All") {
       this.setState({
@@ -781,7 +811,8 @@ class MyTicketList extends Component {
         byCustomerTypeFlag: 0,
         byTicketTypeFlag: 0,
         byCategoryFlag: 0,
-        allFlag: 5
+        allFlag: 5,
+        ActiveTabId: 5
       });
     }
   }
@@ -990,7 +1021,7 @@ class MyTicketList extends Component {
       selectedIssueTypeAll: 0
     });
     let cateId =
-      this.state.byCategoryFlag === 4
+      this.state.byCategoryFlag === 1
         ? this.state.selectedCategory
         : this.state.selectedCategoryAll;
 
@@ -1003,12 +1034,12 @@ class MyTicketList extends Component {
       }
     }).then(function(res) {
       debugger;
-      if (self.state.byCategoryFlag === 4) {
+      if (self.state.byCategoryFlag === 1) {
         var SubCategoryData = res.data.responseData;
         self.setState({
           SubCategoryData: SubCategoryData
         });
-      } else if (self.state.allFlag === 5) {
+      } else if (self.state.allFlag === 1) {
         var SubCategoryAllData = res.data.responseData;
         self.setState({
           SubCategoryAllData: SubCategoryAllData
@@ -1045,7 +1076,7 @@ class MyTicketList extends Component {
       selectedIssueTypeAll: 0
     });
     let subCateId =
-      this.state.byCategoryFlag === 4
+      this.state.byCategoryFlag === 1
         ? this.state.selectedSubCategory
         : this.state.selectedSubCategoryAll;
 
@@ -1060,12 +1091,12 @@ class MyTicketList extends Component {
       debugger;
       // let IssueTypeData = res.data.responseData;
       // self.setState({ IssueTypeData: IssueTypeData });
-      if (self.state.byCategoryFlag === 4) {
+      if (self.state.byCategoryFlag === 1) {
         var IssueTypeData = res.data.responseData;
         self.setState({
           IssueTypeData: IssueTypeData
         });
-      } else if (self.state.allFlag === 5) {
+      } else if (self.state.allFlag === 1) {
         var IssueTypeAllData = res.data.responseData;
         self.setState({
           IssueTypeAllData: IssueTypeAllData
@@ -1175,108 +1206,77 @@ class MyTicketList extends Component {
       }
     });
   }
-  ViewSearchData(TabId) {
+  ViewSearchData() {
     debugger;
     let self = this;
-    var ticketStatus = 0;
-    if (TabId === "Escalation" || TabId === undefined) {
-      ticketStatus = 1001;
-    } else if (TabId === "New") {
-      ticketStatus = 101;
-    } else if (TabId === "Open") {
-      ticketStatus = 102;
-    } else if (TabId === "Resolved") {
-      ticketStatus = 103;
-    } else if (TabId === "Closed") {
-      ticketStatus = 104;
-    } else if (TabId === "Reassigned") {
-      ticketStatus = 1004;
-    } else if (TabId === "All") {
-      ticketStatus = 1002;
-    } else if (TabId === "FollowUp") {
-      ticketStatus = 1003;
-    }
 
     // ---------------By Date tab---------------------
-
-    // this.state.fieldByDate["Ticket_CreatedOn"] = moment(
-    //   this.state.ByDateCreatDate
-    // ).format("YYYY-MM-DD");
-    // this.state.fieldByDate["Ticket_ModifiedOn"] = moment(
-    //   this.state.ByDateSelectDate
-    // ).format("YYYY-MM-DD");
-    // this.state.fieldByDate["SLA_DueON"] = this.state.selectedSlaDueByDate;
-    // this.state.fieldByDate[
-    //   "Ticket_StatusID"
-    // ] = this.state.selectedTicketStatusByDate;
-   
     var dateTab = {};
-    var createDate=moment(this.state.ByDateCreatDate).format(
-      "YYYY-MM-DD");
-      if(createDate  === "Invalid date"){
-        this.setState({
-          createDate:""
-        })
-      }
-    // dateTab["Ticket_CreatedOn"] = moment(this.state.ByDateCreatDate).format(
-    //   "YYYY-MM-DD"
-    // );
-    dateTab["Ticket_CreatedOn"] = createDate;
-    dateTab["Ticket_ModifiedOn"] = moment(this.state.ByDateSelectDate).format(
-      "YYYY-MM-DD"
-    );
-    dateTab["SLA_DueON"] = this.state.selectedSlaDueByDate;
-    dateTab["Ticket_StatusID"] = this.state.selectedTicketStatusByDate;
-    // this.setState({
-    //   fieldByDate: dateTab
-    // });
+    if (this.state.ActiveTabId === 1) {
+      dateTab["Ticket_CreatedOn"] = moment(this.state.ByDateCreatDate).format(
+        "YYYY-MM-DD"
+      );
+      dateTab["Ticket_ModifiedOn"] = moment(this.state.ByDateSelectDate).format(
+        "YYYY-MM-DD"
+      );
+      dateTab["SLA_DueON"] = this.state.selectedSlaDueByDate;
+      dateTab["Ticket_StatusID"] = this.state.selectedTicketStatusByDate;
+    } else {
+      this.setState({
+        dateTab: null
+      });
+    }
+
     // --------------------By Customer Type Tab---------------
     var customerType = {};
+    if (this.state.ActiveTabId === 2) {
+      customerType["CustomerMobileNo"] = this.state.MobileNoByCustType;
+      customerType["CustomerEmailID"] = this.state.EmailIdByCustType;
+      customerType["TicketID"] = this.state.TicketIdByCustType;
+      customerType[
+        "TicketStatusID"
+      ] = this.state.selectedTicketStatusByCustomer;
+    } else {
+      this.setState({
+        customerType: null
+      });
+    }
 
-    customerType["CustomerMobileNo"] = this.state.MobileNoByCustType;
-    customerType["CustomerEmailID"] = this.state.EmailIdByCustType;
-    customerType["TicketID"] = this.state.TicketIdByCustType;
-    customerType["TicketStatusID"] = this.state.selectedTicketStatusByCustomer;
-
-    // this.setState({
-    //   fieldByCustomerType: customerType
-    // });
-    // this.state.fieldByCustomerType["CustomerMobileNo"] = this.state.MobileNoByCustType;
-    // this.state.fieldByCustomerType["CustomerEmailID"] = this.state.EmailIdByCustType;
-    // this.state.fieldByCustomerType["TicketID"] = this.state.TicketIdByCustType;
-    // this.state.fieldByCustomerType["TicketStatusID"] = this.state.selectedTicketStatusByCustomer;
     // --------------------By Ticket Type Tab-----------------
     var ticketType = {};
-
-    ticketType["TicketPriorityID"] = this.state.selectedPriority;
-    ticketType["TicketStatusID"] = this.state.selectedTicketStatusByTicket;
-    ticketType["ChannelOfPurchaseIds"] = this.state.selectedChannelOfPurchase;
-    ticketType["ActionTypes"] = this.state.selectedTicketActionType;
-    // this.setState({
-    //   fieldByTicketType: tikcetType
-    // });
+    if (this.state.ActiveTabId === 3) {
+      ticketType["TicketPriorityID"] = this.state.selectedPriority;
+      ticketType["TicketStatusID"] = this.state.selectedTicketStatusByTicket;
+      ticketType["ChannelOfPurchaseIds"] = this.state.selectedChannelOfPurchase;
+      ticketType["ActionTypes"] = this.state.selectedTicketActionType;
+    } else {
+      this.setState({
+        ticketType: null
+      });
+    }
     // --------------------By Category Tab-------------------
     var categoryType = {};
-
-    categoryType["CategoryId"] = this.state.selectedCategory;
-    categoryType["SubCategoryId"] = this.state.selectedSubCategory;
-    categoryType["IssueTypeId"] = this.state.selectedIssueType;
-    categoryType["TicketStatusID"] = this.state.selectedTicketStatusByCategory;
-    // this.setState({
-    //   fieldByCategory: categoryType
-    // });
-
+    if (this.state.ActiveTabId === 4) {
+      categoryType["CategoryId"] = this.state.selectedCategory;
+      categoryType["SubCategoryId"] = this.state.selectedSubCategory;
+      categoryType["IssueTypeId"] = this.state.selectedIssueType;
+      categoryType["TicketStatusID"] = this.state.selectedTicketStatusByCategory;
+    } else {
+      this.setState({
+        categoryType: null
+      });
+    }
     axios({
       method: "post",
       url: config.apiUrl + "/Search/GetTicketsOnSearch",
       headers: authHeader(),
       data: {
-        HeaderStatusId: 1001,
-        ActiveTabId: this.state.byDateFlag,
+        HeaderStatusId: this.state.headerActiveId,
+        ActiveTabId: this.state.ActiveTabId,
         searchDataByDate: dateTab,
-        //searchDataByCustomerType: customerType,
-        // searchDataByTicketType:ticketType,
-        // searchDataByCategoryType:categoryType
+        searchDataByCustomerType: customerType,
+        searchDataByTicketType: ticketType,
+        searchDataByCategoryType: categoryType
       }
     }).then(function(res) {
       debugger;
@@ -1459,7 +1459,6 @@ class MyTicketList extends Component {
     this.setState({ selectedSlaStatus: slaStatusValue });
   };
   setCategoryValue = e => {
-    // debugger;
     let categoryValue = e.currentTarget.value;
     this.setState({ selectedCategory: categoryValue });
     setTimeout(() => {
