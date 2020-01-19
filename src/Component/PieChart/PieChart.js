@@ -11,12 +11,12 @@ class OpenByPriorityPie extends Component {
   
     this.state = {
       data: {
-        // label: 'somethingA',
-        values: [
-          { x: "Low,22", y: 22 },
-          { x: "High,37", y: 37 },
-          { x: "Medium,40", y: 40 }
-        ]
+        // values: [
+        //   { x: "Low,22", y: 22 },
+        //   { x: "High,37", y: 37 },
+        //   { x: "Medium,40", y: 40 }
+        // ]
+        values: []
       },
       sort: null
     };
@@ -45,46 +45,24 @@ class OpenByPriorityPie extends Component {
       }
     }).then(function(res) {
       debugger;
-      let categories = [],
-        totalTicketsData = [],
-        claimTicketsData = [];
-      let DashboardBillGraphData = res.data.responseData.tickettoClaimGraph;
+      let values = [];
+      let DashboardBillGraphData = res.data.responseData.priorityChart;
       for (let i = 0; i < DashboardBillGraphData.length; i++) {
-        let day = DashboardBillGraphData[i].day;
-        categories.push(day);
-        let totalTickets = DashboardBillGraphData[i].totalTickets;
-        totalTicketsData.push(totalTickets);
-        let claimTickets = DashboardBillGraphData[i].claimTickets;
-        claimTicketsData.push(claimTickets);
+        let priorityName = DashboardBillGraphData[i].priorityName;
+        let priorityCount = DashboardBillGraphData[i].priorityCount;
+        let obj = {x: `${priorityName}, ${priorityCount}`, y: priorityCount};
+        values.push(obj);
       }
 
       self.setState({
-        optionsMixedChart: {
-          xaxis: {
-            categories
-          }
-        },
-        seriesMixedChart: [
-          {
-            data: totalTicketsData
-          },
-          {
-            data: claimTicketsData
-          }
-        ]
+        data: {
+            values
+        }
       });
     });
   }
 
   render() {
-    // var sort = null;
-    // var data = {
-    //   values: [
-    //     { x: "Low,22", y: 22 },
-    //     { x: "High,37", y: 37 },
-    //     { x: "Medium,40", y: 40 }
-    //   ]
-    // };
     return (
       <div className="obpml">
         <PieChart

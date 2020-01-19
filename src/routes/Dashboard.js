@@ -192,6 +192,7 @@ class Dashboard extends Component {
       DashboardGraphData: {},
       DashboardBillGraphData: [],
       DashboardSourceGraphData: [],
+      AgentIds: '',
     };
     this.applyCallback = this.applyCallback.bind(this);
     // this.handleApply = this.handleApply.bind(this);
@@ -239,6 +240,7 @@ class Dashboard extends Component {
       this
     );
     this.handleGetAgentList = this.handleGetAgentList.bind(this);
+    this.checkAllAgentStart = this.checkAllAgentStart.bind(this);
     // this.toggleHoverState = this.toggleHoverState.bind(this);
   }
   // handleApply(event, picker) {
@@ -259,12 +261,12 @@ class Dashboard extends Component {
     this.handleGetTicketPriorityList();
     this.handleGetChannelOfPurchaseList();
     this.handleGetBrandList();
-    this.handleGetDashboardNumberData();
+    // this.handleGetDashboardNumberData();
     this.handleGetDashboardGraphData();
     this.handleGetAgentList();
   }
 
-  handleGetDashboardNumberData() {
+  handleGetDashboardNumberData(AgentIds) {
     debugger;
     let self = this;
     axios({
@@ -272,7 +274,8 @@ class Dashboard extends Component {
       url: config.apiUrl + "/DashBoard/DashBoardCountData",
       headers: authHeader(),
       params: {
-        UserIds: "6,7,8",
+        UserIds: AgentIds,
+        // UserIds: "6,7,8",
         fromdate: "2019-12-26",
         todate: "2020-01-15",
         BrandID: "26, 31"
@@ -309,10 +312,47 @@ class Dashboard extends Component {
     });
   }
 
+  checkAllAgentStart(event) {
+    debugger;
+    var checkboxes = document.getElementsByName("allAgent");
+    var strAgentIds="";
+    for (var i in checkboxes) {
+      if(isNaN(i)==false)
+      {
+        checkboxes[i].checked = true;
+         if(checkboxes[i].checked == true)
+         {
+          if (checkboxes[i].getAttribute('attrIds')!==null)
+            strAgentIds+=checkboxes[i].getAttribute('attrIds')+",";
+         }
+      }
+    }
+    this.setState({
+      AgentIds: strAgentIds
+    });
+    this.handleGetDashboardNumberData(strAgentIds);
+  }
+  checkIndividualAgent(event) {
+    debugger;
+    var checkboxes = document.getElementsByName("allAgent");
+    var strAgentIds="";
+    for (var i in checkboxes) {
+      if(isNaN(i)==false)
+      {
+         if(checkboxes[i].checked == true)
+         {
+          if (checkboxes[i].getAttribute('attrIds')!==null)
+            strAgentIds+=checkboxes[i].getAttribute('attrIds')+",";
+         }
+      }
+    }
+    this.setState({
+      AgentIds: strAgentIds
+    });
+    this.handleGetDashboardNumberData(strAgentIds);
+  }
   checkAllAgent(event) {
-    // this.setState({
-    //   CheckBoxAllAgent: !CheckBoxAllAgent
-    // });
+    this.setState(state => ({ CheckBoxAllAgent: !state.CheckBoxAllAgent }));
     const allCheckboxChecked = event.target.checked;
     var checkboxes = document.getElementsByName("allAgent");
     if (allCheckboxChecked) {
@@ -340,6 +380,7 @@ class Dashboard extends Component {
       debugger;
       let AgentData = res.data.responseData;
       self.setState({ AgentData: AgentData });
+      self.checkAllAgentStart();
     });
   }
   handleGetBrandList() {
@@ -1951,8 +1992,7 @@ class Dashboard extends Component {
                           id="all-agent"
                           className="ch1"
                           onChange={this.checkAllAgent.bind(this)}
-                          checked={true}
-                          // checked={this.state.CheckBoxAllAgent}
+                          checked={this.state.CheckBoxAllAgent}
                           name="allAgent"
                         />
                         <span className="ch1-text">All</span>
@@ -1961,13 +2001,14 @@ class Dashboard extends Component {
                     {this.state.AgentData !== null &&
                       this.state.AgentData.map((item, i) => (
                         <li key={i}>
-                          <label htmlFor={"i" + item.reporteeID}>
+                          <label htmlFor={"i" + item.userID}>
                             <input
                               type="checkbox"
-                              id={"i" + item.reporteeID}
+                              id={"i" + item.userID}
                               className="ch1"
                               name="allAgent"
-                              checked={true}
+                              attrIds={item.userID}
+                              onChange={this.checkIndividualAgent.bind(this)}
                             />
                             <span className="ch1-text">{item.fullName}</span>
                           </label>
@@ -2266,16 +2307,16 @@ class Dashboard extends Component {
                         onMouseLeave={this.handleMouseHover.bind(this)}
                       >
                         <p className="card-head">SLA</p>
-                        <div className="resp-success">
-                          <p className="card-head">Response Success</p>
+                        {Object.keys(this.state.DashboardNumberData).length > 0 ? <div className="resp-success">
+                          <p className="card-head">Response {this.state.DashboardNumberData.isResponseSuccess === true ? 'Success' : 'Failure'}</p>
                           <span className="card-value">
-                            <big>60%</big>
+                          <big>{this.state.DashboardNumberData.responseRate}</big>
                           </span>
                           <p className="card-head mt-lg-4 mt-2">
-                            Resolution Success :
-                            <span className="font-weight-bold">57.23%</span>
+                            Resolution {this.state.DashboardNumberData.isResolutionSuccess === true ? 'Success' : 'Failure'} :
+                            <span className="font-weight-bold">{this.state.DashboardNumberData.resolutionRate}</span>
                           </p>
-                        </div>
+                        </div> : null }
                       </div>
                     </div>
                     <div className="col-lg-3 col-sm-6">
