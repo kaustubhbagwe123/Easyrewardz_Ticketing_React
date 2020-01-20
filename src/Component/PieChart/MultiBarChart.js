@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Chart from 'react-apexcharts';
-import { authHeader } from "./../../helpers/authHeader";
-import axios from "axios";
-import config from "./../../helpers/config";
+// import { authHeader } from "./../../helpers/authHeader";
+// import axios from "axios";
+// import config from "./../../helpers/config";
 
 class MultiBarChart extends Component {
   constructor(props) {
