@@ -47,18 +47,19 @@ class OpenByPriorityPie extends Component {
       debugger;
       let values = [];
       let DashboardBillGraphData = res.data.responseData.priorityChart;
-      for (let i = 0; i < DashboardBillGraphData.length; i++) {
-        let priorityName = DashboardBillGraphData[i].priorityName;
-        let priorityCount = DashboardBillGraphData[i].priorityCount;
-        let obj = {x: `${priorityName}, ${priorityCount}`, y: priorityCount};
-        values.push(obj);
-      }
-
-      self.setState({
-        data: {
-            values
+      if (DashboardBillGraphData !== null) {
+        for (let i = 0; i < DashboardBillGraphData.length; i++) {
+          let priorityName = DashboardBillGraphData[i].priorityName;
+          let priorityCount = DashboardBillGraphData[i].priorityCount;
+          let obj = {x: `${priorityName}, ${priorityCount}`, y: priorityCount};
+          values.push(obj);
         }
-      });
+        self.setState({
+          data: {
+              values
+          }
+        });
+      }
     });
   }
 

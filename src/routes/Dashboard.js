@@ -281,9 +281,11 @@ class Dashboard extends Component {
       params: {
         UserIds: this.state.AgentIds,
         // UserIds: "6,7,8",
-        fromdate: this.state.start._d,
+        fromdate: moment(this.state.start._d).format("YYYY-MM-DD"),
+        // fromdate: this.state.start._d,
         // fromdate: "2019-12-26",
-        todate: this.state.end._d,
+        todate: moment(this.state.end._d).format("YYYY-MM-DD"),
+        // todate: this.state.end._d,
         // todate: "2020-01-15",
         BrandID: this.state.BrandIds
         // BrandID: "26, 31"
