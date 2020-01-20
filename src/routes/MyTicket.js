@@ -363,8 +363,7 @@ class MyTicket extends Component {
         SubCategoryID: this.state.selectetedParameters.subCategoryID,
         IssueTypeID: this.state.selectetedParameters.issueTypeID,
         PriortyID: this.state.selectetedParameters.priorityID,
-        ChannelOfPurchaseID: this.state.selectetedParameters
-          .channelOfPurchaseID,
+        ChannelOfPurchaseID: this.state.selectetedParameters.channelOfPurchaseID,
         TicketActionID: this.state.selectetedParameters.ticketActionTypeID
       }
     }).then(function(res) {
@@ -495,7 +494,7 @@ class MyTicket extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let status = res.data.status;
+      let status = res.data.message ;
       let data = res.data.responseData;
       if (status === "Success") {
         self.setState({ BrandData: data });
@@ -1055,79 +1054,6 @@ class MyTicket extends Component {
         <img src={PlusImg} alt="Plush" className="plush-img" />
       </div>
     );
-    // const data = [
-    //   {
-    //     orderNumber: "BB2213451123",
-    //     MobileNum: <span>9873470074</span>,
-    //     Amount: "13,500",
-    //     purDate: (
-    //       <span>
-    //         <label>23 May 2018</label>
-    //       </span>
-    //     )
-    //   },
-    //   {
-    //     orderNumber: "BB2213451123",
-    //     MobileNum: <span>9873470074</span>,
-    //     Amount: "12,500",
-    //     purDate: (
-    //       <span>
-    //         <label>13 May 2018</label>
-    //       </span>
-    //     )
-    //   },
-    //   {
-    //     orderNumber: "BB2213451123",
-
-    //     MobileNum: <span>9873470074</span>,
-    //     Amount: "11,500",
-    //     purDate: (
-    //       <span>
-    //         <label>10 May 2019</label>
-    //       </span>
-    //     )
-    //   },
-    //   {
-    //     orderNumber: "BB2213451123",
-    //     MobileNum: <span>9873470074</span>,
-    //     Amount: "15,200",
-    //     purDate: (
-    //       <span>
-    //         <label>21 May 2015</label>
-    //       </span>
-    //     )
-    //   },
-    //   {
-    //     orderNumber: "BB2213451123",
-    //     MobileNum: <span>9873470074</span>,
-    //     Amount: "10,000",
-    //     purDate: (
-    //       <span>
-    //         <label>10 May 2017</label>
-    //       </span>
-    //     )
-    //   }
-    // ];
-
-    // const columns = [
-    //   {
-    //     Header: <span className="historyTable-header">Order Number</span>,
-    //     accessor: "orderNumber"
-    //   },
-    //   {
-    //     id: "createdBy",
-    //     Header: <span className="historyTable-header">Mobile Number</span>,
-    //     accessor: "MobileNum"
-    //   },
-    //   {
-    //     Header: <span className="historyTable-header">Amount</span>,
-    //     accessor: "Amount"
-    //   },
-    //   {
-    //     Header: <span className="historyTable-header">Purchase Date</span>,
-    //     accessor: "purDate"
-    //   }
-    // ];
 
     const data1 = [
       {
