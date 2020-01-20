@@ -407,15 +407,17 @@ class TicketSystem extends Component {
       self.setState({ BrandData: BrandData });
     });
   }
-  handleGetCategoryList() {
+  handleGetCategoryList(brandId=0) {
     debugger;
-
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Category/GetCategoryList",
-      headers: authHeader()
-    }).then(function (res) {
+      headers: authHeader(),
+      params:{
+        BrandID:brandId
+      }
+    }).then(function(res) {
       debugger;
       let CategoryData = res.data;
       self.setState({ CategoryData: CategoryData });
@@ -772,8 +774,10 @@ class TicketSystem extends Component {
     this.props.history.push("myTicketList");
   }
   setBrandValue = e => {
+    debugger;
     let brandValue = e.currentTarget.value;
     this.setState({ selectedBrand: brandValue });
+    this.handleGetCategoryList(brandValue);
   };
   setIssueTypeValue = e => {
     let issueTypeValue = e.currentTarget.value;
