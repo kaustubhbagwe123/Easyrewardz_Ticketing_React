@@ -118,7 +118,12 @@ class MyTicket extends Component {
       KbPopupData: [],
       selectedIssueTypeKB: 0,
       selectedCategoryKB: 0,
-      selectedSubCategoryKB: 0
+      selectedSubCategoryKB: 0,
+      CkEditorTemplateData: [],
+      CkEditorTemplateDetails: [],
+      tempName: "",
+      selectTicketTemplateId: 0,
+      mailBodyData: ""
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -780,7 +785,7 @@ class MyTicket extends Component {
       selectedIssueTypeKB: 0,
       selectedCategoryKB: 0,
       selectedSubCategoryKB: 0,
-      KbPopupData:[]
+      KbPopupData: []
     });
   }
   //Category change funcation in KB Templete Modal
@@ -812,6 +817,48 @@ class MyTicket extends Component {
     let issueTypeValue = e.currentTarget.value;
     this.setState({ selectedIssueTypeKB: issueTypeValue });
   };
+
+  //Template Bind By IssueType funcation
+  handleTemplateBindByIssueType() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Template/getListOfTemplateForNote",
+      headers: authHeader(),
+      params: {
+        IssueTypeID: this.state.selectetedParameters.issueTypeID
+      }
+    }).then(function(res) {
+      debugger;
+      let CkEditorTemplateData = res.data.responseData;
+      self.setState({ CkEditorTemplateData: CkEditorTemplateData });
+    });
+  }
+
+  //get Template data for select template funcation
+  handleCkEditorTemplateData(tempId, tempName) {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Template/getTemplateContent",
+      headers: authHeader(),
+      params: {
+        TemplateId: tempId
+      }
+    }).then(function(res) {
+      debugger;
+      let CkEditorTemplateDetails = res.data.responseData;
+      let bodyData = res.data.responseData.templateBody;
+      self.setState({
+        CkEditorTemplateDetails: CkEditorTemplateDetails,
+        tempName: tempName,
+        selectTicketTemplateId: tempId,
+        mailBodyData: bodyData
+      });
+    });
+  }
+
   render() {
     const { open, ticketDetailsData, historicalDetails } = this.state;
     const HidecollapsUp = this.state.collapseUp ? (
@@ -1927,28 +1974,32 @@ class MyTicket extends Component {
                     className="dropdown-toggle my-tic-email"
                     type="button"
                     data-toggle="dropdown"
+                    onClick={this.handleTemplateBindByIssueType.bind(this)}
                   >
                     <FontAwesomeIcon icon={faCalculator} /> Template
                   </button>
                   <ul className="dropdown-menu">
-                    <li>
-                      <a href="#!">Template 1</a>
-                    </li>
-                    <li>
-                      <a href="#!">Template 2</a>
-                    </li>
-                    <li>
-                      <a href="#!">Template 3</a>
-                    </li>
-                    <li>
-                      <a href="#!">Template 4</a>
-                    </li>
+                    {this.state.CkEditorTemplateData !== null &&
+                      this.state.CkEditorTemplateData.map((item, i) => (
+                        <li key={i} value={item.templateID}>
+                          <span
+                            onClick={this.handleCkEditorTemplateData.bind(
+                              this,
+                              item.templateID,
+                              item.templateName
+                            )}
+                          >
+                            {item.templateName}
+                          </span>
+                        </li>
+                      ))}
                   </ul>
                 </div>
                 <Card>
                   <CardBody>
                     <div className="">
                       <CKEditor
+                      data={this.state.CkEditorTemplateDetails.templateBody}
                         config={{
                           toolbar: [
                             {
