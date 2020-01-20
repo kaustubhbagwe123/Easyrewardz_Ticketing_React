@@ -70,13 +70,14 @@ class TicketSystemStore extends Component {
       }
     }).then(function(res) {
       debugger;
-      let SearchData = res.data.responseData;
+      let data = res.data.responseData;
       let Msg = res.data.message;
       if (Msg === "Success") {
-        self.setState({ SearchData: SearchData, message: Msg });
+        self.setState({ SearchData: data, message: Msg });
       } else {
         self.setState({
-          message: res.data.message
+          message: res.data.message,
+          SearchData: []
         });
       }
     });
@@ -217,14 +218,12 @@ class TicketSystemStore extends Component {
                 </div>
               </div>
               <div className="col-12 col-lg-2 col-xl-1">
-                <div className="storeplusline"  onClick={this.handleOrderStoreTableOpen}>
+                <div
+                  className="storeplusline"
+                  onClick={this.handleOrderStoreTableOpen}
+                >
                   <span className="plusline1"></span>
-                  <img
-                    src={ArrowImg}
-                    alt="Arrow"
-                    className="arrow-imgtask-1"
-                   
-                  />
+                  <img src={ArrowImg} alt="Arrow" className="arrow-imgtask-1" />
                 </div>
               </div>
             </div>
@@ -241,9 +240,13 @@ class TicketSystemStore extends Component {
                     <option>Customer Want to visit store</option>
                     <option>Customer Already visited store</option>
                   </select>
-                {/* </div> */}
-                {/* <div className="col-md-2"> */}
-                  <div style={{ display: "flex", marginTop: "7px",float:"right" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      marginTop: "7px",
+                      float: "right"
+                    }}
+                  >
                     <label className="orderdetailpopup">Yes</label>
                     <div className="switchmargin">
                       <div className="switch switch-primary d-inline m-r-10">
@@ -255,26 +258,21 @@ class TicketSystemStore extends Component {
                       </div>
                     </div>
                     <label className="orderdetailpopup">No</label>
-                    <div className="storeplusline13" onClick={this.handleOrderStoreTableClose}>
-                    <span className="plusline13" style={{marginLeft:"10px"}}></span>
-                    <img
-                    src={MinusImg}
-                    alt="Minus"
-                    className="minus-imgorder" 
-                  />
+                    <div
+                      className="storeplusline13"
+                      onClick={this.handleOrderStoreTableClose}
+                    >
+                      <span
+                        className="plusline13"
+                        style={{ marginLeft: "10px" }}
+                      ></span>
+                      <img
+                        src={MinusImg}
+                        alt="Minus"
+                        className="minus-imgorder"
+                      />
+                    </div>
                   </div>
-                  </div>
-                
-                {/* <div className="col-md-1">
-                  <div className="storeplusline13" onClick={this.handleOrderStoreTableClose}>
-                    <span className="plusline13"></span>
-                    <img
-                    src={MinusImg}
-                    alt="Minus"
-                    className="minus-imgorder" 
-                  />
-                  </div>
-                </div> */}
                 </div>
               </div>
 
@@ -417,27 +415,27 @@ class TicketSystemStore extends Component {
                 </div>
               </div>
             </Modal>
-              <div className="row">
-                <div
-                  className="col-md-11 m-b-10 m-t-10"
-                  style={{ marginLeft: "25px" }}
-                >
-                  <input
-                    type="text"
-                    className="systemordersearch"
-                    placeholder="Search By Store Name, Pin Code, Store Code"
-                    name="SrchStoreNameCode"
-                    value={this.state.SrchStoreNameCode}
-                    onChange={this.handleStoreChange}
-                  />
-                  <img
-                    src={SearchBlackImg}
-                    alt="Search"
-                    className="systemorder-imgsearch"
-                    onClick={this.handleSearchStoreDetails.bind(this)}
-                  />
-                </div>
+            <div className="row">
+              <div
+                className="col-md-11 m-b-10 m-t-10"
+                style={{ marginLeft: "25px" }}
+              >
+                <input
+                  type="text"
+                  className="systemordersearch"
+                  placeholder="Search By Store Name, Pin Code, Store Code"
+                  name="SrchStoreNameCode"
+                  value={this.state.SrchStoreNameCode}
+                  onChange={this.handleStoreChange}
+                />
+                <img
+                  src={SearchBlackImg}
+                  alt="Search"
+                  className="systemorder-imgsearch"
+                  onClick={this.handleSearchStoreDetails.bind(this)}
+                />
               </div>
+            </div>
             <span className="linestore3"></span>
             {this.state.message === "Record Not Found" ? (
               <div>

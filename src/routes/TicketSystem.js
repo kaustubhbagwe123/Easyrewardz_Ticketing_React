@@ -119,7 +119,8 @@ class TicketSystem extends Component {
         }
       ],
       titleSuggValue: "",
-      toggleTitle: false
+      toggleTitle: false,
+      loading:false
     };
     this.validator = new SimpleReactValidator();
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
@@ -494,6 +495,7 @@ class TicketSystem extends Component {
   }
 
   handleGetCustomerData(CustId, mode) {
+    this.setState({loading:true})
     let self = this;
     axios({
       method: "post",
@@ -515,7 +517,7 @@ class TicketSystem extends Component {
       CustData.editDOB = CustData.dob;
 
       if (CustMsg === "Success") {
-        self.setState({ customerData: customerData });
+        self.setState({ customerData: customerData,loading:false });
         self.handleEditCustomerClose();
       }
       if (mode === "Edit") {
@@ -615,6 +617,7 @@ class TicketSystem extends Component {
 
   handleCREATE_TICKET(StatusID) {
     debugger;
+    this.setState({loading:true})
     // if (this.validator.allValid()) {
     let self = this;
     // var OID = this.state.selectedTicketPriority;
@@ -645,6 +648,50 @@ class TicketSystem extends Component {
     // uploadFiles = this.state.file;
     var formData = new FormData();
 
+      var paramData = {
+        // TicketTitle: this.state.ticketSuggestion.ticketTitle,
+        TicketTitle: this.state.titleSuggValue,
+        Ticketdescription: this.state.ticketDetails,
+        CustomerID: this.state.customer_Id,
+        BrandID: this.state.selectedBrand,
+        CategoryID: this.state.selectedCategory,
+        SubCategoryID: this.state.selectedSubCategory,
+        IssueTypeID: this.state.selectedIssueType,
+        PriorityID: this.state.selectedTicketPriority,
+        ChannelOfPurchaseID: this.state.selectedChannelOfPurchase,
+        Ticketnotes: this.state.ticketNote,
+        taskMasters: this.state.taskMaster,
+        StatusID: actionStatusId,
+        TicketActionID: this.state.selectedTicketActionType,
+        IsInstantEscalateToHighLevel: this.state.escalationLevel,
+        IsWantToAttachOrder: this.state.customerAttachOrder,
+        TicketTemplateID: this.state.selectTicketTemplateId,
+        IsWantToVisitedStore: this.state.custVisit,
+        IsAlreadyVisitedStore: this.state.AlreadycustVisit,
+        TicketSourceID: 1,
+        OrderItemID: selectedRow.substring(",", selectedRow.length - 1),
+        ticketingMailerQues: mailData
+      };
+      formData.append("ticketingDetails", JSON.stringify(paramData));
+      formData.append("Form", this.state.file[0]);
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Ticketing/createTicket",
+        headers: authHeader(),
+        data: formData
+      }).then(function(res) {
+        debugger;
+        let Msg = res.data.status;
+        self.setState({loading:false})
+        if (Msg) {
+          NotificationManager.success(res.data.message);
+          setTimeout(function() {
+            self.props.history.push("myTicketlist");
+          }, 100);
+        } else {
+          NotificationManager.error(res.data.message);
+        }
+      });
     var paramData = {
       // TicketTitle: this.state.ticketSuggestion.ticketTitle,
       TicketTitle: this.state.titleSuggValue,
@@ -867,6 +914,7 @@ class TicketSystem extends Component {
           </table>
         </div>
         <div className="mask-ticket-system">
+        {this.state.loading===true?<div className="loader-icon"></div>:
           <div className="row marginsystem">
             <div className="column marginsystem1">
               <div className="paddingsystem">
@@ -1951,6 +1999,7 @@ class TicketSystem extends Component {
               <NotificationContainer />
             </div>
           </div>
+           }
         </div>
       </div>
     );
