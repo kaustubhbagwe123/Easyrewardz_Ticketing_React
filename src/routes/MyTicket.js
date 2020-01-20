@@ -129,6 +129,7 @@ class MyTicket extends Component {
       tempName: "",
       selectTicketTemplateId: 0,
       mailBodyData: "",
+      SearchStore:"",
       custID: 0
     };
     this.toggleView = this.toggleView.bind(this);
@@ -312,7 +313,7 @@ class MyTicket extends Component {
       url: config.apiUrl + "/Store/searchStoreDetail",
       headers: authHeader(),
       params: {
-        SearchText: "test"
+        SearchText: this.state.SearchStore
       }
     }).then(function(res) {
       debugger;
@@ -621,7 +622,6 @@ class MyTicket extends Component {
   }
 
   HandleStoreModalOpen() {
-    this.handleGetStoreDetails()
     this.setState({ storemodal: true });
   }
   HandleStoreModalClose() {
@@ -1984,11 +1984,15 @@ class MyTicket extends Component {
                               type="text"
                               className="systemordersearch"
                               placeholder="Search By Store Name, Pin Code, Store Code"
+                              value={this.state.SearchStore}
+                              name="SearchStore"
+                              onChange={this.handleNoteOnChange}
                             />
                             <img
                               src={SearchBlackImg}
                               alt="Search"
                               className="systemorder-imgsearch"
+                              onClick={this.handleGetStoreDetails()}
                             />
                           </div>
                         </div>
