@@ -165,6 +165,10 @@ class Header extends Component {
       data = res.data.responseData; 
       var strTag=data.agentName.split(' ');
       var nameTag=strTag[0].charAt(0).toUpperCase();
+      if(strTag.length>0)
+      {
+        nameTag+=strTag[1].charAt(0).toUpperCase();
+      }
       // for (ja = 0; ja < strTag.length; ja++) {
       //   nameTag += strTag[ja].charAt(0);
       // }
