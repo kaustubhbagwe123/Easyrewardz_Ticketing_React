@@ -145,6 +145,7 @@ a {
 .ordermainrow .ReactTable .rt-tbody .rt-td {
   width: auto !important;
 } */
+
 .ordermainrow .rt-table::-webkit-scrollbar {
   height: 5px;
 }
@@ -590,6 +591,7 @@ table tr th:last-child {
   height: 43px;
   margin-left: 35px;
   cursor: pointer;
+  color: #FFFF;
 }
 
 .myticket-submit-solve-button-text {
@@ -2147,7 +2149,7 @@ table td span {
 }
 .table-btn {
   border-radius: 15px;
-  width: 76px;
+  width: 100px;
   display: inline-block;
   padding: 4px 10px;
   text-transform: uppercase;
@@ -3756,6 +3758,20 @@ table tr th:last-child {
   max-height: 350px;
   margin-left: 0;
 }
+#Historical-popup .rt-table::-webkit-scrollbar {
+  width: 5px;
+}
+#Historical-popup .rt-table::-webkit-scrollbar-track {
+  background: yellow;
+  border-radius: 10px;
+}
+#Historical-popup .rt-table::-webkit-scrollbar-thumb {
+  background: yellow;
+  border-radius: 10px;
+}
+#Historical-popup .rt-table::-webkit-scrollbar-thumb:hover {
+  background: yellow;
+}  
 /**Historical popup css edn**/
 
 /*Progress bar in my tickeyt page*/
@@ -5829,7 +5845,7 @@ font-weight: normal;
   margin: 0 auto;
   display: inline-block;
   min-width: 83%;
-  height: 550px;
+  height: auto;
 }
 .profilemodal-text {
   color: #4a4a4a;
@@ -7324,6 +7340,7 @@ table tr th:last-child {
 }
 .xyz {
   background-color: #edf2f4;
+  border-radius: 8px;
 }
 .calnex {
   float: right;
@@ -8810,11 +8827,7 @@ table tr th:last-child {
 }
 .CommentMinus-img {
   width: 15px;
-  height: 2px;
   margin-left: 0;
-  margin-top: -21px;
-  cursor: pointer;
-  float: right;
   margin-right: 14px;
 }
 .myTicketCommentCollapse #cke_editor2 {
@@ -9407,6 +9420,7 @@ table tr th:last-child {
   border: 1px solid #ECF2F4;
   border-radius: 5px;
   margin-right: 5px;
+  margin-top: 10px;
 }
 .thumbtick-plus {
   border: 1px solid #ECF2F4;
@@ -10099,4 +10113,28 @@ table tr th:last-child {
   height: auto;
   width: 634px;
 }
+#thumb-modal-popup .close {
+  float: right;
+  margin: -25px 3px 0 0;
+  cursor: pointer;
+}
+
 /* ****************End css ************************/
+
+
+.autocomp div {
+  background: red;
+}
+
+.loader-icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  /* height: 100vh; */
+  bottom: 0;
+  background:transparent url("../Images/loader.gif") no-repeat center
+    center;
+  background-size: 60px;
+  z-index: 5;
+}
