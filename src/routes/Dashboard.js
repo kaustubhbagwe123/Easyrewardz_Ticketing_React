@@ -1219,12 +1219,22 @@ class Dashboard extends Component {
     // ---------------By Date tab---------------------
     var dateTab = {};
     if (this.state.ActiveTabId === 1) {
-    dateTab["Ticket_CreatedOn"] = moment(this.state.ByDateCreatDate).format(
-      "YYYY-MM-DD"
-    );
-    dateTab["Ticket_ModifiedOn"] = moment(this.state.ByDateSelectDate).format(
-      "YYYY-MM-DD"
-    );
+      if (this.state.ByDateCreatDate === null || this.state.ByDateCreatDate === undefined || this.state.ByDateCreatDate === '') {
+        
+        dateTab["Ticket_CreatedOn"] = ''
+      } else {
+        dateTab["Ticket_CreatedOn"] = moment(this.state.ByDateCreatDate).format(
+          "YYYY-MM-DD"
+        );
+      }
+      if (this.state.ByDateSelectDate === null || this.state.ByDateSelectDate === undefined || this.state.ByDateSelectDate === '') {
+        
+        dateTab["Ticket_ModifiedOn"] = ''
+      } else {
+        dateTab["Ticket_ModifiedOn"] = moment(this.state.ByDateSelectDate).format(
+          "YYYY-MM-DD"
+          );
+      }
     dateTab["SLA_DueON"] = this.state.selectedSlaDueByDate;
     dateTab["Ticket_StatusID"] = this.state.selectedTicketStatusByDate;
     } else {
