@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import ReactTable from "react-table";
 import DeleteIcon from "../assets/Images/red-delete-icon.png";
 import SimpleReactValidator from "simple-react-validator";

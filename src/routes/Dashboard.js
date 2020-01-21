@@ -52,6 +52,7 @@ import TicketStatus from "./TicketStatus";
 import TicketActionType from "./TicketActionType";
 import ClaimStatus from "./ClaimStatus";
 import TaskStatus from "./TaskStatus";
+import { CSVLink, CSVDownload } from "react-csv";
 
 class Dashboard extends Component {
   constructor(props) {
@@ -280,9 +281,11 @@ class Dashboard extends Component {
       params: {
         UserIds: this.state.AgentIds,
         // UserIds: "6,7,8",
-        fromdate: this.state.start._d,
+        fromdate: moment(this.state.start._d).format("YYYY-MM-DD"),
+        // fromdate: this.state.start._d,
         // fromdate: "2019-12-26",
-        todate: this.state.end._d,
+        todate: moment(this.state.end._d).format("YYYY-MM-DD"),
+        // todate: this.state.end._d,
         // todate: "2020-01-15",
         BrandID: this.state.BrandIds
         // BrandID: "26, 31"
@@ -4449,14 +4452,19 @@ class Dashboard extends Component {
                               </p>
                             </div>
                             <div className="col-auto mob-mar-btm">
-                              <button>
+                              {/* <button>
                                 <img
                                   className="position-relative csv-icon"
                                   src={csv}
                                   alt="csv-icon"
                                 />
                                 CSV
-                              </button>
+                              </button> */}
+                              <CSVLink data={this.state.SearchTicketData}><img
+                                  className="position-relative csv-icon"
+                                  src={csv}
+                                  alt="csv-icon"
+                                />CSV</CSVLink>
                               <button
                                 type="button"
                                 onClick={this.ScheduleOpenModel}
