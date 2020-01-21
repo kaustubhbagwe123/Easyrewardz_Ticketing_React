@@ -13,13 +13,166 @@ import DelBlack from "./../../../assets/Images/del-black.png";
 import UploadCancel from "./../../../assets/Images/upload-cancel.png";
 import { ProgressBar } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { authHeader } from "./../../../helpers/authHeader";
+import axios from "axios";
+import config from "./../../../helpers/config";
+import {
+  NotificationManager
+} from "react-notifications";
+import SimpleReactValidator from "simple-react-validator";
 
 class TicketCRMRole extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fileName: ""
+      fileName: "",
+      CRMRoleID: 0,
+      RoleName: '',
+      RoleisActive: 'true',
+      ModulesEnabled: '',
+      ModulesDisabled: '',
+      crmRoles: [],
+      modulesList: [
+        {moduleId: 1, moduleName: 'Dashboard', isActive: true},
+        {moduleId: 2, moduleName: 'Tickets', isActive: false},
+        {moduleId: 3, moduleName: 'Knowledge Base', isActive: true},
+        {moduleId: 4, moduleName: 'Settings', isActive: true},
+        {moduleId: 5, moduleName: 'Chat', isActive: true},
+        {moduleId: 6, moduleName: 'Notification', isActive: false},
+        {moduleId: 7, moduleName: 'Reports', isActive: true}
+      ]
     };
+
+    this.handleRoleName = this.handleRoleName.bind(this);
+    this.handleModulesDefault = this.handleModulesDefault.bind(this);
+    this.handleGetCRMRoles = this.handleGetCRMRoles.bind(this);
+    this.validator = new SimpleReactValidator();
+  }
+
+  componentDidMount() {
+    this.handleModulesDefault();
+    this.handleGetCRMRoles();
+  }
+
+  handleGetCRMRoles() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CRMRole/GetCRMRoles",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let crmRoles = res.data.responseData;
+      if (crmRoles !== null && crmRoles !== undefined) {
+        self.setState({ crmRoles });
+      }
+    });
+  }
+
+  handleModulesDefault = async () => {
+    debugger;
+    let modulesList = [... this.state.modulesList], isActive, ModulesEnabled = '', ModulesDisabled = '';
+    for (let i = 0; i < modulesList.length; i++) {
+      if (modulesList[i].isActive === true) {
+        ModulesEnabled += modulesList[i].moduleId + ',';
+      } else if (modulesList[i].isActive === false) {
+        ModulesDisabled += modulesList[i].moduleId + ',';
+      }
+    }
+    await this.setState({
+      ModulesEnabled, ModulesDisabled
+    });
+  }
+  checkModule = async (moduleId) => {
+    debugger;
+    let modulesList = [... this.state.modulesList], isActive, ModulesEnabled = '', ModulesDisabled = '';
+    for (let i = 0; i < modulesList.length; i++) {
+      if (modulesList[i].moduleId === moduleId) {
+        isActive = modulesList[i].isActive;
+        modulesList[i].isActive = !isActive;
+      }
+    }
+    for (let i = 0; i < modulesList.length; i++) {
+      if (modulesList[i].isActive === true) {
+        ModulesEnabled += modulesList[i].moduleId + ',';
+      } else if (modulesList[i].isActive === false) {
+        ModulesDisabled += modulesList[i].moduleId + ',';
+      }
+    }
+    await this.setState({
+      modulesList, ModulesEnabled, ModulesDisabled
+    });
+  }
+  handleRoleName(e) {
+    debugger;
+    this.setState({
+      RoleName: e.target.value
+    });
+  }
+  handleRoleisActive = e => {
+    debugger;
+    let RoleisActive = e.currentTarget.value;
+    this.setState({ RoleisActive });
+  };
+
+  createUpdateCrmRole() {
+    debugger;
+    if (this.validator.allValid()) {
+      let self = this, RoleisActive;
+      if (this.state.RoleisActive === 'true') {
+        RoleisActive = true
+      } else if (this.state.RoleisActive === 'false') {
+        RoleisActive = false
+      }
+      axios({
+        method: "post",
+        url: config.apiUrl + "/CRMRole/CreateUpdateCRMRole",
+        headers: authHeader(),
+        params: {
+          CRMRoleID: this.state.CRMRoleID,
+          RoleName: this.state.RoleName,
+          RoleisActive: RoleisActive,
+          ModulesEnabled: this.state.ModulesEnabled,
+          ModulesDisabled: this.state.ModulesDisabled
+        }
+      }).then((res) => {
+        debugger;
+        let status = res.data.message;
+        if (status === "Success") {
+          NotificationManager.success("CRM Role added successfully.");
+          this.handleGetCRMRoles();
+        } else {
+          NotificationManager.error("CRM Role not added.");
+        }
+      });
+    } else {
+      this.validator.showMessages();
+      this.forceUpdate();
+    }
+  }
+
+  deleteCrmRole(deleteId) {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/CRMRole/DeleteCRMRole",
+      headers: authHeader(),
+      params: {
+        CRMRoleID: deleteId
+        // CRMRoleID: this.state.CRMRoleID
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      if (status === "Success") {
+        NotificationManager.success("CRM Role deleted successfully.");
+        self.handleGetCRMRoles();
+      } else {
+        NotificationManager.error("CRM Role not deleted.");
+      }
+    });
   }
 
   fileUpload = e => {
@@ -161,7 +314,62 @@ class TicketCRMRole extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "roleName"
+        accessor: "roleName",
+        Cell: row => {
+          var ids = row.original["id"];
+          return (
+            <div>
+            <span>
+            {row.original.roleName}
+              <Popover content={
+                      <div>
+                        {row.original.modules !== null &&
+                        row.original.modules.map((item, i) => (
+                          <div className="rvmmargin" key={i}>
+                            <p className="rolle-name-text-popover">{item.moduleName}</p>
+                            <label className="pop-over-lbl-text-pop">{item.modulestatus}</label>
+                          </div>
+                        ))}
+                      {/* <div className="rvmmargin">
+                        <p className="rolle-name-text-popover">Dashboard</p>
+                        <label className="pop-over-lbl-text-pop">Enable</label>
+                      </div>
+                      <div className="rvmmargin">
+                        <p className="rolle-name-text-popover">Tickets</p>
+                        <label className="pop-over-lbl-text-pop">Disable</label>
+                      </div>
+                      <div className="rvmmargin">
+                        <p className="rolle-name-text-popover">knowledge Base</p>
+                        <label className="pop-over-lbl-text-pop">Enable</label>
+                      </div>
+                      <div className="rvmmargin">
+                        <p className="rolle-name-text-popover">Settings</p>
+                        <label className="pop-over-lbl-text-pop">Disable</label>
+                      </div>
+                      <div className="rvmmargin">
+                        <p className="rolle-name-text-popover">Chat</p>
+                        <label className="pop-over-lbl-text-pop">Enable</label>
+                      </div>
+                      <div className="rvmmargin">
+                        <p className="rolle-name-text-popover">Notification</p>
+                        <label className="pop-over-lbl-text-pop">Disable</label>
+                      </div>
+                      <div className="rvmmargin">
+                        <p className="rolle-name-text-popover">Reports</p>
+                        <label className="pop-over-lbl-text-pop">Enable</label>
+                      </div> */}
+                    </div>
+              } placement="bottom">
+                <img
+                  className="info-icon-cp"
+                  src={BlackInfoIcon}
+                  alt="info-icon"
+                />
+              </Popover>
+            </span>
+          </div>
+          );
+        }
       },
       {
         Header: (
@@ -170,14 +378,29 @@ class TicketCRMRole extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "CretedBy",
+        accessor: "createdBy",
         Cell: row => {
           var ids = row.original["id"];
           return (
             <div>
               <span>
-                Admin
-                <Popover content={popoverData} placement="bottom">
+                {row.original.createdBy}
+                <Popover content={
+                  <>
+                  <div>
+                    <b>
+                <p className="title">Created By: {row.original.createdBy}</p>
+                    </b>
+                <p className="sub-title">Created Date: {row.original.createdDate}</p>
+                  </div>
+                  <div>
+                    <b>
+                      <p className="title">Updated By: {row.original.modifiedBy}</p>
+                    </b>
+                    <p className="sub-title">Updated Date: {row.original.modifiedDate}</p>
+                  </div>
+                </>
+                } placement="bottom">
                   <img
                     className="info-icon-cp"
                     src={BlackInfoIcon}
@@ -197,7 +420,7 @@ class TicketCRMRole extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "status"
+        accessor: "isRoleActive"
       },
       {
         Header: <span>Actions</span>,
@@ -208,7 +431,23 @@ class TicketCRMRole extends Component {
             <>
               <span>
                 <Popover
-                  content={ActionDelete}
+                  content={
+                    <div className="d-flex general-popover popover-body">
+                      <div className="del-big-icon">
+                        <img src={DelBigIcon} alt="del-icon" />
+                      </div>
+                      <div>
+                        <p className="font-weight-bold blak-clr">Delete file?</p>
+                        <p className="mt-1 fs-12">
+                          Are you sure you want to delete this file?
+                        </p>
+                        <div className="del-can">
+                          <a href={Demo.BLANK_LINK}>CANCEL</a>
+                          <button className="butn" onClick={this.deleteCrmRole.bind(this, row.original.crmRoleID)}>Delete</button>
+                        </div>
+                      </div>
+                    </div>
+                  }
                   placement="bottom"
                   trigger="click"
                 >
@@ -265,7 +504,7 @@ class TicketCRMRole extends Component {
           </p>
           <div className="del-can">
             <a href={Demo.BLANK_LINK}>CANCEL</a>
-            <button className="butn">Delete</button>
+            <button className="butn" onClick={this.deleteCrmRole.bind(this)}>Delete</button>
           </div>
         </div>
       </div>
@@ -382,10 +621,11 @@ class TicketCRMRole extends Component {
               <div className="col-md-8">
                 <div className="table-cntr table-height TicketCrmRoleReact">
                   <ReactTable
-                    data={dataTickCrmRole}
+                    // data={dataTickCrmRole}
+                    data={this.state.crmRoles}
                     columns={columnsTickCrmRole}
                     // resizable={false}
-                    defaultPageSize={5}
+                    defaultPageSize={10}
                     showPagination={false}
                   />
                    <div className="position-relative">
@@ -439,9 +679,44 @@ class TicketCRMRole extends Component {
                         className="txt-1"
                         placeholder="Enter Role Name"
                         maxLength={25}
+                        onChange={this.handleRoleName}
                       />
+                      {this.validator.message(
+                        "Role Name",
+                        this.state.RoleName,
+                        "required"
+                      )}
                     </div>
-                    <div className="crm-margin-div crm-padding-div">
+                    {this.state.modulesList !== null &&
+                      this.state.modulesList.map((item, i) => (
+                        <div className="module-switch crm-margin-div crm-padding-div" key={i}>
+                          <div className="switch switch-primary d-inline m-r-10">
+                            <label className="storeRole-name-text">{item.moduleName}</label>
+                            <input type="checkbox" id={'i' + item.moduleId}
+                              name="allModules"
+                              attrIds={item.moduleId}
+                              checked={item.isActive}
+                              onChange={this.checkModule.bind(this, item.moduleId)}
+                            />
+                            <label
+                              htmlFor={'i' + item.moduleId}
+                              className="cr cr-float-auto"
+                            ></label>
+                            {/* <label htmlFor={"i" + item.brandID}>
+                              <input
+                                type="checkbox"
+                                id={"i" + item.brandID}
+                                className="ch1"
+                                name="allBrand"
+                                attrIds={item.brandID}
+                                onChange={this.checkIndividualBrand.bind(this)}
+                              />
+                              <span className="ch1-text">{item.brandName}</span>
+                            </label> */}
+                          </div>
+                        </div>
+                      ))}
+                    {/* <div className="crm-margin-div crm-padding-div">
                       <div className="switch switch-primary d-inline m-r-10">
                         <label className="storeRole-name-text">Dashboard</label>
                         <input type="checkbox" id="Dashboard-p-1" />
@@ -514,20 +789,21 @@ class TicketCRMRole extends Component {
                           className="cr cr-float-auto"
                         ></label>
                       </div>
-                    </div>
+                    </div> */}
                     <div className="dropDrownSpace">
                       <label className="reports-to">Status</label>
                       <select
+                        value={this.state.RoleisActive}
+                        onChange={this.handleRoleisActive}
                         id="inputState"
                         className="form-control dropdown-setting"
                       >
-                        <option>select</option>
-                        <option>Active</option>
-                        <option>Deactive</option>
+                        <option value="true">Active</option>
+                        <option value="false">Deactive</option>
                       </select>
                     </div>
                     <div className="btnSpace">
-                      <button className="addBtn-ticket-hierarchy">
+                      <button className="addBtn-ticket-hierarchy" onClick={this.createUpdateCrmRole.bind(this)}>
                         <label className="addLable">ADD</label>
                       </button>
                     </div>
