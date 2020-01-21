@@ -410,6 +410,14 @@ class TicketSystem extends Component {
   handleGetCategoryList(brandId=0) {
     debugger;
     let self = this;
+    self.setState({
+      CategoryData:[],
+      selectedCategory:0,
+      SubCategoryData: [],
+      selectedSubCategory: 0,
+      IssueTypeData: [],
+      selectedIssueType: 0
+    });
     axios({
       method: "post",
       url: config.apiUrl + "/Category/GetCategoryList",
