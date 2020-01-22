@@ -84,6 +84,7 @@ class SingIn extends Component {
           }
         }).then(function(res) {
           debugger;
+          //alert(1);
           let data = res.data.responseData;
           let resValid = res.data.message;
           self.setState({
