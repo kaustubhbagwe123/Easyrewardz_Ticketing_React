@@ -8,7 +8,10 @@ import Demo from "./../store/Hashtag";
 import Braille from "./../assets/Images/braille.svg";
 import { Table } from "antd";
 import "antd/dist/antd.css";
-import {Link} from 'react-router-dom';
+import axios from "axios";
+import config from "./../helpers/config";
+import { Link } from "react-router-dom";
+import { authHeader } from "../helpers/authHeader";
 
 const closest = function(el, selector, rootNode) {
   rootNode = rootNode || document.body;
@@ -39,233 +42,189 @@ class CreatePriority extends Component {
     this.onDragStart = this.onDragStart.bind(this);
     this.onDragEnter = this.onDragEnter.bind(this);
     this.onDragEnd = this.onDragEnd.bind(this);
+    this.handleGetPriorityList = this.handleGetPriorityList.bind(this);
     this.state = {
-      data: [
-        {
-          priorityName: "High",
-          content: (
-            <span>
-              Admin
-              <img
-                className="info-icon-cp"
-                src={BlackInfoIcon}
-                alt="info-icon"
-                id="created1"
-              />
-            </span>
-          ),
-          key: "1",
-          createdDate: "23-May-19",
-          status: "Active",
-          action: (
-            <span>
-              <img
-                src={RedDeleteIcon}
-                alt="del-icon"
-                className="del-btn"
-                id="del1"
-              />
-              <button className="react-tabel-button" id="peditpop1">
-                <label className="Table-action-edit-button-text">EDIT</label>
-              </button>
-            </span>
-          )
-        },
-        {
-          priorityName: "Medium",
-          content: (
-            <span>
-              Admin
-              <img
-                className="info-icon-cp"
-                src={BlackInfoIcon}
-                alt="info-icon"
-                id="created2"
-              />
-            </span>
-          ),
-          key: "2",
-          createdDate: "23-May-19",
-          status: "Inactive",
-          action: (
-            <span>
-              <img
-                src={RedDeleteIcon}
-                alt="del-icon"
-                className="del-btn"
-                id="del2"
-              />
-              <button className="react-tabel-button" id="p-edit-pop-2">
-                <label className="Table-action-edit-button-text">EDIT</label>
-              </button>
-            </span>
-          )
-        },
-        {
-          priorityName: "Low",
-          content: (
-            <span>
-              Admin
-              <img
-                className="info-icon-cp"
-                src={BlackInfoIcon}
-                alt="info-icon"
-                id="created-3"
-              />
-            </span>
-          ),
-          key: "3",
-          createdDate: "23-May-19",
-          status: "Active",
-          action: (
-            <span>
-              <img
-                src={RedDeleteIcon}
-                alt="del-icon"
-                className="del-btn"
-                id="del3"
-              />
-              <button className="react-tabel-button" id="p-edit-pop-3">
-                <label className="Table-action-edit-button-text">EDIT</label>
-              </button>
-            </span>
-          )
-        },
-        {
-          priorityName: "6",
-          content: (
-            <span>
-              Admin
-              <img
-                className="info-icon-cp"
-                src={BlackInfoIcon}
-                alt="info-icon"
-                id="created-4"
-              />
-            </span>
-          ),
-          key: "4",
-          createdDate: "23-May-19",
-          status: "Inactive",
-          action: (
-            <span>
-              <img
-                src={RedDeleteIcon}
-                alt="del-icon"
-                className="del-btn"
-                id="del4"
-              />
-              <button className="react-tabel-button" id="p-edit-pop-4">
-                <label className="Table-action-edit-button-text">EDIT</label>
-              </button>
-            </span>
-          )
-        },
-        {
-          priorityName: "8",
-          content: (
-            <span>
-              Admin
-              <img
-                className="info-icon-cp"
-                src={BlackInfoIcon}
-                alt="info-icon"
-                id="created5"
-              />
-            </span>
-          ),
-          key: "5",
-          createdDate: "23-May-19",
-          status: "Active",
-          action: (
-            <span>
-              <img
-                src={RedDeleteIcon}
-                alt="del-icon"
-                className="del-btn"
-                id="del5"
-              />
-              <button className="react-tabel-button" id="p-edit-pop-5">
-                <label className="Table-action-edit-button-text">EDIT</label>
-              </button>
-            </span>
-          )
-        }
-      ],
+      // data: [
+      //   {
+      //     priorityName: "High",
+      //     content: (
+      //       <span>
+      //         Admin
+      //         <img
+      //           className="info-icon-cp"
+      //           src={BlackInfoIcon}
+      //           alt="info-icon"
+      //           id="created1"
+      //         />
+      //       </span>
+      //     ),
+      //     key: "1",
+      //     createdDate: "23-May-19",
+      //     status: "Active",
+      //     action: (
+      //       <span>
+      //         <img
+      //           src={RedDeleteIcon}
+      //           alt="del-icon"
+      //           className="del-btn"
+      //           id="del1"
+      //         />
+      //         <button className="react-tabel-button" id="peditpop1">
+      //           <label className="Table-action-edit-button-text">EDIT</label>
+      //         </button>
+      //       </span>
+      //     )
+      //   },
+      //   {
+      //     priorityName: "Medium",
+      //     content: (
+      //       <span>
+      //         Admin
+      //         <img
+      //           className="info-icon-cp"
+      //           src={BlackInfoIcon}
+      //           alt="info-icon"
+      //           id="created2"
+      //         />
+      //       </span>
+      //     ),
+      //     key: "2",
+      //     createdDate: "23-May-19",
+      //     status: "Inactive",
+      //     action: (
+      //       <span>
+      //         <img
+      //           src={RedDeleteIcon}
+      //           alt="del-icon"
+      //           className="del-btn"
+      //           id="del2"
+      //         />
+      //         <button className="react-tabel-button" id="p-edit-pop-2">
+      //           <label className="Table-action-edit-button-text">EDIT</label>
+      //         </button>
+      //       </span>
+      //     )
+      //   },
+      //   {
+      //     priorityName: "Low",
+      //     content: (
+      //       <span>
+      //         Admin
+      //         <img
+      //           className="info-icon-cp"
+      //           src={BlackInfoIcon}
+      //           alt="info-icon"
+      //           id="created-3"
+      //         />
+      //       </span>
+      //     ),
+      //     key: "3",
+      //     createdDate: "23-May-19",
+      //     status: "Active",
+      //     action: (
+      //       <span>
+      //         <img
+      //           src={RedDeleteIcon}
+      //           alt="del-icon"
+      //           className="del-btn"
+      //           id="del3"
+      //         />
+      //         <button className="react-tabel-button" id="p-edit-pop-3">
+      //           <label className="Table-action-edit-button-text">EDIT</label>
+      //         </button>
+      //       </span>
+      //     )
+      //   },
+      //   {
+      //     priorityName: "6",
+      //     content: (
+      //       <span>
+      //         Admin
+      //         <img
+      //           className="info-icon-cp"
+      //           src={BlackInfoIcon}
+      //           alt="info-icon"
+      //           id="created-4"
+      //         />
+      //       </span>
+      //     ),
+      //     key: "4",
+      //     createdDate: "23-May-19",
+      //     status: "Inactive",
+      //     action: (
+      //       <span>
+      //         <img
+      //           src={RedDeleteIcon}
+      //           alt="del-icon"
+      //           className="del-btn"
+      //           id="del4"
+      //         />
+      //         <button className="react-tabel-button" id="p-edit-pop-4">
+      //           <label className="Table-action-edit-button-text">EDIT</label>
+      //         </button>
+      //       </span>
+      //     )
+      //   },
+      //   {
+      //     priorityName: "8",
+      //     content: (
+      //       <span>
+      //         Admin
+      //         <img
+      //           className="info-icon-cp"
+      //           src={BlackInfoIcon}
+      //           alt="info-icon"
+      //           id="created5"
+      //         />
+      //       </span>
+      //     ),
+      //     key: "5",
+      //     createdDate: "23-May-19",
+      //     status: "Active",
+      //     action: (
+      //       <span>
+      //         <img
+      //           src={RedDeleteIcon}
+      //           alt="del-icon"
+      //           className="del-btn"
+      //           id="del5"
+      //         />
+      //         <button className="react-tabel-button" id="p-edit-pop-5">
+      //           <label className="Table-action-edit-button-text">EDIT</label>
+      //         </button>
+      //       </span>
+      //     )
+      //   }
+      // ],
       dragIndex: -1,
-      draggedIndex: -1
+      draggedIndex: -1,
+      priorityData: []
     };
-    this.columns = [
-      {
-        // title: 'Created Date',
-        key: "operate",
-        render: (text, record, index) => (
-          <span>
-            {(this.state.dragIndex >= 0 &&
-              this.state.dragIndex !== this.state.draggedIndex &&
-              index === this.state.draggedIndex && (
-                <span
-                  className={`drag-target-line ${
-                    this.state.draggedIndex < this.state.dragIndex
-                      ? "drag-target-top"
-                      : ""
-                  }`}
-                />
-              )) ||
-              ""}
-            <a
-              className="drag-handle"
-              draggable="false"
-              onMouseDown={this.onMouseDown}
-              href="#!"
-            >
-              <img src={Braille} alt="braille-icon" />
-            </a>
-          </span>
-        )
-      },
-      {
-        title: "Priority Name",
-        dataIndex: "priorityName",
-        key: "priorityName",
-        filterMultiple: false,
-        onFilter: (value, record) => record.priorityName.indexOf(value) === 0,
-        sorter: (a, b) => a.priorityName.length - b.priorityName.length,
-        sortDirections: ["descend", "ascend"]
-      },
-      {
-        title: "Created By",
-        dataIndex: "content",
-        key: "content",
-        filterMultiple: false,
-        onFilter: (value, record) => record.content.indexOf(value) === 0,
-        sorter: (a, b) => a.content.length - b.content.length,
-        sortDirections: ["descend", "ascend"]
-      },
-      {
-        title: "Created Date",
-        dataIndex: "createdDate",
-        key: "createdDate",
-        sortDirections: ["descend", "ascend"],
-        onFilter: (value, record) => record.createdDate.indexOf(value) === 0,
-        // defaultSortOrder: "descend",
-        sorter: (a, b) => a.createdDate.length - b.createdDate.length
-      },
-      {
-        title: "Status",
-        dataIndex: "status",
-        key: "status",
-        filterMultiple: false,
-        onFilter: (value, record) => record.status.indexOf(value) === 0,
-        sorter: (a, b) => a.status.length - b.status.length,
-        sortDirections: ["descend", "ascend"]
-      },
-      {
-        title: "Action",
-        dataIndex: "action",
-        key: "action",
+  }
+  componentDidMount() {
+    this.handleGetPriorityList();
+  }
+  handleGetPriorityList() {
+    debugger;
+    let self = this;
+    axios({
+      method: "get",
+      url: config.apiUrl + "/Priority/GetPriorityList",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        self.setState({
+          priorityData: data
+        });
+      } else {
+        self.setState({
+          priorityData: []
+        });
       }
-    ];
+    });
   }
 
   onMouseDown(e) {
@@ -335,9 +294,13 @@ class CreatePriority extends Component {
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
-          <Link to="settings" className="header-path">Settings</Link>
+          <Link to="settings" className="header-path">
+            Settings
+          </Link>
           <span>&gt;</span>
-          <Link to={Demo.BLANK_LINK} className="header-path">Ticketing</Link>
+          <Link to={Demo.BLANK_LINK} className="header-path">
+            Ticketing
+          </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="header-path active">
             Priority
@@ -352,12 +315,92 @@ class CreatePriority extends Component {
                     className={
                       (this.state.dragIndex >= 0 && "dragging-container") || ""
                     }
-                    columns={this.columns}
-                    pagination={false}
-                    dataSource={this.state.data}
+                    // columns={this.state.columns}
+                    columns={[
+                      {
+                        key: "priorityID",
+                        render: (text, record, index) => (
+                          <span>
+                            {(this.state.dragIndex >= 0 &&
+                              this.state.dragIndex !==
+                                this.state.draggedIndex &&
+                              index === this.state.draggedIndex && (
+                                <span
+                                  className={`drag-target-line ${
+                                    this.state.draggedIndex <
+                                    this.state.dragIndex
+                                      ? "drag-target-top"
+                                      : ""
+                                  }`}
+                                />
+                              )) ||
+                              ""}
+                            <a
+                              className="drag-handle"
+                              draggable="false"
+                              onMouseDown={this.onMouseDown}
+                              href="#!"
+                            >
+                              <img src={Braille} alt="braille-icon" />
+                            </a>
+                          </span>
+                        )
+                      },
+                      {
+                        title: "Priority Name",
+                        dataIndex: "priortyName",
+                        key: "priortyName",
+                        filterMultiple: false,
+                        onFilter: (value, record) =>
+                          record.priortyName.indexOf(value) === 0,
+                        sorter: (a, b) =>
+                          a.priortyName.length - b.priortyName.length,
+                        sortDirections: ["descend", "ascend"]
+                      },
+                      {
+                        title: "Created By",
+                        dataIndex: "createdByName",
+                        key: "createdByName",
+                        filterMultiple: false,
+                        onFilter: (value, record) =>
+                          record.createdByName.indexOf(value) === 0,
+                        sorter: (a, b) =>
+                          a.createdByName.length - b.createdByName.length,
+                        sortDirections: ["descend", "ascend"]
+                      },
+                      {
+                        title: "Created Date",
+                        dataIndex: "createdDateFormated",
+                        key: "createdDateFormated",
+                        sortDirections: ["descend", "ascend"],
+                        onFilter: (value, record) =>
+                          record.createdDateFormated.indexOf(value) === 0,
+                        // defaultSortOrder: "descend",
+                        sorter: (a, b) =>
+                          a.createdDateFormated.length -
+                          b.createdDateFormated.length
+                      },
+                      {
+                        title: "Status",
+                        dataIndex: "priortyStatus",
+                        key: "priortyStatus",
+                        filterMultiple: false,
+                        onFilter: (value, record) =>
+                          record.priortyStatus.indexOf(value) === 0,
+                        sorter: (a, b) => a.priortyStatus.length - b.priortyStatus.length,
+                        sortDirections: ["descend", "ascend"],
+                      },
+                      {
+                        title: "Action",
+                        dataIndex: "action",
+                        key: "action"
+                      }
+                    ]}
+                    pagination={true}
+                    dataSource={this.state.priorityData}
                   />
-                   
-                  <UncontrolledPopover
+
+                  {/* <UncontrolledPopover
                     trigger="hover"
                     placement="bottom"
                     target="created1"
@@ -374,80 +417,9 @@ class CreatePriority extends Component {
                         <p className="sub-title">Updated Date: 12 March 2018</p>
                       </div>
                     </PopoverBody>
-                  </UncontrolledPopover>
-                  <UncontrolledPopover
-                    trigger="hover"
-                    placement="bottom"
-                    target="created2"
-                    className="general-popover created-popover"
-                    // delay={tooltipDelay}
-                  >
-                    <PopoverBody>
-                      <div>
-                        <p className="title">Created By: Admin</p>
-                        <p className="sub-title">Created Date: 12 March 2018</p>
-                      </div>
-                      <div>
-                        <p className="title">Updated By: Manager</p>
-                        <p className="sub-title">Updated Date: 12 March 2018</p>
-                      </div>
-                    </PopoverBody>
-                  </UncontrolledPopover>
-                  <UncontrolledPopover
-                    trigger="hover"
-                    placement="bottom"
-                    target="created-3"
-                    className="general-popover created-popover"
-                    // delay={tooltipDelay}
-                  >
-                    <PopoverBody>
-                      <div>
-                        <p className="title">Created By: Admin</p>
-                        <p className="sub-title">Created Date: 12 March 2018</p>
-                      </div>
-                      <div>
-                        <p className="title">Updated By: Manager</p>
-                        <p className="sub-title">Updated Date: 12 March 2018</p>
-                      </div>
-                    </PopoverBody>
-                  </UncontrolledPopover>
-                  <UncontrolledPopover
-                    trigger="hover"
-                    placement="bottom"
-                    target="created-4"
-                    className="general-popover created-popover"
-                    // delay={tooltipDelay}
-                  >
-                    <PopoverBody>
-                      <div>
-                        <p className="title">Created By: Admin</p>
-                        <p className="sub-title">Created Date: 12 March 2018</p>
-                      </div>
-                      <div>
-                        <p className="title">Updated By: Manager</p>
-                        <p className="sub-title">Updated Date: 12 March 2018</p>
-                      </div>
-                    </PopoverBody>
-                  </UncontrolledPopover>
-                  <UncontrolledPopover
-                    trigger="hover"
-                    placement="bottom"
-                    target="created5"
-                    className="general-popover created-popover"
-                    // delay={tooltipDelay}
-                  >
-                    <PopoverBody>
-                      <div>
-                        <p className="title">Created By: Admin</p>
-                        <p className="sub-title">Created Date: 12 March 2018</p>
-                      </div>
-                      <div>
-                        <p className="title">Updated By: Manager</p>
-                        <p className="sub-title">Updated Date: 12 March 2018</p>
-                      </div>
-                    </PopoverBody>
-                  </UncontrolledPopover>
-                  <UncontrolledPopover
+                  </UncontrolledPopover> */}
+
+                  {/* <UncontrolledPopover
                     trigger="legacy"
                     placement="auto"
                     target="peditpop1"
@@ -490,180 +462,9 @@ class CreatePriority extends Component {
                         </div>
                       </div>
                     </PopoverBody>
-                  </UncontrolledPopover>
-                  <UncontrolledPopover
-                    trigger="legacy"
-                    placement="bottom"
-                    target="p-edit-pop-2"
-                    className="general-popover delete-popover"
-                    // delay={tooltipDelay}
-                  >
-                    <PopoverBody className="d-flex">
-                      <div>
-                        <div className="">
-                          <label className="popover-header-text">
-                            EDIT PRORITY
-                          </label>
-                        </div>
-                        <div className=" pop-over-div">
-                          <label className="pop-over-lbl-text">
-                            Priority Name
-                          </label>
-                          <input
-                            type="text"
-                            className="pop-over-text"
-                            placeholder="High"
-                          />
-                        </div>
-                        <div className=" pop-over-div">
-                          <label className="pop-over-lbl-text">Status</label>
-                          <select className="pop-over-select">
-                            <option>Active</option>
-                            <option>Inactive</option>
-                          </select>
-                        </div>
-                        <br />
-                        <div>
-                          <label className="pop-over-cancle">CANCEL</label>
-                          <button className="pop-over-button">
-                            <label className="pop-over-btnsave-text">
-                              SAVE
-                            </label>
-                          </button>
-                        </div>
-                      </div>
-                    </PopoverBody>
-                  </UncontrolledPopover>
-                  <UncontrolledPopover
-                    trigger="legacy"
-                    placement="bottom"
-                    target="p-edit-pop-3"
-                    className="general-popover delete-popover"
-                    // delay={tooltipDelay}
-                  >
-                    <PopoverBody className="d-flex">
-                      <div>
-                        <div className="">
-                          <label className="popover-header-text">
-                            EDIT PRORITY
-                          </label>
-                        </div>
-                        <div className=" pop-over-div">
-                          <label className="pop-over-lbl-text">
-                            Priority Name
-                          </label>
-                          <input
-                            type="text"
-                            className="pop-over-text"
-                            placeholder="High"
-                          />
-                        </div>
-                        <div className=" pop-over-div">
-                          <label className="pop-over-lbl-text">Status</label>
-                          <select className="pop-over-select">
-                            <option>Active</option>
-                            <option>Inactive</option>
-                          </select>
-                        </div>
-                        <br />
-                        <div>
-                          <label className="pop-over-cancle">CANCEL</label>
-                          <button className="pop-over-button">
-                            <label className="pop-over-btnsave-text">
-                              SAVE
-                            </label>
-                          </button>
-                        </div>
-                      </div>
-                    </PopoverBody>
-                  </UncontrolledPopover>
-                  <UncontrolledPopover
-                    trigger="legacy"
-                    placement="bottom"
-                    target="p-edit-pop-4"
-                    className="general-popover delete-popover"
-                    // delay={tooltipDelay}
-                  >
-                    <PopoverBody className="d-flex">
-                      <div>
-                        <div className="">
-                          <label className="popover-header-text">
-                            EDIT PRORITY
-                          </label>
-                        </div>
-                        <div className=" pop-over-div">
-                          <label className="pop-over-lbl-text">
-                            Priority Name
-                          </label>
-                          <input
-                            type="text"
-                            className="pop-over-text"
-                            placeholder="High"
-                          />
-                        </div>
-                        <div className=" pop-over-div">
-                          <label className="pop-over-lbl-text">Status</label>
-                          <select className="pop-over-select">
-                            <option>Active</option>
-                            <option>Inactive</option>
-                          </select>
-                        </div>
-                        <br />
-                        <div>
-                          <label className="pop-over-cancle">CANCEL</label>
-                          <button className="pop-over-button">
-                            <label className="pop-over-btnsave-text">
-                              SAVE
-                            </label>
-                          </button>
-                        </div>
-                      </div>
-                    </PopoverBody>
-                  </UncontrolledPopover>
-                  <UncontrolledPopover
-                    trigger="legacy"
-                    placement="bottom"
-                    target="p-edit-pop-5"
-                    className="general-popover delete-popover"
-                    // delay={tooltipDelay}
-                  >
-                    <PopoverBody className="d-flex">
-                      <div>
-                        <div className="">
-                          <label className="popover-header-text">
-                            EDIT PRORITY
-                          </label>
-                        </div>
-                        <div className=" pop-over-div">
-                          <label className="pop-over-lbl-text">
-                            Priority Name
-                          </label>
-                          <input
-                            type="text"
-                            className="pop-over-text"
-                            placeholder="High"
-                          />
-                        </div>
-                        <div className=" pop-over-div">
-                          <label className="pop-over-lbl-text">Status</label>
-                          <select className="pop-over-select">
-                            <option>Active</option>
-                            <option>Inactive</option>
-                          </select>
-                        </div>
-                        <br />
-                        <div>
-                          <label className="pop-over-cancle">CANCEL</label>
-                          <button className="pop-over-button">
-                            <label className="pop-over-btnsave-text">
-                              SAVE
-                            </label>
-                          </button>
-                        </div>
-                      </div>
-                    </PopoverBody>
-                  </UncontrolledPopover>
-                  <UncontrolledPopover
+                  </UncontrolledPopover> */}
+
+                  {/* <UncontrolledPopover
                     trigger="legacy"
                     placement="bottom"
                     target="del1"
@@ -686,104 +487,9 @@ class CreatePriority extends Component {
                         </div>
                       </div>
                     </PopoverBody>
-                  </UncontrolledPopover>
-                  <UncontrolledPopover
-                    trigger="legacy"
-                    placement="bottom"
-                    target="del2"
-                    className="general-popover delete-popover"
-                  >
-                    <PopoverBody className="d-flex">
-                      <div className="del-big-icon">
-                        <img src={BlackDeleteIcon} alt="del-icon" />
-                      </div>
-                      <div>
-                        <p className="font-weight-bold blak-clr">
-                          Delete file?
-                        </p>
-                        <p className="mt-1 fs-12">
-                          Are you sure you want to delete this file?
-                        </p>
-                        <div className="del-can">
-                          <a href={Demo.BLANK_LINK}>CANCEL</a>
-                          <button className="butn">Delete</button>
-                        </div>
-                      </div>
-                    </PopoverBody>
-                  </UncontrolledPopover>
-                  <UncontrolledPopover
-                    trigger="legacy"
-                    placement="bottom"
-                    target="del3"
-                    className="general-popover delete-popover"
-                  >
-                    <PopoverBody className="d-flex">
-                      <div className="del-big-icon">
-                        <img src={BlackDeleteIcon} alt="del-icon" />
-                      </div>
-                      <div>
-                        <p className="font-weight-bold blak-clr">
-                          Delete file?
-                        </p>
-                        <p className="mt-1 fs-12">
-                          Are you sure you want to delete this file?
-                        </p>
-                        <div className="del-can">
-                          <a href={Demo.BLANK_LINK}>CANCEL</a>
-                          <button className="butn">Delete</button>
-                        </div>
-                      </div>
-                    </PopoverBody>
-                  </UncontrolledPopover>
-                  <UncontrolledPopover
-                    trigger="legacy"
-                    placement="bottom"
-                    target="del4"
-                    className="general-popover delete-popover"
-                  >
-                    <PopoverBody className="d-flex">
-                      <div className="del-big-icon">
-                        <img src={BlackDeleteIcon} alt="del-icon" />
-                      </div>
-                      <div>
-                        <p className="font-weight-bold blak-clr">
-                          Delete file?
-                        </p>
-                        <p className="mt-1 fs-12">
-                          Are you sure you want to delete this file?
-                        </p>
-                        <div className="del-can">
-                          <a href={Demo.BLANK_LINK}>CANCEL</a>
-                          <button className="butn">Delete</button>
-                        </div>
-                      </div>
-                    </PopoverBody>
-                  </UncontrolledPopover>
-                  <UncontrolledPopover
-                    trigger="legacy"
-                    placement="bottom"
-                    target="del5"
-                    className="general-popover delete-popover"
-                  >
-                    <PopoverBody className="d-flex">
-                      <div className="del-big-icon">
-                        <img src={BlackDeleteIcon} alt="del-icon" />
-                      </div>
-                      <div>
-                        <p className="font-weight-bold blak-clr">
-                          Delete file?
-                        </p>
-                        <p className="mt-1 fs-12">
-                          Are you sure you want to delete this file?
-                        </p>
-                        <div className="del-can">
-                          <a href={Demo.BLANK_LINK}>CANCEL</a>
-                          <button className="butn">Delete</button>
-                        </div>
-                      </div>
-                    </PopoverBody>
-                  </UncontrolledPopover>
-                  <div className="position-relative">
+                  </UncontrolledPopover> */}
+
+                  {/* <div className="position-relative">
                     <div className="pagi">
                       <ul>
                         <li>
@@ -820,7 +526,7 @@ class CreatePriority extends Component {
                       </select>
                       <p>Items per page</p>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="col-md-4">
