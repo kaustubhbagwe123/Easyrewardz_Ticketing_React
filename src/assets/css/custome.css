@@ -3402,6 +3402,18 @@ table tr th:last-child {
   margin: 0px !important;
 } */
 
+/* settings starts */
+.module-switch .switch input[type="checkbox"]:checked + .cr {
+  border: 1px solid #50D462;
+}
+.module-switch .switch input[type="checkbox"] + .cr:before {
+  background: #c9c9c9;
+}
+.module-switch .switch input[type="checkbox"]:checked + .cr:before {
+  background: #50D462 !important;
+}
+/* settings ends */
+
 /* chetan css end */
 /******************************************************/
 

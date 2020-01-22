@@ -521,7 +521,7 @@ class MyTicket extends Component {
   handleGetCategoryList() {
     debugger;
 
-    let self = this;
+    let self = this;    
     axios({
       method: "post",
       url: config.apiUrl + "/Category/GetCategoryList",

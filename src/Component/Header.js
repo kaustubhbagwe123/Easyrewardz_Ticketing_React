@@ -161,7 +161,8 @@ class Header extends Component {
       method: "post",
       url: config.apiUrl + "/DashBoard/LoggedInAccountDetails",
       headers: authHeader()
-    }).then(function(res) {        
+    }).then(function(res) {
+      debugger;        
       data = res.data.responseData; 
       var strTag=data.agentName.split(' ');
       var nameTag=strTag[0].charAt(0).toUpperCase();
