@@ -376,6 +376,7 @@ class Dashboard extends Component {
   }
   checkIndividualAgent = event => {
     debugger;
+    var agentcount=0;
     var checkboxes = document.getElementsByName("allAgent");
     var strAgentIds="";
     for (var i in checkboxes) {
@@ -384,10 +385,26 @@ class Dashboard extends Component {
          if(checkboxes[i].checked === true)
          {
           if (checkboxes[i].getAttribute('attrIds')!==null)
+            agentcount++;
+            document.getElementById("spnAgent").textContent=agentcount;
             strAgentIds+=checkboxes[i].getAttribute('attrIds')+",";
          }
       }
     }
+    if(agentcount==0)
+    {
+      document.getElementById("spnAgent").textContent="select";
+    }
+    if(checkboxes.length-1==agentcount)
+    {      
+      document.getElementById("spnAgent").textContent="ALL";
+      this.setState({CheckBoxAllAgent:true});
+    }
+    else{      
+      this.setState({CheckBoxAllAgent:false});
+    }
+
+
     this.setState({
       AgentIds: strAgentIds
     }, ()=>{
@@ -397,6 +414,7 @@ class Dashboard extends Component {
   }
   checkIndividualBrand = async event => {
     debugger;
+    var brandcount=0;
     var checkboxes = document.getElementsByName("allBrand");
     var strBrandIds="";
     for (var i in checkboxes) {
@@ -405,10 +423,27 @@ class Dashboard extends Component {
          if(checkboxes[i].checked == true)
          {
           if (checkboxes[i].getAttribute('attrIds')!==null)
+            brandcount++;
+            document.getElementById("spnBrand").textContent=brandcount;
             strBrandIds+=checkboxes[i].getAttribute('attrIds')+",";
          }
       }
     }
+    if(brandcount==0)
+    {
+      document.getElementById("spnBrand").textContent="select";
+    }
+    if(checkboxes.length-1==brandcount)
+    {
+      //document.getElementById("all-brand").checked = true;
+      document.getElementById("spnBrand").textContent="ALL";
+      this.setState({CheckBoxAllBrand:true});
+    }
+    else{
+     // document.getElementById("all-brand").checked = false;
+      this.setState({CheckBoxAllBrand:false});
+    }
+
     await this.setState({
       BrandIds: strBrandIds
     });
@@ -445,6 +480,7 @@ class Dashboard extends Component {
   }
   checkAllBrand = async event => {
     debugger;
+   
     this.setState(state => ({ CheckBoxAllBrand: !state.CheckBoxAllBrand }));
     var strBrandIds="";
     const allCheckboxChecked = event.target.checked;
@@ -1456,7 +1492,7 @@ class Dashboard extends Component {
       "3 Days": [moment(start).subtract(3, "days"), moment(end)]
     };
     let local = {
-      format: "DD-MM-YYYY",
+      //format: "DD-MM-YYYY HH:mm",
       sundayFirst: false
     };
 
@@ -2088,11 +2124,11 @@ class Dashboard extends Component {
                 Brand :
                 <div className="dropdown">
                   <button
-                    className="dropdown-toggle dashallbrand"
+                   style={{width:"90px"}} className="dropdown-toggle dashallbrand"
                     type="button"
                     data-toggle="dropdown"
                   >
-                    <span className="EMFCText">All</span>
+                    <span id="spnBrand" className="EMFCText">All</span>
                   </button>
                   <ul className="dropdown-menu">
                   <li>
@@ -2157,13 +2193,13 @@ class Dashboard extends Component {
                 Agent :
                 <div className="dropdown">
                   <button
-                    className="dropdown-toggle dashallbrand"
+                     style={{width:"90px"}} className="dropdown-toggle dashallbrand"
                     type="button"
                     data-toggle="dropdown"
                   >
-                    <span className="EMFCText">All</span>
+                    <span id="spnAgent" className="EMFCText">All</span>
                   </button>
-                  <ul className="dropdown-menu">
+                  <ul style={{width:"180px"}} className="dropdown-menu">
                     <li>
                       <label htmlFor="all-agent">
                         <input

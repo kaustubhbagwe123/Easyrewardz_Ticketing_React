@@ -154,6 +154,7 @@ class MyTicket extends Component {
     this.handleGetOrderDetails = this.handleGetOrderDetails.bind(this);
     this.handleGetProductData = this.handleGetProductData.bind(this);
     this.handleGetStoreDetails = this.handleGetStoreDetails.bind(this);
+    this.handleGetMessageDetails = this.handleGetMessageDetails.bind(this);
   }
 
   componentDidMount() {
@@ -169,6 +170,7 @@ class MyTicket extends Component {
       this.handleGetTicketDetails(ticketId);
       this.handleGetTaskTableCount(ticketId);
       this.handleGetCountOfTabs(ticketId);
+      this.handleGetMessageDetails(ticketId);
     } else {
       this.props.history.push("myTicketlist");
     }
@@ -268,6 +270,21 @@ class MyTicket extends Component {
       }
     });
   }
+  handleGetMessageDetails(ticketId){
+    debugger
+    let self=this;
+    axios({
+      method:"post",
+      url:config.apiUrl + "/Ticketing/getticketmessage",
+      headers:authHeader(),
+      params:{
+        ticketID:ticketId
+      }
+    }).then(function(res){
+      debugger;
+      let status=res.data.status;
+    })
+  }
   handleGetOrderDetails() {
     debugger;
     let self = this;
@@ -311,7 +328,6 @@ class MyTicket extends Component {
     });
   }
   handleGetStoreDetails() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -321,7 +337,6 @@ class MyTicket extends Component {
         SearchText: this.state.SearchStore
       }
     }).then(function(res) {
-      debugger;
       let data = res.data.responseData;
       let Msg = res.data.message;
       if (Msg === "Success") {
@@ -521,6 +536,7 @@ class MyTicket extends Component {
       }
     }).then(function(res) {
       debugger;
+      // let status=
       let data = res.data;
       self.setState({ CategoryData: data });
     });
@@ -534,17 +550,19 @@ class MyTicket extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let TicketPriorityData = res.data.responseData;
-      self.setState({ TicketPriorityData: TicketPriorityData });
+      let status=res.data.message;
+      let data = res.data.responseData;
+      if(status === "Success"){
+        self.setState({ TicketPriorityData: data });
+      }else{
+        self.setState({ TicketPriorityData: [] });
+      }
     });
   }
   handleGetSubCategoryList() {
     debugger;
 
     let self = this;
-    // let cateId = this.state.KbLink
-    //   ? this.state.selectedCategoryKB
-    //   : this.state.selectetedParameters.categoryID;
     axios({
       method: "post",
       url: config.apiUrl + "/SubCategory/GetSubCategoryByCategoryID",
@@ -561,10 +579,7 @@ class MyTicket extends Component {
   handleGetIssueTypeList() {
     debugger;
     let self = this;
-    // let subCateId = this.state.KbLink
-    //   ? this.state.selectedSubCategoryKB
-    //   : this.state.selectetedParameters.subCategoryID;
-
+   
     axios({
       method: "post",
       url: config.apiUrl + "/IssueType/GetIssueTypeList",
@@ -574,8 +589,13 @@ class MyTicket extends Component {
       }
     }).then(function(res) {
       debugger;
+      let status=res.data.message;
       let data = res.data.responseData;
-      self.setState({ IssueTypeData: data });
+      if(status === "Success"){
+        self.setState({ IssueTypeData: data });
+      }else{
+        self.setState({ IssueTypeData: [] });
+      }
     });
   }
   handleGetChannelOfPurchaseList() {
@@ -586,8 +606,13 @@ class MyTicket extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let ChannelOfPurchaseData = res.data.responseData;
-      self.setState({ ChannelOfPurchaseData: ChannelOfPurchaseData });
+      let status=res.data.message;
+      let data = res.data.responseData;
+      if(status === "Success"){
+        self.setState({ ChannelOfPurchaseData: data });
+      }else{
+        self.setState({ ChannelOfPurchaseData: [] });
+      }
     });
   }
   fileDragEnter = e => {
@@ -745,6 +770,9 @@ class MyTicket extends Component {
         var id = self.state.ticket_Id;
         self.handleGetNotesTabDetails(id);
         NotificationManager.success("Comment added successfully.");
+        self.setState({
+          NoteAddComment:""
+        })
       } else {
         NotificationManager.error("Comment not added.");
       }
@@ -782,10 +810,12 @@ class MyTicket extends Component {
       }
     }).then(function(res) {
       debugger;
-      let status = res.data.status;
+      let status = res.data.message;
       let details = res.data.responseData;
-      if (status === true) {
+      if (status === "Success") {
         self.setState({ Notesdetails: details });
+      }else{
+        self.setState({ Notesdetails: [] });
       }
     });
   }
@@ -1147,6 +1177,7 @@ class MyTicket extends Component {
     ];
     return (
       <Fragment>
+<<<<<<< HEAD
         {this.state.loading === true ? (
           <div className="loader-icon"></div>
         ) : (
@@ -1171,6 +1202,63 @@ class MyTicket extends Component {
                       alt="Loading"
                       className="loading-rectangle"
                       onClick={this.handleGetHistoricalData.bind(this)}
+=======
+        <div className="head-header">
+          <div className="head-header-1">
+            <div className="row">
+              <div className="col-12 col-xs-4 col-sm-4 col-md-3">
+                <img src={HeadphoneImg} alt="headphone" className="headphone" />
+                <label className="id-abc-1234">
+                  ID - {ticketDetailsData.ticketID}
+                  <span className="updated-2-d-ago">
+                    {ticketDetailsData.updateDate}
+                  </span>
+                </label>
+                <img
+                  src={LoadingImg}
+                  alt="Loading"
+                  className="loading-rectangle"
+                  onClick={this.handleGetHistoricalData.bind(this)}
+                />
+              </div>
+
+              <div className="historical-model">
+                <Modal
+                  open={open}
+                  onClose={this.onCloseModal.bind(this)}
+                  closeIconId="sdsg"
+                  modalId="Historical-popup"
+                  overlayId="logout-ovrly"
+                >
+                  <label className="lblHistorical">Ticket Historical</label>
+                  <img
+                    src={CancelImg}
+                    alt="cancelImg"
+                    className="cancalImg"
+                    onClick={this.onCloseModal.bind(this)}
+                  />
+                  {/* <HistoricalTable /> */}
+                  <div className="">
+                    <ReactTable
+                      data={historicalDetails}
+                      columns={[
+                        {
+                          Header: <span>Name</span>,
+                          accessor: "name"
+                        },
+                        {
+                          Header: <span>Action</span>,
+                          accessor: "action"
+                        },
+                        {
+                          Header: <span>Time & Date</span>,
+                          accessor: "dateandTime"
+                        }
+                      ]}
+                      resizable={false}
+                      defaultPageSize={5}
+                      showPagination={false}
+>>>>>>> 6eec16886a3350389124aed5a355a9f45da87482
                     />
                   </div>
 
@@ -1430,6 +1518,7 @@ class MyTicket extends Component {
                                   CUSTOMER
                                 </label>
                               </div>
+<<<<<<< HEAD
                               <div className="row">
                                 <div className="col-md-6 namepad">
                                   <label className="fullna">Full Name</label>
@@ -1453,6 +1542,56 @@ class MyTicket extends Component {
                                     {ticketDetailsData.customerEmailId}
                                   </label>
                                 </div>
+=======
+                              {/* <div className="col-md-6">
+                                <input
+                                  type="text"
+                                  className="search-orderhis"
+                                  placeholder="Search Order"
+                                />
+                              </div> */}
+                              <div className="tablehistrical">
+                                <ReactTable
+                                  data={orderDetails}
+                                  columns={[
+                                    {
+                                      Header: (
+                                        <span className="historyTable-header">
+                                          Order Number
+                                        </span>
+                                      ),
+                                      accessor: "orderNumber"
+                                    },
+                                    {
+                                      Header: (
+                                        <span className="historyTable-header">
+                                          Mobile Number
+                                        </span>
+                                      ),
+                                      accessor: "mobileNumber"
+                                    },
+                                    {
+                                      Header: (
+                                        <span className="historyTable-header">
+                                          Amount
+                                        </span>
+                                      ),
+                                      accessor: "itemPrice"
+                                    },
+                                    {
+                                      Header: (
+                                        <span className="historyTable-header">
+                                          Purchase Date
+                                        </span>
+                                      ),
+                                      accessor: "dateFormat"
+                                    }
+                                  ]}
+                                  // resizable={false}
+                                  defaultPageSize={5}
+                                  showPagination={false}
+                                />
+>>>>>>> 6eec16886a3350389124aed5a355a9f45da87482
                               </div>
                             </div>
 
@@ -3522,6 +3661,7 @@ class MyTicket extends Component {
                     </div>
                   </div>
 
+<<<<<<< HEAD
                   <div
                     className="tab-pane fade"
                     id="Task-tab"
@@ -3540,6 +3680,50 @@ class MyTicket extends Component {
                     ) : (
                       ""
                     )}
+=======
+              <div
+                className="tab-pane fade"
+                id="Task-tab"
+                role="tabpanel"
+                aria-labelledby="Task-tab"
+              >
+                {this.state.ticket_Id > 0 ? (
+                  <MyTicketTask
+                    taskData={{
+                      TicketData: {
+                        TicketId: this.state.ticket_Id,
+                        GridData: this.state.taskTableGrid,
+                        TabActiveId:this.state.TaskTab
+                      }
+                    }}
+                  />
+                ) : (
+                  ""
+                )}
+              </div>
+              <div
+                className="tab-pane fade"
+                id="Notes-tab"
+                role="tabpanel"
+                aria-labelledby="Notes-tab"
+              >
+                <div className="row removemarg" style={{ marginTop: "20px" }}>
+                  <div className="col-12 col-xs-12 col-sm-5">
+                    <textarea
+                      className="Add-Notes-textarea"
+                      placeholder="Add Notes"
+                      name="NoteAddComment"
+                      value={this.state.NoteAddComment}
+                      onChange={this.handleNoteOnChange}
+                    ></textarea>
+                    <button
+                      type="button"
+                      className="notesbtn notesbtn-text"
+                      onClick={this.handleNoteAddComments.bind(this)}
+                    >
+                      ADD COMMENT
+                    </button>
+>>>>>>> 6eec16886a3350389124aed5a355a9f45da87482
                   </div>
                   <div
                     className="tab-pane fade"

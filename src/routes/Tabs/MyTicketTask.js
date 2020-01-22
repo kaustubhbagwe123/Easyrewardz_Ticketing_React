@@ -116,10 +116,12 @@ class MyTicketTask extends Component {
       }
     }).then(function(res) {
       debugger;
-      let status = res.data.status;
+      let status = res.data.message;
       let data = res.data.responseData;
-      if (status === true) {
+      if (status === "Success") {
         self.setState({ taskTableGrid: data });
+      }else{
+        self.setState({ taskTableGrid: [] });
       }
     });
   }
@@ -202,8 +204,13 @@ class MyTicketTask extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let PriorityData = res.data.responseData;
-      self.setState({ TicketPriorityData: PriorityData });
+      let status=res.data.message;
+      let data = res.data.responseData;
+      if(status === "Success"){
+        self.setState({ TicketPriorityData: data });
+      }else{
+        self.setState({ TicketPriorityData: [] });
+      }
     });
   }
   setDepartmentValue = e => {
@@ -263,25 +270,26 @@ class MyTicketTask extends Component {
   }
   handleTaskAddComments() {
     debugger;
-    var TaskData = this.props.taskData;
-
+    var TaskData = this.props.taskData.TicketData.TabActiveId;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Task/AddComment",
       headers: authHeader(),
       params: {
-        CommentForId: TaskData.TaskTab,
+        CommentForId: TaskData,
         Comment: this.state.taskAddComment.trim(),
         Id: this.state.tikcet_ID
       }
     }).then(function(res) {
       debugger;
-      let status = res.data.status;
-      let id = this.state.ticketTask_Id;
-      if (status === true) {
+      let status = res.data.message;
+      if (status === "Success") {
         NotificationManager.success("Comment added successfully.");
-        self.handleGetTaskTabDetails(id);
+        self.setState({
+          taskAddComment:""
+        })
+        self.handleGetTaskTabDetails(self.state.ticketTask_Id);
       } else {
         NotificationManager.error("Comment not added.");
       }
