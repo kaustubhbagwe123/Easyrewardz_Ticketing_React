@@ -899,7 +899,7 @@ class MyTicketList extends Component {
     debugger;
     let self = this;
     axios({
-      method: "post",
+      method: "get",
       url: config.apiUrl + "/Priority/GetPriorityList",
       headers: authHeader()
     }).then(function(res) {
@@ -1213,19 +1213,42 @@ class MyTicketList extends Component {
     // ---------------By Date tab---------------------
     var dateTab = {};
     if (this.state.ActiveTabId === 1) {
-      dateTab["Ticket_CreatedOn"] = moment(this.state.ByDateCreatDate).format(
-        "YYYY-MM-DD"
-      );
-      dateTab["Ticket_ModifiedOn"] = moment(this.state.ByDateSelectDate).format(
-        "YYYY-MM-DD"
-      );
-      dateTab["SLA_DueON"] = this.state.selectedSlaDueByDate;
-      dateTab["Ticket_StatusID"] = this.state.selectedTicketStatusByDate;
+      if (this.state.ByDateCreatDate === null || this.state.ByDateCreatDate === undefined || this.state.ByDateCreatDate === '') {
+        
+        dateTab["Ticket_CreatedOn"] = ''
+      } else {
+        dateTab["Ticket_CreatedOn"] = moment(this.state.ByDateCreatDate).format(
+          "YYYY-MM-DD"
+        );
+      }
+      if (this.state.ByDateSelectDate === null || this.state.ByDateSelectDate === undefined || this.state.ByDateSelectDate === '') {
+        
+        dateTab["Ticket_ModifiedOn"] = ''
+      } else {
+        dateTab["Ticket_ModifiedOn"] = moment(this.state.ByDateSelectDate).format(
+          "YYYY-MM-DD"
+          );
+      }
+    dateTab["SLA_DueON"] = this.state.selectedSlaDueByDate;
+    dateTab["Ticket_StatusID"] = this.state.selectedTicketStatusByDate;
     } else {
-      this.setState({
-        dateTab: null
-      });
+      dateTab = null
     }
+    // var dateTab = {};
+    // if (this.state.ActiveTabId === 1) {
+    //   dateTab["Ticket_CreatedOn"] = moment(this.state.ByDateCreatDate).format(
+    //     "YYYY-MM-DD"
+    //   );
+    //   dateTab["Ticket_ModifiedOn"] = moment(this.state.ByDateSelectDate).format(
+    //     "YYYY-MM-DD"
+    //   );
+    //   dateTab["SLA_DueON"] = this.state.selectedSlaDueByDate;
+    //   dateTab["Ticket_StatusID"] = this.state.selectedTicketStatusByDate;
+    // } else {
+    //   this.setState({
+    //     dateTab: null
+    //   });
+    // }
 
     // --------------------By Customer Type Tab---------------
     var customerType = {};
@@ -1245,10 +1268,24 @@ class MyTicketList extends Component {
     // --------------------By Ticket Type Tab-----------------
     var ticketType = {};
     if (this.state.ActiveTabId === 3) {
+      let purchaseIds="";
+      let actionTypeIds="";
+      if(this.state.selectedChannelOfPurchase!=null)
+      {
+        for (let i = 0; i < this.state.selectedChannelOfPurchase.length; i++) {
+          purchaseIds+=this.state.selectedChannelOfPurchase[i].channelOfPurchaseID+",";
+        }
+      }
+      if(this.state.selectedTicketActionType!=null)
+      {
+        for (let i = 0; i < this.state.selectedTicketActionType.length; i++) {
+          actionTypeIds+=this.state.selectedTicketActionType[i].ticketActionTypeID+",";
+        }
+      }
       ticketType["TicketPriorityID"] = this.state.selectedPriority;
       ticketType["TicketStatusID"] = this.state.selectedTicketStatusByTicket;
-      ticketType["ChannelOfPurchaseIds"] = this.state.selectedChannelOfPurchase;
-      ticketType["ActionTypes"] = this.state.selectedTicketActionType;
+      ticketType["ChannelOfPurchaseIds"] = purchaseIds;
+      ticketType["ActionTypes"] = actionTypeIds;
     } else {
       this.setState({
         ticketType: null

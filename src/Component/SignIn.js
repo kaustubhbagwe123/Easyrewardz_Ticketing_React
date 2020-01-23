@@ -25,8 +25,8 @@ class SingIn extends Component {
       password: "",
       loading: false,
       programCode: "",
-      fullUserName: "",
-      UserEmail: ""
+      // fullUserName: "",
+      // UserEmail: ""
     };
     this.hanleChange = this.hanleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -85,18 +85,18 @@ class SingIn extends Component {
         }).then(function(res) {
           debugger;
           //alert(1);
-          let data = res.data.responseData;
+          // let data = res.data.responseData;
           let resValid = res.data.message;
           self.setState({
           loading: true
           });
           if (resValid === "Valid Login") {
             debugger;
-            NotificationManager.success("Login Successfull.");
-            self.setState({
-              fullUserName: data.firstName + " " + data.lastName,
-              UserEmail: data.userEmailID
-            });
+            //NotificationManager.success("Login Successfull.");
+            // self.setState({
+            //   fullUserName: data.firstName + " " + data.lastName,
+            //   UserEmail: data.userEmailID
+            // });
             window.localStorage.setItem("token", res.data.responseData.token);
             setTimeout(function() {
               self.props.history.push("/admin/dashboard");
@@ -113,7 +113,6 @@ class SingIn extends Component {
   }
 
   render() {
-    const { fullUserName, UserEmail } = this.props;
     return (
       <div className="auth-wrapper">
         <div className="auth-content">

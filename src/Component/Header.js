@@ -27,10 +27,10 @@ import { Popover } from "antd";
 import { authHeader } from "../helpers/authHeader";
 import config from "../helpers/config";
 import axios from "axios";
-import {
-  NotificationContainer,
-  NotificationManager
-} from "react-notifications";
+// import {
+//   NotificationContainer,
+//   NotificationManager
+// } from "react-notifications";
 
 class Header extends Component {
   constructor(props) {
@@ -135,7 +135,6 @@ class Header extends Component {
     this.setState({ modalIsOpen: false });
   };
   handleLogoutMethod() {
-    debugger;
     // let self = this;
     axios({
       method: "post",
@@ -144,9 +143,9 @@ class Header extends Component {
     }).then(function(res) {
       debugger;
       var status = res.data.status;
-      var Msg=res.data.message
+      // var Msg=res.data.message
       if (status === true) {
-        NotificationManager.success(Msg);
+        //NotificationManager.success(Msg);
         localStorage.clear();
         window.location.href = "/";
       }
@@ -912,7 +911,7 @@ class Header extends Component {
               </div>
             </div>
           </Modal>
-          <NotificationContainer />
+          {/* <NotificationContainer /> */}
         </div>
       </React.Fragment>
     );
