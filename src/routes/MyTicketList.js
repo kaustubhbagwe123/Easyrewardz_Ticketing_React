@@ -154,6 +154,7 @@ class MyTicketList extends Component {
       byTicketTypeFlag: 0,
       byCategoryFlag: 0,
       allFlag: 0,
+      resultCount:0,
       TeamMemberData: [
         {
           department: "Team Member 1"
@@ -1234,21 +1235,6 @@ class MyTicketList extends Component {
     } else {
       dateTab = null
     }
-    // var dateTab = {};
-    // if (this.state.ActiveTabId === 1) {
-    //   dateTab["Ticket_CreatedOn"] = moment(this.state.ByDateCreatDate).format(
-    //     "YYYY-MM-DD"
-    //   );
-    //   dateTab["Ticket_ModifiedOn"] = moment(this.state.ByDateSelectDate).format(
-    //     "YYYY-MM-DD"
-    //   );
-    //   dateTab["SLA_DueON"] = this.state.selectedSlaDueByDate;
-    //   dateTab["Ticket_StatusID"] = this.state.selectedTicketStatusByDate;
-    // } else {
-    //   this.setState({
-    //     dateTab: null
-    //   });
-    // }
 
     // --------------------By Customer Type Tab---------------
     var customerType = {};
@@ -1319,9 +1305,11 @@ class MyTicketList extends Component {
       debugger;
       let status = res.data.message;
       let data = res.data.responseData;
+      let count=res.data.responseData.length;
       if (status === "Success") {
         self.setState({
-          SearchTicketData: data
+          SearchTicketData: data,
+          resultCount:count
         });
       } else {
         self.setState({
@@ -4125,7 +4113,11 @@ class MyTicketList extends Component {
                                   <div className="row common-adv-padd justify-content-between">
                                     <div className="col-auto d-flex align-items-center">
                                       <p className="font-weight-bold mr-3">
-                                        <span className="blue-clr">04</span>{" "}
+                                        <span className="blue-clr">
+                                          {this.state.resultCount < 9
+                                            ? "0" + this.state.resultCount
+                                            : this.state.resultCount}
+                                        </span>
                                         Results
                                       </p>
                                       <p

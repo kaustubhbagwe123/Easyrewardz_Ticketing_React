@@ -200,18 +200,24 @@ class StoreMaster extends Component {
     debugger;
     let self = this;
     var activeStatus = 0;
+    var finalBrandId = "";
     var status = this.state.selectStatus;
     if (status === "Active") {
       activeStatus = 1;
     } else {
       activeStatus = 0;
     }
+    if (this.state.selectedBrand !== null) {
+      for (let i = 0; i < this.state.selectedBrand.length; i++) {
+        finalBrandId+= this.state.selectedBrand[i].brandID+ ",";
+      }
+    }
     axios({
       method: "post",
       url: config.apiUrl + "/Store/createstore",
       headers: authHeader(),
       data: {
-        BrandID: this.state.selectedBrand,
+        StoreBrand_Id: finalBrandId,
         StoreCode: this.state.store_code.trim(),
         StoreName: this.state.store_name.trim(),
         StateID: this.state.selectState,
