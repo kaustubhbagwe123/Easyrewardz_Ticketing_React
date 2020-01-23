@@ -3759,6 +3759,7 @@ table tr th:last-child {
 }
 #Historical-popup .rt-table::-webkit-scrollbar {
   width: 5px;
+  height: 5px;
 }
 #Historical-popup .rt-table::-webkit-scrollbar-track {
   background: yellow;
@@ -5844,7 +5845,7 @@ font-weight: normal;
   margin: 0 auto;
   display: inline-block;
   min-width: 83%;
-  height: auto;
+  height: 550px;
 }
 .profilemodal-text {
   color: #4a4a4a;
@@ -7339,7 +7340,6 @@ table tr th:last-child {
 }
 .xyz {
   background-color: #edf2f4;
-  border-radius: 8px;
 }
 .calnex {
   float: right;
@@ -8826,7 +8826,11 @@ table tr th:last-child {
 }
 .CommentMinus-img {
   width: 15px;
+  height: 2px;
   margin-left: 0;
+  margin-top: -21px;
+  cursor: pointer;
+  float: right;
   margin-right: 14px;
 }
 .myTicketCommentCollapse #cke_editor2 {
@@ -9419,7 +9423,6 @@ table tr th:last-child {
   border: 1px solid #ECF2F4;
   border-radius: 5px;
   margin-right: 5px;
-  margin-top: 10px;
 }
 .thumbtick-plus {
   border: 1px solid #ECF2F4;
@@ -10114,8 +10117,10 @@ table tr th:last-child {
 }
 #thumb-modal-popup .close {
   float: right;
-  margin: -25px 3px 0 0;
-  cursor: pointer;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #000;
+  margin: -20px 5px 0 0;
 }
 
 /* ****************End css ************************/
