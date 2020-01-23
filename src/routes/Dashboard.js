@@ -8,7 +8,7 @@ import InfoIcon from "./../assets/Images/info-icon.png";
 import TaskIconBlue from "./../assets/Images/task-icon-blue.png";
 import TaskIconGray from "./../assets/Images/task-icon-gray.png";
 import Sorting from "./../assets/Images/sorting.png";
-import CliamIconBlue from "./../assets/Images/cliam-icon-blue.png";
+// import CliamIconBlue from "./../assets/Images/cliam-icon-blue.png";
 import Chat from "./../assets/Images/chat.png";
 import csv from "./../assets/Images/csv.png";
 import Schedule from "./../assets/Images/schedule.png";
@@ -529,10 +529,10 @@ class Dashboard extends Component {
     var checkboxes = document.getElementsByName("allBrand");
     var strBrandIds="";
     for (var i in checkboxes) {
-      if(isNaN(i)==false)
+      if(isNaN(i)===false)
       {
         checkboxes[i].checked = true;
-         if(checkboxes[i].checked == true)
+         if(checkboxes[i].checked === true)
          {
           if (checkboxes[i].getAttribute('attrIds')!==null)
             strBrandIds+=checkboxes[i].getAttribute('attrIds')+",";
@@ -564,11 +564,11 @@ class Dashboard extends Component {
          }
       }
     }
-    if(agentcount==0)
+    if(agentcount===0)
     {
       document.getElementById("spnAgent").textContent="select";
     }
-    if(checkboxes.length-1==agentcount)
+    if(checkboxes.length-1===agentcount)
     {      
       document.getElementById("spnAgent").textContent="ALL";
       this.setState({CheckBoxAllAgent:true});
@@ -591,9 +591,9 @@ class Dashboard extends Component {
     var checkboxes = document.getElementsByName("allBrand");
     var strBrandIds="";
     for (var i in checkboxes) {
-      if(isNaN(i)==false)
+      if(isNaN(i)===false)
       {
-         if(checkboxes[i].checked == true)
+         if(checkboxes[i].checked === true)
          {
           if (checkboxes[i].getAttribute('attrIds')!==null)
             brandcount++;
@@ -602,11 +602,11 @@ class Dashboard extends Component {
          }
       }
     }
-    if(brandcount==0)
+    if(brandcount===0)
     {
       document.getElementById("spnBrand").textContent="select";
     }
-    if(checkboxes.length-1==brandcount)
+    if(checkboxes.length-1===brandcount)
     {
       //document.getElementById("all-brand").checked = true;
       document.getElementById("spnBrand").textContent="ALL";
