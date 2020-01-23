@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import ReactTable from "react-table";
 import DeleteIcon from "../assets/Images/red-delete-icon.png";
 import SimpleReactValidator from "simple-react-validator";
@@ -106,7 +106,7 @@ class TestingDemo extends Component {
     debugger;
     let self = this;
     axios({
-      method: "post",
+      method: "get",
       url: config.apiUrl + "/Priority/GetPriorityList",
       headers: authHeader()
     }).then(function(res) {

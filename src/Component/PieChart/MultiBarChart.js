@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Chart from 'react-apexcharts';
-import { authHeader } from "./../../helpers/authHeader";
-import axios from "axios";
-import config from "./../../helpers/config";
+// import { authHeader } from "./../../helpers/authHeader";
+// import axios from "axios";
+// import config from "./../../helpers/config";
 
 class MultiBarChart extends Component {
   constructor(props) {
@@ -38,49 +38,50 @@ class MultiBarChart extends Component {
   }
 
   handleGetDashboardGraphData() {
-    debugger;
-    let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/DashBoard/DashBoardGraphData",
-      headers: authHeader(),
-      params: {
-        UserIds: "6,7,8",
-        fromdate: "2019-12-26",
-        todate: "2020-01-15",
-        BrandID: "26, 31"
-      }
-    }).then(function(res) {
+    // debugger;
+    // let self = this;
+    // axios({
+    //   method: "post",
+    //   url: config.apiUrl + "/DashBoard/DashBoardGraphData",
+    //   headers: authHeader(),
+    //   params: {
+    //     UserIds: "6,7,8",
+    //     fromdate: "2019-12-26",
+    //     todate: "2020-01-15",
+    //     BrandID: "26, 31"
+    //   }
+    // }).then(function(res) {
       debugger;
+      var data = this.props.data;
       let categories = [],
         totalTicketsData = [],
         ticketedTaskData = [];
-      let DashboardBillGraphData = res.data.responseData.tickettoTaskGraph;
-      for (let i = 0; i < DashboardBillGraphData.length; i++) {
-        let day = DashboardBillGraphData[i].day;
-        categories.push(day);
-        let totalTickets = DashboardBillGraphData[i].totalTickets;
-        totalTicketsData.push(totalTickets);
-        let taskTickets = DashboardBillGraphData[i].taskTickets;
-        ticketedTaskData.push(taskTickets);
-      }
+      // let DashboardBillGraphData = res.data.responseData.tickettoTaskGraph;
+      // for (let i = 0; i < DashboardBillGraphData.length; i++) {
+      //   let day = DashboardBillGraphData[i].day;
+      //   categories.push(day);
+      //   let totalTickets = DashboardBillGraphData[i].totalTickets;
+      //   totalTicketsData.push(totalTickets);
+      //   let taskTickets = DashboardBillGraphData[i].taskTickets;
+      //   ticketedTaskData.push(taskTickets);
+      // }
 
-      self.setState({
-        optionsMixedChart: {
-          xaxis: {
-            categories
-          }
-        },
-        seriesMixedChart: [
-          {
-            data: totalTicketsData
-          },
-          {
-            data: ticketedTaskData
-          }
-        ]
-      });
-    });
+      // this.setState({
+      //   optionsMixedChart: {
+      //     xaxis: {
+      //       categories
+      //     }
+      //   },
+      //   seriesMixedChart: [
+      //     {
+      //       data: totalTicketsData
+      //     },
+      //     {
+      //       data: ticketedTaskData
+      //     }
+      //   ]
+      // });
+    // });
   }
   
   render() {

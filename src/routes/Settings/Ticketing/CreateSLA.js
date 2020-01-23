@@ -13,13 +13,140 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Popover } from "antd";
 import ReactTable from "react-table";
 import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
+import { authHeader } from "./../../../helpers/authHeader";
+import axios from "axios";
+import config from "./../../../helpers/config";
+import {
+  NotificationManager
+} from "react-notifications";
 
 class CreateSLA extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fileName: ""
+      fileName: "",
+      sla: [],
+      slaIssueType: [],
+      selectedSlaIssueType: 0,
+      updateIssueTypeId: 0,
+      updateSlaisActive: '',
+      updateSlaTarget: []
     };
+
+    this.handleGetSLA = this.handleGetSLA.bind(this);
+    this.handleGetSLAIssueType = this.handleGetSLAIssueType.bind(this);
+  }
+
+  componentDidMount() {
+    this.handleGetSLA();
+    this.handleGetSLAIssueType();
+  }
+
+  handleGetSLAIssueType() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/SLA/GetIssueType",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let slaIssueType = res.data.responseData;
+      let selectedSlaIssueType = slaIssueType[0].issueTypeID;
+      if (slaIssueType !== null && slaIssueType !== undefined) {
+        self.setState({ slaIssueType, selectedSlaIssueType });
+      }
+    });
+  }
+  handleGetSLA() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/SLA/GetSLA",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let sla = res.data.responseData;
+      if (sla !== null && sla !== undefined) {
+        self.setState({ sla });
+      }
+    });
+  }
+
+  handleSlaIssueType = e => {
+    let slaIssueType = e.currentTarget.value;
+    this.setState({ selectedSlaIssueType: slaIssueType });
+  };
+  handleUpdateSlaIssueType = e => {
+    let updateSlaIssueType = e.currentTarget.value;
+    this.setState({ updateIssueTypeId: updateSlaIssueType });
+  };
+  handleUpdateSlaisActive = e => {
+    let updateSlaisActive = e.currentTarget.value;
+    this.setState({ updateSlaisActive });
+  };
+  handleUpdateSla(slaId) {
+    debugger;
+    let SLAisActive;
+      if (this.state.updateSlaisActive === 'true') {
+        SLAisActive = true
+      } else if (this.state.updateSlaisActive === 'false') {
+        SLAisActive = false
+      }
+      axios({
+        method: "post",
+        url: config.apiUrl + "/SLA/ModifySLA",
+        headers: authHeader(),
+        params: {
+          SLAID: slaId,
+          IssueTypeID: this.state.updateIssueTypeId,
+          isActive: SLAisActive
+        }
+      }).then((res) => {
+        debugger;
+        let status = res.data.message;
+        if (status === "Success") {
+          NotificationManager.success("SLA updated successfully.");
+          this.handleGetCRMRoles();
+        } else {
+          NotificationManager.error("SLA not updated.");
+        }
+      });
+  }
+  updateSla(individualData) {
+    debugger;
+    let updateIssueTypeId = individualData.issueTpeID, slaIsActive =  individualData.isSLAActive, updateSlaisActive, updateSlaTarget = individualData.slaTarget;
+    if (slaIsActive === 'Inactive') {
+      updateSlaisActive = 'false'
+    } else {
+      updateSlaisActive = 'true'
+    }
+    this.setState({
+      updateIssueTypeId, updateSlaisActive, updateSlaTarget
+    })
+  }
+
+  deleteSLA(deleteId) {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/SLA/DeleteSLA",
+      headers: authHeader(),
+      params: {
+        SLAID: deleteId
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      if (status === "Success") {
+        NotificationManager.success("SLA deleted successfully.");
+        self.handleGetSLA();
+      } else {
+        NotificationManager.error("SLA not deleted.");
+      }
+    });
   }
 
   fileUpload = e => {
@@ -49,7 +176,7 @@ class CreateSLA extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "IssueType"
+        accessor: "issueTpeName"
       },
       {
         Header: (
@@ -58,21 +185,47 @@ class CreateSLA extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "SlaPriority",
+        accessor: "slaTarget",
         Cell: row => {
           var ids = row.original["id"];
+          let slaTarget = row.original.slaTarget, priorityNameComma = '', priorityName = '';
+          for (let i = 0; i < slaTarget.length; i++) {
+            priorityNameComma += slaTarget[i].priorityName + ',';
+          }
+          priorityName = priorityNameComma.substring(0, priorityNameComma.length-1);
           return (
             <div>
               <span>
-                <label>High,Medium,Low</label>
-                <Popover content={SlaType} placement="bottom">
+                <label>{priorityName}</label>
+                {priorityName.length > 0 ? <Popover content={
+                  <div className="general-popover created-popover">
+                  <div>
+                    <label className="slatargettext-1">SLA TARGETS</label>
+                  </div>
+                  <div>
+                    <label className="createhead-text-1">Priority</label>
+                    <label className="createhead-text-1">%SLA</label>
+                    <label className="createhead-text-1">Respond</label>
+                    <label className="createhead-text-1">Resolve</label>
+                  </div>
+                  {slaTarget !== null &&
+                    slaTarget.map((item, i) => (
+                      <div key={i}>
+                        <label className="slatemp-textpopup-1">{item.priorityName}</label>
+                        <label className="slatemp-textpopup-1">{item.slaBreachPercent}</label>
+                        <label className="slatemp-textpopup-1">{item.priorityRespond}</label>
+                        <label className="slatemp-textpopup-1">{item.priorityResolution}</label>
+                      </div>
+                    ))}
+                </div>
+                } placement="bottom">
                   <img
                     className="info-icon"
                     src={BlackInfoIcon}
                     alt="info-icon"
                     id={ids}
                   />
-                </Popover>
+                </Popover> : ''}
               </span>
             </div>
           );
@@ -85,14 +238,29 @@ class CreateSLA extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "CretedBy",
+        accessor: "createdBy",
         Cell: row => {
           var ids = row.original["id"];
           return (
             <div>
               <span>
-                Admin
-                <Popover content={popoverData} placement="bottom">
+              {row.original.createdBy}
+                <Popover content={
+                  <>
+                  <div>
+                    <b>
+                <p className="title">Created By: {row.original.createdBy}</p>
+                    </b>
+                    <p className="sub-title">Created Date: {row.original.createdDate}</p>
+                  </div>
+                  <div>
+                    <b>
+                      <p className="title">Updated By: {row.original.modifiedBy}</p>
+                    </b>
+                    <p className="sub-title">Updated Date: {row.original.modifiedDate}</p>
+                  </div>
+                </>
+                } placement="bottom">
                   <img
                     className="info-icon-cp"
                     src={BlackInfoIcon}
@@ -113,7 +281,7 @@ class CreateSLA extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "status"
+        accessor: "isSLAActive"
       },
       {
         Header: <span>Actions</span>,
@@ -124,7 +292,23 @@ class CreateSLA extends Component {
             <>
               <span>
                 <Popover
-                  content={ActionDelete}
+                  content={
+                    <div className="d-flex general-popover popover-body">
+                      <div className="del-big-icon">
+                        <img src={DelBigIcon} alt="del-icon" />
+                      </div>
+                      <div>
+                        <p className="font-weight-bold blak-clr">Delete file?</p>
+                        <p className="mt-1 fs-12">
+                          Are you sure you want to delete this file?
+                        </p>
+                        <div className="del-can">
+                          <a href={Demo.BLANK_LINK}>CANCEL</a>
+                          <button className="butn" onClick={this.deleteSLA.bind(this, row.original.slaid)}>Delete</button>
+                        </div>
+                      </div>
+                    </div>
+                  }
                   placement="bottom"
                   trigger="click"
                 >
@@ -136,11 +320,100 @@ class CreateSLA extends Component {
                   />
                 </Popover>
                 <Popover
-                  content={ActionEditBtn}
+                  content={
+                    <div className="edtpadding">
+                      <div className="">
+                        <label className="popover-header-text">EDIT SLA</label>
+                      </div>
+                      <div className="pop-over-div">
+                        <label className="edit-label-1">Issue Type</label>
+                        <select id="inputStatus" className="edit-dropDwon dropdown-setting"
+                        value={this.state.updateIssueTypeId}
+                        onChange={this.handleUpdateSlaIssueType}
+                        >
+                          {this.state.slaIssueType !== null &&
+                            this.state.slaIssueType.map((item, i) => (
+                              <option key={i} value={item.issueTypeID}>
+                                {item.issueTypeName}
+                              </option>
+                            ))}
+                        </select>
+                      </div>
+
+                      {this.state.updateSlaTarget.length > 0 && <div className="pop-over-div m-t-10">
+                        <div>
+                          <label className="slatargettext-1">SLA TARGETS</label>
+                        </div>
+                        <div>
+                          <label className="createhead-text-1">Priority</label>
+                          <label className="createhead-text-1">%SLA</label>
+                          <label className="createhead-text-1">Respond</label>
+                          <label className="createhead-text-1">Resolve</label>
+                        </div>
+                        {this.state.updateSlaTarget !== null &&
+                          this.state.updateSlaTarget.map((item, i) => (
+                            <div key={i}>
+                              <label className="slatemp-textpopup-1">{item.priorityName}</label>
+                              <label className="slatemp-textpopup-1">{item.slaBreachPercent}</label>
+                              <label className="slatemp-textpopup-1">{item.priorityRespond}</label>
+                              <label className="slatemp-textpopup-1">{item.priorityResolution}</label>
+                            </div>
+                          ))}
+                      </div>}
+
+                      {/* <div className="pop-over-div m-t-10">
+                        <div>
+                          <label className="slatargettext-1">SLA TARGETS</label>
+                        </div>
+                        <div>
+                          <label className="createhead-text-1">Priority</label>
+                          <label className="createhead-text-1">%SLA</label>
+                          <label className="createhead-text-1">Respond</label>
+                          <label className="createhead-text-1">Resolve</label>
+                        </div>
+                        <div>
+                          <label className="slatemp-textpopup-1">High</label>
+                          <label className="slatemp-textpopup-1">30%</label>
+                          <label className="slatemp-textpopup-1">30M</label>
+                          <label className="slatemp-textpopup-1">30M</label>
+                        </div>
+                        <div>
+                          <label className="slatemp-textpopup-1">Medium</label>
+                          <label className="slatemp-textpopup-1">30%</label>
+                          <label className="slatemp-textpopup-1">30M</label>
+                          <label className="slatemp-textpopup-1">30M</label>
+                        </div>
+                        <div>
+                          <label className="slatemp-textpopup-1">Low</label>
+                          <label className="slatemp-textpopup-1">30%</label>
+                          <label className="slatemp-textpopup-1">30M</label>
+                          <label className="slatemp-textpopup-1">30M</label>
+                        </div>
+                      </div> */}
+
+                      <div className="pop-over-div">
+                        <label className="edit-label-1">Status</label>
+                        <select id="inputStatus" className="edit-dropDwon dropdown-setting"
+                        value={this.state.updateSlaisActive}
+                        onChange={this.handleUpdateSlaisActive}
+                        >
+                          <option value="true">Active</option>
+                          <option value="false">Inactive</option>
+                        </select>
+                      </div>
+                      <br />
+                      <div>
+                        <label className="pop-over-cancle">CANCEL</label>
+                        <button className="pop-over-button">
+                          <label className="pop-over-btnsave-text" onClick={this.handleUpdateSla.bind(this, row.original.slaid)}>SAVE</label>
+                        </button>
+                      </div>
+                    </div>
+                  }
                   placement="bottom"
                   trigger="click"
                 >
-                  <button className="react-tabel-button" id="p-edit-pop-2">
+                  <button className="react-tabel-button" id="p-edit-pop-2" onClick={this.updateSla.bind(this, row.original)}>
                     <label className="Table-action-edit-button-text">
                       EDIT
                     </label>
@@ -299,10 +572,10 @@ class CreateSLA extends Component {
               <div className="col-md-8">
                 <div className="table-cntr table-height TicketSlaReact">
                   <ReactTable
-                    data={dataTickSla}
+                    data={this.state.sla}
                     columns={columnsTickSla}
                     // resizable={false}
-                    defaultPageSize={5}
+                    defaultPageSize={10}
                     showPagination={false}
                   />
                    <div className="position-relative">
@@ -352,9 +625,18 @@ class CreateSLA extends Component {
                     <div className="divSpace">
                       <div className="dropDrownSpace">
                         <label className="reports-to">Issue Type</label>
-                        <select id="inputState" className="store-create-select">
-                          <option>Broken Shoe</option>
-                          <option>Delay in Delivery</option>
+                        <select id="inputState" className="store-create-select"
+                        value={this.state.selectedSlaIssueType}
+                        onChange={this.handleSlaIssueType}
+                        >
+                          {/* <option>Broken Shoe</option>
+                          <option>Delay in Delivery</option> */}
+                          {this.state.slaIssueType !== null &&
+                            this.state.slaIssueType.map((item, i) => (
+                              <option key={i} value={item.issueTypeID}>
+                                {item.issueTypeName}
+                              </option>
+                            ))}
                         </select>
                       </div>
                     </div>

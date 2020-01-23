@@ -27,10 +27,10 @@ import { Popover } from "antd";
 import { authHeader } from "../helpers/authHeader";
 import config from "../helpers/config";
 import axios from "axios";
-import {
-  NotificationContainer,
-  NotificationManager
-} from "react-notifications";
+// import {
+//   NotificationContainer,
+//   NotificationManager
+// } from "react-notifications";
 
 class Header extends Component {
   constructor(props) {
@@ -38,6 +38,15 @@ class Header extends Component {
 
     this.state = {
       modalIsOpen: false,
+      Email:"",
+      UserName:"",
+      LoginTime:"",
+      LoggedInDuration:"",
+      SLAScore:"",
+      CSatScore:"",
+      AvgResponse:"",
+      LogoutTime:"",
+      NameTag:"",
       HeadPhoneOpen: false,
       LoginOpen: false,
       open: false,
@@ -75,6 +84,7 @@ class Header extends Component {
         }
       ]
     };
+    this.handleLoggedInUserDetails=this.handleLoggedInUserDetails.bind(this);
   }
   handleNextButtonShow() {
     this.setState({ NextButton: !this.state.NextButton });
@@ -125,7 +135,6 @@ class Header extends Component {
     this.setState({ modalIsOpen: false });
   };
   handleLogoutMethod() {
-    debugger;
     // let self = this;
     axios({
       method: "post",
@@ -134,16 +143,43 @@ class Header extends Component {
     }).then(function(res) {
       debugger;
       var status = res.data.status;
-      var Msg=res.data.message
+      // var Msg=res.data.message
       if (status === true) {
-        NotificationManager.success(Msg);
+        //NotificationManager.success(Msg);
         localStorage.clear();
         window.location.href = "/";
       }
     });
   }
+  
+  handleLoggedInUserDetails=()=> {
+    debugger;
+     let self = this;
+     var data="";
+    axios({
+      method: "post",
+      url: config.apiUrl + "/DashBoard/LoggedInAccountDetails",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;        
+      data = res.data.responseData; 
+      var strTag=data.agentName.split(' ');
+      var nameTag=strTag[0].charAt(0).toUpperCase();
+      if(strTag.length>0)
+      {
+        nameTag+=strTag[1].charAt(0).toUpperCase();
+      }
+      // for (ja = 0; ja < strTag.length; ja++) {
+      //   nameTag += strTag[ja].charAt(0);
+      // }
+      // debugger;         
+        self.setState({Email:data.agentEmailId,UserName:data.agentName,LoginTime:data.loginTime,LoggedInDuration:data.loggedInDuration,SLAScore:data.slaScore,CSatScore:data.csatScore,AvgResponse:data.avgResponseTime,LogoutTime:data.logoutTime,NameTag:nameTag});  
+    });
+   
+  }
 
   componentDidMount() {
+    this.handleLoggedInUserDetails()
     let pageName, lastOne, lastValue, arr;
     arr = [...this.state.cont];
     setTimeout(
@@ -170,7 +206,8 @@ class Header extends Component {
     this.setState({ cont: contDummy });
   };
 
-  render() {
+  render() {   
+   
     const TransferCall = (
       <>
         <div>
@@ -713,7 +750,7 @@ class Header extends Component {
               </span>
             </Link>
             <a href="#!" className="bitmap5" onClick={this.onOpenModal}>
-              NR
+              {this.state.NameTag}
             </a>
           </div>
         </div>
@@ -794,9 +831,9 @@ class Header extends Component {
                 </div>
                 <div>
                   <p style={{ fontSize: "16px", fontWeight: "600" }}>
-                    Naman Rampal
+                    {this.state.UserName}
                   </p>
-                  <p className="mail-id">naman@fabindia.com</p>
+                  <p className="mail-id">{this.state.Email}</p>
                 </div>
                 <button
                   type="button"
@@ -849,32 +886,32 @@ class Header extends Component {
                       className="font-weight-bold"
                       style={{ fontSize: "16px", float: "right" }}
                     >
-                      6:30 PM
+                      {this.state.LogoutTime}
                     </p>
                   </div>
                 </div>
                 <ProgressBar className="logout-progress" now={60} />
                 <p className="logout-label font-weight-bold prog-indi">
-                  5H 23M
+                  {this.state.LoggedInDuration}
                 </p>
               </div>
               <div>
                 <div>
                   <p className="logout-label">SLA SCORE</p>
-                  <p className="font-weight-bold">60%</p>
+                  <p className="font-weight-bold">{this.state.SLAScore}</p>
                 </div>
                 <div>
                   <p className="logout-label">Avg Response time</p>
-                  <p className="font-weight-bold">1 Hr</p>
+                  <p className="font-weight-bold">{this.state.AvgResponse}</p>
                 </div>
                 <div>
                   <p className="logout-label">CSAT SCORE</p>
-                  <p className="font-weight-bold">90%</p>
+                  <p className="font-weight-bold">{this.state.CSatScore}</p>
                 </div>
               </div>
             </div>
           </Modal>
-          <NotificationContainer />
+          {/* <NotificationContainer /> */}
         </div>
       </React.Fragment>
     );

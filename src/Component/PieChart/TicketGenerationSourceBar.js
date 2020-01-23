@@ -52,6 +52,7 @@ class TicketGenerationSourceBar extends Component {
       let categories = [],
         totalCountData = [];
       let DashboardSourceGraphData = res.data.responseData.ticketSourceGraph;
+      if (DashboardSourceGraphData !== null) {
       for (let i = 0; i < DashboardSourceGraphData.length; i++) {
         let ticketSourceName = DashboardSourceGraphData[i].ticketSourceName;
         categories.push(ticketSourceName);
@@ -71,6 +72,7 @@ class TicketGenerationSourceBar extends Component {
           }
         ]
       });
+    }
     });
   }
 

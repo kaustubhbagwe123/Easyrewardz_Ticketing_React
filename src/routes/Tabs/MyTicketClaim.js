@@ -230,7 +230,6 @@ class MyTicketClaim extends Component {
                 Header: <span>Status</span>,
                 accessor: "taskStatus",
                 Cell: row => {
-                  debugger;
                   // <span className="table-btn table-green-btn">
                   //   {row.original.taskStatus}
                   // </span>

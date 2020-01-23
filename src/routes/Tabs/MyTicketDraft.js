@@ -100,7 +100,7 @@ class MyTicketDraft extends Component {
             showPagination={true}
             minRows={0}
           />
-          <div className="position-relative">
+          {/* <div className="position-relative">
             <div className="pagi">
               <ul>
                 <li>
@@ -137,7 +137,7 @@ class MyTicketDraft extends Component {
               </select>
               <p>Items per page</p>
             </div>
-          </div>
+          </div> */}
         </div>
       </Fragment>
     );
