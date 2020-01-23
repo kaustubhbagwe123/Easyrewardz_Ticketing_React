@@ -13,9 +13,9 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
 import { Popover } from "antd";
+import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import config from "../../../helpers/config";
 import axios from "axios";
-import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import {
   NotificationContainer,
   NotificationManager
@@ -136,7 +136,7 @@ class TicketHierarchy extends Component {
       let status = res.data.message;
       if (status === "Success") {
         self.handleGetHierarchyData();
-        NotificationManager.success("Designation delete successfully.");
+        NotificationManager.success("Designation deleted successfully.");
       }
     });
   }
