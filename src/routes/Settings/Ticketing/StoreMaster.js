@@ -6,7 +6,7 @@ import FileUpload from "./../../../assets/Images/file.png";
 import DelBlack from "./../../../assets/Images/del-black.png";
 import DownExcel from "./../../../assets/Images/csv.png";
 import UploadCancel from "./../../../assets/Images/upload-cancel.png";
-import { ProgressBar, ThemeProvider } from "react-bootstrap";
+import { ProgressBar } from "react-bootstrap";
 import Demo from "./../../../store/Hashtag.js";
 import { Link } from "react-router-dom";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
@@ -15,12 +15,14 @@ import { Popover } from "antd";
 import ReactTable from "react-table";
 import config from "../../../helpers/config";
 import axios from "axios";
+import Select from "react-select";
 import {
   NotificationContainer,
   NotificationManager
 } from "react-notifications";
 import { authHeader } from "../../../helpers/authHeader";
 import ActiveStatus from "../../activeStatus";
+import ZoneType from "./ZoneType";
 
 class StoreMaster extends Component {
   constructor(props) {
@@ -29,13 +31,17 @@ class StoreMaster extends Component {
       fileName: "",
       selectState: 0,
       selectCity: 0,
-      selectedBrand: 0,
+      selectedBrand: [],
       selectStatus: 0,
       storeData: [],
+      storeEditData: {},
       brandData: [],
       stateData: [],
       cityData: [],
+      regionData: [],
+      storeTypeData: [],
       activeData: ActiveStatus(),
+      zoneData: ZoneType(),
       store_code: "",
       store_name: "",
       pin_code: "",
@@ -50,11 +56,15 @@ class StoreMaster extends Component {
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
     this.handleGetStateList = this.handleGetStateList.bind(this);
     this.handleGetCityList = this.handleGetCityList.bind(this);
+    this.handleGetRegionList = this.handleGetRegionList.bind(this);
+    this.handleGetStoreTypeList = this.handleGetStoreTypeList.bind(this);
   }
   componentDidMount() {
     this.handleGetStoreMasterData();
     this.handleGetBrandList();
     this.handleGetStateList();
+    this.handleGetRegionList();
+    this.handleGetStoreTypeList();
   }
   handleGetStoreMasterData() {
     let self = this;
@@ -133,6 +143,40 @@ class StoreMaster extends Component {
       }
     });
   }
+  handleGetRegionList() {
+    let self = this;
+    axios({
+      method: "get",
+      url: config.apiUrl + "/Master/getregionlist",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        self.setState({ regionData: data });
+      } else {
+        self.setState({ regionData: [] });
+      }
+    });
+  }
+  handleGetStoreTypeList() {
+    let self = this;
+    axios({
+      method: "get",
+      url: config.apiUrl + "/Master/getstoretypelist",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        self.setState({ storeTypeData: data });
+      } else {
+        self.setState({ storeTypeData: [] });
+      }
+    });
+  }
   handleDeleteStore(store_Id) {
     debugger;
     let self = this;
@@ -190,9 +234,10 @@ class StoreMaster extends Component {
         self.setState({
           store_code: "",
           store_name: "",
-          selectedBrand: 0,
+          selectedBrand: [],
           pin_code: "",
           store_Address: "",
+          selectCity: 0,
           selectRegion: 0,
           selectZone: 0,
           store_type: 0,
@@ -217,17 +262,43 @@ class StoreMaster extends Component {
     e.preventDefault();
   };
   handleBrandChange = e => {
-    let value = e.target.value;
-    this.setState({ selectedBrand: value });
+    this.setState({ selectedBrand: e });
   };
   handleStateChange = e => {
     let value = e.target.value;
-    this.setState({ selectState: value });
+    this.setState({ selectState: value, cityData: [] });
     setTimeout(() => {
       if (this.state.selectState) {
         this.handleGetCityList();
       }
     }, 1);
+  };
+  handleEditStoreMasterData(data) {
+    debugger;
+    var storeEditData = data;
+    // storeEditData.brand_Id=storeEditData.brandID;
+    // storeEditData.brand_Id=storeEditData.brandID;
+    // storeEditData.brand_Id=storeEditData.brandID;
+    // storeEditData.brand_Id=storeEditData.brandID;
+    // storeEditData.brand_Id=storeEditData.brandID;
+    // storeEditData.brand_Id=storeEditData.brandID;
+    // storeEditData.brand_Id=storeEditData.brandID;
+  }
+  handleCityChange = e => {
+    let value = e.target.value;
+    this.setState({ selectCity: value });
+  };
+  handleZoneChange = e => {
+    let value = e.target.value;
+    this.setState({ selectZone: value });
+  };
+  handleRegionChange = e => {
+    let value = e.target.value;
+    this.setState({ selectRegion: value });
+  };
+  handleStoreTypeChange = e => {
+    let value = e.target.value;
+    this.setState({ store_type: value });
   };
   handleStatusChange = e => {
     let value = e.target.value;
@@ -241,7 +312,6 @@ class StoreMaster extends Component {
 
   render() {
     const { storeData } = this.state;
-
     return (
       <React.Fragment>
         <NotificationContainer />
@@ -457,10 +527,7 @@ class StoreMaster extends Component {
                                         <label className="edit-label-1">
                                           City
                                         </label>
-                                        <select
-                                          id="inputStatus"
-                                          className="edit-dropDwon dropdown-setting"
-                                        >
+                                        <select className="edit-dropDwon dropdown-setting">
                                           <option>Select</option>
                                           {this.state.cityData !== null &&
                                             this.state.cityData.map(
@@ -593,7 +660,11 @@ class StoreMaster extends Component {
                                 >
                                   <button
                                     className="react-tabel-button"
-                                    id="p-edit-pop-2"
+                                    type="button"
+                                    onClick={this.handleEditStoreMasterData.bind(
+                                      this,
+                                      row.original
+                                    )}
                                   >
                                     EDIT
                                   </button>
@@ -655,23 +726,18 @@ class StoreMaster extends Component {
                     <label className="Create-store-text">CREATE STORE</label>
                     <div className="div-padding-1">
                       <label className="designation-name">Brand</label>
-                      <select
-                        className="store-create-select"
-                        value={this.state.selectedBrand}
+                      <Select
+                        getOptionLabel={option => option.brandName}
+                        getOptionValue={option => option.brandID}
+                        options={this.state.brandData}
+                        placeholder="Select"
+                        // menuIsOpen={true}
+                        closeMenuOnSelect={false}
                         onChange={this.handleBrandChange}
-                      >
-                        <option>Select</option>
-                        {this.state.brandData !== null &&
-                          this.state.brandData.map((item, i) => (
-                            <option
-                              key={i}
-                              value={item.brandID}
-                              className="select-category-placeholder"
-                            >
-                              {item.brandName}
-                            </option>
-                          ))}
-                      </select>
+                        value={this.state.selectedBrand}
+                        // showNewOptionAtTop={false}
+                        isMulti
+                      />
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">Store Code</label>
@@ -719,7 +785,11 @@ class StoreMaster extends Component {
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">City</label>
-                      <select className="store-create-select">
+                      <select
+                        className="store-create-select"
+                        value={this.state.selectCity}
+                        onChange={this.handleCityChange}
+                      >
                         <option>Select</option>
                         {this.state.cityData !== null &&
                           this.state.cityData.map((item, i) => (
@@ -760,20 +830,50 @@ class StoreMaster extends Component {
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">Region</label>
-                      <select className="store-create-select">
-                        <option>Delhi</option>
+                      <select
+                        className="store-create-select"
+                        value={this.state.selectRegion}
+                        onChange={this.handleRegionChange}
+                      >
+                        <option>Select</option>
+                        {this.state.regionData !== null &&
+                          this.state.regionData.map((item, s) => (
+                            <option key={s} value={item.regionID}>
+                              {item.regionName}
+                            </option>
+                          ))}
                       </select>
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">Zone</label>
-                      <select className="store-create-select">
-                        <option>North</option>
+                      <select
+                        className="store-create-select"
+                        value={this.state.selectZone}
+                        onChange={this.handleZoneChange}
+                      >
+                        <option>Select</option>
+                        {this.state.zoneData !== null &&
+                          this.state.zoneData.map((item, s) => (
+                            <option key={s} value={item.zoneID}>
+                              {item.zoneName}
+                            </option>
+                          ))}
                       </select>
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">Store Type</label>
-                      <select className="store-create-select">
-                        <option>Retail</option>
+                      <select
+                        className="store-create-select"
+                        value={this.state.store_type}
+                        onChange={this.handleStoreTypeChange}
+                      >
+                        <option>Select</option>
+                        {this.state.storeTypeData !== null &&
+                          this.state.storeTypeData.map((item, t) => (
+                            <option key={t} value={item.storeTypeID}>
+                              {item.storeTypeName}
+                            </option>
+                          ))}
                       </select>
                     </div>
                     <div className="div-padding-1">
