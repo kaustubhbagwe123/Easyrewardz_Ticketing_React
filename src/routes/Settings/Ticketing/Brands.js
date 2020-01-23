@@ -163,7 +163,7 @@ class Brands extends Component {
       }
     });
   }
-  handleGetDataForEdit(e, data) {
+  handleGetDataForEdit(e) {
     debugger;
     var brandEditData = e;
     brandEditData.brand_Code = brandEditData.brandCode;
