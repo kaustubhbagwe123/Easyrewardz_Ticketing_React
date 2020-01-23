@@ -26,6 +26,7 @@ class Brands extends Component {
       brand_Code: "",
       brand_name: "",
       selectedStatus: 0,
+      loading: false,
       activeData: ActiveStatus()
     };
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -58,6 +59,7 @@ class Brands extends Component {
   handleGetBrandList() {
     debugger;
     let self = this;
+    this.setState({ loading: true });
     axios({
       method: "post",
       url: config.apiUrl + "/Brand/BrandList",
@@ -68,7 +70,7 @@ class Brands extends Component {
       let data = res.data.responseData;
       if (status === "Success") {
         self.setState({
-          brandData: data
+          brandData: data, loading: false
         });
       } else {
         self.setState({
@@ -111,7 +113,6 @@ class Brands extends Component {
     });
   }
   handleDeleteBrandData(brand_Id) {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -197,6 +198,9 @@ class Brands extends Component {
           <div className="store-settings-cntr">
             <div className="row">
               <div className="col-md-8">
+              {this.state.loading === true ? (
+              <div className="loader-icon"></div>
+            ) : (
                 <div className="table-cntr table-height TicketBrandReact">
                   <ReactTable
                     data={brandData}
@@ -480,6 +484,7 @@ class Brands extends Component {
                     </div>
                   </div> */}
                 </div>
+            )}
               </div>
               <div className="col-md-4">
                 <div className="createHierarchyMask">

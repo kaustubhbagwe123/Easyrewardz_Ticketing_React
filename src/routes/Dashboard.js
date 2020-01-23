@@ -1914,7 +1914,7 @@ class Dashboard extends Component {
       "3 Days": [moment(start).subtract(3, "days"), moment(end)]
     };
     let local = {
-      //format: "DD-MM-YYYY HH:mm",
+      format: "DD-MM-YYYY",
       sundayFirst: false
     };
 
@@ -3248,7 +3248,7 @@ class Dashboard extends Component {
                                     value={this.state.selectedSlaDueByDate}
                                     onChange={this.handleSlaDueByDate}
                                   >
-                                    <option>SLA Due</option>
+                                    <option value="0">SLA Due</option>
                                     {this.state.SlaDueData !== null &&
                                       this.state.SlaDueData.map((item, i) => (
                                         <option key={i} value={item.slaDueID}>
@@ -3264,7 +3264,7 @@ class Dashboard extends Component {
                                     }
                                     onChange={this.handleTicketStatusByDate}
                                   >
-                                    <option>Ticket Status</option>
+                                    <option value="0">Ticket Status</option>
                                     {this.state.TicketStatusData !== null &&
                                       this.state.TicketStatusData.map(
                                         (item, i) => (

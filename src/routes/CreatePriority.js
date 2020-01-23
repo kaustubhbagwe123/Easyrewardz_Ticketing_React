@@ -54,7 +54,8 @@ class CreatePriority extends Component {
       updateDetails: {},
       finalData: {},
       priority_name: "",
-      selectedActiveStatus: 0
+      selectedActiveStatus: 0,
+      loading: false
     };
   }
   componentDidMount() {
@@ -63,6 +64,7 @@ class CreatePriority extends Component {
   handleGetPriorityList() {
     debugger;
     let self = this;
+    this.setState({ loading: true });
     axios({
       method: "get",
       url: config.apiUrl + "/Priority/GetPriorityList",
@@ -73,7 +75,7 @@ class CreatePriority extends Component {
       let data = res.data.responseData;
       if (status === "Success") {
         self.setState({
-          priorityData: data
+          priorityData: data, loading: false
         });
       } else {
         self.setState({
@@ -278,6 +280,9 @@ class CreatePriority extends Component {
           <div className="store-settings-cntr">
             <div className="row">
               <div className="col-md-8">
+              {this.state.loading === true ? (
+              <div className="loader-icon"></div>
+            ) : (
                 <div className="table-cntr table-height table-priority">
                   <Table
                     className={
@@ -574,6 +579,7 @@ class CreatePriority extends Component {
                     </div>
                   </div> */}
                 </div>
+                )}
               </div>
               <div className="col-md-4">
                 <div className="createHierarchyMask">
