@@ -146,7 +146,7 @@ class Header extends Component {
       var status = res.data.status;
       var Msg=res.data.message
       if (status === true) {
-        NotificationManager.success(Msg);
+        //NotificationManager.success(Msg);
         localStorage.clear();
         window.location.href = "/";
       }
