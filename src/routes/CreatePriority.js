@@ -2,20 +2,23 @@ import React, { Component } from "react";
 // import TableArr from "./../assets/Images/table-arr.png";
 import RedDeleteIcon from "./../assets/Images/red-delete-icon.png";
 import BlackDeleteIcon from "./../assets/Images/del-big.png";
-import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import BlackInfoIcon from "./../assets/Images/Info-black.png";
 import Demo from "./../store/Hashtag";
 import Braille from "./../assets/Images/braille.svg";
-import { Table } from "antd";
+import { Table, Popover } from "antd";
 import "antd/dist/antd.css";
 import axios from "axios";
 import config from "./../helpers/config";
 import { Link } from "react-router-dom";
 import { authHeader } from "../helpers/authHeader";
+import activeStatus from "./activeStatus";
+import {
+  NotificationContainer,
+  NotificationManager
+} from "react-notifications";
 
 const closest = function(el, selector, rootNode) {
   rootNode = rootNode || document.body;
-  // console.log('rootNode:', rootNode);
   const matchesSelector =
     el.matches ||
     el.webkitMatchesSelector ||
@@ -44,161 +47,14 @@ class CreatePriority extends Component {
     this.onDragEnd = this.onDragEnd.bind(this);
     this.handleGetPriorityList = this.handleGetPriorityList.bind(this);
     this.state = {
-      // data: [
-      //   {
-      //     priorityName: "High",
-      //     content: (
-      //       <span>
-      //         Admin
-      //         <img
-      //           className="info-icon-cp"
-      //           src={BlackInfoIcon}
-      //           alt="info-icon"
-      //           id="created1"
-      //         />
-      //       </span>
-      //     ),
-      //     key: "1",
-      //     createdDate: "23-May-19",
-      //     status: "Active",
-      //     action: (
-      //       <span>
-      //         <img
-      //           src={RedDeleteIcon}
-      //           alt="del-icon"
-      //           className="del-btn"
-      //           id="del1"
-      //         />
-      //         <button className="react-tabel-button" id="peditpop1">
-      //           <label className="Table-action-edit-button-text">EDIT</label>
-      //         </button>
-      //       </span>
-      //     )
-      //   },
-      //   {
-      //     priorityName: "Medium",
-      //     content: (
-      //       <span>
-      //         Admin
-      //         <img
-      //           className="info-icon-cp"
-      //           src={BlackInfoIcon}
-      //           alt="info-icon"
-      //           id="created2"
-      //         />
-      //       </span>
-      //     ),
-      //     key: "2",
-      //     createdDate: "23-May-19",
-      //     status: "Inactive",
-      //     action: (
-      //       <span>
-      //         <img
-      //           src={RedDeleteIcon}
-      //           alt="del-icon"
-      //           className="del-btn"
-      //           id="del2"
-      //         />
-      //         <button className="react-tabel-button" id="p-edit-pop-2">
-      //           <label className="Table-action-edit-button-text">EDIT</label>
-      //         </button>
-      //       </span>
-      //     )
-      //   },
-      //   {
-      //     priorityName: "Low",
-      //     content: (
-      //       <span>
-      //         Admin
-      //         <img
-      //           className="info-icon-cp"
-      //           src={BlackInfoIcon}
-      //           alt="info-icon"
-      //           id="created-3"
-      //         />
-      //       </span>
-      //     ),
-      //     key: "3",
-      //     createdDate: "23-May-19",
-      //     status: "Active",
-      //     action: (
-      //       <span>
-      //         <img
-      //           src={RedDeleteIcon}
-      //           alt="del-icon"
-      //           className="del-btn"
-      //           id="del3"
-      //         />
-      //         <button className="react-tabel-button" id="p-edit-pop-3">
-      //           <label className="Table-action-edit-button-text">EDIT</label>
-      //         </button>
-      //       </span>
-      //     )
-      //   },
-      //   {
-      //     priorityName: "6",
-      //     content: (
-      //       <span>
-      //         Admin
-      //         <img
-      //           className="info-icon-cp"
-      //           src={BlackInfoIcon}
-      //           alt="info-icon"
-      //           id="created-4"
-      //         />
-      //       </span>
-      //     ),
-      //     key: "4",
-      //     createdDate: "23-May-19",
-      //     status: "Inactive",
-      //     action: (
-      //       <span>
-      //         <img
-      //           src={RedDeleteIcon}
-      //           alt="del-icon"
-      //           className="del-btn"
-      //           id="del4"
-      //         />
-      //         <button className="react-tabel-button" id="p-edit-pop-4">
-      //           <label className="Table-action-edit-button-text">EDIT</label>
-      //         </button>
-      //       </span>
-      //     )
-      //   },
-      //   {
-      //     priorityName: "8",
-      //     content: (
-      //       <span>
-      //         Admin
-      //         <img
-      //           className="info-icon-cp"
-      //           src={BlackInfoIcon}
-      //           alt="info-icon"
-      //           id="created5"
-      //         />
-      //       </span>
-      //     ),
-      //     key: "5",
-      //     createdDate: "23-May-19",
-      //     status: "Active",
-      //     action: (
-      //       <span>
-      //         <img
-      //           src={RedDeleteIcon}
-      //           alt="del-icon"
-      //           className="del-btn"
-      //           id="del5"
-      //         />
-      //         <button className="react-tabel-button" id="p-edit-pop-5">
-      //           <label className="Table-action-edit-button-text">EDIT</label>
-      //         </button>
-      //       </span>
-      //     )
-      //   }
-      // ],
       dragIndex: -1,
       draggedIndex: -1,
-      priorityData: []
+      activeData: activeStatus(),
+      priorityData: [],
+      updateDetails: {},
+      finalData: {},
+      priority_name: "",
+      selectedActiveStatus: 0
     };
   }
   componentDidMount() {
@@ -222,6 +78,88 @@ class CreatePriority extends Component {
       } else {
         self.setState({
           priorityData: []
+        });
+      }
+    });
+  }
+  handleSubmitData() {
+    debugger;
+    let self = this;
+    var activeStatus = 0;
+    var status = this.state.selectedActiveStatus;
+    if (status === "Active") {
+      activeStatus = 1;
+    } else {
+      activeStatus = 0;
+    }
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Priority/AddPriority",
+      headers: authHeader(),
+      params: {
+        PriorityName: this.state.priority_name.trim(),
+        status: activeStatus
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      if (status === "Success") {
+        self.handleGetPriorityList();
+        NotificationManager.success("Priority Added successfully.");
+        self.setState({
+          priority_name: "",
+          selectedActiveStatus: 0
+        });
+      }
+    });
+  }
+  handleDeleteData(priority_ID) {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Priority/DeletePriority",
+      headers: authHeader(),
+      params: {
+        PriorityID: priority_ID
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      if (status === "Success") {
+        self.handleGetPriorityList();
+        NotificationManager.success("Priority delete successfully.");
+      }
+    });
+  }
+  handleUpdateData(priority_ID) {
+    debugger;
+    let self = this;
+    var activeStatus = 0;
+    var status = this.state.finalData.status;
+    if (status === "Active") {
+      activeStatus = 1;
+    } else {
+      activeStatus = 0;
+    }
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Priority/UpdatePriority",
+      headers: authHeader(),
+      params: {
+        PriorityID:priority_ID,
+        PriorityName: this.state.finalData.name.trim(),
+        status: activeStatus
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      if (status === "Success") {
+        self.handleGetPriorityList();
+        NotificationManager.success("Priority updated successfully.");
+        self.setState({
+          priority_name: "",
+          selectedActiveStatus: 0
         });
       }
     });
@@ -279,7 +217,7 @@ class CreatePriority extends Component {
       currentState.dragIndex >= 0 &&
       currentState.dragIndex !== currentState.draggedIndex
     ) {
-      const { dragIndex, draggedIndex, data: oldData } = currentState;
+      const { dragIndex, draggedIndex, priorityData: oldData } = currentState;
       const data = [...oldData];
       const item = data.splice(dragIndex, 1)[0];
       data.splice(draggedIndex, 0, item);
@@ -289,10 +227,40 @@ class CreatePriority extends Component {
     }
     this.setState(result);
   }
+  handleCreateOnChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  };
+  handleOnChangeData = e => {
+    debugger;
+    var name = e.target.name;
+    var value = e.target.value;
+
+    var data = this.state.finalData;
+    data[name] = value;
+
+    this.setState({
+      finalDatatemp: data
+    });
+  };
+  handleActiveStatus = e => {
+    let value = e.target.value;
+    this.setState({ selectedActiveStatus: value });
+  };
+  handleroweditClick(e, data) {
+    debugger;
+    var finalData = e;
+    finalData.name = finalData.priortyName;
+    finalData.status = finalData.priortyStatus;
+
+    this.setState({ finalData });
+  }
 
   render() {
     return (
       <React.Fragment>
+        <NotificationContainer />
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="settings" className="header-path">
             Settings
@@ -318,7 +286,7 @@ class CreatePriority extends Component {
                     // columns={this.state.columns}
                     columns={[
                       {
-                        key: "priorityID",
+                        key: "data",
                         render: (text, record, index) => (
                           <span>
                             {(this.state.dragIndex >= 0 &&
@@ -366,19 +334,63 @@ class CreatePriority extends Component {
                           record.createdByName.indexOf(value) === 0,
                         sorter: (a, b) =>
                           a.createdByName.length - b.createdByName.length,
-                        sortDirections: ["descend", "ascend"]
+                        sortDirections: ["descend", "ascend"],
+                        render: (text, record) => {
+                          debugger;
+                          return (
+                            <div>
+                              <Popover
+                                content={
+                                  <div>
+                                    <div>
+                                      <b>
+                                        <p className="title">
+                                          Created By: {record.createdByName}
+                                        </p>
+                                      </b>
+                                      <p className="sub-title">
+                                        Created Date:{" "}
+                                        {record.createdDateFormated}
+                                      </p>
+                                    </div>
+                                    <div>
+                                      <b>
+                                        <p className="title">
+                                          Updated By: {record.modifiedByName}
+                                        </p>
+                                      </b>
+                                      <p className="sub-title">
+                                        Updated Date:{" "}
+                                        {record.modifiedDateFormated}
+                                      </p>
+                                    </div>
+                                  </div>
+                                }
+                                placement="bottom"
+                              >
+                                {record.createdByName}
+                                <img
+                                  className="info-icon-cp"
+                                  src={BlackInfoIcon}
+                                  alt="info-icon"
+                                />
+                              </Popover>
+                            </div>
+                          );
+                        }
                       },
                       {
                         title: "Created Date",
                         dataIndex: "createdDateFormated",
                         key: "createdDateFormated",
-                        sortDirections: ["descend", "ascend"],
                         onFilter: (value, record) =>
                           record.createdDateFormated.indexOf(value) === 0,
                         // defaultSortOrder: "descend",
+                        filterMultiple: false,
                         sorter: (a, b) =>
                           a.createdDateFormated.length -
-                          b.createdDateFormated.length
+                          b.createdDateFormated.length,
+                        sortDirections: ["descend", "ascend"]
                       },
                       {
                         title: "Status",
@@ -387,107 +399,141 @@ class CreatePriority extends Component {
                         filterMultiple: false,
                         onFilter: (value, record) =>
                           record.priortyStatus.indexOf(value) === 0,
-                        sorter: (a, b) => a.priortyStatus.length - b.priortyStatus.length,
-                        sortDirections: ["descend", "ascend"],
+                        sorter: (a, b) =>
+                          a.priortyStatus.length - b.priortyStatus.length,
+                        sortDirections: ["descend", "ascend"]
                       },
                       {
                         title: "Action",
-                        dataIndex: "action",
-                        key: "action"
+                        dataIndex: "priorityID",
+                        key: "priorityID",
+                        render: (text, record) => {
+                          debugger;
+                          return (
+                            <span>
+                              <Popover
+                                content={
+                                  <div>
+                                    <div className="del-big-icon">
+                                      <img
+                                        src={BlackDeleteIcon}
+                                        alt="del-icon"
+                                      />
+                                    </div>
+                                    <div>
+                                      <p className="font-weight-bold blak-clr">
+                                        Delete file?
+                                      </p>
+                                      <p className="mt-1 fs-12">
+                                        Are you sure you want to delete this
+                                        file?
+                                      </p>
+                                      <div className="del-can">
+                                        <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                        <button
+                                          className="butn"
+                                          onClick={this.handleDeleteData.bind(
+                                            this,
+                                            record.priorityID
+                                          )}
+                                        >
+                                          Delete
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                }
+                                trigger="click"
+                                placement="bottom"
+                              >
+                                <img
+                                  src={RedDeleteIcon}
+                                  alt="del-icon"
+                                  className="del-btn"
+                                />
+                              </Popover>
+                              <Popover
+                                content={
+                                  <div>
+                                    <label className="popover-header-text">
+                                      EDIT PRORITY
+                                    </label>
+                                    <div className=" pop-over-div">
+                                      <label className="pop-over-lbl-text">
+                                        Priority Name
+                                      </label>
+                                      <input
+                                        type="text"
+                                        className="pop-over-text"
+                                        placeholder="Enter Priority Name"
+                                        maxLength={25}
+                                        name="name"
+                                        value={this.state.finalData.name}
+                                        onChange={this.handleOnChangeData}
+                                      />
+                                    </div>
+                                    <div className=" pop-over-div">
+                                      <label className="pop-over-lbl-text">
+                                        Status
+                                      </label>
+                                      <select
+                                        className="form-control dropdown-setting"
+                                        name="status"
+                                        value={this.state.finalData.status}
+                                        onChange={this.handleOnChangeData}
+                                      >
+                                        <option>select</option>
+                                        {this.state.activeData !== null &&
+                                          this.state.activeData.map(
+                                            (item, j) => (
+                                              <option
+                                                key={j}
+                                                value={item.ActiveID}
+                                              >
+                                                {item.ActiveName}
+                                              </option>
+                                            )
+                                          )}
+                                      </select>
+                                    </div>
+                                    <br />
+                                    <div>
+                                      <label className="pop-over-cancle">
+                                        CANCEL
+                                      </label>
+                                      <button
+                                        type="button"
+                                        className="pop-over-button"
+                                        onClick={this.handleUpdateData.bind(
+                                          this,record.priorityID
+                                        )}
+                                      >
+                                        SAVE
+                                      </button>
+                                    </div>
+                                  </div>
+                                }
+                                trigger="click"
+                                placement="bottom"
+                              >
+                                <button
+                                  className="react-tabel-button"
+                                  onClick={this.handleroweditClick.bind(
+                                    this,
+                                    record
+                                  )}
+                                >
+                                  EDIT
+                                </button>
+                              </Popover>
+                            </span>
+                          );
+                        }
                       }
                     ]}
                     pagination={true}
                     dataSource={this.state.priorityData}
                   />
-
-                  {/* <UncontrolledPopover
-                    trigger="hover"
-                    placement="bottom"
-                    target="created1"
-                    className="general-popover created-popover"
-                    // delay={tooltipDelay}
-                  >
-                    <PopoverBody>
-                      <div>
-                        <p className="title">Created By: Admin</p>
-                        <p className="sub-title">Created Date: 12 March 2018</p>
-                      </div>
-                      <div>
-                        <p className="title">Updated By: Manager</p>
-                        <p className="sub-title">Updated Date: 12 March 2018</p>
-                      </div>
-                    </PopoverBody>
-                  </UncontrolledPopover> */}
-
-                  {/* <UncontrolledPopover
-                    trigger="legacy"
-                    placement="auto"
-                    target="peditpop1"
-                    className="general-popover delete-popover"
-                    // delay={tooltipDelay}
-                  >
-                    <PopoverBody className="d-flex">
-                      <div>
-                        <div className="">
-                          <label className="popover-header-text">
-                            EDIT PRORITY
-                          </label>
-                        </div>
-                        <div className=" pop-over-div">
-                          <label className="pop-over-lbl-text">
-                            Priority Name
-                          </label>
-                          <input
-                            type="text"
-                            className="pop-over-text"
-                            placeholder="Enter Priority Name"
-                            maxLength={25}
-                          />
-                        </div>
-                        <div className=" pop-over-div">
-                          <label className="pop-over-lbl-text">Status</label>
-                          <select className="pop-over-select">
-                            <option>Active</option>
-                            <option>Inactive</option>
-                          </select>
-                        </div>
-                        <br />
-                        <div>
-                          <label className="pop-over-cancle">CANCEL</label>
-                          <button className="pop-over-button">
-                            <label className="pop-over-btnsave-text">
-                              SAVE
-                            </label>
-                          </button>
-                        </div>
-                      </div>
-                    </PopoverBody>
-                  </UncontrolledPopover> */}
-
-                  {/* <UncontrolledPopover
-                    trigger="legacy"
-                    placement="bottom"
-                    target="del1"
-                    className="general-popover delete-popover"
-                  >
-                    <PopoverBody className="d-flex">
-                      <div className="del-big-icon">
-                        <img src={BlackDeleteIcon} alt="del-icon" />
-                      </div>
-                      <div>
-                        <p className="font-weight-bold blak-clr">
-                          Delete file?
-                        </p>
-                        <p className="mt-1 fs-12">
-                          Are you sure you want to delete this file?
-                        </p>
-                        <div className="del-can">
-                          <a href={Demo.BLANK_LINK}>CANCEL</a>
-                          <button className="butn">Delete</button>
-                        </div>
-                      </div>
-                    </PopoverBody>
-                  </UncontrolledPopover> */}
 
                   {/* <div className="position-relative">
                     <div className="pagi">
@@ -540,22 +586,34 @@ class CreatePriority extends Component {
                         className="txt-1"
                         placeholder="Enter Priority Name"
                         maxLength={25}
+                        name="priority_name"
+                        value={this.state.priority_name}
+                        onChange={this.handleCreateOnChange}
                       />
                     </div>
                     <div className="dropDrownSpace">
                       <label className="reports-to">Status</label>
                       <select
-                        id="inputState"
                         className="form-control dropdown-setting"
+                        value={this.state.selectedActiveStatus}
+                        onChange={this.handleActiveStatus}
                       >
                         <option>select</option>
-                        <option>Active</option>
-                        <option>Deactive</option>
+                        {this.state.activeData !== null &&
+                          this.state.activeData.map((item, i) => (
+                            <option key={i} value={item.ActiveID}>
+                              {item.ActiveName}
+                            </option>
+                          ))}
                       </select>
                     </div>
                     <div className="btnSpace">
-                      <button className="CreateADDBtn">
-                        <label className="addLable">ADD</label>
+                      <button
+                        className="CreateADDBtn addLable"
+                        type="button"
+                        onClick={this.handleSubmitData.bind(this)}
+                      >
+                        ADD
                       </button>
                     </div>
                   </div>
