@@ -1898,7 +1898,7 @@ class Dashboard extends Component {
       "3 Days": [moment(start).subtract(3, "days"), moment(end)]
     };
     let local = {
-      //format: "DD-MM-YYYY HH:mm",
+      format: "DD-MM-YYYY",
       sundayFirst: false
     };
 
