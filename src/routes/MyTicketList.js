@@ -1268,10 +1268,24 @@ class MyTicketList extends Component {
     // --------------------By Ticket Type Tab-----------------
     var ticketType = {};
     if (this.state.ActiveTabId === 3) {
+      let purchaseIds="";
+      let actionTypeIds="";
+      if(this.state.selectedChannelOfPurchase!=null)
+      {
+        for (let i = 0; i < this.state.selectedChannelOfPurchase.length; i++) {
+          purchaseIds+=this.state.selectedChannelOfPurchase[i].channelOfPurchaseID+",";
+        }
+      }
+      if(this.state.selectedTicketActionType!=null)
+      {
+        for (let i = 0; i < this.state.selectedTicketActionType.length; i++) {
+          actionTypeIds+=this.state.selectedTicketActionType[i].ticketActionTypeID+",";
+        }
+      }
       ticketType["TicketPriorityID"] = this.state.selectedPriority;
       ticketType["TicketStatusID"] = this.state.selectedTicketStatusByTicket;
-      ticketType["ChannelOfPurchaseIds"] = this.state.selectedChannelOfPurchase;
-      ticketType["ActionTypes"] = this.state.selectedTicketActionType;
+      ticketType["ChannelOfPurchaseIds"] = purchaseIds;
+      ticketType["ActionTypes"] = actionTypeIds;
     } else {
       this.setState({
         ticketType: null
