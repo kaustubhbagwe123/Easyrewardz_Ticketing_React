@@ -15,27 +15,46 @@ import {
   NotificationContainer,
   NotificationManager
 } from "react-notifications";
+import ActiveStatus from "../../activeStatus";
 class Brands extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       brandData: [],
-      brandEditData:{},
+      brandEditData: {},
       brand_Code: "",
       brand_name: "",
-      selectedStatus: 0
+      selectedStatus: 0,
+      activeData: ActiveStatus()
     };
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
+  }
+  componentDidMount() {
+    this.handleGetBrandList();
   }
   handleBrandOnchange = e => {
     this.setState({
       [e.target.name]: e.target.value
     });
   };
-  componentDidMount() {
-    this.handleGetBrandList();
-  }
+  handleActiveStatus = e => {
+    let value = e.target.value;
+    this.setState({ selectedStatus: value });
+  };
+  handleOnChangeData = e => {
+    debugger;
+    var name = e.target.name;
+    var value = e.target.value;
+
+    var data = this.state.brandEditData;
+    data[name] = value;
+
+    this.setState({
+      brandEditTemp: data
+    });
+  };
+
   handleGetBrandList() {
     debugger;
     let self = this;
@@ -49,7 +68,7 @@ class Brands extends Component {
       let data = res.data.responseData;
       if (status === "Success") {
         self.setState({
-          brandData: data,
+          brandData: data
         });
       } else {
         self.setState({
@@ -61,6 +80,13 @@ class Brands extends Component {
   handleSubmitData() {
     debugger;
     let self = this;
+    var activeStatus = 0;
+    var status = this.state.selectedStatus;
+    if (status === "Active") {
+      activeStatus = 1;
+    } else {
+      activeStatus = 0;
+    }
     axios({
       method: "post",
       url: config.apiUrl + "/Brand/AddBrand",
@@ -68,7 +94,7 @@ class Brands extends Component {
       data: {
         BrandCode: this.state.brand_Code.trim(),
         BrandName: this.state.brand_name.trim(),
-        IsActive: this.state.selectedStatus
+        IsActive: activeStatus
       }
     }).then(function(res) {
       debugger;
@@ -103,60 +129,54 @@ class Brands extends Component {
       }
     });
   }
+  handleUpdateData(brand_Id) {
+    debugger;
+    let self = this;
+    var activeStatus = 0;
+    var status = this.state.brandEditData.brand_status;
+    if (status === "Active") {
+      activeStatus = 1;
+    } else {
+      activeStatus = 0;
+    }
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Brand/UpdateBrand",
+      headers: authHeader(),
+      data: {
+        BrandID: brand_Id,
+        BrandCode: this.state.brandEditData.brand_Code.trim(),
+        BrandName: this.state.brandEditData.brand_name.trim(),
+        IsActive: activeStatus
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      if (status === "Success") {
+        self.handleGetBrandList();
+        NotificationManager.success("Brand updated successfully.");
+        self.setState({
+          brand_Code: "",
+          brand_name: "",
+          selectedStatus: 1
+        });
+      }
+    });
+  }
   handleGetDataForEdit(e, data) {
     debugger;
-    var brandEditData=e
-    brandEditData.brand_Code=brandEditData.brandCode;
-    brandEditData.brand_name=brandEditData.brandName;
+    var brandEditData = e;
+    brandEditData.brand_Code = brandEditData.brandCode;
+    brandEditData.brand_name = brandEditData.brandName;
+    brandEditData.brand_status = brandEditData.status;
 
     this.setState({
       brandEditData
-    })
+    });
   }
 
   render() {
     const { brandData } = this.state;
-
-    // const ActionEditBtn = (
-    //   <div className="edtpadding">
-    //       <label className="popover-header-text">EDIT BRAND</label>
-    //     <div className="pop-over-div">
-    //       <label className="edit-label-1">Brand Code</label>
-    //       <input
-    //         type="text"
-    //         className="txt-edit-popover"
-    //         placeholder="Enter Brand Code"
-    //         maxLength={10}
-    //       />
-    //     </div>
-    //     <div className="pop-over-div">
-    //       <label className="edit-label-1">Brand Name</label>
-    //       <input
-    //         type="text"
-    //         className="txt-edit-popover"
-    //         placeholder="Enter Brand Name"
-    //         maxLength={25}
-    //       />
-    //     </div>
-    //     <div className="pop-over-div">
-    //       <label className="edit-label-1">Status</label>
-    //       <select id="inputStatus" className="edit-dropDwon dropdown-setting">
-    //         <option>Active</option>
-    //         <option>Inactive</option>
-    //       </select>
-    //     </div>
-    //     <br />
-    //     <div>
-    //       <a className="pop-over-cancle" href={Demo.BLANK_LINK}>
-    //         CANCEL
-    //       </a>
-    //       <button className="pop-over-button">
-    //         <label className="pop-over-btnsave-text">SAVE</label>
-    //       </button>
-    //     </div>
-    //   </div>
-    // );
-
     return (
       <React.Fragment>
         <NotificationContainer />
@@ -328,8 +348,10 @@ class Brands extends Component {
                                           placeholder="Enter Brand Code"
                                           maxLength={10}
                                           name="brand_Code"
-                                          value={this.state.brandEditData.brand_Code}
-                                          onChange={this.handleBrandOnchange}
+                                          value={
+                                            this.state.brandEditData.brand_Code
+                                          }
+                                          onChange={this.handleOnChangeData}
                                         />
                                       </div>
                                       <div className="pop-over-div">
@@ -342,8 +364,10 @@ class Brands extends Component {
                                           placeholder="Enter Brand Name"
                                           maxLength={25}
                                           name="brand_name"
-                                          value={this.state.brandEditData.brand_name}
-                                          onChange={this.handleBrandOnchange}
+                                          value={
+                                            this.state.brandEditData.brand_name
+                                          }
+                                          onChange={this.handleOnChangeData}
                                         />
                                       </div>
                                       <div className="pop-over-div">
@@ -351,11 +375,25 @@ class Brands extends Component {
                                           Status
                                         </label>
                                         <select
-                                          id="inputStatus"
                                           className="edit-dropDwon dropdown-setting"
+                                          name="brand_status"
+                                          value={
+                                            this.state.brandEditData.brand_status
+                                          }
+                                          onChange={this.handleOnChangeData}
                                         >
-                                          <option>Active</option>
-                                          <option>Inactive</option>
+                                          <option>select</option>
+                                          {this.state.activeData !== null &&
+                                            this.state.activeData.map(
+                                              (item, j) => (
+                                                <option
+                                                  key={j}
+                                                  value={item.ActiveID}
+                                                >
+                                                  {item.ActiveName}
+                                                </option>
+                                              )
+                                            )}
                                         </select>
                                       </div>
                                       <br />
@@ -366,10 +404,15 @@ class Brands extends Component {
                                         >
                                           CANCEL
                                         </a>
-                                        <button className="pop-over-button">
-                                          <label className="pop-over-btnsave-text">
-                                            SAVE
-                                          </label>
+                                        <button
+                                          className="pop-over-button"
+                                          type="button"
+                                          onClick={this.handleUpdateData.bind(
+                                            this,
+                                            brand_ID
+                                          )}
+                                        >
+                                          SAVE
                                         </button>
                                       </div>
                                     </div>
@@ -474,11 +517,15 @@ class Brands extends Component {
                         className="form-control dropdown-setting"
                         name="selectedStatus"
                         value={this.state.selectedStatus}
-                        onChange={this.handleBrandOnchange}
+                        onChange={this.handleActiveStatus}
                       >
-                        <option value={2}>select</option>
-                        <option value={1}>Active</option>
-                        <option value={0}>Deactive</option>
+                        <option>select</option>
+                        {this.state.activeData !== null &&
+                          this.state.activeData.map((item, j) => (
+                            <option key={j} value={item.ActiveID}>
+                              {item.ActiveName}
+                            </option>
+                          ))}
                       </select>
                     </div>
                     <div className="btnSpace">
