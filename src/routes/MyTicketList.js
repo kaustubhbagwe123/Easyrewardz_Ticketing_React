@@ -899,7 +899,7 @@ class MyTicketList extends Component {
     debugger;
     let self = this;
     axios({
-      method: "post",
+      method: "get",
       url: config.apiUrl + "/Priority/GetPriorityList",
       headers: authHeader()
     }).then(function(res) {
