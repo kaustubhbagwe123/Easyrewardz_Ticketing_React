@@ -1234,6 +1234,21 @@ class MyTicketList extends Component {
     } else {
       dateTab = null
     }
+    // var dateTab = {};
+    // if (this.state.ActiveTabId === 1) {
+    //   dateTab["Ticket_CreatedOn"] = moment(this.state.ByDateCreatDate).format(
+    //     "YYYY-MM-DD"
+    //   );
+    //   dateTab["Ticket_ModifiedOn"] = moment(this.state.ByDateSelectDate).format(
+    //     "YYYY-MM-DD"
+    //   );
+    //   dateTab["SLA_DueON"] = this.state.selectedSlaDueByDate;
+    //   dateTab["Ticket_StatusID"] = this.state.selectedTicketStatusByDate;
+    // } else {
+    //   this.setState({
+    //     dateTab: null
+    //   });
+    // }
 
     // --------------------By Customer Type Tab---------------
     var customerType = {};
