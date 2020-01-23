@@ -153,6 +153,7 @@ class MyTicket extends Component {
     this.handleGetOrderDetails = this.handleGetOrderDetails.bind(this);
     this.handleGetProductData = this.handleGetProductData.bind(this);
     this.handleGetStoreDetails = this.handleGetStoreDetails.bind(this);
+    this.handleGetMessageDetails = this.handleGetMessageDetails.bind(this);
   }
 
   componentDidMount() {
@@ -168,6 +169,7 @@ class MyTicket extends Component {
       this.handleGetTicketDetails(ticketId);
       this.handleGetTaskTableCount(ticketId);
       this.handleGetCountOfTabs(ticketId);
+      this.handleGetMessageDetails(ticketId);
     } else {
       this.props.history.push("myTicketlist");
     }
@@ -263,6 +265,21 @@ class MyTicket extends Component {
       }
     });
   }
+  handleGetMessageDetails(ticketId){
+    debugger
+    let self=this;
+    axios({
+      method:"post",
+      url:config.apiUrl + "/Ticketing/getticketmessage",
+      headers:authHeader(),
+      params:{
+        ticketID:ticketId
+      }
+    }).then(function(res){
+      debugger;
+      let status=res.data.status;
+    })
+  }
   handleGetOrderDetails() {
     debugger;
     let self = this;
@@ -306,7 +323,6 @@ class MyTicket extends Component {
     });
   }
   handleGetStoreDetails() {
-    debugger;
     let self = this;
     axios({
       method: "post",
@@ -316,7 +332,6 @@ class MyTicket extends Component {
         SearchText: this.state.SearchStore
       }
     }).then(function(res) {
-      debugger;
       let data = res.data.responseData;
       let Msg = res.data.message;
       if (Msg === "Success") {
@@ -516,6 +531,7 @@ class MyTicket extends Component {
       }
     }).then(function(res) {
       debugger;
+      // let status=
       let data = res.data;
       self.setState({ CategoryData: data });
     });
@@ -529,17 +545,19 @@ class MyTicket extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let TicketPriorityData = res.data.responseData;
-      self.setState({ TicketPriorityData: TicketPriorityData });
+      let status=res.data.message;
+      let data = res.data.responseData;
+      if(status === "Success"){
+        self.setState({ TicketPriorityData: data });
+      }else{
+        self.setState({ TicketPriorityData: [] });
+      }
     });
   }
   handleGetSubCategoryList() {
     debugger;
 
     let self = this;
-    // let cateId = this.state.KbLink
-    //   ? this.state.selectedCategoryKB
-    //   : this.state.selectetedParameters.categoryID;
     axios({
       method: "post",
       url: config.apiUrl + "/SubCategory/GetSubCategoryByCategoryID",
@@ -556,10 +574,7 @@ class MyTicket extends Component {
   handleGetIssueTypeList() {
     debugger;
     let self = this;
-    // let subCateId = this.state.KbLink
-    //   ? this.state.selectedSubCategoryKB
-    //   : this.state.selectetedParameters.subCategoryID;
-
+   
     axios({
       method: "post",
       url: config.apiUrl + "/IssueType/GetIssueTypeList",
@@ -569,8 +584,13 @@ class MyTicket extends Component {
       }
     }).then(function(res) {
       debugger;
+      let status=res.data.message;
       let data = res.data.responseData;
-      self.setState({ IssueTypeData: data });
+      if(status === "Success"){
+        self.setState({ IssueTypeData: data });
+      }else{
+        self.setState({ IssueTypeData: [] });
+      }
     });
   }
   handleGetChannelOfPurchaseList() {
@@ -581,8 +601,13 @@ class MyTicket extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let ChannelOfPurchaseData = res.data.responseData;
-      self.setState({ ChannelOfPurchaseData: ChannelOfPurchaseData });
+      let status=res.data.message;
+      let data = res.data.responseData;
+      if(status === "Success"){
+        self.setState({ ChannelOfPurchaseData: data });
+      }else{
+        self.setState({ ChannelOfPurchaseData: [] });
+      }
     });
   }
   fileDragEnter = e => {
@@ -740,6 +765,9 @@ class MyTicket extends Component {
         var id = self.state.ticket_Id;
         self.handleGetNotesTabDetails(id);
         NotificationManager.success("Comment added successfully.");
+        self.setState({
+          NoteAddComment:""
+        })
       } else {
         NotificationManager.error("Comment not added.");
       }
@@ -777,10 +805,12 @@ class MyTicket extends Component {
       }
     }).then(function(res) {
       debugger;
-      let status = res.data.status;
+      let status = res.data.message;
       let details = res.data.responseData;
-      if (status === true) {
+      if (status === "Success") {
         self.setState({ Notesdetails: details });
+      }else{
+        self.setState({ Notesdetails: [] });
       }
     });
   }
@@ -1169,7 +1199,7 @@ class MyTicket extends Component {
                   modalId="Historical-popup"
                   overlayId="logout-ovrly"
                 >
-                  <label className="lblHistorical">Historical Ticket</label>
+                  <label className="lblHistorical">Ticket Historical</label>
                   <img
                     src={CancelImg}
                     alt="cancelImg"
@@ -1453,13 +1483,13 @@ class MyTicket extends Component {
                                   HISTORICAL ORDER
                                 </label>
                               </div>
-                              <div className="col-md-6">
+                              {/* <div className="col-md-6">
                                 <input
                                   type="text"
                                   className="search-orderhis"
                                   placeholder="Search Order"
                                 />
-                              </div>
+                              </div> */}
                               <div className="tablehistrical">
                                 <ReactTable
                                   data={orderDetails}
@@ -3427,7 +3457,8 @@ class MyTicket extends Component {
                     taskData={{
                       TicketData: {
                         TicketId: this.state.ticket_Id,
-                        GridData: this.state.taskTableGrid
+                        GridData: this.state.taskTableGrid,
+                        TabActiveId:this.state.TaskTab
                       }
                     }}
                   />

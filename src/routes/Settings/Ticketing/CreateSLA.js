@@ -13,13 +13,39 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Popover } from "antd";
 import ReactTable from "react-table";
 import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
+import { authHeader } from "./../../../helpers/authHeader";
+import axios from "axios";
+import config from "./../../../helpers/config";
 
 class CreateSLA extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fileName: ""
+      fileName: "",
+      sla: [],
     };
+
+    this.handleGetSLA = this.handleGetSLA.bind(this);
+  }
+
+  componentDidMount() {
+    this.handleGetSLA();
+  }
+
+  handleGetSLA() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/SLA/GetSLA",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let sla = res.data.responseData;
+      if (sla !== null && sla !== undefined) {
+        self.setState({ sla });
+      }
+    });
   }
 
   fileUpload = e => {
@@ -49,7 +75,7 @@ class CreateSLA extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "IssueType"
+        accessor: "issueTpeName"
       },
       {
         Header: (
@@ -58,21 +84,48 @@ class CreateSLA extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "SlaPriority",
+        accessor: "slaTarget",
         Cell: row => {
+          debugger;
           var ids = row.original["id"];
+          let slaTarget = row.original.slaTarget, priorityNameComma = '', priorityName = '';
+          for (let i = 0; i < slaTarget.length; i++) {
+            priorityNameComma += slaTarget[i].priorityName + ',';
+          }
+          priorityName = priorityNameComma.substring(0, priorityNameComma.length-1);
           return (
             <div>
               <span>
-                <label>High,Medium,Low</label>
-                <Popover content={SlaType} placement="bottom">
+                <label>{priorityName}</label>
+                {priorityName.length > 0 ? <Popover content={
+                  <div className="general-popover created-popover">
+                  <div>
+                    <label className="slatargettext-1">SLA TARGETS</label>
+                  </div>
+                  <div>
+                    <label className="createhead-text-1">Priority</label>
+                    <label className="createhead-text-1">%SLA</label>
+                    <label className="createhead-text-1">Respond</label>
+                    <label className="createhead-text-1">Resolve</label>
+                  </div>
+                  {slaTarget !== null &&
+                    slaTarget.map((item, i) => (
+                      <div key={i}>
+                        <label className="slatemp-textpopup-1">{item.priorityName}</label>
+                        <label className="slatemp-textpopup-1">{item.slaBreachPercent}</label>
+                        <label className="slatemp-textpopup-1">{item.priorityRespond}</label>
+                        <label className="slatemp-textpopup-1">{item.priorityResolution}</label>
+                      </div>
+                    ))}
+                </div>
+                } placement="bottom">
                   <img
                     className="info-icon"
                     src={BlackInfoIcon}
                     alt="info-icon"
                     id={ids}
                   />
-                </Popover>
+                </Popover> : ''}
               </span>
             </div>
           );
@@ -85,14 +138,29 @@ class CreateSLA extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "CretedBy",
+        accessor: "createdBy",
         Cell: row => {
           var ids = row.original["id"];
           return (
             <div>
               <span>
-                Admin
-                <Popover content={popoverData} placement="bottom">
+              {row.original.createdBy}
+                <Popover content={
+                  <>
+                  <div>
+                    <b>
+                <p className="title">Created By: {row.original.createdBy}</p>
+                    </b>
+                    <p className="sub-title">Created Date: {row.original.createdDate}</p>
+                  </div>
+                  <div>
+                    <b>
+                      <p className="title">Updated By: {row.original.modifiedBy}</p>
+                    </b>
+                    <p className="sub-title">Updated Date: {row.original.modifiedDate}</p>
+                  </div>
+                </>
+                } placement="bottom">
                   <img
                     className="info-icon-cp"
                     src={BlackInfoIcon}
@@ -113,7 +181,7 @@ class CreateSLA extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "status"
+        accessor: "isSLAActive"
       },
       {
         Header: <span>Actions</span>,
@@ -299,10 +367,10 @@ class CreateSLA extends Component {
               <div className="col-md-8">
                 <div className="table-cntr table-height TicketSlaReact">
                   <ReactTable
-                    data={dataTickSla}
+                    data={this.state.sla}
                     columns={columnsTickSla}
                     // resizable={false}
-                    defaultPageSize={5}
+                    defaultPageSize={10}
                     showPagination={false}
                   />
                    <div className="position-relative">

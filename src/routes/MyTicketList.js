@@ -1742,7 +1742,11 @@ class MyTicketList extends Component {
         selectedNoOfWeekForYear: 0,
         selectedNameOfDayForYearCommaSeperated: "",
         selectedWeeklyDays: "",
-        selectedNoOfDaysForMonth: 0
+        selectedNoOfDaysForMonth: 0,
+        selectedNoOfMonthForMonth: 0,
+        selectedNoOfMonthForWeek: 0,
+        selectedNoOfWeekForWeek: 0,
+        selectedNameOfDayForWeekCommaSeperated: ''
       });
     } else if (SelectData === "235") {
       this.setState({
@@ -1757,7 +1761,11 @@ class MyTicketList extends Component {
         selectedWeeklyDays: "",
         selectedNoOfDaysForMonth: 0,
         selectedNameOfMonthForYearCommaSeperated: "",
-        selectedNoOfDayForDailyYear: 0
+        selectedNoOfDayForDailyYear: 0,
+        selectedNoOfMonthForMonth: 0,
+        selectedNoOfMonthForWeek: 0,
+        selectedNoOfWeekForWeek: 0,
+        selectedNameOfDayForWeekCommaSeperated: ''
       });
     }
     this.setState({
