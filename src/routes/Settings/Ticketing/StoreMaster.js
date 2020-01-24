@@ -406,7 +406,7 @@ class StoreMaster extends Component {
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
-                          accessor: "pinCode"
+                          accessor: "strPinCode"
                         },
                         // {
                         //   Header: (

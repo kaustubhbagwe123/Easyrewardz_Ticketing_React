@@ -21,6 +21,7 @@ import {
 import { authHeader } from "../../../helpers/authHeader";
 import config from "../../../helpers/config";
 import axios from "axios";
+import ActiveStatus from "../../activeStatus";
 const { Option } = Select;
 const NEW_ITEM = "NEW_ITEM";
 
@@ -32,42 +33,43 @@ class CategoryMaster extends Component {
     this.state = {
       fileName: "",
       catmulti: false,
-      listOfCategory: [
-        "Complaint 1",
-        "Complaint 2",
-        "Complaint 3",
-        "Complaint 4"
-      ],
-      listOfSubCategory: [
-        "Complaint 1",
-        "Complaint 2",
-        "Complaint 3",
-        "Complaint 4"
-      ],
-      listOfIssueType: [
-        "IssueType 1",
-        "IssueType 2",
-        "IssueType 3",
-        "IssueType 4"
-      ],
+      activeData: ActiveStatus(),
+      // listOfIssueType: [
+      //   "IssueType 1",
+      //   "IssueType 2",
+      //   "IssueType 3",
+      //   "IssueType 4"
+      // ],
       list1Value: "",
       showList1: false,
       ListOfSubCate: "",
       ListOfIssue: "",
       ShowSubCate: false,
       loading: false,
-      categoryGridData: []
+      categoryGridData: [],
+      brandData: [],
+      categoryDropData: [],
+      SubCategoryDropData: [],
+      ListOfIssueData: [],
+      selectStatus: 0,
+      // selectCategory: 0,
+      selectBrand: 0
     };
     this.handleGetCategoryGridData = this.handleGetCategoryGridData.bind(this);
+    this.handleGetBrandList = this.handleGetBrandList.bind(this);
+    this.handleGetCategoryList = this.handleGetCategoryList.bind(this);
+    this.handleGetSubCategoryList = this.handleGetSubCategoryList.bind(this);
+    this.handleAddCategory = this.handleAddCategory.bind(this);
   }
   componentDidMount() {
     this.handleGetCategoryGridData();
+    this.handleGetBrandList();
   }
   handleGetCategoryGridData() {
     let self = this;
     this.setState({ loading: true });
     axios({
-      method: "post",
+      method: "get",
       url: config.apiUrl + "/Category/ListCategorybrandmapping",
       headers: authHeader()
     }).then(function(res) {
@@ -86,7 +88,82 @@ class CategoryMaster extends Component {
       }
     });
   }
-  handleDeleteCategoryData(category_Id){
+  handleGetBrandList() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Brand/GetBrandList",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        self.setState({ brandData: data });
+      } else {
+        self.setState({ brandData: [] });
+      }
+    });
+  }
+
+  handleGetCategoryList() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Category/GetCategoryList",
+      headers: authHeader(),
+      params: {
+        BrandID: this.state.selectBrand
+      }
+    }).then(function(res) {
+      debugger;
+      // let status=
+      let data = res.data;
+      self.setState({ categoryDropData: data });
+    });
+  }
+
+  handleGetSubCategoryList() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/SubCategory/GetSubCategoryByCategoryID",
+      headers: authHeader(),
+      params: {
+        CategoryID: this.state.list1Value
+      }
+    }).then(function(res) {
+      debugger;
+      let data = res.data.responseData;
+      self.setState({ SubCategoryDropData: data });
+    });
+  }
+
+  handleGetIssueTypeList() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/IssueType/GetIssueTypeList",
+      headers: authHeader(),
+      params: {
+        SubCategoryID: this.state.ListOfSubCate
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        self.setState({ ListOfIssueData: data });
+      } else {
+        self.setState({ ListOfIssueData: [] });
+      }
+    });
+  }
+
+  handleDeleteCategoryData(category_Id) {
     debugger;
     let self = this;
     axios({
@@ -106,22 +183,108 @@ class CategoryMaster extends Component {
     });
   }
 
+  handleAddCategory(value) {
+    debugger;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Category/AddCategory",
+      headers: authHeader(),
+      params: {
+        category: value
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      if (status === "Success") {
+        NotificationManager.success("Category add successful.");
+      } else {
+        NotificationManager.error("Category not added."); 
+      }
+    });
+  }
+  handleAddSubCategory(value) {
+    debugger;
+    var values=this.state.list1Value;
+    // axios({
+    //   method: "post",
+    //   url: config.apiUrl + "/Category/AddSubCategory",
+    //   headers: authHeader(),
+    //   params: {
+    //     categoryID:this.state.list1Value,
+    //     SubcategoryName: value
+    //   }
+    // }).then(function(res) {
+    //   debugger;
+    //   let status = res.data.message;
+    //   if (status === "Success") {
+    //     NotificationManager.success("Category add successful.");
+    //   } else {
+    //     NotificationManager.error("Category not added."); 
+    //   }
+    // });
+  }
+
+  handleSubmitData() {
+    debugger;
+    let self = this;
+    var activeStatus = 0;
+    var status = this.state.selectStatus;
+    if (status === "Active") {
+      activeStatus = 1;
+    } else {
+      activeStatus = 0;
+    }
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Category/CreateCategorybrandmapping",
+      headers: authHeader(),
+      data: {
+        BraindID: this.state.selectBrand,
+        CategoryID: this.state.list1Value,
+        SubCategoryID: this.state.ListOfSubCate,
+        IssueTypeID: this.state.ListOfIssue,
+        Status: activeStatus
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      if (status === "Success") {
+        self.handleGetCategoryGridData();
+        NotificationManager.success("Category added successfully.");
+        self.setState({
+          selectBrand: 0,
+          list1Value: "",
+          ListOfSubCate: "",
+          ListOfIssue: "",
+          selectStatus: 0
+        });
+      }
+    });
+  }
+
   HandleMultiSelect() {
     this.setState({ catmulti: true });
   }
   fileUpload = e => {
     this.setState({ fileName: e.target.files[0].name });
   };
-  onChangeList1 = value => {
+  handleCategoryChange = value => {
+    debugger;
     if (value !== NEW_ITEM) {
-      this.setState({ list1Value: value });
+      this.setState({ list1Value: value, SubCategoryDropData: [] });
+      setTimeout(() => {
+        if (this.state.list1Value) {
+          this.handleGetSubCategoryList();
+        }
+      }, 1);
     } else {
       this.setState({ showList1: true });
     }
   };
   onConfirm = inputValue => {
+    debugger;
     inputValue = inputValue.trim();
-    if (this.state.listOfCategory.includes(inputValue)) {
+    if (this.state.categoryDropData.includes(inputValue)) {
       this.setState({
         showList1: false,
         list1Value: inputValue
@@ -129,14 +292,15 @@ class CategoryMaster extends Component {
     } else {
       this.setState({
         showList1: false,
-        listOfCategory: [inputValue, ...this.state.listOfCategory],
+        categoryDropData: [inputValue, ...this.state.categoryDropData],
         list1Value: inputValue
       });
     }
   };
   onConfirm = inputValue => {
+    debugger;
     inputValue = inputValue.trim();
-    if (this.state.listOfSubCategory.includes(inputValue)) {
+    if (this.state.SubCategoryDropData.includes(inputValue)) {
       this.setState({
         ShowSubCate: false,
         ListOfSubCate: inputValue
@@ -144,14 +308,15 @@ class CategoryMaster extends Component {
     } else {
       this.setState({
         ShowSubCate: false,
-        listOfSubCategory: [inputValue, ...this.state.listOfSubCategory],
+        SubCategoryDropData: [inputValue, ...this.state.SubCategoryDropData],
         ListOfSubCate: inputValue
       });
     }
   };
   onConfirm = inputValue => {
+    debugger;
     inputValue = inputValue.trim();
-    if (this.state.listOfIssueType.includes(inputValue)) {
+    if (this.state.ListOfIssueData.includes(inputValue)) {
       this.setState({
         ShowSubCate: false,
         ListOfIssue: inputValue
@@ -159,25 +324,49 @@ class CategoryMaster extends Component {
     } else {
       this.setState({
         ShowSubCate: false,
-        listOfIssueType: [inputValue, ...this.state.listOfIssueType],
+        ListOfIssueData: [inputValue, ...this.state.ListOfIssueData],
         ListOfIssue: inputValue
       });
     }
   };
-  onChangeListSubCate = value => {
+  handleSubCatOnChange = value => {
+    debugger;
     if (value !== NEW_ITEM) {
       this.setState({ ListOfSubCate: value });
+      setTimeout(() => {
+        if (this.state.ListOfSubCate) {
+          this.handleGetIssueTypeList();
+        }
+      }, 1);
     } else {
       this.setState({ ShowSubCate: true });
     }
   };
-  onChangeIssue = value => {
+  handleIssueOnChange = value => {
     if (value !== NEW_ITEM) {
       this.setState({ ListOfIssue: value });
     } else {
       this.setState({ ShowSubCate: true });
     }
   };
+  handleBrandChange = e => {
+    let value = e.target.value;
+    this.setState({
+      selectBrand: value,
+      categoryDropData: [],
+      SubCategoryDropData: []
+    });
+    setTimeout(() => {
+      if (this.state.selectBrand) {
+        this.handleGetCategoryList();
+      }
+    }, 1);
+  };
+  handleStatusChange = e => {
+    let value = e.target.value;
+    this.setState({ selectStatus: value });
+  };
+
   render() {
     const ActionEditBtn = (
       <div className="edtpadding">
@@ -234,26 +423,27 @@ class CategoryMaster extends Component {
             CANCEL
           </a>
           <button className="pop-over-button">
-            <label className="pop-over-btnsave-text">SAVE</label>
+            SAVE
           </button>
         </div>
       </div>
     );
 
-    const {
-      list1Value,
-      ListOfSubCate,
-      ListOfIssue,
-      categoryGridData
-    } = this.state;
-    const list1SelectOptions = this.state.listOfCategory.map(o => (
-      <Option key={o}>{o}</Option>
+    const { categoryGridData } = this.state;
+    const list1SelectOptions = this.state.categoryDropData.map((item, o) => (
+      <Option key={o} value={item.categoryID}>
+        {item.categoryName}
+      </Option>
     ));
-    const listSubCategory = this.state.listOfSubCategory.map(o => (
-      <Option key={o}>{o}</Option>
+    const listSubCategory = this.state.SubCategoryDropData.map((item, o) => (
+      <Option key={o} value={item.subCategoryID}>
+        {item.subCategoryName}
+      </Option>
     ));
-    const listOfIssueType = this.state.listOfIssueType.map(o => (
-      <Option key={o}>{o}</Option>
+    const listOfIssueType = this.state.ListOfIssueData.map((item, i) => (
+      <Option key={i} value={item.issueTypeID}>
+        {item.issueTypeName}
+      </Option>
     ));
     return (
       <React.Fragment>
@@ -354,7 +544,14 @@ class CategoryMaster extends Component {
                                           </p>
                                           <div className="del-can">
                                             <a href={Demo.BLANK_LINK}>CANCEL</a>
-                                            <button className="butn" type="button" onClick={this.handleDeleteCategoryData.bind(this,ids)}>
+                                            <button
+                                              className="butn"
+                                              type="button"
+                                              onClick={this.handleDeleteCategoryData.bind(
+                                                this,
+                                                ids
+                                              )}
+                                            >
                                               Delete
                                             </button>
                                           </div>
@@ -437,12 +634,23 @@ class CategoryMaster extends Component {
                     <label className="Create-store-text">CREATE CATEGORY</label>
                     <div className="divSpace">
                       <div className="dropDrownSpace">
-                        <label className="reports-to"> Brand Name</label>
+                        <label className="reports-to">Brand Name</label>
                         <select
-                          id="inputState"
-                          className="form-control dropdown-setting"
+                          className="store-create-select"
+                          value={this.state.selectBrand}
+                          onChange={this.handleBrandChange}
                         >
-                          <option>Bata</option>
+                          <option>Select</option>
+                          {this.state.brandData !== null &&
+                            this.state.brandData.map((item, i) => (
+                              <option
+                                key={i}
+                                value={item.brandID}
+                                className="select-category-placeholder"
+                              >
+                                {item.brandName}
+                              </option>
+                            ))}
                         </select>
                       </div>
                     </div>
@@ -453,9 +661,9 @@ class CategoryMaster extends Component {
                         </label>
                         <Select
                           showSearch={true}
-                          value={list1Value}
+                          value={this.state.list1Value}
                           style={{ width: "100%" }}
-                          onChange={this.onChangeList1}
+                          onChange={this.handleCategoryChange}
                         >
                           {list1SelectOptions}
                           <Option value={NEW_ITEM}>
@@ -476,25 +684,43 @@ class CategoryMaster extends Component {
                           animation="slide-from-top"
                           validationMsg="Please enter a category!"
                           onConfirm={inputValue => {
+                            debugger;
                             inputValue = inputValue.trim();
-                            if (
-                              this.state.listOfCategory.includes(inputValue)
-                            ) {
+                            if (inputValue) {
                               this.setState({
                                 showList1: false,
                                 list1Value: inputValue
                               });
+                              this.handleAddCategory(inputValue);
                             } else {
                               this.setState({
                                 showList1: false,
-                                listOfCategory: [
-                                  inputValue,
-                                  ...this.state.listOfCategory
-                                ],
                                 list1Value: inputValue
                               });
+                              this.handleAddCategory(inputValue);
                             }
                           }}
+                          // onConfirm={inputValue => {
+                          //   debugger
+                          //   inputValue = inputValue.trim();
+                          //   if (
+                          //     this.state.categoryDropData.includes(inputValue)
+                          //   ) {
+                          //     this.setState({
+                          //       showList1: false,
+                          //       list1Value: inputValue
+                          //     });
+                          //   } else {
+                          //     this.setState({
+                          //       showList1: false,
+                          //       categoryDropData: [
+                          //         inputValue,
+                          //         ...this.state.categoryDropData
+                          //       ],
+                          //       list1Value: inputValue
+                          //     });
+                          //   }
+                          // }}
                           onCancel={() => {
                             this.setState({ showList1: false });
                           }}
@@ -514,9 +740,9 @@ class CategoryMaster extends Component {
                         </label>
                         <Select
                           showSearch={true}
-                          value={ListOfSubCate}
+                          value={this.state.ListOfSubCate}
                           style={{ width: "100%" }}
-                          onChange={this.onChangeListSubCate}
+                          onChange={this.handleSubCatOnChange}
                         >
                           {listSubCategory}
                           <Option value={NEW_ITEM}>
@@ -539,7 +765,9 @@ class CategoryMaster extends Component {
                           onConfirm={inputValue => {
                             inputValue = inputValue.trim();
                             if (
-                              this.state.listOfSubCategory.includes(inputValue)
+                              this.state.SubCategoryDropData.includes(
+                                inputValue
+                              )
                             ) {
                               this.setState({
                                 ShowSubCate: false,
@@ -548,9 +776,9 @@ class CategoryMaster extends Component {
                             } else {
                               this.setState({
                                 ShowSubCate: false,
-                                listOfSubCategory: [
+                                SubCategoryDropData: [
                                   inputValue,
-                                  ...this.state.listOfSubCategory
+                                  ...this.state.SubCategoryDropData
                                 ],
                                 ListOfSubCate: inputValue
                               });
@@ -573,9 +801,9 @@ class CategoryMaster extends Component {
                         <label className="reports-to">Issue Type</label>
                         <Select
                           showSearch={true}
-                          value={ListOfIssue}
+                          value={this.state.ListOfIssue}
                           style={{ width: "100%" }}
-                          onChange={this.onChangeIssue}
+                          onChange={this.handleIssueOnChange}
                         >
                           {listOfIssueType}
                           <Option value={NEW_ITEM}>
@@ -597,7 +825,7 @@ class CategoryMaster extends Component {
                           onConfirm={inputValue => {
                             inputValue = inputValue.trim();
                             if (
-                              this.state.listOfIssueType.includes(inputValue)
+                              this.state.ListOfIssueData.includes(inputValue)
                             ) {
                               this.setState({
                                 ShowSubCate: false,
@@ -606,9 +834,9 @@ class CategoryMaster extends Component {
                             } else {
                               this.setState({
                                 ShowSubCate: false,
-                                listOfIssueType: [
+                                ListOfIssueData: [
                                   inputValue,
-                                  ...this.state.listOfIssueType
+                                  ...this.state.ListOfIssueData
                                 ],
                                 ListOfIssue: inputValue
                               });
@@ -630,17 +858,27 @@ class CategoryMaster extends Component {
                       <div className="dropDrownSpace">
                         <label className="reports-to">Status</label>
                         <select
-                          id="inputState"
                           className="form-control dropdown-setting"
+                          value={this.state.selectStatus}
+                          onChange={this.handleStatusChange}
                         >
-                          <option>Active</option>
-                          <option>Inactive</option>
+                          <option>select</option>
+                          {this.state.activeData !== null &&
+                            this.state.activeData.map((item, j) => (
+                              <option key={j} value={item.ActiveID}>
+                                {item.ActiveName}
+                              </option>
+                            ))}
                         </select>
                       </div>
                     </div>
                     <div className="btnSpace">
-                      <button className="addBtn-ticket-hierarchy">
-                        <label className="addLable">ADD</label>
+                      <button
+                        className="addBtn-ticket-hierarchy"
+                        type="button"
+                        onClick={this.handleSubmitData.bind(this)}
+                      >
+                        ADD
                       </button>
                     </div>
                     <br />

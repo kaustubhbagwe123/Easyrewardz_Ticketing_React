@@ -128,8 +128,8 @@ class SlaTemplateDepartment extends Component {
                 />
               </Popover>
               <Popover content={SlaEdit} placement="bottom" trigger="click">
-                <button className="react-tabel-button" id={ids}>
-                  <label className="Table-action-edit-button-text">EDIT</label>
+                <button className="react-tabel-button editre" id={ids}>
+                 EDIT
                 </button>
               </Popover>
             </div>
@@ -221,7 +221,7 @@ class SlaTemplateDepartment extends Component {
             <div>
             <a className="pop-over-cancle" href={Demo.BLANK_LINK} >CANCEL</a>
               <button className="pop-over-button">
-                <label className="pop-over-btnsave-text">SAVE</label>
+                SAVE
               </button>
             </div>
           </div>
@@ -444,9 +444,7 @@ class SlaTemplateDepartment extends Component {
                     <div className="store-create-margin">
                       <div className="ro">
                         <button className="store-create-button1">
-                          <label className="store-create-button1-text">
-                            ADD
-                          </label>
+                          ADD
                         </button>
                       </div>
                     </div>
