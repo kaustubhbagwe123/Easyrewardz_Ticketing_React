@@ -14,7 +14,13 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Popover } from "antd";
 import ReactTable from "react-table";
-
+import {
+  NotificationContainer,
+  NotificationManager
+} from "react-notifications";
+import { authHeader } from "../../../helpers/authHeader";
+import config from "../../../helpers/config";
+import axios from "axios";
 const { Option } = Select;
 const NEW_ITEM = "NEW_ITEM";
 
@@ -38,11 +44,66 @@ class CategoryMaster extends Component {
         "Complaint 3",
         "Complaint 4"
       ],
+      listOfIssueType: [
+        "IssueType 1",
+        "IssueType 2",
+        "IssueType 3",
+        "IssueType 4"
+      ],
       list1Value: "",
       showList1: false,
       ListOfSubCate: "",
-      ShowSubCate: false
+      ListOfIssue: "",
+      ShowSubCate: false,
+      loading: false,
+      categoryGridData: []
     };
+    this.handleGetCategoryGridData = this.handleGetCategoryGridData.bind(this);
+  }
+  componentDidMount() {
+    this.handleGetCategoryGridData();
+  }
+  handleGetCategoryGridData() {
+    let self = this;
+    this.setState({ loading: true });
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Category/ListCategorybrandmapping",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        self.setState({
+          categoryGridData: data,
+          loading: false
+        });
+      } else {
+        self.setState({
+          categoryGridData: []
+        });
+      }
+    });
+  }
+  handleDeleteCategoryData(category_Id){
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Category/DeleteCategory",
+      headers: authHeader(),
+      params: {
+        CategoryID: category_Id
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      if (status === "Success") {
+        self.handleGetCategoryGridData();
+        NotificationManager.success("Category deleted successfully.");
+      }
+    });
   }
 
   HandleMultiSelect() {
@@ -51,12 +112,6 @@ class CategoryMaster extends Component {
   fileUpload = e => {
     this.setState({ fileName: e.target.files[0].name });
   };
-  // addItem = () => {
-  //   const { items} = this.state;
-  //   this.setState({
-  //     items: [...items, `Complaint ${index++}`],
-  //   });
-  // };
   onChangeList1 = value => {
     if (value !== NEW_ITEM) {
       this.setState({ list1Value: value });
@@ -94,6 +149,21 @@ class CategoryMaster extends Component {
       });
     }
   };
+  onConfirm = inputValue => {
+    inputValue = inputValue.trim();
+    if (this.state.listOfIssueType.includes(inputValue)) {
+      this.setState({
+        ShowSubCate: false,
+        ListOfIssue: inputValue
+      });
+    } else {
+      this.setState({
+        ShowSubCate: false,
+        listOfIssueType: [inputValue, ...this.state.listOfIssueType],
+        ListOfIssue: inputValue
+      });
+    }
+  };
   onChangeListSubCate = value => {
     if (value !== NEW_ITEM) {
       this.setState({ ListOfSubCate: value });
@@ -101,134 +171,14 @@ class CategoryMaster extends Component {
       this.setState({ ShowSubCate: true });
     }
   };
+  onChangeIssue = value => {
+    if (value !== NEW_ITEM) {
+      this.setState({ ListOfIssue: value });
+    } else {
+      this.setState({ ShowSubCate: true });
+    }
+  };
   render() {
-    const dataTickCate = [
-      {
-        id: "U1",
-        status: <span>Active</span>
-      },
-      {
-        id: "U2",
-        status: <span>Inactive</span>
-      },
-      {
-        id: "U3",
-        status: <span>Active</span>
-      },
-      {
-        id: "U4",
-        status: <span>Inactive</span>
-      },
-      {
-        id: "U5",
-        status: <span>Active</span>
-      }
-    ];
-
-    const columnsTickCate = [
-      {
-        Header: (
-          <span>
-            Brand Name
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "BrandName",
-        Cell: row => <span>Bata</span>
-      },
-      {
-        Header: (
-          <span>
-            Category
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "Category",
-        Cell: row => <span>Complaint</span>
-      },
-      {
-        Header: (
-          <span>
-            Sub Cat
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "SubCategory",
-        Cell: row => <span>Defective article</span>
-      },
-      {
-        Header: (
-          <span>
-            Issue Type
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "IssueType",
-        Cell: row => <span>Broken Shoes</span>
-      },
-      {
-        Header: (
-          <span>
-            Status
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "status"
-      },
-      {
-        Header: <span>Actions</span>,
-        accessor: "actiondept",
-        Cell: row => {
-          var ids = row.original["id"];
-          return (
-            <>
-              <span>
-                <Popover
-                  content={ActionDelete}
-                  placement="bottom"
-                  trigger="click"
-                >
-                  <img
-                    src={RedDeleteIcon}
-                    alt="del-icon"
-                    className="del-btn"
-                    id={ids}
-                  />
-                </Popover>
-                <Popover
-                  content={ActionEditBtn}
-                  placement="bottom"
-                  trigger="click"
-                >
-                  <button className="react-tabel-button" id="p-edit-pop-2">
-                    <label className="Table-action-edit-button-text">
-                      EDIT
-                    </label>
-                  </button>
-                </Popover>
-              </span>
-            </>
-          );
-        }
-      }
-    ];
-    const ActionDelete = (
-      <div className="d-flex general-popover popover-body">
-        <div className="del-big-icon">
-          <img src={DelBigIcon} alt="del-icon" />
-        </div>
-        <div>
-          <p className="font-weight-bold blak-clr">Delete file?</p>
-          <p className="mt-1 fs-12">
-            Are you sure you want to delete this file?
-          </p>
-          <div className="del-can">
-            <a href={Demo.BLANK_LINK}>CANCEL</a>
-            <button className="butn">Delete</button>
-          </div>
-        </div>
-      </div>
-    );
     const ActionEditBtn = (
       <div className="edtpadding">
         <div className="">
@@ -236,37 +186,37 @@ class CategoryMaster extends Component {
         </div>
         <div className="pop-over-div">
           <label className="edit-label-1">Brand Name</label>
-           <select id="inputStatus" className="edit-dropDwon dropdown-setting">
-             <option>Bata</option>
-             <option>Bata1</option>
-             <option>Bata3</option>
-           </select>
-         </div>
-
-          <div className="pop-over-div">
-           <label className="edit-label-1">Category</label>
-           <select id="inputStatus" className="edit-dropDwon dropdown-setting">
+          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
             <option>Bata</option>
-             <option>Bata1</option>
+            <option>Bata1</option>
             <option>Bata3</option>
           </select>
-         </div>
-         <div className="pop-over-div">
-           <label className="edit-label-1">Sub-Category</label>
-           <select id="inputStatus" className="edit-dropDwon dropdown-setting">
+        </div>
+
+        <div className="pop-over-div">
+          <label className="edit-label-1">Category</label>
+          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
             <option>Bata</option>
-             <option>Bata1</option>
-             <option>Bata3</option>
+            <option>Bata1</option>
+            <option>Bata3</option>
           </select>
         </div>
         <div className="pop-over-div">
-           <label className="edit-label-1">Issue Type</label>
-           <select id="inputStatus" className="edit-dropDwon dropdown-setting">
+          <label className="edit-label-1">Sub-Category</label>
+          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
             <option>Bata</option>
-             <option>Bata1</option>
+            <option>Bata1</option>
             <option>Bata3</option>
-           </select>
-         </div>
+          </select>
+        </div>
+        <div className="pop-over-div">
+          <label className="edit-label-1">Issue Type</label>
+          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
+            <option>Bata</option>
+            <option>Bata1</option>
+            <option>Bata3</option>
+          </select>
+        </div>
         <div className="pop-over-div">
           <label className="edit-label-1">Status</label>
           <select id="inputStatus" className="edit-dropDwon dropdown-setting">
@@ -276,24 +226,38 @@ class CategoryMaster extends Component {
         </div>
         <br />
         <div>
-        <a className="pop-over-cancle" href={Demo.BLANK_LINK} style={{marginRight:"20px"}}>CANCEL</a>
+          <a
+            className="pop-over-cancle"
+            href={Demo.BLANK_LINK}
+            style={{ marginRight: "20px" }}
+          >
+            CANCEL
+          </a>
           <button className="pop-over-button">
             <label className="pop-over-btnsave-text">SAVE</label>
           </button>
         </div>
       </div>
     );
-   
 
-    const { list1Value, ListOfSubCate } = this.state;
+    const {
+      list1Value,
+      ListOfSubCate,
+      ListOfIssue,
+      categoryGridData
+    } = this.state;
     const list1SelectOptions = this.state.listOfCategory.map(o => (
       <Option key={o}>{o}</Option>
     ));
     const listSubCategory = this.state.listOfSubCategory.map(o => (
       <Option key={o}>{o}</Option>
     ));
+    const listOfIssueType = this.state.listOfIssueType.map(o => (
+      <Option key={o}>{o}</Option>
+    ));
     return (
       <React.Fragment>
+        <NotificationContainer />
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="settings" className="header-path">
             Settings
@@ -311,15 +275,122 @@ class CategoryMaster extends Component {
           <div className="store-settings-cntr">
             <div className="row">
               <div className="col-md-8">
-                <div className="table-cntr table-height TicketCategoyMasReact">
-                  <ReactTable
-                    data={dataTickCate}
-                    columns={columnsTickCate}
-                    // resizable={false}
-                    defaultPageSize={5}
-                    showPagination={false}
-                  />
-                  <div className="position-relative">
+                {this.state.loading === true ? (
+                  <div className="loader-icon"></div>
+                ) : (
+                  <div className="table-cntr table-height TicketCategoyMasReact">
+                    <ReactTable
+                      data={categoryGridData}
+                      columns={[
+                        {
+                          Header: (
+                            <span>
+                              Brand Name
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          accessor: "brandName"
+                        },
+                        {
+                          Header: (
+                            <span>
+                              Category
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          accessor: "categoryName"
+                        },
+                        {
+                          Header: (
+                            <span>
+                              Sub Cat
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          accessor: "subCategoryName"
+                        },
+                        {
+                          Header: (
+                            <span>
+                              Issue Type
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          accessor: "issueTypeName"
+                        },
+                        {
+                          Header: (
+                            <span>
+                              Status
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          accessor: "statusName"
+                        },
+                        {
+                          Header: <span>Actions</span>,
+                          accessor: "actiondept",
+                          Cell: row => {
+                            var ids = row.original["brandCategoryMappingID"];
+                            return (
+                              <>
+                                <span>
+                                  <Popover
+                                    content={
+                                      <div className="d-flex general-popover popover-body">
+                                        <div className="del-big-icon">
+                                          <img
+                                            src={DelBigIcon}
+                                            alt="del-icon"
+                                          />
+                                        </div>
+                                        <div>
+                                          <p className="font-weight-bold blak-clr">
+                                            Delete file?
+                                          </p>
+                                          <p className="mt-1 fs-12">
+                                            Are you sure you want to delete this
+                                            file?
+                                          </p>
+                                          <div className="del-can">
+                                            <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                            <button className="butn" type="button" onClick={this.handleDeleteCategoryData.bind(this,ids)}>
+                                              Delete
+                                            </button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    }
+                                    placement="bottom"
+                                    trigger="click"
+                                  >
+                                    <img
+                                      src={RedDeleteIcon}
+                                      alt="del-icon"
+                                      className="del-btn"
+                                    />
+                                  </Popover>
+                                  <Popover
+                                    content={ActionEditBtn}
+                                    placement="bottom"
+                                    trigger="click"
+                                  >
+                                    <button className="react-tabel-button">
+                                      EDIT
+                                    </button>
+                                  </Popover>
+                                </span>
+                              </>
+                            );
+                          }
+                        }
+                      ]}
+                      // resizable={false}
+                      minRows={1}
+                      defaultPageSize={10}
+                      showPagination={true}
+                    />
+                    {/* <div className="position-relative">
                     <div className="pagi">
                       <ul>
                         <li>
@@ -356,8 +427,9 @@ class CategoryMaster extends Component {
                       </select>
                       <p>Items per page</p>
                     </div>
+                  </div> */}
                   </div>
-                </div>
+                )}
               </div>
               <div className="col-md-4">
                 <div className="store-col-2">
@@ -376,7 +448,9 @@ class CategoryMaster extends Component {
                     </div>
                     <div className="divSpace">
                       <div className="dropDrownSpace">
-                        <label className="reports-to reports-dis">Category</label>
+                        <label className="reports-to reports-dis">
+                          Category
+                        </label>
                         <Select
                           showSearch={true}
                           value={list1Value}
@@ -435,7 +509,9 @@ class CategoryMaster extends Component {
                     </div>
                     <div className="divSpace">
                       <div className="dropDrownSpace">
-                        <label className="reports-to reports-dis">Sub Category</label>
+                        <label className="reports-to reports-dis">
+                          Sub Category
+                        </label>
                         <Select
                           showSearch={true}
                           value={ListOfSubCate}
@@ -490,23 +566,64 @@ class CategoryMaster extends Component {
                             this.setState({ ShowSubCate: false })
                           }
                         />
-                        {/* <select
-                          id="inputState"
-                          className="form-control dropdown-setting"
-                        >
-                          <option>Defective Article</option>
-                        </select> */}
                       </div>
                     </div>
                     <div className="divSpace">
                       <div className="dropDrownSpace">
                         <label className="reports-to">Issue Type</label>
-                        <select
-                          id="inputState"
-                          className="form-control dropdown-setting"
+                        <Select
+                          showSearch={true}
+                          value={ListOfIssue}
+                          style={{ width: "100%" }}
+                          onChange={this.onChangeIssue}
                         >
-                          <option>Broken Shoes</option>
-                        </select>
+                          {listOfIssueType}
+                          <Option value={NEW_ITEM}>
+                            <span className="sweetAlert-inCategory">
+                              + ADD NEW
+                            </span>
+                          </Option>
+                        </Select>
+                        <SweetAlert
+                          show={this.state.ShowSubCate}
+                          style={{ width: "320px" }}
+                          title="Add New Issue type"
+                          text="Enter new Issue Type"
+                          showCancelButton
+                          type="input"
+                          inputPlaceholder="Enter Issue Type"
+                          animation="slide-from-top"
+                          validationMsg="Please Enter Issue Type!"
+                          onConfirm={inputValue => {
+                            inputValue = inputValue.trim();
+                            if (
+                              this.state.listOfIssueType.includes(inputValue)
+                            ) {
+                              this.setState({
+                                ShowSubCate: false,
+                                ListOfIssue: inputValue
+                              });
+                            } else {
+                              this.setState({
+                                ShowSubCate: false,
+                                listOfIssueType: [
+                                  inputValue,
+                                  ...this.state.listOfIssueType
+                                ],
+                                ListOfIssue: inputValue
+                              });
+                            }
+                          }}
+                          onCancel={() => {
+                            this.setState({ ShowSubCate: false });
+                          }}
+                          onEscapeKey={() =>
+                            this.setState({ ShowSubCate: false })
+                          }
+                          onOutsideClick={() =>
+                            this.setState({ ShowSubCate: false })
+                          }
+                        />
                       </div>
                     </div>
                     <div className="divSpace">
