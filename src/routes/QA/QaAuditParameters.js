@@ -200,11 +200,12 @@ class QaAuditParameters extends Component {
                         </label>
                         <div className="m-t-50">
                           <button
-                            className="addBtn-callTab"
+                            className="addBtn-callTab addLable"
                             type="button"
                             onClick={this.handleChangeToggle}
                           >
-                            <label className="addLable">ADD PARAMETERS</label>
+                          ADD PARAMETERS
+                            {/* <label className="addLable">ADD PARAMETERS</label> */}
                           </button>
                         </div>
                       </div>
@@ -257,8 +258,8 @@ class QaAuditParameters extends Component {
                                   </div>
                                 </div>
                                 {this.CreateParameter()}
-                                <button className="call-btn-save">
-                                  <label className="addLable">SAVE</label>
+                                <button className="call-btn-save addLable">
+                                   SAVE
                                 </button>
                               </div>
                             </div>

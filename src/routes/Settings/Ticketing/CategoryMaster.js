@@ -423,7 +423,7 @@ class CategoryMaster extends Component {
             CANCEL
           </a>
           <button className="pop-over-button">
-            <label className="pop-over-btnsave-text">SAVE</label>
+            SAVE
           </button>
         </div>
       </div>

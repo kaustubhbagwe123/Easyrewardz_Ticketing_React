@@ -1247,7 +1247,12 @@
   width: 100%;
   height: 43px;
   cursor: pointer;
-  color:#FFFF
+  color:#FFFF;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  text-align: center;
 }
 .addBtn-ticket-hierarchy {
   background-color: #2561a8;
@@ -1256,6 +1261,11 @@
   height: 43px;
   cursor: pointer;
   color: #fff;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  text-align: center;
 }
 .addLable {
   color: #ffffff;
@@ -1727,14 +1737,12 @@
   padding: 0px !important;
   min-width: 85px;
   cursor: pointer;
-}
-.lblDownloadbtn {
   color: #ffffff;
   font-family: Lato;
   font-size: 11px;
   font-weight: 400;
   line-height: 16px;
-  text-align: left;
+  text-align: center;
   cursor: pointer;
 }
 .thRowSpace {
@@ -1802,7 +1810,7 @@
   width: 100%;
   height: 35px;
   border: none;
-  padding: 10px;
+  padding: 7px 10px !important;
 }
 .cancle-action {
   color: #2561a8;
@@ -1865,15 +1873,16 @@
   font-weight: 400;
   line-height: 36px;
   text-align: left;
-  margin-top: 12px;
+  margin: 12px 0 0 0;
   cursor: pointer;
+  display: inline;
 }
 
 .pop-over-button {
   background-color: #2561a8;
   border-radius: 4px;
   min-width: 75px;
-  height: 35px;
+  height: 30px;
   float: right;
   margin-left: 20px;
   line-height: 1;
@@ -2333,16 +2342,13 @@
   width: 300px;
   height: 43px;
   margin-left: -17px;
-}
-.store-create-button1-text {
   color: #ffffff;
   font-family: Lato;
   font-size: 14px;
   font-weight: 400;
   line-height: 17px;
-  text-align: left;
+  text-align: center;
 }
-
 .admin-create-lable-text {
   color: #b3b3b3;
   font-family: Lato;
@@ -2970,5 +2976,94 @@
   height: 18px;
   margin: -3px 0;
  }
+ .editre {
+  color: #ffffff;
+  font-family: Lato;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 23px;
+  text-align: center;
+  cursor: pointer;
+ }
+ .EditButtonUSer {
+   width: 180px;
+ }
+ .EditButtonUSer .collapse-title {
+  font-weight: 700;
+  color: hsl(0, 0%, 29%);
+  font-size: 14px;
+  padding: 8px 5px;
+  display: block;
+  background: url("./../Images/table-arr.png") no-repeat right 8px center;
+  background-size: 11px;
+  position: relative;
+  margin: 0 !important;
+}
+.EditButtonUSer .collapse-title:hover {
+  color: inherit;
+}
+.EditButtonUSer .collapse-title::after {
+  content: "";
+  position: absolute;
+  height: 1px;
+  background-color: #f4f4f4;
+  left: -25px;
+  right: 0;
+  bottom: 0;
+  width: calc(100% + 50px);
+}
+.EditButtonUSer .collapse-title[aria-expanded="true"] {
+  background-color: #f3f3f3;
+  background: #f3f3f3 url("./../Images/table-arr-up.png") no-repeat right 8px center;
+  background-size: 11px;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 8px 5px;
+}
+.EditButtonUSer .collapse-title[aria-expanded="true"]::after {
+  background-color: transparent;
+}
+.EditButtonUSer .right-sect-collapse .div-cntr {
+  padding: 0 45px;
+}
+.EditButtonUSer .right-sect-collapse {
+  padding-right: 0;
+  padding-left: 0;
+}
+.EditButtonUSer .right-sect-collapse h3 {
+  padding-left: 45px;
+  margin-bottom: 10px;
+}
+.EditButtonUSer .right-sect-div {
+  background-color: #ffffff;
+  border-radius: 4px;
+  box-shadow: none;
+  padding: 0;
+  margin-bottom: 0;
+}
+.EditButtonUSer .sup-agent-cntr {
+  padding-left: 0;
+  padding-top: 15px;
+}
+.EditButtonUSer .sup-agent-cntr .status-options {
+  display: block;
+  margin:0;
+}
+.EditButtonUSer .right-sect-div select {
+  background: #ecf2f4 url("./../Images/table-arr.png") no-repeat right 15px
+    center;
+  background-size: 13px;
+  padding-right: 50px;
+  cursor: pointer;
+}
+.EditButtonUSer .right-sect-div .butn {
+  font-weight: 400;
+  height: 30px;
+  font-size: 14px;
+  width: 100%;
+  margin-top: 15px;
+  line-height: 0px;
+  padding: 5px 5px;
+}
 /* Setting ReactTable Css Start Kalpesh */
 
