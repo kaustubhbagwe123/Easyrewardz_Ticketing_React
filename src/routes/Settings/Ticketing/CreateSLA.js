@@ -815,7 +815,7 @@ class CreateSLA extends Component {
                     </div>
                     <div className="btnSpace">
                       <button className="addBtn-ticket-hierarchy">
-                        <label className="addLable">ADD</label>
+                       ADD
                       </button>
                     </div>
                   </div>

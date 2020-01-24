@@ -125,8 +125,8 @@ class QaHierarchyMaster extends Component {
                       />
                     </Popover>
                     <Popover content={QaHmEdit} placement="bottom" trigger="click">
-                      <button className="react-tabel-button" id={ids}>
-                        <label className="Table-action-edit-button-text">EDIT</label>
+                      <button className="react-tabel-button editre" id={ids}>
+                        EDIT
                       </button>
                     </Popover>
                   </div>
@@ -202,7 +202,7 @@ class QaHierarchyMaster extends Component {
                   <div>
                   <a className="pop-over-cancle" href={Demo.BLANK_LINK}>CANCEL</a>
                     <button className="pop-over-button">
-                      <label className="pop-over-btnsave-text">SAVE</label>
+                        SAVE
                     </button>
                   </div>
                 </div>
@@ -316,7 +316,7 @@ class QaHierarchyMaster extends Component {
                     </div>
                     <div className="btnSpace">
                       <button className="addBtn-ticket-hierarchy">
-                        <label className="addLable">ADD</label>
+                        ADD
                       </button>
                     </div>
                   </div>

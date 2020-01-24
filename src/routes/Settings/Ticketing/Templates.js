@@ -135,10 +135,11 @@ class Templates extends Component {
                   />
                 </Popover>
                 <Popover content={ActionEditBtn} placement="bottom" trigger="click">
-                  <button className="react-tabel-button" id="p-edit-pop-2">
-                    <label className="Table-action-edit-button-text">
+                  <button className="react-tabel-button editre" id="p-edit-pop-2">
+                  EDIT
+                    {/* <label className="Table-action-edit-button-text">
                       EDIT
-                    </label>
+                    </label> */}
                   </button>
                 </Popover>
               </span>
@@ -326,7 +327,8 @@ class Templates extends Component {
                       <button className="CreateADDBtn" 
                       onClick={this.handleConfigureTabsOpen.bind(this)}
                       >
-                        <label className="addLable">CONFIGURE TEMPLATE</label>
+                      CONFIGURE TEMPLATE
+                        {/* <label className="addLable">CONFIGURE TEMPLATE</label> */}
                       </button>
                       <Modal
                           size="lg"

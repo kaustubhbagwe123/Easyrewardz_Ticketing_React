@@ -160,8 +160,8 @@ class QAReports extends Component {
                     
                   />
                 </Popover>
-            <button className="react-tabel-button" id="p-edit-pop-2">
-              <label className="Table-action-edit-button-text">EDIT</label>
+            <button className="react-tabel-button editre" id="p-edit-pop-2">
+              EDIT
             </button>
           </span>
         )
@@ -218,10 +218,11 @@ class QAReports extends Component {
             <div className="addplus">
               <button
                 type="button"
-                className="addplusbtn"
+                className="addplusbtnReport"
                 onClick={this.handleAddReportOpen}
               >
-                <label className="addplusbtntext">+ Add</label>
+              + Add
+                
               </button>
             </div>
           </div>
