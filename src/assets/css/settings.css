@@ -3067,3 +3067,30 @@
 }
 /* Setting ReactTable Css Start Kalpesh */
 
+/* Akasha css start */
+.cus-cs .ant-select-selection {
+  border:none !important;
+}
+.dropDrownSpace .ant-select-selection--single {
+  background-color: #ecf2f4;
+}
+.cus-cs .ant-select-selection--single {
+  background: #ecf2f4 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAICAYAAAAiJnXPAAAAcElEQVR4nJXPMQrCUBBF0TNGhTTRbVho4f43IQlkGyEIsVIL/w/ykQRvM/DgzpsJVNjgZZ3Ac4sdTqhXxMCEPlJwxAX7BemBDkN8hQ3OqbFkwg13Pr9kRrRpY9nQZqGUfolZGBfOnjngmuZflFfMvAHCTRZc4oUWEgAAAABJRU5ErkJggg==) no-repeat right 12px center;
+}
+.cus-cs .ant-select-selection--single {
+  height: 43px !important;
+}
+.cus-cs .ant-select-selection__rendered {
+  line-height: 43px !important;
+}
+.cus-cs .ant-select-selection-selected-value {
+  font-size: 15px;
+  color: #9b9b9b;
+  font-weight: 700;
+}
+.ant-select-arrow {
+  display: none !important;
+}
+/* Akasha css end */
+
+
