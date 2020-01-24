@@ -234,10 +234,8 @@ class StoreAlerts extends Component {
                   />
                 </Popover>
                 <Popover content={ActionEditBtn} placement="bottom" trigger="click">
-                  <button className="react-tabel-button" id="p-edit-pop-2">
-                    <label className="Table-action-edit-button-text">
-                      EDIT
-                    </label>
+                  <button className="react-tabel-button editre" id="p-edit-pop-2">
+                    EDIT
                   </button>
                 </Popover>
               </span>
@@ -311,7 +309,7 @@ class StoreAlerts extends Component {
         <div>
         <a className="pop-over-cancle" href={Demo.BLANK_LINK} >CANCEL</a>
           <button className="pop-over-button">
-            <label className="pop-over-btnsave-text">SAVE</label>
+            SAVE
           </button>
         </div>
       </div>

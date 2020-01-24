@@ -184,7 +184,8 @@ class FileUploadLogs extends Component {
         Cell: row => (
           <div>
             <button className="downloadBtn">
-              <label className="lblDownloadbtn">DOWNLOAD</label>
+            DOWNLOAD
+              {/* <label className="lblDownloadbtn">DOWNLOAD</label> */}
             </button>
           </div>
         ),
@@ -197,7 +198,8 @@ class FileUploadLogs extends Component {
         Cell: row => (
           <div>
             <button className="downloadBtn">
-              <label className="lblDownloadbtn">DOWNLOAD</label>
+            DOWNLOAD
+              {/* <label className="lblDownloadbtn">DOWNLOAD</label> */}
             </button>
           </div>
         ),

@@ -994,8 +994,8 @@ class TicketCRMRole extends Component {
                     </div>
                     <div className="btnSpace">
                       <button className="addBtn-ticket-hierarchy" onClick={this.createUpdateCrmRole.bind(this, 'add')}>
-                        <label className="addLable">ADD</label>
-                      </button>
+                       ADD
+                        </button>
                     </div>
                   </div>
                 </div>

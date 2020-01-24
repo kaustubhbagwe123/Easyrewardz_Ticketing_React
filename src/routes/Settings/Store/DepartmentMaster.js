@@ -133,8 +133,8 @@ class DepartmentMaster extends Component {
               <img src={DeleteIcon} alt="del-icon" className="downloadaction" />
               </Popover>
               <Popover content={DepartEdit} placement="bottom" trigger="click">
-                <button className="react-tabel-button" id={ids}>
-                  <label className="Table-action-edit-button-text">EDIT</label>
+                <button className="react-tabel-button editre" id={ids}>
+                  EDIT
                 </button>
               </Popover>
             </div>
@@ -194,7 +194,7 @@ class DepartmentMaster extends Component {
         <div>
         <a className="pop-over-cancle" href={Demo.BLANK_LINK} >CANCEL</a>
           <button className="pop-over-button">
-            <label className="pop-over-btnsave-text">SAVE</label>
+            SAVE
           </button>
         </div>
       </div>

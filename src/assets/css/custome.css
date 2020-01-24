@@ -7607,6 +7607,18 @@ table tr th:last-child {
   text-align: left;
   cursor: pointer;
 }
+.addplusbtnReport {
+  width: 120px;
+  height: 40px;
+  background-color: #2561a8;
+  cursor: pointer;
+  color: #ffffff;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  text-align: center;
+}
 .downloadaction {
   width: 17px;
   display: inline-block;

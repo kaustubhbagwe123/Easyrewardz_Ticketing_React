@@ -2458,8 +2458,8 @@ class Dashboard extends Component {
     // ];
 
     let value = `${this.state.start.format(
-      "DD-MM-YYYY HH:mm"
-    )} - ${this.state.end.format("DD-MM-YYYY HH:mm")}`;
+      "DD-MM-YYYY"
+    )} - ${this.state.end.format("DD-MM-YYYY")}`;
     let disabled = false;
     return (
       <Fragment>

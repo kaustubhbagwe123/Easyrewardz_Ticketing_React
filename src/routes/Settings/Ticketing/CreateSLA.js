@@ -927,8 +927,8 @@ class CreateSLA extends Component {
                       </div>
                     </div>
                     <div className="btnSpace">
-                      <button className="addBtn-ticket-hierarchy" onClick={this.createSla.bind(this)}>
-                        <label className="addLable">ADD</label>
+                      <button className="addBtn-ticket-hierarchy" type="button" onClick={this.createSla.bind(this)}>
+                        ADD
                       </button>
                     </div>
                   </div>

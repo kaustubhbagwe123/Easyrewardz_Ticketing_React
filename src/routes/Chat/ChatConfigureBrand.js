@@ -182,7 +182,7 @@ class ChatConfigureBrand extends Component {
                                   </div>
                                   <div className="chatconfigbtn">
                                     <button className="CreateADDBtn" onClick={this.HandlePlusButtonModalClose.bind(this)}>
-                                      <label className="addLable">ADD</label>
+                                     ADD
                                     </button>
                                   </div>
                                 </div>
@@ -195,7 +195,7 @@ class ChatConfigureBrand extends Component {
 
                       <div className="chatconfigbtn">
                         <button className="CreateADDBtn">
-                          <label className="addLable">ADD</label>
+                          ADD
                         </button>
                       </div>
                     </div>
