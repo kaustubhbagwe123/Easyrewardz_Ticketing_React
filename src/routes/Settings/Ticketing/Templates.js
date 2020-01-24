@@ -21,6 +21,7 @@ import {
   NotificationContainer,
   NotificationManager
 } from "react-notifications";
+import Select from "react-select";
 
 class Templates extends Component {
   constructor(props) {
@@ -28,14 +29,79 @@ class Templates extends Component {
   
     this.state = {
       ConfigTabsModal: false,
-      template: []
+      template: [],
+      TemplateName: '',
+      TemplateIsActive: 'true',
+      TemplateSubject: '',
+      editorContent: '',
+      slaIssueType: [],
+      selectedSlaIssueType: [],
+      selectedIssueTypeCommaSeperated: "",
     }
 
     this.handleGetTemplate = this.handleGetTemplate.bind(this);
+    this.handleTemplateName = this.handleTemplateName.bind(this);
+    this.handleTemplateSubject = this.handleTemplateSubject.bind(this);
+    this.handleGetSLAIssueType = this.handleGetSLAIssueType.bind(this);
   }
 
   componentDidMount() {
     this.handleGetTemplate();
+    this.handleGetSLAIssueType();
+  }
+
+  setIssueType = e => {
+    debugger;
+    if (e !== null) {
+      var selectedIssueTypeCommaSeperated = Array.prototype.map
+        .call(e, s => s.issueTypeID)
+        .toString();
+    }
+    this.setState({
+      selectedSlaIssueType: e,
+      selectedIssueTypeCommaSeperated
+    });
+  };
+
+  handleTemplateName(e) {
+    debugger;
+    this.setState({
+      TemplateName: e.target.value
+    });
+  }
+  onEditorChange = (evt) => {
+    debugger;
+    var newContent = evt.editor.getData();
+    this.setState({
+      editorContent: newContent
+    });
+  }
+  handleTemplateSubject(e) {
+    debugger;
+    this.setState({
+      TemplateSubject: e.target.value
+    });
+  }
+  handleTemplateIsActive = e => {
+    debugger;
+    let TemplateIsActive = e.currentTarget.value;
+    this.setState({ TemplateIsActive });
+  };
+
+  handleGetSLAIssueType() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/SLA/GetIssueType",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let slaIssueType = res.data.responseData;
+      if (slaIssueType !== null && slaIssueType !== undefined) {
+        self.setState({ slaIssueType });
+      }
+    });
   }
 
   deleteTemplate(deleteId) {
@@ -56,6 +122,40 @@ class Templates extends Component {
         self.handleGetTemplate();
       } else {
         NotificationManager.error("Template not deleted.");
+      }
+    });
+  }
+
+  createTemplate() {
+    debugger;
+    let self = this;
+    this.setState({ConfigTabsModal:false})
+    let TemplateIsActive;
+    if (this.state.TemplateIsActive === 'true') {
+      TemplateIsActive = true
+    } else if (this.state.TemplateIsActive === 'false') {
+      TemplateIsActive = false
+    }
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Template/CreateTemplate",
+      headers: authHeader(),
+      params: {
+        TemplateName: this.state.TemplateName,
+        TemplateSubject: this.state.TemplateSubject,
+        TemplateBody: this.state.editorContent,
+        issueTypes: this.state.selectedIssueTypeCommaSeperated,
+        isTemplateActive: TemplateIsActive
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      if (status === "Success") {
+        NotificationManager.success("Template added successfully.");
+        self.handleGetTemplate();
+      } else {
+        NotificationManager.error("Template not added.");
       }
     });
   }
@@ -291,9 +391,10 @@ class Templates extends Component {
         </div>
         <div className="pop-over-div">
           <label className="edit-label-1">Status</label>
-          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
-            <option>Active</option>
-            <option>Inactive</option>
+          <select id="inputStatus" className="edit-dropDwon dropdown-setting"
+          >
+            <option value="true">Active</option>
+            <option value="false">Inactive</option>
           </select>
         </div>
         <br />
@@ -381,17 +482,46 @@ class Templates extends Component {
                         className="txt-1"
                         placeholder="Enter Name"
                         maxLength={25}
+                        onChange={this.handleTemplateName}
                       />
                     </div>
                     <div className="divSpace">
                       <div className="dropDrownSpace">
                         <label className="reports-to">Issue Type</label>
-                        <select
+                        {/* <select
                           id="inputState"
                           className="form-control dropdown-setting"
                         >
                           <option>Select</option>
-                        </select>
+                        </select> */}
+                        <div className="normal-dropdown mt-0 dropdown-setting temp-multi schedule-multi">
+                          <Select
+                            getOptionLabel={option =>
+                              option.issueTypeName
+                            }
+                            getOptionValue={
+                              option => option.issueTypeID //id
+                            }
+                            options={
+                              this.state
+                                .slaIssueType
+                            }
+                            placeholder="Select"
+                            // menuIsOpen={true}
+                            closeMenuOnSelect={
+                              false
+                            }
+                            onChange={this.setIssueType.bind(
+                              this
+                            )}
+                            value={
+                              this.state
+                                .selectedSlaIssueType
+                            }
+                            // showNewOptionAtTop={false}
+                            isMulti
+                          />
+                        </div>
                       </div>
                     </div>
                     <div className="divSpace">
@@ -400,9 +530,11 @@ class Templates extends Component {
                         <select
                           id="inputState"
                           className="form-control dropdown-setting"
+                          value={this.state.TemplateIsActive}
+                          onChange={this.handleTemplateIsActive}
                         >
-                          <option>Active</option>
-                          <option>Inactive</option>
+                          <option value="true">Active</option>
+                          <option value="false">Inactive</option>
                         </select>
                       </div>
                     </div>
@@ -428,21 +560,31 @@ class Templates extends Component {
                       </div>
                       </div>
                     </Modal.Header>
+                    <div className="temp-sub">
+                        <label className="designation-name">Template Subject</label>
+                        <input
+                          type="text"
+                          className="txt-1"
+                          placeholder="Enter Template Subject"
+                          maxLength={25}
+                          onChange={this.handleTemplateSubject}
+                        />
+                      </div>
                     <Modal.Body>
                       <div className="template-editor">
                         <CKEditor
                                 
-                                content={this.state.content}
+                                content={this.state.editorContent}
                                 events={{
                                   // "blur": this.onBlur,
                                   // "afterPaste": this.afterPaste,
-                                  change: this.onChange,
+                                  change: this.onEditorChange,
                                   items: this.fileUpload
                                 }}
                         />
                       </div>
                       <div className="config-button">
-                              <button className="config-buttontext" type="submit">
+                              <button className="config-buttontext" onClick={this.createTemplate.bind(this)} type="submit">
                                 SAVE & NEXT
                               </button>
                       </div>

@@ -6,11 +6,42 @@ import { Popover } from "antd";
 import BlackInfoIcon from "./../../assets/Images/Info-black.png";
 import ReactTable from "react-table";
 import { Link } from "react-router-dom";
+import { authHeader } from "./../../helpers/authHeader";
+import axios from "axios";
+import config from "./../../helpers/config";
+
 class FileUploadLogs extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      fileUploadLog: [],
+
+    };
+
+    this.handleGetFileUploadLog = this.handleGetFileUploadLog.bind(this);
+
   }
+
+  componentDidMount() {
+    this.handleGetFileUploadLog();
+  }
+
+  handleGetFileUploadLog() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/File/GetFileUploadLogs",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let fileUploadLog = res.data.responseData;
+      if (fileUploadLog !== null && fileUploadLog !== undefined) {
+        self.setState({ fileUploadLog });
+      }
+    });
+  }
+
   render() {
     const dataTickFileUpload = [
       {
@@ -83,7 +114,7 @@ class FileUploadLogs extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "Type"
+        accessor: "fileType"
       },
       {
         Header: (
@@ -101,14 +132,29 @@ class FileUploadLogs extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "Date",
+        accessor: "date",
         Cell: row => {
           var ids = row.original["id"];
           return (
             <div>
               <span>
-                02-09-2019
-                <Popover content={popoverData} placement="bottom">
+                {row.original.date}
+                <Popover content={
+                  <>
+                  <div>
+                    <b>
+                      <p className="title">Created By: {row.original.createdBy}</p>
+                    </b>
+                    <p className="sub-title">Created Date: {row.original.createdDate}</p>
+                  </div>
+                  <div>
+                    <b>
+                      <p className="title">Updated By: {row.original.modifiedBy}</p>
+                    </b>
+                    <p className="sub-title">Updated Date: {row.original.modifiedDate}</p>
+                  </div>
+                </>
+                } placement="bottom">
                   <img
                     className="info-icon-cp"
                     src={BlackInfoIcon}
@@ -128,7 +174,7 @@ class FileUploadLogs extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "status"
+        accessor: "fileUploadStatus"
       },
       {
         Header: (
@@ -194,7 +240,7 @@ class FileUploadLogs extends Component {
         <br />
         <div className="fileUploadTable TicketFileUploadReact">
                   <ReactTable
-                    data={dataTickFileUpload}
+                    data={this.state.fileUploadLog}
                     columns={columnsTickFileUpload}
                     // resizable={false}
                     defaultPageSize={5}

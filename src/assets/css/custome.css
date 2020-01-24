@@ -3412,6 +3412,13 @@ table tr th:last-child {
 .module-switch .switch input[type="checkbox"]:checked + .cr:before {
   background: #50D462 !important;
 }
+.temp-sub {
+  padding: 0 40px 30px 40px;
+}
+.temp-multi.schedule-multi .css-1hwfws3 {
+  padding-right: 35px;
+  background-position: right 12px center;
+}
 /* settings ends */
 
 /* chetan css end */
