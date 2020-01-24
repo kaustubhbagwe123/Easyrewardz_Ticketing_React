@@ -14,15 +14,68 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import CancelImg from "./../../../assets/Images/Circle-cancel.png";
 import CKEditor from "react-ckeditor-component";
 import Modal from "react-bootstrap/Modal";
+import { authHeader } from "./../../../helpers/authHeader";
+import axios from "axios";
+import config from "./../../../helpers/config";
+import {
+  NotificationContainer,
+  NotificationManager
+} from "react-notifications";
 
 class Templates extends Component {
   constructor(props) {
     super(props)
   
     this.state = {
-      ConfigTabsModal: false
+      ConfigTabsModal: false,
+      template: []
     }
+
+    this.handleGetTemplate = this.handleGetTemplate.bind(this);
   }
+
+  componentDidMount() {
+    this.handleGetTemplate();
+  }
+
+  deleteTemplate(deleteId) {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Template/DeleteTemplate",
+      headers: authHeader(),
+      params: {
+        TemplateID: deleteId
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      if (status === "Success") {
+        NotificationManager.success("Template deleted successfully.");
+        self.handleGetTemplate();
+      } else {
+        NotificationManager.error("Template not deleted.");
+      }
+    });
+  }
+
+  handleGetTemplate() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Template/GetTemplate",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let template = res.data.responseData;
+      if (template !== null && template !== undefined) {
+        self.setState({ template });
+      }
+    });
+  }
+
   handleConfigureTabsOpen(){
     this.setState({ConfigTabsModal:true})
   }
@@ -71,7 +124,7 @@ class Templates extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "alertType"
+        accessor: "templateName"
       },
       {
         Header: (
@@ -80,7 +133,7 @@ class Templates extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "communicationMode",
+        accessor: "issueType",
         Cell: props => <span className="number">{props.value}</span>
       },
       {
@@ -96,8 +149,23 @@ class Templates extends Component {
           return (
             <>
               <span>
-                Admin
-                <Popover content={popoverData} placement="bottom">
+              {row.original.createdBy}
+                <Popover content={
+                  <>
+                    <div>
+                      <b>
+                        <p className="title">Created By: {row.original.createdBy}</p>
+                      </b>
+                      <p className="sub-title">Created Date: {row.original.createdDate}</p>
+                    </div>
+                    <div>
+                      <b>
+                        <p className="title">Updated By: {row.original.modifiedBy}</p>
+                      </b>
+                      <p className="sub-title">Updated Date: {row.original.modifiedDate}</p>
+                    </div>
+                  </>
+                } placement="bottom">
                   <img
                     src={InfoImg}
                     className="info-icon"
@@ -118,7 +186,7 @@ class Templates extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "status"
+        accessor: "templateStatus"
       },
       {
         Cell: row => {
@@ -126,7 +194,23 @@ class Templates extends Component {
           return (
             <>
               <span>
-                <Popover content={ActionDelete} placement="bottom" trigger="click">
+                <Popover content={
+                  <div className="d-flex general-popover popover-body">
+                  <div className="del-big-icon">
+                    <img src={DelBigIcon} alt="del-icon" />
+                  </div>
+                  <div>
+                    <p className="font-weight-bold blak-clr">Delete file?</p>
+                    <p className="mt-1 fs-12">
+                      Are you sure you want to delete this file?
+                    </p>
+                    <div className="del-can">
+                      <a href={Demo.BLANK_LINK}>CANCEL</a>
+                      <button className="butn" onClick={this.deleteTemplate.bind(this, row.original.templateID)}>Delete</button>
+                    </div>
+                  </div>
+                </div>
+                } placement="bottom" trigger="click">
                   <img
                     src={DeleteIcon}
                     alt="del-icon"
@@ -239,10 +323,10 @@ class Templates extends Component {
               <div className="col-md-8">
                 <div className="table-cntr table-height template-table">
                   <ReactTable
-                    data={data}
+                    data={this.state.template}
                     columns={columns}
                     // resizable={false}
-                    defaultPageSize={5}
+                    defaultPageSize={10}
                     showPagination={false}
                   />
                   <div className="position-relative1">
@@ -374,6 +458,7 @@ class Templates extends Component {
             </div>
           </div>
         </div>
+        <NotificationContainer />
       </React.Fragment>
     );
   }

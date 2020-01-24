@@ -17,6 +17,7 @@ import { authHeader } from "./../../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../../helpers/config";
 import {
+  NotificationContainer,
   NotificationManager
 } from "react-notifications";
 import SimpleReactValidator from "simple-react-validator";
@@ -1088,6 +1089,7 @@ class TicketCRMRole extends Component {
             </div>
           </div>
         </div>
+        <NotificationContainer />
       </React.Fragment>
     );
   }

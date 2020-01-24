@@ -154,6 +154,7 @@ class MyTicketList extends Component {
       byTicketTypeFlag: 0,
       byCategoryFlag: 0,
       allFlag: 0,
+      resultCount:0,
       TeamMemberData: [
         {
           department: "Team Member 1"
@@ -710,28 +711,28 @@ class MyTicketList extends Component {
         selectedSlaDueByDate: 0,
         selectedTicketStatusByDate: 0
       });
-    } else if (this.state.byCustomerTypeFlag === 1) {
+    } else if (this.state.byCustomerTypeFlag === 2) {
       this.setState({
         MobileNoByCustType: "",
         EmailIdByCustType: "",
         TicketIdByCustType: "",
         selectedTicketStatusByCustomer: 0
       });
-    } else if (this.state.byTicketTypeFlag === 1) {
+    } else if (this.state.byTicketTypeFlag === 3) {
       this.setState({
         selectedPriority: 0,
         selectedTicketStatusByTicket: 0,
         selectedChannelOfPurchase: [],
         selectedTicketActionType: []
       });
-    } else if (this.state.byCategoryFlag === 1) {
+    } else if (this.state.byCategoryFlag === 4) {
       this.setState({
         selectedCategory: 0,
         selectedSubCategory: 0,
         selectedIssueType: 0,
         selectedTicketStatusByCategory: 0
       });
-    } else if (this.state.allFlag === 1) {
+    } else if (this.state.allFlag === 5) {
       this.setState({
         ByAllCreateDate: "",
         selectedTicketSource: 0,
@@ -1021,7 +1022,7 @@ class MyTicketList extends Component {
       selectedIssueTypeAll: 0
     });
     let cateId =
-      this.state.byCategoryFlag === 1
+      this.state.byCategoryFlag === 4
         ? this.state.selectedCategory
         : this.state.selectedCategoryAll;
 
@@ -1034,12 +1035,12 @@ class MyTicketList extends Component {
       }
     }).then(function(res) {
       debugger;
-      if (self.state.byCategoryFlag === 1) {
+      if (self.state.byCategoryFlag === 4) {
         var SubCategoryData = res.data.responseData;
         self.setState({
           SubCategoryData: SubCategoryData
         });
-      } else if (self.state.allFlag === 1) {
+      } else if (self.state.allFlag === 5) {
         var SubCategoryAllData = res.data.responseData;
         self.setState({
           SubCategoryAllData: SubCategoryAllData
@@ -1076,7 +1077,7 @@ class MyTicketList extends Component {
       selectedIssueTypeAll: 0
     });
     let subCateId =
-      this.state.byCategoryFlag === 1
+      this.state.byCategoryFlag === 4
         ? this.state.selectedSubCategory
         : this.state.selectedSubCategoryAll;
 
@@ -1091,12 +1092,12 @@ class MyTicketList extends Component {
       debugger;
       // let IssueTypeData = res.data.responseData;
       // self.setState({ IssueTypeData: IssueTypeData });
-      if (self.state.byCategoryFlag === 1) {
+      if (self.state.byCategoryFlag === 4) {
         var IssueTypeData = res.data.responseData;
         self.setState({
           IssueTypeData: IssueTypeData
         });
-      } else if (self.state.allFlag === 1) {
+      } else if (self.state.allFlag === 5) {
         var IssueTypeAllData = res.data.responseData;
         self.setState({
           IssueTypeAllData: IssueTypeAllData
@@ -1234,21 +1235,6 @@ class MyTicketList extends Component {
     } else {
       dateTab = null
     }
-    // var dateTab = {};
-    // if (this.state.ActiveTabId === 1) {
-    //   dateTab["Ticket_CreatedOn"] = moment(this.state.ByDateCreatDate).format(
-    //     "YYYY-MM-DD"
-    //   );
-    //   dateTab["Ticket_ModifiedOn"] = moment(this.state.ByDateSelectDate).format(
-    //     "YYYY-MM-DD"
-    //   );
-    //   dateTab["SLA_DueON"] = this.state.selectedSlaDueByDate;
-    //   dateTab["Ticket_StatusID"] = this.state.selectedTicketStatusByDate;
-    // } else {
-    //   this.setState({
-    //     dateTab: null
-    //   });
-    // }
 
     // --------------------By Customer Type Tab---------------
     var customerType = {};
@@ -1319,9 +1305,11 @@ class MyTicketList extends Component {
       debugger;
       let status = res.data.message;
       let data = res.data.responseData;
+      let count=res.data.responseData.length;
       if (status === "Success") {
         self.setState({
-          SearchTicketData: data
+          SearchTicketData: data,
+          resultCount:count
         });
       } else {
         self.setState({
@@ -4125,7 +4113,11 @@ class MyTicketList extends Component {
                                   <div className="row common-adv-padd justify-content-between">
                                     <div className="col-auto d-flex align-items-center">
                                       <p className="font-weight-bold mr-3">
-                                        <span className="blue-clr">04</span>{" "}
+                                        <span className="blue-clr">
+                                          {this.state.resultCount < 9
+                                            ? "0" + this.state.resultCount
+                                            : this.state.resultCount}
+                                        </span>
                                         Results
                                       </p>
                                       <p
