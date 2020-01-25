@@ -26,7 +26,7 @@ class TicketSystemTask extends Component {
       selectedDepartment: 0,
       selectedFunction: 0,
       selectedAssignTo: 0,
-      selectedPriority: 0,
+      selectedPriority: 0
     };
     this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
     // this.handleTaskDelete = this.handleTaskDelete.bind(this);
@@ -44,7 +44,6 @@ class TicketSystemTask extends Component {
   }
 
   checkTaskTitDesc(filed, e) {
-    debugger;
     var taskfield = this.state.taskfield;
     taskfield[filed] = e.target.value;
 
@@ -64,8 +63,13 @@ class TicketSystemTask extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let DepartmentData = res.data.responseData;
-      self.setState({ DepartmentData: DepartmentData });
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        self.setState({ DepartmentData: data });
+      } else {
+        self.setState({ DepartmentData: [] });
+      }
     });
   }
   handleGetFunctionList() {
@@ -98,8 +102,13 @@ class TicketSystemTask extends Component {
       }
     }).then(function(res) {
       debugger;
-      let AssignToData = res.data.responseData;
-      self.setState({ AssignToData: AssignToData });
+      let status=res.data.message;
+      let data = res.data.responseData;
+      if(status === "Success"){
+        self.setState({ AssignToData: data });
+      }else{
+        self.setState({ AssignToData: [] });
+      }
     });
   }
   handleGetTicketPriorityList() {
@@ -111,8 +120,13 @@ class TicketSystemTask extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let TicketPriorityData = res.data.responseData;
-      self.setState({ TicketPriorityData: TicketPriorityData });
+      let status=res.data.message;
+      let data = res.data.responseData;
+      if(status === "Success"){
+        self.setState({ TicketPriorityData: data });
+      }else{
+        self.setState({ TicketPriorityData: [] });
+      }
     });
   }
 
@@ -278,7 +292,7 @@ class TicketSystemTask extends Component {
                           className="category-select-system dropdown-label"
                           value={this.state.selectedDepartment}
                           onChange={this.setDepartmentValue}
-                         >
+                        >
                           <option className="select-category-placeholder">
                             Department
                           </option>
@@ -424,9 +438,7 @@ class TicketSystemTask extends Component {
                                 alt="del-icon"
                                 className="downloadaction"
                                 onClick={() => {
-                                  this.handleTaskDelete(
-                                    row.original.ID
-                                  );
+                                  this.handleTaskDelete(row.original.ID);
                                 }}
                               />
                             </div>
@@ -450,4 +462,3 @@ class TicketSystemTask extends Component {
 }
 
 export default TicketSystemTask;
-

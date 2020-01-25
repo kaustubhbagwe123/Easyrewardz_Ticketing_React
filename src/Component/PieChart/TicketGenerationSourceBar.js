@@ -35,32 +35,33 @@ class TicketGenerationSourceBar extends Component {
   }
 
   handleGetDashboardGraphData() {
-    debugger;
-    let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/DashBoard/DashBoardGraphData",
-      headers: authHeader(),
-      params: {
-        UserIds: "6,7,8",
-        fromdate: "2019-12-26",
-        todate: "2020-01-15",
-        BrandID: "26, 31"
-      }
-    }).then(function(res) {
+    // debugger;
+    // let self = this;
+    // axios({
+    //   method: "post",
+    //   url: config.apiUrl + "/DashBoard/DashBoardGraphData",
+    //   headers: authHeader(),
+    //   params: {
+    //     UserIds: "6,7,8",
+    //     fromdate: "2019-12-26",
+    //     todate: "2020-01-15",
+    //     BrandID: "26, 31"
+    //   }
+    // }).then(function(res) {
       debugger;
+      var propsData = this.props.data;
       let categories = [],
         totalCountData = [];
-      let DashboardSourceGraphData = res.data.responseData.ticketSourceGraph;
-      if (DashboardSourceGraphData !== null) {
-      for (let i = 0; i < DashboardSourceGraphData.length; i++) {
-        let ticketSourceName = DashboardSourceGraphData[i].ticketSourceName;
+      // let DashboardSourceGraphData = res.data.responseData.ticketSourceGraph;
+      if (propsData !== null) {
+      for (let i = 0; i < propsData.length; i++) {
+        let ticketSourceName = propsData[i].ticketSourceName;
         categories.push(ticketSourceName);
-        let totalCount = DashboardSourceGraphData[i].ticketSourceCount;
+        let totalCount = propsData[i].ticketSourceCount;
         totalCountData.push(totalCount);
       }
 
-      self.setState({
+      this.setState({
         options: {
           xaxis: {
             categories
@@ -73,7 +74,7 @@ class TicketGenerationSourceBar extends Component {
         ]
       });
     }
-    });
+    // });
   }
 
   render() {

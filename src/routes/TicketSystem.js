@@ -1149,8 +1149,8 @@ class TicketSystem extends Component {
                            )}     */}
 
                 {this.state.file.map((item, i) => (                             
-                           i<5?<img src={ThumbTick} href={item[i]} alt="thumb" className="thumbtick" />:"" 
-                                                                     
+                           i<5?                          
+                           <img src={ThumbTick} href={item[i]} alt="thumb" className="thumbtick" />:""
                             ))}
 
                              {(this.state.file.length > 4 ? 
