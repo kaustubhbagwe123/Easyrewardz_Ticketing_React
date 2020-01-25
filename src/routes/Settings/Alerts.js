@@ -452,7 +452,7 @@ class Alerts extends Component {
                   <button className="react-tabel-button" id="p-edit-pop-2">
                     <label className="Table-action-edit-button-text" onClick={this.updateAlert.bind(this, row.original)}>
                       EDIT
-                    </label> */}
+                    </label>
                   </button>
                 </Popover>
               </span>

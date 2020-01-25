@@ -3809,7 +3809,7 @@ class Dashboard extends Component {
                                     }
                                     onChange={this.handleTicketStatusByCustomer}
                                   >
-                                    <option>Ticket Status</option>
+                                    <option value="0">Ticket Status</option>
                                     {this.state.TicketStatusData !== null &&
                                       this.state.TicketStatusData.map(
                                         (item, i) => (
@@ -3877,7 +3877,7 @@ class Dashboard extends Component {
                                     value={this.state.selectedPriority}
                                     onChange={this.setPriorityValue}
                                   >
-                                    <option>Priority</option>
+                                    <option value="0">Priority</option>
                                     {this.state.TicketPriorityData !== null &&
                                       this.state.TicketPriorityData.map(
                                         (item, i) => (
@@ -3898,7 +3898,7 @@ class Dashboard extends Component {
                                     }
                                     onChange={this.handleTicketStatusByTicket}
                                   >
-                                    <option>Ticket Status</option>
+                                    <option value="0">Ticket Status</option>
                                     {this.state.TicketStatusData !== null &&
                                       this.state.TicketStatusData.map(
                                         (item, i) => (
@@ -4038,7 +4038,7 @@ class Dashboard extends Component {
                                     value={this.state.selectedCategory}
                                     onChange={this.setCategoryValue}
                                   >
-                                    <option>Category</option>
+                                    <option value="0">Category</option>
                                     {this.state.CategoryData !== null &&
                                       this.state.CategoryData.map((item, i) => (
                                         <option key={i} value={item.categoryID}>
@@ -4052,7 +4052,7 @@ class Dashboard extends Component {
                                     value={this.state.selectedSubCategory}
                                     onChange={this.setSubCategoryValue}
                                   >
-                                    <option>Sub Category</option>
+                                    <option value="0">Sub Category</option>
                                     {this.state.SubCategoryData !== null &&
                                       this.state.SubCategoryData.map(
                                         (item, i) => (
@@ -4071,7 +4071,7 @@ class Dashboard extends Component {
                                     value={this.state.selectedIssueType}
                                     onChange={this.setIssueTypeValue}
                                   >
-                                    <option>Issue Type</option>
+                                    <option value="0">Issue Type</option>
                                     {this.state.IssueTypeData !== null &&
                                       this.state.IssueTypeData.map(
                                         (item, i) => (
@@ -4092,7 +4092,7 @@ class Dashboard extends Component {
                                     }
                                     onChange={this.handleTicketStatusByCategory}
                                   >
-                                    <option>Ticket Status</option>
+                                    <option value="0">Ticket Status</option>
                                     {this.state.TicketStatusData !== null &&
                                       this.state.TicketStatusData.map(
                                         (item, i) => (
