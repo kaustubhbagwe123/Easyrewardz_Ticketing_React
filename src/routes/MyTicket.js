@@ -267,7 +267,7 @@ class MyTicket extends Component {
   }
   handleGetMessageDetails(ticketId){
     debugger
-    let self=this;
+    // let self=this;
     axios({
       method:"post",
       url:config.apiUrl + "/Ticketing/getticketmessage",
@@ -277,7 +277,7 @@ class MyTicket extends Component {
       }
     }).then(function(res){
       debugger;
-      let status=res.data.status;
+      // let status=res.data.status;
     })
   }
   handleGetOrderDetails() {
@@ -631,12 +631,6 @@ class MyTicket extends Component {
   HandleStoreProductSearchModalClose() {
     this.setState({ storeproductsearch: false });
   }
-  // HandleHeadePhoneModalOpen() {
-  //   this.setState({ headPhoneTable: true });
-  // }
-  // HandleHeadePhoneModalClose() {
-  //   this.setState({ headPhoneTable: false });
-  // }
   handleOrderTableOpen() {
     this.handleGetProductData()
     this.setState({ OrderTable: true });
@@ -1250,14 +1244,8 @@ class MyTicket extends Component {
                     type="button"
                     className="myticket-submit-solve-button"
                     onClick={this.handleUpdateTicketDetails.bind(this)}
-                    // onClick={this.HandleHeadePhoneModalOpen.bind(this)}
                   >
                     SUBMIT
-                    {/* <img
-                      src={DownWhiteImg}
-                      alt="headphone"
-                      className="down-white"
-                    /> */}
                   </button>
                 </div>
               </div>
@@ -1759,7 +1747,6 @@ class MyTicket extends Component {
                         <select
                           className="rectangle-9 select-category-placeholder"
                           value={this.state.selectetedParameters.subCategoryID}
-                          // onChange={this.setSubCategoryValue}
                           onChange={this.handleDropDownChange}
                           name="subCategoryID"
                         >
@@ -2366,7 +2353,7 @@ class MyTicket extends Component {
             </div>
             <Modal
               open={this.state.Plus}
-              // onClose={this.handleThumbModalClose.bind(this)}
+              onClose={this.handleThumbModalClose.bind(this)}
               modalId="thumb-modal-popup"
               overlayId="logout-ovrlykb"
             >
