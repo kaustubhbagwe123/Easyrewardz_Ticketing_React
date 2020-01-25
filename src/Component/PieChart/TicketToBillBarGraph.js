@@ -43,34 +43,35 @@ class TicketToBillBarGraph extends Component {
   }
 
   handleGetDashboardGraphData() {
-    debugger;
-    let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/DashBoard/DashBoardGraphData",
-      headers: authHeader(),
-      params: {
-        UserIds: "6,7,8",
-        fromdate: "2019-12-26",
-        todate: "2020-01-15",
-        BrandID: "26, 31"
-      }
-    }).then(function(res) {
+    // debugger;
+    // let self = this;
+    // axios({
+    //   method: "post",
+    //   url: config.apiUrl + "/DashBoard/DashBoardGraphData",
+    //   headers: authHeader(),
+    //   params: {
+    //     UserIds: "6,7,8",
+    //     fromdate: "2019-12-26",
+    //     todate: "2020-01-15",
+    //     BrandID: "26, 31"
+    //   }
+    // }).then(function(res) {
       debugger;
+      var propsData = this.props.data;
       let categories = [],
         totalBillsData = [],
         ticketedBillsData = [];
-      let DashboardBillGraphData = res.data.responseData.tickettoBillGraph;
-      for (let i = 0; i < DashboardBillGraphData.length; i++) {
-        let ticketSourceName = DashboardBillGraphData[i].ticketSourceName;
+      // let DashboardBillGraphData = res.data.responseData.tickettoBillGraph;
+      for (let i = 0; i < propsData.length; i++) {
+        let ticketSourceName = propsData[i].ticketSourceName;
         categories.push(ticketSourceName);
-        let totalBills = DashboardBillGraphData[i].totalBills;
+        let totalBills = propsData[i].totalBills;
         totalBillsData.push(totalBills);
-        let ticketedBills = DashboardBillGraphData[i].ticketedBills;
+        let ticketedBills = propsData[i].ticketedBills;
         ticketedBillsData.push(ticketedBills);
       }
 
-      self.setState({
+      this.setState({
         optionsMixedChart: {
           xaxis: {
             categories
@@ -85,7 +86,7 @@ class TicketToBillBarGraph extends Component {
           }
         ]
       });
-    });
+    // });
   }
 
   render() {
