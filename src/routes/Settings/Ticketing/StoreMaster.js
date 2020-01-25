@@ -6,6 +6,7 @@ import FileUpload from "./../../../assets/Images/file.png";
 import DelBlack from "./../../../assets/Images/del-black.png";
 import DownExcel from "./../../../assets/Images/csv.png";
 import UploadCancel from "./../../../assets/Images/upload-cancel.png";
+import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
 import { ProgressBar } from "react-bootstrap";
 import Demo from "./../../../store/Hashtag.js";
 import { Link } from "react-router-dom";
@@ -379,7 +380,40 @@ class StoreMaster extends Component {
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
-                          accessor: "branName"
+                          accessor: "brand_Names",
+                          Cell: row => {
+                            if (isNaN(row.original.brand_Names)) {
+                              return (
+                                <div>
+                                  <span>
+                                    {row.original["brand_Names"]}
+
+                                    <Popover
+                                      content={
+                                        <div>
+                                          <div>
+                                            <p className="title">
+                                              Brand Name: &nbsp;
+                                              <b>
+                                                {row.original["brandNames"]}
+                                              </b>
+                                            </p>
+                                          </div>
+                                        </div>
+                                      }
+                                      placement="bottom"
+                                    >
+                                      <img
+                                        className="info-icon-cp"
+                                        src={BlackInfoIcon}
+                                        alt="info-icon"
+                                      />
+                                    </Popover>
+                                  </span>
+                                </div>
+                              );
+                            }
+                          }
                         },
                         {
                           Header: (
@@ -421,6 +455,7 @@ class StoreMaster extends Component {
                           Header: <span>Actions</span>,
                           accessor: "actiondept",
                           Cell: row => {
+                            debugger
                             var ids = row.original["storeID"];
                             return (
                               <>
