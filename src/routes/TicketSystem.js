@@ -61,7 +61,7 @@ class TicketSystem extends Component {
       KbLink: false,
       Plus: false,
       TabIconColor: "nav-link active",
-      fileText:"",
+      fileText:0,
       altEmailID: "",
       altNumber: "",
       customer_Id: 0,
@@ -623,8 +623,11 @@ class TicketSystem extends Component {
     // this.setState({
     //   file
     // });   
-    this.state.file.push(e.target.files[0]);  
-
+    for (let i = 0; i < e.target.files.length; i++) {
+      this.state.file.push(e.target.files[i]);  
+    }    
+    this.setState({fileText:this.state.file.length});
+    
    // this.setState({fileText:"files"});
   }
 
@@ -1139,13 +1142,29 @@ class TicketSystem extends Component {
                 </div>
 
                 <div className="row my-3 mx-1">
+                {/* {(this.state.file.length==0&&this.state.file.length < 5 ? 
+                             <img src={ThumbTick} alt="thumb" className="thumbtick" />                              
+                              : ( <img style={{display: "none"}} src={PlusImg} alt="thumb" className="thumbtick-plus"
+                              onClick={this.handleThumbModalOpen.bind(this)} />) 
+                           )}     */}
+
+                {this.state.file.map((item, i) => (                             
+                           i<5?<img src={ThumbTick} href={item[i]} alt="thumb" className="thumbtick" />:"" 
+                                                                     
+                            ))}
+
+                             {(this.state.file.length > 4 ? 
+                              <img src={PlusImg} alt="thumb" className="thumbtick-plus"
+                              onClick={this.handleThumbModalOpen.bind(this)} />
+                              : ( <img style={{display: "none"}} src={PlusImg} alt="thumb" className="thumbtick-plus"
+                              onClick={this.handleThumbModalOpen.bind(this)} />) 
+                           )}          
+                  {/* <img src={ThumbTick} alt="thumb" className="thumbtick" />
                   <img src={ThumbTick} alt="thumb" className="thumbtick" />
                   <img src={ThumbTick} alt="thumb" className="thumbtick" />
                   <img src={ThumbTick} alt="thumb" className="thumbtick" />
-                  <img src={ThumbTick} alt="thumb" className="thumbtick" />
-                  <img src={ThumbTick} alt="thumb" className="thumbtick" />
-                  <img src={PlusImg} alt="thumb" className="thumbtick-plus"
-                    onClick={this.handleThumbModalOpen.bind(this)} />
+                  <img src={ThumbTick} alt="thumb" className="thumbtick" /> */}
+                 
                 </div>
                 <Modal
                   open={this.state.Plus}
@@ -1159,14 +1178,17 @@ class TicketSystem extends Component {
                          onClick={this.handleThumbModalClose.bind(this)}/>
                       </div>
                     <div className="row my-3 mx-1">
+                    {this.state.file.map((item, i) => (
+                             <img src={ThumbTick} alt="thumb" className="thumbtick" style={{ marginBottom: "10px" }} />
+                            ))}
+{/*                     
                       <img src={ThumbTick} alt="thumb" className="thumbtick" style={{ marginBottom: "10px" }} />
                       <img src={ThumbTick} alt="thumb" className="thumbtick" style={{ marginBottom: "10px" }} />
                       <img src={ThumbTick} alt="thumb" className="thumbtick" style={{ marginBottom: "10px" }} />
                       <img src={ThumbTick} alt="thumb" className="thumbtick" style={{ marginBottom: "10px" }} />
                       <img src={ThumbTick} alt="thumb" className="thumbtick" style={{ marginBottom: "10px" }} />
                       <img src={ThumbTick} alt="thumb" className="thumbtick" style={{ marginBottom: "10px" }} />
-                      <img src={ThumbTick} alt="thumb" className="thumbtick" style={{ marginBottom: "10px" }} />
-                      <img src={ThumbTick} alt="thumb" className="thumbtick" style={{ marginBottom: "10px" }} />
+                      <img src={ThumbTick} alt="thumb" className="thumbtick" style={{ marginBottom: "10px" }} /> */}
                     </div>
                   </div>
                 </Modal>
@@ -1304,7 +1326,7 @@ class TicketSystem extends Component {
                               </label>
                             </span>
                             <label style={{ color: "#2561a8" }}>
-                              {this.state.file.length} files
+                              {this.state.fileText} files
                             </label>
                           </li>
                           <li>
