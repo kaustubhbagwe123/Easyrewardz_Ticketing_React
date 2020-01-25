@@ -51,7 +51,7 @@ class TicketSystem extends Component {
       CkEditorTemplateData: [],
       CkEditorTemplateDetails: [],
       KbPopupData: [],
-      BrandData: [],
+      BrandData: [],      
       CategoryData: [],
       SubCategoryData: [],
       selectedDataRow: [],
@@ -61,6 +61,7 @@ class TicketSystem extends Component {
       KbLink: false,
       Plus: false,
       TabIconColor: "nav-link active",
+      fileText:"",
       altEmailID: "",
       altNumber: "",
       customer_Id: 0,
@@ -626,8 +627,10 @@ class TicketSystem extends Component {
     // file = this.state.file;
     // this.setState({
     //   file
-    // });
-    this.state.file.push(e.target.files[0]);
+    // });   
+    this.state.file.push(e.target.files[0]);  
+
+   // this.setState({fileText:"files"});
   }
 
   handleCREATE_TICKET(StatusID) {

@@ -194,6 +194,9 @@ class Dashboard extends Component {
       DashboardGraphData: {},
       DashboardBillGraphData: [],
       DashboardSourceGraphData: [],
+      DashboardTaskGraphData: [],
+      DashboardClaimGraphData: [],
+      DashboardPriorityGraphData: [],
       AgentIds: '',
       BrandIds: '',
       ActiveTabId: 1,
@@ -482,8 +485,10 @@ class Dashboard extends Component {
         // todate: "2020-01-15",
         // BrandID: "26, 31"
         UserIds: this.state.AgentIds,
-        fromdate: this.state.start._d,
-        todate: this.state.end._d,
+        // fromdate: this.state.start._d,
+        fromdate: moment(this.state.start._d).format("YYYY-MM-DD"),
+        // todate: this.state.end._d,
+        todate: moment(this.state.end._d).format("YYYY-MM-DD"),
         BrandID: this.state.BrandIds
       }
     }).then(function(res) {
@@ -492,10 +497,36 @@ class Dashboard extends Component {
         let DashboardGraphData = res.data.responseData;
         let DashboardBillGraphData = res.data.responseData.tickettoBillGraph;
         let DashboardSourceGraphData = res.data.responseData.ticketSourceGraph;
+        let DashboardTaskGraphData = res.data.responseData.tickettoTaskGraph;
+        let DashboardPriorityGraphData = res.data.responseData.priorityChart;
+        let DashboardClaimGraphData = res.data.responseData.tickettoClaimGraph;
+        if (DashboardTaskGraphData !== null) {
+          self.setState({
+            DashboardTaskGraphData
+          });
+        }
+        if (DashboardClaimGraphData !== null) {
+          self.setState({
+            DashboardClaimGraphData
+          });
+        }
+        if (DashboardBillGraphData !== null) {
+          self.setState({
+            DashboardBillGraphData
+          });
+        }
+        if (DashboardSourceGraphData !== null) {
+          self.setState({
+            DashboardSourceGraphData
+          });
+        }
+        if (DashboardPriorityGraphData !== null) {
+          self.setState({
+            DashboardPriorityGraphData
+          });
+        }
         self.setState({
-          DashboardGraphData: DashboardGraphData,
-          DashboardBillGraphData: DashboardBillGraphData,
-          DashboardSourceGraphData: DashboardSourceGraphData,
+          DashboardGraphData: DashboardGraphData
         });
       }
     });
@@ -579,13 +610,18 @@ class Dashboard extends Component {
 
 
     this.setState({
-      AgentIds: strAgentIds
+      AgentIds: strAgentIds,
+      DashboardTaskGraphData: [],
+      DashboardClaimGraphData: [],
+      DashboardBillGraphData: [],
+      DashboardSourceGraphData: [],
+      DashboardPriorityGraphData: []
     }, ()=>{
       this.handleGetDashboardNumberData();
       this.handleGetDashboardGraphData();
     });
   }
-  checkIndividualBrand = async event => {
+  checkIndividualBrand = event => {
     debugger;
     var brandcount=0;
     var checkboxes = document.getElementsByName("allBrand");
@@ -617,11 +653,17 @@ class Dashboard extends Component {
       this.setState({CheckBoxAllBrand:false});
     }
 
-    await this.setState({
-      BrandIds: strBrandIds
+    this.setState({
+      BrandIds: strBrandIds,
+      DashboardTaskGraphData: [],
+      DashboardClaimGraphData: [],
+      DashboardBillGraphData: [],
+      DashboardSourceGraphData: [],
+      DashboardPriorityGraphData: []
+    }, ()=>{
+      this.handleGetDashboardNumberData();
+      this.handleGetDashboardGraphData();
     });
-    this.handleGetDashboardNumberData();
-    this.handleGetDashboardGraphData();
   }
   checkAllAgent = async event => {
     debugger;
@@ -756,7 +798,12 @@ class Dashboard extends Component {
     debugger;
     await this.setState({
       start: startDate,
-      end: endDate
+      end: endDate,
+      DashboardTaskGraphData: [],
+      DashboardClaimGraphData: [],
+      DashboardBillGraphData: [],
+      DashboardSourceGraphData: [],
+      DashboardPriorityGraphData: []
     });
     this.handleGetDashboardNumberData();
     this.handleGetDashboardGraphData();
@@ -2826,7 +2873,7 @@ class Dashboard extends Component {
                       <div className="dash-top-cards prio-pie-cntr">
                         <p className="card-head mb-0">Open By Priority</p>
                         <div className="prio-pie-chart">
-                          <OpenByPriorityPie />
+                        {this.state.DashboardPriorityGraphData.length > 0 ? <OpenByPriorityPie data={this.state.DashboardPriorityGraphData} /> : null}
                         </div>
                       </div>
                     </div>
@@ -2894,7 +2941,7 @@ class Dashboard extends Component {
                                 </ul>
                               </div>
                               <div className="col-md-9 tic-bill-graph">
-                                <TicketToBillBarGraph />
+                                {this.state.DashboardBillGraphData.length > 0 ? <TicketToBillBarGraph data={this.state.DashboardBillGraphData} /> : null}
                               </div>
                             </div>
                           </div>
@@ -2930,7 +2977,7 @@ class Dashboard extends Component {
                                 </ul>
                               </div>
                               <div className="col-md-9 ">
-                                <TicketGenerationSourceBar />
+                                {this.state.DashboardSourceGraphData.length > 0 ? <TicketGenerationSourceBar data={this.state.DashboardSourceGraphData} /> : null}
                               </div>
                             </div>
                           </div>
@@ -3014,7 +3061,9 @@ class Dashboard extends Component {
                             role="tabpanel"
                             aria-labelledby="task-tab"
                           >
-                            {Object.keys(this.state.DashboardGraphData).length > 0 ? <MultiBarChart data={this.state.DashboardGraphData} /> : null}
+                            {this.state.DashboardTaskGraphData.length > 0 ? <MultiBarChart data={this.state.DashboardTaskGraphData} /> : null}
+                            {/* {Object.keys(this.state.DashboardGraphData).length > 0 ? <MultiBarChart data={this.state.DashboardTaskGraphData} /> : null} */}
+                            {/* <MultiBarChart data={this.state.DashboardGraphData.tickettoTaskGraph} /> */}
                           </div>
                           <div
                             className="tab-pane fade"
@@ -3022,7 +3071,7 @@ class Dashboard extends Component {
                             role="tabpanel"
                             aria-labelledby="claim-tab"
                           >
-                            <TicketToClaimMultiBar />
+                            {this.state.DashboardClaimGraphData.length > 0 ? <TicketToClaimMultiBar data={this.state.DashboardClaimGraphData} /> : null}
                           </div>
                         </div>
                       </div>

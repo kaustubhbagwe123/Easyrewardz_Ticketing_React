@@ -52,35 +52,37 @@ class MultiBarChart extends Component {
     //   }
     // }).then(function(res) {
       debugger;
-      var data = this.props.data;
-      let categories = [],
-        totalTicketsData = [],
-        ticketedTaskData = [];
-      // let DashboardBillGraphData = res.data.responseData.tickettoTaskGraph;
-      // for (let i = 0; i < DashboardBillGraphData.length; i++) {
-      //   let day = DashboardBillGraphData[i].day;
-      //   categories.push(day);
-      //   let totalTickets = DashboardBillGraphData[i].totalTickets;
-      //   totalTicketsData.push(totalTickets);
-      //   let taskTickets = DashboardBillGraphData[i].taskTickets;
-      //   ticketedTaskData.push(taskTickets);
-      // }
+      var propsData = this.props.data;
+      if (propsData !== null && propsData !== undefined) {
+        let categories = [],
+          totalTicketsData = [],
+          ticketedTaskData = [];
+        // let DashboardBillGraphData = res.data.responseData.tickettoTaskGraph;
+        for (let i = 0; i < propsData.length; i++) {
+          let day = propsData[i].day;
+          categories.push(day);
+          let totalTickets = propsData[i].totalTickets;
+          totalTicketsData.push(totalTickets);
+          let taskTickets = propsData[i].taskTickets;
+          ticketedTaskData.push(taskTickets);
+        }
 
-      // this.setState({
-      //   optionsMixedChart: {
-      //     xaxis: {
-      //       categories
-      //     }
-      //   },
-      //   seriesMixedChart: [
-      //     {
-      //       data: totalTicketsData
-      //     },
-      //     {
-      //       data: ticketedTaskData
-      //     }
-      //   ]
-      // });
+        this.setState({
+          optionsMixedChart: {
+            xaxis: {
+              categories
+            }
+          },
+          seriesMixedChart: [
+            {
+              data: totalTicketsData
+            },
+            {
+              data: ticketedTaskData
+            }
+          ]
+        });
+      }
     // });
   }
   
