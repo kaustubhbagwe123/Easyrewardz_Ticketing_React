@@ -110,43 +110,41 @@ class TicketSystemOrder extends Component {
     let ticketSourceValue = e.currentTarget.value;
     this.setState({ selectedTicketSource: ticketSourceValue });
   };
-  handleCheckOrderID(OrderItemId, rowData, e) {
+  handleCheckOrderID(orderMasterID, rowData) {
     debugger;
 
-    //  e.stopPropagation();
     const newSelected = Object.assign({}, this.state.CheckOrderID);
-    newSelected[OrderItemId] = !this.state.CheckOrderID[OrderItemId];
+    newSelected[orderMasterID] = !this.state.CheckOrderID[orderMasterID];
     this.setState({
-      CheckOrderID: OrderItemId ? newSelected : false
+      CheckOrderID: orderMasterID ? newSelected : false
     });
     var selectedRow = [];
-
     if (this.state.selectedDataRow.length === 0) {
-      selectedRow.push(rowData.original);
+      selectedRow.push(rowData.orderMasterID);
       this.setState({
         selectedDataRow: selectedRow
       });
     } else {
-      if (newSelected[OrderItemId] === true) {
+      if (newSelected[orderMasterID] === true) {
         for (var i = 0; i < this.state.selectedDataRow.length; i++) {
           if (
-            this.state.selectedDataRow[i].OrderItemId ===
-            rowData.original.orderItemID
+            this.state.selectedDataRow[i] ===
+            rowData.orderMasterID
           ) {
             selectedRow.splice(i, 1);
 
             break;
           } else {
             selectedRow = this.state.selectedDataRow;
-            selectedRow.push(rowData.original);
+            selectedRow.push(rowData.orderMasterID);
             break;
           }
         }
       } else {
         for (var j = 0; j < this.state.selectedDataRow.length; j++) {
           if (
-            this.state.selectedDataRow[j].OrderItemId ===
-            rowData.original.orderItemID
+            this.state.selectedDataRow[j] ===
+            rowData.orderMasterID
           ) {
             selectedRow = this.state.selectedDataRow;
             selectedRow.splice(j, 1);
@@ -154,10 +152,12 @@ class TicketSystemOrder extends Component {
           }
         }
       }
-    }
+   }
     this.setState({
       selectedDataRow: selectedRow
     });
+    console.log(this.state.selectedDataRow,"--------final data-------");
+    
     {
       this.props.getOrderId(this.state.selectedDataRow);
     }
@@ -182,10 +182,18 @@ class TicketSystemOrder extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let TicketSourceData = res.data.responseData;
-      self.setState({
-        TicketSourceData: TicketSourceData
-      });
+      let status=res.data.message;
+      let data = res.data.responseData;
+      if(status === "Success"){
+        self.setState({
+          TicketSourceData: data
+        });
+      }else{
+        self.setState({
+          TicketSourceData: []
+        });
+      }
+      
     });
   }
   handleGetManuallyTableData() {
@@ -326,10 +334,7 @@ class TicketSystemOrder extends Component {
     this.handleModeOfPaymentDropDown();
     this.handleGetTicketSourceList();
   }
-  onchangeDataClick(){
-    debugger
-    alert("Data 11233")
-  }
+
 
   render() {
     const { orderDetailsData } = this.state;
@@ -940,52 +945,53 @@ class TicketSystemOrder extends Component {
                 data={orderDetailsData}
                 columns={[
                   {
-                    Header: <span>Invoice Number</span>,
+                    Header: <span>Invoice Numberr</span>,
                     accessor: "invoiceNumber",
-                    // Cell: row => (
-                    //   <div
-                    //     className="filter-checkbox"
-                    //     style={{ marginLeft: "15px" }}
-                    //   >
-                    //     <input
-                    //       type="checkbox"
-                    //       id={"i" + row.original.orderMasterID}
-                    //       style={{ display: "none" }}
-                    //       name="ticket-order"
-                    //       checked={
-                    //         this.state.CheckOrderID[
-                    //           row.original.orderMasterID
-                    //         ] === true
-                    //       }
-                    //       onChange={this.handleCheckOrderID.bind(
-                    //         this,
-                    //         row.original.orderMasterID
-                    //       )}
-                    //     />
-                    //     <label htmlFor={"i" + row.original.orderMasterID}>
-                    //       {row.original.invoiceNumber}
-                    //     </label>
-                    //   </div>
-                    // )
-                    Cell: row => {
-                      return (
-                        <span>
-                          <div className="filter-type pink1 pinkmyticket">
-                            <div className="filter-checkbox pink2 pinkmargin">
-                              <input
-                                type="checkbox"
-                                id={row.original.invoiceNumber}
-                                checked={this.state.CheckBoxChecked}
-                                onChange={this.handelCheckBoxCheckedChange}
-                              />
-                              <label htmlFor={row.original.invoiceNumber}>
-                                {row.original.invoiceNumber}
-                              </label>
-                            </div>
-                          </div>
-                        </span>
-                      );
-                    }
+                    Cell: row => (
+                      <div
+                        className="filter-checkbox"
+                        style={{ marginLeft: "15px" }}
+                      >
+                        <input
+                          type="checkbox"
+                          id={"i" + row.original.orderMasterID}
+                          style={{ display: "none" }}
+                          name="ticket-order"
+                          checked={
+                            this.state.CheckOrderID[
+                              row.original.orderMasterID
+                            ] === true
+                          }
+                          onChange={this.handleCheckOrderID.bind(
+                            this,
+                            row.original.orderMasterID,
+                            row.original
+                          )}
+                        />
+                        <label htmlFor={"i" + row.original.orderMasterID}>
+                          {row.original.invoiceNumber}
+                        </label>
+                      </div>
+                    )
+                    // Cell: row => {
+                    //   return (
+                    //     <span>
+                    //       <div className="filter-type pink1 pinkmyticket">
+                    //         <div className="filter-checkbox pink2 pinkmargin">
+                    //           <input
+                    //             type="checkbox"
+                    //             id={row.original.invoiceNumber}
+                    //             checked={this.state.CheckBoxChecked}
+                    //             onChange={this.handelCheckBoxCheckedChange}
+                    //           />
+                    //           <label htmlFor={row.original.invoiceNumber}>
+                    //             {row.original.invoiceNumber}
+                    //           </label>
+                    //         </div>
+                    //       </div>
+                    //     </span>
+                    //   );
+                    // }
                   },
                   {
                     Header: <span>Invoice Date</span>,
@@ -1035,9 +1041,9 @@ class TicketSystemOrder extends Component {
                               >
                                 <input
                                   type="checkbox"
-                                  // style={{display:"none"}}
-                                  name={row.original.orderItemID}
-                                  id={row.original.orderItemID}
+                                  id={"i" + row.original.orderItemID}
+                                  style={{ display: "none" }}
+                                  name="ticket-order"
                                   checked={
                                     this.state.CheckOrderID[
                                       row.original.orderItemID
@@ -1046,10 +1052,10 @@ class TicketSystemOrder extends Component {
                                   onChange={this.handleCheckOrderID.bind(
                                     this,
                                     row.original.orderItemID,
-                                    row
+                                    row.original
                                   )}
                                 />
-                                <label htmlFor={row.original.orderItemID}>
+                                <label htmlFor={"i" + row.original.orderItemID}>
                                   {row.original.invoiceNo}
                                 </label>
                               </div>

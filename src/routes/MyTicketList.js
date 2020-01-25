@@ -436,7 +436,7 @@ class MyTicketList extends Component {
         headerActiveId: 1003
       });
     }
-    var data = ticketStatus;
+    // var data = ticketStatus;
     this.setState({ loading: true });
     debugger;
     let self = this;
@@ -1297,15 +1297,15 @@ class MyTicketList extends Component {
      //---------------------By Ticket All Tab---------------------
      var allTab={};
     
-     if(this.state.ActiveTabId==5)
+     if(this.state.ActiveTabId===5)
      {
         let withClaim=0;
         let withTask=0;
-        if(this.state.selectedWithClaimAll=="yes")
+        if(this.state.selectedWithClaimAll==="yes")
         {
             withClaim=1;
         }
-        if(this.state.selectedWithTaskAll=="yes")
+        if(this.state.selectedWithTaskAll==="yes")
         {
             withTask=1;
         }
