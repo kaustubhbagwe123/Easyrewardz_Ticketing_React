@@ -206,7 +206,7 @@ class MyTicketList extends Component {
       selectedNameOfMonthForDailyYear: [],
       agentId: 0,
       agentRemark: "",
-      ticketIds: "1,3",
+      ticketIds: "",
       selectedScheduleFor: "",
       dailyDay: 0,
       isByStatus: true,
@@ -246,7 +246,7 @@ class MyTicketList extends Component {
       selectedNoOfDayForDailyYear: 0,
       selectedNoOfWeekForYear: 0,
       selectedNameOfMonthForDailyYear: "",
-      loading: false
+      loading: false,
     };
     this.clearSearch = this.clearSearch.bind(this);
     this.handleAdvSearchFlag = this.handleAdvSearchFlag.bind(this);
@@ -683,12 +683,15 @@ class MyTicketList extends Component {
     debugger;
 
     let self = this;
+    var ticketIdsComma = this.state.ticketIds;
+    var ticketIds = ticketIdsComma.substring(0, ticketIdsComma.length-1);
+
     axios({
       method: "post",
       url: config.apiUrl + "/Ticketing/AssignTickets",
       headers: authHeader(),
       params: {
-        TicketID: this.state.ticketIds,
+        TicketID: ticketIds,
         AgentID: this.state.agentId,
         Remark: this.state.agentRemark
       }
@@ -698,6 +701,7 @@ class MyTicketList extends Component {
       if (messageData === "Success") {
         self.handleAssignModalClose();
         NotificationManager.success("Tickets assigned successfully.");
+        self.handleSearchTicket();
       }
     });
   }
@@ -1657,19 +1661,39 @@ class MyTicketList extends Component {
   clickCheckbox(evt) {
     evt.stopPropagation();
   }
-  handelCheckBoxCheckedChange = () => {
-    this.setState({
-      CheckBoxChecked: !this.state.CheckBoxChecked
+  handelCheckBoxCheckedChange = async () => {
+    // this.setState({
+    //   CheckBoxChecked: !this.state.CheckBoxChecked
+    // });
+    debugger;
+    var checkboxes = document.getElementsByName("MyTicketListcheckbox[]");
+    var strIds="";
+    for (var i in checkboxes) {
+      if(isNaN(i)===false)
+      {
+         if(checkboxes[i].checked === true)
+         {
+          if (checkboxes[i].getAttribute('attrIds')!==null)
+            strIds+=checkboxes[i].getAttribute('attrIds')+",";
+         }
+      }
+    }
+    await this.setState({
+      ticketIds: strIds,
     });
   };
 
-  checkAllCheckbox(event) {
+  checkAllCheckbox = async event => {
+    debugger;
+    var strIds="";
     const allCheckboxChecked = event.target.checked;
     var checkboxes = document.getElementsByName("MyTicketListcheckbox[]");
     if (allCheckboxChecked) {
       for (var i in checkboxes) {
         if (checkboxes[i].checked === false) {
           checkboxes[i].checked = true;
+          if (checkboxes[i].getAttribute('attrIds')!==null)
+            strIds+=checkboxes[i].getAttribute('attrIds')+",";
         }
       }
     } else {
@@ -1678,7 +1702,11 @@ class MyTicketList extends Component {
           checkboxes[J].checked = false;
         }
       }
+      strIds="";
     }
+    await this.setState({
+      ticketIds: strIds
+    });
   }
   handelOnchangeData(e) {
     this.setState({
@@ -4719,12 +4747,12 @@ class MyTicketList extends Component {
                                       </Modal>
                                       <button
                                         className={
-                                          this.state.CheckBoxChecked
+                                          this.state.ticketIds.length > 0
                                             ? "btn-inv"
                                             : "dis-btn"
                                         }
                                         onClick={
-                                          this.state.CheckBoxChecked
+                                          this.state.ticketIds.length > 0
                                             ? this.handleAssignModalOpen.bind(
                                                 this
                                               )
@@ -4995,14 +5023,15 @@ class MyTicketList extends Component {
                                       <div className="filter-checkbox pink2 pinkmargin">
                                         <input
                                           type="checkbox"
-                                          id={row.original.ticketID}
+                                          id={'i' + row.original.ticketID}
                                           name="MyTicketListcheckbox[]"
-                                          checked={this.state.CheckBoxChecked}
+                                          // checked={this.state.CheckBoxChecked}
+                                          attrIds={row.original.ticketID}
                                           onChange={
                                             this.handelCheckBoxCheckedChange
                                           }
                                         />
-                                        <label htmlFor={row.original.ticketID}>
+                                        <label htmlFor={'i' + row.original.ticketID}>
                                           <img
                                             src={HeadPhone3}
                                             alt="HeadPhone"
