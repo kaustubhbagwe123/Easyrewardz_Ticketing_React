@@ -6,28 +6,84 @@ import Modal from "react-responsive-modal";
 import LeftBackIcon from "./../assets/Images/black-left-arrow.png";
 import CancelIcon from "./../assets/Images/cancel.png";
 import { Collapse, CardBody } from "reactstrap";
-import { Card } from "react-bootstrap";
+import { Card, Popover } from "react-bootstrap";
 import CKEditor from 'ckeditor4-react';
+import { authHeader } from "../helpers/authHeader";
+import axios from "axios";
+import config from "./../helpers/config";
+import {
+  NotificationContainer,
+  NotificationManager
+} from "react-notifications";
+import ReactTable from "react-table";
+import { notification } from "antd";
+
 
 class KnowledgeBase extends Component {
   constructor(props) {
     super(props);
-
+var row;
     this.state = {
       headerfirst: "block",
       headersecound: "none",
       searchmodal: false,
       addnewkbmodal: false,
       editapprove: false,
+      editapprove1:false,
       detailscollapse: false,
       tabcolor: "#2561A8",
-      tabcolor1: "#4A4A4A"
+      tabcolor1: "#4A4A4A",
+      selectedCategory: 0,
+      CategoryData: [],
+      byCategoryFlag:0,
+      allFlag:0,
+      selectedSubCategory:0,
+      SubCategoryData:[],
+      selectedSubject:[],
+      selectedDescription:[],
+      KBListData:[],
+      KBListnotApproveData:[],
+      KBid:0,
+      IssueTypeData:[],
+      selectedIssueType:0,
+      updateKBID:0,
+      updateCategoryValue:0,
+      updateCategoryName:"",
+      updateSubCategoryValue:0,
+      updateSubCategoryName:"",
+      updateIssurTypeValue:0,
+      updateIssueTypeName:"",
+      updateSubject:"",
+      approveID:0,
+      approvebit:0,
+      approveKBID:0,
+      approveCategoryValue:0,
+      approveCategoryName:"",
+      approveSubCategoryValue:0,
+      approveSubCategoryName:"",
+      approveIssurTypeValue:0,
+      approveIssueTypeName:"",
+      approveSubject:"",
+      ckeditorAdd:[],
+      ckeditorUpdate:[],
+      ckeditorApprove:[],
+      countApprove:0,
+      countNotApprove:0
     };
     this.HandelFirstTabClick = this.HandelFirstTabClick.bind(this);
     this.HandelSecoundTabClick = this.HandelSecoundTabClick.bind(this);
     this.opneSearchModal = this.opneSearchModal.bind(this);
     this.closeSearchModal = this.closeSearchModal.bind(this);
-    this.HandelOnenCloseDetailsCollapse = this.HandelOnenCloseDetailsCollapse.bind(this)
+    this.HandelOnenCloseDetailsCollapse = this.HandelOnenCloseDetailsCollapse.bind(this);
+    this.handleGetCategoryList=this.handleGetCategoryList.bind(this);
+    this.handleGetSubCategoryList=this.handleGetSubCategoryList.bind(this);
+    this.handleGetIssueTypeList=this.handleGetIssueTypeList.bind(this);
+    this.handleAddKB=this.handleAddKB.bind(this);
+    this.handleKBList=this.handleKBList.bind(this);
+    this.handleDeleteKB=this.handleDeleteKB.bind(this);
+    this.handleUpdateKB=this.handleUpdateKB.bind(this);
+    this.handleRejectKB=this.handleRejectKB.bind(this);
+    this.handleSeaechKB=this.handleSeaechKB.bind(this);
   }
   opneSearchModal() {
     this.setState({ searchmodal: true });
@@ -36,11 +92,25 @@ class KnowledgeBase extends Component {
     this.setState({ searchmodal: false });
   }
 
-  openEditAproveBModal() {
+  openEditAproveBModal(rowdata) {
+   
     this.setState({ editapprove: true });
+   
+   this.setUpdateData(rowdata);
   }
   closeEditAproveModal() {
     this.setState({ editapprove: false });
+  }
+
+  openEditAproveBModal1(approvedata,bit) {
+   
+    this.setState({ editapprove1: true });
+   this.state.approveID=approvedata.kbid;
+  this.state.approvebit=bit;
+  this.setApproveData(approvedata)
+  }
+  closeEditAproveModal1() {
+    this.setState({ editapprove1: false });
   }
 
   openAddNewKBModal() {
@@ -49,6 +119,17 @@ class KnowledgeBase extends Component {
   closeAddNewKBModal() {
     this.setState({ addnewkbmodal: false });
   }
+  componentDidMount() {
+    debugger;
+    
+    this.handleGetCategoryList();
+    this.handleKBList();
+  }
+
+ 
+
+
+  
 
   HandelFirstTabClick() {
     this.setState({
@@ -59,6 +140,73 @@ class KnowledgeBase extends Component {
       tabcolor1: "#4A4A4A"
     });
   }
+setUpdateData(individualData){
+  debugger;
+      
+  let updateKBID=individualData.kbid,
+   updateCategoryValue= individualData.categoryID,
+      updateCategoryName=individualData.categoryName,
+      updateSubCategoryValue=individualData.subCategoryID,
+       updateSubCategoryName=individualData.subCategoryName,
+       updateIssurTypeValue=individualData.issueTypeID,
+       updateIssueTypeName=individualData.issueTypeName,
+       updateSubject=individualData.subject,
+       selectedCategory=updateCategoryValue,
+  selectedSubCategory=updateSubCategoryValue,
+  selectedIssueType=updateIssurTypeValue;;
+
+  this.setState({
+    updateKBID, updateCategoryValue, updateCategoryName, updateSubCategoryValue,updateSubCategoryName,
+    updateIssurTypeValue,updateIssueTypeName,updateSubject,
+    selectedCategory,selectedSubCategory,selectedIssueType
+  })
+  
+}
+setApproveData(individualData){
+  debugger;
+      
+  let approveKBID=individualData.kbid,
+  approveCategoryValue= individualData.categoryID,
+  approveCategoryName=individualData.categoryName,
+  approveSubCategoryValue=individualData.subCategoryID,
+  approveSubCategoryName=individualData.subCategoryName,
+  approveIssurTypeValue=individualData.issueTypeID,
+  approveIssueTypeName=individualData.issueTypeName,
+  approveSubject=individualData.subject,
+       selectedCategory=approveCategoryValue,
+  selectedSubCategory=approveSubCategoryValue,
+  selectedIssueType=approveIssurTypeValue;;
+
+  this.setState({
+    approveKBID, approveCategoryValue, approveCategoryName, approveSubCategoryValue,approveSubCategoryName,
+    approveIssurTypeValue,approveIssueTypeName,approveSubject,
+    selectedCategory,selectedSubCategory,selectedIssueType
+  })
+  
+}
+
+onAddCKEditorChange = (evt) => {
+  debugger;
+  var newContent = evt.editor.getData();
+  this.setState({
+    ckeditorAdd: newContent
+  });
+}
+
+onUpdateCKEditorChange = (evt) => {
+  debugger;
+  var newContent = evt.editor.getData();
+  this.setState({
+    ckeditorUpdate: newContent
+  });
+}
+onApproveCKEditorChange = (evt) => {
+  debugger;
+  var newContent = evt.editor.getData();
+  this.setState({
+    ckeditorApprove: newContent
+  });
+}
 
   HandelSecoundTabClick() {
     this.setState({
@@ -69,6 +217,311 @@ class KnowledgeBase extends Component {
       tabcolor1: "#2561A8"
     });
   }
+
+  setCategoryValue = e => {
+    let categoryValue = e.currentTarget.value;
+    this.setState({ selectedCategory: categoryValue });
+    setTimeout(() => {
+      if (this.state.selectedCategory) {
+        this.handleGetSubCategoryList();
+      }
+    }, 1);
+  };
+ 
+  setSubCategoryValue = e => {
+    let subCategoryValue = e.currentTarget.value;
+    this.setState({ selectedSubCategory: subCategoryValue });
+    setTimeout(() => {
+      if (this.state.selectedSubCategory) {
+        this.handleGetIssueTypeList();
+      }
+    }, 1);
+};
+
+setIssueType = e => {
+  let issuetype = e.currentTarget.value;
+  this.setState({ selectedIssueType: issuetype });
+} 
+
+setSubjectValue = e => {
+let subjectvalue =e.currentTarget.value;
+this.setState({selectedSubject:subjectvalue});
+};
+
+setUpdateSubjectValue = e => {
+  let subjectvalue =e.currentTarget.value;
+  this.setState({updateSubject:subjectvalue});
+  };
+  
+  setApproveSubjectValue =e =>{
+    let subjectvalue =e.currentTarget.value;
+  this.setState({approveSubject:subjectvalue});
+  };
+
+
+setDescriptionValue = e => {
+let descriptionvalue = e.currentTarget.value;
+this.setState({selectedDescription:descriptionvalue});
+};
+  handleGetCategoryList() {
+    debugger;
+
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Category/GetCategoryList",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let CategoryData = res.data;
+      // let CategoryDataAll = res.data;
+      self.setState({
+        CategoryData: CategoryData
+        // CategoryDataAll: CategoryDataAll
+      });
+    });
+  }
+  handleGetSubCategoryList() {
+    debugger;
+    let self = this;
+    
+    let cateId =this.state.selectedCategory;
+      
+    axios({
+      method: "post",
+      url: config.apiUrl + "/SubCategory/GetSubCategoryByCategoryID",
+      headers: authHeader(),
+      params: {
+        CategoryID: cateId
+      }
+    }).then(function(res) {
+      debugger;
+      var SubCategoryData = res.data.responseData;
+      self.setState({
+        SubCategoryData: SubCategoryData
+      });
+    });
+  }
+  handleGetIssueTypeList() {
+    debugger;
+    let self = this;
+    let subCateId = this.state.selectedSubCategory;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/IssueType/GetIssueTypeList",
+      headers: authHeader(),
+      params: {
+        SubCategoryID: subCateId
+      }
+    }).then(function(res) {
+      debugger;
+      let IssueTypeData = res.data.responseData;
+      self.setState({ IssueTypeData: IssueTypeData });
+    });
+  }
+handleDeleteKB(id){
+  debugger;
+  let self=this;
+ 
+  axios({
+    method:"post",
+    url: config.apiUrl + "/KnowledgeBase/DeleteKB",
+    headers: authHeader(),
+    params: {
+      KBID:id
+    }
+  }).then(function(res) {
+    debugger;
+    let Msg = res.data.message;
+    if (Msg === "Success") {
+      NotificationManager.success("Record Deleted successfully.");
+      self.handleKBList();
+    }
+  });
+}
+
+handleRejectKB(id,bit){
+  debugger;
+  let self=this;
+
+  if(bit===0){
+    var json={
+      KBID:id,
+      CategoryID : 0,
+      SubCategoryID:0,
+      IssueTypeID:0,
+      IsApproved:bit,
+      Subject:'',
+      Description:''
+      
+    };
+    axios({
+      method:"post",
+      url: config.apiUrl + "/KnowledgeBase/RejectApproveKB",
+      headers: authHeader(),
+      data:json
+    }).then(function(res) {
+      debugger;
+      let Msg = res.data.message;
+      
+        if (Msg === "Success") {
+         
+          NotificationManager.success("Record Rejected successfully.");
+          
+        
+      }
+      self.handleKBList();
+    });
+  }
+  else{
+
+  }
+  var json={
+    KBID:id,
+   
+    CategoryID : this.state.selectedCategory,
+    SubCategoryID:this.state.selectedSubCategory,
+    IssueTypeID:this.state.selectedIssueType,
+    IsApproved:bit,
+    Subject:this.state.approveSubject,
+    Description:this.state.ckeditorApprove
+   
+    
+  };
+  axios({
+    method:"post",
+    url: config.apiUrl + "/KnowledgeBase/RejectApproveKB",
+    headers: authHeader(),
+    data:json
+  }).then(function(res) {
+    debugger;
+    let Msg = res.data.message;
+    
+      if (Msg === "Success") {
+       
+        NotificationManager.success("Record Approved successfully.");
+      
+    }
+    self.handleKBList();
+  });
+}
+
+handleKBList(){
+  debugger;
+  let self=this;
+  axios({
+    method:"post",
+    url:config.apiUrl + "/KnowledgeBase/KBList",
+    headers: authHeader()
+  }).then(function(res){
+    debugger;
+    var approve=res.data.responseData.approved;
+  
+    var notapprove=res.data.responseData.notApproved;
+    self.setState({
+      KBListData: approve,
+      KBListnotApproveData:notapprove
+    });
+  });
+}
+
+handleSeaechKB(){
+  debugger;
+  let self=this;
+  axios({
+    method:"post",
+    url:config.apiUrl + "/KnowledgeBase/SearchKB",
+    headers: authHeader(),
+    params: {
+      Category_ID:this.state.selectedCategory,
+      SubCategory_ID:this.state.selectedSubCategory,
+      type_ID:this.state.selectedIssueType
+    }
+  }).then(function(res){
+    debugger;
+  
+        var approve=res.data.responseData.approved;
+       
+    var notapprove=res.data.responseData.notApproved;
+    self.setState({
+      KBListData: approve,
+      KBListnotApproveData:notapprove
+    });
+  });
+}
+
+handleUpdateKB(kbid){
+  debugger;
+  let self=this;
+  var json={
+    KBID:kbid,
+    KBCODE:"",
+    CategoryID : this.state.selectedCategory,
+    SubCategoryID:this.state.selectedSubCategory,
+    
+    Subject:this.state.updateSubject,
+    Description:this.state.ckeditorUpdate,
+   
+    IssueTypeID:this.state.selectedIssueType
+  };
+  axios({
+    method:"post",
+    url: config.apiUrl + "/KnowledgeBase/UpdateKB",
+    headers: authHeader(),
+    data:json
+  }).then(function(res) {
+    debugger;
+    let Msg = res.data.message;
+    if (Msg === "Success") {
+      NotificationManager.success("Record Updated successfully.");
+     
+    }
+    else{
+    NotificationManager.error("Record not Selected OR Sequence is Wrong")
+    }
+ 
+    self.handleKBList();
+   
+  }).catch(error => {
+    console.log(error)
+});
+}
+
+
+
+handleAddKB(){
+  debugger;
+  let self=this;
+  var json={
+    KBCODE:"",
+    CategoryID:this.state.selectedCategory,
+    SubCategoryID:this.state.selectedSubCategory,
+    
+    Subject:this.state.selectedSubject,
+    Description:this.state.ckeditorAdd,
+    IsActive:1,
+    IssueTypeID:this.state.selectedIssueType
+  };
+  axios({
+    method:"post",
+    url: config.apiUrl + "/KnowledgeBase/AddKB",
+    headers: authHeader(),
+    data:json
+  }).then(function(res) {
+    debugger;
+    let Msg = res.data.message;
+    if (Msg === "Success") {
+     
+      NotificationManager.success("Record Saved successfully.");
+      
+    }
+    self.handleKBList();
+  }).catch(error => {
+
+    console.log(error)
+});
+}
+
 
   HandelOnenCloseDetailsCollapse() {
     this.setState({ detailscollapse: !this.state.detailscollapse });
@@ -93,6 +546,7 @@ class KnowledgeBase extends Component {
               Knowledge Base List
             </label>
           </a>
+
           <button
             className="kb-Header-button"
             onClick={this.openAddNewKBModal.bind(this)}
@@ -108,7 +562,7 @@ class KnowledgeBase extends Component {
             <div className="row" style={{ padding: "35px 35px 10px 35px" }}>
               <div className="col-md-6"> 
               <label className="main-conenet-point">02 ITEMS</label>
-              <small className="clear-search" onClick={this.opneSearchModal}>
+              <small className="clear-search" onClick={this.handleKBList.bind(this)}>
                 Clear Search
               </small>
               </div>
@@ -125,128 +579,175 @@ class KnowledgeBase extends Component {
               </div>
             </div>
             <div className="kb-table" style={{ padding: "0px 30px 0px 20px" }}>
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Details</th>
-                    <th>Type</th>
-                    <th>Category</th>
-                    <th>Sub catogory</th>
-                    <th className="pad">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      <label className="table-id-data">ABC1234</label>
-                    </td>
-                    <td>
-                      <p
-                        className="table-details-data"
-                        style={{ display: "block" }}
-                      >
-                        Can I purchase a domain through Google?
-                      </p>
-                      <p className="table-details-data-1">
-                        Google can help you purchase a domain through one of our
-                        domain host partners. During sign up, just select the
-                        option to…
-                      </p>
-                      <img
-                        src={DownArrowIcon}
-                        alt="down-arrow-icon"
-                        className="down-icon-kb"
-                      />
-                    </td>
-                    <td>
-                      <label className="table-type-return">return</label>
-                    </td>
-                    <td>
-                      <label className="table-category">
-                        defective article
-                      </label>
-                    </td>
-                    <td>
-                      <label className="table-subcategory">
-                        pain in feet/knee/leg
-                      </label>
-                    </td>
-                    <td style={{padding:"15px 0"}}>
-                      <span style={{float:"right"}}>
-                        <button className="reject-button">
-                        <label className="reject-button-text">reject</label>
-                      </button>
-                      <button
-                        className="aprove-button"
-                        onClick={this.openEditAproveBModal.bind(this)}
-                      >
-                        <label className="approve-button-text">APPROVE</label>
-                      </button>
-                      </span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <label className="table-id-data">ABC1234</label>
-                    </td>
-                    <td>
-                      <p className="table-details-data">
-                        Can I still use the previous version of Sites?
-                      </p>{" "}
-                      <img
+           
+            <ReactTable
+            
+                  data= {this.state.KBListnotApproveData}
+                 
+                  columns={[ 
+                    {
+                      Header: (
+                        <span>
+                          <div >
+                           
+                              
+                              <label >
+                                ID
+                              </label>
+                           
+                          </div>
+                        </span>
+                      ),
+                      accessor: "kbid",
+                      Cell: row => {
+                        return (
+                          <span>
+                            <div >
+                             
+                                
+                                <label >
+                                  {row.original.kbid}
+                                  
+                                </label>
+                              
+                            </div>
+                          </span>
+                        );
+                      }
+                    },
+                    {
+                      Header: (
+                        <span >
+                          <label >
+                                Details
+                              </label>
+                        </span>
+                      ),
+                      accessor: "subject",
+                      Cell: row => {
+                        return (
+                          <span className="table-details-data">
+                            <label className="table-details-data">{row.original.subject}</label>
+                           
+                            <img
                         src={DownArrowIcon}
                         alt="down-arrow-icon"
                         className="down-icon-kb"
                         onClick={this.HandelOnenCloseDetailsCollapse}
                       />
-                      <Collapse isOpen={this.state.detailscollapse}>
+                      
+					  <Collapse isOpen={this.state.detailscollapse}>
                         <Card>
                           <CardBody>
-                            <p className="table-details-data-1">
-                              If your company is using any previous version of
-                              Sites, there will be no disruption. Keep editing
-                              and sharing your Sites as youIf your company is
-                              using any previous version of Sites, there will be
-                              no disruption. Keep editing and sharing your Sites
-                              as youIf your company is using any previous
-                              version of Sites, there will be no disruption.
-                              Keep editing and sharing your Sites as you If your
-                              company is using any previous version of Sites,
-                            </p>
+                            <span  className="table-details-data-1">
+                              {row.original.description}
+                            </span>
                           </CardBody>
                         </Card>
                       </Collapse>
-                    </td>
-                    <td>
-                      <label className="table-type-return">return</label>
-                    </td>
-                    <td>
-                      <label className="table-category">
-                        defective article
-                      </label>
-                    </td>
-                    <td>
-                      <label className="table-subcategory">
-                        pain in feet/knee/leg
-                      </label>
-                    </td>
-                    <td style={{padding:"15px 0"}}>
-                      <span style={{float:"right"}}>
-                        <button className="reject-button">
+                      
+                          </span>
+                        );
+                      }
+                    },
+                    {
+                      Header: (<span><label >
+                                Type
+                      </label></span>),
+                      accessor: "issueTypeName",
+                      
+                      Cell: row => {
+                        return (
+                          <span>
+                            <div >
+                             
+                                
+                                <label className="table-type-return">
+                                  {row.original.issueTypeName}
+                                  
+                                </label>
+                              
+                            </div>
+                          </span>
+                        );
+                      }
+                    },
+					  
+					  
+                    {
+                      Header: (
+                       
+					                 <span><label >
+                                Category
+                              </label></span>
+                      ),
+                      accessor: "categoryName",
+                      Cell: row => {
+                        return (
+                          <span>
+                            <label className="table-category">{row.original.categoryName}
+                           
+                            </label> </span>);
+                      }
+                    },
+                    {
+                      Header: (
+                        <span>
+                          <label >
+                                Sub catogory
+                              </label>
+                        </span>
+                      ),
+                      accessor: "subCategoryName",
+                      Cell: row => {
+                        return ( <span>
+                          <label className="table-subcategory">{row.original.subCategoryName} </label>
+
+                      
+                        </span>);
+                      }
+                    },
+                    {
+                      Header: (
+                        <span >
+                          <label className="pad">
+                                Action
+                              </label>
+                        </span>
+                      ),
+                      accessor: "kbid",
+                     Cell: row => {
+                      return ( <span>
+                        <button className="reject-button" value={row.original.kbid}
+                        onClick={this.handleRejectKB.bind(this,row.original.kbid,0)}>
                         <label className="reject-button-text">reject</label>
                       </button>
                       <button
                         className="aprove-button"
-                        onClick={this.openEditAproveBModal.bind(this)}
+                        value={row.original.kbid}
+                      onClick={this.openEditAproveBModal1.bind(this,row.original,1)}
+                      
                       >
                         <label className="approve-button-text">APPROVE</label>
                       </button>
-                      </span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+
+                      
+                        </span>);
+                     }
+                    
+                    }
+                    
+                    
+                  ]}
+                  // resizable={false}
+                  defaultPageSize={10}
+                  
+                  showPagination={true}
+                  getTrProps={this.HandleRowClickPage}
+                />
+
+
+
             </div>
           </div>
           <div className="pagi">
@@ -287,10 +788,10 @@ class KnowledgeBase extends Component {
           style={{ display: this.state.headersecound }}
         >
           <div className="main-content-margin">
-            <div className="row" style={{ padding: "35px 35px 10px 35px" }}>
+          <div className="row" style={{ padding: "35px 35px 10px 35px" }}>
             <div className="col-md-6">
               <label className="main-conenet-point">02 ITEMS</label>
-              <small className="clear-search">Clear Search</small>
+              <small className="clear-search" onClick={this.handleKBList.bind(this)}>Clear Search</small>
               </div>
               <div className="col-md-6" style={{textAlign:"end"}}>
               <label className="search-KB">
@@ -304,120 +805,178 @@ class KnowledgeBase extends Component {
               />
               </div>
             </div>
-            <div className="kb-table" style={{ padding: "0px 30px 0px 20px" }}>
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Details</th>
-                    <th>Type</th>
-                    <th>Category</th>
-                    <th>Sub catogory</th>
-                    <th className="pad">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      <label className="table-id-data">ABC1234</label>
-                    </td>
-                    <td>
-                      <p
-                        className="table-details-data"
-                        style={{ display: "block" }}
-                      >
-                        Can I purchase a domain through Google?
-                      </p>
 
-                      <p className="table-details-data-1">
-                        Google can help you purchase a domain through one of our
-                        domain host partners. During sign up, just select the
-                        option to…
-                      </p>
-                      <img
-                        src={DownArrowIcon}
-                        alt="down-arrow-icon"
-                        className="down-icon-kb"
-                      />
-                    </td>
-                    <td>
-                      <label className="table-type-return">return</label>
-                    </td>
-                    <td>
-                      <label className="table-category">
-                        defective article
-                      </label>
-                    </td>
-                    <td>
-                      <label className="table-subcategory">
-                        pain in feet/knee/leg
-                      </label>
-                    </td>
-                    <td>
-                      <button className="reject-button-1">
-                        <label className="reject-button-text">DELETE</label>
-                      </button>
-                      {/* <button className="aprove-button">
-                        <label className="approve-button-text">APPROVE</label>
-                      </button> */}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <label className="table-id-data">NA</label>
-                    </td>
-                    <td>
-                      <p className="table-details-data">
-                        Can I still use the previous version of Sites?
-                      </p>{" "}
-                      <img
+            <div className="kb-table" style={{ padding: "0px 30px 0px 20px" }}>
+            
+            <ReactTable
+                  data={this.state.KBListData}
+                
+                 columns= { 
+                  [ 
+                
+                    {
+                      
+                      Header: (
+                        <span>
+                          <div >
+                           
+                              
+                              <label >
+                                ID
+                              </label>
+                           
+                          </div>
+                        </span>
+                      ),
+                      accessor: "kbid",
+                      Cell: row => {
+                       
+                        return (
+                          <span>
+                            <div >
+                             
+                                
+                                <label >
+                                  {row.original.kbid}
+                                  
+                                </label>
+                              
+                            </div>
+                          </span>
+                        );
+                      }
+                    },
+                    {
+                      Header: (
+                        <span >
+                          <label >
+                                Details
+                              </label>
+                        </span>
+                      ),
+                      accessor: "subject",
+                      Cell: row => {
+                        return (
+                          <span className="table-details-data">
+                            <label className="table-details-data">{row.original.subject}</label>
+                            <img
                         src={DownArrowIcon}
                         alt="down-arrow-icon"
                         className="down-icon-kb"
                         onClick={this.HandelOnenCloseDetailsCollapse}
                       />
-                      <Collapse isOpen={this.state.detailscollapse}>
+					  <Collapse isOpen={this.state.detailscollapse}>
                         <Card>
                           <CardBody>
-                            <p className="table-details-data-1">
-                              If your company is using any previous version of
-                              Sites, there will be no disruption. Keep editing
-                              and sharing your Sites as youIf your company is
-                              using any previous version of Sites, there will be
-                              no disruption. Keep editing and sharing your Sites
-                              as youIf your company is using any previous
-                              version of Sites, there will be no disruption.
-                              Keep editing and sharing your Sites as you If your
-                              company is using any previous version of Sites,
-                            </p>
+                            <span  className="table-details-data-1">
+                              {row.original.description}
+                            </span>
                           </CardBody>
                         </Card>
                       </Collapse>
-                    </td>
-                    <td>
-                      <label className="table-type-return">return</label>
-                    </td>
-                    <td>
-                      <label className="table-category">
-                        defective article
-                      </label>
-                    </td>
-                    <td>
-                      <label className="table-subcategory">
-                        pain in feet/knee/leg
-                      </label>
-                    </td>
-                    <td>
-                      <button className="reject-button">
+							
+                          </span>
+                        );
+                      }
+                    },
+                    {
+                      Header: (<span><label >
+                                Type
+                      </label></span>),
+                      accessor: "issueTypeName",
+                      
+                      Cell: row => {
+                        return (
+                          <span>
+                            <div >
+                             
+                                
+                                <label className="table-type-return">
+                                  {row.original.issueTypeName}
+                                  
+                                </label>
+                              
+                            </div>
+                          </span>
+                        );
+                      }
+                    },
+					  
+					  
+                    {
+                      Header: (
+                       
+					                 <span><label >
+                                Category
+                              </label></span>
+                      ),
+                      accessor: "categoryName",
+                      Cell: row => {
+                        return (
+                          <span>
+                            <label className="table-category">{row.original.categoryName}
+                           
+                            </label> </span>);
+                      }
+                    },
+                    {
+                      Header: (
+                        <span>
+                          <label >
+                                Sub catogory
+                              </label>
+                        </span>
+                      ),
+                      accessor: "subCategoryName",
+                      Cell: row => {
+                        return ( <span>
+                          <label className="table-subcategory">{row.original.subCategoryName} </label>
+
+                      
+                        </span>);
+                      }
+                    },
+                    {
+                      Header: (
+                        <span >
+                          <label className="pad">
+                                Action
+                              </label>
+                        </span>
+                      ),
+                      accessor: "kbid",
+                     Cell: row => {
+                      return ( <><span>
+                         <button className="reject-button"  value={row.original.kbid}
+                      
+                      onClick={this.handleDeleteKB.bind(this,row.original.kbid)}
+                      >
                         <label className="reject-button-text">DELETE</label>
+                        </button>          
+                      <button className="aprove-button"  value={row.original.kbid}
+                      onClick={this.openEditAproveBModal.bind(this,row.original)}
+                      >
+                        <label className="approve-button-text" >EDIT</label> 
                       </button>
-                      <button className="aprove-button">
-                        <label className="approve-button-text">EDIT</label>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+                      
+                      
+                        </span></>);
+                     }
+                    
+                    }
+                    
+                    
+                  ]}
+                  // resizable={false}
+                  
+                  defaultPageSize={10}
+                  showPagination={true}
+                  getTrProps={this.HandleRowClickPage}
+                />
+
+
+
+
             </div>
           </div>
           <div className="pagi">
@@ -468,29 +1027,68 @@ class KnowledgeBase extends Component {
                 onClick={this.closeSearchModal}
               />
               <label className="search-modal-text">SEARCH</label>
-              <button className="search-button-modal">
+              <button className="search-button-modal" onClick={this.handleSeaechKB.bind(this)}>
                 <label className="search-button-modal-text">APPLY</label>
               </button>
             </div>
             <br />
             <br />
+            
             <div className="row">
-              <select className="kb-modal-type-select">
-                <option>Type</option>
-              </select>
+            <select className="add-select-category"
+                  value={this.state.selectedCategory}
+                  onChange={this.setCategoryValue}
+                  >
+                    <option>Select Category</option>
+                    {this.state.CategoryData !== null &&
+                                      this.state.CategoryData.map((item, i) => (
+                                        <option key={i} value={item.categoryID}>
+                                          {item.categoryName}
+                                        </option>
+                                      ))}
+                  </select>
             </div>
             <br />
             <div className="row">
-              <select className="kb-modal-type-select">
-                <option>Category</option>
-              </select>
+            <select className="add-select-category"
+                  value={this.state.selectedSubCategory}
+                  onChange={this.setSubCategoryValue}
+                  >
+                    <option>Select Subcategory</option>
+                    {this.state.SubCategoryData !== null &&
+                                      this.state.SubCategoryData.map(
+                                        (item, i) => (
+                                          <option
+                                            key={i}
+                                            value={item.subCategoryID}
+                                          >
+                                            {item.subCategoryName}
+                                          </option>
+                                        )
+                                      )}
+                  </select>
             </div>
             <br />
             <div className="row">
-              <select className="kb-modal-type-select">
-                <option>Sub Category</option>
-              </select>
+            <select className="add-select-category"
+                   value={this.state.selectedIssueType}
+                   onChange={this.setIssueType}
+                  >
+                    <option>Select IssueType</option>
+                    {this.state.IssueTypeData !== null &&
+                            this.state.IssueTypeData.map((item, i) => (
+                              <option
+                                key={i}
+                                value={item.issueTypeID}
+                               
+                              >
+                                {item.issueTypeName}
+                              </option>
+                            ))}
+                   
+                  </select>
             </div>
+            <br />
           </div>
         </Modal>
 
@@ -518,16 +1116,62 @@ class KnowledgeBase extends Component {
 
               <div className="row">
                 <div className="col-md-6">
-                  <select className="add-select-category">
+                  <select className="add-select-category"
+                  value={this.state.selectedCategory}
+                  onChange={this.setCategoryValue}
+                  >
                     <option>Select Category</option>
+                    {this.state.CategoryData !== null &&
+                                      this.state.CategoryData.map((item, i) => (
+                                        <option key={i} value={item.categoryID}>
+                                          {item.categoryName}
+                                        </option>
+                                      ))}
                   </select>
                 </div>
                 <div className="col-md-6">
-                  <select className="add-select-category">
+                  <select className="add-select-category"
+                  value={this.state.selectedSubCategory}
+                  onChange={this.setSubCategoryValue}
+                  >
                     <option>Select Subcategory</option>
+                    {this.state.SubCategoryData !== null &&
+                                      this.state.SubCategoryData.map(
+                                        (item, i) => (
+                                          <option
+                                            key={i}
+                                            value={item.subCategoryID}
+                                          >
+                                            {item.subCategoryName}
+                                          </option>
+                                        )
+                                      )}
                   </select>
                 </div>
+               
               </div>
+              <br></br>
+              <div className="row">
+              <div className="col-md-6">
+                  <select className="add-select-category"
+                   value={this.state.selectedIssueType}
+                   onChange={this.setIssueType}
+                  >
+                    <option>Select IssueType</option>
+                    {this.state.IssueTypeData !== null &&
+                            this.state.IssueTypeData.map((item, i) => (
+                              <option
+                                key={i}
+                                value={item.issueTypeID}
+                               
+                              >
+                                {item.issueTypeName}
+                              </option>
+                            ))}
+                   
+                  </select>
+                </div>
+                </div>
 
               <div className="row">
                 <div className="col-md-12">
@@ -535,6 +1179,9 @@ class KnowledgeBase extends Component {
                   type="text"
                   className="addkb-subject"
                   placeholder=" Write subject here"
+                  value={this.state.selectedSubject}
+                  onChange={this.setSubjectValue}
+
                 />
                 </div>
               </div>
@@ -542,7 +1189,11 @@ class KnowledgeBase extends Component {
               <div className="row">
                 <div className="col-md-12 KBas">
                 <CKEditor
+
+              onChange={this.onAddCKEditorChange}
+                 
                   config={{
+                    
                     toolbar: [
                     {
                       name: 'basicstyles',
@@ -574,6 +1225,7 @@ class KnowledgeBase extends Component {
                     }
                   ],
                   }}
+                 
                 />
                 </div>
               </div>
@@ -585,7 +1237,8 @@ class KnowledgeBase extends Component {
                 >
                   CANCEL
                 </button>
-                <button className="add-kb-button-modal">
+                <button className="add-kb-button-modal"
+                onClick={this.handleAddKB.bind(this)}>
                   <label className="add-kb-button-text-modal">SAVE</label>
                 </button>
               </div>
@@ -593,7 +1246,7 @@ class KnowledgeBase extends Component {
           </div>
         </Modal>
         {/* -----------------------------------------------END---------------------------------------- */}
-        {/* ---------------------------------------Approve MODAL----------------------------------- */}
+        {/* ---------------------------------------update MODAL----------------------------------- */}
 
         <Modal
           onClose={this.closeEditAproveModal.bind(this)}
@@ -615,23 +1268,70 @@ class KnowledgeBase extends Component {
               <br />
               <div className="row">
                 <div className="col-md-6">
-                  <select className="add-select-category">
-                    <option>defective article</option>
+                <select className="add-select-category"
+                  value={this.state.selectedCategory}
+                  onChange={this.setCategoryValue}
+                  >
+                    <option value={this.state.updateCategoryValue}>{this.state.updateCategoryName}</option>
+                    {this.state.CategoryData !== null &&
+                                      this.state.CategoryData.map((item, i) => (
+                                        <option key={i} value={item.categoryID}>
+                                          {item.categoryName}
+                                        </option>
+                                      ))}
                   </select>
                 </div>
                 <div className="col-md-6">
-                  <select className="add-select-category">
-                    <option>pain in feet/knee/leg</option>
+                <select className="add-select-category"
+                  value={this.state.selectedSubCategory}
+                  onChange={this.setSubCategoryValue}
+                  >
+                    <option value={this.state.updateSubCategoryValue}>{this.state.updateSubCategoryName} </option>
+                    {this.state.SubCategoryData !== null &&
+                                      this.state.SubCategoryData.map(
+                                        (item, i) => (
+                                          <option
+                                            key={i}
+                                            value={item.subCategoryID}
+                                          >
+                                            {item.subCategoryName}
+                                          </option>
+                                        )
+                                      )}
                   </select>
                 </div>
               </div>
-
+              <br></br>
+              <div className="row">
+              <div className="col-md-6">
+              <select className="add-select-category"
+                   value={this.state.selectedIssueType}
+                   onChange={this.setIssueType}
+                  >
+                    <option value={this.state.updateIssueTypeValue}>{this.state.updateIssueTypeName}</option>
+                    {this.state.IssueTypeData !== null &&
+                            this.state.IssueTypeData.map((item, i) => (
+                              <option
+                                key={i}
+                                value={item.issueTypeID}
+                               
+                              >
+                                {item.issueTypeName}
+                              </option>
+                            ))}
+                   
+                  </select>
+                </div>
+              </div>
               <div className="row">
                <div className="col-md-12">
                 <input
                   type="text"
                   className="addkb-subject"
+                  
                   placeholder="Can I purchase a domain through Google?"
+                  value={this.state.updateSubject}
+                  onChange={this.setUpdateSubjectValue}
                 />
                 </div>
               </div>
@@ -639,6 +1339,7 @@ class KnowledgeBase extends Component {
               <div className="row KBase">
               <div className="col-md-12">
               <CKEditor
+              onChange={this.onUpdateCKEditorChange}
                   config={{
                     toolbar: [
                     {
@@ -683,7 +1384,157 @@ class KnowledgeBase extends Component {
                 >
                   CANCEL
                 </button>
-                <button className="add-kb-button-modal">
+                <button className="add-kb-button-modal"
+                onClick={this.handleUpdateKB.bind(this,this.state.updateKBID)}>
+                  <label className="add-kb-button-text-modal">EDIT</label>
+                </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Modal>
+        {/* -----------------------------------------------END---------------------------------------- */}
+         {/* ---------------------------------------Approve MODAL----------------------------------- */}
+
+         <Modal
+          onClose={this.closeEditAproveModal1.bind(this)}
+          open={this.state.editapprove1}
+          modalId="addkb-modal-popup"
+          overlayId="addkb-modal-ovrly"
+        >
+          <img
+            src={CancelIcon}
+            alt="cancel-icone"
+            className="cancel-button-modal-icon"
+            onClick={this.closeEditAproveModal1.bind(this)}
+          />
+          <div>
+            <div className="kb-Model-mp">
+              <div className="">
+                <label className="search-modal-text">CONFIRM</label>
+              </div>
+              <br />
+              <div className="row">
+                <div className="col-md-6">
+                <select className="add-select-category"
+                  value={this.state.selectedCategory}
+                  onChange={this.setCategoryValue}
+                  >
+                    <option value={this.state.approveCategoryValue}>{this.state.approveCategoryName}</option>
+                    {this.state.CategoryData !== null &&
+                                      this.state.CategoryData.map((item, i) => (
+                                        <option key={i} value={item.categoryID}>
+                                          {item.categoryName}
+                                        </option>
+                                      ))}
+                  </select>
+                </div>
+                <div className="col-md-6">
+                <select className="add-select-category"
+                  value={this.state.selectedSubCategory}
+                  onChange={this.setSubCategoryValue}
+                  >
+                    <option value={this.state.approveSubCategoryValue}>{this.state.approveSubCategoryName} </option>
+                    {this.state.SubCategoryData !== null &&
+                                      this.state.SubCategoryData.map(
+                                        (item, i) => (
+                                          <option
+                                            key={i}
+                                            value={item.subCategoryID}
+                                          >
+                                            {item.subCategoryName}
+                                          </option>
+                                        )
+                                      )}
+                  </select>
+                </div>
+              </div>
+              <br></br>
+              <div className="row">
+              <div className="col-md-6">
+              <select className="add-select-category"
+                   value={this.state.selectedIssueType}
+                   onChange={this.setIssueType}
+                  >
+                    <option value={this.state.approveIssurTypeValue}>{this.state.approveIssueTypeName}</option>
+                    {this.state.IssueTypeData !== null &&
+                            this.state.IssueTypeData.map((item, i) => (
+                              <option
+                                key={i}
+                                value={item.issueTypeID}
+                               
+                              >
+                                {item.issueTypeName}
+                              </option>
+                            ))}
+                   
+                  </select>
+                </div>
+              </div>
+              <div className="row">
+               <div className="col-md-12">
+                <input
+                  type="text"
+                  className="addkb-subject"
+                  
+                  placeholder="Can I purchase a domain through Google?"
+                  value={this.state.approveSubject}
+                  onChange={this.setApproveSubjectValue}
+                />
+                </div>
+              </div>
+              <br />
+              <div className="row KBase">
+              <div className="col-md-12">
+              <CKEditor
+              onChange={this.onApproveCKEditorChange}
+                  config={{
+                    toolbar: [
+                    {
+                      name: 'basicstyles',
+                      items: ['Bold', 'Italic','Strike']
+                    },
+                    {
+                      name: 'styles',
+                      items: ['Styles', 'Format']
+                    },
+                    {
+                      name: 'paragraph',
+                      items: ['NumberedList', 'BulletedList']
+                    },
+                    {
+                      name: 'links',
+                      items: ['Link', 'Unlink']
+                    },
+                    {
+                      name: 'insert',
+                      items: ['Image', 'Table']
+                    },
+                    {
+                      name: 'tools',
+                      items: ['Maximize']
+                    },
+                    {
+                      name: 'editing',
+                      items: ['Scayt']
+                    }
+                  ],
+                  }}
+                />
+                </div>
+              </div>
+              <br />
+              <div className="row" style={{float:"right"}}>
+               <div className="col-md-12">
+                <button type="button"
+                  className="cancel-button-modalk"
+                  onClick={this.closeEditAproveModal1.bind(this)}
+                >
+                  CANCEL
+                </button>
+                <button className="add-kb-button-modal"
+            onClick={this.handleRejectKB.bind(this,this.state.approveID,this.state.approvebit)}
+                >
                   <label className="add-kb-button-text-modal">APPROVE</label>
                 </button>
                 </div>
