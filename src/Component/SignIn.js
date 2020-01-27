@@ -40,7 +40,7 @@ class SingIn extends Component {
 
   componentDidMount() {
     debugger;
-    var finalEncProgramCode = this.props.location.state;
+    var finalEncProgramCode = this.props.location.state.encProgramCode;
     if (finalEncProgramCode) {
       this.setState({
         programCode: finalEncProgramCode

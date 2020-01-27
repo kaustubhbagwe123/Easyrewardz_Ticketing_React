@@ -8,7 +8,10 @@ class ProgramCodeSignIn extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      programCode: ""
+      programCode: "",
+      encProgramCode: {
+        programCode: ""
+      }
     };
     this.validator = new SimpleReactValidator();
   }
@@ -28,7 +31,7 @@ class ProgramCodeSignIn extends Component {
         });
       }, 500);
       self.setState({
-        programCode: encProgramCode
+        encProgramCode: {programCode: encProgramCode}
       });
     } else {
       this.validator.showMessages();

@@ -178,7 +178,7 @@ class Dashboard extends Component {
       userID: 6,
       agentId: 0,
       agentRemark: "",
-      ticketIds: "1,3",
+      ticketIds: "",
       selectedScheduleFor: "",
       dailyDay: 0,
       isByStatus: true,
@@ -343,6 +343,10 @@ class Dashboard extends Component {
     // this.handleGetDashboardNumberData();
     // this.handleGetDashboardGraphData();
     this.handleGetAgentList();
+  }
+
+  clickCheckbox(evt) {
+    evt.stopPropagation();
   }
 
   handleWeeklyDays = async e => {
@@ -750,9 +754,22 @@ class Dashboard extends Component {
       self.checkAllBrandStart();
     });
   }
-  handelCheckBoxCheckedChange = () => {
-    this.setState({
-      CheckBoxChecked: !this.state.CheckBoxChecked
+  handelCheckBoxCheckedChange = async () => {
+    debugger;
+    var checkboxes = document.getElementsByName("MyTicketListcheckbox[]");
+    var strIds="";
+    for (var i in checkboxes) {
+      if(isNaN(i)===false)
+      {
+         if(checkboxes[i].checked === true)
+         {
+          if (checkboxes[i].getAttribute('attrIds')!==null)
+            strIds+=checkboxes[i].getAttribute('attrIds')+",";
+         }
+      }
+    }
+    await this.setState({
+      ticketIds: strIds,
     });
   };
   handleTicketDetails = (rowInfo, column) => {
@@ -1044,13 +1061,17 @@ class Dashboard extends Component {
   }
   onChange = date => this.setState({ date });
 
-  checkAllCheckbox(event) {
+  checkAllCheckbox = async event => {
+    debugger;
+    var strIds="";
     const allCheckboxChecked = event.target.checked;
-    var checkboxes = document.getElementsByName("dashboardcheckbox[]");
+    var checkboxes = document.getElementsByName("MyTicketListcheckbox[]");
     if (allCheckboxChecked) {
       for (var i in checkboxes) {
         if (checkboxes[i].checked === false) {
           checkboxes[i].checked = true;
+          if (checkboxes[i].getAttribute('attrIds')!==null)
+            strIds+=checkboxes[i].getAttribute('attrIds')+",";
         }
       }
     } else {
@@ -1059,7 +1080,11 @@ class Dashboard extends Component {
           checkboxes[J].checked = false;
         }
       }
+      strIds="";
     }
+    await this.setState({
+      ticketIds: strIds
+    });
   }
   handleMouseHover() {
     this.setState({ TotalNoOfChatShow: !this.state.TotalNoOfChatShow });
@@ -1438,12 +1463,14 @@ class Dashboard extends Component {
     debugger;
 
     let self = this;
+    var ticketIdsComma = this.state.ticketIds;
+    var ticketIds = ticketIdsComma.substring(0, ticketIdsComma.length-1);
     axios({
       method: "post",
       url: config.apiUrl + "/Ticketing/AssignTickets",
       headers: authHeader(),
       params: {
-        TicketID: this.state.ticketIds,
+        TicketID: ticketIds,
         AgentID: this.state.agentId,
         Remark: this.state.agentRemark
       }
@@ -1453,6 +1480,7 @@ class Dashboard extends Component {
       if (messageData === "Success") {
         self.handleAssignModalClose();
         NotificationManager.success("Tickets assigned successfully.");
+        self.handleSearchTicketEscalation();
       }
       // self.setState({
       //   SlaStatusData: SlaStatusData
@@ -2510,6 +2538,7 @@ class Dashboard extends Component {
     let disabled = false;
     return (
       <Fragment>
+        <NotificationContainer />
         <div className="position-relative d-inline-block">
           <Modal
             onClose={this.StatusCloseModel}
@@ -5484,12 +5513,12 @@ class Dashboard extends Component {
                               </Modal>
                               <button
                                 className={
-                                  this.state.CheckBoxChecked
+                                  this.state.ticketIds.length > 0
                                     ? "btn-inv"
                                     : "dis-btn"
                                 }
                                 onClick={
-                                  this.state.CheckBoxChecked
+                                  this.state.ticketIds.length > 0
                                     ? this.handleAssignModalOpen.bind(this)
                                     : null
                                 }
@@ -5672,17 +5701,18 @@ class Dashboard extends Component {
                       accessor: "ticketID",
                       Cell: row => {
                         return (
-                          <span>
+                          <span onClick={e => this.clickCheckbox(e)}>
                             <div className="filter-type pink1 pinkmyticket">
                               <div className="filter-checkbox pink2 pinkmargin">
                                 <input
                                   type="checkbox"
-                                  id={row.original.ticketID}
+                                  id={'j' + row.original.ticketID}
                                   name="MyTicketListcheckbox[]"
-                                  checked={this.state.CheckBoxChecked}
+                                  // checked={this.state.CheckBoxChecked}
+                                  attrIds={row.original.ticketID}
                                   onChange={this.handelCheckBoxCheckedChange}
                                 />
-                                <label htmlFor={row.original.ticketID}>
+                                <label htmlFor={'j' + row.original.ticketID}>
                                   <img
                                     src={HeadPhone3}
                                     alt="HeadPhone"

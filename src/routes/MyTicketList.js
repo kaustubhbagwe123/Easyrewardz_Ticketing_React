@@ -1662,9 +1662,6 @@ class MyTicketList extends Component {
     evt.stopPropagation();
   }
   handelCheckBoxCheckedChange = async () => {
-    // this.setState({
-    //   CheckBoxChecked: !this.state.CheckBoxChecked
-    // });
     debugger;
     var checkboxes = document.getElementsByName("MyTicketListcheckbox[]");
     var strIds="";
