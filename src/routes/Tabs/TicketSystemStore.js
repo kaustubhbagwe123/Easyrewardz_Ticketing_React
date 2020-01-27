@@ -22,7 +22,9 @@ class TicketSystemStore extends Component {
       message: "",
       WantVisit: 0,
       AlreadyCustomerVisit: 0,
-      SwitchBtnStatus: false
+      SwitchBtnStatus: false,
+      CheckStoreID: {},
+      selectedStoreData: []
     };
     this.handleOrderStoreTableOpen = this.handleOrderStoreTableOpen.bind(this);
     this.handleOrderStoreTableClose = this.handleOrderStoreTableClose.bind(
@@ -106,6 +108,66 @@ class TicketSystemStore extends Component {
   handleStoreChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
+
+  handleCheckStoreID(storeMasterID, rowData) {
+    debugger;
+
+    const newSelected = Object.assign({}, this.state.CheckStoreID);
+    newSelected[storeMasterID] = !this.state.CheckStoreID[storeMasterID];
+    this.setState({
+      CheckStoreID: storeMasterID ? newSelected : false
+    });
+    var selectedRow = [];
+    if (this.state.selectedStoreData.length === 0) {
+      selectedRow.push(rowData.storeID);
+      this.setState({
+        selectedStoreData: selectedRow
+      });
+    } else {
+      if (newSelected[storeMasterID] === true) {
+        for (var i = 0; i < this.state.selectedStoreData.length; i++) {
+          if (
+            this.state.selectedStoreData[i] ===
+            rowData.storeID
+          ) {
+            selectedRow.splice(i, 1);
+
+            break;
+          } else {
+            selectedRow = this.state.selectedStoreData;
+            selectedRow.push(rowData.storeID);
+            break;
+          }
+        }
+      } else {
+        for (var j = 0; j < this.state.selectedStoreData.length; j++) {
+          if (
+            this.state.selectedStoreData[j] ===
+            rowData.storeID
+          ) {
+            selectedRow = this.state.selectedStoreData;
+            selectedRow.splice(j, 1);
+            break;
+          }
+        }
+      }
+   }
+   if(selectedRow.length === 1){
+    this.setState({
+      selectedStoreData: selectedRow[0]
+    });
+   }else{
+    this.setState({
+      selectedStoreData: selectedRow
+    });
+   }
+   
+    console.log(this.state.selectedStoreData,"--------Store data-------");
+    
+    {
+      this.props.getStoreID(this.state.selectedStoreData);
+    }
+  }
   render() {
     const { SearchData } = this.state;
     const dataselectstore = [
@@ -486,19 +548,46 @@ class TicketSystemStore extends Component {
                           >
                             <input
                               type="checkbox"
-                              id={row.original.storeID}
-                              name="filter-type"
+                              id={"i" + row.original.storeID}
                               style={{ display: "none" }}
-                              //   onChange={() => this.showAddNoteFuncation()}
+                              name="ticket-order"
+                              checked={
+                                this.state.CheckStoreID[
+                                  row.original.storeID
+                                ] === true
+                              }
+                              onChange={this.handleCheckStoreID.bind(
+                                this,
+                                row.original.storeID,
+                                row.original
+                              )}
                             />
-                            <label
-                              htmlFor={row.original.storeID}
-                              style={{ paddingLeft: "25px" }}
-                            >
-                              <span className="add-note">Demo</span>
+                            <label htmlFor={"i" + row.original.storeID}>
+                              {row.original.storeID}
                             </label>
                           </div>
                         )
+                       
+                        // Cell: row => (
+                        //   <div
+                        //     className="filter-checkbox"
+                        //     style={{ marginLeft: "15px" }}
+                        //   >
+                        //     <input
+                        //       type="checkbox"
+                        //       id={row.original.storeID}
+                        //       name="filter-type"
+                        //       style={{ display: "none" }}
+                        //       //   onChange={() => this.showAddNoteFuncation()}
+                        //     />
+                        //     <label
+                        //       htmlFor={row.original.storeID}
+                        //       style={{ paddingLeft: "25px" }}
+                        //     >
+                        //       <span className="add-note">Demo</span>
+                        //     </label>
+                        //   </div>
+                        // )
                       },
                       {
                         Header: <span>Store Code</span>,
@@ -542,189 +631,6 @@ class TicketSystemStore extends Component {
                 </div>
               </div>
             ) : null}
-            {/* {this.state.SearchStoreDetails ? (
-              <div>
-                {this.state.AddSelectDetail === false ? (
-                  <div>
-                    <div
-                      className="row m-t-10 m-b-10"
-                      style={{ marginLeft: "0", marginRight: "0" }}
-                    >
-                      <div className="col-md-9">
-                        <label
-                          className="orderdetailpopup"
-                          style={{ marginTop: "3px" }}
-                        >
-                          Store Details
-                        </label>
-                      </div>
-                    </div>
-                    <span className="linestore2"></span>
-                    <div className="reactstoreselect">
-                      <ReactTable
-                        data={SearchData}
-                        columns={[
-                          {
-                            Header: <span>Purpose</span>,
-                            accessor: "invoiceNumber"
-                            // Cell: row => (
-                            //   <div className="filter-checkbox" style={{ marginLeft: "15px" }}>
-                            //     <input
-                            //       type="checkbox"
-                            //       id="fil-number16"
-                            //       name="filter-type"
-                            //       style={{ display: "none" }}
-                            //       //   onChange={() => this.showAddNoteFuncation()}
-                            //     />
-                            //     <label htmlFor="fil-number16" style={{ paddingLeft: "25px" }}>
-                            //       <span className="add-note">
-                            //         Customer Want <br></br>to visit store
-                            //       </span>
-                            //     </label>
-                            //   </div>
-                            // )
-                          },
-                          {
-                            Header: <span>Store Code</span>,
-                            accessor: "storeCode"
-                          },
-                          {
-                            Header: <span>Store Name</span>,
-                            accessor: "storeName"
-                          },
-                          {
-                            Header: <span>Store Pin Code</span>,
-                            accessor: "storeCode"
-                          },
-                          {
-                            Header: <span>Store Email ID</span>,
-                            accessor: "storeEmailID"
-                          },
-                          {
-                            Header: <span>Store Addres</span>,
-                            accessor: "address"
-                          },
-                          {
-                            Header: <span>Visit Date</span>,
-                            accessor: "visitDate",
-                            Cell: row => <label>23,Aug 2019</label>
-                          }
-                        ]}
-                        // resizable={false}
-                        defaultPageSize={5}
-                        showPagination={false}
-                      />
-                    </div>
-                    <div className="storedetailtabsbutton">
-                      <button
-                        type="button"
-                        className="addstoretabsbtn"
-                        onClick={this.handleShowSearchSelectDetails.bind(this)}
-                      >
-                        ADD STORE
-                      </button>
-                    </div>
-                  </div>
-                ) : (
-                  <div>
-                    <div className="newtabstore">
-                      <div className="tab-content tabcontentstore">
-                        <div className="">
-                          <ul
-                            className="nav alert-nav-tabs3 store-nav-tabs"
-                            role="tablist"
-                          >
-                            <li className="nav-item fo">
-                              <a
-                                className="nav-link active"
-                                data-toggle="tab"
-                                href="#storedetail-tab"
-                                role="tab"
-                                aria-controls="storedetail-tab"
-                                aria-selected="true"
-                              >
-                                Store Details
-                              </a>
-                            </li>
-                            <li className="nav-item fo">
-                              <a
-                                className="nav-link"
-                                data-toggle="tab"
-                                href="#selectedstore-tab"
-                                role="tab"
-                                aria-controls="selectedstore-tab"
-                                aria-selected="false"
-                              >
-                                Selected Store
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                    <span className="linestore2"></span>
-                    <div className="tab-content p-0">
-                      <div
-                        className="tab-pane fade"
-                        id="storedetail-tab"
-                        role="tabpanel"
-                        aria-labelledby="storedetail-tab"
-                      >
-                        <div className="reactstoreselect">
-                          <ReactTable
-                            data={dataselectstore}
-                            columns={columnsselectstore}
-                            // resizable={false}
-                            defaultPageSize={3}
-                            showPagination={false}
-                          />
-                        </div>
-                      </div>
-
-                      <div
-                        className="tab-pane fade show active"
-                        id="selectedstore-tab"
-                        role="tabpanel"
-                        aria-labelledby="selectedstore-tab"
-                      >
-                        <div className="reactstoreselect">
-                          <ReactTable
-                            data={dataselectstore}
-                            columns={columnsselectstore}
-                            // resizable={false}
-                            defaultPageSize={3}
-                            showPagination={false}
-                          />
-                        </div>
-                        <div className="storedetailtabsbutton">
-                          <button type="button" className="addstoretabsbtn">
-                            REMOVE STORE
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div>
-                <div className="div-notFound">
-                  <img
-                    src={NotFoundImg}
-                    alt="Not Found"
-                    className="notFound-addSrch"
-                  />
-                  <br />
-                  <label
-                    className="lbl-count-foundData"
-                    style={{ fontSize: "22px" }}
-                  >
-                    We couldn't find the store details with
-                    <br /> <span> this store Id,Search another store</span>
-                  </label>
-                </div>
-              </div>
-            )} */}
           </div>
         </div>
       </Fragment>

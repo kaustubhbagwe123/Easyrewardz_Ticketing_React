@@ -153,10 +153,17 @@ class TicketSystemOrder extends Component {
         }
       }
    }
+   if(selectedRow.length === 1){
+    this.setState({
+      selectedDataRow: selectedRow[0]
+    });
+   }else{
     this.setState({
       selectedDataRow: selectedRow
     });
-    console.log(this.state.selectedDataRow,"--------final data-------");
+   }
+   
+    // console.log(this.state.selectedDataRow,"--------final data-------");
     
     {
       this.props.getOrderId(this.state.selectedDataRow);

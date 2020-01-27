@@ -9456,6 +9456,7 @@ table tr th:last-child {
   border: 1px solid #ECF2F4;
   border-radius: 5px;
   margin-right: 5px;
+  height: 45px;
 }
 .thumbtick-plus {
   border: 1px solid #ECF2F4;
