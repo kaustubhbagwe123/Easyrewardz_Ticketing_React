@@ -289,99 +289,6 @@ class TicketCRMRole extends Component {
       </div>
     );
 
-    const dataTickCrmRole = [
-      {
-        id: "Cr1",
-        roleName: (
-          <div>
-            <span>
-              HOD
-              <Popover content={popoverRoleName} placement="bottom">
-                <img
-                  className="info-icon-cp"
-                  src={BlackInfoIcon}
-                  alt="info-icon"
-                />
-              </Popover>
-            </span>
-          </div>
-        ),
-        status: <span>Active</span>
-      },
-      {
-        id: "Cr2",
-        roleName: (
-          <div>
-            <span>
-              Manager
-              <Popover content={popoverRoleName} placement="bottom">
-                <img
-                  className="info-icon-cp"
-                  src={BlackInfoIcon}
-                  alt="info-icon"
-                />
-              </Popover>
-            </span>
-          </div>
-        ),
-        status: <span>Inactive</span>
-      },
-      {
-        id: "Cr3",
-        roleName: (
-          <div>
-            <span>
-              Team Leader
-              <Popover content={popoverRoleName} placement="bottom">
-                <img
-                  className="info-icon-cp"
-                  src={BlackInfoIcon}
-                  alt="info-icon"
-                />
-              </Popover>
-            </span>
-          </div>
-        ),
-        status: <span>Active</span>
-      },
-      {
-        id: "Cr4",
-        roleName: (
-          <div>
-            <span>
-              Supervisor
-              <Popover content={popoverRoleName} placement="bottom">
-                <img
-                  className="info-icon-cp"
-                  src={BlackInfoIcon}
-                  alt="info-icon"
-                />
-              </Popover>
-            </span>
-          </div>
-        ),
-        status: <span>Inactive</span>
-      },
-      {
-        id: "Cr5",
-        roleName: (
-          <div>
-            <span>
-              Executive
-              <Popover content={popoverRoleName} placement="bottom">
-                <img
-                  className="info-icon-cp"
-                  src={BlackInfoIcon}
-                  alt="info-icon"
-                />
-              </Popover>
-            </span>
-          </div>
-        ),
-        status: <span>Active</span>
-      }
-    ];
-
     const columnsTickCrmRole = [
       {
         Header: (
@@ -392,7 +299,7 @@ class TicketCRMRole extends Component {
         ),
         accessor: "roleName",
         Cell: row => {
-          var ids = row.original["id"];
+          // var ids = row.original["id"];
           return (
             <div>
             <span>
@@ -406,34 +313,6 @@ class TicketCRMRole extends Component {
                             <label className="pop-over-lbl-text-pop">{item.modulestatus === true ? 'Enabled' : 'Disabled'}</label>
                           </div>
                         ))}
-                      {/* <div className="rvmmargin">
-                        <p className="rolle-name-text-popover">Dashboard</p>
-                        <label className="pop-over-lbl-text-pop">Enable</label>
-                      </div>
-                      <div className="rvmmargin">
-                        <p className="rolle-name-text-popover">Tickets</p>
-                        <label className="pop-over-lbl-text-pop">Disable</label>
-                      </div>
-                      <div className="rvmmargin">
-                        <p className="rolle-name-text-popover">knowledge Base</p>
-                        <label className="pop-over-lbl-text-pop">Enable</label>
-                      </div>
-                      <div className="rvmmargin">
-                        <p className="rolle-name-text-popover">Settings</p>
-                        <label className="pop-over-lbl-text-pop">Disable</label>
-                      </div>
-                      <div className="rvmmargin">
-                        <p className="rolle-name-text-popover">Chat</p>
-                        <label className="pop-over-lbl-text-pop">Enable</label>
-                      </div>
-                      <div className="rvmmargin">
-                        <p className="rolle-name-text-popover">Notification</p>
-                        <label className="pop-over-lbl-text-pop">Disable</label>
-                      </div>
-                      <div className="rvmmargin">
-                        <p className="rolle-name-text-popover">Reports</p>
-                        <label className="pop-over-lbl-text-pop">Enable</label>
-                      </div> */}
                     </div>
               } placement="bottom">
                 <img
@@ -666,130 +545,6 @@ class TicketCRMRole extends Component {
       }
     ];
 
-    const popoverData = (
-      <>
-        <div>
-          <b>
-            <p className="title">Created By: Admin</p>
-          </b>
-          <p className="sub-title">Created Date: 12 March 2018</p>
-        </div>
-        <div>
-          <b>
-            <p className="title">Updated By: Manager</p>
-          </b>
-          <p className="sub-title">Updated Date: 12 March 2018</p>
-        </div>
-      </>
-    );
-    const ActionDelete = (
-      <div className="d-flex general-popover popover-body">
-        <div className="del-big-icon">
-          <img src={DelBigIcon} alt="del-icon" />
-        </div>
-        <div>
-          <p className="font-weight-bold blak-clr">Delete file?</p>
-          <p className="mt-1 fs-12">
-            Are you sure you want to delete this file?
-          </p>
-          <div className="del-can">
-            <a href={Demo.BLANK_LINK}>CANCEL</a>
-            <button className="butn" onClick={this.deleteCrmRole.bind(this)}>Delete</button>
-          </div>
-        </div>
-      </div>
-    );
-    const ActionEditBtn = (
-      <div className="edtpadding">
-        <div className="">
-          <label className="popover-header-text">EDIT CRM ROLE</label>
-        </div>
-        <div className="pop-over-div">
-          <label className="edit-label-1">Role Name</label>
-          <input
-            type="text"
-            className="txt-edit-popover"
-            placeholder="Enter Role Name"
-            maxLength={25}
-          />
-        </div>
-
-        <div className="crm-margin-div">
-          <div className="switch switch-primary d-inline m-r-10">
-            <label className="storeRole-name-text">Dashboard</label>
-            <input type="checkbox" id="Dashboard-po-1" />
-            <label
-              htmlFor="Dashboard-po-1"
-              className="cr cr-float-auto"
-            ></label>
-          </div>
-        </div>
-        <div className="crm-margin-div">
-          <div className="switch switch-primary d-inline m-r-10">
-            <label className="storeRole-name-text">Tickets</label>
-            <input type="checkbox" id="Tickets-po-2" />
-            <label htmlFor="Tickets-po-2" className="cr cr-float-auto"></label>
-          </div>
-        </div>
-        <div className="crm-margin-div">
-          <div className="switch switch-primary d-inline m-r-10">
-            <label className="storeRole-name-text">Knowledge Base</label>
-            <input type="checkbox" id="Knowledge-po-3" />
-            <label
-              htmlFor="Knowledge-po-3"
-              className="cr cr-float-auto"
-            ></label>
-          </div>
-        </div>
-        <div className="crm-margin-div">
-          <div className="switch switch-primary d-inline m-r-10">
-            <label className="storeRole-name-text">Settings</label>
-            <input type="checkbox" id="Claim-po-3" />
-            <label htmlFor="Claim-po-3" className="cr cr-float-auto"></label>
-          </div>
-        </div>
-        <div className="crm-margin-div">
-          <div className="switch switch-primary d-inline m-r-10">
-            <label className="storeRole-name-text">Chat</label>
-            <input type="checkbox" id="Chat-po-5" />
-            <label htmlFor="Chat-po-5" className="cr cr-float-auto"></label>
-          </div>
-        </div>
-        <div className="crm-margin-div">
-          <div className="switch switch-primary d-inline m-r-10">
-            <label className="storeRole-name-text">Notification</label>
-            <input type="checkbox" id="Notification-po-4" />
-            <label
-              htmlFor="Notification-po-4"
-              className="cr cr-float-auto"
-            ></label>
-          </div>
-        </div>
-
-        <div className="crm-margin-div">
-          <div className="switch switch-primary d-inline m-r-10">
-            <label className="storeRole-name-text">Reports</label>
-            <input type="checkbox" id="Reports-po-6" />
-            <label htmlFor="Reports-po-6" className="cr cr-float-auto"></label>
-          </div>
-        </div>
-
-        <div className="pop-over-div">
-          <label className="edit-label-1">Status</label>
-          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
-            <option>Status</option>
-            <option>Inactive</option>
-          </select>
-        </div>
-        <br />
-        <div>
-        <a className="pop-over-cancle" href={Demo.BLANK_LINK}>CANCEL</a>
-          <button className="pop-over-button">
-            <label className="pop-over-btnsave-text">SAVE</label>
-          </button>
-        </div>
-      </div>
-    );
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
