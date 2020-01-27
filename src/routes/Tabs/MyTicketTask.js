@@ -52,6 +52,7 @@ class MyTicketTask extends Component {
       this
     );
     this.handleGetTaskTableGrid = this.handleGetTaskTableGrid.bind(this);
+    this.handleGetTaskCommentsdetails=this.handleGetTaskCommentsdetails.bind(this)
   }
 
   componentDidMount() {
@@ -95,7 +96,7 @@ class MyTicketTask extends Component {
           ticketTask_Id: taskId
         });
         this.handleTaskDetailsDrawerOpn();
-        this.handleGetTaskTabDetails(taskId);
+        this.handleGetTaskCommentsdetails(taskId);
       }
     };
   };
@@ -138,12 +139,31 @@ class MyTicketTask extends Component {
     }).then(function(res) {
       debugger;
       let status = res.data.message;
-      let details = res.data.responseData.comments;
       let data = res.data.responseData;
       if (status === "Success") {
-        self.setState({ Taskdetails: details, taskDetailsData: data });
+        self.setState({ taskDetailsData: data });
       } else {
-        self.setState({ Taskdetails: [], taskDetailsData: [] });
+        self.setState({ taskDetailsData: [] });
+      }
+    });
+  }
+  handleGetTaskCommentsdetails(ticketTaskId){
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Task/getTaskComment",
+      headers: authHeader(),
+      params: {
+        TaskId: ticketTaskId
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        self.setState({ Taskdetails: data});
+      } else {
+        self.setState({ Taskdetails: [] });
       }
     });
   }
@@ -279,7 +299,7 @@ class MyTicketTask extends Component {
       params: {
         CommentForId: TaskData,
         Comment: this.state.taskAddComment.trim(),
-        Id: this.state.tikcet_ID
+        Id: this.state.ticketTask_Id
       }
     }).then(function(res) {
       debugger;
@@ -289,7 +309,7 @@ class MyTicketTask extends Component {
         self.setState({
           taskAddComment:""
         })
-        self.handleGetTaskTabDetails(self.state.ticketTask_Id);
+        self.handleGetTaskCommentsdetails(self.state.ticketTask_Id);
       } else {
         NotificationManager.error("Comment not added.");
       }

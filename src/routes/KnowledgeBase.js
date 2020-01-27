@@ -6,7 +6,7 @@ import Modal from "react-responsive-modal";
 import LeftBackIcon from "./../assets/Images/black-left-arrow.png";
 import CancelIcon from "./../assets/Images/cancel.png";
 import { Collapse, CardBody } from "reactstrap";
-import { Card, Popover } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import CKEditor from 'ckeditor4-react';
 import { authHeader } from "../helpers/authHeader";
 import axios from "axios";
@@ -16,7 +16,7 @@ import {
   NotificationManager
 } from "react-notifications";
 import ReactTable from "react-table";
-import { notification } from "antd";
+// import { notification } from "antd";
 
 
 class KnowledgeBase extends Component {

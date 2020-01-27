@@ -54,8 +54,8 @@ class TicketSystem extends Component {
       BrandData: [],
       CategoryData: [],
       SubCategoryData: [],
-      selectedDataRow: [],
-      selectedStoreData:[],
+      selectedDataIds: [],
+      selectedStoreIDs: [],
       IssueTypeData: [],
       TicketPriorityData: [],
       ChannelOfPurchaseData: [],
@@ -194,12 +194,12 @@ class TicketSystem extends Component {
   }
   handleGetOrderId = selectedDataRow => {
     this.setState({
-      selectedDataRow: selectedDataRow
+      selectedDataIds: selectedDataRow
     });
   };
   handleGetStoreId = selectedStoreData => {
     this.setState({
-      selectedStoreData: selectedStoreData
+      selectedStoreIDs: selectedStoreData
     });
   };
   handleCustomerStoreStatus(WantVisit, AlreadyCustomerVisit) {
@@ -630,27 +630,27 @@ class TicketSystem extends Component {
     // this.setState({
     //   file
     // });
-
+// -------------------------Image View code start-----------------------
     const img = e;
-        if (e.target.files && e.target.files[0]) {
-            const filesAmount = e.target.files.length;
-            for (let i = 0; i < filesAmount; i++) {
-                const reader = new FileReader();
-                reader.onload = (file) => {
-                    // console.log(file.target.result);
-                    this.setState({
-                        imageView: file.target.result
-                    })
-                };
-                reader.readAsDataURL(e.target.files[i]);
-            }
-        }
+    if (e.target.files && e.target.files[0]) {
+      const filesAmount = e.target.files.length;
+      for (let i = 0; i < filesAmount; i++) {
+        const reader = new FileReader();
+        reader.onload = file => {
+          // console.log(file.target.result);
+          this.setState({
+            imageView: file.target.result
+          });
+        };
+        reader.readAsDataURL(e.target.files[i]);
+      }
+    }
     for (let i = 0; i < e.target.files.length; i++) {
       this.state.file.push(e.target.files[i]);
     }
+
+  // -------------------------Image View code end-----------------------
     this.setState({ fileText: this.state.file.length });
-
-
 
     // this.setState({fileText:"files"});
   }
@@ -662,13 +662,13 @@ class TicketSystem extends Component {
     let self = this;
     // var OID = this.state.selectedTicketPriority;
     var selectedRow = "";
-    for (var i = 0; i < this.state.selectedDataRow.length; i++) {
-      selectedRow += this.state.selectedDataRow[i]["orderItemID"] + ",";
+    for (var i = 0; i < this.state.selectedDataIds.length; i++) {
+      selectedRow += this.state.selectedDataIds[i] + ",";
     }
 
-    var selectedStore="";
-    for (let j = 0; j < this.state.selectedStoreData.length; j++) {
-      selectedStore +=this.state.selectedStoreData[i]["storeID"] + ",";
+    var selectedStore = "";
+    for (let j = 0; j < this.state.selectedStoreIDs.length; j++) {
+    selectedStore += this.state.selectedStoreIDs[j]["storeID"] + ",";
     }
     var actionStatusId = 0;
     if (StatusID === "200") {
@@ -714,6 +714,7 @@ class TicketSystem extends Component {
       IsAlreadyVisitedStore: this.state.AlreadycustVisit,
       TicketSourceID: 1,
       OrderItemID: selectedRow.substring(",", selectedRow.length - 1),
+      StoreID: selectedStore.substring(",", selectedStore.length - 1),
       ticketingMailerQues: mailData
     };
     formData.append("ticketingDetails", JSON.stringify(paramData));
@@ -1172,11 +1173,11 @@ class TicketSystem extends Component {
                   </div>
 
                   <div className="row my-3 mx-1">
-                    <img
+                    {/* <img
                       src={this.state.imageView}
                       alt="thumb"
                       className="thumbtick"
-                    />
+                    /> */}
                     {this.state.file.map((item, i) =>
                       i < 5 ? (
                         <img
@@ -1185,6 +1186,11 @@ class TicketSystem extends Component {
                           alt="thumb"
                           className="thumbtick"
                         />
+                      //   <img
+                      //   src={this.state.imageView}
+                      //   alt="thumb"
+                      //   className="thumbtick"
+                      // />
                       ) : (
                         ""
                       )
@@ -1338,7 +1344,8 @@ class TicketSystem extends Component {
                                   onChange={() =>
                                     this.showInformStoreFuncation()
                                   }
-                                  disabled
+                                  
+                                  disabled={this.state.selectedStoreIDs.length === 0}
                                 />
                                 <label
                                   htmlFor="fil-open"

@@ -70,13 +70,13 @@ class ForgotPassword extends Component {
       }).then(function(res) {
         debugger;
         let SearchData = res.data.responseData;
-        if(res.data.statusCode==1001)
+        if(res.data.statusCode===1001)
         {  
           NotificationManager.error(
           SearchData
          );
         }
-        else if(res.data.statusCode==200)
+        else if(res.data.statusCode===200)
         {
           NotificationManager.success(
             SearchData
