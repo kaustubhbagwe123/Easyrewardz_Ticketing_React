@@ -99,6 +99,7 @@ var row;
     this.setState({ editapprove: true });
    
    this.setUpdateData(rowdata);
+   this.handleGetCategoryList();
   }
   closeEditAproveModal() {
     this.setState({ editapprove: false });
@@ -154,13 +155,14 @@ setUpdateData(individualData){
        updateIssueTypeName=individualData.issueTypeName,
        updateSubject=individualData.subject,
        updateDescription=individualData.description,
+       ckeditorUpdate=updateDescription,
        selectedCategory=updateCategoryValue,
   selectedSubCategory=updateSubCategoryValue,
   selectedIssueType=updateIssurTypeValue;;
 
   this.setState({
     updateKBID, updateCategoryValue, updateCategoryName, updateSubCategoryValue,updateSubCategoryName,
-    updateIssurTypeValue,updateIssueTypeName,updateSubject,updateDescription,
+    updateIssurTypeValue,updateIssueTypeName,updateSubject,updateDescription,ckeditorUpdate,
     selectedCategory,selectedSubCategory,selectedIssueType
   })
   
@@ -177,13 +179,14 @@ setApproveData(individualData){
   approveIssueTypeName=individualData.issueTypeName,
   approveSubject=individualData.subject,
   approveDescription=individualData.description,
+  ckeditorApprove=approveDescription,
        selectedCategory=approveCategoryValue,
   selectedSubCategory=approveSubCategoryValue,
   selectedIssueType=approveIssurTypeValue;;
 
   this.setState({
     approveKBID, approveCategoryValue, approveCategoryName, approveSubCategoryValue,approveSubCategoryName,
-    approveIssurTypeValue,approveIssueTypeName,approveSubject,approveDescription,
+    approveIssurTypeValue,approveIssueTypeName,approveSubject,approveDescription,ckeditorApprove,
     selectedCategory,selectedSubCategory,selectedIssueType
   })
   
@@ -463,6 +466,7 @@ handleSeaechKB(){
 }
 
 handleUpdateKB(kbid){
+
   debugger;
   let self=this;
   var json={
@@ -527,6 +531,14 @@ handleAddKB(){
       NotificationManager.success("Record Saved successfully.");
       
     }
+    self.setState({
+      
+      selectedCategory:0,
+      selectedSubCategory:0,
+      selectedIssueType:0,
+      selectedSubject:"",
+      ckeditorAdd:""
+    });
     self.handleKBList();
   }).catch(error => {
 
@@ -1203,7 +1215,7 @@ handleAddKB(){
               <div className="row">
                 <div className="col-md-12 KBas">
                 <CKEditor
-              
+              data={this.state.ckeditorAdd}
               onChange={this.onAddCKEditorChange}
                  
                   config={{
@@ -1286,7 +1298,7 @@ handleAddKB(){
                   value={this.state.selectedCategory}
                   onChange={this.setCategoryValue}
                   >
-                    <option value={this.state.updateCategoryValue}>{this.state.updateCategoryName}</option>
+                    <option value={this.state.updateCategoryValue} selected>{this.state.updateCategoryName}</option>
                     {this.state.CategoryData !== null &&
                                       this.state.CategoryData.map((item, i) => (
                                         <option key={i} value={item.categoryID}>
@@ -1300,7 +1312,7 @@ handleAddKB(){
                   value={this.state.selectedSubCategory}
                   onChange={this.setSubCategoryValue}
                   >
-                    <option value={this.state.updateSubCategoryValue}>{this.state.updateSubCategoryName} </option>
+                    <option value={this.state.updateSubCategoryValue} selected>{this.state.updateSubCategoryName} </option>
                     {this.state.SubCategoryData !== null &&
                                       this.state.SubCategoryData.map(
                                         (item, i) => (
@@ -1319,10 +1331,11 @@ handleAddKB(){
               <div className="row">
               <div className="col-md-6">
               <select className="add-select-category"
+              
                    value={this.state.selectedIssueType}
                    onChange={this.setIssueType}
                   >
-                    <option value={this.state.updateIssueTypeValue}>{this.state.updateIssueTypeName}</option>
+                    <option value={this.state.updateIssurTypeValue} selected>{this.state.updateIssueTypeName}</option>
                     {this.state.IssueTypeData !== null &&
                             this.state.IssueTypeData.map((item, i) => (
                               <option
