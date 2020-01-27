@@ -532,8 +532,10 @@ handleAddKB(){
     this.setState({ detailscollapse: !this.state.detailscollapse });
   }
   render() {
+ 
     return (
       <Fragment>
+         <NotificationContainer />
         <div className="kb-header">
           <a href={Demo.BLANK_LINK} onClick={this.HandelFirstTabClick}>
             <label
