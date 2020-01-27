@@ -130,7 +130,8 @@ class MyTicket extends Component {
       selectTicketTemplateId: 0,
       mailBodyData: "",
       SearchStore:"",
-      custID: 0
+      custID: 0,
+      loading: false,
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -742,7 +743,9 @@ class MyTicket extends Component {
     }, 100);
   }
   handleNoteAddComments() {
+    debugger
     let self = this;
+    
     axios({
       method: "post",
       url: config.apiUrl + "/Task/AddComment",
@@ -790,6 +793,7 @@ class MyTicket extends Component {
   handleGetNotesTabDetails(ticket_Id) {
     debugger;
     let self = this;
+    this.setState({ loading: true });
     axios({
       method: "post",
       url: config.apiUrl + "/Ticketing/getNotesByTicketId",
@@ -802,9 +806,9 @@ class MyTicket extends Component {
       let status = res.data.message;
       let details = res.data.responseData;
       if (status === "Success") {
-        self.setState({ Notesdetails: details });
+        self.setState({ Notesdetails: details, loading: false });
       }else{
-        self.setState({ Notesdetails: [] });
+        self.setState({ Notesdetails: [] ,loading: false});
       }
     });
   }
@@ -2050,7 +2054,7 @@ class MyTicket extends Component {
                           >
                             <div className="reactstoreselect">
                               <ReactTable
-                                 data={storeDetails}
+                                data={storeDetails}
                                 columns={[
                                   {
                                     Header: <span>Purpose</span>,
@@ -2208,9 +2212,13 @@ class MyTicket extends Component {
                                             type="checkbox"
                                             id={row.original.orderMasterID}
                                             checked={this.state.CheckBoxChecked}
-                                            onChange={this.handelCheckBoxCheckedChange}
+                                            onChange={
+                                              this.handelCheckBoxCheckedChange
+                                            }
                                           />
-                                          <label htmlFor={row.original.orderMasterID}>
+                                          <label
+                                            htmlFor={row.original.orderMasterID}
+                                          >
                                             {row.original.invoiceNumber}
                                           </label>
                                         </div>
@@ -2526,7 +2534,7 @@ class MyTicket extends Component {
                   <CardBody>
                     <div className="">
                       <CKEditor
-                      data={this.state.CkEditorTemplateDetails.templateBody}
+                        data={this.state.CkEditorTemplateDetails.templateBody}
                         config={{
                           toolbar: [
                             {
@@ -3445,7 +3453,7 @@ class MyTicket extends Component {
                       TicketData: {
                         TicketId: this.state.ticket_Id,
                         GridData: this.state.taskTableGrid,
-                        TabActiveId:this.state.TaskTab
+                        TabActiveId: this.state.TaskTab
                       }
                     }}
                   />
@@ -3476,33 +3484,40 @@ class MyTicket extends Component {
                       ADD COMMENT
                     </button>
                   </div>
+
                   <div className="col-12 col-xs-12 col-sm-7 my-ticket-notes">
-                    {this.state.Notesdetails !== null &&
-                      this.state.Notesdetails.map((item, i) => (
-                        <div className="row my-ticket-notes-row" key={i}>
-                          <div className="col-md-1">
-                            <div className="oval-5-1-new">
-                              <img
-                                src={StoreIcon}
-                                style={{ padding: "5px" }}
-                                alt="store-icon"
-                              />
+                    {this.state.loading === true ? (
+                      <div className="loader-icon"></div>
+                    ) : (
+                      <>
+                        {this.state.Notesdetails !== null &&
+                          this.state.Notesdetails.map((item, i) => (
+                            <div className="row my-ticket-notes-row" key={i}>
+                              <div className="col-md-1">
+                                <div className="oval-5-1-new">
+                                  <img
+                                    src={StoreIcon}
+                                    style={{ padding: "5px" }}
+                                    alt="store-icon"
+                                  />
+                                </div>
+                              </div>
+                              <div className="col-md-11">
+                                <div className="row my-ticket-notes-created">
+                                  <label className="varun-nagpal">
+                                    {item.createdByName}
+                                  </label>
+                                </div>
+                                <div className="row my-ticket-notes-created">
+                                  <label className="hi-diwakar-i-really tab">
+                                    {item.note}
+                                  </label>
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                          <div className="col-md-11">
-                            <div className="row my-ticket-notes-created">
-                              <label className="varun-nagpal">
-                                {item.createdByName}
-                              </label>
-                            </div>
-                            <div className="row my-ticket-notes-created">
-                              <label className="hi-diwakar-i-really tab">
-                                {item.note}
-                              </label>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
+                          ))}
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
