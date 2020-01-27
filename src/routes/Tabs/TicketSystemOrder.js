@@ -157,15 +157,7 @@ class TicketSystemOrder extends Component {
         }
       }
     }
-    //  if(selectedRow.length === 1){
-    //   this.setState({
-    //     selectedDataRow: selectedRow[0]
-    //   });
-    //  }else{
-    //   this.setState({
-    //     selectedDataRow: selectedRow
-    //   });
-    //  }
+   
     this.setState({
       selectedDataRow: selectedRow
     });
@@ -173,7 +165,7 @@ class TicketSystemOrder extends Component {
     // console.log(this.state.selectedDataRow,"--------final data-------");
 
     {
-      this.props.getOrderId(this.state.selectedDataRow);
+      this.props.getOrderId(selectedRow);
     }
   }
 

@@ -3654,43 +3654,15 @@ table tr th:last-child {
   padding-left: 25px;
   height: auto;
 }
+.displayNn{
+  display: none;
+}
+.displayShw{
+  display: block;
+}
 /**************************************/
 
 /* -------------Deepka Savani-------------- */
-
-/* .High button {
-  background-color: #ffffff;
-  border: 1px solid #d02139;
-  border-radius: 4px;
-  height: 43px;
-  min-width: 60px;
-  margin-left: 10px;
-  cursor: pointer;
-}
-
-.Low button {
-  background-color: #ffffff;
-  border: 1px solid #5aa805;
-  border-radius: 4px;
-  min-width: 60px;
-  height: 43px;
-  margin-left: 22px;
-  cursor: pointer;
-}
-.Medium button {
-  background-color: #f5a623;
-  border: 1px solid #9f814a;
-  border-radius: 4px;
-  min-width: 68px;
-  height: 43px;
-  margin-left: -15px;
-  cursor: pointer;
-} */
-/* ----------------------------------- */
-
-/* .mask table {
-  border: none !important;
-} */
 
 .addNote-textarea::placeholder {
   color: #9b9b9b;

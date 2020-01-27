@@ -126,8 +126,10 @@ class TicketSystemStore extends Component {
     if (this.state.selectedStoreData.length === 0) {
       selectedRow.push(rowData);
       this.setState({
-        selectedStoreData: selectedRow
+        selectedStoreData: rowData
       });
+      console.log(this.state.selectedStoreData,'single selected value');
+      
     } else {
       if (newSelected[storeMasterID] === true) {
         for (var i = 0; i < this.state.selectedStoreData.length; i++) {
@@ -170,10 +172,8 @@ class TicketSystemStore extends Component {
     selectedStoreData: selectedRow
   });
    
-    console.log(this.state.selectedStoreData,"--------Store data-------");
-    
     {
-      this.props.getStoreID(this.state.selectedStoreData);
+      this.props.getStoreID(selectedRow);
     }
   }
   onFilteredChange(filtered) {
@@ -302,7 +302,7 @@ class TicketSystemStore extends Component {
                     className="systemordersearch"
                     placeholder="Search By Store Name, Pin Code, Store Code"
                     value={this.state.filterAll}
-                  onChange={this.filterAll}
+                    onChange={this.filterAll}
                   />
                   <img
                     src={SearchBlackImg}
@@ -331,18 +331,20 @@ class TicketSystemStore extends Component {
                           Store Details
                         </a>
                       </li>
-                      <li className="nav-item fo">
-                        <a
-                          className="nav-link"
-                          data-toggle="tab"
-                          href="#selectedstore-tab"
-                          role="tab"
-                          aria-controls="selectedstore-tab"
-                          aria-selected="false"
-                        >
-                          Selected Store
-                        </a>
-                      </li>
+                      {this.state.selectedStoreData.length !== 0 ? (
+                       <li className="nav-item fo">
+                       <a
+                         className="nav-link"
+                         data-toggle="tab"
+                         href="#selectedstore-tab"
+                         role="tab"
+                         aria-controls="selectedstore-tab"
+                         aria-selected="false"
+                       >
+                         Selected Store
+                       </a>
+                     </li>
+                      ) :  null}
                     </ul>
                   </div>
                 </div>
@@ -350,7 +352,7 @@ class TicketSystemStore extends Component {
               <span className="linestore2"></span>
               <div className="tab-content p-0">
                 <div
-                  className="tab-pane fade"
+                  className="tab-pane fade show active"
                   id="storedetail-tab"
                   role="tabpanel"
                   aria-labelledby="storedetail-tab"
@@ -410,7 +412,7 @@ class TicketSystemStore extends Component {
                             },
                             {
                               Header: <span>Store Email ID</span>,
-                              accessor: "storeEmailID",
+                              accessor: "storeEmailID"
                             },
                             {
                               Header: <span>Store Addres</span>,
@@ -445,7 +447,7 @@ class TicketSystemStore extends Component {
                                 "storeName",
                                 "storeEmailID",
                                 "address",
-                                "visitDate",
+                                "visitDate"
                               ],
                               threshold: matchSorter.rankings.WORD_STARTS_WITH
                             });
@@ -468,7 +470,7 @@ class TicketSystemStore extends Component {
                   </div>
                 </div>
                 <div
-                  className="tab-pane fade show active"
+                  className="tab-pane fade"
                   id="selectedstore-tab"
                   role="tabpanel"
                   aria-labelledby="selectedstore-tab"
