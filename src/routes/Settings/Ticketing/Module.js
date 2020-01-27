@@ -12,15 +12,23 @@ import "react-rangeslider/lib/index.css";
 import { Popover } from "antd";
 import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
+import { authHeader } from "./../../../helpers/authHeader";
+import axios from "axios";
+import config from "./../../../helpers/config";
 
 class Module extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      value: 10
+      value: 10,
+      modulesNames: [],
+      modulesItems: [],
+      moduleID: 0
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleGetModulesNames = this.handleGetModulesNames.bind(this);
+    this.handleGetModulesItems = this.handleGetModulesItems.bind(this);
   }
   //   handleChangeStart = () => {
   //     console.log('Change event started')
@@ -29,6 +37,68 @@ class Module extends Component {
   handleChange(value) {
     this.setState({
       value: value
+    });
+  }
+
+  componentDidMount() {
+    this.handleGetModulesNames();
+    // this.handleGetModulesItems();
+  }
+
+  checkModule = async (moduleItemID) => {
+    debugger;
+    let modulesItems = [... this.state.modulesItems], isActive;
+    for (let i = 0; i < modulesItems.length; i++) {
+      if (modulesItems[i].moduleItemID === moduleItemID) {
+        isActive = modulesItems[i].moduleItemisActive;
+        modulesItems[i].moduleItemisActive = !isActive;
+      }
+    }
+    await this.setState({
+      modulesItems
+    });
+  }
+  changeModuleTab = async (moduleID) => {
+    debugger;
+    await this.setState({
+      moduleID
+    });
+    this.handleGetModulesItems();
+  }
+
+  handleGetModulesNames() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Module/GetModules",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let modulesNames = res.data.responseData;
+      let moduleID = modulesNames[0].moduleID;
+      if (modulesNames !== null && modulesNames !== undefined) {
+        self.setState({ modulesNames, moduleID });
+      }
+      self.handleGetModulesItems();
+    });
+  }
+  handleGetModulesItems() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Module/GetModulesItems",
+      headers: authHeader(),
+      params: {
+        ModuleID: this.state.moduleID
+      }
+    }).then(function(res) {
+      debugger;
+      let modulesItems = res.data.responseData;
+      if (modulesItems !== null && modulesItems !== undefined) {
+        self.setState({ modulesItems });
+      }
     });
   }
 
@@ -371,13 +441,32 @@ class Module extends Component {
         <div className="paddmodule">
           <div className="module-tabs">
             <section>
-              <Tabs>
+                {this.state.modulesNames.length > 0 && <Tabs onSelect={(index, label) => console.log(label + ' selected')}>
+                  {this.state.modulesNames !== null &&
+                  this.state.modulesNames.map((name, i) => (
+                    <Tab label={name.moduleName} key={i}>
+                      <div className="switch switch-primary">
+                        <label className="moduleswitchtext-main">Field Name</label>
+                        <label className="moduleswitchtext-main1">Show/Hide</label>
+                      </div>
+                      {this.state.modulesItems !== null &&
+                      this.state.modulesItems.map((item, i) => (
+                        <div className="module-switch" key={i}>
+                          <div className="switch switch-primary">
+                            <label className="moduleswitchtext">{item.moduleItemName}</label>
+                            <input name="moduleItems" checked={item.moduleItemisActive} type="checkbox" id={'i' + item.moduleItemID} onChange={this.checkModule.bind(this, item.moduleItemID)} />
+                            <label htmlFor={'i' + item.moduleItemID} className="cr"></label>
+                          </div>
+                        </div>
+                      ))}
+                    </Tab>
+                  ))}
+                </Tabs>}
+              {/* <Tabs>
                 <Tab label="Advance Search">
                   <div className="switch switch-primary">
                     <label className="moduleswitchtext-main">Field Name</label>
                     <label className="moduleswitchtext-main1">Show/Hide</label>
-                    {/* <input type="checkbox" id="editDashboard-p-1"/>
-                                    <label htmlFor="editDashboard-p-1" className="cr"></label> */}
                   </div>
 
                   
@@ -513,8 +602,6 @@ class Module extends Component {
                   <div className="switch switch-primary">
                     <label className="moduleswitchtext-main">Field Name</label>
                     <label className="moduleswitchtext-main1">Show/Hide</label>
-                    {/* <input type="checkbox" id="editDashboard-p-1"/>
-                                    <label htmlFor="editDashboard-p-1" className="cr"></label> */}
                   </div>
 
                   <div className="switch switch-primary">
@@ -897,7 +984,7 @@ class Module extends Component {
                     </Tabs>
                   </div>
                 </Tab>
-              </Tabs>
+              </Tabs> */}
             </section>
           </div>
         </div>

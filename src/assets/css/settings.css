@@ -2496,7 +2496,8 @@
   border: 1px solid #ededed;
   background-color: #f3f3f3;
   font-family: lato;
-  width: 180px;
+  /* width: 180px; */
+  width: 190px;
   text-align: center;
 }
 .module-tabs .nav-tabs {
