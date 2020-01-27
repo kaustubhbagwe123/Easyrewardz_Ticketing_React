@@ -416,11 +416,14 @@ handleKBList(){
   }).then(function(res){
     debugger;
     var approve=res.data.responseData.approved;
-  
     var notapprove=res.data.responseData.notApproved;
+    var approveconut=res.data.responseData.approved.length;
+  var notapproveconut=res.data.responseData.notApproved.length;
     self.setState({
       KBListData: approve,
-      KBListnotApproveData:notapprove
+      KBListnotApproveData:notapprove,
+      countApprove:approveconut,
+      countNotApprove:notapproveconut
     });
   });
 }
@@ -439,13 +442,15 @@ handleSeaechKB(){
     }
   }).then(function(res){
     debugger;
-  
-        var approve=res.data.responseData.approved;
-       
-    var notapprove=res.data.responseData.notApproved;
+        var approve=res.data.responseData.approved;   
+  var notapprove=res.data.responseData.notApproved;
+  var approveconut=res.data.responseData.approved.length;
+  var notapproveconut=res.data.responseData.notApproved.length;
     self.setState({
       KBListData: approve,
-      KBListnotApproveData:notapprove
+      KBListnotApproveData:notapprove,
+      countApprove:approveconut,
+      countNotApprove:notapproveconut
     });
   });
 }
@@ -561,7 +566,7 @@ handleAddKB(){
           <div className="main-content-margin">
             <div className="row" style={{ padding: "35px 35px 10px 35px" }}>
               <div className="col-md-6"> 
-              <label className="main-conenet-point">02 ITEMS</label>
+              <label className="main-conenet-point">{this.state.countNotApprove} ITEMS</label>
               <small className="clear-search" onClick={this.handleKBList.bind(this)}>
                 Clear Search
               </small>
@@ -790,7 +795,7 @@ handleAddKB(){
           <div className="main-content-margin">
           <div className="row" style={{ padding: "35px 35px 10px 35px" }}>
             <div className="col-md-6">
-              <label className="main-conenet-point">02 ITEMS</label>
+              <label className="main-conenet-point">{this.state.countApprove} ITEMS</label>
               <small className="clear-search" onClick={this.handleKBList.bind(this)}>Clear Search</small>
               </div>
               <div className="col-md-6" style={{textAlign:"end"}}>
