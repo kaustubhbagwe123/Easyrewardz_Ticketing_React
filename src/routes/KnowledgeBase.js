@@ -96,10 +96,12 @@ var row;
 
   openEditAproveBModal(rowdata) {
    
-    this.setState({ editapprove: true });
+    this.setState({ editapprove: true,
+    selectedCategory:this.state.updateCategoryValue });
    
    this.setUpdateData(rowdata);
-   this.handleGetCategoryList();
+   
+ 
   }
   closeEditAproveModal() {
     this.setState({ editapprove: false });
@@ -132,7 +134,6 @@ var row;
  
 
 
-  
 
   HandelFirstTabClick() {
     this.setState({
@@ -1311,6 +1312,7 @@ handleAddKB(){
                 <select className="add-select-category"
                   value={this.state.selectedSubCategory}
                   onChange={this.setSubCategoryValue}
+                  onClick={this.handleGetSubCategoryList.bind(this)}
                   >
                     <option value={this.state.updateSubCategoryValue} selected>{this.state.updateSubCategoryName} </option>
                     {this.state.SubCategoryData !== null &&
@@ -1331,9 +1333,9 @@ handleAddKB(){
               <div className="row">
               <div className="col-md-6">
               <select className="add-select-category"
-              
                    value={this.state.selectedIssueType}
                    onChange={this.setIssueType}
+                   onClick={this.handleGetIssueTypeList.bind(this)}
                   >
                     <option value={this.state.updateIssurTypeValue} selected>{this.state.updateIssueTypeName}</option>
                     {this.state.IssueTypeData !== null &&
@@ -1461,6 +1463,7 @@ handleAddKB(){
                 <select className="add-select-category"
                   value={this.state.selectedSubCategory}
                   onChange={this.setSubCategoryValue}
+                  onClick={this.handleGetSubCategoryList.bind(this)}
                   >
                     <option value={this.state.approveSubCategoryValue}>{this.state.approveSubCategoryName} </option>
                     {this.state.SubCategoryData !== null &&
@@ -1483,6 +1486,7 @@ handleAddKB(){
               <select className="add-select-category"
                    value={this.state.selectedIssueType}
                    onChange={this.setIssueType}
+                   onClick={this.handleGetIssueTypeList.bind(this)}
                   >
                     <option value={this.state.approveIssurTypeValue}>{this.state.approveIssueTypeName}</option>
                     {this.state.IssueTypeData !== null &&
