@@ -54,6 +54,7 @@ var row;
       updateIssurTypeValue:0,
       updateIssueTypeName:"",
       updateSubject:"",
+      updateDescription:"",
       approveID:0,
       approvebit:0,
       approveKBID:0,
@@ -64,6 +65,7 @@ var row;
       approveIssurTypeValue:0,
       approveIssueTypeName:"",
       approveSubject:"",
+      approveDescription:"",
       ckeditorAdd:[],
       ckeditorUpdate:[],
       ckeditorApprove:[],
@@ -151,13 +153,14 @@ setUpdateData(individualData){
        updateIssurTypeValue=individualData.issueTypeID,
        updateIssueTypeName=individualData.issueTypeName,
        updateSubject=individualData.subject,
+       updateDescription=individualData.description,
        selectedCategory=updateCategoryValue,
   selectedSubCategory=updateSubCategoryValue,
   selectedIssueType=updateIssurTypeValue;;
 
   this.setState({
     updateKBID, updateCategoryValue, updateCategoryName, updateSubCategoryValue,updateSubCategoryName,
-    updateIssurTypeValue,updateIssueTypeName,updateSubject,
+    updateIssurTypeValue,updateIssueTypeName,updateSubject,updateDescription,
     selectedCategory,selectedSubCategory,selectedIssueType
   })
   
@@ -173,13 +176,14 @@ setApproveData(individualData){
   approveIssurTypeValue=individualData.issueTypeID,
   approveIssueTypeName=individualData.issueTypeName,
   approveSubject=individualData.subject,
+  approveDescription=individualData.description,
        selectedCategory=approveCategoryValue,
   selectedSubCategory=approveSubCategoryValue,
   selectedIssueType=approveIssurTypeValue;;
 
   this.setState({
     approveKBID, approveCategoryValue, approveCategoryName, approveSubCategoryValue,approveSubCategoryName,
-    approveIssurTypeValue,approveIssueTypeName,approveSubject,
+    approveIssurTypeValue,approveIssueTypeName,approveSubject,approveDescription,
     selectedCategory,selectedSubCategory,selectedIssueType
   })
   
@@ -450,7 +454,10 @@ handleSeaechKB(){
       KBListData: approve,
       KBListnotApproveData:notapprove,
       countApprove:approveconut,
-      countNotApprove:notapproveconut
+      countNotApprove:notapproveconut,
+      selectedCategory:0,
+      selectedSubCategory:0,
+      selectedIssueType:0
     });
   });
 }
@@ -1196,7 +1203,7 @@ handleAddKB(){
               <div className="row">
                 <div className="col-md-12 KBas">
                 <CKEditor
-
+              
               onChange={this.onAddCKEditorChange}
                  
                   config={{
@@ -1346,6 +1353,7 @@ handleAddKB(){
               <div className="row KBase">
               <div className="col-md-12">
               <CKEditor
+              data={this.state.updateDescription}
               onChange={this.onUpdateCKEditorChange}
                   config={{
                     toolbar: [
@@ -1494,6 +1502,7 @@ handleAddKB(){
               <div className="row KBase">
               <div className="col-md-12">
               <CKEditor
+              data={this.state.approveDescription}
               onChange={this.onApproveCKEditorChange}
                   config={{
                     toolbar: [
