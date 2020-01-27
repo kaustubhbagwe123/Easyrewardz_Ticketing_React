@@ -23,10 +23,10 @@ class TicketSystemTask extends Component {
       FunctionData: [],
       AssignToData: [],
       TicketPriorityData: [],
-      selectedDepartment: 0,
-      selectedFunction: 0,
-      selectedAssignTo: 0,
-      selectedPriority: 0
+      selectedDepartment: '',
+      selectedFunction: '',
+      selectedAssignTo: '',
+      selectedPriority: ''
     };
     this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
     // this.handleTaskDelete = this.handleTaskDelete.bind(this);
@@ -197,13 +197,14 @@ class TicketSystemTask extends Component {
             Priority: "",
             AssignTo: ""
           },
-          selectedDepartment: 0,
-          selectedFunction: 0,
-          selectedAssignTo: 0,
-          selectedPriority: 0
+          selectedDepartment: '',
+          selectedFunction: '',
+          selectedAssignTo: '',
+          selectedPriority: ''
         });
 
         NotificationManager.success("Task created successfully.");
+        this.validator.hideMessages();
       }
     } else {
       this.validator.showMessages();
@@ -293,7 +294,7 @@ class TicketSystemTask extends Component {
                           value={this.state.selectedDepartment}
                           onChange={this.setDepartmentValue}
                         >
-                          <option className="select-category-placeholder">
+                          <option value='' className="select-category-placeholder">
                             Department
                           </option>
                           {this.state.DepartmentData !== null &&
@@ -308,7 +309,7 @@ class TicketSystemTask extends Component {
                             ))}
                         </select>
                         {this.validator.message(
-                          "Dropdown",
+                          "Department",
                           this.state.selectedDepartment,
                           "required"
                         )}
@@ -320,7 +321,7 @@ class TicketSystemTask extends Component {
                           value={this.state.selectedFunction}
                           onChange={this.setFunctionValue}
                         >
-                          <option className="select-sub-category-placeholder">
+                          <option value='' className="select-sub-category-placeholder">
                             Function
                           </option>
                           {this.state.FunctionData !== null &&
@@ -334,6 +335,11 @@ class TicketSystemTask extends Component {
                               </option>
                             ))}
                         </select>
+                        {this.validator.message(
+                          "Function",
+                          this.state.selectedFunction,
+                          "required"
+                        )}
                       </div>
                     </div>
                     <div className="row m-b-10">
@@ -344,7 +350,7 @@ class TicketSystemTask extends Component {
                           onChange={this.setAssignToValue}
                           className="category-select-system dropdown-label"
                         >
-                          <option className="select-category-placeholder">
+                          <option value='' className="select-category-placeholder">
                             Assign To
                           </option>
                           {this.state.AssignToData !== null &&
@@ -358,6 +364,11 @@ class TicketSystemTask extends Component {
                               </option>
                             ))}
                         </select>
+                        {this.validator.message(
+                          "Assign To",
+                          this.state.selectedAssignTo,
+                          "required"
+                        )}
                       </div>
                       <div className="col-md-6">
                         <select
@@ -366,7 +377,7 @@ class TicketSystemTask extends Component {
                           onChange={this.setPriorityValue}
                           className="category-select-system dropdown-label"
                         >
-                          <option className="select-sub-category-placeholder">
+                          <option value='' className="select-sub-category-placeholder">
                             Priority
                           </option>
                           {this.state.TicketPriorityData !== null &&
@@ -380,6 +391,11 @@ class TicketSystemTask extends Component {
                               </option>
                             ))}
                         </select>
+                        {this.validator.message(
+                          "Priority",
+                          this.state.selectedPriority,
+                          "required"
+                        )}
                       </div>
                     </div>
                     <div className="row m-b-10">

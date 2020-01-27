@@ -109,7 +109,7 @@ class AddSearchMyTicket extends Component {
         self.setState({
           message: res.data.message
         });
-        NotificationManager.error(res.data.message);
+        // NotificationManager.error(res.data.message);
       }
     });
   }
