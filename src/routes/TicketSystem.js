@@ -18,6 +18,10 @@ import PlusImg from "./../assets/Images/plus.png";
 // import moment from "moment";
 import FileUpload from "./../assets/Images/file.png";
 import ThumbTick from "./../assets/Images/thumbticket.png";
+import PDF from "./../assets/Images/pdf.png";
+import CSVi from "./../assets/Images/csvicon.png";
+import Excel from "./../assets/Images/excel.png";
+import Word from "./../assets/Images/word.png";
 import { faCalculator } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import KnowledgeLogo from "./../assets/Images/knowledge.png";
@@ -845,8 +849,41 @@ class TicketSystem extends Component {
     let channelOfPurchaseValue = e.currentTarget.value;
     this.setState({ selectedChannelOfPurchase: channelOfPurchaseValue });
   };
-
-  render() {
+  renderIcon(name){
+    debugger;
+    let ext=name.split('.')[1].toLowerCase();
+    if(ext=="xls"||ext=="xlsx")
+    {
+      return(     
+        Excel
+      )
+    }
+    else if(ext=="doc" ||ext=="docx" || ext=="txt")
+    {
+      return(     
+        Word
+      )
+    }
+    else if(ext=="csv")
+    {
+      return(     
+        CSVi
+      )
+    }
+    else if(ext=="pdf")
+    {
+      return(     
+        PDF
+      )
+    }
+    else{
+      return(     
+        ThumbTick
+      )
+    }
+   
+  }
+  render() {  
     var CustomerId = this.state.customerDetails.customerId;
     var CustNumber = this.state.customerData.customerPhoneNumber;
     return (
@@ -1181,7 +1218,8 @@ class TicketSystem extends Component {
                     {this.state.file.map((item, i) =>
                       i < 5 ? (
                         <img
-                          src={ThumbTick}
+                           src={this.renderIcon(this.state.file[i].name)}
+                           title={this.state.file[i].name}
                           href={item[i]}
                           alt="thumb"
                           className="thumbtick"
@@ -1230,8 +1268,8 @@ class TicketSystem extends Component {
                       <div className="row my-3 mx-1">
                         {this.state.file.map((item, i) => (
                           <img
-                            src={ThumbTick}
-                            alt="thumb"
+                            src={this.renderIcon(this.state.file[i].name)}
+                            title={this.state.file[i].name}
                             className="thumbtick"
                             style={{ marginBottom: "10px" }}
                           />
