@@ -183,39 +183,6 @@ class Templates extends Component {
     this.setState({ConfigTabsModal:false})
   }
   render() {
-    const data = [
-      {
-        id: "A1",
-        alertType: "Complaint Status",
-        communicationMode: 12,
-        status: "Active"
-      },
-      {
-        id: "B1",
-        alertType: "Complaint Status",
-        communicationMode: 10,
-        status: "Inactive"
-      },
-      {
-        id: "C1",
-        alertType: "Complaint Status",
-        communicationMode: 12,
-        status: "Active"
-      },
-      {
-        id: "D1",
-        alertType: "Complaint Status",
-        communicationMode: 10,
-        status: "Inactive"
-      },
-      {
-        id: "E1",
-        alertType: "Complaint Status",
-        communicationMode: 12,
-        status: "Active"
-      }
-    ];
-
     const columns = [
       {
         Header: (
@@ -336,39 +303,6 @@ class Templates extends Component {
       }
     ];
 
-    const popoverData = (
-      <>
-        <div>
-          <b>
-            <p className="title">Created By: Admin</p>
-          </b>
-          <p className="sub-title">Created Date: 12 March 2018</p>
-        </div>
-        <div>
-          <b>
-            <p className="title">Updated By: Manager</p>
-          </b>
-          <p className="sub-title">Updated Date: 12 March 2018</p>
-        </div>
-      </>
-    );
-    const ActionDelete = (
-      <div className="d-flex general-popover popover-body">
-        <div className="del-big-icon">
-          <img src={DelBigIcon} alt="del-icon" />
-        </div>
-        <div>
-          <p className="font-weight-bold blak-clr">Delete file?</p>
-          <p className="mt-1 fs-12">
-            Are you sure you want to delete this file?
-          </p>
-          <div className="del-can">
-            <a href={Demo.BLANK_LINK}>CANCEL</a>
-            <button className="butn">Delete</button>
-          </div>
-        </div>
-      </div>
-    );
     const ActionEditBtn = (
       <div className="edtpadding">
         <div className="">

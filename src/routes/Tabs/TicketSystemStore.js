@@ -128,7 +128,6 @@ class TicketSystemStore extends Component {
       this.setState({
         selectedStoreData: rowData
       });
-      console.log(this.state.selectedStoreData,'single selected value');
       
     } else {
       if (newSelected[storeMasterID] === true) {
@@ -159,15 +158,7 @@ class TicketSystemStore extends Component {
         }
       }
    }
-  //  if(selectedRow.length === 1){
-  //   this.setState({
-  //     selectedStoreData: selectedRow[0]
-  //   });
-  //  }else{
-  //   this.setState({
-  //     selectedStoreData: selectedRow
-  //   });
-  //  }
+  
   this.setState({
     selectedStoreData: selectedRow
   });
@@ -357,7 +348,7 @@ class TicketSystemStore extends Component {
                   role="tabpanel"
                   aria-labelledby="storedetail-tab"
                 >
-                  <div className="reactstoreselect">
+                  <div className="reactstoreselect bckHide">
                     <ReactTable
                       data={SearchData}
                       onFilteredChange={this.onFilteredChange.bind(this)}

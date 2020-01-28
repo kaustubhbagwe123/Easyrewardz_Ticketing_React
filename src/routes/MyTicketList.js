@@ -12,13 +12,6 @@ import Sorting from "./../assets/Images/sorting.png";
 import DelSearch from "./../assets/Images/del-search.png";
 import moment from "moment";
 import Modal from "react-responsive-modal";
-// import MyTicketNew from "./Tabs/MyTicketNew.js";
-// import MyTicketOpen from "./Tabs/MyTicketOpen.js";
-// import MyTicketResolved from "./Tabs/MyTicketResolved.js";
-// import MyTicketReassign from "./Tabs/MyTicketReassign.js";
-// import MyTicketClosed from "./Tabs/MyTicketClosed.js";
-// import MyTicketAll from "./Tabs/MyTicketAll.js";
-// import MyTicketFollowUp from "./Tabs/MyTicketFollowUp.js";
 import MyTicketDraft from "./Tabs/MyTicketDraft.js";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -154,7 +147,7 @@ class MyTicketList extends Component {
       byTicketTypeFlag: 0,
       byCategoryFlag: 0,
       allFlag: 0,
-      resultCount:0,
+      resultCount: 0,
       TeamMemberData: [
         {
           department: "Team Member 1"
@@ -246,7 +239,7 @@ class MyTicketList extends Component {
       selectedNoOfDayForDailyYear: 0,
       selectedNoOfWeekForYear: 0,
       selectedNameOfMonthForDailyYear: "",
-      loading: false,
+      loading: false
     };
     this.clearSearch = this.clearSearch.bind(this);
     this.handleAdvSearchFlag = this.handleAdvSearchFlag.bind(this);
@@ -342,59 +335,11 @@ class MyTicketList extends Component {
       }
     });
   }
-  // handleSearchTicketEscalation() {
-  //   let self = this;
-  //   axios({
-  //     method: "post",
-  //     url: config.apiUrl + "/Search/SearchTicket",
-  //     headers: authHeader(),
-  //     data: {
-  //       isByStatus: this.state.isByStatus,
-  //       pageSize: this.state.advPageSize,
-  //       pageNo: this.state.advPageNo,
-  //       isEscalation: 1
-  //       // ticketStatus: ticketStatus
-  //     }
-  //   }).then(function(res) {
-  //     debugger;
-  //     let data = res.data.responseData;
-  //     let Status = res.data.message;
-  //     if (Status === "Record Not Found") {
-  //       self.setState({ SearchTicketData: [] });
-  //     } else if (data !== null) {
-  //       self.setState({ SearchTicketData: data });
-  //     }
-  //   });
-  // }
 
   handleSearchTicket(TabId) {
     debugger;
     var ticketStatus = 0;
-    // if (TabId === "Escalation") {
-    //   ticketStatus = 1;
-    //   isEscalation = 1;
-    // } else if (TabId === "New") {
-    //   ticketStatus = 101;
-    //   isEscalation = 0;
-    // } else if (TabId === "Open") {
-    //   isEscalation = 0;
-    //   ticketStatus = 102;
-    // } else if (TabId === "Resolved") {
-    //   isEscalation = 0;
-    //   ticketStatus = 103;
-    // } else if (TabId === "Closed") {
-    //   isEscalation = 0;
-    //   ticketStatus = 104;
-    // } else if (TabId === "Reassigned") {
-    //   isEscalation = 0;
-    //   ticketStatus = 106;
-    // } else if (TabId === "All") {
-    //   isEscalation = 0;
-    //   ticketStatus = 107;
-    // } else if (TabId === "FollowUp") {
-    //   isEscalation = 0;
-    //   ticketStatus = 108;
-    // }
+   
     if (TabId === "Escalation" || TabId === undefined) {
       ticketStatus = 1001;
       this.setState({
@@ -684,7 +629,7 @@ class MyTicketList extends Component {
 
     let self = this;
     var ticketIdsComma = this.state.ticketIds;
-    var ticketIds = ticketIdsComma.substring(0, ticketIdsComma.length-1);
+    var ticketIds = ticketIdsComma.substring(0, ticketIdsComma.length - 1);
 
     axios({
       method: "post",
@@ -1218,26 +1163,32 @@ class MyTicketList extends Component {
     // ---------------By Date tab---------------------
     var dateTab = {};
     if (this.state.ActiveTabId === 1) {
-      if (this.state.ByDateCreatDate === null || this.state.ByDateCreatDate === undefined || this.state.ByDateCreatDate === '') {
-        
-        dateTab["Ticket_CreatedOn"] = ''
+      if (
+        this.state.ByDateCreatDate === null ||
+        this.state.ByDateCreatDate === undefined ||
+        this.state.ByDateCreatDate === ""
+      ) {
+        dateTab["Ticket_CreatedOn"] = "";
       } else {
         dateTab["Ticket_CreatedOn"] = moment(this.state.ByDateCreatDate).format(
           "YYYY-MM-DD"
         );
       }
-      if (this.state.ByDateSelectDate === null || this.state.ByDateSelectDate === undefined || this.state.ByDateSelectDate === '') {
-        
-        dateTab["Ticket_ModifiedOn"] = ''
+      if (
+        this.state.ByDateSelectDate === null ||
+        this.state.ByDateSelectDate === undefined ||
+        this.state.ByDateSelectDate === ""
+      ) {
+        dateTab["Ticket_ModifiedOn"] = "";
       } else {
-        dateTab["Ticket_ModifiedOn"] = moment(this.state.ByDateSelectDate).format(
-          "YYYY-MM-DD"
-          );
+        dateTab["Ticket_ModifiedOn"] = moment(
+          this.state.ByDateSelectDate
+        ).format("YYYY-MM-DD");
       }
-    dateTab["SLA_DueON"] = this.state.selectedSlaDueByDate;
-    dateTab["Ticket_StatusID"] = this.state.selectedTicketStatusByDate;
+      dateTab["SLA_DueON"] = this.state.selectedSlaDueByDate;
+      dateTab["Ticket_StatusID"] = this.state.selectedTicketStatusByDate;
     } else {
-      dateTab = null
+      dateTab = null;
     }
 
     // --------------------By Customer Type Tab---------------
@@ -1254,23 +1205,22 @@ class MyTicketList extends Component {
         customerType: null
       });
     }
-   
 
     // --------------------By Ticket Type Tab-----------------
     var ticketType = {};
     if (this.state.ActiveTabId === 3) {
-      let purchaseIds="";
-      let actionTypeIds="";
-      if(this.state.selectedChannelOfPurchase!=null)
-      {
+      let purchaseIds = "";
+      let actionTypeIds = "";
+      if (this.state.selectedChannelOfPurchase != null) {
         for (let i = 0; i < this.state.selectedChannelOfPurchase.length; i++) {
-          purchaseIds+=this.state.selectedChannelOfPurchase[i].channelOfPurchaseID+",";
+          purchaseIds +=
+            this.state.selectedChannelOfPurchase[i].channelOfPurchaseID + ",";
         }
       }
-      if(this.state.selectedTicketActionType!=null)
-      {
+      if (this.state.selectedTicketActionType != null) {
         for (let i = 0; i < this.state.selectedTicketActionType.length; i++) {
-          actionTypeIds+=this.state.selectedTicketActionType[i].ticketActionTypeID+",";
+          actionTypeIds +=
+            this.state.selectedTicketActionType[i].ticketActionTypeID + ",";
         }
       }
       ticketType["TicketPriorityID"] = this.state.selectedPriority;
@@ -1288,59 +1238,62 @@ class MyTicketList extends Component {
       categoryType["CategoryId"] = this.state.selectedCategory;
       categoryType["SubCategoryId"] = this.state.selectedSubCategory;
       categoryType["IssueTypeId"] = this.state.selectedIssueType;
-      categoryType["TicketStatusID"] = this.state.selectedTicketStatusByCategory;
+      categoryType[
+        "TicketStatusID"
+      ] = this.state.selectedTicketStatusByCategory;
     } else {
       this.setState({
         categoryType: null
       });
     }
-     //---------------------By Ticket All Tab---------------------
-     var allTab={};
-    
-     if(this.state.ActiveTabId===5)
-     {
-        let withClaim=0;
-        let withTask=0;
-        if(this.state.selectedWithClaimAll==="yes")
-        {
-            withClaim=1;
-        }
-        if(this.state.selectedWithTaskAll==="yes")
-        {
-            withTask=1;
-        }
-        allTab["CreatedDate"]=this.state.ByAllCreateDate;
-        allTab["ModifiedDate"]=this.state.ByAllLastDate;
-        allTab["CategoryId"]=this.state.selectedCategoryAll;
-        allTab["SubCategoryId"]=this.state.selectedSubCategoryAll;
-        allTab["IssueTypeId"]=this.state.selectedIssueTypeAll;
-        allTab["TicketSourceTypeID"]=this.state.selectedTicketSource;
-        allTab["TicketIdORTitle"]=this.state.TicketIdTitleByAll;
-        allTab["PriorityId"]=this.state.selectedPriorityAll;
-        allTab["TicketSatutsID"]=this.state.selectedTicketStatusAll;
-        allTab["SLAStatus"]=this.state.selectedSlaStatus;
-        allTab["ClaimId"]=this.state.selectedClaimStatus;
-        allTab["InvoiceNumberORSubOrderNo"]=this.state.InvoiceSubOrderByAll;
-        allTab["OrderItemId"]=this.state.ItemIdByAll;
-        allTab["IsVisitStore"]=this.state.selectedVisitStoreAll;
-        allTab["IsWantVistingStore"]=this.state.selectedWantToVisitStoreAll;
-        allTab["CustomerEmailID"]=this.state.EmailByAll;
-        allTab["CustomerMobileNo"]=this.state.MobileByAll;
-        allTab["AssignTo"]=this.state.selectedAssignedToAll;
-        allTab["StoreCodeORAddress"]=this.state.selectedPurchaseStoreCodeAddressAll;
-        allTab["WantToStoreCodeORAddress"]=this.state.selectedVisitStoreCodeAddressAll;       
-        allTab["HaveClaim"]=withClaim;
-        allTab["ClaimStatusId"]=this.state.selectedClaimStatus;
-        allTab["ClaimCategoryId"]=this.state.selectedClaimCategory;
-        allTab["ClaimSubCategoryId"]=this.state.selectedClaimSubCategory;
-        allTab["ClaimIssueTypeId"]=this.state.selectedClaimIssueType;
-        allTab["HaveTask"]=withTask;
-        allTab["TaskStatusId"]=this.state.selectedTaskStatus;
-        allTab["TaskDepartment_Id"]=this.state.selectedDepartment;
-        allTab["TaskFunction_Id"]=this.state.selectedFunction;       
-     }
+    //---------------------By Ticket All Tab---------------------
+    var allTab = {};
 
-   //----------------------------------------------------------
+    if (this.state.ActiveTabId === 5) {
+      let withClaim = 0;
+      let withTask = 0;
+      if (this.state.selectedWithClaimAll === "yes") {
+        withClaim = 1;
+      }
+      if (this.state.selectedWithTaskAll === "yes") {
+        withTask = 1;
+      }
+      allTab["CreatedDate"] = this.state.ByAllCreateDate;
+      allTab["ModifiedDate"] = this.state.ByAllLastDate;
+      allTab["CategoryId"] = this.state.selectedCategoryAll;
+      allTab["SubCategoryId"] = this.state.selectedSubCategoryAll;
+      allTab["IssueTypeId"] = this.state.selectedIssueTypeAll;
+      allTab["TicketSourceTypeID"] = this.state.selectedTicketSource;
+      allTab["TicketIdORTitle"] = this.state.TicketIdTitleByAll;
+      allTab["PriorityId"] = this.state.selectedPriorityAll;
+      allTab["TicketSatutsID"] = this.state.selectedTicketStatusAll;
+      allTab["SLAStatus"] = this.state.selectedSlaStatus;
+      allTab["ClaimId"] = this.state.selectedClaimStatus;
+      allTab["InvoiceNumberORSubOrderNo"] = this.state.InvoiceSubOrderByAll;
+      allTab["OrderItemId"] = this.state.ItemIdByAll;
+      allTab["IsVisitStore"] = this.state.selectedVisitStoreAll;
+      allTab["IsWantVistingStore"] = this.state.selectedWantToVisitStoreAll;
+      allTab["CustomerEmailID"] = this.state.EmailByAll;
+      allTab["CustomerMobileNo"] = this.state.MobileByAll;
+      allTab["AssignTo"] = this.state.selectedAssignedToAll;
+      allTab[
+        "StoreCodeORAddress"
+      ] = this.state.selectedPurchaseStoreCodeAddressAll;
+      allTab[
+        "WantToStoreCodeORAddress"
+      ] = this.state.selectedVisitStoreCodeAddressAll;
+      allTab["HaveClaim"] = withClaim;
+      allTab["ClaimStatusId"] = this.state.selectedClaimStatus;
+      allTab["ClaimCategoryId"] = this.state.selectedClaimCategory;
+      allTab["ClaimSubCategoryId"] = this.state.selectedClaimSubCategory;
+      allTab["ClaimIssueTypeId"] = this.state.selectedClaimIssueType;
+      allTab["HaveTask"] = withTask;
+      allTab["TaskStatusId"] = this.state.selectedTaskStatus;
+      allTab["TaskDepartment_Id"] = this.state.selectedDepartment;
+      allTab["TaskFunction_Id"] = this.state.selectedFunction;
+    }
+
+    //----------------------------------------------------------
     axios({
       method: "post",
       url: config.apiUrl + "/Search/GetTicketsOnSearch",
@@ -1352,22 +1305,21 @@ class MyTicketList extends Component {
         searchDataByCustomerType: customerType,
         searchDataByTicketType: ticketType,
         searchDataByCategoryType: categoryType,
-        SearchDataByAll:allTab
+        SearchDataByAll: allTab
       }
     }).then(function(res) {
       debugger;
       let status = res.data.message;
       let data = res.data.responseData;
-      let count=0;
-      if(res.data.responseData!=null)
-      {
-         count=res.data.responseData.length;
+      let count = 0;
+      if (res.data.responseData != null) {
+        count = res.data.responseData.length;
       }
-     
+
       if (status === "Success") {
         self.setState({
           SearchTicketData: data,
-          resultCount:count
+          resultCount: count
         });
       } else {
         self.setState({
@@ -1664,33 +1616,31 @@ class MyTicketList extends Component {
   handelCheckBoxCheckedChange = async () => {
     debugger;
     var checkboxes = document.getElementsByName("MyTicketListcheckbox[]");
-    var strIds="";
+    var strIds = "";
     for (var i in checkboxes) {
-      if(isNaN(i)===false)
-      {
-         if(checkboxes[i].checked === true)
-         {
-          if (checkboxes[i].getAttribute('attrIds')!==null)
-            strIds+=checkboxes[i].getAttribute('attrIds')+",";
-         }
+      if (isNaN(i) === false) {
+        if (checkboxes[i].checked === true) {
+          if (checkboxes[i].getAttribute("attrIds") !== null)
+            strIds += checkboxes[i].getAttribute("attrIds") + ",";
+        }
       }
     }
     await this.setState({
-      ticketIds: strIds,
+      ticketIds: strIds
     });
   };
 
   checkAllCheckbox = async event => {
     debugger;
-    var strIds="";
+    var strIds = "";
     const allCheckboxChecked = event.target.checked;
     var checkboxes = document.getElementsByName("MyTicketListcheckbox[]");
     if (allCheckboxChecked) {
       for (var i in checkboxes) {
         if (checkboxes[i].checked === false) {
           checkboxes[i].checked = true;
-          if (checkboxes[i].getAttribute('attrIds')!==null)
-            strIds+=checkboxes[i].getAttribute('attrIds')+",";
+          if (checkboxes[i].getAttribute("attrIds") !== null)
+            strIds += checkboxes[i].getAttribute("attrIds") + ",";
         }
       }
     } else {
@@ -1699,12 +1649,12 @@ class MyTicketList extends Component {
           checkboxes[J].checked = false;
         }
       }
-      strIds="";
+      strIds = "";
     }
     await this.setState({
       ticketIds: strIds
     });
-  }
+  };
   handelOnchangeData(e) {
     this.setState({
       [e.target.name]: e.target.value
@@ -1827,7 +1777,7 @@ class MyTicketList extends Component {
         selectedNoOfMonthForMonth: 0,
         selectedNoOfMonthForWeek: 0,
         selectedNoOfWeekForWeek: 0,
-        selectedNameOfDayForWeekCommaSeperated: ''
+        selectedNameOfDayForWeekCommaSeperated: ""
       });
     } else if (SelectData === "235") {
       this.setState({
@@ -1846,7 +1796,7 @@ class MyTicketList extends Component {
         selectedNoOfMonthForMonth: 0,
         selectedNoOfMonthForWeek: 0,
         selectedNoOfWeekForWeek: 0,
-        selectedNameOfDayForWeekCommaSeperated: ''
+        selectedNameOfDayForWeekCommaSeperated: ""
       });
     }
     this.setState({
@@ -2408,490 +2358,6 @@ class MyTicketList extends Component {
                                           </select>
                                         </div>
                                       </div>
-                                      {/* <div className="row justify-content-between">
-                                      <div className="col-auto d-flex align-items-center">
-                                        <p className="font-weight-bold mr-3">
-                                          <span className="blue-clr">04</span>{" "}
-                                          Results
-                                        </p>
-                                        <p className="blue-clr fs-14">
-                                          CLEAR SEARCH
-                                        </p>
-                                      </div>
-                                      <div className="col-auto mob-mar-btm">
-                                        <button>
-                                          <img
-                                            className="position-relative csv-icon"
-                                            src={csv}
-                                            alt="csv-icon"
-                                          />
-                                          CSV
-                                        </button>
-                                        <button
-                                          type="button"
-                                          onClick={this.ScheduleOpenModel}
-                                        >
-                                          <img
-                                            className="sch-icon"
-                                            src={Schedule}
-                                            alt="schedule-icon"
-                                          />
-                                          Schedule
-                                        </button>
-                                        <Modal
-                                          onClose={this.ScheduleCloseModel}
-                                          open={this.state.Schedule}
-                                          modalId="ScheduleModel"
-                                          overlayId="logout-ovrly"
-                                        >
-                                          <div>
-                                            <label>
-                                              <b>Schedule date to</b>
-                                            </label>
-                                            <div>
-                                              <select
-                                                id="inputState"
-                                                className="form-control dropdown-setting1 ScheduleDate-to"
-                                              >
-                                                <option>Team Member</option>
-                                                <option>Team Member 1</option>
-                                              </select>
-                                              <select
-                                                id="inputState"
-                                                className="form-control dropdown-setting1 ScheduleDate-to"
-                                                value={
-                                                  this.state.selectScheduleDate
-                                                }
-                                                onChange={
-                                                  this.handleScheduleDateChange
-                                                }
-                                              >
-                                                {this.state.ScheduleOption !==
-                                                  null &&
-                                                  this.state.ScheduleOption.map(
-                                                    (item, i) => (
-                                                      <option
-                                                        key={i}
-                                                        value={item.scheduleID}
-                                                      >
-                                                        {item.scheduleName}
-                                                      </option>
-                                                    )
-                                                  )}
-                                              </select>
-                                              {this.state.selectScheduleDate ===
-                                              "111" ? (
-                                                <div className="ScheduleDate-to">
-                                                  <span>
-                                                    <label className="every1">
-                                                      Every
-                                                    </label>
-                                                    <input
-                                                      type="text"
-                                                      className="Every"
-                                                      placeholder="1"
-                                                    />
-                                                    <label className="every1">
-                                                      Day
-                                                    </label>
-                                                  </span>
-                                                </div>
-                                              ) : null}
-                                              {this.state.selectScheduleDate ===
-                                              "222" ? (
-                                                <div className="ScheduleDate-to">
-                                                  <span>
-                                                    <label className="every1">
-                                                      Every
-                                                    </label>
-                                                    <input
-                                                      type="text"
-                                                      className="Every"
-                                                      placeholder="1"
-                                                    />
-                                                    <label className="every1">
-                                                      Week on
-                                                    </label>
-                                                  </span>
-                                                  <div
-                                                    style={{
-                                                      marginTop: "10px"
-                                                    }}
-                                                  >
-                                                    <Checkbox>Mon</Checkbox>
-                                                    <Checkbox>Tue</Checkbox>
-                                                    <Checkbox>Wed</Checkbox>
-                                                    <Checkbox>Thu</Checkbox>
-                                                    <Checkbox>Fri</Checkbox>
-                                                    <Checkbox>Sat</Checkbox>
-                                                    <Checkbox>Sun</Checkbox>
-                                                  </div>
-                                                </div>
-                                              ) : null}
-                                              {this.state.selectScheduleDate ===
-                                              "333" ? (
-                                                <div className="ScheduleDate-to">
-                                                  <span>
-                                                    <label className="every1">
-                                                      Day
-                                                    </label>
-                                                    <input
-                                                      type="text"
-                                                      className="Every"
-                                                      placeholder="9"
-                                                    />
-                                                    <label className="every1">
-                                                      of every
-                                                    </label>
-                                                    <input
-                                                      type="text"
-                                                      className="Every"
-                                                      placeholder="1"
-                                                    />
-                                                    <label className="every1">
-                                                      months
-                                                    </label>
-                                                  </span>
-                                                </div>
-                                              ) : null}
-                                              {this.state.selectScheduleDate ===
-                                              "444" ? (
-                                                <div className="ScheduleDate-to">
-                                                  <span>
-                                                    <label className="every1">
-                                                      Every
-                                                    </label>
-                                                    <input
-                                                      type="text"
-                                                      className="Every"
-                                                      placeholder="1"
-                                                    />
-                                                    <label className="every1">
-                                                      month on the
-                                                    </label>
-                                                  </span>
-                                                  <div className="row mt-3">
-                                                    <div className="col-md-6">
-                                                      <select
-                                                        id="inputState"
-                                                        className="form-control dropdown-setting1"
-                                                      >
-                                                        <option>Second</option>
-                                                        <option>Four</option>
-                                                      </select>
-                                                    </div>
-                                                    <div className="col-md-6">
-                                                      <select
-                                                        id="inputState"
-                                                        className="form-control dropdown-setting1"
-                                                      >
-                                                        <option>Sunday</option>
-                                                        <option>Monday</option>
-                                                      </select>
-                                                    </div>
-                                                  </div>
-                                                </div>
-                                              ) : null}
-                                              {this.state.selectScheduleDate ===
-                                              "555" ? (
-                                                <div className="ScheduleDate-to">
-                                                  <div className="row m-0">
-                                                    <label
-                                                      className="every1"
-                                                      style={{
-                                                        lineHeight: "40px"
-                                                      }}
-                                                    >
-                                                      on
-                                                    </label>
-                                                    <div className="col-md-7">
-                                                      <select
-                                                        id="inputState"
-                                                        className="form-control dropdown-setting1"
-                                                      >
-                                                        <option>
-                                                          Septmber
-                                                        </option>
-                                                        <option>
-                                                          Octomber
-                                                        </option>
-                                                      </select>
-                                                    </div>
-                                                    <input
-                                                      type="text"
-                                                      className="Every"
-                                                      placeholder="1"
-                                                    />
-                                                  </div>
-                                                </div>
-                                              ) : null}
-                                              {this.state.selectScheduleDate ===
-                                              "666" ? (
-                                                <div className="ScheduleDate-to">
-                                                  <span>
-                                                    <div className="row m-0">
-                                                      <label
-                                                        className="every1"
-                                                        style={{
-                                                          lineHeight: "40px"
-                                                        }}
-                                                      >
-                                                        on the
-                                                      </label>
-                                                      <div className="col-md-7">
-                                                        <select
-                                                          id="inputState"
-                                                          className="form-control dropdown-setting1"
-                                                        >
-                                                          <option>
-                                                            Second
-                                                          </option>
-                                                          <option>Four</option>
-                                                        </select>
-                                                      </div>
-                                                    </div>
-                                                  </span>
-                                                  <div className="row mt-3">
-                                                    <div className="col-md-5">
-                                                      <select
-                                                        id="inputState"
-                                                        className="form-control dropdown-setting1"
-                                                        style={{
-                                                          width: "100px"
-                                                        }}
-                                                      >
-                                                        <option>Sunday</option>
-                                                        <option>Monday</option>
-                                                      </select>
-                                                    </div>
-                                                    <label
-                                                      className="every1"
-                                                      style={{
-                                                        lineHeight: "40px",
-                                                        marginLeft: "14px"
-                                                      }}
-                                                    >
-                                                      to
-                                                    </label>
-                                                    <div className="col-md-5">
-                                                      <select
-                                                        id="inputState"
-                                                        className="form-control dropdown-setting1"
-                                                        style={{
-                                                          width: "100px"
-                                                        }}
-                                                      >
-                                                        <option>
-                                                          Septmber
-                                                        </option>
-                                                        <option>
-                                                          Octomber
-                                                        </option>
-                                                      </select>
-                                                    </div>
-                                                  </div>
-                                                </div>
-                                              ) : null}
-
-                                              <input
-                                                type="text"
-                                                className="txt-1 txt1Place txt1Time"
-                                                placeholder="11AM"
-                                              />
-                                              <div>
-                                                <button className="scheduleBtn">
-                                                  <label className="addLable">
-                                                    SCHEDULE
-                                                  </label>
-                                                </button>
-                                              </div>
-                                              <div>
-                                                <button
-                                                  type="button"
-                                                  className="scheduleBtncancel"
-                                                >
-                                                  CANCEL
-                                                </button>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </Modal>
-                                        <button
-                                          className={
-                                            this.state.CheckBoxChecked
-                                              ? "btn-inv"
-                                              : "dis-btn"
-                                          }
-                                          onClick={
-                                            this.state.CheckBoxChecked
-                                              ? this.handleAssignModalOpen.bind(
-                                                  this
-                                                )
-                                              : null
-                                          }
-                                        >
-                                          <img
-                                            src={Assign}
-                                            className="assign-icon"
-                                            alt="assign-icon"
-                                          />
-                                          Assign
-                                        </button>
-                                        <Modal
-                                          onClose={this.handleAssignModalClose.bind(
-                                            this
-                                          )}
-                                          open={this.state.AssignModal}
-                                          modalId="AssignPop-up"
-                                        >
-                                          <div className="assign-modal-headerDashboard">
-                                            <img
-                                              src={BlackLeftArrow}
-                                              alt="black-left-arrow-icon"
-                                              className="black-left-arrow"
-                                              onClick={this.handleAssignModalClose.bind(
-                                                this
-                                              )}
-                                            />
-                                            <label className="claim-details">
-                                              Assign Tickets To
-                                            </label>
-                                            <img
-                                              src={SearchBlackImg}
-                                              alt="SearchBlack"
-                                              className="black-left-arrow srch-mleft-spc"
-                                            />
-                                          </div>
-                                          <div className="assign-modal-div">
-                                            <input
-                                              type="text"
-                                              className="txt-1 txt-btmSpace"
-                                              placeholder="First Name"
-                                              name="assignFirstName"
-                                              value={this.state.assignFirstName}
-                                              onChange={this.handelOnchangeData}
-                                            />
-                                            <input
-                                              type="text"
-                                              className="txt-1 txt-btmSpace"
-                                              placeholder="Last Name"
-                                              name="assignLastName"
-                                              value={this.state.assignLastName}
-                                              onChange={this.handelOnchangeData}
-                                            />
-                                            <input
-                                              type="text"
-                                              className="txt-1 txt-btmSpace"
-                                              placeholder="Email"
-                                              name="assignEmail"
-                                              value={this.state.assignEmail}
-                                              onChange={this.handelOnchangeData}
-                                            />
-                                            <div className="txt-btmSpace">
-                                              <select
-                                                id="inputState"
-                                                className="form-control dropdown-setting"
-                                                value={
-                                                  this.state.selectedDesignation
-                                                }
-                                                onChange={
-                                                  this.setDesignationValue
-                                                }
-                                              >
-                                                
-                                                <option>Designation</option>
-                                                {this.state.DesignationData !==
-                                                  null &&
-                                                  this.state.DesignationData.map(
-                                                    (item, i) => (
-                                                      <option
-                                                        key={i}
-                                                        value={
-                                                          item.designationID
-                                                        }
-                                                      >
-                                                        {item.designationName}
-                                                      </option>
-                                                    )
-                                                  )}
-                                              </select>
-                                            </div>
-                                            <button
-                                              className="butn assign-btn"
-                                              type="button"
-                                              onClick={this.handleAssignSearchData.bind(
-                                                this
-                                              )}
-                                            >
-                                              SEARCH
-                                            </button>
-                                            <a
-                                              href="#!"
-                                              className="anchorTag-clear"
-                                            >
-                                              CLEAR
-                                            </a>
-                                          </div>
-                                          <div className="assign-modal-body">
-                                            <ReactTable
-                                              data={SearchAssignData}
-                                              columns={[
-                                                {
-                                                  Header: <span>Agent</span>,
-                                                  accessor: "agent",
-                                                  Cell: row => {
-                                                    var ids =
-                                                      row.original["user_ID"];
-                                                    return (
-                                                      <div>
-                                                        <span>
-                                                          <img
-                                                            src={Headphone2Img}
-                                                            alt="headphone"
-                                                            className="oval-55 assign-hdphone"
-                                                            id={ids}
-                                                          />
-                                                          {
-                                                            row.original[
-                                                              "agentName"
-                                                            ]
-                                                          }
-                                                        </span>
-                                                      </div>
-                                                    );
-                                                  }
-                                                },
-                                                {
-                                                  Header: (
-                                                    <span>Designation</span>
-                                                  ),
-                                                  accessor: "designation"
-                                                },
-                                                {
-                                                  Header: <span>Email</span>,
-                                                  accessor: "email"
-                                                }
-                                              ]}
-                                              
-                                              defaultPageSize={5}
-                                              showPagination={false}
-                                            />
-
-                                            <textarea
-                                              className="assign-modal-textArea"
-                                              placeholder="Add Remarks"
-                                            ></textarea>
-                                            <button
-                                              className="assign-butn btn-assign-tikcet"
-                                              type="button"
-                                            >
-                                              ASSIGN TICKETS
-                                            </button>
-                                          </div>
-                                        </Modal>
-                                      </div>
-                                    </div>
-                                   */}
                                     </div>
                                   </div>
                                   <div
@@ -2963,44 +2429,7 @@ class MyTicketList extends Component {
                                           </select>
                                         </div>
                                       </div>
-                                      {/* <div className="row justify-content-between">
-                                      <div className="col-auto d-flex align-items-center">
-                                        <p className="font-weight-bold mr-3">
-                                          <span className="blue-clr">04</span>{" "}
-                                          Results
-                                        </p>
-                                        <p className="blue-clr fs-14">
-                                          CLEAR SEARCH
-                                        </p>
-                                      </div>
-                                      <div className="col-auto mob-mar-btm">
-                                        <button>
-                                          <img
-                                            className="position-relative csv-icon"
-                                            src={csv}
-                                            alt="csv-icon"
-                                          />
-                                          CSV
-                                        </button>
-                                        <button>
-                                          <img
-                                            className="sch-icon"
-                                            src={Schedule}
-                                            alt="schedule-icon"
-                                          />
-                                          Schedule
-                                        </button>
-                                        <button className="btn-inv btn-dis">
-                                          <img
-                                            src={Assign}
-                                            className="assign-icon"
-                                            alt="assign-icon"
-                                          />
-                                          Assign
-                                        </button>
-                                      </div>
-                                    </div>
-                                   */}
+                                       
                                     </div>
                                   </div>
                                   <div
@@ -3057,30 +2486,7 @@ class MyTicketList extends Component {
                                           </select>
                                         </div>
                                         <div className="col-md-3 col-sm-6">
-                                          {/* <select
-                                          value={
-                                            this.state.selectedChannelOfPurchase
-                                          }
-                                          onChange={
-                                            this.setChannelOfPurchaseValue
-                                          }
-                                        >
-                                          <option>Channel Of Purchase</option>
-                                          {this.state.ChannelOfPurchaseData !==
-                                            null &&
-                                            this.state.ChannelOfPurchaseData.map(
-                                              (item, i) => (
-                                                <option
-                                                  key={i}
-                                                  value={
-                                                    item.channelOfPurchaseID
-                                                  }
-                                                >
-                                                  {item.nameOfChannel}
-                                                </option>
-                                              )
-                                            )}
-                                        </select> */}
+                                           
                                           <div className="normal-dropdown">
                                             <Select
                                               getOptionLabel={option =>
@@ -3135,44 +2541,6 @@ class MyTicketList extends Component {
                                           </div>
                                         </div>
                                       </div>
-                                      {/* <div className="row justify-content-between">
-                                      <div className="col-auto d-flex align-items-center">
-                                        <p className="font-weight-bold mr-3">
-                                          <span className="blue-clr">04</span>{" "}
-                                          Results
-                                        </p>
-                                        <p className="blue-clr fs-14">
-                                          CLEAR SEARCH
-                                        </p>
-                                      </div>
-                                      <div className="col-auto mob-mar-btm">
-                                        <button>
-                                          <img
-                                            className="position-relative csv-icon"
-                                            src={csv}
-                                            alt="csv-icon"
-                                          />
-                                          CSV
-                                        </button>
-                                        <button>
-                                          <img
-                                            className="sch-icon"
-                                            src={Schedule}
-                                            alt="schedule-icon"
-                                          />
-                                          Schedule
-                                        </button>
-                                        <button className="btn-inv btn-dis">
-                                          <img
-                                            src={Assign}
-                                            className="assign-icon"
-                                            alt="assign-icon"
-                                          />
-                                          Assign
-                                        </button>
-                                      </div>
-                                    </div>
-                                   */}
                                     </div>
                                   </div>
                                   <div
@@ -3270,44 +2638,6 @@ class MyTicketList extends Component {
                                           </select>
                                         </div>
                                       </div>
-                                      {/* <div className="row justify-content-between">
-                                      <div className="col-auto d-flex align-items-center">
-                                        <p className="font-weight-bold mr-3">
-                                          <span className="blue-clr">04</span>{" "}
-                                          Results
-                                        </p>
-                                        <p className="blue-clr fs-14">
-                                          CLEAR SEARCH
-                                        </p>
-                                      </div>
-                                      <div className="col-auto mob-mar-btm">
-                                        <button>
-                                          <img
-                                            className="position-relative csv-icon"
-                                            src={csv}
-                                            alt="csv-icon"
-                                          />
-                                          CSV
-                                        </button>
-                                        <button>
-                                          <img
-                                            className="sch-icon"
-                                            src={Schedule}
-                                            alt="schedule-icon"
-                                          />
-                                          Schedule
-                                        </button>
-                                        <button className="btn-inv btn-dis">
-                                          <img
-                                            src={Assign}
-                                            className="assign-icon"
-                                            alt="assign-icon"
-                                          />
-                                          Assign
-                                        </button>
-                                      </div>
-                                    </div>
-                                   */}
                                     </div>
                                   </div>
                                   <div
@@ -3489,9 +2819,6 @@ class MyTicketList extends Component {
                                           />
                                         </div>
                                         <div className="col-md-3 col-sm-6 allspc">
-                                          {/* <select>
-                                          <option>Sub Category</option>
-                                        </select> */}
                                           <select
                                             value={
                                               this.state.selectedSubCategoryAll
@@ -3570,9 +2897,6 @@ class MyTicketList extends Component {
                                           />
                                         </div>
                                         <div className="col-md-3 col-sm-6">
-                                          {/* <select>
-                                          <option>Issue Type</option>
-                                        </select> */}
                                           <select
                                             value={
                                               this.state.selectedIssueTypeAll
@@ -3939,252 +3263,9 @@ class MyTicketList extends Component {
                                                 </React.Fragment>
                                               ) : null}
                                             </div>
-
-                                            {/* {this.state.selectedWithClaimAll ===
-                                          "yes" ? (
-                                            <React.Fragment> */}
-                                            {/* <div className="col-sm-6 m-b-25">
-                                                <select
-                                                  value={
-                                                    this.state
-                                                      .selectedClaimStatus
-                                                  }
-                                                  onChange={
-                                                    this.handleClaimStatus
-                                                  }
-                                                >
-                                                  <option>Claim Status</option>
-                                                  {this.state
-                                                    .ClaimStatusData !== null &&
-                                                    this.state.ClaimStatusData.map(
-                                                      (item, i) => (
-                                                        <option
-                                                          key={i}
-                                                          value={
-                                                            item.claimStatusID
-                                                          }
-                                                        >
-                                                          {item.claimStatusName}
-                                                        </option>
-                                                      )
-                                                    )}
-                                                </select>
-                                              </div> */}
-                                            {/* <div className="col-sm-6">
-                                                <select
-                                                  value={
-                                                    this.state
-                                                      .selectedTaskStatus
-                                                  }
-                                                  onChange={
-                                                    this.handleTaskStatus
-                                                  }
-                                                >
-                                                  <option>Task Status</option>
-                                                  {this.state.TaskStatusData !==
-                                                    null &&
-                                                    this.state.TaskStatusData.map(
-                                                      (item, i) => (
-                                                        <option
-                                                          key={i}
-                                                          value={
-                                                            item.taskStatusID
-                                                          }
-                                                        >
-                                                          {item.taskStatusName}
-                                                        </option>
-                                                      )
-                                                    )}
-                                                </select>
-                                              </div> */}
-                                            {/* <div className="col-sm-6 m-b-25">
-                                                <select
-                                                  value={
-                                                    this.state
-                                                      .selectedClaimCategory
-                                                  }
-                                                  onChange={
-                                                    this.setClaimCategoryValue
-                                                  }
-                                                >
-                                                  <option>
-                                                    Claim Category
-                                                  </option>
-                                                  {this.state.CategoryData !==
-                                                    null &&
-                                                    this.state.CategoryData.map(
-                                                      (item, i) => (
-                                                        <option
-                                                          key={i}
-                                                          value={
-                                                            item.categoryID
-                                                          }
-                                                        >
-                                                          {item.categoryName}
-                                                        </option>
-                                                      )
-                                                    )}
-                                                </select>
-                                              </div> */}
-                                            {/* <div className="col-sm-6">
-                                                <select
-                                                  value={
-                                                    this.state
-                                                      .selectedDepartment
-                                                  }
-                                                  onChange={
-                                                    this.setDepartmentValue
-                                                  }
-                                                >
-                                                  <option>
-                                                    Task Department
-                                                  </option>
-                                                  {this.state.DepartmentData !==
-                                                    null &&
-                                                    this.state.DepartmentData.map(
-                                                      (item, i) => (
-                                                        <option
-                                                          key={i}
-                                                          value={
-                                                            item.departmentID
-                                                          }
-                                                        >
-                                                          {item.departmentName}
-                                                        </option>
-                                                      )
-                                                    )}
-                                                </select>
-                                              </div> */}
-                                            {/* <div className="col-sm-6 m-b-25">
-                                                <select
-                                                  value={
-                                                    this.state
-                                                      .selectedClaimSubCategory
-                                                  }
-                                                  onChange={
-                                                    this
-                                                      .setClaimSubCategoryValue
-                                                  }
-                                                >
-                                                  <option>
-                                                    Claim Sub Category
-                                                  </option>
-                                                  {this.state
-                                                    .ClaimSubCategoryData !==
-                                                    null &&
-                                                    this.state.ClaimSubCategoryData.map(
-                                                      (item, i) => (
-                                                        <option
-                                                          key={i}
-                                                          value={
-                                                            item.subCategoryID
-                                                          }
-                                                        >
-                                                          {item.subCategoryName}
-                                                        </option>
-                                                      )
-                                                    )}
-                                                </select>
-                                              </div> */}
-                                            {/* <div className="col-sm-6">
-                                                <select
-                                                  value={
-                                                    this.state.selectedFunction
-                                                  }
-                                                  onChange={
-                                                    this.setFunctionValue
-                                                  }
-                                                >
-                                                  <option>Task Function</option>
-                                                  {this.state.FunctionData !==
-                                                    null &&
-                                                    this.state.FunctionData.map(
-                                                      (item, i) => (
-                                                        <option
-                                                          key={i}
-                                                          value={
-                                                            item.functionID
-                                                          }
-                                                        >
-                                                          {item.funcationName}
-                                                        </option>
-                                                      )
-                                                    )}
-                                                </select>
-                                              </div> */}
-                                            {/* <div className="col-sm-6">
-                                                <select
-                                                  value={
-                                                    this.state
-                                                      .selectedClaimIssueType
-                                                  }
-                                                  onChange={
-                                                    this.setClaimIssueTypeValue
-                                                  }
-                                                >
-                                                  <option>
-                                                    Claim Issue Type
-                                                  </option>
-                                                  {this.state
-                                                    .ClaimIssueTypeData !==
-                                                    null &&
-                                                    this.state.ClaimIssueTypeData.map(
-                                                      (item, i) => (
-                                                        <option
-                                                          key={i}
-                                                          value={
-                                                            item.issueTypeID
-                                                          }
-                                                        >
-                                                          {item.issueTypeName}
-                                                        </option>
-                                                      )
-                                                    )}
-                                                </select>
-                                              </div> */}
-                                            {/* </React.Fragment>
-                                          ) : null} */}
                                           </div>
                                         </div>
                                       </div>
-                                      {/* <div className="row justify-content-between">
-                                      <div className="col-auto d-flex align-items-center">
-                                        <p className="font-weight-bold mr-3">
-                                          <span className="blue-clr">04</span>{" "}
-                                          Results
-                                        </p>
-                                        <p className="blue-clr fs-14">
-                                          CLEAR SEARCH
-                                        </p>
-                                      </div>
-                                      <div className="col-auto mob-mar-btm">
-                                        <button>
-                                          <img
-                                            className="position-relative csv-icon"
-                                            src={csv}
-                                            alt="csv-icon"
-                                          />
-                                          CSV
-                                        </button>
-                                        <button>
-                                          <img
-                                            className="sch-icon"
-                                            src={Schedule}
-                                            alt="schedule-icon"
-                                          />
-                                          Schedule
-                                        </button>
-                                        <button className="btn-inv btn-dis">
-                                          <img
-                                            src={Assign}
-                                            className="assign-icon"
-                                            alt="assign-icon"
-                                          />
-                                          Assign
-                                        </button>
-                                      </div>
-                                    </div>
-                                   */}
                                     </div>
                                   </div>
                                 </div>
@@ -4240,21 +3321,6 @@ class MyTicketList extends Component {
                                             <b>Schedule date to</b>
                                           </label>
                                           <div>
-                                            {/* <select
-                                            id="inputState"
-                                            className="form-control dropdown-setting1 ScheduleDate-to"
-                                            value={
-                                              this.state.selectedScheduleFor
-                                            }
-                                            onChange={this.setScheduleFor}
-                                          >
-                                            <option value="team-member">
-                                              Team Member
-                                            </option>
-                                            <option value="team-member-1">
-                                              Team Member 1
-                                            </option>
-                                          </select> */}
                                             <div className="normal-dropdown dropdown-setting1 schedule-multi">
                                               <Select
                                                 getOptionLabel={option =>
@@ -4508,13 +3574,6 @@ class MyTicketList extends Component {
                                                         isMulti
                                                       />
                                                     </div>
-                                                    {/* <select
-                                                    id="inputState"
-                                                    className="form-control dropdown-setting1"
-                                                  >
-                                                    <option>Sunday</option>
-                                                    <option>Monday</option>
-                                                  </select> */}
                                                   </div>
                                                 </div>
                                               </div>
@@ -4532,13 +3591,6 @@ class MyTicketList extends Component {
                                                     on
                                                   </label>
                                                   <div className="col-md-7">
-                                                    {/* <select
-                                                    id="inputState"
-                                                    className="form-control dropdown-setting1"
-                                                  >
-                                                    <option>Septmber</option>
-                                                    <option>Octomber</option>
-                                                  </select> */}
                                                     <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
                                                       <Select
                                                         getOptionLabel={option =>
@@ -4619,16 +3671,6 @@ class MyTicketList extends Component {
                                                 </span>
                                                 <div className="row mt-3">
                                                   <div className="col-md-5">
-                                                    {/* <select
-                                                    id="inputState"
-                                                    className="form-control dropdown-setting1"
-                                                    style={{
-                                                      width: "100px"
-                                                    }}
-                                                  >
-                                                    <option>Sunday</option>
-                                                    <option>Monday</option>
-                                                  </select> */}
                                                     <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
                                                       <Select
                                                         getOptionLabel={option =>
@@ -4668,16 +3710,6 @@ class MyTicketList extends Component {
                                                     to
                                                   </label>
                                                   <div className="col-md-5">
-                                                    {/* <select
-                                                    id="inputState"
-                                                    className="form-control dropdown-setting1"
-                                                    style={{
-                                                      width: "100px"
-                                                    }}
-                                                  >
-                                                    <option>Septmber</option>
-                                                    <option>Octomber</option>
-                                                  </select> */}
                                                     <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
                                                       <Select
                                                         getOptionLabel={option =>
@@ -5020,7 +4052,7 @@ class MyTicketList extends Component {
                                       <div className="filter-checkbox pink2 pinkmargin">
                                         <input
                                           type="checkbox"
-                                          id={'i' + row.original.ticketID}
+                                          id={"i" + row.original.ticketID}
                                           name="MyTicketListcheckbox[]"
                                           // checked={this.state.CheckBoxChecked}
                                           attrIds={row.original.ticketID}
@@ -5028,7 +4060,9 @@ class MyTicketList extends Component {
                                             this.handelCheckBoxCheckedChange
                                           }
                                         />
-                                        <label htmlFor={'i' + row.original.ticketID}>
+                                        <label
+                                          htmlFor={"i" + row.original.ticketID}
+                                        >
                                           <img
                                             src={HeadPhone3}
                                             alt="HeadPhone"
@@ -5316,68 +4350,6 @@ class MyTicketList extends Component {
                     </div>
                   </div>
                 </div>
-                {/* <div
-                className="tab-pane fade"
-                id="New-tab"
-                role="tabpanel"
-                aria-labelledby="New-tab"
-              >
-                //  <MyTicketNew /> 
-              </div>
-
-              <div
-                className="tab-pane fade"
-                id="Open-tab"
-                role="tabpanel"
-                aria-labelledby="Open-tab"
-              >
-                <MyTicketOpen />
-              </div>
-
-              <div
-                className="tab-pane fade"
-                id="Resolved-tab"
-                role="tabpanel"
-                aria-labelledby="Resolved-tab"
-              >
-                <MyTicketResolved />
-              </div>
-
-              <div
-                className="tab-pane fade"
-                id="Reassigned-tab"
-                role="tabpanel"
-                aria-labelledby="Reassigned-tab"
-              >
-                <MyTicketReassign />
-              </div>
-
-              <div
-                className="tab-pane fade"
-                id="Closed-tab"
-                role="tabpanel"
-                aria-labelledby="Closed-tab"
-              >
-                <MyTicketClosed />
-              </div>
-
-              <div
-                className="tab-pane fade"
-                id="All-tab"
-                role="tabpanel"
-                aria-labelledby="All-tab"
-              >
-                <MyTicketAll />
-              </div>
-
-              <div
-                className="tab-pane fade"
-                id="Follow-tab"
-                role="tabpanel"
-                aria-labelledby="Follow-tab"
-              >
-                <MyTicketFollowUp />
-              </div> */}
 
                 <div
                   className="tab-pane fade"
