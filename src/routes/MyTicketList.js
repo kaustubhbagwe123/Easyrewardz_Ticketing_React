@@ -925,11 +925,11 @@ class MyTicketList extends Component {
     }).then(function(res) {
       debugger;
       let CategoryData = res.data;
-      // let CategoryDataAll = res.data;
-      self.setState({
-        CategoryData: CategoryData
-        // CategoryDataAll: CategoryDataAll
-      });
+      if (CategoryData !== null) {
+        self.setState({
+          CategoryData: CategoryData
+        });
+      }
     });
   }
   handleGetClaimSubCategoryList() {
