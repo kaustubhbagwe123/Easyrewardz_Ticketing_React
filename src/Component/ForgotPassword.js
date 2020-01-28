@@ -24,41 +24,9 @@ class ForgotPassword extends Component {
   handleSubmit(event) {
     event.preventDefault();
     debugger;
-    // const { emailId } = this.state;
-
-    // const requestOptions = {
-    //   method: "POST",
-    //   header: {
-    //     "Content-Type": "application/json",
-    //     "Access-Control-Allow-Methods": "*"
-    //   },
-    //   body: ""
-    // };
-    // let self = this;
-    // axios.post(config.apiUrl + "/Account/ForgetPassword?EmailId="+emailId,
-    // requestOptions)
-
+  
     if (this.validator.allValid()) {
-      // const requestOptions = {
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     "Access-Control-Allow-Methods": "*"
-      //   },
-      //   // body:JSON.stringify({ EmailID, Password ,AppId})
-      //   body: ""
-      // };
-      // axios
-      //   .post(config.apiUrl + "/Account/ForgetPassword", requestOptions, {
-      //     params: {
-      //       EmailId: this.state.emailId
-      //     }
-      //   })
-
-      //   .then(function(response) {
-      //     debugger;
-      //     // let BrandData = response;
-      //     // self.setState({ BrandData: BrandData });
-      //   });
+     
       let self = this;
       axios({
         method: "post",

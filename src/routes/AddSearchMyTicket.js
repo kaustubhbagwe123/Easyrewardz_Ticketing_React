@@ -127,8 +127,8 @@ class AddSearchMyTicket extends Component {
         }
       }).then(function(res) {
         debugger;
-        let validCheck = res.data.responseData;
-        if (validCheck === "Not Exist") {
+        let validCheck =res.data.message;
+        if (validCheck === "Success") {
           self.handleAddCustomerSave();
         } else {
           NotificationManager.error(res.data.responseData);
