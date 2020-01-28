@@ -18,6 +18,10 @@ import PlusImg from "./../assets/Images/plus.png";
 // import moment from "moment";
 import FileUpload from "./../assets/Images/file.png";
 import ThumbTick from "./../assets/Images/thumbticket.png";
+import PDF from "./../assets/Images/pdf.png";
+import CSVi from "./../assets/Images/csvicon.png";
+import Excel from "./../assets/Images/excel.png";
+import Word from "./../assets/Images/word.png";
 import { faCalculator } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import KnowledgeLogo from "./../assets/Images/knowledge.png";
@@ -123,7 +127,9 @@ class TicketSystem extends Component {
       titleSuggValue: "",
       toggleTitle: false,
       loading: false,
-      imageView: ""
+      imageView: "",
+      ticketTitleCompulsion: '',
+      ticketDetailsCompulsion: ''
     };
     this.validator = new SimpleReactValidator();
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
@@ -657,8 +663,10 @@ class TicketSystem extends Component {
 
   handleCREATE_TICKET(StatusID) {
     debugger;
-    this.setState({ loading: true });
+    // this.setState({ loading: true });
     // if (this.validator.allValid()) {
+    if (this.state.titleSuggValue.length > 0 && this.state.ticketDetails.length > 0) {
+    this.setState({ loading: true });
     let self = this;
     // var OID = this.state.selectedTicketPriority;
     var selectedRow = "";
@@ -737,6 +745,12 @@ class TicketSystem extends Component {
         NotificationManager.error(res.data.message);
       }
     });
+  } else {
+    this.setState({
+      ticketTitleCompulsion: 'Ticket Title field is compulsary.',
+      ticketDetailsCompulsion: 'Ticket Details field is compulsary.'
+    })
+  }
     // } else {
     //   this.validator.showMessages();
     //   this.forceUpdate();
@@ -845,8 +859,41 @@ class TicketSystem extends Component {
     let channelOfPurchaseValue = e.currentTarget.value;
     this.setState({ selectedChannelOfPurchase: channelOfPurchaseValue });
   };
-
-  render() {
+  renderIcon(name){
+    debugger;
+    let ext=name.split('.')[1].toLowerCase();
+    if(ext=="xls"||ext=="xlsx")
+    {
+      return(     
+        Excel
+      )
+    }
+    else if(ext=="doc" ||ext=="docx" || ext=="txt")
+    {
+      return(     
+        Word
+      )
+    }
+    else if(ext=="csv")
+    {
+      return(     
+        CSVi
+      )
+    }
+    else if(ext=="pdf")
+    {
+      return(     
+        PDF
+      )
+    }
+    else{
+      return(     
+        ThumbTick
+      )
+    }
+   
+  }
+  render() {  
     var CustomerId = this.state.customerDetails.customerId;
     var CustNumber = this.state.customerData.customerPhoneNumber;
     return (
@@ -955,7 +1002,9 @@ class TicketSystem extends Component {
                           }}
                           id="titleSuggestion"
                           autoComplete="off"
+                          style={{ 'margin-bottom' : '5px' }}
                         />
+                        {this.state.titleSuggValue.length == 0 && <p style={{ 'color' : 'red', 'margin-bottom' : '0px' }}>{this.state.ticketTitleCompulsion}</p>}
                         {this.validator.message(
                           "TicketTitle",
                           this.state.titleSuggValue,
@@ -991,6 +1040,7 @@ class TicketSystem extends Component {
                         onChange={this.handleTicketChange}
                         maxLength={250}
                       ></textarea>
+                      {this.state.ticketDetails.length == 0 && <p style={{ 'color' : 'red', 'margin-bottom' : '0px' }}>{this.state.ticketDetailsCompulsion}</p>}
                       {this.validator.message(
                         "ticketDetails",
                         this.state.ticketDetails,
@@ -1181,7 +1231,8 @@ class TicketSystem extends Component {
                     {this.state.file.map((item, i) =>
                       i < 5 ? (
                         <img
-                          src={ThumbTick}
+                           src={this.renderIcon(this.state.file[i].name)}
+                           title={this.state.file[i].name}
                           href={item[i]}
                           alt="thumb"
                           className="thumbtick"
@@ -1230,8 +1281,8 @@ class TicketSystem extends Component {
                       <div className="row my-3 mx-1">
                         {this.state.file.map((item, i) => (
                           <img
-                            src={ThumbTick}
-                            alt="thumb"
+                            src={this.renderIcon(this.state.file[i].name)}
+                            title={this.state.file[i].name}
                             className="thumbtick"
                             style={{ marginBottom: "10px" }}
                           />
