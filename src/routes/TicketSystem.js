@@ -123,7 +123,9 @@ class TicketSystem extends Component {
       titleSuggValue: "",
       toggleTitle: false,
       loading: false,
-      imageView: ""
+      imageView: "",
+      ticketTitleCompulsion: '',
+      ticketDetailsCompulsion: ''
     };
     this.validator = new SimpleReactValidator();
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
@@ -657,8 +659,10 @@ class TicketSystem extends Component {
 
   handleCREATE_TICKET(StatusID) {
     debugger;
-    this.setState({ loading: true });
+    // this.setState({ loading: true });
     // if (this.validator.allValid()) {
+    if (this.state.titleSuggValue.length > 0 && this.state.ticketDetails.length > 0) {
+    this.setState({ loading: true });
     let self = this;
     // var OID = this.state.selectedTicketPriority;
     var selectedRow = "";
@@ -737,6 +741,12 @@ class TicketSystem extends Component {
         NotificationManager.error(res.data.message);
       }
     });
+  } else {
+    this.setState({
+      ticketTitleCompulsion: 'Ticket Title field is compulsary.',
+      ticketDetailsCompulsion: 'Ticket Details field is compulsary.'
+    })
+  }
     // } else {
     //   this.validator.showMessages();
     //   this.forceUpdate();
@@ -955,7 +965,9 @@ class TicketSystem extends Component {
                           }}
                           id="titleSuggestion"
                           autoComplete="off"
+                          style={{ 'margin-bottom' : '5px' }}
                         />
+                        {this.state.titleSuggValue.length == 0 && <p style={{ 'color' : 'red', 'margin-bottom' : '0px' }}>{this.state.ticketTitleCompulsion}</p>}
                         {this.validator.message(
                           "TicketTitle",
                           this.state.titleSuggValue,
@@ -991,6 +1003,7 @@ class TicketSystem extends Component {
                         onChange={this.handleTicketChange}
                         maxLength={250}
                       ></textarea>
+                      {this.state.ticketDetails.length == 0 && <p style={{ 'color' : 'red', 'margin-bottom' : '0px' }}>{this.state.ticketDetailsCompulsion}</p>}
                       {this.validator.message(
                         "ticketDetails",
                         this.state.ticketDetails,
