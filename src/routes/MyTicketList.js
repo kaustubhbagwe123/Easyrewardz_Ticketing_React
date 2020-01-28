@@ -155,6 +155,8 @@ class MyTicketList extends Component {
       byCategoryFlag: 0,
       allFlag: 0,
       resultCount:0,
+      selectedAssignedTo:0,
+      AssignToData:[],
       TeamMemberData: [
         {
           department: "Team Member 1"
@@ -248,6 +250,7 @@ class MyTicketList extends Component {
       selectedNameOfMonthForDailyYear: "",
       loading: false,
     };
+    this.handleAssignTo=this.handleAssignTo.bind(this);
     this.clearSearch = this.clearSearch.bind(this);
     this.handleAdvSearchFlag = this.handleAdvSearchFlag.bind(this);
     this.toggleSearch = this.toggleSearch.bind(this);
@@ -1326,7 +1329,7 @@ class MyTicketList extends Component {
         allTab["IsWantVistingStore"]=this.state.selectedWantToVisitStoreAll;
         allTab["CustomerEmailID"]=this.state.EmailByAll;
         allTab["CustomerMobileNo"]=this.state.MobileByAll;
-        allTab["AssignTo"]=this.state.selectedAssignedToAll;
+        allTab["AssignTo"]=this.state.selectedAssignedTo;
         allTab["StoreCodeORAddress"]=this.state.selectedPurchaseStoreCodeAddressAll;
         allTab["WantToStoreCodeORAddress"]=this.state.selectedVisitStoreCodeAddressAll;       
         allTab["HaveClaim"]=withClaim;
@@ -1375,6 +1378,11 @@ class MyTicketList extends Component {
         });
       }
     });
+  }
+
+  setAssignedToValue= e=>{
+    let assign=e.currentTarget.value;
+    this.setState({ selectedAssignedTo: assign });
   }
 
   setDepartmentValue = e => {
@@ -1661,6 +1669,27 @@ class MyTicketList extends Component {
   clickCheckbox(evt) {
     evt.stopPropagation();
   }
+
+handleAssignTo(){
+  debugger;
+
+  let self = this;
+  axios({
+    method: "post",
+    url: config.apiUrl + "/User/GetUserList",
+    headers: authHeader()
+  }).then(function(res) {
+    debugger;
+    let AssignData = res.data.responseData;
+    
+    self.setState({
+      AssignToData: AssignData
+      
+    });
+  });
+
+}
+
   handelCheckBoxCheckedChange = async () => {
     debugger;
     var checkboxes = document.getElementsByName("MyTicketListcheckbox[]");
@@ -2757,6 +2786,8 @@ class MyTicketList extends Component {
                                               Assign Tickets To
                                             </label>
                                             <img
+
+
                                               src={SearchBlackImg}
                                               alt="SearchBlack"
                                               className="black-left-arrow srch-mleft-spc"
@@ -3478,15 +3509,20 @@ class MyTicketList extends Component {
                                           />
                                         </div>
                                         <div className="col-md-3 col-sm-6">
-                                          <input
-                                            className="no-bg"
-                                            type="text"
-                                            placeholder="Assigned To"
-                                            value={
-                                              this.state.selectedAssignedToAll
-                                            }
-                                            onChange={this.handleAssignedToAll}
-                                          />
+                                          
+                                           <select className="add-select-category"
+                                            value={this.state.selectedAssignedTo}
+                                             onChange={this.setAssignedToValue}
+                                             onClick={this.handleAssignTo.bind(this)}
+                                             >
+                                           <option>Select Assigned To</option>
+                                           {this.state.AssignToData !== null &&
+                                         this.state.AssignToData.map((item, i) => (
+                                         <option key={i} value={item.userID}>
+                                          {item.fullName}
+                                        </option>
+                                      ))}
+                                        </select>
                                         </div>
                                         <div className="col-md-3 col-sm-6 allspc">
                                           {/* <select>
