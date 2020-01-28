@@ -5837,7 +5837,7 @@ font-weight: normal;
   margin: 0 auto;
   display: inline-block;
   min-width: 83%;
-  height: 550px;
+  /* height: 550px; */
 }
 .profilemodal-text {
   color: #4a4a4a;
@@ -6737,7 +6737,7 @@ table thead tr {
 .seacrh-img-addsearch {
   width: 4%;
   display: inline-block;
-  background: #ECF2F4;
+  background: rgb(232, 240, 254);
   padding-top: 11px;
   padding-bottom: 11px;
   border-radius: 4px;
@@ -10147,4 +10147,29 @@ table tr th:last-child {
     center;
   background-size: 60px;
   z-index: 5;
+}
+.tic-history .ReactTable {
+  border: none;
+}
+.tic-history .ReactTable .rt-thead.-header {
+  background-color: transparent;
+  border: none;
+}
+.tic-history .ReactTable .rt-tbody .rt-tr-group {
+  border: none;
+}
+.tic-history .ReactTable .rt-th {
+  font-weight: bold;
+  text-align: left;
+  color: #888;
+}
+.tic-history .ReactTable .rt-tbody .rt-td {
+  padding: 10px 15px !important;
+}
+.tic-history  .ReactTable .rt-thead .rt-th.-cursor-pointer, .tic-history .ReactTable .rt-thead .rt-td.-cursor-pointer {
+  padding: 10px 15px !important;
+}
+
+.bckHide .rt-th{
+  display: none;
 }

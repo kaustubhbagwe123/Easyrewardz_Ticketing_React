@@ -96,8 +96,8 @@ class MyTicket extends Component {
       IssueTypeData: [],
       ChannelOfPurchaseData: [],
       historicalDetails: [],
-      productDetails:[],
-      storeDetails:[],
+      productDetails: [],
+      storeDetails: [],
       ticketDetailsData: {},
       tabCounts: {},
       fileName: "",
@@ -126,12 +126,16 @@ class MyTicket extends Component {
       selectedSubCategoryKB: 0,
       CkEditorTemplateData: [],
       CkEditorTemplateDetails: [],
+      selectedStore: [],
       tempName: "",
       selectTicketTemplateId: 0,
       mailBodyData: "",
-      SearchStore:"",
+      SearchStore: "",
       custID: 0,
       loading: false,
+      Plus: false,
+      selectedStoreData: [],
+      CheckStoreID: {}
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -155,6 +159,9 @@ class MyTicket extends Component {
     this.handleGetProductData = this.handleGetProductData.bind(this);
     this.handleGetStoreDetails = this.handleGetStoreDetails.bind(this);
     this.handleGetMessageDetails = this.handleGetMessageDetails.bind(this);
+    this.hanldeGetSelectedStoreData = this.hanldeGetSelectedStoreData.bind(
+      this
+    );
   }
 
   componentDidMount() {
@@ -179,6 +186,7 @@ class MyTicket extends Component {
   handleGetTicketDetails(ID) {
     debugger;
     let self = this;
+    this.setState({ loading: true });
     axios({
       method: "post",
       url: config.apiUrl + "/Ticketing/getTicketDetailsByTicketId",
@@ -211,7 +219,8 @@ class MyTicket extends Component {
       self.setState({
         ticketDetailsData: data,
         custID: customer_Id,
-        selectetedParameters
+        selectetedParameters,
+        loading: false
       });
 
       setTimeout(() => {
@@ -266,20 +275,20 @@ class MyTicket extends Component {
       }
     });
   }
-  handleGetMessageDetails(ticketId){
-    debugger
+  handleGetMessageDetails(ticketId) {
+    debugger;
     // let self=this;
     axios({
-      method:"post",
-      url:config.apiUrl + "/Ticketing/getticketmessage",
-      headers:authHeader(),
-      params:{
-        ticketID:ticketId
+      method: "post",
+      url: config.apiUrl + "/Ticketing/getticketmessage",
+      headers: authHeader(),
+      params: {
+        ticketID: ticketId
       }
-    }).then(function(res){
+    }).then(function(res) {
       debugger;
       // let status=res.data.status;
-    })
+    });
   }
   handleGetOrderDetails() {
     debugger;
@@ -336,7 +345,7 @@ class MyTicket extends Component {
       let data = res.data.responseData;
       let Msg = res.data.message;
       if (Msg === "Success") {
-        self.setState({ storeDetails: data});
+        self.setState({ storeDetails: data });
       } else {
         self.setState({
           storeDetails: []
@@ -379,7 +388,8 @@ class MyTicket extends Component {
         SubCategoryID: this.state.selectetedParameters.subCategoryID,
         IssueTypeID: this.state.selectetedParameters.issueTypeID,
         PriortyID: this.state.selectetedParameters.priorityID,
-        ChannelOfPurchaseID: this.state.selectetedParameters.channelOfPurchaseID,
+        ChannelOfPurchaseID: this.state.selectetedParameters
+          .channelOfPurchaseID,
         TicketActionID: this.state.selectetedParameters.ticketActionTypeID
       }
     }).then(function(res) {
@@ -510,7 +520,7 @@ class MyTicket extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let status = res.data.message ;
+      let status = res.data.message;
       let data = res.data.responseData;
       if (status === "Success") {
         self.setState({ BrandData: data });
@@ -522,7 +532,7 @@ class MyTicket extends Component {
   handleGetCategoryList() {
     debugger;
 
-    let self = this;    
+    let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Category/GetCategoryList",
@@ -546,11 +556,11 @@ class MyTicket extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let status=res.data.message;
+      let status = res.data.message;
       let data = res.data.responseData;
-      if(status === "Success"){
+      if (status === "Success") {
         self.setState({ TicketPriorityData: data });
-      }else{
+      } else {
         self.setState({ TicketPriorityData: [] });
       }
     });
@@ -575,7 +585,6 @@ class MyTicket extends Component {
   handleGetIssueTypeList() {
     debugger;
     let self = this;
-   
     axios({
       method: "post",
       url: config.apiUrl + "/IssueType/GetIssueTypeList",
@@ -585,11 +594,11 @@ class MyTicket extends Component {
       }
     }).then(function(res) {
       debugger;
-      let status=res.data.message;
+      let status = res.data.message;
       let data = res.data.responseData;
-      if(status === "Success"){
+      if (status === "Success") {
         self.setState({ IssueTypeData: data });
-      }else{
+      } else {
         self.setState({ IssueTypeData: [] });
       }
     });
@@ -602,15 +611,16 @@ class MyTicket extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let status=res.data.message;
+      let status = res.data.message;
       let data = res.data.responseData;
-      if(status === "Success"){
+      if (status === "Success") {
         self.setState({ ChannelOfPurchaseData: data });
-      }else{
+      } else {
         self.setState({ ChannelOfPurchaseData: [] });
       }
     });
   }
+
   fileDragEnter = e => {
     e.preventDefault();
   };
@@ -633,18 +643,19 @@ class MyTicket extends Component {
     this.setState({ storeproductsearch: false });
   }
   handleOrderTableOpen() {
-    this.handleGetProductData()
+    this.handleGetProductData();
     this.setState({ OrderTable: true });
   }
   handleOrderTableClose() {
-    this.setState({ OrderTable: false });
+    this.setState({ OrderTable: false, SearchStore: "" });
   }
 
   HandleStoreModalOpen() {
+    this.hanldeGetSelectedStoreData();
     this.setState({ storemodal: true });
   }
   HandleStoreModalClose() {
-    this.setState({ storemodal: false });
+    this.setState({ storemodal: false, SearchStore: "" });
   }
   handleUpOpen() {
     this.setState({ collapseUp: true });
@@ -743,9 +754,9 @@ class MyTicket extends Component {
     }, 100);
   }
   handleNoteAddComments() {
-    debugger
+    debugger;
     let self = this;
-    
+
     axios({
       method: "post",
       url: config.apiUrl + "/Task/AddComment",
@@ -763,8 +774,8 @@ class MyTicket extends Component {
         self.handleGetNotesTabDetails(id);
         NotificationManager.success("Comment added successfully.");
         self.setState({
-          NoteAddComment:""
-        })
+          NoteAddComment: ""
+        });
       } else {
         NotificationManager.error("Comment not added.");
       }
@@ -790,6 +801,77 @@ class MyTicket extends Component {
       }
     });
   }
+
+  hanldeGetSelectedStoreData() {
+    debugger;
+    let self = this;
+    this.setState({ loading: true });
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Store/getSelectedStores",
+      headers: authHeader(),
+      params: {
+        TicketID: this.state.ticket_Id
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      let data = res.data.responseData;
+
+      if (status === "Success") {
+        const newSelected = Object.assign({}, self.state.CheckStoreID);
+        debugger;
+        var selectedRow = [];
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].storeID) {
+            newSelected[data[i].storeID] = !self.state.CheckStoreID[
+              data[i].storeID
+            ];
+            selectedRow.push(data[i]);
+            self.setState({
+              CheckStoreID: data[i].storeID ? newSelected : false
+            });
+          }
+        }
+        self.setState({
+          selectedStoreData:selectedRow,
+          selectedStore: data,
+          loading: false
+        });
+      } else {
+        self.setState({
+          selectedStore: []
+        });
+      }
+    });
+  }
+
+  handleAttachStoreData(){
+    debugger;
+    let self = this;
+    var selectedStore = "";
+    for (let j = 0; j < this.state.selectedStoreData.length; j++) {
+    selectedStore += this.state.selectedStoreData[j]["storeID"] + ",";
+    }
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Store/attachstore",
+      headers: authHeader(),
+      params: {
+        TicketId: this.state.ticket_Id,
+        StoreId:selectedStore.substring(",", selectedStore.length - 1)
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      // let details = res.data.responseData;
+      if(status === "Success"){
+        NotificationManager.success("Store attached successfully.");
+      }else{
+        NotificationManager.error("Store not attached"); 
+      }
+    });
+  }
   handleGetNotesTabDetails(ticket_Id) {
     debugger;
     let self = this;
@@ -807,8 +889,8 @@ class MyTicket extends Component {
       let details = res.data.responseData;
       if (status === "Success") {
         self.setState({ Notesdetails: details, loading: false });
-      }else{
-        self.setState({ Notesdetails: [] ,loading: false});
+      } else {
+        self.setState({ Notesdetails: [], loading: false });
       }
     });
   }
@@ -1027,7 +1109,51 @@ class MyTicket extends Component {
     });
   }
 
+  handleCheckStoreID(storeMasterID, rowData) {
+    debugger;
+
+    const newSelected = Object.assign({}, this.state.CheckStoreID);
+    newSelected[storeMasterID] = !this.state.CheckStoreID[storeMasterID];
+    this.setState({
+      CheckStoreID: storeMasterID ? newSelected : false
+    });
+    var selectedRow = [];
+    if (this.state.selectedStoreData.length === 0) {
+      selectedRow.push(rowData);
+      this.setState({
+        selectedStoreData: rowData
+      });
+    } else {
+      if (newSelected[storeMasterID] === true) {
+        for (var i = 0; i < this.state.selectedStoreData.length; i++) {
+          if (this.state.selectedStoreData[i] === rowData) {
+            selectedRow.splice(i, 1);
+
+            break;
+          } else {
+            selectedRow = this.state.selectedStoreData;
+            selectedRow.push(rowData);
+            break;
+          }
+        }
+      } else {
+        for (var j = 0; j < this.state.selectedStoreData.length; j++) {
+          if (this.state.selectedStoreData[j] === rowData) {
+            selectedRow = this.state.selectedStoreData;
+            selectedRow.splice(j, 1);
+            break;
+          }
+        }
+      }
+    }
+
+    this.setState({
+      selectedStoreData: selectedRow
+    });
+  }
+
   render() {
+    
     const {
       open,
       ticketDetailsData,
@@ -1035,7 +1161,8 @@ class MyTicket extends Component {
       SearchAssignData,
       orderDetails,
       productDetails,
-      storeDetails
+      storeDetails,
+      selectedStore
     } = this.state;
     const HidecollapsUp = this.state.collapseUp ? (
       <img
@@ -1052,21 +1179,7 @@ class MyTicket extends Component {
         onClick={this.handleUpOpen.bind(this)}
       />
     );
-    // const HidecollapsUpKbLink = this.state.collapseUp ? (
-    //   <img
-    //     src={Up1Img}
-    //     alt="up"
-    //     className="down-icon-kb1"
-    //     onClick={this.handleUpClose.bind(this)}
-    //   />
-    // ) : (
-    //   <img
-    //     src={Down1Img}
-    //     alt="up"
-    //     className="down-icon-kb1"
-    //     onClick={this.handleUpOpen.bind(this)}
-    //   />
-    // );
+
     const EmailCollapseUpDown = this.state.EmailCollapse ? (
       <div
         style={{ height: "30px", cursor: "pointer" }}
@@ -1170,126 +1283,137 @@ class MyTicket extends Component {
     ];
     return (
       <Fragment>
-        <div className="head-header">
-          <div className="head-header-1">
-            <div className="row">
-              <div className="col-12 col-xs-4 col-sm-4 col-md-3">
-                <img src={HeadphoneImg} alt="headphone" className="headphone" />
-                <label className="id-abc-1234">
-                  ID - {ticketDetailsData.ticketID}
-                  <span className="updated-2-d-ago">
-                    {ticketDetailsData.updateDate}
-                  </span>
-                </label>
-                <img
-                  src={LoadingImg}
-                  alt="Loading"
-                  className="loading-rectangle"
-                  onClick={this.handleGetHistoricalData.bind(this)}
-                />
-              </div>
-
-              <div className="historical-model">
-                <Modal
-                  open={open}
-                  onClose={this.onCloseModal.bind(this)}
-                  closeIconId="sdsg"
-                  modalId="Historical-popup"
-                  overlayId="logout-ovrly"
-                >
-                  <label className="lblHistorical">Ticket Historical</label>
-                  <img
-                    src={CancelImg}
-                    alt="cancelImg"
-                    className="cancalImg"
-                    onClick={this.onCloseModal.bind(this)}
-                  />
-                  {/* <HistoricalTable /> */}
-                  <div className="">
-                    <ReactTable
-                      data={historicalDetails}
-                      columns={[
-                        {
-                          Header: <span>Name</span>,
-                          accessor: "name"
-                        },
-                        {
-                          Header: <span>Action</span>,
-                          accessor: "action"
-                        },
-                        {
-                          Header: <span>Time & Date</span>,
-                          accessor: "dateandTime"
-                        }
-                      ]}
-                      resizable={false}
-                      defaultPageSize={5}
-                      showPagination={false}
+        {this.state.loading === true ? (
+          <div className="loader-icon"></div>
+        ) : (
+          <div>
+            <div className="head-header">
+              <div className="head-header-1">
+                <div className="row">
+                  <div className="col-12 col-xs-4 col-sm-4 col-md-3">
+                    <img
+                      src={HeadphoneImg}
+                      alt="headphone"
+                      className="headphone"
+                    />
+                    <label className="id-abc-1234">
+                      ID - {ticketDetailsData.ticketID}
+                      <span className="updated-2-d-ago">
+                        {ticketDetailsData.updateDate}
+                      </span>
+                    </label>
+                    <img
+                      src={LoadingImg}
+                      alt="Loading"
+                      className="loading-rectangle"
+                      onClick={this.handleGetHistoricalData.bind(this)}
                     />
                   </div>
-                </Modal>
-              </div>
 
-              <div className="col-12 col-xs-8 col-sm-8 col-md-9">
-                <div style={{ float: "right", marginTop: "0px" }}>
-                  <img
-                    src={Headphone2Img}
-                    alt="headphone"
-                    className="oval-55"
-                  />
-                  <label
-                    className="naman-r"
-                    onClick={this.HandlelabelModalOpen.bind(this)}
-                  >
-                    {ticketDetailsData.username}
-                  </label>
-                  <img src={DownImg} alt="down" className="down-header" />
-                  <button
-                    type="button"
-                    className="myticket-submit-solve-button"
-                    onClick={this.handleUpdateTicketDetails.bind(this)}
-                  >
-                    SUBMIT
-                  </button>
-                </div>
-              </div>
-              <Modal
-                open={this.state.labelModal}
-                onClose={this.HandlelabelModalClose.bind(this)}
-                closeIconId="close"
-                modalId="labelmodel-popup"
-                overlayId="logout-ovrly"
-              >
-                <div className="myTicket-table remov">
-                  <ReactTable
-                    data={SearchAssignData}
-                    columns={[
-                      {
-                        Header: <span>Emp Id</span>,
-                        accessor: "BrandCode"
-                      },
-                      {
-                        Header: <span>Name</span>,
-                        accessor: "BrandName"
-                      },
-                      {
-                        Header: <span>Designation</span>,
-                        accessor: "BrandAd"
-                      }
-                    ]}
-                    // resizable={false}
-                    minRows={1}
-                    defaultPageSize={5}
-                    showPagination={false}
-                  />
-                  <div className="button-margin">
-                    <button type="button" className="btn btn-outline-primary">
-                      SELECT
-                    </button>
+                  <div className="historical-model">
+                    <Modal
+                      open={open}
+                      onClose={this.onCloseModal.bind(this)}
+                      closeIconId="sdsg"
+                      modalId="Historical-popup"
+                      overlayId="logout-ovrly"
+                    >
+                      <label className="lblHistorical">Ticket Historical</label>
+                      <img
+                        src={CancelImg}
+                        alt="cancelImg"
+                        className="cancalImg"
+                        onClick={this.onCloseModal.bind(this)}
+                      />
+                      {/* <HistoricalTable /> */}
+                      <div className="tic-history">
+                        <ReactTable
+                          data={historicalDetails}
+                          columns={[
+                            {
+                              Header: <span>Name</span>,
+                              accessor: "name"
+                            },
+                            {
+                              Header: <span>Action</span>,
+                              accessor: "action"
+                            },
+                            {
+                              Header: <span>Time & Date</span>,
+                              accessor: "dateandTime"
+                            }
+                          ]}
+                          resizable={false}
+                          defaultPageSize={5}
+                          showPagination={false}
+                        />
+                      </div>
+                    </Modal>
                   </div>
-                </div>
-              </Modal>
-              {/* <Modal
+
+                  <div className="col-12 col-xs-8 col-sm-8 col-md-9">
+                    <div style={{ float: "right", marginTop: "0px" }}>
+                      <img
+                        src={Headphone2Img}
+                        alt="headphone"
+                        className="oval-55"
+                      />
+                      <label
+                        className="naman-r"
+                        onClick={this.HandlelabelModalOpen.bind(this)}
+                      >
+                        {ticketDetailsData.username}
+                      </label>
+                      <img src={DownImg} alt="down" className="down-header" />
+                      <button
+                        type="button"
+                        className="myticket-submit-solve-button"
+                        onClick={this.handleUpdateTicketDetails.bind(this)}
+                      >
+                        SUBMIT
+                      </button>
+                    </div>
+                  </div>
+                  <Modal
+                    open={this.state.labelModal}
+                    onClose={this.HandlelabelModalClose.bind(this)}
+                    closeIconId="close"
+                    modalId="labelmodel-popup"
+                    overlayId="logout-ovrly"
+                  >
+                    <div className="myTicket-table remov">
+                      <ReactTable
+                        data={SearchAssignData}
+                        columns={[
+                          {
+                            Header: <span>Emp Id</span>,
+                            accessor: "BrandCode"
+                          },
+                          {
+                            Header: <span>Name</span>,
+                            accessor: "BrandName"
+                          },
+                          {
+                            Header: <span>Designation</span>,
+                            accessor: "BrandAd"
+                          }
+                        ]}
+                        // resizable={false}
+                        minRows={1}
+                        defaultPageSize={5}
+                        showPagination={false}
+                      />
+                      <div className="button-margin">
+                        <button
+                          type="button"
+                          className="btn btn-outline-primary"
+                        >
+                          SELECT
+                        </button>
+                      </div>
+                    </div>
+                  </Modal>
+                  {/* <Modal
                 open={this.state.headPhoneTable}
                 onClose={this.HandleHeadePhoneModalClose.bind(this)}
                 closeIconId="close"
@@ -1315,217 +1439,219 @@ class MyTicket extends Component {
                   </div>
                 </div>
               </Modal> */}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div className="card-rectangle">
-          <div className="rectangle-box">
-            <div className="row">
-              <div className="col-md-3">
-                <div style={{ padding: "15px" }}>
-                  <label className="mobile-number">Mobile Number</label>
-                  <br />
-                  <label className="mobile-no">
-                    {ticketDetailsData.customerPhoneNumber}
-                  </label>
-                  <img
-                    src={EyeImg}
-                    alt="eye"
-                    className="eyeImg1"
-                    onClick={this.HandleProfileModalOpen.bind(this)}
-                  />
-                  <Modal
-                    open={this.state.profilemodal}
-                    onClose={this.HandleProfileModalClose.bind(this)}
-                    modalId="profile-popup"
-                    overlayId="logout-ovrly"
-                  >
-                    <div className="profilemodalmaindiv">
-                      <div style={{ float: "right" }}>
-                        <img
-                          src={CrossIcon}
-                          alt="cross-icon"
-                          className="pro-cross-icn"
-                          onClick={this.HandleProfileModalClose.bind(this)}
-                        />
-                      </div>
-                      <div className="row profilemodalrow">
-                        <div className="col-md-6">
-                          <label className="profilemodal-text">Name</label>
-                          <label className="profilemodal-textval">
-                            {ticketDetailsData.customerName}
-                          </label>
-                        </div>
-                        <div className="col-md-6">
-                          <label className="profilemodal-text">Mobile</label>
-                          <label className="profilemodal-textval">
-                            {ticketDetailsData.customerPhoneNumber}
-                          </label>
-                        </div>
-                      </div>
-                      <div className="row profilemodalrow-1">
-                        <div className="col-md-6">
-                          <label className="profilemodal-text">Email</label>
-                          <label className="profilemodal-textval">
-                            {ticketDetailsData.customerEmailId}
-                          </label>
-                        </div>
-
-                        <div className="col-md-6">
-                          <label className="profilemodal-text">
-                            Alternate Number
-                          </label>
-                          <label className="profilemodal-textval">
-                            {ticketDetailsData.altNumber}
-                          </label>
-                        </div>
-                      </div>
-                      <div className="row" style={{ marginLeft: "15px" }}>
-                        <div className="openticketbox profilemodalrow-1">
-                          <label className="open-tickets-box-text">
-                            {ticketDetailsData.openTicket}
-                            <small className="open-tickets-box-textval">
-                              Open Tickets
-                            </small>
-                          </label>
-                        </div>
-                        <div className="openticketbox-2 profilemodalrow-1">
-                          <label className="open-tickets-box-text">
-                            {ticketDetailsData.totalticket}
-                            <small className="open-tickets-box-textval">
-                              Total Tickets
-                            </small>
-                          </label>
-                        </div>
-                      </div>
-                      <div className="row profilemodal-row-3">
-                        <img src={CustomerIcon} alt="customer-icon" />
-                        <label className="full-profile-view-text">
-                          FULL PROFILE VIEW
-                        </label>
-                      </div>
-                    </div>
-                  </Modal>
-                  <div
-                    className=""
-                    style={{ display: "inline", marginLeft: "5px" }}
-                  >
-                    <img
-                      src={BillInvoiceImg}
-                      alt="eye"
-                      className="billImg"
-                      onClick={this.handleBillImgModalOpen.bind(this)}
-                    />
-                    <Modal
-                      open={this.state.BillInvoiceModal}
-                      onClose={this.handleBillImgModalClose.bind(this)}
-                      modalId="BillInvoice-popup"
-                      overlayId="logout-ovrly"
-                    >
-                      <div className="row">
-                        <div className="col-md-5">
-                          <div className="customerBill">
+            <div className="card-rectangle">
+              <div className="rectangle-box">
+                <div className="row">
+                  <div className="col-md-3">
+                    <div style={{ padding: "15px" }}>
+                      <label className="mobile-number">Mobile Number</label>
+                      <br />
+                      <label className="mobile-no">
+                        {ticketDetailsData.customerPhoneNumber}
+                      </label>
+                      <img
+                        src={EyeImg}
+                        alt="eye"
+                        className="eyeImg1"
+                        onClick={this.HandleProfileModalOpen.bind(this)}
+                      />
+                      <Modal
+                        open={this.state.profilemodal}
+                        onClose={this.HandleProfileModalClose.bind(this)}
+                        modalId="profile-popup"
+                        overlayId="logout-ovrly"
+                      >
+                        <div className="profilemodalmaindiv">
+                          <div style={{ float: "right" }}>
                             <img
-                              src={UserIcon}
-                              alt="customer-icon"
-                              className="usericon"
+                              src={CrossIcon}
+                              alt="cross-icon"
+                              className="pro-cross-icn"
+                              onClick={this.HandleProfileModalClose.bind(this)}
                             />
-                            <label className="customer-text">CUSTOMER</label>
                           </div>
-                          <div className="row">
-                            <div className="col-md-6 namepad">
-                              <label className="fullna">Full Name</label>
-                              <label className="namedi">
+                          <div className="row profilemodalrow">
+                            <div className="col-md-6">
+                              <label className="profilemodal-text">Name</label>
+                              <label className="profilemodal-textval">
                                 {ticketDetailsData.customerName}
                               </label>
                             </div>
-                            <div className="col-md-6 namepad">
-                              <label className="fullna">Mobile Number</label>
-                              <label className="namedi">
+                            <div className="col-md-6">
+                              <label className="profilemodal-text">
+                                Mobile
+                              </label>
+                              <label className="profilemodal-textval">
                                 {ticketDetailsData.customerPhoneNumber}
                               </label>
                             </div>
                           </div>
-                          <div className="row">
-                            <div className="col-md-6 namepad">
-                              <label className="fullna">Email ID</label>
-                              <label className="namedi">
+                          <div className="row profilemodalrow-1">
+                            <div className="col-md-6">
+                              <label className="profilemodal-text">Email</label>
+                              <label className="profilemodal-textval">
                                 {ticketDetailsData.customerEmailId}
                               </label>
                             </div>
+
+                            <div className="col-md-6">
+                              <label className="profilemodal-text">
+                                Alternate Number
+                              </label>
+                              <label className="profilemodal-textval">
+                                {ticketDetailsData.altNumber}
+                              </label>
+                            </div>
+                          </div>
+                          <div className="row" style={{ marginLeft: "15px" }}>
+                            <div className="openticketbox profilemodalrow-1">
+                              <label className="open-tickets-box-text">
+                                {ticketDetailsData.openTicket}
+                                <small className="open-tickets-box-textval">
+                                  Open Tickets
+                                </small>
+                              </label>
+                            </div>
+                            <div className="openticketbox-2 profilemodalrow-1">
+                              <label className="open-tickets-box-text">
+                                {ticketDetailsData.totalticket}
+                                <small className="open-tickets-box-textval">
+                                  Total Tickets
+                                </small>
+                              </label>
+                            </div>
+                          </div>
+                          <div className="row profilemodal-row-3">
+                            <img src={CustomerIcon} alt="customer-icon" />
+                            <label className="full-profile-view-text">
+                              FULL PROFILE VIEW
+                            </label>
                           </div>
                         </div>
-
-                        <div className="col-md-7 xyz">
-                          <img
-                            src={CrossIcon}
-                            alt="cross-icon"
-                            className="cross"
-                            onClick={this.handleBillImgModalClose.bind(this)}
-                          />
-                          {this.state.HistOrderShow ? (
-                            <div>
-                              <div className="histo">
+                      </Modal>
+                      <div
+                        className=""
+                        style={{ display: "inline", marginLeft: "5px" }}
+                      >
+                        <img
+                          src={BillInvoiceImg}
+                          alt="eye"
+                          className="billImg"
+                          onClick={this.handleBillImgModalOpen.bind(this)}
+                        />
+                        <Modal
+                          open={this.state.BillInvoiceModal}
+                          onClose={this.handleBillImgModalClose.bind(this)}
+                          modalId="BillInvoice-popup"
+                          overlayId="logout-ovrly"
+                        >
+                          <div className="row">
+                            <div className="col-md-5">
+                              <div className="customerBill">
                                 <img
-                                  src={Order}
+                                  src={UserIcon}
                                   alt="customer-icon"
-                                  style={{ marginTop: "-10px" }}
+                                  className="usericon"
                                 />
                                 <label className="customer-text">
-                                  HISTORICAL ORDER
+                                  CUSTOMER
                                 </label>
                               </div>
-                              {/* <div className="col-md-6">
-                                <input
-                                  type="text"
-                                  className="search-orderhis"
-                                  placeholder="Search Order"
-                                />
-                              </div> */}
-                              <div className="tablehistrical">
-                                <ReactTable
-                                  data={orderDetails}
-                                  columns={[
-                                    {
-                                      Header: (
-                                        <span className="historyTable-header">
-                                          Order Number
-                                        </span>
-                                      ),
-                                      accessor: "orderNumber"
-                                    },
-                                    {
-                                      Header: (
-                                        <span className="historyTable-header">
-                                          Mobile Number
-                                        </span>
-                                      ),
-                                      accessor: "mobileNumber"
-                                    },
-                                    {
-                                      Header: (
-                                        <span className="historyTable-header">
-                                          Amount
-                                        </span>
-                                      ),
-                                      accessor: "itemPrice"
-                                    },
-                                    {
-                                      Header: (
-                                        <span className="historyTable-header">
-                                          Purchase Date
-                                        </span>
-                                      ),
-                                      accessor: "dateFormat"
-                                    }
-                                  ]}
-                                  // resizable={false}
-                                  defaultPageSize={5}
-                                  showPagination={false}
-                                />
+                              <div className="row">
+                                <div className="col-md-6 namepad">
+                                  <label className="fullna">Full Name</label>
+                                  <label className="namedi">
+                                    {ticketDetailsData.customerName}
+                                  </label>
+                                </div>
+                                <div className="col-md-6 namepad">
+                                  <label className="fullna">
+                                    Mobile Number
+                                  </label>
+                                  <label className="namedi">
+                                    {ticketDetailsData.customerPhoneNumber}
+                                  </label>
+                                </div>
                               </div>
+                              <div className="row">
+                                <div className="col-md-6 namepad">
+                                  <label className="fullna">Email ID</label>
+                                  <label className="namedi">
+                                    {ticketDetailsData.customerEmailId}
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
 
-                              {/* <div className="row skipmar">
+                            <div className="col-md-7 xyz">
+                              <img
+                                src={CrossIcon}
+                                alt="cross-icon"
+                                className="cross"
+                                onClick={this.handleBillImgModalClose.bind(
+                                  this
+                                )}
+                              />
+                              {this.state.HistOrderShow ? (
+                                <div>
+                                  <div className="histo">
+                                    <img
+                                      src={Order}
+                                      alt="customer-icon"
+                                      style={{ marginTop: "-10px" }}
+                                    />
+                                    <label className="customer-text">
+                                      HISTORICAL ORDER
+                                    </label>
+                                  </div>
+
+                                  <div className="tablehistrical">
+                                    <ReactTable
+                                      data={orderDetails}
+                                      columns={[
+                                        {
+                                          Header: (
+                                            <span className="historyTable-header">
+                                              Order Number
+                                            </span>
+                                          ),
+                                          accessor: "orderNumber"
+                                        },
+                                        {
+                                          Header: (
+                                            <span className="historyTable-header">
+                                              Mobile Number
+                                            </span>
+                                          ),
+                                          accessor: "mobileNumber"
+                                        },
+                                        {
+                                          Header: (
+                                            <span className="historyTable-header">
+                                              Amount
+                                            </span>
+                                          ),
+                                          accessor: "itemPrice"
+                                        },
+                                        {
+                                          Header: (
+                                            <span className="historyTable-header">
+                                              Purchase Date
+                                            </span>
+                                          ),
+                                          accessor: "dateFormat"
+                                        }
+                                      ]}
+                                      // resizable={false}
+                                      defaultPageSize={5}
+                                      showPagination={false}
+                                    />
+                                  </div>
+
+                                  {/* <div className="row skipmar">
                                 <div className="col-md-5">
                                   <label className="skiptext">
                                     SKIP ATTATCHING ORDER
@@ -1550,33 +1676,698 @@ class MyTicket extends Component {
                                   </div>
                                 </div>
                               </div> */}
-                            </div>
-                          ) : (
-                            <div>
-                              <div className="row histo">
-                                <div className="col-md-7">
-                                  <img
-                                    src={UserIcon}
-                                    alt="customer-icon"
-                                    className="usericon"
-                                  />
-                                  <img
-                                    src={Up1Img}
-                                    alt="down"
-                                    className="down-header"
-                                  />
-                                  <label className="customer-text">
-                                    ORDER - BB2213451123
-                                  </label>
                                 </div>
-                                <div className="col-md-5">
-                                  <label className="customerOrder-text">
-                                    ORDER
+                              ) : (
+                                <div>
+                                  <div className="row histo">
+                                    <div className="col-md-7">
+                                      <img
+                                        src={UserIcon}
+                                        alt="customer-icon"
+                                        className="usericon"
+                                      />
+                                      <img
+                                        src={Up1Img}
+                                        alt="down"
+                                        className="down-header"
+                                      />
+                                      <label className="customer-text">
+                                        ORDER - BB2213451123
+                                      </label>
+                                    </div>
+                                    <div className="col-md-5">
+                                      <label className="customerOrder-text">
+                                        ORDER
+                                      </label>
+                                      <label className="customerItem-text">
+                                        ITEM
+                                      </label>
+                                      <div className="orderswitch">
+                                        <div className="switch switch-primary d-inline">
+                                          <input
+                                            type="checkbox"
+                                            id="editTasks-p-2"
+                                          />
+                                          <label
+                                            htmlFor="editTasks-p-2"
+                                            className="cr ord"
+                                          ></label>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="tablehistrical tablehistricaldetail">
+                                    <ReactTable
+                                      data={data1}
+                                      columns={columns1}
+                                      // resizable={false}
+                                      defaultPageSize={2}
+                                      showPagination={false}
+                                    />
+                                  </div>
+                                  <div className="row skipmar done">
+                                    <div className="col-md-12">
+                                      <div className="calnex">
+                                        <button
+                                          type="button"
+                                          className="calnexbtn"
+                                        >
+                                          <label className="calnexbtn-text">
+                                            Cancel
+                                          </label>
+                                        </button>
+                                        <button
+                                          type="button"
+                                          className="calnexbtn1"
+                                          onClick={this.handleBillImgModalClose.bind(
+                                            this
+                                          )}
+                                        >
+                                          <label className="calnexbtn1-text">
+                                            DONE
+                                          </label>
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </Modal>
+                      </div>
+                      <div className="card-space-1">
+                        <label className="target-closure-date">
+                          Target Closure Date &nbsp;
+                        </label>
+                        <label className="Date-target">
+                          {ticketDetailsData.targetClouredate}
+                        </label>
+                      </div>
+                      <div className="mobilenumber-resp">
+                        <span className="line-respo"></span>
+                        <label className="respo">Response</label>
+                        <label className="resol">
+                          <span className="line-resol"></span>
+                          Resolution
+                        </label>
+                      </div>
+                      <progress
+                        className="ticket-progress"
+                        style={{ width: "100%" }}
+                        value="50"
+                        max="100"
+                      ></progress>
+                      <p className="logout-label font-weight-bold prog-indi-1">
+                        2 day
+                      </p>
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <div className="mid-sec mid-secnew">
+                      <div className="row mob-pad">
+                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                          <div className="form-group">
+                            <label className="label-4">Status</label>
+                            <select
+                              className="rectangle-9 select-category-placeholder"
+                              value={
+                                this.state.selectetedParameters.ticketStatusID
+                              }
+                              onChange={this.handleDropDownChange}
+                              name="ticketStatusID"
+                            >
+                              <option>Ticket Status</option>
+                              {this.state.TicketStatusData !== null &&
+                                this.state.TicketStatusData.map((item, i) => (
+                                  <option key={i} value={item.ticketStatusID}>
+                                    {item.ticketStatusName}
+                                  </option>
+                                ))}
+                            </select>
+                          </div>
+                        </div>
+                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
+                          <div className="form-group">
+                            <label className="label-4">Priority</label>
+                            <select
+                              className="rectangle-9 select-category-placeholder"
+                              value={this.state.selectetedParameters.priorityID}
+                              onChange={this.handleDropDownChange}
+                              name="priorityID"
+                            >
+                              <option>Priority</option>
+                              {this.state.TicketPriorityData !== null &&
+                                this.state.TicketPriorityData.map((item, i) => (
+                                  <option key={i} value={item.priorityID}>
+                                    {item.priortyName}
+                                  </option>
+                                ))}
+                            </select>
+                          </div>
+                        </div>
+                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
+                          <div className="form-group">
+                            <label className="label-4">Brand</label>
+                            <select
+                              className="rectangle-9 select-category-placeholder"
+                              value={this.state.selectetedParameters.brandID}
+                              onChange={this.handleDropDownChange}
+                              name="brandID"
+                            >
+                              <option className="select-category-placeholder">
+                                Select Brand
+                              </option>
+                              {this.state.BrandData !== null &&
+                                this.state.BrandData.map((item, i) => (
+                                  <option
+                                    key={i}
+                                    value={item.brandID}
+                                    className="select-category-placeholder"
+                                  >
+                                    {item.brandName}
+                                  </option>
+                                ))}
+                            </select>
+                          </div>
+                        </div>
+                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                          <div className="form-group">
+                            <label className="label-4">Category</label>
+                            <select
+                              className="rectangle-9 select-category-placeholder"
+                              value={this.state.selectetedParameters.categoryID}
+                              onChange={this.handleDropDownChange}
+                              name="categoryID"
+                            >
+                              <option className="select-category-placeholder">
+                                Select Category
+                              </option>
+                              {this.state.CategoryData !== null &&
+                                this.state.CategoryData.map((item, i) => (
+                                  <option
+                                    key={i}
+                                    value={item.categoryID}
+                                    className="select-category-placeholder"
+                                  >
+                                    {item.categoryName}
+                                  </option>
+                                ))}
+                            </select>
+                          </div>
+                        </div>
+                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
+                          <div className="form-group">
+                            <label className="label-4">Sub Category</label>
+                            <select
+                              className="rectangle-9 select-category-placeholder"
+                              value={
+                                this.state.selectetedParameters.subCategoryID
+                              }
+                              onChange={this.handleDropDownChange}
+                              name="subCategoryID"
+                            >
+                              <option className="select-category-placeholder">
+                                Select Sub Category
+                              </option>
+                              {this.state.SubCategoryData !== null &&
+                                this.state.SubCategoryData.map((item, i) => (
+                                  <option
+                                    key={i}
+                                    value={item.subCategoryID}
+                                    className="select-category-placeholder"
+                                  >
+                                    {item.subCategoryName}
+                                  </option>
+                                ))}
+                            </select>
+                          </div>
+                        </div>
+                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
+                          <div className="form-group">
+                            <label className="label-4">Issue Type</label>
+
+                            <select
+                              className="rectangle-9 select-category-placeholder"
+                              value={
+                                this.state.selectetedParameters.issueTypeID
+                              }
+                              onChange={this.handleDropDownChange}
+                              name="issueTypeID"
+                            >
+                              <option className="select-sub-category-placeholder">
+                                Select Issue Type
+                              </option>
+                              {this.state.IssueTypeData !== null &&
+                                this.state.IssueTypeData.map((item, i) => (
+                                  <option
+                                    key={i}
+                                    value={item.issueTypeID}
+                                    className="select-category-placeholder"
+                                  >
+                                    {item.issueTypeName}
+                                  </option>
+                                ))}
+                            </select>
+                          </div>
+                        </div>
+                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
+                          <div className="form-group">
+                            <label className="label-4">
+                              Channel Of Purchase
+                            </label>
+                            <select
+                              className="rectangle-9 select-category-placeholder"
+                              value={
+                                this.state.selectetedParameters
+                                  .channelOfPurchaseID
+                              }
+                              onChange={this.handleDropDownChange}
+                              name="channelOfPurchaseID"
+                              // value={this.state.selectedChannelOfPurchase}
+                              // onChange={this.setChannelOfPurchaseValue}
+                            >
+                              <option className="select-category-placeholder">
+                                Select Channel Of Purchase
+                              </option>
+                              {this.state.ChannelOfPurchaseData !== null &&
+                                this.state.ChannelOfPurchaseData.map(
+                                  (item, i) => (
+                                    <option
+                                      key={i}
+                                      value={item.channelOfPurchaseID}
+                                      className="select-category-placeholder"
+                                    >
+                                      {item.nameOfChannel}
+                                    </option>
+                                  )
+                                )}
+                            </select>
+                          </div>
+                        </div>
+                        <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
+                          <div className="form-group">
+                            <label className="label-4">
+                              Ticket Action Type
+                            </label>
+                            <select
+                              className="rectangle-9 select-category-placeholder"
+                              value={
+                                this.state.selectetedParameters
+                                  .ticketActionTypeID
+                              }
+                              onChange={this.handleDropDownChange}
+                              name="ticketActionTypeID"
+                            >
+                              <option className="select-category-placeholder">
+                                Select Ticket Action Type
+                              </option>
+                              {this.state.TicketActionTypeData !== null &&
+                                this.state.TicketActionTypeData.map(
+                                  (item, i) => (
+                                    <option
+                                      key={i}
+                                      value={item.ticketActionTypeID}
+                                      className="select-category-placeholder"
+                                    >
+                                      {item.ticketActionTypeName}
+                                    </option>
+                                  )
+                                )}
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-md-3">
+                    <div style={{ padding: "15px 0" }}>
+                      <div className="storebox">
+                        <div className="form-group">
+                          <label className="label-4 storeSpacing">Store</label>
+                          <label
+                            className="bata-rajouri-garden"
+                            onClick={this.HandleStoreModalOpen.bind(this)}
+                          >
+                            Bata Rajouri Garden &nbsp;
+                            <img
+                              src={PencilImg}
+                              alt="Pencile"
+                              className="pencilImg"
+                            />
+                          </label>
+                          <Modal
+                            open={this.state.storemodal}
+                            onClose={this.HandleStoreModalClose.bind(this)}
+                            modalId="addStoreTableModal"
+                            overlayId="logout-ovrly"
+                          >
+                            <div className="row storemainrow">
+                              <div className="col-md-12">
+                                <select className="systemstoredropdown1">
+                                  <option>Customer Want to visit store</option>
+                                  <option>
+                                    Customer Already visited store
+                                  </option>
+                                </select>
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    marginTop: "7px",
+                                    float: "right"
+                                  }}
+                                >
+                                  <label className="orderdetailpopup">
+                                    Yes
                                   </label>
-                                  <label className="customerItem-text">
-                                    ITEM
+                                  <div className="switchmargin">
+                                    <div className="switch switch-primary d-inline m-r-10">
+                                      <input
+                                        type="checkbox"
+                                        id="editDashboard-p-12"
+                                      />
+                                      <label
+                                        htmlFor="editDashboard-p-12"
+                                        className="cr"
+                                      ></label>
+                                    </div>
+                                  </div>
+                                  <label className="orderdetailpopup">No</label>
+                                  <div
+                                    className="storeplusline13"
+                                    onClick={this.HandleStoreModalClose.bind(
+                                      this
+                                    )}
+                                  >
+                                    <span
+                                      className="plusline13"
+                                      style={{ marginLeft: "10px" }}
+                                    ></span>
+                                    <img
+                                      src={MinusImg}
+                                      alt="Minus"
+                                      className="minus-imgorder"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="row">
+                              <div
+                                className="col-md-6 m-b-10 m-t-10"
+                                style={{ marginLeft: "25px" }}
+                              >
+                                <input
+                                  type="text"
+                                  className="systemordersearch"
+                                  placeholder="Search By Store Name, Pin Code, Store Code"
+                                  value={this.state.SearchStore}
+                                  name="SearchStore"
+                                  onChange={this.handleNoteOnChange}
+                                />
+                                <img
+                                  src={SearchBlackImg}
+                                  alt="Search"
+                                  className="systemorder-imgsearch"
+                                  onClick={this.handleGetStoreDetails()}
+                                />
+                              </div>
+                              <div className="">
+                                <button
+                                  type="button"
+                                  className="myticket-submit-solve-button"
+                                  onClick={this.handleAttachStoreData.bind(this)}
+                                >
+                                  Attach Store
+                                </button>
+                              </div>
+                            </div>
+                            <span className="linestore1"></span>
+                            <div className="newtabstore">
+                              <div className="tab-content tabcontentstore">
+                                <div className="">
+                                  <ul
+                                    className="nav alert-nav-tabs3 store-nav-tabs"
+                                    role="tablist"
+                                  >
+                                    <li className="nav-item fo">
+                                      <a
+                                        className="nav-link active"
+                                        data-toggle="tab"
+                                        href="#storedetail-tab"
+                                        role="tab"
+                                        aria-controls="storedetail-tab"
+                                        aria-selected="true"
+                                      >
+                                        Store Details
+                                      </a>
+                                    </li>
+                                    <li className="nav-item fo">
+                                      <a
+                                        className="nav-link"
+                                        data-toggle="tab"
+                                        href="#selectedstore-tab"
+                                        role="tab"
+                                        aria-controls="selectedstore-tab"
+                                        aria-selected="false"
+                                      >
+                                        Selected Store
+                                      </a>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+                            <span className="linestore2"></span>
+                            <div className="tab-content p-0">
+                              <div
+                                className="tab-pane fade show active"
+                                id="storedetail-tab"
+                                role="tabpanel"
+                                aria-labelledby="storedetail-tab"
+                              >
+                                <div className="reactstoreselect">
+                                  <ReactTable
+                                    data={storeDetails}
+                                    columns={[
+                                      {
+                                        Header: <span>Purpose</span>,
+                                        accessor: "invoiceNumber",
+                                        Cell: row => (
+                                          <div
+                                            className="filter-checkbox"
+                                            style={{ marginLeft: "15px" }}
+                                          >
+                                            <input
+                                              type="checkbox"
+                                              id={"i" + row.original.storeID}
+                                              style={{ display: "none" }}
+                                              name="ticket-store"
+                                              checked={
+                                                this.state.CheckStoreID[
+                                                  row.original.storeID
+                                                ] === true
+                                              }
+                                              onChange={this.handleCheckStoreID.bind(
+                                                this,
+                                                row.original.storeID,
+                                                row.original
+                                              )}
+                                              defaultChecked={true}
+                                            />
+                                            <label
+                                              htmlFor={
+                                                "i" + row.original.storeID
+                                              }
+                                            >
+                                              {row.original.storeID}
+                                            </label>
+                                          </div>
+                                        )
+                                      },
+                                      {
+                                        Header: <span>Store Code</span>,
+                                        accessor: "storeCode"
+                                      },
+                                      {
+                                        Header: <span>Store Name</span>,
+                                        accessor: "storeName"
+                                      },
+                                      {
+                                        Header: <span>Store Pin Code</span>,
+                                        accessor: "storeCode"
+                                      },
+                                      {
+                                        Header: <span>Store Email ID</span>,
+                                        accessor: "storeEmailID"
+                                      },
+                                      {
+                                        Header: <span>Store Addres</span>,
+                                        accessor: "address"
+                                      },
+                                      {
+                                        Header: <span>Visit Date</span>,
+                                        accessor: "visitDate",
+                                        Cell: row => <label>23,Aug 2019</label>
+                                      }
+                                    ]}
+                                    // resizable={false}
+                                    defaultPageSize={5}
+                                    showPagination={false}
+                                  />
+                                </div>
+                              </div>
+                              <div
+                                className="tab-pane fade"
+                                id="selectedstore-tab"
+                                role="tabpanel"
+                                aria-labelledby="selectedstore-tab"
+                              >
+                                <div className="reactstoreselect">
+                                  {this.state.loading === true ? (
+                                    <div className="loader-icon"></div>
+                                  ) : (
+                                    <ReactTable
+                                      data={selectedStore}
+                                      columns={[
+                                        {
+                                          Header: <span>Purpose</span>,
+                                          accessor: "invoiceNumber",
+                                          Cell: row => (
+                                            <div
+                                              className="filter-checkbox"
+                                              style={{ marginLeft: "15px" }}
+                                            >
+                                              <input
+                                                type="checkbox"
+                                                id={"i" + row.original.storeID}
+                                                style={{ display: "none" }}
+                                                name="ticket-store"
+                                                checked={
+                                                  this.state.CheckStoreID[
+                                                    row.original.storeID
+                                                  ] === true
+                                                }
+                                                onChange={this.handleCheckStoreID.bind(
+                                                  this,
+                                                  row.original.storeID,
+                                                  row.original
+                                                )}
+                                                defaultChecked={true}
+                                              />
+                                              <label
+                                                htmlFor={
+                                                  "i" + row.original.storeID
+                                                }
+                                              >
+                                                {row.original.storeID}
+                                              </label>
+                                            </div>
+                                          )
+                                        },
+                                        {
+                                          Header: <span>Store Code</span>,
+                                          accessor: "storeCode"
+                                        },
+                                        {
+                                          Header: <span>Store Name</span>,
+                                          accessor: "storeName"
+                                        },
+                                        {
+                                          Header: <span>Store Pin Code</span>,
+                                          accessor: "pincode"
+                                        },
+                                        {
+                                          Header: <span>Store Email ID</span>,
+                                          accessor: "storeEmailID"
+                                        },
+                                        {
+                                          Header: <span>Store Addres</span>,
+                                          accessor: "address"
+                                        },
+                                        {
+                                          Header: <span>Visit Date</span>,
+                                          accessor: "visitDate",
+                                          Cell: row => (
+                                            <label>23,Aug 2019</label>
+                                          )
+                                        }
+                                      ]}
+                                      // resizable={false}
+                                      defaultPageSize={5}
+                                      showPagination={false}
+                                    />
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          </Modal>
+                        </div>
+                        <div className="">
+                          <label className="label-4">Product</label>
+                          <label
+                            className="bata-rajouri-garden"
+                            onClick={this.handleOrderTableOpen.bind(this)}
+                          >
+                            Red Tennis Coca Cola White Monogr...&nbsp;
+                            <img
+                              src={PencilImg}
+                              alt="Pencile"
+                              className="pencilImg"
+                            />
+                          </label>
+                          <Modal
+                            onClose={this.handleOrderTableClose.bind(this)}
+                            open={this.state.OrderTable}
+                            modalId="addOrderTableModal"
+                            overlayId="logout-ovrly"
+                          >
+                            <div
+                              className="row"
+                              style={{ marginLeft: "0px", marginRight: "0px" }}
+                            >
+                              <div
+                                className="col-md-12 claim-status-card"
+                                style={{ height: "54px" }}
+                              >
+                                <label style={{ marginTop: "7px" }}>
+                                  <b>Customer Want to attach order</b>
+                                </label>
+                                <div
+                                  className="claimplus"
+                                  onClick={this.handleOrderTableClose.bind(
+                                    this
+                                  )}
+                                >
+                                  <span className="plusline12"></span>
+                                  <span>
+                                    <img
+                                      src={MinusImg}
+                                      alt="Minus"
+                                      className="minus-imgorder"
+                                    />
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              className="row m-t-10 m-b-10"
+                              style={{ marginLeft: "0", marginRight: "0" }}
+                            >
+                              <div className="col-md-6">
+                                <label className="orderdetailpopup">
+                                  Order Details
+                                </label>
+                              </div>
+                              <div className="col-md-3">
+                                <div
+                                  style={{ float: "right", display: "flex" }}
+                                >
+                                  <label className="orderdetailpopup">
+                                    Order
                                   </label>
-                                  <div className="orderswitch">
+                                  <div className="orderswitch orderswitchitem">
                                     <div className="switch switch-primary d-inline">
                                       <input
                                         type="checkbox"
@@ -1588,1680 +2379,371 @@ class MyTicket extends Component {
                                       ></label>
                                     </div>
                                   </div>
+                                  <label className="orderdetailpopup">
+                                    Item
+                                  </label>
                                 </div>
                               </div>
-                              <div className="tablehistrical tablehistricaldetail">
-                                <ReactTable
-                                  data={data1}
-                                  columns={columns1}
-                                  // resizable={false}
-                                  defaultPageSize={2}
-                                  showPagination={false}
+                              <div className="col-md-3">
+                                <input
+                                  type="text"
+                                  className="searchtextpopup"
+                                  placeholder="Search Order"
                                 />
-                              </div>
-                              <div className="row skipmar done">
-                                <div className="col-md-12">
-                                  <div className="calnex">
-                                    <button type="button" className="calnexbtn">
-                                      <label className="calnexbtn-text">
-                                        Cancel
-                                      </label>
-                                    </button>
-                                    <button
-                                      type="button"
-                                      className="calnexbtn1"
-                                      onClick={this.handleBillImgModalClose.bind(
-                                        this
-                                      )}
-                                    >
-                                      <label className="calnexbtn1-text">
-                                        DONE
-                                      </label>
-                                    </button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </Modal>
-                  </div>
-                  <div className="card-space-1">
-                    <label className="target-closure-date">
-                      Target Closure Date &nbsp;
-                    </label>
-                    <label className="Date-target">
-                      {ticketDetailsData.targetClouredate}
-                    </label>
-                  </div>
-                  <div className="mobilenumber-resp">
-                    <span className="line-respo"></span>
-                    <label className="respo">Response</label>
-                    <label className="resol">
-                      <span className="line-resol"></span>
-                      Resolution
-                    </label>
-                  </div>
-                  <progress
-                    className="ticket-progress"
-                    style={{ width: "100%" }}
-                    value="50"
-                    max="100"
-                  ></progress>
-                  <p className="logout-label font-weight-bold prog-indi-1">
-                    2 day
-                  </p>
-                </div>
-              </div>
-              <div className="col-md-6">
-                <div className="mid-sec mid-secnew">
-                  <div className="row mob-pad">
-                    <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4">
-                      <div className="form-group">
-                        <label className="label-4">Status</label>
-                        <select
-                          className="rectangle-9 select-category-placeholder"
-                          value={this.state.selectetedParameters.ticketStatusID}
-                          onChange={this.handleDropDownChange}
-                          name="ticketStatusID"
-                        >
-                          <option>Ticket Status</option>
-                          {this.state.TicketStatusData !== null &&
-                            this.state.TicketStatusData.map((item, i) => (
-                              <option key={i} value={item.ticketStatusID}>
-                                {item.ticketStatusName}
-                              </option>
-                            ))}
-                        </select>
-                      </div>
-                    </div>
-                    <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                      <div className="form-group">
-                        <label className="label-4">Priority</label>
-                        <select
-                          className="rectangle-9 select-category-placeholder"
-                          value={this.state.selectetedParameters.priorityID}
-                          onChange={this.handleDropDownChange}
-                          name="priorityID"
-                        >
-                          <option>Priority</option>
-                          {this.state.TicketPriorityData !== null &&
-                            this.state.TicketPriorityData.map((item, i) => (
-                              <option key={i} value={item.priorityID}>
-                                {item.priortyName}
-                              </option>
-                            ))}
-                        </select>
-                      </div>
-                    </div>
-                    <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                      <div className="form-group">
-                        <label className="label-4">Brand</label>
-                        <select
-                          className="rectangle-9 select-category-placeholder"
-                          value={this.state.selectetedParameters.brandID}
-                          onChange={this.handleDropDownChange}
-                          name="brandID"
-                        >
-                          <option className="select-category-placeholder">
-                            Select Brand
-                          </option>
-                          {this.state.BrandData !== null &&
-                            this.state.BrandData.map((item, i) => (
-                              <option
-                                key={i}
-                                value={item.brandID}
-                                className="select-category-placeholder"
-                              >
-                                {item.brandName}
-                              </option>
-                            ))}
-                        </select>
-                      </div>
-                    </div>
-                    <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4">
-                      <div className="form-group">
-                        <label className="label-4">Category</label>
-                        <select
-                          className="rectangle-9 select-category-placeholder"
-                          value={this.state.selectetedParameters.categoryID}
-                          onChange={this.handleDropDownChange}
-                          name="categoryID"
-                        >
-                          <option className="select-category-placeholder">
-                            Select Category
-                          </option>
-                          {this.state.CategoryData !== null &&
-                            this.state.CategoryData.map((item, i) => (
-                              <option
-                                key={i}
-                                value={item.categoryID}
-                                className="select-category-placeholder"
-                              >
-                                {item.categoryName}
-                              </option>
-                            ))}
-                        </select>
-                      </div>
-                    </div>
-                    <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                      <div className="form-group">
-                        <label className="label-4">Sub Category</label>
-                        <select
-                          className="rectangle-9 select-category-placeholder"
-                          value={this.state.selectetedParameters.subCategoryID}
-                          onChange={this.handleDropDownChange}
-                          name="subCategoryID"
-                        >
-                          <option className="select-category-placeholder">
-                            Select Sub Category
-                          </option>
-                          {this.state.SubCategoryData !== null &&
-                            this.state.SubCategoryData.map((item, i) => (
-                              <option
-                                key={i}
-                                value={item.subCategoryID}
-                                className="select-category-placeholder"
-                              >
-                                {item.subCategoryName}
-                              </option>
-                            ))}
-                        </select>
-                      </div>
-                    </div>
-                    <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                      <div className="form-group">
-                        <label className="label-4">Issue Type</label>
-
-                        <select
-                          className="rectangle-9 select-category-placeholder"
-                          value={this.state.selectetedParameters.issueTypeID}
-                          onChange={this.handleDropDownChange}
-                          name="issueTypeID"
-                        >
-                          <option className="select-sub-category-placeholder">
-                            Select Issue Type
-                          </option>
-                          {this.state.IssueTypeData !== null &&
-                            this.state.IssueTypeData.map((item, i) => (
-                              <option
-                                key={i}
-                                value={item.issueTypeID}
-                                className="select-category-placeholder"
-                              >
-                                {item.issueTypeName}
-                              </option>
-                            ))}
-                        </select>
-                      </div>
-                    </div>
-                    <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                      <div className="form-group">
-                        <label className="label-4">Channel Of Purchase</label>
-                        <select
-                          className="rectangle-9 select-category-placeholder"
-                          value={
-                            this.state.selectetedParameters.channelOfPurchaseID
-                          }
-                          onChange={this.handleDropDownChange}
-                          name="channelOfPurchaseID"
-                          // value={this.state.selectedChannelOfPurchase}
-                          // onChange={this.setChannelOfPurchaseValue}
-                        >
-                          <option className="select-category-placeholder">
-                            Select Channel Of Purchase
-                          </option>
-                          {this.state.ChannelOfPurchaseData !== null &&
-                            this.state.ChannelOfPurchaseData.map((item, i) => (
-                              <option
-                                key={i}
-                                value={item.channelOfPurchaseID}
-                                className="select-category-placeholder"
-                              >
-                                {item.nameOfChannel}
-                              </option>
-                            ))}
-                        </select>
-                      </div>
-                    </div>
-                    <div className="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-4 dropdrown">
-                      <div className="form-group">
-                        <label className="label-4">Ticket Action Type</label>
-                        <select
-                          className="rectangle-9 select-category-placeholder"
-                          value={
-                            this.state.selectetedParameters.ticketActionTypeID
-                          }
-                          onChange={this.handleDropDownChange}
-                          name="ticketActionTypeID"
-                        >
-                          <option className="select-category-placeholder">
-                            Select Ticket Action Type
-                          </option>
-                          {this.state.TicketActionTypeData !== null &&
-                            this.state.TicketActionTypeData.map((item, i) => (
-                              <option
-                                key={i}
-                                value={item.ticketActionTypeID}
-                                className="select-category-placeholder"
-                              >
-                                {item.ticketActionTypeName}
-                              </option>
-                            ))}
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-3">
-                <div style={{ padding: "15px 0" }}>
-                  <div className="storebox">
-                    <div className="form-group">
-                      <label className="label-4 storeSpacing">Store</label>
-                      <label
-                        className="bata-rajouri-garden"
-                        onClick={this.HandleStoreModalOpen.bind(this)}
-                      >
-                        Bata Rajouri Garden &nbsp;
-                        <img
-                          src={PencilImg}
-                          alt="Pencile"
-                          className="pencilImg"
-                        />
-                      </label>
-                      <Modal
-                        open={this.state.storemodal}
-                        onClose={this.HandleStoreModalClose.bind(this)}
-                        modalId="addStoreTableModal"
-                        overlayId="logout-ovrly"
-                      >
-                        <div className="row storemainrow">
-                          <div className="col-md-12">
-                            <select className="systemstoredropdown1">
-                              <option>Customer Want to visit store</option>
-                              <option>Customer Already visited store</option>
-                            </select>
-                            <div
-                              style={{
-                                display: "flex",
-                                marginTop: "7px",
-                                float: "right"
-                              }}
-                            >
-                              <label className="orderdetailpopup">Yes</label>
-                              <div className="switchmargin">
-                                <div className="switch switch-primary d-inline m-r-10">
-                                  <input
-                                    type="checkbox"
-                                    id="editDashboard-p-12"
-                                  />
-                                  <label
-                                    htmlFor="editDashboard-p-12"
-                                    className="cr"
-                                  ></label>
-                                </div>
-                              </div>
-                              <label className="orderdetailpopup">No</label>
-                              <div
-                                className="storeplusline13"
-                                onClick={this.HandleStoreModalClose.bind(this)}
-                              >
-                                <span
-                                  className="plusline13"
-                                  style={{ marginLeft: "10px" }}
-                                ></span>
                                 <img
-                                  src={MinusImg}
-                                  alt="Minus"
-                                  className="minus-imgorder"
+                                  src={SearchBlackImg}
+                                  alt="Search"
+                                  className="searchtextimgpopup"
                                 />
                               </div>
                             </div>
-                          </div>
-                        </div>
-
-                        <div className="row">
-                          <div
-                            className="col-md-6 m-b-10 m-t-10"
-                            style={{ marginLeft: "25px" }}
-                          >
-                            <input
-                              type="text"
-                              className="systemordersearch"
-                              placeholder="Search By Store Name, Pin Code, Store Code"
-                              value={this.state.SearchStore}
-                              name="SearchStore"
-                              onChange={this.handleNoteOnChange}
-                            />
-                            <img
-                              src={SearchBlackImg}
-                              alt="Search"
-                              className="systemorder-imgsearch"
-                              onClick={this.handleGetStoreDetails()}
-                            />
-                          </div>
-                        </div>
-                        <span className="linestore1"></span>
-                        <div className="newtabstore">
-                          <div className="tab-content tabcontentstore">
-                            <div className="">
-                              <ul
-                                className="nav alert-nav-tabs3 store-nav-tabs"
-                                role="tablist"
-                              >
-                                <li className="nav-item fo">
-                                  <a
-                                    className="nav-link active"
-                                    data-toggle="tab"
-                                    href="#storedetail-tab"
-                                    role="tab"
-                                    aria-controls="storedetail-tab"
-                                    aria-selected="true"
-                                  >
-                                    Store Details
-                                  </a>
-                                </li>
-                                <li className="nav-item fo">
-                                  <a
-                                    className="nav-link"
-                                    data-toggle="tab"
-                                    href="#selectedstore-tab"
-                                    role="tab"
-                                    aria-controls="selectedstore-tab"
-                                    aria-selected="false"
-                                  >
-                                    Selected Store
-                                  </a>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-                        <span className="linestore2"></span>
-                        <div className="tab-content p-0">
-                          <div
-                            className="tab-pane fade"
-                            id="storedetail-tab"
-                            role="tabpanel"
-                            aria-labelledby="storedetail-tab"
-                          >
-                            <div className="reactstoreselect">
+                            <div className="reacttableordermodal ordermainrow">
                               <ReactTable
-                                data={storeDetails}
+                                data={productDetails}
                                 columns={[
                                   {
-                                    Header: <span>Purpose</span>,
+                                    Header: <span>Invoice Number</span>,
                                     accessor: "invoiceNumber",
-                                    Cell: row => (
-                                      <div
-                                        className="filter-checkbox"
-                                        style={{ marginLeft: "15px" }}
-                                      >
-                                        <input
-                                          type="checkbox"
-                                          id={row.original.storeID}
-                                          name="filter-type"
-                                          style={{ display: "none" }}
-                                        />
-                                        <label
-                                          htmlFor={row.original.storeID}
-                                          style={{ paddingLeft: "25px" }}
-                                        >
-                                          <span className="add-note">demo</span>
-                                        </label>
-                                      </div>
-                                    )
-                                  },
-                                  {
-                                    Header: <span>Store Code</span>,
-                                    accessor: "storeCode"
-                                  },
-                                  {
-                                    Header: <span>Store Name</span>,
-                                    accessor: "storeName"
-                                  },
-                                  {
-                                    Header: <span>Store Pin Code</span>,
-                                    accessor: "storeCode"
-                                  },
-                                  {
-                                    Header: <span>Store Email ID</span>,
-                                    accessor: "storeEmailID"
-                                  },
-                                  {
-                                    Header: <span>Store Addres</span>,
-                                    accessor: "address"
-                                  },
-                                  {
-                                    Header: <span>Visit Date</span>,
-                                    accessor: "visitDate",
-                                    Cell: row => <label>23,Aug 2019</label>
-                                  }
-                                ]}
-                                // resizable={false}
-                                defaultPageSize={5}
-                                showPagination={false}
-                              />
-                            </div>
-                          </div>
-                          <div
-                            className="tab-pane fade show active"
-                            id="selectedstore-tab"
-                            role="tabpanel"
-                            aria-labelledby="selectedstore-tab"
-                          >
-                            <div className="reactstoreselect">
-                              <ReactTable
-                                data={storeDetails}
-                                columns={[
-                                  {
-                                    Header: <span>Purpose</span>,
-                                    accessor: "invoiceNumber",
-                                    Cell: row => (
-                                      <div
-                                        className="filter-checkbox"
-                                        style={{ marginLeft: "15px" }}
-                                      >
-                                        <input
-                                          type="checkbox"
-                                          id={row.original.storeID}
-                                          name="filter-type"
-                                          style={{ display: "none" }}
-                                        />
-                                        <label
-                                          htmlFor={row.original.storeID}
-                                          style={{ paddingLeft: "25px" }}
-                                        >
-                                          <span className="add-note">demo</span>
-                                        </label>
-                                      </div>
-                                    )
-                                  },
-                                  {
-                                    Header: <span>Store Code</span>,
-                                    accessor: "storeCode"
-                                  },
-                                  {
-                                    Header: <span>Store Name</span>,
-                                    accessor: "storeName"
-                                  },
-                                  {
-                                    Header: <span>Store Pin Code</span>,
-                                    accessor: "storeCode"
-                                  },
-                                  {
-                                    Header: <span>Store Email ID</span>,
-                                    accessor: "storeEmailID"
-                                  },
-                                  {
-                                    Header: <span>Store Addres</span>,
-                                    accessor: "address"
-                                  },
-                                  {
-                                    Header: <span>Visit Date</span>,
-                                    accessor: "visitDate",
-                                    Cell: row => <label>23,Aug 2019</label>
-                                  }
-                                ]}
-                                // resizable={false}
-                                defaultPageSize={5}
-                                showPagination={false}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </Modal>
-                    </div>
-                    <div className="">
-                      <label className="label-4">Product</label>
-                      <label
-                        className="bata-rajouri-garden"
-                        onClick={this.handleOrderTableOpen.bind(this)}
-                      >
-                        Red Tennis Coca Cola White Monogr...&nbsp;
-                        <img
-                          src={PencilImg}
-                          alt="Pencile"
-                          className="pencilImg"
-                        />
-                      </label>
-                      <Modal
-                        onClose={this.handleOrderTableClose.bind(this)}
-                        open={this.state.OrderTable}
-                        modalId="addOrderTableModal"
-                        overlayId="logout-ovrly"
-                      >
-                        <div
-                          className="row"
-                          style={{ marginLeft: "0px", marginRight: "0px" }}
-                        >
-                          <div
-                            className="col-md-12 claim-status-card"
-                            style={{ height: "54px" }}
-                          >
-                            <label style={{ marginTop: "7px" }}>
-                              <b>Customer Want to attach order</b>
-                            </label>
-                            <div
-                              className="claimplus"
-                              onClick={this.handleOrderTableClose.bind(this)}
-                            >
-                              <span className="plusline12"></span>
-                              <span>
-                                <img
-                                  src={MinusImg}
-                                  alt="Minus"
-                                  className="minus-imgorder"
-                                />
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                        <div
-                          className="row m-t-10 m-b-10"
-                          style={{ marginLeft: "0", marginRight: "0" }}
-                        >
-                          <div className="col-md-6">
-                            <label className="orderdetailpopup">
-                              Order Details
-                            </label>
-                          </div>
-                          <div className="col-md-3">
-                            <div style={{ float: "right", display: "flex" }}>
-                              <label className="orderdetailpopup">Order</label>
-                              <div className="orderswitch orderswitchitem">
-                                <div className="switch switch-primary d-inline">
-                                  <input type="checkbox" id="editTasks-p-2" />
-                                  <label
-                                    htmlFor="editTasks-p-2"
-                                    className="cr ord"
-                                  ></label>
-                                </div>
-                              </div>
-                              <label className="orderdetailpopup">Item</label>
-                            </div>
-                          </div>
-                          <div className="col-md-3">
-                            <input
-                              type="text"
-                              className="searchtextpopup"
-                              placeholder="Search Order"
-                            />
-                            <img
-                              src={SearchBlackImg}
-                              alt="Search"
-                              className="searchtextimgpopup"
-                            />
-                          </div>
-                        </div>
-                        <div className="reacttableordermodal ordermainrow">
-                          <ReactTable
-                            data={productDetails}
-                            columns={[
-                              {
-                                Header: <span>Invoice Number</span>,
-                                accessor: "invoiceNumber",
-                                Cell: row => {
-                                  return (
-                                    <span>
-                                      <div className="filter-type pink1 pinkmyticket">
-                                        <div className="filter-checkbox pink2 pinkmargin">
-                                          <input
-                                            type="checkbox"
-                                            id={row.original.orderMasterID}
-                                            checked={this.state.CheckBoxChecked}
-                                            onChange={
-                                              this.handelCheckBoxCheckedChange
-                                            }
-                                          />
-                                          <label
-                                            htmlFor={row.original.orderMasterID}
-                                          >
-                                            {row.original.invoiceNumber}
-                                          </label>
-                                        </div>
-                                      </div>
-                                    </span>
-                                  );
-                                }
-                              },
-                              {
-                                Header: <span>Invoice Date</span>,
-                                accessor: "dateFormat"
-                              },
-                              {
-                                Header: <span>Item Count</span>,
-                                accessor: "itemCount"
-                              },
-                              {
-                                Header: <span>Item Price</span>,
-                                accessor: "itemPrice"
-                              },
-                              {
-                                Header: <span>Price Paid</span>,
-                                accessor: "pricePaid"
-                              },
-                              {
-                                Header: <span>Store Code</span>,
-                                accessor: "storeCode"
-                              },
-                              {
-                                Header: <span>Store Addres</span>,
-                                accessor: "storeAddress"
-                              },
-                              {
-                                Header: <span>Discount</span>,
-                                accessor: "discount"
-                              }
-                            ]}
-                            //resizable={false}
-                            minRows={1}
-                            defaultPageSize={5}
-                            showPagination={false}
-                            SubComponent={row => {
-                              return (
-                                <div style={{ padding: "20px" }}>
-                                  <ReactTable
-                                    data={row.original.orderItems}
-                                    columns={[
-                                      {
-                                        Header: <span>Article Number</span>,
-                                        accessor: "invoiceNo",
-                                        Cell: row => {
-                                          return (
-                                            <div
-                                              className="filter-checkbox"
-                                              style={{ marginLeft: "15px" }}
-                                            >
+                                    Cell: row => {
+                                      return (
+                                        <span>
+                                          <div className="filter-type pink1 pinkmyticket">
+                                            <div className="filter-checkbox pink2 pinkmargin">
                                               <input
                                                 type="checkbox"
-                                                style={{ display: "none" }}
-                                                id={row.original.orderItemID}
-                                                // name="dashboardcheckbox[]"
+                                                id={row.original.orderMasterID}
+                                                checked={
+                                                  this.state.CheckBoxChecked
+                                                }
+                                                onChange={
+                                                  this
+                                                    .handelCheckBoxCheckedChange
+                                                }
                                               />
                                               <label
                                                 htmlFor={
-                                                  row.original.orderItemID
+                                                  row.original.orderMasterID
                                                 }
                                               >
-                                                {row.original.invoiceNo}
+                                                {row.original.invoiceNumber}
                                               </label>
                                             </div>
-                                          );
-                                        }
-                                      },
-                                      {
-                                        Header: <span>Article Size</span>,
-                                        accessor: "size"
-                                      },
-                                      {
-                                        Header: <span>Article MRP</span>,
-                                        accessor: "itemPrice"
-                                      },
-                                      {
-                                        Header: <span>Price Paid</span>,
-                                        accessor: "pricePaid"
-                                      },
-                                      {
-                                        Header: <span>Discount</span>,
-                                        accessor: "discount"
-                                      },
-                                      {
-                                        Header: <span>Required Size</span>,
-                                        accessor: "requireSize"
-                                      }
-                                    ]}
-                                    defaultPageSize={2}
-                                    minRows={1}
-                                    showPagination={false}
-                                  />
-                                </div>
-                              );
-                            }}
-                          />
+                                          </div>
+                                        </span>
+                                      );
+                                    }
+                                  },
+                                  {
+                                    Header: <span>Invoice Date</span>,
+                                    accessor: "dateFormat"
+                                  },
+                                  {
+                                    Header: <span>Item Count</span>,
+                                    accessor: "itemCount"
+                                  },
+                                  {
+                                    Header: <span>Item Price</span>,
+                                    accessor: "itemPrice"
+                                  },
+                                  {
+                                    Header: <span>Price Paid</span>,
+                                    accessor: "pricePaid"
+                                  },
+                                  {
+                                    Header: <span>Store Code</span>,
+                                    accessor: "storeCode"
+                                  },
+                                  {
+                                    Header: <span>Store Addres</span>,
+                                    accessor: "storeAddress"
+                                  },
+                                  {
+                                    Header: <span>Discount</span>,
+                                    accessor: "discount"
+                                  }
+                                ]}
+                                //resizable={false}
+                                minRows={1}
+                                defaultPageSize={5}
+                                showPagination={false}
+                                SubComponent={row => {
+                                  return (
+                                    <div style={{ padding: "20px" }}>
+                                      <ReactTable
+                                        data={row.original.orderItems}
+                                        columns={[
+                                          {
+                                            Header: <span>Article Number</span>,
+                                            accessor: "invoiceNo",
+                                            Cell: row => {
+                                              return (
+                                                <div
+                                                  className="filter-checkbox"
+                                                  style={{ marginLeft: "15px" }}
+                                                >
+                                                  <input
+                                                    type="checkbox"
+                                                    style={{ display: "none" }}
+                                                    id={
+                                                      row.original.orderItemID
+                                                    }
+                                                    // name="dashboardcheckbox[]"
+                                                  />
+                                                  <label
+                                                    htmlFor={
+                                                      row.original.orderItemID
+                                                    }
+                                                  >
+                                                    {row.original.invoiceNo}
+                                                  </label>
+                                                </div>
+                                              );
+                                            }
+                                          },
+                                          {
+                                            Header: <span>Article Size</span>,
+                                            accessor: "size"
+                                          },
+                                          {
+                                            Header: <span>Article MRP</span>,
+                                            accessor: "itemPrice"
+                                          },
+                                          {
+                                            Header: <span>Price Paid</span>,
+                                            accessor: "pricePaid"
+                                          },
+                                          {
+                                            Header: <span>Discount</span>,
+                                            accessor: "discount"
+                                          },
+                                          {
+                                            Header: <span>Required Size</span>,
+                                            accessor: "requireSize"
+                                          }
+                                        ]}
+                                        defaultPageSize={2}
+                                        minRows={1}
+                                        showPagination={false}
+                                      />
+                                    </div>
+                                  );
+                                }}
+                              />
+                            </div>
+                          </Modal>
                         </div>
-                      </Modal>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div style={{ padding: "15px", background: "#fff" }}>
-          <div className="rectangle-3 text-editor">
-            <div className="row">
-              <label className="ticket-title-where">Ticket Title:</label>
-            </div>
-            <div className="row" style={{ marginTop: "0" }}>
-              <label className="label-2">{ticketDetailsData.ticketTitle}</label>
-            </div>
-            <div className="row">
-              <label className="ticket-title-where">Ticket Details:</label>
-            </div>
-            <div className="row" style={{ marginTop: "0" }}>
-              <label className="label-3">
-                {ticketDetailsData.ticketdescription}
-              </label>
-            </div>
-            <div className="row">
-              <img src={ThumbTick} alt="thumb" className="thumbtick" />
-              <img src={ThumbTick} alt="thumb" className="thumbtick" />
-              <img src={ThumbTick} alt="thumb" className="thumbtick" />
-              <img src={ThumbTick} alt="thumb" className="thumbtick" />
-              <img src={ThumbTick} alt="thumb" className="thumbtick" />
-              <img
-                src={PlusImg}
-                alt="thumb"
-                className="thumbtick-plus"
-                onClick={this.handleThumbModalOpen.bind(this)}
-              />
-            </div>
-            <Modal
-              open={this.state.Plus}
-              onClose={this.handleThumbModalClose.bind(this)}
-              modalId="thumb-modal-popup"
-              overlayId="logout-ovrlykb"
-            >
-              <div>
-                <div className="close">
+            <div style={{ padding: "15px", background: "#fff" }}>
+              <div className="rectangle-3 text-editor">
+                <div className="row">
+                  <label className="ticket-title-where">Ticket Title:</label>
+                </div>
+                <div className="row" style={{ marginTop: "0" }}>
+                  <label className="label-2">
+                    {ticketDetailsData.ticketTitle}
+                  </label>
+                </div>
+                <div className="row">
+                  <label className="ticket-title-where">Ticket Details:</label>
+                </div>
+                <div className="row" style={{ marginTop: "0" }}>
+                  <label className="label-3">
+                    {ticketDetailsData.ticketdescription}
+                  </label>
+                </div>
+                <div className="row">
+                  <img src={ThumbTick} alt="thumb" className="thumbtick" />
+                  <img src={ThumbTick} alt="thumb" className="thumbtick" />
+                  <img src={ThumbTick} alt="thumb" className="thumbtick" />
+                  <img src={ThumbTick} alt="thumb" className="thumbtick" />
+                  <img src={ThumbTick} alt="thumb" className="thumbtick" />
                   <img
-                    src={CrossIcon}
-                    alt="cross-icon"
-                    onClick={this.handleThumbModalClose.bind(this)}
+                    src={PlusImg}
+                    alt="thumb"
+                    className="thumbtick-plus"
+                    onClick={this.handleThumbModalOpen.bind(this)}
                   />
                 </div>
-                <div className="row my-3 mx-1">
-                  <img
-                    src={ThumbTick}
-                    alt="thumb"
-                    className="thumbtick"
-                    style={{ marginBottom: "10px" }}
-                  />
-                  <img
-                    src={ThumbTick}
-                    alt="thumb"
-                    className="thumbtick"
-                    style={{ marginBottom: "10px" }}
-                  />
-                  <img
-                    src={ThumbTick}
-                    alt="thumb"
-                    className="thumbtick"
-                    style={{ marginBottom: "10px" }}
-                  />
-                  <img
-                    src={ThumbTick}
-                    alt="thumb"
-                    className="thumbtick"
-                    style={{ marginBottom: "10px" }}
-                  />
-                  <img
-                    src={ThumbTick}
-                    alt="thumb"
-                    className="thumbtick"
-                    style={{ marginBottom: "10px" }}
-                  />
-                  <img
-                    src={ThumbTick}
-                    alt="thumb"
-                    className="thumbtick"
-                    style={{ marginBottom: "10px" }}
-                  />
-                  <img
-                    src={ThumbTick}
-                    alt="thumb"
-                    className="thumbtick"
-                    style={{ marginBottom: "10px" }}
-                  />
-                  <img
-                    src={ThumbTick}
-                    alt="thumb"
-                    className="thumbtick"
-                    style={{ marginBottom: "10px" }}
-                  />
-                </div>
-              </div>
-            </Modal>
-            <div className="row">
-              <div className="mask1">
-                <div className="mail-mask">
-                  <div className="dropdown" style={{ display: "inherit" }}>
-                    <button
-                      className="dropdown-toggle my-tic-email"
-                      type="button"
-                      data-toggle="dropdown"
-                    >
-                      <img src={Email1} alt="email" className="EMFCImg" />
-                      <span className="EMFCText">Email</span>
-                      {/* <FontAwesomeIcon icon={faEnvelope} /> Email */}
-                    </button>
-                    <ul className="dropdown-menu">
-                      <li>
-                        <a href="#!">
+                <Modal
+                  open={this.state.Plus}
+                  onClose={this.handleThumbModalClose.bind(this)}
+                  modalId="thumb-modal-popup"
+                  overlayId="logout-ovrlykb"
+                >
+                  <div>
+                    <div className="close">
+                      <img
+                        src={CrossIcon}
+                        alt="cross-icon"
+                        onClick={this.handleThumbModalClose.bind(this)}
+                      />
+                    </div>
+                    <div className="row my-3 mx-1">
+                      <img
+                        src={ThumbTick}
+                        alt="thumb"
+                        className="thumbtick"
+                        style={{ marginBottom: "10px" }}
+                      />
+                      <img
+                        src={ThumbTick}
+                        alt="thumb"
+                        className="thumbtick"
+                        style={{ marginBottom: "10px" }}
+                      />
+                      <img
+                        src={ThumbTick}
+                        alt="thumb"
+                        className="thumbtick"
+                        style={{ marginBottom: "10px" }}
+                      />
+                      <img
+                        src={ThumbTick}
+                        alt="thumb"
+                        className="thumbtick"
+                        style={{ marginBottom: "10px" }}
+                      />
+                      <img
+                        src={ThumbTick}
+                        alt="thumb"
+                        className="thumbtick"
+                        style={{ marginBottom: "10px" }}
+                      />
+                      <img
+                        src={ThumbTick}
+                        alt="thumb"
+                        className="thumbtick"
+                        style={{ marginBottom: "10px" }}
+                      />
+                      <img
+                        src={ThumbTick}
+                        alt="thumb"
+                        className="thumbtick"
+                        style={{ marginBottom: "10px" }}
+                      />
+                      <img
+                        src={ThumbTick}
+                        alt="thumb"
+                        className="thumbtick"
+                        style={{ marginBottom: "10px" }}
+                      />
+                    </div>
+                  </div>
+                </Modal>
+                <div className="row">
+                  <div className="mask1">
+                    <div className="mail-mask">
+                      <div className="dropdown" style={{ display: "inherit" }}>
+                        <button
+                          className="dropdown-toggle my-tic-email"
+                          type="button"
+                          data-toggle="dropdown"
+                        >
                           <img src={Email1} alt="email" className="EMFCImg" />
                           <span className="EMFCText">Email</span>
-                          {/* <FontAwesomeIcon icon={faEnvelope} /> Email */}
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#!">
-                          <img src={Sms1} alt="sma" className="EMFCImg" />
-                          <span className="EMFCText">SMS</span>
-                          {/* <FontAwesomeIcon icon={faCommentAlt} /> SMS */}
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#!">
-                          <img
-                            src={Facebook1}
-                            alt="facebook"
-                            className="EMFCImg"
-                          />
-                          <span className="EMFCText">Facebook</span>
-                          {/* <FontAwesomeIcon icon={faComment} /> Facebook */}
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#!">
-                          <img src={Call1} alt="call" className="EMFCImg" />
-                          <span className="EMFCText">Call</span>
-                          {/* <FontAwesomeIcon icon={faPhone} /> Call */}
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-
-                  <div
-                    className="mob-float"
-                    style={{ display: "flex", float: "right" }}
-                  >
-                    {/* <img src={ArrowImg} alt="Arrow" className="arrow-img" /> */}
-                    <div className="line-1"></div>
-                    {EmailCollapseUpDown}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="myTicketEmail">
-              <Collapse isOpen={this.state.EmailCollapse}>
-                <a
-                  href="#!"
-                  className="kblink"
-                  style={{ top: "5px" }}
-                  onClick={this.HandleKbLinkModalOpen.bind(this)}
-                >
-                  {/* <FontAwesomeIcon icon={faBrain} /> Kb Link */}
-                  <img
-                    src={KnowledgeLogo}
-                    alt="KnowledgeLogo"
-                    className="knoim"
-                  />
-                  Kb Link
-                </a>
-                <div
-                  className="dropdown collapbtn"
-                  style={{ display: "inherit", top: "5px" }}
-                >
-                  <button
-                    className="dropdown-toggle my-tic-email"
-                    type="button"
-                    data-toggle="dropdown"
-                    onClick={this.handleTemplateBindByIssueType.bind(this)}
-                  >
-                    <FontAwesomeIcon icon={faCalculator} /> Template
-                  </button>
-                  <ul className="dropdown-menu">
-                    {this.state.CkEditorTemplateData !== null &&
-                      this.state.CkEditorTemplateData.map((item, i) => (
-                        <li key={i} value={item.templateID}>
-                          <span
-                            onClick={this.handleCkEditorTemplateData.bind(
-                              this,
-                              item.templateID,
-                              item.templateName
-                            )}
-                          >
-                            {item.templateName}
-                          </span>
-                        </li>
-                      ))}
-                  </ul>
-                </div>
-                <Card>
-                  <CardBody>
-                    <div className="">
-                      <CKEditor
-                        data={this.state.CkEditorTemplateDetails.templateBody}
-                        config={{
-                          toolbar: [
-                            {
-                              name: "basicstyles",
-                              items: ["Bold", "Italic", "Strike"]
-                            },
-                            {
-                              name: "styles",
-                              items: ["Styles", "Format"]
-                            },
-                            {
-                              name: "paragraph",
-                              items: ["NumberedList", "BulletedList"]
-                            },
-                            {
-                              name: "links",
-                              items: ["Link", "Unlink"]
-                            },
-                            {
-                              name: "insert",
-                              items: ["Image", "Table"]
-                            },
-                            {
-                              name: "tools",
-                              items: ["Maximize"]
-                            },
-                            {
-                              name: "editing",
-                              items: ["Scayt"]
-                            }
-                          ]
-                        }}
-                      />
-                    </div>
-                  </CardBody>
-                  <div className="row colladrowa">
-                    <div className="col-md-12 colladrow">
-                      <ul>
-                        <li>
-                          <label>To: diwarkar@gmail.com</label>
-                        </li>
-                        <li>
-                          <label className="">
-                            <div
-                              className="input-group"
-                              // style={{ display: "block" }}
-                            >
-                              <span className="input-group-addon inputcc">
-                                CC:
-                              </span>
-                              <input type="text" className="CCdi" />
-                              <span className="input-group-addon inputcc-one">
-                                +1
-                              </span>
-                            </div>
-                          </label>
-                        </li>
-                        <li>
-                          <label className="">
-                            <div
-                              className="input-group"
-                              // style={{ display: "block" }}
-                            >
-                              <span className="input-group-addon inputcc">
-                                BCC:
-                              </span>
-                              <input type="text" className="CCdi" />
-                              <span className="input-group-addon inputcc-one">
-                                +1
-                              </span>
-                            </div>
-                          </label>
-                        </li>
-                        <li>
-                          <div className="filter-checkbox">
-                            <input
-                              type="checkbox"
-                              id="fil-open"
-                              name="filter-type"
-                              style={{ display: "none" }}
-                            />
-                            <label
-                              htmlFor="fil-open"
-                              style={{ paddingLeft: "25px" }}
-                            >
-                              <span>Inform Store Note</span>
-                            </label>
-                          </div>
-                        </li>
-                        <li>
-                          <span>
-                            <input
-                              id="file-upload"
-                              className="file-upload1 d-none"
-                              type="file"
-                              onChange={this.fileUpload}
-                            />
-                            <label
-                              htmlFor="file-upload"
-                              onDrop={this.fileDrop}
-                              onDragOver={this.fileDragOver}
-                              onDragEnter={this.fileDragEnter}
-                            >
-                              <img
-                                src={FileUpload}
-                                alt="file-upload"
-                                className="fileup"
-                              />
-                            </label>
-                          </span>
-                          <label style={{ color: "#2561a8" }}>3 files</label>
-                        </li>
-                        <li style={{ float: "right" }}>
-                          <button className="send">Send</button>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </Card>
-              </Collapse>
-            </div>
-            <div>
-              <Modal
-                open={this.state.KbLink}
-                onClose={this.HandleKbLinkModalClose.bind(this)}
-                modalId="KbLink-popup"
-                overlayId="logout-ovrlykb"
-              >
-                <div className="row" style={{ margin: "0" }}>
-                  <div className="col-md-7" style={{ padding: "0" }}>
-                    <div className="knokb">
-                      <h5>
-                        <img
-                          src={KnowledgeLogo}
-                          alt="KnowledgeLogo"
-                          className="knoim1"
-                        />
-                        KNOWLEGE BASE
-                      </h5>
-                      <p>Message</p>
-
-                      <div id="kb-accordion">
-                        {this.state.KbPopupData !== null &&
-                          this.state.KbPopupData.map((item, i) => (
-                            <div key={i} className="kb-acc-cntr">
-                              <p
-                                className="table-details-data-modal"
-                                data-toggle="collapse"
-                                data-target={"#collapse" + i}
-                                aria-expanded={i === 0 ? "true" : "false"}
-                                aria-controls={"collapse" + i}
-                                onClick={() => this.setState({ copied: false })}
-                              >
-                                {item.subject}
-                              </p>
-                              <div
-                                id={"collapse" + i}
-                                className={
-                                  i === 0 ? "collapse show" : "collapse"
-                                }
-                                data-parent="#kb-accordion"
-                              >
-                                <p className="mb-0">{item.description}</p>
-                                <CopyToClipboard
-                                  text={item.description}
-                                  onCopy={() => this.setState({ copied: true })}
-                                >
-                                  <a href="#!" className="copyblue-kbtext">
-                                    <img
-                                      src={CopyBlue}
-                                      alt=""
-                                      className="copyblue-kb"
-                                    />
-                                    Copy
-                                  </a>
-                                </CopyToClipboard>
-                                {this.state.copied ? (
-                                  <span
-                                    className="ml-2"
-                                    style={{ color: "red" }}
-                                  >
-                                    Copied.
-                                  </span>
-                                ) : null}
-                              </div>
-                            </div>
-                          ))}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-5 kblinkright">
-                    <div className="knokb-a">
-                      <img
-                        src={CancelImg}
-                        alt="cancelImg"
-                        className="cancalImg-kb"
-                        onClick={this.HandleKbLinkModalClose.bind(this)}
-                      />
-                      <h5>KB TEMPLATE</h5>
-                      <div className="form-group">
-                        <select
-                          value={this.state.selectedCategoryKB}
-                          onChange={this.setCategoryValueKB}
-                          className="kblinkrectangle-9 select-category-placeholderkblink"
-                        >
-                          <option>Category</option>
-                          {this.state.CategoryData !== null &&
-                            this.state.CategoryData.map((item, i) => (
-                              <option key={i} value={item.categoryID}>
-                                {item.categoryName}
-                              </option>
-                            ))}
-                        </select>
-                      </div>
-                      <div className="form-group">
-                        <select
-                          value={this.state.selectedSubCategoryKB}
-                          onChange={this.setSubCategoryValueKB}
-                          className="kblinkrectangle-9 select-category-placeholderkblink"
-                        >
-                          <option>Sub-Category</option>
-                          {this.state.SubCategoryData !== null &&
-                            this.state.SubCategoryData.map((item, i) => (
-                              <option key={i} value={item.subCategoryID}>
-                                {item.subCategoryName}
-                              </option>
-                            ))}
-                        </select>
-                      </div>
-                      <div className="form-group">
-                        <select
-                          value={this.state.selectedIssueTypeKB}
-                          onChange={this.setIssueTypeValueKB}
-                          className="kblinkrectangle-9 select-category-placeholderkblink"
-                        >
-                          <option>Type</option>
-                          {this.state.IssueTypeData !== null &&
-                            this.state.IssueTypeData.map((item, i) => (
-                              <option key={i} value={item.issueTypeID}>
-                                {item.issueTypeName}
-                              </option>
-                            ))}
-                        </select>
-                      </div>
-                      <div>
-                        <button
-                          onClick={this.handleKbLinkPopupSearch}
-                          className="kblink-search"
-                        >
-                          SEARCH
                         </button>
-                      </div>
-                      <div style={{ marginTop: "275px" }}>
-                        <a href="#!" className="copyblue-kbtext">
-                          VIEW POLICY
-                        </a>
-                        <img
-                          src={ViewBlue}
-                          alt="viewpolicy"
-                          className="viewpolicy-kb"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Modal>
-            </div>
-            <div className="edit-storeTask-header newtab">
-              <div className="tab-content">
-                <div className="store-header-task">
-                  <ul className="nav alert-nav-tabs3" role="tablist">
-                    <li className="nav-item fo">
-                      <a
-                        className="nav-link active"
-                        data-toggle="tab"
-                        href="#Message-tab"
-                        role="tab"
-                        aria-controls="Message-tab"
-                        aria-selected="true"
-                      >
-                        Message: 04
-                      </a>
-                    </li>
-                    <li className="nav-item fo">
-                      <a
-                        className="nav-link"
-                        data-toggle="tab"
-                        href="#Notes-tab"
-                        role="tab"
-                        aria-controls="Notes-tab"
-                        aria-selected="false"
-                        name="Notes"
-                        onClick={this.handleGetTabsName}
-                      >
-                        Notes:{" "}
-                        {this.state.Notesdetails.length < 9
-                          ? "0" + this.state.Notesdetails.length
-                          : this.state.Notesdetails.length}
-                      </a>
-                    </li>
-                    <li className="nav-item fo">
-                      <a
-                        className="nav-link"
-                        data-toggle="tab"
-                        href="#Task-tab"
-                        role="tab"
-                        aria-controls="Task-tab"
-                        aria-selected="false"
-                        name="Task"
-                        onClick={this.handleGetTabsName}
-                      >
-                        Task:{" "}
-                        {this.state.tabCounts.task < 9
-                          ? "0" + this.state.tabCounts.task
-                          : this.state.tabCounts.task}
-                      </a>
-                    </li>
-                    <li className="nav-item fo">
-                      <a
-                        className="nav-link"
-                        data-toggle="tab"
-                        href="#Claim-tab"
-                        role="tab"
-                        aria-controls="Claim-tab"
-                        aria-selected="false"
-                        name="Claim"
-                        onClick={this.handleGetTabsName}
-                      >
-                        Claim:{" "}
-                        {this.state.tabCounts.claim < 9
-                          ? "0" + this.state.tabCounts.claim
-                          : this.state.tabCounts.claim}
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div className="tab-content p-0 tabpadtick">
-              <div
-                className="tab-pane fade"
-                id="Claim-tab"
-                role="tabpanel"
-                aria-labelledby="Claim-tab"
-              >
-                {this.state.ticket_Id > 0 ? (
-                  <MyTicketClaim
-                    claimData={{
-                      claimDeatils: {
-                        ticketId: this.state.ticket_Id,
-                        claimTabId: this.state.ClaimTab
-                      }
-                    }}
-                  />
-                ) : (
-                  ""
-                )}
-              </div>
-              <div
-                className="tab-pane fade show active"
-                id="Message-tab"
-                role="tabpanel"
-                aria-labelledby="Message-tab"
-                style={{ marginTop: "10px" }}
-              >
-                <div className="row message-header">
-                  <div className="col-12 col-xs-12 col-sm-3">
-                    <label className="user-label">User</label>
-                  </div>
-                  <div className="col-12 col-xs-12 col-sm-7">
-                    <label className="message-label">Message</label>
-                  </div>
-                  <div className="col-12 col-xs-12 col-sm-2">
-                    <label className="action-label">Action</label>
-                  </div>
-                </div>
-                <div className="row top-margin">
-                  <div className="col-md-5">
-                    <div className="v3"></div>
-                  </div>
-                  <div className="col-md-2">
-                    <label className="today-02">TODAY 02</label>
-                  </div>
-                  <div className="col-md-5">
-                    <div className="v4"></div>
-                  </div>
-                </div>
-                <div className="row top-margin">
-                  <div className="col-12 col-xs-12 col-sm-4 col-md-3">
-                    <div className="row" style={{ marginTop: "0" }}>
-                      <div className="oval-5-1">
-                        <img
-                          src={RightImg}
-                          alt="right"
-                          className="right-icon"
-                        />
-                      </div>
-                      <label
-                        className="solved-by-naman-r"
-                        style={{ marginLeft: "7px" }}
-                      >
-                        Solved by NamanR
-                      </label>
-                      <img src={MsgImg} alt="right" className="smg-Img1" />
-                    </div>
-                  </div>
-                  <div className="col-12 col-xs-12 col-sm-6 col-md-7">
-                    <label className="i-have-solved-this-i">
-                      I Have solved this issue
-                    </label>
-                  </div>
-                  <div className="col-12 col-xs-12 col-sm-2 col-md-2 mob-flex">
-                    {HidecollapsUp}
-                    <label
-                      className="comment"
-                      onClick={this.handleCommentsDrawerOpen.bind(this)}
-                    >
-                      Comment
-                    </label>
-                  </div>
-                  <Drawer
-                    placement="right"
-                    closable={false}
-                    onClose={this.handleCommentsDrawerClose.bind(this)}
-                    visible={this.state.CommentsDrawer}
-                    className="commentsDwarer"
-                  >
-                    <div className="drawer-header-1">
-                      <label className="lblHeader-drawer">Task</label>
-                      <button
-                        type="button"
-                        className="btn-addMoreTask"
-                        onClick={this.handleAddNewForm.bind(this)}
-                      >
-                        ADD MORE TASK
-                      </button>
-                    </div>
-                    <form onSubmit={this.handleSubmitForm.bind(this)}>
-                      {this.CreateUIForm()}
-                    </form>
-                  </Drawer>
-                </div>
-                <div className="row card-op-out">
-                  <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
-                  <div className="col-12 col-xs-12 col-sm-6 col-md-7">
-                    <Collapse isOpen={this.state.collapseUp}>
-                      <Card>
-                        <CardBody>
-                          <div className="card-details">
-                            <div className="card-details-1">
-                              <label className="label-5">Dear Matthew,</label>
-                              <label className="label-5">
-                                We're always working to make Shopify exactly
-                                what you need for your retails business. Your
-                                feedback helps us decide which features to
-                                build, and what improvements should be made to
-                                our platform.
-                                <br />
-                                <br />
-                                To help us make Shopify the best it can be, we
-                                want your feedback today, take a few minutes to
-                                fill out survays before Tuesday,July 7th.
-                              </label>
-                            </div>
-                          </div>
-                        </CardBody>
-                      </Card>
-                    </Collapse>
-                  </div>
-                  <div className="col-12 col-xs-12 col-sm-2"></div>
-                </div>
-
-                <div className="row">
-                  <div className="col-md-5">
-                    <div className="v3"></div>
-                  </div>
-                  <div className="col-md-2">
-                    <label className="yesterday-02">YESTERDAY 02</label>
-                  </div>
-                  <div className="col-md-5">
-                    <div className="v6"></div>
-                  </div>
-                </div>
-
-                <div className="row new-top-bottom-margin">
-                  <div className="col-12 col-xs-12 col-sm-4 col-md-3">
-                    <img
-                      src={Loading1Img}
-                      alt="right"
-                      className="oval-loading"
-                    />
-                    <label className="rashmi-c">
-                      Rashmi.C
-                      <span>
-                        <label className="updated-2-d-ago">
-                          Reassign to
-                          <label className="lable-name">Naman.R</label>
-                        </label>
-                      </span>
-                    </label>
-                  </div>
-                  <div className="col-12 col-xs-12 col-sm-6 col-md-7">
-                    <label className="hi-naman-please-hel">
-                      Hi @Naman Please help customer with voucher Issue
-                    </label>
-                  </div>
-                  <div className="col-12 col-xs-12 col-sm-2 mob-flex">
-                    <label
-                      className="comment-text"
-                      onClick={this.handleCommentCollapseOpen.bind(this)}
-                    >
-                      Comment
-                    </label>
-                  </div>
-                  <div className="row" style={{ width: "100%" }}>
-                    <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
-                    <div className="col-12 col-xs-12 col-sm-8 col-md-9">
-                      <div className="commentcollapseTicket">
-                        <Collapse isOpen={this.state.CommentCollapse}>
-                          <Card>
-                            <CardBody>
-                              <div className="commenttextborder">
-                                <div className="Commentlabel">
-                                  <label className="Commentlabel1">
-                                    Comment
-                                  </label>
-                                </div>
-                                <div>
-                                  <span className="comment-line"></span>
-                                  <div
-                                    style={{
-                                      float: "right",
-                                      cursor: "pointer",
-                                      height: "30px",
-                                      marginTop: "-33px"
-                                    }}
-                                  >
-                                    <img
-                                      src={MinusImg}
-                                      alt="Minus"
-                                      className="CommentMinus-img"
-                                    />
-                                  </div>
-                                </div>
-                                <div className="commenttextmessage">
-                                  <label style={{ marginBottom: "10px" }}>
-                                    Hello,
-                                  </label>
-                                  <label>
-                                    I saw a vintage table lamp on your site last
-                                    month and I'd bookmarked it to buy it later
-                                    for a friend. I can't seem to find it
-                                    anymore through.
-                                    <br></br>Is it out of stock or do you not
-                                    sell those anymore ?
-                                  </label>
-                                  <label
-                                    style={{
-                                      marginTop: "10px",
-                                      display: "block"
-                                    }}
-                                  >
-                                    Thanks
-                                  </label>
-                                  <label>Naman Rampal.</label>
-                                </div>
-                                <div className="SendCommentBtn">
-                                  <button
-                                    className="SendCommentBtn1"
-                                    onClick={this.handleCommentCollapseOpen2.bind(
-                                      this
-                                    )}
-                                  >
-                                    SEND
-                                  </button>
-                                </div>
-                              </div>
-                            </CardBody>
-                          </Card>
-                        </Collapse>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="myTicketCommentCollapse myTicketEmail">
-                  <Collapse isOpen={this.state.CommentCollapse2}>
-                    <div className="col-12" style={{ marginTop: "5px" }}>
-                      <div className="mask1">
-                        <div className="mail-mask">
-                          <div
-                            className="dropdown"
-                            style={{ display: "inherit" }}
-                          >
-                            <button
-                              className="dropdown-toggle my-tic-email"
-                              type="button"
-                              data-toggle="dropdown"
-                            >
+                        <ul className="dropdown-menu">
+                          <li>
+                            <a href="#!">
                               <img
                                 src={Email1}
                                 alt="email"
                                 className="EMFCImg"
                               />
                               <span className="EMFCText">Email</span>
-                              {/* <FontAwesomeIcon icon={faEnvelope} /> Email */}
-                            </button>
-                            <ul className="dropdown-menu">
-                              <li>
-                                <a href="#!">
-                                  <img
-                                    src={Email1}
-                                    alt="email"
-                                    className="EMFCImg"
-                                  />
-                                  <span className="EMFCText">Email</span>
-                                  {/* <FontAwesomeIcon icon={faEnvelope} /> Email */}
-                                </a>
-                              </li>
-                              <li>
-                                <a href="#!">
-                                  <img
-                                    src={Sms1}
-                                    alt="sms"
-                                    className="EMFCImg"
-                                  />
-                                  <span className="EMFCText">SMS</span>
-                                  {/* <FontAwesomeIcon icon={faCommentAlt} /> SMS */}
-                                </a>
-                              </li>
-                              <li>
-                                <a href="#!">
-                                  <img
-                                    src={Facebook1}
-                                    alt="facebook"
-                                    className="EMFCImg"
-                                  />
-                                  <span className="EMFCText">Facebook</span>
-                                  {/* <FontAwesomeIcon icon={faComment} /> Facebook */}
-                                </a>
-                              </li>
-                              <li>
-                                <a href="#!">
-                                  <img
-                                    src={Call1}
-                                    alt="call"
-                                    className="EMFCImg"
-                                  />
-                                  <span className="EMFCText">Call</span>
-                                  {/* <FontAwesomeIcon icon={faPhone} /> Call */}
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
-
-                          <a
-                            href="#!"
-                            className="kblink"
-                            onClick={this.HandleKbLinkModalOpen.bind(this)}
-                          >
-                            <img
-                              src={KnowledgeLogo}
-                              alt="KnowledgeLogo"
-                              className="knoim"
-                            />
-                            Kb Link
-                          </a>
-
-                          <div
-                            className="dropdown collapbtn"
-                            style={{ display: "inherit" }}
-                          >
-                            <button
-                              className="dropdown-toggle my-tic-email"
-                              type="button"
-                              data-toggle="dropdown"
-                            >
-                              <FontAwesomeIcon icon={faCalculator} /> Template
-                            </button>
-                            <ul className="dropdown-menu">
-                              <li>
-                                <a href="#!">Template 1</a>
-                              </li>
-                              <li>
-                                <a href="#!">Template 2</a>
-                              </li>
-                              <li>
-                                <a href="#!">Template 3</a>
-                              </li>
-                              <li>
-                                <a href="#!">Template 4</a>
-                              </li>
-                            </ul>
-                          </div>
-
-                          <h3 className="textbhead">
-                            Subject:{" "}
-                            <span>Need to change my shipping address</span>
-                          </h3>
-                          <div
-                            className="mob-float"
-                            style={{ display: "flex", float: "right" }}
-                          >
-                            {/* <img
-                              src={ArrowImg}
-                              alt="Arrow"
-                              className="arrow-img"
-                            /> */}
-                            <div className="line-1"></div>
-                            <div
-                              style={{ height: "31", cursor: "pointer" }}
-                              onClick={this.hanldeCommentClose2.bind(this)}
-                            >
+                            </a>
+                          </li>
+                          <li>
+                            <a href="#!">
+                              <img src={Sms1} alt="sma" className="EMFCImg" />
+                              <span className="EMFCText">SMS</span>
+                            </a>
+                          </li>
+                          <li>
+                            <a href="#!">
                               <img
-                                src={MinusImg}
-                                alt="Minus"
-                                className="minus-img"
+                                src={Facebook1}
+                                alt="facebook"
+                                className="EMFCImg"
                               />
-                            </div>
-                          </div>
-                        </div>
+                              <span className="EMFCText">Facebook</span>
+                            </a>
+                          </li>
+                          <li>
+                            <a href="#!">
+                              <img src={Call1} alt="call" className="EMFCImg" />
+                              <span className="EMFCText">Call</span>
+                            </a>
+                          </li>
+                        </ul>
                       </div>
+
+                      <div
+                        className="mob-float"
+                        style={{ display: "flex", float: "right" }}
+                      >
+                        <div className="line-1"></div>
+                        {EmailCollapseUpDown}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="myTicketEmail">
+                  <Collapse isOpen={this.state.EmailCollapse}>
+                    <a
+                      href="#!"
+                      className="kblink"
+                      style={{ top: "5px" }}
+                      onClick={this.HandleKbLinkModalOpen.bind(this)}
+                    >
+                      <img
+                        src={KnowledgeLogo}
+                        alt="KnowledgeLogo"
+                        className="knoim"
+                      />
+                      Kb Link
+                    </a>
+                    <div
+                      className="dropdown collapbtn"
+                      style={{ display: "inherit", top: "5px" }}
+                    >
+                      <button
+                        className="dropdown-toggle my-tic-email"
+                        type="button"
+                        data-toggle="dropdown"
+                        onClick={this.handleTemplateBindByIssueType.bind(this)}
+                      >
+                        <FontAwesomeIcon icon={faCalculator} /> Template
+                      </button>
+                      <ul className="dropdown-menu">
+                        {this.state.CkEditorTemplateData !== null &&
+                          this.state.CkEditorTemplateData.map((item, i) => (
+                            <li key={i} value={item.templateID}>
+                              <span
+                                onClick={this.handleCkEditorTemplateData.bind(
+                                  this,
+                                  item.templateID,
+                                  item.templateName
+                                )}
+                              >
+                                {item.templateName}
+                              </span>
+                            </li>
+                          ))}
+                      </ul>
                     </div>
                     <Card>
                       <CardBody>
-                        <div className="col-md-12">
+                        <div className="">
                           <CKEditor
+                            data={
+                              this.state.CkEditorTemplateDetails.templateBody
+                            }
                             config={{
                               toolbar: [
                                 {
@@ -3299,7 +2781,7 @@ class MyTicket extends Component {
                       </CardBody>
                       <div className="row colladrowa">
                         <div className="col-md-12 colladrow">
-                          <ul style={{ padding: "0 15px" }}>
+                          <ul>
                             <li>
                               <label>To: diwarkar@gmail.com</label>
                             </li>
@@ -3339,12 +2821,12 @@ class MyTicket extends Component {
                               <div className="filter-checkbox">
                                 <input
                                   type="checkbox"
-                                  id="fil-open1"
+                                  id="fil-open"
                                   name="filter-type"
                                   style={{ display: "none" }}
                                 />
                                 <label
-                                  htmlFor="fil-open1"
+                                  htmlFor="fil-open"
                                   style={{ paddingLeft: "25px" }}
                                 >
                                   <span>Inform Store Note</span>
@@ -3385,269 +2867,1034 @@ class MyTicket extends Component {
                     </Card>
                   </Collapse>
                 </div>
-                <div className="row row-spacing new-top-bottom-margin">
-                  <div className="col-12 col-xs-12 col-sm-4 col-md-3">
-                    <img
-                      src={Headphone2Img}
-                      alt="headphone"
-                      className="oval-56"
-                    />
-                    <label className="rashmi-c">Rashmi.C</label>
-                    <img
-                      src={FacebookImg}
-                      alt="facebook"
-                      className="facebook"
-                    />
-                  </div>
-                  <div className="col-12 col-xs-12 col-sm-6 col-md-7">
-                    <img src={ClipImg} alt="clip" className="clip" />
-                    <label className="hi-diwakar-i-really2">
-                      &nbsp; Hi Diwakar, I really appreciate you joining us at
-                      Voucherify! My top priority is that you have a great
-                      experience.
-                    </label>
-                  </div>
-                  <div className="col-12 col-xs-12 col-sm-2">
-                    <label
-                      className="comment-text1"
-                      onClick={this.hanldeCommentOpen2.bind(this)}
-                    >
-                      Comment
-                    </label>
+                <div>
+                  <Modal
+                    open={this.state.KbLink}
+                    onClose={this.HandleKbLinkModalClose.bind(this)}
+                    modalId="KbLink-popup"
+                    overlayId="logout-ovrlykb"
+                  >
+                    <div className="row" style={{ margin: "0" }}>
+                      <div className="col-md-7" style={{ padding: "0" }}>
+                        <div className="knokb">
+                          <h5>
+                            <img
+                              src={KnowledgeLogo}
+                              alt="KnowledgeLogo"
+                              className="knoim1"
+                            />
+                            KNOWLEGE BASE
+                          </h5>
+                          <p>Message</p>
+
+                          <div id="kb-accordion">
+                            {this.state.KbPopupData !== null &&
+                              this.state.KbPopupData.map((item, i) => (
+                                <div key={i} className="kb-acc-cntr">
+                                  <p
+                                    className="table-details-data-modal"
+                                    data-toggle="collapse"
+                                    data-target={"#collapse" + i}
+                                    aria-expanded={i === 0 ? "true" : "false"}
+                                    aria-controls={"collapse" + i}
+                                    onClick={() =>
+                                      this.setState({ copied: false })
+                                    }
+                                  >
+                                    {item.subject}
+                                  </p>
+                                  <div
+                                    id={"collapse" + i}
+                                    className={
+                                      i === 0 ? "collapse show" : "collapse"
+                                    }
+                                    data-parent="#kb-accordion"
+                                  >
+                                    <p className="mb-0">{item.description}</p>
+                                    <CopyToClipboard
+                                      text={item.description}
+                                      onCopy={() =>
+                                        this.setState({ copied: true })
+                                      }
+                                    >
+                                      <a href="#!" className="copyblue-kbtext">
+                                        <img
+                                          src={CopyBlue}
+                                          alt=""
+                                          className="copyblue-kb"
+                                        />
+                                        Copy
+                                      </a>
+                                    </CopyToClipboard>
+                                    {this.state.copied ? (
+                                      <span
+                                        className="ml-2"
+                                        style={{ color: "red" }}
+                                      >
+                                        Copied.
+                                      </span>
+                                    ) : null}
+                                  </div>
+                                </div>
+                              ))}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-md-5 kblinkright">
+                        <div className="knokb-a">
+                          <img
+                            src={CancelImg}
+                            alt="cancelImg"
+                            className="cancalImg-kb"
+                            onClick={this.HandleKbLinkModalClose.bind(this)}
+                          />
+                          <h5>KB TEMPLATE</h5>
+                          <div className="form-group">
+                            <select
+                              value={this.state.selectedCategoryKB}
+                              onChange={this.setCategoryValueKB}
+                              className="kblinkrectangle-9 select-category-placeholderkblink"
+                            >
+                              <option>Category</option>
+                              {this.state.CategoryData !== null &&
+                                this.state.CategoryData.map((item, i) => (
+                                  <option key={i} value={item.categoryID}>
+                                    {item.categoryName}
+                                  </option>
+                                ))}
+                            </select>
+                          </div>
+                          <div className="form-group">
+                            <select
+                              value={this.state.selectedSubCategoryKB}
+                              onChange={this.setSubCategoryValueKB}
+                              className="kblinkrectangle-9 select-category-placeholderkblink"
+                            >
+                              <option>Sub-Category</option>
+                              {this.state.SubCategoryData !== null &&
+                                this.state.SubCategoryData.map((item, i) => (
+                                  <option key={i} value={item.subCategoryID}>
+                                    {item.subCategoryName}
+                                  </option>
+                                ))}
+                            </select>
+                          </div>
+                          <div className="form-group">
+                            <select
+                              value={this.state.selectedIssueTypeKB}
+                              onChange={this.setIssueTypeValueKB}
+                              className="kblinkrectangle-9 select-category-placeholderkblink"
+                            >
+                              <option>Type</option>
+                              {this.state.IssueTypeData !== null &&
+                                this.state.IssueTypeData.map((item, i) => (
+                                  <option key={i} value={item.issueTypeID}>
+                                    {item.issueTypeName}
+                                  </option>
+                                ))}
+                            </select>
+                          </div>
+                          <div>
+                            <button
+                              onClick={this.handleKbLinkPopupSearch}
+                              className="kblink-search"
+                            >
+                              SEARCH
+                            </button>
+                          </div>
+                          <div style={{ marginTop: "275px" }}>
+                            <a href="#!" className="copyblue-kbtext">
+                              VIEW POLICY
+                            </a>
+                            <img
+                              src={ViewBlue}
+                              alt="viewpolicy"
+                              className="viewpolicy-kb"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </Modal>
+                </div>
+                <div className="edit-storeTask-header newtab">
+                  <div className="tab-content">
+                    <div className="store-header-task">
+                      <ul className="nav alert-nav-tabs3" role="tablist">
+                        <li className="nav-item fo">
+                          <a
+                            className="nav-link active"
+                            data-toggle="tab"
+                            href="#Message-tab"
+                            role="tab"
+                            aria-controls="Message-tab"
+                            aria-selected="true"
+                          >
+                            Message: 04
+                          </a>
+                        </li>
+                        <li className="nav-item fo">
+                          <a
+                            className="nav-link"
+                            data-toggle="tab"
+                            href="#Notes-tab"
+                            role="tab"
+                            aria-controls="Notes-tab"
+                            aria-selected="false"
+                            name="Notes"
+                            onClick={this.handleGetTabsName}
+                          >
+                            Notes:{" "}
+                            {this.state.Notesdetails.length < 9
+                              ? "0" + this.state.Notesdetails.length
+                              : this.state.Notesdetails.length}
+                          </a>
+                        </li>
+                        <li className="nav-item fo">
+                          <a
+                            className="nav-link"
+                            data-toggle="tab"
+                            href="#Task-tab"
+                            role="tab"
+                            aria-controls="Task-tab"
+                            aria-selected="false"
+                            name="Task"
+                            onClick={this.handleGetTabsName}
+                          >
+                            Task:{" "}
+                            {this.state.tabCounts.task < 9
+                              ? "0" + this.state.tabCounts.task
+                              : this.state.tabCounts.task}
+                          </a>
+                        </li>
+                        <li className="nav-item fo">
+                          <a
+                            className="nav-link"
+                            data-toggle="tab"
+                            href="#Claim-tab"
+                            role="tab"
+                            aria-controls="Claim-tab"
+                            aria-selected="false"
+                            name="Claim"
+                            onClick={this.handleGetTabsName}
+                          >
+                            Claim:{" "}
+                            {this.state.tabCounts.claim < 9
+                              ? "0" + this.state.tabCounts.claim
+                              : this.state.tabCounts.claim}
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
-                <div className="row row-spacing new-top-bottom-margin">
-                  <div className="col-12 col-xs-12 col-sm-4 col-md-3">
-                    <img src={BlackUserIcon} alt="Avatar" className="oval-6" />
-                    <label className="rashmi-c">Diwakar</label>
-                    <img
-                      src={Headphone2Img}
-                      alt="headphone"
-                      className="headphone1"
-                    />
-                  </div>
-                  <div className="col-12 col-xs-12 col-sm-6 col-md-7">
-                    <label className="need-to-change-my-sh">
-                      Need to change my shipping address
-                    </label>
-                  </div>
-                  <div className="col-12 col-xs-12 col-sm-2">
-                    <label className="reply-comment">
-                      Reply
-                      <br />
-                      Comment
-                    </label>
-                  </div>
-                </div>
-              </div>
-
-              <div
-                className="tab-pane fade"
-                id="Task-tab"
-                role="tabpanel"
-                aria-labelledby="Task-tab"
-              >
-                {this.state.ticket_Id > 0 ? (
-                  <MyTicketTask
-                    taskData={{
-                      TicketData: {
-                        TicketId: this.state.ticket_Id,
-                        GridData: this.state.taskTableGrid,
-                        TabActiveId: this.state.TaskTab
-                      }
-                    }}
-                  />
-                ) : (
-                  ""
-                )}
-              </div>
-              <div
-                className="tab-pane fade"
-                id="Notes-tab"
-                role="tabpanel"
-                aria-labelledby="Notes-tab"
-              >
-                <div className="row removemarg" style={{ marginTop: "20px" }}>
-                  <div className="col-12 col-xs-12 col-sm-5">
-                    <textarea
-                      className="Add-Notes-textarea"
-                      placeholder="Add Notes"
-                      name="NoteAddComment"
-                      value={this.state.NoteAddComment}
-                      onChange={this.handleNoteOnChange}
-                    ></textarea>
-                    <button
-                      type="button"
-                      className="notesbtn notesbtn-text"
-                      onClick={this.handleNoteAddComments.bind(this)}
-                    >
-                      ADD COMMENT
-                    </button>
-                  </div>
-
-                  <div className="col-12 col-xs-12 col-sm-7 my-ticket-notes">
-                    {this.state.loading === true ? (
-                      <div className="loader-icon"></div>
+                <div className="tab-content p-0 tabpadtick">
+                  <div
+                    className="tab-pane fade"
+                    id="Claim-tab"
+                    role="tabpanel"
+                    aria-labelledby="Claim-tab"
+                  >
+                    {this.state.ticket_Id > 0 ? (
+                      <MyTicketClaim
+                        claimData={{
+                          claimDeatils: {
+                            ticketId: this.state.ticket_Id,
+                            claimTabId: this.state.ClaimTab
+                          }
+                        }}
+                      />
                     ) : (
-                      <>
-                        {this.state.Notesdetails !== null &&
-                          this.state.Notesdetails.map((item, i) => (
-                            <div className="row my-ticket-notes-row" key={i}>
-                              <div className="col-md-1">
-                                <div className="oval-5-1-new">
+                      ""
+                    )}
+                  </div>
+                  <div
+                    className="tab-pane fade show active"
+                    id="Message-tab"
+                    role="tabpanel"
+                    aria-labelledby="Message-tab"
+                    style={{ marginTop: "10px" }}
+                  >
+                    <div className="row message-header">
+                      <div className="col-12 col-xs-12 col-sm-3">
+                        <label className="user-label">User</label>
+                      </div>
+                      <div className="col-12 col-xs-12 col-sm-7">
+                        <label className="message-label">Message</label>
+                      </div>
+                      <div className="col-12 col-xs-12 col-sm-2">
+                        <label className="action-label">Action</label>
+                      </div>
+                    </div>
+                    <div className="row top-margin">
+                      <div className="col-md-5">
+                        <div className="v3"></div>
+                      </div>
+                      <div className="col-md-2">
+                        <label className="today-02">TODAY 02</label>
+                      </div>
+                      <div className="col-md-5">
+                        <div className="v4"></div>
+                      </div>
+                    </div>
+                    <div className="row top-margin">
+                      <div className="col-12 col-xs-12 col-sm-4 col-md-3">
+                        <div className="row" style={{ marginTop: "0" }}>
+                          <div className="oval-5-1">
+                            <img
+                              src={RightImg}
+                              alt="right"
+                              className="right-icon"
+                            />
+                          </div>
+                          <label
+                            className="solved-by-naman-r"
+                            style={{ marginLeft: "7px" }}
+                          >
+                            Solved by NamanR
+                          </label>
+                          <img src={MsgImg} alt="right" className="smg-Img1" />
+                        </div>
+                      </div>
+                      <div className="col-12 col-xs-12 col-sm-6 col-md-7">
+                        <label className="i-have-solved-this-i">
+                          I Have solved this issue
+                        </label>
+                      </div>
+                      <div className="col-12 col-xs-12 col-sm-2 col-md-2 mob-flex">
+                        {HidecollapsUp}
+                        <label
+                          className="comment"
+                          onClick={this.handleCommentsDrawerOpen.bind(this)}
+                        >
+                          Comment
+                        </label>
+                      </div>
+                      <Drawer
+                        placement="right"
+                        closable={false}
+                        onClose={this.handleCommentsDrawerClose.bind(this)}
+                        visible={this.state.CommentsDrawer}
+                        className="commentsDwarer"
+                      >
+                        <div className="drawer-header-1">
+                          <label className="lblHeader-drawer">Task</label>
+                          <button
+                            type="button"
+                            className="btn-addMoreTask"
+                            onClick={this.handleAddNewForm.bind(this)}
+                          >
+                            ADD MORE TASK
+                          </button>
+                        </div>
+                        <form onSubmit={this.handleSubmitForm.bind(this)}>
+                          {this.CreateUIForm()}
+                        </form>
+                      </Drawer>
+                    </div>
+                    <div className="row card-op-out">
+                      <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
+                      <div className="col-12 col-xs-12 col-sm-6 col-md-7">
+                        <Collapse isOpen={this.state.collapseUp}>
+                          <Card>
+                            <CardBody>
+                              <div className="card-details">
+                                <div className="card-details-1">
+                                  <label className="label-5">
+                                    Dear Matthew,
+                                  </label>
+                                  <label className="label-5">
+                                    We're always working to make Shopify exactly
+                                    what you need for your retails business.
+                                    Your feedback helps us decide which features
+                                    to build, and what improvements should be
+                                    made to our platform.
+                                    <br />
+                                    <br />
+                                    To help us make Shopify the best it can be,
+                                    we want your feedback today, take a few
+                                    minutes to fill out survays before
+                                    Tuesday,July 7th.
+                                  </label>
+                                </div>
+                              </div>
+                            </CardBody>
+                          </Card>
+                        </Collapse>
+                      </div>
+                      <div className="col-12 col-xs-12 col-sm-2"></div>
+                    </div>
+
+                    <div className="row">
+                      <div className="col-md-5">
+                        <div className="v3"></div>
+                      </div>
+                      <div className="col-md-2">
+                        <label className="yesterday-02">YESTERDAY 02</label>
+                      </div>
+                      <div className="col-md-5">
+                        <div className="v6"></div>
+                      </div>
+                    </div>
+
+                    <div className="row new-top-bottom-margin">
+                      <div className="col-12 col-xs-12 col-sm-4 col-md-3">
+                        <img
+                          src={Loading1Img}
+                          alt="right"
+                          className="oval-loading"
+                        />
+                        <label className="rashmi-c">
+                          Rashmi.C
+                          <span>
+                            <label className="updated-2-d-ago">
+                              Reassign to
+                              <label className="lable-name">Naman.R</label>
+                            </label>
+                          </span>
+                        </label>
+                      </div>
+                      <div className="col-12 col-xs-12 col-sm-6 col-md-7">
+                        <label className="hi-naman-please-hel">
+                          Hi @Naman Please help customer with voucher Issue
+                        </label>
+                      </div>
+                      <div className="col-12 col-xs-12 col-sm-2 mob-flex">
+                        <label
+                          className="comment-text"
+                          onClick={this.handleCommentCollapseOpen.bind(this)}
+                        >
+                          Comment
+                        </label>
+                      </div>
+                      <div className="row" style={{ width: "100%" }}>
+                        <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
+                        <div className="col-12 col-xs-12 col-sm-8 col-md-9">
+                          <div className="commentcollapseTicket">
+                            <Collapse isOpen={this.state.CommentCollapse}>
+                              <Card>
+                                <CardBody>
+                                  <div className="commenttextborder">
+                                    <div className="Commentlabel">
+                                      <label className="Commentlabel1">
+                                        Comment
+                                      </label>
+                                    </div>
+                                    <div>
+                                      <span className="comment-line"></span>
+                                      <div
+                                        style={{
+                                          float: "right",
+                                          cursor: "pointer",
+                                          height: "30px",
+                                          marginTop: "-33px"
+                                        }}
+                                      >
+                                        <img
+                                          src={MinusImg}
+                                          alt="Minus"
+                                          className="CommentMinus-img"
+                                        />
+                                      </div>
+                                    </div>
+                                    <div className="commenttextmessage">
+                                      <label style={{ marginBottom: "10px" }}>
+                                        Hello,
+                                      </label>
+                                      <label>
+                                        I saw a vintage table lamp on your site
+                                        last month and I'd bookmarked it to buy
+                                        it later for a friend. I can't seem to
+                                        find it anymore through.
+                                        <br></br>Is it out of stock or do you
+                                        not sell those anymore ?
+                                      </label>
+                                      <label
+                                        style={{
+                                          marginTop: "10px",
+                                          display: "block"
+                                        }}
+                                      >
+                                        Thanks
+                                      </label>
+                                      <label>Naman Rampal.</label>
+                                    </div>
+                                    <div className="SendCommentBtn">
+                                      <button
+                                        className="SendCommentBtn1"
+                                        onClick={this.handleCommentCollapseOpen2.bind(
+                                          this
+                                        )}
+                                      >
+                                        SEND
+                                      </button>
+                                    </div>
+                                  </div>
+                                </CardBody>
+                              </Card>
+                            </Collapse>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="myTicketCommentCollapse myTicketEmail">
+                      <Collapse isOpen={this.state.CommentCollapse2}>
+                        <div className="col-12" style={{ marginTop: "5px" }}>
+                          <div className="mask1">
+                            <div className="mail-mask">
+                              <div
+                                className="dropdown"
+                                style={{ display: "inherit" }}
+                              >
+                                <button
+                                  className="dropdown-toggle my-tic-email"
+                                  type="button"
+                                  data-toggle="dropdown"
+                                >
                                   <img
-                                    src={StoreIcon}
-                                    style={{ padding: "5px" }}
-                                    alt="store-icon"
+                                    src={Email1}
+                                    alt="email"
+                                    className="EMFCImg"
+                                  />
+                                  <span className="EMFCText">Email</span>
+                                </button>
+                                <ul className="dropdown-menu">
+                                  <li>
+                                    <a href="#!">
+                                      <img
+                                        src={Email1}
+                                        alt="email"
+                                        className="EMFCImg"
+                                      />
+                                      <span className="EMFCText">Email</span>
+                                    </a>
+                                  </li>
+                                  <li>
+                                    <a href="#!">
+                                      <img
+                                        src={Sms1}
+                                        alt="sms"
+                                        className="EMFCImg"
+                                      />
+                                      <span className="EMFCText">SMS</span>
+                                    </a>
+                                  </li>
+                                  <li>
+                                    <a href="#!">
+                                      <img
+                                        src={Facebook1}
+                                        alt="facebook"
+                                        className="EMFCImg"
+                                      />
+                                      <span className="EMFCText">Facebook</span>
+                                    </a>
+                                  </li>
+                                  <li>
+                                    <a href="#!">
+                                      <img
+                                        src={Call1}
+                                        alt="call"
+                                        className="EMFCImg"
+                                      />
+                                      <span className="EMFCText">Call</span>
+                                    </a>
+                                  </li>
+                                </ul>
+                              </div>
+
+                              <a
+                                href="#!"
+                                className="kblink"
+                                onClick={this.HandleKbLinkModalOpen.bind(this)}
+                              >
+                                <img
+                                  src={KnowledgeLogo}
+                                  alt="KnowledgeLogo"
+                                  className="knoim"
+                                />
+                                Kb Link
+                              </a>
+
+                              <div
+                                className="dropdown collapbtn"
+                                style={{ display: "inherit" }}
+                              >
+                                <button
+                                  className="dropdown-toggle my-tic-email"
+                                  type="button"
+                                  data-toggle="dropdown"
+                                >
+                                  <FontAwesomeIcon icon={faCalculator} />{" "}
+                                  Template
+                                </button>
+                                <ul className="dropdown-menu">
+                                  <li>
+                                    <a href="#!">Template 1</a>
+                                  </li>
+                                  <li>
+                                    <a href="#!">Template 2</a>
+                                  </li>
+                                  <li>
+                                    <a href="#!">Template 3</a>
+                                  </li>
+                                  <li>
+                                    <a href="#!">Template 4</a>
+                                  </li>
+                                </ul>
+                              </div>
+
+                              <h3 className="textbhead">
+                                Subject:{" "}
+                                <span>Need to change my shipping address</span>
+                              </h3>
+                              <div
+                                className="mob-float"
+                                style={{ display: "flex", float: "right" }}
+                              >
+                                <div className="line-1"></div>
+                                <div
+                                  style={{ height: "31", cursor: "pointer" }}
+                                  onClick={this.hanldeCommentClose2.bind(this)}
+                                >
+                                  <img
+                                    src={MinusImg}
+                                    alt="Minus"
+                                    className="minus-img"
                                   />
                                 </div>
                               </div>
-                              <div className="col-md-11">
-                                <div className="row my-ticket-notes-created">
-                                  <label className="varun-nagpal">
-                                    {item.createdByName}
-                                  </label>
-                                </div>
-                                <div className="row my-ticket-notes-created">
-                                  <label className="hi-diwakar-i-really tab">
-                                    {item.note}
-                                  </label>
-                                </div>
-                              </div>
                             </div>
-                          ))}
-                      </>
+                          </div>
+                        </div>
+                        <Card>
+                          <CardBody>
+                            <div className="col-md-12">
+                              <CKEditor
+                                config={{
+                                  toolbar: [
+                                    {
+                                      name: "basicstyles",
+                                      items: ["Bold", "Italic", "Strike"]
+                                    },
+                                    {
+                                      name: "styles",
+                                      items: ["Styles", "Format"]
+                                    },
+                                    {
+                                      name: "paragraph",
+                                      items: ["NumberedList", "BulletedList"]
+                                    },
+                                    {
+                                      name: "links",
+                                      items: ["Link", "Unlink"]
+                                    },
+                                    {
+                                      name: "insert",
+                                      items: ["Image", "Table"]
+                                    },
+                                    {
+                                      name: "tools",
+                                      items: ["Maximize"]
+                                    },
+                                    {
+                                      name: "editing",
+                                      items: ["Scayt"]
+                                    }
+                                  ]
+                                }}
+                              />
+                            </div>
+                          </CardBody>
+                          <div className="row colladrowa">
+                            <div className="col-md-12 colladrow">
+                              <ul style={{ padding: "0 15px" }}>
+                                <li>
+                                  <label>To: diwarkar@gmail.com</label>
+                                </li>
+                                <li>
+                                  <label className="">
+                                    <div
+                                      className="input-group"
+                                      // style={{ display: "block" }}
+                                    >
+                                      <span className="input-group-addon inputcc">
+                                        CC:
+                                      </span>
+                                      <input type="text" className="CCdi" />
+                                      <span className="input-group-addon inputcc-one">
+                                        +1
+                                      </span>
+                                    </div>
+                                  </label>
+                                </li>
+                                <li>
+                                  <label className="">
+                                    <div
+                                      className="input-group"
+                                      // style={{ display: "block" }}
+                                    >
+                                      <span className="input-group-addon inputcc">
+                                        BCC:
+                                      </span>
+                                      <input type="text" className="CCdi" />
+                                      <span className="input-group-addon inputcc-one">
+                                        +1
+                                      </span>
+                                    </div>
+                                  </label>
+                                </li>
+                                <li>
+                                  <div className="filter-checkbox">
+                                    <input
+                                      type="checkbox"
+                                      id="fil-open1"
+                                      name="filter-type"
+                                      style={{ display: "none" }}
+                                    />
+                                    <label
+                                      htmlFor="fil-open1"
+                                      style={{ paddingLeft: "25px" }}
+                                    >
+                                      <span>Inform Store Note</span>
+                                    </label>
+                                  </div>
+                                </li>
+                                <li>
+                                  <span>
+                                    <input
+                                      id="file-upload"
+                                      className="file-upload1 d-none"
+                                      type="file"
+                                      onChange={this.fileUpload}
+                                    />
+                                    <label
+                                      htmlFor="file-upload"
+                                      onDrop={this.fileDrop}
+                                      onDragOver={this.fileDragOver}
+                                      onDragEnter={this.fileDragEnter}
+                                    >
+                                      <img
+                                        src={FileUpload}
+                                        alt="file-upload"
+                                        className="fileup"
+                                      />
+                                    </label>
+                                  </span>
+                                  <label style={{ color: "#2561a8" }}>
+                                    3 files
+                                  </label>
+                                </li>
+                                <li style={{ float: "right" }}>
+                                  <button className="send">Send</button>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </Card>
+                      </Collapse>
+                    </div>
+                    <div className="row row-spacing new-top-bottom-margin">
+                      <div className="col-12 col-xs-12 col-sm-4 col-md-3">
+                        <img
+                          src={Headphone2Img}
+                          alt="headphone"
+                          className="oval-56"
+                        />
+                        <label className="rashmi-c">Rashmi.C</label>
+                        <img
+                          src={FacebookImg}
+                          alt="facebook"
+                          className="facebook"
+                        />
+                      </div>
+                      <div className="col-12 col-xs-12 col-sm-6 col-md-7">
+                        <img src={ClipImg} alt="clip" className="clip" />
+                        <label className="hi-diwakar-i-really2">
+                          &nbsp; Hi Diwakar, I really appreciate you joining us
+                          at Voucherify! My top priority is that you have a
+                          great experience.
+                        </label>
+                      </div>
+                      <div className="col-12 col-xs-12 col-sm-2">
+                        <label
+                          className="comment-text1"
+                          onClick={this.hanldeCommentOpen2.bind(this)}
+                        >
+                          Comment
+                        </label>
+                      </div>
+                    </div>
+                    <div className="row row-spacing new-top-bottom-margin">
+                      <div className="col-12 col-xs-12 col-sm-4 col-md-3">
+                        <img
+                          src={BlackUserIcon}
+                          alt="Avatar"
+                          className="oval-6"
+                        />
+                        <label className="rashmi-c">Diwakar</label>
+                        <img
+                          src={Headphone2Img}
+                          alt="headphone"
+                          className="headphone1"
+                        />
+                      </div>
+                      <div className="col-12 col-xs-12 col-sm-6 col-md-7">
+                        <label className="need-to-change-my-sh">
+                          Need to change my shipping address
+                        </label>
+                      </div>
+                      <div className="col-12 col-xs-12 col-sm-2">
+                        <label className="reply-comment">
+                          Reply
+                          <br />
+                          Comment
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    className="tab-pane fade"
+                    id="Task-tab"
+                    role="tabpanel"
+                    aria-labelledby="Task-tab"
+                  >
+                    {this.state.ticket_Id > 0 ? (
+                      <MyTicketTask
+                        taskData={{
+                          TicketData: {
+                            TicketId: this.state.ticket_Id,
+                            GridData: this.state.taskTableGrid,
+                            TabActiveId: this.state.TaskTab
+                          }
+                        }}
+                      />
+                    ) : (
+                      ""
                     )}
+                  </div>
+                  <div
+                    className="tab-pane fade"
+                    id="Notes-tab"
+                    role="tabpanel"
+                    aria-labelledby="Notes-tab"
+                  >
+                    <div
+                      className="row removemarg"
+                      style={{ marginTop: "20px" }}
+                    >
+                      <div className="col-12 col-xs-12 col-sm-5">
+                        <textarea
+                          className="Add-Notes-textarea"
+                          placeholder="Add Notes"
+                          name="NoteAddComment"
+                          value={this.state.NoteAddComment}
+                          onChange={this.handleNoteOnChange}
+                        ></textarea>
+                        <button
+                          type="button"
+                          className="notesbtn notesbtn-text"
+                          onClick={this.handleNoteAddComments.bind(this)}
+                        >
+                          ADD COMMENT
+                        </button>
+                      </div>
+
+                      <div className="col-12 col-xs-12 col-sm-7 my-ticket-notes">
+                        {this.state.loading === true ? (
+                          <div className="loader-icon"></div>
+                        ) : (
+                          <>
+                            {this.state.Notesdetails !== null &&
+                              this.state.Notesdetails.map((item, i) => (
+                                <div
+                                  className="row my-ticket-notes-row"
+                                  key={i}
+                                >
+                                  <div className="col-md-1">
+                                    <div className="oval-5-1-new">
+                                      <img
+                                        src={StoreIcon}
+                                        style={{ padding: "5px" }}
+                                        alt="store-icon"
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="col-md-11">
+                                    <div className="row my-ticket-notes-created">
+                                      <label className="varun-nagpal">
+                                        {item.createdByName}
+                                      </label>
+                                    </div>
+                                    <div className="row my-ticket-notes-created">
+                                      <label className="hi-diwakar-i-really tab">
+                                        {item.note}
+                                      </label>
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                          </>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-        <Modal
-          open={this.state.profilemodal}
-          onClose={this.HandleProfileModalClose.bind(this)}
-          modalId="profile-popup"
-          overlayId="logout-ovrly"
-        >
-          <div className="profilemodalmaindiv">
-            <div style={{ float: "right" }}>
-              <img
-                src={CrossIcon}
-                alt="cross-icon"
-                className="pro-cross-icn"
-                onClick={this.HandleProfileModalClose.bind(this)}
-              />
-            </div>
-            <div className="row profilemodalrow">
-              <div className="col-md-6">
-                <label className="profilemodal-text">Name</label>
-                <label className="profilemodal-textval">
-                  {ticketDetailsData.customerName}
-                </label>
-              </div>
-              <div className="col-md-6">
-                <label className="profilemodal-text">Mobile</label>
-                <label className="profilemodal-textval">
-                  {" "}
-                  {ticketDetailsData.customerPhoneNumber}
-                </label>
-              </div>
-            </div>
-            <div className="row profilemodalrow-1">
-              <div className="col-md-6">
-                <label className="profilemodal-text">Email</label>
-                <label className="profilemodal-textval">
-                  {ticketDetailsData.customerEmailId}
-                </label>
-              </div>
+            <Modal
+              open={this.state.profilemodal}
+              onClose={this.HandleProfileModalClose.bind(this)}
+              modalId="profile-popup"
+              overlayId="logout-ovrly"
+            >
+              <div className="profilemodalmaindiv">
+                <div style={{ float: "right" }}>
+                  <img
+                    src={CrossIcon}
+                    alt="cross-icon"
+                    className="pro-cross-icn"
+                    onClick={this.HandleProfileModalClose.bind(this)}
+                  />
+                </div>
+                <div className="row profilemodalrow">
+                  <div className="col-md-6">
+                    <label className="profilemodal-text">Name</label>
+                    <label className="profilemodal-textval">
+                      {ticketDetailsData.customerName}
+                    </label>
+                  </div>
+                  <div className="col-md-6">
+                    <label className="profilemodal-text">Mobile</label>
+                    <label className="profilemodal-textval">
+                      {" "}
+                      {ticketDetailsData.customerPhoneNumber}
+                    </label>
+                  </div>
+                </div>
+                <div className="row profilemodalrow-1">
+                  <div className="col-md-6">
+                    <label className="profilemodal-text">Email</label>
+                    <label className="profilemodal-textval">
+                      {ticketDetailsData.customerEmailId}
+                    </label>
+                  </div>
 
-              <div className="col-md-6">
-                <label className="profilemodal-text">Alternate Number</label>
-                <label className="profilemodal-textval">
-                  {ticketDetailsData.altNumber}
-                </label>
+                  <div className="col-md-6">
+                    <label className="profilemodal-text">
+                      Alternate Number
+                    </label>
+                    <label className="profilemodal-textval">
+                      {ticketDetailsData.altNumber}
+                    </label>
+                  </div>
+                </div>
+                <div className="row" style={{ marginLeft: "15px" }}>
+                  <div className="openticketbox profilemodalrow-1">
+                    <label className="open-tickets-box-text">
+                      {ticketDetailsData.openTicket}
+                      <small className="open-tickets-box-textval">
+                        Open Tickets
+                      </small>
+                    </label>
+                  </div>
+                  <div className="openticketbox-2 profilemodalrow-1">
+                    <label className="open-tickets-box-text">
+                      {ticketDetailsData.totalticket}
+                      <small className="open-tickets-box-textval">
+                        Total Tickets
+                      </small>
+                    </label>
+                  </div>
+                </div>
+                <div className="row profilemodal-row-3">
+                  <img src={CustomerIcon} alt="customer-icon" />
+                  <label className="full-profile-view-text">
+                    FULL PROFILE VIEW
+                  </label>
+                </div>
               </div>
-            </div>
-            <div className="row" style={{ marginLeft: "15px" }}>
-              <div className="openticketbox profilemodalrow-1">
-                <label className="open-tickets-box-text">
-                  {ticketDetailsData.openTicket}
-                  <small className="open-tickets-box-textval">
-                    Open Tickets
-                  </small>
-                </label>
-              </div>
-              <div className="openticketbox-2 profilemodalrow-1">
-                <label className="open-tickets-box-text">
-                  {ticketDetailsData.totalticket}
-                  <small className="open-tickets-box-textval">
-                    Total Tickets
-                  </small>
-                </label>
-              </div>
-            </div>
-            <div className="row profilemodal-row-3">
-              <img src={CustomerIcon} alt="customer-icon" />
-              <label className="full-profile-view-text">
-                FULL PROFILE VIEW
-              </label>
-            </div>
-          </div>
-        </Modal>
+            </Modal>
 
-        <div className="row" style={{ margin: "0" }}>
-          <div className="TicketTabs">
-            <ul className="mb-0">
-              <li className="SubR">
-                <img src={PlusImg} alt="Plus" className="Ticket" />
-              </li>
-              <li className="Sub">
-                <span>
-                  <img src={Ticket} alt="Ticket" className="Ticket" />
-                </span>
-                <label className="Subject">Subject: Need to change m...</label>
-                <span>
-                  <img src={CancelImgGrey} alt="Cancel" className="cancel" />
-                </span>
-              </li>
-              <li className="Sub active">
-                <span>
-                  <img src={Ticket} alt="Ticket" className="Ticket" />
-                </span>
-                <label className="Subject">Subject: Need to change m...</label>
-                <span>
-                  <img src={CancelImgGrey} alt="Cancel" className="cancel" />
-                </span>
-              </li>
-              <li className="Sub">
-                <span>
-                  <img src={Ticket} alt="Ticket" className="Ticket" />
-                </span>
-                <label className="Subject">Subject: Need to change m...</label>
-                <span>
-                  <img src={CancelImgGrey} alt="Cancel" className="cancel" />
-                </span>
-              </li>
-              <li className="Sub">
-                <span>
-                  <img src={Ticket} alt="Ticket" className="Ticket" />
-                </span>
-                <label className="Subject">Subject: Need to change m...</label>
-                <span>
-                  <img src={CancelImgGrey} alt="Cancel" className="cancel" />
-                </span>
-              </li>
-              <li className="SubL">
-                <label className="More">More</label>
-                <span>
-                  <img src={MoreUp} alt="Cancel" className="MoreUp" />
-                </span>
-              </li>
-            </ul>
+            <div className="row" style={{ margin: "0" }}>
+              <div className="TicketTabs">
+                <ul className="mb-0">
+                  <li className="SubR">
+                    <img src={PlusImg} alt="Plus" className="Ticket" />
+                  </li>
+                  <li className="Sub">
+                    <span>
+                      <img src={Ticket} alt="Ticket" className="Ticket" />
+                    </span>
+                    <label className="Subject">
+                      Subject: Need to change m...
+                    </label>
+                    <span>
+                      <img
+                        src={CancelImgGrey}
+                        alt="Cancel"
+                        className="cancel"
+                      />
+                    </span>
+                  </li>
+                  <li className="Sub active">
+                    <span>
+                      <img src={Ticket} alt="Ticket" className="Ticket" />
+                    </span>
+                    <label className="Subject">
+                      Subject: Need to change m...
+                    </label>
+                    <span>
+                      <img
+                        src={CancelImgGrey}
+                        alt="Cancel"
+                        className="cancel"
+                      />
+                    </span>
+                  </li>
+                  <li className="Sub">
+                    <span>
+                      <img src={Ticket} alt="Ticket" className="Ticket" />
+                    </span>
+                    <label className="Subject">
+                      Subject: Need to change m...
+                    </label>
+                    <span>
+                      <img
+                        src={CancelImgGrey}
+                        alt="Cancel"
+                        className="cancel"
+                      />
+                    </span>
+                  </li>
+                  <li className="Sub">
+                    <span>
+                      <img src={Ticket} alt="Ticket" className="Ticket" />
+                    </span>
+                    <label className="Subject">
+                      Subject: Need to change m...
+                    </label>
+                    <span>
+                      <img
+                        src={CancelImgGrey}
+                        alt="Cancel"
+                        className="cancel"
+                      />
+                    </span>
+                  </li>
+                  <li className="SubL">
+                    <label className="More">More</label>
+                    <span>
+                      <img src={MoreUp} alt="Cancel" className="MoreUp" />
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <NotificationContainer />
           </div>
-        </div>
-        <NotificationContainer />
+        )}
       </Fragment>
     );
   }
