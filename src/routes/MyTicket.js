@@ -135,7 +135,8 @@ class MyTicket extends Component {
       loading: false,
       Plus: false,
       selectedStoreData: [],
-      CheckStoreID: {}
+      CheckStoreID: {},
+      notesCommentCompulsion: ''
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -755,6 +756,7 @@ class MyTicket extends Component {
   }
   handleNoteAddComments() {
     debugger;
+    if (this.state.NoteAddComment.length > 0) {
     let self = this;
 
     axios({
@@ -774,12 +776,18 @@ class MyTicket extends Component {
         self.handleGetNotesTabDetails(id);
         NotificationManager.success("Comment added successfully.");
         self.setState({
-          NoteAddComment: ""
+          NoteAddComment: "",
+          notesCommentCompulsion: ''
         });
       } else {
         NotificationManager.error("Comment not added.");
       }
     });
+  } else {
+    this.setState({
+      notesCommentCompulsion: 'The Notes field is compulsary.'
+    })
+  }
   }
   handleGetHistoricalData() {
     debugger;
@@ -3692,10 +3700,12 @@ class MyTicket extends Component {
                           value={this.state.NoteAddComment}
                           onChange={this.handleNoteOnChange}
                         ></textarea>
+                        {this.state.NoteAddComment.length == 0 && <p style={{ 'color' : 'red', 'margin-bottom' : '0px' }}>{this.state.notesCommentCompulsion}</p>}
                         <button
                           type="button"
                           className="notesbtn notesbtn-text"
                           onClick={this.handleNoteAddComments.bind(this)}
+                          style={{ 'margin-top' : '5px' }}
                         >
                           ADD COMMENT
                         </button>

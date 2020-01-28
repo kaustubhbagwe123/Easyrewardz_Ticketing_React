@@ -41,7 +41,8 @@ class AddSearchMyTicket extends Component {
       createdBy: 6,
       SearchData: [],
       value: "",
-      copied: false
+      copied: false,
+      searchCompulsion: ''
     };
     this.handleAddCustomerOpen = this.handleAddCustomerOpen.bind(this);
     this.handleAddCustomerClose = this.handleAddCustomerClose.bind(this);
@@ -81,6 +82,7 @@ class AddSearchMyTicket extends Component {
   }
   handleSearchCustomer() {
     debugger;
+    if (this.state.SrchEmailPhone.length > 0) {
     let self = this;
     axios({
       method: "post",
@@ -112,6 +114,11 @@ class AddSearchMyTicket extends Component {
         // NotificationManager.error(res.data.message);
       }
     });
+  } else {
+    this.setState({
+      searchCompulsion: 'Search field is compulsary.'
+    })
+  }
   }
   CheckValidCustomerEmailPhoneNo() {
     debugger;
@@ -250,6 +257,7 @@ class AddSearchMyTicket extends Component {
                   onClick={this.handleSearchCustomer}
                 />
               </div>
+              {this.state.SrchEmailPhone.length == 0 && <p style={{ 'color' : 'red', 'margin-bottom' : '0px' }}>{this.state.searchCompulsion}</p>}
 
               {this.state.message === "Record Not Found" ? (
                 <div>
