@@ -147,6 +147,9 @@ class MyTicketList extends Component {
       byTicketTypeFlag: 0,
       byCategoryFlag: 0,
       allFlag: 0,
+      resultCount:0,
+      selectedAssignedTo:0,
+      AssignToData:[],
       resultCount: 0,
       TeamMemberData: [
         {
@@ -241,6 +244,7 @@ class MyTicketList extends Component {
       selectedNameOfMonthForDailyYear: "",
       loading: false
     };
+    this.handleAssignTo=this.handleAssignTo.bind(this);
     this.clearSearch = this.clearSearch.bind(this);
     this.handleAdvSearchFlag = this.handleAdvSearchFlag.bind(this);
     this.toggleSearch = this.toggleSearch.bind(this);
@@ -1246,52 +1250,51 @@ class MyTicketList extends Component {
         categoryType: null
       });
     }
-    //---------------------By Ticket All Tab---------------------
-    var allTab = {};
-
-    if (this.state.ActiveTabId === 5) {
-      let withClaim = 0;
-      let withTask = 0;
-      if (this.state.selectedWithClaimAll === "yes") {
-        withClaim = 1;
-      }
-      if (this.state.selectedWithTaskAll === "yes") {
-        withTask = 1;
-      }
-      allTab["CreatedDate"] = this.state.ByAllCreateDate;
-      allTab["ModifiedDate"] = this.state.ByAllLastDate;
-      allTab["CategoryId"] = this.state.selectedCategoryAll;
-      allTab["SubCategoryId"] = this.state.selectedSubCategoryAll;
-      allTab["IssueTypeId"] = this.state.selectedIssueTypeAll;
-      allTab["TicketSourceTypeID"] = this.state.selectedTicketSource;
-      allTab["TicketIdORTitle"] = this.state.TicketIdTitleByAll;
-      allTab["PriorityId"] = this.state.selectedPriorityAll;
-      allTab["TicketSatutsID"] = this.state.selectedTicketStatusAll;
-      allTab["SLAStatus"] = this.state.selectedSlaStatus;
-      allTab["ClaimId"] = this.state.selectedClaimStatus;
-      allTab["InvoiceNumberORSubOrderNo"] = this.state.InvoiceSubOrderByAll;
-      allTab["OrderItemId"] = this.state.ItemIdByAll;
-      allTab["IsVisitStore"] = this.state.selectedVisitStoreAll;
-      allTab["IsWantVistingStore"] = this.state.selectedWantToVisitStoreAll;
-      allTab["CustomerEmailID"] = this.state.EmailByAll;
-      allTab["CustomerMobileNo"] = this.state.MobileByAll;
-      allTab["AssignTo"] = this.state.selectedAssignedToAll;
-      allTab[
-        "StoreCodeORAddress"
-      ] = this.state.selectedPurchaseStoreCodeAddressAll;
-      allTab[
-        "WantToStoreCodeORAddress"
-      ] = this.state.selectedVisitStoreCodeAddressAll;
-      allTab["HaveClaim"] = withClaim;
-      allTab["ClaimStatusId"] = this.state.selectedClaimStatus;
-      allTab["ClaimCategoryId"] = this.state.selectedClaimCategory;
-      allTab["ClaimSubCategoryId"] = this.state.selectedClaimSubCategory;
-      allTab["ClaimIssueTypeId"] = this.state.selectedClaimIssueType;
-      allTab["HaveTask"] = withTask;
-      allTab["TaskStatusId"] = this.state.selectedTaskStatus;
-      allTab["TaskDepartment_Id"] = this.state.selectedDepartment;
-      allTab["TaskFunction_Id"] = this.state.selectedFunction;
-    }
+     //---------------------By Ticket All Tab---------------------
+     var allTab={};
+    
+     if(this.state.ActiveTabId===5)
+     {
+        let withClaim=0;
+        let withTask=0;
+        if(this.state.selectedWithClaimAll==="yes")
+        {
+            withClaim=1;
+        }
+        if(this.state.selectedWithTaskAll==="yes")
+        {
+            withTask=1;
+        }
+        allTab["CreatedDate"]=this.state.ByAllCreateDate;
+        allTab["ModifiedDate"]=this.state.ByAllLastDate;
+        allTab["CategoryId"]=this.state.selectedCategoryAll;
+        allTab["SubCategoryId"]=this.state.selectedSubCategoryAll;
+        allTab["IssueTypeId"]=this.state.selectedIssueTypeAll;
+        allTab["TicketSourceTypeID"]=this.state.selectedTicketSource;
+        allTab["TicketIdORTitle"]=this.state.TicketIdTitleByAll;
+        allTab["PriorityId"]=this.state.selectedPriorityAll;
+        allTab["TicketSatutsID"]=this.state.selectedTicketStatusAll;
+        allTab["SLAStatus"]=this.state.selectedSlaStatus;
+        allTab["ClaimId"]=this.state.selectedClaimStatus;
+        allTab["InvoiceNumberORSubOrderNo"]=this.state.InvoiceSubOrderByAll;
+        allTab["OrderItemId"]=this.state.ItemIdByAll;
+        allTab["IsVisitStore"]=this.state.selectedVisitStoreAll;
+        allTab["IsWantVistingStore"]=this.state.selectedWantToVisitStoreAll;
+        allTab["CustomerEmailID"]=this.state.EmailByAll;
+        allTab["CustomerMobileNo"]=this.state.MobileByAll;
+        allTab["AssignTo"]=this.state.selectedAssignedTo;
+        allTab["StoreCodeORAddress"]=this.state.selectedPurchaseStoreCodeAddressAll;
+        allTab["WantToStoreCodeORAddress"]=this.state.selectedVisitStoreCodeAddressAll;       
+        allTab["HaveClaim"]=withClaim;
+        allTab["ClaimStatusId"]=this.state.selectedClaimStatus;
+        allTab["ClaimCategoryId"]=this.state.selectedClaimCategory;
+        allTab["ClaimSubCategoryId"]=this.state.selectedClaimSubCategory;
+        allTab["ClaimIssueTypeId"]=this.state.selectedClaimIssueType;
+        allTab["HaveTask"]=withTask;
+        allTab["TaskStatusId"]=this.state.selectedTaskStatus;
+        allTab["TaskDepartment_Id"]=this.state.selectedDepartment;
+        allTab["TaskFunction_Id"]=this.state.selectedFunction;       
+     }
 
     //----------------------------------------------------------
     axios({
@@ -1327,6 +1330,11 @@ class MyTicketList extends Component {
         });
       }
     });
+  }
+
+  setAssignedToValue= e=>{
+    let assign=e.currentTarget.value;
+    this.setState({ selectedAssignedTo: assign });
   }
 
   setDepartmentValue = e => {
@@ -1613,6 +1621,27 @@ class MyTicketList extends Component {
   clickCheckbox(evt) {
     evt.stopPropagation();
   }
+
+handleAssignTo(){
+  debugger;
+
+  let self = this;
+  axios({
+    method: "post",
+    url: config.apiUrl + "/User/GetUserList",
+    headers: authHeader()
+  }).then(function(res) {
+    debugger;
+    let AssignData = res.data.responseData;
+    
+    self.setState({
+      AssignToData: AssignData
+      
+    });
+  });
+
+}
+
   handelCheckBoxCheckedChange = async () => {
     debugger;
     var checkboxes = document.getElementsByName("MyTicketListcheckbox[]");
@@ -2808,15 +2837,20 @@ class MyTicketList extends Component {
                                           />
                                         </div>
                                         <div className="col-md-3 col-sm-6">
-                                          <input
-                                            className="no-bg"
-                                            type="text"
-                                            placeholder="Assigned To"
-                                            value={
-                                              this.state.selectedAssignedToAll
-                                            }
-                                            onChange={this.handleAssignedToAll}
-                                          />
+                                          
+                                           <select className="add-select-category"
+                                            value={this.state.selectedAssignedTo}
+                                             onChange={this.setAssignedToValue}
+                                             onClick={this.handleAssignTo.bind(this)}
+                                             >
+                                           <option>Select Assigned To</option>
+                                           {this.state.AssignToData !== null &&
+                                         this.state.AssignToData.map((item, i) => (
+                                         <option key={i} value={item.userID}>
+                                          {item.fullName}
+                                        </option>
+                                      ))}
+                                        </select>
                                         </div>
                                         <div className="col-md-3 col-sm-6 allspc">
                                           <select
