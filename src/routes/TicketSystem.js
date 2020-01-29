@@ -80,12 +80,12 @@ class TicketSystem extends Component {
       ticketNote: "",
       selectedBrand: "",
       createdBy: 6,
-      selectedCategory: "",
-      selectedCategoryKB: 0,
-      selectedSubCategory: "",
-      selectedSubCategoryKB: 0,
-      selectedIssueType: 0,
-      selectedIssueTypeKB: 0,
+      selectedCategory: '',
+      selectedCategoryKB: '',
+      selectedSubCategory: '',
+      selectedSubCategoryKB: '',
+      selectedIssueType: '',
+      selectedIssueTypeKB: '',
       selectedTicketPriority: 0,
       customerAttachOrder: 0,
       customerStoreStatus: 0,
@@ -130,11 +130,16 @@ class TicketSystem extends Component {
       toggleTitle: false,
       loading: false,
       imageView: "",
-      ticketTitleCompulsion: "",
-      ticketDetailsCompulsion: "",
-      ticketBrandCompulsion: "",
-      ticketCategoryCompulsion: "",
-      ticketSubCategoryCompulsion: ""
+      ticketTitleCompulsion: '',
+      ticketDetailsCompulsion: '',
+      ticketBrandCompulsion: '',
+      ticketCategoryCompulsion: '',
+      ticketSubCategoryCompulsion: '',
+      ticketIssueTypeCompulsion: '',
+      channelPurchaseCompulsion: '',
+      categoryKbCompulsion: '',
+      subCategoryKbCompulsion: '',
+      issueTypeKbCompulsion: '',
     };
     this.validator = new SimpleReactValidator();
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
@@ -394,6 +399,7 @@ class TicketSystem extends Component {
     });
   }
   handleKbLinkPopupSearch() {
+    if (this.state.selectedCategoryKB.length > 0 && this.state.selectedSubCategoryKB.length > 0 && this.state.selectedIssueTypeKB.length > 0) {
     let self = this;
     axios({
       method: "post",
@@ -412,6 +418,13 @@ class TicketSystem extends Component {
       }
       self.setState({ KbPopupData: KbPopupData });
     });
+  } else {
+    this.setState({
+      categoryKbCompulsion: 'Category field is compulsory.',
+      subCategoryKbCompulsion: 'Sub Category field is compulsory.',
+      issueTypeKbCompulsion: 'Issue Type field is compulsory.',
+    })
+  }
   }
   handleGetBrandList() {
     debugger;
@@ -839,6 +852,8 @@ class TicketSystem extends Component {
     setTimeout(() => {
       if (this.state.selectedCategoryKB) {
         this.handleGetSubCategoryList();
+      } else {
+        this.setState({ IssueTypeData: [], selectedIssueTypeKB: '', selectedSubCategoryKB: '', SubCategoryData: [] });
       }
     }, 1);
   };
@@ -861,6 +876,8 @@ class TicketSystem extends Component {
     setTimeout(() => {
       if (this.state.selectedSubCategoryKB) {
         this.handleGetIssueTypeList();
+      } else {
+        this.setState({ IssueTypeData: [], selectedIssueTypeKB: '' });
       }
     }, 1);
   };
@@ -2114,7 +2131,7 @@ class TicketSystem extends Component {
                             onChange={this.setCategoryValueKB}
                             className="kblinkrectangle-9 select-category-placeholderkblink"
                           >
-                            <option>Category</option>
+                            <option value=''>Category</option>
                             {this.state.CategoryData !== null &&
                               this.state.CategoryData.map((item, i) => (
                                 <option key={i} value={item.categoryID}>
@@ -2122,6 +2139,7 @@ class TicketSystem extends Component {
                                 </option>
                               ))}
                           </select>
+                          {this.state.selectedCategoryKB.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.categoryKbCompulsion}</p>}
                         </div>
                         <div className="form-group">
                           <select
@@ -2129,7 +2147,7 @@ class TicketSystem extends Component {
                             onChange={this.setSubCategoryValueKB}
                             className="kblinkrectangle-9 select-category-placeholderkblink"
                           >
-                            <option>Sub-Category</option>
+                            <option value=''>Sub-Category</option>
                             {this.state.SubCategoryData !== null &&
                               this.state.SubCategoryData.map((item, i) => (
                                 <option key={i} value={item.subCategoryID}>
@@ -2137,6 +2155,7 @@ class TicketSystem extends Component {
                                 </option>
                               ))}
                           </select>
+                          {this.state.selectedSubCategoryKB.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.subCategoryKbCompulsion}</p>}
                         </div>
                         <div className="form-group">
                           <select
@@ -2144,7 +2163,7 @@ class TicketSystem extends Component {
                             onChange={this.setIssueTypeValueKB}
                             className="kblinkrectangle-9 select-category-placeholderkblink"
                           >
-                            <option>Type</option>
+                            <option value=''>Type</option>
                             {this.state.IssueTypeData !== null &&
                               this.state.IssueTypeData.map((item, i) => (
                                 <option key={i} value={item.issueTypeID}>
@@ -2152,6 +2171,7 @@ class TicketSystem extends Component {
                                 </option>
                               ))}
                           </select>
+                          {this.state.selectedIssueTypeKB.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.issueTypeKbCompulsion}</p>}
                         </div>
                         <div>
                           <button

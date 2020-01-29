@@ -48,7 +48,8 @@ class CreateSLA extends Component {
       PriorityRespondDurationLow: "M",
       PriorityResolutionDurationHigh: "M",
       PriorityResolutionDurationMedium: "M",
-      PriorityResolutionDurationLow: "M"
+      PriorityResolutionDurationLow: "M",
+      value:null    
     };
 
     this.handleGetSLA = this.handleGetSLA.bind(this);
@@ -89,6 +90,20 @@ class CreateSLA extends Component {
         self.setState({ slaIssueType, selectedSlaIssueType });
       }
     });
+  }
+
+  handleCreate(issueTypeName) {
+    let {slaIssueType,  value } = this.state;
+
+    let newOption = {
+      issueTypeName,
+      issueTypeID: slaIssueType.length + 1
+    }
+
+    this.setState({
+      value: newOption,  // select new option
+      slaIssueType: [...slaIssueType, newOption] // add new option to our dataset
+    })
   }
   handleGetSLA() {
     debugger;
@@ -257,7 +272,7 @@ class CreateSLA extends Component {
   };
   render() {
    
-
+    let {slaIssueType,  value } = this.state;
     const columnsTickSla = [
       {
         Header: (
@@ -651,14 +666,13 @@ class CreateSLA extends Component {
                               </option>
                             ))}
                         </select> */}
-                        <DropdownList
-                          filter
-                          data={listOfIssueType}
-                          value={this.state.selectedSlaIssueType}
+                        <DropdownList filter
+                          data={this.state.slaIssueType}
+                          value={this.state.value}
                           allowCreate="onFilter"
-                          // onCreate={name => this.handleCreate(name)}
+                          onCreate={issueTypeName => this.handleCreate(issueTypeName)}
                           onChange={value => this.setState({ value })}
-                          textField="name"
+                          textField="issueTypeName"
                         />
                       </div>
                     </div>
