@@ -23,6 +23,7 @@ import PDF from "./../assets/Images/pdf.png";
 import CSVi from "./../assets/Images/csvicon.png";
 import Excel from "./../assets/Images/excel.png";
 import Word from "./../assets/Images/word.png";
+import TxtLogo from "./../assets/Images/TxtIcon.png";
 import { faCalculator } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import KnowledgeLogo from "./../assets/Images/knowledge.png";
@@ -624,24 +625,7 @@ class TicketSystem extends Component {
   };
   handleFileUpload(e) {
     debugger;
-    // var file = [];
-    // file = e.target.files;
-    // for (let i = 0; i < file.length; i++) {
-    //   // formData.append('file', fileData[i])
-    //   this.state.file.push(file[i]);
-    //   this.setState({
-    //     file: file
-    //   });
-    // }
-    // console.log(this.state.file, "fileUpload");
-
-    // var file = [];
-    // file = this.state.file;
-    // this.setState({
-    //   file
-    // });
     // -------------------------Image View code start-----------------------
-    const img = e;
     if (e.target.files && e.target.files[0]) {
       const filesAmount = e.target.files.length;
       for (let i = 0; i < filesAmount; i++) {
@@ -655,8 +639,17 @@ class TicketSystem extends Component {
       }
     }
     for (let i = 0; i < e.target.files.length; i++) {
-      this.state.file.push(e.target.files[i]);
-      console.log(this.state.file, "file data------------------");
+      debugger;
+
+      var objFile = new Object();
+      var name = e.target.files[i].name;
+      var type = name.substring(name.lastIndexOf(".") + 1, name.length);
+      objFile.Type = type;
+      objFile.name = name;
+
+      objFile.File = e.target.files[i];
+
+      this.state.file.push(objFile);
     }
 
     // -------------------------Image View code end-----------------------
@@ -664,12 +657,12 @@ class TicketSystem extends Component {
 
     // this.setState({fileText:"files"});
   }
-  handleRemoveImage = i => {
-    debugger
-    let file=[...this.state.file];
-    file.splice(i - 1,1);
+  handleRemoveImage(i) {
+    debugger;
+    let file = [...this.state.file];
+    file.splice(i - 1, 1);
     this.setState(file);
-  };
+  }
 
   handleCREATE_TICKET(StatusID) {
     debugger;
@@ -875,21 +868,21 @@ class TicketSystem extends Component {
     let channelOfPurchaseValue = e.currentTarget.value;
     this.setState({ selectedChannelOfPurchase: channelOfPurchaseValue });
   };
-  renderIcon(name) {
-    debugger;
-    let ext = name.split(".")[1].toLowerCase();
-    if (ext === "xls" || ext === "xlsx") {
-      return Excel;
-    } else if (ext === "doc" || ext === "docx" || ext === "txt") {
-      return Word;
-    } else if (ext === "csv") {
-      return CSVi;
-    } else if (ext === "pdf") {
-      return PDF;
-    } else {
-      return ThumbTick;
-    }
-  }
+  // renderIcon(name) {
+  //   debugger;
+  //   let ext = name.split(".")[1].toLowerCase();
+  //   if (ext === "xls" || ext === "xlsx") {
+  //     return Excel;
+  //   } else if (ext === "doc" || ext === "docx" || ext === "txt") {
+  //     return Word;
+  //   } else if (ext === "csv") {
+  //     return CSVi;
+  //   } else if (ext === "pdf") {
+  //     return PDF;
+  //   } else {
+  //     return ThumbTick;
+  //   }
+  // }
   render() {
     var CustomerId = this.state.customerDetails.customerId;
     var CustNumber = this.state.customerData.customerPhoneNumber;
@@ -1262,30 +1255,44 @@ class TicketSystem extends Component {
                       alt="thumb"
                       className="thumbtick"
                     /> */}
+
                     {this.state.file.map((item, i, j) =>
                       i < 5 ? (
                         <div style={{ position: "relative" }}>
-                          <img
-                            src={CircleCancel}
-                            alt="thumb"
-                            className="circleCancle"
-                            onClick={this.handleRemoveImage}
-                          />
-                          <img
-                            src={this.renderIcon(this.state.file[i].name)}
-                            key={j}
-                            title={this.state.file[i].name}
-                            href={item[i]}
-                            alt="thumb"
-                            className="thumbtick"
-                          />
+                          <div>
+                            <img
+                              src={CircleCancel}
+                              key={j}
+                              alt="thumb"
+                              className="circleCancle"
+                              onClick={() => {
+                                this.handleRemoveImage(item.name);
+                              }}
+                            />
+                          </div>
+
+                          <div>
+                            <img
+                              src={
+                                item.Type === "docx"
+                                  ? require("./../assets/Images/word.png")
+                                  : item.Type === "xlsx"
+                                  ? require("./../assets/Images/excel.png")
+                                  : item.Type === "pdf"
+                                  ? require("./../assets/Images/pdf.png")
+                                  : item.Type === "txt"
+                                  ? require("./../assets/Images/TxtIcon.png")
+                                  : require("./../assets/Images/thumbticket.png")
+                              }
+                              key={j}
+                              title={item.name}
+                              // href={item[i]}
+                              alt="thumb"
+                              className="thumbtick"
+                            />
+                          </div>
                         </div>
                       ) : (
-                        //   <img
-                        //   src={this.state.imageView}
-                        //   alt="thumb"
-                        //   className="thumbtick"
-                        // />
                         ""
                       )
                     )}
@@ -1324,12 +1331,23 @@ class TicketSystem extends Component {
                       <div className="row my-3 mx-1">
                         {this.state.file.map((item, i, j) => (
                           <img
-                            src={this.renderIcon(this.state.file[i].name)}
-                            key={j}
-                            title={this.state.file[i].name}
-                            className="thumbtick"
-                            style={{ marginBottom: "10px" }}
-                          />
+                          src={
+                            item.Type === "docx"
+                              ? require("./../assets/Images/word.png")
+                              : item.Type === "xlsx"
+                              ? require("./../assets/Images/excel.png")
+                              : item.Type === "pdf"
+                              ? require("./../assets/Images/pdf.png")
+                              : item.Type === "txt"
+                              ? require("./../assets/Images/TxtIcon.png")
+                              : require("./../assets/Images/thumbticket.png")
+                          }
+                          key={j}
+                          title={item.name}
+                          href={item[i]}
+                          alt="thumb"
+                          className="thumbtick"
+                        />
                         ))}
                       </div>
                     </div>
@@ -1482,7 +1500,6 @@ class TicketSystem extends Component {
                               <label className="diwamargin">
                                 <div
                                   className="input-group"
-                                  // style={{ display: "block" }}
                                 >
                                   <span className="input-group-addon inputcc">
                                     CC:
@@ -1509,7 +1526,6 @@ class TicketSystem extends Component {
                               <label className="diwamargin">
                                 <div
                                   className="input-group"
-                                  // style={{ display: "block" }}
                                 >
                                   <span className="input-group-addon inputcc">
                                     BCC:
