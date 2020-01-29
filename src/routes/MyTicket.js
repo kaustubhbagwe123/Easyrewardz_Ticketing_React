@@ -117,7 +117,7 @@ class MyTicket extends Component {
       TicketActionTypeData: TicketActionType(),
       taskTableGrid: [],
       SearchAssignData: [],
-      selectetedParameters: {},
+      // selectetedParameters: {},
       claimDetailsData: [],
       selectetedParameters: {},
       KbPopupData: [],
@@ -863,7 +863,7 @@ class MyTicket extends Component {
 
   handleAttachStoreData(){
     debugger;
-    let self = this;
+    // let self = this;
     var selectedStore = "";
     for (let j = 0; j < this.state.selectedStoreData.length; j++) {
     selectedStore += this.state.selectedStoreData[j]["storeID"] + ",";
@@ -3756,7 +3756,7 @@ class MyTicket extends Component {
                           value={this.state.NoteAddComment}
                           onChange={this.handleNoteOnChange}
                         ></textarea>
-                        {this.state.NoteAddComment.length == 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.notesCommentCompulsion}</p>}
+                        {this.state.NoteAddComment.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.notesCommentCompulsion}</p>}
                         <button
                           type="button"
                           className="notesbtn notesbtn-text"
