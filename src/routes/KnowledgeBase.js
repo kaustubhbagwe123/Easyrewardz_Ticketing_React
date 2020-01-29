@@ -540,6 +540,7 @@ handleAddKB(){
       selectedSubject:"",
       ckeditorAdd:""
     });
+    self.closeAddNewKBModal();
     self.handleKBList();
   }).catch(error => {
 
