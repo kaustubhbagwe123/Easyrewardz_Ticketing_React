@@ -1966,6 +1966,9 @@ class Dashboard extends Component {
       if (Msg === "Success") {
         NotificationManager.success("Save Search parameter successfully.");
         self.handleGetSaveSearchList();
+        self.setState({
+          SearchName:''
+        })
       }
     });
   }
@@ -5035,7 +5038,7 @@ class Dashboard extends Component {
             </div>
           </div>
         </section>
-        <Modal
+        {/* <Modal
           open={this.state.open}
           onClose={this.onCloseModal}
           center
@@ -5102,7 +5105,7 @@ class Dashboard extends Component {
               </li>
             </ul>
           </div>
-        </Modal>
+        </Modal> */}
       </Fragment>
     );
   }

@@ -3081,6 +3081,9 @@ table tr th:last-child {
   background: #fff url("../Images/down-1.png") no-repeat right 12px center;
   background-size: 16px;
   text-align: left;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .my-tic-email1::after {
   display: none;

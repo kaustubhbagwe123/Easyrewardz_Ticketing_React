@@ -662,33 +662,38 @@ class MyTicketList extends Component {
         ByDateCreatDate: "",
         ByDateSelectDate: "",
         selectedSlaDueByDate: 0,
-        selectedTicketStatusByDate: 0
+        selectedTicketStatusByDate: 0,
+        resultCount: 0
+      }, () => {
+        this.ViewSearchData(1);
       });
-      this.ViewSearchData();
     } else if (this.state.byCustomerTypeFlag === 2) {
       this.setState({
         MobileNoByCustType: "",
         EmailIdByCustType: "",
         TicketIdByCustType: "",
-        selectedTicketStatusByCustomer: 0
+        selectedTicketStatusByCustomer: 0,
+        resultCount: 0
       });
-      this.ViewSearchData();
+      this.ViewSearchData(1);
     } else if (this.state.byTicketTypeFlag === 3) {
       this.setState({
         selectedPriority: 0,
         selectedTicketStatusByTicket: 0,
         selectedChannelOfPurchase: [],
-        selectedTicketActionType: []
+        selectedTicketActionType: [],
+        resultCount: 0
       });
-      this.ViewSearchData();
+      this.ViewSearchData(1);
     } else if (this.state.byCategoryFlag === 4) {
       this.setState({
         selectedCategory: 0,
         selectedSubCategory: 0,
         selectedIssueType: 0,
-        selectedTicketStatusByCategory: 0
+        selectedTicketStatusByCategory: 0,
+        resultCount: 0
       });
-      this.ViewSearchData();
+      this.ViewSearchData(1);
     } else if (this.state.allFlag === 5) {
       this.setState({
         ByAllCreateDate: "",
@@ -719,9 +724,10 @@ class MyTicketList extends Component {
         selectedWithTaskAll: "no",
         selectedTaskStatus: 0,
         selectedDepartment: 0,
-        selectedFunction: 0
+        selectedFunction: 0,
+        resultCount: 0
       });
-      this.ViewSearchData();
+      this.ViewSearchData(1);
     }
   }
 
@@ -1168,7 +1174,7 @@ class MyTicketList extends Component {
       }
     });
   }
-  ViewSearchData() {
+  ViewSearchData(clrSrch) {
     debugger;
     let self = this;
 
@@ -1329,9 +1335,13 @@ class MyTicketList extends Component {
 
       if (status === "Success") {
         self.setState({
-          SearchTicketData: data,
-          resultCount: count
+          SearchTicketData: data
         });
+        if (clrSrch === 0) {
+          self.setState({
+            resultCount: count
+          });
+        }
       } else {
         self.setState({
           SearchTicketData: [],
@@ -2236,7 +2246,7 @@ handleAssignTo(){
                                     <button
                                       type="button"
                                       className="btn-inv"
-                                      onClick={this.ViewSearchData.bind(this)}
+                                      onClick={this.ViewSearchData.bind(this, 0)}
                                     >
                                       View Search
                                     </button>
@@ -2356,7 +2366,7 @@ handleAssignTo(){
                                             }
                                             onChange={this.handleSlaDueByDate}
                                           >
-                                            <option>SLA Due</option>
+                                            <option value="0">SLA Due</option>
                                             {this.state.SlaDueData !== null &&
                                               this.state.SlaDueData.map(
                                                 (item, i) => (
@@ -2451,7 +2461,7 @@ handleAssignTo(){
                                               this.handleTicketStatusByCustomer
                                             }
                                           >
-                                            <option>Ticket Status</option>
+                                            <option value="0">Ticket Status</option>
                                             {this.state.TicketStatusData !==
                                               null &&
                                               this.state.TicketStatusData.map(
@@ -2483,7 +2493,7 @@ handleAssignTo(){
                                             value={this.state.selectedPriority}
                                             onChange={this.setPriorityValue}
                                           >
-                                            <option>Priority</option>
+                                            <option value="0">Priority</option>
                                             {this.state.TicketPriorityData !==
                                               null &&
                                               this.state.TicketPriorityData.map(
@@ -2508,7 +2518,7 @@ handleAssignTo(){
                                               this.handleTicketStatusByTicket
                                             }
                                           >
-                                            <option>Ticket Status</option>
+                                            <option value="0">Ticket Status</option>
                                             {this.state.TicketStatusData !==
                                               null &&
                                               this.state.TicketStatusData.map(
@@ -2594,7 +2604,7 @@ handleAssignTo(){
                                             value={this.state.selectedCategory}
                                             onChange={this.setCategoryValue}
                                           >
-                                            <option>Category</option>
+                                            <option value="0">Category</option>
                                             {this.state.CategoryData !== null &&
                                               this.state.CategoryData.map(
                                                 (item, i) => (
@@ -2615,7 +2625,7 @@ handleAssignTo(){
                                             }
                                             onChange={this.setSubCategoryValue}
                                           >
-                                            <option>Sub Category</option>
+                                            <option value="0">Sub Category</option>
                                             {this.state.SubCategoryData !==
                                               null &&
                                               this.state.SubCategoryData.map(
@@ -2635,7 +2645,7 @@ handleAssignTo(){
                                             value={this.state.selectedIssueType}
                                             onChange={this.setIssueTypeValue}
                                           >
-                                            <option>Issue Type</option>
+                                            <option value="0">Issue Type</option>
                                             {this.state.IssueTypeData !==
                                               null &&
                                               this.state.IssueTypeData.map(
@@ -2660,7 +2670,7 @@ handleAssignTo(){
                                               this.handleTicketStatusByCategory
                                             }
                                           >
-                                            <option>Ticket Status</option>
+                                            <option value="0">Ticket Status</option>
                                             {this.state.TicketStatusData !==
                                               null &&
                                               this.state.TicketStatusData.map(
