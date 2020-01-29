@@ -257,7 +257,7 @@ class AddSearchMyTicket extends Component {
                   onClick={this.handleSearchCustomer}
                 />
               </div>
-              {this.state.SrchEmailPhone.length == 0 && <p style={{ 'color' : 'red', 'margin-bottom' : '0px' }}>{this.state.searchCompulsion}</p>}
+              {this.state.SrchEmailPhone.length == 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.searchCompulsion}</p>}
 
               {this.state.message === "Record Not Found" ? (
                 <div>
