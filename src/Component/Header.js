@@ -162,18 +162,17 @@ class Header extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;        
-      data = res.data.responseData; 
+      data = res.data.responseData;
+      var status = res.data.message;
+      if (status === 'Success') {
       var strTag=data.agentName.split(' ');
       var nameTag=strTag[0].charAt(0).toUpperCase();
       if(strTag.length>0)
       {
         nameTag+=strTag[1].charAt(0).toUpperCase();
-      }
-      // for (ja = 0; ja < strTag.length; ja++) {
-      //   nameTag += strTag[ja].charAt(0);
-      // }
-      // debugger;         
+      }        
         self.setState({Email:data.agentEmailId,UserName:data.agentName,LoginTime:data.loginTime,LoggedInDuration:data.loggedInDuration,SLAScore:data.slaScore,CSatScore:data.csatScore,AvgResponse:data.avgResponseTime,LogoutTime:data.logoutTime,NameTag:nameTag});  
+      } 
     });
    
   }

@@ -646,7 +646,6 @@ class TicketSystem extends Component {
       for (let i = 0; i < filesAmount; i++) {
         const reader = new FileReader();
         reader.onload = file => {
-          // console.log(file.target.result);
           this.setState({
             imageView: file.target.result
           });
@@ -866,25 +865,25 @@ class TicketSystem extends Component {
   renderIcon(name){
     debugger;
     let ext=name.split('.')[1].toLowerCase();
-    if(ext=="xls"||ext=="xlsx")
+    if(ext==="xls"||ext==="xlsx")
     {
       return(     
         Excel
       )
     }
-    else if(ext=="doc" ||ext=="docx" || ext=="txt")
+    else if(ext==="doc" ||ext==="docx" || ext==="txt")
     {
       return(     
         Word
       )
     }
-    else if(ext=="csv")
+    else if(ext==="csv")
     {
       return(     
         CSVi
       )
     }
-    else if(ext=="pdf")
+    else if(ext==="pdf")
     {
       return(     
         PDF
@@ -1008,7 +1007,7 @@ class TicketSystem extends Component {
                           autoComplete="off"
                           style={{ 'marginBottom' : '5px' }}
                         />
-                        {this.state.titleSuggValue.length == 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.ticketTitleCompulsion}</p>}
+                        {this.state.titleSuggValue.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.ticketTitleCompulsion}</p>}
                         {this.validator.message(
                           "TicketTitle",
                           this.state.titleSuggValue,
@@ -1044,7 +1043,7 @@ class TicketSystem extends Component {
                         onChange={this.handleTicketChange}
                         maxLength={250}
                       ></textarea>
-                      {this.state.ticketDetails.length == 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.ticketDetailsCompulsion}</p>}
+                      {this.state.ticketDetails.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.ticketDetailsCompulsion}</p>}
                       {this.validator.message(
                         "ticketDetails",
                         this.state.ticketDetails,
@@ -1075,7 +1074,7 @@ class TicketSystem extends Component {
                             </option>
                           ))}
                       </select>
-                      {this.state.selectedBrand.length == 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.ticketBrandCompulsion}</p>}
+                      {this.state.selectedBrand.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.ticketBrandCompulsion}</p>}
                     </div>
                     <div className="col-md-6">
                       <label className="sub-category">Category</label>
@@ -1098,7 +1097,7 @@ class TicketSystem extends Component {
                             </option>
                           ))}
                       </select>
-                      {this.state.selectedCategory.length == 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.ticketCategoryCompulsion}</p>}
+                      {this.state.selectedCategory.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.ticketCategoryCompulsion}</p>}
                     </div>
                   </div>
 
@@ -1124,7 +1123,7 @@ class TicketSystem extends Component {
                             </option>
                           ))}
                       </select>
-                      {this.state.selectedSubCategory.length == 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.ticketSubCategoryCompulsion}</p>}
+                      {this.state.selectedSubCategory.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.ticketSubCategoryCompulsion}</p>}
                     </div>
                     <div className="col-md-6">
                       <label className="sub-category">Issue Type</label>
@@ -1147,7 +1146,7 @@ class TicketSystem extends Component {
                             </option>
                           ))}
                       </select>
-                      {this.state.selectedSubCategory.length == 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.ticketIssueTypeCompulsion}</p>}
+                      {this.state.selectedSubCategory.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.ticketIssueTypeCompulsion}</p>}
                     </div>
                   </div>
 

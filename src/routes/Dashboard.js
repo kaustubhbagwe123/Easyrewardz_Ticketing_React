@@ -265,6 +265,7 @@ class Dashboard extends Component {
           month: "October"
         }
       ],
+      resultCount:0,
     };
     this.handleAssignTo=this.handleAssignTo.bind(this);
     this.applyCallback = this.applyCallback.bind(this);
@@ -679,6 +680,7 @@ class Dashboard extends Component {
     const allCheckboxChecked = event.target.checked;
     var checkboxes = document.getElementsByName("allAgent");
     if (allCheckboxChecked) {
+      document.getElementById("spnAgent").textContent="ALL";
       for (var i in checkboxes) {
         if (checkboxes[i].checked === false) {
           checkboxes[i].checked = true;
@@ -687,6 +689,7 @@ class Dashboard extends Component {
         }
       }
     } else {
+      document.getElementById("spnAgent").textContent="select";
       for (var J in checkboxes) {
         if (checkboxes[J].checked === true) {
           checkboxes[J].checked = false;
@@ -708,6 +711,7 @@ class Dashboard extends Component {
     const allCheckboxChecked = event.target.checked;
     var checkboxes = document.getElementsByName("allBrand");
     if (allCheckboxChecked) {
+      document.getElementById("spnBrand").textContent="ALL";
       for (var i in checkboxes) {
         if (checkboxes[i].checked === false) {
           checkboxes[i].checked = true;
@@ -716,6 +720,7 @@ class Dashboard extends Component {
         }
       }
     } else {
+      document.getElementById("spnBrand").textContent="select";
       for (var J in checkboxes) {
         if (checkboxes[J].checked === true) {
           checkboxes[J].checked = false;
@@ -1694,29 +1699,37 @@ class Dashboard extends Component {
         ByDateCreatDate: "",
         ByDateSelectDate: "",
         selectedSlaDueByDate: 0,
-        selectedTicketStatusByDate: 0
+        selectedTicketStatusByDate: 0,
+        resultCount: 0
       });
+      this.handleSearchTicketEscalation();
     } else if (this.state.byCustomerTypeFlag === 2) {
       this.setState({
         MobileNoByCustType: "",
         EmailIdByCustType: "",
         TicketIdByCustType: "",
-        selectedTicketStatusByCustomer: 0
+        selectedTicketStatusByCustomer: 0,
+        resultCount: 0
       });
+      this.handleSearchTicketEscalation();
     } else if (this.state.byTicketTypeFlag === 3) {
       this.setState({
         selectedPriority: 0,
         selectedTicketStatusByTicket: 0,
         selectedChannelOfPurchase: [],
-        selectedTicketActionType: []
+        selectedTicketActionType: [],
+        resultCount: 0
       });
+      this.handleSearchTicketEscalation();
     } else if (this.state.byCategoryFlag === 4) {
       this.setState({
         selectedCategory: 0,
         selectedSubCategory: 0,
         selectedIssueType: 0,
-        selectedTicketStatusByCategory: 0
+        selectedTicketStatusByCategory: 0,
+        resultCount: 0
       });
+      this.handleSearchTicketEscalation();
     } else if (this.state.allFlag === 5) {
       this.setState({
         ByAllCreateDate: "",
@@ -1747,8 +1760,10 @@ class Dashboard extends Component {
         selectedWithTaskAll: "no",
         selectedTaskStatus: 0,
         selectedDepartment: 0,
-        selectedFunction: 0
+        selectedFunction: 0,
+        resultCount: 0
       });
+      this.handleSearchTicketEscalation();
     }
   }
   ViewSearchData() {
@@ -1893,13 +1908,20 @@ class Dashboard extends Component {
       debugger;
       let status = res.data.message;
       let data = res.data.responseData;
+      let count = 0;
+      if (res.data.responseData != null) {
+        count = res.data.responseData.length;
+      }
+
       if (status === "Success") {
         self.setState({
-          SearchTicketData: data
+          SearchTicketData: data,
+          resultCount: count
         });
       } else {
         self.setState({
-          SearchTicketData: []
+          SearchTicketData: [],
+          resultCount: 0
         });
       }
     });
@@ -1944,6 +1966,9 @@ class Dashboard extends Component {
       if (Msg === "Success") {
         NotificationManager.success("Save Search parameter successfully.");
         self.handleGetSaveSearchList();
+        self.setState({
+          SearchName:''
+        })
       }
     });
   }
@@ -2067,85 +2092,7 @@ class Dashboard extends Component {
       format: "DD-MM-YYYY",
       sundayFirst: false
     };
-
-    const DefArti = (
-      <div className="dash-creation-popup-cntr">
-        <ul className="dash-category-popup dashnewpopup">
-          <li>
-            <p>Category</p>
-            <p>Defective article</p>
-          </li>
-          <li>
-            <p>Sub Category</p>
-            <p>Customer wants refund</p>
-          </li>
-          <li>
-            <p>Type</p>
-            <p>Delivery</p>
-          </li>
-        </ul>
-      </div>
-    );
-
-    const InsertPlaceholder = (
-      <div className="insertpop1">
-        <ul className="dash-creation-popup">
-          <li className="title">Creation details</li>
-          <li>
-            <p>Naman Created</p>
-            <p>2 Hrs ago</p>
-          </li>
-          <li>
-            <p>Assigned to Vikas</p>
-            <p>1.5 Hrs ago</p>
-          </li>
-          <li>
-            <p>Vikas updated</p>
-            <p>1 Hr ago</p>
-          </li>
-          <li>
-            <p>Response time remaining by</p>
-            <p>30 mins</p>
-          </li>
-          <li>
-            <p>Response overdue by</p>
-            <p>1 Hr</p>
-          </li>
-          <li>
-            <p>Resolution overdue by</p>
-            <p>2 Hrs</p>
-          </li>
-        </ul>
-      </div>
-    );
-    const TaskBlue = (
-      <div className="dash-task-popup-new">
-        <div className="d-flex justify-content-between align-items-center">
-          <p className="m-b-0">
-            TASK: <span className="green-clr">02</span>/
-            <span className="task-red-clr">04</span>
-          </p>
-          <div className="d-flex align-items-center">
-            2 NEW
-            <div className="nw-chat">
-              <img src={Chat} alt="chat" />
-            </div>
-          </div>
-        </div>
-        <ProgressBar className="task-progress" now={70} />
-      </div>
-    );
-    const ClaimBlue = (
-      <div className="dash-task-popup-new">
-        <div className="d-flex justify-content-between align-items-center">
-          <p>
-            CLAIM: <span className="green-clr">02</span>/
-            <span className="task-red-clr">01</span>
-          </p>
-        </div>
-        <ProgressBar className="task-progress" now={70} />
-      </div>
-    );
+ 
     const TitleChange = this.state.collapseSearch
       ? "Close Search"
       : "Search Tickets";
@@ -2156,457 +2103,7 @@ class Dashboard extends Component {
       <img className="search-icon" src={SearchIcon} alt="search-icon" />
     );
 
-    // const dataDash = [
-    //   {
-    //     idDash: (
-    //       <span>
-    //         <div className="filter-type pink1">
-    //           <div className="filter-checkbox pink2 pinkmargin">
-    //             <input
-    //               type="checkbox"
-    //               id="fil-ab7"
-    //               name="dashboardcheckbox[]"
-    //             />
-    //             <label htmlFor="fil-ab7">
-    //               <img
-    //                 src={HeadPhone3}
-    //                 alt="HeadPhone"
-    //                 className="headPhone3"
-    //               />
-    //               ABC1234
-    //             </label>
-    //           </div>
-    //         </div>
-    //       </span>
-    //     ),
-    //     statusDash: (
-    //       <span className="table-b table-blue-btn">
-    //         <label>Open</label>
-    //       </span>
-    //     ),
-    //     subjectDash: (
-    //       <div>
-    //         Need to change my shipping address
-    //         <span style={{ display: "block", fontSize: "11px" }}>
-    //           Hope this help, Please rate us
-    //         </span>
-    //       </div>
-    //     ),
-    //     creationNew: (
-    //       <span>
-    //         <label>2 Hour Ago</label>
-    //         <Popover content={InsertPlaceholder} placement="left">
-    //           <img className="info-icon" src={InfoIcon} alt="info-icon" />
-    //         </Popover>
-    //       </span>
-    //     )
-    //   },
-    //   {
-    //     idDash: (
-    //       <span>
-    //         <div className="filter-type pink1">
-    //           <div className="filter-checkbox pink2 pinkmargin">
-    //             <input
-    //               type="checkbox"
-    //               id="fil-ab6"
-    //               name="dashboardcheckbox[]"
-    //             />
-    //             <label htmlFor="fil-ab6">
-    //               <img
-    //                 src={HeadPhone3}
-    //                 alt="HeadPhone"
-    //                 className="headPhone3"
-    //               />
-    //               ABC1234
-    //             </label>
-    //           </div>
-    //         </div>
-    //       </span>
-    //     ),
-    //     statusDash: (
-    //       <span className="table-b table-blue-btn">
-    //         <label>Open</label>
-    //       </span>
-    //     ),
-    //     subjectDash: (
-    //       <div>
-    //         Need to change my shipping address
-    //         <span style={{ display: "block", fontSize: "11px" }}>
-    //           Hope this help, Please rate us
-    //         </span>
-    //       </div>
-    //     ),
-    //     creationNew: (
-    //       <span>
-    //         <label>12 March 2018</label>
-    //         <Popover content={InsertPlaceholder} placement="left">
-    //           <img className="info-icon" src={InfoIcon} alt="info-icon" />
-    //         </Popover>
-    //       </span>
-    //     )
-    //   },
-    //   {
-    //     idDash: (
-    //       <span>
-    //         <div className="filter-type pink1">
-    //           <div className="filter-checkbox pink2 pinkmargin">
-    //             <input
-    //               type="checkbox"
-    //               id="fil-ab5"
-    //               name="dashboardcheckbox[]"
-    //             />
-    //             <label htmlFor="fil-ab5">
-    //               <img
-    //                 src={HeadPhone3}
-    //                 alt="HeadPhone"
-    //                 className="headPhone3"
-    //               />
-    //               ABC1234
-    //             </label>
-    //           </div>
-    //         </div>
-    //       </span>
-    //     ),
-    //     statusDash: (
-    //       <span className="table-b table-yellow-btn">
-    //         <label>New</label>
-    //       </span>
-    //     ),
-    //     Img: (
-    //       <div>
-    //         <Popover content={TaskBlue} placement="bottom">
-    //           <img
-    //             className="task-icon-1"
-    //             src={TaskIconBlue}
-    //             alt="task-icon-blue"
-    //           />
-    //         </Popover>
-    //       </div>
-    //     ),
-    //     subjectDash: (
-    //       <div>
-    //         {/* <Popover content={TaskBlue} placement="bottom">
-    //           <img
-    //             className="task-icon-1 marginimg"
-    //             src={TaskIconBlue}
-    //             alt="task-icon-blue"
-    //           />
-    //         </Popover> */}
-    //         {/* <img
-    //           className="task-icon-1 marginimg"
-    //           src={TaskIconBlue}
-    //           alt="task-icon-blue"
-    //         /> */}
-    //         Need to change my shipping address
-    //         <span style={{ display: "block", fontSize: "11px" }}>
-    //           Hope this help, Please rate us
-    //         </span>
-    //       </div>
-    //     ),
-    //     creationNew: (
-    //       <span>
-    //         <label>12 March 2018</label>
-    //         <Popover content={InsertPlaceholder} placement="left">
-    //           <img className="info-icon" src={InfoIcon} alt="info-icon" />
-    //         </Popover>
-    //       </span>
-    //     )
-    //   },
-    //   {
-    //     idDash: (
-    //       <span>
-    //         <div className="filter-type pink1">
-    //           <div className="filter-checkbox pink2 pinkmargin">
-    //             <input
-    //               type="checkbox"
-    //               id="fil-ab4"
-    //               name="dashboardcheckbox[]"
-    //             />
-    //             <label htmlFor="fil-ab4">
-    //               <img
-    //                 src={HeadPhone3}
-    //                 alt="HeadPhone"
-    //                 className="headPhone3"
-    //               />
-    //               ABC1234
-    //             </label>
-    //           </div>
-    //         </div>
-    //       </span>
-    //     ),
-    //     statusDash: (
-    //       <span className="table-b table-yellow-btn">
-    //         <label>New</label>
-    //       </span>
-    //     ),
-    //     Img: (
-    //       <img
-    //         className="task-icon-1"
-    //         src={TaskIconGray}
-    //         alt="task-icon-gray"
-    //       />
-    //     ),
-    //     subjectDash: (
-    //       <div>
-    //         {/* <img
-    //           className="task-icon-1 marginimg"
-    //           src={TaskIconGray}
-    //           alt="task-icon-gray"
-    //         /> */}
-    //         Need to change my shipping address
-    //         <span style={{ display: "block", fontSize: "11px" }}>
-    //           Hope this help, Please rate us
-    //         </span>
-    //       </div>
-    //     ),
-    //     creationNew: (
-    //       <span>
-    //         <label>12 March 2018</label>
-    //         <Popover content={InsertPlaceholder} placement="left">
-    //           <img className="info-icon" src={InfoIcon} alt="info-icon" />
-    //         </Popover>
-    //       </span>
-    //     )
-    //   },
-    //   {
-    //     idDash: (
-    //       <span>
-    //         <div className="filter-type pink1">
-    //           <div className="filter-checkbox pink2 pinkmargin">
-    //             <input
-    //               type="checkbox"
-    //               id="fil-ab3"
-    //               name="dashboardcheckbox[]"
-    //             />
-    //             <label htmlFor="fil-ab3">
-    //               <img
-    //                 src={HeadPhone3}
-    //                 alt="HeadPhone"
-    //                 className="headPhone3"
-    //               />
-    //               ABC1234
-    //             </label>
-    //           </div>
-    //         </div>
-    //       </span>
-    //     ),
-    //     statusDash: (
-    //       <span className="table-b table-green-btn">
-    //         <label>Solved</label>
-    //       </span>
-    //     ),
-    //     Img: (
-    //       <div>
-    //         <Popover content={ClaimBlue} placement="bottom">
-    //           <img
-    //             className="claim-icon marginimg"
-    //             src={CliamIconBlue}
-    //             alt="cliam-icon-blue"
-    //           />
-    //         </Popover>
-    //         <span style={{ marginLeft: "20px" }}>
-    //           <img
-    //             className="task-icon-1 marginimg"
-    //             src={TaskIconGray}
-    //             alt="task-icon-gray"
-    //           />
-    //         </span>
-    //       </div>
-    //     ),
-    //     subjectDash: (
-    //       <div>
-    //         Need to change my shipping address
-    //         <span style={{ display: "block", fontSize: "11px" }}>
-    //           Hope this help, Please rate us
-    //         </span>
-    //       </div>
-    //     ),
-    //     creationNew: (
-    //       <span>
-    //         <label>12 March 2018</label>
-    //         <Popover content={InsertPlaceholder} placement="left">
-    //           <img className="info-icon" src={InfoIcon} alt="info-icon" />
-    //         </Popover>
-    //       </span>
-    //     )
-    //   },
-    //   {
-    //     idDash: (
-    //       <span>
-    //         <div className="filter-type pink1">
-    //           <div className="filter-checkbox pink2 pinkmargin">
-    //             <input
-    //               type="checkbox"
-    //               id="fil-ab2"
-    //               name="dashboardcheckbox[]"
-    //             />
-    //             <label htmlFor="fil-ab2">
-    //               <img
-    //                 src={HeadPhone3}
-    //                 alt="HeadPhone"
-    //                 className="headPhone3"
-    //               />
-    //               ABC1234
-    //             </label>
-    //           </div>
-    //         </div>
-    //       </span>
-    //     ),
-    //     statusDash: (
-    //       <span className="table-b table-green-btn">
-    //         <label>Solved</label>
-    //       </span>
-    //     ),
-    //     subjectDash: (
-    //       <div>
-    //         Need to change my shipping address
-    //         <span style={{ display: "block", fontSize: "11px" }}>
-    //           Hope this help, Please rate us
-    //         </span>
-    //       </div>
-    //     ),
-    //     creationNew: (
-    //       <span>
-    //         <label>12 March 2018</label>
-    //         <Popover content={InsertPlaceholder} placement="left">
-    //           <img className="info-icon" src={InfoIcon} alt="info-icon" />
-    //         </Popover>
-    //       </span>
-    //     )
-    //   },
-    //   {
-    //     idDash: (
-    //       <span>
-    //         <div className="filter-type pink1">
-    //           <div className="filter-checkbox pink2 pinkmargin">
-    //             <input
-    //               type="checkbox"
-    //               id="fil-ab1"
-    //               name="dashboardcheckbox[]"
-    //             />
-    //             <label htmlFor="fil-ab1">
-    //               <img
-    //                 src={HeadPhone3}
-    //                 alt="HeadPhone"
-    //                 className="headPhone3"
-    //               />
-    //               ABC1234
-    //             </label>
-    //           </div>
-    //         </div>
-    //       </span>
-    //     ),
-    //     statusDash: (
-    //       <span className="table-b table-green-btn">
-    //         <label>Solved</label>
-    //       </span>
-    //     ),
-    //     subjectDash: (
-    //       <div>
-    //         Need to change my shipping address
-    //         <span style={{ display: "block", fontSize: "11px" }}>
-    //           Hope this help, Please rate us
-    //         </span>
-    //       </div>
-    //     ),
-    //     creationNew: (
-    //       <span>
-    //         <label>12 March 2018</label>
-    //         <Popover content={InsertPlaceholder} placement="left">
-    //           <img className="info-icon" src={InfoIcon} alt="info-icon" />
-    //         </Popover>
-    //       </span>
-    //     )
-    //   }
-    // ];
-
-    // const columnsDash = [
-    //   {
-    //     Header: (
-    //       <span>
-    //         <div className="filter-type pink1">
-    //           <div className="filter-checkbox pink2 pinkmargin">
-    //             <input
-    //               type="checkbox"
-    //               id="fil-ab1"
-    //               name="dashboardcheckbox[]"
-    //               onChange={this.checkAllCheckbox.bind(this)}
-    //             />
-    //             <label htmlFor="fil-ab1">ID</label>
-    //           </div>
-    //         </div>
-    //       </span>
-    //     ),
-    //     accessor: "idDash"
-    //   },
-    //   {
-    //     Header: (
-    //       <span onClick={this.StatusOpenModel}>
-    //         Status <FontAwesomeIcon icon={faCaretDown} />
-    //       </span>
-    //     ),
-    //     accessor: "statusDash"
-    //   },
-    //   {
-    //     Header: <span></span>,
-    //     accessor: "Img",
-    //     width: 45
-    //   },
-    //   {
-    //     Header: (
-    //       <label>
-    //         <span style={{ fontWeight: "bold", fontSize: "13px !important" }}>
-    //           Subject/
-    //         </span>
-    //         <span>Lastest Message</span>
-    //       </label>
-    //     ),
-    //     accessor: "subjectDash"
-    //   },
-    //   {
-    //     Header: (
-    //       <span>
-    //         Category <FontAwesomeIcon icon={faCaretDown} />
-    //       </span>
-    //     ),
-    //     accessor: "categoryDash",
-    //     Cell: props => (
-    //       <span>
-    //         <label>Defective article </label>
-    //         <Popover content={DefArti} placement="bottom">
-    //           <img className="info-icon" src={InfoIcon} alt="info-icon" />
-    //         </Popover>
-    //       </span>
-    //     )
-    //   },
-    //   {
-    //     Header: (
-    //       <span>
-    //         Priority <FontAwesomeIcon icon={faCaretDown} />
-    //       </span>
-    //     ),
-    //     accessor: "priorityDash",
-    //     Cell: props => <span>High</span>
-    //   },
-    //   {
-    //     Header: (
-    //       <span>
-    //         Assigne <FontAwesomeIcon icon={faCaretDown} />
-    //       </span>
-    //     ),
-    //     accessor: "assigneeDash",
-    //     Cell: props => <span>N Rampal</span>
-    //   },
-    //   {
-    //     Header: (
-    //       <span>
-    //         Creation On <FontAwesomeIcon icon={faCaretDown} />
-    //       </span>
-    //     ),
-    //     accessor: "creationNew"
-    //   }
-    // ];
-
+  
     let value = `${this.state.start.format(
       "DD-MM-YYYY"
     )} - ${this.state.end.format("DD-MM-YYYY")}`;
@@ -2733,30 +2230,7 @@ class Dashboard extends Component {
                           </label>
                         </li>
                       ))}
-                    {/* <li>
-                      <label htmlFor="one">
-                        <input type="checkbox" id="one" className="ch1" />
-                        <span className="ch1-text">Bata 1</span>
-                      </label>
-                    </li>
-                    <li>
-                      <label htmlFor="two">
-                        <input type="checkbox" id="two" className="ch1" />
-                        <span className="ch1-text">Bata 2</span>
-                      </label>
-                    </li>
-                    <li>
-                      <label htmlFor="three">
-                        <input type="checkbox" id="three" className="ch1" />
-                        <span className="ch1-text">Bata 3</span>
-                      </label>
-                    </li>
-                    <li>
-                      <label htmlFor="four">
-                        <input type="checkbox" id="four" className="ch1" />
-                        <span className="ch1-text">Bata 4</span>
-                      </label>
-                    </li> */}
+                   
                   </ul>
                 </div>
               </span>
@@ -2802,70 +2276,10 @@ class Dashboard extends Component {
                           </label>
                         </li>
                       ))}
-                    {/* <li>
-                      <label htmlFor="one">
-                        <input type="checkbox" id="one" className="ch1" />
-                        <span className="ch1-text">Bata 1</span>
-                      </label>
-                    </li>
-                    <li>
-                      <label htmlFor="two">
-                        <input type="checkbox" id="two" className="ch1" />
-                        <span className="ch1-text">Bata 2</span>
-                      </label>
-                    </li>
-                    <li>
-                      <label htmlFor="three">
-                        <input type="checkbox" id="three" className="ch1" />
-                        <span className="ch1-text">Bata 3</span>
-                      </label>
-                    </li>
-                    <li>
-                      <label htmlFor="four">
-                        <input type="checkbox" id="four" className="ch1" />
-                        <span className="ch1-text">Bata 4</span>
-                      </label>
-                    </li> */}
+                    
                   </ul>
                 </div>
-                {/* <div className="dropdown">
-                  <button
-                    className="dropdown-toggle dashallbrand"
-                    type="button"
-                    data-toggle="dropdown"
-                  >
-                    <span className="EMFCText">All</span>
-                  </button>
-                  <ul className="dropdown-menu">
-                    <li>
-                      <div className="filter-type pink1">
-                        <div className="filter-checkbox pink2 pinkmargin">
-                          <input type="checkbox" id="fil-ch4" />
-                          <label htmlFor="fil-ch4"></label>
-                          <span>abc</span>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="filter-type pink1">
-                        <div className="filter-checkbox pink2 pinkmargin">
-                          <input type="checkbox" id="fil-ch5" />
-                          <label htmlFor="fil-ch5"></label>
-                          <span>abc</span>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="filter-type pink1">
-                        <div className="filter-checkbox pink2 pinkmargin">
-                          <input type="checkbox" id="fil-ch6" />
-                          <label htmlFor="fil-ch6"></label>
-                          <span>abc</span>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div> */}
+               
               </span>
             </div>
           </div>
@@ -3033,15 +2447,7 @@ class Dashboard extends Component {
                                         </li>
                                       )
                                     )}
-                                  {/* <li>
-                                    Offline : <b>20/100</b>
-                                  </li>
-                                  <li>
-                                    Web : <b>10/80</b>
-                                  </li>
-                                  <li>
-                                    Mobile : <b>5/100</b>
-                                  </li> */}
+                                 
                                 </ul>
                               </div>
                               <div className="col-md-9 tic-bill-graph">
@@ -3069,15 +2475,7 @@ class Dashboard extends Component {
                                         </li>
                                       )
                                     )}
-                                  {/* <li>
-                                    Offline : <b>20/100</b>
-                                  </li>
-                                  <li>
-                                    Web : <b>10/80</b>
-                                  </li>
-                                  <li>
-                                    Mobile : <b>5/100</b>
-                                  </li> */}
+                                 
                                 </ul>
                               </div>
                               <div className="col-md-9 ">
@@ -3125,7 +2523,7 @@ class Dashboard extends Component {
                                 ? "0" + this.state.DashboardNumberData.taskClose
                                 : this.state.DashboardNumberData.taskClose) : null}
                             </span>
-                            <small>Pending</small>
+                            <small>Closed</small>
                           </div>
                         </div>
                       </div>
@@ -3199,7 +2597,7 @@ class Dashboard extends Component {
                                   this.state.DashboardNumberData.claimClose
                                 : this.state.DashboardNumberData.claimClose) : null}
                             </span>
-                            <small>Pending</small>
+                            <small>Closed</small>
                           </div>
                         </div>
                       </div>
@@ -3977,44 +3375,7 @@ class Dashboard extends Component {
                                   </select>
                                 </div>
                               </div>
-                              {/* <div className="row justify-content-between">
-                                      <div className="col-auto d-flex align-items-center">
-                                        <p className="font-weight-bold mr-3">
-                                          <span className="blue-clr">04</span>{" "}
-                                          Results
-                                        </p>
-                                        <p className="blue-clr fs-14">
-                                          CLEAR SEARCH
-                                        </p>
-                                      </div>
-                                      <div className="col-auto mob-mar-btm">
-                                        <button>
-                                          <img
-                                            className="position-relative csv-icon"
-                                            src={csv}
-                                            alt="csv-icon"
-                                          />
-                                          CSV
-                                        </button>
-                                        <button>
-                                          <img
-                                            className="sch-icon"
-                                            src={Schedule}
-                                            alt="schedule-icon"
-                                          />
-                                          Schedule
-                                        </button>
-                                        <button className="btn-inv btn-dis">
-                                          <img
-                                            src={Assign}
-                                            className="assign-icon"
-                                            alt="assign-icon"
-                                          />
-                                          Assign
-                                        </button>
-                                      </div>
-                                    </div>
-                                   */}
+                              
                             </div>
                           </div>
                           <div
@@ -4066,30 +3427,7 @@ class Dashboard extends Component {
                                   </select>
                                 </div>
                                 <div className="col-md-3 col-sm-6">
-                                  {/* <select
-                                          value={
-                                            this.state.selectedChannelOfPurchase
-                                          }
-                                          onChange={
-                                            this.setChannelOfPurchaseValue
-                                          }
-                                        >
-                                          <option>Channel Of Purchase</option>
-                                          {this.state.ChannelOfPurchaseData !==
-                                            null &&
-                                            this.state.ChannelOfPurchaseData.map(
-                                              (item, i) => (
-                                                <option
-                                                  key={i}
-                                                  value={
-                                                    item.channelOfPurchaseID
-                                                  }
-                                                >
-                                                  {item.nameOfChannel}
-                                                </option>
-                                              )
-                                            )}
-                                        </select> */}
+                             
                                   <div className="normal-dropdown">
                                     <Select
                                       getOptionLabel={option =>
@@ -4138,44 +3476,7 @@ class Dashboard extends Component {
                                   </div>
                                 </div>
                               </div>
-                              {/* <div className="row justify-content-between">
-                                      <div className="col-auto d-flex align-items-center">
-                                        <p className="font-weight-bold mr-3">
-                                          <span className="blue-clr">04</span>{" "}
-                                          Results
-                                        </p>
-                                        <p className="blue-clr fs-14">
-                                          CLEAR SEARCH
-                                        </p>
-                                      </div>
-                                      <div className="col-auto mob-mar-btm">
-                                        <button>
-                                          <img
-                                            className="position-relative csv-icon"
-                                            src={csv}
-                                            alt="csv-icon"
-                                          />
-                                          CSV
-                                        </button>
-                                        <button>
-                                          <img
-                                            className="sch-icon"
-                                            src={Schedule}
-                                            alt="schedule-icon"
-                                          />
-                                          Schedule
-                                        </button>
-                                        <button className="btn-inv btn-dis">
-                                          <img
-                                            src={Assign}
-                                            className="assign-icon"
-                                            alt="assign-icon"
-                                          />
-                                          Assign
-                                        </button>
-                                      </div>
-                                    </div>
-                                   */}
+                            
                             </div>
                           </div>
                           <div
@@ -4260,44 +3561,7 @@ class Dashboard extends Component {
                                   </select>
                                 </div>
                               </div>
-                              {/* <div className="row justify-content-between">
-                                      <div className="col-auto d-flex align-items-center">
-                                        <p className="font-weight-bold mr-3">
-                                          <span className="blue-clr">04</span>{" "}
-                                          Results
-                                        </p>
-                                        <p className="blue-clr fs-14">
-                                          CLEAR SEARCH
-                                        </p>
-                                      </div>
-                                      <div className="col-auto mob-mar-btm">
-                                        <button>
-                                          <img
-                                            className="position-relative csv-icon"
-                                            src={csv}
-                                            alt="csv-icon"
-                                          />
-                                          CSV
-                                        </button>
-                                        <button>
-                                          <img
-                                            className="sch-icon"
-                                            src={Schedule}
-                                            alt="schedule-icon"
-                                          />
-                                          Schedule
-                                        </button>
-                                        <button className="btn-inv btn-dis">
-                                          <img
-                                            src={Assign}
-                                            className="assign-icon"
-                                            alt="assign-icon"
-                                          />
-                                          Assign
-                                        </button>
-                                      </div>
-                                    </div>
-                                   */}
+                             
                             </div>
                           </div>
                           <div
@@ -4817,251 +4081,13 @@ class Dashboard extends Component {
                                       ) : null}
                                     </div>
 
-                                    {/* {this.state.selectedWithClaimAll ===
-                                          "yes" ? (
-                                            <React.Fragment> */}
-                                    {/* <div className="col-sm-6 m-b-25">
-                                                <select
-                                                  value={
-                                                    this.state
-                                                      .selectedClaimStatus
-                                                  }
-                                                  onChange={
-                                                    this.handleClaimStatus
-                                                  }
-                                                >
-                                                  <option>Claim Status</option>
-                                                  {this.state
-                                                    .ClaimStatusData !== null &&
-                                                    this.state.ClaimStatusData.map(
-                                                      (item, i) => (
-                                                        <option
-                                                          key={i}
-                                                          value={
-                                                            item.claimStatusID
-                                                          }
-                                                        >
-                                                          {item.claimStatusName}
-                                                        </option>
-                                                      )
-                                                    )}
-                                                </select>
-                                              </div> */}
-                                    {/* <div className="col-sm-6">
-                                                <select
-                                                  value={
-                                                    this.state
-                                                      .selectedTaskStatus
-                                                  }
-                                                  onChange={
-                                                    this.handleTaskStatus
-                                                  }
-                                                >
-                                                  <option>Task Status</option>
-                                                  {this.state.TaskStatusData !==
-                                                    null &&
-                                                    this.state.TaskStatusData.map(
-                                                      (item, i) => (
-                                                        <option
-                                                          key={i}
-                                                          value={
-                                                            item.taskStatusID
-                                                          }
-                                                        >
-                                                          {item.taskStatusName}
-                                                        </option>
-                                                      )
-                                                    )}
-                                                </select>
-                                              </div> */}
-                                    {/* <div className="col-sm-6 m-b-25">
-                                                <select
-                                                  value={
-                                                    this.state
-                                                      .selectedClaimCategory
-                                                  }
-                                                  onChange={
-                                                    this.setClaimCategoryValue
-                                                  }
-                                                >
-                                                  <option>
-                                                    Claim Category
-                                                  </option>
-                                                  {this.state.CategoryData !==
-                                                    null &&
-                                                    this.state.CategoryData.map(
-                                                      (item, i) => (
-                                                        <option
-                                                          key={i}
-                                                          value={
-                                                            item.categoryID
-                                                          }
-                                                        >
-                                                          {item.categoryName}
-                                                        </option>
-                                                      )
-                                                    )}
-                                                </select>
-                                              </div> */}
-                                    {/* <div className="col-sm-6">
-                                                <select
-                                                  value={
-                                                    this.state
-                                                      .selectedDepartment
-                                                  }
-                                                  onChange={
-                                                    this.setDepartmentValue
-                                                  }
-                                                >
-                                                  <option>
-                                                    Task Department
-                                                  </option>
-                                                  {this.state.DepartmentData !==
-                                                    null &&
-                                                    this.state.DepartmentData.map(
-                                                      (item, i) => (
-                                                        <option
-                                                          key={i}
-                                                          value={
-                                                            item.departmentID
-                                                          }
-                                                        >
-                                                          {item.departmentName}
-                                                        </option>
-                                                      )
-                                                    )}
-                                                </select>
-                                              </div> */}
-                                    {/* <div className="col-sm-6 m-b-25">
-                                                <select
-                                                  value={
-                                                    this.state
-                                                      .selectedClaimSubCategory
-                                                  }
-                                                  onChange={
-                                                    this
-                                                      .setClaimSubCategoryValue
-                                                  }
-                                                >
-                                                  <option>
-                                                    Claim Sub Category
-                                                  </option>
-                                                  {this.state
-                                                    .ClaimSubCategoryData !==
-                                                    null &&
-                                                    this.state.ClaimSubCategoryData.map(
-                                                      (item, i) => (
-                                                        <option
-                                                          key={i}
-                                                          value={
-                                                            item.subCategoryID
-                                                          }
-                                                        >
-                                                          {item.subCategoryName}
-                                                        </option>
-                                                      )
-                                                    )}
-                                                </select>
-                                              </div> */}
-                                    {/* <div className="col-sm-6">
-                                                <select
-                                                  value={
-                                                    this.state.selectedFunction
-                                                  }
-                                                  onChange={
-                                                    this.setFunctionValue
-                                                  }
-                                                >
-                                                  <option>Task Function</option>
-                                                  {this.state.FunctionData !==
-                                                    null &&
-                                                    this.state.FunctionData.map(
-                                                      (item, i) => (
-                                                        <option
-                                                          key={i}
-                                                          value={
-                                                            item.functionID
-                                                          }
-                                                        >
-                                                          {item.funcationName}
-                                                        </option>
-                                                      )
-                                                    )}
-                                                </select>
-                                              </div> */}
-                                    {/* <div className="col-sm-6">
-                                                <select
-                                                  value={
-                                                    this.state
-                                                      .selectedClaimIssueType
-                                                  }
-                                                  onChange={
-                                                    this.setClaimIssueTypeValue
-                                                  }
-                                                >
-                                                  <option>
-                                                    Claim Issue Type
-                                                  </option>
-                                                  {this.state
-                                                    .ClaimIssueTypeData !==
-                                                    null &&
-                                                    this.state.ClaimIssueTypeData.map(
-                                                      (item, i) => (
-                                                        <option
-                                                          key={i}
-                                                          value={
-                                                            item.issueTypeID
-                                                          }
-                                                        >
-                                                          {item.issueTypeName}
-                                                        </option>
-                                                      )
-                                                    )}
-                                                </select>
-                                              </div> */}
-                                    {/* </React.Fragment>
-                                          ) : null} */}
+                                  
+                                     
+                                    
                                   </div>
                                 </div>
                               </div>
-                              {/* <div className="row justify-content-between">
-                                      <div className="col-auto d-flex align-items-center">
-                                        <p className="font-weight-bold mr-3">
-                                          <span className="blue-clr">04</span>{" "}
-                                          Results
-                                        </p>
-                                        <p className="blue-clr fs-14">
-                                          CLEAR SEARCH
-                                        </p>
-                                      </div>
-                                      <div className="col-auto mob-mar-btm">
-                                        <button>
-                                          <img
-                                            className="position-relative csv-icon"
-                                            src={csv}
-                                            alt="csv-icon"
-                                          />
-                                          CSV
-                                        </button>
-                                        <button>
-                                          <img
-                                            className="sch-icon"
-                                            src={Schedule}
-                                            alt="schedule-icon"
-                                          />
-                                          Schedule
-                                        </button>
-                                        <button className="btn-inv btn-dis">
-                                          <img
-                                            src={Assign}
-                                            className="assign-icon"
-                                            alt="assign-icon"
-                                          />
-                                          Assign
-                                        </button>
-                                      </div>
-                                    </div>
-                                   */}
+                              
                             </div>
                           </div>
                         </div>
@@ -5069,7 +4095,9 @@ class Dashboard extends Component {
                           <div className="row common-adv-padd justify-content-between">
                             <div className="col-auto d-flex align-items-center">
                               <p className="font-weight-bold mr-3">
-                                <span className="blue-clr">04</span> Results
+                                <span className="blue-clr">{this.state.resultCount < 9
+                                            ? "0" + this.state.resultCount
+                                            : this.state.resultCount}</span> Results
                               </p>
                               <p
                                 className="blue-clr fs-14"
@@ -5079,14 +4107,7 @@ class Dashboard extends Component {
                               </p>
                             </div>
                             <div className="col-auto mob-mar-btm">
-                              {/* <button>
-                                <img
-                                  className="position-relative csv-icon"
-                                  src={csv}
-                                  alt="csv-icon"
-                                />
-                                CSV
-                              </button> */}
+                              
                               <CSVLink className="csv-button" data={this.state.SearchTicketData}><img
                                   className="position-relative csv-icon"
                                   src={csv}
@@ -5117,21 +4138,7 @@ class Dashboard extends Component {
                                     <b>Schedule date to</b>
                                   </label>
                                   <div>
-                                    {/* <select
-                                            id="inputState"
-                                            className="form-control dropdown-setting1 ScheduleDate-to"
-                                            value={
-                                              this.state.selectedScheduleFor
-                                            }
-                                            onChange={this.setScheduleFor}
-                                          >
-                                            <option value="team-member">
-                                              Team Member
-                                            </option>
-                                            <option value="team-member-1">
-                                              Team Member 1
-                                            </option>
-                                          </select> */}
+                                    
                                     <div className="normal-dropdown dropdown-setting1 schedule-multi">
                                       <Select
                                         getOptionLabel={option =>
@@ -5364,13 +4371,7 @@ class Dashboard extends Component {
                                                         isMulti
                                                       />
                                                     </div>
-                                            {/* <select
-                                              id="inputState"
-                                              className="form-control dropdown-setting1"
-                                            >
-                                              <option>Sunday</option>
-                                              <option>Monday</option>
-                                            </select> */}
+                                            
                                           </div>
                                         </div>
                                       </div>
@@ -5387,13 +4388,7 @@ class Dashboard extends Component {
                                             on
                                           </label>
                                           <div className="col-md-7">
-                                            {/* <select
-                                              id="inputState"
-                                              className="form-control dropdown-setting1"
-                                            >
-                                              <option>Septmber</option>
-                                              <option>Octomber</option>
-                                            </select> */}
+                                             
                                             <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
                                                       <Select
                                                         getOptionLabel={option =>
@@ -5473,16 +4468,7 @@ class Dashboard extends Component {
                                         </span>
                                         <div className="row mt-3">
                                           <div className="col-md-5">
-                                            {/* <select
-                                              id="inputState"
-                                              className="form-control dropdown-setting1"
-                                              style={{
-                                                width: "100px"
-                                              }}
-                                            >
-                                              <option>Sunday</option>
-                                              <option>Monday</option>
-                                            </select> */}
+                                           
                                             <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
                                                       <Select
                                                         getOptionLabel={option =>
@@ -5522,16 +4508,7 @@ class Dashboard extends Component {
                                             to
                                           </label>
                                           <div className="col-md-5">
-                                            {/* <select
-                                              id="inputState"
-                                              className="form-control dropdown-setting1"
-                                              style={{
-                                                width: "100px"
-                                              }}
-                                            >
-                                              <option>Septmber</option>
-                                              <option>Octomber</option>
-                                            </select> */}
+                                            
                                             <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
                                                       <Select
                                                         getOptionLabel={option =>
@@ -6061,7 +5038,7 @@ class Dashboard extends Component {
             </div>
           </div>
         </section>
-        <Modal
+        {/* <Modal
           open={this.state.open}
           onClose={this.onCloseModal}
           center
@@ -6128,7 +5105,7 @@ class Dashboard extends Component {
               </li>
             </ul>
           </div>
-        </Modal>
+        </Modal> */}
       </Fragment>
     );
   }

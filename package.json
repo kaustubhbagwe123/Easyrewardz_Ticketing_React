@@ -83,6 +83,7 @@
     "react-tag-input": "^6.4.1",
     "react-times": "^3.1.12",
     "react-validation": "^3.0.7",
+    "react-widgets": "^4.4.11",
     "reactstrap": "^8.3.1",
     "recharts": "^1.8.5",
     "rsuite": "^4.2.0",

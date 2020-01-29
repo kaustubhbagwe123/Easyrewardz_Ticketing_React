@@ -374,7 +374,7 @@ class MyTicketTask extends Component {
               onChange={this.handleTaskOnchangeData}
               maxLength="100"
             />
-            {this.state.taskTitle.length == 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.taskTitleCompulsion}</p>}
+            {this.state.taskTitle.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.taskTitleCompulsion}</p>}
             <textarea
               className="ClaimAddTadk-modal-textArea mb-0"
               placeholder="Task Description"
@@ -384,7 +384,7 @@ class MyTicketTask extends Component {
               onChange={this.handleTaskOnchangeData}
               maxLength="250"
             ></textarea>
-            {this.state.taskDescription.length == 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.taskDescCompulsion}</p>}
+            {this.state.taskDescription.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.taskDescCompulsion}</p>}
             <div className="row m-t-15">
               <div className="col-md-6">
                 <select
@@ -407,7 +407,7 @@ class MyTicketTask extends Component {
                       </option>
                     ))}
                 </select>
-                {this.state.selectedDepartment.length == 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.taskDepartmentCompulsion}</p>}
+                {this.state.selectedDepartment.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.taskDepartmentCompulsion}</p>}
               </div>
               <div className="col-md-6">
                 <select
@@ -430,7 +430,7 @@ class MyTicketTask extends Component {
                       </option>
                     ))}
                 </select>
-                {this.state.selectedFunction.length == 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.taskFunctionCompulsion}</p>}
+                {this.state.selectedFunction.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.taskFunctionCompulsion}</p>}
               </div>
             </div>
             <div className="row m-t-15">
@@ -455,7 +455,7 @@ class MyTicketTask extends Component {
                       </option>
                     ))}
                 </select>
-                {this.state.selectedAssignTo.length == 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.taskAssignToCompulsion}</p>}
+                {this.state.selectedAssignTo.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.taskAssignToCompulsion}</p>}
               </div>
               <div className="col-md-6">
                 <select
@@ -478,7 +478,7 @@ class MyTicketTask extends Component {
                       </option>
                     ))}
                 </select>
-                {this.state.selectedPriority.length == 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.taskPriorityCompulsion}</p>}
+                {this.state.selectedPriority.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.taskPriorityCompulsion}</p>}
               </div>
             </div>
             <div className="row m-t-20" style={{ float: "right" }}>

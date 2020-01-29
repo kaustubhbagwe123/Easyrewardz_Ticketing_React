@@ -9,6 +9,7 @@ import config from "../../helpers/config";
 import { authHeader } from "../../helpers/authHeader";
 import MinusImg from "./../../assets/Images/minus.png";
 import matchSorter from "match-sorter";
+import DatePicker from "react-datepicker";
 
 class TicketSystemStore extends Component {
   constructor(props) {
@@ -27,7 +28,8 @@ class TicketSystemStore extends Component {
       CheckStoreID: {},
       selectedStoreData: [],
       filterAll: "",
-      filtered: []
+      filtered: [],
+      byVisitDate:""
     };
     this.handleOrderStoreTableOpen = this.handleOrderStoreTableOpen.bind(this);
     this.handleOrderStoreTableClose = this.handleOrderStoreTableClose.bind(
@@ -42,6 +44,10 @@ class TicketSystemStore extends Component {
   }
   handleOrderStoreTableClose() {
     this.setState({ OrderStoreTable: false });
+  }
+  handleByvisitDate(date) {
+    debugger;
+    this.setState({ byVisitDate: date });
   }
   handleStoreStatus = e => {
     this.setState({
@@ -128,14 +134,10 @@ class TicketSystemStore extends Component {
       this.setState({
         selectedStoreData: rowData
       });
-      
     } else {
       if (newSelected[storeMasterID] === true) {
         for (var i = 0; i < this.state.selectedStoreData.length; i++) {
-          if (
-            this.state.selectedStoreData[i] ===
-            rowData
-          ) {
+          if (this.state.selectedStoreData[i] === rowData) {
             selectedRow.splice(i, 1);
 
             break;
@@ -147,22 +149,19 @@ class TicketSystemStore extends Component {
         }
       } else {
         for (var j = 0; j < this.state.selectedStoreData.length; j++) {
-          if (
-            this.state.selectedStoreData[j] ===
-            rowData
-          ) {
+          if (this.state.selectedStoreData[j] === rowData) {
             selectedRow = this.state.selectedStoreData;
             selectedRow.splice(j, 1);
             break;
           }
         }
       }
-   }
-  
-  this.setState({
-    selectedStoreData: selectedRow
-  });
-   
+    }
+
+    this.setState({
+      selectedStoreData: selectedRow
+    });
+
     {
       this.props.getStoreID(selectedRow);
     }
@@ -188,7 +187,7 @@ class TicketSystemStore extends Component {
     this.setState({ filterAll, filtered });
   }
   render() {
-    const { SearchData,selectedStoreData } = this.state;
+    const { SearchData, selectedStoreData } = this.state;
     return (
       <Fragment>
         <div className="ticketSycard">
@@ -323,19 +322,19 @@ class TicketSystemStore extends Component {
                         </a>
                       </li>
                       {this.state.selectedStoreData.length !== 0 ? (
-                       <li className="nav-item fo">
-                       <a
-                         className="nav-link"
-                         data-toggle="tab"
-                         href="#selectedstore-tab"
-                         role="tab"
-                         aria-controls="selectedstore-tab"
-                         aria-selected="false"
-                       >
-                         Selected Store
-                       </a>
-                     </li>
-                      ) :  null}
+                        <li className="nav-item fo">
+                          <a
+                            className="nav-link"
+                            data-toggle="tab"
+                            href="#selectedstore-tab"
+                            role="tab"
+                            aria-controls="selectedstore-tab"
+                            aria-selected="false"
+                          >
+                            Selected Store
+                          </a>
+                        </li>
+                      ) : null}
                     </ul>
                   </div>
                 </div>
@@ -348,7 +347,7 @@ class TicketSystemStore extends Component {
                   role="tabpanel"
                   aria-labelledby="storedetail-tab"
                 >
-                  <div className="reactstoreselect bckHide">
+                  <div className="reactstoreselect">
                     <ReactTable
                       data={SearchData}
                       onFilteredChange={this.onFilteredChange.bind(this)}
@@ -360,8 +359,8 @@ class TicketSystemStore extends Component {
                         {
                           columns: [
                             {
-                              Header: <span>Purpose</span>,
-                              accessor: "invoiceNumber",
+                              Header: <span>Store Code</span>,
+                              accessor: "storeCode",
                               Cell: row => (
                                 <div
                                   className="filter-checkbox"
@@ -388,10 +387,6 @@ class TicketSystemStore extends Component {
                                   </label>
                                 </div>
                               )
-                            },
-                            {
-                              Header: <span>Store Code</span>,
-                              accessor: "storeCode"
                             },
                             {
                               Header: <span>Store Name</span>,
@@ -466,7 +461,7 @@ class TicketSystemStore extends Component {
                   role="tabpanel"
                   aria-labelledby="selectedstore-tab"
                 >
-                  <div className="reactstoreselect">
+                  <div className="reactstoreselect datePickertable">
                     <ReactTable
                       data={selectedStoreData}
                       columns={[
@@ -504,7 +499,21 @@ class TicketSystemStore extends Component {
                         },
                         {
                           Header: <span>Store Code</span>,
-                          accessor: "storeCode"
+                          accessor: "storeCode",
+                          Cell: row => (
+                            <div className="col-md-3 col-sm-6">
+                              <DatePicker
+                                selected={this.state.byVisitDate}
+                                onChange={this.handleByvisitDate.bind(this)}
+                                placeholderText="Visite Date"
+                                showMonthDropdown
+                                showYearDropdown
+                                dateFormat="dd/MM/yyyy"
+                                value={this.state.byVisitDate}
+                                // className="form-control"
+                              />
+                            </div>
+                          )
                         },
                         {
                           Header: <span>Store Name</span>,
@@ -525,13 +534,27 @@ class TicketSystemStore extends Component {
                         {
                           Header: <span>Visit Date</span>,
                           accessor: "visitDate",
-                          Cell: row => <label>23,Aug 2019</label>
+                          // Cell: row => (
+                          //   <div className="col-md-3 col-sm-6">
+                          //     <DatePicker
+                          //       selected={this.state.byVisitDate}
+                          //       onChange={this.handleByvisitDate.bind(this)}
+                          //       placeholderText="Visite Date"
+                          //       showMonthDropdown
+                          //       showYearDropdown
+                          //       dateFormat="dd/MM/yyyy"
+                          //       value={this.state.byVisitDate}
+                          //       // className="form-control"
+                          //     />
+                          //   </div>
+                          // )
                         }
                       ]}
                       // resizable={false}
                       defaultPageSize={5}
                       showPagination={false}
                     />
+                 
                   </div>
                 </div>
               </div>
@@ -583,89 +606,276 @@ class TicketSystemStore extends Component {
                   className="row m-t-10 m-b-10"
                   style={{ marginLeft: "0", marginRight: "0" }}
                 >
-                  <div className="col-md-9">
-                    <label
-                      className="orderdetailpopup"
-                      style={{ marginTop: "3px" }}
+                  <div className="">
+                    <ul
+                      className="nav alert-nav-tabs3 store-nav-tabs"
+                      role="tablist"
                     >
-                      Store Details
-                    </label>
+                      <li className="nav-item fo">
+                        <a
+                          className="nav-link active"
+                          data-toggle="tab"
+                          href="#storeSubdetail-tab"
+                          role="tab"
+                          aria-controls="storeSubdetail-tab"
+                          aria-selected="true"
+                        >
+                          Store Details
+                        </a>
+                      </li>
+                      {this.state.AddSelectDetail === true ? (
+                        <li className="nav-item fo">
+                          <a
+                            className="nav-link"
+                            data-toggle="tab"
+                            href="#selectedSubstore-tab"
+                            role="tab"
+                            aria-controls="selectedSubstore-tab"
+                            aria-selected="false"
+                          >
+                            Selected Store
+                          </a>
+                        </li>
+                      ) : null}
+                    </ul>
                   </div>
                 </div>
                 <span className="linestore2"></span>
-                <div className="reactstoreselect ordermainrow">
-                  <ReactTable
-                    data={SearchData}
-                    columns={[
-                      {
-                        Header: <span>Purpose</span>,
-                        accessor: "invoiceNumber",
-                        Cell: row => (
-                          <div
-                            className="filter-checkbox"
-                            style={{ marginLeft: "15px" }}
-                          >
-                            <input
-                              type="checkbox"
-                              id={"selected" + row.original.storeID}
-                              style={{ display: "none" }}
-                              name="ticket-store"
-                              checked={
-                                this.state.CheckStoreID[
-                                  row.original.storeID
-                                ] === true
-                              }
-                              onChange={this.handleCheckStoreID.bind(
-                                this,
-                                row.original.storeID,
-                                row.original
-                              )}
-                            />
-                            <label htmlFor={"selected" + row.original.storeID}>
-                              {row.original.storeID}
-                            </label>
-                          </div>
-                        )
-                      },
-                      {
-                        Header: <span>Store Code</span>,
-                        accessor: "storeCode"
-                      },
-                      {
-                        Header: <span>Store Name</span>,
-                        accessor: "storeName"
-                      },
-                      {
-                        Header: <span>Store Pin Code</span>,
-                        accessor: "storeCode"
-                      },
-                      {
-                        Header: <span>Store Email ID</span>,
-                        accessor: "storeEmailID"
-                      },
-                      {
-                        Header: <span>Store Addres</span>,
-                        accessor: "address"
-                      },
-                      {
-                        Header: <span>Visit Date</span>,
-                        accessor: "visitDate",
-                        Cell: row => <label>23,Aug 2019</label>
-                      }
-                    ]}
-                    // resizable={false}
-                    defaultPageSize={5}
-                    showPagination={false}
-                  />
-                </div>
-                <div className="storedetailtabsbutton">
-                  <button
-                    type="button"
-                    className="addstoretabsbtn"
-                    onClick={this.handleShowSearchSelectDetails.bind(this)}
+                <div className="tab-content p-0">
+                  <div
+                    className="tab-pane fade show active"
+                    id="storeSubdetail-tab"
+                    role="tabpanel"
+                    aria-labelledby="storeSubdetail-tab"
                   >
-                    ADD STORE
-                  </button>
+                    <div className="reactstoreselect">
+                      <ReactTable
+                        data={SearchData}
+                        onFilteredChange={this.onFilteredChange.bind(this)}
+                        filtered={this.state.filtered}
+                        defaultFilterMethod={(filter, row) =>
+                          String(row[filter.id]) === filter.value
+                        }
+                        columns={[
+                          {
+                            columns: [
+                              {
+                                Header: <span>Store Code</span>,
+                                accessor: "storeCode",
+                                Cell: row => (
+                                  <div
+                                    className="filter-checkbox"
+                                    style={{ marginLeft: "15px" }}
+                                  >
+                                    <input
+                                      type="checkbox"
+                                      id={"i" + row.original.storeID}
+                                      style={{ display: "none" }}
+                                      name="ticket-store"
+                                      checked={
+                                        this.state.CheckStoreID[
+                                          row.original.storeID
+                                        ] === true
+                                      }
+                                      onChange={this.handleCheckStoreID.bind(
+                                        this,
+                                        row.original.storeID,
+                                        row.original
+                                      )}
+                                    />
+                                    <label htmlFor={"i" + row.original.storeID}>
+                                      {row.original.storeID}
+                                    </label>
+                                  </div>
+                                )
+                              },
+                              {
+                                Header: <span>Store Name</span>,
+                                accessor: "storeName"
+                              },
+                              {
+                                Header: <span>Store Pin Code</span>,
+                                accessor: "storeCode"
+                              },
+                              {
+                                Header: <span>Store Email ID</span>,
+                                accessor: "storeEmailID"
+                              },
+                              {
+                                Header: <span>Store Addres</span>,
+                                accessor: "address"
+                              },
+                              {
+                                Header: <span>Visit Date</span>,
+                                accessor: "visitDate",
+                                Cell: row => <label>23,Aug 2019</label>
+                              }
+                            ]
+                          },
+                          {
+                            show: false,
+                            Header: "All",
+                            id: "all",
+                            width: 0,
+                            resizable: false,
+                            sortable: false,
+                            Filter: () => {},
+                            getProps: () => {
+                              return {
+                                // style: { padding: "0px"}
+                              };
+                            },
+                            filterMethod: (filter, rows) => {
+                              debugger;
+                              var result = matchSorter(rows, filter.value, {
+                                keys: [
+                                  "invoiceNumber",
+                                  "storeCode",
+                                  "storeName",
+                                  "storeEmailID",
+                                  "address",
+                                  "visitDate"
+                                ],
+                                threshold: matchSorter.rankings.WORD_STARTS_WITH
+                              });
+                              if (result.length > 0) {
+                                debugger;
+                                return result;
+                              } else {
+                                debugger;
+                                result = [{ storeEmailID: "No Record Found" }];
+                                return result;
+                              }
+                            },
+                            filterAll: true
+                          }
+                        ]}
+                        // resizable={false}
+                        defaultPageSize={5}
+                        showPagination={false}
+                      />
+                    </div>
+                    {this.state.selectedStoreData.length !== 0 ? (
+                      <div className="storedetailtabsbutton">
+                        <button
+                          type="button"
+                          className="addstoretabsbtn"
+                          onClick={this.handleShowSearchSelectDetails.bind(
+                            this
+                          )}
+                        >
+                          ADD STORE
+                        </button>
+                      </div>
+                    ) : null}
+                  </div>
+                  <div
+                    className="tab-pane fade"
+                    id="selectedSubstore-tab"
+                    role="tabpanel"
+                    aria-labelledby="selectedSubstore-tab"
+                  >
+                    <div className="reactstoreselect">
+                      <ReactTable
+                        data={selectedStoreData}
+                        columns={[
+                          // {
+                          //   Header: <span>Purpose</span>,
+                          //   accessor: "invoiceNumber",
+                          //   Cell: row => (
+                          //     <div
+                          //       className="filter-checkbox"
+                          //       style={{ marginLeft: "15px" }}
+                          //     >
+                          //       <input
+                          //         type="checkbox"
+                          //         id={"selected" + row.original.storeID}
+                          //         style={{ display: "none" }}
+                          //         name="ticket-store"
+                          //         checked={
+                          //           this.state.CheckStoreID[
+                          //             row.original.storeID
+                          //           ] === true
+                          //         }
+                          //         onChange={this.handleCheckStoreID.bind(
+                          //           this,
+                          //           row.original.storeID,
+                          //           row.original
+                          //         )}
+                          //       />
+                          //       <label
+                          //         htmlFor={"selected" + row.original.storeID}
+                          //       >
+                          //         {row.original.storeID}
+                          //       </label>
+                          //     </div>
+                          //   )
+                          // },
+                          {
+                            Header: <span>Store Code</span>,
+                            accessor: "storeCode",
+                            Cell: row => (
+                              <div
+                                className="filter-checkbox"
+                                style={{ marginLeft: "15px" }}
+                              >
+                                <input
+                                  type="checkbox"
+                                  id={"selected" + row.original.storeID}
+                                  style={{ display: "none" }}
+                                  name="ticket-store"
+                                  checked={
+                                    this.state.CheckStoreID[
+                                      row.original.storeID
+                                    ] === true
+                                  }
+                                  onChange={this.handleCheckStoreID.bind(
+                                    this,
+                                    row.original.storeID,
+                                    row.original
+                                  )}
+                                />
+                                <label
+                                  htmlFor={"selected" + row.original.storeID}
+                                >
+                                  {row.original.storeID}
+                                </label>
+                              </div>
+                            )
+                          },
+                          {
+                            Header: <span>Store Name</span>,
+                            accessor: "storeName"
+                          },
+                          {
+                            Header: <span>Store Pin Code</span>,
+                            accessor: "storeCode"
+                          },
+                          {
+                            Header: <span>Store Email ID</span>,
+                            accessor: "storeEmailID"
+                          },
+                          {
+                            Header: <span>Store Addres</span>,
+                            accessor: "address"
+                          },
+                          {
+                            Header: <span>Visit Date</span>,
+                            accessor: "visitDate",
+                            Cell: row => <label>23,Aug 2019</label>
+                          }
+                        ]}
+                        // resizable={false}
+                        defaultPageSize={5}
+                        showPagination={false}
+                      />
+                    </div>
+                    <div className="storedetailtabsbutton">
+                      <button type="button" className="addstoretabsbtn">
+                        REMOVE STORE
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             ) : null}
