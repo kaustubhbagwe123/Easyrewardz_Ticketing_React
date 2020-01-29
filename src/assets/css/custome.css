@@ -1849,7 +1849,7 @@ body {
 .fs-12 {
   font-size: 12px;
 }
-button {
+button, .csv-button {
   background-color: #ecf2f4;
   border: 1px solid #2561a8;
   border-radius: 5px;
@@ -9716,7 +9716,7 @@ table tr th:last-child {
   padding-right: 25px;
   padding-left: 25px;
 }
-.myticlist-expand-sect button {
+.myticlist-expand-sect button, .csv-button {
   background-color: #fff;
   margin-right: 15px;
   padding-top: 12px;
@@ -10170,6 +10170,11 @@ table tr th:last-child {
   padding: 10px 15px !important;
 }
 
+
 .bckHide .rt-th{
   display: none;
+}
+.tableSrolling{
+  max-height: 300px;
+  overflow: auto;
 }

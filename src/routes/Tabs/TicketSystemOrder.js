@@ -54,7 +54,8 @@ class TicketSystemOrder extends Component {
       modeData: {},
       orderMasterID: false,
       filterAll: "",
-      filtered: []
+      filtered: [],
+      expanded: null
     };
     this.validator = new SimpleReactValidator();
     this.onFilteredChange = this.onFilteredChange.bind(this);
@@ -354,10 +355,23 @@ class TicketSystemOrder extends Component {
 
     this.setState({ filterAll, filtered });
   }
+  expand_row(row) {
+    var expanded = {...this.state.expanded};
+    if (expanded[row.index]) {
+      expanded[row.index] = !expanded[row.index];
+    } else {
+      expanded[row.index] = true;
+    }
+
+    console.log(expanded);
+    this.setState({
+      expanded: expanded
+    });
+  }
 
   render() {
     const { orderDetailsData } = this.state;
-
+    const defaultExpandedRows = orderDetailsData.map(() => {return true});
     return (
       <div className="ticketSycard">
         <div className="ticketSycard1">
@@ -461,7 +475,7 @@ class TicketSystemOrder extends Component {
                 />
               </div>
             </div>
-            <div className="reacttableordermodal ordermainrow">
+            <div className="reacttableordermodal ordermainrow tableSrolling headers-menu">
             <ReactTable
                 data={orderDetailsData}
                 // noDataText=""
@@ -635,7 +649,14 @@ class TicketSystemOrder extends Component {
                           },
                           {
                             Header: <span>Required Size</span>,
-                            accessor: "requireSize"
+                            accessor: "requireSize",
+                            Cell: row => {
+                              return (
+                                <div>
+                                    <input type="text" name="requiredize" />
+                                </div>
+                              );
+                            }
                           }
                         ]}
                         defaultPageSize={2}
@@ -643,7 +664,8 @@ class TicketSystemOrder extends Component {
                       />
                     </div>
                   );
-                }}
+                }
+              }
               />
             </div>
           </Modal>
@@ -1094,6 +1116,14 @@ class TicketSystemOrder extends Component {
                 // resizable={false}
                 defaultPageSize={3}
                 showPagination={false}
+                expanded={this.state.expanded}
+                getTdProps={(state, rowInfo, column, instance) => {
+                  return {
+                    onClick: e => {
+                      this.expand_row(rowInfo);
+                    }
+                  };
+                }}
                 SubComponent={row => {
                   return (
                     <div style={{ padding: "20px" }}>

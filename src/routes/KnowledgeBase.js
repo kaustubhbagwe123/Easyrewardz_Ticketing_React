@@ -378,6 +378,7 @@ handleRejectKB(id,bit){
           
         
       }
+     
       self.handleKBList();
     });
   }
@@ -410,6 +411,7 @@ handleRejectKB(id,bit){
         NotificationManager.success("Record Approved successfully.");
       
     }
+    self.closeEditAproveModal1();
     self.handleKBList();
   });
 }
@@ -463,6 +465,7 @@ handleSeaechKB(){
       selectedSubCategory:0,
       selectedIssueType:0
     });
+    self.closeSearchModal();
   });
 }
 
@@ -496,7 +499,7 @@ handleUpdateKB(kbid){
     else{
     NotificationManager.error("Record not Selected OR Sequence is Wrong")
     }
- 
+ self.closeEditAproveModal();
     self.handleKBList();
    
   }).catch(error => {
@@ -540,6 +543,7 @@ handleAddKB(){
       selectedSubject:"",
       ckeditorAdd:""
     });
+    self.closeAddNewKBModal();
     self.handleKBList();
   }).catch(error => {
 

@@ -76,11 +76,11 @@ class TicketSystem extends Component {
       ticketDetails: "",
       ticketSuggestion: {},
       ticketNote: "",
-      selectedBrand: 0,
+      selectedBrand: '',
       createdBy: 6,
-      selectedCategory: 0,
+      selectedCategory: '',
       selectedCategoryKB: 0,
-      selectedSubCategory: 0,
+      selectedSubCategory: '',
       selectedSubCategoryKB: 0,
       selectedIssueType: 0,
       selectedIssueTypeKB: 0,
@@ -129,7 +129,10 @@ class TicketSystem extends Component {
       loading: false,
       imageView: "",
       ticketTitleCompulsion: '',
-      ticketDetailsCompulsion: ''
+      ticketDetailsCompulsion: '',
+      ticketBrandCompulsion: '',
+      ticketCategoryCompulsion: '',
+      ticketSubCategoryCompulsion: '',
     };
     this.validator = new SimpleReactValidator();
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
@@ -665,7 +668,7 @@ class TicketSystem extends Component {
     debugger;
     // this.setState({ loading: true });
     // if (this.validator.allValid()) {
-    if (this.state.titleSuggValue.length > 0 && this.state.ticketDetails.length > 0) {
+    if (this.state.titleSuggValue.length > 0 && this.state.ticketDetails.length > 0 && this.state.selectedBrand.length > 0 && this.state.selectedCategory.length > 0 && this.state.selectedSubCategory.length > 0) {
     this.setState({ loading: true });
     let self = this;
     // var OID = this.state.selectedTicketPriority;
@@ -747,41 +750,42 @@ class TicketSystem extends Component {
     });
   } else {
     this.setState({
-      ticketTitleCompulsion: 'Ticket Title field is compulsary.',
-      ticketDetailsCompulsion: 'Ticket Details field is compulsary.'
+      ticketTitleCompulsion: 'Ticket Title field is compulsory.',
+      ticketDetailsCompulsion: 'Ticket Details field is compulsory.',
+      ticketBrandCompulsion: 'Brand field is compulsory.',
+      ticketCategoryCompulsion: 'Category field is compulsory.',
+      ticketSubCategoryCompulsion: 'Sub Category field is compulsory.',
     })
   }
-    // } else {
-    //   this.validator.showMessages();
-    //   this.forceUpdate();
-    // }
+   
+  // Don't remove this function
   }
-  handleSendMailData() {
-    debugger;
-    var subject = "Demo Mail";
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Ticketing/SendMail",
-      headers: authHeader(),
-      params: {
-        EmailID: this.state.customerData.customerEmailId,
-        Mailcc: this.state.mailFiled.userCC,
-        Mailbcc: this.state.mailFiled.userBCC,
-        Mailsubject: subject,
-        MailBody: this.state.mailBodyData,
-        informStore: this.state.InformStore,
-        storeID: ""
-      }
-    }).then(function(res) {
-      debugger;
-      let status = res.data.status;
-      if (status === true) {
-        NotificationManager.success(res.data.responseData);
-      } else {
-        NotificationManager.error(res.data.responseData);
-      }
-    });
-  }
+  // handleSendMailData() {
+  //   debugger;
+  //   var subject = "Demo Mail";
+  //   axios({
+  //     method: "post",
+  //     url: config.apiUrl + "/Ticketing/SendMail",
+  //     headers: authHeader(),
+  //     params: {
+  //       EmailID: this.state.customerData.customerEmailId,
+  //       Mailcc: this.state.mailFiled.userCC,
+  //       Mailbcc: this.state.mailFiled.userBCC,
+  //       Mailsubject: subject,
+  //       MailBody: this.state.mailBodyData,
+  //       informStore: this.state.InformStore,
+  //       storeID: ""
+  //     }
+  //   }).then(function(res) {
+  //     debugger;
+  //     let status = res.data.status;
+  //     if (status === true) {
+  //       NotificationManager.success(res.data.responseData);
+  //     } else {
+  //       NotificationManager.error(res.data.responseData);
+  //     }
+  //   });
+  // }
 
   handlebackprev() {
     this.props.history.push("myTicketList");
@@ -862,25 +866,25 @@ class TicketSystem extends Component {
   renderIcon(name){
     debugger;
     let ext=name.split('.')[1].toLowerCase();
-    if(ext=="xls"||ext=="xlsx")
+    if(ext==="xls"||ext==="xlsx")
     {
       return(     
         Excel
       )
     }
-    else if(ext=="doc" ||ext=="docx" || ext=="txt")
+    else if(ext==="doc" ||ext==="docx" || ext==="txt")
     {
       return(     
         Word
       )
     }
-    else if(ext=="csv")
+    else if(ext==="csv")
     {
       return(     
         CSVi
       )
     }
-    else if(ext=="pdf")
+    else if(ext==="pdf")
     {
       return(     
         PDF
@@ -1002,9 +1006,9 @@ class TicketSystem extends Component {
                           }}
                           id="titleSuggestion"
                           autoComplete="off"
-                          style={{ 'margin-bottom' : '5px' }}
+                          style={{ 'marginBottom' : '5px' }}
                         />
-                        {this.state.titleSuggValue.length == 0 && <p style={{ 'color' : 'red', 'margin-bottom' : '0px' }}>{this.state.ticketTitleCompulsion}</p>}
+                        {this.state.titleSuggValue.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.ticketTitleCompulsion}</p>}
                         {this.validator.message(
                           "TicketTitle",
                           this.state.titleSuggValue,
@@ -1040,7 +1044,7 @@ class TicketSystem extends Component {
                         onChange={this.handleTicketChange}
                         maxLength={250}
                       ></textarea>
-                      {this.state.ticketDetails.length == 0 && <p style={{ 'color' : 'red', 'margin-bottom' : '0px' }}>{this.state.ticketDetailsCompulsion}</p>}
+                      {this.state.ticketDetails.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.ticketDetailsCompulsion}</p>}
                       {this.validator.message(
                         "ticketDetails",
                         this.state.ticketDetails,
@@ -1057,7 +1061,7 @@ class TicketSystem extends Component {
                         value={this.state.selectedBrand}
                         onChange={this.setBrandValue}
                       >
-                        <option className="select-category-placeholder">
+                        <option value='' className="select-category-placeholder">
                           Select Brand
                         </option>
                         {this.state.BrandData !== null &&
@@ -1071,6 +1075,7 @@ class TicketSystem extends Component {
                             </option>
                           ))}
                       </select>
+                      {this.state.selectedBrand.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.ticketBrandCompulsion}</p>}
                     </div>
                     <div className="col-md-6">
                       <label className="sub-category">Category</label>
@@ -1079,7 +1084,7 @@ class TicketSystem extends Component {
                         onChange={this.setCategoryValue}
                         className="category-select-system dropdown-label"
                       >
-                        <option className="select-category-placeholder">
+                        <option value='' className="select-category-placeholder">
                           Select Category
                         </option>
                         {this.state.CategoryData !== null &&
@@ -1093,6 +1098,7 @@ class TicketSystem extends Component {
                             </option>
                           ))}
                       </select>
+                      {this.state.selectedCategory.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.ticketCategoryCompulsion}</p>}
                     </div>
                   </div>
 
@@ -1104,7 +1110,7 @@ class TicketSystem extends Component {
                         onChange={this.setSubCategoryValue}
                         className="category-select-system dropdown-label"
                       >
-                        <option className="select-category-placeholder">
+                        <option value='' className="select-category-placeholder">
                           Select Sub Category
                         </option>
                         {this.state.SubCategoryData !== null &&
@@ -1118,6 +1124,7 @@ class TicketSystem extends Component {
                             </option>
                           ))}
                       </select>
+                      {this.state.selectedSubCategory.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.ticketSubCategoryCompulsion}</p>}
                     </div>
                     <div className="col-md-6">
                       <label className="sub-category">Issue Type</label>
@@ -1140,6 +1147,7 @@ class TicketSystem extends Component {
                             </option>
                           ))}
                       </select>
+                      {this.state.selectedSubCategory.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.ticketIssueTypeCompulsion}</p>}
                     </div>
                   </div>
 
@@ -1485,7 +1493,7 @@ class TicketSystem extends Component {
                                 </div>
                               </label>
                             </li>
-                            <li>
+                            {/* <li>
                               <button
                                 className="send1"
                                 type="button"
@@ -1493,7 +1501,7 @@ class TicketSystem extends Component {
                               >
                                 Send
                               </button>
-                            </li>
+                            </li> */}
                           </ul>
                         </div>
                       </div>

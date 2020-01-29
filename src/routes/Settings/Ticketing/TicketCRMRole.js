@@ -256,39 +256,7 @@ class TicketCRMRole extends Component {
   };
 
   render() {
-    const popoverRoleName = (
-      <div>
-        <div className="rvmmargin">
-          <p className="rolle-name-text-popover">Dashboard</p>
-          <label className="pop-over-lbl-text-pop">Enable</label>
-        </div>
-        <div className="rvmmargin">
-          <p className="rolle-name-text-popover">Tickets</p>
-          <label className="pop-over-lbl-text-pop">Disable</label>
-        </div>
-        <div className="rvmmargin">
-          <p className="rolle-name-text-popover">knowledge Base</p>
-          <label className="pop-over-lbl-text-pop">Enable</label>
-        </div>
-        <div className="rvmmargin">
-          <p className="rolle-name-text-popover">Settings</p>
-          <label className="pop-over-lbl-text-pop">Disable</label>
-        </div>
-        <div className="rvmmargin">
-          <p className="rolle-name-text-popover">Chat</p>
-          <label className="pop-over-lbl-text-pop">Enable</label>
-        </div>
-        <div className="rvmmargin">
-          <p className="rolle-name-text-popover">Notification</p>
-          <label className="pop-over-lbl-text-pop">Disable</label>
-        </div>
-        <div className="rvmmargin">
-          <p className="rolle-name-text-popover">Reports</p>
-          <label className="pop-over-lbl-text-pop">Enable</label>
-        </div>
-      </div>
-    );
-
+   
     const columnsTickCrmRole = [
       {
         Header: (

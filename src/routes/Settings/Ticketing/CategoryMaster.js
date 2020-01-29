@@ -39,7 +39,7 @@ class CategoryMaster extends Component {
       ListOfSubCate: "",
       ListOfIssue: "",
       ShowSubCate: false,
-      ShowIssuetype:false,
+      ShowIssuetype: false,
       loading: false,
       categoryGridData: [],
       brandData: [],
@@ -49,8 +49,9 @@ class CategoryMaster extends Component {
       selectStatus: 0,
       category_Id: 0,
       selectBrand: 0,
-      subCategory_Id:0,
-      issueType_Id:0
+      subCategory_Id: 0,
+      issueType_Id: 0,
+      selectetedParameters:{}
     };
     this.handleGetCategoryGridData = this.handleGetCategoryGridData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -73,8 +74,8 @@ class CategoryMaster extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let status = res.data.message;
-      let data = res.data.responseData;
+      var status = res.data.message;
+      var data = res.data.responseData;
       if (status === "Success") {
         self.setState({
           categoryGridData: data,
@@ -184,7 +185,7 @@ class CategoryMaster extends Component {
 
   handleAddCategory(value) {
     debugger;
-    let self=this;
+    let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Category/AddCategory",
@@ -195,110 +196,110 @@ class CategoryMaster extends Component {
     }).then(function(res) {
       debugger;
       let status = res.data.message;
-      let data=res.data.responseData;
+      let data = res.data.responseData;
       if (status === "Success") {
         NotificationManager.success("Category added successfully.");
         self.setState({
-          category_Id:data
-        })
+          category_Id: data
+        });
       } else {
-        NotificationManager.error("Category not added."); 
+        NotificationManager.error("Category not added.");
       }
     });
   }
   handleAddSubCategory(value) {
     debugger;
-    let self=this;
-    var finalId=0;
-    if(this.state.category_Id === 0){
-      finalId=this.state.list1Value
-    }else{
-      finalId=this.state.category_Id
+    let self = this;
+    var finalId = 0;
+    if (this.state.category_Id === 0) {
+      finalId = this.state.list1Value;
+    } else {
+      finalId = this.state.category_Id;
     }
     axios({
       method: "post",
       url: config.apiUrl + "/SubCategory/AddSubCategory",
       headers: authHeader(),
       params: {
-        categoryID:finalId,
+        categoryID: finalId,
         SubcategoryName: value
       }
     }).then(function(res) {
       debugger;
       let status = res.data.message;
-      let data=res.data.responseData;
+      let data = res.data.responseData;
       if (status === "Success") {
         NotificationManager.success("SubCategory added successfully.");
         self.setState({
-          subCategory_Id:data
+          subCategory_Id: data
         });
       } else {
-        NotificationManager.error("SubCategory not added."); 
+        NotificationManager.error("SubCategory not added.");
       }
     });
   }
 
   handleAddIssueType(value) {
     debugger;
-    let self=this;
-    var finalId=0;
-    if(this.state.subCategory_Id === 0){
-      finalId=this.state.ListOfSubCate
-    }else{
-      finalId=this.state.subCategory_Id
+    let self = this;
+    var finalId = 0;
+    if (this.state.subCategory_Id === 0) {
+      finalId = this.state.ListOfSubCate;
+    } else {
+      finalId = this.state.subCategory_Id;
     }
     axios({
       method: "post",
       url: config.apiUrl + "/IssueType/AddIssueType",
       headers: authHeader(),
       params: {
-        SubcategoryID:finalId,
+        SubcategoryID: finalId,
         IssuetypeName: value
       }
     }).then(function(res) {
       debugger;
       let status = res.data.message;
-      let data=res.data.responseData;
+      let data = res.data.responseData;
       if (status === "Success") {
         NotificationManager.success("Issue Type added successfully.");
         self.setState({
-          issueType_Id:data
+          issueType_Id: data
         });
       } else {
-        NotificationManager.error("Issue Type not added."); 
+        NotificationManager.error("Issue Type not added.");
       }
     });
   }
 
   handleSubmitData() {
-     debugger;
+    debugger;
     let self = this;
     var activeStatus = 0;
-    var categorydata=0;
-    var subCategoryData=0;
-    var IssueData=0;
+    var categorydata = 0;
+    var subCategoryData = 0;
+    var IssueData = 0;
     var status = this.state.selectStatus;
     if (status === "Active") {
       activeStatus = 1;
     } else {
       activeStatus = 0;
     }
-    if(isNaN(this.state.list1Value)){
-      categorydata=this.state.category_Id
-    }else{
-      categorydata=this.state.list1Value
+    if (isNaN(this.state.list1Value)) {
+      categorydata = this.state.category_Id;
+    } else {
+      categorydata = this.state.list1Value;
     }
 
-    if(isNaN(this.state.ListOfSubCate)){
-      subCategoryData=this.state.subCategory_Id;
-    }else{
-      subCategoryData=this.state.ListOfSubCate
+    if (isNaN(this.state.ListOfSubCate)) {
+      subCategoryData = this.state.subCategory_Id;
+    } else {
+      subCategoryData = this.state.ListOfSubCate;
     }
 
-    if(isNaN(this.state.ListOfIssue)){
-      IssueData=this.state.issueType_Id
-    }else{
-      IssueData=this.state.ListOfIssue
+    if (isNaN(this.state.ListOfIssue)) {
+      IssueData = this.state.issueType_Id;
+    } else {
+      IssueData = this.state.ListOfIssue;
     }
 
     axios({
@@ -382,73 +383,18 @@ class CategoryMaster extends Component {
       }
     }, 1);
   };
+  handleEditDropDownChange = e =>{  
+    debugger
+    let name=e.target.name;
+    let value=e.target.value;
+
+  }
   handleStatusChange = e => {
     let value = e.target.value;
     this.setState({ selectStatus: value });
   };
 
   render() {
-    const ActionEditBtn = (
-      <div className="edtpadding">
-        <div className="">
-          <label className="popover-header-text">EDIT CATEGORY</label>
-        </div>
-        <div className="pop-over-div">
-          <label className="edit-label-1">Brand Name</label>
-          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
-            <option>Bata</option>
-            <option>Bata1</option>
-            <option>Bata3</option>
-          </select>
-        </div>
-
-        <div className="pop-over-div">
-          <label className="edit-label-1">Category</label>
-          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
-            <option>Bata</option>
-            <option>Bata1</option>
-            <option>Bata3</option>
-          </select>
-        </div>
-        <div className="pop-over-div">
-          <label className="edit-label-1">Sub-Category</label>
-          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
-            <option>Bata</option>
-            <option>Bata1</option>
-            <option>Bata3</option>
-          </select>
-        </div>
-        <div className="pop-over-div">
-          <label className="edit-label-1">Issue Type</label>
-          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
-            <option>Bata</option>
-            <option>Bata1</option>
-            <option>Bata3</option>
-          </select>
-        </div>
-        <div className="pop-over-div">
-          <label className="edit-label-1">Status</label>
-          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
-            <option>Active</option>
-            <option>Inactive</option>
-          </select>
-        </div>
-        <br />
-        <div>
-          <a
-            className="pop-over-cancle"
-            href={Demo.BLANK_LINK}
-            style={{ marginRight: "20px" }}
-          >
-            CANCEL
-          </a>
-          <button className="pop-over-button">
-            SAVE
-          </button>
-        </div>
-      </div>
-    );
-
     const { categoryGridData } = this.state;
     const list1SelectOptions = this.state.categoryDropData.map((item, o) => (
       <Option key={o} value={item.categoryID}>
@@ -588,7 +534,115 @@ class CategoryMaster extends Component {
                                     />
                                   </Popover>
                                   <Popover
-                                    content={ActionEditBtn}
+                                    content={
+                                      <div className="edtpadding">
+                                        <label className="popover-header-text">
+                                          EDIT CATEGORY
+                                        </label>
+                                        <div className="pop-over-div">
+                                          <label className="edit-label-1">
+                                            Brand Name
+                                          </label>
+                                          <select
+                                            className="store-create-select"
+                                            value={this.state.selectBrand}
+                                            onChange={this.handleEditDropDownChange}
+                                            name="brandId"
+                                          >
+                                            <option>Select</option>
+                                            {this.state.brandData !== null &&
+                                              this.state.brandData.map(
+                                                (item, i) => (
+                                                  <option
+                                                    key={i}
+                                                    value={item.brandID}
+                                                    className="select-category-placeholder"
+                                                  >
+                                                    {item.brandName}
+                                                  </option>
+                                                )
+                                              )}
+                                          </select>
+                                        </div>
+
+                                        <div className="pop-over-div">
+                                          <label className="edit-label-1">
+                                            Category
+                                          </label>
+                                          <select
+                                            className="store-create-select"
+                                            value={this.state.category_Id}
+                                            onChange={this.handleEditDropDownChange}
+                                            name="categoryId"
+                                          >
+                                            <option>Select</option>
+                                            {this.state.categoryDropData !== null &&
+                                              this.state.categoryDropData.map(
+                                                (item, i) => (
+                                                  <option
+                                                    key={i}
+                                                    value={item.categoryID}
+                                                    className="select-category-placeholder"
+                                                  >
+                                                    {item.categoryName}
+                                                  </option>
+                                                )
+                                              )}
+                                          </select>
+                                        </div>
+                                        <div className="pop-over-div">
+                                          <label className="edit-label-1">
+                                            Sub-Category
+                                          </label>
+                                          <select
+                                            id="inputStatus"
+                                            className="edit-dropDwon dropdown-setting"
+                                          >
+                                            <option>Bata</option>
+                                            <option>Bata1</option>
+                                            <option>Bata3</option>
+                                          </select>
+                                        </div>
+                                        <div className="pop-over-div">
+                                          <label className="edit-label-1">
+                                            Issue Type
+                                          </label>
+                                          <select
+                                            id="inputStatus"
+                                            className="edit-dropDwon dropdown-setting"
+                                          >
+                                            <option>Bata</option>
+                                            <option>Bata1</option>
+                                            <option>Bata3</option>
+                                          </select>
+                                        </div>
+                                        <div className="pop-over-div">
+                                          <label className="edit-label-1">
+                                            Status
+                                          </label>
+                                          <select
+                                            id="inputStatus"
+                                            className="edit-dropDwon dropdown-setting"
+                                          >
+                                            <option>Active</option>
+                                            <option>Inactive</option>
+                                          </select>
+                                        </div>
+                                        <br />
+                                        <div>
+                                          <a
+                                            className="pop-over-cancle"
+                                            href={Demo.BLANK_LINK}
+                                            style={{ marginRight: "20px" }}
+                                          >
+                                            CANCEL
+                                          </a>
+                                          <button className="pop-over-button">
+                                            SAVE
+                                          </button>
+                                        </div>
+                                      </div>
+                                    }
                                     placement="bottom"
                                     trigger="click"
                                   >
@@ -717,30 +771,8 @@ class CategoryMaster extends Component {
                                 showList1: false,
                                 list1Value: inputValue
                               });
-                             
                             }
                           }}
-                          // onConfirm={inputValue => {
-                          //   debugger
-                          //   inputValue = inputValue.trim();
-                          //   if (
-                          //     this.state.categoryDropData.includes(inputValue)
-                          //   ) {
-                          //     this.setState({
-                          //       showList1: false,
-                          //       list1Value: inputValue
-                          //     });
-                          //   } else {
-                          //     this.setState({
-                          //       showList1: false,
-                          //       categoryDropData: [
-                          //         inputValue,
-                          //         ...this.state.categoryDropData
-                          //       ],
-                          //       list1Value: inputValue
-                          //     });
-                          //   }
-                          // }}
                           onCancel={() => {
                             this.setState({ showList1: false });
                           }}
@@ -798,28 +830,6 @@ class CategoryMaster extends Component {
                               });
                             }
                           }}
-                          // onConfirm={inputValue => {
-                          //   inputValue = inputValue.trim();
-                          //   if (
-                          //     this.state.SubCategoryDropData.includes(
-                          //       inputValue
-                          //     )
-                          //   ) {
-                          //     this.setState({
-                          //       ShowSubCate: false,
-                          //       ListOfSubCate: inputValue
-                          //     });
-                          //   } else {
-                          //     this.setState({
-                          //       ShowSubCate: false,
-                          //       SubCategoryDropData: [
-                          //         inputValue,
-                          //         ...this.state.SubCategoryDropData
-                          //       ],
-                          //       ListOfSubCate: inputValue
-                          //     });
-                          //   }
-                          // }}
                           onCancel={() => {
                             this.setState({ ShowSubCate: false });
                           }}
@@ -865,7 +875,7 @@ class CategoryMaster extends Component {
                                 ShowIssuetype: false,
                                 ListOfIssue: inputValue
                               });
-                              this.handleAddIssueType(inputValue)
+                              this.handleAddIssueType(inputValue);
                             } else {
                               this.setState({
                                 ShowIssuetype: false,
@@ -873,26 +883,6 @@ class CategoryMaster extends Component {
                               });
                             }
                           }}
-                          // onConfirm={inputValue => {
-                          //   inputValue = inputValue.trim();
-                          //   if (
-                          //     this.state.ListOfIssueData.includes(inputValue)
-                          //   ) {
-                          //     this.setState({
-                          //       ShowIssuetype: false,
-                          //       ListOfIssue: inputValue
-                          //     });
-                          //   } else {
-                          //     this.setState({
-                          //       ShowIssuetype: false,
-                          //       ListOfIssueData: [
-                          //         inputValue,
-                          //         ...this.state.ListOfIssueData
-                          //       ],
-                          //       ListOfIssue: inputValue
-                          //     });
-                          //   }
-                          // }}
                           onCancel={() => {
                             this.setState({ ShowIssuetype: false });
                           }}

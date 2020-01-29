@@ -69,6 +69,7 @@ class MyTicket extends Component {
 
     this.state = {
       open: false,
+      InformStore: false,
       collapseUp: true,
       profilemodal: false,
       storemodal: false,
@@ -116,7 +117,7 @@ class MyTicket extends Component {
       TicketActionTypeData: TicketActionType(),
       taskTableGrid: [],
       SearchAssignData: [],
-      selectetedParameters: {},
+      // selectetedParameters: {},
       claimDetailsData: [],
       selectetedParameters: {},
       KbPopupData: [],
@@ -135,7 +136,10 @@ class MyTicket extends Component {
       loading: false,
       Plus: false,
       selectedStoreData: [],
-      CheckStoreID: {}
+      CheckStoreID: {},
+      notesCommentCompulsion: '',
+      userCC: "",
+      userBCC: "",
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -157,7 +161,6 @@ class MyTicket extends Component {
     this.handleKbLinkPopupSearch = this.handleKbLinkPopupSearch.bind(this);
     this.handleGetOrderDetails = this.handleGetOrderDetails.bind(this);
     this.handleGetProductData = this.handleGetProductData.bind(this);
-    this.handleGetStoreDetails = this.handleGetStoreDetails.bind(this);
     this.handleGetMessageDetails = this.handleGetMessageDetails.bind(this);
     this.hanldeGetSelectedStoreData = this.hanldeGetSelectedStoreData.bind(
       this
@@ -551,7 +554,7 @@ class MyTicket extends Component {
     debugger;
     let self = this;
     axios({
-      method: "post",
+      method: "get",
       url: config.apiUrl + "/Priority/GetPriorityList",
       headers: authHeader()
     }).then(function(res) {
@@ -725,6 +728,11 @@ class MyTicket extends Component {
   handleSubmitForm(e) {
     e.preventDefault();
   }
+  showInformStoreFuncation = () => {
+    this.setState({
+      InformStore: !this.state.InformStore
+    });
+  };
   handleGetTabsName(e) {
     let self = this;
     let CurrentActive = e.target.name;
@@ -755,6 +763,7 @@ class MyTicket extends Component {
   }
   handleNoteAddComments() {
     debugger;
+    if (this.state.NoteAddComment.length > 0) {
     let self = this;
 
     axios({
@@ -774,12 +783,18 @@ class MyTicket extends Component {
         self.handleGetNotesTabDetails(id);
         NotificationManager.success("Comment added successfully.");
         self.setState({
-          NoteAddComment: ""
+          NoteAddComment: "",
+          notesCommentCompulsion: ''
         });
       } else {
         NotificationManager.error("Comment not added.");
       }
     });
+  } else {
+    this.setState({
+      notesCommentCompulsion: 'The Notes field is compulsary.'
+    })
+  }
   }
   handleGetHistoricalData() {
     debugger;
@@ -805,7 +820,7 @@ class MyTicket extends Component {
   hanldeGetSelectedStoreData() {
     debugger;
     let self = this;
-    this.setState({ loading: true });
+    // this.setState({ loading: true });
     axios({
       method: "post",
       url: config.apiUrl + "/Store/getSelectedStores",
@@ -836,7 +851,7 @@ class MyTicket extends Component {
         self.setState({
           selectedStoreData:selectedRow,
           selectedStore: data,
-          loading: false
+          // loading: false
         });
       } else {
         self.setState({
@@ -848,7 +863,7 @@ class MyTicket extends Component {
 
   handleAttachStoreData(){
     debugger;
-    let self = this;
+    // let self = this;
     var selectedStore = "";
     for (let j = 0; j < this.state.selectedStoreData.length; j++) {
     selectedStore += this.state.selectedStoreData[j]["storeID"] + ",";
@@ -1098,14 +1113,40 @@ class MyTicket extends Component {
       }
     }).then(function(res) {
       debugger;
-      let CkEditorTemplateDetails = res.data.responseData;
+      let TemplateDetails = res.data.responseData;
       let bodyData = res.data.responseData.templateBody;
       self.setState({
-        CkEditorTemplateDetails: CkEditorTemplateDetails,
+        CkEditorTemplateDetails: TemplateDetails,
         tempName: tempName,
         selectTicketTemplateId: tempId,
         mailBodyData: bodyData
       });
+    });
+  }
+  handleSendMailData() {
+    debugger;
+    var subject = "Demo Mail";
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Ticketing/SendMail",
+      headers: authHeader(),
+      params: {
+        EmailID: this.state.ticketDetailsData.customerEmailId,
+        Mailcc: this.state.userCC,
+        Mailbcc: this.state.userBCC,
+        Mailsubject: subject,
+        MailBody: this.state.CkEditorTemplateDetails.templateBody,
+        informStore: this.state.InformStore,
+        storeID: ""
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.status;
+      if (status === true) {
+        NotificationManager.success(res.data.responseData);
+      } else {
+        NotificationManager.error(res.data.responseData);
+      }
     });
   }
 
@@ -2090,7 +2131,7 @@ class MyTicket extends Component {
                                   src={SearchBlackImg}
                                   alt="Search"
                                   className="systemorder-imgsearch"
-                                  onClick={this.handleGetStoreDetails()}
+                                  onClick={this.handleGetStoreDetails.bind(this)}
                                 />
                               </div>
                               <div className="">
@@ -2225,9 +2266,9 @@ class MyTicket extends Component {
                                 aria-labelledby="selectedstore-tab"
                               >
                                 <div className="reactstoreselect">
-                                  {this.state.loading === true ? (
+                                  {/* {this.state.loading === true ? (
                                     <div className="loader-icon"></div>
-                                  ) : (
+                                  ) : ( */}
                                     <ReactTable
                                       data={selectedStore}
                                       columns={[
@@ -2298,7 +2339,7 @@ class MyTicket extends Component {
                                       defaultPageSize={5}
                                       showPagination={false}
                                     />
-                                  )}
+                                  // )}
                                 </div>
                               </div>
                             </div>
@@ -2783,7 +2824,7 @@ class MyTicket extends Component {
                         <div className="col-md-12 colladrow">
                           <ul>
                             <li>
-                              <label>To: diwarkar@gmail.com</label>
+                              <label>To: &nbsp;{ticketDetailsData.customerEmailId}</label>
                             </li>
                             <li>
                               <label className="">
@@ -2794,7 +2835,13 @@ class MyTicket extends Component {
                                   <span className="input-group-addon inputcc">
                                     CC:
                                   </span>
-                                  <input type="text" className="CCdi" />
+                                  <input
+                                    type="text"
+                                    className="CCdi1"
+                                    name="userCC"
+                                    value={this.state.userCC}
+                                    onChange={this.handleNoteOnChange}
+                                  />
                                   <span className="input-group-addon inputcc-one">
                                     +1
                                   </span>
@@ -2810,7 +2857,13 @@ class MyTicket extends Component {
                                   <span className="input-group-addon inputcc">
                                     BCC:
                                   </span>
-                                  <input type="text" className="CCdi" />
+                                  <input
+                                    type="text"
+                                    className="CCdi1"
+                                    name="userBCC"
+                                    value={this.state.userBCC}
+                                    onChange={this.handleNoteOnChange}
+                                  />
                                   <span className="input-group-addon inputcc-one">
                                     +1
                                   </span>
@@ -2819,11 +2872,16 @@ class MyTicket extends Component {
                             </li>
                             <li>
                               <div className="filter-checkbox">
-                                <input
+                              <input
                                   type="checkbox"
                                   id="fil-open"
                                   name="filter-type"
                                   style={{ display: "none" }}
+                                  onChange={() =>
+                                    this.showInformStoreFuncation()
+                                  }
+                                  
+                                  // disabled={this.state.selectedStoreIDs.length === 0}
                                 />
                                 <label
                                   htmlFor="fil-open"
@@ -2859,7 +2917,13 @@ class MyTicket extends Component {
                               </label>
                             </li>
                             <li style={{ float: "right" }}>
-                              <button className="send">Send</button>
+                            <button
+                                className="send1"
+                                type="button"
+                                onClick={this.handleSendMailData.bind(this)}
+                              >
+                                Send
+                              </button>
                             </li>
                           </ul>
                         </div>
@@ -3692,10 +3756,12 @@ class MyTicket extends Component {
                           value={this.state.NoteAddComment}
                           onChange={this.handleNoteOnChange}
                         ></textarea>
+                        {this.state.NoteAddComment.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.notesCommentCompulsion}</p>}
                         <button
                           type="button"
                           className="notesbtn notesbtn-text"
                           onClick={this.handleNoteAddComments.bind(this)}
+                          style={{ 'marginTop' : '5px' }}
                         >
                           ADD COMMENT
                         </button>
