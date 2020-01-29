@@ -14,6 +14,7 @@ import TicketSystemStore from "./Tabs/TicketSystemStore";
 import Modal from "react-responsive-modal";
 import CKEditor from "ckeditor4-react";
 import PlusImg from "./../assets/Images/plus.png";
+import CircleCancel from "./../assets/Images/Circle-cancel.png";
 // import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 // import moment from "moment";
 import FileUpload from "./../assets/Images/file.png";
@@ -76,11 +77,11 @@ class TicketSystem extends Component {
       ticketDetails: "",
       ticketSuggestion: {},
       ticketNote: "",
-      selectedBrand: '',
+      selectedBrand: "",
       createdBy: 6,
-      selectedCategory: '',
+      selectedCategory: "",
       selectedCategoryKB: 0,
-      selectedSubCategory: '',
+      selectedSubCategory: "",
       selectedSubCategoryKB: 0,
       selectedIssueType: 0,
       selectedIssueTypeKB: 0,
@@ -128,11 +129,11 @@ class TicketSystem extends Component {
       toggleTitle: false,
       loading: false,
       imageView: "",
-      ticketTitleCompulsion: '',
-      ticketDetailsCompulsion: '',
-      ticketBrandCompulsion: '',
-      ticketCategoryCompulsion: '',
-      ticketSubCategoryCompulsion: '',
+      ticketTitleCompulsion: "",
+      ticketDetailsCompulsion: "",
+      ticketBrandCompulsion: "",
+      ticketCategoryCompulsion: "",
+      ticketSubCategoryCompulsion: ""
     };
     this.validator = new SimpleReactValidator();
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
@@ -639,7 +640,7 @@ class TicketSystem extends Component {
     // this.setState({
     //   file
     // });
-// -------------------------Image View code start-----------------------
+    // -------------------------Image View code start-----------------------
     const img = e;
     if (e.target.files && e.target.files[0]) {
       const filesAmount = e.target.files.length;
@@ -655,109 +656,121 @@ class TicketSystem extends Component {
     }
     for (let i = 0; i < e.target.files.length; i++) {
       this.state.file.push(e.target.files[i]);
+      console.log(this.state.file, "file data------------------");
     }
 
-  // -------------------------Image View code end-----------------------
+    // -------------------------Image View code end-----------------------
     this.setState({ fileText: this.state.file.length });
 
     // this.setState({fileText:"files"});
   }
+  handleRemoveImage = i => {
+    debugger
+    let file=[...this.state.file];
+    file.splice(i - 1,1);
+    this.setState(file);
+  };
 
   handleCREATE_TICKET(StatusID) {
     debugger;
     // this.setState({ loading: true });
-    // if (this.validator.allValid()) {
-    if (this.state.titleSuggValue.length > 0 && this.state.ticketDetails.length > 0 && this.state.selectedBrand.length > 0 && this.state.selectedCategory.length > 0 && this.state.selectedSubCategory.length > 0) {
-    this.setState({ loading: true });
-    let self = this;
-    // var OID = this.state.selectedTicketPriority;
-    var selectedRow = "";
-    for (var i = 0; i < this.state.selectedDataIds.length; i++) {
-      selectedRow += this.state.selectedDataIds[i] + ",";
-    }
-
-    var selectedStore = "";
-    for (let j = 0; j < this.state.selectedStoreIDs.length; j++) {
-    selectedStore += this.state.selectedStoreIDs[j]["storeID"] + ",";
-    }
-    var actionStatusId = 0;
-    if (StatusID === "200") {
-      actionStatusId = 103;
-    } else if (StatusID === "201") {
-      actionStatusId = 101;
-    } else {
-      actionStatusId = 100;
-    }
-    var mailData = [];
-    mailData = this.state.mailData;
-    this.state.mailFiled["ToEmail"] = this.state.customerData.customerEmailId;
-    this.state.mailFiled["TikcketMailSubject"] = "Demo Subject";
-    this.state.mailFiled["TicketMailBody"] = this.state.tempName;
-    this.state.mailFiled["PriorityID"] = this.state.selectedTicketPriority;
-    this.state.mailFiled["IsInforToStore"] = this.state.InformStore;
-    mailData.push(this.state.mailFiled);
-    // var want = this.state.custVisit;
-    // var Already = this.state.AlreadycustVisit;
-    // var uploadFiles = [];
-    // uploadFiles = this.state.file;
-    var formData = new FormData();
-
-    var paramData = {
-      // TicketTitle: this.state.ticketSuggestion.ticketTitle,
-      TicketTitle: this.state.titleSuggValue,
-      Ticketdescription: this.state.ticketDetails,
-      CustomerID: this.state.customer_Id,
-      BrandID: this.state.selectedBrand,
-      CategoryID: this.state.selectedCategory,
-      SubCategoryID: this.state.selectedSubCategory,
-      IssueTypeID: this.state.selectedIssueType,
-      PriorityID: this.state.selectedTicketPriority,
-      ChannelOfPurchaseID: this.state.selectedChannelOfPurchase,
-      Ticketnotes: this.state.ticketNote,
-      taskMasters: this.state.taskMaster,
-      StatusID: actionStatusId,
-      TicketActionID: this.state.selectedTicketActionType,
-      IsInstantEscalateToHighLevel: this.state.escalationLevel,
-      IsWantToAttachOrder: this.state.customerAttachOrder,
-      TicketTemplateID: this.state.selectTicketTemplateId,
-      IsWantToVisitedStore: this.state.custVisit,
-      IsAlreadyVisitedStore: this.state.AlreadycustVisit,
-      TicketSourceID: 1,
-      OrderItemID: selectedRow.substring(",", selectedRow.length - 1),
-      StoreID: selectedStore.substring(",", selectedStore.length - 1),
-      ticketingMailerQues: mailData
-    };
-    formData.append("ticketingDetails", JSON.stringify(paramData));
-    formData.append("Form", this.state.file[0]);
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Ticketing/createTicket",
-      headers: authHeader(),
-      data: formData
-    }).then(function(res) {
-      debugger;
-      let Msg = res.data.status;
-      self.setState({ loading: false });
-      if (Msg) {
-        NotificationManager.success(res.data.message);
-        setTimeout(function() {
-          self.props.history.push("myTicketlist");
-        }, 100);
-      } else {
-        NotificationManager.error(res.data.message);
+    if (
+      this.state.titleSuggValue.length > 0 &&
+      this.state.ticketDetails.length > 0 &&
+      this.state.selectedBrand.length > 0 &&
+      this.state.selectedCategory.length > 0 &&
+      this.state.selectedSubCategory.length > 0
+    ) {
+      this.setState({ loading: true });
+      let self = this;
+      // var OID = this.state.selectedTicketPriority;
+      var selectedRow = "";
+      for (var i = 0; i < this.state.selectedDataIds.length; i++) {
+        selectedRow += this.state.selectedDataIds[i] + ",";
       }
-    });
-  } else {
-    this.setState({
-      ticketTitleCompulsion: 'Ticket Title field is compulsory.',
-      ticketDetailsCompulsion: 'Ticket Details field is compulsory.',
-      ticketBrandCompulsion: 'Brand field is compulsory.',
-      ticketCategoryCompulsion: 'Category field is compulsory.',
-      ticketSubCategoryCompulsion: 'Sub Category field is compulsory.',
-    })
-  }
-   
-  // Don't remove this function
+
+      var selectedStore = "";
+      for (let j = 0; j < this.state.selectedStoreIDs.length; j++) {
+        selectedStore += this.state.selectedStoreIDs[j]["storeID"] + ",";
+      }
+      var actionStatusId = 0;
+      if (StatusID === "200") {
+        actionStatusId = 103;
+      } else if (StatusID === "201") {
+        actionStatusId = 101;
+      } else {
+        actionStatusId = 100;
+      }
+      var mailData = [];
+      mailData = this.state.mailData;
+      this.state.mailFiled["ToEmail"] = this.state.customerData.customerEmailId;
+      this.state.mailFiled["TikcketMailSubject"] = "Demo Subject";
+      this.state.mailFiled["TicketMailBody"] = this.state.tempName;
+      this.state.mailFiled["PriorityID"] = this.state.selectedTicketPriority;
+      this.state.mailFiled["IsInforToStore"] = this.state.InformStore;
+      mailData.push(this.state.mailFiled);
+      // var want = this.state.custVisit;
+      // var Already = this.state.AlreadycustVisit;
+      // var uploadFiles = [];
+      // uploadFiles = this.state.file;
+      var formData = new FormData();
+
+      var paramData = {
+        // TicketTitle: this.state.ticketSuggestion.ticketTitle,
+        TicketTitle: this.state.titleSuggValue,
+        Ticketdescription: this.state.ticketDetails,
+        CustomerID: this.state.customer_Id,
+        BrandID: this.state.selectedBrand,
+        CategoryID: this.state.selectedCategory,
+        SubCategoryID: this.state.selectedSubCategory,
+        IssueTypeID: this.state.selectedIssueType,
+        PriorityID: this.state.selectedTicketPriority,
+        ChannelOfPurchaseID: this.state.selectedChannelOfPurchase,
+        Ticketnotes: this.state.ticketNote,
+        taskMasters: this.state.taskMaster,
+        StatusID: actionStatusId,
+        TicketActionID: this.state.selectedTicketActionType,
+        IsInstantEscalateToHighLevel: this.state.escalationLevel,
+        IsWantToAttachOrder: this.state.customerAttachOrder,
+        TicketTemplateID: this.state.selectTicketTemplateId,
+        IsWantToVisitedStore: this.state.custVisit,
+        IsAlreadyVisitedStore: this.state.AlreadycustVisit,
+        TicketSourceID: 1,
+        OrderItemID: selectedRow.substring(",", selectedRow.length - 1),
+        StoreID: selectedStore.substring(",", selectedStore.length - 1),
+        ticketingMailerQues: mailData
+      };
+      formData.append("ticketingDetails", JSON.stringify(paramData));
+      formData.append("Form", this.state.file[0]);
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Ticketing/createTicket",
+        headers: authHeader(),
+        data: formData
+      }).then(function(res) {
+        debugger;
+        let Msg = res.data.status;
+        self.setState({ loading: false });
+        if (Msg) {
+          NotificationManager.success(res.data.message);
+          setTimeout(function() {
+            self.props.history.push("myTicketlist");
+          }, 100);
+        } else {
+          NotificationManager.error(res.data.message);
+        }
+      });
+    } else {
+      this.setState({
+        ticketTitleCompulsion: "Ticket Title field is compulsory.",
+        ticketDetailsCompulsion: "Ticket Details field is compulsory.",
+        ticketBrandCompulsion: "Brand field is compulsory.",
+        ticketCategoryCompulsion: "Category field is compulsory.",
+        ticketSubCategoryCompulsion: "Sub Category field is compulsory."
+      });
+    }
+
+    // Don't remove this function
   }
   // handleSendMailData() {
   //   debugger;
@@ -862,41 +875,22 @@ class TicketSystem extends Component {
     let channelOfPurchaseValue = e.currentTarget.value;
     this.setState({ selectedChannelOfPurchase: channelOfPurchaseValue });
   };
-  renderIcon(name){
+  renderIcon(name) {
     debugger;
-    let ext=name.split('.')[1].toLowerCase();
-    if(ext==="xls"||ext==="xlsx")
-    {
-      return(     
-        Excel
-      )
+    let ext = name.split(".")[1].toLowerCase();
+    if (ext === "xls" || ext === "xlsx") {
+      return Excel;
+    } else if (ext === "doc" || ext === "docx" || ext === "txt") {
+      return Word;
+    } else if (ext === "csv") {
+      return CSVi;
+    } else if (ext === "pdf") {
+      return PDF;
+    } else {
+      return ThumbTick;
     }
-    else if(ext==="doc" ||ext==="docx" || ext==="txt")
-    {
-      return(     
-        Word
-      )
-    }
-    else if(ext==="csv")
-    {
-      return(     
-        CSVi
-      )
-    }
-    else if(ext==="pdf")
-    {
-      return(     
-        PDF
-      )
-    }
-    else{
-      return(     
-        ThumbTick
-      )
-    }
-   
   }
-  render() {  
+  render() {
     var CustomerId = this.state.customerDetails.customerId;
     var CustNumber = this.state.customerData.customerPhoneNumber;
     return (
@@ -1005,9 +999,13 @@ class TicketSystem extends Component {
                           }}
                           id="titleSuggestion"
                           autoComplete="off"
-                          style={{ 'marginBottom' : '5px' }}
+                          style={{ marginBottom: "5px" }}
                         />
-                        {this.state.titleSuggValue.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.ticketTitleCompulsion}</p>}
+                        {this.state.titleSuggValue.length === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.ticketTitleCompulsion}
+                          </p>
+                        )}
                         {this.validator.message(
                           "TicketTitle",
                           this.state.titleSuggValue,
@@ -1043,7 +1041,11 @@ class TicketSystem extends Component {
                         onChange={this.handleTicketChange}
                         maxLength={250}
                       ></textarea>
-                      {this.state.ticketDetails.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.ticketDetailsCompulsion}</p>}
+                      {this.state.ticketDetails.length === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.ticketDetailsCompulsion}
+                        </p>
+                      )}
                       {this.validator.message(
                         "ticketDetails",
                         this.state.ticketDetails,
@@ -1060,7 +1062,10 @@ class TicketSystem extends Component {
                         value={this.state.selectedBrand}
                         onChange={this.setBrandValue}
                       >
-                        <option value='' className="select-category-placeholder">
+                        <option
+                          value=""
+                          className="select-category-placeholder"
+                        >
                           Select Brand
                         </option>
                         {this.state.BrandData !== null &&
@@ -1074,7 +1079,11 @@ class TicketSystem extends Component {
                             </option>
                           ))}
                       </select>
-                      {this.state.selectedBrand.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.ticketBrandCompulsion}</p>}
+                      {this.state.selectedBrand.length === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.ticketBrandCompulsion}
+                        </p>
+                      )}
                     </div>
                     <div className="col-md-6">
                       <label className="sub-category">Category</label>
@@ -1083,7 +1092,10 @@ class TicketSystem extends Component {
                         onChange={this.setCategoryValue}
                         className="category-select-system dropdown-label"
                       >
-                        <option value='' className="select-category-placeholder">
+                        <option
+                          value=""
+                          className="select-category-placeholder"
+                        >
                           Select Category
                         </option>
                         {this.state.CategoryData !== null &&
@@ -1097,7 +1109,11 @@ class TicketSystem extends Component {
                             </option>
                           ))}
                       </select>
-                      {this.state.selectedCategory.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.ticketCategoryCompulsion}</p>}
+                      {this.state.selectedCategory.length === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.ticketCategoryCompulsion}
+                        </p>
+                      )}
                     </div>
                   </div>
 
@@ -1109,7 +1125,10 @@ class TicketSystem extends Component {
                         onChange={this.setSubCategoryValue}
                         className="category-select-system dropdown-label"
                       >
-                        <option value='' className="select-category-placeholder">
+                        <option
+                          value=""
+                          className="select-category-placeholder"
+                        >
                           Select Sub Category
                         </option>
                         {this.state.SubCategoryData !== null &&
@@ -1123,7 +1142,11 @@ class TicketSystem extends Component {
                             </option>
                           ))}
                       </select>
-                      {this.state.selectedSubCategory.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.ticketSubCategoryCompulsion}</p>}
+                      {this.state.selectedSubCategory.length === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.ticketSubCategoryCompulsion}
+                        </p>
+                      )}
                     </div>
                     <div className="col-md-6">
                       <label className="sub-category">Issue Type</label>
@@ -1146,7 +1169,11 @@ class TicketSystem extends Component {
                             </option>
                           ))}
                       </select>
-                      {this.state.selectedSubCategory.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.ticketIssueTypeCompulsion}</p>}
+                      {this.state.selectedSubCategory.length === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.ticketIssueTypeCompulsion}
+                        </p>
+                      )}
                     </div>
                   </div>
 
@@ -1235,21 +1262,30 @@ class TicketSystem extends Component {
                       alt="thumb"
                       className="thumbtick"
                     /> */}
-                    {this.state.file.map((item, i) =>
+                    {this.state.file.map((item, i, j) =>
                       i < 5 ? (
-                        <img
-                           src={this.renderIcon(this.state.file[i].name)}
-                           title={this.state.file[i].name}
-                          href={item[i]}
-                          alt="thumb"
-                          className="thumbtick"
-                        />
-                      //   <img
-                      //   src={this.state.imageView}
-                      //   alt="thumb"
-                      //   className="thumbtick"
-                      // />
+                        <div style={{ position: "relative" }}>
+                          <img
+                            src={CircleCancel}
+                            alt="thumb"
+                            className="circleCancle"
+                            onClick={this.handleRemoveImage}
+                          />
+                          <img
+                            src={this.renderIcon(this.state.file[i].name)}
+                            key={j}
+                            title={this.state.file[i].name}
+                            href={item[i]}
+                            alt="thumb"
+                            className="thumbtick"
+                          />
+                        </div>
                       ) : (
+                        //   <img
+                        //   src={this.state.imageView}
+                        //   alt="thumb"
+                        //   className="thumbtick"
+                        // />
                         ""
                       )
                     )}
@@ -1286,9 +1322,10 @@ class TicketSystem extends Component {
                         />
                       </div>
                       <div className="row my-3 mx-1">
-                        {this.state.file.map((item, i) => (
+                        {this.state.file.map((item, i, j) => (
                           <img
                             src={this.renderIcon(this.state.file[i].name)}
+                            key={j}
                             title={this.state.file[i].name}
                             className="thumbtick"
                             style={{ marginBottom: "10px" }}
@@ -1402,8 +1439,9 @@ class TicketSystem extends Component {
                                   onChange={() =>
                                     this.showInformStoreFuncation()
                                   }
-                                  
-                                  disabled={this.state.selectedStoreIDs.length === 0}
+                                  disabled={
+                                    this.state.selectedStoreIDs.length === 0
+                                  }
                                 />
                                 <label
                                   htmlFor="fil-open"

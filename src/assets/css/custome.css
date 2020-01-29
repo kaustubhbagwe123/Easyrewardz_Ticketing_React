@@ -10211,3 +10211,10 @@ table tr th:last-child {
 .datePickertable .ReactTable .rt-tbody {
   overflow: initial;
 }
+.circleCancle{
+  height: 18px;
+   position: absolute;
+   top: -7px;
+    right: -2px;
+    cursor: pointer;
+}
