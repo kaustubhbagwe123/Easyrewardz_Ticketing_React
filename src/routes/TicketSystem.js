@@ -76,11 +76,11 @@ class TicketSystem extends Component {
       ticketDetails: "",
       ticketSuggestion: {},
       ticketNote: "",
-      selectedBrand: 0,
+      selectedBrand: '',
       createdBy: 6,
-      selectedCategory: 0,
+      selectedCategory: '',
       selectedCategoryKB: 0,
-      selectedSubCategory: 0,
+      selectedSubCategory: '',
       selectedSubCategoryKB: 0,
       selectedIssueType: 0,
       selectedIssueTypeKB: 0,
@@ -129,7 +129,10 @@ class TicketSystem extends Component {
       loading: false,
       imageView: "",
       ticketTitleCompulsion: '',
-      ticketDetailsCompulsion: ''
+      ticketDetailsCompulsion: '',
+      ticketBrandCompulsion: '',
+      ticketCategoryCompulsion: '',
+      ticketSubCategoryCompulsion: '',
     };
     this.validator = new SimpleReactValidator();
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
@@ -665,7 +668,7 @@ class TicketSystem extends Component {
     debugger;
     // this.setState({ loading: true });
     // if (this.validator.allValid()) {
-    if (this.state.titleSuggValue.length > 0 && this.state.ticketDetails.length > 0) {
+    if (this.state.titleSuggValue.length > 0 && this.state.ticketDetails.length > 0 && this.state.selectedBrand.length > 0 && this.state.selectedCategory.length > 0 && this.state.selectedSubCategory.length > 0) {
     this.setState({ loading: true });
     let self = this;
     // var OID = this.state.selectedTicketPriority;
@@ -748,7 +751,10 @@ class TicketSystem extends Component {
   } else {
     this.setState({
       ticketTitleCompulsion: 'Ticket Title field is compulsory.',
-      ticketDetailsCompulsion: 'Ticket Details field is compulsory.'
+      ticketDetailsCompulsion: 'Ticket Details field is compulsory.',
+      ticketBrandCompulsion: 'Brand field is compulsory.',
+      ticketCategoryCompulsion: 'Category field is compulsory.',
+      ticketSubCategoryCompulsion: 'Sub Category field is compulsory.',
     })
   }
    
@@ -1055,7 +1061,7 @@ class TicketSystem extends Component {
                         value={this.state.selectedBrand}
                         onChange={this.setBrandValue}
                       >
-                        <option className="select-category-placeholder">
+                        <option value='' className="select-category-placeholder">
                           Select Brand
                         </option>
                         {this.state.BrandData !== null &&
@@ -1069,6 +1075,7 @@ class TicketSystem extends Component {
                             </option>
                           ))}
                       </select>
+                      {this.state.selectedBrand.length == 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.ticketBrandCompulsion}</p>}
                     </div>
                     <div className="col-md-6">
                       <label className="sub-category">Category</label>
@@ -1077,7 +1084,7 @@ class TicketSystem extends Component {
                         onChange={this.setCategoryValue}
                         className="category-select-system dropdown-label"
                       >
-                        <option className="select-category-placeholder">
+                        <option value='' className="select-category-placeholder">
                           Select Category
                         </option>
                         {this.state.CategoryData !== null &&
@@ -1091,6 +1098,7 @@ class TicketSystem extends Component {
                             </option>
                           ))}
                       </select>
+                      {this.state.selectedCategory.length == 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.ticketCategoryCompulsion}</p>}
                     </div>
                   </div>
 
@@ -1102,7 +1110,7 @@ class TicketSystem extends Component {
                         onChange={this.setSubCategoryValue}
                         className="category-select-system dropdown-label"
                       >
-                        <option className="select-category-placeholder">
+                        <option value='' className="select-category-placeholder">
                           Select Sub Category
                         </option>
                         {this.state.SubCategoryData !== null &&
@@ -1116,6 +1124,7 @@ class TicketSystem extends Component {
                             </option>
                           ))}
                       </select>
+                      {this.state.selectedSubCategory.length == 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.ticketSubCategoryCompulsion}</p>}
                     </div>
                     <div className="col-md-6">
                       <label className="sub-category">Issue Type</label>
@@ -1138,6 +1147,7 @@ class TicketSystem extends Component {
                             </option>
                           ))}
                       </select>
+                      {this.state.selectedSubCategory.length == 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.ticketIssueTypeCompulsion}</p>}
                     </div>
                   </div>
 
