@@ -747,41 +747,39 @@ class TicketSystem extends Component {
     });
   } else {
     this.setState({
-      ticketTitleCompulsion: 'Ticket Title field is compulsary.',
-      ticketDetailsCompulsion: 'Ticket Details field is compulsary.'
+      ticketTitleCompulsion: 'Ticket Title field is compulsory.',
+      ticketDetailsCompulsion: 'Ticket Details field is compulsory.'
     })
   }
-    // } else {
-    //   this.validator.showMessages();
-    //   this.forceUpdate();
-    // }
+   
+  // Don't remove this function
   }
-  handleSendMailData() {
-    debugger;
-    var subject = "Demo Mail";
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Ticketing/SendMail",
-      headers: authHeader(),
-      params: {
-        EmailID: this.state.customerData.customerEmailId,
-        Mailcc: this.state.mailFiled.userCC,
-        Mailbcc: this.state.mailFiled.userBCC,
-        Mailsubject: subject,
-        MailBody: this.state.mailBodyData,
-        informStore: this.state.InformStore,
-        storeID: ""
-      }
-    }).then(function(res) {
-      debugger;
-      let status = res.data.status;
-      if (status === true) {
-        NotificationManager.success(res.data.responseData);
-      } else {
-        NotificationManager.error(res.data.responseData);
-      }
-    });
-  }
+  // handleSendMailData() {
+  //   debugger;
+  //   var subject = "Demo Mail";
+  //   axios({
+  //     method: "post",
+  //     url: config.apiUrl + "/Ticketing/SendMail",
+  //     headers: authHeader(),
+  //     params: {
+  //       EmailID: this.state.customerData.customerEmailId,
+  //       Mailcc: this.state.mailFiled.userCC,
+  //       Mailbcc: this.state.mailFiled.userBCC,
+  //       Mailsubject: subject,
+  //       MailBody: this.state.mailBodyData,
+  //       informStore: this.state.InformStore,
+  //       storeID: ""
+  //     }
+  //   }).then(function(res) {
+  //     debugger;
+  //     let status = res.data.status;
+  //     if (status === true) {
+  //       NotificationManager.success(res.data.responseData);
+  //     } else {
+  //       NotificationManager.error(res.data.responseData);
+  //     }
+  //   });
+  // }
 
   handlebackprev() {
     this.props.history.push("myTicketList");
@@ -1485,7 +1483,7 @@ class TicketSystem extends Component {
                                 </div>
                               </label>
                             </li>
-                            <li>
+                            {/* <li>
                               <button
                                 className="send1"
                                 type="button"
@@ -1493,7 +1491,7 @@ class TicketSystem extends Component {
                               >
                                 Send
                               </button>
-                            </li>
+                            </li> */}
                           </ul>
                         </div>
                       </div>

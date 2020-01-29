@@ -1124,6 +1124,9 @@ class MyTicketList extends Component {
       if (Msg === "Success") {
         NotificationManager.success("Save Search parameter successfully.");
         self.handleGetSaveSearchList();
+        self.setState({
+          SearchName:''
+        })
       }
     });
   }
