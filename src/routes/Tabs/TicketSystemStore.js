@@ -9,6 +9,7 @@ import config from "../../helpers/config";
 import { authHeader } from "../../helpers/authHeader";
 import MinusImg from "./../../assets/Images/minus.png";
 import matchSorter from "match-sorter";
+import DatePicker from "react-datepicker";
 
 class TicketSystemStore extends Component {
   constructor(props) {
@@ -27,7 +28,8 @@ class TicketSystemStore extends Component {
       CheckStoreID: {},
       selectedStoreData: [],
       filterAll: "",
-      filtered: []
+      filtered: [],
+      byVisitDate:""
     };
     this.handleOrderStoreTableOpen = this.handleOrderStoreTableOpen.bind(this);
     this.handleOrderStoreTableClose = this.handleOrderStoreTableClose.bind(
@@ -42,6 +44,10 @@ class TicketSystemStore extends Component {
   }
   handleOrderStoreTableClose() {
     this.setState({ OrderStoreTable: false });
+  }
+  handleByvisitDate(date) {
+    debugger;
+    this.setState({ byVisitDate: date });
   }
   handleStoreStatus = e => {
     this.setState({
@@ -353,36 +359,6 @@ class TicketSystemStore extends Component {
                         {
                           columns: [
                             {
-                              Header: <span>Purpose</span>,
-                              accessor: "invoiceNumber",
-                              Cell: row => (
-                                <div
-                                  className="filter-checkbox"
-                                  style={{ marginLeft: "15px" }}
-                                >
-                                  <input
-                                    type="checkbox"
-                                    id={"i" + row.original.storeID}
-                                    style={{ display: "none" }}
-                                    name="ticket-store"
-                                    checked={
-                                      this.state.CheckStoreID[
-                                        row.original.storeID
-                                      ] === true
-                                    }
-                                    onChange={this.handleCheckStoreID.bind(
-                                      this,
-                                      row.original.storeID,
-                                      row.original
-                                    )}
-                                  />
-                                  <label htmlFor={"i" + row.original.storeID}>
-                                    {row.original.storeID}
-                                  </label>
-                                </div>
-                              )
-                            },
-                            {
                               Header: <span>Store Code</span>,
                               accessor: "storeCode",
                               Cell: row => (
@@ -485,7 +461,7 @@ class TicketSystemStore extends Component {
                   role="tabpanel"
                   aria-labelledby="selectedstore-tab"
                 >
-                  <div className="reactstoreselect">
+                  <div className="reactstoreselect datePickertable">
                     <ReactTable
                       data={selectedStoreData}
                       columns={[
@@ -523,7 +499,21 @@ class TicketSystemStore extends Component {
                         },
                         {
                           Header: <span>Store Code</span>,
-                          accessor: "storeCode"
+                          accessor: "storeCode",
+                          Cell: row => (
+                            <div className="col-md-3 col-sm-6">
+                              <DatePicker
+                                selected={this.state.byVisitDate}
+                                onChange={this.handleByvisitDate.bind(this)}
+                                placeholderText="Visite Date"
+                                showMonthDropdown
+                                showYearDropdown
+                                dateFormat="dd/MM/yyyy"
+                                value={this.state.byVisitDate}
+                                // className="form-control"
+                              />
+                            </div>
+                          )
                         },
                         {
                           Header: <span>Store Name</span>,
@@ -544,13 +534,27 @@ class TicketSystemStore extends Component {
                         {
                           Header: <span>Visit Date</span>,
                           accessor: "visitDate",
-                          Cell: row => <label>23,Aug 2019</label>
+                          // Cell: row => (
+                          //   <div className="col-md-3 col-sm-6">
+                          //     <DatePicker
+                          //       selected={this.state.byVisitDate}
+                          //       onChange={this.handleByvisitDate.bind(this)}
+                          //       placeholderText="Visite Date"
+                          //       showMonthDropdown
+                          //       showYearDropdown
+                          //       dateFormat="dd/MM/yyyy"
+                          //       value={this.state.byVisitDate}
+                          //       // className="form-control"
+                          //     />
+                          //   </div>
+                          // )
                         }
                       ]}
                       // resizable={false}
                       defaultPageSize={5}
                       showPagination={false}
                     />
+                 
                   </div>
                 </div>
               </div>
@@ -611,9 +615,9 @@ class TicketSystemStore extends Component {
                         <a
                           className="nav-link active"
                           data-toggle="tab"
-                          href="#storedetail-tab"
+                          href="#storeSubdetail-tab"
                           role="tab"
-                          aria-controls="storedetail-tab"
+                          aria-controls="storeSubdetail-tab"
                           aria-selected="true"
                         >
                           Store Details
@@ -624,9 +628,9 @@ class TicketSystemStore extends Component {
                           <a
                             className="nav-link"
                             data-toggle="tab"
-                            href="#selectedstore-tab"
+                            href="#selectedSubstore-tab"
                             role="tab"
-                            aria-controls="selectedstore-tab"
+                            aria-controls="selectedSubstore-tab"
                             aria-selected="false"
                           >
                             Selected Store
@@ -640,9 +644,9 @@ class TicketSystemStore extends Component {
                 <div className="tab-content p-0">
                   <div
                     className="tab-pane fade show active"
-                    id="storedetail-tab"
+                    id="storeSubdetail-tab"
                     role="tabpanel"
-                    aria-labelledby="storedetail-tab"
+                    aria-labelledby="storeSubdetail-tab"
                   >
                     <div className="reactstoreselect">
                       <ReactTable
@@ -767,9 +771,9 @@ class TicketSystemStore extends Component {
                   </div>
                   <div
                     className="tab-pane fade"
-                    id="selectedstore-tab"
+                    id="selectedSubstore-tab"
                     role="tabpanel"
-                    aria-labelledby="selectedstore-tab"
+                    aria-labelledby="selectedSubstore-tab"
                   >
                     <div className="reactstoreselect">
                       <ReactTable

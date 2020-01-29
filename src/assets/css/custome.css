@@ -10178,3 +10178,33 @@ table tr th:last-child {
   max-height: 300px;
   overflow: auto;
 }
+
+.datePickertable .ReactTable .rt-table {
+  flex: auto 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.datePickertable .ReactTable .rt-tbody {
+  flex: 99999 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.datePickertable .ReactTable .rt-tr .rt-td {
+
+  flex: 1 0;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding: 7px 5px;
+  overflow: initial;
+  transition: .3s ease;
+  transition-property: width,min-width,padding,opacity;;
+}
+
+.datePickertable .ReactTable .rt-tbody {
+  overflow: initial;
+}
