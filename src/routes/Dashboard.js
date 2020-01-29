@@ -5087,7 +5087,7 @@ class Dashboard extends Component {
                                 />
                                 CSV
                               </button> */}
-                              <CSVLink data={this.state.SearchTicketData}><img
+                              <CSVLink className="csv-button" data={this.state.SearchTicketData}><img
                                   className="position-relative csv-icon"
                                   src={csv}
                                   alt="csv-icon"
