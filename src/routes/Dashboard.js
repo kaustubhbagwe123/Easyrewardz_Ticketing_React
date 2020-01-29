@@ -265,6 +265,7 @@ class Dashboard extends Component {
           month: "October"
         }
       ],
+      resultCount:0,
     };
     this.handleAssignTo=this.handleAssignTo.bind(this);
     this.applyCallback = this.applyCallback.bind(this);
@@ -1694,29 +1695,37 @@ class Dashboard extends Component {
         ByDateCreatDate: "",
         ByDateSelectDate: "",
         selectedSlaDueByDate: 0,
-        selectedTicketStatusByDate: 0
+        selectedTicketStatusByDate: 0,
+        resultCount: 0
       });
+      this.handleSearchTicketEscalation();
     } else if (this.state.byCustomerTypeFlag === 2) {
       this.setState({
         MobileNoByCustType: "",
         EmailIdByCustType: "",
         TicketIdByCustType: "",
-        selectedTicketStatusByCustomer: 0
+        selectedTicketStatusByCustomer: 0,
+        resultCount: 0
       });
+      this.handleSearchTicketEscalation();
     } else if (this.state.byTicketTypeFlag === 3) {
       this.setState({
         selectedPriority: 0,
         selectedTicketStatusByTicket: 0,
         selectedChannelOfPurchase: [],
-        selectedTicketActionType: []
+        selectedTicketActionType: [],
+        resultCount: 0
       });
+      this.handleSearchTicketEscalation();
     } else if (this.state.byCategoryFlag === 4) {
       this.setState({
         selectedCategory: 0,
         selectedSubCategory: 0,
         selectedIssueType: 0,
-        selectedTicketStatusByCategory: 0
+        selectedTicketStatusByCategory: 0,
+        resultCount: 0
       });
+      this.handleSearchTicketEscalation();
     } else if (this.state.allFlag === 5) {
       this.setState({
         ByAllCreateDate: "",
@@ -1747,8 +1756,10 @@ class Dashboard extends Component {
         selectedWithTaskAll: "no",
         selectedTaskStatus: 0,
         selectedDepartment: 0,
-        selectedFunction: 0
+        selectedFunction: 0,
+        resultCount: 0
       });
+      this.handleSearchTicketEscalation();
     }
   }
   ViewSearchData() {
@@ -1893,13 +1904,20 @@ class Dashboard extends Component {
       debugger;
       let status = res.data.message;
       let data = res.data.responseData;
+      let count = 0;
+      if (res.data.responseData != null) {
+        count = res.data.responseData.length;
+      }
+
       if (status === "Success") {
         self.setState({
-          SearchTicketData: data
+          SearchTicketData: data,
+          resultCount: count
         });
       } else {
         self.setState({
-          SearchTicketData: []
+          SearchTicketData: [],
+          resultCount: 0
         });
       }
     });
@@ -3125,7 +3143,7 @@ class Dashboard extends Component {
                                 ? "0" + this.state.DashboardNumberData.taskClose
                                 : this.state.DashboardNumberData.taskClose) : null}
                             </span>
-                            <small>Pending</small>
+                            <small>Closed</small>
                           </div>
                         </div>
                       </div>
@@ -3199,7 +3217,7 @@ class Dashboard extends Component {
                                   this.state.DashboardNumberData.claimClose
                                 : this.state.DashboardNumberData.claimClose) : null}
                             </span>
-                            <small>Pending</small>
+                            <small>Closed</small>
                           </div>
                         </div>
                       </div>
@@ -5069,7 +5087,9 @@ class Dashboard extends Component {
                           <div className="row common-adv-padd justify-content-between">
                             <div className="col-auto d-flex align-items-center">
                               <p className="font-weight-bold mr-3">
-                                <span className="blue-clr">04</span> Results
+                                <span className="blue-clr">{this.state.resultCount < 9
+                                            ? "0" + this.state.resultCount
+                                            : this.state.resultCount}</span> Results
                               </p>
                               <p
                                 className="blue-clr fs-14"

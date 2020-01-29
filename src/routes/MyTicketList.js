@@ -664,6 +664,7 @@ class MyTicketList extends Component {
         selectedSlaDueByDate: 0,
         selectedTicketStatusByDate: 0
       });
+      this.ViewSearchData();
     } else if (this.state.byCustomerTypeFlag === 2) {
       this.setState({
         MobileNoByCustType: "",
@@ -671,6 +672,7 @@ class MyTicketList extends Component {
         TicketIdByCustType: "",
         selectedTicketStatusByCustomer: 0
       });
+      this.ViewSearchData();
     } else if (this.state.byTicketTypeFlag === 3) {
       this.setState({
         selectedPriority: 0,
@@ -678,6 +680,7 @@ class MyTicketList extends Component {
         selectedChannelOfPurchase: [],
         selectedTicketActionType: []
       });
+      this.ViewSearchData();
     } else if (this.state.byCategoryFlag === 4) {
       this.setState({
         selectedCategory: 0,
@@ -685,6 +688,7 @@ class MyTicketList extends Component {
         selectedIssueType: 0,
         selectedTicketStatusByCategory: 0
       });
+      this.ViewSearchData();
     } else if (this.state.allFlag === 5) {
       this.setState({
         ByAllCreateDate: "",
@@ -717,6 +721,7 @@ class MyTicketList extends Component {
         selectedDepartment: 0,
         selectedFunction: 0
       });
+      this.ViewSearchData();
     }
   }
 
@@ -1329,7 +1334,8 @@ class MyTicketList extends Component {
         });
       } else {
         self.setState({
-          SearchTicketData: []
+          SearchTicketData: [],
+          resultCount: 0
         });
       }
     });
@@ -2374,7 +2380,7 @@ handleAssignTo(){
                                               this.handleTicketStatusByDate
                                             }
                                           >
-                                            <option>Ticket Status</option>
+                                            <option value="0">Ticket Status</option>
                                             {this.state.TicketStatusData !==
                                               null &&
                                               this.state.TicketStatusData.map(
