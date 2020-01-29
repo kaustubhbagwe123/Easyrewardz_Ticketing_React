@@ -161,7 +161,6 @@ class MyTicket extends Component {
     this.handleKbLinkPopupSearch = this.handleKbLinkPopupSearch.bind(this);
     this.handleGetOrderDetails = this.handleGetOrderDetails.bind(this);
     this.handleGetProductData = this.handleGetProductData.bind(this);
-    this.handleGetStoreDetails = this.handleGetStoreDetails.bind(this);
     this.handleGetMessageDetails = this.handleGetMessageDetails.bind(this);
     this.hanldeGetSelectedStoreData = this.hanldeGetSelectedStoreData.bind(
       this
@@ -555,7 +554,7 @@ class MyTicket extends Component {
     debugger;
     let self = this;
     axios({
-      method: "post",
+      method: "get",
       url: config.apiUrl + "/Priority/GetPriorityList",
       headers: authHeader()
     }).then(function(res) {
@@ -2132,7 +2131,7 @@ class MyTicket extends Component {
                                   src={SearchBlackImg}
                                   alt="Search"
                                   className="systemorder-imgsearch"
-                                  onClick={this.handleGetStoreDetails()}
+                                  onClick={this.handleGetStoreDetails.bind(this)}
                                 />
                               </div>
                               <div className="">
@@ -3757,12 +3756,12 @@ class MyTicket extends Component {
                           value={this.state.NoteAddComment}
                           onChange={this.handleNoteOnChange}
                         ></textarea>
-                        {this.state.NoteAddComment.length == 0 && <p style={{ 'color' : 'red', 'margin-bottom' : '0px' }}>{this.state.notesCommentCompulsion}</p>}
+                        {this.state.NoteAddComment.length == 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.notesCommentCompulsion}</p>}
                         <button
                           type="button"
                           className="notesbtn notesbtn-text"
                           onClick={this.handleNoteAddComments.bind(this)}
-                          style={{ 'margin-top' : '5px' }}
+                          style={{ 'marginTop' : '5px' }}
                         >
                           ADD COMMENT
                         </button>

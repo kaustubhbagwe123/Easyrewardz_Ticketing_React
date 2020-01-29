@@ -1000,9 +1000,9 @@ class TicketSystem extends Component {
                           }}
                           id="titleSuggestion"
                           autoComplete="off"
-                          style={{ 'margin-bottom' : '5px' }}
+                          style={{ 'marginBottom' : '5px' }}
                         />
-                        {this.state.titleSuggValue.length == 0 && <p style={{ 'color' : 'red', 'margin-bottom' : '0px' }}>{this.state.ticketTitleCompulsion}</p>}
+                        {this.state.titleSuggValue.length == 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.ticketTitleCompulsion}</p>}
                         {this.validator.message(
                           "TicketTitle",
                           this.state.titleSuggValue,
@@ -1038,7 +1038,7 @@ class TicketSystem extends Component {
                         onChange={this.handleTicketChange}
                         maxLength={250}
                       ></textarea>
-                      {this.state.ticketDetails.length == 0 && <p style={{ 'color' : 'red', 'margin-bottom' : '0px' }}>{this.state.ticketDetailsCompulsion}</p>}
+                      {this.state.ticketDetails.length == 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.ticketDetailsCompulsion}</p>}
                       {this.validator.message(
                         "ticketDetails",
                         this.state.ticketDetails,

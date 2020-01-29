@@ -664,7 +664,8 @@ class TicketSystemOrder extends Component {
                       />
                     </div>
                   );
-                }}
+                }
+              }
               />
             </div>
           </Modal>
