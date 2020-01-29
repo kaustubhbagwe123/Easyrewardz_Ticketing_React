@@ -53,7 +53,29 @@ class StoreMaster extends Component {
       store_type: 0,
       contact_email: "",
       contact_Phone: "",
-      loading: false
+      loading: false,
+      updatestoreID: 0,
+            updatestoreName: "",
+            updatestoreCode: "",
+            updatebranName: "",
+            updatecityName: "",
+            updatestateName: "",
+            updatepinCode: 0,
+            updatestatus: "",
+            updatestrPinCode: "0",
+            updatecityID: 0,
+            updatestateID: 0,
+            updateregionID: 0,
+            updatezoneID: 0,
+            updatestoreTypeID: 0,
+            updatestatusID: false,
+            updatebrandIDs: "",
+            updatebrandNames: "",
+            updatebrand_Names: "",
+            updateAddress:"",
+            updateEmail:"",
+            updatePhone:""
+      
     };
     this.handleGetStoreMasterData = this.handleGetStoreMasterData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -63,6 +85,7 @@ class StoreMaster extends Component {
     this.handleGetStoreTypeList = this.handleGetStoreTypeList.bind(this);
   }
   componentDidMount() {
+
     this.handleGetStoreMasterData();
     this.handleGetBrandList();
     this.handleGetStateList();
@@ -274,11 +297,12 @@ class StoreMaster extends Component {
   };
   handleBrandChange = e => {
     debugger;
-    this.setState({ selectedBrand: e });
+    this.setState({ EditBrand: e });
   };
   handleEditBrandChange = e => {
     debugger;
-    this.setState({ EditBrand: e });
+    let value = e.target.value;
+    this.setState({ EditBrand: value });
   };
   handleStateChange = e => {
     let value = e.target.value;
@@ -299,6 +323,45 @@ class StoreMaster extends Component {
     // storeEditData.brand_Id=storeEditData.brandID;
     // storeEditData.brand_Id=storeEditData.brandID;
     // storeEditData.brand_Id=storeEditData.brandID;
+    this.setStoreUpdateData(data);
+  }
+  setStoreUpdateData(individualData){
+    debugger;
+        
+    let updatestoreID=individualData.storeID,
+        updatestoreName=individualData.storeName,
+        updatestoreCode=individualData.storeCode,
+        updatebranName=individualData.brandName,
+        updatecityName=individualData.cityName,
+        updatestateName=individualData.stateName,
+        updatepinCode=individualData.pinCode,
+        updatestatus=individualData.status,
+        updatestrPinCode=individualData.strPinCode,
+        updatecityID=individualData.cityID,
+        updatestateID=individualData.stateID,
+        updateregionID=individualData.regionID,
+        updatezoneID=individualData.zoneID,
+        updatestoreTypeID=individualData.storeTypeID,
+        updatestatusID=individualData.statusID,
+        updatebrandIDs=individualData.brandIDs,
+        updatebrandNames=individualData.brandNames,
+        updatebrand_Names=individualData.brand_Names,
+         
+        selectState=updatestateID,
+        selectCity=updatecityID,
+        selectRegion=updateregionID,
+        selectZone=updatezoneID,
+        store_type=updatestoreTypeID,
+        selectStatus=updatestatusID,
+        EditBrand=updatebrandIDs;
+
+  
+    this.setState({
+      updatestoreID,updatestoreName,updatestoreCode,updatebranName,updatecityName,updatestateName,updatepinCode,updatestatus,
+      updatestrPinCode,updatecityID,updatestateID,updateregionID,updatezoneID,updatestoreTypeID,updatestatusID,updatebrandIDs,
+      updatebrandNames,updatebrand_Names,selectState,selectCity,selectRegion,selectZone,store_type,selectStatus,EditBrand
+    })
+    
   }
   handleCityChange = e => {
     let value = e.target.value;
@@ -509,29 +572,21 @@ class StoreMaster extends Component {
                                         <label className="popover-header-text">
                                           EDIT STORE
                                         </label>
-                                        <div className="pop-over-div">
-                                          <label className="edit-label-1">
-                                            Brand
-                                          </label>
-                                          <Select
-                                            getOptionLabel={option =>
-                                              option.brandName
-                                            }
-                                            getOptionValue={option =>
-                                              option.brandID
-                                            }
-                                            options={this.state.brandData}
-                                            placeholder="Select"
-                                            // menuIsOpen={true}
-                                            closeMenuOnSelect={false}
-                                            onChange={
-                                              this.handleEditBrandChange
-                                            }
-                                            value={this.state.EditBrand}
-                                            // showNewOptionAtTop={false}
-                                            isMulti
-                                          />
-                                        </div>
+                                        <div className="div-padding-1">
+                      <label className="designation-name">Brand</label>
+                      <Select
+                        getOptionLabel={option => option.brandName}
+                        getOptionValue={option => option.brandID}
+                        options={this.state.brandData}
+                        placeholder="Select"
+                        // menuIsOpen={true}
+                        closeMenuOnSelect={false}
+                        onChange={this.handleBrandChange}
+                        value={this.state.EditBrand}
+                        // showNewOptionAtTop={false}
+                        isMulti
+                      />
+                    </div>
                                         <div className="pop-over-div">
                                           <label className="edit-label-1">
                                             Store Code
@@ -541,6 +596,7 @@ class StoreMaster extends Component {
                                             className="txt-edit-popover"
                                             placeholder="Enter Store Code"
                                             maxLength={10}
+                                            value={this.state.updatestoreCode}
                                           />
                                         </div>
                                         <div className="pop-over-div">
@@ -552,6 +608,7 @@ class StoreMaster extends Component {
                                             className="txt-edit-popover"
                                             placeholder="Enter Store Name"
                                             maxLength={100}
+                                            value={this.state.updatestoreName}
                                           />
                                         </div>
                                         <div className="pop-over-div">
@@ -563,7 +620,7 @@ class StoreMaster extends Component {
                                             value={this.state.selectState}
                                             onChange={this.handleStateChange}
                                           >
-                                            <option>Select</option>
+                                            <option value={this.state.updatestateID}>{this.state.updatestateName}</option>
                                             {this.state.stateData !== null &&
                                               this.state.stateData.map(
                                                 (item, i) => (
@@ -577,13 +634,21 @@ class StoreMaster extends Component {
                                                 )
                                               )}
                                           </select>
+
+                                         
+                                         
+
+
                                         </div>
                                         <div className="pop-over-div">
                                           <label className="edit-label-1">
                                             City
                                           </label>
-                                          <select className="edit-dropDwon dropdown-setting">
-                                            <option>Select</option>
+                                          <select className="edit-dropDwon dropdown-setting"
+                                          value={this.state.selectCity}
+                                          onChange={this.handleCityChange}
+                                          >
+                                            <option value={this.state.updatecityID}>{this.state.updatecityName}</option>
                                             {this.state.cityData !== null &&
                                               this.state.cityData.map(
                                                 (item, i) => (
@@ -607,6 +672,7 @@ class StoreMaster extends Component {
                                             className="txt-edit-popover"
                                             placeholder="Enter Pin Code"
                                             maxLength={11}
+                                            value={this.state.updatepinCode}
                                           />
                                         </div>
                                         <div className="pop-over-div">
@@ -619,6 +685,7 @@ class StoreMaster extends Component {
                                             className="store-create-textarea"
                                             placeholder="Enter address"
                                             maxLength={250}
+                                            
                                           ></textarea>
                                         </div>
                                         <div className="pop-over-div">
@@ -626,39 +693,54 @@ class StoreMaster extends Component {
                                             Region
                                           </label>
                                           <select
-                                            id="inputStatus"
-                                            className="edit-dropDwon dropdown-setting"
-                                          >
-                                            <option>Delhi</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                          </select>
+                        className="store-create-select"
+                        value={this.state.selectRegion}
+                        onChange={this.handleRegionChange}
+                      >
+                        <option>Select</option>
+                        {this.state.regionData !== null &&
+                          this.state.regionData.map((item, s) => (
+                            <option key={s} value={item.regionID}>
+                              {item.regionName}
+                            </option>
+                          ))}
+                      </select>
                                         </div>
                                         <div className="pop-over-div">
                                           <label className="edit-label-1">
                                             Zone
                                           </label>
                                           <select
-                                            id="inputStatus"
-                                            className="edit-dropDwon dropdown-setting"
-                                          >
-                                            <option>North</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                          </select>
+                        className="store-create-select"
+                        value={this.state.selectZone}
+                        onChange={this.handleZoneChange}
+                      >
+                        <option>Select</option>
+                        {this.state.zoneData !== null &&
+                          this.state.zoneData.map((item, s) => (
+                            <option key={s} value={item.zoneID}>
+                              {item.zoneName}
+                            </option>
+                          ))}
+                      </select>
                                         </div>
                                         <div className="pop-over-div">
                                           <label className="edit-label-1">
                                             Store Type
                                           </label>
                                           <select
-                                            id="inputStatus"
-                                            className="edit-dropDwon dropdown-setting"
-                                          >
-                                            <option>Retail</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                          </select>
+                        className="store-create-select"
+                        value={this.state.store_type}
+                        onChange={this.handleStoreTypeChange}
+                      >
+                        <option>Select</option>
+                        {this.state.storeTypeData !== null &&
+                          this.state.storeTypeData.map((item, t) => (
+                            <option key={t} value={item.storeTypeID}>
+                              {item.storeTypeName}
+                            </option>
+                          ))}
+                      </select>
                                         </div>
                                         <div className="pop-over-div">
                                           <label className="edit-label-1">
@@ -669,6 +751,7 @@ class StoreMaster extends Component {
                                             className="txt-edit-popover"
                                             placeholder="Enter email id"
                                             maxLength={100}
+                                            
                                           />
                                         </div>
                                         <div className="pop-over-div">
@@ -687,12 +770,18 @@ class StoreMaster extends Component {
                                             Status
                                           </label>
                                           <select
-                                            id="inputStatus"
-                                            className="edit-dropDwon dropdown-setting"
-                                          >
-                                            <option>Status</option>
-                                            <option>Inactive</option>
-                                          </select>
+                        className="form-control dropdown-setting"
+                        value={this.state.selectStatus}
+                        onChange={this.handleStatusChange}
+                      >
+                        <option>select</option>
+                        {this.state.activeData !== null &&
+                          this.state.activeData.map((item, j) => (
+                            <option key={j} value={item.ActiveID}>
+                              {item.ActiveName}
+                            </option>
+                          ))}
+                      </select>
                                         </div>
                                         <br />
                                         <div>
