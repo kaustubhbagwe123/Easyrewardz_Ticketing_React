@@ -648,7 +648,6 @@ class TicketSystem extends Component {
       for (let i = 0; i < filesAmount; i++) {
         const reader = new FileReader();
         reader.onload = file => {
-          // console.log(file.target.result);
           this.setState({
             imageView: file.target.result
           });
