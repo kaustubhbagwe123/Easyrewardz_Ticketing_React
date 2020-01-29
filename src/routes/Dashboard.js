@@ -679,6 +679,7 @@ class Dashboard extends Component {
     const allCheckboxChecked = event.target.checked;
     var checkboxes = document.getElementsByName("allAgent");
     if (allCheckboxChecked) {
+      document.getElementById("spnAgent").textContent="ALL";
       for (var i in checkboxes) {
         if (checkboxes[i].checked === false) {
           checkboxes[i].checked = true;
@@ -687,6 +688,7 @@ class Dashboard extends Component {
         }
       }
     } else {
+      document.getElementById("spnAgent").textContent="select";
       for (var J in checkboxes) {
         if (checkboxes[J].checked === true) {
           checkboxes[J].checked = false;
@@ -708,6 +710,7 @@ class Dashboard extends Component {
     const allCheckboxChecked = event.target.checked;
     var checkboxes = document.getElementsByName("allBrand");
     if (allCheckboxChecked) {
+      document.getElementById("spnBrand").textContent="ALL";
       for (var i in checkboxes) {
         if (checkboxes[i].checked === false) {
           checkboxes[i].checked = true;
@@ -716,6 +719,7 @@ class Dashboard extends Component {
         }
       }
     } else {
+      document.getElementById("spnBrand").textContent="select";
       for (var J in checkboxes) {
         if (checkboxes[J].checked === true) {
           checkboxes[J].checked = false;
