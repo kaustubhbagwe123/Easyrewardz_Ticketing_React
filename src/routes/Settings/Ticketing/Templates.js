@@ -14,15 +14,168 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import CancelImg from "./../../../assets/Images/Circle-cancel.png";
 import CKEditor from "react-ckeditor-component";
 import Modal from "react-bootstrap/Modal";
+import { authHeader } from "./../../../helpers/authHeader";
+import axios from "axios";
+import config from "./../../../helpers/config";
+import {
+  NotificationContainer,
+  NotificationManager
+} from "react-notifications";
+import Select from "react-select";
 
 class Templates extends Component {
   constructor(props) {
     super(props)
   
     this.state = {
-      ConfigTabsModal: false
+      ConfigTabsModal: false,
+      template: [],
+      TemplateName: '',
+      TemplateIsActive: 'true',
+      TemplateSubject: '',
+      editorContent: '',
+      slaIssueType: [],
+      selectedSlaIssueType: [],
+      selectedIssueTypeCommaSeperated: "",
     }
+
+    this.handleGetTemplate = this.handleGetTemplate.bind(this);
+    this.handleTemplateName = this.handleTemplateName.bind(this);
+    this.handleTemplateSubject = this.handleTemplateSubject.bind(this);
+    this.handleGetSLAIssueType = this.handleGetSLAIssueType.bind(this);
   }
+
+  componentDidMount() {
+    this.handleGetTemplate();
+    this.handleGetSLAIssueType();
+  }
+
+  setIssueType = e => {
+    debugger;
+    if (e !== null) {
+      var selectedIssueTypeCommaSeperated = Array.prototype.map
+        .call(e, s => s.issueTypeID)
+        .toString();
+    }
+    this.setState({
+      selectedSlaIssueType: e,
+      selectedIssueTypeCommaSeperated
+    });
+  };
+
+  handleTemplateName(e) {
+    debugger;
+    this.setState({
+      TemplateName: e.target.value
+    });
+  }
+  onEditorChange = (evt) => {
+    debugger;
+    var newContent = evt.editor.getData();
+    this.setState({
+      editorContent: newContent
+    });
+  }
+  handleTemplateSubject(e) {
+    debugger;
+    this.setState({
+      TemplateSubject: e.target.value
+    });
+  }
+  handleTemplateIsActive = e => {
+    debugger;
+    let TemplateIsActive = e.currentTarget.value;
+    this.setState({ TemplateIsActive });
+  };
+
+  handleGetSLAIssueType() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/SLA/GetIssueType",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let slaIssueType = res.data.responseData;
+      if (slaIssueType !== null && slaIssueType !== undefined) {
+        self.setState({ slaIssueType });
+      }
+    });
+  }
+
+  deleteTemplate(deleteId) {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Template/DeleteTemplate",
+      headers: authHeader(),
+      params: {
+        TemplateID: deleteId
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      if (status === "Success") {
+        NotificationManager.success("Template deleted successfully.");
+        self.handleGetTemplate();
+      } else {
+        NotificationManager.error("Template not deleted.");
+      }
+    });
+  }
+
+  createTemplate() {
+    debugger;
+    let self = this;
+    this.setState({ConfigTabsModal:false})
+    let TemplateIsActive;
+    if (this.state.TemplateIsActive === 'true') {
+      TemplateIsActive = true
+    } else if (this.state.TemplateIsActive === 'false') {
+      TemplateIsActive = false
+    }
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Template/CreateTemplate",
+      headers: authHeader(),
+      params: {
+        TemplateName: this.state.TemplateName,
+        TemplateSubject: this.state.TemplateSubject,
+        TemplateBody: this.state.editorContent,
+        issueTypes: this.state.selectedIssueTypeCommaSeperated,
+        isTemplateActive: TemplateIsActive
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      if (status === "Success") {
+        NotificationManager.success("Template added successfully.");
+        self.handleGetTemplate();
+      } else {
+        NotificationManager.error("Template not added.");
+      }
+    });
+  }
+
+  handleGetTemplate() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Template/GetTemplate",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let template = res.data.responseData;
+      if (template !== null && template !== undefined) {
+        self.setState({ template });
+      }
+    });
+  }
+
   handleConfigureTabsOpen(){
     this.setState({ConfigTabsModal:true})
   }
@@ -30,39 +183,6 @@ class Templates extends Component {
     this.setState({ConfigTabsModal:false})
   }
   render() {
-    const data = [
-      {
-        id: "A1",
-        alertType: "Complaint Status",
-        communicationMode: 12,
-        status: "Active"
-      },
-      {
-        id: "B1",
-        alertType: "Complaint Status",
-        communicationMode: 10,
-        status: "Inactive"
-      },
-      {
-        id: "C1",
-        alertType: "Complaint Status",
-        communicationMode: 12,
-        status: "Active"
-      },
-      {
-        id: "D1",
-        alertType: "Complaint Status",
-        communicationMode: 10,
-        status: "Inactive"
-      },
-      {
-        id: "E1",
-        alertType: "Complaint Status",
-        communicationMode: 12,
-        status: "Active"
-      }
-    ];
-
     const columns = [
       {
         Header: (
@@ -71,7 +191,7 @@ class Templates extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "alertType"
+        accessor: "templateName"
       },
       {
         Header: (
@@ -80,7 +200,7 @@ class Templates extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "communicationMode",
+        accessor: "issueType",
         Cell: props => <span className="number">{props.value}</span>
       },
       {
@@ -96,8 +216,23 @@ class Templates extends Component {
           return (
             <>
               <span>
-                Admin
-                <Popover content={popoverData} placement="bottom">
+              {row.original.createdBy}
+                <Popover content={
+                  <>
+                    <div>
+                      <b>
+                        <p className="title">Created By: {row.original.createdBy}</p>
+                      </b>
+                      <p className="sub-title">Created Date: {row.original.createdDate}</p>
+                    </div>
+                    <div>
+                      <b>
+                        <p className="title">Updated By: {row.original.modifiedBy}</p>
+                      </b>
+                      <p className="sub-title">Updated Date: {row.original.modifiedDate}</p>
+                    </div>
+                  </>
+                } placement="bottom">
                   <img
                     src={InfoImg}
                     className="info-icon"
@@ -118,7 +253,7 @@ class Templates extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "status"
+        accessor: "templateStatus"
       },
       {
         Cell: row => {
@@ -126,7 +261,23 @@ class Templates extends Component {
           return (
             <>
               <span>
-                <Popover content={ActionDelete} placement="bottom" trigger="click">
+                <Popover content={
+                  <div className="d-flex general-popover popover-body">
+                  <div className="del-big-icon">
+                    <img src={DelBigIcon} alt="del-icon" />
+                  </div>
+                  <div>
+                    <p className="font-weight-bold blak-clr">Delete file?</p>
+                    <p className="mt-1 fs-12">
+                      Are you sure you want to delete this file?
+                    </p>
+                    <div className="del-can">
+                      <a href={Demo.BLANK_LINK}>CANCEL</a>
+                      <button className="butn" onClick={this.deleteTemplate.bind(this, row.original.templateID)}>Delete</button>
+                    </div>
+                  </div>
+                </div>
+                } placement="bottom" trigger="click">
                   <img
                     src={DeleteIcon}
                     alt="del-icon"
@@ -135,10 +286,11 @@ class Templates extends Component {
                   />
                 </Popover>
                 <Popover content={ActionEditBtn} placement="bottom" trigger="click">
-                  <button className="react-tabel-button" id="p-edit-pop-2">
-                    <label className="Table-action-edit-button-text">
+                  <button className="react-tabel-button editre" id="p-edit-pop-2">
+                  EDIT
+                    {/* <label className="Table-action-edit-button-text">
                       EDIT
-                    </label>
+                    </label> */}
                   </button>
                 </Popover>
               </span>
@@ -151,39 +303,6 @@ class Templates extends Component {
       }
     ];
 
-    const popoverData = (
-      <>
-        <div>
-          <b>
-            <p className="title">Created By: Admin</p>
-          </b>
-          <p className="sub-title">Created Date: 12 March 2018</p>
-        </div>
-        <div>
-          <b>
-            <p className="title">Updated By: Manager</p>
-          </b>
-          <p className="sub-title">Updated Date: 12 March 2018</p>
-        </div>
-      </>
-    );
-    const ActionDelete = (
-      <div className="d-flex general-popover popover-body">
-        <div className="del-big-icon">
-          <img src={DelBigIcon} alt="del-icon" />
-        </div>
-        <div>
-          <p className="font-weight-bold blak-clr">Delete file?</p>
-          <p className="mt-1 fs-12">
-            Are you sure you want to delete this file?
-          </p>
-          <div className="del-can">
-            <a href={Demo.BLANK_LINK}>CANCEL</a>
-            <button className="butn">Delete</button>
-          </div>
-        </div>
-      </div>
-    );
     const ActionEditBtn = (
       <div className="edtpadding">
         <div className="">
@@ -207,9 +326,10 @@ class Templates extends Component {
         </div>
         <div className="pop-over-div">
           <label className="edit-label-1">Status</label>
-          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
-            <option>Active</option>
-            <option>Inactive</option>
+          <select id="inputStatus" className="edit-dropDwon dropdown-setting"
+          >
+            <option value="true">Active</option>
+            <option value="false">Inactive</option>
           </select>
         </div>
         <br />
@@ -238,10 +358,10 @@ class Templates extends Component {
               <div className="col-md-8">
                 <div className="table-cntr table-height template-table">
                   <ReactTable
-                    data={data}
+                    data={this.state.template}
                     columns={columns}
                     // resizable={false}
-                    defaultPageSize={5}
+                    defaultPageSize={10}
                     showPagination={false}
                   />
                   <div className="position-relative1">
@@ -297,17 +417,46 @@ class Templates extends Component {
                         className="txt-1"
                         placeholder="Enter Name"
                         maxLength={25}
+                        onChange={this.handleTemplateName}
                       />
                     </div>
                     <div className="divSpace">
                       <div className="dropDrownSpace">
                         <label className="reports-to">Issue Type</label>
-                        <select
+                        {/* <select
                           id="inputState"
                           className="form-control dropdown-setting"
                         >
                           <option>Select</option>
-                        </select>
+                        </select> */}
+                        <div className="normal-dropdown mt-0 dropdown-setting temp-multi schedule-multi">
+                          <Select
+                            getOptionLabel={option =>
+                              option.issueTypeName
+                            }
+                            getOptionValue={
+                              option => option.issueTypeID //id
+                            }
+                            options={
+                              this.state
+                                .slaIssueType
+                            }
+                            placeholder="Select"
+                            // menuIsOpen={true}
+                            closeMenuOnSelect={
+                              false
+                            }
+                            onChange={this.setIssueType.bind(
+                              this
+                            )}
+                            value={
+                              this.state
+                                .selectedSlaIssueType
+                            }
+                            // showNewOptionAtTop={false}
+                            isMulti
+                          />
+                        </div>
                       </div>
                     </div>
                     <div className="divSpace">
@@ -316,9 +465,11 @@ class Templates extends Component {
                         <select
                           id="inputState"
                           className="form-control dropdown-setting"
+                          value={this.state.TemplateIsActive}
+                          onChange={this.handleTemplateIsActive}
                         >
-                          <option>Active</option>
-                          <option>Inactive</option>
+                          <option value="true">Active</option>
+                          <option value="false">Inactive</option>
                         </select>
                       </div>
                     </div>
@@ -326,7 +477,8 @@ class Templates extends Component {
                       <button className="CreateADDBtn" 
                       onClick={this.handleConfigureTabsOpen.bind(this)}
                       >
-                        <label className="addLable">CONFIGURE TEMPLATE</label>
+                      CONFIGURE TEMPLATE
+                        {/* <label className="addLable">CONFIGURE TEMPLATE</label> */}
                       </button>
                       <Modal
                           size="lg"
@@ -344,21 +496,31 @@ class Templates extends Component {
                       </div>
                       </div>
                     </Modal.Header>
+                    <div className="temp-sub">
+                        <label className="designation-name">Template Subject</label>
+                        <input
+                          type="text"
+                          className="txt-1"
+                          placeholder="Enter Template Subject"
+                          maxLength={25}
+                          onChange={this.handleTemplateSubject}
+                        />
+                      </div>
                     <Modal.Body>
                       <div className="template-editor">
                         <CKEditor
                                 
-                                content={this.state.content}
+                                content={this.state.editorContent}
                                 events={{
                                   // "blur": this.onBlur,
                                   // "afterPaste": this.afterPaste,
-                                  change: this.onChange,
+                                  change: this.onEditorChange,
                                   items: this.fileUpload
                                 }}
                         />
                       </div>
                       <div className="config-button">
-                              <button className="config-buttontext" type="submit">
+                              <button className="config-buttontext" onClick={this.createTemplate.bind(this)} type="submit">
                                 SAVE & NEXT
                               </button>
                       </div>
@@ -372,6 +534,7 @@ class Templates extends Component {
             </div>
           </div>
         </div>
+        <NotificationContainer />
       </React.Fragment>
     );
   }

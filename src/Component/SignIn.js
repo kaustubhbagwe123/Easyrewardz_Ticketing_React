@@ -4,6 +4,8 @@ import "react-app-polyfill/ie11";
 import "./../assets/css/custome.css";
 import Logo from "./../assets/Images/logo.jpg";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { encryption } from "../helpers/encryption";
 import axios from "axios";
 import config from "../helpers/config";
@@ -21,9 +23,10 @@ class SingIn extends Component {
     this.state = {
       emailID: "",
       password: "",
+      loading: false,
       programCode: "",
-      fullUserName: "",
-      UserEmail: ""
+      // fullUserName: "",
+      // UserEmail: ""
     };
     this.hanleChange = this.hanleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -37,7 +40,7 @@ class SingIn extends Component {
 
   componentDidMount() {
     debugger;
-    var finalEncProgramCode = this.props.location.state;
+    var finalEncProgramCode = this.props.location.state.encProgramCode;
     if (finalEncProgramCode) {
       this.setState({
         programCode: finalEncProgramCode
@@ -50,13 +53,14 @@ class SingIn extends Component {
   handleSubmit(event) {
     event.preventDefault();
     debugger;
+    let self = this;
     if (this.validator.allValid()) {
       const { emailID, password } = this.state;
       var X_Authorized_userId = encryption(emailID, "enc");
 
       let X_Authorized_password = encryption(password, "enc");
 
-      let X_Authorized_Domainname = encryption(window.location.origin, "enc");
+     let X_Authorized_Domainname = encryption(window.location.origin, "enc");
       // let X_Authorized_Domainname = encryption(
       //   "http://easyrewardz.demo.brainvire.net",
       //   "enc"
@@ -65,7 +69,7 @@ class SingIn extends Component {
       let X_Authorized_Programcode = ProCode.programCode;
 
       if (X_Authorized_userId !== null && X_Authorized_password !== null) {
-        let self = this;
+        
 
         axios({
           method: "post",
@@ -80,15 +84,19 @@ class SingIn extends Component {
           }
         }).then(function(res) {
           debugger;
-          let data = res.data.responseData;
+          //alert(1);
+          // let data = res.data.responseData;
           let resValid = res.data.message;
+          self.setState({
+          loading: true
+          });
           if (resValid === "Valid Login") {
             debugger;
-            NotificationManager.success("Login Successfull.");
-            self.setState({
-              fullUserName: data.firstName + " " + data.lastName,
-              UserEmail: data.userEmailID
-            });
+            //NotificationManager.success("Login Successfull.");
+            // self.setState({
+            //   fullUserName: data.firstName + " " + data.lastName,
+            //   UserEmail: data.userEmailID
+            // });
             window.localStorage.setItem("token", res.data.responseData.token);
             setTimeout(function() {
               self.props.history.push("/admin/dashboard");
@@ -105,7 +113,6 @@ class SingIn extends Component {
   }
 
   render() {
-    const { fullUserName, UserEmail } = this.props;
     return (
       <div className="auth-wrapper">
         <div className="auth-content">
@@ -154,9 +161,20 @@ class SingIn extends Component {
                 <button
                   type="submit"
                   className="program-code-button"
+                  disabled={this.state.loading}
                   // onClick={this.handleSubmit}
                 >
-                  LOGIN
+                  
+                  {this.state.loading ? (
+                      <FontAwesomeIcon
+                        className="circular-loader"
+                        icon={faCircleNotch}
+                        spin
+                      />
+                    ) : (
+                      ""
+                    )}
+                    {this.state.loading ? "Please Wait ..." : "LOGIN"}
                 </button>
               </form>
               <div>

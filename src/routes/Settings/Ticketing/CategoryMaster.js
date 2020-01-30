@@ -14,7 +14,14 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Popover } from "antd";
 import ReactTable from "react-table";
-
+import {
+  NotificationContainer,
+  NotificationManager
+} from "react-notifications";
+import { authHeader } from "../../../helpers/authHeader";
+import config from "../../../helpers/config";
+import axios from "axios";
+import ActiveStatus from "../../activeStatus";
 const { Option } = Select;
 const NEW_ITEM = "NEW_ITEM";
 
@@ -26,23 +33,301 @@ class CategoryMaster extends Component {
     this.state = {
       fileName: "",
       catmulti: false,
-      listOfCategory: [
-        "Complaint 1",
-        "Complaint 2",
-        "Complaint 3",
-        "Complaint 4"
-      ],
-      listOfSubCategory: [
-        "Complaint 1",
-        "Complaint 2",
-        "Complaint 3",
-        "Complaint 4"
-      ],
+      activeData: ActiveStatus(),
       list1Value: "",
       showList1: false,
       ListOfSubCate: "",
-      ShowSubCate: false
+      ListOfIssue: "",
+      ShowSubCate: false,
+      ShowIssuetype: false,
+      loading: false,
+      categoryGridData: [],
+      brandData: [],
+      categoryDropData: [],
+      SubCategoryDropData: [],
+      ListOfIssueData: [],
+      selectStatus: 0,
+      category_Id: 0,
+      selectBrand: 0,
+      subCategory_Id: 0,
+      issueType_Id: 0,
+      selectetedParameters:{}
     };
+    this.handleGetCategoryGridData = this.handleGetCategoryGridData.bind(this);
+    this.handleGetBrandList = this.handleGetBrandList.bind(this);
+    this.handleGetCategoryList = this.handleGetCategoryList.bind(this);
+    this.handleGetSubCategoryList = this.handleGetSubCategoryList.bind(this);
+    this.handleAddCategory = this.handleAddCategory.bind(this);
+    this.handleAddSubCategory = this.handleAddSubCategory.bind(this);
+    this.handleAddIssueType = this.handleAddIssueType.bind(this);
+  }
+  componentDidMount() {
+    this.handleGetCategoryGridData();
+    this.handleGetBrandList();
+  }
+  handleGetCategoryGridData() {
+    let self = this;
+    this.setState({ loading: true });
+    axios({
+      method: "get",
+      url: config.apiUrl + "/Category/ListCategorybrandmapping",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      var status = res.data.message;
+      var data = res.data.responseData;
+      if (status === "Success") {
+        self.setState({
+          categoryGridData: data,
+          loading: false
+        });
+      } else {
+        self.setState({
+          categoryGridData: []
+        });
+      }
+    });
+  }
+  handleGetBrandList() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Brand/GetBrandList",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        self.setState({ brandData: data });
+      } else {
+        self.setState({ brandData: [] });
+      }
+    });
+  }
+
+  handleGetCategoryList() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Category/GetCategoryList",
+      headers: authHeader(),
+      params: {
+        BrandID: this.state.selectBrand
+      }
+    }).then(function(res) {
+      debugger;
+      // let status=
+      let data = res.data;
+      self.setState({ categoryDropData: data });
+    });
+  }
+
+  handleGetSubCategoryList() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/SubCategory/GetSubCategoryByCategoryID",
+      headers: authHeader(),
+      params: {
+        CategoryID: this.state.list1Value
+      }
+    }).then(function(res) {
+      debugger;
+      let data = res.data.responseData;
+      self.setState({ SubCategoryDropData: data });
+    });
+  }
+
+  handleGetIssueTypeList() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/IssueType/GetIssueTypeList",
+      headers: authHeader(),
+      params: {
+        SubCategoryID: this.state.ListOfSubCate
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        self.setState({ ListOfIssueData: data });
+      } else {
+        self.setState({ ListOfIssueData: [] });
+      }
+    });
+  }
+
+  handleDeleteCategoryData(category_Id) {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Category/DeleteCategory",
+      headers: authHeader(),
+      params: {
+        CategoryID: category_Id
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      if (status === "Success") {
+        self.handleGetCategoryGridData();
+        NotificationManager.success("Category deleted successfully.");
+      }
+    });
+  }
+
+  handleAddCategory(value) {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Category/AddCategory",
+      headers: authHeader(),
+      params: {
+        category: value
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        NotificationManager.success("Category added successfully.");
+        self.setState({
+          category_Id: data
+        });
+      } else {
+        NotificationManager.error("Category not added.");
+      }
+    });
+  }
+  handleAddSubCategory(value) {
+    debugger;
+    let self = this;
+    var finalId = 0;
+    if (this.state.category_Id === 0) {
+      finalId = this.state.list1Value;
+    } else {
+      finalId = this.state.category_Id;
+    }
+    axios({
+      method: "post",
+      url: config.apiUrl + "/SubCategory/AddSubCategory",
+      headers: authHeader(),
+      params: {
+        categoryID: finalId,
+        SubcategoryName: value
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        NotificationManager.success("SubCategory added successfully.");
+        self.setState({
+          subCategory_Id: data
+        });
+      } else {
+        NotificationManager.error("SubCategory not added.");
+      }
+    });
+  }
+
+  handleAddIssueType(value) {
+    debugger;
+    let self = this;
+    var finalId = 0;
+    if (this.state.subCategory_Id === 0) {
+      finalId = this.state.ListOfSubCate;
+    } else {
+      finalId = this.state.subCategory_Id;
+    }
+    axios({
+      method: "post",
+      url: config.apiUrl + "/IssueType/AddIssueType",
+      headers: authHeader(),
+      params: {
+        SubcategoryID: finalId,
+        IssuetypeName: value
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        NotificationManager.success("Issue Type added successfully.");
+        self.setState({
+          issueType_Id: data
+        });
+      } else {
+        NotificationManager.error("Issue Type not added.");
+      }
+    });
+  }
+
+  handleSubmitData() {
+    debugger;
+    let self = this;
+    var activeStatus = 0;
+    var categorydata = 0;
+    var subCategoryData = 0;
+    var IssueData = 0;
+    var status = this.state.selectStatus;
+    if (status === "Active") {
+      activeStatus = 1;
+    } else {
+      activeStatus = 0;
+    }
+    if (isNaN(this.state.list1Value)) {
+      categorydata = this.state.category_Id;
+    } else {
+      categorydata = this.state.list1Value;
+    }
+
+    if (isNaN(this.state.ListOfSubCate)) {
+      subCategoryData = this.state.subCategory_Id;
+    } else {
+      subCategoryData = this.state.ListOfSubCate;
+    }
+
+    if (isNaN(this.state.ListOfIssue)) {
+      IssueData = this.state.issueType_Id;
+    } else {
+      IssueData = this.state.ListOfIssue;
+    }
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Category/CreateCategorybrandmapping",
+      headers: authHeader(),
+      data: {
+        BraindID: this.state.selectBrand,
+        CategoryID: categorydata,
+        SubCategoryID: subCategoryData,
+        IssueTypeID: IssueData,
+        Status: activeStatus
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      if (status === "Success") {
+        self.handleGetCategoryGridData();
+        NotificationManager.success("Category added successfully.");
+        self.setState({
+          selectBrand: 0,
+          list1Value: "",
+          ListOfSubCate: "",
+          ListOfIssue: "",
+          selectStatus: 0
+        });
+      }
+    });
   }
 
   HandleMultiSelect() {
@@ -51,249 +336,84 @@ class CategoryMaster extends Component {
   fileUpload = e => {
     this.setState({ fileName: e.target.files[0].name });
   };
-  // addItem = () => {
-  //   const { items} = this.state;
-  //   this.setState({
-  //     items: [...items, `Complaint ${index++}`],
-  //   });
-  // };
-  onChangeList1 = value => {
+  handleCategoryChange = value => {
+    debugger;
     if (value !== NEW_ITEM) {
-      this.setState({ list1Value: value });
+      this.setState({ list1Value: value, SubCategoryDropData: [] });
+      setTimeout(() => {
+        if (this.state.list1Value) {
+          this.handleGetSubCategoryList();
+        }
+      }, 1);
     } else {
       this.setState({ showList1: true });
     }
   };
-  onConfirm = inputValue => {
-    inputValue = inputValue.trim();
-    if (this.state.listOfCategory.includes(inputValue)) {
-      this.setState({
-        showList1: false,
-        list1Value: inputValue
-      });
-    } else {
-      this.setState({
-        showList1: false,
-        listOfCategory: [inputValue, ...this.state.listOfCategory],
-        list1Value: inputValue
-      });
-    }
-  };
-  onConfirm = inputValue => {
-    inputValue = inputValue.trim();
-    if (this.state.listOfSubCategory.includes(inputValue)) {
-      this.setState({
-        ShowSubCate: false,
-        ListOfSubCate: inputValue
-      });
-    } else {
-      this.setState({
-        ShowSubCate: false,
-        listOfSubCategory: [inputValue, ...this.state.listOfSubCategory],
-        ListOfSubCate: inputValue
-      });
-    }
-  };
-  onChangeListSubCate = value => {
+
+  handleSubCatOnChange = value => {
+    debugger;
     if (value !== NEW_ITEM) {
       this.setState({ ListOfSubCate: value });
+      setTimeout(() => {
+        if (this.state.ListOfSubCate) {
+          this.handleGetIssueTypeList();
+        }
+      }, 1);
     } else {
       this.setState({ ShowSubCate: true });
     }
   };
+  handleIssueOnChange = value => {
+    if (value !== NEW_ITEM) {
+      this.setState({ ListOfIssue: value });
+    } else {
+      this.setState({ ShowIssuetype: true });
+    }
+  };
+  handleBrandChange = e => {
+    let value = e.target.value;
+    this.setState({
+      selectBrand: value,
+      categoryDropData: [],
+      SubCategoryDropData: []
+    });
+    setTimeout(() => {
+      if (this.state.selectBrand) {
+        this.handleGetCategoryList();
+      }
+    }, 1);
+  };
+  handleEditDropDownChange = e =>{  
+    debugger
+    let name=e.target.name;
+    let value=e.target.value;
+
+  }
+  handleStatusChange = e => {
+    let value = e.target.value;
+    this.setState({ selectStatus: value });
+  };
+
   render() {
-    const dataTickCate = [
-      {
-        id: "U1",
-        status: <span>Active</span>
-      },
-      {
-        id: "U2",
-        status: <span>Inactive</span>
-      },
-      {
-        id: "U3",
-        status: <span>Active</span>
-      },
-      {
-        id: "U4",
-        status: <span>Inactive</span>
-      },
-      {
-        id: "U5",
-        status: <span>Active</span>
-      }
-    ];
-
-    const columnsTickCate = [
-      {
-        Header: (
-          <span>
-            Brand Name
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "BrandName",
-        Cell: row => <span>Bata</span>
-      },
-      {
-        Header: (
-          <span>
-            Category
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "Category",
-        Cell: row => <span>Complaint</span>
-      },
-      {
-        Header: (
-          <span>
-            Sub Cat
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "SubCategory",
-        Cell: row => <span>Defective article</span>
-      },
-      {
-        Header: (
-          <span>
-            Issue Type
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "IssueType",
-        Cell: row => <span>Broken Shoes</span>
-      },
-      {
-        Header: (
-          <span>
-            Status
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "status"
-      },
-      {
-        Header: <span>Actions</span>,
-        accessor: "actiondept",
-        Cell: row => {
-          var ids = row.original["id"];
-          return (
-            <>
-              <span>
-                <Popover
-                  content={ActionDelete}
-                  placement="bottom"
-                  trigger="click"
-                >
-                  <img
-                    src={RedDeleteIcon}
-                    alt="del-icon"
-                    className="del-btn"
-                    id={ids}
-                  />
-                </Popover>
-                <Popover
-                  content={ActionEditBtn}
-                  placement="bottom"
-                  trigger="click"
-                >
-                  <button className="react-tabel-button" id="p-edit-pop-2">
-                    <label className="Table-action-edit-button-text">
-                      EDIT
-                    </label>
-                  </button>
-                </Popover>
-              </span>
-            </>
-          );
-        }
-      }
-    ];
-    const ActionDelete = (
-      <div className="d-flex general-popover popover-body">
-        <div className="del-big-icon">
-          <img src={DelBigIcon} alt="del-icon" />
-        </div>
-        <div>
-          <p className="font-weight-bold blak-clr">Delete file?</p>
-          <p className="mt-1 fs-12">
-            Are you sure you want to delete this file?
-          </p>
-          <div className="del-can">
-            <a href={Demo.BLANK_LINK}>CANCEL</a>
-            <button className="butn">Delete</button>
-          </div>
-        </div>
-      </div>
-    );
-    const ActionEditBtn = (
-      <div className="edtpadding">
-        <div className="">
-          <label className="popover-header-text">EDIT CATEGORY</label>
-        </div>
-        <div className="pop-over-div">
-          <label className="edit-label-1">Brand Name</label>
-           <select id="inputStatus" className="edit-dropDwon dropdown-setting">
-             <option>Bata</option>
-             <option>Bata1</option>
-             <option>Bata3</option>
-           </select>
-         </div>
-
-          <div className="pop-over-div">
-           <label className="edit-label-1">Category</label>
-           <select id="inputStatus" className="edit-dropDwon dropdown-setting">
-            <option>Bata</option>
-             <option>Bata1</option>
-            <option>Bata3</option>
-          </select>
-         </div>
-         <div className="pop-over-div">
-           <label className="edit-label-1">Sub-Category</label>
-           <select id="inputStatus" className="edit-dropDwon dropdown-setting">
-            <option>Bata</option>
-             <option>Bata1</option>
-             <option>Bata3</option>
-          </select>
-        </div>
-        <div className="pop-over-div">
-           <label className="edit-label-1">Issue Type</label>
-           <select id="inputStatus" className="edit-dropDwon dropdown-setting">
-            <option>Bata</option>
-             <option>Bata1</option>
-            <option>Bata3</option>
-           </select>
-         </div>
-        <div className="pop-over-div">
-          <label className="edit-label-1">Status</label>
-          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
-            <option>Active</option>
-            <option>Inactive</option>
-          </select>
-        </div>
-        <br />
-        <div>
-        <a className="pop-over-cancle" href={Demo.BLANK_LINK} style={{marginRight:"20px"}}>CANCEL</a>
-          <button className="pop-over-button">
-            <label className="pop-over-btnsave-text">SAVE</label>
-          </button>
-        </div>
-      </div>
-    );
-   
-
-    const { list1Value, ListOfSubCate } = this.state;
-    const list1SelectOptions = this.state.listOfCategory.map(o => (
-      <Option key={o}>{o}</Option>
+    const { categoryGridData } = this.state;
+    const list1SelectOptions = this.state.categoryDropData.map((item, o) => (
+      <Option key={o} value={item.categoryID}>
+        {item.categoryName}
+      </Option>
     ));
-    const listSubCategory = this.state.listOfSubCategory.map(o => (
-      <Option key={o}>{o}</Option>
+    const listSubCategory = this.state.SubCategoryDropData.map((item, o) => (
+      <Option key={o} value={item.subCategoryID}>
+        {item.subCategoryName}
+      </Option>
+    ));
+    const listOfIssueType = this.state.ListOfIssueData.map((item, i) => (
+      <Option key={i} value={item.issueTypeID}>
+        {item.issueTypeName}
+      </Option>
     ));
     return (
       <React.Fragment>
+        <NotificationContainer />
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="settings" className="header-path">
             Settings
@@ -311,15 +431,237 @@ class CategoryMaster extends Component {
           <div className="store-settings-cntr">
             <div className="row">
               <div className="col-md-8">
-                <div className="table-cntr table-height TicketCategoyMasReact">
-                  <ReactTable
-                    data={dataTickCate}
-                    columns={columnsTickCate}
-                    // resizable={false}
-                    defaultPageSize={5}
-                    showPagination={false}
-                  />
-                  <div className="position-relative">
+                {this.state.loading === true ? (
+                  <div className="loader-icon"></div>
+                ) : (
+                  <div className="table-cntr table-height TicketCategoyMasReact">
+                    <ReactTable
+                      data={categoryGridData}
+                      columns={[
+                        {
+                          Header: (
+                            <span>
+                              Brand Name
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          accessor: "brandName"
+                        },
+                        {
+                          Header: (
+                            <span>
+                              Category
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          accessor: "categoryName"
+                        },
+                        {
+                          Header: (
+                            <span>
+                              Sub Cat
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          accessor: "subCategoryName"
+                        },
+                        {
+                          Header: (
+                            <span>
+                              Issue Type
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          accessor: "issueTypeName"
+                        },
+                        {
+                          Header: (
+                            <span>
+                              Status
+                              <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          accessor: "statusName"
+                        },
+                        {
+                          Header: <span>Actions</span>,
+                          accessor: "actiondept",
+                          Cell: row => {
+                            var ids = row.original["brandCategoryMappingID"];
+                            return (
+                              <>
+                                <span>
+                                  <Popover
+                                    content={
+                                      <div className="d-flex general-popover popover-body">
+                                        <div className="del-big-icon">
+                                          <img
+                                            src={DelBigIcon}
+                                            alt="del-icon"
+                                          />
+                                        </div>
+                                        <div>
+                                          <p className="font-weight-bold blak-clr">
+                                            Delete file?
+                                          </p>
+                                          <p className="mt-1 fs-12">
+                                            Are you sure you want to delete this
+                                            file?
+                                          </p>
+                                          <div className="del-can">
+                                            <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                            <button
+                                              className="butn"
+                                              type="button"
+                                              onClick={this.handleDeleteCategoryData.bind(
+                                                this,
+                                                ids
+                                              )}
+                                            >
+                                              Delete
+                                            </button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    }
+                                    placement="bottom"
+                                    trigger="click"
+                                  >
+                                    <img
+                                      src={RedDeleteIcon}
+                                      alt="del-icon"
+                                      className="del-btn"
+                                    />
+                                  </Popover>
+                                  <Popover
+                                    content={
+                                      <div className="edtpadding">
+                                        <label className="popover-header-text">
+                                          EDIT CATEGORY
+                                        </label>
+                                        <div className="pop-over-div">
+                                          <label className="edit-label-1">
+                                            Brand Name
+                                          </label>
+                                          <select
+                                            className="store-create-select"
+                                            value={this.state.selectBrand}
+                                            onChange={this.handleEditDropDownChange}
+                                            name="brandId"
+                                          >
+                                            <option>Select</option>
+                                            {this.state.brandData !== null &&
+                                              this.state.brandData.map(
+                                                (item, i) => (
+                                                  <option
+                                                    key={i}
+                                                    value={item.brandID}
+                                                    className="select-category-placeholder"
+                                                  >
+                                                    {item.brandName}
+                                                  </option>
+                                                )
+                                              )}
+                                          </select>
+                                        </div>
+
+                                        <div className="pop-over-div">
+                                          <label className="edit-label-1">
+                                            Category
+                                          </label>
+                                          <select
+                                            className="store-create-select"
+                                            value={this.state.category_Id}
+                                            onChange={this.handleEditDropDownChange}
+                                            name="categoryId"
+                                          >
+                                            <option>Select</option>
+                                            {this.state.categoryDropData !== null &&
+                                              this.state.categoryDropData.map(
+                                                (item, i) => (
+                                                  <option
+                                                    key={i}
+                                                    value={item.categoryID}
+                                                    className="select-category-placeholder"
+                                                  >
+                                                    {item.categoryName}
+                                                  </option>
+                                                )
+                                              )}
+                                          </select>
+                                        </div>
+                                        <div className="pop-over-div">
+                                          <label className="edit-label-1">
+                                            Sub-Category
+                                          </label>
+                                          <select
+                                            id="inputStatus"
+                                            className="edit-dropDwon dropdown-setting"
+                                          >
+                                            <option>Bata</option>
+                                            <option>Bata1</option>
+                                            <option>Bata3</option>
+                                          </select>
+                                        </div>
+                                        <div className="pop-over-div">
+                                          <label className="edit-label-1">
+                                            Issue Type
+                                          </label>
+                                          <select
+                                            id="inputStatus"
+                                            className="edit-dropDwon dropdown-setting"
+                                          >
+                                            <option>Bata</option>
+                                            <option>Bata1</option>
+                                            <option>Bata3</option>
+                                          </select>
+                                        </div>
+                                        <div className="pop-over-div">
+                                          <label className="edit-label-1">
+                                            Status
+                                          </label>
+                                          <select
+                                            id="inputStatus"
+                                            className="edit-dropDwon dropdown-setting"
+                                          >
+                                            <option>Active</option>
+                                            <option>Inactive</option>
+                                          </select>
+                                        </div>
+                                        <br />
+                                        <div>
+                                          <a
+                                            className="pop-over-cancle"
+                                            href={Demo.BLANK_LINK}
+                                            style={{ marginRight: "20px" }}
+                                          >
+                                            CANCEL
+                                          </a>
+                                          <button className="pop-over-button">
+                                            SAVE
+                                          </button>
+                                        </div>
+                                      </div>
+                                    }
+                                    placement="bottom"
+                                    trigger="click"
+                                  >
+                                    <button className="react-tabel-button">
+                                      EDIT
+                                    </button>
+                                  </Popover>
+                                </span>
+                              </>
+                            );
+                          }
+                        }
+                      ]}
+                      // resizable={false}
+                      minRows={1}
+                      defaultPageSize={10}
+                      showPagination={true}
+                    />
+                    {/* <div className="position-relative">
                     <div className="pagi">
                       <ul>
                         <li>
@@ -356,32 +698,46 @@ class CategoryMaster extends Component {
                       </select>
                       <p>Items per page</p>
                     </div>
+                  </div> */}
                   </div>
-                </div>
+                )}
               </div>
               <div className="col-md-4">
                 <div className="store-col-2">
-                  <div className="createSpace">
+                  <div className="createSpace cus-cs">
                     <label className="Create-store-text">CREATE CATEGORY</label>
                     <div className="divSpace">
                       <div className="dropDrownSpace">
-                        <label className="reports-to"> Brand Name</label>
+                        <label className="reports-to">Brand Name</label>
                         <select
-                          id="inputState"
-                          className="form-control dropdown-setting"
+                          className="store-create-select"
+                          value={this.state.selectBrand}
+                          onChange={this.handleBrandChange}
                         >
-                          <option>Bata</option>
+                          <option>Select</option>
+                          {this.state.brandData !== null &&
+                            this.state.brandData.map((item, i) => (
+                              <option
+                                key={i}
+                                value={item.brandID}
+                                className="select-category-placeholder"
+                              >
+                                {item.brandName}
+                              </option>
+                            ))}
                         </select>
                       </div>
                     </div>
                     <div className="divSpace">
                       <div className="dropDrownSpace">
-                        <label className="reports-to reports-dis">Category</label>
+                        <label className="reports-to reports-dis">
+                          Category
+                        </label>
                         <Select
                           showSearch={true}
-                          value={list1Value}
+                          value={this.state.list1Value}
                           style={{ width: "100%" }}
-                          onChange={this.onChangeList1}
+                          onChange={this.handleCategoryChange}
                         >
                           {list1SelectOptions}
                           <Option value={NEW_ITEM}>
@@ -402,21 +758,17 @@ class CategoryMaster extends Component {
                           animation="slide-from-top"
                           validationMsg="Please enter a category!"
                           onConfirm={inputValue => {
+                            debugger;
                             inputValue = inputValue.trim();
-                            if (
-                              this.state.listOfCategory.includes(inputValue)
-                            ) {
+                            if (inputValue !== "") {
                               this.setState({
                                 showList1: false,
                                 list1Value: inputValue
                               });
+                              this.handleAddCategory(inputValue);
                             } else {
                               this.setState({
                                 showList1: false,
-                                listOfCategory: [
-                                  inputValue,
-                                  ...this.state.listOfCategory
-                                ],
                                 list1Value: inputValue
                               });
                             }
@@ -435,12 +787,14 @@ class CategoryMaster extends Component {
                     </div>
                     <div className="divSpace">
                       <div className="dropDrownSpace">
-                        <label className="reports-to reports-dis">Sub Category</label>
+                        <label className="reports-to reports-dis">
+                          Sub Category
+                        </label>
                         <Select
                           showSearch={true}
-                          value={ListOfSubCate}
+                          value={this.state.ListOfSubCate}
                           style={{ width: "100%" }}
-                          onChange={this.onChangeListSubCate}
+                          onChange={this.handleSubCatOnChange}
                         >
                           {listSubCategory}
                           <Option value={NEW_ITEM}>
@@ -461,21 +815,17 @@ class CategoryMaster extends Component {
                           animation="slide-from-top"
                           validationMsg="Please enter a category!"
                           onConfirm={inputValue => {
+                            debugger;
                             inputValue = inputValue.trim();
-                            if (
-                              this.state.listOfSubCategory.includes(inputValue)
-                            ) {
+                            if (inputValue !== "") {
                               this.setState({
                                 ShowSubCate: false,
                                 ListOfSubCate: inputValue
                               });
+                              this.handleAddSubCategory(inputValue);
                             } else {
                               this.setState({
                                 ShowSubCate: false,
-                                listOfSubCategory: [
-                                  inputValue,
-                                  ...this.state.listOfSubCategory
-                                ],
                                 ListOfSubCate: inputValue
                               });
                             }
@@ -490,40 +840,86 @@ class CategoryMaster extends Component {
                             this.setState({ ShowSubCate: false })
                           }
                         />
-                        {/* <select
-                          id="inputState"
-                          className="form-control dropdown-setting"
-                        >
-                          <option>Defective Article</option>
-                        </select> */}
                       </div>
                     </div>
                     <div className="divSpace">
                       <div className="dropDrownSpace">
                         <label className="reports-to">Issue Type</label>
-                        <select
-                          id="inputState"
-                          className="form-control dropdown-setting"
+                        <Select
+                          showSearch={true}
+                          value={this.state.ListOfIssue}
+                          style={{ width: "100%" }}
+                          onChange={this.handleIssueOnChange}
                         >
-                          <option>Broken Shoes</option>
-                        </select>
+                          {listOfIssueType}
+                          <Option value={NEW_ITEM}>
+                            <span className="sweetAlert-inCategory">
+                              + ADD NEW
+                            </span>
+                          </Option>
+                        </Select>
+                        <SweetAlert
+                          show={this.state.ShowIssuetype}
+                          style={{ width: "320px" }}
+                          title="Add New Issue type"
+                          text="Enter new Issue Type"
+                          showCancelButton
+                          type="input"
+                          inputPlaceholder="Enter Issue Type"
+                          animation="slide-from-top"
+                          validationMsg="Please Enter Issue Type!"
+                          onConfirm={inputValue => {
+                            inputValue = inputValue.trim();
+                            if (inputValue !== "") {
+                              this.setState({
+                                ShowIssuetype: false,
+                                ListOfIssue: inputValue
+                              });
+                              this.handleAddIssueType(inputValue);
+                            } else {
+                              this.setState({
+                                ShowIssuetype: false,
+                                ListOfIssue: inputValue
+                              });
+                            }
+                          }}
+                          onCancel={() => {
+                            this.setState({ ShowIssuetype: false });
+                          }}
+                          onEscapeKey={() =>
+                            this.setState({ ShowIssuetype: false })
+                          }
+                          onOutsideClick={() =>
+                            this.setState({ ShowIssuetype: false })
+                          }
+                        />
                       </div>
                     </div>
                     <div className="divSpace">
                       <div className="dropDrownSpace">
                         <label className="reports-to">Status</label>
                         <select
-                          id="inputState"
                           className="form-control dropdown-setting"
+                          value={this.state.selectStatus}
+                          onChange={this.handleStatusChange}
                         >
-                          <option>Active</option>
-                          <option>Inactive</option>
+                          <option>select</option>
+                          {this.state.activeData !== null &&
+                            this.state.activeData.map((item, j) => (
+                              <option key={j} value={item.ActiveID}>
+                                {item.ActiveName}
+                              </option>
+                            ))}
                         </select>
                       </div>
                     </div>
                     <div className="btnSpace">
-                      <button className="addBtn-ticket-hierarchy">
-                        <label className="addLable">ADD</label>
+                      <button
+                        className="addBtn-ticket-hierarchy"
+                        type="button"
+                        onClick={this.handleSubmitData.bind(this)}
+                      >
+                        ADD
                       </button>
                     </div>
                     <br />

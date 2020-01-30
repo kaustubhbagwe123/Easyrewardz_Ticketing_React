@@ -440,8 +440,8 @@ class ChatElements extends Component {
           return (
             <div>
               <Popover content={ChatEdit} placement="bottom" trigger="click">
-                <button className="react-tabel-button" id={ids}>
-                  <label className="Table-action-edit-button-text">EDIT</label>
+                <button className="react-tabel-button editre" id={ids}>
+                  EDIT
                 </button>
               </Popover>
             </div>
@@ -484,7 +484,7 @@ class ChatElements extends Component {
       <div>
       <a className="pop-over-cancle" href={Demo.BLANK_LINK} >CANCEL</a>
         <button className="pop-over-button">
-          <label className="pop-over-btnsave-text">SAVE</label>
+          SAVE
         </button>
       </div>
     </div>
@@ -599,7 +599,7 @@ class ChatElements extends Component {
                     </div>
                     <div className="btnSpace">
                       <button className="CreateADDBtn">
-                        <label className="addLable">ADD</label>
+                        ADD
                       </button>
                     </div>
                   </div>

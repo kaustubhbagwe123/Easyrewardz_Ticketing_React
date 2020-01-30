@@ -2,6 +2,10 @@ import React, { Component } from "react";
 // import '../assets/css/style.css'
 import logo from "../assets/Images/logo.jpg";
 import { Link } from "react-router-dom";
+import {
+  NotificationContainer,
+  NotificationManager
+} from "react-notifications";
 import axios from "axios";
 import config from "../helpers/config";
 import SimpleReactValidator from "simple-react-validator";
@@ -20,41 +24,9 @@ class ForgotPassword extends Component {
   handleSubmit(event) {
     event.preventDefault();
     debugger;
-    // const { emailId } = this.state;
-
-    // const requestOptions = {
-    //   method: "POST",
-    //   header: {
-    //     "Content-Type": "application/json",
-    //     "Access-Control-Allow-Methods": "*"
-    //   },
-    //   body: ""
-    // };
-    // let self = this;
-    // axios.post(config.apiUrl + "/Account/ForgetPassword?EmailId="+emailId,
-    // requestOptions)
-
+  
     if (this.validator.allValid()) {
-      // const requestOptions = {
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     "Access-Control-Allow-Methods": "*"
-      //   },
-      //   // body:JSON.stringify({ EmailID, Password ,AppId})
-      //   body: ""
-      // };
-      // axios
-      //   .post(config.apiUrl + "/Account/ForgetPassword", requestOptions, {
-      //     params: {
-      //       EmailId: this.state.emailId
-      //     }
-      //   })
-
-      //   .then(function(response) {
-      //     debugger;
-      //     // let BrandData = response;
-      //     // self.setState({ BrandData: BrandData });
-      //   });
+     
       let self = this;
       axios({
         method: "post",
@@ -66,6 +38,18 @@ class ForgotPassword extends Component {
       }).then(function(res) {
         debugger;
         let SearchData = res.data.responseData;
+        if(res.data.statusCode===1001)
+        {  
+          NotificationManager.error(
+          SearchData
+         );
+        }
+        else if(res.data.statusCode===200)
+        {
+          NotificationManager.success(
+            SearchData
+           );
+        }
         self.setState({ SearchData: SearchData });
       });
     } else {
@@ -84,6 +68,7 @@ class ForgotPassword extends Component {
   render() {
     return (
       <div className="auth-wrapper">
+      <NotificationContainer></NotificationContainer>
         <div className="auth-content">
           <div className="card forgotpass-card">
             <div className="card-body text-center">

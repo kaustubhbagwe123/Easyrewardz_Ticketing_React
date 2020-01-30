@@ -170,10 +170,8 @@ class StoreCRMRole extends Component {
                   placement="bottom"
                   trigger="click"
                 >
-                  <button className="react-tabel-button" id="p-edit-pop-2">
-                    <label className="Table-action-edit-button-text">
-                      EDIT
-                    </label>
+                  <button className="react-tabel-button editre" id="p-edit-pop-2">
+                    EDIT
                   </button>
                 </Popover>
               </span>
@@ -302,7 +300,7 @@ class StoreCRMRole extends Component {
         <div>
           <label className="pop-over-cancle">CANCEL</label>
           <button className="pop-over-button">
-            <label className="pop-over-btnsave-text">SAVE</label>
+            SAVE
           </button>
         </div>
       </div>
@@ -464,7 +462,7 @@ class StoreCRMRole extends Component {
                     </div>
                     <div className="btnSpace">
                       <button className="addBtn-ticket-hierarchy">
-                        <label className="addLable">ADD</label>
+                        ADD
                       </button>
                     </div>
                   </div>

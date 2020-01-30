@@ -20,7 +20,7 @@ import {
 } from "react-notifications";
 import { authHeader } from "../helpers/authHeader";
 // import { authHeader } from "../helpers/authHeader";
-import {CopyToClipboard} from 'react-copy-to-clipboard';
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 class AddSearchMyTicket extends Component {
   constructor(props) {
@@ -40,8 +40,9 @@ class AddSearchMyTicket extends Component {
       message: "",
       createdBy: 6,
       SearchData: [],
-      value: '',
+      value: "",
       copied: false,
+      searchCompulsion: ''
     };
     this.handleAddCustomerOpen = this.handleAddCustomerOpen.bind(this);
     this.handleAddCustomerClose = this.handleAddCustomerClose.bind(this);
@@ -49,7 +50,19 @@ class AddSearchMyTicket extends Component {
 
     this.handleSearchCustomer = this.handleSearchCustomer.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleCopyToaster = this.handleCopyToaster.bind(this);
     this.validator = new SimpleReactValidator();
+  }
+  handleCopyToaster() {
+    debugger;
+    setTimeout(() => {
+      if (
+        this.state.copied &&
+        this.state.copied
+      ) {
+        NotificationManager.success("Copied.");
+      }
+    }, 100);
   }
   handleAddCustomerOpen() {
     this.setState({ AddCustomer: true });
@@ -69,6 +82,7 @@ class AddSearchMyTicket extends Component {
   }
   handleSearchCustomer() {
     debugger;
+    if (this.state.SrchEmailPhone.length > 0) {
     let self = this;
     axios({
       method: "post",
@@ -97,10 +111,14 @@ class AddSearchMyTicket extends Component {
         self.setState({
           message: res.data.message
         });
-        NotificationManager.error(res.data.message);
+        // NotificationManager.error(res.data.message);
       }
     });
- 
+  } else {
+    this.setState({
+      searchCompulsion: 'Search field is compulsary.'
+    })
+  }
   }
   CheckValidCustomerEmailPhoneNo() {
     debugger;
@@ -116,8 +134,8 @@ class AddSearchMyTicket extends Component {
         }
       }).then(function(res) {
         debugger;
-        let validCheck = res.data.responseData;
-        if (validCheck === "Not Exist") {
+        let validCheck =res.data.message;
+        if (validCheck === "Success") {
           self.handleAddCustomerSave();
         } else {
           NotificationManager.error(res.data.responseData);
@@ -159,6 +177,7 @@ class AddSearchMyTicket extends Component {
         loading: true
       });
       if (responseMessage === "Success") {
+        debugger
         NotificationManager.success("New Customer added successfully.");
         setTimeout(function() {
           self.props.history.push({
@@ -200,14 +219,15 @@ class AddSearchMyTicket extends Component {
           <label className="label-addsearch">Source</label>
           <img src={HeadphoneImg} alt="HeadphoneImg" className="headphonered" />
           <label className="mobile-noAddsearch">+91-9873470074</label>
-          <CopyToClipboard text={"Hello"} onCopy={() => this.setState({ copied: true })}>
-              <img src={PasteImg} alt="PasteImage" className="paste-addSearch" />  
+          <CopyToClipboard
+            text={"Hello"}
+            onCopy={() => this.setState({ copied: true })}
+          >
+            <img src={PasteImg} 
+              alt="PasteImage" 
+              className="paste-addSearch" 
+              onClick={this.handleCopyToaster} />
           </CopyToClipboard>
-          {this.state.copied ? (
-              <span className="ml-2" style={{ color: "red" }} >
-                   Copied.
-              </span>
-            ) : null}
         </div>
         <div className="addsearch-div">
           <div className="card">
@@ -228,7 +248,7 @@ class AddSearchMyTicket extends Component {
                 value={this.state.SrchEmailPhone}
                 onChange={this.addCustomerData}
                 maxLength="100"
-              />   
+              />
               <div className="seacrh-img-addsearch">
                 <img
                   src={SearchBlueImg}
@@ -237,7 +257,8 @@ class AddSearchMyTicket extends Component {
                   onClick={this.handleSearchCustomer}
                 />
               </div>
-             
+              {this.state.SrchEmailPhone.length == 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.searchCompulsion}</p>}
+
               {this.state.message === "Record Not Found" ? (
                 <div>
                   <div className="div-notFoundaddseacr">

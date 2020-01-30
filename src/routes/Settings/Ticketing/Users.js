@@ -143,10 +143,11 @@ class Users extends Component {
                   placement="bottom"
                   trigger="click"
                 >
-                  <button className="react-tabel-button" id="p-edit-pop-2">
-                    <label className="Table-action-edit-button-text">
+                  <button className="react-tabel-button editre" id="p-edit-pop-2">
+                    EDIT
+                    {/* <label className="Table-action-edit-button-text">
                       EDIT
-                    </label>
+                    </label> */}
                   </button>
                 </Popover>
               </span>
@@ -189,40 +190,231 @@ class Users extends Component {
       </div>
     );
     const ActionEditBtn = (
-      <div className="edtpadding">
+      <div className="edtpadding EditButtonUSer">
         <div className="">
-          <label className="popover-header-text">CREATE USER</label>
+          <label className="popover-header-text">EDIT USER</label>
         </div>
-        <div className="pop-over-div">
-          <label className="edit-label-1">Designation Name</label>
-          <input
-            type="text"
-            className="txt-edit-popover"
-            placeholder="Enter Designation Name"
-            maxLength={25}
-          />
+
+        <div className="right-sect-div right-sect-collapse">
+          <div className="collapse-cntr">
+            <div className="pop-over-div">
+              <a
+                className="collapse-title mx-0"
+                data-toggle="collapse"
+                href="#personal-detailsNew"
+                role="button"
+                aria-expanded="true"
+                aria-controls="personal-detailsNew"
+              >
+                Personal Details
+              </a>
+            </div>
+            <div className="multi-collapse show" id="personal-detailsNew">
+              <div className="pop-over-div">
+                <label className="edit-label-1">User Name</label>
+                <input type="text" className="txt-edit-popover" defaultValue="Ajay" maxLength={25} />
+              </div>
+              <div className="pop-over-div">
+                <label className="edit-label-1">Mobile Number</label>
+                <input type="text" className="txt-edit-popover" defaultValue="9876543210" maxLength={10} />
+              </div>
+              <div className="pop-over-div">
+                <label className="edit-label-1">Email ID</label>
+                <input type="text" className="txt-edit-popover" defaultValue="something@email.com" maxLength={100} />
+              </div>
+              <div className="pop-over-div">
+                <button
+                  data-target="#profile-detailsNEW1"
+                  data-toggle="collapse"
+                  className="butn"
+                >
+                  SAVE &amp; NEXT
+                        </button>
+              </div>
+            </div>
+          </div>
+          <div className="collapse-cntr">
+            <a
+              className="collapse-title mx-0"
+              data-toggle="collapse"
+              href="#profile-detailsNEW1"
+              role="button"
+              aria-expanded="false"
+              aria-controls="profile-detailsNEW1"
+            >
+              Profile Details
+                    </a>
+            <div
+              className="collapse multi-collapse"
+              id="profile-detailsNEW1"
+            >
+              <div className="pop-over-div">
+                <label className="edit-label-1">User Designation</label>
+                <select className="txt-edit-popover">
+                  <option>Manager</option>
+                  <option>Manager</option>
+                  <option>Manager</option>
+                </select>
+              </div>
+              <div className="pop-over-div">
+                <label className="edit-label-1">Reportee Designation</label>
+                <select className="txt-edit-popover">
+                  <option>HOD</option>
+                  <option>HOD</option>
+                  <option>HOD</option>
+                </select>
+              </div>
+              <div className="pop-over-div">
+                <label className="edit-label-1">Report To</label>
+                <select className="txt-edit-popover">
+                  <option>HOD</option>
+                  <option>HOD</option>
+                  <option>HOD</option>
+                </select>
+              </div>
+              <div className="pop-over-div">
+                <button
+                  data-target="#mapped-categoryNew"
+                  data-toggle="collapse"
+                  className="butn"
+                >
+                  SAVE &amp; NEXT
+                        </button>
+              </div>
+            </div>
+          </div>
+          <div className="collapse-cntr">
+            <a
+              className="collapse-title mx-0"
+              data-toggle="collapse"
+              href="#mapped-categoryNew"
+              role="button"
+              aria-expanded="false"
+              aria-controls="mapped-categoryNew"
+            >
+              Mapped Category
+                    </a>
+            <div
+              className="collapse multi-collapse"
+              id="mapped-categoryNew"
+            >
+              <div className="pop-over-div">
+                <label className="edit-label-1">Brand</label>
+                <select className="txt-edit-popover">
+                  <option>Bata, PVR</option>
+                  <option>Bata, PVR</option>
+                  <option>Bata, PVR</option>
+                </select>
+              </div>
+              <div className="pop-over-div">
+                <label className="edit-label-1">Categories</label>
+                <select className="txt-edit-popover">
+                  <option>Compliant</option>
+                  <option>Compliant</option>
+                  <option>Compliant</option>
+                </select>
+              </div>
+              <div className="pop-over-div">
+                <label className="edit-label-1">Sub Categories</label>
+                <select className="txt-edit-popover">
+                  <option>Payments</option>
+                  <option>Payments</option>
+                  <option>Payments</option>
+                </select>
+              </div>
+              <div className="pop-over-div">
+                <label className="edit-label-1">Issue Type</label>
+                <select className="txt-edit-popover">
+                  <option>Not Processed</option>
+                  <option>Not Processed</option>
+                  <option>Not Processed</option>
+                </select>
+              </div>
+              <div className="mapped-cate-extra">
+                <div className="pop-over-div">
+                  <label className="edit-label-1">CRM Role</label>
+                  <select className="txt-edit-popover">
+                    <option>Manager</option>
+                    <option>Manager</option>
+                    <option>Manager</option>
+                  </select>
+                </div>
+                <div className="pop-over-div escalation-options">
+                  <div className="filter-checkbox">
+                    <input
+                      type="checkbox"
+                      id="copy-esc1"
+                      name="esc-options"
+                    />
+                    <label htmlFor="copy-esc1">Copy Escalation</label>
+                  </div>
+                  <div className="filter-checkbox">
+                    <input
+                      type="checkbox"
+                      id="assign-esc1"
+                      name="esc-options"
+                    />
+                    <label htmlFor="assign-esc1">
+                      Assign Escalation
+                            </label>
+                  </div>
+                  <div className="sup-agent-cntr">
+                    <div className="status-options">
+                      <input
+                        type="radio"
+                        name="supervisor-agent"
+                        id="supervisor1"
+                      />
+                      <label
+                        htmlFor="supervisor1"
+                        className="logout-label"
+                      >
+                        Supervisor
+                              </label>
+                    </div>
+                    <div className="status-options">
+                      <input
+                        type="radio"
+                        name="supervisor-agent"
+                        id="agent1"
+                      />
+                      <label htmlFor="agent1" className="logout-label">
+                        Agent
+                              </label>
+                    </div>
+                  </div>
+                </div>
+                <div className="pop-over-div">
+                  <label className="edit-label-1">Select Agent</label>
+                  <select className="txt-edit-popover">
+                    <option>Amit</option>
+                    <option>Amit</option>
+                    <option>Amit</option>
+                  </select>
+                </div>
+                <div className="pop-over-div">
+                  <label className="edit-label-1">Status</label>
+                  <select className="txt-edit-popover">
+                    <option>Inactive</option>
+                    <option>Inactive</option>
+                    <option>Inactive</option>
+                  </select>
+                </div>
+              </div>
+              <div className="pop-over-div">
+                <button className="butn">ADD</button>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="pop-over-div">
-          <label className="edit-label-1">Report To</label>
-          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-          </select>
-        </div>
-        <div className="pop-over-div">
-          <label className="edit-label-1">Status</label>
-          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
-            <option>Active</option>
-            <option>Inactive</option>
-          </select>
-        </div>
+
+
         <br />
         <div>
-        <a className="pop-over-cancle" href={Demo.BLANK_LINK}>CANCEL</a>
+          <a className="pop-over-cancle" href={Demo.BLANK_LINK}>CANCEL</a>
           {/* <label className="pop-over-cancle">CANCEL</label> */}
           <button className="pop-over-button">
-            <label className="pop-over-btnsave-text">SAVE</label>
+            SAVE
           </button>
         </div>
       </div>

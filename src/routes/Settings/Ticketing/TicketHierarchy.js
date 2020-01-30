@@ -14,14 +14,197 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
 import { Popover } from "antd";
 import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
+import config from "../../../helpers/config";
+import axios from "axios";
+import {
+  NotificationContainer,
+  NotificationManager
+} from "react-notifications";
+import { authHeader } from "../../../helpers/authHeader";
+import ActiveStatus from "../../activeStatus";
 
 class TicketHierarchy extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fileName: ""
+      fileName: "",
+      designation_name: "",
+      selectReportTo: 0,
+      selectStatus: 0,
+      hierarchyData: [],
+      reportToData: [],
+      activeData: ActiveStatus(),
+      hierarchyEditData: {}
     };
+    this.handleGetHierarchyData = this.handleGetHierarchyData.bind(this);
+    this.hanldeGetReportListDropDown = this.hanldeGetReportListDropDown.bind(
+      this
+    );
   }
+  componentDidMount() {
+    this.handleGetHierarchyData();
+    this.hanldeGetReportListDropDown();
+  }
+  hanldeGetReportListDropDown() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Designation/GetDesignationList",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        self.setState({
+          reportToData: data
+        });
+      } else {
+        self.setState({
+          reportToData: []
+        });
+      }
+    });
+  }
+  handleGetHierarchyData() {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Hierarchy/ListHierarchy",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        self.setState({
+          hierarchyData: data
+        });
+      } else {
+        self.setState({
+          hierarchyData: []
+        });
+      }
+    });
+  }
+  handleSubmitData() {
+    debugger;
+    let self = this;
+    var activeStatus = 0;
+    var status = this.state.selectStatus;
+    if (status === "Active") {
+      activeStatus = 1;
+    } else {
+      activeStatus = 0;
+    }
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Hierarchy/CreateHierarchy",
+      headers: authHeader(),
+      data: {
+        DesignationName: this.state.designation_name.trim(),
+        ReportToDesignation: this.state.selectReportTo,
+        IsActive: activeStatus
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      if (status === "Success") {
+        self.handleGetHierarchyData();
+        NotificationManager.success("Hierarchy added successfully.");
+        self.setState({
+          designation_name: "",
+          selectReportTo: 0,
+          selectedStatus: 1
+        });
+      }
+    });
+  }
+  handleDeleteHierarchy(hierarchy_Id) {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Hierarchy/CreateHierarchy",
+      headers: authHeader(),
+      data: {
+        DesignationID: hierarchy_Id,
+        Deleteflag: 1
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      if (status === "Success") {
+        self.handleGetHierarchyData();
+        NotificationManager.success("Designation deleted successfully.");
+      }
+    });
+  }
+  handleUpdateHierarchyData(hierarchy_Id){
+    debugger
+    let self = this;
+    var activeStatus = 0;
+    var status = this.state.hierarchyEditData.designation_status;
+    if (status === "Active") {
+      activeStatus = 1;
+    } else {
+      activeStatus = 0;
+    }
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Hierarchy/CreateHierarchy",
+      headers: authHeader(),
+      data: {
+        DesignationID:hierarchy_Id,
+        DesignationName: this.state.hierarchyEditData.designation_Name.trim(),
+        ReportToDesignation: this.state.hierarchyEditData.report_To,
+        IsActive: activeStatus
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      if (status === "Success") {
+        self.handleGetHierarchyData();
+        NotificationManager.success("Hierarchy update successfully.");
+        self.setState({
+          designation_Name: "",
+          report_To: 0,
+          designation_status: 1
+        });
+      }
+    });
+  }
+  handleGetEditData(data) {
+    debugger;
+    var hierarchyEditData = data;
+    hierarchyEditData.designation_Name = hierarchyEditData.designationName;
+    hierarchyEditData.report_To = hierarchyEditData.reportToDesignation;
+    hierarchyEditData.designation_status = hierarchyEditData.status;
+
+    this.setState({
+      hierarchyEditData
+    });
+  }
+  handleOnReportToChange = e => {
+    let value = e.target.value;
+    this.setState({ selectReportTo: value });
+  };
+  handleStatusChange = e => {
+    let value = e.target.value;
+    this.setState({ selectStatus: value });
+  };
+  handleOnChangeData = e => {
+    debugger;
+    var name = e.target.name;
+    var value = e.target.value;
+
+    var data = this.state.hierarchyEditData;
+    data[name] = value;
+
+    this.setState({
+      EditTemp: data
+    });
+  };
   fileUpload = e => {
     this.setState({ fileName: e.target.files[0].name });
   };
@@ -35,211 +218,25 @@ class TicketHierarchy extends Component {
   fileDragEnter = e => {
     e.preventDefault();
   };
+  handleOnChangeHierarchyData = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  };
   render() {
-    const dataTickHier = [
-      {
-        id: "H1",
-        Desig: <span>HOD</span>,
-        Report: <span>Root</span>,
-        status: <span>Active</span>
-      },
-      {
-        id: "H2",
-        Desig: <span>Manager</span>,
-        Report: <span>HOD</span>,
-        status: <span>Inactive</span>
-      },
-      {
-        id: "H3",
-        Desig: <span>Team Leader</span>,
-        Report: <span>Manager</span>,
-        status: <span>Active</span>
-      },
-      {
-        id: "H4",
-        Desig: <span>Supervisor</span>,
-        Report: <span>Team Leader</span>,
-        status: <span>Inactive</span>
-      },
-      {
-        id: "H5",
-        Desig: <span>Executive</span>,
-        Report: <span>Supervisor</span>,
-        status: <span>Active</span>
-      }
-    ];
-
-    const columnsTickHier = [
-      {
-        Header: (
-          <span>
-            Designation
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "Desig"
-      },
-      {
-        Header: (
-          <span>
-            Report To
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "Report"
-      },
-      {
-        Header: (
-          <span>
-            Created By
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "creat",
-        Cell: row => {
-          var ids = row.original["id"];
-          return (
-            <div>
-              <span>
-                Admin
-                <Popover content={popoverData} placement="bottom">
-                  <img
-                    className="info-icon-cp"
-                    src={BlackInfoIcon}
-                    alt="info-icon"
-                    id={ids}
-                  />
-                </Popover>
-              </span>
-            </div>
-          );
-        }
-      },
-      {
-        Header: (
-          <span>
-            Status
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "status"
-      },
-      {
-        Header: <span>Actions</span>,
-        accessor: "actiondept",
-        Cell: row => {
-          var ids = row.original["id"];
-          return (
-            <>
-              <span>
-                <Popover
-                  content={ActionDelete}
-                  placement="bottom"
-                  trigger="click"
-                >
-                  <img
-                    src={RedDeleteIcon}
-                    alt="del-icon"
-                    className="del-btn"
-                    id={ids}
-                  />
-                </Popover>
-                <Popover
-                  content={ActionEditBtn}
-                  placement="bottom"
-                  trigger="click"
-                >
-                  <button className="react-tabel-button" id="p-edit-pop-2">
-                    <label className="Table-action-edit-button-text">
-                      EDIT
-                    </label>
-                  </button>
-                </Popover>
-              </span>
-            </>
-          );
-        }
-      }
-    ];
-    const popoverData = (
-      <>
-        <div>
-          <b>
-            <p className="title">Created By: Admin</p>
-          </b>
-          <p className="sub-title">Created Date: 12 March 2018</p>
-        </div>
-        <div>
-          <b>
-            <p className="title">Updated By: Manager</p>
-          </b>
-          <p className="sub-title">Updated Date: 12 March 2018</p>
-        </div>
-      </>
-    );
-    const ActionDelete = (
-      <div className="d-flex general-popover popover-body">
-        <div className="del-big-icon">
-          <img src={DelBigIcon} alt="del-icon" />
-        </div>
-        <div>
-          <p className="font-weight-bold blak-clr">Delete file?</p>
-          <p className="mt-1 fs-12">
-            Are you sure you want to delete this file?
-          </p>
-          <div className="del-can">
-            <a href={Demo.BLANK_LINK}>CANCEL</a>
-            <button className="butn">Delete</button>
-          </div>
-        </div>
-      </div>
-    );
-    const ActionEditBtn = (
-      <div className="edtpadding">
-        <div className="">
-          <label className="popover-header-text">EDIT HIERARCHY</label>
-        </div>
-        <div className="pop-over-div">
-          <label className="edit-label-1">Designation Name</label>
-          <input
-            type="text"
-            className="txt-edit-popover"
-            placeholder="Enter Designation Name"
-            maxLength={25}
-          />
-        </div>
-        <div className="pop-over-div">
-          <label className="edit-label-1">Report To</label>
-          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-          </select>
-        </div>
-        <div className="pop-over-div">
-          <label className="edit-label-1">Status</label>
-          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
-            <option>Status</option>
-            <option>Inactive</option>
-          </select>
-        </div>
-        <br />
-        <div>
-          {/* <label className="pop-over-cancle">CANCEL</label> */}
-          <a className="pop-over-cancle" href={Demo.BLANK_LINK}>CANCEL</a>
-          <button className="pop-over-button">
-            <label className="pop-over-btnsave-text">SAVE</label>
-          </button>
-        </div>
-      </div>
-    );
+    const { hierarchyData } = this.state;
 
     return (
       <React.Fragment>
+        <NotificationContainer />
         <div className="container-fluid setting-title setting-breadcrumb">
-          <Link to="settings" className="header-path">Settings</Link>
+          <Link to="settings" className="header-path">
+            Settings
+          </Link>
           <span>&gt;</span>
-          <a href={Demo.BLANK_LINK} className="header-path">Ticketing</a>
+          <a href={Demo.BLANK_LINK} className="header-path">
+            Ticketing
+          </a>
           <span>&gt;</span>
           <a href={Demo.BLANK_LINK} className="header-path active">
             Hierarchy
@@ -251,13 +248,263 @@ class TicketHierarchy extends Component {
               <div className="col-md-8">
                 <div className="table-cntr table-height TicketHierarchyReact">
                   <ReactTable
-                    data={dataTickHier}
-                    columns={columnsTickHier}
+                    data={hierarchyData}
+                    columns={[
+                      {
+                        Header: (
+                          <span>
+                            Designation
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "designationName"
+                      },
+                      {
+                        Header: (
+                          <span>
+                            Report To
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "reportTo"
+                      },
+                      {
+                        Header: (
+                          <span>
+                            Created By
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "createdbyperson",
+                        Cell: row => {
+                          var ids = row.original["designationID"];
+                          return (
+                            <div>
+                              <span>
+                                Admin
+                                <Popover
+                                  content={
+                                    <div>
+                                      <div>
+                                        <b>
+                                          <p className="title">
+                                            Created By:&nbsp;
+                                            {row.original["createdbyperson"]}
+                                          </p>
+                                        </b>
+                                        <p className="sub-title">
+                                          Created Date:&nbsp;
+                                          {row.original["createdateformat"]}
+                                        </p>
+                                      </div>
+                                      <div>
+                                        <b>
+                                          <p className="title">
+                                            Updated By:&nbsp;
+                                            {row.original["updatedbyperson"]}
+                                          </p>
+                                        </b>
+                                        <p className="sub-title">
+                                          Updated Date:&nbsp;
+                                          {row.original["updateddateformat"]}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  }
+                                  placement="bottom"
+                                >
+                                  <img
+                                    className="info-icon-cp"
+                                    src={BlackInfoIcon}
+                                    alt="info-icon"
+                                  />
+                                </Popover>
+                              </span>
+                            </div>
+                          );
+                        }
+                      },
+                      {
+                        Header: (
+                          <span>
+                            Status
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "status"
+                      },
+                      {
+                        Header: <span>Actions</span>,
+                        accessor: "actiondept",
+                        Cell: row => {
+                          var ids = row.original["designationID"];
+                          return (
+                            <>
+                              <span>
+                                <Popover
+                                  content={
+                                    <div className="d-flex general-popover popover-body">
+                                      <div className="del-big-icon">
+                                        <img src={DelBigIcon} alt="del-icon" />
+                                      </div>
+                                      <div>
+                                        <p className="font-weight-bold blak-clr">
+                                          Delete file?
+                                        </p>
+                                        <p className="mt-1 fs-12">
+                                          Are you sure you want to delete this
+                                          file?
+                                        </p>
+                                        <div className="del-can">
+                                          <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                          <button
+                                            className="butn"
+                                            type="button"
+                                            onClick={this.handleDeleteHierarchy.bind(
+                                              this,
+                                              ids
+                                            )}
+                                          >
+                                            Delete
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  }
+                                  placement="bottom"
+                                  trigger="click"
+                                >
+                                  <img
+                                    src={RedDeleteIcon}
+                                    alt="del-icon"
+                                    className="del-btn"
+                                  />
+                                </Popover>
+                                <Popover
+                                  content={
+                                    <div className="edtpadding">
+                                      <label className="popover-header-text">
+                                        EDIT HIERARCHY
+                                      </label>
+                                      <div className="pop-over-div">
+                                        <label className="edit-label-1">
+                                          Designation Name
+                                        </label>
+                                        <input
+                                          type="text"
+                                          className="txt-edit-popover"
+                                          placeholder="Enter Designation Name"
+                                          maxLength={25}
+                                          name="designation_Name"
+                                          value={
+                                            this.state.hierarchyEditData
+                                              .designation_Name
+                                          }
+                                          onChange={this.handleOnChangeData}
+                                        />
+                                      </div>
+                                      <div className="pop-over-div">
+                                        <label className="edit-label-1">
+                                          Report To
+                                        </label>
+                                        <select
+                                          className="edit-dropDwon dropdown-setting"
+                                          name="report_To"
+                                          value={
+                                            this.state.hierarchyEditData
+                                              .report_To
+                                          }
+                                          onChange={this.handleOnChangeData}
+                                        >
+                                          <option>select</option>
+                                          <option value={0}>Root</option>
+                                          {this.state.reportToData !== null &&
+                                            this.state.reportToData.map(
+                                              (item, i) => (
+                                                <option
+                                                  key={i}
+                                                  value={item.designationID}
+                                                >
+                                                  {item.designationName}
+                                                </option>
+                                              )
+                                            )}
+                                        </select>
+                                      </div>
+                                      <div className="pop-over-div">
+                                        <label className="edit-label-1">
+                                          Status
+                                        </label>
+                                        <select
+                                          className="edit-dropDwon dropdown-setting"
+                                          name="designation_status"
+                                          value={
+                                            this.state.hierarchyEditData
+                                              .designation_status
+                                          }
+                                          onChange={this.handleOnChangeData}
+                                        >
+                                          <option>select</option>
+                                          {this.state.activeData !== null &&
+                                            this.state.activeData.map(
+                                              (item, j) => (
+                                                <option
+                                                  key={j}
+                                                  value={item.ActiveID}
+                                                >
+                                                  {item.ActiveName}
+                                                </option>
+                                              )
+                                            )}
+                                        </select>
+                                      </div>
+                                      <br />
+                                      <div>
+                                        <a
+                                          className="pop-over-cancle"
+                                          href={Demo.BLANK_LINK}
+                                        >
+                                          CANCEL
+                                        </a>
+                                        <button
+                                          className="pop-over-button"
+                                          type="button"
+                                          onClick={this.handleUpdateHierarchyData.bind(
+                                            this,
+                                            ids
+                                          )}
+                                        >
+                                          SAVE
+                                        </button>
+                                      </div>
+                                    </div>
+                                  }
+                                  placement="bottom"
+                                  trigger="click"
+                                >
+                                  <button
+                                    className="react-tabel-button"
+                                    type="button"
+                                    onClick={this.handleGetEditData.bind(
+                                      this,
+                                      row.original
+                                    )}
+                                  >
+                                    EDIT
+                                  </button>
+                                </Popover>
+                              </span>
+                            </>
+                          );
+                        }
+                      }
+                    ]}
                     // resizable={false}
-                    defaultPageSize={5}
-                    showPagination={false}
+                    minRows={1}
+                    defaultPageSize={10}
+                    showPagination={true}
                   />
-                  <div className="position-relative">
+                  {/* <div className="position-relative">
                     <div className="pagi">
                       <ul>
                         <li>
@@ -294,9 +541,8 @@ class TicketHierarchy extends Component {
                       </select>
                       <p>Items per page</p>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
-
               </div>
 
               <div className="col-md-4">
@@ -314,34 +560,53 @@ class TicketHierarchy extends Component {
                         className="txt-1"
                         placeholder="Enter Designation Name"
                         maxLength={25}
+                        name="designation_name"
+                        value={this.state.designation_name}
+                        onChange={this.handleOnChangeHierarchyData}
                       />
                     </div>
                     <div className="divSpace">
                       <div className="dropDrownSpace">
                         <label className="reports-to">Reports To</label>
                         <select
-                          id="inputState"
                           className="form-control dropdown-setting"
+                          value={this.state.selectReportTo}
+                          onChange={this.handleOnReportToChange}
                         >
                           <option>select</option>
-                          <option>Root</option>
+                          <option value={0}>Root</option>
+                          {this.state.reportToData !== null &&
+                            this.state.reportToData.map((item, i) => (
+                              <option key={i} value={item.designationID}>
+                                {item.designationName}
+                              </option>
+                            ))}
                         </select>
                       </div>
                     </div>
                     <div className="dropDrownSpace">
                       <label className="reports-to">Status</label>
                       <select
-                        id="inputState"
                         className="form-control dropdown-setting"
+                        value={this.state.selectStatus}
+                        onChange={this.handleStatusChange}
                       >
                         <option>select</option>
-                        <option>Active</option>
-                        <option>Deactive</option>
+                        {this.state.activeData !== null &&
+                          this.state.activeData.map((item, j) => (
+                            <option key={j} value={item.ActiveID}>
+                              {item.ActiveName}
+                            </option>
+                          ))}
                       </select>
                     </div>
                     <div className="btnSpace">
-                      <button className="addBtn-ticket-hierarchy">
-                        <label className="addLable">ADD</label>
+                      <button
+                        className="addBtn-ticket-hierarchy"
+                        type="button"
+                        onClick={this.handleSubmitData.bind(this)}
+                      >
+                        ADD
                       </button>
                     </div>
                   </div>

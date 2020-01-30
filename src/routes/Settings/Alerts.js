@@ -22,6 +22,13 @@ import CancelImg from "./../../assets/Images/Circle-cancel.png";
 import { Checkbox } from "antd";
 import CKEditor from "react-ckeditor-component";
 import Modal from "react-bootstrap/Modal";
+import { authHeader } from "./../../helpers/authHeader";
+import axios from "axios";
+import config from "./../../helpers/config";
+import {
+  NotificationContainer,
+  NotificationManager
+} from "react-notifications";
 
 class Alerts extends Component {
   constructor(props) {
@@ -30,13 +37,137 @@ class Alerts extends Component {
       fileName: "",
       AddAlertTabsPopup: false,
       content: "",
-      tabIndex:0
+      tabIndex:0,
+      alert: [],
+      updateAlertTypeName: '',
+      updateAlertisActive: '',
+      emailCust: false,
+      emailInt: false,
+      emailStore: false,
+      smsCust: false,
+      notiInt: false,
     };
     this.updateContent = this.updateContent.bind(this);
     this.onChange = this.onChange.bind(this);
     this.handleAddAlertTabsOpen = this.handleAddAlertTabsOpen.bind(this);
     this.handleAddAlertTabsClose = this.handleAddAlertTabsClose.bind(this);
+    this.handleGetAlert = this.handleGetAlert.bind(this);
+    this.handleUpdateAlertTypeName = this.handleUpdateAlertTypeName.bind(this);
   }
+
+  componentDidMount() {
+    this.handleGetAlert();
+    this.handleAlertTabs = this.handleAlertTabs.bind(this);
+  }
+
+  handleAlertTabs = e => {
+    debugger;
+    let check = e.target.checked;
+    let val = e.target.value;
+    if (val === 'smsCust') {
+      this.setState({
+        tabIndex: 1
+      });
+    }
+    if (check === true) {
+      this.setState({
+        [val]: true
+      });
+    } else {
+      this.setState({
+        [val]: false
+      });
+    }
+  };
+
+  handleGetAlert() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Alert/GetAlertList",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let alert = res.data.responseData;
+      if (alert !== null && alert !== undefined) {
+        self.setState({ alert });
+      }
+    });
+  }
+  deleteAlert(deleteId) {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Alert/DeleteAlert",
+      headers: authHeader(),
+      params: {
+        AlertID: deleteId
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      if (status === "Success") {
+        NotificationManager.success("Alert deleted successfully.");
+        self.handleGetAlert();
+      } else {
+        NotificationManager.error("Alert not deleted.");
+      }
+    });
+  }
+  handleUpdateAlert(alertId) {
+    debugger;
+    let AlertisActive;
+      if (this.state.updateAlertisActive === 'true') {
+        AlertisActive = true
+      } else if (this.state.updateAlertisActive === 'false') {
+        AlertisActive = false
+      }
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Alert/ModifyAlert",
+        headers: authHeader(),
+        params: {
+          AlertID: alertId,
+          AlertTypeName: this.state.updateAlertTypeName,
+          isAlertActive: AlertisActive
+        }
+      }).then((res) => {
+        debugger;
+        let status = res.data.message;
+        if (status === "Success") {
+          NotificationManager.success("Alert updated successfully.");
+          this.handleGetAlert();
+        } else {
+          NotificationManager.error("Alert not updated.");
+        }
+      });
+  }
+
+  updateAlert(individualData) {
+    debugger;
+    let updateAlertId = individualData.alertID, updateAlertTypeName = individualData.alertTypeName, alertIsActive =  individualData.isAlertActive, updateAlertisActive;
+    if (alertIsActive === 'Inactive') {
+      updateAlertisActive = 'false'
+    } else {
+      updateAlertisActive = 'true'
+    }
+    this.setState({
+      updateAlertId, updateAlertisActive, updateAlertTypeName
+    })
+  }
+
+  handleUpdateAlertTypeName(e) {
+    debugger;
+    this.setState({
+      updateAlertTypeName: e.target.value
+    });
+  }
+  handleUpdateAlertisActive = e => {
+    let updateAlertisActive = e.currentTarget.value;
+    this.setState({ updateAlertisActive });
+  };
   fileUpload = e => {
     this.setState({ fileName: e.target.files[0].name });
   };
@@ -68,6 +199,7 @@ class Alerts extends Component {
     });
   }
   handleTabChange(index){
+    debugger;
     this.setState({
       tabIndex:index
     })
@@ -169,14 +301,26 @@ class Alerts extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "alertType"
+        accessor: "alertTypeName"
       },
       {
         Header: "Communication Mode",
-        accessor: "communicationMode",
+        accessor: "modeOfCommunication",
         className: "communication-labelHeader",
         sortable: false,
-        Cell: props => <span className="number">{props.value}</span>
+        Cell: row => {
+          return (
+            <div>
+              {row.original.modeOfCommunication.isByEmail === true && <img src={LetterBox} alt="Letter" className="alert-tableImge" />}
+              {row.original.modeOfCommunication.isBySMS === true && <img src={SmsImg} alt="Sms" className="alert-tableImge" />}
+              {row.original.modeOfCommunication.isByNotification === true && <img
+                src={NotificationImg}
+                alt="Notification"
+                className="alert-tableImge"
+              />}
+            </div>
+          )
+        }
       },
       {
         id: "createdBy",
@@ -191,8 +335,23 @@ class Alerts extends Component {
           return (
             <div>
               <span>
-                Admin
-                <Popover content={popoverData} placement="bottom" >
+                {row.original.createdBy}
+                <Popover content={
+                  <>
+                  <div>
+                    <b>
+                      <p className="title">Created By: {row.original.createdBy}</p>
+                    </b>
+                    <p className="sub-title">Created Date: {row.original.createdDate}</p>
+                  </div>
+                  <div>
+                    <b>
+                      <p className="title">Updated By: {row.original.modifiedBy}</p>
+                    </b>
+                    <p className="sub-title">Updated Date: {row.original.modifiedDate}</p>
+                  </div>
+                </>
+                } placement="bottom" >
                   <img
                     className="info-icon-cp"
                     src={BlackInfoIcon}
@@ -203,8 +362,8 @@ class Alerts extends Component {
               </span>
             </div>
           );
-        }
-        // accessor: "createdBy"
+        },
+        accessor: "createdBy"
       },
       {
         Header: (
@@ -213,7 +372,7 @@ class Alerts extends Component {
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
         ),
-        accessor: "status"
+        accessor: "isAlertActive"
       },
       {
         Header: "Actions",
@@ -224,7 +383,23 @@ class Alerts extends Component {
           return (
             <>
               <span>
-                <Popover content={ActionDelete} placement="bottom" trigger="click">
+                <Popover content={
+                  <div className="d-flex general-popover popover-body">
+                  <div className="del-big-icon">
+                    <img src={DelBigIcon} alt="del-icon" />
+                  </div>
+                  <div>
+                    <p className="font-weight-bold blak-clr">Delete file?</p>
+                    <p className="mt-1 fs-12">
+                      Are you sure you want to delete this file?
+                    </p>
+                    <div className="del-can">
+                      <a href={Demo.BLANK_LINK}>CANCEL</a>
+                      <button className="butn" onClick={this.deleteAlert.bind(this, row.original.alertID)}>Delete</button>
+                    </div>
+                  </div>
+                </div>
+                } placement="bottom" trigger="click">
                   <img
                     src={RedDeleteIcon}
                     alt="del-icon"
@@ -232,9 +407,50 @@ class Alerts extends Component {
                     id={ids}
                   />
                 </Popover>
-                <Popover content={ActionEditBtn} placement="bottom" trigger="click">
+                <Popover content={
+                  <div className="edtpadding">
+                  <div className="">
+                    <label className="popover-header-text">EDIT ALERTS</label>
+                  </div>
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">Alert Type</label>
+                    <input
+                      type="text"
+                      className="txt-edit-popover"
+                      placeholder="Enter Alert Type"
+                      maxLength={25}
+                      value={this.state.updateAlertTypeName}
+                      onChange={this.handleUpdateAlertTypeName}
+                    />
+                  </div>
+                  {/* <div className="pop-over-div">
+                    <label className="edit-label-1">Issue Type</label>
+                    <select id="inputStatus" className="edit-dropDwon dropdown-setting">
+                      <option>Select</option>
+                      <option>Admin</option>
+                    </select>
+                  </div> */}
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">Status</label>
+                    <select id="inputStatus" className="edit-dropDwon dropdown-setting"
+                    value={this.state.updateAlertisActive}
+                    onChange={this.handleUpdateAlertisActive}
+                    >
+                      <option value="true">Active</option>
+                      <option value="false">Inactive</option>
+                    </select>
+                  </div>
+                  <br />
+                  <div>
+                  <a className="pop-over-cancle" href={Demo.BLANK_LINK} >CANCEL</a>
+                    <button className="pop-over-button">
+                      <label className="pop-over-btnsave-text" onClick={this.handleUpdateAlert.bind(this, row.original.alertID)}>SAVE</label>
+                    </button>
+                  </div>
+                </div>
+                } placement="bottom" trigger="click">
                   <button className="react-tabel-button" id="p-edit-pop-2">
-                    <label className="Table-action-edit-button-text">
+                    <label className="Table-action-edit-button-text" onClick={this.updateAlert.bind(this, row.original)}>
                       EDIT
                     </label>
                   </button>
@@ -290,6 +506,8 @@ class Alerts extends Component {
             className="txt-edit-popover"
             placeholder="Enter Alert Type"
             maxLength={25}
+            value={this.state.updateAlertTypeName}
+            onChange={this.handleUpdateAlertTypeName}
           />
         </div>
         {/* <div className="pop-over-div">
@@ -301,16 +519,19 @@ class Alerts extends Component {
         </div> */}
         <div className="pop-over-div">
           <label className="edit-label-1">Status</label>
-          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
-            <option>Active</option>
-            <option>Inactive</option>
+          <select id="inputStatus" className="edit-dropDwon dropdown-setting"
+          value={this.state.updateAlertisActive}
+          onChange={this.handleUpdateAlertisActive}
+          >
+            <option value="true">Active</option>
+            <option value="false">Inactive</option>
           </select>
         </div>
         <br />
         <div>
         <a className="pop-over-cancle" href={Demo.BLANK_LINK} >CANCEL</a>
           <button className="pop-over-button">
-            <label className="pop-over-btnsave-text">SAVE</label>
+           SAVE
           </button>
         </div>
       </div>
@@ -332,7 +553,7 @@ class Alerts extends Component {
               <div className="col-md-8">
                 <div className="table-cntr table-height alertsTable">
                   <ReactTable
-                    data={data}
+                    data={this.state.alert}
                     columns={columns}
                     // resizable={false}
                     defaultPageSize={5}
@@ -390,19 +611,19 @@ class Alerts extends Component {
                   <div className="div-cntr">
                     <label>Email</label>
                     <br />
-                    <Checkbox>Customer</Checkbox>
-                    <Checkbox>Internal</Checkbox>
-                    <Checkbox>Store</Checkbox>
+                    <Checkbox onChange={this.handleAlertTabs} value="emailCust">Customer</Checkbox>
+                    <Checkbox onChange={this.handleAlertTabs} value="emailInt">Internal</Checkbox>
+                    <Checkbox onChange={this.handleAlertTabs} value="emailStore">Store</Checkbox>
                   </div>
                   <div className="div-cntr">
                     <label>SMS</label>
                     <br />
-                    <Checkbox>Customer</Checkbox>
+                    <Checkbox onChange={this.handleAlertTabs} value="smsCust">Customer</Checkbox>
                   </div>
                   <div className="div-cntr">
                     <label>Notification</label>
                     <br />
-                    <Checkbox>Internal</Checkbox>
+                    <Checkbox onChange={this.handleAlertTabs} value="notiInt">Internal</Checkbox>
                   </div>
                   <div className="div-cntr">
                     <label>Status</label>
@@ -428,8 +649,9 @@ class Alerts extends Component {
                           className="nav nav-tabs margin-Alerttab"
                           role="tablist"
                         >
-                          <li className="nav-item">
+                          {(this.state.emailCust || this.state.emailInt || this.state.emailStore) && <li className="nav-item">
                             <a
+                            onClick={this.handleTabChange.bind(this,0)}
                               className={`nav-link ${this.state.tabIndex === 0 && 'active'}`}
                               data-toggle="tab"
                               href="#email-tab"
@@ -439,9 +661,10 @@ class Alerts extends Component {
                             >
                               Email
                             </a>
-                          </li>
-                          <li className="nav-item">
+                          </li>}
+                          {this.state.smsCust && <li className="nav-item">
                             <a
+                              onClick={this.handleTabChange.bind(this,1)}
                               className={`nav-link ${this.state.tabIndex === 1 && 'active'}`}
                               data-toggle="tab"
                               href="#sms-tab"
@@ -451,9 +674,10 @@ class Alerts extends Component {
                             >
                               SMS
                             </a>
-                          </li>
-                          <li className="nav-item">
+                          </li>}
+                          {this.state.notiInt && <li className="nav-item">
                             <a
+                            onClick={this.handleTabChange.bind(this,2)}
                                className={`nav-link ${this.state.tabIndex === 2 && 'active'}`}
                               data-toggle="tab"
                               href="#notification-tab"
@@ -463,7 +687,7 @@ class Alerts extends Component {
                             >
                               Notification
                             </a>
-                          </li>
+                          </li>}
                         </ul>
                         <img
                           src={CancelImg}
@@ -475,7 +699,7 @@ class Alerts extends Component {
                     </Modal.Header>
                     <Modal.Body>
                       <div className="tab-content">
-                        <div
+                        {(this.state.emailCust || this.state.emailInt || this.state.emailStore) && <div
                           className={`tab-pane fade ${this.state.tabIndex === 0 && 'show active'}`}
                           id="email-tab"
                           role="tabpanel"
@@ -483,7 +707,7 @@ class Alerts extends Component {
                         >
                           <div className="position-relative-alert">
                             <ul className="nav alert-nav-tabs3" role="tablist">
-                              <li className="nav-item">
+                              {this.state.emailCust && <li className="nav-item">
                                 <a
                                   className="nav-link active"
                                   data-toggle="tab"
@@ -494,8 +718,8 @@ class Alerts extends Component {
                                 >
                                   Customer
                                 </a>
-                              </li>
-                              <li className="nav-item">
+                              </li>}
+                              {this.state.emailInt && <li className="nav-item">
                                 <a
                                   className="nav-link"
                                   data-toggle="tab"
@@ -506,8 +730,8 @@ class Alerts extends Component {
                                 >
                                   Internal
                                 </a>
-                              </li>
-                              <li className="nav-item">
+                              </li>}
+                              {this.state.emailStore && <li className="nav-item">
                                 <a
                                   className="nav-link"
                                   data-toggle="tab"
@@ -518,7 +742,7 @@ class Alerts extends Component {
                                 >
                                   Store
                                 </a>
-                              </li>
+                              </li>}
                             </ul>
                           </div>
                           <div className="tab-content p-0 alert-p1">
@@ -603,7 +827,74 @@ class Alerts extends Component {
                               role="tabpanel"
                               aria-labelledby="Internal-tab"
                             >
-                              Internal
+                              <label className="alert-main-popuplbl">
+                                Compose your Email
+                              </label>
+                              <div className="div-padding-alert">
+                                <div className="form-group row">
+                                  <label className="label-color-alert">
+                                    To
+                                  </label>
+                                  <div className="col-sm-6 m-t1">
+                                    <input
+                                      type="text"
+                                      className="textbox-email-editor"
+                                    />
+                                  </div>
+                                </div>
+                                <div className="form-group row">
+                                  <label className="label-color-alert">
+                                    CC
+                                  </label>
+                                  <div className="col-sm-6 m-t1">
+                                    <input
+                                      type="text"
+                                      className="textbox-email-editor text-box2"
+                                    />
+                                  </div>
+                                </div>
+                                <div className="form-group row">
+                                  <label className="label-color-alert">
+                                    BCC
+                                  </label>
+                                  <div className="col-sm-6 m-t1">
+                                    <input
+                                      type="text"
+                                      className="textbox-email-editor text-box3"
+                                    />
+                                  </div>
+                                </div>
+                                <div className="form-group row">
+                                  <label className="label-color-alert">
+                                    Subject
+                                  </label>
+                                  <div className="col-sm-6">
+                                    <input
+                                      type="text"
+                                      className="textbox-email-editor text-box4"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                              <CKEditor
+                                content={this.state.content}
+                                events={{
+                                  // "blur": this.onBlur,
+                                  // "afterPaste": this.afterPaste,
+                                  change: this.onChange,
+                                  items: this.fileUpload
+                                }}
+                              />
+                              <div className="div-button1">
+                                <button
+                                  className="butn-2"
+                                  type="submit"
+                                  id="sms-tab"
+                                  onClick={this.handleTabChange.bind(this,1)}
+                                >
+                                  SAVE & NEXT
+                                </button>
+                              </div>
                             </div>
                             <div
                               className="tab-pane fade"
@@ -611,10 +902,77 @@ class Alerts extends Component {
                               role="tabpanel"
                               aria-labelledby="ticket-tab"
                             >
-                              Store
+                              <label className="alert-main-popuplbl">
+                                Compose your Email
+                              </label>
+                              <div className="div-padding-alert">
+                                <div className="form-group row">
+                                  <label className="label-color-alert">
+                                    To
+                                  </label>
+                                  <div className="col-sm-6 m-t1">
+                                    <input
+                                      type="text"
+                                      className="textbox-email-editor"
+                                    />
+                                  </div>
+                                </div>
+                                <div className="form-group row">
+                                  <label className="label-color-alert">
+                                    CC
+                                  </label>
+                                  <div className="col-sm-6 m-t1">
+                                    <input
+                                      type="text"
+                                      className="textbox-email-editor text-box2"
+                                    />
+                                  </div>
+                                </div>
+                                <div className="form-group row">
+                                  <label className="label-color-alert">
+                                    BCC
+                                  </label>
+                                  <div className="col-sm-6 m-t1">
+                                    <input
+                                      type="text"
+                                      className="textbox-email-editor text-box3"
+                                    />
+                                  </div>
+                                </div>
+                                <div className="form-group row">
+                                  <label className="label-color-alert">
+                                    Subject
+                                  </label>
+                                  <div className="col-sm-6">
+                                    <input
+                                      type="text"
+                                      className="textbox-email-editor text-box4"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                              <CKEditor
+                                content={this.state.content}
+                                events={{
+                                  // "blur": this.onBlur,
+                                  // "afterPaste": this.afterPaste,
+                                  change: this.onChange,
+                                  items: this.fileUpload
+                                }}
+                              />
+                              <div className="div-button1">
+                                <button
+                                  className="butn-2"
+                                  type="submit"
+                                  id="sms-tab"
+                                  onClick={this.handleTabChange.bind(this,1)}
+                                >
+                                  SAVE & NEXT
+                                </button>
+                              </div>
                             </div>
                           </div>
-                        </div>
+                        </div>}
                         <div id="sms-tab" 
                         className={`tab-pane fade ${this.state.tabIndex === 1 && 'show active'}`}
                         >
@@ -729,6 +1087,7 @@ class Alerts extends Component {
             </div>
           </div>
         </div>
+        <NotificationContainer />
       </React.Fragment>
     );
   }

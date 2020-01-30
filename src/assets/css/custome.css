@@ -145,6 +145,7 @@ a {
 .ordermainrow .ReactTable .rt-tbody .rt-td {
   width: auto !important;
 } */
+
 .ordermainrow .rt-table::-webkit-scrollbar {
   height: 5px;
 }
@@ -590,6 +591,7 @@ table tr th:last-child {
   height: 43px;
   margin-left: 35px;
   cursor: pointer;
+  color: #FFFF;
 }
 
 .myticket-submit-solve-button-text {
@@ -1847,7 +1849,7 @@ body {
 .fs-12 {
   font-size: 12px;
 }
-button {
+button, .csv-button {
   background-color: #ecf2f4;
   border: 1px solid #2561a8;
   border-radius: 5px;
@@ -2147,7 +2149,7 @@ table td span {
 }
 .table-btn {
   border-radius: 15px;
-  width: 76px;
+  width: 100px;
   display: inline-block;
   padding: 4px 10px;
   text-transform: uppercase;
@@ -3079,6 +3081,9 @@ table tr th:last-child {
   background: #fff url("../Images/down-1.png") no-repeat right 12px center;
   background-size: 16px;
   text-align: left;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .my-tic-email1::after {
   display: none;
@@ -3400,6 +3405,25 @@ table tr th:last-child {
   margin: 0px !important;
 } */
 
+/* settings starts */
+.module-switch .switch input[type="checkbox"]:checked + .cr {
+  border: 1px solid #50D462;
+}
+.module-switch .switch input[type="checkbox"] + .cr:before {
+  background: #c9c9c9;
+}
+.module-switch .switch input[type="checkbox"]:checked + .cr:before {
+  background: #50D462 !important;
+}
+.temp-sub {
+  padding: 0 40px 30px 40px;
+}
+.temp-multi.schedule-multi .css-1hwfws3 {
+  padding-right: 35px;
+  background-position: right 12px center;
+}
+/* settings ends */
+
 /* chetan css end */
 /******************************************************/
 
@@ -3633,43 +3657,15 @@ table tr th:last-child {
   padding-left: 25px;
   height: auto;
 }
+.displayNn{
+  display: none;
+}
+.displayShw{
+  display: block;
+}
 /**************************************/
 
 /* -------------Deepka Savani-------------- */
-
-/* .High button {
-  background-color: #ffffff;
-  border: 1px solid #d02139;
-  border-radius: 4px;
-  height: 43px;
-  min-width: 60px;
-  margin-left: 10px;
-  cursor: pointer;
-}
-
-.Low button {
-  background-color: #ffffff;
-  border: 1px solid #5aa805;
-  border-radius: 4px;
-  min-width: 60px;
-  height: 43px;
-  margin-left: 22px;
-  cursor: pointer;
-}
-.Medium button {
-  background-color: #f5a623;
-  border: 1px solid #9f814a;
-  border-radius: 4px;
-  min-width: 68px;
-  height: 43px;
-  margin-left: -15px;
-  cursor: pointer;
-} */
-/* ----------------------------------- */
-
-/* .mask table {
-  border: none !important;
-} */
 
 .addNote-textarea::placeholder {
   color: #9b9b9b;
@@ -3756,6 +3752,21 @@ table tr th:last-child {
   max-height: 350px;
   margin-left: 0;
 }
+#Historical-popup .rt-table::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+#Historical-popup .rt-table::-webkit-scrollbar-track {
+  background: yellow;
+  border-radius: 10px;
+}
+#Historical-popup .rt-table::-webkit-scrollbar-thumb {
+  background: yellow;
+  border-radius: 10px;
+}
+#Historical-popup .rt-table::-webkit-scrollbar-thumb:hover {
+  background: yellow;
+}  
 /**Historical popup css edn**/
 
 /*Progress bar in my tickeyt page*/
@@ -5829,7 +5840,7 @@ font-weight: normal;
   margin: 0 auto;
   display: inline-block;
   min-width: 83%;
-  height: 550px;
+  /* height: 550px; */
 }
 .profilemodal-text {
   color: #4a4a4a;
@@ -6254,7 +6265,7 @@ font-weight: normal;
   height: 20px;
   width: 35px;
   border-radius: 30px;
-  background: #c9c9c9 ;
+  background: #50D462 ;
 }
 .switch input[type="checkbox"] + .cr:after {
   -webkit-box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1),
@@ -6284,7 +6295,7 @@ font-weight: normal;
   cursor: not-allowed;
 }
 .switch.switch-primary input[type="checkbox"]:checked + .cr:before {
-  background: #50D462;
+  background: #c9c9c9;
 }
 .switch.switch-danger input[type="checkbox"]:checked + .cr:before {
   background: #f44236;
@@ -6385,6 +6396,7 @@ font-weight: normal;
   height: 27px;
   min-width: auto;
   padding: 0px !important;
+  color:#FFFFFF
 }
 .rt-tableMoveImge {
   flex: 0 0 auto !important;
@@ -6728,7 +6740,7 @@ table thead tr {
 .seacrh-img-addsearch {
   width: 4%;
   display: inline-block;
-  background: #ECF2F4;
+  background: rgb(232, 240, 254);
   padding-top: 11px;
   padding-bottom: 11px;
   border-radius: 4px;
@@ -7569,6 +7581,18 @@ table tr th:last-child {
   line-height: 17px;
   text-align: left;
   cursor: pointer;
+}
+.addplusbtnReport {
+  width: 120px;
+  height: 40px;
+  background-color: #2561a8;
+  cursor: pointer;
+  color: #ffffff;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  text-align: center;
 }
 .downloadaction {
   width: 17px;
@@ -9407,6 +9431,16 @@ table tr th:last-child {
   border: 1px solid #ECF2F4;
   border-radius: 5px;
   margin-right: 5px;
+  height: 45px;
+}
+.thumbtick-plus {
+  border: 1px solid #ECF2F4;
+  border-radius: 5px;
+  margin-right: 5px;
+  margin: auto 0;
+  width: 32px;
+  height: 35px;
+  cursor: pointer;
 }
 .cancalImg-kb {
   width: 15px;
@@ -9685,7 +9719,7 @@ table tr th:last-child {
   padding-right: 25px;
   padding-left: 25px;
 }
-.myticlist-expand-sect button {
+.myticlist-expand-sect button, .csv-button {
   background-color: #fff;
   margin-right: 15px;
   padding-top: 12px;
@@ -9699,6 +9733,7 @@ table tr th:last-child {
 .myticlist-expand-sect button.btn-inv {
   color: #fff;
   background-color: #2561a8;
+      cursor: pointer;
 }
 .myticlist-expand-sect .tab-content .row {
   padding: 20px 0;
@@ -10080,4 +10115,106 @@ table tr th:last-child {
 .pop-over-cancle:hover {
   color: #2561a8 !important;
 }
+#thumb-modal-popup {
+  border-radius: 5px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+  padding: 10px;
+  margin: auto;
+  display: inline-block;
+  height: auto;
+  width: 634px;
+}
+#thumb-modal-popup .close {
+  float: right;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #000;
+  margin: -20px 5px 0 0;
+}
+
 /* ****************End css ************************/
+
+
+.autocomp div {
+  background: red;
+}
+
+.loader-icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  /* height: 100vh; */
+  bottom: 0;
+  background:transparent url("../Images/loader.gif") no-repeat center
+    center;
+  background-size: 60px;
+  z-index: 5;
+}
+.tic-history .ReactTable {
+  border: none;
+}
+.tic-history .ReactTable .rt-thead.-header {
+  background-color: transparent;
+  border: none;
+}
+.tic-history .ReactTable .rt-tbody .rt-tr-group {
+  border: none;
+}
+.tic-history .ReactTable .rt-th {
+  font-weight: bold;
+  text-align: left;
+  color: #888;
+}
+.tic-history .ReactTable .rt-tbody .rt-td {
+  padding: 10px 15px !important;
+}
+.tic-history  .ReactTable .rt-thead .rt-th.-cursor-pointer, .tic-history .ReactTable .rt-thead .rt-td.-cursor-pointer {
+  padding: 10px 15px !important;
+}
+
+
+.bckHide .rt-th{
+  display: none;
+}
+.tableSrolling{
+  max-height: 300px;
+  overflow: auto;
+}
+
+.datePickertable .ReactTable .rt-table {
+  flex: auto 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.datePickertable .ReactTable .rt-tbody {
+  flex: 99999 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.datePickertable .ReactTable .rt-tr .rt-td {
+
+  flex: 1 0;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding: 7px 5px;
+  overflow: initial;
+  transition: .3s ease;
+  transition-property: width,min-width,padding,opacity;;
+}
+
+.datePickertable .ReactTable .rt-tbody {
+  overflow: initial;
+}
+.circleCancle{
+  height: 18px;
+   position: absolute;
+   top: -7px;
+    right: -2px;
+    cursor: pointer;
+}

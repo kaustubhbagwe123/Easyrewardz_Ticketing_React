@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import Chart from 'react-apexcharts';
+import { authHeader } from "./../../helpers/authHeader";
+import axios from "axios";
+import config from "./../../helpers/config";
 
 class TicketToClaimMultiBar extends Component {
   constructor(props) {
@@ -11,19 +14,75 @@ class TicketToClaimMultiBar extends Component {
           id: 'basic-bar'
         },
         xaxis: {
-          categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+          categories: []
         },
       },
       seriesMixedChart: [ {
         name: 'Total Tickets',
         type: 'column',
-        data: [2500, 2000, 1700, 1700, 1300, 1800, 2000]
+        data: []
       }, {
-        name: 'Tickets with Task',
+        name: 'Tickets with Claim',
         type: 'column',
-        data: [1300, 1200, 1100, 1200, 1000, 1300, 1100]
+        data: []
       }],
-    }
+    };
+
+    this.handleGetDashboardGraphData = this.handleGetDashboardGraphData.bind(
+      this
+    );
+  }
+
+  componentDidMount() {
+    this.handleGetDashboardGraphData();
+  }
+
+  handleGetDashboardGraphData() {
+    // debugger;
+    // let self = this;
+    // axios({
+    //   method: "post",
+    //   url: config.apiUrl + "/DashBoard/DashBoardGraphData",
+    //   headers: authHeader(),
+    //   params: {
+    //     UserIds: "6,7,8",
+    //     fromdate: "2019-12-26",
+    //     todate: "2020-01-15",
+    //     BrandID: "26, 31"
+    //   }
+    // }).then(function(res) {
+      debugger;
+      var propsData = this.props.data;
+      let categories = [],
+        totalTicketsData = [],
+        claimTicketsData = [];
+      // let DashboardBillGraphData = res.data.responseData.tickettoClaimGraph;
+      for (let i = 0; i < propsData.length; i++) {
+        let day = propsData[i].day;
+        categories.push(day);
+        let totalTickets = propsData[i].totalTickets;
+        totalTicketsData.push(totalTickets);
+        let claimTickets = propsData[i].claimTickets;
+        claimTicketsData.push(claimTickets);
+      }
+
+      this.setState({
+        optionsMixedChart: {
+          xaxis: {
+            categories
+          }
+        },
+        seriesMixedChart: [
+          {
+            data: totalTicketsData
+          },
+          {
+            data: claimTicketsData
+          }
+        ]
+      });
+      
+    // });
   }
   
   render() {

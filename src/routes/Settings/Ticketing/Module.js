@@ -12,15 +12,23 @@ import "react-rangeslider/lib/index.css";
 import { Popover } from "antd";
 import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
+import { authHeader } from "./../../../helpers/authHeader";
+import axios from "axios";
+import config from "./../../../helpers/config";
 
 class Module extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      value: 10
+      value: 10,
+      modulesNames: [],
+      modulesItems: [],
+      moduleID: 0
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleGetModulesNames = this.handleGetModulesNames.bind(this);
+    this.handleGetModulesItems = this.handleGetModulesItems.bind(this);
   }
   //   handleChangeStart = () => {
   //     console.log('Change event started')
@@ -32,330 +40,71 @@ class Module extends Component {
     });
   }
 
-  //   handleChangeComplete = () => {
-  //     console.log('Change event completed')
-  //   };
+  componentDidMount() {
+    this.handleGetModulesNames();
+    // this.handleGetModulesItems();
+  }
+
+  checkModule = async (moduleItemID) => {
+    debugger;
+    let modulesItems = [... this.state.modulesItems], isActive;
+    for (let i = 0; i < modulesItems.length; i++) {
+      if (modulesItems[i].moduleItemID === moduleItemID) {
+        isActive = modulesItems[i].moduleItemisActive;
+        modulesItems[i].moduleItemisActive = !isActive;
+      }
+    }
+    await this.setState({
+      modulesItems
+    });
+  }
+  changeModuleTab = async (moduleID) => {
+    debugger;
+    await this.setState({
+      moduleID
+    });
+    this.handleGetModulesItems();
+  }
+
+  handleGetModulesNames() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Module/GetModules",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let modulesNames = res.data.responseData;
+      let moduleID = modulesNames[0].moduleID;
+      if (modulesNames !== null && modulesNames !== undefined) {
+        self.setState({ modulesNames, moduleID });
+      }
+      self.handleGetModulesItems();
+    });
+  }
+  handleGetModulesItems() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Module/GetModulesItems",
+      headers: authHeader(),
+      params: {
+        ModuleID: this.state.moduleID
+      }
+    }).then(function(res) {
+      debugger;
+      let modulesItems = res.data.responseData;
+      if (modulesItems !== null && modulesItems !== undefined) {
+        self.setState({ modulesItems });
+      }
+    });
+  }
+
+
   render() {
-    const InsertPlaceholder =(
-      <div className="insertpop1">
-        <div className="insertpop">
-          <label className="">
-            Customer Name
-          </label>
-          <label className="">
-            Customer Name
-          </label>
-        </div>
-        <div className="insertpop">
-          <label className="">
-            Customer Email
-          </label>
-          <label className="">
-            Customer Email
-          </label>
-        </div>
-        <div className="insertpop">
-          <label className="">
-            Customer City
-          </label>
-          <label className="">
-            Customer City
-          </label>
-        </div>
-      </div>
-  )
-    const { value } = this.state;
-    const dataModule = [
-      {
-        bannedReason: <label>Spam</label>
-      },
-      {
-        bannedReason: <label>Abusive</label>
-      },
-      {
-        bannedReason: <label>Spam</label>
-      },
-      {
-        bannedReason: <label>Abusive</label>
-      },
-      {
-        bannedReason: <label>Spam</label>
-      }
-    ];
-
-    const columnsModule = [
-      {
-        Header: (
-          <span>
-            Customer Name <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "custoName",
-        Cell: props => <span>Naman</span>
-      },
-      {
-        Header: (
-          <span>
-            Visitor IP <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "visiIp",
-        Cell: props => <span>1.2.2.223.32</span>
-      },
-      {
-        Header: (
-          <span>
-            Chat ID <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "chatId",
-        Cell: props => <span>1234</span>
-      },
-      {
-        Header: (
-          <span>
-            Chat date & Time <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "chatdate",
-        Cell: props => <span>18-08-2019 12:23:11 PM</span>
-      },
-      {
-        Header: (
-          <span>
-            Banned Reason <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "bannedReason"
-      },
-      {
-        Header: (
-          <span>
-            Banned Till Date <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "bannedTill",
-        Cell: props => <span>18-08-2019 12:23:11 PM</span>
-      },
-      {
-        Header: (
-          <span>
-            Action
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "action",
-        Cell: props => (
-          <span>
-            <button className="modulereactbtn" id="p-edit-pop-2">
-              <label className="Table-action-edit-button-text">
-                REMOVE BAN
-              </label>
-            </button>
-          </span>
-        )
-      }
-    ];
-
-    const dataShortcut = [
-      {
-        shortcutname: "Goodbye",
-        tagshortcut: (
-          <span className="goodby">
-            GoodBye_Survey
-          </span>
-        ),
-        messageshortcut: (
-          <span>
-            <label>
-              Thanks for chatting with us.Have We resolved yore Question(s)?
-            </label>
-            <div className="shortcut-option">
-              <input type="radio" name="yes" id="yes" />
-              <label htmlFor="yes" className="logout-label1">
-                Yes
-              </label>
-              <input type="radio" name="yes" id="no" />
-              <label htmlFor="no" className="logout-label1">
-                No
-              </label>
-            </div>
-          </span>
-        )
-      },
-      {
-        shortcutname: "Help",
-        tagshortcut: (
-          <span className="goodby">
-            Help_Survey
-          </span>
-        ), 
-        messageshortcut: (
-          <span>
-            <label>Do you need any help?</label>
-            <div className="shortcut-option">
-              <input type="radio" name="yes1" id="yes1" />
-              <label htmlFor="yes1" className="logout-label1">
-                Yes
-              </label>
-              <input type="radio" name="yes1" id="no1" />
-              <label htmlFor="no1" className="logout-label1">
-                No
-              </label>
-            </div>
-          </span>
-        )
-      },
-      {
-        shortcutname: "Hii",
-        tagshortcut: " ",
-        messageshortcut: (
-          <span>
-            <label>Hi,how can we help you today?</label>
-          </span>
-        )
-      },
-      {
-        shortcutname: "Returning",
-        tagshortcut: (
-          <span className="goodby">
-          Returning
-          </span>
-        ),
-        messageshortcut: (
-          <span>
-            <label>Welcome back,how can we help you today?</label>
-          </span>
-        )
-      },
-      {
-        shortcutname: "Other Help",
-        tagshortcut: " ",
-        messageshortcut: (
-          <span>
-            <label>Do you need any other help?</label>
-            <div className="shortcut-option">
-              <input type="radio" name="yes2" id="yes2" />
-              <label htmlFor="yes2" className="logout-label1">
-                Yes
-              </label>
-              <input type="radio" name="yes2" id="no2" />
-              <label htmlFor="no2" className="logout-label1">
-                No
-              </label>
-            </div>
-          </span>
-        )
-      }
-    ];
-
-    const columnsShortcut = [
-      {
-        Header: (
-          <span>
-            Shortcut <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "shortcutname"
-      },
-      {
-        Header: (
-          <span>
-            Message
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "messageshortcut"
-      },
-      {
-        Header: (
-          <span>
-            Available For
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "availabeshortcut",
-        Cell: props => <label>All Agents</label>
-      },
-      {
-        Header: (
-          <span>
-            Tags
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "tagshortcut"
-      },
-      {
-        Header: <span>Actions</span>,
-        accessor: "actionshortcut",
-        Cell: props => (
-          <span>
-            <Popover content={ActionDelete} placement="bottom" trigger="click" >
-                  <img src={RedDeleteIcon} alt="del-icon" className="del-btn" />
-            </Popover>
-            <Popover
-                  content={ActionEditBtn}
-                  placement="bottom"
-                  trigger="click"
-                >
-                  <button className="react-tabel-button" id="p-edit-pop-2">
-                    <label className="Table-action-edit-button-text">
-                      EDIT
-                    </label>
-                  </button>
-                </Popover>
-          </span>
-        )
-      }
-    ];
-    const ActionEditBtn = (
-      <div className="edtpadding">
-        <div className="">
-          <label className="popover-header-text">EDIT SHORTCUT</label>
-        </div>
-        <div className="pop-over-div">
-          <label className="edit-label-1">Shortcut</label>
-          <input
-            type="text"
-            className="txt-edit-popover"
-            placeholder="Enter Shortcut"
-          />
-        </div>
-
-        <div className="pop-over-div">
-          <label className="edit-label-1">Available for</label>
-          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
-            <option>Status</option>
-            <option>Inactive</option>
-          </select>
-        </div>
-        <br />
-        <div>
-        <a className="pop-over-cancle" href={Demo.BLANK_LINK}>CANCEL</a>
-          <button className="pop-over-button">
-            <label className="pop-over-btnsave-text">SAVE</label>
-          </button>
-        </div>
-      </div>
-    );
-    const ActionDelete = (
-      <div className="d-flex general-popover popover-body">
-        <div className="del-big-icon">
-          <img src={DelBigIcon} alt="del-icon" />
-        </div>
-        <div>
-          <p className="font-weight-bold blak-clr">Delete file?</p>
-          <p className="mt-1 fs-12">
-            Are you sure you want to delete this file?
-          </p>
-          <div className="del-can">
-            <a href={Demo.BLANK_LINK}>CANCEL</a>
-            <button className="butn">Delete</button>
-          </div>
-        </div>
-      </div>
-    );
+ 
     return (
       <Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
@@ -371,13 +120,32 @@ class Module extends Component {
         <div className="paddmodule">
           <div className="module-tabs">
             <section>
-              <Tabs>
+                {this.state.modulesNames.length > 0 && <Tabs onSelect={(index, label) => console.log(label + ' selected')}>
+                  {this.state.modulesNames !== null &&
+                  this.state.modulesNames.map((name, i) => (
+                    <Tab label={name.moduleName} key={i}>
+                      <div className="switch switch-primary">
+                        <label className="moduleswitchtext-main">Field Name</label>
+                        <label className="moduleswitchtext-main1">Show/Hide</label>
+                      </div>
+                      {this.state.modulesItems !== null &&
+                      this.state.modulesItems.map((item, i) => (
+                        <div className="module-switch" key={i}>
+                          <div className="switch switch-primary">
+                            <label className="moduleswitchtext">{item.moduleItemName}</label>
+                            <input name="moduleItems" checked={item.moduleItemisActive} type="checkbox" id={'i' + item.moduleItemID} onChange={this.checkModule.bind(this, item.moduleItemID)} />
+                            <label htmlFor={'i' + item.moduleItemID} className="cr"></label>
+                          </div>
+                        </div>
+                      ))}
+                    </Tab>
+                  ))}
+                </Tabs>}
+              {/* <Tabs>
                 <Tab label="Advance Search">
                   <div className="switch switch-primary">
                     <label className="moduleswitchtext-main">Field Name</label>
                     <label className="moduleswitchtext-main1">Show/Hide</label>
-                    {/* <input type="checkbox" id="editDashboard-p-1"/>
-                                    <label htmlFor="editDashboard-p-1" className="cr"></label> */}
                   </div>
 
                   
@@ -513,8 +281,6 @@ class Module extends Component {
                   <div className="switch switch-primary">
                     <label className="moduleswitchtext-main">Field Name</label>
                     <label className="moduleswitchtext-main1">Show/Hide</label>
-                    {/* <input type="checkbox" id="editDashboard-p-1"/>
-                                    <label htmlFor="editDashboard-p-1" className="cr"></label> */}
                   </div>
 
                   <div className="switch switch-primary">
@@ -897,7 +663,7 @@ class Module extends Component {
                     </Tabs>
                   </div>
                 </Tab>
-              </Tabs>
+              </Tabs> */}
             </section>
           </div>
         </div>

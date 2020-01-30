@@ -13,6 +13,7 @@ import {
   NotificationContainer,
   NotificationManager
 } from "react-notifications";
+import matchSorter from "match-sorter";
 import { authHeader } from "../../helpers/authHeader";
 import SimpleReactValidator from "simple-react-validator";
 
@@ -50,9 +51,15 @@ class TicketSystemOrder extends Component {
       StorAddress: {},
       purchaseFrmStorName: {},
       customerdetails: {},
-      modeData: {}
+      modeData: {},
+      orderMasterID: false,
+      filterAll: "",
+      filtered: [],
+      expanded: null
     };
     this.validator = new SimpleReactValidator();
+    this.onFilteredChange = this.onFilteredChange.bind(this);
+    this.filterAll = this.filterAll.bind(this);
     this.handleOrderTableOpen = this.handleOrderTableOpen.bind(this);
     this.handleOrderTableClose = this.handleOrderTableClose.bind(this);
     this.handleGetTicketSourceList = this.handleGetTicketSourceList.bind(this);
@@ -62,6 +69,11 @@ class TicketSystemOrder extends Component {
     this.handleGetManuallyTableData = this.handleGetManuallyTableData.bind(
       this
     );
+  }
+
+  componentDidMount() {
+    this.handleModeOfPaymentDropDown();
+    this.handleGetTicketSourceList();
   }
   handleOrderTableOpen() {
     this.setState({ OrderTable: true });
@@ -92,6 +104,11 @@ class TicketSystemOrder extends Component {
       AddManuallyData: !this.state.AddManuallyData
     });
   }
+  handelCheckBoxCheckedChange = () => {
+    this.setState({
+      CheckBoxChecked: !this.state.CheckBoxChecked
+    });
+  };
   handleChangeSaveManualTbl() {
     this.setState({
       AddManualSaveTbl: !this.state.AddManualSaveTbl
@@ -104,44 +121,36 @@ class TicketSystemOrder extends Component {
     let ticketSourceValue = e.currentTarget.value;
     this.setState({ selectedTicketSource: ticketSourceValue });
   };
-  handleCheckOrderID(OrderItemId, rowData, e) {
+  handleCheckOrderID(orderMasterID, rowData) {
     debugger;
 
-    e.stopPropagation();
     const newSelected = Object.assign({}, this.state.CheckOrderID);
-    newSelected[OrderItemId] = !this.state.CheckOrderID[OrderItemId];
+    newSelected[orderMasterID] = !this.state.CheckOrderID[orderMasterID];
     this.setState({
-      CheckOrderID: OrderItemId ? newSelected : false
+      CheckOrderID: orderMasterID ? newSelected : false
     });
     var selectedRow = [];
-
     if (this.state.selectedDataRow.length === 0) {
-      selectedRow.push(rowData.original);
+      selectedRow.push(rowData.orderMasterID);
       this.setState({
         selectedDataRow: selectedRow
       });
     } else {
-      if (newSelected[OrderItemId] === true) {
+      if (newSelected[orderMasterID] === true) {
         for (var i = 0; i < this.state.selectedDataRow.length; i++) {
-          if (
-            this.state.selectedDataRow[i].OrderItemId ===
-            rowData.original.orderItemID
-          ) {
+          if (this.state.selectedDataRow[i] === rowData.orderMasterID) {
             selectedRow.splice(i, 1);
 
             break;
           } else {
             selectedRow = this.state.selectedDataRow;
-            selectedRow.push(rowData.original);
+            selectedRow.push(rowData.orderMasterID);
             break;
           }
         }
       } else {
         for (var j = 0; j < this.state.selectedDataRow.length; j++) {
-          if (
-            this.state.selectedDataRow[j].OrderItemId ===
-            rowData.original.orderItemID
-          ) {
+          if (this.state.selectedDataRow[j] === rowData.orderMasterID) {
             selectedRow = this.state.selectedDataRow;
             selectedRow.splice(j, 1);
             break;
@@ -149,11 +158,15 @@ class TicketSystemOrder extends Component {
         }
       }
     }
+   
     this.setState({
       selectedDataRow: selectedRow
     });
+
+    // console.log(this.state.selectedDataRow,"--------final data-------");
+
     {
-      this.props.getOrderId(this.state.selectedDataRow);
+      this.props.getOrderId(selectedRow);
     }
   }
 
@@ -176,10 +189,17 @@ class TicketSystemOrder extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let TicketSourceData = res.data.responseData;
-      self.setState({
-        TicketSourceData: TicketSourceData
-      });
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        self.setState({
+          TicketSourceData: data
+        });
+      } else {
+        self.setState({
+          TicketSourceData: []
+        });
+      }
     });
   }
   handleGetManuallyTableData() {
@@ -198,12 +218,14 @@ class TicketSystemOrder extends Component {
   handleOrderSearchData() {
     debugger;
     let self = this;
+    var CustID = this.props.custDetails;
     axios({
       method: "post",
       url: config.apiUrl + "/Order/getOrderListWithItemDetails",
       headers: authHeader(),
       params: {
-        OrderNumber: this.state.orderNumber
+        OrderNumber: this.state.orderNumber,
+        CustomerID: CustID
       }
     }).then(function(res) {
       debugger;
@@ -313,15 +335,43 @@ class TicketSystemOrder extends Component {
       self.setState({ modeData: modeData });
     });
   }
+  onFilteredChange(filtered) {
+    debugger;
+    if (filtered.length > 1 && this.state.filterAll.length) {
+      // NOTE: this removes any FILTER ALL filter
+      const filterAll = "";
+      this.setState({
+        filtered: filtered.filter(item => item.id !== "all"),
+        filterAll
+      });
+    } else this.setState({ filtered });
+  }
 
-  componentDidMount() {
-    this.handleModeOfPaymentDropDown();
-    this.handleGetTicketSourceList();
+  filterAll(e) {
+    debugger;
+    const { value } = e.target;
+    const filterAll = value;
+    const filtered = [{ id: "all", value: filterAll }];
+
+    this.setState({ filterAll, filtered });
+  }
+  expand_row(row) {
+    var expanded = {...this.state.expanded};
+    if (expanded[row.index]) {
+      expanded[row.index] = !expanded[row.index];
+    } else {
+      expanded[row.index] = true;
+    }
+
+    console.log(expanded);
+    this.setState({
+      expanded: expanded
+    });
   }
 
   render() {
     const { orderDetailsData } = this.state;
-
+    const defaultExpandedRows = orderDetailsData.map(() => {return true});
     return (
       <div className="ticketSycard">
         <div className="ticketSycard1">
@@ -380,8 +430,6 @@ class TicketSystemOrder extends Component {
                   className="claimplus"
                   onClick={this.handleOrderTableClose.bind(this)}
                 >
-                  {/* <span className="plusline1"></span>
-                  <img src={ArrowImg} alt="Arrow" className="arrow-imgtask-1" /> */}
                   <span className="plusline12"></span>
                   <span>
                     <img
@@ -405,8 +453,8 @@ class TicketSystemOrder extends Component {
                   <label className="orderdetailpopup">Order</label>
                   <div className="orderswitch orderswitchitem">
                     <div className="switch switch-primary d-inline">
-                      <input type="checkbox" id="editTasks-p-2" />
-                      <label htmlFor="editTasks-p-2" className="cr ord"></label>
+                      <input type="checkbox" id="item-11" />
+                      <label htmlFor="item-11" className="cr ord"></label>
                     </div>
                   </div>
                   <label className="orderdetailpopup">Item</label>
@@ -417,6 +465,8 @@ class TicketSystemOrder extends Component {
                   type="text"
                   className="searchtextpopup"
                   placeholder="Search Order"
+                  value={this.state.filterAll}
+                  onChange={this.filterAll}
                 />
                 <img
                   src={SearchBlackImg}
@@ -425,59 +475,117 @@ class TicketSystemOrder extends Component {
                 />
               </div>
             </div>
-            <div className="reacttableordermodal ordermainrow">
-              <ReactTable
+            <div className="reacttableordermodal ordermainrow tableSrolling headers-menu">
+            <ReactTable
                 data={orderDetailsData}
+                // noDataText=""
+                onFilteredChange={this.onFilteredChange.bind(this)}
+                filtered={this.state.filtered}
+                defaultFilterMethod={(filter, row) =>
+                  String(row[filter.id]) === filter.value
+                }
                 columns={[
                   {
-                    Header: <span>Invoice Number</span>,
-                    accessor: "invoiceNumber",
-                    Cell: row => {
+                    columns: [
+                      {
+                        Header: <span>Invoice Number</span>,
+                        accessor: "invoiceNumber",
+                        sortable: false,
+                        Cell: row => (
+                          <div
+                            className="filter-checkbox"
+                            style={{ marginLeft: "15px" }}
+                          >
+                            <input
+                              type="checkbox"
+                              id={"i" + row.original.orderMasterID}
+                              style={{ display: "none" }}
+                              name="ticket-order"
+                              checked={
+                                this.state.CheckOrderID[
+                                  row.original.orderMasterID
+                                ] === true
+                              }
+                              onChange={this.handleCheckOrderID.bind(
+                                this,
+                                row.original.orderMasterID,
+                                row.original
+                              )}
+                            />
+                            <label htmlFor={"i" + row.original.orderMasterID}>
+                              {row.original.invoiceNumber}
+                            </label>
+                          </div>
+                        )
+                      },
+                      {
+                        Header: <span>Invoice Date</span>,
+                        accessor: "dateFormat"
+                      },
+                      {
+                        Header: <span>Item Count</span>,
+                        accessor: "itemCount",
+                      },
+                      {
+                        Header: <span>Item Price</span>,
+                        accessor: "itemPrice",
+                      },
+                      {
+                        Header: <span>Price Paid</span>,
+                        accessor: "pricePaid",
+                      },
+                      {
+                        Header: <span>Store Code</span>,
+                        accessor: "storeCode"
+                      },
+                      {
+                        Header: <span>Store Addres</span>,
+                        accessor: "storeAddress"
+                      },
+                      {
+                        Header: <span>Discount</span>,
+                        accessor: "discount"
+                      }
+                    ]
+                  },
+                  {
+                    show: false,
+                    Header: "All",
+                    id: "all",
+                    width: 0,
+                    resizable: false,
+                    sortable: false,
+                    Filter: () => {},
+                    getProps: () => {
+                      return {
+                        // style: { padding: "0px"}
+                      };
+                    },
+                    filterMethod: (filter, rows) => {
                       debugger;
-                      return (
-                        <div
-                          className="filter-checkbox"
-                          style={{ marginLeft: "15px" }}
-                        >
-                          <input
-                            type="checkbox"
-                            style={{ display: "none" }}
-                            id={row.original.orderMasterID}
-                          />
-                          <label htmlFor={row.original.orderMasterID}>
-                            {row.original.invoiceNumber}
-                          </label>
-                        </div>
-                      );
-                    }
-                  },
-                  {
-                    Header: <span>Invoice Date</span>,
-                    accessor: "dateFormat"
-                  },
-                  {
-                    Header: <span>Item Count</span>,
-                    accessor: "itemCount"
-                  },
-                  {
-                    Header: <span>Item Price</span>,
-                    accessor: "itemPrice"
-                  },
-                  {
-                    Header: <span>Price Paid</span>,
-                    accessor: "pricePaid"
-                  },
-                  {
-                    Header: <span>Store Code</span>,
-                    accessor: "storeCode"
-                  },
-                  {
-                    Header: <span>Store Addres</span>,
-                    accessor: "storeAddress"
-                  },
-                  {
-                    Header: <span>Discount</span>,
-                    accessor: "discount"
+                      var result = matchSorter(rows, filter.value, {
+                        keys: [
+                          "invoiceNumber",
+                          "dateFormat",
+                          "itemCount",
+                          "itemPrice",
+                          "pricePaid",
+                          "storeCode",
+                          "storeAddress",
+                          "discount"
+                        ],
+                        threshold: matchSorter.rankings.WORD_STARTS_WITH
+                      });
+                      if (result.length > 0) {
+                        debugger;
+                        return result;
+                      } else {
+                        debugger;
+                        result = [{ itemPrice: "No Record Found" }];
+                        return result;
+                      }
+                    },
+                    filterAll: true
                   }
                 ]}
                 //resizable={false}
@@ -492,44 +600,63 @@ class TicketSystemOrder extends Component {
                           {
                             Header: <span>Article Number</span>,
                             accessor: "invoiceNo",
-                            Cell: row => {
-                              return (
-                                <div
-                                  className="filter-checkbox"
-                                  style={{ marginLeft: "15px" }}
+                            Cell: row => (
+                              <div
+                                className="filter-checkbox"
+                                style={{ marginLeft: "15px" }}
+                              >
+                                <input
+                                  type="checkbox"
+                                  id={"order" + row.original.orderItemID}
+                                  style={{ display: "none" }}
+                                  name="ticket-order"
+                                  checked={
+                                    this.state.CheckOrderID[
+                                      row.original.orderItemID
+                                    ] === true
+                                  }
+                                  onChange={this.handleCheckOrderID.bind(
+                                    this,
+                                    row.original.orderItemID,
+                                    row.original
+                                  )}
+                                />
+                                <label
+                                  htmlFor={"order" + row.original.orderItemID}
                                 >
-                                  <input
-                                    type="checkbox"
-                                    style={{ display: "none" }}
-                                    id={row.original.orderItemID}
-                                    // name="dashboardcheckbox[]"
-                                  />
-                                  <label htmlFor={row.original.orderItemID}>
-                                    {row.original.invoiceNo}
-                                  </label>
-                                </div>
-                              );
-                            }
+                                  {row.original.orderItemID}
+                                </label>
+                              </div>
+                            )
                           },
                           {
                             Header: <span>Article Size</span>,
-                            accessor: "size"
+                            accessor: "size",
                           },
                           {
                             Header: <span>Article MRP</span>,
-                            accessor: "itemPrice"
+                            accessor: "itemPrice",
                           },
                           {
                             Header: <span>Price Paid</span>,
                             accessor: "pricePaid"
+                          
                           },
                           {
                             Header: <span>Discount</span>,
-                            accessor: "discount"
+                            accessor: "discount",
+                            sortable: true
                           },
                           {
                             Header: <span>Required Size</span>,
-                            accessor: "requireSize"
+                            accessor: "requireSize",
+                            Cell: row => {
+                              return (
+                                <div>
+                                    <input type="text" name="requiredize" />
+                                </div>
+                              );
+                            }
                           }
                         ]}
                         defaultPageSize={2}
@@ -537,7 +664,8 @@ class TicketSystemOrder extends Component {
                       />
                     </div>
                   );
-                }}
+                }
+              }
               />
             </div>
           </Modal>
@@ -927,7 +1055,7 @@ class TicketSystemOrder extends Component {
                 data={orderDetailsData}
                 columns={[
                   {
-                    Header: <span>Invoice Number</span>,
+                    Header: <span>Invoice Numberr</span>,
                     accessor: "invoiceNumber",
                     Cell: row => (
                       <div
@@ -946,7 +1074,8 @@ class TicketSystemOrder extends Component {
                           }
                           onChange={this.handleCheckOrderID.bind(
                             this,
-                            row.original.orderMasterID
+                            row.original.orderMasterID,
+                            row.original
                           )}
                         />
                         <label htmlFor={"i" + row.original.orderMasterID}>
@@ -987,8 +1116,15 @@ class TicketSystemOrder extends Component {
                 // resizable={false}
                 defaultPageSize={3}
                 showPagination={false}
+                expanded={this.state.expanded}
+                getTdProps={(state, rowInfo, column, instance) => {
+                  return {
+                    onClick: e => {
+                      this.expand_row(rowInfo);
+                    }
+                  };
+                }}
                 SubComponent={row => {
-                  debugger;
                   return (
                     <div style={{ padding: "20px" }}>
                       <ReactTable
@@ -1004,9 +1140,9 @@ class TicketSystemOrder extends Component {
                               >
                                 <input
                                   type="checkbox"
-                                  // style={{display:"none"}}
-                                  name={row.original.orderItemID}
-                                  id={row.original.orderItemID}
+                                  id={"order" + row.original.orderItemID}
+                                  style={{ display: "none" }}
+                                  name="ticket-order"
                                   checked={
                                     this.state.CheckOrderID[
                                       row.original.orderItemID
@@ -1015,10 +1151,12 @@ class TicketSystemOrder extends Component {
                                   onChange={this.handleCheckOrderID.bind(
                                     this,
                                     row.original.orderItemID,
-                                    row
+                                    row.original
                                   )}
                                 />
-                                <label htmlFor={row.original.orderItemID}>
+                                <label
+                                  htmlFor={"order" + row.original.orderItemID}
+                                >
                                   {row.original.invoiceNo}
                                 </label>
                               </div>

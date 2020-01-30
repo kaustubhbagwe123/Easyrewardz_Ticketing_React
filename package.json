@@ -21,6 +21,10 @@
     "fusioncharts": "^3.15.0",
     "history": "^4.10.1",
     "jquery": "^3.4.1",
+<<<<<<< HEAD
+=======
+    "match-sorter": "^4.0.2",
+>>>>>>> bc8411b16693a4b1392d5937fbdf8e8bc882bf59
     "mdbreact": "^4.24.0",
     "multiselect-react-dropdown": "^1.3.0",
     "onefe-bootstrap-daterangepicker": "^2.1.17",
@@ -48,6 +52,7 @@
     "react-charts-d3": "^2.4.1",
     "react-ckeditor-component": "^1.1.0",
     "react-copy-to-clipboard": "^5.0.2",
+    "react-csv": "^1.1.2",
     "react-d3-components": "^0.9.1",
     "react-datepicker": "^2.11.0",
     "react-dom": "^16.12.0",
@@ -57,6 +62,10 @@
     "react-fileupload-progress": "^0.5.0",
     "react-input-range": "^1.3.0",
     "react-input-switch": "^2.2.1",
+<<<<<<< HEAD
+=======
+    "react-inputs-validation": "^4.3.3",
+>>>>>>> bc8411b16693a4b1392d5937fbdf8e8bc882bf59
     "react-markdown-editor-lite": "^0.4.8",
     "react-modal": "^3.11.1",
     "react-modal-bootstrap": "^1.1.1",
@@ -77,10 +86,19 @@
     "react-simple-tooltip": "^2.6.1",
     "react-sortable-hoc": "^1.10.1",
     "react-stepzilla": "^6.0.2",
+<<<<<<< HEAD
     "react-table": "^6.11.5",
     "react-tag-input": "^6.4.2",
     "react-times": "^3.1.12",
     "reactstrap": "^8.2.0",
+=======
+    "react-table": "^6.8.5",
+    "react-tag-input": "^6.4.1",
+    "react-times": "^3.1.12",
+    "react-validation": "^3.0.7",
+    "react-widgets": "^4.4.11",
+    "reactstrap": "^8.3.1",
+>>>>>>> bc8411b16693a4b1392d5937fbdf8e8bc882bf59
     "recharts": "^1.8.5",
     "rsuite": "^4.2.0",
     "select2": "^4.0.12",
