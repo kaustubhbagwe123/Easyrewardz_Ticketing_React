@@ -40,6 +40,7 @@ class TicketSystemOrder extends Component {
       requiredSize: "",
       selectedTicketSource: 0,
       custAttachOrder: 1,
+      SwitchBtnStatus: false,
       purchaseFrmStorAddress: "",
       TicketSourceData: [],
       modeOfPayment: [],
@@ -169,9 +170,10 @@ class TicketSystemOrder extends Component {
     }
   }
 
-  handleCheckOrder = () => {
+  handleCheckOrder = e => {
     this.setState({
-      custAttachOrder: 0
+      custAttachOrder: 0,
+      SwitchBtnStatus: e.target.checked
     });
     {
       this.props.AttachOrder(
@@ -478,6 +480,7 @@ class TicketSystemOrder extends Component {
                       type="checkbox"
                       id="editDashboard-p-1"
                       value={this.state.custAttachOrder}
+                      checked={this.state.SwitchBtnStatus}
                       onChange={this.handleCheckOrder}
                     />
                     <label htmlFor="editDashboard-p-1" className="cr"></label>
@@ -511,9 +514,30 @@ class TicketSystemOrder extends Component {
                 className="col-md-12 claim-status-card"
                 style={{ height: "54px" }}
               >
+                <div className="row">
+                  <div className="col-md-6">
                 <label style={{ marginTop: "7px" }}>
                   <b>Customer Want to attach order</b>
                 </label>
+                </div>
+                <div className="col-md-6 d-flex justify-content-end">
+                  <div style={{ display: "inline-flex", marginRight: '10px' }}>
+                    <label className="orderdetailpopup">Yes</label>
+                    <div className="switchmargin">
+                      <div className="switch switch-primary d-inline m-r-10">
+                        <input
+                          type="checkbox"
+                          id="editDashboard-p-11"
+                          value={this.state.custAttachOrder}
+                          checked={this.state.SwitchBtnStatus}
+                          onChange={this.handleCheckOrder}
+                        />
+                        <label htmlFor="editDashboard-p-11" className="cr"></label>
+                      </div>
+                    </div>
+                    <label className="orderdetailpopup">No</label>
+                  </div>
+
                 <div
                   className="claimplus"
                   onClick={this.handleOrderTableClose.bind(this)}
@@ -526,6 +550,8 @@ class TicketSystemOrder extends Component {
                       className="minus-imgorder"
                     />
                   </span>
+                </div>
+                </div>
                 </div>
               </div>
             </div>
