@@ -81,9 +81,9 @@ class TicketSystemOrder extends Component {
   handleOrderTableClose() {
     this.setState({ OrderTable: false });
   }
-  handleByDateCreate(date) {
+  handleByDateCreate = date => {
     this.setState({ OrderCreatDate: date });
-  }
+  };
 
   handleShowSearchOrderDetails() {
     this.setState({
@@ -123,7 +123,6 @@ class TicketSystemOrder extends Component {
   };
   handleCheckOrderID(orderMasterID, rowData) {
     debugger;
-
     const newSelected = Object.assign({}, this.state.CheckOrderID);
     newSelected[orderMasterID] = !this.state.CheckOrderID[orderMasterID];
     this.setState({
@@ -158,7 +157,7 @@ class TicketSystemOrder extends Component {
         }
       }
     }
-   
+
     this.setState({
       selectedDataRow: selectedRow
     });
@@ -272,6 +271,19 @@ class TicketSystemOrder extends Component {
         if (responseMessage === "Success") {
           NotificationManager.success("New Order added successfully.");
           self.handleChangeSaveManualTbl();
+          self.setState({
+            productBarCode: "",
+            orderId: "",
+            selectedTicketSource: 0,
+            modeOfPayment: 0,
+            OrderCreatDate: "",
+            orderMRP: "",
+            pricePaid: "",
+            PurchaseFromStoreId: "",
+            discount: "",
+            size: "",
+            requiredSize: ""
+          });
         }
       });
     } else {
@@ -356,22 +368,80 @@ class TicketSystemOrder extends Component {
     this.setState({ filterAll, filtered });
   }
   expand_row(row) {
-    var expanded = {...this.state.expanded};
+    var expanded = { ...this.state.expanded };
     if (expanded[row.index]) {
       expanded[row.index] = !expanded[row.index];
     } else {
       expanded[row.index] = true;
     }
 
-    console.log(expanded);
     this.setState({
       expanded: expanded
     });
   }
+  handleNumberOnchange = e => {
+    debugger;
+    var values = e.target.value;
+    var names = e.target.name;
+
+    if (isNaN(values)) {
+      return false;
+    }
+    var splitText = values.split(".");
+    var index = values.indexOf(".");
+    if (index != -1) {
+      if (splitText) {
+        if (splitText[1].length <= 2) {
+          if (index != -1 && splitText.length === 2) {
+            if (names === "orderMRP") {
+              this.setState({ orderMRP: values });
+            } else if (names === "pricePaid") {
+              this.setState({ pricePaid: values });
+            } else if (names === "discount") {
+              this.setState({ discount: values });
+            } else if (names === "size") {
+              this.setState({ size: values });
+            } else if (names === "requiredSize") {
+              this.setState({ requiredSize: values });
+            }
+          }
+        } else {
+          return false;
+        }
+      } else {
+        if (names === "orderMRP") {
+          this.setState({ orderMRP: values });
+        } else if (names === "pricePaid") {
+          this.setState({ pricePaid: values });
+        } else if (names === "discount") {
+          this.setState({ discount: values });
+        } else if (names === "size") {
+          this.setState({ size: values });
+        } else if (names === "requiredSize") {
+          this.setState({ requiredSize: values });
+        }
+      }
+    } else {
+      if (names === "orderMRP") {
+        this.setState({ orderMRP: values });
+      } else if (names === "pricePaid") {
+        this.setState({ pricePaid: values });
+      } else if (names === "discount") {
+        this.setState({ discount: values });
+      } else if (names === "size") {
+        this.setState({ size: values });
+      } else if (names === "requiredSize") {
+        this.setState({ requiredSize: values });
+      }
+    }
+  };
 
   render() {
     const { orderDetailsData } = this.state;
-    const defaultExpandedRows = orderDetailsData.map(() => {return true});
+
+    const defaultExpandedRows = orderDetailsData.map(() => {
+      return true;
+    });
     return (
       <div className="ticketSycard">
         <div className="ticketSycard1">
@@ -476,7 +546,7 @@ class TicketSystemOrder extends Component {
               </div>
             </div>
             <div className="reacttableordermodal ordermainrow tableSrolling headers-menu">
-            <ReactTable
+              <ReactTable
                 data={orderDetailsData}
                 // noDataText=""
                 onFilteredChange={this.onFilteredChange.bind(this)}
@@ -524,15 +594,15 @@ class TicketSystemOrder extends Component {
                       },
                       {
                         Header: <span>Item Count</span>,
-                        accessor: "itemCount",
+                        accessor: "itemCount"
                       },
                       {
                         Header: <span>Item Price</span>,
-                        accessor: "itemPrice",
+                        accessor: "itemPrice"
                       },
                       {
                         Header: <span>Price Paid</span>,
-                        accessor: "pricePaid",
+                        accessor: "pricePaid"
                       },
                       {
                         Header: <span>Store Code</span>,
@@ -631,16 +701,15 @@ class TicketSystemOrder extends Component {
                           },
                           {
                             Header: <span>Article Size</span>,
-                            accessor: "size",
+                            accessor: "size"
                           },
                           {
                             Header: <span>Article MRP</span>,
-                            accessor: "itemPrice",
+                            accessor: "itemPrice"
                           },
                           {
                             Header: <span>Price Paid</span>,
                             accessor: "pricePaid"
-                          
                           },
                           {
                             Header: <span>Discount</span>,
@@ -653,7 +722,7 @@ class TicketSystemOrder extends Component {
                             Cell: row => {
                               return (
                                 <div>
-                                    <input type="text" name="requiredize" />
+                                  <input type="text" name="requiredize" />
                                 </div>
                               );
                             }
@@ -664,8 +733,7 @@ class TicketSystemOrder extends Component {
                       />
                     </div>
                   );
-                }
-              }
+                }}
               />
             </div>
           </Modal>
@@ -769,6 +837,7 @@ class TicketSystemOrder extends Component {
                     name="productBarCode"
                     value={this.state.productBarCode}
                     onChange={this.handleManuallyOnchange}
+                    autoComplete="off"
                   />
                   {this.validator.message(
                     "ProductBarCode",
@@ -828,7 +897,7 @@ class TicketSystemOrder extends Component {
                 <div className="col-md-6 dapic">
                   <DatePicker
                     selected={this.state.OrderCreatDate}
-                    onChange={this.handleByDateCreate.bind(this)}
+                    onChange={this.handleByDateCreate}
                     placeholderText="Date"
                     showMonthDropdown
                     showYearDropdown
@@ -846,7 +915,8 @@ class TicketSystemOrder extends Component {
                     placeholder="MRP"
                     name="orderMRP"
                     value={this.state.orderMRP}
-                    onChange={this.handleManuallyOnchange}
+                    onChange={this.handleNumberOnchange}
+                    autoComplete="off"
                   />
                   {this.validator.message(
                     "mrp",
@@ -861,7 +931,8 @@ class TicketSystemOrder extends Component {
                     placeholder="Price Paid"
                     name="pricePaid"
                     value={this.state.pricePaid}
-                    onChange={this.handleManuallyOnchange}
+                    onChange={this.handleNumberOnchange}
+                    autoComplete="off"
                   />
                   {this.validator.message(
                     "PricePaid",
@@ -879,7 +950,8 @@ class TicketSystemOrder extends Component {
                     placeholder="Discount"
                     name="discount"
                     value={this.state.discount}
-                    onChange={this.handleManuallyOnchange}
+                    onChange={this.handleNumberOnchange}
+                    autoComplete="off"
                   />
                   {this.validator.message(
                     "Discount",
@@ -894,7 +966,8 @@ class TicketSystemOrder extends Component {
                     placeholder="Size"
                     name="size"
                     value={this.state.size}
-                    onChange={this.handleManuallyOnchange}
+                    onChange={this.handleNumberOnchange}
+                    autoComplete="off"
                   />
                 </div>
               </div>
@@ -907,7 +980,8 @@ class TicketSystemOrder extends Component {
                     placeholder="Required Size"
                     name="requiredSize"
                     value={this.state.requiredSize}
-                    onChange={this.handleManuallyOnchange}
+                    onChange={this.handleNumberOnchange}
+                    autoComplete="off"
                   />
                   {this.validator.message(
                     "RequiredSize",
