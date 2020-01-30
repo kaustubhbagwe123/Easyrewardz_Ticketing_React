@@ -45,6 +45,7 @@
     "react-bootstrap-modal": "^4.2.0",
     "react-bootstrap-sweetalert": "^4.4.1",
     "react-bootstrap-tabs": "^1.0.2",
+    "react-build": "^1.0.8",
     "react-charts-d3": "^2.4.1",
     "react-ckeditor-component": "^1.1.0",
     "react-copy-to-clipboard": "^5.0.2",

@@ -25,8 +25,6 @@ class SingIn extends Component {
       password: "",
       loading: false,
       programCode: "",
-      // fullUserName: "",
-      // UserEmail: ""
     };
     this.hanleChange = this.hanleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -40,14 +38,19 @@ class SingIn extends Component {
 
   componentDidMount() {
     debugger;
-    var finalEncProgramCode = this.props.location.state.encProgramCode;
-    if (finalEncProgramCode) {
-      this.setState({
-        programCode: finalEncProgramCode
-      });
-    } else {
+    if(this.props.location.encProgramCode){
+      var finalEncProgramCode = this.props.location.encProgramCode;
+      if (finalEncProgramCode) {
+        this.setState({
+          programCode: finalEncProgramCode
+        });
+      } else {
+        this.props.history.push("/");
+      }
+    }else{
       this.props.history.push("/");
     }
+    
   }
 
   handleSubmit(event) {
@@ -65,8 +68,7 @@ class SingIn extends Component {
       //   "http://easyrewardz.demo.brainvire.net",
       //   "enc"
       // );
-      let ProCode = this.state.programCode;
-      let X_Authorized_Programcode = ProCode.programCode;
+      let X_Authorized_Programcode = this.state.programCode;
 
       if (X_Authorized_userId !== null && X_Authorized_password !== null) {
         
