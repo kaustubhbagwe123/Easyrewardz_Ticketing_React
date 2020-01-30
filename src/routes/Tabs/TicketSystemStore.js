@@ -50,6 +50,7 @@ class TicketSystemStore extends Component {
     this.setState({ byVisitDate: date });
   }
   handleStoreStatus = e => {
+    debugger;
     this.setState({
       SwitchBtnStatus: e.target.checked
     });
@@ -211,7 +212,7 @@ class TicketSystemStore extends Component {
                       <input
                         type="checkbox"
                         id="editDashboard-p-18"
-                        value={this.state.SwitchBtnStatus}
+                        checked={this.state.SwitchBtnStatus}
                         onChange={this.handleStoreStatus}
                       />
                       <label
@@ -256,7 +257,8 @@ class TicketSystemStore extends Component {
                     <label className="orderdetailpopup">Yes</label>
                     <div className="switchmargin">
                       <div className="switch switch-primary d-inline m-r-10">
-                        <input type="checkbox" id="editDashboard-p-12" />
+                        <input type="checkbox" id="editDashboard-p-12" checked={this.state.SwitchBtnStatus}
+                        onChange={this.handleStoreStatus} />
                         <label
                           htmlFor="editDashboard-p-12"
                           className="cr"
