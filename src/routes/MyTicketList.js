@@ -304,6 +304,7 @@ class MyTicketList extends Component {
     this.handleGetSlaStatusList();
     this.handleGetDraftDetails();
     this.handleGetDepartmentList();
+    this.handleGetSaveSearchList();
   }
   handleSearchTicketAllTabCount() {
     let self = this;

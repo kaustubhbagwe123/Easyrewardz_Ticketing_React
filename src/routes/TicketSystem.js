@@ -91,7 +91,7 @@ class TicketSystem extends Component {
       customerStoreStatus: 0,
       selectTicketTemplateId: 0,
       selectedTicketActionType: "200",
-      selectedChannelOfPurchase: 0,
+      selectedChannelOfPurchase: '',
       selectedTemplateID: 0,
       priorityId: 0,
       escalationLevel: 0,
@@ -444,11 +444,11 @@ class TicketSystem extends Component {
     let self = this;
     self.setState({
       CategoryData: [],
-      selectedCategory: 0,
+      selectedCategory: '',
       SubCategoryData: [],
-      selectedSubCategory: 0,
+      selectedSubCategory: '',
       IssueTypeData: [],
-      selectedIssueType: 0
+      selectedIssueType: ''
     });
     axios({
       method: "post",
@@ -469,9 +469,9 @@ class TicketSystem extends Component {
     let self = this;
     self.setState({
       SubCategoryData: [],
-      selectedSubCategory: 0,
+      selectedSubCategory: '',
       IssueTypeData: [],
-      selectedIssueType: 0
+      selectedIssueType: ''
     });
     let cateId = this.state.KbLink
       ? this.state.selectedCategoryKB
@@ -493,7 +493,7 @@ class TicketSystem extends Component {
   handleGetIssueTypeList() {
     debugger;
     let self = this;
-    self.setState({ IssueTypeData: [], selectedIssueType: 0 });
+    self.setState({ IssueTypeData: [], selectedIssueType: '' });
     let subCateId = this.state.KbLink
       ? this.state.selectedSubCategoryKB
       : this.state.selectedSubCategory;
@@ -688,7 +688,9 @@ class TicketSystem extends Component {
       this.state.ticketDetails.length > 0 &&
       this.state.selectedBrand.length > 0 &&
       this.state.selectedCategory.length > 0 &&
-      this.state.selectedSubCategory.length > 0
+      this.state.selectedSubCategory.length > 0 &&
+      this.state.selectedIssueType.length > 0 &&
+      this.state.selectedChannelOfPurchase.length > 0
     ) {
       this.setState({ loading: true });
       let self = this;
@@ -775,7 +777,9 @@ class TicketSystem extends Component {
         ticketDetailsCompulsion: "Ticket Details field is compulsory.",
         ticketBrandCompulsion: "Brand field is compulsory.",
         ticketCategoryCompulsion: "Category field is compulsory.",
-        ticketSubCategoryCompulsion: "Sub Category field is compulsory."
+        ticketSubCategoryCompulsion: "Sub Category field is compulsory.",
+        ticketIssueTypeCompulsion: "Issue Type field is compulsory.",
+        channelPurchaseCompulsion: "Channel of Purchase field is compulsory.",
       });
     }
 
@@ -846,6 +850,8 @@ class TicketSystem extends Component {
     setTimeout(() => {
       if (this.state.selectedCategory) {
         this.handleGetSubCategoryList();
+      } else {
+        this.setState({ IssueTypeData: [], selectedIssueType: '', selectedSubCategory: '', SubCategoryData: [] });
       }
     }, 1);
   };
@@ -868,6 +874,8 @@ class TicketSystem extends Component {
     setTimeout(() => {
       if (this.state.selectedSubCategory) {
         this.handleGetIssueTypeList();
+      } else {
+        this.setState({ IssueTypeData: [], selectedIssueType: '' });
       }
     }, 1);
   };
@@ -1155,7 +1163,7 @@ class TicketSystem extends Component {
                         onChange={this.setIssueTypeValue}
                         className="category-select-system dropdown-label"
                       >
-                        <option className="select-sub-category-placeholder">
+                        <option value='' className="select-sub-category-placeholder">
                           Select Issue Type
                         </option>
                         {this.state.IssueTypeData !== null &&
@@ -1169,7 +1177,7 @@ class TicketSystem extends Component {
                             </option>
                           ))}
                       </select>
-                      {this.state.selectedSubCategory.length === 0 && (
+                      {this.state.selectedIssueType.length === 0 && (
                         <p style={{ color: "red", marginBottom: "0px" }}>
                           {this.state.ticketIssueTypeCompulsion}
                         </p>
@@ -1239,7 +1247,7 @@ class TicketSystem extends Component {
                         onChange={this.setChannelOfPurchaseValue}
                         className="category-select-system dropdown-label"
                       >
-                        <option className="select-category-placeholder">
+                        <option value='' className="select-category-placeholder">
                           Select Channel Of Purchase
                         </option>
                         {this.state.ChannelOfPurchaseData !== null &&
@@ -1253,6 +1261,11 @@ class TicketSystem extends Component {
                             </option>
                           ))}
                       </select>
+                      {this.state.selectedChannelOfPurchase.length === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.channelPurchaseCompulsion}
+                        </p>
+                      )}
                     </div>
                   </div>
 

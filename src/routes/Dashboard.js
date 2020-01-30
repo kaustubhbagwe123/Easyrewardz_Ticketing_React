@@ -347,6 +347,7 @@ class Dashboard extends Component {
     // this.handleGetDashboardNumberData();
     // this.handleGetDashboardGraphData();
     this.handleGetAgentList();
+    this.handleGetSaveSearchList();
   }
 
   clickCheckbox(evt) {
