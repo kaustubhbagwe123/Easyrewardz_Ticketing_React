@@ -915,7 +915,7 @@ class TicketSystemOrder extends Component {
                     "required"
                   )}
                 </div>
-                <div className="col-md-6 autocomp">
+                <div className="col-md-6">
                   {/* <input
                         type="text"
                         className="addmanuallytext1"

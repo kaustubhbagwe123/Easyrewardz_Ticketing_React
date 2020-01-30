@@ -18,11 +18,11 @@ import CircleCancel from "./../assets/Images/Circle-cancel.png";
 // import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 // import moment from "moment";
 import FileUpload from "./../assets/Images/file.png";
-import ThumbTick from "./../assets/Images/thumbticket.png";
-import PDF from "./../assets/Images/pdf.png";
-import CSVi from "./../assets/Images/csvicon.png";
-import Excel from "./../assets/Images/excel.png";
-import Word from "./../assets/Images/word.png";
+import ThumbTick from "./../assets/Images/thumbticket.png"; // Don't comment this line
+import PDF from "./../assets/Images/pdf.png";       // Don't comment this line
+import CSVi from "./../assets/Images/csvicon.png";  // Don't comment this line
+import Excel from "./../assets/Images/excel.png";   // Don't comment this line
+import Word from "./../assets/Images/word.png";     // Don't comment this line
 import TxtLogo from "./../assets/Images/TxtIcon.png";
 import { faCalculator } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -672,9 +672,12 @@ class TicketSystem extends Component {
   }
   handleRemoveImage(i) {
     debugger;
-    let file = [...this.state.file];
-    file.splice(i - 1, 1);
-    this.setState(file);
+    let file = this.state.file;
+    file.splice(i,1);
+    setTimeout(() => {
+      this.setState(file);  
+    }, 100);
+    
   }
 
   handleCREATE_TICKET(StatusID) {
@@ -893,22 +896,9 @@ class TicketSystem extends Component {
     let channelOfPurchaseValue = e.currentTarget.value;
     this.setState({ selectedChannelOfPurchase: channelOfPurchaseValue });
   };
-  // renderIcon(name) {
-  //   debugger;
-  //   let ext = name.split(".")[1].toLowerCase();
-  //   if (ext === "xls" || ext === "xlsx") {
-  //     return Excel;
-  //   } else if (ext === "doc" || ext === "docx" || ext === "txt") {
-  //     return Word;
-  //   } else if (ext === "csv") {
-  //     return CSVi;
-  //   } else if (ext === "pdf") {
-  //     return PDF;
-  //   } else {
-  //     return ThumbTick;
-  //   }
-  // }
+ 
   render() {
+    
     var CustomerId = this.state.customerDetails.customerId;
     var CustNumber = this.state.customerData.customerPhoneNumber;
     return (
@@ -1286,17 +1276,16 @@ class TicketSystem extends Component {
                       className="thumbtick"
                     /> */}
 
-                    {this.state.file.map((item, i, j) =>
+                    {this.state.file.map((item, i) =>
                       i < 5 ? (
-                        <div style={{ position: "relative" }}>
+                        <div style={{ position: "relative" }} key={i}>
                           <div>
                             <img
                               src={CircleCancel}
-                              key={j}
                               alt="thumb"
                               className="circleCancle"
                               onClick={() => {
-                                this.handleRemoveImage(item.name);
+                                this.handleRemoveImage(i);
                               }}
                             />
                           </div>
@@ -1314,9 +1303,7 @@ class TicketSystem extends Component {
                                   ? require("./../assets/Images/TxtIcon.png")
                                   : require("./../assets/Images/thumbticket.png")
                               }
-                              key={j}
                               title={item.name}
-                              // href={item[i]}
                               alt="thumb"
                               className="thumbtick"
                             />
@@ -1359,25 +1346,38 @@ class TicketSystem extends Component {
                         />
                       </div>
                       <div className="row my-3 mx-1">
-                        {this.state.file.map((item, i, j) => (
-                          <img
-                          src={
-                            item.Type === "docx"
-                              ? require("./../assets/Images/word.png")
-                              : item.Type === "xlsx"
-                              ? require("./../assets/Images/excel.png")
-                              : item.Type === "pdf"
-                              ? require("./../assets/Images/pdf.png")
-                              : item.Type === "txt"
-                              ? require("./../assets/Images/TxtIcon.png")
-                              : require("./../assets/Images/thumbticket.png")
-                          }
-                          key={j}
-                          title={item.name}
-                          href={item[i]}
-                          alt="thumb"
-                          className="thumbtick"
-                        />
+                        {this.state.file.map((item, i) => (
+                          <div style={{ position: "relative" }} key={i}>
+                            <div>
+                              <img
+                                src={CircleCancel}
+                                alt="thumb"
+                                className="circleCancle"
+                                onClick={() => {
+                                  this.handleRemoveImage(i);
+                                }}
+                              />
+                            </div>
+
+                            <div>
+                              <img
+                                src={
+                                  item.Type === "docx"
+                                    ? require("./../assets/Images/word.png")
+                                    : item.Type === "xlsx"
+                                    ? require("./../assets/Images/excel.png")
+                                    : item.Type === "pdf"
+                                    ? require("./../assets/Images/pdf.png")
+                                    : item.Type === "txt"
+                                    ? require("./../assets/Images/TxtIcon.png")
+                                    : require("./../assets/Images/thumbticket.png")
+                                }
+                                title={item.name}
+                                alt="thumb"
+                                className="thumbtick"
+                              />
+                            </div>
+                          </div>
                         ))}
                       </div>
                     </div>
@@ -1528,9 +1528,7 @@ class TicketSystem extends Component {
                             </li>
                             <li>
                               <label className="diwamargin">
-                                <div
-                                  className="input-group"
-                                >
+                                <div className="input-group">
                                   <span className="input-group-addon inputcc">
                                     CC:
                                   </span>
@@ -1554,9 +1552,7 @@ class TicketSystem extends Component {
 
                             <li>
                               <label className="diwamargin">
-                                <div
-                                  className="input-group"
-                                >
+                                <div className="input-group">
                                   <span className="input-group-addon inputcc">
                                     BCC:
                                   </span>
@@ -2144,7 +2140,7 @@ class TicketSystem extends Component {
                             onChange={this.setCategoryValueKB}
                             className="kblinkrectangle-9 select-category-placeholderkblink"
                           >
-                            <option value=''>Category</option>
+                            <option value="">Category</option>
                             {this.state.CategoryData !== null &&
                               this.state.CategoryData.map((item, i) => (
                                 <option key={i} value={item.categoryID}>
@@ -2152,7 +2148,11 @@ class TicketSystem extends Component {
                                 </option>
                               ))}
                           </select>
-                          {this.state.selectedCategoryKB.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.categoryKbCompulsion}</p>}
+                          {this.state.selectedCategoryKB.length === 0 && (
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.categoryKbCompulsion}
+                            </p>
+                          )}
                         </div>
                         <div className="form-group">
                           <select
@@ -2160,7 +2160,7 @@ class TicketSystem extends Component {
                             onChange={this.setSubCategoryValueKB}
                             className="kblinkrectangle-9 select-category-placeholderkblink"
                           >
-                            <option value=''>Sub-Category</option>
+                            <option value="">Sub-Category</option>
                             {this.state.SubCategoryData !== null &&
                               this.state.SubCategoryData.map((item, i) => (
                                 <option key={i} value={item.subCategoryID}>
@@ -2168,7 +2168,11 @@ class TicketSystem extends Component {
                                 </option>
                               ))}
                           </select>
-                          {this.state.selectedSubCategoryKB.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.subCategoryKbCompulsion}</p>}
+                          {this.state.selectedSubCategoryKB.length === 0 && (
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.subCategoryKbCompulsion}
+                            </p>
+                          )}
                         </div>
                         <div className="form-group">
                           <select
@@ -2176,7 +2180,7 @@ class TicketSystem extends Component {
                             onChange={this.setIssueTypeValueKB}
                             className="kblinkrectangle-9 select-category-placeholderkblink"
                           >
-                            <option value=''>Type</option>
+                            <option value="">Type</option>
                             {this.state.IssueTypeData !== null &&
                               this.state.IssueTypeData.map((item, i) => (
                                 <option key={i} value={item.issueTypeID}>
@@ -2184,7 +2188,11 @@ class TicketSystem extends Component {
                                 </option>
                               ))}
                           </select>
-                          {this.state.selectedIssueTypeKB.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.issueTypeKbCompulsion}</p>}
+                          {this.state.selectedIssueTypeKB.length === 0 && (
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.issueTypeKbCompulsion}
+                            </p>
+                          )}
                         </div>
                         <div>
                           <button
