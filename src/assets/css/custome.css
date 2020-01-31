@@ -10143,6 +10143,12 @@ table tr th:last-child {
   position: relative;
   min-height: 150px;
 }
+.loader-icon-cntr-above {
+  background: #fff;
+  margin: 0 15px;
+  border-radius: 5px;
+  margin-bottom: 40px;
+}
 .loader-icon {
   position: absolute;
   top: 0;

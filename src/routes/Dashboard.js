@@ -268,7 +268,8 @@ class Dashboard extends Component {
       ],
       resultCount: 0,
       loading: false,
-      SearchNameCompulsory:''
+      SearchNameCompulsory:'',
+      loadingAbove: true
     };
     this.handleAssignTo = this.handleAssignTo.bind(this);
     this.applyCallback = this.applyCallback.bind(this);
@@ -460,6 +461,7 @@ class Dashboard extends Component {
   };
 
   handleGetDashboardNumberData() {
+    this.setState({ loadingAbove: true });
     debugger;
     let self = this;
     axios({
@@ -482,9 +484,13 @@ class Dashboard extends Component {
       debugger;
       let DashboardNumberData = res.data.responseData;
       self.setState({ DashboardNumberData: DashboardNumberData });
+      if (Object.keys(self.state.DashboardGraphData).length > 0 && Object.keys(self.state.DashboardNumberData).length > 0) {
+        self.setState({ loadingAbove: false });
+      }
     });
   }
   handleGetDashboardGraphData() {
+    this.setState({ loadingAbove: true });
     debugger;
     let self = this;
     axios({
@@ -540,6 +546,9 @@ class Dashboard extends Component {
         self.setState({
           DashboardGraphData: DashboardGraphData
         });
+        if (Object.keys(self.state.DashboardGraphData).length > 0 && Object.keys(self.state.DashboardNumberData).length > 0) {
+          self.setState({ loadingAbove: false });
+        }
       }
     });
   }
@@ -1018,6 +1027,15 @@ class Dashboard extends Component {
         assignEmail: "",
         selectedDesignation: 0
       });
+    });
+  }
+  handleAssignClearData() {
+    debugger;
+    this.setState({
+      assignFirstName: "",
+      assignLastName: "",
+      assignEmail: "",
+      selectedDesignation: 0
     });
   }
   setFunctionValue = e => {
@@ -2357,6 +2375,10 @@ class Dashboard extends Component {
           <Collapse isOpen={this.state.collapse}>
             <Card>
               <CardBody>
+          {this.state.loadingAbove === true ? (
+              <div className="loader-icon-cntr loader-icon-cntr-above"><div className="loader-icon"></div></div>
+            ) : (
+              <>
                 <div className="container-fluid dash-tp-card btm-mar">
                   <div className="row justify-content-center">
                     <div className="col-md col-sm-4 col-6">
@@ -2698,6 +2720,8 @@ class Dashboard extends Component {
                     </div>
                   </div>
                 </div>
+              </>
+            )}
               </CardBody>
             </Card>
           </Collapse>
@@ -4723,7 +4747,11 @@ class Dashboard extends Component {
                                   >
                                     SEARCH
                                   </button>
-                                  <a href="#!" className="anchorTag-clear">
+                                  <a href="#!" className="anchorTag-clear"
+                                  onClick={this.handleAssignClearData.bind(
+                                    this
+                                  )}
+                                  >
                                     CLEAR
                                   </a>
                                 </div>
