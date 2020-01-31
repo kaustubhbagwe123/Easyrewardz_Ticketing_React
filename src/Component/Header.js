@@ -816,9 +816,9 @@ class Header extends Component {
               </label>
             </div>
             <div className="viewticketspeadding">
-              <a href={Demo.BLANK_LINK}>
+              <Link to="myTicketlist">
                 <label className="md-4 view-tickets">VIEW TICKETS</label>
-              </a>
+              </Link>
             </div>
           </div>
           <div className="row rowpadding">
@@ -833,9 +833,9 @@ class Header extends Component {
               </label>
             </div>
             <div className="viewticketspeadding">
-              <a href={Demo.BLANK_LINK}>
+            <Link to="myTicketlist">
                 <label className="md-4 view-tickets">VIEW TICKETS</label>
-              </a>
+              </Link>
             </div>
           </div>
           <div className="row rowpadding">
@@ -850,9 +850,9 @@ class Header extends Component {
               </label>
             </div>
             <div className="viewticketspeadding">
-              <a href={Demo.BLANK_LINK}>
+            <Link to="myTicketlist">
                 <label className="md-4 view-tickets">VIEW TICKETS</label>
-              </a>
+              </Link>
             </div>
           </div>
         </Modal>
