@@ -84,6 +84,7 @@ class Dashboard extends Component {
       TotalNoOfChatShow: true,
       date: [new Date(), new Date()],
       range: "",
+      CSVDownload:[],
       SearchTicketData: [],
       SearchListData: [],
       SlaDueData: SlaDue(),
@@ -1909,16 +1910,20 @@ class Dashboard extends Component {
       debugger;
       let status = res.data.message;
       let data = res.data.responseData;
-      let count = 0;
-      if (res.data.responseData != null) {
-        count = res.data.responseData.length;
-      }
-
+      let CSVData =data;
       if (status === "Success") {
         self.setState({
           SearchTicketData: data,
           resultCount: count
         });
+        for (let i = 0; i < CSVData.length; i++) {
+         delete CSVData[i].totalpages;
+         delete CSVData[i].responseTimeRemainingBy;
+         delete CSVData[i].responseOverdueBy;
+         delete CSVData[i].resolutionOverdueBy;
+         delete CSVData[i].ticketCommentCount;
+        }
+        self.setState({CSVDownload:CSVData});
       } else {
         self.setState({
           SearchTicketData: [],
@@ -2003,10 +2008,19 @@ class Dashboard extends Component {
       debugger;
       let data = res.data.responseData;
       let Status = res.data.message;
+      let CSVData=data;
       if (Status === "Record Not Found") {
         self.setState({ SearchTicketData: [] });
       } else if (data !== null) {
         self.setState({ SearchTicketData: data });
+        for (let i = 0; i < CSVData.length; i++) {
+          delete CSVData[i].totalpages;
+          delete CSVData[i].responseTimeRemainingBy;
+          delete CSVData[i].responseOverdueBy;
+          delete CSVData[i].resolutionOverdueBy;
+          delete CSVData[i].ticketCommentCount;
+         }
+         self.setState({CSVDownload:CSVData});
       }
     });
   }
@@ -4109,7 +4123,7 @@ class Dashboard extends Component {
                             </div>
                             <div className="col-auto mob-mar-btm">
                               
-                              <CSVLink className="csv-button" data={this.state.SearchTicketData}><img
+                              <CSVLink className="csv-button" data={this.state.CSVDownload}><img
                                   className="position-relative csv-icon"
                                   src={csv}
                                   alt="csv-icon"

@@ -40,6 +40,7 @@ import {
 } from "react-notifications";
 import ScheduleDateDropDown from "./ScheduleDateDropDown";
 import { authHeader } from "../helpers/authHeader";
+import { CSVLink, CSVDownload } from "react-csv";
 
 class MyTicketList extends Component {
   constructor(props) {
@@ -55,6 +56,7 @@ class MyTicketList extends Component {
       assignFirstName: "",
       assignLastName: "",
       assignEmail: "",
+      CSVDownload:[],
       selectedDesignation: 0,
       DesignationData: [],
       TicketPriorityData: [],
@@ -406,11 +408,20 @@ class MyTicketList extends Component {
     }).then(function(res) {
       debugger;
       let data = res.data.responseData;
+      let CSVData=data;
       let Status = res.data.message;
       if (Status === "Record Not Found") {
         self.setState({ SearchTicketData: [], loading: false });
       } else {
         self.setState({ SearchTicketData: data, loading: false });
+        for (let i = 0; i < CSVData.length; i++) {
+          delete CSVData[i].totalpages;
+          delete CSVData[i].responseTimeRemainingBy;
+          delete CSVData[i].responseOverdueBy;
+          delete CSVData[i].resolutionOverdueBy;
+          delete CSVData[i].ticketCommentCount;
+         }
+         self.setState({CSVDownload:CSVData});
       }
     });
   }
@@ -1329,12 +1340,21 @@ class MyTicketList extends Component {
       debugger;
       let status = res.data.message;
       let data = res.data.responseData;
+      let CSVData=data;
       let count = 0;
       if (res.data.responseData != null) {
         count = res.data.responseData.length;
       }
 
       if (status === "Success") {
+        for (let i = 0; i < CSVData.length; i++) {
+          delete CSVData[i].totalpages;
+          delete CSVData[i].responseTimeRemainingBy;
+          delete CSVData[i].responseOverdueBy;
+          delete CSVData[i].resolutionOverdueBy;
+          delete CSVData[i].ticketCommentCount;
+         }
+         self.setState({CSVDownload:CSVData});
         self.setState({
           SearchTicketData: data
         });
@@ -3342,14 +3362,11 @@ handleAssignTo(){
                                       </p>
                                     </div>
                                     <div className="col-auto mob-mar-btm">
-                                      <button>
-                                        <img
-                                          className="position-relative csv-icon"
-                                          src={csv}
-                                          alt="csv-icon"
-                                        />
-                                        CSV
-                                      </button>
+                                    <CSVLink className="csv-button" data={this.state.CSVDownload}><img
+                                      className="position-relative csv-icon"
+                                      src={csv}
+                                      alt="csv-icon"
+                                    />CSV</CSVLink>
                                       <button
                                         type="button"
                                         onClick={this.ScheduleOpenModel}
