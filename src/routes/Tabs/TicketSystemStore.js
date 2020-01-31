@@ -451,7 +451,7 @@ class TicketSystemStore extends Component {
                           filterAll: true
                         }
                       ]}
-                      // resizable={false}
+                      resizable={false}
                       defaultPageSize={5}
                       showPagination={false}
                     />
@@ -537,7 +537,7 @@ class TicketSystemStore extends Component {
                           )
                         }
                       ]}
-                      // resizable={false}
+                      resizable={false}
                       defaultPageSize={5}
                       showPagination={false}
                     />
@@ -635,7 +635,7 @@ class TicketSystemStore extends Component {
                     role="tabpanel"
                     aria-labelledby="storeSubdetail-tab"
                   >
-                    <div className="reactstoreselect">
+                    <div className="reactstoreselect ordermainrow">
                       <ReactTable
                         data={SearchData}
                         onFilteredChange={this.onFilteredChange.bind(this)}
@@ -647,8 +647,8 @@ class TicketSystemStore extends Component {
                           {
                             columns: [
                               {
-                                Header: <span>Store Code</span>,
-                                accessor: "storeCode",
+                                Header: <></>,
+                                accessor: "storeID",
                                 Cell: row => (
                                   <div
                                     className="filter-checkbox"
@@ -670,11 +670,12 @@ class TicketSystemStore extends Component {
                                         row.original
                                       )}
                                     />
-                                    <label htmlFor={"i" + row.original.storeID}>
-                                      {row.original.storeID}
-                                    </label>
                                   </div>
                                 )
+                              },
+                              {
+                                Header: <span>Store Code</span>,
+                                accessor: "storeCode" 
                               },
                               {
                                 Header: <span>Store Name</span>,
@@ -737,7 +738,7 @@ class TicketSystemStore extends Component {
                             filterAll: true
                           }
                         ]}
-                        // resizable={false}
+                        resizable={false}
                         defaultPageSize={5}
                         showPagination={false}
                       />
@@ -762,7 +763,7 @@ class TicketSystemStore extends Component {
                     role="tabpanel"
                     aria-labelledby="selectedSubstore-tab"
                   >
-                    <div className="reactstoreselect">
+                    <div className="reactstoreselect ordermainrow">
                       <ReactTable
                         data={selectedStoreData}
                         columns={[
@@ -852,7 +853,7 @@ class TicketSystemStore extends Component {
                             Cell: row => <label>23,Aug 2019</label>
                           }
                         ]}
-                        // resizable={false}
+                        resizable={false}
                         defaultPageSize={5}
                         showPagination={false}
                       />

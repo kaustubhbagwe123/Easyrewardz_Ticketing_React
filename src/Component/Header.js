@@ -27,6 +27,7 @@ import { Popover } from "antd";
 import { authHeader } from "../helpers/authHeader";
 import config from "../helpers/config";
 import axios from "axios";
+import Demo from "../store/Hashtag";
 // import {
 //   NotificationContainer,
 //   NotificationManager
@@ -773,7 +774,7 @@ class Header extends Component {
               </label>
             </div>
             <div className="viewticketspeadding">
-              <a href="{#}">
+              <a href={Demo.BLANK_LINK}>
                 <label className="md-4 view-tickets">VIEW TICKETS</label>
               </a>
             </div>
@@ -791,7 +792,7 @@ class Header extends Component {
               </label>
             </div>
             <div className="viewticketspeadding">
-              <a href="{#}">
+              <a href={Demo.BLANK_LINK}>
                 <label className="md-4 view-tickets">VIEW TICKETS</label>
               </a>
             </div>
@@ -809,7 +810,7 @@ class Header extends Component {
               </label>
             </div>
             <div className="viewticketspeadding">
-              <a href="{#}">
+              <a href={Demo.BLANK_LINK}>
                 <label className="md-4 view-tickets">VIEW TICKETS</label>
               </a>
             </div>
