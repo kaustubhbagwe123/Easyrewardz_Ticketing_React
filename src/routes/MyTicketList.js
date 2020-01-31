@@ -56,7 +56,7 @@ class MyTicketList extends Component {
       assignFirstName: "",
       assignLastName: "",
       assignEmail: "",
-      CSVDownload:[],
+      CSVDownload: [],
       selectedDesignation: 0,
       DesignationData: [],
       TicketPriorityData: [],
@@ -149,9 +149,9 @@ class MyTicketList extends Component {
       byTicketTypeFlag: 0,
       byCategoryFlag: 0,
       allFlag: 0,
-      resultCount:0,
-      selectedAssignedTo:0,
-      AssignToData:[],
+      resultCount: 0,
+      selectedAssignedTo: 0,
+      AssignToData: [],
       resultCount: 0,
       TeamMemberData: [
         {
@@ -244,9 +244,10 @@ class MyTicketList extends Component {
       selectedNoOfDayForDailyYear: 0,
       selectedNoOfWeekForYear: 0,
       selectedNameOfMonthForDailyYear: "",
-      loading: false
+      loading: false,
+      SearchNameCompulsory: ""
     };
-    this.handleAssignTo=this.handleAssignTo.bind(this);
+    this.handleAssignTo = this.handleAssignTo.bind(this);
     this.clearSearch = this.clearSearch.bind(this);
     this.handleAdvSearchFlag = this.handleAdvSearchFlag.bind(this);
     this.toggleSearch = this.toggleSearch.bind(this);
@@ -346,7 +347,7 @@ class MyTicketList extends Component {
   handleSearchTicket(TabId) {
     debugger;
     var ticketStatus = 0;
-   
+
     if (TabId === "Escalation" || TabId === undefined) {
       ticketStatus = 1001;
       this.setState({
@@ -408,7 +409,7 @@ class MyTicketList extends Component {
     }).then(function(res) {
       debugger;
       let data = res.data.responseData;
-      let CSVData=data;
+      let CSVData = data;
       let Status = res.data.message;
       if (Status === "Record Not Found") {
         self.setState({ SearchTicketData: [], loading: false });
@@ -420,8 +421,8 @@ class MyTicketList extends Component {
           delete CSVData[i].responseOverdueBy;
           delete CSVData[i].resolutionOverdueBy;
           delete CSVData[i].ticketCommentCount;
-         }
-         self.setState({CSVDownload:CSVData});
+        }
+        self.setState({ CSVDownload: CSVData });
       }
     });
   }
@@ -670,15 +671,18 @@ class MyTicketList extends Component {
   clearSearch() {
     debugger;
     if (this.state.byDateFlag === 1) {
-      this.setState({
-        ByDateCreatDate: "",
-        ByDateSelectDate: "",
-        selectedSlaDueByDate: 0,
-        selectedTicketStatusByDate: 0,
-        resultCount: 0
-      }, () => {
-        this.ViewSearchData(1);
-      });
+      this.setState(
+        {
+          ByDateCreatDate: "",
+          ByDateSelectDate: "",
+          selectedSlaDueByDate: 0,
+          selectedTicketStatusByDate: 0,
+          resultCount: 0
+        },
+        () => {
+          this.ViewSearchData(1);
+        }
+      );
     } else if (this.state.byCustomerTypeFlag === 2) {
       this.setState({
         MobileNoByCustType: "",
@@ -1119,48 +1123,55 @@ class MyTicketList extends Component {
   SaveSearchData() {
     debugger;
     let self = this;
-    var paramData = {
-      ByDate: this.state.byDateFlag,
-      creationDate: this.state.ByDateCreatDate,
-      lastUpdatedDate: this.state.ByDateSelectDate,
-      SLADue: this.state.selectedSlaDueByDate,
-      ticketStatus: this.state.selectedTicketStatusByDate,
-      ByCustomerType: this.state.byCustomerTypeFlag,
-      customerMob: this.state.MobileNoByCustType,
-      customerEmail: this.state.EmailIdByCustType,
-      TicketID: this.state.TicketIdByCustType,
-      ticketStatus: this.state.selectedTicketStatusByCustomer,
-      ByTicketType: this.state.byTicketTypeFlag,
-      Priority: this.state.selectedPriority,
-      ticketStatus: this.state.selectedTicketStatusByTicket,
-      chanelOfPurchase: this.state.selectedChannelOfPurchase,
-      ticketActionType: this.state.selectedTicketActionType,
-      ByCategory: this.state.byCategoryFlag,
-      Category: this.state.selectedCategory,
-      subCategory: this.state.selectedSubCategory,
-      issueType: this.state.selectedIssueType,
-      ticketStatus: this.state.selectedTicketStatusByCategory,
-      byAll: this.state.allFlag
-    };
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Ticketing/savesearch",
-      headers: authHeader(),
-      params: {
-        SearchSaveName: this.state.SearchName,
-        parameter: JSON.stringify(paramData)
-      }
-    }).then(function(res) {
-      debugger;
-      let Msg = res.data.message;
-      if (Msg === "Success") {
-        NotificationManager.success("Save Search parameter successfully.");
-        self.handleGetSaveSearchList();
-        self.setState({
-          SearchName:''
-        })
-      }
-    });
+    if(this.state.SearchName.length > 0){
+      var paramData = {
+        ByDate: this.state.byDateFlag,
+        creationDate: this.state.ByDateCreatDate,
+        lastUpdatedDate: this.state.ByDateSelectDate,
+        SLADue: this.state.selectedSlaDueByDate,
+        ticketStatus: this.state.selectedTicketStatusByDate,
+        ByCustomerType: this.state.byCustomerTypeFlag,
+        customerMob: this.state.MobileNoByCustType,
+        customerEmail: this.state.EmailIdByCustType,
+        TicketID: this.state.TicketIdByCustType,
+        ticketStatus: this.state.selectedTicketStatusByCustomer,
+        ByTicketType: this.state.byTicketTypeFlag,
+        Priority: this.state.selectedPriority,
+        ticketStatus: this.state.selectedTicketStatusByTicket,
+        chanelOfPurchase: this.state.selectedChannelOfPurchase,
+        ticketActionType: this.state.selectedTicketActionType,
+        ByCategory: this.state.byCategoryFlag,
+        Category: this.state.selectedCategory,
+        subCategory: this.state.selectedSubCategory,
+        issueType: this.state.selectedIssueType,
+        ticketStatus: this.state.selectedTicketStatusByCategory,
+        byAll: this.state.allFlag
+      };
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Ticketing/savesearch",
+        headers: authHeader(),
+        params: {
+          SearchSaveName: this.state.SearchName,
+          parameter: JSON.stringify(paramData)
+        }
+      }).then(function(res) {
+        debugger;
+        let Msg = res.data.message;
+        if (Msg === "Success") {
+          NotificationManager.success("Save Search parameter successfully.");
+          self.handleGetSaveSearchList();
+          self.setState({
+            SearchName: ""
+          });
+        }
+      });
+    }else{
+      self.setState({
+        SearchNameCompulsory:"Please enter search name data."
+      })
+    }
+   
   }
   handleGetSaveSearchList() {
     debugger;
@@ -1285,51 +1296,52 @@ class MyTicketList extends Component {
         categoryType: null
       });
     }
-     //---------------------By Ticket All Tab---------------------
-     var allTab={};
-    
-     if(this.state.ActiveTabId===5)
-     {
-        let withClaim=0;
-        let withTask=0;
-        if(this.state.selectedWithClaimAll==="yes")
-        {
-            withClaim=1;
-        }
-        if(this.state.selectedWithTaskAll==="yes")
-        {
-            withTask=1;
-        }
-        allTab["CreatedDate"]=this.state.ByAllCreateDate;
-        allTab["ModifiedDate"]=this.state.ByAllLastDate;
-        allTab["CategoryId"]=this.state.selectedCategoryAll;
-        allTab["SubCategoryId"]=this.state.selectedSubCategoryAll;
-        allTab["IssueTypeId"]=this.state.selectedIssueTypeAll;
-        allTab["TicketSourceTypeID"]=this.state.selectedTicketSource;
-        allTab["TicketIdORTitle"]=this.state.TicketIdTitleByAll;
-        allTab["PriorityId"]=this.state.selectedPriorityAll;
-        allTab["TicketSatutsID"]=this.state.selectedTicketStatusAll;
-        allTab["SLAStatus"]=this.state.selectedSlaStatus;
-        allTab["ClaimId"]=this.state.selectedClaimStatus;
-        allTab["InvoiceNumberORSubOrderNo"]=this.state.InvoiceSubOrderByAll;
-        allTab["OrderItemId"]=this.state.ItemIdByAll;
-        allTab["IsVisitStore"]=this.state.selectedVisitStoreAll;
-        allTab["IsWantVistingStore"]=this.state.selectedWantToVisitStoreAll;
-        allTab["CustomerEmailID"]=this.state.EmailByAll;
-        allTab["CustomerMobileNo"]=this.state.MobileByAll;
-        allTab["AssignTo"]=this.state.selectedAssignedTo;
-        allTab["StoreCodeORAddress"]=this.state.selectedPurchaseStoreCodeAddressAll;
-        allTab["WantToStoreCodeORAddress"]=this.state.selectedVisitStoreCodeAddressAll;       
-        allTab["HaveClaim"]=withClaim;
-        allTab["ClaimStatusId"]=this.state.selectedClaimStatus;
-        allTab["ClaimCategoryId"]=this.state.selectedClaimCategory;
-        allTab["ClaimSubCategoryId"]=this.state.selectedClaimSubCategory;
-        allTab["ClaimIssueTypeId"]=this.state.selectedClaimIssueType;
-        allTab["HaveTask"]=withTask;
-        allTab["TaskStatusId"]=this.state.selectedTaskStatus;
-        allTab["TaskDepartment_Id"]=this.state.selectedDepartment;
-        allTab["TaskFunction_Id"]=this.state.selectedFunction;       
-     }
+    //---------------------By Ticket All Tab---------------------
+    var allTab = {};
+
+    if (this.state.ActiveTabId === 5) {
+      let withClaim = 0;
+      let withTask = 0;
+      if (this.state.selectedWithClaimAll === "yes") {
+        withClaim = 1;
+      }
+      if (this.state.selectedWithTaskAll === "yes") {
+        withTask = 1;
+      }
+      allTab["CreatedDate"] = this.state.ByAllCreateDate;
+      allTab["ModifiedDate"] = this.state.ByAllLastDate;
+      allTab["CategoryId"] = this.state.selectedCategoryAll;
+      allTab["SubCategoryId"] = this.state.selectedSubCategoryAll;
+      allTab["IssueTypeId"] = this.state.selectedIssueTypeAll;
+      allTab["TicketSourceTypeID"] = this.state.selectedTicketSource;
+      allTab["TicketIdORTitle"] = this.state.TicketIdTitleByAll;
+      allTab["PriorityId"] = this.state.selectedPriorityAll;
+      allTab["TicketSatutsID"] = this.state.selectedTicketStatusAll;
+      allTab["SLAStatus"] = this.state.selectedSlaStatus;
+      allTab["ClaimId"] = this.state.selectedClaimStatus;
+      allTab["InvoiceNumberORSubOrderNo"] = this.state.InvoiceSubOrderByAll;
+      allTab["OrderItemId"] = this.state.ItemIdByAll;
+      allTab["IsVisitStore"] = this.state.selectedVisitStoreAll;
+      allTab["IsWantVistingStore"] = this.state.selectedWantToVisitStoreAll;
+      allTab["CustomerEmailID"] = this.state.EmailByAll;
+      allTab["CustomerMobileNo"] = this.state.MobileByAll;
+      allTab["AssignTo"] = this.state.selectedAssignedTo;
+      allTab[
+        "StoreCodeORAddress"
+      ] = this.state.selectedPurchaseStoreCodeAddressAll;
+      allTab[
+        "WantToStoreCodeORAddress"
+      ] = this.state.selectedVisitStoreCodeAddressAll;
+      allTab["HaveClaim"] = withClaim;
+      allTab["ClaimStatusId"] = this.state.selectedClaimStatus;
+      allTab["ClaimCategoryId"] = this.state.selectedClaimCategory;
+      allTab["ClaimSubCategoryId"] = this.state.selectedClaimSubCategory;
+      allTab["ClaimIssueTypeId"] = this.state.selectedClaimIssueType;
+      allTab["HaveTask"] = withTask;
+      allTab["TaskStatusId"] = this.state.selectedTaskStatus;
+      allTab["TaskDepartment_Id"] = this.state.selectedDepartment;
+      allTab["TaskFunction_Id"] = this.state.selectedFunction;
+    }
 
     //----------------------------------------------------------
     axios({
@@ -1349,7 +1361,7 @@ class MyTicketList extends Component {
       debugger;
       let status = res.data.message;
       let data = res.data.responseData;
-      let CSVData=data;
+      let CSVData = data;
       let count = 0;
       if (res.data.responseData != null) {
         count = res.data.responseData.length;
@@ -1362,8 +1374,8 @@ class MyTicketList extends Component {
           delete CSVData[i].responseOverdueBy;
           delete CSVData[i].resolutionOverdueBy;
           delete CSVData[i].ticketCommentCount;
-         }
-         self.setState({CSVDownload:CSVData});
+        }
+        self.setState({ CSVDownload: CSVData });
         self.setState({
           SearchTicketData: data
         });
@@ -1381,10 +1393,10 @@ class MyTicketList extends Component {
     });
   }
 
-  setAssignedToValue= e=>{
-    let assign=e.currentTarget.value;
+  setAssignedToValue = e => {
+    let assign = e.currentTarget.value;
     this.setState({ selectedAssignedTo: assign });
-  }
+  };
 
   setDepartmentValue = e => {
     let departmentValue = e.currentTarget.value;
@@ -1671,25 +1683,23 @@ class MyTicketList extends Component {
     evt.stopPropagation();
   }
 
-handleAssignTo(){
-  debugger;
-
-  let self = this;
-  axios({
-    method: "post",
-    url: config.apiUrl + "/User/GetUserList",
-    headers: authHeader()
-  }).then(function(res) {
+  handleAssignTo() {
     debugger;
-    let AssignData = res.data.responseData;
-    
-    self.setState({
-      AssignToData: AssignData
-      
-    });
-  });
 
-}
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/User/GetUserList",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let AssignData = res.data.responseData;
+
+      self.setState({
+        AssignToData: AssignData
+      });
+    });
+  }
 
   handelCheckBoxCheckedChange = async () => {
     debugger;
@@ -2276,7 +2286,10 @@ handleAssignTo(){
                                     <button
                                       type="button"
                                       className="btn-inv"
-                                      onClick={this.ViewSearchData.bind(this, 0)}
+                                      onClick={this.ViewSearchData.bind(
+                                        this,
+                                        0
+                                      )}
                                     >
                                       View Search
                                     </button>
@@ -2300,6 +2313,16 @@ handleAssignTo(){
                                       value={this.state.SearchName}
                                       onChange={this.handelOnchangeData}
                                     />
+                                    {this.state.SearchName.length === 0 && (
+                                      <p
+                                        style={{
+                                          color: "red",
+                                          marginBottom: "0px"
+                                        }}
+                                      >
+                                        {this.state.SearchNameCompulsory}
+                                      </p>
+                                    )}
                                     <button
                                       className="butn"
                                       type="button"
@@ -2420,7 +2443,9 @@ handleAssignTo(){
                                               this.handleTicketStatusByDate
                                             }
                                           >
-                                            <option value="0">Ticket Status</option>
+                                            <option value="0">
+                                              Ticket Status
+                                            </option>
                                             {this.state.TicketStatusData !==
                                               null &&
                                               this.state.TicketStatusData.map(
@@ -2491,7 +2516,9 @@ handleAssignTo(){
                                               this.handleTicketStatusByCustomer
                                             }
                                           >
-                                            <option value="0">Ticket Status</option>
+                                            <option value="0">
+                                              Ticket Status
+                                            </option>
                                             {this.state.TicketStatusData !==
                                               null &&
                                               this.state.TicketStatusData.map(
@@ -2507,7 +2534,6 @@ handleAssignTo(){
                                           </select>
                                         </div>
                                       </div>
-                                       
                                     </div>
                                   </div>
                                   <div
@@ -2548,7 +2574,9 @@ handleAssignTo(){
                                               this.handleTicketStatusByTicket
                                             }
                                           >
-                                            <option value="0">Ticket Status</option>
+                                            <option value="0">
+                                              Ticket Status
+                                            </option>
                                             {this.state.TicketStatusData !==
                                               null &&
                                               this.state.TicketStatusData.map(
@@ -2564,7 +2592,6 @@ handleAssignTo(){
                                           </select>
                                         </div>
                                         <div className="col-md-3 col-sm-6">
-                                           
                                           <div className="normal-dropdown">
                                             <Select
                                               getOptionLabel={option =>
@@ -2655,7 +2682,9 @@ handleAssignTo(){
                                             }
                                             onChange={this.setSubCategoryValue}
                                           >
-                                            <option value="0">Sub Category</option>
+                                            <option value="0">
+                                              Sub Category
+                                            </option>
                                             {this.state.SubCategoryData !==
                                               null &&
                                               this.state.SubCategoryData.map(
@@ -2675,7 +2704,9 @@ handleAssignTo(){
                                             value={this.state.selectedIssueType}
                                             onChange={this.setIssueTypeValue}
                                           >
-                                            <option value="0">Issue Type</option>
+                                            <option value="0">
+                                              Issue Type
+                                            </option>
                                             {this.state.IssueTypeData !==
                                               null &&
                                               this.state.IssueTypeData.map(
@@ -2700,7 +2731,9 @@ handleAssignTo(){
                                               this.handleTicketStatusByCategory
                                             }
                                           >
-                                            <option value="0">Ticket Status</option>
+                                            <option value="0">
+                                              Ticket Status
+                                            </option>
                                             {this.state.TicketStatusData !==
                                               null &&
                                               this.state.TicketStatusData.map(
@@ -2886,20 +2919,29 @@ handleAssignTo(){
                                           />
                                         </div>
                                         <div className="col-md-3 col-sm-6">
-                                          
-                                           <select className="add-select-category"
-                                            value={this.state.selectedAssignedTo}
-                                             onChange={this.setAssignedToValue}
-                                             onClick={this.handleAssignTo.bind(this)}
-                                             >
-                                           <option>Select Assigned To</option>
-                                           {this.state.AssignToData !== null &&
-                                         this.state.AssignToData.map((item, i) => (
-                                         <option key={i} value={item.userID}>
-                                          {item.fullName}
-                                        </option>
-                                      ))}
-                                        </select>
+                                          <select
+                                            className="add-select-category"
+                                            value={
+                                              this.state.selectedAssignedTo
+                                            }
+                                            onChange={this.setAssignedToValue}
+                                            onClick={this.handleAssignTo.bind(
+                                              this
+                                            )}
+                                          >
+                                            <option>Select Assigned To</option>
+                                            {this.state.AssignToData !== null &&
+                                              this.state.AssignToData.map(
+                                                (item, i) => (
+                                                  <option
+                                                    key={i}
+                                                    value={item.userID}
+                                                  >
+                                                    {item.fullName}
+                                                  </option>
+                                                )
+                                              )}
+                                          </select>
                                         </div>
                                         <div className="col-md-3 col-sm-6 allspc">
                                           <select
@@ -3371,11 +3413,17 @@ handleAssignTo(){
                                       </p>
                                     </div>
                                     <div className="col-auto mob-mar-btm">
-                                    <CSVLink className="csv-button" data={this.state.CSVDownload}><img
-                                      className="position-relative csv-icon"
-                                      src={csv}
-                                      alt="csv-icon"
-                                    />CSV</CSVLink>
+                                      <CSVLink
+                                        className="csv-button"
+                                        data={this.state.CSVDownload}
+                                      >
+                                        <img
+                                          className="position-relative csv-icon"
+                                          src={csv}
+                                          alt="csv-icon"
+                                        />
+                                        CSV
+                                      </CSVLink>
                                       <button
                                         type="button"
                                         onClick={this.ScheduleOpenModel}

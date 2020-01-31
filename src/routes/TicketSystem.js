@@ -19,10 +19,10 @@ import CircleCancel from "./../assets/Images/Circle-cancel.png";
 // import moment from "moment";
 import FileUpload from "./../assets/Images/file.png";
 import ThumbTick from "./../assets/Images/thumbticket.png"; // Don't comment this line
-import PDF from "./../assets/Images/pdf.png";       // Don't comment this line
-import CSVi from "./../assets/Images/csvicon.png";  // Don't comment this line
-import Excel from "./../assets/Images/excel.png";   // Don't comment this line
-import Word from "./../assets/Images/word.png";     // Don't comment this line
+import PDF from "./../assets/Images/pdf.png"; // Don't comment this line
+import CSVi from "./../assets/Images/csvicon.png"; // Don't comment this line
+import Excel from "./../assets/Images/excel.png"; // Don't comment this line
+import Word from "./../assets/Images/word.png"; // Don't comment this line
 import TxtLogo from "./../assets/Images/TxtIcon.png";
 import { faCalculator } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -80,18 +80,18 @@ class TicketSystem extends Component {
       ticketNote: "",
       selectedBrand: "",
       createdBy: 6,
-      selectedCategory: '',
-      selectedCategoryKB: '',
-      selectedSubCategory: '',
-      selectedSubCategoryKB: '',
-      selectedIssueType: '',
-      selectedIssueTypeKB: '',
+      selectedCategory: "",
+      selectedCategoryKB: "",
+      selectedSubCategory: "",
+      selectedSubCategoryKB: "",
+      selectedIssueType: "",
+      selectedIssueTypeKB: "",
       selectedTicketPriority: 0,
       customerAttachOrder: 0,
       customerStoreStatus: 0,
       selectTicketTemplateId: 0,
       selectedTicketActionType: "200",
-      selectedChannelOfPurchase: '',
+      selectedChannelOfPurchase: "",
       selectedTemplateID: 0,
       priorityId: 0,
       escalationLevel: 0,
@@ -130,16 +130,16 @@ class TicketSystem extends Component {
       toggleTitle: false,
       loading: false,
       imageView: "",
-      ticketTitleCompulsion: '',
-      ticketDetailsCompulsion: '',
-      ticketBrandCompulsion: '',
-      ticketCategoryCompulsion: '',
-      ticketSubCategoryCompulsion: '',
-      ticketIssueTypeCompulsion: '',
-      channelPurchaseCompulsion: '',
-      categoryKbCompulsion: '',
-      subCategoryKbCompulsion: '',
-      issueTypeKbCompulsion: '',
+      ticketTitleCompulsion: "",
+      ticketDetailsCompulsion: "",
+      ticketBrandCompulsion: "",
+      ticketCategoryCompulsion: "",
+      ticketSubCategoryCompulsion: "",
+      ticketIssueTypeCompulsion: "",
+      channelPurchaseCompulsion: "",
+      categoryKbCompulsion: "",
+      subCategoryKbCompulsion: "",
+      issueTypeKbCompulsion: ""
     };
     this.validator = new SimpleReactValidator();
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
@@ -399,32 +399,36 @@ class TicketSystem extends Component {
     });
   }
   handleKbLinkPopupSearch() {
-    if (this.state.selectedCategoryKB.length > 0 && this.state.selectedSubCategoryKB.length > 0 && this.state.selectedIssueTypeKB.length > 0) {
-    let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/KnowledgeBase/searchbycategory",
-      headers: authHeader(),
-      params: {
-        Type_ID: this.state.selectedIssueTypeKB,
-        Category_ID: this.state.selectedCategoryKB,
-        SubCategor_ID: this.state.selectedSubCategoryKB
-      }
-    }).then(function(res) {
-      debugger;
-      let KbPopupData = res.data.responseData;
-      if (KbPopupData.length === 0 || KbPopupData === null) {
-        NotificationManager.error("No Record Found.");
-      }
-      self.setState({ KbPopupData: KbPopupData });
-    });
-  } else {
-    this.setState({
-      categoryKbCompulsion: 'Category field is compulsory.',
-      subCategoryKbCompulsion: 'Sub Category field is compulsory.',
-      issueTypeKbCompulsion: 'Issue Type field is compulsory.',
-    })
-  }
+    if (
+      this.state.selectedCategoryKB.length > 0 &&
+      this.state.selectedSubCategoryKB.length > 0 &&
+      this.state.selectedIssueTypeKB.length > 0
+    ) {
+      let self = this;
+      axios({
+        method: "post",
+        url: config.apiUrl + "/KnowledgeBase/searchbycategory",
+        headers: authHeader(),
+        params: {
+          Type_ID: this.state.selectedIssueTypeKB,
+          Category_ID: this.state.selectedCategoryKB,
+          SubCategor_ID: this.state.selectedSubCategoryKB
+        }
+      }).then(function(res) {
+        debugger;
+        let KbPopupData = res.data.responseData;
+        if (KbPopupData.length === 0 || KbPopupData === null) {
+          NotificationManager.error("No Record Found.");
+        }
+        self.setState({ KbPopupData: KbPopupData });
+      });
+    } else {
+      this.setState({
+        categoryKbCompulsion: "Category field is compulsory.",
+        subCategoryKbCompulsion: "Sub Category field is compulsory.",
+        issueTypeKbCompulsion: "Issue Type field is compulsory."
+      });
+    }
   }
   handleGetBrandList() {
     debugger;
@@ -435,8 +439,8 @@ class TicketSystem extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let BrandData = res.data.responseData;
-      self.setState({ BrandData: BrandData });
+      let data = res.data.responseData;
+      self.setState({ BrandData: data });
     });
   }
   handleGetCategoryList(brandId = 0) {
@@ -444,11 +448,11 @@ class TicketSystem extends Component {
     let self = this;
     self.setState({
       CategoryData: [],
-      selectedCategory: '',
+      selectedCategory: "",
       SubCategoryData: [],
-      selectedSubCategory: '',
+      selectedSubCategory: "",
       IssueTypeData: [],
-      selectedIssueType: ''
+      selectedIssueType: ""
     });
     axios({
       method: "post",
@@ -469,9 +473,9 @@ class TicketSystem extends Component {
     let self = this;
     self.setState({
       SubCategoryData: [],
-      selectedSubCategory: '',
+      selectedSubCategory: "",
       IssueTypeData: [],
-      selectedIssueType: ''
+      selectedIssueType: ""
     });
     let cateId = this.state.KbLink
       ? this.state.selectedCategoryKB
@@ -493,7 +497,7 @@ class TicketSystem extends Component {
   handleGetIssueTypeList() {
     debugger;
     let self = this;
-    self.setState({ IssueTypeData: [], selectedIssueType: '' });
+    self.setState({ IssueTypeData: [], selectedIssueType: "" });
     let subCateId = this.state.KbLink
       ? this.state.selectedSubCategoryKB
       : this.state.selectedSubCategory;
@@ -673,11 +677,10 @@ class TicketSystem extends Component {
   handleRemoveImage(i) {
     debugger;
     let file = this.state.file;
-    file.splice(i,1);
+    file.splice(i, 1);
     setTimeout(() => {
-      this.setState(file);  
+      this.setState(file);
     }, 100);
-    
   }
 
   handleCREATE_TICKET(StatusID) {
@@ -779,7 +782,7 @@ class TicketSystem extends Component {
         ticketCategoryCompulsion: "Category field is compulsory.",
         ticketSubCategoryCompulsion: "Sub Category field is compulsory.",
         ticketIssueTypeCompulsion: "Issue Type field is compulsory.",
-        channelPurchaseCompulsion: "Channel of Purchase field is compulsory.",
+        channelPurchaseCompulsion: "Channel of Purchase field is compulsory."
       });
     }
 
@@ -851,7 +854,12 @@ class TicketSystem extends Component {
       if (this.state.selectedCategory) {
         this.handleGetSubCategoryList();
       } else {
-        this.setState({ IssueTypeData: [], selectedIssueType: '', selectedSubCategory: '', SubCategoryData: [] });
+        this.setState({
+          IssueTypeData: [],
+          selectedIssueType: "",
+          selectedSubCategory: "",
+          SubCategoryData: []
+        });
       }
     }, 1);
   };
@@ -862,7 +870,12 @@ class TicketSystem extends Component {
       if (this.state.selectedCategoryKB) {
         this.handleGetSubCategoryList();
       } else {
-        this.setState({ IssueTypeData: [], selectedIssueTypeKB: '', selectedSubCategoryKB: '', SubCategoryData: [] });
+        this.setState({
+          IssueTypeData: [],
+          selectedIssueTypeKB: "",
+          selectedSubCategoryKB: "",
+          SubCategoryData: []
+        });
       }
     }, 1);
   };
@@ -875,7 +888,7 @@ class TicketSystem extends Component {
       if (this.state.selectedSubCategory) {
         this.handleGetIssueTypeList();
       } else {
-        this.setState({ IssueTypeData: [], selectedIssueType: '' });
+        this.setState({ IssueTypeData: [], selectedIssueType: "" });
       }
     }, 1);
   };
@@ -888,7 +901,7 @@ class TicketSystem extends Component {
       if (this.state.selectedSubCategoryKB) {
         this.handleGetIssueTypeList();
       } else {
-        this.setState({ IssueTypeData: [], selectedIssueTypeKB: '' });
+        this.setState({ IssueTypeData: [], selectedIssueTypeKB: "" });
       }
     }, 1);
   };
@@ -896,9 +909,8 @@ class TicketSystem extends Component {
     let channelOfPurchaseValue = e.currentTarget.value;
     this.setState({ selectedChannelOfPurchase: channelOfPurchaseValue });
   };
- 
+
   render() {
-    
     var CustomerId = this.state.customerDetails.customerId;
     var CustNumber = this.state.customerData.customerPhoneNumber;
     return (
@@ -1014,7 +1026,7 @@ class TicketSystem extends Component {
                             {this.state.ticketTitleCompulsion}
                           </p>
                         )}
-                        
+
                         {this.state.TicketTitleData !== null &&
                           this.state.TicketTitleData.length > 0 &&
                           this.state.titleSuggValue.length > 0 && (
@@ -1050,7 +1062,6 @@ class TicketSystem extends Component {
                           {this.state.ticketDetailsCompulsion}
                         </p>
                       )}
-                      
                     </div>
                   </div>
 
@@ -1155,7 +1166,10 @@ class TicketSystem extends Component {
                         onChange={this.setIssueTypeValue}
                         className="category-select-system dropdown-label"
                       >
-                        <option value='' className="select-sub-category-placeholder">
+                        <option
+                          value=""
+                          className="select-sub-category-placeholder"
+                        >
                           Select Issue Type
                         </option>
                         {this.state.IssueTypeData !== null &&
@@ -1239,7 +1253,10 @@ class TicketSystem extends Component {
                         onChange={this.setChannelOfPurchaseValue}
                         className="category-select-system dropdown-label"
                       >
-                        <option value='' className="select-category-placeholder">
+                        <option
+                          value=""
+                          className="select-category-placeholder"
+                        >
                           Select Channel Of Purchase
                         </option>
                         {this.state.ChannelOfPurchaseData !== null &&

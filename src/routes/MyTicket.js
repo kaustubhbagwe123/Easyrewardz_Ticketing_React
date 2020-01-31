@@ -3131,7 +3131,7 @@ class MyTicket extends Component {
                               : this.state.tabCounts.task}
                           </a>
                         </li>
-                        <li className="nav-item fo">
+                        <li className="nav-item fo" style={{display:'none'}}>
                           <a
                             className="nav-link"
                             data-toggle="tab"
