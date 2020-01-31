@@ -266,6 +266,7 @@ class Dashboard extends Component {
         }
       ],
       resultCount:0,
+      loading: false
     };
     this.handleAssignTo=this.handleAssignTo.bind(this);
     this.applyCallback = this.applyCallback.bind(this);
@@ -1770,6 +1771,7 @@ class Dashboard extends Component {
   ViewSearchData() {
     debugger;
     let self = this;
+    this.setState({ loading: true })
 
     // ---------------By Date tab---------------------
     var dateTab = {};
@@ -1917,12 +1919,14 @@ class Dashboard extends Component {
       if (status === "Success") {
         self.setState({
           SearchTicketData: data,
-          resultCount: count
+          resultCount: count,
+          loading: false
         });
       } else {
         self.setState({
           SearchTicketData: [],
-          resultCount: 0
+          resultCount: 0,
+          loading: false
         });
       }
     });
@@ -1987,6 +1991,7 @@ class Dashboard extends Component {
     });
   }
   handleSearchTicketEscalation() {
+    this.setState({ loading: true });
     let self = this;
     axios({
       method: "post",
@@ -2004,9 +2009,9 @@ class Dashboard extends Component {
       let data = res.data.responseData;
       let Status = res.data.message;
       if (Status === "Record Not Found") {
-        self.setState({ SearchTicketData: [] });
+        self.setState({ SearchTicketData: [], loading: false });
       } else if (data !== null) {
-        self.setState({ SearchTicketData: data });
+        self.setState({ SearchTicketData: data, loading: false });
       }
     });
   }
@@ -4733,7 +4738,9 @@ class Dashboard extends Component {
                   </Card>
                 </Collapse>
               </div>
-
+              {this.state.loading === true ? (
+              <div className="loader-icon-cntr"><div className="loader-icon"></div></div>
+            ) : (
               <div className="MyTicketListReact">
                 <ReactTable
                   data={SearchTicketData}
@@ -4992,6 +4999,7 @@ class Dashboard extends Component {
                   defaultPageSize={10}
                   showPagination={true}
                   getTrProps={this.HandleRowClickPage}
+                  minRows={2}
                 />
                 {/* <div className="position-relative">
                         <div className="pagi">
@@ -5032,6 +5040,7 @@ class Dashboard extends Component {
                         </div>
                       </div> */}
               </div>
+              )}
               <div className="float-search" onClick={this.toggleSearch}>
                 <small>{TitleChange}</small>
                 {ImgChange}

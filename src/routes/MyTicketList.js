@@ -4357,6 +4357,7 @@ handleAssignTo(){
                           defaultPageSize={10}
                           showPagination={true}
                           getTrProps={this.HandleRowClickPage}
+                          minRows={2}
                         />
                         {/* <div className="position-relative">
                         <div className="pagi">
