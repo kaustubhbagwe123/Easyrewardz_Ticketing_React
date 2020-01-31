@@ -10139,6 +10139,10 @@ table tr th:last-child {
   background: red;
 }
 
+.loader-icon-cntr {
+  position: relative;
+  min-height: 150px;
+}
 .loader-icon {
   position: absolute;
   top: 0;

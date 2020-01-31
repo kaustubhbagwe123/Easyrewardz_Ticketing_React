@@ -772,7 +772,7 @@ handleAddKB(){
                   ]}
                   // resizable={false}
                   defaultPageSize={10}
-                  
+                  minRows={2}
                   showPagination={true}
                   getTrProps={this.HandleRowClickPage}
                 />
