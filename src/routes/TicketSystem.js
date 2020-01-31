@@ -1014,11 +1014,7 @@ class TicketSystem extends Component {
                             {this.state.ticketTitleCompulsion}
                           </p>
                         )}
-                        {this.validator.message(
-                          "TicketTitle",
-                          this.state.titleSuggValue,
-                          "required"
-                        )}
+                        
                         {this.state.TicketTitleData !== null &&
                           this.state.TicketTitleData.length > 0 &&
                           this.state.titleSuggValue.length > 0 && (
@@ -1054,11 +1050,7 @@ class TicketSystem extends Component {
                           {this.state.ticketDetailsCompulsion}
                         </p>
                       )}
-                      {this.validator.message(
-                        "ticketDetails",
-                        this.state.ticketDetails,
-                        "required"
-                      )}
+                      
                     </div>
                   </div>
 

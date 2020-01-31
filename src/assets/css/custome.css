@@ -6318,7 +6318,7 @@ font-weight: normal;
 /* *************New react table start css(SHLOK BAROT)************** */
 .ReactTable .rt-thead.-header {
   box-shadow: none !important;
-  background-color: #e5e9ed;
+  background-color: #f8f8f8;
   border-bottom: 1px solid #eeeeee;
 }
 .ReactTable {
@@ -10229,4 +10229,30 @@ table tr th:last-child {
 }
 .datePickertable button {
   min-width: initial;
+}
+#Modalorderitemtable .ReactTable .rt-thead.-headerGroups {
+  background: none;
+  border-bottom: none;
+  display: none;
+}
+#Modalorderitemtable .ReactTable {
+  border: none;
+}
+#Modalordertable {
+  max-height: 400px;
+  overflow: auto;
+}
+#Modalordertable .ReactTable .rt-thead.-headerGroups {
+  background: none;
+  border-bottom: none;
+  display: none;
+}
+#Modalordertable .ReactTable {
+  border: none;
+}
+
+.reactstoreselect .ReactTable .rt-thead.-headerGroups {
+  background: none;
+  border-bottom: none;
+  display: none;
 }

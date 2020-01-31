@@ -248,6 +248,7 @@ class TicketSystemOrder extends Component {
     if (this.validator.allValid()) {
       let self = this;
       var CustID = this.props.custDetails;
+      var createdDate=moment(this.state.OrderCreatDate).format("DD-MM-YYYY");
       axios({
         method: "post",
         url: config.apiUrl + "/Order/createOrder",
@@ -258,9 +259,9 @@ class TicketSystemOrder extends Component {
           BillID: this.state.billId,
           TicketSourceID: this.state.selectedTicketSource,
           ModeOfPaymentID: this.state.modeOfPayment,
-          TransactionDate: moment(this.state.OrderCreatDate).format("DD-MM-YYYY"),
-          InvoiceNumber: "Inv123",
-          InvoiceDate:  moment(this.state.OrderCreatDate).format("DD-MM-YYYY"),
+          TransactionDate: this.state.OrderCreatDate,       ///createdDate,
+          InvoiceNumber: "",
+          InvoiceDate:  this.state.OrderCreatDate, //createdDate, 
           OrderPrice: this.state.orderMRP,
           PricePaid: this.state.pricePaid,
           CustomerID: CustID,
@@ -278,6 +279,7 @@ class TicketSystemOrder extends Component {
           self.handleChangeSaveManualTbl();
           self.setState({
             productBarCode: "",
+            billId:'',
             orderId: "",
             selectedTicketSource: 0,
             modeOfPayment: 0,
@@ -678,11 +680,11 @@ class TicketSystemOrder extends Component {
                         },
                         {
                           Header: <span>Item Price</span>,
-                          accessor: "itemPrice"
+                          accessor: "ordeItemPrice"
                         },
                         {
                           Header: <span>Price Paid</span>,
-                          accessor: "pricePaid"
+                          accessor: "orderPricePaid"
                         },
                         {
                           Header: <span>Store Code</span>,
@@ -743,7 +745,7 @@ class TicketSystemOrder extends Component {
                   showPagination={false}
                 />
               </div>
-              <div id="Modalordertable" style={{ display: "none" }}>
+              <div id="Modalordertable" className="varunoverflow" style={{ display: "none" }}>
                 <ReactTable
                   data={orderDetailsData}
                   onFilteredChange={this.onFilteredChange.bind(this)}
@@ -795,11 +797,11 @@ class TicketSystemOrder extends Component {
                         },
                         {
                           Header: <span>Item Price</span>,
-                          accessor: "itemPrice"
+                          accessor: "ordeItemPrice"
                         },
                         {
                           Header: <span>Price Paid</span>,
-                          accessor: "pricePaid"
+                          accessor: "orderPricePaid"
                         },
                         {
                           Header: <span>Store Code</span>,
@@ -906,7 +908,7 @@ class TicketSystemOrder extends Component {
                             },
                             {
                               Header: <span>Price Paid</span>,
-                              accessor: "pricePaid"
+                              accessor: "orderPricePaid"
                             },
                             {
                               Header: <span>Discount</span>,
@@ -1316,7 +1318,7 @@ class TicketSystemOrder extends Component {
                   data={orderDetailsData}
                   columns={[
                     {
-                      Header: <span>Invoice Numberr</span>,
+                      Header: <span>Invoice Number</span>,
                       accessor: "invoiceNumber",
                       Cell: row => (
                         <div
@@ -1355,11 +1357,11 @@ class TicketSystemOrder extends Component {
                     },
                     {
                       Header: <span>Item Price</span>,
-                      accessor: "itemPrice"
+                      accessor: "ordeItemPrice"
                     },
                     {
                       Header: <span>Price Paid</span>,
-                      accessor: "pricePaid"
+                      accessor: "orderPricePaid"
                     },
                     {
                       Header: <span>Store Code</span>,
@@ -1374,7 +1376,7 @@ class TicketSystemOrder extends Component {
                       accessor: "discount"
                     }
                   ]}
-                  // resizable={false}
+                  resizable={false}
                   defaultPageSize={3}
                   showPagination={false}
                 />
@@ -1424,11 +1426,11 @@ class TicketSystemOrder extends Component {
                     },
                     {
                       Header: <span>Item Price</span>,
-                      accessor: "itemPrice"
+                      accessor: "ordeItemPrice"
                     },
                     {
                       Header: <span>Price Paid</span>,
-                      accessor: "pricePaid"
+                      accessor: "orderPricePaid"
                     },
                     {
                       Header: <span>Store Code</span>,
@@ -1443,7 +1445,7 @@ class TicketSystemOrder extends Component {
                       accessor: "discount"
                     }
                   ]}
-                  // resizable={false}
+                  resizable={false}
                   defaultPageSize={3}
                   showPagination={false}
                   SubComponent={row => {
@@ -1494,7 +1496,7 @@ class TicketSystemOrder extends Component {
                             },
                             {
                               Header: <span>Price Paid</span>,
-                              accessor: "pricePaid"
+                              accessor: "orderPricePaid"
                             },
                             {
                               Header: <span>Discount</span>,
