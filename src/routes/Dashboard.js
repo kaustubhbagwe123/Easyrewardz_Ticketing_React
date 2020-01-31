@@ -1910,7 +1910,7 @@ class Dashboard extends Component {
       debugger;
       let status = res.data.message;
       let data = res.data.responseData;
-      let CSVData = data;
+      let CSVData =data;
       let count = 0;
       if (res.data.responseData != null) {
         count = res.data.responseData.length;
