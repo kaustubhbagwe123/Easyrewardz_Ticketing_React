@@ -10189,6 +10189,7 @@ table tr th:last-child {
   align-items: stretch;
   width: 100%;
   border-collapse: collapse;
+  overflow: initial;
 }
 
 .datePickertable .ReactTable .rt-tbody {
@@ -10217,4 +10218,15 @@ table tr th:last-child {
    top: -7px;
     right: -2px;
     cursor: pointer;
+}
+
+.datePickertable .react-datepicker__input-container input {
+  width: 100%;
+  border: 1px solid #dcd4d4;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-weight: 500;
+}
+.datePickertable button {
+  min-width: initial;
 }
