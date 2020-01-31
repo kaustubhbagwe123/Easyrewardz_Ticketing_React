@@ -7,6 +7,7 @@ import ReactTable from "react-table";
 import MinusImg from "./../../assets/Images/minus.png";
 import DatePicker from "react-datepicker";
 import axios from "axios";
+import moment from "moment";
 import config from "./../../helpers/config";
 import ReactAutocomplete from "react-autocomplete";
 import {
@@ -57,7 +58,8 @@ class TicketSystemOrder extends Component {
       orderMasterID: false,
       filterAll: "",
       filtered: [],
-      orderItem: false
+      orderItem: false,
+      purchaseFrmStorID:0
     };
     this.validator = new SimpleReactValidator();
     this.onFilteredChange = this.onFilteredChange.bind(this);
@@ -256,13 +258,13 @@ class TicketSystemOrder extends Component {
           BillID: this.state.billId,
           TicketSourceID: this.state.selectedTicketSource,
           ModeOfPaymentID: this.state.modeOfPayment,
-          TransactionDate: this.state.OrderCreatDate,
+          TransactionDate: moment(this.state.OrderCreatDate).format("DD-MM-YYYY"),
           InvoiceNumber: "Inv123",
-          InvoiceDate: this.state.OrderCreatDate,
+          InvoiceDate:  moment(this.state.OrderCreatDate).format("DD-MM-YYYY"),
           OrderPrice: this.state.orderMRP,
           PricePaid: this.state.pricePaid,
           CustomerID: CustID,
-          PurchaseFromStoreId: this.state.PurchaseFromStoreId,
+          PurchaseFromStoreId: this.state.purchaseFrmStorID,
           Discount: this.state.discount,
           Size: this.state.size,
           RequireSize: this.state.requiredSize
@@ -282,7 +284,7 @@ class TicketSystemOrder extends Component {
             OrderCreatDate: "",
             orderMRP: "",
             pricePaid: "",
-            PurchaseFromStoreId: "",
+            purchaseFrmStorName: {},
             discount: "",
             size: "",
             requiredSize: ""
@@ -333,10 +335,12 @@ class TicketSystemOrder extends Component {
 
     var StorAddress = this.state.StorAddress;
     StorAddress["address"] = id.address;
+    var Store_Id=id.storeID
 
     this.setState({
       SearchData,
-      StorAddress
+      StorAddress,
+      purchaseFrmStorID:Store_Id
     });
   }
   handleModeOfPaymentDropDown() {

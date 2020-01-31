@@ -1821,6 +1821,7 @@ class TicketSystem extends Component {
                             <Radio.Group
                               onChange={this.GenderonChange}
                               value={this.state.CustData.genderID}
+                              disabled
                             >
                               <Radio value={1}>Male</Radio>
                               <Radio value={2}>Female</Radio>
