@@ -3081,6 +3081,9 @@ table tr th:last-child {
   background: #fff url("../Images/down-1.png") no-repeat right 12px center;
   background-size: 16px;
   text-align: left;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .my-tic-email1::after {
   display: none;
@@ -10177,4 +10180,53 @@ table tr th:last-child {
 .tableSrolling{
   max-height: 300px;
   overflow: auto;
+}
+
+.datePickertable .ReactTable .rt-table {
+  flex: auto 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  border-collapse: collapse;
+  overflow: initial;
+}
+
+.datePickertable .ReactTable .rt-tbody {
+  flex: 99999 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.datePickertable .ReactTable .rt-tr .rt-td {
+
+  flex: 1 0;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding: 7px 5px;
+  overflow: initial;
+  transition: .3s ease;
+  transition-property: width,min-width,padding,opacity;;
+}
+
+.datePickertable .ReactTable .rt-tbody {
+  overflow: initial;
+}
+.circleCancle{
+  height: 18px;
+   position: absolute;
+   top: -7px;
+    right: -2px;
+    cursor: pointer;
+}
+
+.datePickertable .react-datepicker__input-container input {
+  width: 100%;
+  border: 1px solid #dcd4d4;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-weight: 500;
+}
+.datePickertable button {
+  min-width: initial;
 }
