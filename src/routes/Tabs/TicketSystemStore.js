@@ -501,21 +501,7 @@ class TicketSystemStore extends Component {
                         },
                         {
                           Header: <span>Store Code</span>,
-                          accessor: "storeCode",
-                          Cell: row => (
-                            <div className="col-md-3 col-sm-6">
-                              <DatePicker
-                                selected={this.state.byVisitDate}
-                                onChange={this.handleByvisitDate.bind(this)}
-                                placeholderText="Visite Date"
-                                showMonthDropdown
-                                showYearDropdown
-                                dateFormat="dd/MM/yyyy"
-                                value={this.state.byVisitDate}
-                                // className="form-control"
-                              />
-                            </div>
-                          )
+                          accessor: "storeCode"
                         },
                         {
                           Header: <span>Store Name</span>,
@@ -536,20 +522,19 @@ class TicketSystemStore extends Component {
                         {
                           Header: <span>Visit Date</span>,
                           accessor: "visitDate",
-                          // Cell: row => (
-                          //   <div className="col-md-3 col-sm-6">
-                          //     <DatePicker
-                          //       selected={this.state.byVisitDate}
-                          //       onChange={this.handleByvisitDate.bind(this)}
-                          //       placeholderText="Visite Date"
-                          //       showMonthDropdown
-                          //       showYearDropdown
-                          //       dateFormat="dd/MM/yyyy"
-                          //       value={this.state.byVisitDate}
-                          //       // className="form-control"
-                          //     />
-                          //   </div>
-                          // )
+                          Cell: row => (
+                            <div className="col-sm-12 p-0">
+                              <DatePicker
+                                selected={this.state.byVisitDate}
+                                onChange={this.handleByvisitDate.bind(this)}
+                                placeholderText="Visited Date"
+                                showMonthDropdown
+                                showYearDropdown
+                                dateFormat="dd/MM/yyyy"
+                                value={this.state.byVisitDate}
+                              />
+                            </div>
+                          )
                         }
                       ]}
                       // resizable={false}

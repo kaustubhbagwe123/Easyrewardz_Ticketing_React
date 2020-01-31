@@ -56,7 +56,6 @@ class TicketSystemOrder extends Component {
       orderMasterID: false,
       filterAll: "",
       filtered: [],
-      orderItem: false
     };
     this.validator = new SimpleReactValidator();
     this.onFilteredChange = this.onFilteredChange.bind(this);
@@ -456,7 +455,6 @@ class TicketSystemOrder extends Component {
   };
 
   render() {
-    console.log(this.state.orderItem, "OrderItem-------");
 
     const { orderDetailsData } = this.state;
     const defaultExpandedRows = orderDetailsData.map(() => {
@@ -1129,7 +1127,7 @@ class TicketSystemOrder extends Component {
                       className="orderdetailpopup "
                       style={{ marginTop: "3px" }}
                     >
-                      Orderr
+                      Order
                     </label>
                     <div className="orderswitch orderswitchitem">
                       <div className="switch switch-primary d-inline">
