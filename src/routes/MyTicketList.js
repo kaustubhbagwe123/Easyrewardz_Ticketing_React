@@ -1106,6 +1106,15 @@ class MyTicketList extends Component {
       });
     });
   }
+  handleAssignClearData() {
+    debugger;
+    this.setState({
+      assignFirstName: "",
+      assignLastName: "",
+      assignEmail: "",
+      selectedDesignation: 0
+    });
+  }
 
   SaveSearchData() {
     debugger;
@@ -3955,6 +3964,9 @@ handleAssignTo(){
                                           <a
                                             href="#!"
                                             className="anchorTag-clear"
+                                            onClick={this.handleAssignClearData.bind(
+                                              this
+                                            )}
                                           >
                                             CLEAR
                                           </a>
