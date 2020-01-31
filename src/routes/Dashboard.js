@@ -1913,6 +1913,10 @@ class Dashboard extends Component {
       let status = res.data.message;
       let data = res.data.responseData;
       let CSVData =data;
+      let count = 0;
+      if (res.data.responseData != null) {
+        count = res.data.responseData.length;
+      }
       if (status === "Success") {
         self.setState({
           SearchTicketData: data,
