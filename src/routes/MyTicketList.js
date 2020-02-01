@@ -91,7 +91,7 @@ class MyTicketList extends Component {
       selectedTicketStatusByDate: 0,
       selectScheduleDate: 0,
       selectedNoOfDay: 0,
-      selectedScheduleTime: 0,
+      selectedScheduleTime: '',
       selectedSlaDueByDate: 0,
       selectedClaimStatus: 0,
       selectedTaskStatus: 0,
@@ -638,7 +638,7 @@ class MyTicketList extends Component {
   handleScheduleTime(e) {
     debugger;
     this.setState({
-      selectedScheduleTime: e.currentTarget.value
+      selectedScheduleTime: e
     });
   }
   handleAssignTickets() {
@@ -3889,12 +3889,28 @@ class MyTicketList extends Component {
                                               </div>
                                             ) : null}
 
-                                            <input
+                                            {/* <input
                                               type="text"
                                               className="txt-1 txt1Place txt1Time"
                                               placeholder="11AM"
                                               onChange={this.handleScheduleTime}
-                                            />
+                                            /> */}
+                                            <div className="dash-timepicker">
+                                              <DatePicker
+                                                selected={this.state.selectedScheduleTime}
+                                                onChange={this.handleScheduleTime.bind(
+                                                  this
+                                                )}
+                                                placeholderText="11 AM"
+                                                showTimeSelect
+                                                showTimeSelectOnly
+                                                timeIntervals={60}
+                                                timeCaption="Select Time"
+                                                dateFormat="h:mm aa"
+                                                className="txt-1 txt1Place txt1Time"
+                                                value={this.state.selectedScheduleTime}
+                                              />
+                                            </div>
                                             <div>
                                               <button
                                                 className="scheduleBtn"
