@@ -869,21 +869,23 @@ class Header extends Component {
                 <div className="user-img">
                   <img src={UserLogo} alt="User" />
                 </div>
-                <div>
-                  <p style={{ fontSize: "16px", fontWeight: "600" }}>
-                    {this.state.UserName}
-                  </p>
-                  <p className="mail-id">{this.state.Email}</p>
+                <div className="logout-flex">
+                  <div>
+                    <p style={{ fontSize: "16px", fontWeight: "600" }}>
+                      {this.state.UserName}
+                    </p>
+                    <p className="mail-id">{this.state.Email}</p>
+                  </div>
+                  <button
+                    type="button"
+                    className="logout"
+                    onClick={this.handleLogoutMethod.bind(this)}
+                  >
+                    LOGOUT
+                  </button>
                 </div>
-                <button
-                  type="button"
-                  className="logout"
-                  onClick={this.handleLogoutMethod.bind(this)}
-                >
-                  LOGOUT
-                </button>
               </div>
-              <div className="status-sctn alignradio">
+              <div className="status-sctn alignradio d-none">
                 <div className="d-flex align-items-center">
                   <div className="logout-status" style={{ marginTop: "10px" }}>
                     <img src={StatusLogo} alt="status" />
@@ -917,7 +919,8 @@ class Header extends Component {
                       className="font-weight-bold"
                       style={{ fontSize: "16px" }}
                     >
-                      9:30 AM
+                      {/* 9:30 AM */}
+                      {this.state.LoginTime}
                     </p>
                   </div>
                   <div>

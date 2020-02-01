@@ -2496,6 +2496,13 @@ table tr th:last-child {
 /* tabs ends */
 
 /* logout block starts */
+.logout-flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-grow: 1;
+  margin-left: 10px;
+}
 .logout-block {
   color: #000;
   width: 380px;
