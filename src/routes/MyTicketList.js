@@ -471,15 +471,15 @@ class MyTicketList extends Component {
     });
   }
 
-  handleTicketDetails = (rowInfo, column) => {
-    return {
-      onClick: e => {
-        debugger;
-        var agentId = column.original["user_ID"];
-        this.setState({ agentId });
-      }
-    };
-  };
+  // handleTicketDetails = (rowInfo, column) => {
+  //   return {
+  //     onClick: e => {
+  //       debugger;
+  //       var agentId = column.original["user_ID"];
+  //       this.setState({ agentId });
+  //     }
+  //   };
+  // };
   handleAssignRemark(e) {
     debugger;
     this.setState({
@@ -4064,13 +4064,28 @@ class MyTicketList extends Component {
                                               }
                                             ]}
                                             resizable={false}
+                                            className="assign-ticket-table"
                                             defaultPageSize={5}
-                                            showPagination={false}
+                                            minRows={3}
+                                            // showPagination={false}
                                             getTrProps={
-                                              this.handleTicketDetails
+                                              (rowInfo, column) => {
+                                                const index = column ? column.index : -1;
+                                                return {
+                                                  onClick: e => {
+                                                    debugger;
+                                                    this.selectedRow = index;
+                                                    var agentId = column.original["user_ID"];
+                                                    this.setState({ agentId });
+                                                  },
+                                                  style: {
+                                                    background: this.selectedRow === index ? '#ECF2F4' : null
+                                                  }
+                                                };
+                                              }
                                             }
                                           />
-                                          <div className="position-relative">
+                                          {/* <div className="position-relative">
                                             <div className="pagi">
                                               <ul>
                                                 <li>
@@ -4123,14 +4138,14 @@ class MyTicketList extends Component {
                                               </select>
                                               <p>Items per page</p>
                                             </div>
-                                          </div>
+                                          </div> */}
                                           <textarea
                                             className="assign-modal-textArea"
                                             placeholder="Add Remarks"
                                             onChange={this.handleAssignRemark}
                                           ></textarea>
                                           <button
-                                            className="assign-butn btn-assign-tikcet"
+                                            className="assign-butn btn-assign-tikcet w-100"
                                             type="button"
                                             onClick={this.handleAssignTickets}
                                           >

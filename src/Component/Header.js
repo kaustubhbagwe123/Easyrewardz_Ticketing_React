@@ -883,7 +883,7 @@ class Header extends Component {
                 </div>
                 <div className="logout-flex">
                   <div>
-                    <p style={{ fontSize: "16px", fontWeight: "600" }}>
+                    <p style={{ fontSize: "16px", fontWeight: "600" }}>x`
                       {this.state.UserName}
                     </p>
                     <p className="mail-id">{this.state.Email}</p>
