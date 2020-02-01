@@ -2762,7 +2762,9 @@ table tr th:last-child {
   padding-right: 20px;
   padding-left: 20px;
 }
-
+.dash-timepicker .react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box, .dash-timepicker .react-datepicker__time-container {
+  width: 185px !important;
+}
 /* dashboard ends */
 
 /* chatbot starts */
