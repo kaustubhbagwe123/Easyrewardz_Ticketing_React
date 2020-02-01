@@ -139,7 +139,9 @@ class TicketSystem extends Component {
       channelPurchaseCompulsion: "",
       categoryKbCompulsion: "",
       subCategoryKbCompulsion: "",
-      issueTypeKbCompulsion: ""
+      issueTypeKbCompulsion: "",
+      userCcCount: 0,
+      userBccCount: 0
     };
     this.validator = new SimpleReactValidator();
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
@@ -302,9 +304,13 @@ class TicketSystem extends Component {
     mailFiled[filed] = e.target.value;
 
     if (filed === "userCC") {
-      this.setState({ mailFiled });
+      var CcCount = mailFiled.userCC;
+      var finalCount = CcCount.split(",");
+      this.setState({ mailFiled, userCcCount: finalCount.length });
     } else {
-      this.setState({ mailFiled });
+      var BCcCount = mailFiled.userBCC;
+      var finalCount = BCcCount.split(",");
+      this.setState({ mailFiled, userBccCount: finalCount.length });
     }
   }
   handleUpdateCustomer() {
@@ -1553,7 +1559,9 @@ class TicketSystem extends Component {
                                   />
 
                                   <span className="input-group-addon inputcc-one">
-                                    +1
+                                    {this.state.userCcCount < 1
+                                      ? "+" + this.state.userCcCount
+                                      : "+" + this.state.userCcCount}
                                   </span>
                                 </div>
                               </label>
@@ -1576,7 +1584,10 @@ class TicketSystem extends Component {
                                     )}
                                   />
                                   <span className="input-group-addon inputcc-one">
-                                    +1
+                                    {/* +{this.state.userBccCount} */}
+                                    {this.state.userBccCount < 1
+                                      ? "+" + this.state.userBccCount
+                                      : "+" + this.state.userBccCount}
                                   </span>
                                 </div>
                               </label>

@@ -2341,9 +2341,9 @@ class MyTicketList extends Component {
                                       {this.state.SearchListData !== null &&
                                         this.state.SearchListData.map(
                                           (item, i) => (
-                                            <li>
+                                            <li  key={i}>
                                               <label
-                                                key={i}
+                                               
                                                 value={item.searchParamID}
                                               >
                                                 {item.searchName}

@@ -670,6 +670,9 @@ class TicketSystemStore extends Component {
                                         row.original
                                       )}
                                     />
+                                     <label htmlFor={"i" + row.original.storeID}>
+                                    {row.original.storeID}
+                                  </label>
                                   </div>
                                 )
                               },
@@ -767,38 +770,38 @@ class TicketSystemStore extends Component {
                       <ReactTable
                         data={selectedStoreData}
                         columns={[
-                          // {
-                          //   Header: <span>Purpose</span>,
-                          //   accessor: "invoiceNumber",
-                          //   Cell: row => (
-                          //     <div
-                          //       className="filter-checkbox"
-                          //       style={{ marginLeft: "15px" }}
-                          //     >
-                          //       <input
-                          //         type="checkbox"
-                          //         id={"selected" + row.original.storeID}
-                          //         style={{ display: "none" }}
-                          //         name="ticket-store"
-                          //         checked={
-                          //           this.state.CheckStoreID[
-                          //             row.original.storeID
-                          //           ] === true
-                          //         }
-                          //         onChange={this.handleCheckStoreID.bind(
-                          //           this,
-                          //           row.original.storeID,
-                          //           row.original
-                          //         )}
-                          //       />
-                          //       <label
-                          //         htmlFor={"selected" + row.original.storeID}
-                          //       >
-                          //         {row.original.storeID}
-                          //       </label>
-                          //     </div>
-                          //   )
-                          // },
+                          {
+                            Header: <span>Purpose</span>,
+                            accessor: "invoiceNumber",
+                            Cell: row => (
+                              <div
+                                className="filter-checkbox"
+                                style={{ marginLeft: "15px" }}
+                              >
+                                <input
+                                  type="checkbox"
+                                  id={"selected" + row.original.storeID}
+                                  style={{ display: "none" }}
+                                  name="ticket-store"
+                                  checked={
+                                    this.state.CheckStoreID[
+                                      row.original.storeID
+                                    ] === true
+                                  }
+                                  onChange={this.handleCheckStoreID.bind(
+                                    this,
+                                    row.original.storeID,
+                                    row.original
+                                  )}
+                                />
+                                <label
+                                  htmlFor={"selected" + row.original.storeID}
+                                >
+                                  {row.original.storeID}
+                                </label>
+                              </div>
+                            )
+                          },
                           {
                             Header: <span>Store Code</span>,
                             accessor: "storeCode",

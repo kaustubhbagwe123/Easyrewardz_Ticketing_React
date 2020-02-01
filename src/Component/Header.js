@@ -232,21 +232,33 @@ class Header extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let Count1 = res.data.responseData[0].ticketCount;
-      let Count2 = res.data.responseData[1].ticketCount;
-      let Count3 = res.data.responseData[2].ticketCount;
-      let Msg1 = res.data.responseData[0].notificationMessage;
-      let Msg2 = res.data.responseData[1].notificationMessage;
-      let Msg3 = res.data.responseData[2].notificationMessage;
+      let status = res.data.message;
+      if (status === "Success") {
+        let Count1 = res.data.responseData[0].ticketCount;
+        let Count2 = res.data.responseData[1].ticketCount;
+        let Count3 = res.data.responseData[2].ticketCount;
+        let Msg1 = res.data.responseData[0].notificationMessage;
+        let Msg2 = res.data.responseData[1].notificationMessage;
+        let Msg3 = res.data.responseData[2].notificationMessage;
 
-      self.setState({
-        notifiCount1: Count1,
-        notifiCount2: Count2,
-        notifiCount3: Count3,
-        notifiMsg1: Msg1,
-        notifiMsg2: Msg2,
-        notifiMsg3: Msg3
-      });
+        self.setState({
+          notifiCount1: Count1,
+          notifiCount2: Count2,
+          notifiCount3: Count3,
+          notifiMsg1: Msg1,
+          notifiMsg2: Msg2,
+          notifiMsg3: Msg3
+        });
+      } else {
+        self.setState({
+          notifiCount1: "",
+          notifiCount2: "",
+          notifiCount3: "",
+          notifiMsg1: "",
+          notifiMsg2: "",
+          notifiMsg3: ""
+        });
+      }
     });
   }
 
@@ -833,7 +845,7 @@ class Header extends Component {
               </label>
             </div>
             <div className="viewticketspeadding">
-            <Link to="myTicketlist">
+              <Link to="myTicketlist">
                 <label className="md-4 view-tickets">VIEW TICKETS</label>
               </Link>
             </div>
@@ -850,7 +862,7 @@ class Header extends Component {
               </label>
             </div>
             <div className="viewticketspeadding">
-            <Link to="myTicketlist">
+              <Link to="myTicketlist">
                 <label className="md-4 view-tickets">VIEW TICKETS</label>
               </Link>
             </div>
