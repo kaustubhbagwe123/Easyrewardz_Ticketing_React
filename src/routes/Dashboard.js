@@ -2124,6 +2124,23 @@ class Dashboard extends Component {
     this.setState({ selectedIssueTypeAll: issueTypeAllValue });
   };
 
+  handleApplySearch(paramsID){
+    debugger
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Search/GetTicketsOnSavedSearch",
+      headers: authHeader(),
+      params: {
+        SearchParamID: paramsID
+      }
+    }).then(function(res) {
+      debugger;
+      let data = res.data.responseData;
+      self.setState({ ClaimIssueTypeData: data });
+    });
+  }
+
   render() {
     const { SearchAssignData, SearchTicketData } = this.state;
     let now = new Date();
@@ -2380,353 +2397,375 @@ class Dashboard extends Component {
           <Collapse isOpen={this.state.collapse}>
             <Card>
               <CardBody>
-          {this.state.loadingAbove === true ? (
-              <div className="loader-icon-cntr loader-icon-cntr-above"><div className="loader-icon"></div></div>
-            ) : (
-              <>
-                <div className="container-fluid dash-tp-card btm-mar">
-                  <div className="row justify-content-center">
-                    <div className="col-md col-sm-4 col-6">
-                      <div className="dash-top-cards">
-                        <p className="card-head">All</p>
-                        <span className="card-value">
-                          {this.state.DashboardNumberData !== null
-                            ? this.state.DashboardNumberData.all !== null &&
-                              this.state.DashboardNumberData.all < 9
-                              ? "0" + this.state.DashboardNumberData.all
-                              : this.state.DashboardNumberData.all
-                            : null}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="col-md col-sm-4 col-6">
-                      <div className="dash-top-cards">
-                        <p className="card-head">Open</p>
-                        <span className="card-value">
-                          {this.state.DashboardNumberData !== null
-                            ? this.state.DashboardNumberData.open !== null &&
-                              this.state.DashboardNumberData.open < 9
-                              ? "0" + this.state.DashboardNumberData.open
-                              : this.state.DashboardNumberData.open
-                            : null}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="col-md col-sm-4 col-6">
-                      <div className="dash-top-cards">
-                        <p className="card-head">Due Today</p>
-                        <span className="card-value">
-                          {this.state.DashboardNumberData !== null
-                            ? this.state.DashboardNumberData.dueToday !==
-                                null &&
-                              this.state.DashboardNumberData.dueToday < 9
-                              ? "0" + this.state.DashboardNumberData.dueToday
-                              : this.state.DashboardNumberData.dueToday
-                            : null}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="col-md col-sm-4 col-6">
-                      <div className="dash-top-cards">
-                        <p className="card-head">Over Due</p>
-                        <span className="card-value red-clr">
-                          {this.state.DashboardNumberData !== null
-                            ? this.state.DashboardNumberData.overDue !== null &&
-                              this.state.DashboardNumberData.overDue < 9
-                              ? "0" + this.state.DashboardNumberData.overDue
-                              : this.state.DashboardNumberData.overDue
-                            : null}
-                        </span>
-                      </div>
-                    </div>
-                    {this.state.TotalNoOfChatShow && (
-                      <div
-                        className="col-md col-sm-4 col-6"
-                        onClick={this.HandleChangeRedict.bind(this)}
-                      >
-                        <div className="dash-top-cards">
-                          <p className="card-head">Total no of chat</p>
-                          <span className="card-value">102</span>
-                          <small className="blue-clr">View More Insights</small>
-                        </div>
-                      </div>
-                    )}
+                {this.state.loadingAbove === true ? (
+                  <div className="loader-icon-cntr loader-icon-cntr-above">
+                    <div className="loader-icon"></div>
                   </div>
-                </div>
-                <div className="container-fluid btm-mar">
-                  <div className="row">
-                    <div className="col-lg-3 col-md-4">
-                      <div className="dash-top-cards prio-pie-cntr">
-                        <p className="card-head mb-0">Open By Priority</p>
-                        <div className="prio-pie-chart">
-                          {this.state.DashboardPriorityGraphData.length > 0 ? (
-                            <OpenByPriorityPie
-                              data={this.state.DashboardPriorityGraphData}
-                            />
-                          ) : null}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-6 col-md-8">
-                      <div className="dash-top-cards p-0">
-                        <ul className="nav nav-tabs" role="tablist">
-                          <li className="nav-item">
-                            <a
-                              className="nav-link active"
-                              data-toggle="tab"
-                              href="#bill-graph-tab"
-                              role="tab"
-                              aria-controls="bill-graph-tab"
-                              aria-selected="true"
-                              onClick={this.handlechangebtntab.bind(this)}
-                            >
-                              Tickets to bill graph
-                            </a>
-                          </li>
-                          <li className="nav-item">
-                            <a
-                              className="nav-link tab2"
-                              data-toggle="tab"
-                              href="#source-tab"
-                              role="tab"
-                              aria-controls="source-tab"
-                              aria-selected="false"
-                              onClick={this.handlechangebtntab.bind(this)}
-                            >
-                              Tickets generation source tab
-                            </a>
-                          </li>
-                        </ul>
-                        <div className="tab-content mt-3">
-                          <div
-                            className="tab-pane fade show active"
-                            id="bill-graph-tab"
-                            role="tabpanel"
-                            aria-labelledby="bill-graph-tab"
-                          >
-                            <div className="row">
-                              <div className="col-md-3">
-                                <ul className="bill-graph-list">
-                                  {this.state.DashboardBillGraphData !== null &&
-                                    this.state.DashboardBillGraphData.map(
-                                      (item, i) => (
-                                        <li key={i}>
-                                          {item.ticketSourceName} :{" "}
-                                          <b>
-                                            {item.ticketedBills}/
-                                            {item.totalBills}
-                                          </b>
-                                        </li>
-                                      )
-                                    )}
-                                </ul>
-                              </div>
-                              <div className="col-md-9 tic-bill-graph">
-                                {this.state.DashboardBillGraphData.length >
-                                0 ? (
-                                  <TicketToBillBarGraph
-                                    data={this.state.DashboardBillGraphData}
-                                  />
-                                ) : null}
-                              </div>
-                            </div>
+                ) : (
+                  <>
+                    <div className="container-fluid dash-tp-card btm-mar">
+                      <div className="row justify-content-center">
+                        <div className="col-md col-sm-4 col-6">
+                          <div className="dash-top-cards">
+                            <p className="card-head">All</p>
+                            <span className="card-value">
+                              {this.state.DashboardNumberData !== null
+                                ? this.state.DashboardNumberData.all !== null &&
+                                  this.state.DashboardNumberData.all < 9
+                                  ? "0" + this.state.DashboardNumberData.all
+                                  : this.state.DashboardNumberData.all
+                                : null}
+                            </span>
                           </div>
-                          <div
-                            className="tab-pane fade"
-                            id="source-tab"
-                            role="tabpanel"
-                            aria-labelledby="source-tab"
-                          >
-                            <div className="row">
-                              <div className="col-md-3">
-                                <ul className="bill-graph-list">
-                                  {this.state.DashboardSourceGraphData !==
+                        </div>
+                        <div className="col-md col-sm-4 col-6">
+                          <div className="dash-top-cards">
+                            <p className="card-head">Open</p>
+                            <span className="card-value">
+                              {this.state.DashboardNumberData !== null
+                                ? this.state.DashboardNumberData.open !==
                                     null &&
-                                    this.state.DashboardSourceGraphData.map(
-                                      (item, i) => (
-                                        <li key={i}>
-                                          {item.ticketSourceName} :{" "}
-                                          <b>{item.ticketSourceCount}</b>
-                                        </li>
-                                      )
-                                    )}
-                                </ul>
+                                  this.state.DashboardNumberData.open < 9
+                                  ? "0" + this.state.DashboardNumberData.open
+                                  : this.state.DashboardNumberData.open
+                                : null}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="col-md col-sm-4 col-6">
+                          <div className="dash-top-cards">
+                            <p className="card-head">Due Today</p>
+                            <span className="card-value">
+                              {this.state.DashboardNumberData !== null
+                                ? this.state.DashboardNumberData.dueToday !==
+                                    null &&
+                                  this.state.DashboardNumberData.dueToday < 9
+                                  ? "0" +
+                                    this.state.DashboardNumberData.dueToday
+                                  : this.state.DashboardNumberData.dueToday
+                                : null}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="col-md col-sm-4 col-6">
+                          <div className="dash-top-cards">
+                            <p className="card-head">Over Due</p>
+                            <span className="card-value red-clr">
+                              {this.state.DashboardNumberData !== null
+                                ? this.state.DashboardNumberData.overDue !==
+                                    null &&
+                                  this.state.DashboardNumberData.overDue < 9
+                                  ? "0" + this.state.DashboardNumberData.overDue
+                                  : this.state.DashboardNumberData.overDue
+                                : null}
+                            </span>
+                          </div>
+                        </div>
+                        {this.state.TotalNoOfChatShow && (
+                          <div
+                            className="col-md col-sm-4 col-6"
+                            onClick={this.HandleChangeRedict.bind(this)}
+                          >
+                            <div className="dash-top-cards">
+                              <p className="card-head">Total no of chat</p>
+                              <span className="card-value">102</span>
+                              <small className="blue-clr">
+                                View More Insights
+                              </small>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <div className="container-fluid btm-mar">
+                      <div className="row">
+                        <div className="col-lg-3 col-md-4">
+                          <div className="dash-top-cards prio-pie-cntr">
+                            <p className="card-head mb-0">Open By Priority</p>
+                            <div className="prio-pie-chart">
+                              {this.state.DashboardPriorityGraphData.length >
+                              0 ? (
+                                <OpenByPriorityPie
+                                  data={this.state.DashboardPriorityGraphData}
+                                />
+                              ) : null}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-lg-6 col-md-8">
+                          <div className="dash-top-cards p-0">
+                            <ul className="nav nav-tabs" role="tablist">
+                              <li className="nav-item">
+                                <a
+                                  className="nav-link active"
+                                  data-toggle="tab"
+                                  href="#bill-graph-tab"
+                                  role="tab"
+                                  aria-controls="bill-graph-tab"
+                                  aria-selected="true"
+                                  onClick={this.handlechangebtntab.bind(this)}
+                                >
+                                  Tickets to bill graph
+                                </a>
+                              </li>
+                              <li className="nav-item">
+                                <a
+                                  className="nav-link tab2"
+                                  data-toggle="tab"
+                                  href="#source-tab"
+                                  role="tab"
+                                  aria-controls="source-tab"
+                                  aria-selected="false"
+                                  onClick={this.handlechangebtntab.bind(this)}
+                                >
+                                  Tickets generation source tab
+                                </a>
+                              </li>
+                            </ul>
+                            <div className="tab-content mt-3">
+                              <div
+                                className="tab-pane fade show active"
+                                id="bill-graph-tab"
+                                role="tabpanel"
+                                aria-labelledby="bill-graph-tab"
+                              >
+                                <div className="row">
+                                  <div className="col-md-3">
+                                    <ul className="bill-graph-list">
+                                      {this.state.DashboardBillGraphData !==
+                                        null &&
+                                        this.state.DashboardBillGraphData.map(
+                                          (item, i) => (
+                                            <li key={i}>
+                                              {item.ticketSourceName} :{" "}
+                                              <b>
+                                                {item.ticketedBills}/
+                                                {item.totalBills}
+                                              </b>
+                                            </li>
+                                          )
+                                        )}
+                                    </ul>
+                                  </div>
+                                  <div className="col-md-9 tic-bill-graph">
+                                    {this.state.DashboardBillGraphData.length >
+                                    0 ? (
+                                      <TicketToBillBarGraph
+                                        data={this.state.DashboardBillGraphData}
+                                      />
+                                    ) : null}
+                                  </div>
+                                </div>
                               </div>
-                              <div className="col-md-9 ">
-                                {this.state.DashboardSourceGraphData.length >
+                              <div
+                                className="tab-pane fade"
+                                id="source-tab"
+                                role="tabpanel"
+                                aria-labelledby="source-tab"
+                              >
+                                <div className="row">
+                                  <div className="col-md-3">
+                                    <ul className="bill-graph-list">
+                                      {this.state.DashboardSourceGraphData !==
+                                        null &&
+                                        this.state.DashboardSourceGraphData.map(
+                                          (item, i) => (
+                                            <li key={i}>
+                                              {item.ticketSourceName} :{" "}
+                                              <b>{item.ticketSourceCount}</b>
+                                            </li>
+                                          )
+                                        )}
+                                    </ul>
+                                  </div>
+                                  <div className="col-md-9 ">
+                                    {this.state.DashboardSourceGraphData
+                                      .length > 0 ? (
+                                      <TicketGenerationSourceBar
+                                        data={
+                                          this.state.DashboardSourceGraphData
+                                        }
+                                      />
+                                    ) : null}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-lg-3">
+                          <div
+                            className="dash-top-cards"
+                            onMouseOver={this.handleMouseHover.bind(this)}
+                            onMouseLeave={this.handleMouseHover.bind(this)}
+                          >
+                            <p className="card-head">SLA</p>
+                            {this.state.DashboardNumberData !== null ? (
+                              Object.keys(this.state.DashboardNumberData)
+                                .length > 0 ? (
+                                <div className="resp-success">
+                                  <p className="card-head">
+                                    Response{" "}
+                                    {this.state.DashboardNumberData
+                                      .isResponseSuccess === true
+                                      ? "Success"
+                                      : "Failure"}
+                                  </p>
+                                  <span className="card-value">
+                                    <big>
+                                      {
+                                        this.state.DashboardNumberData
+                                          .responseRate
+                                      }
+                                    </big>
+                                  </span>
+                                  <p className="card-head mt-lg-4 mt-2">
+                                    Resolution{" "}
+                                    {this.state.DashboardNumberData
+                                      .isResolutionSuccess === true
+                                      ? "Success"
+                                      : "Failure"}{" "}
+                                    :
+                                    <span className="font-weight-bold">
+                                      {
+                                        this.state.DashboardNumberData
+                                          .resolutionRate
+                                      }
+                                    </span>
+                                  </p>
+                                </div>
+                              ) : null
+                            ) : null}
+                          </div>
+                        </div>
+                        <div className="col-lg-3 col-sm-6">
+                          <div className="dash-top-cards">
+                            <p className="card-head">Task</p>
+                            <div className="aside-cont">
+                              <div>
+                                <span className="card-value">
+                                  {this.state.DashboardNumberData !== null
+                                    ? this.state.DashboardNumberData.taskOpen <
+                                      9
+                                      ? "0" +
+                                        this.state.DashboardNumberData.taskOpen
+                                      : this.state.DashboardNumberData.taskOpen
+                                    : null}
+                                </span>
+                                <small>Open</small>
+                              </div>
+                              <div>
+                                <span className="card-value">
+                                  {this.state.DashboardNumberData !== null
+                                    ? this.state.DashboardNumberData.taskClose <
+                                      9
+                                      ? "0" +
+                                        this.state.DashboardNumberData.taskClose
+                                      : this.state.DashboardNumberData.taskClose
+                                    : null}
+                                </span>
+                                <small>Closed</small>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-lg-6 order-1 order-lg-0">
+                          <div className="dash-top-cards p-0">
+                            <ul className="nav nav-tabs" role="tablist">
+                              <li className="nav-item">
+                                <a
+                                  className="nav-link active"
+                                  data-toggle="tab"
+                                  href="#task-tab"
+                                  role="tab"
+                                  aria-controls="task-tab"
+                                  aria-selected="true"
+                                >
+                                  Ticket to Task
+                                </a>
+                              </li>
+                              <li className="nav-item">
+                                <a
+                                  className="nav-link"
+                                  data-toggle="tab"
+                                  href="#claim-tab"
+                                  role="tab"
+                                  aria-controls="claim-tab"
+                                  aria-selected="false"
+                                >
+                                  Ticket to claim
+                                </a>
+                              </li>
+                            </ul>
+                            <div className="tab-content task-claim-cont">
+                              <div
+                                className="tab-pane fade show active"
+                                id="task-tab"
+                                role="tabpanel"
+                                aria-labelledby="task-tab"
+                              >
+                                {this.state.DashboardTaskGraphData.length >
                                 0 ? (
-                                  <TicketGenerationSourceBar
-                                    data={this.state.DashboardSourceGraphData}
+                                  <MultiBarChart
+                                    data={this.state.DashboardTaskGraphData}
+                                  />
+                                ) : null}
+                                {/* {Object.keys(this.state.DashboardGraphData).length > 0 ? <MultiBarChart data={this.state.DashboardTaskGraphData} /> : null} */}
+                                {/* <MultiBarChart data={this.state.DashboardGraphData.tickettoTaskGraph} /> */}
+                              </div>
+                              <div
+                                className="tab-pane fade"
+                                id="claim-tab"
+                                role="tabpanel"
+                                aria-labelledby="claim-tab"
+                              >
+                                {this.state.DashboardClaimGraphData.length >
+                                0 ? (
+                                  <TicketToClaimMultiBar
+                                    data={this.state.DashboardClaimGraphData}
                                   />
                                 ) : null}
                               </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-3">
-                      <div
-                        className="dash-top-cards"
-                        onMouseOver={this.handleMouseHover.bind(this)}
-                        onMouseLeave={this.handleMouseHover.bind(this)}
-                      >
-                        <p className="card-head">SLA</p>
-                        {this.state.DashboardNumberData !== null ? (
-                          Object.keys(this.state.DashboardNumberData).length >
-                          0 ? (
-                            <div className="resp-success">
-                              <p className="card-head">
-                                Response{" "}
-                                {this.state.DashboardNumberData
-                                  .isResponseSuccess === true
-                                  ? "Success"
-                                  : "Failure"}
-                              </p>
-                              <span className="card-value">
-                                <big>
-                                  {this.state.DashboardNumberData.responseRate}
-                                </big>
-                              </span>
-                              <p className="card-head mt-lg-4 mt-2">
-                                Resolution{" "}
-                                {this.state.DashboardNumberData
-                                  .isResolutionSuccess === true
-                                  ? "Success"
-                                  : "Failure"}{" "}
-                                :
-                                <span className="font-weight-bold">
-                                  {
-                                    this.state.DashboardNumberData
-                                      .resolutionRate
-                                  }
+                        <div className="col-lg-3 col-sm-6">
+                          <div className="dash-top-cards">
+                            <p className="card-head">Claim</p>
+                            <div className="aside-cont">
+                              <div>
+                                <span className="card-value">
+                                  {this.state.DashboardNumberData !== null
+                                    ? this.state.DashboardNumberData.claimOpen <
+                                      9
+                                      ? "0" +
+                                        this.state.DashboardNumberData.claimOpen
+                                      : this.state.DashboardNumberData.claimOpen
+                                    : null}
                                 </span>
-                              </p>
+                                <small>Open</small>
+                              </div>
+                              <div>
+                                <span className="card-value">
+                                  {this.state.DashboardNumberData !== null
+                                    ? this.state.DashboardNumberData
+                                        .claimClose < 9
+                                      ? "0" +
+                                        this.state.DashboardNumberData
+                                          .claimClose
+                                      : this.state.DashboardNumberData
+                                          .claimClose
+                                    : null}
+                                </span>
+                                <small>Closed</small>
+                              </div>
                             </div>
-                          ) : null
-                        ) : null}
-                      </div>
-                    </div>
-                    <div className="col-lg-3 col-sm-6">
-                      <div className="dash-top-cards">
-                        <p className="card-head">Task</p>
-                        <div className="aside-cont">
-                          <div>
-                            <span className="card-value">
-                              {this.state.DashboardNumberData !== null
-                                ? this.state.DashboardNumberData.taskOpen < 9
-                                  ? "0" +
-                                    this.state.DashboardNumberData.taskOpen
-                                  : this.state.DashboardNumberData.taskOpen
-                                : null}
-                            </span>
-                            <small>Open</small>
-                          </div>
-                          <div>
-                            <span className="card-value">
-                              {this.state.DashboardNumberData !== null
-                                ? this.state.DashboardNumberData.taskClose < 9
-                                  ? "0" +
-                                    this.state.DashboardNumberData.taskClose
-                                  : this.state.DashboardNumberData.taskClose
-                                : null}
-                            </span>
-                            <small>Closed</small>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div className="col-lg-6 order-1 order-lg-0">
-                      <div className="dash-top-cards p-0">
-                        <ul className="nav nav-tabs" role="tablist">
-                          <li className="nav-item">
-                            <a
-                              className="nav-link active"
-                              data-toggle="tab"
-                              href="#task-tab"
-                              role="tab"
-                              aria-controls="task-tab"
-                              aria-selected="true"
-                            >
-                              Ticket to Task
-                            </a>
-                          </li>
-                          <li className="nav-item">
-                            <a
-                              className="nav-link"
-                              data-toggle="tab"
-                              href="#claim-tab"
-                              role="tab"
-                              aria-controls="claim-tab"
-                              aria-selected="false"
-                            >
-                              Ticket to claim
-                            </a>
-                          </li>
-                        </ul>
-                        <div className="tab-content task-claim-cont">
-                          <div
-                            className="tab-pane fade show active"
-                            id="task-tab"
-                            role="tabpanel"
-                            aria-labelledby="task-tab"
-                          >
-                            {this.state.DashboardTaskGraphData.length > 0 ? (
-                              <MultiBarChart
-                                data={this.state.DashboardTaskGraphData}
-                              />
-                            ) : null}
-                            {/* {Object.keys(this.state.DashboardGraphData).length > 0 ? <MultiBarChart data={this.state.DashboardTaskGraphData} /> : null} */}
-                            {/* <MultiBarChart data={this.state.DashboardGraphData.tickettoTaskGraph} /> */}
-                          </div>
-                          <div
-                            className="tab-pane fade"
-                            id="claim-tab"
-                            role="tabpanel"
-                            aria-labelledby="claim-tab"
-                          >
-                            {this.state.DashboardClaimGraphData.length > 0 ? (
-                              <TicketToClaimMultiBar
-                                data={this.state.DashboardClaimGraphData}
-                              />
-                            ) : null}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-3 col-sm-6">
-                      <div className="dash-top-cards">
-                        <p className="card-head">Claim</p>
-                        <div className="aside-cont">
-                          <div>
-                            <span className="card-value">
-                              {this.state.DashboardNumberData !== null
-                                ? this.state.DashboardNumberData.claimOpen < 9
-                                  ? "0" +
-                                    this.state.DashboardNumberData.claimOpen
-                                  : this.state.DashboardNumberData.claimOpen
-                                : null}
-                            </span>
-                            <small>Open</small>
-                          </div>
-                          <div>
-                            <span className="card-value">
-                              {this.state.DashboardNumberData !== null
-                                ? this.state.DashboardNumberData.claimClose < 9
-                                  ? "0" +
-                                    this.state.DashboardNumberData.claimClose
-                                  : this.state.DashboardNumberData.claimClose
-                                : null}
-                            </span>
-                            <small>Closed</small>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </>
-            )}
+                  </>
+                )}
               </CardBody>
             </Card>
           </Collapse>
@@ -2839,16 +2878,16 @@ class Dashboard extends Component {
                               value={this.state.SearchName}
                               onChange={this.handelOnchangeData}
                             />
-                             {this.state.SearchName.length === 0 && (
-                                      <p
-                                        style={{
-                                          color: "red",
-                                          marginBottom: "0px"
-                                        }}
-                                      >
-                                        {this.state.SearchNameCompulsory}
-                                      </p>
-                                    )}
+                            {this.state.SearchName.length === 0 && (
+                              <p
+                                style={{
+                                  color: "red",
+                                  marginBottom: "0px"
+                                }}
+                              >
+                                {this.state.SearchNameCompulsory}
+                              </p>
+                            )}
                             <button
                               className="butn"
                               type="button"
@@ -2871,7 +2910,15 @@ class Dashboard extends Component {
                                       {item.searchName}
                                     </label>
                                     <div>
-                                      <a href={Demo.BLANK_LINK}>APPLY</a>
+                                      <a
+                                        className="applySearch"
+                                        onClick={this.handleApplySearch.bind(
+                                          this,
+                                          item.searchParamID
+                                        )}
+                                      >
+                                        APPLY
+                                      </a>
                                       <img
                                         src={DelSearch}
                                         alt="del-search"
@@ -4633,22 +4680,24 @@ class Dashboard extends Component {
                                       placeholder="11AM"
                                       onChange={this.handleScheduleTime}
                                     /> */}
-                                  <div className="dash-timepicker">
-                                    <DatePicker
-                                      selected={this.state.selectedScheduleTime}
-                                      onChange={this.handleScheduleTime.bind(
-                                        this
-                                      )}
-                                      placeholderText="11 AM"
-                                      showTimeSelect
-                                      showTimeSelectOnly
-                                      timeIntervals={60}
-                                      timeCaption="Select Time"
-                                      dateFormat="h:mm aa"
-                                      className="txt-1 txt1Place txt1Time"
-                                      value={this.state.selectedScheduleTime}
-                                    />
-                                  </div>
+                                    <div className="dash-timepicker">
+                                      <DatePicker
+                                        selected={
+                                          this.state.selectedScheduleTime
+                                        }
+                                        onChange={this.handleScheduleTime.bind(
+                                          this
+                                        )}
+                                        placeholderText="11 AM"
+                                        showTimeSelect
+                                        showTimeSelectOnly
+                                        timeIntervals={60}
+                                        timeCaption="Select Time"
+                                        dateFormat="h:mm aa"
+                                        className="txt-1 txt1Place txt1Time"
+                                        value={this.state.selectedScheduleTime}
+                                      />
+                                    </div>
 
                                     <div>
                                       <button
@@ -4769,10 +4818,12 @@ class Dashboard extends Component {
                                   >
                                     SEARCH
                                   </button>
-                                  <a href="#!" className="anchorTag-clear"
-                                  onClick={this.handleAssignClearData.bind(
-                                    this
-                                  )}
+                                  <a
+                                    href="#!"
+                                    className="anchorTag-clear"
+                                    onClick={this.handleAssignClearData.bind(
+                                      this
+                                    )}
                                   >
                                     CLEAR
                                   </a>
@@ -5153,7 +5204,6 @@ class Dashboard extends Component {
             </div>
           </div>
         </section>
-      
       </Fragment>
     );
   }
