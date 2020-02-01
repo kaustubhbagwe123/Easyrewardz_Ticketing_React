@@ -781,11 +781,16 @@ class Dashboard extends Component {
     });
   };
   handleTicketDetails = (rowInfo, column) => {
+    const index = column ? column.index : -1;
     return {
       onClick: e => {
         debugger;
+        this.selectedRow = index;
         var agentId = column.original["user_ID"];
         this.setState({ agentId });
+      },
+      style: {
+        background: this.selectedRow === index ? '#ECF2F4' : null
       }
     };
   };
@@ -4790,8 +4795,10 @@ class Dashboard extends Component {
                                     ]}
                                     // resizable={false}
                                     defaultPageSize={5}
+                                    minRows={3}
                                     showPagination={true}
                                     getTrProps={this.handleTicketDetails}
+                                    className="assign-ticket-table"
                                   />
 
                                   <textarea
@@ -4800,7 +4807,7 @@ class Dashboard extends Component {
                                     onChange={this.handleAssignRemark}
                                   ></textarea>
                                   <button
-                                    className="assign-butn btn-assign-tikcet"
+                                    className="assign-butn btn-assign-tikcet w-100"
                                     type="button"
                                     onClick={this.handleAssignTickets}
                                   >

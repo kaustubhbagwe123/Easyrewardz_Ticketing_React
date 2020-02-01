@@ -6882,7 +6882,8 @@ table thead tr {
   margin-top: 115px !important;
 }
 .assign-modal-div {
-  padding: 0px 40px 0px 30px;
+  /* padding: 0px 40px 0px 30px; */
+  padding: 0px 30px;
 }
 .assign-modal-header {
   padding: 25px 30px 10px;
@@ -6899,7 +6900,10 @@ table thead tr {
   margin-bottom: 15px;
 }
 .srch-mleft-spc {
-  margin-left: 120px;
+  /* margin-left: 120px; */
+  float: right;
+    width: auto;
+    margin-top: 5px;
 }
 .assign-btn {
   height: 43px;
@@ -6936,7 +6940,8 @@ table thead tr {
 .assign-modal-textArea {
   background-color: #ecf2f4;
   border-radius: 4px;
-  width: 359px;
+  /* width: 359px; */
+  width: 100%;
   height: 236px;
   border: none;
   padding: 15px;
@@ -6964,11 +6969,15 @@ table thead tr {
 /* Css End Knowledge base */
 /* Dashboard Assign pop up modal css start*/
 #AssignPop-up {
-  max-width: 450px;
+  /* max-width: 450px; */
+  max-width: 520px;
   background: #ffffff;
   background-clip: padding-box;
   box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.25);
-  margin-left: 815px;
+  margin-left: 800px;
+  /* margin-left: 815px; */
+  padding-right: 0;
+  padding-left: 0;
 }
 .assign-modal-headerDashboard {
   padding: 0px 20px 20px;
@@ -7560,6 +7569,24 @@ table tr th:last-child {
 .ReactTable .rt-td {
   font-size: 14px;
   color: #a0a0a0 !important;
+}
+.assign-ticket-table .rt-tr[style="background: rgb(236, 242, 244);"] .rt-td {
+  color: #000 !important;
+}
+.assign-ticket-table .rt-tbody .rt-tr {
+  cursor: pointer;
+}
+.assign-ticket-table .rt-tbody .rt-tr.-padRow {
+  cursor: initial;
+}
+.assign-ticket-table .rt-tbody .rt-tr:hover {
+  background: #ECF2F4;
+}
+.assign-ticket-table .rt-tbody .rt-tr.-padRow:hover {
+  background: #fff;
+}
+.assign-ticket-table .rt-tbody .rt-tr:hover .rt-td {
+  color: #000 !important;
 }
 /* React table body color css end */
 /* StoreUser page css start by shlok */
