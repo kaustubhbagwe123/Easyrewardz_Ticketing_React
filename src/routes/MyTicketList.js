@@ -1168,7 +1168,7 @@ class MyTicketList extends Component {
       });
     }else{
       self.setState({
-        SearchNameCompulsory:"Please enter search name data."
+        SearchNameCompulsory:"Please Enter Search Name."
       })
     }
    

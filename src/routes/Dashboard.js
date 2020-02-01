@@ -266,8 +266,9 @@ class Dashboard extends Component {
           month: "October"
         }
       ],
-      resultCount:0,
+      resultCount: 0,
       loading: false,
+      SearchNameCompulsory:'',
       loadingAbove: true
     };
     this.handleAssignTo = this.handleAssignTo.bind(this);
@@ -1959,48 +1960,55 @@ class Dashboard extends Component {
   SaveSearchData() {
     debugger;
     let self = this;
-    var paramData = {
-      ByDate: this.state.byDateFlag,
-      creationDate: this.state.ByDateCreatDate,
-      lastUpdatedDate: this.state.ByDateSelectDate,
-      SLADue: this.state.selectedSlaDueByDate,
-      ticketStatus: this.state.selectedTicketStatusByDate,
-      ByCustomerType: this.state.byCustomerTypeFlag,
-      customerMob: this.state.MobileNoByCustType,
-      customerEmail: this.state.EmailIdByCustType,
-      TicketID: this.state.TicketIdByCustType,
-      ticketStatus: this.state.selectedTicketStatusByCustomer,
-      ByTicketType: this.state.byTicketTypeFlag,
-      Priority: this.state.selectedPriority,
-      ticketStatus: this.state.selectedTicketStatusByTicket,
-      chanelOfPurchase: this.state.selectedChannelOfPurchase,
-      ticketActionType: this.state.selectedTicketActionType,
-      ByCategory: this.state.byCategoryFlag,
-      Category: this.state.selectedCategory,
-      subCategory: this.state.selectedSubCategory,
-      issueType: this.state.selectedIssueType,
-      ticketStatus: this.state.selectedTicketStatusByCategory,
-      byAll: this.state.allFlag
-    };
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Ticketing/savesearch",
-      headers: authHeader(),
-      params: {
-        SearchSaveName: this.state.SearchName,
-        parameter: JSON.stringify(paramData)
-      }
-    }).then(function(res) {
-      debugger;
-      let Msg = res.data.message;
-      if (Msg === "Success") {
-        NotificationManager.success("Save Search parameter successfully.");
-        self.handleGetSaveSearchList();
-        self.setState({
-          SearchName: ""
-        });
-      }
-    });
+    if(this.state.SearchName.length > 0){
+      var paramData = {
+        ByDate: this.state.byDateFlag,
+        creationDate: this.state.ByDateCreatDate,
+        lastUpdatedDate: this.state.ByDateSelectDate,
+        SLADue: this.state.selectedSlaDueByDate,
+        ticketStatus: this.state.selectedTicketStatusByDate,
+        ByCustomerType: this.state.byCustomerTypeFlag,
+        customerMob: this.state.MobileNoByCustType,
+        customerEmail: this.state.EmailIdByCustType,
+        TicketID: this.state.TicketIdByCustType,
+        ticketStatus: this.state.selectedTicketStatusByCustomer,
+        ByTicketType: this.state.byTicketTypeFlag,
+        Priority: this.state.selectedPriority,
+        ticketStatus: this.state.selectedTicketStatusByTicket,
+        chanelOfPurchase: this.state.selectedChannelOfPurchase,
+        ticketActionType: this.state.selectedTicketActionType,
+        ByCategory: this.state.byCategoryFlag,
+        Category: this.state.selectedCategory,
+        subCategory: this.state.selectedSubCategory,
+        issueType: this.state.selectedIssueType,
+        ticketStatus: this.state.selectedTicketStatusByCategory,
+        byAll: this.state.allFlag
+      };
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Ticketing/savesearch",
+        headers: authHeader(),
+        params: {
+          SearchSaveName: this.state.SearchName,
+          parameter: JSON.stringify(paramData)
+        }
+      }).then(function(res) {
+        debugger;
+        let Msg = res.data.message;
+        if (Msg === "Success") {
+          NotificationManager.success("Save Search parameter successfully.");
+          self.handleGetSaveSearchList();
+          self.setState({
+            SearchName: ""
+          });
+        }
+      });
+    }else{
+      self.setState({
+        SearchNameCompulsory:"Please Enter Search Name."
+      })
+    }
+    
   }
   handleGetSaveSearchList() {
     debugger;
@@ -2826,6 +2834,16 @@ class Dashboard extends Component {
                               value={this.state.SearchName}
                               onChange={this.handelOnchangeData}
                             />
+                             {this.state.SearchName.length === 0 && (
+                                      <p
+                                        style={{
+                                          color: "red",
+                                          marginBottom: "0px"
+                                        }}
+                                      >
+                                        {this.state.SearchNameCompulsory}
+                                      </p>
+                                    )}
                             <button
                               className="butn"
                               type="button"
@@ -5112,74 +5130,7 @@ class Dashboard extends Component {
             </div>
           </div>
         </section>
-        {/* <Modal
-          open={this.state.open}
-          onClose={this.onCloseModal}
-          center
-          modalId="save-search-popup"
-          overlayId="save-search-ovrly"
-        >
-          <div className="save-search">
-            <p>SAVE SEARCH</p>
-          </div>
-          <div className="search-name">
-            <input type="search" placeholder="Give name to your search" />
-            <button className="butn">Save</button>
-          </div>
-          <div className="search-names">
-            <div className="names-title">
-              <p>Search Name</p>
-              <p className="mar-comp">Action</p>
-            </div>
-            <ul>
-              <li>
-                <p>Open tickets with high priority</p>
-                <div>
-                  <a href={Demo.BLANK_LINK}>APPLY</a>
-                  <a href={Demo.BLANK_LINK} className="m-0">
-                    <img src={DelSearch} alt="del-search" />
-                  </a>
-                </div>
-              </li>
-              <li>
-                <p>Open tickets with high priority</p>
-                <div>
-                  <a href={Demo.BLANK_LINK}>APPLY</a>
-                  <a href={Demo.BLANK_LINK} className="m-0">
-                    <img src={DelSearch} alt="del-search" />
-                  </a>
-                </div>
-              </li>
-              <li>
-                <p>Open tickets with high priority</p>
-                <div>
-                  <a href={Demo.BLANK_LINK}>APPLY</a>
-                  <a href={Demo.BLANK_LINK} className="m-0">
-                    <img src={DelSearch} alt="del-search" />
-                  </a>
-                </div>
-              </li>
-              <li>
-                <p>Open tickets with high priority</p>
-                <div>
-                  <a href={Demo.BLANK_LINK}>APPLY</a>
-                  <a href={Demo.BLANK_LINK} className="m-0">
-                    <img src={DelSearch} alt="del-search" />
-                  </a>
-                </div>
-              </li>
-              <li>
-                <p>Open tickets with high priority</p>
-                <div>
-                  <a href={Demo.BLANK_LINK}>APPLY</a>
-                  <a href={Demo.BLANK_LINK} className="m-0">
-                    <img src={DelSearch} alt="del-search" />
-                  </a>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </Modal> */}
+      
       </Fragment>
     );
   }
