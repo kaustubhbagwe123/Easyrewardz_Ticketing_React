@@ -10300,3 +10300,11 @@ table tr th:last-child {
   border-bottom: none;
   display: none;
 }
+
+.applySearch{
+  font-size: 14px;
+    font-weight: 700;
+    color: #2561a8 !important;
+    margin-right: 12px;
+    cursor: pointer;
+}

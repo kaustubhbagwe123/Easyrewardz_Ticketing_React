@@ -1892,6 +1892,24 @@ class MyTicketList extends Component {
     });
   };
 
+  handleApplySearch(paramsID){
+    debugger
+    let self = this;
+   
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Search/GetTicketsOnSavedSearch",
+      headers: authHeader(),
+      params: {
+        SearchParamID: paramsID
+      }
+    }).then(function(res) {
+      debugger;
+      let data = res.data.responseData;
+      self.setState({ ClaimIssueTypeData: data });
+    });
+  }
+
   render() {
     const { DraftDetails, SearchAssignData, SearchTicketData } = this.state;
 
@@ -2349,7 +2367,7 @@ class MyTicketList extends Component {
                                                 {item.searchName}
                                               </label>
                                               <div>
-                                                <a href={Demo.BLANK_LINK}>
+                                                <a className="applySearch" onClick={this.handleApplySearch.bind(this,item.searchParamID)}>
                                                   APPLY
                                                 </a>
                                                 <img
