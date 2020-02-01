@@ -91,7 +91,7 @@ class MyTicketList extends Component {
       selectedTicketStatusByDate: 0,
       selectScheduleDate: 0,
       selectedNoOfDay: 0,
-      selectedScheduleTime: 0,
+      selectedScheduleTime: '',
       selectedSlaDueByDate: 0,
       selectedClaimStatus: 0,
       selectedTaskStatus: 0,
@@ -638,7 +638,7 @@ class MyTicketList extends Component {
   handleScheduleTime(e) {
     debugger;
     this.setState({
-      selectedScheduleTime: e.currentTarget.value
+      selectedScheduleTime: e
     });
   }
   handleAssignTickets() {
