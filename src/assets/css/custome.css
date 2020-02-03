@@ -10310,3 +10310,14 @@ table tr th:last-child {
     margin-right: 12px;
     cursor: pointer;
 }
+
+.tic-noti label {
+  line-height: 1.5;
+}
+.noti-count {
+  width: 50px;
+  text-align: center;
+}
+.noti-count label {
+  padding-right: 9px;
+}

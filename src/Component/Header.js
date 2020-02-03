@@ -817,10 +817,10 @@ class Header extends Component {
           overlayId="logout-ovrly"
         >
           <div className="row rowpadding">
-            <div className="md-2 rectangle-2 lable05">
+            <div className="md-2 rectangle-2 lable05 noti-count">
               <label className="labledata">{this.state.notifiCount1}</label>
             </div>
-            <div className="md-6 new-tickets-assigned">
+            <div className="md-6 new-tickets-assigned tic-noti">
               <label>
                 <span style={{ fontSize: "17px", fontWeight: "bold" }}>
                   {this.state.notifiMsg1}
@@ -834,10 +834,10 @@ class Header extends Component {
             </div>
           </div>
           <div className="row rowpadding">
-            <div className="md-2 rectangle-2 lable05">
+            <div className="md-2 rectangle-2 lable05 noti-count">
               <label className="labledata">{this.state.notifiCount2}</label>
             </div>
-            <div className="md-6 new-tickets-assigned">
+            <div className="md-6 new-tickets-assigned tic-noti">
               <label>
                 <span style={{ fontSize: "17px", fontWeight: "bold" }}>
                   {this.state.notifiMsg2}
@@ -851,10 +851,10 @@ class Header extends Component {
             </div>
           </div>
           <div className="row rowpadding">
-            <div className="md-2 rectangle-2 lable05">
+            <div className="md-2 rectangle-2 lable05 noti-count">
               <label className="labledata">{this.state.notifiCount3}</label>
             </div>
-            <div className="md-6 new-tickets-assigned">
+            <div className="md-6 new-tickets-assigned tic-noti">
               <label>
                 <span style={{ fontSize: "17px", fontWeight: "bold" }}>
                   {this.state.notifiMsg3}
@@ -883,7 +883,7 @@ class Header extends Component {
                 </div>
                 <div className="logout-flex">
                   <div>
-                    <p style={{ fontSize: "16px", fontWeight: "600" }}>x`
+                    <p style={{ fontSize: "16px", fontWeight: "600" }}>
                       {this.state.UserName}
                     </p>
                     <p className="mail-id">{this.state.Email}</p>
