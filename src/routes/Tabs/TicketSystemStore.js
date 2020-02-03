@@ -29,7 +29,8 @@ class TicketSystemStore extends Component {
       selectedStoreData: [],
       filterAll: "",
       filtered: [],
-      byVisitDate:""
+      byVisitDate:"",
+      byValideStoreData:''
     };
     this.handleOrderStoreTableOpen = this.handleOrderStoreTableOpen.bind(this);
     this.handleOrderStoreTableClose = this.handleOrderStoreTableClose.bind(
@@ -75,26 +76,33 @@ class TicketSystemStore extends Component {
   handleSearchStoreDetails() {
     debugger;
     let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Store/searchStoreDetail",
-      headers: authHeader(),
-      params: {
-        SearchText: this.state.SrchStoreNameCode.trim()
-      }
-    }).then(function(res) {
-      debugger;
-      let data = res.data.responseData;
-      let Msg = res.data.message;
-      if (Msg === "Success") {
-        self.setState({ SearchData: data, message: Msg });
-      } else {
-        self.setState({
-          message: res.data.message,
-          SearchData: []
-        });
-      }
-    });
+    if(this.state.SrchStoreNameCode.length > 0){
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Store/searchStoreDetail",
+        headers: authHeader(),
+        params: {
+          SearchText: this.state.SrchStoreNameCode.trim()
+        }
+      }).then(function(res) {
+        debugger;
+        let data = res.data.responseData;
+        let Msg = res.data.message;
+        if (Msg === "Success") {
+          self.setState({ SearchData: data, message: Msg });
+        } else {
+          self.setState({
+            message: res.data.message,
+            SearchData: []
+          });
+        }
+      });
+    }else{
+      self.setState({
+        byValideStoreData:'Please Enter Store Details.'
+      })
+    }
+   
   }
   hanldeStatusChange(e) {
     debugger;
@@ -559,12 +567,23 @@ class TicketSystemStore extends Component {
                   value={this.state.SrchStoreNameCode}
                   onChange={this.handleStoreChange}
                 />
+               
                 <img
                   src={SearchBlackImg}
                   alt="Search"
                   className="systemorder-imgsearch"
                   onClick={this.handleSearchStoreDetails.bind(this)}
                 />
+                 {this.state.SrchStoreNameCode.length === 0 && (
+                  <p
+                  style={{
+                    color: "red",
+                    marginBottom: "0px"
+                  }}
+                >
+                  {this.state.byValideStoreData}
+                </p>
+                )}
               </div>
             </div>
             <span className="linestore3"></span>

@@ -10321,3 +10321,14 @@ table tr th:last-child {
 .noti-count label {
   padding-right: 9px;
 }
+
+/* ----------------- */
+.brush .extent {
+  stroke: #000;
+  fill-opacity: .125;
+  shape-rendering: crispEdges;
+}
+ 
+.brush .background {
+  fill: #ddd;
+}

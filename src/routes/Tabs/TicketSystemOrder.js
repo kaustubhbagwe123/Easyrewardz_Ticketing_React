@@ -59,7 +59,8 @@ class TicketSystemOrder extends Component {
       filterAll: "",
       filtered: [],
       orderItem: false,
-      purchaseFrmStorID:0
+      purchaseFrmStorID: 0,
+      validOrdernumber: ""
     };
     this.validator = new SimpleReactValidator();
     this.onFilteredChange = this.onFilteredChange.bind(this);
@@ -222,33 +223,40 @@ class TicketSystemOrder extends Component {
   handleOrderSearchData() {
     debugger;
     let self = this;
-    var CustID = this.props.custDetails;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Order/getOrderListWithItemDetails",
-      headers: authHeader(),
-      params: {
-        OrderNumber: this.state.orderNumber,
-        CustomerID: CustID
-      }
-    }).then(function(res) {
-      debugger;
-      let Msg = res.data.message;
-      let mainData = res.data.responseData;
-      // let subData = res.data.responseData[0].orderItems;
-      self.setState({
-        message: Msg,
-        orderDetailsData: mainData
-        // OrderSubComponent: subData
+    if(this.state.orderNumber.length > 0){
+      var CustID = this.props.custDetails;
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Order/getOrderListWithItemDetails",
+        headers: authHeader(),
+        params: {
+          OrderNumber: this.state.orderNumber,
+          CustomerID: CustID
+        }
+      }).then(function(res) {
+        debugger;
+        let Msg = res.data.message;
+        let mainData = res.data.responseData;
+        // let subData = res.data.responseData[0].orderItems;
+        self.setState({
+          message: Msg,
+          orderDetailsData: mainData
+          // OrderSubComponent: subData
+        });
       });
-    });
+    }else{
+      self.setState({
+        validOrdernumber:'Please Enter Order Number'
+      })
+    }
+   
   }
   hadleAddManuallyOrderData() {
     debugger;
     if (this.validator.allValid()) {
       let self = this;
       var CustID = this.props.custDetails;
-      var createdDate=moment(this.state.OrderCreatDate).format("DD-MM-YYYY");
+      var createdDate = moment(this.state.OrderCreatDate).format("DD-MM-YYYY");
       axios({
         method: "post",
         url: config.apiUrl + "/Order/createOrder",
@@ -259,9 +267,9 @@ class TicketSystemOrder extends Component {
           BillID: this.state.billId,
           TicketSourceID: this.state.selectedTicketSource,
           ModeOfPaymentID: this.state.modeOfPayment,
-          TransactionDate: this.state.OrderCreatDate,       ///createdDate,
+          TransactionDate: this.state.OrderCreatDate, ///createdDate,
           InvoiceNumber: "",
-          InvoiceDate:  this.state.OrderCreatDate, //createdDate, 
+          InvoiceDate: this.state.OrderCreatDate, //createdDate,
           OrderPrice: this.state.orderMRP,
           PricePaid: this.state.pricePaid,
           CustomerID: CustID,
@@ -279,7 +287,7 @@ class TicketSystemOrder extends Component {
           self.handleChangeSaveManualTbl();
           self.setState({
             productBarCode: "",
-            billId:'',
+            billId: "",
             orderId: "",
             selectedTicketSource: 0,
             modeOfPayment: 0,
@@ -337,12 +345,12 @@ class TicketSystemOrder extends Component {
 
     var StorAddress = this.state.StorAddress;
     StorAddress["address"] = id.address;
-    var Store_Id=id.storeID
+    var Store_Id = id.storeID;
 
     this.setState({
       SearchData,
       StorAddress,
-      purchaseFrmStorID:Store_Id
+      purchaseFrmStorID: Store_Id
     });
   }
   handleModeOfPaymentDropDown() {
@@ -464,7 +472,7 @@ class TicketSystemOrder extends Component {
       OrdItmBtnStatus: e.target.checked
     });
   };
-  handleChangeModalOrderItem=(e)=>{
+  handleChangeModalOrderItem = e => {
     debugger;
     var values = e.target.checked;
     if (values) {
@@ -482,10 +490,9 @@ class TicketSystemOrder extends Component {
     this.setState({
       OrdItmBtnStatus: e.target.checked
     });
-  }
+  };
 
   render() {
-
     const { orderDetailsData } = this.state;
     const defaultExpandedRows = orderDetailsData.map(() => {
       return true;
@@ -956,12 +963,23 @@ class TicketSystemOrder extends Component {
                     value={this.state.orderNumber}
                     onChange={this.handleOrderChange.bind(this)}
                   />
+                  
                   <img
                     src={SearchBlackImg}
                     alt="Search"
                     className="systemorder-imgsearch"
                     onClick={this.handleOrderSearchData.bind(this)}
                   />
+                  {this.state.orderNumber.length === 0 && (
+                    <p
+                      style={{
+                        color: "red",
+                        marginBottom: "0px"
+                      }}
+                    >
+                      {this.state.validOrdernumber}
+                    </p>
+                  )}
                 </div>
               </div>
               {this.state.message === "Record Not Found" ? (
@@ -1518,7 +1536,6 @@ class TicketSystemOrder extends Component {
                     );
                   }}
                 />
-                
               </div>
             </div>
           ) : null}
