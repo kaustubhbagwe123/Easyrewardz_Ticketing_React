@@ -1438,32 +1438,32 @@ class TicketSystemOrder extends Component {
                     {
                       Header: <span>Invoice Numberr</span>,
                       accessor: "invoiceNumber",
-                      // Cell: row => (
-                      //   <div
-                      //     className="filter-checkbox"
-                      //     style={{ marginLeft: "15px" }}
-                      //   >
-                      //     <input
-                      //       type="checkbox"
-                      //       id={"i" + row.original.orderMasterID}
-                      //       style={{ display: "none" }}
-                      //       name="ticket-order"
-                      //       checked={
-                      //         this.state.CheckOrderID[
-                      //           row.original.orderMasterID
-                      //         ] === true
-                      //       }
-                      //       onChange={this.handleCheckOrderID.bind(
-                      //         this,
-                      //         row.original.orderMasterID,
-                      //         row.original
-                      //       )}
-                      //     />
-                      //     <label htmlFor={"i" + row.original.orderMasterID}>
-                      //       {row.original.invoiceNumber}
-                      //     </label>
-                      //   </div>
-                      // )
+                      Cell: row => (
+                        <div
+                          className="filter-checkbox"
+                          style={{ marginLeft: "15px" }}
+                        >
+                          <input
+                            type="checkbox"
+                            id={"i" + row.original.orderMasterID}
+                            style={{ display: "none" }}
+                            name="ticket-order"
+                            checked={
+                              this.state.CheckOrderID[
+                                row.original.orderMasterID
+                              ] === true
+                            }
+                            onChange={this.handleCheckOrderID.bind(
+                              this,
+                              row.original.orderMasterID,
+                              row.original
+                            )}
+                          />
+                          <label htmlFor={"i" + row.original.orderMasterID}>
+                            {row.original.invoiceNumber}
+                          </label>
+                        </div>
+                      )
                     },
                     {
                       Header: <span>Invoice Date</span>,
