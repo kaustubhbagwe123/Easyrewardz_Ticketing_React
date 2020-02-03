@@ -2114,10 +2114,10 @@ class MyTicket extends Component {
                               </div>
                             </div>
 
-                            <div className="row">
+                            <div className="row m-0">
                               <div
                                 className="col-md-6 m-b-10 m-t-10"
-                                style={{ marginLeft: "25px" }}
+                                // style={{ marginLeft: "25px" }}
                               >
                                 <input
                                   type="text"
@@ -2134,10 +2134,10 @@ class MyTicket extends Component {
                                   onClick={this.handleGetStoreDetails.bind(this)}
                                 />
                               </div>
-                              <div className="">
+                              <div className="col-md-6 m-b-10 m-t-10 text-right">
                                 <button
                                   type="button"
-                                  className="myticket-submit-solve-button"
+                                  className="myticket-submit-solve-button m-0"
                                   onClick={this.handleAttachStoreData.bind(this)}
                                 >
                                   Attach Store
@@ -3131,7 +3131,7 @@ class MyTicket extends Component {
                               : this.state.tabCounts.task}
                           </a>
                         </li>
-                        <li className="nav-item fo">
+                        <li className="nav-item fo" style={{display:'none'}}>
                           <a
                             className="nav-link"
                             data-toggle="tab"

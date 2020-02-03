@@ -54,8 +54,32 @@ class StoreMaster extends Component {
       contact_email: "",
       contact_Phone: "",
       loading: false,
+<<<<<<< HEAD
       userEditData:{}
       
+=======
+      updatestoreID: 0,
+      updatestoreName: "",
+      updatestoreCode: "",
+      updatebranName: "",
+      updatecityName: "",
+      updatestateName: "",
+      updatepinCode: 0,
+      updatestatus: "",
+      updatestrPinCode: "0",
+      updatecityID: 0,
+      updatestateID: 0,
+      updateregionID: 0,
+      updatezoneID: 0,
+      updatestoreTypeID: 0,
+      updatestatusID: false,
+      updatebrandIDs: "",
+      updatebrandNames: "",
+      updatebrand_Names: "",
+      updateAddress: "",
+      updateEmail: "",
+      updatePhone: ""
+>>>>>>> e3ae6f57018f74657c0890cbe997cd0ce7fa653f
     };
     this.handleGetStoreMasterData = this.handleGetStoreMasterData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -66,7 +90,6 @@ class StoreMaster extends Component {
     this.handleUpdateData=this.handleUpdateData.bind(this);
   }
   componentDidMount() {
-
     this.handleGetStoreMasterData();
     this.handleGetBrandList();
     this.handleGetStateList();
@@ -336,8 +359,17 @@ class StoreMaster extends Component {
   };
   handleBrandChange = e => {
     debugger;
+<<<<<<< HEAD
     
     this.setState({ selectedBrand: e });
+=======
+    this.setState({ selectedBrand: e });
+  };
+  handleEditBrandChange = e => {
+    debugger;
+    let value = e.target.value;
+    this.setState({ EditBrand: value });
+>>>>>>> e3ae6f57018f74657c0890cbe997cd0ce7fa653f
   };
  
   handleStateChange = e => {
@@ -353,17 +385,12 @@ class StoreMaster extends Component {
   handleEditStoreMasterData(data) {
     debugger;
     var storeEditData = data;
-    // storeEditData.brand_Id=storeEditData.brandID;
-    // storeEditData.brand_Id=storeEditData.brandID;
-    // storeEditData.brand_Id=storeEditData.brandID;
-    // storeEditData.brand_Id=storeEditData.brandID;
-    // storeEditData.brand_Id=storeEditData.brandID;
-    // storeEditData.brand_Id=storeEditData.brandID;
-    // storeEditData.brand_Id=storeEditData.brandID;
+
     this.setStoreUpdateData(data);
   }
-  setStoreUpdateData(individualData){
+  setStoreUpdateData(individualData) {
     debugger;
+<<<<<<< HEAD
       var userEditData= individualData; 
      userEditData.store_ID=userEditData.storeID;
     userEditData.store_Name=userEditData.storeName;
@@ -392,6 +419,62 @@ class StoreMaster extends Component {
       userEditData
     })
     
+=======
+
+    let updatestoreID = individualData.storeID,
+      updatestoreName = individualData.storeName,
+      updatestoreCode = individualData.storeCode,
+      updatebranName = individualData.brandName,
+      updatecityName = individualData.cityName,
+      updatestateName = individualData.stateName,
+      updatepinCode = individualData.pinCode,
+      updatestatus = individualData.status,
+      updatestrPinCode = individualData.strPinCode,
+      updatecityID = individualData.cityID,
+      updatestateID = individualData.stateID,
+      updateregionID = individualData.regionID,
+      updatezoneID = individualData.zoneID,
+      updatestoreTypeID = individualData.storeTypeID,
+      updatestatusID = individualData.statusID,
+      updatebrandIDs = individualData.brandIDs,
+      updatebrandNames = individualData.brandNames,
+      updatebrand_Names = individualData.brand_Names,
+      selectState = updatestateID,
+      selectCity = updatecityID,
+      selectRegion = updateregionID,
+      selectZone = updatezoneID,
+      store_type = updatestoreTypeID,
+      selectStatus = updatestatusID,
+      EditBrand = updatebrandIDs;
+
+    this.setState({
+      updatestoreID,
+      updatestoreName,
+      updatestoreCode,
+      updatebranName,
+      updatecityName,
+      updatestateName,
+      updatepinCode,
+      updatestatus,
+      updatestrPinCode,
+      updatecityID,
+      updatestateID,
+      updateregionID,
+      updatezoneID,
+      updatestoreTypeID,
+      updatestatusID,
+      updatebrandIDs,
+      updatebrandNames,
+      updatebrand_Names,
+      selectState,
+      selectCity,
+      selectRegion,
+      selectZone,
+      store_type,
+      selectStatus,
+      EditBrand
+    });
+>>>>>>> e3ae6f57018f74657c0890cbe997cd0ce7fa653f
   }
   handleOnChangeEditData = e => {
     debugger;
@@ -570,7 +653,7 @@ class StoreMaster extends Component {
                           Header: <span>Actions</span>,
                           accessor: "actiondept",
                           Cell: row => {
-                            debugger
+                            debugger;
                             var ids = row.original["storeID"];
                             return (
                               <>
@@ -625,6 +708,7 @@ class StoreMaster extends Component {
                                           EDIT STORE
                                         </label>
                                         <div className="div-padding-1">
+<<<<<<< HEAD
                       <label className="designation-name">Brand</label>
                       <Select
                         getOptionLabel={option => option.brandName}
@@ -640,6 +724,28 @@ class StoreMaster extends Component {
                         isMulti
                       />
                     </div>
+=======
+                                          <label className="designation-name">
+                                            Brand
+                                          </label>
+                                          <Select
+                                            getOptionLabel={option =>
+                                              option.brandName
+                                            }
+                                            getOptionValue={option =>
+                                              option.brandID
+                                            }
+                                            options={this.state.brandData}
+                                            placeholder="Select"
+                                            // menuIsOpen={true}
+                                            closeMenuOnSelect={false}
+                                            onChange={this.handleBrandChange}
+                                            value={this.state.EditBrand}
+                                            // showNewOptionAtTop={false}
+                                            isMulti
+                                          />
+                                        </div>
+>>>>>>> e3ae6f57018f74657c0890cbe997cd0ce7fa653f
                                         <div className="pop-over-div">
                                           <label className="edit-label-1">
                                             Store Code
@@ -680,7 +786,15 @@ class StoreMaster extends Component {
                                             value={this.state.userEditData.state_ID}
                                             onChange={this.handleOnChangeEditData}
                                           >
+<<<<<<< HEAD
                                             <option >select</option>
+=======
+                                            <option
+                                              value={this.state.updatestateID}
+                                            >
+                                              {this.state.updatestateName}
+                                            </option>
+>>>>>>> e3ae6f57018f74657c0890cbe997cd0ce7fa653f
                                             {this.state.stateData !== null &&
                                               this.state.stateData.map(
                                                 (item, i) => (
@@ -694,22 +808,30 @@ class StoreMaster extends Component {
                                                 )
                                               )}
                                           </select>
-
-                                         
-                                         
-
-
                                         </div>
                                         <div className="pop-over-div">
                                           <label className="edit-label-1">
                                             City
                                           </label>
+<<<<<<< HEAD
                                           <select className="edit-dropDwon dropdown-setting"
                                           name="city_ID"
                                           value={this.state.userEditData.city_ID}
                                           onChange={this.handleOnChangeEditData}
                                           >
                                             <option >select</option>
+=======
+                                          <select
+                                            className="edit-dropDwon dropdown-setting"
+                                            value={this.state.selectCity}
+                                            onChange={this.handleCityChange}
+                                          >
+                                            <option
+                                              value={this.state.updatecityID}
+                                            >
+                                              {this.state.updatecityName}
+                                            </option>
+>>>>>>> e3ae6f57018f74657c0890cbe997cd0ce7fa653f
                                             {this.state.cityData !== null &&
                                               this.state.cityData.map(
                                                 (item, i) => (
@@ -749,8 +871,11 @@ class StoreMaster extends Component {
                                             placeholder="Enter address"
                                             name="address_"
                                             maxLength={250}
+<<<<<<< HEAD
                                             value={this.state.userEditData.address_}
                                             onChange={this.handleOnChangeEditData}
+=======
+>>>>>>> e3ae6f57018f74657c0890cbe997cd0ce7fa653f
                                           ></textarea>
                                         </div>
                                         <div className="pop-over-div">
@@ -758,6 +883,7 @@ class StoreMaster extends Component {
                                             Region
                                           </label>
                                           <select
+<<<<<<< HEAD
                         className="store-create-select"
                         name="region_ID"
                         value={this.state.userEditData.region_ID}
@@ -771,12 +897,32 @@ class StoreMaster extends Component {
                             </option>
                           ))}
                       </select>
+=======
+                                            className="store-create-select"
+                                            value={this.state.selectRegion}
+                                            onChange={this.handleRegionChange}
+                                          >
+                                            <option>Select</option>
+                                            {this.state.regionData !== null &&
+                                              this.state.regionData.map(
+                                                (item, s) => (
+                                                  <option
+                                                    key={s}
+                                                    value={item.regionID}
+                                                  >
+                                                    {item.regionName}
+                                                  </option>
+                                                )
+                                              )}
+                                          </select>
+>>>>>>> e3ae6f57018f74657c0890cbe997cd0ce7fa653f
                                         </div>
                                         <div className="pop-over-div">
                                           <label className="edit-label-1">
                                             Zone
                                           </label>
                                           <select
+<<<<<<< HEAD
                         className="store-create-select"
                         name="zone_ID"
                         value={this.state.userEditData.zone_ID}
@@ -790,12 +936,32 @@ class StoreMaster extends Component {
                             </option>
                           ))}
                       </select>
+=======
+                                            className="store-create-select"
+                                            value={this.state.selectZone}
+                                            onChange={this.handleZoneChange}
+                                          >
+                                            <option>Select</option>
+                                            {this.state.zoneData !== null &&
+                                              this.state.zoneData.map(
+                                                (item, s) => (
+                                                  <option
+                                                    key={s}
+                                                    value={item.zoneID}
+                                                  >
+                                                    {item.zoneName}
+                                                  </option>
+                                                )
+                                              )}
+                                          </select>
+>>>>>>> e3ae6f57018f74657c0890cbe997cd0ce7fa653f
                                         </div>
                                         <div className="pop-over-div">
                                           <label className="edit-label-1">
                                             Store Type
                                           </label>
                                           <select
+<<<<<<< HEAD
                         className="store-create-select"
                         name="storeType_ID"
                         value={this.state.userEditData.storeType_ID}
@@ -809,6 +975,28 @@ class StoreMaster extends Component {
                             </option>
                           ))}
                       </select>
+=======
+                                            className="store-create-select"
+                                            value={this.state.store_type}
+                                            onChange={
+                                              this.handleStoreTypeChange
+                                            }
+                                          >
+                                            <option>Select</option>
+                                            {this.state.storeTypeData !==
+                                              null &&
+                                              this.state.storeTypeData.map(
+                                                (item, t) => (
+                                                  <option
+                                                    key={t}
+                                                    value={item.storeTypeID}
+                                                  >
+                                                    {item.storeTypeName}
+                                                  </option>
+                                                )
+                                              )}
+                                          </select>
+>>>>>>> e3ae6f57018f74657c0890cbe997cd0ce7fa653f
                                         </div>
                                         <div className="pop-over-div">
                                           <label className="edit-label-1">
@@ -820,8 +1008,11 @@ class StoreMaster extends Component {
                                             placeholder="Enter email id"
                                             name="email_"
                                             maxLength={100}
+<<<<<<< HEAD
                                             value={this.state.userEditData.email_}
                                             onChange={this.handleOnChangeEditData}
+=======
+>>>>>>> e3ae6f57018f74657c0890cbe997cd0ce7fa653f
                                           />
                                         </div>
                                         <div className="pop-over-div">
@@ -843,6 +1034,7 @@ class StoreMaster extends Component {
                                             Status
                                           </label>
                                           <select
+<<<<<<< HEAD
                         className="form-control dropdown-setting"
                         name="status_ID"
                         value={this.state.userEditData.status_ID}
@@ -851,6 +1043,25 @@ class StoreMaster extends Component {
                         <option value="true">Active</option>
                         <option value="false" >Inactive</option>
                       </select>
+=======
+                                            className="form-control dropdown-setting"
+                                            value={this.state.selectStatus}
+                                            onChange={this.handleStatusChange}
+                                          >
+                                            <option>select</option>
+                                            {this.state.activeData !== null &&
+                                              this.state.activeData.map(
+                                                (item, j) => (
+                                                  <option
+                                                    key={j}
+                                                    value={item.ActiveID}
+                                                  >
+                                                    {item.ActiveName}
+                                                  </option>
+                                                )
+                                              )}
+                                          </select>
+>>>>>>> e3ae6f57018f74657c0890cbe997cd0ce7fa653f
                                         </div>
                                         <br />
                                         <div>

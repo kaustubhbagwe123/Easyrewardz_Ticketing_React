@@ -2496,6 +2496,13 @@ table tr th:last-child {
 /* tabs ends */
 
 /* logout block starts */
+.logout-flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-grow: 1;
+  margin-left: 10px;
+}
 .logout-block {
   color: #000;
   width: 380px;
@@ -2755,7 +2762,9 @@ table tr th:last-child {
   padding-right: 20px;
   padding-left: 20px;
 }
-
+.dash-timepicker .react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box, .dash-timepicker .react-datepicker__time-container {
+  width: 185px !important;
+}
 /* dashboard ends */
 
 /* chatbot starts */
@@ -6318,7 +6327,7 @@ font-weight: normal;
 /* *************New react table start css(SHLOK BAROT)************** */
 .ReactTable .rt-thead.-header {
   box-shadow: none !important;
-  background-color: #e5e9ed;
+  background-color: #f8f8f8;
   border-bottom: 1px solid #eeeeee;
 }
 .ReactTable {
@@ -6875,7 +6884,8 @@ table thead tr {
   margin-top: 115px !important;
 }
 .assign-modal-div {
-  padding: 0px 40px 0px 30px;
+  /* padding: 0px 40px 0px 30px; */
+  padding: 0px 30px;
 }
 .assign-modal-header {
   padding: 25px 30px 10px;
@@ -6892,7 +6902,10 @@ table thead tr {
   margin-bottom: 15px;
 }
 .srch-mleft-spc {
-  margin-left: 120px;
+  /* margin-left: 120px; */
+  float: right;
+    width: auto;
+    margin-top: 5px;
 }
 .assign-btn {
   height: 43px;
@@ -6929,7 +6942,8 @@ table thead tr {
 .assign-modal-textArea {
   background-color: #ecf2f4;
   border-radius: 4px;
-  width: 359px;
+  /* width: 359px; */
+  width: 100%;
   height: 236px;
   border: none;
   padding: 15px;
@@ -6957,11 +6971,15 @@ table thead tr {
 /* Css End Knowledge base */
 /* Dashboard Assign pop up modal css start*/
 #AssignPop-up {
-  max-width: 450px;
+  /* max-width: 450px; */
+  max-width: 520px;
   background: #ffffff;
   background-clip: padding-box;
   box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.25);
-  margin-left: 815px;
+  margin-left: 800px;
+  /* margin-left: 815px; */
+  padding-right: 0;
+  padding-left: 0;
 }
 .assign-modal-headerDashboard {
   padding: 0px 20px 20px;
@@ -7553,6 +7571,24 @@ table tr th:last-child {
 .ReactTable .rt-td {
   font-size: 14px;
   color: #a0a0a0 !important;
+}
+.assign-ticket-table .rt-tr[style="background: rgb(236, 242, 244);"] .rt-td {
+  color: #000 !important;
+}
+.assign-ticket-table .rt-tbody .rt-tr {
+  cursor: pointer;
+}
+.assign-ticket-table .rt-tbody .rt-tr.-padRow {
+  cursor: initial;
+}
+.assign-ticket-table .rt-tbody .rt-tr:hover {
+  background: #ECF2F4;
+}
+.assign-ticket-table .rt-tbody .rt-tr.-padRow:hover {
+  background: #fff;
+}
+.assign-ticket-table .rt-tbody .rt-tr:hover .rt-td {
+  color: #000 !important;
 }
 /* React table body color css end */
 /* StoreUser page css start by shlok */
@@ -10139,6 +10175,16 @@ table tr th:last-child {
   background: red;
 }
 
+.loader-icon-cntr {
+  position: relative;
+  min-height: 150px;
+}
+.loader-icon-cntr-above {
+  background: #fff;
+  margin: 0 15px;
+  border-radius: 5px;
+  margin-bottom: 40px;
+}
 .loader-icon {
   position: absolute;
   top: 0;
@@ -10189,6 +10235,7 @@ table tr th:last-child {
   align-items: stretch;
   width: 100%;
   border-collapse: collapse;
+  overflow: initial;
 }
 
 .datePickertable .ReactTable .rt-tbody {
@@ -10217,4 +10264,60 @@ table tr th:last-child {
    top: -7px;
     right: -2px;
     cursor: pointer;
+}
+
+.datePickertable .react-datepicker__input-container input {
+  width: 100%;
+  border: 1px solid #dcd4d4;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-weight: 500;
+}
+.datePickertable button {
+  min-width: initial;
+}
+#Modalorderitemtable .ReactTable .rt-thead.-headerGroups {
+  background: none;
+  border-bottom: none;
+  display: none;
+}
+#Modalorderitemtable .ReactTable {
+  border: none;
+}
+#Modalordertable {
+  max-height: 400px;
+  overflow: auto;
+}
+#Modalordertable .ReactTable .rt-thead.-headerGroups {
+  background: none;
+  border-bottom: none;
+  display: none;
+}
+#Modalordertable .ReactTable {
+  border: none;
+}
+
+.reactstoreselect .ReactTable .rt-thead.-headerGroups {
+  background: none;
+  border-bottom: none;
+  display: none;
+}
+
+.applySearch{
+  font-size: 14px;
+    font-weight: 700;
+    color: #2561a8 !important;
+    margin-right: 12px;
+    cursor: pointer;
+}
+
+.tic-noti label {
+  line-height: 1.5;
+}
+.noti-count {
+  width: 50px;
+  text-align: center;
+}
+.noti-count label {
+  padding-right: 9px;
 }

@@ -27,7 +27,7 @@ class ProgramCodeSignIn extends Component {
       setTimeout(function() {
         self.props.history.push({
           pathname: "SignIn",
-          state: self.state
+          encProgramCode: encProgramCode
         });
       }, 500);
       self.setState({

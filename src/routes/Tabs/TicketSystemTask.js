@@ -3,12 +3,14 @@ import ReactTable from "react-table";
 import DeleteIcon from "./../../assets/Images/red-delete-icon.png";
 import SimpleReactValidator from "simple-react-validator";
 import axios from "axios";
+import { Popover } from "antd";
 import config from "../../helpers/config";
 import {
   NotificationContainer,
   NotificationManager
 } from "react-notifications";
 import { authHeader } from "../../helpers/authHeader";
+import Demo from "../../store/Hashtag";
 
 class TicketSystemTask extends Component {
   constructor(props) {
@@ -449,14 +451,49 @@ class TicketSystemTask extends Component {
                           accessor: "actionReport",
                           Cell: row => (
                             <div>
-                              <img
+                              {/* <img
                                 src={DeleteIcon}
                                 alt="del-icon"
                                 className="downloadaction"
                                 onClick={() => {
                                   this.handleTaskDelete(row.original.ID);
                                 }}
+                              /> */}
+                              <Popover
+                                    content={
+                                      <div className="d-flex general-popover popover-body">
+                                        <div>
+                                          <p className="font-weight-bold blak-clr">
+                                            Delete file?
+                                          </p>
+                                          <p className="mt-1 fs-12">
+                                            Are you sure you want to delete this
+                                            file?
+                                          </p>
+                                          <div className="del-can">
+                                            <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                            <button
+                                              className="butn"
+                                              type="button"
+                                              onClick={() => {
+                                                this.handleTaskDelete(row.original.ID);
+                                              }}
+                                            >
+                                              Delete
+                                            </button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    }
+                                    placement="bottom"
+                                    trigger="click"
+                                  >
+                                    <img
+                                src={DeleteIcon}
+                                alt="del-icon"
+                                className="downloadaction"
                               />
+                                  </Popover>
                             </div>
                           )
                         }

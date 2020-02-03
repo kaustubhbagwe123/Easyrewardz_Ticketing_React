@@ -49,7 +49,7 @@ class CreateSLA extends Component {
       PriorityResolutionDurationHigh: "M",
       PriorityResolutionDurationMedium: "M",
       PriorityResolutionDurationLow: "M",
-      value:null    
+      value: null
     };
 
     this.handleGetSLA = this.handleGetSLA.bind(this);
@@ -93,17 +93,17 @@ class CreateSLA extends Component {
   }
 
   handleCreate(issueTypeName) {
-    let {slaIssueType,  value } = this.state;
+    let { slaIssueType, value } = this.state;
 
     let newOption = {
       issueTypeName,
       issueTypeID: slaIssueType.length + 1
-    }
+    };
 
     this.setState({
-      value: newOption,  // select new option
+      value: newOption, // select new option
       slaIssueType: [...slaIssueType, newOption] // add new option to our dataset
-    })
+    });
   }
   handleGetSLA() {
     debugger;
@@ -271,8 +271,7 @@ class CreateSLA extends Component {
     this.setState({ fileName: e.target.files[0].name });
   };
   render() {
-   
-    let {slaIssueType,  value } = this.state;
+    const { slaIssueType, value } = this.state;
     const columnsTickSla = [
       {
         Header: (
@@ -468,9 +467,8 @@ class CreateSLA extends Component {
                 <Popover
                   content={
                     <div className="edtpadding">
-                       
-                        <label className="popover-header-text">EDIT SLA</label>
-                      
+                      <label className="popover-header-text">EDIT SLA</label>
+
                       <div className="pop-over-div">
                         <label className="edit-label-1">Issue Type</label>
                         <select
@@ -523,7 +521,6 @@ class CreateSLA extends Component {
                         </div>
                       )}
 
-
                       <div className="pop-over-div">
                         <label className="edit-label-1">Status</label>
                         <select
@@ -572,8 +569,7 @@ class CreateSLA extends Component {
         }
       }
     ];
-     
- 
+
     const listOfIssueType = this.state.slaIssueType.map((item, i) => (
       <option key={i} value={item.issueTypeID}>
         {item.issueTypeName}
@@ -666,11 +662,14 @@ class CreateSLA extends Component {
                               </option>
                             ))}
                         </select> */}
-                        <DropdownList filter
+                        <DropdownList
+                          filter
                           data={this.state.slaIssueType}
                           value={this.state.value}
                           allowCreate="onFilter"
-                          onCreate={issueTypeName => this.handleCreate(issueTypeName)}
+                          onCreate={issueTypeName =>
+                            this.handleCreate(issueTypeName)
+                          }
                           onChange={value => this.setState({ value })}
                           textField="issueTypeName"
                         />

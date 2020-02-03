@@ -27,6 +27,7 @@ import { Popover } from "antd";
 import { authHeader } from "../helpers/authHeader";
 import config from "../helpers/config";
 import axios from "axios";
+import Demo from "../store/Hashtag";
 // import {
 //   NotificationContainer,
 //   NotificationManager
@@ -38,15 +39,15 @@ class Header extends Component {
 
     this.state = {
       modalIsOpen: false,
-      Email:"",
-      UserName:"",
-      LoginTime:"",
-      LoggedInDuration:"",
-      SLAScore:"",
-      CSatScore:"",
-      AvgResponse:"",
-      LogoutTime:"",
-      NameTag:"",
+      Email: "",
+      UserName: "",
+      LoginTime: "",
+      LoggedInDuration: "",
+      SLAScore: "",
+      CSatScore: "",
+      AvgResponse: "",
+      LogoutTime: "",
+      NameTag: "",
       HeadPhoneOpen: false,
       LoginOpen: false,
       open: false,
@@ -54,6 +55,12 @@ class Header extends Component {
       ChatDetailModel: false,
       NextButtonModal: false,
       WaitingCall: false,
+      notifiCount1: 0,
+      notifiCount2: 0,
+      notifiCount3: 0,
+      notifiMsg1: "",
+      notifiMsg2: "",
+      notifiMsg3: "",
       cont: [
         {
           data: "Dashboards",
@@ -84,8 +91,30 @@ class Header extends Component {
         }
       ]
     };
-    this.handleLoggedInUserDetails=this.handleLoggedInUserDetails.bind(this);
+    this.handleLoggedInUserDetails = this.handleLoggedInUserDetails.bind(this);
+    this.handleGetNotificationList = this.handleGetNotificationList.bind(this);
   }
+
+  componentDidMount() {
+    this.handleLoggedInUserDetails();
+    let pageName, lastOne, lastValue, arr;
+    arr = [...this.state.cont];
+    setTimeout(
+      function() {
+        pageName = window.location.pathname;
+        lastOne = pageName.split("/");
+        lastValue = lastOne[lastOne.length - 1];
+        arr.forEach(i => {
+          i.activeClass = "single-menu";
+          if (i.urls === lastValue) i.activeClass = "active single-menu";
+        });
+        this.setState({ cont: arr });
+      }.bind(this),
+      1
+    );
+    this.handleGetNotificationList();
+  }
+
   handleNextButtonShow() {
     this.setState({ NextButton: !this.state.NextButton });
   }
@@ -151,50 +180,39 @@ class Header extends Component {
       }
     });
   }
-  
-  handleLoggedInUserDetails=()=> {
+
+  handleLoggedInUserDetails = () => {
     debugger;
-     let self = this;
-     var data="";
+    let self = this;
+    var data = "";
     axios({
       method: "post",
       url: config.apiUrl + "/DashBoard/LoggedInAccountDetails",
       headers: authHeader()
     }).then(function(res) {
-      debugger;        
+      debugger;
       data = res.data.responseData;
       var status = res.data.message;
-      if (status === 'Success') {
-      var strTag=data.agentName.split(' ');
-      var nameTag=strTag[0].charAt(0).toUpperCase();
-      if(strTag.length>0)
-      {
-        nameTag+=strTag[1].charAt(0).toUpperCase();
-      }        
-        self.setState({Email:data.agentEmailId,UserName:data.agentName,LoginTime:data.loginTime,LoggedInDuration:data.loggedInDuration,SLAScore:data.slaScore,CSatScore:data.csatScore,AvgResponse:data.avgResponseTime,LogoutTime:data.logoutTime,NameTag:nameTag});  
-      } 
-    });
-   
-  }
-
-  componentDidMount() {
-    this.handleLoggedInUserDetails()
-    let pageName, lastOne, lastValue, arr;
-    arr = [...this.state.cont];
-    setTimeout(
-      function() {
-        pageName = window.location.pathname;
-        lastOne = pageName.split("/");
-        lastValue = lastOne[lastOne.length - 1];
-        arr.forEach(i => {
-          i.activeClass = "single-menu";
-          if (i.urls === lastValue) i.activeClass = "active single-menu";
+      if (status === "Success") {
+        var strTag = data.agentName.split(" ");
+        var nameTag = strTag[0].charAt(0).toUpperCase();
+        if (strTag.length > 0) {
+          nameTag += strTag[1].charAt(0).toUpperCase();
+        }
+        self.setState({
+          Email: data.agentEmailId,
+          UserName: data.agentName,
+          LoginTime: data.loginTime,
+          LoggedInDuration: data.loggedInDuration,
+          SLAScore: data.slaScore,
+          CSatScore: data.csatScore,
+          AvgResponse: data.avgResponseTime,
+          LogoutTime: data.logoutTime,
+          NameTag: nameTag
         });
-        this.setState({ cont: arr });
-      }.bind(this),
-      1
-    );
-  }
+      }
+    });
+  };
 
   actives = e => {
     const contDummy = [...this.state.cont];
@@ -205,8 +223,46 @@ class Header extends Component {
     this.setState({ cont: contDummy });
   };
 
-  render() {   
-   
+  handleGetNotificationList() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Notification/GetNotifications",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      if (status === "Success") {
+        let Count1 = res.data.responseData[0].ticketCount;
+        let Count2 = res.data.responseData[1].ticketCount;
+        let Count3 = res.data.responseData[2].ticketCount;
+        let Msg1 = res.data.responseData[0].notificationMessage;
+        let Msg2 = res.data.responseData[1].notificationMessage;
+        let Msg3 = res.data.responseData[2].notificationMessage;
+
+        self.setState({
+          notifiCount1: Count1,
+          notifiCount2: Count2,
+          notifiCount3: Count3,
+          notifiMsg1: Msg1,
+          notifiMsg2: Msg2,
+          notifiMsg3: Msg3
+        });
+      } else {
+        self.setState({
+          notifiCount1: "",
+          notifiCount2: "",
+          notifiCount3: "",
+          notifiMsg1: "",
+          notifiMsg2: "",
+          notifiMsg3: ""
+        });
+      }
+    });
+  }
+
+  render() {
     const TransferCall = (
       <>
         <div>
@@ -761,57 +817,54 @@ class Header extends Component {
           overlayId="logout-ovrly"
         >
           <div className="row rowpadding">
-            <div className="md-2 rectangle-2 lable05">
-              <label className="labledata">05</label>
+            <div className="md-2 rectangle-2 lable05 noti-count">
+              <label className="labledata">{this.state.notifiCount1}</label>
             </div>
-            <div className="md-6 new-tickets-assigned">
+            <div className="md-6 new-tickets-assigned tic-noti">
               <label>
                 <span style={{ fontSize: "17px", fontWeight: "bold" }}>
-                  New Tickets
-                </span>{" "}
-                assigned to you
+                  {this.state.notifiMsg1}
+                </span>
               </label>
             </div>
             <div className="viewticketspeadding">
-              <a href="{#}">
+              <Link to="myTicketlist">
                 <label className="md-4 view-tickets">VIEW TICKETS</label>
-              </a>
+              </Link>
             </div>
           </div>
           <div className="row rowpadding">
-            <div className="md-2 rectangle-2 lable05">
-              <label className="labledata">05</label>
+            <div className="md-2 rectangle-2 lable05 noti-count">
+              <label className="labledata">{this.state.notifiCount2}</label>
             </div>
-            <div className="md-6 new-tickets-assigned">
+            <div className="md-6 new-tickets-assigned tic-noti">
               <label>
                 <span style={{ fontSize: "17px", fontWeight: "bold" }}>
-                  Update
-                </span>{" "}
-                happened to your tickets
+                  {this.state.notifiMsg2}
+                </span>
               </label>
             </div>
             <div className="viewticketspeadding">
-              <a href="{#}">
+              <Link to="myTicketlist">
                 <label className="md-4 view-tickets">VIEW TICKETS</label>
-              </a>
+              </Link>
             </div>
           </div>
           <div className="row rowpadding">
-            <div className="md-2 rectangle-2 lable05">
-              <label className="labledata">05</label>
+            <div className="md-2 rectangle-2 lable05 noti-count">
+              <label className="labledata">{this.state.notifiCount3}</label>
             </div>
-            <div className="md-6 new-tickets-assigned">
+            <div className="md-6 new-tickets-assigned tic-noti">
               <label>
                 <span style={{ fontSize: "17px", fontWeight: "bold" }}>
-                  Escalation
-                </span>{" "}
-                in your ticket
+                  {this.state.notifiMsg3}
+                </span>
               </label>
             </div>
             <div className="viewticketspeadding">
-              <a href="{#}">
+              <Link to="myTicketlist">
                 <label className="md-4 view-tickets">VIEW TICKETS</label>
-              </a>
+              </Link>
             </div>
           </div>
         </Modal>
@@ -828,21 +881,23 @@ class Header extends Component {
                 <div className="user-img">
                   <img src={UserLogo} alt="User" />
                 </div>
-                <div>
-                  <p style={{ fontSize: "16px", fontWeight: "600" }}>
-                    {this.state.UserName}
-                  </p>
-                  <p className="mail-id">{this.state.Email}</p>
+                <div className="logout-flex">
+                  <div>
+                    <p style={{ fontSize: "16px", fontWeight: "600" }}>
+                      {this.state.UserName}
+                    </p>
+                    <p className="mail-id">{this.state.Email}</p>
+                  </div>
+                  <button
+                    type="button"
+                    className="logout"
+                    onClick={this.handleLogoutMethod.bind(this)}
+                  >
+                    LOGOUT
+                  </button>
                 </div>
-                <button
-                  type="button"
-                  className="logout"
-                  onClick={this.handleLogoutMethod.bind(this)}
-                >
-                  LOGOUT
-                </button>
               </div>
-              <div className="status-sctn alignradio">
+              <div className="status-sctn alignradio d-none">
                 <div className="d-flex align-items-center">
                   <div className="logout-status" style={{ marginTop: "10px" }}>
                     <img src={StatusLogo} alt="status" />
@@ -876,7 +931,8 @@ class Header extends Component {
                       className="font-weight-bold"
                       style={{ fontSize: "16px" }}
                     >
-                      9:30 AM
+                      {/* 9:30 AM */}
+                      {this.state.LoginTime}
                     </p>
                   </div>
                   <div>

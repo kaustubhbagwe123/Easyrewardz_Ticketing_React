@@ -50,6 +50,7 @@ class TicketSystemStore extends Component {
     this.setState({ byVisitDate: date });
   }
   handleStoreStatus = e => {
+    debugger;
     this.setState({
       SwitchBtnStatus: e.target.checked
     });
@@ -211,7 +212,7 @@ class TicketSystemStore extends Component {
                       <input
                         type="checkbox"
                         id="editDashboard-p-18"
-                        value={this.state.SwitchBtnStatus}
+                        checked={this.state.SwitchBtnStatus}
                         onChange={this.handleStoreStatus}
                       />
                       <label
@@ -256,7 +257,8 @@ class TicketSystemStore extends Component {
                     <label className="orderdetailpopup">Yes</label>
                     <div className="switchmargin">
                       <div className="switch switch-primary d-inline m-r-10">
-                        <input type="checkbox" id="editDashboard-p-12" />
+                        <input type="checkbox" id="editDashboard-p-12" checked={this.state.SwitchBtnStatus}
+                        onChange={this.handleStoreStatus} />
                         <label
                           htmlFor="editDashboard-p-12"
                           className="cr"
@@ -449,7 +451,7 @@ class TicketSystemStore extends Component {
                           filterAll: true
                         }
                       ]}
-                      // resizable={false}
+                      resizable={false}
                       defaultPageSize={5}
                       showPagination={false}
                     />
@@ -499,21 +501,7 @@ class TicketSystemStore extends Component {
                         },
                         {
                           Header: <span>Store Code</span>,
-                          accessor: "storeCode",
-                          Cell: row => (
-                            <div className="col-md-3 col-sm-6">
-                              <DatePicker
-                                selected={this.state.byVisitDate}
-                                onChange={this.handleByvisitDate.bind(this)}
-                                placeholderText="Visite Date"
-                                showMonthDropdown
-                                showYearDropdown
-                                dateFormat="dd/MM/yyyy"
-                                value={this.state.byVisitDate}
-                                // className="form-control"
-                              />
-                            </div>
-                          )
+                          accessor: "storeCode"
                         },
                         {
                           Header: <span>Store Name</span>,
@@ -534,23 +522,22 @@ class TicketSystemStore extends Component {
                         {
                           Header: <span>Visit Date</span>,
                           accessor: "visitDate",
-                          // Cell: row => (
-                          //   <div className="col-md-3 col-sm-6">
-                          //     <DatePicker
-                          //       selected={this.state.byVisitDate}
-                          //       onChange={this.handleByvisitDate.bind(this)}
-                          //       placeholderText="Visite Date"
-                          //       showMonthDropdown
-                          //       showYearDropdown
-                          //       dateFormat="dd/MM/yyyy"
-                          //       value={this.state.byVisitDate}
-                          //       // className="form-control"
-                          //     />
-                          //   </div>
-                          // )
+                          Cell: row => (
+                            <div className="col-sm-12 p-0">
+                              <DatePicker
+                                selected={this.state.byVisitDate}
+                                onChange={this.handleByvisitDate.bind(this)}
+                                placeholderText="Visited Date"
+                                showMonthDropdown
+                                showYearDropdown
+                                dateFormat="dd/MM/yyyy"
+                                value={this.state.byVisitDate}
+                              />
+                            </div>
+                          )
                         }
                       ]}
-                      // resizable={false}
+                      resizable={false}
                       defaultPageSize={5}
                       showPagination={false}
                     />
@@ -648,7 +635,7 @@ class TicketSystemStore extends Component {
                     role="tabpanel"
                     aria-labelledby="storeSubdetail-tab"
                   >
-                    <div className="reactstoreselect">
+                    <div className="reactstoreselect ordermainrow">
                       <ReactTable
                         data={SearchData}
                         onFilteredChange={this.onFilteredChange.bind(this)}
@@ -660,8 +647,8 @@ class TicketSystemStore extends Component {
                           {
                             columns: [
                               {
-                                Header: <span>Store Code</span>,
-                                accessor: "storeCode",
+                                Header: <></>,
+                                accessor: "storeID",
                                 Cell: row => (
                                   <div
                                     className="filter-checkbox"
@@ -683,11 +670,15 @@ class TicketSystemStore extends Component {
                                         row.original
                                       )}
                                     />
-                                    <label htmlFor={"i" + row.original.storeID}>
-                                      {row.original.storeID}
-                                    </label>
+                                     <label htmlFor={"i" + row.original.storeID}>
+                                    {row.original.storeID}
+                                  </label>
                                   </div>
                                 )
+                              },
+                              {
+                                Header: <span>Store Code</span>,
+                                accessor: "storeCode" 
                               },
                               {
                                 Header: <span>Store Name</span>,
@@ -750,7 +741,7 @@ class TicketSystemStore extends Component {
                             filterAll: true
                           }
                         ]}
-                        // resizable={false}
+                        resizable={false}
                         defaultPageSize={5}
                         showPagination={false}
                       />
@@ -775,42 +766,42 @@ class TicketSystemStore extends Component {
                     role="tabpanel"
                     aria-labelledby="selectedSubstore-tab"
                   >
-                    <div className="reactstoreselect">
+                    <div className="reactstoreselect ordermainrow">
                       <ReactTable
                         data={selectedStoreData}
                         columns={[
-                          // {
-                          //   Header: <span>Purpose</span>,
-                          //   accessor: "invoiceNumber",
-                          //   Cell: row => (
-                          //     <div
-                          //       className="filter-checkbox"
-                          //       style={{ marginLeft: "15px" }}
-                          //     >
-                          //       <input
-                          //         type="checkbox"
-                          //         id={"selected" + row.original.storeID}
-                          //         style={{ display: "none" }}
-                          //         name="ticket-store"
-                          //         checked={
-                          //           this.state.CheckStoreID[
-                          //             row.original.storeID
-                          //           ] === true
-                          //         }
-                          //         onChange={this.handleCheckStoreID.bind(
-                          //           this,
-                          //           row.original.storeID,
-                          //           row.original
-                          //         )}
-                          //       />
-                          //       <label
-                          //         htmlFor={"selected" + row.original.storeID}
-                          //       >
-                          //         {row.original.storeID}
-                          //       </label>
-                          //     </div>
-                          //   )
-                          // },
+                          {
+                            Header: <span>Purpose</span>,
+                            accessor: "invoiceNumber",
+                            Cell: row => (
+                              <div
+                                className="filter-checkbox"
+                                style={{ marginLeft: "15px" }}
+                              >
+                                <input
+                                  type="checkbox"
+                                  id={"selected" + row.original.storeID}
+                                  style={{ display: "none" }}
+                                  name="ticket-store"
+                                  checked={
+                                    this.state.CheckStoreID[
+                                      row.original.storeID
+                                    ] === true
+                                  }
+                                  onChange={this.handleCheckStoreID.bind(
+                                    this,
+                                    row.original.storeID,
+                                    row.original
+                                  )}
+                                />
+                                <label
+                                  htmlFor={"selected" + row.original.storeID}
+                                >
+                                  {row.original.storeID}
+                                </label>
+                              </div>
+                            )
+                          },
                           {
                             Header: <span>Store Code</span>,
                             accessor: "storeCode",
@@ -865,7 +856,7 @@ class TicketSystemStore extends Component {
                             Cell: row => <label>23,Aug 2019</label>
                           }
                         ]}
-                        // resizable={false}
+                        resizable={false}
                         defaultPageSize={5}
                         showPagination={false}
                       />
