@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { PieChart } from "react-d3-components";
-import { authHeader } from "./../../helpers/authHeader";
-import axios from "axios";
-import config from "./../../helpers/config";
+// import { authHeader } from "./../../helpers/authHeader";
+// import axios from "axios";
+// import config from "./../../helpers/config";
 
 class OpenByPriorityPie extends Component {
 
@@ -11,11 +11,6 @@ class OpenByPriorityPie extends Component {
   
     this.state = {
       data: {
-        // values: [
-        //   { x: "Low,22", y: 22 },
-        //   { x: "High,37", y: 37 },
-        //   { x: "Medium,40", y: 40 }
-        // ]
         values: []
       },
       sort: null
@@ -69,7 +64,7 @@ class OpenByPriorityPie extends Component {
       <div className="obpml">
         <PieChart
           data={this.state.data}
-          width={300}
+          width={350}
           height={260}
           margin={{ top: 10, bottom: 10, left: 100, right: 100 }}
           sort={this.state.sort}

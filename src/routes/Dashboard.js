@@ -2905,8 +2905,8 @@ class Dashboard extends Component {
                               {/* <li> */}
                               {this.state.SearchListData !== null &&
                                 this.state.SearchListData.map((item, i) => (
-                                  <li>
-                                    <label key={i} value={item.searchParamID}>
+                                  <li key={i}>
+                                    <label  value={item.searchParamID}>
                                       {item.searchName}
                                     </label>
                                     <div>
