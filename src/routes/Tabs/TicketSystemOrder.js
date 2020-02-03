@@ -60,12 +60,9 @@ class TicketSystemOrder extends Component {
       filtered: [],
       orderItem: false,
       purchaseFrmStorID: 0,
-<<<<<<< HEAD
-      validOrdernumber: ""
-=======
+      validOrdernumber: "",
       expanded: {},
       expandedOrderPopup: {},
->>>>>>> 7c4104257d2dc2824498e935254232dc0e839bed
     };
     this.validator = new SimpleReactValidator();
     this.onFilteredChange = this.onFilteredChange.bind(this);
@@ -243,7 +240,6 @@ class TicketSystemOrder extends Component {
   handleOrderSearchData() {
     debugger;
     let self = this;
-<<<<<<< HEAD
     if(this.state.orderNumber.length > 0){
       var CustID = this.props.custDetails;
       axios({
@@ -264,26 +260,6 @@ class TicketSystemOrder extends Component {
           orderDetailsData: mainData
           // OrderSubComponent: subData
         });
-=======
-    var CustID = this.props.custDetails;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Order/getOrderListWithItemDetails",
-      headers: authHeader(),
-      params: {
-        OrderNumber: this.state.orderNumber,
-        CustomerID: CustID
-      }
-    }).then(function (res) {
-      debugger;
-      let Msg = res.data.message;
-      let mainData = res.data.responseData;
-      // let subData = res.data.responseData[0].orderItems;
-      self.setState({
-        message: Msg,
-        orderDetailsData: mainData
-        // OrderSubComponent: subData
->>>>>>> 7c4104257d2dc2824498e935254232dc0e839bed
       });
     }else{
       self.setState({
@@ -310,11 +286,7 @@ class TicketSystemOrder extends Component {
           ModeOfPaymentID: this.state.modeOfPayment,
           TransactionDate: this.state.OrderCreatDate, ///createdDate,
           InvoiceNumber: "",
-<<<<<<< HEAD
           InvoiceDate: this.state.OrderCreatDate, //createdDate,
-=======
-          InvoiceDate: this.state.OrderCreatDate, //createdDate, 
->>>>>>> 7c4104257d2dc2824498e935254232dc0e839bed
           OrderPrice: this.state.orderMRP,
           PricePaid: this.state.pricePaid,
           CustomerID: CustID,
@@ -332,11 +304,7 @@ class TicketSystemOrder extends Component {
           self.handleChangeSaveManualTbl();
           self.setState({
             productBarCode: "",
-<<<<<<< HEAD
             billId: "",
-=======
-            billId: '',
->>>>>>> 7c4104257d2dc2824498e935254232dc0e839bed
             orderId: "",
             selectedTicketSource: 0,
             modeOfPayment: 0,
@@ -394,11 +362,7 @@ class TicketSystemOrder extends Component {
 
     var StorAddress = this.state.StorAddress;
     StorAddress["address"] = id.address;
-<<<<<<< HEAD
     var Store_Id = id.storeID;
-=======
-    var Store_Id = id.storeID
->>>>>>> 7c4104257d2dc2824498e935254232dc0e839bed
 
     this.setState({
       SearchData,
@@ -525,11 +489,7 @@ class TicketSystemOrder extends Component {
       OrdItmBtnStatus: e.target.checked
     });
   };
-<<<<<<< HEAD
   handleChangeModalOrderItem = e => {
-=======
-  handleChangeModalOrderItem = (e) => {
->>>>>>> 7c4104257d2dc2824498e935254232dc0e839bed
     debugger;
     var values = e.target.checked;
     if (values) {
@@ -1621,10 +1581,6 @@ class TicketSystemOrder extends Component {
                     );
                   }}
                 />
-<<<<<<< HEAD
-=======
-
->>>>>>> 7c4104257d2dc2824498e935254232dc0e839bed
               </div>
             </div>
           ) : null}
