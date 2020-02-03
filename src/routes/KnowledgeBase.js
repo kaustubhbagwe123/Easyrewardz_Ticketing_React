@@ -33,19 +33,19 @@ var row;
       detailscollapse: false,
       tabcolor: "#2561A8",
       tabcolor1: "#4A4A4A",
-      selectedCategory: 0,
+      selectedCategory: '',
       CategoryData: [],
       byCategoryFlag:0,
       allFlag:0,
-      selectedSubCategory:0,
+      selectedSubCategory:'',
       SubCategoryData:[],
-      selectedSubject:[],
+      selectedSubject:'',
       selectedDescription:[],
       KBListData:[],
       KBListnotApproveData:[],
       KBid:0,
       IssueTypeData:[],
-      selectedIssueType:0,
+      selectedIssueType:'',
       updateKBID:0,
       updateCategoryValue:0,
       updateCategoryName:"",
@@ -58,19 +58,31 @@ var row;
       approveID:0,
       approvebit:0,
       approveKBID:0,
-      approveCategoryValue:0,
+      approveCategoryValue:'',
       approveCategoryName:"",
-      approveSubCategoryValue:0,
+      approveSubCategoryValue:'',
       approveSubCategoryName:"",
-      approveIssurTypeValue:0,
+      approveIssurTypeValue:'',
       approveIssueTypeName:"",
       approveSubject:"",
       approveDescription:"",
-      ckeditorAdd:[],
+      ckeditorAdd:'',
       ckeditorUpdate:[],
       ckeditorApprove:[],
       countApprove:0,
-      countNotApprove:0
+      countNotApprove:0,
+      categoryCompulsion: '',
+      subCategoryCompulsion: '',
+      issueTypeCompulsion: '',
+      subjectCompulsion: '',
+      approveCategoryCompulsion: '',
+      approveSubCategoryCompulsion: '',
+      approveIssueTypeCompulsion: '',
+      approveSubjectCompulsion: '',
+      updateCategoryCompulsion: '',
+      updateSubCategoryCompulsion: '',
+      updateIssueTypeCompulsion: '',
+      updateSubjectCompulsion: '',
     };
     this.HandelFirstTabClick = this.HandelFirstTabClick.bind(this);
     this.HandelSecoundTabClick = this.HandelSecoundTabClick.bind(this);
@@ -119,7 +131,10 @@ var row;
   }
 
   openAddNewKBModal() {
-    this.setState({ addnewkbmodal: true });
+    this.setState({ addnewkbmodal: true, categoryCompulsion: '',
+    subCategoryCompulsion: '',
+    issueTypeCompulsion: '',
+    subjectCompulsion: '' });
   }
   closeAddNewKBModal() {
     this.setState({ addnewkbmodal: false });
@@ -384,7 +399,11 @@ handleRejectKB(id,bit){
   }
   else{
 
-  }
+  // }
+
+  if (
+    this.state.approveCategoryValue > 0 && this.state.approveSubCategoryValue > 0 && this.state.approveIssurTypeValue > 0 && this.state.approveSubject.length > 0
+  ) {
   var json={
     KBID:id,
    
@@ -414,6 +433,16 @@ handleRejectKB(id,bit){
     self.closeEditAproveModal1();
     self.handleKBList();
   });
+} else {
+  this.setState({
+    approveCategoryCompulsion: "Category field is compulsory.",
+    approveSubCategoryCompulsion: "Sub Category field is compulsory.",
+    approveIssueTypeCompulsion: "Issue Type field is compulsory.",
+    approveSubjectCompulsion: "Subject field is compulsory.",
+  });
+}
+
+}
 }
 
 handleKBList(){
@@ -461,9 +490,9 @@ handleSeaechKB(){
       KBListnotApproveData:notapprove,
       countApprove:approveconut,
       countNotApprove:notapproveconut,
-      selectedCategory:0,
-      selectedSubCategory:0,
-      selectedIssueType:0
+      selectedCategory:'',
+      selectedSubCategory:'',
+      selectedIssueType:''
     });
     self.closeSearchModal();
   });
@@ -472,6 +501,9 @@ handleSeaechKB(){
 handleUpdateKB(kbid){
 
   debugger;
+  if (
+    this.state.updateCategoryValue > 0 && this.state.updateSubCategoryValue > 0 && this.state.updateIssurTypeValue > 0 && this.state.updateSubject.length > 0
+  ) {
   let self=this;
   var json={
     KBID:kbid,
@@ -505,12 +537,23 @@ handleUpdateKB(kbid){
   }).catch(error => {
     console.log(error)
 });
+} else {
+  this.setState({
+    updateCategoryCompulsion: "Category field is compulsory.",
+    updateSubCategoryCompulsion: "Sub Category field is compulsory.",
+    updateIssueTypeCompulsion: "Issue Type field is compulsory.",
+    updateSubjectCompulsion: "Subject field is compulsory.",
+  });
+}
 }
 
 
 
 handleAddKB(){
   debugger;
+  if (
+    this.state.selectedCategory.length > 0 && this.state.selectedSubCategory.length > 0 && this.state.selectedIssueType.length > 0 && this.state.selectedSubject.length > 0
+  ) {
   let self=this;
   var json={
     KBCODE:"",
@@ -537,9 +580,9 @@ handleAddKB(){
     }
     self.setState({
       
-      selectedCategory:0,
-      selectedSubCategory:0,
-      selectedIssueType:0,
+      selectedCategory:'',
+      selectedSubCategory:'',
+      selectedIssueType:'',
       selectedSubject:"",
       ckeditorAdd:""
     });
@@ -549,6 +592,14 @@ handleAddKB(){
 
     console.log(error)
 });
+} else {
+  this.setState({
+    categoryCompulsion: "Category field is compulsory.",
+    subCategoryCompulsion: "Sub Category field is compulsory.",
+    issueTypeCompulsion: "Issue Type field is compulsory.",
+    subjectCompulsion: "Subject field is compulsory.",
+  });
+}
 }
 
 
@@ -1151,7 +1202,7 @@ handleAddKB(){
                   value={this.state.selectedCategory}
                   onChange={this.setCategoryValue}
                   >
-                    <option>Select Category</option>
+                    <option value="">Select Category</option>
                     {this.state.CategoryData !== null &&
                                       this.state.CategoryData.map((item, i) => (
                                         <option key={i} value={item.categoryID}>
@@ -1159,13 +1210,18 @@ handleAddKB(){
                                         </option>
                                       ))}
                   </select>
+                  {this.state.selectedCategory.length === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.categoryCompulsion}
+                        </p>
+                      )}
                 </div>
                 <div className="col-md-6">
                   <select className="add-select-category"
                   value={this.state.selectedSubCategory}
                   onChange={this.setSubCategoryValue}
                   >
-                    <option>Select Subcategory</option>
+                    <option value="">Select Subcategory</option>
                     {this.state.SubCategoryData !== null &&
                                       this.state.SubCategoryData.map(
                                         (item, i) => (
@@ -1178,6 +1234,11 @@ handleAddKB(){
                                         )
                                       )}
                   </select>
+                  {this.state.selectedSubCategory.length === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.subCategoryCompulsion}
+                        </p>
+                      )}
                 </div>
                
               </div>
@@ -1188,7 +1249,7 @@ handleAddKB(){
                    value={this.state.selectedIssueType}
                    onChange={this.setIssueType}
                   >
-                    <option>Select IssueType</option>
+                    <option value=''>Select IssueType</option>
                     {this.state.IssueTypeData !== null &&
                             this.state.IssueTypeData.map((item, i) => (
                               <option
@@ -1201,6 +1262,11 @@ handleAddKB(){
                             ))}
                    
                   </select>
+                  {this.state.selectedIssueType.length === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.issueTypeCompulsion}
+                        </p>
+                      )}
                 </div>
                 </div>
 
@@ -1214,6 +1280,11 @@ handleAddKB(){
                   onChange={this.setSubjectValue}
 
                 />
+                {this.state.selectedSubject.length === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.subjectCompulsion}
+                        </p>
+                      )}
                 </div>
               </div>
               <br />
@@ -1310,6 +1381,11 @@ handleAddKB(){
                                           {item.categoryName}
                                         </option>
                                       ))}
+                                      {this.state.updateCategoryValue.length === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.updateCategoryCompulsion}
+                        </p>
+                      )}
                   </select>
                 </div>
                 <div className="col-md-6">
@@ -1331,6 +1407,11 @@ handleAddKB(){
                                         )
                                       )}
                   </select>
+                  {this.state.updateSubCategoryValue.length === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.updateSubCategoryCompulsion}
+                        </p>
+                      )}
                 </div>
               </div>
               <br></br>
@@ -1354,6 +1435,11 @@ handleAddKB(){
                             ))}
                    
                   </select>
+                  {this.state.updateIssurTypeValue.length === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.updateIssueTypeCompulsion}
+                        </p>
+                      )}
                 </div>
               </div>
               <div className="row">
@@ -1366,6 +1452,11 @@ handleAddKB(){
                   value={this.state.updateSubject}
                   onChange={this.setUpdateSubjectValue}
                 />
+                {this.state.updateSubject.length === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.updateSubjectCompulsion}
+                        </p>
+                      )}
                 </div>
               </div>
               <br />
@@ -1461,6 +1552,11 @@ handleAddKB(){
                                           {item.categoryName}
                                         </option>
                                       ))}
+                                      {this.state.approveCategoryValue.length === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.approveCategoryCompulsion}
+                        </p>
+                      )}
                   </select>
                 </div>
                 <div className="col-md-6">
@@ -1482,6 +1578,11 @@ handleAddKB(){
                                         )
                                       )}
                   </select>
+                  {this.state.approveSubCategoryValue.length === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.approveSubCategoryCompulsion}
+                        </p>
+                      )}
                 </div>
               </div>
               <br></br>
@@ -1505,6 +1606,11 @@ handleAddKB(){
                             ))}
                    
                   </select>
+                  {this.state.approveIssurTypeValue.length === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.approveIssueTypeCompulsion}
+                        </p>
+                      )}
                 </div>
               </div>
               <div className="row">
@@ -1517,6 +1623,11 @@ handleAddKB(){
                   value={this.state.approveSubject}
                   onChange={this.setApproveSubjectValue}
                 />
+                {this.state.approveSubject.length === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.approveSubjectCompulsion}
+                        </p>
+                      )}
                 </div>
               </div>
               <br />
