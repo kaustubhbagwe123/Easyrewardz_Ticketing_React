@@ -677,11 +677,7 @@ class StoreMaster extends Component {
                                             value={this.state.userEditData.state_ID}
                                             onChange={this.handleOnChangeEditData}
                                           >
-                                            <option
-                                              value={this.state.updatestateID}
-                                            >
-                                              {this.state.updatestateName}
-                                            </option>
+                                            <option >select</option>
                                             {this.state.stateData !== null &&
                                               this.state.stateData.map(
                                                 (item, i) => (
