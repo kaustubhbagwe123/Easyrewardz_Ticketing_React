@@ -96,9 +96,9 @@ class Reports extends Component {
     this.handleGetBrandList();
     this.handleGetCategoryList();
     this.handleGetTicketSourceList();
-    this.handleGetTicketPriorityList();
-    this.handleAssignTo();
-    this.handleGetDepartmentList();
+   this.handleGetTicketPriorityList();
+   this.handleAssignTo();
+   this.handleGetDepartmentList();
    
   }
   handleAddReportOpen() {
@@ -229,8 +229,11 @@ class Reports extends Component {
     }).then(function (res) {
       debugger;
       var reportdata = res.data.responseData;
-
-      self.setState({
+       
+      if(reportdata==null){
+        reportdata=[]
+      }
+      self.setState({        
         ReportData: reportdata
       });
     });
@@ -257,6 +260,7 @@ class Reports extends Component {
     });
   }
   handleGetBrandList() {
+    debugger;
     let self = this;
     axios({
       method: "post",

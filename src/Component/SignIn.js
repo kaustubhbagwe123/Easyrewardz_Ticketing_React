@@ -69,6 +69,7 @@ class SingIn extends Component {
       //   "http://easyrewardz.demo.brainvire.net",
       //   "enc"
       // );
+
       let X_Authorized_Programcode = this.state.programCode;
 
       if (X_Authorized_userId !== null && X_Authorized_password !== null) {
