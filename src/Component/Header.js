@@ -61,6 +61,7 @@ class Header extends Component {
       notifiMsg1: "",
       notifiMsg2: "",
       notifiMsg3: "",
+      percentLog: 0,
       cont: [
         {
           data: "Dashboards",
@@ -199,6 +200,9 @@ class Header extends Component {
         if (strTag.length > 0) {
           nameTag += strTag[1].charAt(0).toUpperCase();
         }
+        let nume = (data.loggedInDurationInHours * 60) + data.loggedInDurationInMinutes;
+        let deno = (data.shiftDurationInHour * 60) + data.shiftDurationInMinutes;
+        let percentLog = ((nume / deno) * 100).toFixed(2);
         self.setState({
           Email: data.agentEmailId,
           UserName: data.agentName,
@@ -208,7 +212,8 @@ class Header extends Component {
           CSatScore: data.csatScore,
           AvgResponse: data.avgResponseTime,
           LogoutTime: data.logoutTime,
-          NameTag: nameTag
+          NameTag: nameTag,
+          percentLog
         });
       }
     });
@@ -945,8 +950,8 @@ class Header extends Component {
                     </p>
                   </div>
                 </div>
-                <ProgressBar className="logout-progress" now={60} />
-                <p className="logout-label font-weight-bold prog-indi">
+                <ProgressBar className="logout-progress" now={this.state.percentLog} />
+                <p className="logout-label font-weight-bold prog-indi" style={{ width: this.state.percentLog + '%' }}>
                   {this.state.LoggedInDuration}
                 </p>
               </div>
