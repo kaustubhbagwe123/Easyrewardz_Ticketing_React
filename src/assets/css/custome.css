@@ -10323,7 +10323,30 @@ table tr th:last-child {
 .noti-count label {
   padding-right: 9px;
 }
-
+.cus-drp .css-yk16xz-control {
+  border: none;
+  background: #ecf2f4 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAQCAYAAAAI0W+oAAAA/klEQ…j3UuJad2BC/F5+Er2dlJryf+sGhAHjNwWV88XXdixkp/UFw/tTyABncXQAAAAASUVORK5CYII=) no-repeat right 25px center;
+  background-size: 13px;
+  height: 43px;
+  color: #000;
+  display: block;
+  border: 0;
+  margin-top: 5px;
+}
+.cus-drp .css-1g48xl4-IndicatorsContainer {
+  display: none;
+}
+.cus-drp .css-1pahdxg-control {
+  border-color: transparent;
+  margin-top: 5px;
+  border:none;
+  min-height: 43px;
+  box-shadow: none;
+  background-color: #ecf2f4;
+}
+.cus-drp .css-1pahdxg-control:hover, .cus-drp .css-1pahdxg-control:focus {
+  border-color: transparent;
+}
 .cus-scroll {
   max-height:300px;
   overflow:auto;
