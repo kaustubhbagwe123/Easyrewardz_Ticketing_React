@@ -764,7 +764,7 @@ class TicketSystemOrder extends Component {
                     filterAll: true
                   }
                 ]}
-                //resizable={false}
+                resizable={false}
                 defaultPageSize={3}
                 showPagination={false}
               />
@@ -1371,7 +1371,7 @@ class TicketSystemOrder extends Component {
                   data={orderDetailsData}
                   columns={[
                     {
-                      Header: <span>Invoice Number</span>,
+                      Header: <span></span>,
                       accessor: "invoiceNumber",
                       Cell: row => (
                         <div
@@ -1394,11 +1394,40 @@ class TicketSystemOrder extends Component {
                               row.original
                             )}
                           />
-                          <label htmlFor={"i" + row.original.orderMasterID}>
-                            {row.original.invoiceNumber}
+                          <label>
                           </label>
                         </div>
                       )
+                    },
+                    {
+                      Header: <span>Invoice Number</span>,
+                      accessor: "invoiceNumber",
+                      // Cell: row => (
+                      //   <div
+                      //     className="filter-checkbox"
+                      //     style={{ marginLeft: "15px" }}
+                      //   >
+                      //     <input
+                      //       type="checkbox"
+                      //       id={"i" + row.original.orderMasterID}
+                      //       style={{ display: "none" }}
+                      //       name="ticket-order"
+                      //       checked={
+                      //         this.state.CheckOrderID[
+                      //         row.original.orderMasterID
+                      //         ] === true
+                      //       }
+                      //       onChange={this.handleCheckOrderID.bind(
+                      //         this,
+                      //         row.original.orderMasterID,
+                      //         row.original
+                      //       )}
+                      //     />
+                      //     <label htmlFor={"i" + row.original.orderMasterID}>
+                      //       {row.original.invoiceNumber}
+                      //     </label>
+                      //   </div>
+                      // )
                     },
                     {
                       Header: <span>Invoice Date</span>,
@@ -1429,7 +1458,7 @@ class TicketSystemOrder extends Component {
                       accessor: "discount"
                     }
                   ]}
-                  resizable={false}
+                  resizable={true}
                   defaultPageSize={3}
                   showPagination={false}
                 />
@@ -1454,7 +1483,7 @@ class TicketSystemOrder extends Component {
                   }}
                   columns={[
                     {
-                      Header: <span>Invoice Numberr</span>,
+                      Header: <span></span>,
                       accessor: "invoiceNumber",
                       Cell: row => (
                         <div
@@ -1477,11 +1506,41 @@ class TicketSystemOrder extends Component {
                               row.original
                             )}
                           />
-                          <label htmlFor={"i" + row.original.orderMasterID}>
-                            {row.original.invoiceNumber}
+                          <label>
+                           
                           </label>
                         </div>
                       )
+                    },
+                    {
+                      Header: <span>Invoice Numberr</span>,
+                      // accessor: "invoiceNumber",
+                      // Cell: row => (
+                      //   <div
+                      //     className="filter-checkbox"
+                      //     style={{ marginLeft: "15px" }}
+                      //   >
+                      //     <input
+                      //       type="checkbox"
+                      //       id={"i" + row.original.orderMasterID}
+                      //       style={{ display: "none" }}
+                      //       name="ticket-order"
+                      //       checked={
+                      //         this.state.CheckOrderID[
+                      //           row.original.orderMasterID
+                      //         ] === true
+                      //       }
+                      //       onChange={this.handleCheckOrderID.bind(
+                      //         this,
+                      //         row.original.orderMasterID,
+                      //         row.original
+                      //       )}
+                      //     />
+                      //     <label htmlFor={"i" + row.original.orderMasterID}>
+                      //       {row.original.invoiceNumber}
+                      //     </label>
+                      //   </div>
+                      // )
                     },
                     {
                       Header: <span>Invoice Date</span>,
@@ -1512,7 +1571,7 @@ class TicketSystemOrder extends Component {
                       accessor: "discount"
                     }
                   ]}
-                  resizable={false}
+                  resizable={true}
                   defaultPageSize={3}
                   showPagination={false}
                   SubComponent={row => {

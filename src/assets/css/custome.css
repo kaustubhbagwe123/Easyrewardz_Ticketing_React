@@ -518,6 +518,7 @@ a {
   padding: 10;
   margin-right: 150px;
   margin-top: 45px;
+  width: 400px;
   /* margin-bottom: 4px; */
   display: inline-block;
 }
@@ -10323,3 +10324,29 @@ table tr th:last-child {
   padding-right: 9px;
 }
 
+.cus-scroll {
+  max-height:300px;
+  overflow:auto;
+}
+.agentlist .ReactTable .rt-tbody .rt-tr-group:hover {
+  background-color: #ECF2F4;
+  cursor: pointer;
+}
+.agentlist .ReactTable .rt-thead.-header {
+  box-shadow: none !important;
+  background-color: transparent;
+  border-bottom: none;
+}
+.agentlist .ReactTable {
+  border: none;
+}
+.agentlist .ReactTable .rt-thead .rt-resizable-header-content {
+  color: #a0a0a0 !important;
+} 
+.agentlist .ReactTable .rt-td {
+  color: #4a4a4a !important;
+  padding: 12px 20px !important;
+}
+.agentlist .ReactTable .rt-tbody .rt-tr-group {
+  border-bottom: none;
+}

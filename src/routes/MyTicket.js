@@ -1599,7 +1599,7 @@ class MyTicket extends Component {
                     modalId="labelmodel-popup"
                     overlayId="logout-ovrly"
                   >
-                    <div className="myTicket-table remov">
+                    <div className="myTicket-table remov varunoverflow cus-scroll agentlist">
                       <ReactTable
                         data={SearchAssignData}
                         columns={[
@@ -1618,8 +1618,8 @@ class MyTicket extends Component {
                         ]}
                         // resizable={false}
                         minRows={1}
-                        defaultPageSize={5}
-                        // showPagination={false}
+                        // defaultPageSize={5}
+                        showPagination={false}
                       />
                       <div className="button-margin">
                         <button
