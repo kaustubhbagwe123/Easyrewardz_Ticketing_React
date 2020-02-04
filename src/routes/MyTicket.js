@@ -115,7 +115,7 @@ class MyTicket extends Component {
       TicketStatusData: TicketStatus(),
       selectedTicketActionType: [],
       TicketActionTypeData: TicketActionType(),
-      taskTableGrid: [],
+      // taskTableGrid: [],
       SearchAssignData: [],
       // selectetedParameters: {},
       claimDetailsData: [],
@@ -143,9 +143,12 @@ class MyTicket extends Component {
       notesCommentCompulsion: "",
       userCC: "",
       userBCC: "",
-      messageDetails: [],
+      messageDetails: {},
       fileText: 0,
       file: [],
+      userCcCount: 0,
+      userBccCount: 0,
+      mailFiled: {}
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -159,7 +162,7 @@ class MyTicket extends Component {
     this.handleGetChannelOfPurchaseList = this.handleGetChannelOfPurchaseList.bind(
       this
     );
-    this.handleGetTaskTableCount = this.handleGetTaskTableCount.bind(this);
+    // this.handleGetTaskTableCount = this.handleGetTaskTableCount.bind(this);
     this.handleUpdateTicketStatus = this.handleUpdateTicketStatus.bind(this);
     this.handleGetTicketDetails = this.handleGetTicketDetails.bind(this);
     this.handleGetCountOfTabs = this.handleGetCountOfTabs.bind(this);
@@ -183,7 +186,7 @@ class MyTicket extends Component {
       this.handleGetChannelOfPurchaseList();
       this.handleGetNotesTabDetails(ticketId);
       this.handleGetTicketDetails(ticketId);
-      this.handleGetTaskTableCount(ticketId);
+      // this.handleGetTaskTableCount(ticketId);
       this.handleGetCountOfTabs(ticketId);
       this.handleGetMessageDetails(ticketId);
     } else {
@@ -300,6 +303,8 @@ class MyTicket extends Component {
       let status = res.data.message;
       if (status === "Success") {
         let data = res.data.responseData[0];
+        console.log(data,'data');
+        
         self.setState({
           messageDetails: data
         });
@@ -447,27 +452,27 @@ class MyTicket extends Component {
     });
   }
 
-  handleGetTaskTableCount(ID) {
-    debugger;
-    let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Task/gettasklist",
-      headers: authHeader(),
-      params: {
-        TicketId: ID
-      }
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      let data = res.data.responseData;
-      if (status === "Success") {
-        self.setState({ taskTableGrid: data });
-      } else {
-        self.setState({ taskTableGrid: [] });
-      }
-    });
-  }
+  // handleGetTaskTableCount(ID) {
+  //   debugger;
+  //   let self = this;
+  //   axios({
+  //     method: "post",
+  //     url: config.apiUrl + "/Task/gettasklist",
+  //     headers: authHeader(),
+  //     params: {
+  //       TicketId: ID
+  //     }
+  //   }).then(function(res) {
+  //     debugger;
+  //     let status = res.data.message;
+  //     let data = res.data.responseData;
+  //     if (status === "Success") {
+  //       self.setState({ taskTableGrid: data });
+  //     } else {
+  //       self.setState({ taskTableGrid: [] });
+  //     }
+  //   });
+  // }
 
   handleNoteOnChange = e => {
     this.setState({
@@ -1241,8 +1246,8 @@ class MyTicket extends Component {
       headers: authHeader(),
       params: {
         EmailID: this.state.ticketDetailsData.customerEmailId,
-        Mailcc: this.state.userCC,
-        Mailbcc: this.state.userBCC,
+        Mailcc: this.state.mailFiled.userCC,
+        Mailbcc: this.state.mailFiled.userBCC,
         Mailsubject: subject,
         MailBody: this.state.CkEditorTemplateDetails.templateBody,
         informStore: this.state.InformStore,
@@ -1302,6 +1307,22 @@ class MyTicket extends Component {
     });
   }
 
+  handleMailOnChange(filed, e) {
+    debugger;
+    var mailFiled = this.state.mailFiled;
+    mailFiled[filed] = e.target.value;
+
+    if (filed === "userCC") {
+      var CcCount = mailFiled.userCC;
+      var finalCount = CcCount.split(",");
+      this.setState({ mailFiled, userCcCount: finalCount.length });
+    } else {
+      var BCcCount = mailFiled.userBCC;
+      var finalCount = BCcCount.split(",");
+      this.setState({ mailFiled, userBccCount: finalCount.length });
+    }
+  }
+
   handleFileUpload(e) {
     debugger;
     // -------------------------Image View code start-----------------------
@@ -1339,12 +1360,15 @@ class MyTicket extends Component {
     debugger;
     let file = this.state.file;
     file.splice(i, 1);
+    var fileText=file.length;
     setTimeout(() => {
-      this.setState(file);
-    }, 100);
+      this.setState({file,fileText});
+    }, 50);
   }
 
   render() {
+    console.log(this.state.messageDetails,'Demo');
+    
     const {
       open,
       ticketDetailsData,
@@ -1353,7 +1377,8 @@ class MyTicket extends Component {
       orderDetails,
       selectedProduct,
       storeDetails,
-      selectedStore
+      selectedStore,
+      messageDetails
     } = this.state;
     const HidecollapsUp = this.state.collapseUp ? (
       <img
@@ -1497,6 +1522,7 @@ class MyTicket extends Component {
                       src={LoadingImg}
                       alt="Loading"
                       className="loading-rectangle"
+                      title="Ticket Historical"
                       onClick={this.handleGetHistoricalData.bind(this)}
                     />
                   </div>
@@ -1548,6 +1574,7 @@ class MyTicket extends Component {
                         src={Headphone2Img}
                         alt="headphone"
                         className="oval-55"
+                        title="Agent List"
                       />
                       <label
                         className="naman-r"
@@ -1647,6 +1674,7 @@ class MyTicket extends Component {
                         src={EyeImg}
                         alt="eye"
                         className="eyeImg1"
+                        title="Customer Profile"
                         onClick={this.HandleProfileModalOpen.bind(this)}
                       />
                       <Modal
@@ -1731,6 +1759,7 @@ class MyTicket extends Component {
                           src={BillInvoiceImg}
                           alt="eye"
                           className="billImg"
+                          title="Historical Order"
                           onClick={this.handleBillImgModalOpen.bind(this)}
                         />
                         <Modal
@@ -2205,6 +2234,7 @@ class MyTicket extends Component {
                               src={PencilImg}
                               alt="Pencile"
                               className="pencilImg"
+                              title="Attach Store"
                             />
                           </label>
                           <Modal
@@ -2491,7 +2521,6 @@ class MyTicket extends Component {
                                     defaultPageSize={5}
                                     showPagination={false}
                                   />
-                                  // )}
                                 </div>
                               </div>
                             </div>
@@ -2508,6 +2537,7 @@ class MyTicket extends Component {
                               src={PencilImg}
                               alt="Pencile"
                               className="pencilImg"
+                              title="Attach Product"
                             />
                           </label>
                           <Modal
@@ -2590,7 +2620,7 @@ class MyTicket extends Component {
                                 />
                               </div>
                             </div>
-                           
+
                             <span className="linestore1"></span>
                             <div className="newtabstore">
                               <div className="tab-content tabcontentstore">
@@ -2877,25 +2907,98 @@ class MyTicket extends Component {
             </div>
             <div style={{ padding: "15px", background: "#fff" }}>
               <div className="rectangle-3 text-editor">
-                <div className="row">
-                  <label className="ticket-title-where">Ticket Title:</label>
+                <div className="row mt-2">
+                  <label className="ticket-title-where mb-0">
+                    Ticket Title:
+                  </label>
                 </div>
                 <div className="row" style={{ marginTop: "0" }}>
-                  <label className="label-2">
+                  <label className="label-2 mb-0">
                     {ticketDetailsData.ticketTitle}
                   </label>
                 </div>
-                <div className="row">
-                  <label className="ticket-title-where">Ticket Details:</label>
+                <div className="row mt-3">
+                  <label className="ticket-title-where mb-0">
+                    Ticket Details:
+                  </label>
                 </div>
                 <div className="row" style={{ marginTop: "0" }}>
-                  <label className="label-3">
+                  <label className="label-3 pb-0">
                     {ticketDetailsData.ticketdescription}
                   </label>
                 </div>
-                <div className="row my-3 mx-1">
-                    {this.state.file.map((item, i) =>
-                      i < 5 ? (
+                <div className="row my-2 mx-1">
+                  {this.state.file.map((item, i) =>
+                    i < 5 ? (
+                      <div style={{ position: "relative" }} key={i}>
+                        <div>
+                          <img
+                            src={CircleCancel}
+                            alt="thumb"
+                            className="circleCancle"
+                            onClick={() => {
+                              this.handleRemoveImage(i);
+                            }}
+                          />
+                        </div>
+
+                        <div>
+                          <img
+                            src={
+                              item.Type === "docx"
+                                ? require("./../assets/Images/word.png")
+                                : item.Type === "xlsx"
+                                ? require("./../assets/Images/excel.png")
+                                : item.Type === "pdf"
+                                ? require("./../assets/Images/pdf.png")
+                                : item.Type === "txt"
+                                ? require("./../assets/Images/TxtIcon.png")
+                                : require("./../assets/Images/thumbticket.png")
+                            }
+                            title={item.name}
+                            alt="thumb"
+                            className="thumbtick"
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      ""
+                    )
+                  )}
+
+                  {this.state.file.length > 4 ? (
+                    <img
+                      src={PlusImg}
+                      alt="thumb"
+                      className="thumbtick-plus"
+                      onClick={this.handleThumbModalOpen.bind(this)}
+                    />
+                  ) : (
+                    <img
+                      style={{ display: "none" }}
+                      src={PlusImg}
+                      alt="thumb"
+                      className="thumbtick-plus"
+                      onClick={this.handleThumbModalOpen.bind(this)}
+                    />
+                  )}
+                </div>
+                <Modal
+                  open={this.state.Plus}
+                  onClose={this.handleThumbModalClose.bind(this)}
+                  modalId="thumb-modal-popup"
+                  overlayId="logout-ovrlykb"
+                >
+                  <div>
+                    <div className="close">
+                      <img
+                        src={CrossIcon}
+                        alt="cross-icon"
+                        onClick={this.handleThumbModalClose.bind(this)}
+                      />
+                    </div>
+                    <div className="row my-3 mx-1">
+                      {this.state.file.map((item, i) => (
                         <div style={{ position: "relative" }} key={i}>
                           <div>
                             <img
@@ -2927,77 +3030,8 @@ class MyTicket extends Component {
                             />
                           </div>
                         </div>
-                      ) : (
-                        ""
-                      )
-                    )}
-
-                    {this.state.file.length > 4 ? (
-                      <img
-                        src={PlusImg}
-                        alt="thumb"
-                        className="thumbtick-plus"
-                        onClick={this.handleThumbModalOpen.bind(this)}
-                      />
-                    ) : (
-                      <img
-                        style={{ display: "none" }}
-                        src={PlusImg}
-                        alt="thumb"
-                        className="thumbtick-plus"
-                        onClick={this.handleThumbModalOpen.bind(this)}
-                      />
-                    )}
-                  </div>
-                <Modal
-                  open={this.state.Plus}
-                  onClose={this.handleThumbModalClose.bind(this)}
-                  modalId="thumb-modal-popup"
-                  overlayId="logout-ovrlykb"
-                >
-                  <div>
-                    <div className="close">
-                      <img
-                        src={CrossIcon}
-                        alt="cross-icon"
-                        onClick={this.handleThumbModalClose.bind(this)}
-                      />
+                      ))}
                     </div>
-                    <div className="row my-3 mx-1">
-                        {this.state.file.map((item, i) => (
-                          <div style={{ position: "relative" }} key={i}>
-                            <div>
-                              <img
-                                src={CircleCancel}
-                                alt="thumb"
-                                className="circleCancle"
-                                onClick={() => {
-                                  this.handleRemoveImage(i);
-                                }}
-                              />
-                            </div>
-
-                            <div>
-                              <img
-                                src={
-                                  item.Type === "docx"
-                                    ? require("./../assets/Images/word.png")
-                                    : item.Type === "xlsx"
-                                    ? require("./../assets/Images/excel.png")
-                                    : item.Type === "pdf"
-                                    ? require("./../assets/Images/pdf.png")
-                                    : item.Type === "txt"
-                                    ? require("./../assets/Images/TxtIcon.png")
-                                    : require("./../assets/Images/thumbticket.png")
-                                }
-                                title={item.name}
-                                alt="thumb"
-                                className="thumbtick"
-                              />
-                            </div>
-                          </div>
-                        ))}
-                      </div>
                   </div>
                 </Modal>
                 <div className="row">
@@ -3165,11 +3199,16 @@ class MyTicket extends Component {
                                     type="text"
                                     className="CCdi1"
                                     name="userCC"
-                                    value={this.state.userCC}
-                                    onChange={this.handleNoteOnChange}
+                                    value={this.state.mailFiled.userCC}
+                                    onChange={this.handleMailOnChange.bind(
+                                      this,
+                                      "userCC"
+                                    )}
                                   />
                                   <span className="input-group-addon inputcc-one">
-                                    +1
+                                    {this.state.userCcCount < 1
+                                      ? "+" + this.state.userCcCount
+                                      : "+" + this.state.userCcCount}
                                   </span>
                                 </div>
                               </label>
@@ -3187,11 +3226,16 @@ class MyTicket extends Component {
                                     type="text"
                                     className="CCdi1"
                                     name="userBCC"
-                                    value={this.state.userBCC}
-                                    onChange={this.handleNoteOnChange}
+                                    value={this.state.mailFiled.userBCC}
+                                    onChange={this.handleMailOnChange.bind(
+                                      this,
+                                      "userBCC"
+                                    )}
                                   />
                                   <span className="input-group-addon inputcc-one">
-                                    +1
+                                    {this.state.userBccCount < 1
+                                      ? "+" + this.state.userBccCount
+                                      : "+" + this.state.userBccCount}
                                   </span>
                                 </div>
                               </label>
@@ -3839,6 +3883,9 @@ class MyTicket extends Component {
                               <h3 className="textbhead">
                                 Subject: &nbsp;
                                 <span>
+                                  {/* {messageDetails.length > 0 ? (
+                                    <>{messageDetails[0].ticketMailSubject}</>
+                                  ) : null} */}
                                   {this.state.messageDetails.ticketMailSubject}
                                 </span>
                               </h3>
@@ -3866,6 +3913,18 @@ class MyTicket extends Component {
                             <div className="col-md-12">
                               <CKEditor
                                 data={this.state.messageDetails.ticketMailBody}
+                                // data={
+                                //   this.state.messageDetails.length > 0 ? (
+                                //     <div>
+                                //                                             
+                                //       {
+                                //         this.state.messageDetails[0]
+                                //           .ticketMailBody
+                                //       }
+                                //                                           
+                                //     </div>
+                                //   ) : null
+                                // }
                                 config={{
                                   toolbar: [
                                     {
@@ -4029,6 +4088,13 @@ class MyTicket extends Component {
                         />
                         <label className="rashmi-c">
                           {this.state.messageDetails.commentBy}
+                          {/* {this.state.messageDetails.length > 0 ? (
+                            <>
+                                                                    
+                              {this.state.messageDetails[0].commentBy}
+                                                                  
+                            </>
+                          ) : null} */}
                         </label>
                         <img
                           src={Headphone2Img}
@@ -4042,6 +4108,21 @@ class MyTicket extends Component {
                         </label>
                       </div>
                       <div className="col-12 col-xs-12 col-sm-2">
+                        {/* {this.state.messageDetails.length > 0 ? (
+                          <>
+                                                                  
+                            {this.state.messageDetails.isCustomerComment ===
+                            1 ? (
+                              <label
+                                className="reply-comment"
+                                onClick={this.hanldeCommentOpen2.bind(this)}
+                              >
+                                Reply
+                              </label>
+                            ) : null}
+                                                                
+                          </>
+                        ) : null} */}
                         {this.state.messageDetails.isCustomerComment === 1 ? (
                           <label
                             className="reply-comment"
@@ -4068,7 +4149,7 @@ class MyTicket extends Component {
                         taskData={{
                           TicketData: {
                             TicketId: this.state.ticket_Id,
-                            GridData: this.state.taskTableGrid,
+                            // GridData: this.state.taskTableGrid,
                             TabActiveId: this.state.TaskTab
                           }
                         }}

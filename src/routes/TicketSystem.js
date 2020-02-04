@@ -682,8 +682,9 @@ class TicketSystem extends Component {
     debugger;
     let file = this.state.file;
     file.splice(i, 1);
+    var fileText=file.length;
     setTimeout(() => {
-      this.setState(file);
+      this.setState({file,fileText});
     }, 100);
   }
 
