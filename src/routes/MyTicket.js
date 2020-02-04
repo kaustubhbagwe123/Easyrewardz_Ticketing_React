@@ -3940,7 +3940,7 @@ class MyTicket extends Component {
                                 <li>
                                   <label>To: diwarkar@gmail.com</label>
                                 </li>
-                                <li>
+                                {/* <li>
                                   <label className="">
                                     <div
                                       className="input-group"
@@ -3971,6 +3971,21 @@ class MyTicket extends Component {
                                       </span>
                                     </div>
                                   </label>
+                                </li> */}
+                                <li>
+                                  <label>CC: diwarkar@gmail.com
+                                  <span style={{border: "none"}} className="input-group-addon inputcc-one">
+                                    +1
+                                  </span>
+                                  </label>
+                                </li>
+                                <li>
+                                  <label>BCC: diwarkar@gmail.com
+                                  <span style={{border: "none"}} className="input-group-addon inputcc-one">
+                                    +1
+                                  </span>
+                                  </label>
+                                  
                                 </li>
                                 <li>
                                   <div className="filter-checkbox">

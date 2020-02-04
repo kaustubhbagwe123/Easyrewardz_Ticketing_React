@@ -62,8 +62,8 @@ class SingIn extends Component {
       var X_Authorized_userId = encryption(emailID, "enc");
 
       let X_Authorized_password = encryption(password, "enc");
-
-     let X_Authorized_Domainname = encryption(window.location.origin, "enc");
+      let X_Authorized_Domainname = encryption('https://erbelltkt.dcdev.brainvire.net', "enc");
+    //  let X_Authorized_Domainname = encryption(window.location.origin, "enc");
       // let X_Authorized_Domainname = encryption(
       //   "http://easyrewardz.demo.brainvire.net",
       //   "enc"
