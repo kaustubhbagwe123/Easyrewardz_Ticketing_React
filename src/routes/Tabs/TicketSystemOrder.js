@@ -958,7 +958,7 @@ class TicketSystemOrder extends Component {
                             sortable: true
                           },
                           {
-                            Header: <span>Required kk Size</span>,
+                            Header: <span>Required Size</span>,
                             accessor: "requireSize",
                             Cell: row => {
                               return (

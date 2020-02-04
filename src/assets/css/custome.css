@@ -2600,10 +2600,11 @@ table tr th:last-child {
 }
 .prog-indi {
   text-align: right;
-  width: 60%;
+  /* width: 60%; */
   position: relative;
   left: 22px;
   margin-top: 5px;
+  white-space: nowrap;
 }
 #logout-popup {
   border-radius: 8px;
