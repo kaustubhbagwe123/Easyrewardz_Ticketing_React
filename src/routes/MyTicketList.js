@@ -395,7 +395,6 @@ class MyTicketList extends Component {
     let self = this;
     axios({
       method: "post",
-      // url: config.apiUrl + "/Search/SearchTicket",
       url: config.apiUrl + "/Search/GetTicketsOnPageLoad",
       headers: authHeader(),
       params: {
