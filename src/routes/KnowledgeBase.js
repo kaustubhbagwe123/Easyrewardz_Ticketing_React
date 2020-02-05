@@ -660,7 +660,7 @@ handleAddKB(){
               />
               </div>
             </div>
-            <div className="kb-table" style={{ padding: "0px 30px 0px 20px" }}>
+            <div className="kb-table" style={{ padding: "0px 30px 20px 20px" }}>
            
             <ReactTable
             
@@ -832,7 +832,7 @@ handleAddKB(){
 
             </div>
           </div>
-          <div className="pagi">
+          {/* <div className="pagi">
             <ul>
               <li>
                 <a href={Demo.BLANK_LINK}>&lt;</a>
@@ -862,7 +862,7 @@ handleAddKB(){
                 <a href={Demo.BLANK_LINK}>&gt;</a>
               </li>
             </ul>
-          </div>
+          </div> */}
         </div>
 
         <div
@@ -888,7 +888,7 @@ handleAddKB(){
               </div>
             </div>
 
-            <div className="kb-table" style={{ padding: "0px 30px 0px 20px" }}>
+            <div className="kb-table" style={{ padding: "0px 30px 20px 20px" }}>
             
             <ReactTable
                   data={this.state.KBListData}
@@ -1061,7 +1061,7 @@ handleAddKB(){
 
             </div>
           </div>
-          <div className="pagi">
+          {/* <div className="pagi">
             <ul>
               <li>
                 <a href={Demo.BLANK_LINK}>&lt;</a>
@@ -1091,7 +1091,7 @@ handleAddKB(){
                 <a href={Demo.BLANK_LINK}>&gt;</a>
               </li>
             </ul>
-          </div>
+          </div> */}
         </div>
         {/* ----------------------------------Search Modal------------------------------------ */}
         <Modal
