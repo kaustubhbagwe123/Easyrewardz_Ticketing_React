@@ -21,11 +21,17 @@ class QaHierarchyMaster extends Component {
         super(props)
     
         this.state = {
-             fileName : ""
+             fileName : "",
+            
         }
     }
     
-
+    hide = () => {
+      debugger;
+      this.setState({
+        visible: false,
+      });
+    }
     fileUpload = e => {
         this.setState({ fileName: e.target.files[0].name });
       };
@@ -200,7 +206,7 @@ class QaHierarchyMaster extends Component {
                   </div>
                   <br />
                   <div>
-                  <a className="pop-over-cancle" href={Demo.BLANK_LINK}>CANCEL</a>
+                  <a className="pop-over-cancle" onClick={this.hide}>CANCEL11</a>
                     <button className="pop-over-button">
                         SAVE
                     </button>

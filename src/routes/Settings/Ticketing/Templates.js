@@ -50,6 +50,12 @@ class Templates extends Component {
     this.handleGetSLAIssueType();
   }
 
+  hide = () => {
+    this.setState({
+      visible: false,
+    });
+  }
+
   setIssueType = e => {
     debugger;
     if (e !== null) {
@@ -334,7 +340,7 @@ class Templates extends Component {
         </div>
         <br />
         <div>
-        <a className="pop-over-cancle" href={Demo.BLANK_LINK}>CANCEL</a>
+        <a className="pop-over-cancle" onClick={this.hide}>CANCEL</a>
           <button className="pop-over-button">
             <label className="pop-over-btnsave-text">SAVE</label>
           </button>
