@@ -46,6 +46,32 @@ class Alerts extends Component {
       emailStore: false,
       smsCust: false,
       notiInt: false,
+      selectedAlertType:"",
+      selectedEmailCustomer:false,
+      selectedEmailInternal:false,
+      selectedEmailStore:false,
+      selectedSMSCustomer:false,
+      selectedNotifInternal:false,
+      selectedStatus:"",
+      selectedToCustomer:"",
+      selectedCCCustomer:"",
+      selectedBCCCustomer:"",
+      selectedSubjectCustomer:"",
+      selectedCKCustomer:"",
+      selectedToInternal:"",
+      selectedCCInternal:"",
+      selectedBCCInternal:"",
+      selectedSubjectInternal:"",
+      selectedCKInternal:"",
+      selectedToStore:"",
+      selectedCCStore:"",
+      selectedBCCStore:"",
+      selectedSubjectStore:"",
+      selectedCKStore:"",
+      selectedSMSContent:"",
+      selectedNotifContent:""
+
+
     };
     this.updateContent = this.updateContent.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -53,11 +79,46 @@ class Alerts extends Component {
     this.handleAddAlertTabsClose = this.handleAddAlertTabsClose.bind(this);
     this.handleGetAlert = this.handleGetAlert.bind(this);
     this.handleUpdateAlertTypeName = this.handleUpdateAlertTypeName.bind(this);
+    this.handleInsertAlert=this.handleInsertAlert.bind(this);
   }
 
   componentDidMount() {
     this.handleGetAlert();
     this.handleAlertTabs = this.handleAlertTabs.bind(this);
+  }
+
+
+  setDataOnChangeAlert = e => {
+    debugger;
+
+
+    this.setState({
+      [e.target.name]: e.target.value,
+
+    });
+    
+  };
+
+  setCKEditorCustomer = (evt) => {
+    debugger;
+    var newContent = evt.editor.getData();
+    this.setState({
+      selectedCKCustomer: newContent
+    });
+  }
+  setCKEditorInternal = (evt) => {
+    debugger;
+    var newContent = evt.editor.getData();
+    this.setState({
+      selectedCKInternal: newContent
+    });
+  }
+  setCKEditorStore = (evt) => {
+    debugger;
+    var newContent = evt.editor.getData();
+    this.setState({
+      selectedCKStore: newContent
+    });
   }
 
   handleAlertTabs = e => {
@@ -78,6 +139,30 @@ class Alerts extends Component {
         [val]: false
       });
     }
+    if(val==='emailCust'){
+     
+      this.state.selectedEmailCustomer=true;
+     
+     
+    }
+    
+    if(val==='emailInt'){
+      this.state.selectedEmailInternal=true;
+     
+    }
+    if(val==='emailStore'){
+      this.state.selectedEmailStore=true;
+     
+    }
+    if(val==='smsCust'){
+      this.state.selectedSMSCustomer=true;
+     
+    }
+    if(val==='notiInt'){
+      this.state.selectedNotifInternal=true;
+     
+    }
+   
   };
 
   handleGetAlert() {
@@ -203,6 +288,101 @@ class Alerts extends Component {
     this.setState({
       tabIndex:index
     })
+  }
+  handleInsertAlert() {
+    debugger;
+    let self = this;
+    var setstatus=false;
+    var status=this.state.selectedStatus;
+    if(status==="true"){
+      setstatus=true;
+    }
+    else{
+      setstatus=false;
+    }
+   
+    var cust,inter,store,sms,notn;
+    var jsondata=[];
+    
+    cust={
+      Communication_Mode:240,
+      CommunicationFor:250,
+      Content:this.state.selectedCKCustomer,
+      ToEmailID:this.state.selectedToCustomer,
+      CCEmailID:this.state.selectedCCCustomer,
+      BCCEmailID:this.state.selectedBCCCustomer,
+      Subject:this.state.selectedSubjectCustomer
+    }
+    inter= {
+      Communication_Mode:240,
+      CommunicationFor:251,
+      Content:this.state.selectedCKInternal,
+      ToEmailID:this.state.selectedToInternal,
+      CCEmailID:this.state.selectedCCInternal,
+      BCCEmailID:this.state.selectedBCCInternal,
+      Subject:this.state.selectedSubjectInternal
+    }
+    store= {
+      Communication_Mode:240,
+      CommunicationFor:252,
+      Content:this.state.selectedCKStore,
+      ToEmailID:this.state.selectedToStore,
+      CCEmailID:this.state.selectedCCStore,
+      BCCEmailID:this.state.selectedBCCStore,
+      Subject:this.state.selectedSubjectStore
+    }
+    sms={
+      Communication_Mode:241,
+      CommunicationFor:250,
+      Content:this.state.selectedSMSContent
+      
+    }
+    notn= {
+      Communication_Mode:242,
+      CommunicationFor:251,
+      Content:this.state.selectedNotifContent
+      
+    }
+
+    if(this.state.selectedEmailCustomer===true){
+      jsondata.push(cust);
+    }
+    if(this.state.selectedEmailInternal===true){
+      jsondata.push(inter);
+    }
+    if(this.state.selectedEmailStore===true){
+      jsondata.push(store);
+    }
+    if(this.state.selectedSMSCustomer===true){
+      jsondata.push(sms);
+    }
+    if(this.state.selectedNotifInternal===true){
+      jsondata.push(notn);
+    }
+    
+    var json = {
+      AlertTypeName:this.state.selectedAlertType,
+      isAlertActive:setstatus,
+      CommunicationModeDetails:jsondata
+    };
+    
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Alert/CreateAlert",
+      headers: authHeader(),
+      data:json
+    }).then(function (res) {
+      debugger;
+      let id = res.data.responseData;
+      let Msg = res.data.message;
+      if (Msg === "Success") {
+
+        NotificationManager.success("Record Saved successfully.");
+
+      }
+      self.handleAddAlertTabsClose();
+      
+    });
   }
   render() {
     const data = [
@@ -605,7 +785,11 @@ class Alerts extends Component {
                   <h3>Create ALERTS</h3>
                   <div className="div-cntr">
                     <label>Alert Type</label>
-                    <input type="text" placeholder="Enter alert type" maxLength={25} />
+                    <input type="text" placeholder="Enter alert type" maxLength={25}
+                    name="selectedAlertType"
+                    value={this.state.selectedAlertType}
+                    onChange={this.setDataOnChangeAlert}
+                    />
                   </div>
                   <h4>Communication Mode</h4>
                   <div className="div-cntr">
@@ -627,9 +811,14 @@ class Alerts extends Component {
                   </div>
                   <div className="div-cntr">
                     <label>Status</label>
-                    <select>
-                      <option>Active</option>
-                      <option>Inactive</option>
+                    <select
+                     name="selectedStatus"
+                     value={this.state.selectedStatus}
+                     onChange={this.setDataOnChangeAlert}
+                    >
+                      <option >Select</option>
+                      <option value="true">Active</option>
+                      <option value="false">Inactive</option>
                     </select>
                   </div>
                   <button
@@ -764,6 +953,9 @@ class Alerts extends Component {
                                     <input
                                       type="text"
                                       className="textbox-email-editor"
+                                      name="selectedToCustomer"
+                     value={this.state.selectedToCustomer}
+                     onChange={this.setDataOnChangeAlert}
                                     />
                                   </div>
                                 </div>
@@ -775,6 +967,9 @@ class Alerts extends Component {
                                     <input
                                       type="text"
                                       className="textbox-email-editor text-box2"
+                                      name="selectedCCCustomer"
+                                      value={this.state.selectedCCCustomer}
+                                      onChange={this.setDataOnChangeAlert}
                                     />
                                   </div>
                                 </div>
@@ -786,6 +981,9 @@ class Alerts extends Component {
                                     <input
                                       type="text"
                                       className="textbox-email-editor text-box3"
+                                      name="selectedBCCCustomer"
+                                      value={this.state.selectedBCCCustomer}
+                                      onChange={this.setDataOnChangeAlert}
                                     />
                                   </div>
                                 </div>
@@ -797,30 +995,41 @@ class Alerts extends Component {
                                     <input
                                       type="text"
                                       className="textbox-email-editor text-box4"
+                                      name="selectedSubjectCustomer"
+                                      value={this.state.selectedSubjectCustomer}
+                                      onChange={this.setDataOnChangeAlert}
                                     />
                                   </div>
                                 </div>
                               </div>
                               <CKEditor
-                                content={this.state.content}
+                                //content={this.state.content}
                                 events={{
                                   // "blur": this.onBlur,
                                   // "afterPaste": this.afterPaste,
-                                  change: this.onChange,
+                                  //change: this.onChange,
                                   items: this.fileUpload
+                                 
                                 }}
+                              
+                               data={this.state.selectedCKCustomer}
+                                onChange={this.setCKEditorCustomer}
                               />
-                              <div className="div-button1">
+                              
+                               {/* <div className="div-button1">
                                 <button
                                   className="butn-2"
                                   type="submit"
                                   id="sms-tab"
+                                  
+                                 
                                   onClick={this.handleTabChange.bind(this,1)}
                                 >
                                   SAVE & NEXT
                                 </button>
-                              </div>
-                            </div>
+                              </div> */}
+                         
+                             </div>
                             <div
                               className="tab-pane fade"
                               id="Internal-tab"
@@ -839,6 +1048,9 @@ class Alerts extends Component {
                                     <input
                                       type="text"
                                       className="textbox-email-editor"
+                                      name="selectedToInternal"
+                                      value={this.state.selectedToInternal}
+                                      onChange={this.setDataOnChangeAlert}
                                     />
                                   </div>
                                 </div>
@@ -850,6 +1062,9 @@ class Alerts extends Component {
                                     <input
                                       type="text"
                                       className="textbox-email-editor text-box2"
+                                      name="selectedCCInternal"
+                                      value={this.state.selectedCCInternal}
+                                      onChange={this.setDataOnChangeAlert}
                                     />
                                   </div>
                                 </div>
@@ -861,6 +1076,9 @@ class Alerts extends Component {
                                     <input
                                       type="text"
                                       className="textbox-email-editor text-box3"
+                                      name="selectedBCCInternal"
+                                      value={this.state.selectedBCCInternal}
+                                      onChange={this.setDataOnChangeAlert}
                                     />
                                   </div>
                                 </div>
@@ -872,29 +1090,36 @@ class Alerts extends Component {
                                     <input
                                       type="text"
                                       className="textbox-email-editor text-box4"
+                                      name="selectedSubjectInternal"
+                                      value={this.state.selectedSubjectInternal}
+                                      onChange={this.setDataOnChangeAlert}
                                     />
                                   </div>
                                 </div>
                               </div>
                               <CKEditor
-                                content={this.state.content}
+                                //content={this.state.content}
                                 events={{
                                   // "blur": this.onBlur,
                                   // "afterPaste": this.afterPaste,
-                                  change: this.onChange,
+                                  //change: this.onChange,
                                   items: this.fileUpload
                                 }}
+                                name="selectedCKInternal"
+                                data={this.state.selectedCKInternal}
+                                onChange={this.setCKEditorInternal}
                               />
-                              <div className="div-button1">
+                             {/* <div className="div-button1">
                                 <button
                                   className="butn-2"
                                   type="submit"
                                   id="sms-tab"
                                   onClick={this.handleTabChange.bind(this,1)}
+                                  
                                 >
                                   SAVE & NEXT
                                 </button>
-                              </div>
+                              </div>*/}
                             </div>
                             <div
                               className="tab-pane fade"
@@ -914,6 +1139,9 @@ class Alerts extends Component {
                                     <input
                                       type="text"
                                       className="textbox-email-editor"
+                                      name="selectedToStore"
+                                      value={this.state.selectedToStore}
+                                      onChange={this.setDataOnChangeAlert}
                                     />
                                   </div>
                                 </div>
@@ -925,6 +1153,9 @@ class Alerts extends Component {
                                     <input
                                       type="text"
                                       className="textbox-email-editor text-box2"
+                                      name="selectedCCStore"
+                                      value={this.state.selectedCCStore}
+                                      onChange={this.setDataOnChangeAlert}
                                     />
                                   </div>
                                 </div>
@@ -936,6 +1167,9 @@ class Alerts extends Component {
                                     <input
                                       type="text"
                                       className="textbox-email-editor text-box3"
+                                      name="selectedBCCStore"
+                                      value={this.state.selectedBCCStore}
+                                      onChange={this.setDataOnChangeAlert}
                                     />
                                   </div>
                                 </div>
@@ -947,6 +1181,9 @@ class Alerts extends Component {
                                     <input
                                       type="text"
                                       className="textbox-email-editor text-box4"
+                                      name="selectedSubjectStore"
+                                      value={this.state.selectedSubjectStore}
+                                      onChange={this.setDataOnChangeAlert}
                                     />
                                   </div>
                                 </div>
@@ -959,17 +1196,23 @@ class Alerts extends Component {
                                   change: this.onChange,
                                   items: this.fileUpload
                                 }}
+                                name="selectedCKStore"
+                                data={this.state.selectedCKStore}
+                                onChange={this.setCKEditorStore}
+
+
                               />
-                              <div className="div-button1">
+                              {/*<div className="div-button1">
                                 <button
                                   className="butn-2"
                                   type="submit"
                                   id="sms-tab"
                                   onClick={this.handleTabChange.bind(this,1)}
+                                  
                                 >
                                   SAVE & NEXT
                                 </button>
-                              </div>
+                              </div>*/}
                             </div>
                           </div>
                         </div>}
@@ -983,12 +1226,18 @@ class Alerts extends Component {
                             <textarea
                               rows="10"
                               className="text-areaModel"
+                              name="selectedSMSContent"
+                                      value={this.state.selectedSMSContent}
+                                      onChange={this.setDataOnChangeAlert}
                             ></textarea>
-                            <div className="div-button1">
-                              <button className="butn-2" type="submit" onClick={this.handleTabChange.bind(this,2)}>
+                            {/*<div className="div-button1">
+                              <button className="butn-2" type="submit" 
+                              onClick={this.handleTabChange.bind(this,2)}
+                              
+                              >
                                 SAVE & NEXT
                               </button>
-                            </div>
+                            </div>*/}
                           </div>
                         </div>
                         <div id="notification-tab"
@@ -1001,14 +1250,27 @@ class Alerts extends Component {
                             <textarea
                               rows="10"
                               className="text-areaModel"
+                              name="selectedNotifContent"
+                                      value={this.state.selectedNotifContent}
+                                      onChange={this.setDataOnChangeAlert}
                             ></textarea>
-                            <div className="div-button1">
-                              <button className="butn-2" type="submit">
+                           {/* <div className="div-button1">
+                              <button className="butn-2" type="submit"
+                             
+                              >
                                 SAVE & NEXT
                               </button>
-                            </div>
+                          </div>*/}
+                           
                           </div>
                         </div>
+                         <div className="div-button1">
+                              <button className="butn-2" type="submit"
+                              onClick={this.handleInsertAlert.bind(this)}
+                              >
+                                SAVE
+                              </button>
+                            </div>
                       </div>
                     </Modal.Body>
                   </Modal>
