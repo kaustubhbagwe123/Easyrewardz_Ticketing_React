@@ -1794,7 +1794,7 @@ select {
   -ms-appearance: none;
 }
 body {
-  font-family: "Lato", sans-serif;
+  font-family: "Lato", sans-serif !important;
   background-color: #f5f8f9;
   color: #4a4a4a;
 }

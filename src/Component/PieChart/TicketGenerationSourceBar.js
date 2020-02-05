@@ -15,6 +15,28 @@ class TicketGenerationSourceBar extends Component {
         },
         xaxis: {
           categories: []
+        },
+        dataLabels: {
+          enabled: false
+        },
+        fill: {
+          colors: ['#2561A8'],
+          opacity: 1
+        },
+        states: {
+          hover: {
+            filter: {
+              type: 'none'
+            }
+          },
+          active: {
+            filter: {
+              type: 'none'
+            }
+          }
+        },
+        tooltip: {
+          enabled: false
         }
       },
       series: [
