@@ -15,6 +15,35 @@ class TicketToBillBarGraph extends Component {
         xaxis: {
           categories: []
           // categories: ["Offline", "Web", "Mobile"]
+        },
+        legend: {
+          position: 'top',
+          horizontalAlign: 'right',
+          markers: {
+            fillColors: ['#75A5DE', '#2561A8']
+          }
+        },
+        fill: {
+          colors: ['#75A5DE', '#2561A8'],
+          opacity: 1
+        },
+        stroke: {
+          show: false
+        },
+        states: {
+          hover: {
+            filter: {
+              type: 'none'
+            }
+          },
+          active: {
+            filter: {
+              type: 'none'
+            }
+          }
+        },
+        tooltip: {
+          enabled: false
         }
       },
       seriesMixedChart: [

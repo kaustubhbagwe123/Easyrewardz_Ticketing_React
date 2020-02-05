@@ -23,7 +23,7 @@ import PDF from "./../assets/Images/pdf.png"; // Don't comment this line
 import CSVi from "./../assets/Images/csvicon.png"; // Don't comment this line
 import Excel from "./../assets/Images/excel.png"; // Don't comment this line
 import Word from "./../assets/Images/word.png"; // Don't comment this line
-import TxtLogo from "./../assets/Images/TxtIcon.png";
+import TxtLogo from "./../assets/Images/TxtIcon.png"; // Don't comment this line
 import { faCalculator } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import KnowledgeLogo from "./../assets/Images/knowledge.png";
@@ -677,15 +677,14 @@ class TicketSystem extends Component {
 
     // -------------------------Image View code end-----------------------
     this.setState({ fileText: this.state.file.length });
-
-    // this.setState({fileText:"files"});
   }
   handleRemoveImage(i) {
     debugger;
     let file = this.state.file;
     file.splice(i, 1);
+    var fileText=file.length;
     setTimeout(() => {
-      this.setState(file);
+      this.setState({file,fileText});
     }, 100);
   }
 
