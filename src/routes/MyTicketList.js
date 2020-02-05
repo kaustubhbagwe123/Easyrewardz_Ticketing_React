@@ -40,7 +40,7 @@ import {
 } from "react-notifications";
 import ScheduleDateDropDown from "./ScheduleDateDropDown";
 import { authHeader } from "../helpers/authHeader";
-import { CSVLink, CSVDownload } from "react-csv";
+import { CSVLink } from "react-csv";
 
 class MyTicketList extends Component {
   constructor(props) {
@@ -1307,8 +1307,8 @@ class MyTicketList extends Component {
       if (this.state.selectedWithTaskAll === "yes") {
         withTask = 1;
       }
-      allTab["CreatedDate"] = this.state.ByAllCreateDate;
-      allTab["ModifiedDate"] = this.state.ByAllLastDate;
+      allTab["CreatedDate"] =  moment(this.state.ByAllCreateDate).format("YYYY-MM-DD");
+      allTab["ModifiedDate"] = moment(this.state.ByAllLastDate).format("YYYY-MM-DD");
       allTab["CategoryId"] = this.state.selectedCategoryAll;
       allTab["SubCategoryId"] = this.state.selectedSubCategoryAll;
       allTab["IssueTypeId"] = this.state.selectedIssueTypeAll;

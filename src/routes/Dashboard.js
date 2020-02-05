@@ -144,7 +144,7 @@ class Dashboard extends Component {
       selectedPriorityAll: 0,
       selectedTicketStatusByDate: 0,
       selectedNoOfDay: "",
-      selectedScheduleTime: '',
+      selectedScheduleTime: "",
       selectedSlaDueByDate: 0,
       selectedClaimStatus: 0,
       selectedTaskStatus: 0,
@@ -268,7 +268,7 @@ class Dashboard extends Component {
       ],
       resultCount: 0,
       loading: false,
-      SearchNameCompulsory:'',
+      SearchNameCompulsory: "",
       loadingAbove: true
     };
     this.handleAssignTo = this.handleAssignTo.bind(this);
@@ -484,7 +484,10 @@ class Dashboard extends Component {
       debugger;
       let DashboardNumberData = res.data.responseData;
       self.setState({ DashboardNumberData: DashboardNumberData });
-      if (Object.keys(self.state.DashboardGraphData).length > 0 && Object.keys(self.state.DashboardNumberData).length > 0) {
+      if (
+        Object.keys(self.state.DashboardGraphData).length > 0 &&
+        Object.keys(self.state.DashboardNumberData).length > 0
+      ) {
         self.setState({ loadingAbove: false });
       }
     });
@@ -546,7 +549,10 @@ class Dashboard extends Component {
         self.setState({
           DashboardGraphData: DashboardGraphData
         });
-        if (Object.keys(self.state.DashboardGraphData).length > 0 && Object.keys(self.state.DashboardNumberData).length > 0) {
+        if (
+          Object.keys(self.state.DashboardGraphData).length > 0 &&
+          Object.keys(self.state.DashboardNumberData).length > 0
+        ) {
           self.setState({ loadingAbove: false });
         }
       }
@@ -790,7 +796,7 @@ class Dashboard extends Component {
         this.setState({ agentId });
       },
       style: {
-        background: this.selectedRow === index ? '#ECF2F4' : null
+        background: this.selectedRow === index ? "#ECF2F4" : null
       }
     };
   };
@@ -1880,8 +1886,32 @@ class Dashboard extends Component {
       if (this.state.selectedWithTaskAll === "yes") {
         withTask = 1;
       }
-      allTab["CreatedDate"] = this.state.ByAllCreateDate;
-      allTab["ModifiedDate"] = this.state.ByAllLastDate;
+
+      // --------------------Check null date----------------------------------
+      if (
+        this.state.ByAllCreateDate === null ||
+        this.state.ByAllCreateDate === undefined ||
+        this.state.ByAllCreateDate === ""
+      ) {
+        allTab["CreatedDate"] = "";
+      } else {
+        allTab["CreatedDate"] = moment(this.state.ByAllCreateDate).format(
+          "YYYY-MM-DD"
+        );
+      }
+      // --------------------Check null date----------------------------------
+      if (
+        this.state.ByAllLastDate === null ||
+        this.state.ByAllLastDate === undefined ||
+        this.state.ByAllLastDate === ""
+      ) {
+        allTab["ModifiedDate"] = "";
+      } else {
+        allTab["ModifiedDate"] = moment(this.state.ByAllLastDate).format(
+          "YYYY-MM-DD"
+        );
+      }
+
       allTab["CategoryId"] = this.state.selectedCategoryAll;
       allTab["SubCategoryId"] = this.state.selectedSubCategoryAll;
       allTab["IssueTypeId"] = this.state.selectedIssueTypeAll;
@@ -1928,13 +1958,14 @@ class Dashboard extends Component {
         searchDataByDate: dateTab,
         searchDataByCustomerType: customerType,
         searchDataByTicketType: ticketType,
-        searchDataByCategoryType: categoryType
+        searchDataByCategoryType: categoryType,
+        searchDataByAll: allTab
       }
     }).then(function(res) {
       debugger;
       let status = res.data.message;
       let data = res.data.responseData;
-      let CSVData =data;
+      let CSVData = data;
       let count = 0;
       if (res.data.responseData != null) {
         count = res.data.responseData.length;
@@ -1965,7 +1996,7 @@ class Dashboard extends Component {
   SaveSearchData() {
     debugger;
     let self = this;
-    if(this.state.SearchName.length > 0){
+    if (this.state.SearchName.length > 0) {
       var paramData = {
         ByDate: this.state.byDateFlag,
         creationDate: this.state.ByDateCreatDate,
@@ -2008,12 +2039,11 @@ class Dashboard extends Component {
           });
         }
       });
-    }else{
+    } else {
       self.setState({
-        SearchNameCompulsory:"Please Enter Search Name."
-      })
+        SearchNameCompulsory: "Please Enter Search Name."
+      });
     }
-    
   }
   handleGetSaveSearchList() {
     debugger;
@@ -2124,8 +2154,8 @@ class Dashboard extends Component {
     this.setState({ selectedIssueTypeAll: issueTypeAllValue });
   };
 
-  handleApplySearch(paramsID){
-    debugger
+  handleApplySearch(paramsID) {
+    debugger;
     let self = this;
     axios({
       method: "post",
@@ -2906,7 +2936,7 @@ class Dashboard extends Component {
                               {this.state.SearchListData !== null &&
                                 this.state.SearchListData.map((item, i) => (
                                   <li key={i}>
-                                    <label  value={item.searchParamID}>
+                                    <label value={item.searchParamID}>
                                       {item.searchName}
                                     </label>
                                     <div>
@@ -3002,7 +3032,6 @@ class Dashboard extends Component {
                                           <option
                                             key={i}
                                             value={item.ticketStatusID}
-                                            
                                           >
                                             {item.ticketStatusName}
                                           </option>
@@ -4261,8 +4290,6 @@ class Dashboard extends Component {
                                   </div>
                                 </div>
                               </div>
-
-
                             </div>
                           </div>
                         </div>

@@ -15,17 +15,25 @@ import ReactTable from "react-table";
 import InfoIcon from "./../../assets/Images/Info-black.png";
 import { Popover } from "antd";
 import BlackDeleteIcon from "./../../assets/Images/del-big.png";
+import { CSVLink, CSVDownload } from "react-csv";
+import config from "../../helpers/config";
 
 class QaHierarchyMaster extends Component {
     constructor(props) {
         super(props)
     
         this.state = {
-             fileName : ""
+             fileName : "",
+             Template:[]
         }
     }
     
-
+    hide = () => {
+      debugger;
+      this.setState({
+        visible: false,
+      });
+    }
     fileUpload = e => {
         this.setState({ fileName: e.target.files[0].name });
       };
@@ -40,6 +48,11 @@ class QaHierarchyMaster extends Component {
         e.preventDefault();
       };
     render() {
+     const templateData = [
+        ["Designation", "ReportTo","Status"],
+        ["HOD", "Root","Active"],
+        ["Manager", "HOD","Active"]           
+      ];
         const dataQaHierarMas = [
             {
               id: "D1",
@@ -200,7 +213,7 @@ class QaHierarchyMaster extends Component {
                   </div>
                   <br />
                   <div>
-                  <a className="pop-over-cancle" href={Demo.BLANK_LINK}>CANCEL</a>
+                  <a className="pop-over-cancle" onClick={this.hide}>CANCEL11</a>
                     <button className="pop-over-button">
                         SAVE
                     </button>
@@ -327,9 +340,18 @@ class QaHierarchyMaster extends Component {
                     <h3 className="pb-0">Bulk Upload</h3>
                     <div className="down-excel">
                       <p>Template</p>
-                      <a href={Demo.BLANK_LINK}>
+                        {/* <CSVLink
+                                className=""
+                                data={templateData}
+                              >
+                        <a href={Demo.BLANK_LINK}>
                         <img src={DownExcel} alt="download icon" />
                       </a>
+                     </CSVLink> */}
+                     <CSVLink data={config.hierarchyTemplate}>
+                       <img src={DownExcel} alt="download icon" />
+                    </CSVLink>
+                    
                     </div>
                   </div>
                   <input

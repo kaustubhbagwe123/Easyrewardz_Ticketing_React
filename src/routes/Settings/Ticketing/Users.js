@@ -22,6 +22,7 @@ import {
   NotificationManager
 } from "react-notifications";
 import Select from "react-select";
+import { CSVLink, CSVDownload } from "react-csv";
 
 class Users extends Component {
   constructor(props) {
@@ -1644,9 +1645,9 @@ class Users extends Component {
                     <h3 className="pb-0">Bulk Upload</h3>
                     <div className="down-excel">
                       <p>Template</p>
-                      <a href={Demo.BLANK_LINK}>
-                        <img src={DownExcel} alt="download icon" />
-                      </a>
+                      <CSVLink filename={"User.csv"} data={config.userTemplate}>
+                       <img src={DownExcel} alt="download icon" />
+                    </CSVLink>
                     </div>
                   </div>
                   <input

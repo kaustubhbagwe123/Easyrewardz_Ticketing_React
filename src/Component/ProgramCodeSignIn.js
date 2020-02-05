@@ -3,6 +3,12 @@ import React, { Component } from "react";
 import logo from "../assets/Images/logo.jpg";
 import SimpleReactValidator from "simple-react-validator";
 import { encryption } from "../helpers/encryption";
+import {
+  NotificationContainer,
+  NotificationManager
+} from "react-notifications";
+import axios from "axios";
+import config from "../helpers/config";
 
 class ProgramCodeSignIn extends Component {
   constructor(props) {
@@ -23,16 +29,47 @@ class ProgramCodeSignIn extends Component {
     if (this.validator.allValid()) {
       const{programCode}=this.state;
       var encProgramCode=encryption(programCode, "enc");
-      // this.props.history.push("SignIn");
-      setTimeout(function() {
-        self.props.history.push({
-          pathname: "SignIn",
-          encProgramCode: encProgramCode
-        });
-      }, 500);
-      self.setState({
-        encProgramCode: {programCode: encProgramCode}
+      let X_Authorized_Domainname = encryption('https://erbelltkt.dcdev.brainvire.net', "enc");
+     // let X_Authorized_Domainname = encryption(window.location.origin, "enc");    
+      let X_Authorized_Programcode = encProgramCode;
+      // setTimeout(function() {
+      //   self.props.history.push({
+      //     pathname: "SignIn",
+      //     encProgramCode: encProgramCode
+      //   });
+      // }, 500);
+      // self.setState({
+      //   encProgramCode: {programCode: encProgramCode}
+      // });
+      axios({
+        method: "get",
+        url: config.apiUrl + "/Account/validateprogramcode",      
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",              
+          "X-Authorized-Programcode":X_Authorized_Programcode ,
+          "X-Authorized-Domainname":X_Authorized_Domainname     
+        }
+      }).then(function(res) {
+        debugger;
+        let Msg = res.data.statusCode;
+        if (Msg === 200) {          
+          setTimeout(function() {
+            self.props.history.push({
+              pathname: "SignIn",
+              encProgramCode: encProgramCode
+            });
+          }, 500);
+          self.setState({
+            encProgramCode: {programCode: encProgramCode}
+          });
+        }
+        else{
+          NotificationManager.error("Please enter valid program code.");
+        }
       });
+      // this.props.history.push("SignIn");
+     
     } else {
       this.validator.showMessages();
       this.forceUpdate();
@@ -43,8 +80,10 @@ class ProgramCodeSignIn extends Component {
   };
 
   render() {
-    return (
+    
+    return (     
       <div className="auth-wrapper">
+      <NotificationContainer></NotificationContainer>
         <div className="auth-content">
           <div className="card programcode-card-new">
             <div className="card-body text-center">
