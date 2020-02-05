@@ -24,6 +24,7 @@ import {
 import { authHeader } from "../../../helpers/authHeader";
 import ActiveStatus from "../../activeStatus";
 import ZoneType from "./ZoneType";
+import { CSVLink, CSVDownload } from "react-csv";
 
 class StoreMaster extends Component {
   constructor(props) {
@@ -83,10 +84,16 @@ class StoreMaster extends Component {
       let status = res.data.message;
       let data = res.data.responseData;
       if (status === "Success") {
-        self.setState({
-          storeData: data,
-          loading: false
-        });
+        debugger;
+        if(data!=null)
+        {
+          // self.setState({
+          //   storeData: data,
+          //   loading: false
+          // });
+        }
+       
+      
       } else {
         self.setState({
           storeData: []
@@ -1224,9 +1231,9 @@ class StoreMaster extends Component {
                     <h3 className="pb-0">Bulk Upload</h3>
                     <div className="down-excel">
                       <p>Template</p>
-                      <a href={Demo.BLANK_LINK}>
-                        <img src={DownExcel} alt="download icon" />
-                      </a>
+                      <CSVLink filename={"Store.csv"}  data={config.storeTemplate}>
+                       <img src={DownExcel} alt="download icon" />
+                    </CSVLink>
                     </div>
                   </div>
                   <input

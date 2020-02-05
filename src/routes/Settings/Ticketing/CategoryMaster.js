@@ -13,6 +13,7 @@ import SweetAlert from "react-bootstrap-sweetalert";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Popover } from "antd";
+import DownExcel from "./../../../assets/Images/csv.png";
 import ReactTable from "react-table";
 import {
   NotificationContainer,
@@ -22,6 +23,7 @@ import { authHeader } from "../../../helpers/authHeader";
 import config from "../../../helpers/config";
 import axios from "axios";
 import ActiveStatus from "../../activeStatus";
+import { CSVLink, CSVDownload } from "react-csv";
 const { Option } = Select;
 const NEW_ITEM = "NEW_ITEM";
 
@@ -930,6 +932,12 @@ class CategoryMaster extends Component {
                   <div className="right-sect-div">
                     <br />
                     <h3>Bulk Upload</h3>
+                    <div className="down-excel">
+                      <p>Template</p>
+                      <CSVLink filename={"Category.csv"}  data={config.categoryTemplate}>
+                       <img src={DownExcel} alt="download icon" />
+                    </CSVLink>
+                    </div>
                     <input
                       id="file-upload"
                       className="file-upload d-none"

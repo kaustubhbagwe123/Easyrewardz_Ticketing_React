@@ -7,6 +7,7 @@ import DelBigIcon from "./../../../assets/Images/del-big.png";
 import FileUpload from "./../../../assets/Images/file.png";
 import DelBlack from "./../../../assets/Images/del-black.png";
 import UploadCancel from "./../../../assets/Images/upload-cancel.png";
+import DownExcel from "./../../../assets/Images/csv.png";
 import { ProgressBar } from "react-bootstrap";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -21,6 +22,7 @@ import {
   NotificationContainer,
   NotificationManager
 } from "react-notifications";
+import { CSVLink, CSVDownload } from "react-csv";
 
 class CreateSLA extends Component {
   constructor(props) {
@@ -916,6 +918,12 @@ class CreateSLA extends Component {
                   <div className="right-sect-div">
                     <br />
                     <h3>Bulk Upload</h3>
+                    <div className="down-excel">
+                      <p>Template</p>
+                      <CSVLink  filename={"SLA.csv"} data={config.slaTemplate}>
+                       <img src={DownExcel} alt="download icon" />
+                     </CSVLink>
+                    </div>
                     <input
                       id="file-upload"
                       className="file-upload d-none"
