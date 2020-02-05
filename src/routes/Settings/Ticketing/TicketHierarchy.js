@@ -22,6 +22,7 @@ import {
 } from "react-notifications";
 import { authHeader } from "../../../helpers/authHeader";
 import ActiveStatus from "../../activeStatus";
+import { CSVLink, CSVDownload } from "react-csv";
 
 class TicketHierarchy extends Component {
   constructor(props) {
@@ -617,9 +618,9 @@ class TicketHierarchy extends Component {
                     <h3 className="pb-0">Bulk Upload</h3>
                     <div className="down-excel">
                       <p>Template</p>
-                      <a href={Demo.BLANK_LINK}>
-                        <img src={DownExcel} alt="download icon" />
-                      </a>
+                      <CSVLink  filename={"Hierarchy.csv"} data={config.hierarchyTemplate}>
+                       <img src={DownExcel} alt="download icon" />
+                     </CSVLink>
                     </div>
                   </div>
                   <input

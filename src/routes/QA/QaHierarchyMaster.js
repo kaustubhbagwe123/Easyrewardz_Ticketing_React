@@ -15,6 +15,8 @@ import ReactTable from "react-table";
 import InfoIcon from "./../../assets/Images/Info-black.png";
 import { Popover } from "antd";
 import BlackDeleteIcon from "./../../assets/Images/del-big.png";
+import { CSVLink, CSVDownload } from "react-csv";
+import config from "../../helpers/config";
 
 class QaHierarchyMaster extends Component {
     constructor(props) {
@@ -22,7 +24,7 @@ class QaHierarchyMaster extends Component {
     
         this.state = {
              fileName : "",
-            
+             Template:[]
         }
     }
     
@@ -46,6 +48,11 @@ class QaHierarchyMaster extends Component {
         e.preventDefault();
       };
     render() {
+     const templateData = [
+        ["Designation", "ReportTo","Status"],
+        ["HOD", "Root","Active"],
+        ["Manager", "HOD","Active"]           
+      ];
         const dataQaHierarMas = [
             {
               id: "D1",
@@ -333,9 +340,18 @@ class QaHierarchyMaster extends Component {
                     <h3 className="pb-0">Bulk Upload</h3>
                     <div className="down-excel">
                       <p>Template</p>
-                      <a href={Demo.BLANK_LINK}>
+                        {/* <CSVLink
+                                className=""
+                                data={templateData}
+                              >
+                        <a href={Demo.BLANK_LINK}>
                         <img src={DownExcel} alt="download icon" />
                       </a>
+                     </CSVLink> */}
+                     <CSVLink data={config.hierarchyTemplate}>
+                       <img src={DownExcel} alt="download icon" />
+                    </CSVLink>
+                    
                     </div>
                   </div>
                   <input

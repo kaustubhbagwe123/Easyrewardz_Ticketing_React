@@ -20,7 +20,9 @@ import {
   NotificationContainer,
   NotificationManager
 } from "react-notifications";
+import DownExcel from "../../../assets/Images/csv.png";
 import SimpleReactValidator from "simple-react-validator";
+import { CSVLink, CSVDownload } from "react-csv";
 
 class TicketCRMRole extends Component {
   constructor(props) {
@@ -727,6 +729,10 @@ class TicketCRMRole extends Component {
                   <div className="right-sect-div">
                     <br />
                     <h3>Bulk Upload</h3>
+                    Template
+                    <CSVLink filename={"CRM.csv"}  data={config.crmRoleTemplate}>
+                       <img src={DownExcel} alt="download icon" />
+                    </CSVLink>
                     <input
                       id="file-upload"
                       className="file-upload d-none"

@@ -1,9 +1,7 @@
 import React, { Component, Fragment } from "react";
 import Modal from "react-responsive-modal";
-// import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { faCalculator } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import HistoricalTable from "./HistoricalTable";
 import HeadphoneImg from "./../assets/Images/headphone.png";
 import Headphone2Img from "./../assets/Images/headphone2.png";
 import BlackUserIcon from "./../assets/Images/avatar.png";
@@ -14,7 +12,6 @@ import EyeImg from "./../assets/Images/eye.png";
 import BillInvoiceImg from "./../assets/Images/bill-Invoice.png";
 import MsgImg from "./../assets/Images/msg.png";
 import Down1Img from "./../assets/Images/down-1.png";
-// import ArrowImg from "./../assets/Images/arrow.png";
 import PlusImg from "./../assets/Images/plus.png";
 import MinusImg from "./../assets/Images/minus.png";
 import RightImg from "./../assets/Images/right.png";
@@ -30,10 +27,7 @@ import { Drawer } from "antd";
 import CustomerIcon from "./../assets/Images/customer-icon.png";
 import UserIcon from "./../assets/Images/UserIcon.png";
 import CrossIcon from "./../assets/Images/cancel.png";
-// import TikcetSystemStoreModal from "./../routes/TicketSystemStoreModal";
 import StoreIcon from "./../assets/Images/store.png";
-// import SendEmail from "./../assets/Images/sendEmail.png";
-// import PlusImgTh from "./../assets/Images/plus.png";
 import MyTicketTask from "./Tabs/MyTicketTask";
 import MyTicketClaim from "./Tabs/MyTicketClaim";
 import FileUpload from "./../assets/Images/file.png";
@@ -43,7 +37,6 @@ import KnowledgeLogo from "./../assets/Images/knowledge.png";
 // import DownArrowIcon from "./../assets/Images/down-1.png";
 import CopyBlue from "./../assets/Images/copyblue.png";
 import ViewBlue from "./../assets/Images/viewblue.png";
-import ThumbTick from "./../assets/Images/thumbticket.png";
 import Email1 from "./../assets/Images/SecuredLetter2.png";
 import Sms1 from "./../assets/Images/Sms.png";
 import Facebook1 from "./../assets/Images/facebook.png";
@@ -63,6 +56,14 @@ import TicketStatus from "./TicketStatus";
 // import Select from "react-select";
 import TicketActionType from "./TicketActionType";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import CircleCancel from "./../assets/Images/Circle-cancel.png";
+import ThumbTick from "./../assets/Images/thumbticket.png"; // Don't comment this line
+import PDF from "./../assets/Images/pdf.png"; // Don't comment this line
+import CSVi from "./../assets/Images/csvicon.png"; // Don't comment this line
+import Excel from "./../assets/Images/excel.png"; // Don't comment this line
+import Word from "./../assets/Images/word.png"; // Don't comment this line
+import TxtLogo from "./../assets/Images/TxtIcon.png"; // Don't comment this line
+
 class MyTicket extends Component {
   constructor(props) {
     super(props);
@@ -97,7 +98,6 @@ class MyTicket extends Component {
       IssueTypeData: [],
       ChannelOfPurchaseData: [],
       historicalDetails: [],
-      productDetails: [],
       storeDetails: [],
       ticketDetailsData: {},
       tabCounts: {},
@@ -115,7 +115,7 @@ class MyTicket extends Component {
       TicketStatusData: TicketStatus(),
       selectedTicketActionType: [],
       TicketActionTypeData: TicketActionType(),
-      taskTableGrid: [],
+      // taskTableGrid: [],
       SearchAssignData: [],
       // selectetedParameters: {},
       claimDetailsData: [],
@@ -128,6 +128,7 @@ class MyTicket extends Component {
       CkEditorTemplateData: [],
       CkEditorTemplateDetails: [],
       selectedStore: [],
+      selectedProduct: [],
       tempName: "",
       selectTicketTemplateId: 0,
       mailBodyData: "",
@@ -136,10 +137,18 @@ class MyTicket extends Component {
       loading: false,
       Plus: false,
       selectedStoreData: [],
+      selectedDataRow: [],
       CheckStoreID: {},
-      notesCommentCompulsion: '',
+      CheckOrderID: {},
+      notesCommentCompulsion: "",
       userCC: "",
       userBCC: "",
+      messageDetails: {},
+      fileText: 0,
+      file: [],
+      userCcCount: 0,
+      userBccCount: 0,
+      mailFiled: {}
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -153,7 +162,7 @@ class MyTicket extends Component {
     this.handleGetChannelOfPurchaseList = this.handleGetChannelOfPurchaseList.bind(
       this
     );
-    this.handleGetTaskTableCount = this.handleGetTaskTableCount.bind(this);
+    // this.handleGetTaskTableCount = this.handleGetTaskTableCount.bind(this);
     this.handleUpdateTicketStatus = this.handleUpdateTicketStatus.bind(this);
     this.handleGetTicketDetails = this.handleGetTicketDetails.bind(this);
     this.handleGetCountOfTabs = this.handleGetCountOfTabs.bind(this);
@@ -174,11 +183,10 @@ class MyTicket extends Component {
       this.setState({ HistOrderShow: true, ticket_Id: ticketId });
       this.handleGetTicketPriorityList();
       this.handleGetBrandList();
-      this.handleAssignDataList();
       this.handleGetChannelOfPurchaseList();
       this.handleGetNotesTabDetails(ticketId);
       this.handleGetTicketDetails(ticketId);
-      this.handleGetTaskTableCount(ticketId);
+      // this.handleGetTaskTableCount(ticketId);
       this.handleGetCountOfTabs(ticketId);
       this.handleGetMessageDetails(ticketId);
     } else {
@@ -199,38 +207,46 @@ class MyTicket extends Component {
       }
     }).then(function(res) {
       debugger;
+      let status = res.data.message;
       let data = res.data.responseData;
-      var customer_Id = data.customerID;
-      var ticketStatus = data.status;
-      var ticketPriority = data.priortyID;
-      var ticketBrand = data.brandID;
-      var ticketCagetory = data.categoryID;
-      var ticketSubGategory = data.subCategoryID;
-      var ticketChannelOfPurchaseID = data.channelOfPurchaseID;
-      var ticketActionType = data.ticketActionTypeID;
-      var ticketIssueTypeID = data.issueTypeID;
-      var selectetedParameters = {
-        ticketStatusID: ticketStatus,
-        priorityID: ticketPriority,
-        brandID: ticketBrand,
-        categoryID: ticketCagetory,
-        subCategoryID: ticketSubGategory,
-        channelOfPurchaseID: ticketChannelOfPurchaseID,
-        ticketActionTypeID: ticketActionType,
-        issueTypeID: ticketIssueTypeID
-      };
-      self.setState({
-        ticketDetailsData: data,
-        custID: customer_Id,
-        selectetedParameters,
-        loading: false
-      });
+      if (status === "Success") {
+        var customer_Id = data.customerID;
+        var ticketStatus = data.status;
+        var ticketPriority = data.priortyID;
+        var ticketBrand = data.brandID;
+        var ticketCagetory = data.categoryID;
+        var ticketSubGategory = data.subCategoryID;
+        var ticketChannelOfPurchaseID = data.channelOfPurchaseID;
+        var ticketActionType = data.ticketActionTypeID;
+        var ticketIssueTypeID = data.issueTypeID;
+        var selectetedParameters = {
+          ticketStatusID: ticketStatus,
+          priorityID: ticketPriority,
+          brandID: ticketBrand,
+          categoryID: ticketCagetory,
+          subCategoryID: ticketSubGategory,
+          channelOfPurchaseID: ticketChannelOfPurchaseID,
+          ticketActionTypeID: ticketActionType,
+          issueTypeID: ticketIssueTypeID
+        };
+        self.setState({
+          ticketDetailsData: data,
+          custID: customer_Id,
+          selectetedParameters,
+          loading: false
+        });
 
-      setTimeout(() => {
-        self.handleGetCategoryList();
-        self.handleGetSubCategoryList();
-        self.handleGetIssueTypeList();
-      }, 100);
+        setTimeout(() => {
+          self.handleGetCategoryList();
+          self.handleGetSubCategoryList();
+          self.handleGetIssueTypeList();
+        }, 100);
+      } else {
+        self.setState({
+          ticketDetailsData: {},
+          custID: 0
+        });
+      }
     });
   }
   handleAssignDataList() {
@@ -238,14 +254,8 @@ class MyTicket extends Component {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/Ticketing/searchAgent",
-      headers: authHeader(),
-      params: {
-        FirstName: "",
-        LastName: "",
-        Email: "",
-        DesignationID: ""
-      }
+      url: config.apiUrl + "/Ticketing/getagentlist",
+      headers: authHeader()
     }).then(function(res) {
       debugger;
       let data = res.data.responseData;
@@ -280,7 +290,7 @@ class MyTicket extends Component {
   }
   handleGetMessageDetails(ticketId) {
     debugger;
-    // let self=this;
+    let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Ticketing/getticketmessage",
@@ -290,6 +300,19 @@ class MyTicket extends Component {
       }
     }).then(function(res) {
       debugger;
+      let status = res.data.message;
+      if (status === "Success") {
+        let data = res.data.responseData[0];
+        console.log(data, "data");
+
+        self.setState({
+          messageDetails: data
+        });
+      } else {
+        self.setState({
+          messageDetails: []
+        });
+      }
       // let status=res.data.status;
     });
   }
@@ -319,20 +342,42 @@ class MyTicket extends Component {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/Order/getOrderListWithItemDetails",
+      url: config.apiUrl + "/Order/getOrderDetailByTicketID",
       headers: authHeader(),
       params: {
-        OrderNumber: "test123",
-        CustomerID: this.state.custID
+        TicketID: this.state.ticket_Id
       }
     }).then(function(res) {
       debugger;
       let Msg = res.data.message;
-      let mainData = res.data.responseData;
-      self.setState({
-        message: Msg,
-        productDetails: mainData
-      });
+      let data = res.data.responseData;
+      if (Msg === "Success") {
+        const newSelected = Object.assign({}, self.state.CheckOrderID);
+        debugger;
+        var selectedRow = [];
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].orderMasterID) {
+            newSelected[data[i].orderMasterID] = !self.state.CheckOrderID[
+              data[i].orderMasterID
+            ];
+            selectedRow.push(data[i]);
+            self.setState({
+              CheckOrderID: data[i].orderMasterID ? newSelected : false
+            });
+          }
+        }
+        self.setState({
+          selectedDataRow: selectedRow,
+          selectedProduct: data
+        });
+        self.setState({
+          selectedProduct: data
+        });
+      } else {
+        self.setState({
+          selectedProduct: []
+        });
+      }
     });
   }
   handleGetStoreDetails() {
@@ -407,27 +452,27 @@ class MyTicket extends Component {
     });
   }
 
-  handleGetTaskTableCount(ID) {
-    debugger;
-    let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Task/gettasklist",
-      headers: authHeader(),
-      params: {
-        TicketId: ID
-      }
-    }).then(function(res) {
-      debugger;
-      let status = res.data.status;
-      let data = res.data.responseData;
-      if (status === "Success") {
-        self.setState({ taskTableGrid: data });
-      } else {
-        self.setState({ taskTableGrid: [] });
-      }
-    });
-  }
+  // handleGetTaskTableCount(ID) {
+  //   debugger;
+  //   let self = this;
+  //   axios({
+  //     method: "post",
+  //     url: config.apiUrl + "/Task/gettasklist",
+  //     headers: authHeader(),
+  //     params: {
+  //       TicketId: ID
+  //     }
+  //   }).then(function(res) {
+  //     debugger;
+  //     let status = res.data.message;
+  //     let data = res.data.responseData;
+  //     if (status === "Success") {
+  //       self.setState({ taskTableGrid: data });
+  //     } else {
+  //       self.setState({ taskTableGrid: [] });
+  //     }
+  //   });
+  // }
 
   handleNoteOnChange = e => {
     this.setState({
@@ -581,8 +626,13 @@ class MyTicket extends Component {
       }
     }).then(function(res) {
       debugger;
+      let status = res.data.message;
       let data = res.data.responseData;
-      self.setState({ SubCategoryData: data });
+      if (status === "Success") {
+        self.setState({ SubCategoryData: data });
+      } else {
+        self.setState({ SubCategoryData: [] });
+      }
     });
   }
   handleGetIssueTypeList() {
@@ -679,6 +729,7 @@ class MyTicket extends Component {
     this.setState({ profilemodal: false });
   }
   HandlelabelModalOpen() {
+    this.handleAssignDataList();
     this.setState({ labelModal: true });
   }
   HandlelabelModalClose() {
@@ -764,37 +815,37 @@ class MyTicket extends Component {
   handleNoteAddComments() {
     debugger;
     if (this.state.NoteAddComment.length > 0) {
-    let self = this;
+      let self = this;
 
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Task/AddComment",
-      headers: authHeader(),
-      params: {
-        CommentForId: this.state.NotesTab,
-        Comment: this.state.NoteAddComment.trim(),
-        Id: this.state.ticket_Id
-      }
-    }).then(function(res) {
-      debugger;
-      let status = res.data.status;
-      if (status === true) {
-        var id = self.state.ticket_Id;
-        self.handleGetNotesTabDetails(id);
-        NotificationManager.success("Comment added successfully.");
-        self.setState({
-          NoteAddComment: "",
-          notesCommentCompulsion: ''
-        });
-      } else {
-        NotificationManager.error("Comment not added.");
-      }
-    });
-  } else {
-    this.setState({
-      notesCommentCompulsion: 'The Notes field is compulsary.'
-    })
-  }
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Task/AddComment",
+        headers: authHeader(),
+        params: {
+          CommentForId: this.state.NotesTab,
+          Comment: this.state.NoteAddComment.trim(),
+          Id: this.state.ticket_Id
+        }
+      }).then(function(res) {
+        debugger;
+        let status = res.data.status;
+        if (status === true) {
+          var id = self.state.ticket_Id;
+          self.handleGetNotesTabDetails(id);
+          NotificationManager.success("Comment added successfully.");
+          self.setState({
+            NoteAddComment: "",
+            notesCommentCompulsion: ""
+          });
+        } else {
+          NotificationManager.error("Comment not added.");
+        }
+      });
+    } else {
+      this.setState({
+        notesCommentCompulsion: "The Notes field is compulsary."
+      });
+    }
   }
   handleGetHistoricalData() {
     debugger;
@@ -849,8 +900,8 @@ class MyTicket extends Component {
           }
         }
         self.setState({
-          selectedStoreData:selectedRow,
-          selectedStore: data,
+          selectedStoreData: selectedRow,
+          selectedStore: data
           // loading: false
         });
       } else {
@@ -861,12 +912,12 @@ class MyTicket extends Component {
     });
   }
 
-  handleAttachStoreData(){
+  handleAttachStoreData() {
     debugger;
     // let self = this;
     var selectedStore = "";
     for (let j = 0; j < this.state.selectedStoreData.length; j++) {
-    selectedStore += this.state.selectedStoreData[j]["storeID"] + ",";
+      selectedStore += this.state.selectedStoreData[j]["storeID"] + ",";
     }
     axios({
       method: "post",
@@ -874,16 +925,43 @@ class MyTicket extends Component {
       headers: authHeader(),
       params: {
         TicketId: this.state.ticket_Id,
-        StoreId:selectedStore.substring(",", selectedStore.length - 1)
+        StoreId: selectedStore.substring(",", selectedStore.length - 1)
       }
     }).then(function(res) {
       debugger;
       let status = res.data.message;
       // let details = res.data.responseData;
-      if(status === "Success"){
+      if (status === "Success") {
         NotificationManager.success("Store attached successfully.");
-      }else{
-        NotificationManager.error("Store not attached"); 
+      } else {
+        NotificationManager.error("Store not attached");
+      }
+    });
+  }
+
+  handleAttachProductData() {
+    debugger;
+    // let self = this;
+    var selectedProduct = "";
+    for (let j = 0; j < this.state.selectedDataRow.length; j++) {
+      selectedProduct += this.state.selectedDataRow[j]["orderMasterID"] + ",";
+    }
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Order/attachorder",
+      headers: authHeader(),
+      params: {
+        TicketId: this.state.ticket_Id,
+        OrderID: selectedProduct.substring(",", selectedProduct.length - 1)
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      // let details = res.data.responseData;
+      if (status === "Success") {
+        NotificationManager.success("Product attached successfully.");
+      } else {
+        NotificationManager.error("Product not attached");
       }
     });
   }
@@ -1015,11 +1093,47 @@ class MyTicket extends Component {
   setTicketActionTypeValue = e => {
     this.setState({ selectedTicketActionType: e });
   };
-  handelCheckBoxCheckedChange = () => {
+  handleCheckOrderID(orderMasterID, rowData) {
+    debugger;
+    const newSelected = Object.assign({}, this.state.CheckOrderID);
+    newSelected[orderMasterID] = !this.state.CheckOrderID[orderMasterID];
     this.setState({
-      CheckBoxChecked: !this.state.CheckBoxChecked
+      CheckOrderID: orderMasterID ? newSelected : false
     });
-  };
+    var selectedRow = [];
+    if (this.state.selectedDataRow.length === 0) {
+      selectedRow.push(rowData.orderMasterID);
+      this.setState({
+        selectedDataRow: selectedRow
+      });
+    } else {
+      if (newSelected[orderMasterID] === true) {
+        for (var i = 0; i < this.state.selectedDataRow.length; i++) {
+          if (this.state.selectedDataRow[i] === rowData.orderMasterID) {
+            selectedRow.splice(i, 1);
+
+            break;
+          } else {
+            selectedRow = this.state.selectedDataRow;
+            selectedRow.push(rowData.orderMasterID);
+            break;
+          }
+        }
+      } else {
+        for (var j = 0; j < this.state.selectedDataRow.length; j++) {
+          if (this.state.selectedDataRow[j] === rowData.orderMasterID) {
+            selectedRow = this.state.selectedDataRow;
+            selectedRow.splice(j, 1);
+            break;
+          }
+        }
+      }
+    }
+
+    this.setState({
+      selectedDataRow: selectedRow
+    });
+  }
   //KB Templete Pop up Search API
   handleKbLinkPopupSearch() {
     debugger;
@@ -1132,8 +1246,8 @@ class MyTicket extends Component {
       headers: authHeader(),
       params: {
         EmailID: this.state.ticketDetailsData.customerEmailId,
-        Mailcc: this.state.userCC,
-        Mailbcc: this.state.userBCC,
+        Mailcc: this.state.mailFiled.userCC,
+        Mailbcc: this.state.mailFiled.userBCC,
         Mailsubject: subject,
         MailBody: this.state.CkEditorTemplateDetails.templateBody,
         informStore: this.state.InformStore,
@@ -1193,17 +1307,76 @@ class MyTicket extends Component {
     });
   }
 
+  handleMailOnChange(filed, e) {
+    debugger;
+    var mailFiled = this.state.mailFiled;
+    mailFiled[filed] = e.target.value;
+
+    if (filed === "userCC") {
+      var CcCount = mailFiled.userCC;
+      var finalCount = CcCount.split(",");
+      this.setState({ mailFiled, userCcCount: finalCount.length });
+    } else {
+      var BCcCount = mailFiled.userBCC;
+      var finalCount = BCcCount.split(",");
+      this.setState({ mailFiled, userBccCount: finalCount.length });
+    }
+  }
+
+  handleFileUpload(e) {
+    debugger;
+    // -------------------------Image View code start-----------------------
+    if (e.target.files && e.target.files[0]) {
+      const filesAmount = e.target.files.length;
+      for (let i = 0; i < filesAmount; i++) {
+        const reader = new FileReader();
+        reader.onload = file => {
+          this.setState({
+            imageView: file.target.result
+          });
+        };
+        reader.readAsDataURL(e.target.files[i]);
+      }
+    }
+    for (let i = 0; i < e.target.files.length; i++) {
+      debugger;
+
+      var objFile = new Object();
+      var name = e.target.files[i].name;
+      var type = name.substring(name.lastIndexOf(".") + 1, name.length);
+      objFile.Type = type;
+      objFile.name = name;
+
+      objFile.File = e.target.files[i];
+
+      this.state.file.push(objFile);
+    }
+
+    // -------------------------Image View code end-----------------------
+    this.setState({ fileText: this.state.file.length });
+  }
+
+  handleRemoveImage(i) {
+    debugger;
+    let file = this.state.file;
+    file.splice(i, 1);
+    var fileText = file.length;
+    setTimeout(() => {
+      this.setState({ file, fileText });
+    }, 50);
+  }
+
   render() {
-    
     const {
       open,
       ticketDetailsData,
       historicalDetails,
       SearchAssignData,
       orderDetails,
-      productDetails,
+      selectedProduct,
       storeDetails,
-      selectedStore
+      selectedStore,
+      messageDetails
     } = this.state;
     const HidecollapsUp = this.state.collapseUp ? (
       <img
@@ -1347,6 +1520,7 @@ class MyTicket extends Component {
                       src={LoadingImg}
                       alt="Loading"
                       className="loading-rectangle"
+                      title="Ticket Historical"
                       onClick={this.handleGetHistoricalData.bind(this)}
                     />
                   </div>
@@ -1398,6 +1572,7 @@ class MyTicket extends Component {
                         src={Headphone2Img}
                         alt="headphone"
                         className="oval-55"
+                        title="Agent List"
                       />
                       <label
                         className="naman-r"
@@ -1422,26 +1597,26 @@ class MyTicket extends Component {
                     modalId="labelmodel-popup"
                     overlayId="logout-ovrly"
                   >
-                    <div className="myTicket-table remov">
+                    <div className="myTicket-table remov varunoverflow cus-scroll agentlist">
                       <ReactTable
                         data={SearchAssignData}
                         columns={[
                           {
                             Header: <span>Emp Id</span>,
-                            accessor: "BrandCode"
+                            accessor: "user_ID"
                           },
                           {
                             Header: <span>Name</span>,
-                            accessor: "BrandName"
+                            accessor: "agentName"
                           },
                           {
                             Header: <span>Designation</span>,
-                            accessor: "BrandAd"
+                            accessor: "designation"
                           }
                         ]}
                         // resizable={false}
                         minRows={1}
-                        defaultPageSize={5}
+                        // defaultPageSize={5}
                         showPagination={false}
                       />
                       <div className="button-margin">
@@ -1497,6 +1672,7 @@ class MyTicket extends Component {
                         src={EyeImg}
                         alt="eye"
                         className="eyeImg1"
+                        title="Customer Profile"
                         onClick={this.HandleProfileModalOpen.bind(this)}
                       />
                       <Modal
@@ -1581,6 +1757,7 @@ class MyTicket extends Component {
                           src={BillInvoiceImg}
                           alt="eye"
                           className="billImg"
+                          title="Historical Order"
                           onClick={this.handleBillImgModalOpen.bind(this)}
                         />
                         <Modal
@@ -2055,6 +2232,7 @@ class MyTicket extends Component {
                               src={PencilImg}
                               alt="Pencile"
                               className="pencilImg"
+                              title="Attach Store"
                             />
                           </label>
                           <Modal
@@ -2131,14 +2309,18 @@ class MyTicket extends Component {
                                   src={SearchBlackImg}
                                   alt="Search"
                                   className="systemorder-imgsearch"
-                                  onClick={this.handleGetStoreDetails.bind(this)}
+                                  onClick={this.handleGetStoreDetails.bind(
+                                    this
+                                  )}
                                 />
                               </div>
                               <div className="col-md-6 m-b-10 m-t-10 text-right">
                                 <button
                                   type="button"
                                   className="myticket-submit-solve-button m-0"
-                                  onClick={this.handleAttachStoreData.bind(this)}
+                                  onClick={this.handleAttachStoreData.bind(
+                                    this
+                                  )}
                                 >
                                   Attach Store
                                 </button>
@@ -2269,77 +2451,74 @@ class MyTicket extends Component {
                                   {/* {this.state.loading === true ? (
                                     <div className="loader-icon"></div>
                                   ) : ( */}
-                                    <ReactTable
-                                      data={selectedStore}
-                                      columns={[
-                                        {
-                                          Header: <span>Purpose</span>,
-                                          accessor: "invoiceNumber",
-                                          Cell: row => (
-                                            <div
-                                              className="filter-checkbox"
-                                              style={{ marginLeft: "15px" }}
+                                  <ReactTable
+                                    data={selectedStore}
+                                    columns={[
+                                      {
+                                        Header: <span>Purpose</span>,
+                                        accessor: "invoiceNumber",
+                                        Cell: row => (
+                                          <div
+                                            className="filter-checkbox"
+                                            style={{ marginLeft: "15px" }}
+                                          >
+                                            <input
+                                              type="checkbox"
+                                              id={"i" + row.original.storeID}
+                                              style={{ display: "none" }}
+                                              name="ticket-store"
+                                              checked={
+                                                this.state.CheckStoreID[
+                                                  row.original.storeID
+                                                ] === true
+                                              }
+                                              onChange={this.handleCheckStoreID.bind(
+                                                this,
+                                                row.original.storeID,
+                                                row.original
+                                              )}
+                                              defaultChecked={true}
+                                            />
+                                            <label
+                                              htmlFor={
+                                                "i" + row.original.storeID
+                                              }
                                             >
-                                              <input
-                                                type="checkbox"
-                                                id={"i" + row.original.storeID}
-                                                style={{ display: "none" }}
-                                                name="ticket-store"
-                                                checked={
-                                                  this.state.CheckStoreID[
-                                                    row.original.storeID
-                                                  ] === true
-                                                }
-                                                onChange={this.handleCheckStoreID.bind(
-                                                  this,
-                                                  row.original.storeID,
-                                                  row.original
-                                                )}
-                                                defaultChecked={true}
-                                              />
-                                              <label
-                                                htmlFor={
-                                                  "i" + row.original.storeID
-                                                }
-                                              >
-                                                {row.original.storeID}
-                                              </label>
-                                            </div>
-                                          )
-                                        },
-                                        {
-                                          Header: <span>Store Code</span>,
-                                          accessor: "storeCode"
-                                        },
-                                        {
-                                          Header: <span>Store Name</span>,
-                                          accessor: "storeName"
-                                        },
-                                        {
-                                          Header: <span>Store Pin Code</span>,
-                                          accessor: "pincode"
-                                        },
-                                        {
-                                          Header: <span>Store Email ID</span>,
-                                          accessor: "storeEmailID"
-                                        },
-                                        {
-                                          Header: <span>Store Addres</span>,
-                                          accessor: "address"
-                                        },
-                                        {
-                                          Header: <span>Visit Date</span>,
-                                          accessor: "visitDate",
-                                          Cell: row => (
-                                            <label>23,Aug 2019</label>
-                                          )
-                                        }
-                                      ]}
-                                      // resizable={false}
-                                      defaultPageSize={5}
-                                      showPagination={false}
-                                    />
-                                  // )}
+                                              {row.original.storeID}
+                                            </label>
+                                          </div>
+                                        )
+                                      },
+                                      {
+                                        Header: <span>Store Code</span>,
+                                        accessor: "storeCode"
+                                      },
+                                      {
+                                        Header: <span>Store Name</span>,
+                                        accessor: "storeName"
+                                      },
+                                      {
+                                        Header: <span>Store Pin Code</span>,
+                                        accessor: "pincode"
+                                      },
+                                      {
+                                        Header: <span>Store Email ID</span>,
+                                        accessor: "storeEmailID"
+                                      },
+                                      {
+                                        Header: <span>Store Addres</span>,
+                                        accessor: "address"
+                                      },
+                                      {
+                                        Header: <span>Visit Date</span>,
+                                        accessor: "visitDate",
+                                        Cell: row => <label>23,Aug 2019</label>
+                                      }
+                                    ]}
+                                    // resizable={false}
+                                    defaultPageSize={5}
+                                    showPagination={false}
+                                  />
                                 </div>
                               </div>
                             </div>
@@ -2356,6 +2535,7 @@ class MyTicket extends Component {
                               src={PencilImg}
                               alt="Pencile"
                               className="pencilImg"
+                              title="Attach Product"
                             />
                           </label>
                           <Modal
@@ -2438,138 +2618,282 @@ class MyTicket extends Component {
                                 />
                               </div>
                             </div>
-                            <div className="reacttableordermodal ordermainrow">
-                              <ReactTable
-                                data={productDetails}
-                                columns={[
-                                  {
-                                    Header: <span>Invoice Number</span>,
-                                    accessor: "invoiceNumber",
-                                    Cell: row => {
-                                      return (
-                                        <span>
-                                          <div className="filter-type pink1 pinkmyticket">
-                                            <div className="filter-checkbox pink2 pinkmargin">
-                                              <input
-                                                type="checkbox"
-                                                id={row.original.orderMasterID}
-                                                checked={
-                                                  this.state.CheckBoxChecked
-                                                }
-                                                onChange={
-                                                  this
-                                                    .handelCheckBoxCheckedChange
-                                                }
-                                              />
-                                              <label
-                                                htmlFor={
-                                                  row.original.orderMasterID
-                                                }
-                                              >
-                                                {row.original.invoiceNumber}
-                                              </label>
-                                            </div>
-                                          </div>
-                                        </span>
-                                      );
-                                    }
-                                  },
-                                  {
-                                    Header: <span>Invoice Date</span>,
-                                    accessor: "dateFormat"
-                                  },
-                                  {
-                                    Header: <span>Item Count</span>,
-                                    accessor: "itemCount"
-                                  },
-                                  {
-                                    Header: <span>Item Price</span>,
-                                    accessor: "itemPrice"
-                                  },
-                                  {
-                                    Header: <span>Price Paid</span>,
-                                    accessor: "pricePaid"
-                                  },
-                                  {
-                                    Header: <span>Store Code</span>,
-                                    accessor: "storeCode"
-                                  },
-                                  {
-                                    Header: <span>Store Addres</span>,
-                                    accessor: "storeAddress"
-                                  },
-                                  {
-                                    Header: <span>Discount</span>,
-                                    accessor: "discount"
-                                  }
-                                ]}
-                                //resizable={false}
-                                minRows={1}
-                                defaultPageSize={5}
-                                showPagination={false}
-                                SubComponent={row => {
-                                  return (
-                                    <div style={{ padding: "20px" }}>
-                                      <ReactTable
-                                        data={row.original.orderItems}
-                                        columns={[
-                                          {
-                                            Header: <span>Article Number</span>,
-                                            accessor: "invoiceNo",
-                                            Cell: row => {
-                                              return (
-                                                <div
-                                                  className="filter-checkbox"
-                                                  style={{ marginLeft: "15px" }}
-                                                >
-                                                  <input
-                                                    type="checkbox"
-                                                    style={{ display: "none" }}
-                                                    id={
-                                                      row.original.orderItemID
-                                                    }
-                                                    // name="dashboardcheckbox[]"
-                                                  />
-                                                  <label
-                                                    htmlFor={
-                                                      row.original.orderItemID
-                                                    }
-                                                  >
-                                                    {row.original.invoiceNo}
-                                                  </label>
-                                                </div>
-                                              );
-                                            }
-                                          },
-                                          {
-                                            Header: <span>Article Size</span>,
-                                            accessor: "size"
-                                          },
-                                          {
-                                            Header: <span>Article MRP</span>,
-                                            accessor: "itemPrice"
-                                          },
-                                          {
-                                            Header: <span>Price Paid</span>,
-                                            accessor: "pricePaid"
-                                          },
-                                          {
-                                            Header: <span>Discount</span>,
-                                            accessor: "discount"
-                                          },
-                                          {
-                                            Header: <span>Required Size</span>,
-                                            accessor: "requireSize"
-                                          }
-                                        ]}
-                                        defaultPageSize={2}
-                                        minRows={1}
-                                        showPagination={false}
-                                      />
+
+                            <span className="linestore1"></span>
+                            <div className="newtabstore">
+                              <div className="tab-content tabcontentstore">
+                                <div className="">
+                                  <ul
+                                    className="nav alert-nav-tabs3 store-nav-tabs"
+                                    role="tablist"
+                                  >
+                                    <li className="nav-item fo">
+                                      <a
+                                        className="nav-link active"
+                                        data-toggle="tab"
+                                        href="#productdetail-tab"
+                                        role="tab"
+                                        aria-controls="productdetail-tab"
+                                        aria-selected="true"
+                                      >
+                                        Product Details
+                                      </a>
+                                    </li>
+                                    <li className="nav-item fo">
+                                      <a
+                                        className="nav-link"
+                                        data-toggle="tab"
+                                        href="#selectedproduct-tab"
+                                        role="tab"
+                                        aria-controls="selectedproduct-tab"
+                                        aria-selected="false"
+                                      >
+                                        Selected Product
+                                      </a>
+                                    </li>
+                                    <div className="col-md-6 m-b-10 m-t-10 text-right">
+                                      <button
+                                        type="button"
+                                        className="myticket-submit-solve-button m-0"
+                                        onClick={this.handleAttachProductData.bind(
+                                          this
+                                        )}
+                                      >
+                                        Attach Product
+                                      </button>
                                     </div>
-                                  );
-                                }}
-                              />
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+                            <span className="linestore2"></span>
+                            <div className="tab-content p-0">
+                              <div
+                                className="tab-pane fade show active"
+                                id="productdetail-tab"
+                                role="tabpanel"
+                                aria-labelledby="productdetail-tab"
+                              >
+                                <div className="reactstoreselect">
+                                  <ReactTable
+                                    data={selectedProduct}
+                                    columns={[
+                                      {
+                                        Header: <span>Invoice Number</span>,
+                                        accessor: "invoiceNumber",
+                                        Cell: row => (
+                                          <div
+                                            className="filter-checkbox"
+                                            style={{ marginLeft: "15px" }}
+                                          >
+                                            <input
+                                              type="checkbox"
+                                              id={
+                                                "i" + row.original.orderMasterID
+                                              }
+                                              style={{ display: "none" }}
+                                              name="ticket-order"
+                                              checked={
+                                                this.state.CheckOrderID[
+                                                  row.original.orderMasterID
+                                                ] === true
+                                              }
+                                              onChange={this.handleCheckOrderID.bind(
+                                                this,
+                                                row.original.orderMasterID,
+                                                row.original
+                                              )}
+                                            />
+                                            <label
+                                              htmlFor={
+                                                "i" + row.original.orderMasterID
+                                              }
+                                            >
+                                              {row.original.invoiceNumber}
+                                            </label>
+                                          </div>
+                                        )
+                                      },
+                                      {
+                                        Header: <span>Invoice Date</span>,
+                                        accessor: "dateFormat"
+                                      },
+                                      {
+                                        Header: <span>Item Count</span>,
+                                        accessor: "itemCount"
+                                      },
+                                      {
+                                        Header: <span>Item Price</span>,
+                                        accessor: "ordeItemPrice"
+                                      },
+                                      {
+                                        Header: <span>Price Paid</span>,
+                                        accessor: "orderPricePaid"
+                                      },
+                                      {
+                                        Header: <span>Store Code</span>,
+                                        accessor: "storeCode"
+                                      },
+                                      {
+                                        Header: <span>Store Addres</span>,
+                                        accessor: "storeAddress"
+                                      },
+                                      {
+                                        Header: <span>Discount</span>,
+                                        accessor: "discount"
+                                      }
+                                    ]}
+                                    //resizable={false}
+                                    minRows={1}
+                                    defaultPageSize={5}
+                                    showPagination={false}
+                                    // SubComponent={row => {
+                                    //   return (
+                                    //     <div style={{ padding: "20px" }}>
+                                    //       <ReactTable
+                                    //         data={row.original.orderItems}
+                                    //         columns={[
+                                    //           {
+                                    //             Header: <span>Article Number</span>,
+                                    //             accessor: "invoiceNo",
+                                    //             Cell: row => {
+                                    //               return (
+                                    //                 <div
+                                    //                   className="filter-checkbox"
+                                    //                   style={{ marginLeft: "15px" }}
+                                    //                 >
+                                    //                   <input
+                                    //                     type="checkbox"
+                                    //                     style={{ display: "none" }}
+                                    //                     id={
+                                    //                       row.original.orderItemID
+                                    //                     }
+                                    //                     // name="dashboardcheckbox[]"
+                                    //                   />
+                                    //                   <label
+                                    //                     htmlFor={
+                                    //                       row.original.orderItemID
+                                    //                     }
+                                    //                   >
+                                    //                     {row.original.invoiceNo}
+                                    //                   </label>
+                                    //                 </div>
+                                    //               );
+                                    //             }
+                                    //           },
+                                    //           {
+                                    //             Header: <span>Article Size</span>,
+                                    //             accessor: "size"
+                                    //           },
+                                    //           {
+                                    //             Header: <span>Article MRP</span>,
+                                    //             accessor: "itemPrice"
+                                    //           },
+                                    //           {
+                                    //             Header: <span>Price Paid</span>,
+                                    //             accessor: "pricePaid"
+                                    //           },
+                                    //           {
+                                    //             Header: <span>Discount</span>,
+                                    //             accessor: "discount"
+                                    //           },
+                                    //           {
+                                    //             Header: <span>Required Size</span>,
+                                    //             accessor: "requireSize"
+                                    //           }
+                                    //         ]}
+                                    //         defaultPageSize={2}
+                                    //         minRows={1}
+                                    //         showPagination={false}
+                                    //       />
+                                    //     </div>
+                                    //   );
+                                    // }}
+                                  />
+                                </div>
+                              </div>
+                              <div
+                                className="tab-pane fade"
+                                id="selectedproduct-tab"
+                                role="tabpanel"
+                                aria-labelledby="selectedproduct-tab"
+                              >
+                                <div className="reactstoreselect">
+                                  <ReactTable
+                                    data={selectedProduct}
+                                    columns={[
+                                      {
+                                        Header: <span>Invoice Number</span>,
+                                        accessor: "invoiceNumber",
+                                        Cell: row => (
+                                          <div
+                                            className="filter-checkbox"
+                                            style={{ marginLeft: "15px" }}
+                                          >
+                                            <input
+                                              type="checkbox"
+                                              id={
+                                                "i" + row.original.orderMasterID
+                                              }
+                                              style={{ display: "none" }}
+                                              name="ticket-order"
+                                              checked={
+                                                this.state.CheckOrderID[
+                                                  row.original.orderMasterID
+                                                ] === true
+                                              }
+                                              onChange={this.handleCheckOrderID.bind(
+                                                this,
+                                                row.original.orderMasterID,
+                                                row.original
+                                              )}
+                                            />
+                                            <label
+                                              htmlFor={
+                                                "i" + row.original.orderMasterID
+                                              }
+                                            >
+                                              {row.original.invoiceNumber}
+                                            </label>
+                                          </div>
+                                        )
+                                      },
+                                      {
+                                        Header: <span>Invoice Date</span>,
+                                        accessor: "dateFormat"
+                                      },
+                                      {
+                                        Header: <span>Item Count</span>,
+                                        accessor: "itemCount"
+                                      },
+                                      {
+                                        Header: <span>Item Price</span>,
+                                        accessor: "ordeItemPrice"
+                                      },
+                                      {
+                                        Header: <span>Price Paid</span>,
+                                        accessor: "orderPricePaid"
+                                      },
+                                      {
+                                        Header: <span>Store Code</span>,
+                                        accessor: "storeCode"
+                                      },
+                                      {
+                                        Header: <span>Store Addres</span>,
+                                        accessor: "storeAddress"
+                                      },
+                                      {
+                                        Header: <span>Discount</span>,
+                                        accessor: "discount"
+                                      }
+                                    ]}
+                                    //resizable={false}
+                                    minRows={1}
+                                    defaultPageSize={5}
+                                    showPagination={false}
+                                  />
+                                </div>
+                              </div>
                             </div>
                           </Modal>
                         </div>
@@ -2581,34 +2905,81 @@ class MyTicket extends Component {
             </div>
             <div style={{ padding: "15px", background: "#fff" }}>
               <div className="rectangle-3 text-editor">
-                <div className="row">
-                  <label className="ticket-title-where">Ticket Title:</label>
+                <div className="row mt-2">
+                  <label className="ticket-title-where mb-0">
+                    Ticket Title:
+                  </label>
                 </div>
                 <div className="row" style={{ marginTop: "0" }}>
-                  <label className="label-2">
+                  <label className="label-2 mb-0">
                     {ticketDetailsData.ticketTitle}
                   </label>
                 </div>
-                <div className="row">
-                  <label className="ticket-title-where">Ticket Details:</label>
+                <div className="row mt-3">
+                  <label className="ticket-title-where mb-0">
+                    Ticket Details:
+                  </label>
                 </div>
                 <div className="row" style={{ marginTop: "0" }}>
-                  <label className="label-3">
+                  <label className="label-3 pb-0">
                     {ticketDetailsData.ticketdescription}
                   </label>
                 </div>
-                <div className="row">
-                  <img src={ThumbTick} alt="thumb" className="thumbtick" />
-                  <img src={ThumbTick} alt="thumb" className="thumbtick" />
-                  <img src={ThumbTick} alt="thumb" className="thumbtick" />
-                  <img src={ThumbTick} alt="thumb" className="thumbtick" />
-                  <img src={ThumbTick} alt="thumb" className="thumbtick" />
-                  <img
-                    src={PlusImg}
-                    alt="thumb"
-                    className="thumbtick-plus"
-                    onClick={this.handleThumbModalOpen.bind(this)}
-                  />
+                <div className="row my-2 mx-1">
+                  {this.state.file.map((item, i) =>
+                    i < 5 ? (
+                      <div style={{ position: "relative" }} key={i}>
+                        <div>
+                          <img
+                            src={CircleCancel}
+                            alt="thumb"
+                            className="circleCancle"
+                            onClick={() => {
+                              this.handleRemoveImage(i);
+                            }}
+                          />
+                        </div>
+
+                        <div>
+                          <img
+                            src={
+                              item.Type === "docx"
+                                ? require("./../assets/Images/word.png")
+                                : item.Type === "xlsx"
+                                ? require("./../assets/Images/excel.png")
+                                : item.Type === "pdf"
+                                ? require("./../assets/Images/pdf.png")
+                                : item.Type === "txt"
+                                ? require("./../assets/Images/TxtIcon.png")
+                                : require("./../assets/Images/thumbticket.png")
+                            }
+                            title={item.name}
+                            alt="thumb"
+                            className="thumbtick"
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      ""
+                    )
+                  )}
+
+                  {this.state.file.length > 4 ? (
+                    <img
+                      src={PlusImg}
+                      alt="thumb"
+                      className="thumbtick-plus"
+                      onClick={this.handleThumbModalOpen.bind(this)}
+                    />
+                  ) : (
+                    <img
+                      style={{ display: "none" }}
+                      src={PlusImg}
+                      alt="thumb"
+                      className="thumbtick-plus"
+                      onClick={this.handleThumbModalOpen.bind(this)}
+                    />
+                  )}
                 </div>
                 <Modal
                   open={this.state.Plus}
@@ -2625,54 +2996,39 @@ class MyTicket extends Component {
                       />
                     </div>
                     <div className="row my-3 mx-1">
-                      <img
-                        src={ThumbTick}
-                        alt="thumb"
-                        className="thumbtick"
-                        style={{ marginBottom: "10px" }}
-                      />
-                      <img
-                        src={ThumbTick}
-                        alt="thumb"
-                        className="thumbtick"
-                        style={{ marginBottom: "10px" }}
-                      />
-                      <img
-                        src={ThumbTick}
-                        alt="thumb"
-                        className="thumbtick"
-                        style={{ marginBottom: "10px" }}
-                      />
-                      <img
-                        src={ThumbTick}
-                        alt="thumb"
-                        className="thumbtick"
-                        style={{ marginBottom: "10px" }}
-                      />
-                      <img
-                        src={ThumbTick}
-                        alt="thumb"
-                        className="thumbtick"
-                        style={{ marginBottom: "10px" }}
-                      />
-                      <img
-                        src={ThumbTick}
-                        alt="thumb"
-                        className="thumbtick"
-                        style={{ marginBottom: "10px" }}
-                      />
-                      <img
-                        src={ThumbTick}
-                        alt="thumb"
-                        className="thumbtick"
-                        style={{ marginBottom: "10px" }}
-                      />
-                      <img
-                        src={ThumbTick}
-                        alt="thumb"
-                        className="thumbtick"
-                        style={{ marginBottom: "10px" }}
-                      />
+                      {this.state.file.map((item, i) => (
+                        <div style={{ position: "relative" }} key={i}>
+                          <div>
+                            <img
+                              src={CircleCancel}
+                              alt="thumb"
+                              className="circleCancle"
+                              onClick={() => {
+                                this.handleRemoveImage(i);
+                              }}
+                            />
+                          </div>
+
+                          <div>
+                            <img
+                              src={
+                                item.Type === "docx"
+                                  ? require("./../assets/Images/word.png")
+                                  : item.Type === "xlsx"
+                                  ? require("./../assets/Images/excel.png")
+                                  : item.Type === "pdf"
+                                  ? require("./../assets/Images/pdf.png")
+                                  : item.Type === "txt"
+                                  ? require("./../assets/Images/TxtIcon.png")
+                                  : require("./../assets/Images/thumbticket.png")
+                              }
+                              title={item.name}
+                              alt="thumb"
+                              className="thumbtick"
+                            />
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </Modal>
@@ -2824,7 +3180,9 @@ class MyTicket extends Component {
                         <div className="col-md-12 colladrow">
                           <ul>
                             <li>
-                              <label>To: &nbsp;{ticketDetailsData.customerEmailId}</label>
+                              <label>
+                                To: &nbsp;{ticketDetailsData.customerEmailId}
+                              </label>
                             </li>
                             <li>
                               <label className="">
@@ -2839,11 +3197,16 @@ class MyTicket extends Component {
                                     type="text"
                                     className="CCdi1"
                                     name="userCC"
-                                    value={this.state.userCC}
-                                    onChange={this.handleNoteOnChange}
+                                    value={this.state.mailFiled.userCC}
+                                    onChange={this.handleMailOnChange.bind(
+                                      this,
+                                      "userCC"
+                                    )}
                                   />
                                   <span className="input-group-addon inputcc-one">
-                                    +1
+                                    {this.state.userCcCount < 1
+                                      ? "+" + this.state.userCcCount
+                                      : "+" + this.state.userCcCount}
                                   </span>
                                 </div>
                               </label>
@@ -2861,18 +3224,23 @@ class MyTicket extends Component {
                                     type="text"
                                     className="CCdi1"
                                     name="userBCC"
-                                    value={this.state.userBCC}
-                                    onChange={this.handleNoteOnChange}
+                                    value={this.state.mailFiled.userBCC}
+                                    onChange={this.handleMailOnChange.bind(
+                                      this,
+                                      "userBCC"
+                                    )}
                                   />
                                   <span className="input-group-addon inputcc-one">
-                                    +1
+                                    {this.state.userBccCount < 1
+                                      ? "+" + this.state.userBccCount
+                                      : "+" + this.state.userBccCount}
                                   </span>
                                 </div>
                               </label>
                             </li>
                             <li>
                               <div className="filter-checkbox">
-                              <input
+                                <input
                                   type="checkbox"
                                   id="fil-open"
                                   name="filter-type"
@@ -2880,14 +3248,14 @@ class MyTicket extends Component {
                                   onChange={() =>
                                     this.showInformStoreFuncation()
                                   }
-                                  
+
                                   // disabled={this.state.selectedStoreIDs.length === 0}
                                 />
                                 <label
                                   htmlFor="fil-open"
                                   style={{ paddingLeft: "25px" }}
                                 >
-                                  <span>Inform Store Note</span>
+                                  <span>Inform Store</span>
                                 </label>
                               </div>
                             </li>
@@ -2897,7 +3265,9 @@ class MyTicket extends Component {
                                   id="file-upload"
                                   className="file-upload1 d-none"
                                   type="file"
-                                  onChange={this.fileUpload}
+                                  name="file"
+                                  onChange={this.handleFileUpload.bind(this)}
+                                  multiple
                                 />
                                 <label
                                   htmlFor="file-upload"
@@ -2913,11 +3283,11 @@ class MyTicket extends Component {
                                 </label>
                               </span>
                               <label style={{ color: "#2561a8" }}>
-                                3 files
+                                {this.state.fileText} files
                               </label>
                             </li>
                             <li style={{ float: "right" }}>
-                            <button
+                              <button
                                 className="send1"
                                 type="button"
                                 onClick={this.handleSendMailData.bind(this)}
@@ -3131,7 +3501,7 @@ class MyTicket extends Component {
                               : this.state.tabCounts.task}
                           </a>
                         </li>
-                        <li className="nav-item fo">
+                        <li className="nav-item fo" style={{ display: "none" }}>
                           <a
                             className="nav-link"
                             data-toggle="tab"
@@ -3294,7 +3664,9 @@ class MyTicket extends Component {
                         <div className="v3"></div>
                       </div>
                       <div className="col-md-2">
-                        <label className="yesterday-02">YESTERDAY 02</label>
+                        <label className="yesterday-02">
+                          {messageDetails.updatedAt}
+                        </label>
                       </div>
                       <div className="col-md-5">
                         <div className="v6"></div>
@@ -3509,8 +3881,13 @@ class MyTicket extends Component {
                               </div>
 
                               <h3 className="textbhead">
-                                Subject:{" "}
-                                <span>Need to change my shipping address</span>
+                                Subject: &nbsp;
+                                <span>
+                                  {/* {messageDetails.length > 0 ? (
+                                    <>{messageDetails[0].ticketMailSubject}</>
+                                  ) : null} */}
+                                  {this.state.messageDetails.ticketMailSubject}
+                                </span>
                               </h3>
                               <div
                                 className="mob-float"
@@ -3535,6 +3912,19 @@ class MyTicket extends Component {
                           <CardBody>
                             <div className="col-md-12">
                               <CKEditor
+                                data={this.state.messageDetails.ticketMailBody}
+                                // data={
+                                //   this.state.messageDetails.length > 0 ? (
+                                //     <div>
+                                //
+                                //       {
+                                //         this.state.messageDetails[0]
+                                //           .ticketMailBody
+                                //       }
+                                //
+                                //     </div>
+                                //   ) : null
+                                // }
                                 config={{
                                   toolbar: [
                                     {
@@ -3574,14 +3964,14 @@ class MyTicket extends Component {
                             <div className="col-md-12 colladrow">
                               <ul style={{ padding: "0 15px" }}>
                                 <li>
-                                  <label>To: diwarkar@gmail.com</label>
+                                  <label>
+                                    To: &nbsp;
+                                    {ticketDetailsData.customerEmailId}
+                                  </label>
                                 </li>
-                                <li>
+                                {/* <li>
                                   <label className="">
-                                    <div
-                                      className="input-group"
-                                      // style={{ display: "block" }}
-                                    >
+                                    <div className="input-group">
                                       <span className="input-group-addon inputcc">
                                         CC:
                                       </span>
@@ -3607,6 +3997,28 @@ class MyTicket extends Component {
                                       </span>
                                     </div>
                                   </label>
+                                </li> */}
+                                <li>
+                                  <label>
+                                    CC: diwarkar@gmail.com
+                                    <span
+                                      style={{ border: "none" }}
+                                      className="input-group-addon inputcc-one"
+                                    >
+                                      +1
+                                    </span>
+                                  </label>
+                                </li>
+                                <li>
+                                  <label>
+                                    BCC: diwarkar@gmail.com
+                                    <span
+                                      style={{ border: "none" }}
+                                      className="input-group-addon inputcc-one"
+                                    >
+                                      +1
+                                    </span>
+                                  </label>
                                 </li>
                                 <li>
                                   <div className="filter-checkbox">
@@ -3620,7 +4032,7 @@ class MyTicket extends Component {
                                       htmlFor="fil-open1"
                                       style={{ paddingLeft: "25px" }}
                                     >
-                                      <span>Inform Store Note</span>
+                                      <span>Inform Store</span>
                                     </label>
                                   </div>
                                 </li>
@@ -3696,7 +4108,16 @@ class MyTicket extends Component {
                           alt="Avatar"
                           className="oval-6"
                         />
-                        <label className="rashmi-c">Diwakar</label>
+                        <label className="rashmi-c">
+                          {this.state.messageDetails.commentBy}
+                          {/* {this.state.messageDetails.length > 0 ? (
+                            <>
+                                                                    
+                              {this.state.messageDetails[0].commentBy}
+                                                                  
+                            </>
+                          ) : null} */}
+                        </label>
                         <img
                           src={Headphone2Img}
                           alt="headphone"
@@ -3709,11 +4130,32 @@ class MyTicket extends Component {
                         </label>
                       </div>
                       <div className="col-12 col-xs-12 col-sm-2">
-                        <label className="reply-comment">
-                          Reply
-                          <br />
-                          Comment
-                        </label>
+                        {/* {this.state.messageDetails.length > 0 ? (
+                          <>
+                                                                  
+                            {this.state.messageDetails.isCustomerComment ===
+                            1 ? (
+                              <label
+                                className="reply-comment"
+                                onClick={this.hanldeCommentOpen2.bind(this)}
+                              >
+                                Reply
+                              </label>
+                            ) : null}
+                                                                
+                          </>
+                        ) : null} */}
+                        {this.state.messageDetails.isCustomerComment === 1 ? (
+                          <label
+                            className="reply-comment"
+                            onClick={this.hanldeCommentOpen2.bind(this)}
+                          >
+                            Reply
+                          </label>
+                        ) : null}
+
+                        <br />
+                        <label className="reply-comment">Comment</label>
                       </div>
                     </div>
                   </div>
@@ -3729,7 +4171,7 @@ class MyTicket extends Component {
                         taskData={{
                           TicketData: {
                             TicketId: this.state.ticket_Id,
-                            GridData: this.state.taskTableGrid,
+                            // GridData: this.state.taskTableGrid,
                             TabActiveId: this.state.TaskTab
                           }
                         }}
@@ -3756,12 +4198,16 @@ class MyTicket extends Component {
                           value={this.state.NoteAddComment}
                           onChange={this.handleNoteOnChange}
                         ></textarea>
-                        {this.state.NoteAddComment.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.notesCommentCompulsion}</p>}
+                        {this.state.NoteAddComment.length === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.notesCommentCompulsion}
+                          </p>
+                        )}
                         <button
                           type="button"
                           className="notesbtn notesbtn-text"
                           onClick={this.handleNoteAddComments.bind(this)}
-                          style={{ 'marginTop' : '5px' }}
+                          style={{ marginTop: "5px" }}
                         >
                           ADD COMMENT
                         </button>

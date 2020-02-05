@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import Chart from "react-apexcharts";
-import { authHeader } from "./../../helpers/authHeader";
-import axios from "axios";
-import config from "./../../helpers/config";
+// import { authHeader } from "./../../helpers/authHeader";
+// import axios from "axios";
+// import config from "./../../helpers/config";
 class TicketToBillBarGraph extends Component {
   constructor(props) {
     super(props);
@@ -15,6 +15,35 @@ class TicketToBillBarGraph extends Component {
         xaxis: {
           categories: []
           // categories: ["Offline", "Web", "Mobile"]
+        },
+        legend: {
+          position: 'top',
+          horizontalAlign: 'right',
+          markers: {
+            fillColors: ['#75A5DE', '#2561A8']
+          }
+        },
+        fill: {
+          colors: ['#75A5DE', '#2561A8'],
+          opacity: 1
+        },
+        stroke: {
+          show: false
+        },
+        states: {
+          hover: {
+            filter: {
+              type: 'none'
+            }
+          },
+          active: {
+            filter: {
+              type: 'none'
+            }
+          }
+        },
+        tooltip: {
+          enabled: false
         }
       },
       seriesMixedChart: [

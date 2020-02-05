@@ -37,6 +37,10 @@ class Templates extends Component {
       slaIssueType: [],
       selectedSlaIssueType: [],
       selectedIssueTypeCommaSeperated: "",
+      editStatus:"",
+      editIssueType:[],
+     
+      templateEdit:{}
     }
 
     this.handleGetTemplate = this.handleGetTemplate.bind(this);
@@ -50,12 +54,45 @@ class Templates extends Component {
     this.handleGetSLAIssueType();
   }
 
-  hide = () => {
-    this.setState({
-      visible: false,
-    });
-  }
 
+  setTemplateEditData(editdata){
+    debugger;
+     var templateEdit=editdata;
+     templateEdit.template_ID=editdata.templateID;
+     templateEdit.template_Name=editdata.templateName;
+     templateEdit.issue_Type=editdata.issueType;
+     templateEdit.template_Status=editdata.templateStatus;
+      
+      var editIssueType= templateEdit.issue_Type.split(',').map(Number);
+     
+     
+      
+     if(templateEdit.template_Status==="Active"){
+      templateEdit.template_Status="true";
+     }
+     else{
+      templateEdit.template_Status="false";
+     }
+   
+
+     this.setState({
+      templateEdit,editIssueType
+    })
+
+  }
+  handleOnChangeEditData = e => {
+    debugger;
+    var name = e.target.name;
+    var value = e.target.value;
+
+    var data = this.state.templateEdit;
+    data[name] = value;
+
+    this.setState({
+      EditTemp: data
+    });
+    
+  };
   setIssueType = e => {
     debugger;
     if (e !== null) {
@@ -68,6 +105,16 @@ class Templates extends Component {
       selectedIssueTypeCommaSeperated
     });
   };
+  
+  setEditIssueType = e => {
+    debugger;
+    
+    this.setState({
+      editIssueType: e
+    
+    });
+  };
+
 
   handleTemplateName(e) {
     debugger;
@@ -291,8 +338,75 @@ class Templates extends Component {
                     id={ids}
                   />
                 </Popover>
-                <Popover content={ActionEditBtn} placement="bottom" trigger="click">
-                  <button className="react-tabel-button editre" id="p-edit-pop-2">
+                <Popover content={<div className="edtpadding">
+        <div className="">
+          <label className="popover-header-text">EDIT TEMPLATES</label>
+        </div>
+        <div className="pop-over-div">
+          <label className="edit-label-1">Name</label>
+          <input
+            type="text"
+            className="txt-edit-popover"
+            placeholder="Enter Name"
+            maxLength={25}
+            name="template_Name"
+            value={this.state.templateEdit.template_Name}
+            onChange={this.handleOnChangeEditData}
+          />
+        </div>
+        <div className="pop-over-div">
+          <label className="edit-label-1">Issue Type</label>
+          <Select
+                            getOptionLabel={option =>
+                              option.issueTypeName
+                            }
+                            getOptionValue={
+                              option => option.issueTypeID //id
+                            }
+                            options={
+                              this.state
+                                .slaIssueType
+                            }
+                            placeholder="Select"
+                            // menuIsOpen={true}
+                            closeMenuOnSelect={
+                              false
+                            }
+                            onChange={this.setEditIssueType.bind(
+                              this
+                            )}
+                            value={
+                              this.state.editIssueType
+                                
+                            }
+                            
+                            // showNewOptionAtTop={false}
+                            defaultValue={{ label: "asd", value: 1 }}
+                            isMulti
+                          />
+        </div>
+        <div className="pop-over-div">
+          <label className="edit-label-1">Status</label>
+          <select id="inputStatus" className="edit-dropDwon dropdown-setting"
+          name="template_Status"
+          value={this.state.templateEdit.template_Status}
+          onChange={this.handleOnChangeEditData}
+          >
+            <option value="true">Active</option>
+            <option value="false">Inactive</option>
+          </select>
+        </div>
+        <br />
+        <div>
+        <a className="pop-over-cancle" onClick={this.hide}>CANCEL</a>
+          <button className="pop-over-button">
+            <label className="pop-over-btnsave-text">SAVE</label>
+          </button>
+        </div>
+      </div>} placement="bottom" trigger="click">
+                  <button className="react-tabel-button editre" id="p-edit-pop-2"
+                  onClick={this.setTemplateEditData.bind(this,row.original)}
+                  >
                   EDIT
                     {/* <label className="Table-action-edit-button-text">
                       EDIT
@@ -309,44 +423,7 @@ class Templates extends Component {
       }
     ];
 
-    const ActionEditBtn = (
-      <div className="edtpadding">
-        <div className="">
-          <label className="popover-header-text">EDIT TEMPLATES</label>
-        </div>
-        <div className="pop-over-div">
-          <label className="edit-label-1">Name</label>
-          <input
-            type="text"
-            className="txt-edit-popover"
-            placeholder="Enter Name"
-            maxLength={25}
-          />
-        </div>
-        <div className="pop-over-div">
-          <label className="edit-label-1">Issue Type</label>
-          <select id="inputStatus" className="edit-dropDwon dropdown-setting">
-            <option>Select</option>
-            <option>Admin</option>
-          </select>
-        </div>
-        <div className="pop-over-div">
-          <label className="edit-label-1">Status</label>
-          <select id="inputStatus" className="edit-dropDwon dropdown-setting"
-          >
-            <option value="true">Active</option>
-            <option value="false">Inactive</option>
-          </select>
-        </div>
-        <br />
-        <div>
-        <a className="pop-over-cancle" onClick={this.hide}>CANCEL</a>
-          <button className="pop-over-button">
-            <label className="pop-over-btnsave-text">SAVE</label>
-          </button>
-        </div>
-      </div>
-    );
+    
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
@@ -459,6 +536,7 @@ class Templates extends Component {
                               this.state
                                 .selectedSlaIssueType
                             }
+                           
                             // showNewOptionAtTop={false}
                             isMulti
                           />

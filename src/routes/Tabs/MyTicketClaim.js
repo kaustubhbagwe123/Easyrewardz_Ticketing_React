@@ -61,7 +61,7 @@ class MyTicketClaim extends Component {
       debugger;
       let status = res.data.message;
       let data = res.data.responseData;
-      if (status !== "Record Not Found") {
+      if (status === "Success") {
         self.setState({ claimDetailsData: data });
       } else {
         self.setState({ claimDetailsData: [] });

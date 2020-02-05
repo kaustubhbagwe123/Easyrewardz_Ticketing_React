@@ -52,7 +52,7 @@ import TicketStatus from "./TicketStatus";
 import TicketActionType from "./TicketActionType";
 import ClaimStatus from "./ClaimStatus";
 import TaskStatus from "./TaskStatus";
-import { CSVLink, CSVDownload } from "react-csv";
+import { CSVLink } from "react-csv";
 
 class Dashboard extends Component {
   constructor(props) {
@@ -84,6 +84,7 @@ class Dashboard extends Component {
       TotalNoOfChatShow: true,
       date: [new Date(), new Date()],
       range: "",
+      CSVDownload: [],
       SearchTicketData: [],
       SearchListData: [],
       SlaDueData: SlaDue(),
@@ -120,8 +121,8 @@ class Dashboard extends Component {
       assignFirstName: "",
       assignLastName: "",
       assignEmail: "",
-      selectedAssignedTo:0,
-      AssignToData:[],
+      selectedAssignedTo: 0,
+      AssignToData: [],
       TeamMemberData: [
         {
           department: "Team Member 1"
@@ -143,7 +144,7 @@ class Dashboard extends Component {
       selectedPriorityAll: 0,
       selectedTicketStatusByDate: 0,
       selectedNoOfDay: "",
-      selectedScheduleTime: 0,
+      selectedScheduleTime: '',
       selectedSlaDueByDate: 0,
       selectedClaimStatus: 0,
       selectedTaskStatus: 0,
@@ -199,8 +200,8 @@ class Dashboard extends Component {
       DashboardTaskGraphData: [],
       DashboardClaimGraphData: [],
       DashboardPriorityGraphData: [],
-      AgentIds: '',
-      BrandIds: '',
+      AgentIds: "",
+      BrandIds: "",
       ActiveTabId: 1,
       selectedTeamMemberCommaSeperated: "",
       selectedNameOfDayForWeekCommaSeperated: "",
@@ -265,9 +266,12 @@ class Dashboard extends Component {
           month: "October"
         }
       ],
-      resultCount:0,
+      resultCount: 0,
+      loading: false,
+      SearchNameCompulsory:'',
+      loadingAbove: true
     };
-    this.handleAssignTo=this.handleAssignTo.bind(this);
+    this.handleAssignTo = this.handleAssignTo.bind(this);
     this.applyCallback = this.applyCallback.bind(this);
     // this.handleApply = this.handleApply.bind(this);
     this.toggle = this.toggle.bind(this);
@@ -457,6 +461,7 @@ class Dashboard extends Component {
   };
 
   handleGetDashboardNumberData() {
+    this.setState({ loadingAbove: true });
     debugger;
     let self = this;
     axios({
@@ -479,9 +484,13 @@ class Dashboard extends Component {
       debugger;
       let DashboardNumberData = res.data.responseData;
       self.setState({ DashboardNumberData: DashboardNumberData });
+      if (Object.keys(self.state.DashboardGraphData).length > 0 && Object.keys(self.state.DashboardNumberData).length > 0) {
+        self.setState({ loadingAbove: false });
+      }
     });
   }
   handleGetDashboardGraphData() {
+    this.setState({ loadingAbove: true });
     debugger;
     let self = this;
     axios({
@@ -537,6 +546,9 @@ class Dashboard extends Component {
         self.setState({
           DashboardGraphData: DashboardGraphData
         });
+        if (Object.keys(self.state.DashboardGraphData).length > 0 && Object.keys(self.state.DashboardNumberData).length > 0) {
+          self.setState({ loadingAbove: false });
+        }
       }
     });
   }
@@ -544,22 +556,20 @@ class Dashboard extends Component {
   checkAllAgentStart(event) {
     debugger;
     var checkboxes = document.getElementsByName("allAgent");
-    var strAgentIds="";
+    var strAgentIds = "";
     for (var i in checkboxes) {
-      if(isNaN(i)===false)
-      {
+      if (isNaN(i) === false) {
         checkboxes[i].checked = true;
-         if(checkboxes[i].checked === true)
-         {
-          if (checkboxes[i].getAttribute('attrIds')!==null)
-            strAgentIds+=checkboxes[i].getAttribute('attrIds')+",";
-         }
+        if (checkboxes[i].checked === true) {
+          if (checkboxes[i].getAttribute("attrIds") !== null)
+            strAgentIds += checkboxes[i].getAttribute("attrIds") + ",";
+        }
       }
     }
     this.setState({
       AgentIds: strAgentIds
     });
-    if (this.state.AgentIds !== '' && this.state.BrandIds !== '') {
+    if (this.state.AgentIds !== "" && this.state.BrandIds !== "") {
       this.handleGetDashboardNumberData();
       this.handleGetDashboardGraphData();
     }
@@ -567,174 +577,165 @@ class Dashboard extends Component {
   checkAllBrandStart(event) {
     debugger;
     var checkboxes = document.getElementsByName("allBrand");
-    var strBrandIds="";
+    var strBrandIds = "";
     for (var i in checkboxes) {
-      if(isNaN(i)===false)
-      {
+      if (isNaN(i) === false) {
         checkboxes[i].checked = true;
-         if(checkboxes[i].checked === true)
-         {
-          if (checkboxes[i].getAttribute('attrIds')!==null)
-            strBrandIds+=checkboxes[i].getAttribute('attrIds')+",";
-         }
+        if (checkboxes[i].checked === true) {
+          if (checkboxes[i].getAttribute("attrIds") !== null)
+            strBrandIds += checkboxes[i].getAttribute("attrIds") + ",";
+        }
       }
     }
     this.setState({
       BrandIds: strBrandIds
     });
-    if (this.state.AgentIds !== '' && this.state.BrandIds !== '') {
+    if (this.state.AgentIds !== "" && this.state.BrandIds !== "") {
       this.handleGetDashboardNumberData();
       this.handleGetDashboardGraphData();
     }
   }
   checkIndividualAgent = event => {
     debugger;
-    var agentcount=0;
+    var agentcount = 0;
     var checkboxes = document.getElementsByName("allAgent");
-    var strAgentIds="";
+    var strAgentIds = "";
     for (var i in checkboxes) {
-      if(isNaN(i)===false)
-      {
-         if(checkboxes[i].checked === true)
-         {
-          if (checkboxes[i].getAttribute('attrIds')!==null)
-            agentcount++;
-            document.getElementById("spnAgent").textContent=agentcount;
-            strAgentIds+=checkboxes[i].getAttribute('attrIds')+",";
-         }
+      if (isNaN(i) === false) {
+        if (checkboxes[i].checked === true) {
+          if (checkboxes[i].getAttribute("attrIds") !== null) agentcount++;
+          document.getElementById("spnAgent").textContent = agentcount;
+          strAgentIds += checkboxes[i].getAttribute("attrIds") + ",";
+        }
       }
     }
-    if(agentcount===0)
-    {
-      document.getElementById("spnAgent").textContent="select";
+    if (agentcount === 0) {
+      document.getElementById("spnAgent").textContent = "select";
     }
-    if(checkboxes.length-1===agentcount)
-    {      
-      document.getElementById("spnAgent").textContent="ALL";
-      this.setState({CheckBoxAllAgent:true});
-    }
-    else{      
-      this.setState({CheckBoxAllAgent:false});
+    if (checkboxes.length - 1 === agentcount) {
+      document.getElementById("spnAgent").textContent = "ALL";
+      this.setState({ CheckBoxAllAgent: true });
+    } else {
+      this.setState({ CheckBoxAllAgent: false });
     }
 
-
-    this.setState({
-      AgentIds: strAgentIds,
-      DashboardTaskGraphData: [],
-      DashboardClaimGraphData: [],
-      DashboardBillGraphData: [],
-      DashboardSourceGraphData: [],
-      DashboardPriorityGraphData: []
-    }, ()=>{
-      this.handleGetDashboardNumberData();
-      this.handleGetDashboardGraphData();
-    });
-  }
+    this.setState(
+      {
+        AgentIds: strAgentIds,
+        DashboardTaskGraphData: [],
+        DashboardClaimGraphData: [],
+        DashboardBillGraphData: [],
+        DashboardSourceGraphData: [],
+        DashboardPriorityGraphData: []
+      },
+      () => {
+        this.handleGetDashboardNumberData();
+        this.handleGetDashboardGraphData();
+      }
+    );
+  };
   checkIndividualBrand = event => {
     debugger;
-    var brandcount=0;
+    var brandcount = 0;
     var checkboxes = document.getElementsByName("allBrand");
-    var strBrandIds="";
+    var strBrandIds = "";
     for (var i in checkboxes) {
-      if(isNaN(i)===false)
-      {
-         if(checkboxes[i].checked === true)
-         {
-          if (checkboxes[i].getAttribute('attrIds')!==null)
-            brandcount++;
-            document.getElementById("spnBrand").textContent=brandcount;
-            strBrandIds+=checkboxes[i].getAttribute('attrIds')+",";
-         }
+      if (isNaN(i) === false) {
+        if (checkboxes[i].checked === true) {
+          if (checkboxes[i].getAttribute("attrIds") !== null) brandcount++;
+          document.getElementById("spnBrand").textContent = brandcount;
+          strBrandIds += checkboxes[i].getAttribute("attrIds") + ",";
+        }
       }
     }
-    if(brandcount===0)
-    {
-      document.getElementById("spnBrand").textContent="select";
+    if (brandcount === 0) {
+      document.getElementById("spnBrand").textContent = "select";
     }
-    if(checkboxes.length-1===brandcount)
-    {
+    if (checkboxes.length - 1 === brandcount) {
       //document.getElementById("all-brand").checked = true;
-      document.getElementById("spnBrand").textContent="ALL";
-      this.setState({CheckBoxAllBrand:true});
-    }
-    else{
-     // document.getElementById("all-brand").checked = false;
-      this.setState({CheckBoxAllBrand:false});
+      document.getElementById("spnBrand").textContent = "ALL";
+      this.setState({ CheckBoxAllBrand: true });
+    } else {
+      // document.getElementById("all-brand").checked = false;
+      this.setState({ CheckBoxAllBrand: false });
     }
 
-    this.setState({
-      BrandIds: strBrandIds,
-      DashboardTaskGraphData: [],
-      DashboardClaimGraphData: [],
-      DashboardBillGraphData: [],
-      DashboardSourceGraphData: [],
-      DashboardPriorityGraphData: []
-    }, ()=>{
-      this.handleGetDashboardNumberData();
-      this.handleGetDashboardGraphData();
-    });
-  }
+    this.setState(
+      {
+        BrandIds: strBrandIds,
+        DashboardTaskGraphData: [],
+        DashboardClaimGraphData: [],
+        DashboardBillGraphData: [],
+        DashboardSourceGraphData: [],
+        DashboardPriorityGraphData: []
+      },
+      () => {
+        this.handleGetDashboardNumberData();
+        this.handleGetDashboardGraphData();
+      }
+    );
+  };
   checkAllAgent = async event => {
     debugger;
     this.setState(state => ({ CheckBoxAllAgent: !state.CheckBoxAllAgent }));
-    var strAgentIds="";
+    var strAgentIds = "";
     const allCheckboxChecked = event.target.checked;
     var checkboxes = document.getElementsByName("allAgent");
     if (allCheckboxChecked) {
-      document.getElementById("spnAgent").textContent="ALL";
+      document.getElementById("spnAgent").textContent = "ALL";
       for (var i in checkboxes) {
         if (checkboxes[i].checked === false) {
           checkboxes[i].checked = true;
-          if (checkboxes[i].getAttribute('attrIds')!==null)
-            strAgentIds+=checkboxes[i].getAttribute('attrIds')+",";
+          if (checkboxes[i].getAttribute("attrIds") !== null)
+            strAgentIds += checkboxes[i].getAttribute("attrIds") + ",";
         }
       }
     } else {
-      document.getElementById("spnAgent").textContent="select";
+      document.getElementById("spnAgent").textContent = "select";
       for (var J in checkboxes) {
         if (checkboxes[J].checked === true) {
           checkboxes[J].checked = false;
         }
       }
-      strAgentIds="";
+      strAgentIds = "";
     }
     await this.setState({
       AgentIds: strAgentIds
     });
     this.handleGetDashboardNumberData();
     this.handleGetDashboardGraphData();
-  }
+  };
   checkAllBrand = async event => {
     debugger;
-   
+
     this.setState(state => ({ CheckBoxAllBrand: !state.CheckBoxAllBrand }));
-    var strBrandIds="";
+    var strBrandIds = "";
     const allCheckboxChecked = event.target.checked;
     var checkboxes = document.getElementsByName("allBrand");
     if (allCheckboxChecked) {
-      document.getElementById("spnBrand").textContent="ALL";
+      document.getElementById("spnBrand").textContent = "ALL";
       for (var i in checkboxes) {
         if (checkboxes[i].checked === false) {
           checkboxes[i].checked = true;
-          if (checkboxes[i].getAttribute('attrIds')!==null)
-            strBrandIds+=checkboxes[i].getAttribute('attrIds')+",";
+          if (checkboxes[i].getAttribute("attrIds") !== null)
+            strBrandIds += checkboxes[i].getAttribute("attrIds") + ",";
         }
       }
     } else {
-      document.getElementById("spnBrand").textContent="select";
+      document.getElementById("spnBrand").textContent = "select";
       for (var J in checkboxes) {
         if (checkboxes[J].checked === true) {
           checkboxes[J].checked = false;
         }
       }
-      strBrandIds="";
+      strBrandIds = "";
     }
     await this.setState({
       BrandIds: strBrandIds
     });
     this.handleGetDashboardNumberData();
     this.handleGetDashboardGraphData();
-  }
+  };
   handleGetAgentList() {
     debugger;
     let self = this;
@@ -766,38 +767,41 @@ class Dashboard extends Component {
   handelCheckBoxCheckedChange = async () => {
     debugger;
     var checkboxes = document.getElementsByName("MyTicketListcheckbox[]");
-    var strIds="";
+    var strIds = "";
     for (var i in checkboxes) {
-      if(isNaN(i)===false)
-      {
-         if(checkboxes[i].checked === true)
-         {
-          if (checkboxes[i].getAttribute('attrIds')!==null)
-            strIds+=checkboxes[i].getAttribute('attrIds')+",";
-         }
+      if (isNaN(i) === false) {
+        if (checkboxes[i].checked === true) {
+          if (checkboxes[i].getAttribute("attrIds") !== null)
+            strIds += checkboxes[i].getAttribute("attrIds") + ",";
+        }
       }
     }
     await this.setState({
-      ticketIds: strIds,
+      ticketIds: strIds
     });
   };
   handleTicketDetails = (rowInfo, column) => {
+    const index = column ? column.index : -1;
     return {
       onClick: e => {
         debugger;
+        this.selectedRow = index;
         var agentId = column.original["user_ID"];
         this.setState({ agentId });
+      },
+      style: {
+        background: this.selectedRow === index ? '#ECF2F4' : null
       }
     };
   };
-  setAssignedToValue= e=>{
-    let assign=e.currentTarget.value;
+  setAssignedToValue = e => {
+    let assign = e.currentTarget.value;
     this.setState({ selectedAssignedTo: assign });
-  }
+  };
 
-  handleAssignTo(){
+  handleAssignTo() {
     debugger;
-  
+
     let self = this;
     axios({
       method: "post",
@@ -806,15 +810,13 @@ class Dashboard extends Component {
     }).then(function(res) {
       debugger;
       let AssignData = res.data.responseData;
-      
+
       self.setState({
         AssignToData: AssignData
-        
       });
     });
-  
   }
-  
+
   setScheduleFor = e => {
     let scheduleForValue = e.currentTarget.value;
     this.setState({ selectedScheduleFor: scheduleForValue });
@@ -845,7 +847,7 @@ class Dashboard extends Component {
     let ticketStatusValue = e.currentTarget.value;
     this.setState({ selectedTicketStatusByCategory: ticketStatusValue });
   };
-  applyCallback = async (startDate, endDate) =>  {
+  applyCallback = async (startDate, endDate) => {
     debugger;
     await this.setState({
       start: startDate,
@@ -858,7 +860,7 @@ class Dashboard extends Component {
     });
     this.handleGetDashboardNumberData();
     this.handleGetDashboardGraphData();
-  }
+  };
   handleDateRange(date) {
     this.setState({ range: date });
   }
@@ -895,7 +897,7 @@ class Dashboard extends Component {
   handleScheduleTime(e) {
     debugger;
     this.setState({
-      selectedScheduleTime: e.currentTarget.value
+      selectedScheduleTime: e
     });
   }
   handleAssignRemark(e) {
@@ -1032,6 +1034,15 @@ class Dashboard extends Component {
       });
     });
   }
+  handleAssignClearData() {
+    debugger;
+    this.setState({
+      assignFirstName: "",
+      assignLastName: "",
+      assignEmail: "",
+      selectedDesignation: 0
+    });
+  }
   setFunctionValue = e => {
     let functionValue = e.currentTarget.value;
     this.setState({ selectedFunction: functionValue });
@@ -1097,15 +1108,15 @@ class Dashboard extends Component {
 
   checkAllCheckbox = async event => {
     debugger;
-    var strIds="";
+    var strIds = "";
     const allCheckboxChecked = event.target.checked;
     var checkboxes = document.getElementsByName("MyTicketListcheckbox[]");
     if (allCheckboxChecked) {
       for (var i in checkboxes) {
         if (checkboxes[i].checked === false) {
           checkboxes[i].checked = true;
-          if (checkboxes[i].getAttribute('attrIds')!==null)
-            strIds+=checkboxes[i].getAttribute('attrIds')+",";
+          if (checkboxes[i].getAttribute("attrIds") !== null)
+            strIds += checkboxes[i].getAttribute("attrIds") + ",";
         }
       }
     } else {
@@ -1114,12 +1125,12 @@ class Dashboard extends Component {
           checkboxes[J].checked = false;
         }
       }
-      strIds="";
+      strIds = "";
     }
     await this.setState({
       ticketIds: strIds
     });
-  }
+  };
   handleMouseHover() {
     this.setState({ TotalNoOfChatShow: !this.state.TotalNoOfChatShow });
   }
@@ -1221,7 +1232,7 @@ class Dashboard extends Component {
         selectedNoOfMonthForMonth: 0,
         selectedNoOfMonthForWeek: 0,
         selectedNoOfWeekForWeek: 0,
-        selectedNameOfDayForWeekCommaSeperated: ''
+        selectedNameOfDayForWeekCommaSeperated: ""
       });
     } else if (SelectData === "235") {
       this.setState({
@@ -1240,7 +1251,7 @@ class Dashboard extends Component {
         selectedNoOfMonthForMonth: 0,
         selectedNoOfMonthForWeek: 0,
         selectedNoOfWeekForWeek: 0,
-        selectedNameOfDayForWeekCommaSeperated: ''
+        selectedNameOfDayForWeekCommaSeperated: ""
       });
     }
     this.setState({
@@ -1409,11 +1420,13 @@ class Dashboard extends Component {
         NameOfDayForWeek: this.state.selectedNameOfDayForWeekCommaSeperated,
         IsDailyForYear: this.state.IsDailyForYear,
         NoOfDayForDailyYear: this.state.selectedNoOfDayForDailyYear,
-        NameOfMonthForDailyYear: this.state.selectedNameOfMonthForYearCommaSeperated,
+        NameOfMonthForDailyYear: this.state
+          .selectedNameOfMonthForYearCommaSeperated,
         IsWeeklyForYear: this.state.IsWeeklyForYear,
         NoOfWeekForYear: this.state.selectedNoOfWeekForYear,
         NameOfDayForYear: this.state.selectedNameOfDayForYearCommaSeperated,
-        NameOfMonthForYear: this.state.selectedNameOfMonthForDailyYearCommaSeperated
+        NameOfMonthForYear: this.state
+          .selectedNameOfMonthForDailyYearCommaSeperated
       }
     }).then(function(res) {
       debugger;
@@ -1498,7 +1511,7 @@ class Dashboard extends Component {
 
     let self = this;
     var ticketIdsComma = this.state.ticketIds;
-    var ticketIds = ticketIdsComma.substring(0, ticketIdsComma.length-1);
+    var ticketIds = ticketIdsComma.substring(0, ticketIdsComma.length - 1);
     axios({
       method: "post",
       url: config.apiUrl + "/Ticketing/AssignTickets",
@@ -1770,127 +1783,139 @@ class Dashboard extends Component {
   ViewSearchData() {
     debugger;
     let self = this;
+    this.setState({ loading: true });
 
     // ---------------By Date tab---------------------
     var dateTab = {};
     if (this.state.ActiveTabId === 1) {
-      if (this.state.ByDateCreatDate === null || this.state.ByDateCreatDate === undefined || this.state.ByDateCreatDate === '') {
-        
-        dateTab["Ticket_CreatedOn"] = ''
+      if (
+        this.state.ByDateCreatDate === null ||
+        this.state.ByDateCreatDate === undefined ||
+        this.state.ByDateCreatDate === ""
+      ) {
+        dateTab["Ticket_CreatedOn"] = "";
       } else {
         dateTab["Ticket_CreatedOn"] = moment(this.state.ByDateCreatDate).format(
           "YYYY-MM-DD"
         );
       }
-      if (this.state.ByDateSelectDate === null || this.state.ByDateSelectDate === undefined || this.state.ByDateSelectDate === '') {
-        
-        dateTab["Ticket_ModifiedOn"] = ''
+      if (
+        this.state.ByDateSelectDate === null ||
+        this.state.ByDateSelectDate === undefined ||
+        this.state.ByDateSelectDate === ""
+      ) {
+        dateTab["Ticket_ModifiedOn"] = "";
       } else {
-        dateTab["Ticket_ModifiedOn"] = moment(this.state.ByDateSelectDate).format(
-          "YYYY-MM-DD"
-          );
+        dateTab["Ticket_ModifiedOn"] = moment(
+          this.state.ByDateSelectDate
+        ).format("YYYY-MM-DD");
       }
-    dateTab["SLA_DueON"] = this.state.selectedSlaDueByDate;
-    dateTab["Ticket_StatusID"] = this.state.selectedTicketStatusByDate;
+      dateTab["SLA_DueON"] = this.state.selectedSlaDueByDate;
+      dateTab["Ticket_StatusID"] = this.state.selectedTicketStatusByDate;
     } else {
-      dateTab = null
+      dateTab = null;
     }
 
     // --------------------By Customer Type Tab---------------
     var customerType = {};
     if (this.state.ActiveTabId === 2) {
-    customerType["CustomerMobileNo"] = this.state.MobileNoByCustType;
-    customerType["CustomerEmailID"] = this.state.EmailIdByCustType;
-    customerType["TicketID"] = this.state.TicketIdByCustType;
-    customerType["TicketStatusID"] = this.state.selectedTicketStatusByCustomer;
-  } else {
-    customerType = null
-  }
+      customerType["CustomerMobileNo"] = this.state.MobileNoByCustType;
+      customerType["CustomerEmailID"] = this.state.EmailIdByCustType;
+      customerType["TicketID"] = this.state.TicketIdByCustType;
+      customerType[
+        "TicketStatusID"
+      ] = this.state.selectedTicketStatusByCustomer;
+    } else {
+      customerType = null;
+    }
 
     // --------------------By Ticket Type Tab-----------------
     var ticketType = {};
     if (this.state.ActiveTabId === 3) {
-      let purchaseIds="";
-      let actionTypeIds="";
+      let purchaseIds = "";
+      let actionTypeIds = "";
 
-      if(this.state.selectedChannelOfPurchase!=null)
-      {
+      if (this.state.selectedChannelOfPurchase != null) {
         for (let i = 0; i < this.state.selectedChannelOfPurchase.length; i++) {
-          purchaseIds+=this.state.selectedChannelOfPurchase[i].channelOfPurchaseID+",";
+          purchaseIds +=
+            this.state.selectedChannelOfPurchase[i].channelOfPurchaseID + ",";
         }
       }
-      if(this.state.selectedTicketActionType!=null)
-      {
+      if (this.state.selectedTicketActionType != null) {
         for (let i = 0; i < this.state.selectedTicketActionType.length; i++) {
-          actionTypeIds+=this.state.selectedTicketActionType[i].ticketActionTypeID+",";
+          actionTypeIds +=
+            this.state.selectedTicketActionType[i].ticketActionTypeID + ",";
         }
       }
 
-    ticketType["TicketPriorityID"] = this.state.selectedPriority;
-    ticketType["TicketStatusID"] = this.state.selectedTicketStatusByTicket;
-    ticketType["ChannelOfPurchaseIds"] =purchaseIds;
-    ticketType["ActionTypes"] = actionTypeIds;
-  } else {
-    ticketType = null
-  }
+      ticketType["TicketPriorityID"] = this.state.selectedPriority;
+      ticketType["TicketStatusID"] = this.state.selectedTicketStatusByTicket;
+      ticketType["ChannelOfPurchaseIds"] = purchaseIds;
+      ticketType["ActionTypes"] = actionTypeIds;
+    } else {
+      ticketType = null;
+    }
 
     // --------------------By Category Tab-------------------
     var categoryType = {};
     if (this.state.ActiveTabId === 4) {
-    categoryType["CategoryId"] = this.state.selectedCategory;
-    categoryType["SubCategoryId"] = this.state.selectedSubCategory;
-    categoryType["IssueTypeId"] = this.state.selectedIssueType;
-    categoryType["TicketStatusID"] = this.state.selectedTicketStatusByCategory;
-  } else {
-    categoryType = null
-  }
-  //---------------------By Ticket All Tab---------------------
-  var allTab={};
-    
-  if(this.state.ActiveTabId===5)
-  {
-     let withClaim=0;
-     let withTask=0;
-     if(this.state.selectedWithClaimAll==="yes")
-     {
-         withClaim=1;
-     }
-     if(this.state.selectedWithTaskAll==="yes")
-     {
-         withTask=1;
-     }
-     allTab["CreatedDate"]=this.state.ByAllCreateDate;
-     allTab["ModifiedDate"]=this.state.ByAllLastDate;
-     allTab["CategoryId"]=this.state.selectedCategoryAll;
-     allTab["SubCategoryId"]=this.state.selectedSubCategoryAll;
-     allTab["IssueTypeId"]=this.state.selectedIssueTypeAll;
-     allTab["TicketSourceTypeID"]=this.state.selectedTicketSource;
-     allTab["TicketIdORTitle"]=this.state.TicketIdTitleByAll;
-     allTab["PriorityId"]=this.state.selectedPriorityAll;
-     allTab["TicketSatutsID"]=this.state.selectedTicketStatusAll;
-     allTab["SLAStatus"]=this.state.selectedSlaStatus;
-     allTab["ClaimId"]=this.state.selectedClaimStatus;
-     allTab["InvoiceNumberORSubOrderNo"]=this.state.InvoiceSubOrderByAll;
-     allTab["OrderItemId"]=this.state.ItemIdByAll;
-     allTab["IsVisitStore"]=this.state.selectedVisitStoreAll;
-     allTab["IsWantVistingStore"]=this.state.selectedWantToVisitStoreAll;
-     allTab["CustomerEmailID"]=this.state.EmailByAll;
-     allTab["CustomerMobileNo"]=this.state.MobileByAll;
-     allTab["AssignTo"]=this.state.selectedAssignedTo;
-     allTab["StoreCodeORAddress"]=this.state.selectedPurchaseStoreCodeAddressAll;
-     allTab["WantToStoreCodeORAddress"]=this.state.selectedVisitStoreCodeAddressAll;       
-     allTab["HaveClaim"]=withClaim;
-     allTab["ClaimStatusId"]=this.state.selectedClaimStatus;
-     allTab["ClaimCategoryId"]=this.state.selectedClaimCategory;
-     allTab["ClaimSubCategoryId"]=this.state.selectedClaimSubCategory;
-     allTab["ClaimIssueTypeId"]=this.state.selectedClaimIssueType;
-     allTab["HaveTask"]=withTask;
-     allTab["TaskStatusId"]=this.state.selectedTaskStatus;
-     allTab["TaskDepartment_Id"]=this.state.selectedDepartment;
-     allTab["TaskFunction_Id"]=this.state.selectedFunction;       
-  }
+      categoryType["CategoryId"] = this.state.selectedCategory;
+      categoryType["SubCategoryId"] = this.state.selectedSubCategory;
+      categoryType["IssueTypeId"] = this.state.selectedIssueType;
+      categoryType[
+        "TicketStatusID"
+      ] = this.state.selectedTicketStatusByCategory;
+    } else {
+      categoryType = null;
+    }
+    //---------------------By Ticket All Tab---------------------
+    var allTab = {};
 
-//----------------------------------------------------------
+    if (this.state.ActiveTabId === 5) {
+      let withClaim = 0;
+      let withTask = 0;
+      if (this.state.selectedWithClaimAll === "yes") {
+        withClaim = 1;
+      }
+      if (this.state.selectedWithTaskAll === "yes") {
+        withTask = 1;
+      }
+      allTab["CreatedDate"] = this.state.ByAllCreateDate;
+      allTab["ModifiedDate"] = this.state.ByAllLastDate;
+      allTab["CategoryId"] = this.state.selectedCategoryAll;
+      allTab["SubCategoryId"] = this.state.selectedSubCategoryAll;
+      allTab["IssueTypeId"] = this.state.selectedIssueTypeAll;
+      allTab["TicketSourceTypeID"] = this.state.selectedTicketSource;
+      allTab["TicketIdORTitle"] = this.state.TicketIdTitleByAll;
+      allTab["PriorityId"] = this.state.selectedPriorityAll;
+      allTab["TicketSatutsID"] = this.state.selectedTicketStatusAll;
+      allTab["SLAStatus"] = this.state.selectedSlaStatus;
+      allTab["ClaimId"] = this.state.selectedClaimStatus;
+      allTab["InvoiceNumberORSubOrderNo"] = this.state.InvoiceSubOrderByAll;
+      allTab["OrderItemId"] = this.state.ItemIdByAll;
+      allTab["IsVisitStore"] = this.state.selectedVisitStoreAll;
+      allTab["IsWantVistingStore"] = this.state.selectedWantToVisitStoreAll;
+      allTab["CustomerEmailID"] = this.state.EmailByAll;
+      allTab["CustomerMobileNo"] = this.state.MobileByAll;
+      allTab["AssignTo"] = this.state.selectedAssignedTo;
+      allTab[
+        "StoreCodeORAddress"
+      ] = this.state.selectedPurchaseStoreCodeAddressAll;
+      allTab[
+        "WantToStoreCodeORAddress"
+      ] = this.state.selectedVisitStoreCodeAddressAll;
+      allTab["HaveClaim"] = withClaim;
+      allTab["ClaimStatusId"] = this.state.selectedClaimStatus;
+      allTab["ClaimCategoryId"] = this.state.selectedClaimCategory;
+      allTab["ClaimSubCategoryId"] = this.state.selectedClaimSubCategory;
+      allTab["ClaimIssueTypeId"] = this.state.selectedClaimIssueType;
+      allTab["HaveTask"] = withTask;
+      allTab["TaskStatusId"] = this.state.selectedTaskStatus;
+      allTab["TaskDepartment_Id"] = this.state.selectedDepartment;
+      allTab["TaskFunction_Id"] = this.state.selectedFunction;
+    }
+
+    //----------------------------------------------------------
 
     axios({
       method: "post",
@@ -1902,27 +1927,37 @@ class Dashboard extends Component {
         ActiveTabId: this.state.ActiveTabId,
         searchDataByDate: dateTab,
         searchDataByCustomerType: customerType,
-        searchDataByTicketType:ticketType,
-        searchDataByCategoryType:categoryType
+        searchDataByTicketType: ticketType,
+        searchDataByCategoryType: categoryType
       }
     }).then(function(res) {
       debugger;
       let status = res.data.message;
       let data = res.data.responseData;
+      let CSVData =data;
       let count = 0;
       if (res.data.responseData != null) {
         count = res.data.responseData.length;
       }
-
       if (status === "Success") {
         self.setState({
           SearchTicketData: data,
-          resultCount: count
+          resultCount: count,
+          loading: false
         });
+        for (let i = 0; i < CSVData.length; i++) {
+          delete CSVData[i].totalpages;
+          delete CSVData[i].responseTimeRemainingBy;
+          delete CSVData[i].responseOverdueBy;
+          delete CSVData[i].resolutionOverdueBy;
+          delete CSVData[i].ticketCommentCount;
+        }
+        self.setState({ CSVDownload: CSVData });
       } else {
         self.setState({
           SearchTicketData: [],
-          resultCount: 0
+          resultCount: 0,
+          loading: false
         });
       }
     });
@@ -1930,48 +1965,55 @@ class Dashboard extends Component {
   SaveSearchData() {
     debugger;
     let self = this;
-    var paramData = {
-      ByDate: this.state.byDateFlag,
-      creationDate: this.state.ByDateCreatDate,
-      lastUpdatedDate: this.state.ByDateSelectDate,
-      SLADue: this.state.selectedSlaDueByDate,
-      ticketStatus: this.state.selectedTicketStatusByDate,
-      ByCustomerType: this.state.byCustomerTypeFlag,
-      customerMob: this.state.MobileNoByCustType,
-      customerEmail: this.state.EmailIdByCustType,
-      TicketID: this.state.TicketIdByCustType,
-      ticketStatus: this.state.selectedTicketStatusByCustomer,
-      ByTicketType: this.state.byTicketTypeFlag,
-      Priority: this.state.selectedPriority,
-      ticketStatus: this.state.selectedTicketStatusByTicket,
-      chanelOfPurchase: this.state.selectedChannelOfPurchase,
-      ticketActionType: this.state.selectedTicketActionType,
-      ByCategory: this.state.byCategoryFlag,
-      Category: this.state.selectedCategory,
-      subCategory: this.state.selectedSubCategory,
-      issueType: this.state.selectedIssueType,
-      ticketStatus: this.state.selectedTicketStatusByCategory,
-      byAll: this.state.allFlag
-    };
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Ticketing/savesearch",
-      headers: authHeader(),
-      params: {
-        SearchSaveName: this.state.SearchName,
-        parameter: JSON.stringify(paramData)
-      }
-    }).then(function(res) {
-      debugger;
-      let Msg = res.data.message;
-      if (Msg === "Success") {
-        NotificationManager.success("Save Search parameter successfully.");
-        self.handleGetSaveSearchList();
-        self.setState({
-          SearchName:''
-        })
-      }
-    });
+    if(this.state.SearchName.length > 0){
+      var paramData = {
+        ByDate: this.state.byDateFlag,
+        creationDate: this.state.ByDateCreatDate,
+        lastUpdatedDate: this.state.ByDateSelectDate,
+        SLADue: this.state.selectedSlaDueByDate,
+        ticketStatus: this.state.selectedTicketStatusByDate,
+        ByCustomerType: this.state.byCustomerTypeFlag,
+        customerMob: this.state.MobileNoByCustType,
+        customerEmail: this.state.EmailIdByCustType,
+        TicketID: this.state.TicketIdByCustType,
+        ticketStatus: this.state.selectedTicketStatusByCustomer,
+        ByTicketType: this.state.byTicketTypeFlag,
+        Priority: this.state.selectedPriority,
+        ticketStatus: this.state.selectedTicketStatusByTicket,
+        chanelOfPurchase: this.state.selectedChannelOfPurchase,
+        ticketActionType: this.state.selectedTicketActionType,
+        ByCategory: this.state.byCategoryFlag,
+        Category: this.state.selectedCategory,
+        subCategory: this.state.selectedSubCategory,
+        issueType: this.state.selectedIssueType,
+        ticketStatus: this.state.selectedTicketStatusByCategory,
+        byAll: this.state.allFlag
+      };
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Ticketing/savesearch",
+        headers: authHeader(),
+        params: {
+          SearchSaveName: this.state.SearchName,
+          parameter: JSON.stringify(paramData)
+        }
+      }).then(function(res) {
+        debugger;
+        let Msg = res.data.message;
+        if (Msg === "Success") {
+          NotificationManager.success("Save Search parameter successfully.");
+          self.handleGetSaveSearchList();
+          self.setState({
+            SearchName: ""
+          });
+        }
+      });
+    }else{
+      self.setState({
+        SearchNameCompulsory:"Please Enter Search Name."
+      })
+    }
+    
   }
   handleGetSaveSearchList() {
     debugger;
@@ -1987,6 +2029,7 @@ class Dashboard extends Component {
     });
   }
   handleSearchTicketEscalation() {
+    this.setState({ loading: true });
     let self = this;
     axios({
       method: "post",
@@ -2003,10 +2046,19 @@ class Dashboard extends Component {
       debugger;
       let data = res.data.responseData;
       let Status = res.data.message;
+      let CSVData = data;
       if (Status === "Record Not Found") {
-        self.setState({ SearchTicketData: [] });
+        self.setState({ SearchTicketData: [], loading: false });
       } else if (data !== null) {
-        self.setState({ SearchTicketData: data });
+        self.setState({ SearchTicketData: data, loading: false });
+        for (let i = 0; i < CSVData.length; i++) {
+          delete CSVData[i].totalpages;
+          delete CSVData[i].responseTimeRemainingBy;
+          delete CSVData[i].responseOverdueBy;
+          delete CSVData[i].resolutionOverdueBy;
+          delete CSVData[i].ticketCommentCount;
+        }
+        self.setState({ CSVDownload: CSVData });
       }
     });
   }
@@ -2072,6 +2124,23 @@ class Dashboard extends Component {
     this.setState({ selectedIssueTypeAll: issueTypeAllValue });
   };
 
+  handleApplySearch(paramsID){
+    debugger
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Search/GetTicketsOnSavedSearch",
+      headers: authHeader(),
+      params: {
+        SearchParamID: paramsID
+      }
+    }).then(function(res) {
+      debugger;
+      let data = res.data.responseData;
+      self.setState({ ClaimIssueTypeData: data });
+    });
+  }
+
   render() {
     const { SearchAssignData, SearchTicketData } = this.state;
     let now = new Date();
@@ -2093,7 +2162,7 @@ class Dashboard extends Component {
       format: "DD-MM-YYYY",
       sundayFirst: false
     };
- 
+
     const TitleChange = this.state.collapseSearch
       ? "Close Search"
       : "Search Tickets";
@@ -2104,7 +2173,6 @@ class Dashboard extends Component {
       <img className="search-icon" src={SearchIcon} alt="search-icon" />
     );
 
-  
     let value = `${this.state.start.format(
       "DD-MM-YYYY"
     )} - ${this.state.end.format("DD-MM-YYYY")}`;
@@ -2195,14 +2263,17 @@ class Dashboard extends Component {
                 Brand :
                 <div className="dropdown">
                   <button
-                   style={{width:"90px"}} className="dropdown-toggle dashallbrand"
+                    style={{ width: "90px" }}
+                    className="dropdown-toggle dashallbrand"
                     type="button"
                     data-toggle="dropdown"
                   >
-                    <span id="spnBrand" className="EMFCText">All</span>
+                    <span id="spnBrand" className="EMFCText">
+                      All
+                    </span>
                   </button>
                   <ul className="dropdown-menu">
-                  <li>
+                    <li>
                       <label htmlFor="all-brand">
                         <input
                           type="checkbox"
@@ -2231,7 +2302,6 @@ class Dashboard extends Component {
                           </label>
                         </li>
                       ))}
-                   
                   </ul>
                 </div>
               </span>
@@ -2241,13 +2311,16 @@ class Dashboard extends Component {
                 Agent :
                 <div className="dropdown">
                   <button
-                     style={{width:"90px"}} className="dropdown-toggle dashallbrand"
+                    style={{ width: "90px" }}
+                    className="dropdown-toggle dashallbrand"
                     type="button"
                     data-toggle="dropdown"
                   >
-                    <span id="spnAgent" className="EMFCText">All</span>
+                    <span id="spnAgent" className="EMFCText">
+                      All
+                    </span>
                   </button>
-                  <ul style={{width:"180px"}} className="dropdown-menu">
+                  <ul style={{ width: "180px" }} className="dropdown-menu">
                     <li>
                       <label htmlFor="all-agent">
                         <input
@@ -2277,10 +2350,8 @@ class Dashboard extends Component {
                           </label>
                         </li>
                       ))}
-                    
                   </ul>
                 </div>
-               
               </span>
             </div>
           </div>
@@ -2326,285 +2397,375 @@ class Dashboard extends Component {
           <Collapse isOpen={this.state.collapse}>
             <Card>
               <CardBody>
-                <div className="container-fluid dash-tp-card btm-mar">
-                  <div className="row justify-content-center">
-                    <div className="col-md col-sm-4 col-6">
-                      <div className="dash-top-cards">
-                        <p className="card-head">All</p>
-                        <span className="card-value">
-                          {this.state.DashboardNumberData !== null ? (this.state.DashboardNumberData.all !== null &&
-                          this.state.DashboardNumberData.all < 9
-                            ? "0" + this.state.DashboardNumberData.all
-                            : this.state.DashboardNumberData.all) : null}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="col-md col-sm-4 col-6">
-                      <div className="dash-top-cards">
-                        <p className="card-head">Open</p>
-                        <span className="card-value">
-                          {this.state.DashboardNumberData !== null ? (this.state.DashboardNumberData.open !== null &&
-                          this.state.DashboardNumberData.open < 9
-                            ? "0" + this.state.DashboardNumberData.open
-                            : this.state.DashboardNumberData.open) : null}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="col-md col-sm-4 col-6">
-                      <div className="dash-top-cards">
-                        <p className="card-head">Due Today</p>
-                        <span className="card-value">
-                          {this.state.DashboardNumberData !== null ? (this.state.DashboardNumberData.dueToday !== null &&
-                          this.state.DashboardNumberData.dueToday < 9
-                            ? "0" + this.state.DashboardNumberData.dueToday
-                            : this.state.DashboardNumberData.dueToday) : null}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="col-md col-sm-4 col-6">
-                      <div className="dash-top-cards">
-                        <p className="card-head">Over Due</p>
-                        <span className="card-value red-clr">
-                          {this.state.DashboardNumberData !== null ? (this.state.DashboardNumberData.overDue !== null &&
-                          this.state.DashboardNumberData.overDue < 9
-                            ? "0" + this.state.DashboardNumberData.overDue
-                            : this.state.DashboardNumberData.overDue) : null}
-                        </span>
-                      </div>
-                    </div>
-                    {this.state.TotalNoOfChatShow && (
-                      <div
-                        className="col-md col-sm-4 col-6"
-                        onClick={this.HandleChangeRedict.bind(this)}
-                      >
-                        <div className="dash-top-cards">
-                          <p className="card-head">Total no of chat</p>
-                          <span className="card-value">102</span>
-                          <small className="blue-clr">View More Insights</small>
-                        </div>
-                      </div>
-                    )}
+                {this.state.loadingAbove === true ? (
+                  <div className="loader-icon-cntr loader-icon-cntr-above">
+                    <div className="loader-icon"></div>
                   </div>
-                </div>
-                <div className="container-fluid btm-mar">
-                  <div className="row">
-                    <div className="col-lg-3 col-md-4">
-                      <div className="dash-top-cards prio-pie-cntr">
-                        <p className="card-head mb-0">Open By Priority</p>
-                        <div className="prio-pie-chart">
-                        {this.state.DashboardPriorityGraphData.length > 0 ? <OpenByPriorityPie data={this.state.DashboardPriorityGraphData} /> : null}
+                ) : (
+                  <>
+                    <div className="container-fluid dash-tp-card btm-mar">
+                      <div className="row justify-content-center">
+                        <div className="col-md col-sm-4 col-6">
+                          <div className="dash-top-cards">
+                            <p className="card-head">All</p>
+                            <span className="card-value">
+                              {this.state.DashboardNumberData !== null
+                                ? this.state.DashboardNumberData.all !== null &&
+                                  this.state.DashboardNumberData.all < 9
+                                  ? "0" + this.state.DashboardNumberData.all
+                                  : this.state.DashboardNumberData.all
+                                : null}
+                            </span>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-6 col-md-8">
-                      <div className="dash-top-cards p-0">
-                        <ul className="nav nav-tabs" role="tablist">
-                          <li className="nav-item">
-                            <a
-                              className="nav-link active"
-                              data-toggle="tab"
-                              href="#bill-graph-tab"
-                              role="tab"
-                              aria-controls="bill-graph-tab"
-                              aria-selected="true"
-                              onClick={this.handlechangebtntab.bind(this)}
-                            >
-                              Tickets to bill graph
-                            </a>
-                          </li>
-                          <li className="nav-item">
-                            <a
-                              className="nav-link tab2"
-                              data-toggle="tab"
-                              href="#source-tab"
-                              role="tab"
-                              aria-controls="source-tab"
-                              aria-selected="false"
-                              onClick={this.handlechangebtntab.bind(this)}
-                            >
-                              Tickets generation source tab
-                            </a>
-                          </li>
-                        </ul>
-                        <div className="tab-content mt-3">
+                        <div className="col-md col-sm-4 col-6">
+                          <div className="dash-top-cards">
+                            <p className="card-head">Open</p>
+                            <span className="card-value">
+                              {this.state.DashboardNumberData !== null
+                                ? this.state.DashboardNumberData.open !==
+                                    null &&
+                                  this.state.DashboardNumberData.open < 9
+                                  ? "0" + this.state.DashboardNumberData.open
+                                  : this.state.DashboardNumberData.open
+                                : null}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="col-md col-sm-4 col-6">
+                          <div className="dash-top-cards">
+                            <p className="card-head">Due Today</p>
+                            <span className="card-value">
+                              {this.state.DashboardNumberData !== null
+                                ? this.state.DashboardNumberData.dueToday !==
+                                    null &&
+                                  this.state.DashboardNumberData.dueToday < 9
+                                  ? "0" +
+                                    this.state.DashboardNumberData.dueToday
+                                  : this.state.DashboardNumberData.dueToday
+                                : null}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="col-md col-sm-4 col-6">
+                          <div className="dash-top-cards">
+                            <p className="card-head">Over Due</p>
+                            <span className="card-value red-clr">
+                              {this.state.DashboardNumberData !== null
+                                ? this.state.DashboardNumberData.overDue !==
+                                    null &&
+                                  this.state.DashboardNumberData.overDue < 9
+                                  ? "0" + this.state.DashboardNumberData.overDue
+                                  : this.state.DashboardNumberData.overDue
+                                : null}
+                            </span>
+                          </div>
+                        </div>
+                        {this.state.TotalNoOfChatShow && (
                           <div
-                            className="tab-pane fade show active"
-                            id="bill-graph-tab"
-                            role="tabpanel"
-                            aria-labelledby="bill-graph-tab"
+                            className="col-md col-sm-4 col-6"
+                            onClick={this.HandleChangeRedict.bind(this)}
                           >
-                            <div className="row">
-                              <div className="col-md-3">
-                                <ul className="bill-graph-list">
-                                  {this.state.DashboardBillGraphData !== null &&
-                                    this.state.DashboardBillGraphData.map(
-                                      (item, i) => (
-                                        <li key={i}>
-                                          {item.ticketSourceName} :{" "}
-                                          <b>
-                                            {item.ticketedBills}/
-                                            {item.totalBills}
-                                          </b>
-                                        </li>
-                                      )
-                                    )}
-                                 
-                                </ul>
-                              </div>
-                              <div className="col-md-9 tic-bill-graph">
-                                {this.state.DashboardBillGraphData.length > 0 ? <TicketToBillBarGraph data={this.state.DashboardBillGraphData} /> : null}
-                              </div>
+                            <div className="dash-top-cards">
+                              <p className="card-head">Total no of chat</p>
+                              <span className="card-value">102</span>
+                              <small className="blue-clr">
+                                View More Insights
+                              </small>
                             </div>
                           </div>
-                          <div
-                            className="tab-pane fade"
-                            id="source-tab"
-                            role="tabpanel"
-                            aria-labelledby="source-tab"
-                          >
-                            <div className="row">
-                              <div className="col-md-3">
-                                <ul className="bill-graph-list">
-                                {this.state.DashboardSourceGraphData !== null &&
-                                    this.state.DashboardSourceGraphData.map(
-                                      (item, i) => (
-                                        <li key={i}>
-                                          {item.ticketSourceName} :{" "}
-                                          <b>
-                                            {item.ticketSourceCount}
-                                          </b>
-                                        </li>
-                                      )
-                                    )}
-                                 
-                                </ul>
-                              </div>
-                              <div className="col-md-9 ">
-                                {this.state.DashboardSourceGraphData.length > 0 ? <TicketGenerationSourceBar data={this.state.DashboardSourceGraphData} /> : null}
-                              </div>
+                        )}
+                      </div>
+                    </div>
+                    <div className="container-fluid btm-mar">
+                      <div className="row">
+                        <div className="col-lg-3 col-md-4">
+                          <div className="dash-top-cards prio-pie-cntr">
+                            <p className="card-head mb-0">Open By Priority</p>
+                            <div className="prio-pie-chart">
+                              {this.state.DashboardPriorityGraphData.length >
+                              0 ? (
+                                <OpenByPriorityPie
+                                  data={this.state.DashboardPriorityGraphData}
+                                />
+                              ) : null}
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-3">
-                      <div
-                        className="dash-top-cards"
-                        onMouseOver={this.handleMouseHover.bind(this)}
-                        onMouseLeave={this.handleMouseHover.bind(this)}
-                      >
-                        <p className="card-head">SLA</p>
-                        {this.state.DashboardNumberData !== null ? (Object.keys(this.state.DashboardNumberData).length > 0 ? <div className="resp-success">
-                          <p className="card-head">Response {this.state.DashboardNumberData.isResponseSuccess === true ? 'Success' : 'Failure'}</p>
-                          <span className="card-value">
-                          <big>{this.state.DashboardNumberData.responseRate}</big>
-                          </span>
-                          <p className="card-head mt-lg-4 mt-2">
-                            Resolution {this.state.DashboardNumberData.isResolutionSuccess === true ? 'Success' : 'Failure'} :
-                            <span className="font-weight-bold">{this.state.DashboardNumberData.resolutionRate}</span>
-                          </p>
-                        </div> : null ) : null }
-                      </div>
-                    </div>
-                    <div className="col-lg-3 col-sm-6">
-                      <div className="dash-top-cards">
-                        <p className="card-head">Task</p>
-                        <div className="aside-cont">
-                          <div>
-                            <span className="card-value">
-                              {this.state.DashboardNumberData !== null ? (this.state.DashboardNumberData.taskOpen < 9
-                                ? "0" + this.state.DashboardNumberData.taskOpen
-                                : this.state.DashboardNumberData.taskOpen) : null}
-                            </span>
-                            <small>Open</small>
-                          </div>
-                          <div>
-                            <span className="card-value">
-                              {this.state.DashboardNumberData !== null ? (this.state.DashboardNumberData.taskClose < 9
-                                ? "0" + this.state.DashboardNumberData.taskClose
-                                : this.state.DashboardNumberData.taskClose) : null}
-                            </span>
-                            <small>Closed</small>
+                        <div className="col-lg-6 col-md-8">
+                          <div className="dash-top-cards p-0">
+                            <ul className="nav nav-tabs" role="tablist">
+                              <li className="nav-item">
+                                <a
+                                  className="nav-link active"
+                                  data-toggle="tab"
+                                  href="#bill-graph-tab"
+                                  role="tab"
+                                  aria-controls="bill-graph-tab"
+                                  aria-selected="true"
+                                  onClick={this.handlechangebtntab.bind(this)}
+                                >
+                                  Tickets to bill graph
+                                </a>
+                              </li>
+                              <li className="nav-item">
+                                <a
+                                  className="nav-link tab2"
+                                  data-toggle="tab"
+                                  href="#source-tab"
+                                  role="tab"
+                                  aria-controls="source-tab"
+                                  aria-selected="false"
+                                  onClick={this.handlechangebtntab.bind(this)}
+                                >
+                                  Tickets generation source tab
+                                </a>
+                              </li>
+                            </ul>
+                            <div className="tab-content mt-3">
+                              <div
+                                className="tab-pane fade show active"
+                                id="bill-graph-tab"
+                                role="tabpanel"
+                                aria-labelledby="bill-graph-tab"
+                              >
+                                <div className="row">
+                                  <div className="col-md-3">
+                                    <ul className="bill-graph-list">
+                                      {this.state.DashboardBillGraphData !==
+                                        null &&
+                                        this.state.DashboardBillGraphData.map(
+                                          (item, i) => (
+                                            <li key={i}>
+                                              {item.ticketSourceName} :{" "}
+                                              <b>
+                                                {item.ticketedBills}/
+                                                {item.totalBills}
+                                              </b>
+                                            </li>
+                                          )
+                                        )}
+                                    </ul>
+                                  </div>
+                                  <div className="col-md-9 tic-bill-graph">
+                                    {this.state.DashboardBillGraphData.length >
+                                    0 ? (
+                                      <TicketToBillBarGraph
+                                        data={this.state.DashboardBillGraphData}
+                                      />
+                                    ) : null}
+                                  </div>
+                                </div>
+                              </div>
+                              <div
+                                className="tab-pane fade"
+                                id="source-tab"
+                                role="tabpanel"
+                                aria-labelledby="source-tab"
+                              >
+                                <div className="row">
+                                  <div className="col-md-3">
+                                    <ul className="bill-graph-list">
+                                      {this.state.DashboardSourceGraphData !==
+                                        null &&
+                                        this.state.DashboardSourceGraphData.map(
+                                          (item, i) => (
+                                            <li key={i}>
+                                              {item.ticketSourceName} :{" "}
+                                              <b>{item.ticketSourceCount}</b>
+                                            </li>
+                                          )
+                                        )}
+                                    </ul>
+                                  </div>
+                                  <div className="col-md-9 ">
+                                    {this.state.DashboardSourceGraphData
+                                      .length > 0 ? (
+                                      <TicketGenerationSourceBar
+                                        data={
+                                          this.state.DashboardSourceGraphData
+                                        }
+                                      />
+                                    ) : null}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-6 order-1 order-lg-0">
-                      <div className="dash-top-cards p-0">
-                        <ul className="nav nav-tabs" role="tablist">
-                          <li className="nav-item">
-                            <a
-                              className="nav-link active"
-                              data-toggle="tab"
-                              href="#task-tab"
-                              role="tab"
-                              aria-controls="task-tab"
-                              aria-selected="true"
-                            >
-                              Ticket to Task
-                            </a>
-                          </li>
-                          <li className="nav-item">
-                            <a
-                              className="nav-link"
-                              data-toggle="tab"
-                              href="#claim-tab"
-                              role="tab"
-                              aria-controls="claim-tab"
-                              aria-selected="false"
-                            >
-                              Ticket to claim
-                            </a>
-                          </li>
-                        </ul>
-                        <div className="tab-content task-claim-cont">
+                        <div className="col-lg-3">
                           <div
-                            className="tab-pane fade show active"
-                            id="task-tab"
-                            role="tabpanel"
-                            aria-labelledby="task-tab"
+                            className="dash-top-cards"
+                            onMouseOver={this.handleMouseHover.bind(this)}
+                            onMouseLeave={this.handleMouseHover.bind(this)}
                           >
-                            {this.state.DashboardTaskGraphData.length > 0 ? <MultiBarChart data={this.state.DashboardTaskGraphData} /> : null}
-                            {/* {Object.keys(this.state.DashboardGraphData).length > 0 ? <MultiBarChart data={this.state.DashboardTaskGraphData} /> : null} */}
-                            {/* <MultiBarChart data={this.state.DashboardGraphData.tickettoTaskGraph} /> */}
+                            <p className="card-head">SLA</p>
+                            {this.state.DashboardNumberData !== null ? (
+                              Object.keys(this.state.DashboardNumberData)
+                                .length > 0 ? (
+                                <div className="resp-success">
+                                  <p className="card-head">
+                                    Response{" "}
+                                    {this.state.DashboardNumberData
+                                      .isResponseSuccess === true
+                                      ? "Success"
+                                      : "Failure"}
+                                  </p>
+                                  <span className="card-value">
+                                    <big>
+                                      {
+                                        this.state.DashboardNumberData
+                                          .responseRate
+                                      }
+                                    </big>
+                                  </span>
+                                  <p className="card-head mt-lg-4 mt-2">
+                                    Resolution{" "}
+                                    {this.state.DashboardNumberData
+                                      .isResolutionSuccess === true
+                                      ? "Success"
+                                      : "Failure"}{" "}
+                                    :
+                                    <span className="font-weight-bold">
+                                      {
+                                        this.state.DashboardNumberData
+                                          .resolutionRate
+                                      }
+                                    </span>
+                                  </p>
+                                </div>
+                              ) : null
+                            ) : null}
                           </div>
-                          <div
-                            className="tab-pane fade"
-                            id="claim-tab"
-                            role="tabpanel"
-                            aria-labelledby="claim-tab"
-                          >
-                            {this.state.DashboardClaimGraphData.length > 0 ? <TicketToClaimMultiBar data={this.state.DashboardClaimGraphData} /> : null}
+                        </div>
+                        <div className="col-lg-3 col-sm-6">
+                          <div className="dash-top-cards">
+                            <p className="card-head">Task</p>
+                            <div className="aside-cont">
+                              <div>
+                                <span className="card-value">
+                                  {this.state.DashboardNumberData !== null
+                                    ? this.state.DashboardNumberData.taskOpen <
+                                      9
+                                      ? "0" +
+                                        this.state.DashboardNumberData.taskOpen
+                                      : this.state.DashboardNumberData.taskOpen
+                                    : null}
+                                </span>
+                                <small>Open</small>
+                              </div>
+                              <div>
+                                <span className="card-value">
+                                  {this.state.DashboardNumberData !== null
+                                    ? this.state.DashboardNumberData.taskClose <
+                                      9
+                                      ? "0" +
+                                        this.state.DashboardNumberData.taskClose
+                                      : this.state.DashboardNumberData.taskClose
+                                    : null}
+                                </span>
+                                <small>Closed</small>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-lg-6 order-1 order-lg-0">
+                          <div className="dash-top-cards p-0">
+                            <ul className="nav nav-tabs" role="tablist">
+                              <li className="nav-item">
+                                <a
+                                  className="nav-link active"
+                                  data-toggle="tab"
+                                  href="#task-tab"
+                                  role="tab"
+                                  aria-controls="task-tab"
+                                  aria-selected="true"
+                                >
+                                  Ticket to Task
+                                </a>
+                              </li>
+                              <li className="nav-item">
+                                <a
+                                  className="nav-link"
+                                  data-toggle="tab"
+                                  href="#claim-tab"
+                                  role="tab"
+                                  aria-controls="claim-tab"
+                                  aria-selected="false"
+                                >
+                                  Ticket to claim
+                                </a>
+                              </li>
+                            </ul>
+                            <div className="tab-content task-claim-cont">
+                              <div
+                                className="tab-pane fade show active"
+                                id="task-tab"
+                                role="tabpanel"
+                                aria-labelledby="task-tab"
+                              >
+                                {this.state.DashboardTaskGraphData.length >
+                                0 ? (
+                                  <MultiBarChart
+                                    data={this.state.DashboardTaskGraphData}
+                                  />
+                                ) : null}
+                                {/* {Object.keys(this.state.DashboardGraphData).length > 0 ? <MultiBarChart data={this.state.DashboardTaskGraphData} /> : null} */}
+                                {/* <MultiBarChart data={this.state.DashboardGraphData.tickettoTaskGraph} /> */}
+                              </div>
+                              <div
+                                className="tab-pane fade"
+                                id="claim-tab"
+                                role="tabpanel"
+                                aria-labelledby="claim-tab"
+                              >
+                                {this.state.DashboardClaimGraphData.length >
+                                0 ? (
+                                  <TicketToClaimMultiBar
+                                    data={this.state.DashboardClaimGraphData}
+                                  />
+                                ) : null}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-lg-3 col-sm-6">
+                          <div className="dash-top-cards">
+                            <p className="card-head">Claim</p>
+                            <div className="aside-cont">
+                              <div>
+                                <span className="card-value">
+                                  {this.state.DashboardNumberData !== null
+                                    ? this.state.DashboardNumberData.claimOpen <
+                                      9
+                                      ? "0" +
+                                        this.state.DashboardNumberData.claimOpen
+                                      : this.state.DashboardNumberData.claimOpen
+                                    : null}
+                                </span>
+                                <small>Open</small>
+                              </div>
+                              <div>
+                                <span className="card-value">
+                                  {this.state.DashboardNumberData !== null
+                                    ? this.state.DashboardNumberData
+                                        .claimClose < 9
+                                      ? "0" +
+                                        this.state.DashboardNumberData
+                                          .claimClose
+                                      : this.state.DashboardNumberData
+                                          .claimClose
+                                    : null}
+                                </span>
+                                <small>Closed</small>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div className="col-lg-3 col-sm-6">
-                      <div className="dash-top-cards">
-                        <p className="card-head">Claim</p>
-                        <div className="aside-cont">
-                          <div>
-                            <span className="card-value">
-                              {this.state.DashboardNumberData !== null ? (this.state.DashboardNumberData.claimOpen < 9
-                                ? "0" + this.state.DashboardNumberData.claimOpen
-                                : this.state.DashboardNumberData.claimOpen) : null}
-                            </span>
-                            <small>Open</small>
-                          </div>
-                          <div>
-                            <span className="card-value">
-                              {this.state.DashboardNumberData !== null ? (this.state.DashboardNumberData.claimClose < 9
-                                ? "0" +
-                                  this.state.DashboardNumberData.claimClose
-                                : this.state.DashboardNumberData.claimClose) : null}
-                            </span>
-                            <small>Closed</small>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                  </>
+                )}
               </CardBody>
             </Card>
           </Collapse>
@@ -2717,6 +2878,16 @@ class Dashboard extends Component {
                               value={this.state.SearchName}
                               onChange={this.handelOnchangeData}
                             />
+                            {this.state.SearchName.length === 0 && (
+                              <p
+                                style={{
+                                  color: "red",
+                                  marginBottom: "0px"
+                                }}
+                              >
+                                {this.state.SearchNameCompulsory}
+                              </p>
+                            )}
                             <button
                               className="butn"
                               type="button"
@@ -2734,12 +2905,20 @@ class Dashboard extends Component {
                               {/* <li> */}
                               {this.state.SearchListData !== null &&
                                 this.state.SearchListData.map((item, i) => (
-                                  <li>
-                                    <label key={i} value={item.searchParamID}>
+                                  <li key={i}>
+                                    <label  value={item.searchParamID}>
                                       {item.searchName}
                                     </label>
                                     <div>
-                                      <a href={Demo.BLANK_LINK}>APPLY</a>
+                                      <a
+                                        className="applySearch"
+                                        onClick={this.handleApplySearch.bind(
+                                          this,
+                                          item.searchParamID
+                                        )}
+                                      >
+                                        APPLY
+                                      </a>
                                       <img
                                         src={DelSearch}
                                         alt="del-search"
@@ -2823,6 +3002,7 @@ class Dashboard extends Component {
                                           <option
                                             key={i}
                                             value={item.ticketStatusID}
+                                            
                                           >
                                             {item.ticketStatusName}
                                           </option>
@@ -3376,7 +3556,6 @@ class Dashboard extends Component {
                                   </select>
                                 </div>
                               </div>
-                              
                             </div>
                           </div>
                           <div
@@ -3428,7 +3607,6 @@ class Dashboard extends Component {
                                   </select>
                                 </div>
                                 <div className="col-md-3 col-sm-6">
-                             
                                   <div className="normal-dropdown">
                                     <Select
                                       getOptionLabel={option =>
@@ -3477,7 +3655,6 @@ class Dashboard extends Component {
                                   </div>
                                 </div>
                               </div>
-                            
                             </div>
                           </div>
                           <div
@@ -3562,7 +3739,6 @@ class Dashboard extends Component {
                                   </select>
                                 </div>
                               </div>
-                             
                             </div>
                           </div>
                           <div
@@ -3712,19 +3888,20 @@ class Dashboard extends Component {
                                   />
                                 </div>
                                 <div className="col-md-3 col-sm-6">
-                                <select className="add-select-category"
-                                            value={this.state.selectedAssignedTo}
-                                             onChange={this.setAssignedToValue}
-                                             onClick={this.handleAssignTo.bind(this)}
-                                             >
-                                           <option>Select Assigned To</option>
-                                           {this.state.AssignToData !== null &&
-                                         this.state.AssignToData.map((item, i) => (
-                                         <option key={i} value={item.userID}>
+                                  <select
+                                    className="add-select-category"
+                                    value={this.state.selectedAssignedTo}
+                                    onChange={this.setAssignedToValue}
+                                    onClick={this.handleAssignTo.bind(this)}
+                                  >
+                                    <option>Select Assigned To</option>
+                                    {this.state.AssignToData !== null &&
+                                      this.state.AssignToData.map((item, i) => (
+                                        <option key={i} value={item.userID}>
                                           {item.fullName}
                                         </option>
                                       ))}
-                                        </select>
+                                  </select>
                                 </div>
                                 <div className="col-md-3 col-sm-6 allspc">
                                   {/* <select>
@@ -4081,14 +4258,11 @@ class Dashboard extends Component {
                                         </React.Fragment>
                                       ) : null}
                                     </div>
-
-                                  
-                                     
-                                    
                                   </div>
                                 </div>
                               </div>
-                              
+
+
                             </div>
                           </div>
                         </div>
@@ -4096,9 +4270,12 @@ class Dashboard extends Component {
                           <div className="row common-adv-padd justify-content-between">
                             <div className="col-auto d-flex align-items-center">
                               <p className="font-weight-bold mr-3">
-                                <span className="blue-clr">{this.state.resultCount < 9
-                                            ? "0" + this.state.resultCount
-                                            : this.state.resultCount}</span> Results
+                                <span className="blue-clr">
+                                  {this.state.resultCount < 9
+                                    ? "0" + this.state.resultCount
+                                    : this.state.resultCount}
+                                </span>{" "}
+                                Results
                               </p>
                               <p
                                 className="blue-clr fs-14"
@@ -4108,12 +4285,17 @@ class Dashboard extends Component {
                               </p>
                             </div>
                             <div className="col-auto mob-mar-btm">
-                              
-                              <CSVLink className="csv-button" data={this.state.SearchTicketData}><img
+                              <CSVLink
+                                className="csv-button"
+                                data={this.state.CSVDownload}
+                              >
+                                <img
                                   className="position-relative csv-icon"
                                   src={csv}
                                   alt="csv-icon"
-                                />CSV</CSVLink>
+                                />
+                                CSV
+                              </CSVLink>
                               <button
                                 type="button"
                                 onClick={this.ScheduleOpenModel}
@@ -4139,7 +4321,6 @@ class Dashboard extends Component {
                                     <b>Schedule date to</b>
                                   </label>
                                   <div>
-                                    
                                     <div className="normal-dropdown dropdown-setting1 schedule-multi">
                                       <Select
                                         getOptionLabel={option =>
@@ -4214,61 +4395,47 @@ class Dashboard extends Component {
                                           }}
                                         >
                                           <Checkbox
-                                                    onChange={
-                                                      this.handleWeeklyDays
-                                                    }
-                                                    value="Mon"
-                                                  >
-                                                    Mon
-                                                  </Checkbox>
-                                                  <Checkbox
-                                                    onChange={
-                                                      this.handleWeeklyDays
-                                                    }
-                                                    value="Tue"
-                                                  >
-                                                    Tue
-                                                  </Checkbox>
-                                                  <Checkbox
-                                                    onChange={
-                                                      this.handleWeeklyDays
-                                                    }
-                                                    value="Wed"
-                                                  >
-                                                    Wed
-                                                  </Checkbox>
-                                                  <Checkbox
-                                                    onChange={
-                                                      this.handleWeeklyDays
-                                                    }
-                                                    value="Thu"
-                                                  >
-                                                    Thu
-                                                  </Checkbox>
-                                                  <Checkbox
-                                                    onChange={
-                                                      this.handleWeeklyDays
-                                                    }
-                                                    value="Fri"
-                                                  >
-                                                    Fri
-                                                  </Checkbox>
-                                                  <Checkbox
-                                                    onChange={
-                                                      this.handleWeeklyDays
-                                                    }
-                                                    value="Sat"
-                                                  >
-                                                    Sat
-                                                  </Checkbox>
-                                                  <Checkbox
-                                                    onChange={
-                                                      this.handleWeeklyDays
-                                                    }
-                                                    value="Sun"
-                                                  >
-                                                    Sun
-                                                  </Checkbox>
+                                            onChange={this.handleWeeklyDays}
+                                            value="Mon"
+                                          >
+                                            Mon
+                                          </Checkbox>
+                                          <Checkbox
+                                            onChange={this.handleWeeklyDays}
+                                            value="Tue"
+                                          >
+                                            Tue
+                                          </Checkbox>
+                                          <Checkbox
+                                            onChange={this.handleWeeklyDays}
+                                            value="Wed"
+                                          >
+                                            Wed
+                                          </Checkbox>
+                                          <Checkbox
+                                            onChange={this.handleWeeklyDays}
+                                            value="Thu"
+                                          >
+                                            Thu
+                                          </Checkbox>
+                                          <Checkbox
+                                            onChange={this.handleWeeklyDays}
+                                            value="Fri"
+                                          >
+                                            Fri
+                                          </Checkbox>
+                                          <Checkbox
+                                            onChange={this.handleWeeklyDays}
+                                            value="Sat"
+                                          >
+                                            Sat
+                                          </Checkbox>
+                                          <Checkbox
+                                            onChange={this.handleWeeklyDays}
+                                            value="Sun"
+                                          >
+                                            Sun
+                                          </Checkbox>
                                         </div>
                                       </div>
                                     ) : null}
@@ -4280,9 +4447,7 @@ class Dashboard extends Component {
                                             type="text"
                                             className="Every"
                                             placeholder="9"
-                                            onChange={
-                                              this.handleDaysForMonth
-                                            }
+                                            onChange={this.handleDaysForMonth}
                                           />
                                           <label className="every1">
                                             of every
@@ -4291,9 +4456,7 @@ class Dashboard extends Component {
                                             type="text"
                                             className="Every"
                                             placeholder="1"
-                                            onChange={
-                                              this.handleMonthForMonth
-                                            }
+                                            onChange={this.handleMonthForMonth}
                                           />
                                           <label className="every1">
                                             months
@@ -4311,9 +4474,7 @@ class Dashboard extends Component {
                                             type="text"
                                             className="Every"
                                             placeholder="1"
-                                            onChange={
-                                              this.handleMonthForWeek
-                                            }
+                                            onChange={this.handleMonthForWeek}
                                           />
                                           <label className="every1">
                                             month on the
@@ -4324,55 +4485,43 @@ class Dashboard extends Component {
                                             <select
                                               id="inputState"
                                               className="form-control dropdown-setting1"
-                                              onChange={
-                                                this.handleWeekForWeek
-                                              }
+                                              onChange={this.handleWeekForWeek}
                                               value={
                                                 this.state
                                                   .selectedNoOfWeekForWeek
                                               }
                                             >
-                                              <option value="0">
-                                                Select
-                                              </option>
-                                              <option value="2">
-                                                Second
-                                              </option>
-                                              <option value="4">
-                                                Four
-                                              </option>
+                                              <option value="0">Select</option>
+                                              <option value="2">Second</option>
+                                              <option value="4">Four</option>
                                             </select>
                                           </div>
                                           <div className="col-md-6">
-                                          <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                                                      <Select
-                                                        getOptionLabel={option =>
-                                                          option.days
-                                                        }
-                                                        getOptionValue={
-                                                          option => option.days //id
-                                                        }
-                                                        options={
-                                                          this.state
-                                                            .NameOfDayForWeek
-                                                        }
-                                                        placeholder="Select"
-                                                        // menuIsOpen={true}
-                                                        closeMenuOnSelect={
-                                                          false
-                                                        }
-                                                        onChange={this.setNameOfDayForWeek.bind(
-                                                          this
-                                                        )}
-                                                        value={
-                                                          this.state
-                                                            .selectedNameOfDayForWeek
-                                                        }
-                                                        // showNewOptionAtTop={false}
-                                                        isMulti
-                                                      />
-                                                    </div>
-                                            
+                                            <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                                              <Select
+                                                getOptionLabel={option =>
+                                                  option.days
+                                                }
+                                                getOptionValue={
+                                                  option => option.days //id
+                                                }
+                                                options={
+                                                  this.state.NameOfDayForWeek
+                                                }
+                                                placeholder="Select"
+                                                // menuIsOpen={true}
+                                                closeMenuOnSelect={false}
+                                                onChange={this.setNameOfDayForWeek.bind(
+                                                  this
+                                                )}
+                                                value={
+                                                  this.state
+                                                    .selectedNameOfDayForWeek
+                                                }
+                                                // showNewOptionAtTop={false}
+                                                isMulti
+                                              />
+                                            </div>
                                           </div>
                                         </div>
                                       </div>
@@ -4389,43 +4538,37 @@ class Dashboard extends Component {
                                             on
                                           </label>
                                           <div className="col-md-7">
-                                             
                                             <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                                                      <Select
-                                                        getOptionLabel={option =>
-                                                          option.month
-                                                        }
-                                                        getOptionValue={
-                                                          option => option.month //id
-                                                        }
-                                                        options={
-                                                          this.state
-                                                            .NameOfMonthForYear
-                                                        }
-                                                        placeholder="Select"
-                                                        // menuIsOpen={true}
-                                                        closeMenuOnSelect={
-                                                          false
-                                                        }
-                                                        onChange={this.setNameOfMonthForYear.bind(
-                                                          this
-                                                        )}
-                                                        value={
-                                                          this.state
-                                                            .selectedNameOfMonthForYear
-                                                        }
-                                                        // showNewOptionAtTop={false}
-                                                        isMulti
-                                                      />
-                                                    </div>
+                                              <Select
+                                                getOptionLabel={option =>
+                                                  option.month
+                                                }
+                                                getOptionValue={
+                                                  option => option.month //id
+                                                }
+                                                options={
+                                                  this.state.NameOfMonthForYear
+                                                }
+                                                placeholder="Select"
+                                                // menuIsOpen={true}
+                                                closeMenuOnSelect={false}
+                                                onChange={this.setNameOfMonthForYear.bind(
+                                                  this
+                                                )}
+                                                value={
+                                                  this.state
+                                                    .selectedNameOfMonthForYear
+                                                }
+                                                // showNewOptionAtTop={false}
+                                                isMulti
+                                              />
+                                            </div>
                                           </div>
                                           <input
                                             type="text"
                                             className="Every"
                                             placeholder="1"
-                                            onChange={
-                                              this.handleDayForYear
-                                            }
+                                            onChange={this.handleDayForYear}
                                           />
                                         </div>
                                       </div>
@@ -4460,44 +4603,38 @@ class Dashboard extends Component {
                                                 <option value="2">
                                                   Second
                                                 </option>
-                                                <option value="4">
-                                                  Four
-                                                </option>
+                                                <option value="4">Four</option>
                                               </select>
                                             </div>
                                           </div>
                                         </span>
                                         <div className="row mt-3">
                                           <div className="col-md-5">
-                                           
                                             <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                                                      <Select
-                                                        getOptionLabel={option =>
-                                                          option.days
-                                                        }
-                                                        getOptionValue={
-                                                          option => option.days //id
-                                                        }
-                                                        options={
-                                                          this.state
-                                                            .NameOfDayForYear
-                                                        }
-                                                        placeholder="Select"
-                                                        // menuIsOpen={true}
-                                                        closeMenuOnSelect={
-                                                          false
-                                                        }
-                                                        onChange={this.setNameOfDayForYear.bind(
-                                                          this
-                                                        )}
-                                                        value={
-                                                          this.state
-                                                            .selectedNameOfDayForYear
-                                                        }
-                                                        // showNewOptionAtTop={false}
-                                                        isMulti
-                                                      />
-                                                    </div>
+                                              <Select
+                                                getOptionLabel={option =>
+                                                  option.days
+                                                }
+                                                getOptionValue={
+                                                  option => option.days //id
+                                                }
+                                                options={
+                                                  this.state.NameOfDayForYear
+                                                }
+                                                placeholder="Select"
+                                                // menuIsOpen={true}
+                                                closeMenuOnSelect={false}
+                                                onChange={this.setNameOfDayForYear.bind(
+                                                  this
+                                                )}
+                                                value={
+                                                  this.state
+                                                    .selectedNameOfDayForYear
+                                                }
+                                                // showNewOptionAtTop={false}
+                                                isMulti
+                                              />
+                                            </div>
                                           </div>
                                           <label
                                             className="every1"
@@ -4509,46 +4646,62 @@ class Dashboard extends Component {
                                             to
                                           </label>
                                           <div className="col-md-5">
-                                            
                                             <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                                                      <Select
-                                                        getOptionLabel={option =>
-                                                          option.month
-                                                        }
-                                                        getOptionValue={
-                                                          option => option.month //id
-                                                        }
-                                                        options={
-                                                          this.state
-                                                            .NameOfMonthForDailyYear
-                                                        }
-                                                        placeholder="Select"
-                                                        // menuIsOpen={true}
-                                                        closeMenuOnSelect={
-                                                          false
-                                                        }
-                                                        onChange={this.setNameOfMonthForDailyYear.bind(
-                                                          this
-                                                        )}
-                                                        value={
-                                                          this.state
-                                                            .selectedNameOfMonthForDailyYear
-                                                        }
-                                                        // showNewOptionAtTop={false}
-                                                        isMulti
-                                                      />
-                                                    </div>
+                                              <Select
+                                                getOptionLabel={option =>
+                                                  option.month
+                                                }
+                                                getOptionValue={
+                                                  option => option.month //id
+                                                }
+                                                options={
+                                                  this.state
+                                                    .NameOfMonthForDailyYear
+                                                }
+                                                placeholder="Select"
+                                                // menuIsOpen={true}
+                                                closeMenuOnSelect={false}
+                                                onChange={this.setNameOfMonthForDailyYear.bind(
+                                                  this
+                                                )}
+                                                value={
+                                                  this.state
+                                                    .selectedNameOfMonthForDailyYear
+                                                }
+                                                // showNewOptionAtTop={false}
+                                                isMulti
+                                              />
+                                            </div>
                                           </div>
                                         </div>
                                       </div>
                                     ) : null}
 
-                                    <input
+                                    {/* <input
                                       type="text"
                                       className="txt-1 txt1Place txt1Time"
                                       placeholder="11AM"
                                       onChange={this.handleScheduleTime}
-                                    />
+                                    /> */}
+                                    <div className="dash-timepicker">
+                                      <DatePicker
+                                        selected={
+                                          this.state.selectedScheduleTime
+                                        }
+                                        onChange={this.handleScheduleTime.bind(
+                                          this
+                                        )}
+                                        placeholderText="11 AM"
+                                        showTimeSelect
+                                        showTimeSelectOnly
+                                        timeIntervals={60}
+                                        timeCaption="Select Time"
+                                        dateFormat="h:mm aa"
+                                        className="txt-1 txt1Place txt1Time"
+                                        value={this.state.selectedScheduleTime}
+                                      />
+                                    </div>
+
                                     <div>
                                       <button
                                         className="scheduleBtn"
@@ -4668,7 +4821,13 @@ class Dashboard extends Component {
                                   >
                                     SEARCH
                                   </button>
-                                  <a href="#!" className="anchorTag-clear">
+                                  <a
+                                    href="#!"
+                                    className="anchorTag-clear"
+                                    onClick={this.handleAssignClearData.bind(
+                                      this
+                                    )}
+                                  >
                                     CLEAR
                                   </a>
                                 </div>
@@ -4707,8 +4866,10 @@ class Dashboard extends Component {
                                     ]}
                                     // resizable={false}
                                     defaultPageSize={5}
+                                    minRows={3}
                                     showPagination={true}
                                     getTrProps={this.handleTicketDetails}
+                                    className="assign-ticket-table"
                                   />
 
                                   <textarea
@@ -4717,7 +4878,7 @@ class Dashboard extends Component {
                                     onChange={this.handleAssignRemark}
                                   ></textarea>
                                   <button
-                                    className="assign-butn btn-assign-tikcet"
+                                    className="assign-butn btn-assign-tikcet w-100"
                                     type="button"
                                     onClick={this.handleAssignTickets}
                                   >
@@ -4733,267 +4894,273 @@ class Dashboard extends Component {
                   </Card>
                 </Collapse>
               </div>
-
-              <div className="MyTicketListReact">
-                <ReactTable
-                  data={SearchTicketData}
-                  columns={[
-                    {
-                      Header: (
-                        <span>
-                          <div className="filter-type pink1 pinkmyticket">
-                            <div className="filter-checkbox pink2 pinkmargin">
-                              <input
-                                type="checkbox"
-                                id="fil-aball"
-                                name="MyTicketListcheckbox[]"
-                                // checked={this.state.CheckBoxChecked}
-                                onChange={this.checkAllCheckbox.bind(this)}
-                              />
-                              <label htmlFor="fil-aball" className="ticketid">
-                                ID
-                              </label>
-                            </div>
-                          </div>
-                        </span>
-                      ),
-                      accessor: "ticketID",
-                      Cell: row => {
-                        return (
-                          <span onClick={e => this.clickCheckbox(e)}>
+              {this.state.loading === true ? (
+                <div className="loader-icon-cntr">
+                  <div className="loader-icon"></div>
+                </div>
+              ) : (
+                <div className="MyTicketListReact">
+                  <ReactTable
+                    data={SearchTicketData}
+                    columns={[
+                      {
+                        Header: (
+                          <span>
                             <div className="filter-type pink1 pinkmyticket">
                               <div className="filter-checkbox pink2 pinkmargin">
                                 <input
                                   type="checkbox"
-                                  id={'j' + row.original.ticketID}
+                                  id="fil-aball"
                                   name="MyTicketListcheckbox[]"
                                   // checked={this.state.CheckBoxChecked}
-                                  attrIds={row.original.ticketID}
-                                  onChange={this.handelCheckBoxCheckedChange}
+                                  onChange={this.checkAllCheckbox.bind(this)}
                                 />
-                                <label htmlFor={'j' + row.original.ticketID}>
-                                  <img
-                                    src={HeadPhone3}
-                                    alt="HeadPhone"
-                                    className="headPhone3"
-                                  />
-                                  {row.original.ticketID}
+                                <label htmlFor="fil-aball" className="ticketid">
+                                  ID
                                 </label>
                               </div>
                             </div>
                           </span>
-                        );
-                      }
-                    },
-                    {
-                      Header: (
-                        <span onClick={this.StatusOpenModel}>
-                          Status <FontAwesomeIcon icon={faCaretDown} />
-                        </span>
-                      ),
-                      accessor: "ticketStatus",
-                      Cell: row => {
-                        return (
-                          <span className="table-b table-blue-btn">
-                            <label>{row.original.ticketStatus}</label>
-                          </span>
-                        );
-                      }
-                    },
-                    {
-                      Header: <span></span>,
-                      accessor: "taskStatus",
-                      width: 45,
-                      Cell: row => {
-                        if (
-                          row.original.taskStatus === "0/0" &&
-                          row.original.taskStatus === null
-                        ) {
+                        ),
+                        accessor: "ticketID",
+                        Cell: row => {
                           return (
-                            <div>
-                              <img
-                                className="task-icon-1 marginimg"
-                                src={TaskIconGray}
-                                alt="task-icon-gray"
-                              />
-                            </div>
-                          );
-                        } else {
-                          return (
-                            <div>
-                              <Popover
-                                content={
-                                  <div className="dash-task-popup-new">
-                                    <div className="d-flex justify-content-between align-items-center">
-                                      <p className="m-b-0">
-                                        TASK:{row.original.taskStatus}
-                                      </p>
-                                      <div className="d-flex align-items-center">
-                                        2 NEW
-                                        <div className="nw-chat">
-                                          <img src={Chat} alt="chat" />
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <ProgressBar
-                                      className="task-progress"
-                                      now={70}
+                            <span onClick={e => this.clickCheckbox(e)}>
+                              <div className="filter-type pink1 pinkmyticket">
+                                <div className="filter-checkbox pink2 pinkmargin">
+                                  <input
+                                    type="checkbox"
+                                    id={"j" + row.original.ticketID}
+                                    name="MyTicketListcheckbox[]"
+                                    // checked={this.state.CheckBoxChecked}
+                                    attrIds={row.original.ticketID}
+                                    onChange={this.handelCheckBoxCheckedChange}
+                                  />
+                                  <label htmlFor={"j" + row.original.ticketID}>
+                                    <img
+                                      src={HeadPhone3}
+                                      alt="HeadPhone"
+                                      className="headPhone3"
                                     />
-                                  </div>
-                                }
-                                placement="bottom"
-                              >
-                                <img
-                                  className="task-icon-1 marginimg"
-                                  src={TaskIconBlue}
-                                  alt="task-icon-blue"
-                                />
-                              </Popover>
-                            </div>
+                                    {row.original.ticketID}
+                                  </label>
+                                </div>
+                              </div>
+                            </span>
                           );
                         }
-                      }
-                    },
-                    {
-                      Header: (
-                        <label className="ticketid">
-                          <span>Subject/</span>
-                          <span
-                            style={{
-                              fontWeight: "bold",
-                              fontSize: "11px !important"
-                            }}
-                          >
-                            Lastest Message
+                      },
+                      {
+                        Header: (
+                          <span onClick={this.StatusOpenModel}>
+                            Status <FontAwesomeIcon icon={faCaretDown} />
                           </span>
-                        </label>
-                      ),
-                      accessor: "message",
-                      Cell: row => {
-                        return <div>{row.original.message}</div>;
+                        ),
+                        accessor: "ticketStatus",
+                        Cell: row => {
+                          return (
+                            <span className="table-b table-blue-btn">
+                              <label>{row.original.ticketStatus}</label>
+                            </span>
+                          );
+                        }
+                      },
+                      {
+                        Header: <span></span>,
+                        accessor: "taskStatus",
+                        width: 45,
+                        Cell: row => {
+                          if (
+                            row.original.taskStatus === "0/0" &&
+                            row.original.taskStatus === null
+                          ) {
+                            return (
+                              <div>
+                                <img
+                                  className="task-icon-1 marginimg"
+                                  src={TaskIconGray}
+                                  alt="task-icon-gray"
+                                />
+                              </div>
+                            );
+                          } else {
+                            return (
+                              <div>
+                                <Popover
+                                  content={
+                                    <div className="dash-task-popup-new">
+                                      <div className="d-flex justify-content-between align-items-center">
+                                        <p className="m-b-0">
+                                          TASK:{row.original.taskStatus}
+                                        </p>
+                                        <div className="d-flex align-items-center">
+                                          2 NEW
+                                          <div className="nw-chat">
+                                            <img src={Chat} alt="chat" />
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <ProgressBar
+                                        className="task-progress"
+                                        now={70}
+                                      />
+                                    </div>
+                                  }
+                                  placement="bottom"
+                                >
+                                  <img
+                                    className="task-icon-1 marginimg"
+                                    src={TaskIconBlue}
+                                    alt="task-icon-blue"
+                                  />
+                                </Popover>
+                              </div>
+                            );
+                          }
+                        }
+                      },
+                      {
+                        Header: (
+                          <label className="ticketid">
+                            <span>Subject/</span>
+                            <span
+                              style={{
+                                fontWeight: "bold",
+                                fontSize: "11px !important"
+                              }}
+                            >
+                              Lastest Message
+                            </span>
+                          </label>
+                        ),
+                        accessor: "message",
+                        Cell: row => {
+                          return <div>{row.original.message}</div>;
+                        }
+                      },
+                      {
+                        Header: (
+                          <span className="ticketid">
+                            Category <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "category",
+                        Cell: row => (
+                          <span>
+                            <label>{row.original.category} </label>
+
+                            <Popover
+                              content={
+                                <div className="dash-creation-popup-cntr">
+                                  <ul className="dash-category-popup dashnewpopup">
+                                    <li>
+                                      <p>Category</p>
+                                      <p>{row.original.category}</p>
+                                    </li>
+                                    <li>
+                                      <p>Sub Category</p>
+                                      <p>{row.original.subCategory}</p>
+                                    </li>
+                                    <li>
+                                      <p>Type</p>
+                                      <p>{row.original.issueType}</p>
+                                    </li>
+                                  </ul>
+                                </div>
+                              }
+                              placement="bottom"
+                            >
+                              <img
+                                className="info-icon"
+                                src={InfoIcon}
+                                alt="info-icon"
+                              />
+                            </Popover>
+                          </span>
+                        )
+                      },
+                      {
+                        Header: (
+                          <span className="ticketid">
+                            Priority <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "priority"
+                      },
+                      {
+                        Header: (
+                          <span className="ticketid">
+                            Assignee <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "assignee"
+                      },
+                      {
+                        Header: (
+                          <span className="ticketid">
+                            Creation On <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "createdOn",
+                        Cell: row => (
+                          <span>
+                            <label>{row.original.createdOn}</label>
+
+                            <Popover
+                              content={
+                                <div className="insertpop1">
+                                  <ul className="dash-creation-popup">
+                                    <li className="title">Creation details</li>
+                                    <li>
+                                      <p>{row.original.createdBy} Created</p>
+                                      <p>{row.original.createdago}</p>
+                                    </li>
+                                    <li>
+                                      <p>
+                                        Assigned to {row.original.assignedTo}
+                                      </p>
+                                      <p>{row.original.assignedago}</p>
+                                    </li>
+                                    <li>
+                                      <p>{row.original.updatedBy} updated</p>
+                                      <p>{row.original.updatedago}</p>
+                                    </li>
+                                    <li>
+                                      <p>Response time remaining by</p>
+                                      <p>
+                                        {row.original.responseTimeRemainingBy}
+                                      </p>
+                                    </li>
+                                    <li>
+                                      <p>Response overdue by</p>
+                                      <p>{row.original.responseOverdueBy}</p>
+                                    </li>
+                                    <li>
+                                      <p>Resolution overdue by</p>
+                                      <p>{row.original.resolutionOverdueBy}</p>
+                                    </li>
+                                  </ul>
+                                </div>
+                              }
+                              placement="bottom"
+                            >
+                              <img
+                                className="info-icon"
+                                src={InfoIcon}
+                                alt="info-icon"
+                              />
+                            </Popover>
+                          </span>
+                        )
                       }
-                    },
-                    {
-                      Header: (
-                        <span className="ticketid">
-                          Category <FontAwesomeIcon icon={faCaretDown} />
-                        </span>
-                      ),
-                      accessor: "category",
-                      Cell: row => (
-                        <span>
-                          <label>{row.original.category} </label>
-
-                          <Popover
-                            content={
-                              <div className="dash-creation-popup-cntr">
-                                <ul className="dash-category-popup dashnewpopup">
-                                  <li>
-                                    <p>Category</p>
-                                    <p>{row.original.category}</p>
-                                  </li>
-                                  <li>
-                                    <p>Sub Category</p>
-                                    <p>{row.original.subCategory}</p>
-                                  </li>
-                                  <li>
-                                    <p>Type</p>
-                                    <p>{row.original.issueType}</p>
-                                  </li>
-                                </ul>
-                              </div>
-                            }
-                            placement="bottom"
-                          >
-                            <img
-                              className="info-icon"
-                              src={InfoIcon}
-                              alt="info-icon"
-                            />
-                          </Popover>
-                        </span>
-                      )
-                    },
-                    {
-                      Header: (
-                        <span className="ticketid">
-                          Priority <FontAwesomeIcon icon={faCaretDown} />
-                        </span>
-                      ),
-                      accessor: "priority"
-                      // Cell: props => <span>High</span>
-                    },
-                    {
-                      Header: (
-                        <span className="ticketid">
-                          Assignee <FontAwesomeIcon icon={faCaretDown} />
-                        </span>
-                      ),
-                      accessor: "assignee"
-                    },
-                    {
-                      Header: (
-                        <span className="ticketid">
-                          Creation On <FontAwesomeIcon icon={faCaretDown} />
-                        </span>
-                      ),
-                      accessor: "createdOn",
-                      Cell: row => (
-                        <span>
-                          <label>{row.original.createdOn}</label>
-
-                          <Popover
-                            content={
-                              <div className="insertpop1">
-                                <ul className="dash-creation-popup">
-                                  <li className="title">Creation details</li>
-                                  <li>
-                                    <p>{row.original.createdBy} Created</p>
-                                    <p>{row.original.createdago}</p>
-                                  </li>
-                                  <li>
-                                    <p>Assigned to {row.original.assignedTo}</p>
-                                    <p>{row.original.assignedago}</p>
-                                  </li>
-                                  <li>
-                                    <p>{row.original.updatedBy} updated</p>
-                                    <p>{row.original.updatedago}</p>
-                                  </li>
-                                  <li>
-                                    <p>Response time remaining by</p>
-                                    <p>
-                                      {row.original.responseTimeRemainingBy}
-                                    </p>
-                                  </li>
-                                  <li>
-                                    <p>Response overdue by</p>
-                                    <p>{row.original.responseOverdueBy}</p>
-                                  </li>
-                                  <li>
-                                    <p>Resolution overdue by</p>
-                                    <p>{row.original.resolutionOverdueBy}</p>
-                                  </li>
-                                </ul>
-                              </div>
-                            }
-                            placement="bottom"
-                          >
-                            <img
-                              className="info-icon"
-                              src={InfoIcon}
-                              alt="info-icon"
-                            />
-                          </Popover>
-                        </span>
-                      )
-                    }
-                  ]}
-                  // resizable={false}
-                  defaultPageSize={10}
-                  showPagination={true}
-                  getTrProps={this.HandleRowClickPage}
-                />
-                {/* <div className="position-relative">
+                    ]}
+                    // resizable={false}
+                    defaultPageSize={10}
+                    showPagination={true}
+                    getTrProps={this.HandleRowClickPage}
+                    minRows={2}
+                  />
+                  {/* <div className="position-relative">
                         <div className="pagi">
                           <ul>
                             <li>
@@ -5031,7 +5198,8 @@ class Dashboard extends Component {
                           <p>Items per page</p>
                         </div>
                       </div> */}
-              </div>
+                </div>
+              )}
               <div className="float-search" onClick={this.toggleSearch}>
                 <small>{TitleChange}</small>
                 {ImgChange}
@@ -5039,74 +5207,6 @@ class Dashboard extends Component {
             </div>
           </div>
         </section>
-        {/* <Modal
-          open={this.state.open}
-          onClose={this.onCloseModal}
-          center
-          modalId="save-search-popup"
-          overlayId="save-search-ovrly"
-        >
-          <div className="save-search">
-            <p>SAVE SEARCH</p>
-          </div>
-          <div className="search-name">
-            <input type="search" placeholder="Give name to your search" />
-            <button className="butn">Save</button>
-          </div>
-          <div className="search-names">
-            <div className="names-title">
-              <p>Search Name</p>
-              <p className="mar-comp">Action</p>
-            </div>
-            <ul>
-              <li>
-                <p>Open tickets with high priority</p>
-                <div>
-                  <a href={Demo.BLANK_LINK}>APPLY</a>
-                  <a href={Demo.BLANK_LINK} className="m-0">
-                    <img src={DelSearch} alt="del-search" />
-                  </a>
-                </div>
-              </li>
-              <li>
-                <p>Open tickets with high priority</p>
-                <div>
-                  <a href={Demo.BLANK_LINK}>APPLY</a>
-                  <a href={Demo.BLANK_LINK} className="m-0">
-                    <img src={DelSearch} alt="del-search" />
-                  </a>
-                </div>
-              </li>
-              <li>
-                <p>Open tickets with high priority</p>
-                <div>
-                  <a href={Demo.BLANK_LINK}>APPLY</a>
-                  <a href={Demo.BLANK_LINK} className="m-0">
-                    <img src={DelSearch} alt="del-search" />
-                  </a>
-                </div>
-              </li>
-              <li>
-                <p>Open tickets with high priority</p>
-                <div>
-                  <a href={Demo.BLANK_LINK}>APPLY</a>
-                  <a href={Demo.BLANK_LINK} className="m-0">
-                    <img src={DelSearch} alt="del-search" />
-                  </a>
-                </div>
-              </li>
-              <li>
-                <p>Open tickets with high priority</p>
-                <div>
-                  <a href={Demo.BLANK_LINK}>APPLY</a>
-                  <a href={Demo.BLANK_LINK} className="m-0">
-                    <img src={DelSearch} alt="del-search" />
-                  </a>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </Modal> */}
       </Fragment>
     );
   }
