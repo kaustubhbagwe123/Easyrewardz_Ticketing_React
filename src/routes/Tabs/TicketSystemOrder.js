@@ -144,7 +144,7 @@ class TicketSystemOrder extends Component {
     this.setState({ selectedTicketSource: ticketSourceValue });
   };
   handleCheckOrderID(orderMasterID, rowData) {
-    debugger;
+    // debugger;
     const newSelected = Object.assign({}, this.state.CheckOrderID);
     newSelected[orderMasterID] = !this.state.CheckOrderID[orderMasterID];
     this.setState({
@@ -210,7 +210,7 @@ class TicketSystemOrder extends Component {
       url: config.apiUrl + "/Master/getTicketSources",
       headers: authHeader()
     }).then(function (res) {
-      debugger;
+      // debugger;
       let status = res.data.message;
       let data = res.data.responseData;
       if (status === "Success") {
@@ -225,7 +225,7 @@ class TicketSystemOrder extends Component {
     });
   }
   handleGetManuallyTableData() {
-    debugger;
+    // debugger;
     let self = this;
     axios({
       method: "post",
@@ -238,7 +238,7 @@ class TicketSystemOrder extends Component {
     });
   }
   handleOrderSearchData() {
-    debugger;
+    // debugger;
     let self = this;
     if(this.state.orderNumber.length > 0){
       var CustID = this.props.custDetails;
@@ -251,7 +251,7 @@ class TicketSystemOrder extends Component {
           CustomerID: CustID
         }
       }).then(function(res) {
-        debugger;
+        // debugger;
         let Msg = res.data.message;
         let mainData = res.data.responseData;
         // let subData = res.data.responseData[0].orderItems;
@@ -269,7 +269,7 @@ class TicketSystemOrder extends Component {
    
   }
   hadleAddManuallyOrderData() {
-    debugger;
+    // debugger;
     if (this.validator.allValid()) {
       let self = this;
       var CustID = this.props.custDetails;
@@ -296,7 +296,7 @@ class TicketSystemOrder extends Component {
           RequireSize: this.state.requiredSize
         }
       }).then(function (res) {
-        debugger;
+        // debugger;
         let responseMessage = res.data.message;
 
         if (responseMessage === "Success") {
@@ -324,7 +324,7 @@ class TicketSystemOrder extends Component {
     }
   }
   handlePurchaseStoreName(field, e) {
-    debugger;
+    // debugger;
     let self = this;
     let SearchData = this.state.purchaseFrmStorName;
     SearchData[field] = e.target.value;
@@ -338,7 +338,7 @@ class TicketSystemOrder extends Component {
           SearchText: SearchData[field]
         }
       }).then(function (res) {
-        debugger;
+        // debugger;
 
         var SearchItem = res.data.responseData;
         if (SearchItem.length > 0) {
@@ -356,7 +356,7 @@ class TicketSystemOrder extends Component {
     }
   }
   HandleSelectdata(e, field, value, id) {
-    debugger;
+    // debugger;
     let SearchData = this.state.SearchData;
     SearchData[field] = value;
 
@@ -382,7 +382,7 @@ class TicketSystemOrder extends Component {
     });
   }
   onFilteredChange(filtered) {
-    debugger;
+    // debugger;
     if (filtered.length > 1 && this.state.filterAll.length) {
       // NOTE: this removes any FILTER ALL filter
       const filterAll = "";
@@ -394,7 +394,7 @@ class TicketSystemOrder extends Component {
   }
 
   filterAll(e) {
-    debugger;
+    // debugger;
     const { value } = e.target;
     const filterAll = value;
     const filtered = [{ id: "all", value: filterAll }];
@@ -414,7 +414,7 @@ class TicketSystemOrder extends Component {
     });
   }
   handleNumberOnchange = e => {
-    debugger;
+    // debugger;
     var values = e.target.value;
     var names = e.target.name;
 
@@ -471,7 +471,7 @@ class TicketSystemOrder extends Component {
   };
 
   handleChangeOrderItem = e => {
-    debugger;
+    // debugger;
     var values = e.target.checked;
     if (values) {
       var x = document.getElementById("ordertable");
@@ -490,7 +490,7 @@ class TicketSystemOrder extends Component {
     });
   };
   handleChangeModalOrderItem = e => {
-    debugger;
+    // debugger;
     var values = e.target.checked;
     if (values) {
       var x = document.getElementById("Modalordertable");
@@ -738,7 +738,7 @@ class TicketSystemOrder extends Component {
                       };
                     },
                     filterMethod: (filter, rows) => {
-                      debugger;
+                      // debugger;
                       var result = matchSorter(rows, filter.value, {
                         keys: [
                           "invoiceNumber",
@@ -753,10 +753,10 @@ class TicketSystemOrder extends Component {
                         threshold: matchSorter.rankings.WORD_STARTS_WITH
                       });
                       if (result.length > 0) {
-                        debugger;
+                        // debugger;
                         return result;
                       } else {
-                        debugger;
+                        // debugger;
                         result = [{ itemPrice: "No Record Found" }];
                         return result;
                       }
@@ -873,7 +873,7 @@ class TicketSystemOrder extends Component {
                       };
                     },
                     filterMethod: (filter, rows) => {
-                      debugger;
+                      // debugger;
                       var result = matchSorter(rows, filter.value, {
                         keys: [
                           "invoiceNumber",
@@ -888,10 +888,10 @@ class TicketSystemOrder extends Component {
                         threshold: matchSorter.rankings.WORD_STARTS_WITH
                       });
                       if (result.length > 0) {
-                        debugger;
+                        // debugger;
                         return result;
                       } else {
-                        debugger;
+                        // debugger;
                         result = [{ itemPrice: "No Record Found" }];
                         return result;
                       }
@@ -899,7 +899,7 @@ class TicketSystemOrder extends Component {
                     filterAll: true
                   }
                 ]}
-                //resizable={false}
+                resizable={false}
                 defaultPageSize={3}
                 showPagination={false}
                 SubComponent={row => {
@@ -1319,7 +1319,7 @@ class TicketSystemOrder extends Component {
             </div>
           ) : null}
           {this.state.message === "Success" ? (
-            <div className="reacttableordermodal ordermainrow">
+            <div className="reacttableordermodal ordermainrow order-det">
               <div
                 className="row m-t-10 m-b-10"
                 style={{ marginLeft: "0", marginRight: "0" }}
@@ -1458,13 +1458,13 @@ class TicketSystemOrder extends Component {
                       accessor: "discount"
                     }
                   ]}
-                  resizable={true}
+                  resizable={false}
                   defaultPageSize={3}
                   showPagination={false}
                 />
               </div>
 
-              <div id="ordertable" style={{ display: "none" }}>
+              <div id="ordertable" class="order-detc2" style={{ display: "none" }}>
                 <ReactTable
                   data={orderDetailsData}
                   expanded={this.state.expanded}
@@ -1513,8 +1513,8 @@ class TicketSystemOrder extends Component {
                       )
                     },
                     {
-                      Header: <span>Invoice Numberr</span>,
-                      // accessor: "invoiceNumber",
+                      Header: <span>Invoice Number</span>,
+                      accessor: "invoiceNumber",
                       // Cell: row => (
                       //   <div
                       //     className="filter-checkbox"
@@ -1571,12 +1571,12 @@ class TicketSystemOrder extends Component {
                       accessor: "discount"
                     }
                   ]}
-                  resizable={true}
+                  resizable={false}
                   defaultPageSize={3}
                   showPagination={false}
                   SubComponent={row => {
                     return (
-                      <div style={{ padding: "20px" }}>
+                      <div style={{ padding: "20px"}}>
                         <ReactTable
                           data={row.original.orderItems}
                           columns={[

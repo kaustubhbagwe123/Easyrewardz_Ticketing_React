@@ -652,7 +652,7 @@ class CreateSLA extends Component {
                     <div className="divSpace">
                       <div className="dropDrownSpace">
                         <label className="reports-to">Issue Type</label>
-                        {/* <select
+                        <select
                           className="store-create-select"
                           value={this.state.selectedSlaIssueType}
                           onChange={this.handleSlaIssueType}
@@ -663,8 +663,8 @@ class CreateSLA extends Component {
                                 {item.issueTypeName}
                               </option>
                             ))}
-                        </select> */}
-                        <DropdownList
+                        </select>
+                        {/* <DropdownList
                           filter
                           data={this.state.slaIssueType}
                           value={this.state.value}
@@ -674,7 +674,7 @@ class CreateSLA extends Component {
                           }
                           onChange={value => this.setState({ value })}
                           textField="issueTypeName"
-                        />
+                        /> */}
                       </div>
                     </div>
                     <div className="slatargetRow">
