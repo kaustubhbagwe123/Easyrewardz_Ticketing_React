@@ -5,7 +5,7 @@ import DownArrowIcon from "./../assets/Images/down-1.png";
 import Modal from "react-responsive-modal";
 import LeftBackIcon from "./../assets/Images/black-left-arrow.png";
 import CancelIcon from "./../assets/Images/cancel.png";
-import { Collapse, CardBody } from "reactstrap";
+import { CardBody, UncontrolledCollapse } from "reactstrap";
 import { Card } from "react-bootstrap";
 import CKEditor from 'ckeditor4-react';
 import { authHeader } from "../helpers/authHeader";
@@ -716,9 +716,10 @@ handleAddKB(){
                         alt="down-arrow-icon"
                         className="down-icon-kb"
                         onClick={this.HandelOnenCloseDetailsCollapse}
+                        id={'i' + row.original.kbid}
                       />
                       
-					  <Collapse isOpen={this.state.detailscollapse}>
+					  <UncontrolledCollapse toggler={'#i' + row.original.kbid}>
                         <Card>
                           <CardBody>
                             <span  className="table-details-data-1">
@@ -726,7 +727,7 @@ handleAddKB(){
                             </span>
                           </CardBody>
                         </Card>
-                      </Collapse>
+                      </UncontrolledCollapse>
                       
                           </span>
                         );
@@ -946,8 +947,9 @@ handleAddKB(){
                         alt="down-arrow-icon"
                         className="down-icon-kb"
                         onClick={this.HandelOnenCloseDetailsCollapse}
+                        id={'i' + row.original.kbid}
                       />
-					  <Collapse isOpen={this.state.detailscollapse}>
+					  <UncontrolledCollapse toggler={'#i' + row.original.kbid}>
                         <Card>
                           <CardBody>
                             <span  className="table-details-data-1">
@@ -955,7 +957,7 @@ handleAddKB(){
                             </span>
                           </CardBody>
                         </Card>
-                      </Collapse>
+                      </UncontrolledCollapse>
 							
                           </span>
                         );
