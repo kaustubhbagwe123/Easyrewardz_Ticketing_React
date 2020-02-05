@@ -91,7 +91,7 @@ class MyTicketList extends Component {
       selectedTicketStatusByDate: 0,
       selectScheduleDate: 0,
       selectedNoOfDay: 0,
-      selectedScheduleTime: '',
+      selectedScheduleTime: "",
       selectedSlaDueByDate: 0,
       selectedClaimStatus: 0,
       selectedTaskStatus: 0,
@@ -245,7 +245,8 @@ class MyTicketList extends Component {
       selectedNoOfWeekForYear: 0,
       selectedNameOfMonthForDailyYear: "",
       loading: false,
-      SearchNameCompulsory: ""
+      SearchNameCompulsory: "",
+      FinalSaveSearchData: ""
     };
     this.handleAssignTo = this.handleAssignTo.bind(this);
     this.clearSearch = this.clearSearch.bind(this);
@@ -1122,37 +1123,15 @@ class MyTicketList extends Component {
   SaveSearchData() {
     debugger;
     let self = this;
-    if(this.state.SearchName.length > 0){
-      var paramData = {
-        ByDate: this.state.byDateFlag,
-        creationDate: this.state.ByDateCreatDate,
-        lastUpdatedDate: this.state.ByDateSelectDate,
-        SLADue: this.state.selectedSlaDueByDate,
-        ticketStatus: this.state.selectedTicketStatusByDate,
-        ByCustomerType: this.state.byCustomerTypeFlag,
-        customerMob: this.state.MobileNoByCustType,
-        customerEmail: this.state.EmailIdByCustType,
-        TicketID: this.state.TicketIdByCustType,
-        ticketStatus: this.state.selectedTicketStatusByCustomer,
-        ByTicketType: this.state.byTicketTypeFlag,
-        Priority: this.state.selectedPriority,
-        ticketStatus: this.state.selectedTicketStatusByTicket,
-        chanelOfPurchase: this.state.selectedChannelOfPurchase,
-        ticketActionType: this.state.selectedTicketActionType,
-        ByCategory: this.state.byCategoryFlag,
-        Category: this.state.selectedCategory,
-        subCategory: this.state.selectedSubCategory,
-        issueType: this.state.selectedIssueType,
-        ticketStatus: this.state.selectedTicketStatusByCategory,
-        byAll: this.state.allFlag
-      };
+    if (this.state.SearchName.length > 0) {
+    
       axios({
         method: "post",
         url: config.apiUrl + "/Ticketing/savesearch",
         headers: authHeader(),
         params: {
           SearchSaveName: this.state.SearchName,
-          parameter: JSON.stringify(paramData)
+          parameter: this.state.FinalSaveSearchData
         }
       }).then(function(res) {
         debugger;
@@ -1165,12 +1144,11 @@ class MyTicketList extends Component {
           });
         }
       });
-    }else{
+    } else {
       self.setState({
-        SearchNameCompulsory:"Please Enter Search Name."
-      })
+        SearchNameCompulsory: "Please Enter Search Name."
+      });
     }
-   
   }
   handleGetSaveSearchList() {
     debugger;
@@ -1250,9 +1228,7 @@ class MyTicketList extends Component {
         "TicketStatusID"
       ] = this.state.selectedTicketStatusByCustomer;
     } else {
-      this.setState({
-        customerType: null
-      });
+      customerType = null;
     }
 
     // --------------------By Ticket Type Tab-----------------
@@ -1277,9 +1253,7 @@ class MyTicketList extends Component {
       ticketType["ChannelOfPurchaseIds"] = purchaseIds;
       ticketType["ActionTypes"] = actionTypeIds;
     } else {
-      this.setState({
-        ticketType: null
-      });
+      ticketType = null;
     }
     // --------------------By Category Tab-------------------
     var categoryType = {};
@@ -1291,9 +1265,7 @@ class MyTicketList extends Component {
         "TicketStatusID"
       ] = this.state.selectedTicketStatusByCategory;
     } else {
-      this.setState({
-        categoryType: null
-      });
+      categoryType = null;
     }
     //---------------------By Ticket All Tab---------------------
     var allTab = {};
@@ -1307,8 +1279,12 @@ class MyTicketList extends Component {
       if (this.state.selectedWithTaskAll === "yes") {
         withTask = 1;
       }
-      allTab["CreatedDate"] =  moment(this.state.ByAllCreateDate).format("YYYY-MM-DD");
-      allTab["ModifiedDate"] = moment(this.state.ByAllLastDate).format("YYYY-MM-DD");
+      allTab["CreatedDate"] = moment(this.state.ByAllCreateDate).format(
+        "YYYY-MM-DD"
+      );
+      allTab["ModifiedDate"] = moment(this.state.ByAllLastDate).format(
+        "YYYY-MM-DD"
+      );
       allTab["CategoryId"] = this.state.selectedCategoryAll;
       allTab["SubCategoryId"] = this.state.selectedSubCategoryAll;
       allTab["IssueTypeId"] = this.state.selectedIssueTypeAll;
@@ -1340,8 +1316,25 @@ class MyTicketList extends Component {
       allTab["TaskStatusId"] = this.state.selectedTaskStatus;
       allTab["TaskDepartment_Id"] = this.state.selectedDepartment;
       allTab["TaskFunction_Id"] = this.state.selectedFunction;
+    } else {
+      allTab = null;
     }
 
+    // ----------------------SetState variable in Json Format for Apply Search------------------------------------
+    var ShowDataparam = {};
+
+    ShowDataparam.HeaderStatusId = this.state.headerActiveId;
+    ShowDataparam.ActiveTabI = this.state.ActiveTabId;
+    ShowDataparam.searchDataByDate = dateTab;
+    ShowDataparam.searchDataByCustomerType = customerType;
+    ShowDataparam.searchDataByTicketType = ticketType;
+    ShowDataparam.searchDataByCategoryType = categoryType;
+    ShowDataparam.SearchDataByAll = allTab;
+
+    var FinalSaveSearchData = JSON.stringify(ShowDataparam);
+    this.setState({
+      FinalSaveSearchData
+    });
     //----------------------------------------------------------
     axios({
       method: "post",
@@ -1891,10 +1884,10 @@ class MyTicketList extends Component {
     });
   };
 
-  handleApplySearch(paramsID){
-    debugger
+  handleApplySearch(paramsID) {
+    debugger;
     let self = this;
-   
+
     axios({
       method: "post",
       url: config.apiUrl + "/Search/GetTicketsOnSavedSearch",
@@ -2358,15 +2351,18 @@ class MyTicketList extends Component {
                                       {this.state.SearchListData !== null &&
                                         this.state.SearchListData.map(
                                           (item, i) => (
-                                            <li  key={i}>
-                                              <label
-                                               
-                                                value={item.searchParamID}
-                                              >
+                                            <li key={i}>
+                                              <label value={item.searchParamID}>
                                                 {item.searchName}
                                               </label>
                                               <div>
-                                                <a className="applySearch" onClick={this.handleApplySearch.bind(this,item.searchParamID)}>
+                                                <a
+                                                  className="applySearch"
+                                                  onClick={this.handleApplySearch.bind(
+                                                    this,
+                                                    item.searchParamID
+                                                  )}
+                                                >
                                                   APPLY
                                                 </a>
                                                 <img
@@ -3896,7 +3892,10 @@ class MyTicketList extends Component {
                                             /> */}
                                             <div className="dash-timepicker">
                                               <DatePicker
-                                                selected={this.state.selectedScheduleTime}
+                                                selected={
+                                                  this.state
+                                                    .selectedScheduleTime
+                                                }
                                                 onChange={this.handleScheduleTime.bind(
                                                   this
                                                 )}
@@ -3907,7 +3906,10 @@ class MyTicketList extends Component {
                                                 timeCaption="Select Time"
                                                 dateFormat="h:mm aa"
                                                 className="txt-1 txt1Place txt1Time"
-                                                value={this.state.selectedScheduleTime}
+                                                value={
+                                                  this.state
+                                                    .selectedScheduleTime
+                                                }
                                               />
                                             </div>
                                             <div>
@@ -4101,22 +4103,26 @@ class MyTicketList extends Component {
                                             defaultPageSize={5}
                                             minRows={3}
                                             // showPagination={false}
-                                            getTrProps={
-                                              (rowInfo, column) => {
-                                                const index = column ? column.index : -1;
-                                                return {
-                                                  onClick: e => {
-                                                    debugger;
-                                                    this.selectedRow = index;
-                                                    var agentId = column.original["user_ID"];
-                                                    this.setState({ agentId });
-                                                  },
-                                                  style: {
-                                                    background: this.selectedRow === index ? '#ECF2F4' : null
-                                                  }
-                                                };
-                                              }
-                                            }
+                                            getTrProps={(rowInfo, column) => {
+                                              const index = column
+                                                ? column.index
+                                                : -1;
+                                              return {
+                                                onClick: e => {
+                                                  debugger;
+                                                  this.selectedRow = index;
+                                                  var agentId =
+                                                    column.original["user_ID"];
+                                                  this.setState({ agentId });
+                                                },
+                                                style: {
+                                                  background:
+                                                    this.selectedRow === index
+                                                      ? "#ECF2F4"
+                                                      : null
+                                                }
+                                              };
+                                            }}
                                           />
                                           {/* <div className="position-relative">
                                             <div className="pagi">
