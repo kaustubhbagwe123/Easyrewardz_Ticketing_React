@@ -1305,7 +1305,7 @@ class Users extends Component {
                   </div>
                 </div>
               </div>
-              <div className="col-md-4">
+              <div className="col-md-4 cus-drp">
                 <div className="right-sect-div right-sect-collapse">
                   <h3>Create Users</h3>
                   <div className="collapse-cntr">
