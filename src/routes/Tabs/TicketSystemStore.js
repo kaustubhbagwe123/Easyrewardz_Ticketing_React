@@ -29,8 +29,8 @@ class TicketSystemStore extends Component {
       selectedStoreData: [],
       filterAll: "",
       filtered: [],
-      byVisitDate:"",
-      byValideStoreData:''
+      byVisitDate: "",
+      byValideStoreData: ""
     };
     this.handleOrderStoreTableOpen = this.handleOrderStoreTableOpen.bind(this);
     this.handleOrderStoreTableClose = this.handleOrderStoreTableClose.bind(
@@ -76,7 +76,7 @@ class TicketSystemStore extends Component {
   handleSearchStoreDetails() {
     debugger;
     let self = this;
-    if(this.state.SrchStoreNameCode.length > 0){
+    if (this.state.SrchStoreNameCode.length > 0) {
       axios({
         method: "post",
         url: config.apiUrl + "/Store/searchStoreDetail",
@@ -97,12 +97,11 @@ class TicketSystemStore extends Component {
           });
         }
       });
-    }else{
+    } else {
       self.setState({
-        byValideStoreData:'Please Enter Store Details.'
-      })
+        byValideStoreData: "Please Enter Store Details."
+      });
     }
-   
   }
   hanldeStatusChange(e) {
     debugger;
@@ -265,8 +264,12 @@ class TicketSystemStore extends Component {
                     <label className="orderdetailpopup">Yes</label>
                     <div className="switchmargin">
                       <div className="switch switch-primary d-inline m-r-10">
-                        <input type="checkbox" id="editDashboard-p-12" checked={this.state.SwitchBtnStatus}
-                        onChange={this.handleStoreStatus} />
+                        <input
+                          type="checkbox"
+                          id="editDashboard-p-12"
+                          checked={this.state.SwitchBtnStatus}
+                          onChange={this.handleStoreStatus}
+                        />
                         <label
                           htmlFor="editDashboard-p-12"
                           className="cr"
@@ -369,8 +372,8 @@ class TicketSystemStore extends Component {
                         {
                           columns: [
                             {
-                              Header: <span>Store Code</span>,
-                              accessor: "storeCode",
+                              Header: <></>,
+                              accessor: "storeID",
                               Cell: row => (
                                 <div
                                   className="filter-checkbox"
@@ -392,11 +395,13 @@ class TicketSystemStore extends Component {
                                       row.original
                                     )}
                                   />
-                                  <label htmlFor={"i" + row.original.storeID}>
-                                    {row.original.storeID}
-                                  </label>
+                                  <label></label>
                                 </div>
                               )
+                            },
+                            {
+                              Header: <span>Store Code</span>,
+                              accessor: "storeCode"
                             },
                             {
                               Header: <span>Store Name</span>,
@@ -404,7 +409,7 @@ class TicketSystemStore extends Component {
                             },
                             {
                               Header: <span>Store Pin Code</span>,
-                              accessor: "storeCode"
+                              accessor: "pincode"
                             },
                             {
                               Header: <span>Store Email ID</span>,
@@ -426,7 +431,7 @@ class TicketSystemStore extends Component {
                           Header: "All",
                           id: "all",
                           width: 0,
-                          resizable: false,
+                          resizable: true,
                           sortable: false,
                           Filter: () => {},
                           getProps: () => {
@@ -459,7 +464,7 @@ class TicketSystemStore extends Component {
                           filterAll: true
                         }
                       ]}
-                      resizable={false}
+                      resizable={true}
                       defaultPageSize={5}
                       showPagination={false}
                     />
@@ -517,7 +522,7 @@ class TicketSystemStore extends Component {
                         },
                         {
                           Header: <span>Store Pin Code</span>,
-                          accessor: "storeCode"
+                          accessor: "pincode"
                         },
                         {
                           Header: <span>Store Email ID</span>,
@@ -545,11 +550,10 @@ class TicketSystemStore extends Component {
                           )
                         }
                       ]}
-                      resizable={false}
+                      resizable={true}
                       defaultPageSize={5}
                       showPagination={false}
                     />
-                 
                   </div>
                 </div>
               </div>
@@ -567,22 +571,22 @@ class TicketSystemStore extends Component {
                   value={this.state.SrchStoreNameCode}
                   onChange={this.handleStoreChange}
                 />
-               
+
                 <img
                   src={SearchBlackImg}
                   alt="Search"
                   className="systemorder-imgsearch"
                   onClick={this.handleSearchStoreDetails.bind(this)}
                 />
-                 {this.state.SrchStoreNameCode.length === 0 && (
+                {this.state.SrchStoreNameCode.length === 0 && (
                   <p
-                  style={{
-                    color: "red",
-                    marginBottom: "0px"
-                  }}
-                >
-                  {this.state.byValideStoreData}
-                </p>
+                    style={{
+                      color: "red",
+                      marginBottom: "0px"
+                    }}
+                  >
+                    {this.state.byValideStoreData}
+                  </p>
                 )}
               </div>
             </div>
@@ -689,15 +693,13 @@ class TicketSystemStore extends Component {
                                         row.original
                                       )}
                                     />
-                                     <label htmlFor={"i" + row.original.storeID}>
-                                    {row.original.storeID}
-                                  </label>
+                                    <label></label>
                                   </div>
                                 )
                               },
                               {
                                 Header: <span>Store Code</span>,
-                                accessor: "storeCode" 
+                                accessor: "storeCode"
                               },
                               {
                                 Header: <span>Store Name</span>,
@@ -705,7 +707,7 @@ class TicketSystemStore extends Component {
                               },
                               {
                                 Header: <span>Store Pin Code</span>,
-                                accessor: "storeCode"
+                                accessor: "pincode"
                               },
                               {
                                 Header: <span>Store Email ID</span>,
@@ -727,7 +729,7 @@ class TicketSystemStore extends Component {
                             Header: "All",
                             id: "all",
                             width: 0,
-                            resizable: false,
+                            resizable: true,
                             sortable: false,
                             Filter: () => {},
                             getProps: () => {
@@ -760,7 +762,7 @@ class TicketSystemStore extends Component {
                             filterAll: true
                           }
                         ]}
-                        resizable={false}
+                        resizable={true}
                         defaultPageSize={5}
                         showPagination={false}
                       />
@@ -859,7 +861,7 @@ class TicketSystemStore extends Component {
                           },
                           {
                             Header: <span>Store Pin Code</span>,
-                            accessor: "storeCode"
+                            accessor: "pincode"
                           },
                           {
                             Header: <span>Store Email ID</span>,
@@ -875,7 +877,7 @@ class TicketSystemStore extends Component {
                             Cell: row => <label>23,Aug 2019</label>
                           }
                         ]}
-                        resizable={false}
+                        resizable={true}
                         defaultPageSize={5}
                         showPagination={false}
                       />

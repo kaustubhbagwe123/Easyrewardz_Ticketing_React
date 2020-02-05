@@ -303,8 +303,8 @@ class MyTicket extends Component {
       let status = res.data.message;
       if (status === "Success") {
         let data = res.data.responseData[0];
-        console.log(data,'data');
-        
+        console.log(data, "data");
+
         self.setState({
           messageDetails: data
         });
@@ -1360,15 +1360,13 @@ class MyTicket extends Component {
     debugger;
     let file = this.state.file;
     file.splice(i, 1);
-    var fileText=file.length;
+    var fileText = file.length;
     setTimeout(() => {
-      this.setState({file,fileText});
+      this.setState({ file, fileText });
     }, 50);
   }
 
   render() {
-    console.log(this.state.messageDetails,'Demo');
-    
     const {
       open,
       ticketDetailsData,
@@ -3666,7 +3664,9 @@ class MyTicket extends Component {
                         <div className="v3"></div>
                       </div>
                       <div className="col-md-2">
-                        <label className="yesterday-02">YESTERDAY 02</label>
+                        <label className="yesterday-02">
+                          {messageDetails.updatedAt}
+                        </label>
                       </div>
                       <div className="col-md-5">
                         <div className="v6"></div>
@@ -3916,12 +3916,12 @@ class MyTicket extends Component {
                                 // data={
                                 //   this.state.messageDetails.length > 0 ? (
                                 //     <div>
-                                //                                             
+                                //
                                 //       {
                                 //         this.state.messageDetails[0]
                                 //           .ticketMailBody
                                 //       }
-                                //                                           
+                                //
                                 //     </div>
                                 //   ) : null
                                 // }
@@ -3999,19 +3999,26 @@ class MyTicket extends Component {
                                   </label>
                                 </li> */}
                                 <li>
-                                  <label>CC: diwarkar@gmail.com
-                                  <span style={{border: "none"}} className="input-group-addon inputcc-one">
-                                    +1
-                                  </span>
+                                  <label>
+                                    CC: diwarkar@gmail.com
+                                    <span
+                                      style={{ border: "none" }}
+                                      className="input-group-addon inputcc-one"
+                                    >
+                                      +1
+                                    </span>
                                   </label>
                                 </li>
                                 <li>
-                                  <label>BCC: diwarkar@gmail.com
-                                  <span style={{border: "none"}} className="input-group-addon inputcc-one">
-                                    +1
-                                  </span>
+                                  <label>
+                                    BCC: diwarkar@gmail.com
+                                    <span
+                                      style={{ border: "none" }}
+                                      className="input-group-addon inputcc-one"
+                                    >
+                                      +1
+                                    </span>
                                   </label>
-                                  
                                 </li>
                                 <li>
                                   <div className="filter-checkbox">
