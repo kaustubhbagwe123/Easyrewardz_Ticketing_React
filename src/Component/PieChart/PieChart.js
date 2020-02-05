@@ -68,6 +68,7 @@ class OpenByPriorityPie extends Component {
           height={260}
           margin={{ top: 10, bottom: 10, left: 100, right: 100 }}
           sort={this.state.sort}
+          shapeColor={"red"}
         />
       </div>
     )

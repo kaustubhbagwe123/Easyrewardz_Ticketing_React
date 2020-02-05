@@ -5,7 +5,7 @@ import DownArrowIcon from "./../assets/Images/down-1.png";
 import Modal from "react-responsive-modal";
 import LeftBackIcon from "./../assets/Images/black-left-arrow.png";
 import CancelIcon from "./../assets/Images/cancel.png";
-import { Collapse, CardBody } from "reactstrap";
+import { CardBody, UncontrolledCollapse } from "reactstrap";
 import { Card } from "react-bootstrap";
 import CKEditor from 'ckeditor4-react';
 import { authHeader } from "../helpers/authHeader";
@@ -660,7 +660,7 @@ handleAddKB(){
               />
               </div>
             </div>
-            <div className="kb-table" style={{ padding: "0px 30px 0px 20px" }}>
+            <div className="kb-table" style={{ padding: "0px 30px 20px 20px" }}>
            
             <ReactTable
             
@@ -716,9 +716,10 @@ handleAddKB(){
                         alt="down-arrow-icon"
                         className="down-icon-kb"
                         onClick={this.HandelOnenCloseDetailsCollapse}
+                        id={'i' + row.original.kbid}
                       />
                       
-					  <Collapse isOpen={this.state.detailscollapse}>
+					  <UncontrolledCollapse toggler={'#i' + row.original.kbid}>
                         <Card>
                           <CardBody>
                             <span  className="table-details-data-1">
@@ -726,7 +727,7 @@ handleAddKB(){
                             </span>
                           </CardBody>
                         </Card>
-                      </Collapse>
+                      </UncontrolledCollapse>
                       
                           </span>
                         );
@@ -832,7 +833,7 @@ handleAddKB(){
 
             </div>
           </div>
-          <div className="pagi">
+          {/* <div className="pagi">
             <ul>
               <li>
                 <a href={Demo.BLANK_LINK}>&lt;</a>
@@ -862,7 +863,7 @@ handleAddKB(){
                 <a href={Demo.BLANK_LINK}>&gt;</a>
               </li>
             </ul>
-          </div>
+          </div> */}
         </div>
 
         <div
@@ -888,7 +889,7 @@ handleAddKB(){
               </div>
             </div>
 
-            <div className="kb-table" style={{ padding: "0px 30px 0px 20px" }}>
+            <div className="kb-table" style={{ padding: "0px 30px 20px 20px" }}>
             
             <ReactTable
                   data={this.state.KBListData}
@@ -946,8 +947,9 @@ handleAddKB(){
                         alt="down-arrow-icon"
                         className="down-icon-kb"
                         onClick={this.HandelOnenCloseDetailsCollapse}
+                        id={'i' + row.original.kbid}
                       />
-					  <Collapse isOpen={this.state.detailscollapse}>
+					  <UncontrolledCollapse toggler={'#i' + row.original.kbid}>
                         <Card>
                           <CardBody>
                             <span  className="table-details-data-1">
@@ -955,7 +957,7 @@ handleAddKB(){
                             </span>
                           </CardBody>
                         </Card>
-                      </Collapse>
+                      </UncontrolledCollapse>
 							
                           </span>
                         );
@@ -1061,7 +1063,7 @@ handleAddKB(){
 
             </div>
           </div>
-          <div className="pagi">
+          {/* <div className="pagi">
             <ul>
               <li>
                 <a href={Demo.BLANK_LINK}>&lt;</a>
@@ -1091,7 +1093,7 @@ handleAddKB(){
                 <a href={Demo.BLANK_LINK}>&gt;</a>
               </li>
             </ul>
-          </div>
+          </div> */}
         </div>
         {/* ----------------------------------Search Modal------------------------------------ */}
         <Modal

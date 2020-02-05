@@ -968,7 +968,7 @@ class MyTicket extends Component {
   handleGetNotesTabDetails(ticket_Id) {
     debugger;
     let self = this;
-    this.setState({ loading: true });
+    // this.setState({ loading: true });
     axios({
       method: "post",
       url: config.apiUrl + "/Ticketing/getNotesByTicketId",
@@ -981,9 +981,9 @@ class MyTicket extends Component {
       let status = res.data.message;
       let details = res.data.responseData;
       if (status === "Success") {
-        self.setState({ Notesdetails: details, loading: false });
+        self.setState({ Notesdetails: details });
       } else {
-        self.setState({ Notesdetails: [], loading: false });
+        self.setState({ Notesdetails: [] });
       }
     });
   }
@@ -4214,10 +4214,10 @@ class MyTicket extends Component {
                       </div>
 
                       <div className="col-12 col-xs-12 col-sm-7 my-ticket-notes">
-                        {this.state.loading === true ? (
+                        {/* {this.state.loading === true ? (
                           <div className="loader-icon"></div>
                         ) : (
-                          <>
+                          <> */}
                             {this.state.Notesdetails !== null &&
                               this.state.Notesdetails.map((item, i) => (
                                 <div
@@ -4247,8 +4247,8 @@ class MyTicket extends Component {
                                   </div>
                                 </div>
                               ))}
-                          </>
-                        )}
+                          {/* </>
+                        )} */}
                       </div>
                     </div>
                   </div>
