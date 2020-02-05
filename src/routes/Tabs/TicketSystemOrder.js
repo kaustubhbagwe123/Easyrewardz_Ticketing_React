@@ -324,7 +324,7 @@ class TicketSystemOrder extends Component {
     }
   }
   handlePurchaseStoreName(field, e) {
-    // debugger;
+    debugger;
     let self = this;
     let SearchData = this.state.purchaseFrmStorName;
     SearchData[field] = e.target.value;
