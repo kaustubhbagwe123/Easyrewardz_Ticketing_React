@@ -269,7 +269,8 @@ class Dashboard extends Component {
       resultCount: 0,
       loading: false,
       SearchNameCompulsory: "",
-      loadingAbove: true
+      loadingAbove: true,
+      modulesItems:[]
     };
     this.handleAssignTo = this.handleAssignTo.bind(this);
     this.applyCallback = this.applyCallback.bind(this);
@@ -328,6 +329,7 @@ class Dashboard extends Component {
     this.handleMonthForWeek = this.handleMonthForWeek.bind(this);
     this.handleWeekly = this.handleWeekly.bind(this);
     this.handleWeeklyDays = this.handleWeeklyDays.bind(this);
+    this.handleAdvanceSearchOption=this.handleAdvanceSearchOption.bind(this);
     // this.toggleHoverState = this.toggleHoverState.bind(this);
   }
   // handleApply(event, picker) {
@@ -339,19 +341,21 @@ class Dashboard extends Component {
 
   componentDidMount() {
     debugger;
-    this.handleSearchTicketEscalation();
-    this.handleGetDepartmentList();
-    this.handleGetTicketSourceList();
-    this.handleGetCategoryList();
-    this.handleGetSlaStatusList();
-    this.handleGetDesignationList();
-    this.handleGetTicketPriorityList();
-    this.handleGetChannelOfPurchaseList();
-    this.handleGetBrandList();
-    // this.handleGetDashboardNumberData();
-    // this.handleGetDashboardGraphData();
-    this.handleGetAgentList();
-    this.handleGetSaveSearchList();
+    //this.handleSearchTicketEscalation();
+    //this.handleGetDepartmentList();
+    //this.handleGetTicketSourceList();
+    //this.handleGetCategoryList();
+    //this.handleGetSlaStatusList();
+    //this.handleGetDesignationList();
+    //this.handleGetTicketPriorityList();
+    //this.handleGetChannelOfPurchaseList();
+    //this.handleGetBrandList();
+    /// this.handleGetDashboardNumberData();
+    /// this.handleGetDashboardGraphData();
+   // this.handleGetAgentList();
+    //this.handleGetSaveSearchList();
+
+    this.handleAdvanceSearchOption();
   }
 
   clickCheckbox(evt) {
@@ -459,7 +463,24 @@ class Dashboard extends Component {
       selectedWeeklyDays: finalWeekList
     });
   };
-
+  handleAdvanceSearchOption() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Module/GetModulesItems",
+      headers: authHeader(),
+      params: {
+        ModuleID: 8
+      }
+    }).then(function(res) {
+      debugger;
+      let modulesItems = res.data.responseData;
+      if (modulesItems !== null && modulesItems !== undefined) {
+        self.setState({ modulesItems });
+      }
+    });
+  }
   handleGetDashboardNumberData() {
     this.setState({ loadingAbove: true });
     debugger;
@@ -3891,6 +3912,7 @@ class Dashboard extends Component {
                                   <select
                                     value={this.state.selectedPriorityAll}
                                     onChange={this.setPriorityAllValue}
+                                    
                                   >
                                     <option>Ticket Priority</option>
                                     {this.state.TicketPriorityData !== null &&

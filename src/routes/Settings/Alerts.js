@@ -1003,17 +1003,19 @@ class Alerts extends Component {
                                 </div>
                               </div>
                               <CKEditor
+                               data={this.state.selectedCKCustomer}
+                               onChange={this.setCKEditorCustomer.bind(this)}
                                 //content={this.state.content}
                                 events={{
                                   // "blur": this.onBlur,
                                   // "afterPaste": this.afterPaste,
+                                 
                                   //change: this.onChange,
-                                  items: this.fileUpload
+                                  tems: this.fileUpload
                                  
                                 }}
                               
-                               data={this.state.selectedCKCustomer}
-                                onChange={this.setCKEditorCustomer}
+                                
                               />
                               
                                {/* <div className="div-button1">
