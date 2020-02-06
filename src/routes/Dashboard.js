@@ -270,7 +270,8 @@ class Dashboard extends Component {
       loading: false,
       SearchNameCompulsory: "",
       loadingAbove: true,
-      modulesItems:[]
+      modulesItems:[],
+      FinalSaveSearchData: ""
     };
     this.handleAssignTo = this.handleAssignTo.bind(this);
     this.applyCallback = this.applyCallback.bind(this);
@@ -1964,9 +1965,27 @@ class Dashboard extends Component {
       allTab["TaskStatusId"] = this.state.selectedTaskStatus;
       allTab["TaskDepartment_Id"] = this.state.selectedDepartment;
       allTab["TaskFunction_Id"] = this.state.selectedFunction;
+    }else{
+      allTab=null
     }
 
-    //----------------------------------------------------------
+    // ----------------------SetState variable in Json Format for Apply Search------------------------------------
+    var ShowDataparam = {};
+
+    ShowDataparam.AssigntoId = this.state.AgentIds;
+    ShowDataparam.BrandId = this.state.BrandIds;
+    ShowDataparam.ActiveTabId = this.state.ActiveTabId;
+    ShowDataparam.searchDataByDate = dateTab;
+    ShowDataparam.searchDataByCustomerType = customerType;
+    ShowDataparam.searchDataByTicketType = ticketType;
+    ShowDataparam.searchDataByCategoryType = categoryType;
+    ShowDataparam.searchDataByAll = allTab;
+
+    var FinalSaveSearchData = JSON.stringify(ShowDataparam);
+    this.setState({
+      FinalSaveSearchData
+    });
+    // ----------------------------------------------------------
 
     axios({
       method: "post",
@@ -2018,36 +2037,14 @@ class Dashboard extends Component {
     debugger;
     let self = this;
     if (this.state.SearchName.length > 0) {
-      var paramData = {
-        ByDate: this.state.byDateFlag,
-        creationDate: this.state.ByDateCreatDate,
-        lastUpdatedDate: this.state.ByDateSelectDate,
-        SLADue: this.state.selectedSlaDueByDate,
-        ticketStatus: this.state.selectedTicketStatusByDate,
-        ByCustomerType: this.state.byCustomerTypeFlag,
-        customerMob: this.state.MobileNoByCustType,
-        customerEmail: this.state.EmailIdByCustType,
-        TicketID: this.state.TicketIdByCustType,
-        ticketStatus: this.state.selectedTicketStatusByCustomer,
-        ByTicketType: this.state.byTicketTypeFlag,
-        Priority: this.state.selectedPriority,
-        ticketStatus: this.state.selectedTicketStatusByTicket,
-        chanelOfPurchase: this.state.selectedChannelOfPurchase,
-        ticketActionType: this.state.selectedTicketActionType,
-        ByCategory: this.state.byCategoryFlag,
-        Category: this.state.selectedCategory,
-        subCategory: this.state.selectedSubCategory,
-        issueType: this.state.selectedIssueType,
-        ticketStatus: this.state.selectedTicketStatusByCategory,
-        byAll: this.state.allFlag
-      };
+      
       axios({
         method: "post",
         url: config.apiUrl + "/Ticketing/savesearch",
         headers: authHeader(),
         params: {
           SearchSaveName: this.state.SearchName,
-          parameter: JSON.stringify(paramData)
+          parameter: this.state.FinalSaveSearchData
         }
       }).then(function(res) {
         debugger;

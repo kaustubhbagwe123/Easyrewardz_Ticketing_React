@@ -67,7 +67,7 @@ class MultiBarChart extends Component {
   }
 
   handleGetDashboardGraphData() {
-    // debugger;
+   debugger;
     // let self = this;
     // axios({
     //   method: "post",
