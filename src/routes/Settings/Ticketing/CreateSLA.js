@@ -240,9 +240,10 @@ class CreateSLA extends Component {
       let status = res.data.message;
       if (status === "Success") {
         NotificationManager.success("SLA added successfully.");
-        // self.setState({
-        //   selectedSlaIssueType:
-        // })
+        self.setState({
+          selectedSlaIssueType:0,
+          SlaIsActive:"true"
+        })
         self.handleGetSLA();
       } else {
         NotificationManager.error("SLA not added.");
