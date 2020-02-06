@@ -8510,7 +8510,7 @@ table tr th:last-child {
   box-shadow: none !important;
   background-color: #fff;
   border: none;
-  min-width: max-content;
+  min-width: max-content !important;
 }
 .searchtextpopup {
   background-color: #ffffff;
@@ -8690,6 +8690,7 @@ table tr th:last-child {
 }
 .reacttableordermodal .ReactTable .rt-tbody {
   overflow: hidden;
+  min-width: max-content !important;
 }
 .storedetailtabsbutton {
   float: right;
