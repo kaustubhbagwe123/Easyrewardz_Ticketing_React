@@ -16,6 +16,8 @@ import {
   NotificationManager
 } from "react-notifications";
 import ReactTable from "react-table";
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { notification } from "antd";
 
 
@@ -701,7 +703,7 @@ handleAddKB(){
                       Header: (
                         <span >
                           <label >
-                                Details
+                                Details <FontAwesomeIcon icon={faCaretDown} />
                               </label>
                         </span>
                       ),
@@ -735,7 +737,7 @@ handleAddKB(){
                     },
                     {
                       Header: (<span><label >
-                                Type
+                                Type <FontAwesomeIcon icon={faCaretDown} />
                       </label></span>),
                       accessor: "issueTypeName",
                       
@@ -761,7 +763,7 @@ handleAddKB(){
                       Header: (
                        
 					                 <span><label >
-                                Category
+                                Category <FontAwesomeIcon icon={faCaretDown} />
                               </label></span>
                       ),
                       accessor: "categoryName",
@@ -777,7 +779,7 @@ handleAddKB(){
                       Header: (
                         <span>
                           <label >
-                                Sub catogory
+                                Sub catogory <FontAwesomeIcon icon={faCaretDown} />
                               </label>
                         </span>
                       ),
@@ -933,7 +935,7 @@ handleAddKB(){
                       Header: (
                         <span >
                           <label >
-                                Details
+                                Details <FontAwesomeIcon icon={faCaretDown} />
                               </label>
                         </span>
                       ),
@@ -965,7 +967,7 @@ handleAddKB(){
                     },
                     {
                       Header: (<span><label >
-                                Type
+                                Type <FontAwesomeIcon icon={faCaretDown} />
                       </label></span>),
                       accessor: "issueTypeName",
                       
@@ -991,7 +993,7 @@ handleAddKB(){
                       Header: (
                        
 					                 <span><label >
-                                Category
+                                Category <FontAwesomeIcon icon={faCaretDown} />
                               </label></span>
                       ),
                       accessor: "categoryName",
@@ -1007,7 +1009,7 @@ handleAddKB(){
                       Header: (
                         <span>
                           <label >
-                                Sub catogory
+                                Sub catogory <FontAwesomeIcon icon={faCaretDown} />
                               </label>
                         </span>
                       ),
