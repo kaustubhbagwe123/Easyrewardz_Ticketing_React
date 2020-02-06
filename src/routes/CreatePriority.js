@@ -127,10 +127,12 @@ class CreatePriority extends Component {
       }
     }).then(function(res) {
       debugger;
-      let status = res.data.message;
-      if (status === "Success") {
+      let status = res.data.statusCode;
+      if (status === 1010) {
         self.handleGetPriorityList();
         NotificationManager.success("Priority delete successfully.");
+      }else{
+        NotificationManager.error(res.data.message);
       }
     });
   }
