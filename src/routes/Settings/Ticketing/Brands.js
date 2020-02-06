@@ -426,7 +426,7 @@ class Brands extends Component {
                                 >
                                   <button
                                     className="react-tabel-button"
-                                    type="button"
+                                    // type="button"
                                     onClick={this.handleGetDataForEdit.bind(
                                       this,
                                       row.original
