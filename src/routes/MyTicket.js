@@ -3881,14 +3881,18 @@ class MyTicket extends Component {
                               </div>
 
                               <h3 className="textbhead">
-                                Subject: &nbsp;
+                                  <span className="input-group-addon inputcc" style={{padding:"5px 5px 6px" , background: "transparent" , border:"none" , color: "#555"}}>
+                                    Subject: &nbsp;
+                                  </span>
+                                  <input type="text" className="CCdi" />
+                                  {/* Subject: &nbsp;
                                 <span>
-                                  {/* {messageDetails.length > 0 ? (
+                                  {messageDetails.length > 0 ? (
                                     <>{messageDetails[0].ticketMailSubject}</>
-                                  ) : null} */}
+                                  ) : null}
                                   {this.state.messageDetails.ticketMailSubject}
-                                </span>
-                              </h3>
+                                </span> */}
+                                </h3>
                               <div
                                 className="mob-float"
                                 style={{ display: "flex", float: "right" }}
@@ -3963,7 +3967,7 @@ class MyTicket extends Component {
                           <div className="row colladrowa">
                             <div className="col-md-12 colladrow">
                               <ul style={{ padding: "0 15px" }}>
-                               <li>
+                                <li>
                                   <label className="">
                                     <div className="input-group">
                                       <span className="input-group-addon inputcc">
@@ -4228,36 +4232,33 @@ class MyTicket extends Component {
                           <div className="loader-icon"></div>
                         ) : (
                           <> */}
-                            {this.state.Notesdetails !== null &&
-                              this.state.Notesdetails.map((item, i) => (
-                                <div
-                                  className="row my-ticket-notes-row"
-                                  key={i}
-                                >
-                                  <div className="col-md-1">
-                                    <div className="oval-5-1-new">
-                                      <img
-                                        src={StoreIcon}
-                                        style={{ padding: "5px" }}
-                                        alt="store-icon"
-                                      />
-                                    </div>
-                                  </div>
-                                  <div className="col-md-11">
-                                    <div className="row my-ticket-notes-created">
-                                      <label className="varun-nagpal">
-                                        {item.createdByName}
-                                      </label>
-                                    </div>
-                                    <div className="row my-ticket-notes-created">
-                                      <label className="hi-diwakar-i-really tab">
-                                        {item.note}
-                                      </label>
-                                    </div>
-                                  </div>
+                        {this.state.Notesdetails !== null &&
+                          this.state.Notesdetails.map((item, i) => (
+                            <div className="row my-ticket-notes-row" key={i}>
+                              <div className="col-md-1">
+                                <div className="oval-5-1-new">
+                                  <img
+                                    src={StoreIcon}
+                                    style={{ padding: "5px" }}
+                                    alt="store-icon"
+                                  />
                                 </div>
-                              ))}
-                          {/* </>
+                              </div>
+                              <div className="col-md-11">
+                                <div className="row my-ticket-notes-created">
+                                  <label className="varun-nagpal">
+                                    {item.createdByName}
+                                  </label>
+                                </div>
+                                <div className="row my-ticket-notes-created">
+                                  <label className="hi-diwakar-i-really tab">
+                                    {item.note}
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        {/* </>
                         )} */}
                       </div>
                     </div>
