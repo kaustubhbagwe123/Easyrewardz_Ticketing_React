@@ -734,7 +734,7 @@ class Store_CRMRoles extends Component {
                     </div>
                     <div className="btnSpace">
                       <button className="addBtn-ticket-hierarchy">
-                        <label className="addLable">ADD</label>
+                        <label className="addLable">ADD ROLE</label>
                       </button>
                     </div>
                   </div>
