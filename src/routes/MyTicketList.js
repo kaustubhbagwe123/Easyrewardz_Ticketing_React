@@ -1159,8 +1159,8 @@ class MyTicketList extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let SearchListData = res.data.responseData;
-      self.setState({ SearchListData: SearchListData });
+      let data = res.data.responseData;
+      self.setState({ SearchListData: data });
     });
   }
   hadleSearchDeleteData(searchDeletId) {

@@ -158,6 +158,7 @@ class TicketCRMRole extends Component {
   createUpdateCrmRole(addUpdate, crmRoleId) {
     debugger;
     // if (this.validator.allValid()) {
+      let self=this;
       let RoleisActive, CRMRoleID, RoleName, ModulesEnabled, ModulesDisabled;
       if (addUpdate === 'add') {
         if (this.state.RoleisActive === 'true') {
@@ -200,10 +201,17 @@ class TicketCRMRole extends Component {
         if (status === "Success") {
           if (addUpdate === 'add') {
             NotificationManager.success("CRM Role added successfully.");
+            self.setState({
+              RoleName:'',
+              RoleisActive:'true',
+              ModulesEnabled:'',
+              updateModulesEnabled:'',
+              updateModulesDisabled:''
+            })
+            self.handleGetCRMRoles();
           } else if (addUpdate === 'update') {
             NotificationManager.success("CRM Role updated successfully.");
           }
-          this.handleGetCRMRoles();
         } else {
           if (addUpdate === 'add') {
             NotificationManager.error("CRM Role not added.");
@@ -536,14 +544,13 @@ class TicketCRMRole extends Component {
               <div className="col-md-8">
                 <div className="table-cntr table-height TicketCrmRoleReact">
                   <ReactTable
-                    // data={dataTickCrmRole}
                     data={this.state.crmRoles}
                     columns={columnsTickCrmRole}
                     // resizable={false}
                     defaultPageSize={10}
-                    showPagination={false}
+                    showPagination={true}
                   />
-                   <div className="position-relative">
+                   {/* <div className="position-relative">
                     <div className="pagi">
                       <ul>
                         <li>
@@ -580,7 +587,7 @@ class TicketCRMRole extends Component {
                       </select>
                       <p>Items per page</p>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="col-md-4">

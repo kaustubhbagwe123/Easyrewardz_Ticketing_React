@@ -17,12 +17,12 @@ import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
 import { authHeader } from "./../../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../../helpers/config";
-import DropdownList from "react-widgets/lib/DropdownList";
+// import DropdownList from "react-widgets/lib/DropdownList";
 import {
   NotificationContainer,
   NotificationManager
 } from "react-notifications";
-import { CSVLink, CSVDownload } from "react-csv";
+import { CSVLink } from "react-csv";
 
 class CreateSLA extends Component {
   constructor(props) {
@@ -240,6 +240,9 @@ class CreateSLA extends Component {
       let status = res.data.message;
       if (status === "Success") {
         NotificationManager.success("SLA added successfully.");
+        // self.setState({
+        //   selectedSlaIssueType:
+        // })
         self.handleGetSLA();
       } else {
         NotificationManager.error("SLA not added.");
@@ -572,12 +575,6 @@ class CreateSLA extends Component {
       }
     ];
 
-    const listOfIssueType = this.state.slaIssueType.map((item, i) => (
-      <option key={i} value={item.issueTypeID}>
-        {item.issueTypeName}
-      </option>
-    ));
-
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
@@ -603,9 +600,9 @@ class CreateSLA extends Component {
                     columns={columnsTickSla}
                     // resizable={false}
                     defaultPageSize={10}
-                    showPagination={false}
+                    showPagination={true}
                   />
-                  <div className="position-relative">
+                  {/* <div className="position-relative">
                     <div className="pagi">
                       <ul>
                         <li>
@@ -642,7 +639,7 @@ class CreateSLA extends Component {
                       </select>
                       <p>Items per page</p>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="col-md-4">
