@@ -611,7 +611,7 @@ class TicketSystemStore extends Component {
               </div>
             ) : null}
             {this.state.message === "Success" ? (
-              <div>
+              <div className="reacttableordermodal order-det">
                 <div
                   className="row m-t-10 m-b-10"
                   style={{ marginLeft: "0", marginRight: "0" }}

@@ -3963,13 +3963,23 @@ class MyTicket extends Component {
                           <div className="row colladrowa">
                             <div className="col-md-12 colladrow">
                               <ul style={{ padding: "0 15px" }}>
-                                <li>
+                               <li>
+                                  <label className="">
+                                    <div className="input-group">
+                                      <span className="input-group-addon inputcc">
+                                        To: &nbsp;
+                                      </span>
+                                      <input type="text" className="CCdi" />
+                                    </div>
+                                  </label>
+                                </li>
+                                {/* <li>
                                   <label>
                                     To: &nbsp;
                                     {ticketDetailsData.customerEmailId}
                                   </label>
-                                </li>
-                                {/* <li>
+                                </li> */}
+                                <li>
                                   <label className="">
                                     <div className="input-group">
                                       <span className="input-group-addon inputcc">
@@ -3997,8 +4007,8 @@ class MyTicket extends Component {
                                       </span>
                                     </div>
                                   </label>
-                                </li> */}
-                                <li>
+                                </li>
+                                {/* <li>
                                   <label>
                                     CC: diwarkar@gmail.com
                                     <span
@@ -4019,7 +4029,7 @@ class MyTicket extends Component {
                                       +1
                                     </span>
                                   </label>
-                                </li>
+                                </li> */}
                                 <li>
                                   <div className="filter-checkbox">
                                     <input

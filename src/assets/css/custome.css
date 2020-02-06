@@ -8635,11 +8635,12 @@ table tr th:last-child {
   border: none;
 }
 .store-nav-tabs .nav-link {
-  color: #4a4a4a;
-  font-weight: 700;
-  padding: 12px 0px;
-  border: 0;
-  margin-right: 15px;
+  color: #4a4a4a !important;
+    font-weight: 700;
+    padding: 0;
+    margin-top: 3px;
+    border: 0;
+    margin-left: 15px;
 }
 .tabcontentstore {
   padding: 0px;
@@ -8877,7 +8878,7 @@ table tr th:last-child {
   width: 15px;
   height: 2px;
   margin-left: 0;
-  margin-top: -21px;
+  margin-top: 12px;
   cursor: pointer;
   float: right;
   margin-right: 14px;
@@ -9308,6 +9309,7 @@ table tr th:last-child {
   font-size: 14px;
   height: 40px;
   width: 115px;
+  margin-bottom: 5px;
   border-radius: 5px;
   border: 1px solid #2561a8;
   cursor: pointer;
