@@ -10417,3 +10417,7 @@ table tr th:last-child {
   border-bottom: 6px solid #fff;
   border-left: 6px solid #fff0;
 }
+.tic-his {
+  max-height: 300px;
+    overflow: auto;
+}

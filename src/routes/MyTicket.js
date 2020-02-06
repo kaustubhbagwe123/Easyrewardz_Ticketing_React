@@ -1541,7 +1541,7 @@ class MyTicket extends Component {
                         onClick={this.onCloseModal.bind(this)}
                       />
                       {/* <HistoricalTable /> */}
-                      <div className="tic-history">
+                      <div className="tic-history tic-his varunoverflow">
                         <ReactTable
                           data={historicalDetails}
                           columns={[
