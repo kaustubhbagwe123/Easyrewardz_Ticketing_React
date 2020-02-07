@@ -30,6 +30,7 @@ class Users extends Component {
 
     this.state = {
       fileName: "",
+      isOpen: false,
       getID: 0,
       userData: [],
       selectUserName: "",
@@ -88,6 +89,7 @@ class Users extends Component {
     this.handleDeleteUser = this.handleDeleteUser.bind(this);
     this.handleUpdateUser = this.handleUpdateUser.bind(this);
     this.handleGetUserListByID=this.handleGetUserListByID.bind(this);
+    this.togglePopover = this.togglePopover.bind(this);
   }
   componentDidMount() {
     debugger;
@@ -98,7 +100,21 @@ class Users extends Component {
     this.handleGetCRMRoleList();
    
   }
+  togglePopover() {
+    this.setState({ isOpen: !this.state.isOpen });
+  }
 
+  hide(e, id) {
+    debugger;
+    // document.getElementById(id).style.display="none";
+    document.getElementById(id).parentElement.parentElement.parentElement.parentElement.parentElement.style.display = "none";
+  }
+  show(e, id) {
+    debugger;
+    if (document.getElementById(id))
+      // document.getElementById(id).style.display="block";
+      document.getElementById(id).parentElement.parentElement.parentElement.parentElement.parentElement.style.display = "block";
+  }
   setUserEditData(editdata) {
    
     debugger;
@@ -450,6 +466,7 @@ class Users extends Component {
 
   handleGetUserListByID(id) {
     debugger;
+    
     let self = this;
     axios({
       method: "post",
@@ -460,12 +477,19 @@ class Users extends Component {
       }
     }).then(function (res) {
       debugger;
+      var status=res.data.message;
       var userdata = res.data.responseData;
-
-      self.setState({
-        GetUserData: userdata
-      });
-      self.setUserEditData(userdata);
+      if(status==="Success"){
+        self.setState({
+          GetUserData: userdata
+        });
+        self.setUserEditData(userdata);
+      }else{
+        self.setState({
+          GetUserData: []
+        });
+      }
+     
     });
   }
 
@@ -853,7 +877,7 @@ class Users extends Component {
               <span>
 
                 <Popover
-                  content={<div className="d-flex general-popover popover-body">
+                  content={<div className="samdel d-flex general-popover popover-body" id={"samdel" + ids}>
                     <div className="del-big-icon">
                       <img src={DelBigIcon} alt="del-icon" />
                     </div>
@@ -863,7 +887,7 @@ class Users extends Component {
                         Are you sure you want to delete this file?
                     </p>
                       <div className="del-can">
-                        <a href={Demo.BLANK_LINK}>CANCEL</a>
+                        <a className="canblue" onClick={() => this.hide(this, "samdel" + ids)}>CANCEL</a>
                         <button className="butn" onClick={this.handleDeleteUser.bind(this, row.original.userId)}>Delete</button>
                       </div>
                     </div>
@@ -876,7 +900,7 @@ class Users extends Component {
                     alt="del-icon"
                     className="del-btn"
                     id={ids}
-
+                    onClick={() => this.show(this, "samdel" + ids)}
                   />
                 </Popover>
                 <Popover
@@ -1204,7 +1228,7 @@ class Users extends Component {
                     
                                         <br />
                                         <div>
-                                          <a className="pop-over-cancle" href={Demo.BLANK_LINK}>CANCEL</a>
+                                          <a className="pop-over-cancle canblue">CANCEL</a>
                                           {/* <label className="pop-over-cancle">CANCEL</label> */}
                                           <button className="pop-over-button" onClick={this.handleUpdateUser.bind(this, row.original.userId)}>
                                             SAVE
@@ -1673,13 +1697,14 @@ class Users extends Component {
                         <div className="file-dtls">
                           <p className="file-name">{this.state.fileName}</p>
                           <div className="del-file" id="del-file-1">
-                            <img src={DelBlack} alt="delete-black" />
+                            <img src={DelBlack} alt="delete-black" onClick={this.togglePopover} />
                           </div>
                           <UncontrolledPopover
                             trigger="legacy"
                             placement="auto"
                             target="del-file-1"
                             className="general-popover delete-popover"
+                            isOpen={this.state.isOpen} toggle={this.togglePopover}
                           >
                             <PopoverBody className="d-flex">
                               <div className="del-big-icon">
@@ -1693,7 +1718,7 @@ class Users extends Component {
                                   Are you sure you want to delete this file?
                                 </p>
                                 <div className="del-can">
-                                  <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                  <a className="canblue" onClick={this.togglePopover}>CANCEL</a>
                                   <button className="butn">Delete</button>
                                 </div>
                               </div>

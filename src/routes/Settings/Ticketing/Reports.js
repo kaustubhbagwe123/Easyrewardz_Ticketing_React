@@ -192,6 +192,17 @@ class Reports extends Component {
    this.handleGetDepartmentList();
    
   }
+  hide(e, id) {
+    debugger;
+    // document.getElementById(id).style.display="none";
+    document.getElementById(id).parentElement.parentElement.parentElement.parentElement.parentElement.style.display = "none";
+  }
+  show(e, id) {
+    debugger;
+    if (document.getElementById(id))
+      // document.getElementById(id).style.display="block";
+      document.getElementById(id).parentElement.parentElement.parentElement.parentElement.parentElement.style.display = "block";
+  }
   ScheduleOpenModel = () => {
     this.setState({ Schedule: true });
   };
@@ -946,7 +957,7 @@ class Reports extends Component {
               alt="download icon"
               className="downloadaction"
             />
-            <Popover content={<div className="d-flex general-popover popover-body">
+            <Popover content={<div className="samdel d-flex general-popover popover-body" >
         <div className="del-big-icon">
           <img src={DelBigIcon} alt="del-icon" />
         </div>
@@ -956,7 +967,7 @@ class Reports extends Component {
             Are you sure you want to delete this file?
           </p>
           <div className="del-can">
-            <a href={Demo.BLANK_LINK}>CANCEL</a>
+            <a >CANCEL</a>
             <button className="butn" onClick={this.handleDeleteReport.bind(this,row.original.reportID)}  >Delete</button>
           </div>
         </div>
@@ -965,7 +976,7 @@ class Reports extends Component {
                     src={RedDeleteIcon}
                     alt="del-icon"
                     className="del-btn"
-                    
+                    // onClick={() => this.show(this, "samdel" + ids)}
                   />
                 </Popover>
             

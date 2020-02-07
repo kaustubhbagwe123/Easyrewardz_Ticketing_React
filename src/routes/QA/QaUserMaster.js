@@ -21,10 +21,28 @@ class QaUserMaster extends Component {
     super(props);
 
     this.state = {
-      fileName: ""
+      fileName: "",
+      isOpen: false
     };
+    this.togglePopover = this.togglePopover.bind(this)
   }
 
+
+  togglePopover() {
+    this.setState({ isOpen: !this.state.isOpen });
+  }
+
+  hide(e, id) {
+    debugger;
+    // document.getElementById(id).style.display="none";
+    document.getElementById(id).parentElement.parentElement.parentElement.parentElement.parentElement.style.display = "none";
+  }
+  show(e, id) {
+    debugger;
+    if (document.getElementById(id))
+      // document.getElementById(id).style.display="block";
+      document.getElementById(id).parentElement.parentElement.parentElement.parentElement.parentElement.style.display = "block";
+  }
   fileUpload = e => {
     this.setState({ fileName: e.target.files[0].name });
   };
@@ -128,17 +146,231 @@ class QaUserMaster extends Component {
           var ids = row.original["id"];
           return (
             <div>
-              <Popover content={QaUserMasterDel} placement="bottom" trigger="click">
+              <Popover content={<div className="samdel d-flex" id={"samdel" + ids}>
+                <div className="del-big-icon">
+                  <img src={BlackDeleteIcon} alt="del-icon" />
+                </div>
+                <div>
+                  <p className="font-weight-bold blak-clr">Delete file?</p>
+                  <p className="mt-1 fs-12">
+                    Are you sure you want to delete this file?
+                  </p>
+                  <div className="del-can">
+                    <a className="canblue" onClick={() => this.hide(this, "samdel" + ids)}>CANCEL</a>
+                    <button className="butn">Delete</button>
+                  </div>
+                </div>
+              </div>} placement="bottom" trigger="click">
                 <img
                   src={DeleteIcon}
                   alt="del-icon"
                   id={ids}
                   className="downloadaction"
+                  onClick={() => this.show(this, "samdel" + ids)}
                 />
               </Popover>
-              <Popover content={QaUserMasterEdit} placement="bottom" trigger="click">
-                <button className="react-tabel-button editre" id={ids}>
-                    EDIT
+              <Popover content={<div className="edtpadding EditButtonUSer qaus" id={"edtpadding" + ids}>
+                <div className="">
+                  <label className="popover-header-text">EDIT USER</label>
+                </div>
+
+                <div className="right-sect-div right-sect-collapse">
+                  <div className="collapse-cntr">
+                    <div className="pop-over-div">
+                      <a
+                        className="collapse-title mx-0"
+                        data-toggle="collapse"
+                        href="#Brand-detailsNew1"
+                        role="button"
+                        aria-expanded="true"
+                        aria-controls="Brand-detailsNew1"
+                      >
+                        Brand Details
+                                            </a>
+                    </div>
+                    <div className="multi-collapse show" id="Brand-detailsNew1">
+                      <div className="pop-over-div">
+                        <label className="edit-label-1">Brand</label>
+                        <select className="add-select-category">
+                          <option>Bata</option>
+                          <option>Bata1</option>
+                        </select>
+                      </div>
+                      <div className="pop-over-div">
+                        <button
+                          data-target="#personal-detailsNew"
+                          data-toggle="collapse"
+                          className="butn"
+                        >
+                          SAVE &amp; NEXT
+                                                      </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="collapse-cntr">
+                    <div className="pop-over-div">
+                      <a
+                        className="collapse-title mx-0"
+                        data-toggle="collapse"
+                        href="#personal-detailsNew"
+                        role="button"
+                        aria-expanded="false"
+                        aria-controls="personal-detailsNew"
+                      >
+                        Personal Details
+                                            </a>
+                    </div>
+                    <div className="multi-collapse" id="personal-detailsNew">
+                      <div className="pop-over-div">
+                        <label className="edit-label-1">User Name</label>
+                        <input type="text" className="txt-edit-popover" maxLength={25} />
+                      </div>
+                      <div className="pop-over-div">
+                        <label className="edit-label-1">Mobile Number</label>
+                        <input type="text" className="txt-edit-popover" maxLength={10}
+
+                        />
+                      </div>
+                      <div className="pop-over-div">
+                        <label className="edit-label-1">Email ID</label>
+                        <input type="text" className="txt-edit-popover" maxLength={100}
+
+                        />
+                      </div>
+                      <div className="pop-over-div">
+                        <button
+                          data-target="#profile-detailsNEW1"
+                          data-toggle="collapse"
+                          className="butn"
+                        >
+                          SAVE &amp; NEXT
+                                                      </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="collapse-cntr">
+                    <a
+                      className="collapse-title mx-0"
+                      data-toggle="collapse"
+                      href="#profile-detailsNEW1"
+                      role="button"
+                      aria-expanded="false"
+                      aria-controls="profile-detailsNEW1"
+                    >
+                      Profile Details
+                                                  </a>
+                    <div
+                      className="collapse multi-collapse"
+                      id="profile-detailsNEW1"
+                    >
+                      <div className="pop-over-div">
+                        <label className="edit-label-1">User Designation</label>
+                        <select className="add-select-category">
+                          <option>1</option>
+                          <option>2</option>
+                        </select>
+                      </div>
+                      <div className="pop-over-div">
+                        <label className="edit-label-1">Reportee Designation</label>
+                        <select className="add-select-category">
+                          <option>1</option>
+                          <option>2</option>
+                        </select>
+                      </div>
+                      <div className="pop-over-div">
+                        <label className="edit-label-1">Report To</label>
+                        <select className="add-select-category">
+
+                          <option>1</option>
+                          <option>2</option>
+                        </select>
+                      </div>
+                      <div className="pop-over-div">
+                        <button
+                          data-target="#mapped-categoryNew"
+                          data-toggle="collapse"
+                          className="butn"
+                        >
+                          SAVE &amp; NEXT
+                                                      </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="collapse-cntr">
+                    <a
+                      className="collapse-title mx-0"
+                      data-toggle="collapse"
+                      href="#mapped-categoryNew"
+                      role="button"
+                      aria-expanded="false"
+                      aria-controls="mapped-categoryNew"
+                    >
+                      Mapped Category
+                                                  </a>
+                    <div
+                      className="collapse multi-collapse"
+                      id="mapped-categoryNew"
+                    >
+                      <div className="pop-over-div">
+                        <label className="edit-label-1">Brand</label>
+                        <select className="add-select-category">
+                          <option>1</option>
+                          <option>2</option>
+                        </select>
+                      </div>
+                      <div className="pop-over-div">
+                        <label className="edit-label-1">Categories</label>
+                        <select className="txt-edit-popover">
+                          <option>Compliant</option>
+                          <option>Compliant</option>
+                          <option>Compliant</option>
+                        </select>
+                      </div>
+                      <div className="pop-over-div">
+                        <label className="edit-label-1">Sub Categories</label>
+                        <select className="txt-edit-popover">
+                          <option>Payments</option>
+                          <option>Payments</option>
+                          <option>Payments</option>
+                        </select>
+                      </div>
+                      <div className="pop-over-div">
+                        <label className="edit-label-1">Issue Type</label>
+                        <select className="txt-edit-popover">
+                          <option>Not Processed</option>
+                          <option>Not Processed</option>
+                          <option>Not Processed</option>
+                        </select>
+                      </div>
+                      <div className="mapped-cate-extra">
+                        <div className="pop-over-div">
+                          <label className="edit-label-1">CRM Role</label>
+                          <select className="add-select-category">
+                            <option>1</option>
+                            <option>2</option>
+                          </select>
+                        </div>
+                        <div className="pop-over-div">
+                          <label className="edit-label-1">Status</label>
+                          <select className="txt-edit-popover">
+                            <option>Active</option>
+                            <option>Inactive</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <br />
+                <div>
+                  <a className="pop-over-cancle canblue" onClick={() => this.hide(this, "edtpadding" + ids)}>CANCEL</a>
+                  <button className="pop-over-button">SAVE</button>
+                </div>
+              </div>} placement="bottom" trigger="click">
+                <button className="react-tabel-button editre" id={ids} onClick={() => this.show(this, "edtpadding" + ids)}>
+                  EDIT
                 </button>
               </Popover>
             </div>
@@ -146,24 +378,6 @@ class QaUserMaster extends Component {
         }
       }
     ];
-
-    const QaUserMasterDel = (
-      <div className="d-flex">
-        <div className="del-big-icon">
-          <img src={BlackDeleteIcon} alt="del-icon" />
-        </div>
-        <div>
-          <p className="font-weight-bold blak-clr">Delete file?</p>
-          <p className="mt-1 fs-12">
-            Are you sure you want to delete this file?
-          </p>
-          <div className="del-can">
-            <a href={Demo.BLANK_LINK}>CANCEL</a>
-            <button className="butn">Delete</button>
-          </div>
-        </div>
-      </div>
-    );
 
     const QaUserName = (
       <div className="general-popover created-popover">
@@ -175,50 +389,6 @@ class QaUserMaster extends Component {
           <p className="title">Updated By: Manager</p>
           <p className="sub-title">Updated Date: 12 March 2018</p>
         </div>
-      </div>
-    );
-
-    const QaUserMasterEdit = (
-      <div className="edtpadding">
-      <div className="d-flex">
-        <div>
-          <div className="">
-            <label className="popover-header-text">EDIT USER</label>
-          </div>
-          <div className="pop-over-div">
-            <label className="edit-label-1">Designation Name</label>
-            <input
-              type="text"
-              className="txt-edit-popover"
-              placeholder="Designation Name"
-              maxLength={25}
-            />
-          </div>
-          <div className="pop-over-div">
-            <label className="edit-label-1">Brand Name</label>
-            <input
-              type="text"
-              className="txt-edit-popover"
-              placeholder="Brand Name"
-              maxLength={25}
-            />
-          </div>
-          <div className="pop-over-div">
-            <label className="edit-label-1">Status</label>
-            <select id="inputStatus" className="edit-dropDwon dropdown-setting">
-              <option>Active</option>
-              <option>Inactive</option>
-            </select>
-          </div>
-          <br />
-          <div>
-          <a className="pop-over-cancle" href={Demo.BLANK_LINK}>CANCEL</a>
-            <button className="pop-over-button">
-              SAVE
-            </button>
-          </div>
-        </div>
-      </div>
       </div>
     );
 
@@ -245,7 +415,7 @@ class QaUserMaster extends Component {
                     defaultPageSize={3}
                     showPagination={false}
                   />
-                   <div className="position-relative1">
+                  <div className="position-relative1">
                     <div className="pagi">
                       <ul>
                         <li>
@@ -463,7 +633,7 @@ class QaUserMaster extends Component {
                             <option>Manager</option>
                           </select>
                         </div>
-                      
+
                         <div className="div-cntr">
                           <label>Status</label>
                           <select>
@@ -512,13 +682,14 @@ class QaUserMaster extends Component {
                         <div className="file-dtls">
                           <p className="file-name">{this.state.fileName}</p>
                           <div className="del-file" id="del-file-1">
-                            <img src={DelBlack} alt="delete-black" />
+                            <img src={DelBlack} alt="delete-black" onClick={this.togglePopover} />
                           </div>
                           <UncontrolledPopover
                             trigger="legacy"
                             placement="auto"
                             target="del-file-1"
                             className="general-popover delete-popover"
+                            isOpen={this.state.isOpen} toggle={this.togglePopover}
                           >
                             <PopoverBody className="d-flex">
                               <div className="del-big-icon">
@@ -532,7 +703,7 @@ class QaUserMaster extends Component {
                                   Are you sure you want to delete this file?
                                 </p>
                                 <div className="del-can">
-                                  <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                  <a className="canblue" onClick={this.togglePopover}>CANCEL</a>
                                   <button className="butn">Delete</button>
                                 </div>
                               </div>

@@ -29,6 +29,7 @@ class TicketHierarchy extends Component {
     super(props);
     this.state = {
       fileName: "",
+      isOpen: false,
       designation_name: "",
       selectReportTo: 0,
       selectStatus: 0,
@@ -37,10 +38,26 @@ class TicketHierarchy extends Component {
       activeData: ActiveStatus(),
       hierarchyEditData: {}
     };
+    this.togglePopover = this.togglePopover.bind(this);
     this.handleGetHierarchyData = this.handleGetHierarchyData.bind(this);
     this.hanldeGetReportListDropDown = this.hanldeGetReportListDropDown.bind(
       this
     );
+  }
+  togglePopover() {
+    this.setState({ isOpen: !this.state.isOpen });
+  }
+
+  hide(e, id) {
+    debugger;
+    // document.getElementById(id).style.display="none";
+    document.getElementById(id).parentElement.parentElement.parentElement.parentElement.parentElement.style.display = "none";
+  }
+  show(e, id) {
+    debugger;
+    if (document.getElementById(id))
+      // document.getElementById(id).style.display="block";
+      document.getElementById(id).parentElement.parentElement.parentElement.parentElement.parentElement.style.display = "block";
   }
   componentDidMount() {
     this.handleGetHierarchyData();
@@ -179,6 +196,7 @@ class TicketHierarchy extends Component {
   }
   handleGetEditData(data) {
     debugger;
+    this.show();
     var hierarchyEditData = data;
     hierarchyEditData.designation_Name = hierarchyEditData.designationName;
     hierarchyEditData.report_To = hierarchyEditData.reportToDesignation;
@@ -346,7 +364,7 @@ class TicketHierarchy extends Component {
                               <span>
                                 <Popover
                                   content={
-                                    <div className="d-flex general-popover popover-body">
+                                    <div className="samdel d-flex general-popover popover-body" id={"samdel" + ids}>
                                       <div className="del-big-icon">
                                         <img src={DelBigIcon} alt="del-icon" />
                                       </div>
@@ -359,7 +377,7 @@ class TicketHierarchy extends Component {
                                           file?
                                         </p>
                                         <div className="del-can">
-                                          <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                          <a className="canblue" onClick={() => this.hide(this, "samdel" + ids)}>CANCEL</a>
                                           <button
                                             className="butn"
                                             type="button"
@@ -381,6 +399,7 @@ class TicketHierarchy extends Component {
                                     src={RedDeleteIcon}
                                     alt="del-icon"
                                     className="del-btn"
+                                    onClick={() => this.show(this, "samdel" + ids)}
                                   />
                                 </Popover>
                                 <Popover
@@ -464,8 +483,7 @@ class TicketHierarchy extends Component {
                                       <br />
                                       <div>
                                         <a
-                                          className="pop-over-cancle"
-                                          href={Demo.BLANK_LINK}
+                                          className="pop-over-cancle canblue"
                                         >
                                           CANCEL
                                         </a>
@@ -648,13 +666,14 @@ class TicketHierarchy extends Component {
                         <div className="file-dtls">
                           <p className="file-name">{this.state.fileName}</p>
                           <div className="del-file" id="del-file-1">
-                            <img src={DelBlack} alt="delete-black" />
+                            <img src={DelBlack} alt="delete-black" onClick={this.togglePopover} />
                           </div>
                           <UncontrolledPopover
                             trigger="legacy"
                             placement="auto"
                             target="del-file-1"
                             className="general-popover delete-popover"
+                            isOpen={this.state.isOpen} toggle={this.togglePopover}
                           >
                             <PopoverBody className="d-flex">
                               <div className="del-big-icon">
@@ -668,7 +687,7 @@ class TicketHierarchy extends Component {
                                   Are you sure you want to delete this file?
                                 </p>
                                 <div className="del-can">
-                                  <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                  <a className="canblue" onClick={this.togglePopover}>CANCEL</a>
                                   <button className="butn">Delete</button>
                                 </div>
                               </div>

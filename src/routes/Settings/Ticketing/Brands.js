@@ -31,6 +31,17 @@ class Brands extends Component {
     };
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
   }
+  hide(e, id) {
+    debugger;
+    // document.getElementById(id).style.display="none";
+    document.getElementById(id).parentElement.parentElement.parentElement.parentElement.parentElement.style.display = "none";
+  }
+  show(e, id) {
+    debugger;
+    if (document.getElementById(id))
+      // document.getElementById(id).style.display="block";
+      document.getElementById(id).parentElement.parentElement.parentElement.parentElement.parentElement.style.display = "block";
+  }
   componentDidMount() {
     this.handleGetBrandList();
   }
@@ -301,7 +312,7 @@ class Brands extends Component {
                               <span>
                                 <Popover
                                   content={
-                                    <div className="d-flex general-popover popover-body">
+                                    <div className="samdel d-flex general-popover popover-body" id={"samdel" + brand_ID}>
                                       <div className="del-big-icon">
                                         <img src={DelBigIcon} alt="del-icon" />
                                       </div>
@@ -314,7 +325,7 @@ class Brands extends Component {
                                           file?
                                         </p>
                                         <div className="del-can">
-                                          <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                          <a className="canblue" onClick={() => this.hide(this, "samdel" + brand_ID)}>CANCEL</a>
                                           <button
                                             className="butn"
                                             type="button"
@@ -336,6 +347,7 @@ class Brands extends Component {
                                     src={RedDeleteIcon}
                                     alt="del-icon"
                                     className="del-btn"
+                                    onClick={() => this.show(this, "samdel" + brand_ID)}
                                   />
                                 </Popover>
                                 <Popover
