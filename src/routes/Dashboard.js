@@ -5337,7 +5337,7 @@ class Dashboard extends Component {
                                     </ul>
                                   </div>
                                 }
-                                placement="bottom"
+                                placement="left"
                               >
                                 <img
                                   className="info-icon"
