@@ -1999,6 +1999,7 @@ class MyTicketList extends Component {
             >
               <li className="nav-item">
                 <a
+                
                   className="nav-link active"
                   data-toggle="tab"
                   href="#Escalation-tab"
@@ -2011,7 +2012,7 @@ class MyTicketList extends Component {
                   }}
                 >
                   Escalation:{" "}
-                  <span className="myTciket-tab-span">
+                  <span className="myTciket-tab-span" >
                     {this.state.byEscalationCount < 9
                       ? "0" + this.state.byEscalationCount
                       : this.state.byEscalationCount}
