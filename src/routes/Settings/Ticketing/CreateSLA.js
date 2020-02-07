@@ -860,6 +860,7 @@ class CreateSLA extends Component {
                                   </li>
                                 </ul>
                               </div>
+                            </div>
                               <div className="category-buttonbtm">
                                 <ul>
                                   <li>
@@ -877,7 +878,6 @@ class CreateSLA extends Component {
                                   </li>
                                 </ul>
                               </div>
-                            </div>
                           </div>
                         </div>
                       </div>
