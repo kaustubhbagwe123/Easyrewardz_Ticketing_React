@@ -246,7 +246,17 @@ class MyTicketList extends Component {
       selectedNameOfMonthForDailyYear: "",
       loading: false,
       SearchNameCompulsory: "",
-      FinalSaveSearchData: ""
+      FinalSaveSearchData: "",
+      modulesItemsMyticket:[],
+      Escalation:"",
+      New:"",
+      Open:"",
+      Resolved:"",
+      ReassignedByMe:"",
+      Closed:"",
+      All:"",
+      FollowUp:"",
+      Draft:""
     };
     this.handleAssignTo = this.handleAssignTo.bind(this);
     this.clearSearch = this.clearSearch.bind(this);
@@ -294,6 +304,7 @@ class MyTicketList extends Component {
     this.handleSearchTicketAllTabCount = this.handleSearchTicketAllTabCount.bind(
       this
     );
+    this.handleMyTicketsearchOption=this.handleMyTicketsearchOption.bind(this);
   }
 
   componentDidMount() {
@@ -309,6 +320,92 @@ class MyTicketList extends Component {
     this.handleGetDraftDetails();
     this.handleGetDepartmentList();
     this.handleGetSaveSearchList();
+    this.handleMyTicketsearchOption();
+  }
+
+  handleMyTicketsearchOption() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Module/GetModulesItems",
+      headers: authHeader(),
+      params: {
+        ModuleID:9
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        self.setState({ modulesItemsMyticket: data
+           });
+           self.setMyTicketSearch();
+      } else {
+        self.setState({ modulesItemsMyticket: [] });
+      }
+    });
+    
+  }
+
+  setMyTicketSearch(){
+    debugger;
+    var data=[];
+    data=this.state.modulesItemsMyticket;
+    if(data[0].moduleItemisActive===true){
+      this.setState({ Escalation:"yes" });
+    }else{
+      this.setState({ Escalation:"none" });
+    }
+
+    if(data[1].moduleItemisActive===true){
+      this.setState({ New:"yes" });
+    }else{
+      this.setState({ New:"none" });
+    }
+
+    if(data[2].moduleItemisActive===true){
+      this.setState({ Open:"yes" });
+    }else{
+      this.setState({ Open:"none" });
+    }
+
+    if(data[3].moduleItemisActive===true){
+      this.setState({ Resolved:"yes" });
+    }else{
+      this.setState({ Resolved:"none" });
+    }
+
+    if(data[4].moduleItemisActive===true){
+      this.setState({ ReassignedByMe:"yes" });
+    }else{
+      this.setState({ ReassignedByMe:"none" });
+    }
+
+    if(data[5].moduleItemisActive===true){
+      this.setState({ Closed:"yes" });
+    }else{
+      this.setState({ Closed:"none" });
+    }
+
+    if(data[6].moduleItemisActive===true){
+      this.setState({ All:"yes" });
+    }else{
+      this.setState({ All:"none" });
+    }
+
+    if(data[7].moduleItemisActive===true){
+      this.setState({ FollowUp:"yes" });
+    }else{
+      this.setState({ FollowUp:"none" });
+    }
+
+    if(data[8].moduleItemisActive===true){
+      this.setState({ Draft:"yes" });
+    }else{
+      this.setState({ Draft:"none" });
+    }
+
   }
   handleSearchTicketAllTabCount() {
     let self = this;
@@ -1999,7 +2096,7 @@ class MyTicketList extends Component {
             >
               <li className="nav-item">
                 <a
-                
+                style={{display:this.state.Escalation}}
                   className="nav-link active"
                   data-toggle="tab"
                   href="#Escalation-tab"
@@ -2021,6 +2118,7 @@ class MyTicketList extends Component {
               </li>
               <li className="nav-item">
                 <a
+                 style={{display:this.state.New}}
                   className="nav-link"
                   data-toggle="tab"
                   href="#Escalation-tab"
@@ -2042,6 +2140,7 @@ class MyTicketList extends Component {
               </li>
               <li className="nav-item">
                 <a
+                style={{display:this.state.Open}}
                   className="nav-link"
                   data-toggle="tab"
                   href="#Escalation-tab"
@@ -2063,6 +2162,7 @@ class MyTicketList extends Component {
               </li>
               <li className="nav-item">
                 <a
+                style={{display:this.state.Resolved}}
                   className="nav-link"
                   data-toggle="tab"
                   href="#Escalation-tab"
@@ -2084,6 +2184,7 @@ class MyTicketList extends Component {
               </li>
               <li className="nav-item">
                 <a
+                style={{display:this.state.ReassignedByMe}}
                   className="nav-link"
                   data-toggle="tab"
                   href="#Escalation-tab"
@@ -2105,6 +2206,7 @@ class MyTicketList extends Component {
               </li>
               <li className="nav-item">
                 <a
+                style={{display:this.state.Closed}}
                   className="nav-link"
                   data-toggle="tab"
                   href="#Escalation-tab"
@@ -2126,6 +2228,7 @@ class MyTicketList extends Component {
               </li>
               <li className="nav-item">
                 <a
+                style={{display:this.state.All}}
                   className="nav-link"
                   data-toggle="tab"
                   href="#Escalation-tab"
@@ -2147,6 +2250,7 @@ class MyTicketList extends Component {
               </li>
               <li className="nav-item">
                 <a
+                style={{display:this.state.FollowUp}}
                   className="nav-link"
                   data-toggle="tab"
                   href="#Escalation-tab"
@@ -2168,6 +2272,7 @@ class MyTicketList extends Component {
               </li>
               <li className="nav-item">
                 <a
+                 style={{display:this.state.Draft}}
                   className="nav-link"
                   data-toggle="tab"
                   href="#Draft-tab"

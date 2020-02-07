@@ -163,6 +163,10 @@ class Module extends Component {
         NotificationManager.success("Record Updated successfully.");
 
       }
+      else{
+        NotificationManager.error("Record Not Updated");
+
+      }
       self.setState({
         activeID:[],
         inactiveID:[]
@@ -180,11 +184,17 @@ class Module extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let modulesNames = res.data.responseData;
-      let moduleID = modulesNames[0].moduleID;
-      let moduleIDMyticket = modulesNames[1].moduleID;
-      if (modulesNames !== null && modulesNames !== undefined) {
-        self.setState({ modulesNames, moduleID,moduleIDMyticket });
+      let status = res.data.message;
+      let data = res.data.responseData;
+      let moduleID = data[0].moduleID;
+      let moduleIDMyticket = data[1].moduleID;
+     
+      if (status === "Success") {
+        self.setState({ modulesNames: data,moduleID,moduleIDMyticket
+           });
+          
+      } else {
+        self.setState({ modulesNames: [] });
       }
       self.handleGetModulesItems();
       self.handleGetModulesItemsMyTicket();
@@ -202,9 +212,15 @@ class Module extends Component {
       }
     }).then(function(res) {
       debugger;
-      let modulesItems = res.data.responseData;
-      if (modulesItems !== null && modulesItems !== undefined) {
-        self.setState({ modulesItems });
+      let status = res.data.message;
+      let data = res.data.responseData;
+     
+      if (status === "Success") {
+        self.setState({ modulesItems: data
+           });
+          
+      } else {
+        self.setState({ modulesItems: [] });
       }
     });
   }
@@ -220,9 +236,15 @@ class Module extends Component {
       }
     }).then(function(res) {
       debugger;
-      let modulesItemsMyticket = res.data.responseData;
-      if (modulesItemsMyticket !== null && modulesItemsMyticket !== undefined) {
-        self.setState({ modulesItemsMyticket });
+      let status = res.data.message;
+      let data = res.data.responseData;
+      
+      if (status === "Success") {
+        self.setState({ modulesItemsMyticket: data
+           });
+          
+      } else {
+        self.setState({ modulesItemsMyticket: [] });
       }
     });
   }
