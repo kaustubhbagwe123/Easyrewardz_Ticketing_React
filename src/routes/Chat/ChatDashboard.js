@@ -1,15 +1,27 @@
 import React, { Component } from "react";
 import TableArr from "./../../assets/Images/gray-down-icon.png";
 import ChartStatusLive from "./Charts/ChartStatusLive.js";
+import DateTimeRangeContainer from "react-advanced-datetimerange-picker";
 import LineTotalChat from "./Charts/LineTotalChat";
+import moment from "moment";
+import { Row, Col } from "react-bootstrap";
+import { FormControl } from "react-bootstrap";
 
 // import Chart from "react-apexcharts";
 
 class ChatDashboard extends Component {
   constructor(props) {
     super(props);
-
+  let now = new Date();
+    let start = moment(
+      new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0)
+    );
+    let end = moment(start)
+      .add(1, "days")
+      .subtract(1, "seconds");
     this.state = {
+      start: start,
+      end: end,
       chatstatus: true,
       daterange: "Today",
       daterangeszie: "870px",
@@ -17,6 +29,8 @@ class ChatDashboard extends Component {
       bad: "30%"
     };
   }
+
+  
 
   mainDashboard = () => {
     this.props.history.push("/admin/dashboard");
@@ -36,12 +50,43 @@ class ChatDashboard extends Component {
       });
     }
   };
+   applyCallback = async (startDate, endDate) => {
+    debugger;
+    await this.setState({
+      start: startDate,
+      end: endDate,
+    });
+     
+  };
 
   render() {
+      let now = new Date();
+    let start = moment(
+      new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0)
+    );
+    let end = moment(start)
+      .add(1, "days")
+      .subtract(1, "seconds");
+    let ranges = {
+      "Today Only": [moment(start), moment(end)],
+      "Yesterday Only": [
+        moment(start).subtract(1, "days"),
+        moment(end).subtract(1, "days")
+      ],
+      "3 Days": [moment(start).subtract(3, "days"), moment(end)]
+    };
+     let local = {
+      format: "DD-MM-YYYY",
+      sundayFirst: false
+    };
+     let value = `${this.state.start.format(
+      "DD-MM-YYYY"
+    )} - ${this.state.end.format("DD-MM-YYYY")}`;
+    let disabled = false;
     return (
       <div>
-        <div className="Chat-main-header">
-          <div className="row" style={{padding: "15px 0"}}>
+        <div className="Chat-main-header dash-dropdowns">
+          <div className="row" style={{width: "100%"}}>
            <div className="col-md-6">
            <div className="d-flex dashallbrand1">
            <div>
@@ -147,19 +192,36 @@ class ChatDashboard extends Component {
             </div>
            </div>
             <div className="col-md-6">
-              <div style={{float: "right"}}>
-              <div
-               
-                onClick={this.daterangefunction}
-              >
-                <label className="lable-text">
-                  Date Range : <b>{this.state.daterange}</b>
-                </label>
-                <img
-                  src={TableArr}
-                  alt="down-arrow"
-                  className="sort-down-arrow"
-                />
+              <div className="d-flex" style={{float: "right"}}>
+              <span>Date Range : </span>
+              <div className="DashTimeRange">
+                <Row className="show-grid" style={{ textAlign: "center" }}>
+                  {/* <Col xs={3} /> */}
+                  <Col xs={6} md={12} id="DateTimeRangeContainerNoMobileMode">
+                    <DateTimeRangeContainer
+                      ranges={ranges}
+                      start={this.state.start}
+                      end={this.state.end}
+                      local={local}
+                      applyCallback={this.applyCallback}
+                      smartMode
+                      leftMode
+                      // forceMobileMode
+                      noMobileMode
+                    >
+                      <FormControl
+                        id="formControlsTextB"
+                        type="text"
+                        label="Text"
+                        placeholder="Enter text"
+                        style={{ cursor: "pointer" }}
+                        disabled={disabled}
+                        value={value}
+                      />
+                    </DateTimeRangeContainer>
+                  </Col>
+                  {/* <Col xs={3} md={4} /> */}
+                </Row>
               </div>
             </div>
             </div>

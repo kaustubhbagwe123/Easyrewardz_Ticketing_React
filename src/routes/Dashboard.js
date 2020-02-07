@@ -5094,7 +5094,7 @@ class Dashboard extends Component {
                   <div className="loader-icon"></div>
                 </div>
               ) : (
-                  <div className="MyTicketListReact">
+                  <div className="MyTicketListReact cus-head">
                     <ReactTable
                       data={SearchTicketData}
                       columns={[
@@ -5218,14 +5218,7 @@ class Dashboard extends Component {
                           Header: (
                             <label className="ticketid">
                               <span>Subject/</span>
-                              <span
-                                style={{
-                                  fontWeight: "bold",
-                                  fontSize: "11px !important"
-                                }}
-                              >
-                                Lastest Message
-                            </span>
+                              <span style={{fontSize:"10px !important"}}>Lastest Message</span>
                             </label>
                           ),
                           accessor: "message",
