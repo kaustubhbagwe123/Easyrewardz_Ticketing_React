@@ -1911,6 +1911,9 @@ button, .csv-button {
   top: 2px;
   z-index: 1;
 }
+.dashboard-collapse-icon-inv {
+  background-color: #2561A8;
+}
 .dash-popup {
   position: absolute;
   background-color: #fff;
@@ -2769,6 +2772,9 @@ table tr th:last-child {
 }
 .dash-timepicker .react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box, .dash-timepicker .react-datepicker__time-container {
   width: 185px !important;
+}
+.collapse-icon {
+  width: 15px;
 }
 /* dashboard ends */
 

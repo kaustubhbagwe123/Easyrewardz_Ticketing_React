@@ -4,6 +4,7 @@ import { ProgressBar } from "react-bootstrap";
 import Modal from "react-responsive-modal";
 import SearchIcon from "./../assets/Images/search-icon.png";
 import Dash from "./../assets/Images/dash.png";
+import CollapseIcon from "./../assets/Images/collapse.png";
 import InfoIcon from "./../assets/Images/info-icon.png";
 import TaskIconBlue from "./../assets/Images/task-icon-blue.png";
 import TaskIconGray from "./../assets/Images/task-icon-gray.png";
@@ -2607,8 +2608,9 @@ class Dashboard extends Component {
           </div>
         </div>
         <section className="dash-cntr">
-          <div className="dashboard-collapse-icon" onClick={this.toggle}>
-            <img src={Dash} alt="dash-icon" />
+          <div className={this.state.collapse ? "dashboard-collapse-icon" : "dashboard-collapse-icon dashboard-collapse-icon-inv"} onClick={this.toggle}>
+            {this.state.collapse ? <img src={Dash} alt="dash-icon" /> :
+            <img src={CollapseIcon} alt="dash-icon" className="collapse-icon" />}
           </div>
           <Collapse isOpen={this.state.collapse}>
             <Card>
