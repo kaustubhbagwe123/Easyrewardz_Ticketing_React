@@ -10421,3 +10421,10 @@ table tr th:last-child {
   max-height: 300px;
     overflow: auto;
 }
+.cus-head span {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+.cus-head .ReactTable .rt-thead.-header {
+  background-color: #E5E9ED;
+}
