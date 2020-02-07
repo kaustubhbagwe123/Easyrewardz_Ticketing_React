@@ -56,7 +56,7 @@ class Reports extends Component {
       selectedClaimID:"",
       selectedWithClaim:"no",
       selectedClaimStatus: 0,
-      selectedWithTaskAll:"",
+      selectedWithTaskAll:"no",
       selectedTaskStatus:0,
       selectedClaimCategory:0,
       selectedClaimSubCategory:0,
@@ -798,11 +798,18 @@ class Reports extends Component {
     var ReportParams = {};
     let withClaim = 0;
       let withTask = 0;
-      if (this.state.selectedWithClaimAll === "yes") {
+      if (this.state.selectedWithClaim === "yes") {
         withClaim = 1;
+        ReportParams["ClaimStatusId"] = this.state.selectedClaimStatus;
+        ReportParams["ClaimCategoryId"] = this.state.selectedClaimCategory;
+        ReportParams["ClaimSubCategoryId"] = this.state.selectedClaimSubCategory;
+        ReportParams["ClaimIssueTypeId"] = this.state.selectedClaimIssueType;
       }
       if (this.state.selectedWithTaskAll === "yes") {
         withTask = 1;
+        ReportParams["TaskStatusId"] = this.state.selectedTaskStatus;
+      ReportParams["TaskDepartment_Id"] = this.state.selectedDepartment;
+      ReportParams["TaskFunction_Id"] = this.state.selectedFunction;
       }
       ReportParams["BrandID"] = this.state.selectBrand;
       ReportParams["CreatedDate"] = this.state.ReportCreateDate;
@@ -830,14 +837,9 @@ class Reports extends Component {
         "WantToStoreCodeORAddress"
       ] = this.state.selectedVisitStoreAddress;
       ReportParams["HaveClaim"] = withClaim;
-      ReportParams["ClaimStatusId"] = this.state.selectedClaimStatus;
-      ReportParams["ClaimCategoryId"] = this.state.selectedClaimCategory;
-      ReportParams["ClaimSubCategoryId"] = this.state.selectedClaimSubCategory;
-      ReportParams["ClaimIssueTypeId"] = this.state.selectedClaimIssueType;
+     
       ReportParams["HaveTask"] = withTask;
-      ReportParams["TaskStatusId"] = this.state.selectedTaskStatus;
-      ReportParams["TaskDepartment_Id"] = this.state.selectedDepartment;
-      ReportParams["TaskFunction_Id"] = this.state.selectedFunction;
+      
    
     axios({
       method: "post",
@@ -979,11 +981,15 @@ class Reports extends Component {
                     // onClick={() => this.show(this, "samdel" + ids)}
                   />
                 </Popover>
+               
+                <button className="react-tabel-button editre" id="p-edit-pop-2"
+                 onClick={this.handleAddReportOpen}
+                >
+                   EDIT
+                   {/* <label className="Table-action-edit-button-text">EDIT</label> */}
+                   </button>
+               
             
-            <button className="react-tabel-button editre" id="p-edit-pop-2">
-            EDIT
-              {/* <label className="Table-action-edit-button-text">EDIT</label> */}
-            </button>
           </span>
         )
       }
@@ -1405,8 +1411,10 @@ class Reports extends Component {
 
                   <div className="row">
                    
-                      <div className="col-md-3 ticketreport">
-                      <label>Claim Status</label>
+                      <div className="col-md-3 ticketreport" >
+                        {this.state.selectedWithClaim==="yes"? (
+                          <>
+                          <label>Claim Status</label>
                       <select
                       name="selectedClaimStatus"
                           value={this.state.selectedClaimStatus}
@@ -1426,37 +1434,47 @@ class Reports extends Component {
                                                   )
                                                 )}
                                             </select>
+                                            </>
+                        ) : null}
+                     
                     </div>
                    
                     
                     <div className="col-md-3 ticketreport">
-                      <label>Task Status</label>
-                      <select
-                      name="selectedTaskStatus"
-                                              value={
-                                                this.state.selectedTaskStatus
-                                              }
-                                              onChange={this.setOnChangeReportData}
-                                            >
-                                              <option>Task Status</option>
-                                              {this.state.TaskStatusData !==
-                                                null &&
-                                                this.state.TaskStatusData.map(
-                                                  (item, i) => (
-                                                    <option
-                                                      key={i}
-                                                      value={item.taskStatusID}
-                                                    >
-                                                      {item.taskStatusName}
-                                                    </option>
-                                                  )
-                                                )}
-                                            </select>
+                      {this.state.selectedWithTaskAll==="yes"?(<>
+                        <label>Task Status</label>
+                        <select
+                        name="selectedTaskStatus"
+                                                value={
+                                                  this.state.selectedTaskStatus
+                                                }
+                                                onChange={this.setOnChangeReportData}
+                                              >
+                                                <option>Task Status</option>
+                                                {this.state.TaskStatusData !==
+                                                  null &&
+                                                  this.state.TaskStatusData.map(
+                                                    (item, i) => (
+                                                      <option
+                                                        key={i}
+                                                        value={item.taskStatusID}
+                                                      >
+                                                        {item.taskStatusName}
+                                                      </option>
+                                                    )
+                                                  )}
+                                              </select></>
+
+                      ):null}
+                      
                     </div>
                     </div>
 
                   <div className="row">
+                 
                     <div className="col-md-3 ticketreport">
+                    {this.state.selectedWithClaim==="yes"? (
+                      <>
                       <label>Claim Category</label>
                       <select
                       name="selectedClaimCategory"
@@ -1481,8 +1499,13 @@ class Reports extends Component {
                                                   )
                                                 )}
                                             </select>
+                                            </>
+
+                    ):null}
+                     
                     </div>
                     <div className="col-md-3 ticketreport">
+                    {this.state.selectedWithTaskAll==="yes"?(<>
                       <label>Task Priority</label>
                       <select
                       name="selectedTaskPriority"
@@ -1501,42 +1524,49 @@ class Reports extends Component {
                                           </option>
                                         )
                                       )}
-                                  </select>
+                                  </select></>
+                    ):null}
+                      
                     </div>
                   </div>
 
                   <div className="row">
                     <div className="col-md-3 ticketreport">
-                      <label>Claim Sub Category</label>
-                      <select
-                      name="selectedClaimSubCategory"
-                                              value={
-                                                this.state
-                                                  .selectedClaimSubCategory
-                                              }
-                                              onChange={
-                                                this.setOnChangeReportData
-                                              }
-                                            >
-                                              <option>
-                                                Claim Sub Category
-                                              </option>
-                                              {this.state
-                                                .SubCategoryData !==
-                                                null &&
-                                                this.state.SubCategoryData.map(
-                                                  (item, i) => (
-                                                    <option
-                                                      key={i}
-                                                      value={item.subCategoryID}
-                                                    >
-                                                      {item.subCategoryName}
-                                                    </option>
-                                                  )
-                                                )}
-                                            </select>
+                    {this.state.selectedWithClaim==="yes"? (<>
+                     <label>Claim Sub Category</label>
+                     <select
+                     name="selectedClaimSubCategory"
+                                             value={
+                                               this.state
+                                                 .selectedClaimSubCategory
+                                             }
+                                             onChange={
+                                               this.setOnChangeReportData
+                                             }
+                                           >
+                                             <option>
+                                               Claim Sub Category
+                                             </option>
+                                             {this.state
+                                               .SubCategoryData !==
+                                               null &&
+                                               this.state.SubCategoryData.map(
+                                                 (item, i) => (
+                                                   <option
+                                                     key={i}
+                                                     value={item.subCategoryID}
+                                                   >
+                                                     {item.subCategoryName}
+                                                   </option>
+                                                 )
+                                               )}
+                                           </select></>
+
+                    ):null}
+                      
                     </div>
                     <div className="col-md-3 ticketreport">
+                    {this.state.selectedWithTaskAll==="yes"?(<>
                       <label>Task Department</label>
                       <select
                       name="selectedDepartment"
@@ -1558,12 +1588,15 @@ class Reports extends Component {
                                                     </option>
                                                   )
                                                 )}
-                                            </select>
+                                            </select></>
+                    ):null}
+                     
                     </div>
                   </div>
 
                   <div className="row">
                     <div className="col-md-3 ticketreport">
+                    {this.state.selectedWithClaim==="yes"? (<>
                       <label>Claim Issue Type</label>
                       <select
                       name="selectedClaimIssueType"
@@ -1588,9 +1621,12 @@ class Reports extends Component {
                                                     </option>
                                                   )
                                                 )}
-                                            </select>
+                                            </select></>
+                    ):null}
+                      
                     </div>
                     <div className="col-md-3 ticketreport">
+                    {this.state.selectedWithTaskAll==="yes"?(<>
                       <label>Task Function</label>
                       <select
                       name="selectedFunction"
@@ -1599,7 +1635,9 @@ class Reports extends Component {
                       >
                         <option>Attandance</option>
                         <option>Attandance1</option>
-                      </select>
+                      </select></>
+                    ):null}
+                      
                     </div>
                   </div>
                   <div className="row nextbutton1">

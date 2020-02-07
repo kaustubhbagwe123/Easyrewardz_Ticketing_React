@@ -143,7 +143,7 @@ class MyTicket extends Component {
       notesCommentCompulsion: "",
       userCC: "",
       userBCC: "",
-      messageDetails: {},
+      messageDetails: [],
       fileText: 0,
       file: [],
       userCcCount: 0,
@@ -302,9 +302,8 @@ class MyTicket extends Component {
       debugger;
       let status = res.data.message;
       if (status === "Success") {
-        let data = res.data.responseData[0];
-        console.log(data, "data");
-
+        let data = res.data.responseData;
+        
         self.setState({
           messageDetails: data
         });
@@ -3881,18 +3880,26 @@ class MyTicket extends Component {
                               </div>
 
                               <h3 className="textbhead">
-                                  <span className="input-group-addon inputcc" style={{padding:"5px 5px 6px" , background: "transparent" , border:"none" , color: "#555"}}>
-                                    Subject: &nbsp;
-                                  </span>
-                                  <input type="text" className="CCdi" />
-                                  {/* Subject: &nbsp;
+                                <span
+                                  className="input-group-addon inputcc"
+                                  style={{
+                                    padding: "5px 5px 6px",
+                                    background: "transparent",
+                                    border: "none",
+                                    color: "#555"
+                                  }}
+                                >
+                                  Subject: &nbsp;
+                                </span>
+                                <input type="text" className="CCdi" />
+                                {/* Subject: &nbsp;
                                 <span>
                                   {messageDetails.length > 0 ? (
                                     <>{messageDetails[0].ticketMailSubject}</>
                                   ) : null}
                                   {this.state.messageDetails.ticketMailSubject}
                                 </span> */}
-                                </h3>
+                              </h3>
                               <div
                                 className="mob-float"
                                 style={{ display: "flex", float: "right" }}
@@ -4084,37 +4091,46 @@ class MyTicket extends Component {
                         </Card>
                       </Collapse>
                     </div>
-                    <div className="row row-spacing new-top-bottom-margin">
-                      <div className="col-12 col-xs-12 col-sm-4 col-md-3">
-                        <img
-                          src={Headphone2Img}
-                          alt="headphone"
-                          className="oval-56"
-                        />
-                        <label className="rashmi-c">Rashmi.C</label>
-                        <img
-                          src={FacebookImg}
-                          alt="facebook"
-                          className="facebook"
-                        />
+                    {this.state.messageDetails !== null &&
+                    this.state.messageDetails.map((item, i) => {
+                      debugger
+                      return(
+                        <div className="row row-spacing new-top-bottom-margin" key={i}>
+                        <div className="col-12 col-xs-12 col-sm-4 col-md-3">
+                          <img
+                            src={Headphone2Img}
+                            alt="headphone"
+                            className="oval-56"
+                          />
+                          <label className="rashmi-c">{item.commentBy}</label>
+                          <img
+                            src={FacebookImg}
+                            alt="facebook"
+                            className="facebook"
+                          />
+                        </div>
+                        <div className="col-12 col-xs-12 col-sm-6 col-md-7">
+                          {item.hasAttachment === 1 ? (
+                            <img src={ClipImg} alt="clip" className="clip" />
+                          ) : null}
+
+                          <label className="hi-diwakar-i-really2">
+                          &nbsp;{item.ticketMailBody}
+                          </label>
+                        </div>
+                        <div className="col-12 col-xs-12 col-sm-2">
+                          <label
+                            className="comment-text1"
+                            onClick={this.hanldeCommentOpen2.bind(this)}
+                          >
+                            Comment
+                          </label>
+                        </div>
                       </div>
-                      <div className="col-12 col-xs-12 col-sm-6 col-md-7">
-                        <img src={ClipImg} alt="clip" className="clip" />
-                        <label className="hi-diwakar-i-really2">
-                          &nbsp; Hi Diwakar, I really appreciate you joining us
-                          at Voucherify! My top priority is that you have a
-                          great experience.
-                        </label>
-                      </div>
-                      <div className="col-12 col-xs-12 col-sm-2">
-                        <label
-                          className="comment-text1"
-                          onClick={this.hanldeCommentOpen2.bind(this)}
-                        >
-                          Comment
-                        </label>
-                      </div>
-                    </div>
+                      )
+                     
+})}
+
                     <div className="row row-spacing new-top-bottom-margin">
                       <div className="col-12 col-xs-12 col-sm-4 col-md-3">
                         <img
@@ -4124,13 +4140,6 @@ class MyTicket extends Component {
                         />
                         <label className="rashmi-c">
                           {this.state.messageDetails.commentBy}
-                          {/* {this.state.messageDetails.length > 0 ? (
-                            <>
-                                                                    
-                              {this.state.messageDetails[0].commentBy}
-                                                                  
-                            </>
-                          ) : null} */}
                         </label>
                         <img
                           src={Headphone2Img}

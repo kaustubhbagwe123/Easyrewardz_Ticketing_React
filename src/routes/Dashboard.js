@@ -4045,7 +4045,7 @@ class Dashboard extends Component {
                                     value={this.state.selectedCategoryAll}
                                     onChange={this.setCategoryAllValue}
                                   >
-                                    <option>Category</option>
+                                    <option value="0">Category</option>
                                     {this.state.CategoryData !== null &&
                                       this.state.CategoryData.map((item, i) => (
                                         <option key={i} value={item.categoryID}>
@@ -4108,7 +4108,7 @@ class Dashboard extends Component {
                                     value={this.state.selectedSubCategoryAll}
                                     onChange={this.setSubCategoryAllValue}
                                   >
-                                    <option>Sub Category</option>
+                                    <option value="0">Sub Category</option>
                                     {this.state.SubCategoryAllData !== null &&
                                       this.state.SubCategoryAllData.map(
                                         (item, i) => (
@@ -4176,7 +4176,7 @@ class Dashboard extends Component {
                                     value={this.state.selectedIssueTypeAll}
                                     onChange={this.setIssueTypeAllValue}
                                   >
-                                    <option>Issue Type</option>
+                                    <option value="0">Issue Type</option>
                                     {this.state.IssueTypeAllData !== null &&
                                       this.state.IssueTypeAllData.map(
                                         (item, i) => (
@@ -4293,7 +4293,7 @@ class Dashboard extends Component {
                                                   this.setClaimCategoryValue
                                                 }
                                               >
-                                                <option>Claim Category</option>
+                                                <option value="0">Claim Category</option>
                                                 {this.state.CategoryData !==
                                                   null &&
                                                   this.state.CategoryData.map(
@@ -4319,7 +4319,7 @@ class Dashboard extends Component {
                                                   this.setClaimSubCategoryValue
                                                 }
                                               >
-                                                <option>
+                                                <option value="0">
                                                   Claim Sub Category
                                               </option>
                                                 {this.state
@@ -4348,7 +4348,7 @@ class Dashboard extends Component {
                                                   this.setClaimIssueTypeValue
                                                 }
                                               >
-                                                <option>Claim Issue Type</option>
+                                                <option value="0">Claim Issue Type</option>
                                                 {this.state.ClaimIssueTypeData !==
                                                   null &&
                                                   this.state.ClaimIssueTypeData.map(
@@ -4481,7 +4481,12 @@ class Dashboard extends Component {
                             </div>
                             <div className="col-auto mob-mar-btm">
                               <CSVLink
-                                className="csv-button"
+                                // className="csv-button"
+                                className={
+                                  this.state.SearchTicketData.length > 0
+                                    ? "csv-button"
+                                    : "csv-button csv-dis-btn"
+                                }
                                 data={this.state.CSVDownload}
                               >
                                 <img
@@ -5273,7 +5278,8 @@ class Dashboard extends Component {
                               Priority <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
-                          accessor: "priority"
+                          accessor: "priority", 
+                          minWidth: 50
                         },
                         {
                           Header: (

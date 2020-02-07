@@ -6427,10 +6427,9 @@ svg:not(:root).svg-inline--fa {
 .btn-padding-rTbale {
   padding-top: 20px !important;
 }
-.rt-resizable-header {
-  /* flex: 0 0 auto !important; */
+/* .rt-resizable-header {
   width: 0px !important;
-}
+} */
 .headerAdminStyle {
   background: aqua !important;
 }
@@ -9771,6 +9770,15 @@ table tr th:last-child {
   padding-top: 12px;
   padding-bottom: 12px;
   cursor: pointer;
+}
+.csv-button {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+.csv-dis-btn {
+  opacity: 0.4;
+  cursor: default;
+  pointer-events: none;
 }
 .myticlist-expand-sect .save-view-search button.btn-inv {
   padding-right: 45px;
