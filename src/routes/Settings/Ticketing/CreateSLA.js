@@ -6,6 +6,7 @@ import Demo from "../../../store/Hashtag.js";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
 import FileUpload from "./../../../assets/Images/file.png";
 import DelBlack from "./../../../assets/Images/del-black.png";
+import Correct from "./../../../assets/Images/correct.png";
 import UploadCancel from "./../../../assets/Images/upload-cancel.png";
 import DownExcel from "./../../../assets/Images/csv.png";
 import { ProgressBar } from "react-bootstrap";
@@ -839,22 +840,22 @@ class CreateSLA extends Component {
                               <div className="category-box category-scroll">
                                 <ul>
                                   <li>
-                                    <label>Broken Shoe</label>
+                                    <label>Broken Shoe <img src={Correct} alt="Checked" /></label>
                                     <span>Defective article</span>
                                     <span>Complaint</span>
                                   </li>
                                   <li>
-                                    <label>Broken Shoe</label>
+                                    <label>Broken Shoe <img src={Correct} alt="Checked" /></label>
                                     <span>Defective article</span>
                                     <span>Complaint</span>
                                   </li>
                                   <li>
-                                    <label>Broken Shoe</label>
+                                    <label>Broken Shoe <img src={Correct} alt="Checked" /></label>
                                     <span>Defective article</span>
                                     <span>Complaint</span>
                                   </li>
                                   <li>
-                                    <label>Broken Shoe</label>
+                                    <label>Broken Shoe <img src={Correct} alt="Checked" /></label>
                                     <span>Defective article</span>
                                     <span>Complaint</span>
                                   </li>
