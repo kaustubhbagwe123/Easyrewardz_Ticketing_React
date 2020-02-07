@@ -466,7 +466,7 @@ class Users extends Component {
 
   handleGetUserListByID(id) {
     debugger;
-    this.show();
+    
     let self = this;
     axios({
       method: "post",
@@ -477,12 +477,19 @@ class Users extends Component {
       }
     }).then(function (res) {
       debugger;
+      var status=res.data.message;
       var userdata = res.data.responseData;
-
-      self.setState({
-        GetUserData: userdata
-      });
-      self.setUserEditData(userdata);
+      if(status==="Success"){
+        self.setState({
+          GetUserData: userdata
+        });
+        self.setUserEditData(userdata);
+      }else{
+        self.setState({
+          GetUserData: []
+        });
+      }
+     
     });
   }
 

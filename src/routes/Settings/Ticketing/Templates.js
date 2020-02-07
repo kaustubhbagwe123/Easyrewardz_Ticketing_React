@@ -309,6 +309,8 @@ class Templates extends Component {
         accessor: "templateStatus"
       },
       {
+        Header: "Actions",
+        sortable: false,
         Cell: row => {
           var ids = row.original["id"];
           return (
@@ -416,10 +418,9 @@ class Templates extends Component {
               </span>
             </>
           );
-        },
-        Header: "Actions",
-        sortable: false
-        //   className:"action-template",
+        }
+       
+        //  className:"action-template",
       }
     ];
 
