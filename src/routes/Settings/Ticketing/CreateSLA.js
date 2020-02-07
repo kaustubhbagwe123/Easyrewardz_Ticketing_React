@@ -316,6 +316,11 @@ class CreateSLA extends Component {
   fileUpload = e => {
     this.setState({ fileName: e.target.files[0].name });
   };
+  handleAddNoteCheck = e => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
   render() {
     const { slaIssueType, value } = this.state;
     const columnsTickSla = [
@@ -688,31 +693,159 @@ class CreateSLA extends Component {
                   <div className="createSpace">
                     <label className="Create-store-text">CREATE SLA</label>
                     <div className="divSpace">
-                      <div className="dropDrownSpace">
+                      <div className="dropDrownSpace issuetype-cusdrp">
                         <label className="reports-to">Issue Type</label>
-                        <select
-                          className="store-create-select"
-                          value={this.state.selectedSlaIssueType}
-                          onChange={this.handleSlaIssueType}
-                        >
-                          {this.state.slaIssueType !== null &&
-                            this.state.slaIssueType.map((item, i) => (
-                              <option key={i} value={item.issueTypeID}>
-                                {item.issueTypeName}
-                              </option>
-                            ))}
-                        </select>
-                        {/* <DropdownList
-                          filter
-                          data={this.state.slaIssueType}
-                          value={this.state.value}
-                          allowCreate="onFilter"
-                          onCreate={issueTypeName =>
-                            this.handleCreate(issueTypeName)
-                          }
-                          onChange={value => this.setState({ value })}
-                          textField="issueTypeName"
-                        /> */}
+                        <div className="dropdown">
+                          <button
+                            className="btn"
+                            type="button"
+                            data-toggle="dropdown"
+                          >
+                            Broken Shoe
+                            <span className="caret"></span>
+                          </button>
+                          <div className="dropdown-menu">
+                            <div className="cat-mainbox">
+                              <input
+                                type="text"
+                                className="searchf"
+                                placeholder="Search"
+                                maxLength={10}
+                                name="store_code"
+                              />
+                              <div className="filter-checkbox category-scroll">
+                                <ul>
+                                  <li>
+                                    <input
+                                      type="checkbox"
+                                      id="fil-add"
+                                      name="filter-type"
+                                      style={{ display: "none" }}
+                                      onChange={this.handleAddNoteCheck}
+                                    />
+                                    <label
+                                      htmlFor="fil-add"
+                                      style={{ paddingLeft: "25px" }}
+                                    >
+                                      <span className="add-note">Add Note</span>
+                                    </label>
+                                  </li>
+                                  <li>
+                                    <input
+                                      type="checkbox"
+                                      id="fil-add"
+                                      name="filter-type"
+                                      style={{ display: "none" }}
+                                      onChange={this.handleAddNoteCheck}
+                                    />
+                                    <label
+                                      htmlFor="fil-add"
+                                      style={{ paddingLeft: "25px" }}
+                                    >
+                                      <span className="add-note">Add Note</span>
+                                    </label>
+                                  </li>
+                                  <li>
+                                    <input
+                                      type="checkbox"
+                                      id="fil-add"
+                                      name="filter-type"
+                                      style={{ display: "none" }}
+                                      onChange={this.handleAddNoteCheck}
+                                    />
+                                    <label
+                                      htmlFor="fil-add"
+                                      style={{ paddingLeft: "25px" }}
+                                    >
+                                      <span className="add-note">Add Note</span>
+                                    </label>
+                                  </li>
+                                  <li>
+                                    <input
+                                      type="checkbox"
+                                      id="fil-add"
+                                      name="filter-type"
+                                      style={{ display: "none" }}
+                                      onChange={this.handleAddNoteCheck}
+                                    />
+                                    <label
+                                      htmlFor="fil-add"
+                                      style={{ paddingLeft: "25px" }}
+                                    >
+                                      <span className="add-note">Add Note</span>
+                                    </label>
+                                  </li>
+                                  <li>
+                                    <input
+                                      type="checkbox"
+                                      id="fil-add"
+                                      name="filter-type"
+                                      style={{ display: "none" }}
+                                      onChange={this.handleAddNoteCheck}
+                                    />
+                                    <label
+                                      htmlFor="fil-add"
+                                      style={{ paddingLeft: "25px" }}
+                                    >
+                                      <span className="add-note">Add Note</span>
+                                    </label>
+                                  </li>
+                                </ul>
+                              </div>
+                              <div className="category-button">
+                                <ul>
+                                  <li>
+                                    <label>Select All</label>
+                                  </li>
+                                  <li>
+                                    <label>Clear</label>
+                                  </li>
+                                </ul>
+                              </div>
+                              <div className="category-box category-scroll">
+                                <ul>
+                                  <li>
+                                    <label>Broken Shoe</label>
+                                    <span>Defective article</span>
+                                    <span>Complaint</span>
+                                  </li>
+                                  <li>
+                                    <label>Broken Shoe</label>
+                                    <span>Defective article</span>
+                                    <span>Complaint</span>
+                                  </li>
+                                  <li>
+                                    <label>Broken Shoe</label>
+                                    <span>Defective article</span>
+                                    <span>Complaint</span>
+                                  </li>
+                                  <li>
+                                    <label>Broken Shoe</label>
+                                    <span>Defective article</span>
+                                    <span>Complaint</span>
+                                  </li>
+                                </ul>
+                              </div>
+                              <div className="category-buttonbtm">
+                                <ul>
+                                  <li>
+                                    <button
+                                      className="cancel"
+                                    >
+                                        Cancel
+                                    </button>
+                                  </li>
+                                  <li style={{float: "right"}}>
+                                    <button
+                                      className="done"
+                                    >Done
+                                    </button>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <div className="slatargetRow">
@@ -743,7 +876,7 @@ class CreateSLA extends Component {
                                 name="SLABreachPercent1"
                                 value={item.priortyName || ""}
                                 autoComplete="off"
-                                onChange={this.handleSlaTargets.bind(this,i)}
+                                onChange={this.handleSlaTargets.bind(this, i)}
                               />
                             </div>
                             <div className="inner-div-2-1">
@@ -760,7 +893,7 @@ class CreateSLA extends Component {
                                 // value={this.state.SLABreachPercent2}
                                 value={item.priortyName || ""}
                                 autoComplete="off"
-                                onChange={this.handleSlaTargets.bind(this,i)}
+                                onChange={this.handleSlaTargets.bind(this, i)}
                               />
                             </div>
                             <div className="inner-div-2">
@@ -786,7 +919,7 @@ class CreateSLA extends Component {
                                 autoComplete="off"
                                 value={item.priortyName || ""}
                                 // onChange={this.handleSlaTargets}
-                                onChange={this.handleSlaTargets.bind(this,i)}
+                                onChange={this.handleSlaTargets.bind(this, i)}
                               />
                             </div>
                             <div className="inner-div-2">

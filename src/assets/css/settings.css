@@ -2076,7 +2076,7 @@
 
 .slatargetRow {
   /* margin-left: 20px; */
-  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .slatargettext {
@@ -2181,7 +2181,7 @@
   font-weight: 700;
   line-height: 14px;
   text-align: left;
-  padding-right: 13px;
+  padding-right:8px;
   display: inline-block;
 }
 
