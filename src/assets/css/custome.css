@@ -6427,10 +6427,9 @@ svg:not(:root).svg-inline--fa {
 .btn-padding-rTbale {
   padding-top: 20px !important;
 }
-.rt-resizable-header {
-  /* flex: 0 0 auto !important; */
+/* .rt-resizable-header {
   width: 0px !important;
-}
+} */
 .headerAdminStyle {
   background: aqua !important;
 }
