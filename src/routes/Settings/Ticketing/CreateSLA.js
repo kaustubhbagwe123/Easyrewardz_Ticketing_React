@@ -51,27 +51,46 @@ class CreateSLA extends Component {
       PriorityResolutionDurationHigh: "M",
       PriorityResolutionDurationMedium: "M",
       PriorityResolutionDurationLow: "M",
-      value: null
+      value: null,
+      PriorityData: [],
+      FinalDataOfSlaTarget: [],
+      SLABreachPercent1: 0,
+      SLABreachPercent2: 0,
+      SLABreachPercent3: 0
     };
 
     this.handleGetSLA = this.handleGetSLA.bind(this);
     this.handleGetSLAIssueType = this.handleGetSLAIssueType.bind(this);
-    this.handleSlaTargets = this.handleSlaTargets.bind(this);
+    // this.handleSlaTargets = this.handleSlaTargets.bind(this);
     this.handleSlaTargetsDropdowns = this.handleSlaTargetsDropdowns.bind(this);
+    this.handleGetPriorityList = this.handleGetPriorityList.bind(this);
   }
 
   componentDidMount() {
     this.handleGetSLA();
     this.handleGetSLAIssueType();
+    this.handleGetPriorityList();
   }
 
-  handleSlaTargets(e) {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
-  }
+  handleSlaTargets = (e, item) => {
+    debugger;
+    console.log(item);
+
+    // let data=item.priortyName;
+    // if(data === "High"){
+
+    // }
+    // PriorityData[i] = {
+    //   ...multiCBM[i],
+    //   [name]: value
+    // };
+    // this.setState({
+    //   [e.target.name]: e.target.value
+    // });
+  };
   handleSlaTargetsDropdowns(e) {
     debugger;
+
     this.setState({
       [e.target.name]: e.target.value
     });
@@ -116,9 +135,30 @@ class CreateSLA extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let sla = res.data.responseData;
-      if (sla !== null && sla !== undefined) {
-        self.setState({ sla });
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        self.setState({ sla: data });
+      } else {
+        self.setState({ sla: [] });
+      }
+    });
+  }
+  handleGetPriorityList() {
+    debugger;
+    let self = this;
+    axios({
+      method: "get",
+      url: config.apiUrl + "/Priority/GetPriorityList",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        self.setState({ PriorityData: data });
+      } else {
+        self.setState({ PriorityData: [] });
       }
     });
   }
@@ -203,27 +243,27 @@ class CreateSLA extends Component {
           this.state.PriorityResolutionValueHigh
         ),
         PriorityResolutionDuration: this.state.PriorityResolutionDurationHigh
-      },
-      {
-        PriorityID: 29,
-        SLABreachPercent: parseInt(this.state.SLABreachPercentMedium),
-        PriorityRespondValue: parseInt(this.state.PriorityRespondValueMedium),
-        PriorityRespondDuration: this.state.PriorityRespondDurationMedium,
-        PriorityResolutionValue: parseInt(
-          this.state.PriorityResolutionValueMedium
-        ),
-        PriorityResolutionDuration: this.state.PriorityResolutionDurationMedium
-      },
-      {
-        PriorityID: 30,
-        SLABreachPercent: parseInt(this.state.SLABreachPercentLow),
-        PriorityRespondValue: parseInt(this.state.PriorityRespondValueLow),
-        PriorityRespondDuration: this.state.PriorityRespondDurationLow,
-        PriorityResolutionValue: parseInt(
-          this.state.PriorityResolutionValueLow
-        ),
-        PriorityResolutionDuration: this.state.PriorityResolutionDurationLow
       }
+      // {
+      //   PriorityID: 29,
+      //   SLABreachPercent: parseInt(this.state.SLABreachPercentMedium),
+      //   PriorityRespondValue: parseInt(this.state.PriorityRespondValueMedium),
+      //   PriorityRespondDuration: this.state.PriorityRespondDurationMedium,
+      //   PriorityResolutionValue: parseInt(
+      //     this.state.PriorityResolutionValueMedium
+      //   ),
+      //   PriorityResolutionDuration: this.state.PriorityResolutionDurationMedium
+      // },
+      // {
+      //   PriorityID: 30,
+      //   SLABreachPercent: parseInt(this.state.SLABreachPercentLow),
+      //   PriorityRespondValue: parseInt(this.state.PriorityRespondValueLow),
+      //   PriorityRespondDuration: this.state.PriorityRespondDurationLow,
+      //   PriorityResolutionValue: parseInt(
+      //     this.state.PriorityResolutionValueLow
+      //   ),
+      //   PriorityResolutionDuration: this.state.PriorityResolutionDurationLow
+      // }
     ];
 
     axios({
@@ -241,9 +281,9 @@ class CreateSLA extends Component {
       if (status === "Success") {
         NotificationManager.success("SLA added successfully.");
         self.setState({
-          selectedSlaIssueType:0,
-          SlaIsActive:"true"
-        })
+          selectedSlaIssueType: 0,
+          SlaIsActive: "true"
+        });
         self.handleGetSLA();
       } else {
         NotificationManager.error("SLA not added.");
@@ -686,6 +726,98 @@ class CreateSLA extends Component {
                       <label className="createhead-text">Rerspond</label>
                       <label className="createhead-text">Resolve</label>
                     </div>
+                    {this.state.PriorityData !== null &&
+                      this.state.PriorityData.map((item, i) => (
+                        <div className="slatargetRow-1" key={i}>
+                          <div className="sla-div">
+                            <label className="createhead-text-1">
+                              {item.priortyName}
+                            </label>
+                          </div>
+                          <div className="sla-div-1">
+                            <div className="inner-div">
+                              <input
+                                type="text"
+                                placeholder="30"
+                                className="text-box-crt-sla"
+                                name="SLABreachPercent1"
+                                value={item.priortyName || ""}
+                                autoComplete="off"
+                                onChange={this.handleSlaTargets.bind(this,i)}
+                              />
+                            </div>
+                            <div className="inner-div-2-1">
+                              <label className="pers-lable">%</label>
+                            </div>
+                          </div>
+                          <div className="sla-div-1">
+                            <div className="inner-div">
+                              <input
+                                type="text"
+                                placeholder="30"
+                                className="text-box-crt-sla"
+                                name="SLABreachPercent2"
+                                // value={this.state.SLABreachPercent2}
+                                value={item.priortyName || ""}
+                                autoComplete="off"
+                                onChange={this.handleSlaTargets.bind(this,i)}
+                              />
+                            </div>
+                            <div className="inner-div-2">
+                              <select
+                                className="pers-lable-select"
+                                name="SLABreachPercent3"
+                                value={this.state.SLABreachPercent3}
+                                onChange={this.handleSlaTargetsDropdowns}
+                              >
+                                <option value="M">M</option>
+                                <option value="H">H</option>
+                                <option value="D">D</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div className="sla-div-1">
+                            <div className="inner-div">
+                              <input
+                                type="text"
+                                placeholder="30"
+                                className="text-box-crt-sla"
+                                name="PriorityResolutionValueHigh"
+                                autoComplete="off"
+                                value={item.priortyName || ""}
+                                // onChange={this.handleSlaTargets}
+                                onChange={this.handleSlaTargets.bind(this,i)}
+                              />
+                            </div>
+                            <div className="inner-div-2">
+                              <select
+                                className="pers-lable-select"
+                                name="PriorityResolutionDurationHigh"
+                                value={
+                                  this.state.PriorityResolutionDurationHigh
+                                }
+                                onChange={this.handleSlaTargetsDropdowns}
+                              >
+                                <option value="M">M</option>
+                                <option value="H">H</option>
+                                <option value="D">D</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+
+                    {/* <div className="slatargetRow">
+                      <label className="slatargettext">SLA Targets</label>
+                    </div>
+                    <div className="slatargetRow-1">
+                      <label className="createhead-text-new">Priority</label>
+                      <label className="createhead-text">
+                        %SLA <br /> Breach
+                      </label>
+                      <label className="createhead-text">Rerspond</label>
+                      <label className="createhead-text">Resolve</label>
+                    </div>
                     <div className="slatargetRow-1">
                       <div className="sla-div">
                         <label className="createhead-text-1">High</label>
@@ -715,7 +847,6 @@ class CreateSLA extends Component {
                           />
                         </div>
                         <div className="inner-div-2">
-                          {/* <label className="pers-lable">%</label> */}
                           <select
                             className="pers-lable-select"
                             name="PriorityRespondDurationHigh"
@@ -739,7 +870,6 @@ class CreateSLA extends Component {
                           />
                         </div>
                         <div className="inner-div-2">
-                          {/* <label className="pers-lable">%</label> */}
                           <select
                             className="pers-lable-select"
                             name="PriorityResolutionDurationHigh"
@@ -782,7 +912,6 @@ class CreateSLA extends Component {
                           />
                         </div>
                         <div className="inner-div-2">
-                          {/* <label className="pers-lable">%</label> */}
                           <select
                             className="pers-lable-select"
                             name="PriorityRespondDurationMedium"
@@ -806,7 +935,6 @@ class CreateSLA extends Component {
                           />
                         </div>
                         <div className="inner-div-2">
-                          {/* <label className="pers-lable">%</label> */}
                           <select
                             className="pers-lable-select"
                             name="PriorityResolutionDurationMedium"
@@ -849,7 +977,6 @@ class CreateSLA extends Component {
                           />
                         </div>
                         <div className="inner-div-2">
-                          {/* <label className="pers-lable">%</label> */}
                           <select
                             className="pers-lable-select"
                             name="PriorityRespondDurationLow"
@@ -873,7 +1000,6 @@ class CreateSLA extends Component {
                           />
                         </div>
                         <div className="inner-div-2">
-                          {/* <label className="pers-lable">%</label> */}
                           <select
                             className="pers-lable-select"
                             name="PriorityResolutionDurationLow"
@@ -886,7 +1012,7 @@ class CreateSLA extends Component {
                           </select>
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                     <div className="divSpace-3">
                       <div className="dropDrownSpace">
                         <label className="reports-to">Status</label>
@@ -918,9 +1044,9 @@ class CreateSLA extends Component {
                     <h3>Bulk Upload</h3>
                     <div className="down-excel">
                       <p>Template</p>
-                      <CSVLink  filename={"SLA.csv"} data={config.slaTemplate}>
-                       <img src={DownExcel} alt="download icon" />
-                     </CSVLink>
+                      <CSVLink filename={"SLA.csv"} data={config.slaTemplate}>
+                        <img src={DownExcel} alt="download icon" />
+                      </CSVLink>
                     </div>
                     <input
                       id="file-upload"

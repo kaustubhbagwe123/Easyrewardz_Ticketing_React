@@ -22,7 +22,7 @@ import {
 } from "react-notifications";
 import DownExcel from "../../../assets/Images/csv.png";
 import SimpleReactValidator from "simple-react-validator";
-import { CSVLink, CSVDownload } from "react-csv";
+import { CSVLink } from "react-csv";
 
 class TicketCRMRole extends Component {
   constructor(props) {
@@ -47,19 +47,22 @@ class TicketCRMRole extends Component {
       updateRoleisActive: '',
       updateModulesEnabled: '',
       updateModulesDisabled: '',
-      updateModulesList: []
+      updateModulesList: [],
+      
     };
 
     this.handleRoleName = this.handleRoleName.bind(this);
     this.handleUpdateRoleName = this.handleUpdateRoleName.bind(this);
     this.handleModulesDefault = this.handleModulesDefault.bind(this);
     this.handleGetCRMRoles = this.handleGetCRMRoles.bind(this);
+    
     this.validator = new SimpleReactValidator();
   }
 
   componentDidMount() {
     this.handleModulesDefault();
     this.handleGetCRMRoles();
+    
   }
 
   handleGetCRMRoles() {
@@ -77,7 +80,7 @@ class TicketCRMRole extends Component {
       }
     });
   }
-
+  
   handleModulesDefault = async () => {
     debugger;
     let modulesList = [... this.state.modulesList], isActive, ModulesEnabled = '', ModulesDisabled = '';
