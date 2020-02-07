@@ -4176,7 +4176,7 @@ class Dashboard extends Component {
                                     value={this.state.selectedIssueTypeAll}
                                     onChange={this.setIssueTypeAllValue}
                                   >
-                                    <option>Issue Type</option>
+                                    <option value="0">Issue Type</option>
                                     {this.state.IssueTypeAllData !== null &&
                                       this.state.IssueTypeAllData.map(
                                         (item, i) => (
@@ -4348,7 +4348,7 @@ class Dashboard extends Component {
                                                   this.setClaimIssueTypeValue
                                                 }
                                               >
-                                                <option>Claim Issue Type</option>
+                                                <option value="0">Claim Issue Type</option>
                                                 {this.state.ClaimIssueTypeData !==
                                                   null &&
                                                   this.state.ClaimIssueTypeData.map(
@@ -4481,7 +4481,12 @@ class Dashboard extends Component {
                             </div>
                             <div className="col-auto mob-mar-btm">
                               <CSVLink
-                                className="csv-button"
+                                // className="csv-button"
+                                className={
+                                  this.state.SearchTicketData.length > 0
+                                    ? "csv-button"
+                                    : "csv-button csv-dis-btn"
+                                }
                                 data={this.state.CSVDownload}
                               >
                                 <img

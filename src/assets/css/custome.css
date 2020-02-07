@@ -9771,6 +9771,15 @@ table tr th:last-child {
   padding-bottom: 12px;
   cursor: pointer;
 }
+.csv-button {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+.csv-dis-btn {
+  opacity: 0.4;
+  cursor: default;
+  pointer-events: none;
+}
 .myticlist-expand-sect .save-view-search button.btn-inv {
   padding-right: 45px;
   padding-left: 45px;

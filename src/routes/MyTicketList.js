@@ -2991,7 +2991,7 @@ class MyTicketList extends Component {
                                             }
                                             onChange={this.setCategoryAllValue}
                                           >
-                                            <option>Category</option>
+                                            <option value="0">Category</option>
                                             {this.state.CategoryData !== null &&
                                               this.state.CategoryData.map(
                                                 (item, i) => (
@@ -3071,7 +3071,7 @@ class MyTicketList extends Component {
                                               this.setSubCategoryAllValue
                                             }
                                           >
-                                            <option>Sub Category</option>
+                                            <option value="0">Sub Category</option>
                                             {this.state.SubCategoryAllData !==
                                               null &&
                                               this.state.SubCategoryAllData.map(
@@ -3147,7 +3147,7 @@ class MyTicketList extends Component {
                                             }
                                             onChange={this.setIssueTypeAllValue}
                                           >
-                                            <option>Issue Type</option>
+                                            <option value="0">Issue Type</option>
                                             {this.state.IssueTypeAllData !==
                                               null &&
                                               this.state.IssueTypeAllData.map(
@@ -3289,7 +3289,7 @@ class MyTicketList extends Component {
                                                           .setClaimCategoryValue
                                                       }
                                                     >
-                                                      <option>
+                                                      <option value="0">
                                                         Claim Category
                                                       </option>
                                                       {this.state
@@ -3323,7 +3323,7 @@ class MyTicketList extends Component {
                                                           .setClaimSubCategoryValue
                                                       }
                                                     >
-                                                      <option>
+                                                      <option value="0">
                                                         Claim Sub Category
                                                       </option>
                                                       {this.state
@@ -3357,7 +3357,7 @@ class MyTicketList extends Component {
                                                           .setClaimIssueTypeValue
                                                       }
                                                     >
-                                                      <option>
+                                                      <option value="0">
                                                         Claim Issue Type
                                                       </option>
                                                       {this.state
@@ -3533,7 +3533,12 @@ class MyTicketList extends Component {
                                     </div>
                                     <div className="col-auto mob-mar-btm">
                                       <CSVLink
-                                        className="csv-button"
+                                        // className="csv-button"
+                                        className={
+                                          this.state.SearchTicketData.length > 0
+                                            ? "csv-button"
+                                            : "csv-button csv-dis-btn"
+                                        }
                                         data={this.state.CSVDownload}
                                       >
                                         <img
