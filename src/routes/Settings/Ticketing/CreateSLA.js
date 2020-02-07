@@ -270,10 +270,10 @@ class CreateSLA extends Component {
         NotificationManager.success("SLA added successfully.");
         self.setState({
           selectedSlaIssueType: 0,
-          SlaIsActive: "true",
-          finalData:[]
+          SlaIsActive: "true"
         });
         self.handleGetSLA();
+        self.handleGetPriorityList();
       } else {
         NotificationManager.error("SLA not added.");
       }
