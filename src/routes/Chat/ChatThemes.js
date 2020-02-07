@@ -7,6 +7,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Popover } from "antd";
 
 class ChatThemes extends Component {
+  hide(e, id) {
+    debugger;
+    // document.getElementById(id).style.display="none";
+    document.getElementById(id).parentElement.parentElement.parentElement.parentElement.parentElement.style.display = "none";
+  }
+  show(e, id) {
+    debugger;
+    if (document.getElementById(id))
+      // document.getElementById(id).style.display="block";
+      document.getElementById(id).parentElement.parentElement.parentElement.parentElement.parentElement.style.display = "block";
+  }
   render() {
     const dataChatRules = [
       {
@@ -14,7 +25,7 @@ class ChatThemes extends Component {
         themeCode: "Theme_Arbo",
         themeName: "Arbo Cement",
         deactive: (
-          <div className="crm-margin-div crm-padding-div">
+          <div className="crm-margin-div chatpadtoggle">
             <div className="switch switch-primary d-inline m-r-10">
               <input type="checkbox" id="Notification-c1" />
               <label
@@ -30,7 +41,7 @@ class ChatThemes extends Component {
         themeCode: "Theme_Boo",
         themeName: "BooCosmos",
         deactive: (
-          <div className="crm-margin-div crm-padding-div">
+          <div className="crm-margin-div chatpadtoggle">
             <div className="switch switch-primary d-inline m-r-10">
               <input type="checkbox" id="Notification-c2" />
               <label
@@ -46,7 +57,7 @@ class ChatThemes extends Component {
         themeCode: "Theme_Arch",
         themeName: "Archstone",
         deactive: (
-          <div className="crm-margin-div crm-padding-div">
+          <div className="crm-margin-div chatpadtoggle">
             <div className="switch switch-primary d-inline m-r-10">
               <input type="checkbox" id="Notification-c3" />
               <label
@@ -62,7 +73,7 @@ class ChatThemes extends Component {
         themeCode: "Theme_Boost",
         themeName: "Boost",
         deactive: (
-          <div className="crm-margin-div crm-padding-div">
+          <div className="crm-margin-div chatpadtoggle">
             <div className="switch switch-primary d-inline m-r-10">
               <input type="checkbox" id="Notification-c4" />
               <label
@@ -78,7 +89,7 @@ class ChatThemes extends Component {
         themeCode: "Theme_CC",
         themeName: "Cream City",
         deactive: (
-          <div className="crm-margin-div crm-padding-div">
+          <div className="crm-margin-div chatpadtoggle">
             <div className="switch switch-primary d-inline m-r-10">
               <input type="checkbox" id="Notification-c5" />
               <label
@@ -94,7 +105,7 @@ class ChatThemes extends Component {
         themeCode: "Theme_EMt",
         themeName: "EMinente",
         deactive: (
-          <div className="crm-margin-div crm-padding-div">
+          <div className="crm-margin-div chatpadtoggle">
             <div className="switch switch-primary d-inline m-r-10">
               <input type="checkbox" id="Notification-c6" />
               <label
@@ -110,7 +121,7 @@ class ChatThemes extends Component {
         themeCode: "Theme_F&F",
         themeName: "Floss & Flirt",
         deactive: (
-          <div className="crm-margin-div crm-padding-div">
+          <div className="crm-margin-div chatpadtoggle">
             <div className="switch switch-primary d-inline m-r-10">
               <input type="checkbox" id="Notification-c7" />
               <label
@@ -126,7 +137,7 @@ class ChatThemes extends Component {
         themeCode: "Theme_Dellin",
         themeName: "Dellin",
         deactive: (
-          <div className="crm-margin-div crm-padding-div">
+          <div className="crm-margin-div chatpadtoggle">
             <div className="switch switch-primary d-inline m-r-10">
               <input type="checkbox" id="Notification-c8" />
               <label
@@ -142,7 +153,7 @@ class ChatThemes extends Component {
         themeCode: "Theme_Emp",
         themeName: "Empire",
         deactive: (
-          <div className="crm-margin-div crm-padding-div">
+          <div className="crm-margin-div chatpadtoggle">
             <div className="switch switch-primary d-inline m-r-10">
               <input type="checkbox" id="Notification-c9" />
               <label
@@ -158,7 +169,7 @@ class ChatThemes extends Component {
         themeCode: "Theme_Flo",
         themeName: "Flourish",
         deactive: (
-          <div className="crm-margin-div crm-padding-div">
+          <div className="crm-margin-div chatpadtoggle">
             <div className="switch switch-primary d-inline m-r-10">
               <input type="checkbox" id="Notification-c9" />
               <label
@@ -174,7 +185,7 @@ class ChatThemes extends Component {
         themeCode: "Theme_De",
         themeName: "De'pise",
         deactive: (
-          <div className="crm-margin-div crm-padding-div">
+          <div className="crm-margin-div chatpadtoggle">
             <div className="switch switch-primary d-inline m-r-10">
               <input type="checkbox" id="Notification-c9" />
               <label
@@ -190,7 +201,7 @@ class ChatThemes extends Component {
         themeCode: "Theme_En",
         themeName: "Enclave",
         deactive: (
-          <div className="crm-margin-div crm-padding-div">
+          <div className="crm-margin-div chatpadtoggle">
             <div className="switch switch-primary d-inline m-r-10">
               <input type="checkbox" id="Notification-c9" />
               <label
@@ -234,19 +245,54 @@ class ChatThemes extends Component {
       {
         Header: <span>Actions</span>,
         accessor: "actiondept",
-        // Cell: row => (
-        //   <button className="react-tabel-button">
-        //     <label className="Table-action-edit-button-text">EDIT</label>
-        //   </button>
-        // )
         Cell: row => {
           var ids = row.original["id"];
           return (
             <div>
 
-              <Popover content={ChatEdit} placement="bottom" trigger="click" >
-                <button className="react-tabel-button editre" id={ids}>
-                  EDIt
+              <Popover content={<div className="edtpadding" id={"edtpadding" + ids}>
+                <div className="d-flex">
+                  <div>
+                    <div className="">
+                      <label className="popover-header-text">EDIT THEME</label>
+                    </div>
+                    <div className="pop-over-div">
+                      <label className="edit-label-1">Theme Code</label>
+                      <input
+                        type="text"
+                        className="txt-edit-popover"
+                        placeholder="Enter Theme Code"
+                        maxLength={10}
+                      />
+                    </div>
+                    <div className="pop-over-div">
+                      <label className="edit-label-1">Theme Name</label>
+                      <input
+                        type="text"
+                        className="txt-edit-popover"
+                        placeholder="Enter Theme Name"
+                        maxLength={25}
+                      />
+                    </div>
+                    <div className="pop-over-div" style={{ width: "170px" }}>
+                      <label className="edit-label-1">Theme Icon</label>
+                      <div class="custom-file txt-edit-popover">
+                        <input type="file" className="custom-file-input" />
+                        <label className="custom-file-label">Theme.png</label>
+                      </div>
+                    </div>
+                    <br />
+                    <div>
+                      <a className="pop-over-cancle canblue" onClick={() => this.hide(this, "edtpadding" + ids)}>CANCEL</a>
+                      <button className="pop-over-button">
+                        SAVE
+            </button>
+                    </div>
+                  </div>
+                </div>
+              </div>} placement="bottom" trigger="click" >
+                <button className="react-tabel-button editre" id={ids} onClick={() => this.show(this, "edtpadding" + ids)}>
+                  EDIT
                 </button>
               </Popover>
             </div>
@@ -254,46 +300,7 @@ class ChatThemes extends Component {
         }
       }
     ];
-    const ChatEdit = (
 
-      <div className="edtpadding">
-      <div className="">
-        <label className="popover-header-text">EDIT THEME</label>
-      </div>
-      <div className="pop-over-div">
-        <label className="edit-label-1">Theme Code</label>
-        <input
-          type="text"
-          className="txt-edit-popover"
-          placeholder="Enter Theme Code"
-          maxLength={10}
-        />
-      </div>
-      <div className="pop-over-div">
-        <label className="edit-label-1">Theme Name</label>
-        <input
-          type="text"
-          className="txt-edit-popover"
-          placeholder="Enter Theme Name"
-          maxLength={25}
-        />
-      </div>
-      <div className="pop-over-div">
-        <label className="edit-label-1">Theme Icon</label>
-        <div class="custom-file txt-edit-popover">
-              <input type="file" className="custom-file-input" />
-              <label className="custom-file-label">Theme_Icon.png</label>
-            </div>
-      </div>
-      <br />
-      <div>
-      <a className="pop-over-cancle" href={Demo.BLANK_LINK} >CANCEL</a>
-        <button className="pop-over-button">
-         SAVE
-        </button>
-      </div>
-    </div>
-  );
     return (
       <Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
@@ -322,7 +329,7 @@ class ChatThemes extends Component {
                     defaultPageSize={15}
                     showPagination={false}
                   />
-                   <div className="position-relative1">
+                  <div className="position-relative1">
                     <div className="pagi">
                       <ul>
                         <li>

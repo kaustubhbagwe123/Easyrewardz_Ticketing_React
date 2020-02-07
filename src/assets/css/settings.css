@@ -1795,6 +1795,17 @@
   margin-bottom: 5px;
   margin-top: 10px;
 }
+.qaus .edit-label-1 {
+  color: #4a4a4a;
+  font-family: Lato;
+  font-size: 12px !important;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: left;
+  display: block;
+  margin-bottom: 5px;
+  margin-top: 10px;
+}
 .edit-dropDwon {
   border-radius: 0.25rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
@@ -1811,6 +1822,15 @@
   height: 35px;
   border: none;
   padding: 7px 10px !important;
+}
+.txt-edit-popoverchat {
+  background-color: #ecf2f4;
+  border-radius: 4px;
+  width: 100%;
+  height: 35px;
+  border: none;
+  padding: 7px 10px !important;
+  margin-bottom: 15px;
 }
 .cancle-action {
   color: #2561a8;
@@ -3091,6 +3111,12 @@
 }
 .ant-select-arrow {
   display: none !important;
+}
+.chatpadtoggle {
+  padding-right: 90px;
+}
+.canblue{
+  color: #2561a8 !important;
 }
 /* Akasha css end */
 
