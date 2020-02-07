@@ -244,17 +244,13 @@ class CreateSLA extends Component {
 
     var paramData=[];
     for (let i = 0; i < data.length; i++) {
-      var temp={};
-      // var paramData = [
-      //   {
+      var temp={}; 
           temp.PriorityID= data[i].priorityID;
           temp.SLABreachPercent= data[i].SlaBreach;
           temp.PriorityRespondValue= data[i].Rerspondtime;
           temp.PriorityRespondDuration=data[i].RerspondType;
           temp.PriorityResolutionValue= data[i].ResolveTime;
           temp.PriorityResolutionDuration= data[i].ResolveType
-        // }
-      // ]
       paramData.push(temp)
     }
 
@@ -274,7 +270,8 @@ class CreateSLA extends Component {
         NotificationManager.success("SLA added successfully.");
         self.setState({
           selectedSlaIssueType: 0,
-          SlaIsActive: "true"
+          SlaIsActive: "true",
+          finalData:[]
         });
         self.handleGetSLA();
       } else {
@@ -840,212 +837,7 @@ class CreateSLA extends Component {
                         </div>
                       ))}
 
-                    {/* <div className="slatargetRow">
-                      <label className="slatargettext">SLA Targets</label>
-                    </div>
-                    <div className="slatargetRow-1">
-                      <label className="createhead-text-new">Priority</label>
-                      <label className="createhead-text">
-                        %SLA <br /> Breach
-                      </label>
-                      <label className="createhead-text">Rerspond</label>
-                      <label className="createhead-text">Resolve</label>
-                    </div>
-                    <div className="slatargetRow-1">
-                      <div className="sla-div">
-                        <label className="createhead-text-1">High</label>
-                      </div>
-                      <div className="sla-div-1">
-                        <div className="inner-div">
-                          <input
-                            type="text"
-                            placeholder="30"
-                            className="text-box-crt-sla"
-                            name="SLABreachPercentHigh"
-                            onChange={this.handleSlaTargets}
-                          />
-                        </div>
-                        <div className="inner-div-2-1">
-                          <label className="pers-lable">%</label>
-                        </div>
-                      </div>
-                      <div className="sla-div-1">
-                        <div className="inner-div">
-                          <input
-                            type="text"
-                            placeholder="30"
-                            className="text-box-crt-sla"
-                            name="PriorityRespondValueHigh"
-                            onChange={this.handleSlaTargets}
-                          />
-                        </div>
-                        <div className="inner-div-2">
-                          <select
-                            className="pers-lable-select"
-                            name="PriorityRespondDurationHigh"
-                            value={this.state.PriorityRespondDurationHigh}
-                            onChange={this.handleSlaTargetsDropdowns}
-                          >
-                            <option value="M">M</option>
-                            <option value="H">H</option>
-                            <option value="D">D</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div className="sla-div-1">
-                        <div className="inner-div">
-                          <input
-                            type="text"
-                            placeholder="30"
-                            className="text-box-crt-sla"
-                            name="PriorityResolutionValueHigh"
-                            onChange={this.handleSlaTargets}
-                          />
-                        </div>
-                        <div className="inner-div-2">
-                          <select
-                            className="pers-lable-select"
-                            name="PriorityResolutionDurationHigh"
-                            value={this.state.PriorityResolutionDurationHigh}
-                            onChange={this.handleSlaTargetsDropdowns}
-                          >
-                            <option value="M">M</option>
-                            <option value="H">H</option>
-                            <option value="D">D</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="slatargetRow-1">
-                      <div className="sla-div">
-                        <label className="createhead-text-1">Medium</label>
-                      </div>
-                      <div className="sla-div-1">
-                        <div className="inner-div">
-                          <input
-                            type="text"
-                            placeholder="30"
-                            className="text-box-crt-sla"
-                            name="SLABreachPercentMedium"
-                            onChange={this.handleSlaTargets}
-                          />
-                        </div>
-                        <div className="inner-div-2-1">
-                          <label className="pers-lable">%</label>
-                        </div>
-                      </div>
-                      <div className="sla-div-1">
-                        <div className="inner-div">
-                          <input
-                            type="text"
-                            placeholder="30"
-                            className="text-box-crt-sla"
-                            name="PriorityRespondValueMedium"
-                            onChange={this.handleSlaTargets}
-                          />
-                        </div>
-                        <div className="inner-div-2">
-                          <select
-                            className="pers-lable-select"
-                            name="PriorityRespondDurationMedium"
-                            value={this.state.PriorityRespondDurationMedium}
-                            onChange={this.handleSlaTargetsDropdowns}
-                          >
-                            <option value="M">M</option>
-                            <option value="H">H</option>
-                            <option value="D">D</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div className="sla-div-1">
-                        <div className="inner-div">
-                          <input
-                            type="text"
-                            placeholder="30"
-                            className="text-box-crt-sla"
-                            name="PriorityResolutionValueMedium"
-                            onChange={this.handleSlaTargets}
-                          />
-                        </div>
-                        <div className="inner-div-2">
-                          <select
-                            className="pers-lable-select"
-                            name="PriorityResolutionDurationMedium"
-                            value={this.state.PriorityResolutionDurationMedium}
-                            onChange={this.handleSlaTargetsDropdowns}
-                          >
-                            <option value="M">M</option>
-                            <option value="H">H</option>
-                            <option value="D">D</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="slatargetRow-1">
-                      <div className="sla-div">
-                        <label className="createhead-text-1">Low</label>
-                      </div>
-                      <div className="sla-div-1">
-                        <div className="inner-div">
-                          <input
-                            type="text"
-                            placeholder="30"
-                            className="text-box-crt-sla"
-                            name="SLABreachPercentLow"
-                            onChange={this.handleSlaTargets}
-                          />
-                        </div>
-                        <div className="inner-div-2-1">
-                          <label className="pers-lable">%</label>
-                        </div>
-                      </div>
-                      <div className="sla-div-1">
-                        <div className="inner-div">
-                          <input
-                            type="text"
-                            placeholder="30"
-                            className="text-box-crt-sla"
-                            name="PriorityRespondValueLow"
-                            onChange={this.handleSlaTargets}
-                          />
-                        </div>
-                        <div className="inner-div-2">
-                          <select
-                            className="pers-lable-select"
-                            name="PriorityRespondDurationLow"
-                            value={this.state.PriorityRespondDurationLow}
-                            onChange={this.handleSlaTargetsDropdowns}
-                          >
-                            <option value="M">M</option>
-                            <option value="H">H</option>
-                            <option value="D">D</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div className="sla-div-1">
-                        <div className="inner-div">
-                          <input
-                            type="text"
-                            placeholder="30"
-                            className="text-box-crt-sla"
-                            name="PriorityResolutionValueLow"
-                            onChange={this.handleSlaTargets}
-                          />
-                        </div>
-                        <div className="inner-div-2">
-                          <select
-                            className="pers-lable-select"
-                            name="PriorityResolutionDurationLow"
-                            value={this.state.PriorityResolutionDurationLow}
-                            onChange={this.handleSlaTargetsDropdowns}
-                          >
-                            <option value="M">M</option>
-                            <option value="H">H</option>
-                            <option value="D">D</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div> */}
+                   
                     <div className="divSpace-3">
                       <div className="dropDrownSpace">
                         <label className="reports-to">Status</label>

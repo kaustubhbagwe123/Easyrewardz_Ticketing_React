@@ -303,7 +303,6 @@ class MyTicket extends Component {
       let status = res.data.message;
       if (status === "Success") {
         let data = res.data.responseData;
-        console.log(data,"final data");
         
         self.setState({
           messageDetails: data
