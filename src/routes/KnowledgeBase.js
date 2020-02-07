@@ -5,9 +5,9 @@ import DownArrowIcon from "./../assets/Images/down-1.png";
 import Modal from "react-responsive-modal";
 import LeftBackIcon from "./../assets/Images/black-left-arrow.png";
 import CancelIcon from "./../assets/Images/cancel.png";
-import { Collapse, CardBody } from "reactstrap";
+import { CardBody, UncontrolledCollapse } from "reactstrap";
 import { Card } from "react-bootstrap";
-import CKEditor from 'ckeditor4-react';
+import CKEditor from "ckeditor4-react";
 import { authHeader } from "../helpers/authHeader";
 import axios from "axios";
 import config from "./../helpers/config";
@@ -16,88 +16,91 @@ import {
   NotificationManager
 } from "react-notifications";
 import ReactTable from "react-table";
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { notification } from "antd";
-
 
 class KnowledgeBase extends Component {
   constructor(props) {
     super(props);
-var row;
+    var row;
     this.state = {
       headerfirst: "block",
       headersecound: "none",
       searchmodal: false,
       addnewkbmodal: false,
       editapprove: false,
-      editapprove1:false,
+      editapprove1: false,
       detailscollapse: false,
       tabcolor: "#2561A8",
       tabcolor1: "#4A4A4A",
-      selectedCategory: '',
+      selectedCategory: "",
       CategoryData: [],
-      byCategoryFlag:0,
-      allFlag:0,
-      selectedSubCategory:'',
-      SubCategoryData:[],
-      selectedSubject:'',
-      selectedDescription:[],
-      KBListData:[],
-      KBListnotApproveData:[],
-      KBid:0,
-      IssueTypeData:[],
-      selectedIssueType:'',
-      updateKBID:0,
-      updateCategoryValue:0,
-      updateCategoryName:"",
-      updateSubCategoryValue:0,
-      updateSubCategoryName:"",
-      updateIssurTypeValue:0,
-      updateIssueTypeName:"",
-      updateSubject:"",
-      updateDescription:"",
-      approveID:0,
-      approvebit:0,
-      approveKBID:0,
-      approveCategoryValue:'',
-      approveCategoryName:"",
-      approveSubCategoryValue:'',
-      approveSubCategoryName:"",
-      approveIssurTypeValue:'',
-      approveIssueTypeName:"",
-      approveSubject:"",
-      approveDescription:"",
-      ckeditorAdd:'',
-      ckeditorUpdate:[],
-      ckeditorApprove:[],
-      countApprove:0,
-      countNotApprove:0,
-      categoryCompulsion: '',
-      subCategoryCompulsion: '',
-      issueTypeCompulsion: '',
-      subjectCompulsion: '',
-      approveCategoryCompulsion: '',
-      approveSubCategoryCompulsion: '',
-      approveIssueTypeCompulsion: '',
-      approveSubjectCompulsion: '',
-      updateCategoryCompulsion: '',
-      updateSubCategoryCompulsion: '',
-      updateIssueTypeCompulsion: '',
-      updateSubjectCompulsion: '',
+      byCategoryFlag: 0,
+      allFlag: 0,
+      selectedSubCategory: "",
+      SubCategoryData: [],
+      selectedSubject: "",
+      selectedDescription: [],
+      KBListData: [],
+      KBListnotApproveData: [],
+      KBid: 0,
+      IssueTypeData: [],
+      selectedIssueType: "",
+      updateKBID: 0,
+      updateCategoryValue: 0,
+      updateCategoryName: "",
+      updateSubCategoryValue: 0,
+      updateSubCategoryName: "",
+      updateIssurTypeValue: 0,
+      updateIssueTypeName: "",
+      updateSubject: "",
+      updateDescription: "",
+      approveID: 0,
+      approvebit: 0,
+      approveKBID: 0,
+      approveCategoryValue: "",
+      approveCategoryName: "",
+      approveSubCategoryValue: "",
+      approveSubCategoryName: "",
+      approveIssurTypeValue: "",
+      approveIssueTypeName: "",
+      approveSubject: "",
+      approveDescription: "",
+      ckeditorAdd: "",
+      ckeditorUpdate: [],
+      ckeditorApprove: [],
+      countApprove: 0,
+      countNotApprove: 0,
+      categoryCompulsion: "",
+      subCategoryCompulsion: "",
+      issueTypeCompulsion: "",
+      subjectCompulsion: "",
+      approveCategoryCompulsion: "",
+      approveSubCategoryCompulsion: "",
+      approveIssueTypeCompulsion: "",
+      approveSubjectCompulsion: "",
+      updateCategoryCompulsion: "",
+      updateSubCategoryCompulsion: "",
+      updateIssueTypeCompulsion: "",
+      updateSubjectCompulsion: ""
     };
     this.HandelFirstTabClick = this.HandelFirstTabClick.bind(this);
     this.HandelSecoundTabClick = this.HandelSecoundTabClick.bind(this);
     this.opneSearchModal = this.opneSearchModal.bind(this);
     this.closeSearchModal = this.closeSearchModal.bind(this);
-    this.HandelOnenCloseDetailsCollapse = this.HandelOnenCloseDetailsCollapse.bind(this);
-    this.handleGetCategoryList=this.handleGetCategoryList.bind(this);
-    this.handleGetSubCategoryList=this.handleGetSubCategoryList.bind(this);
-    this.handleGetIssueTypeList=this.handleGetIssueTypeList.bind(this);
-    this.handleAddKB=this.handleAddKB.bind(this);
-    this.handleKBList=this.handleKBList.bind(this);
-    this.handleDeleteKB=this.handleDeleteKB.bind(this);
-    this.handleUpdateKB=this.handleUpdateKB.bind(this);
-    this.handleRejectKB=this.handleRejectKB.bind(this);
-    this.handleSeaechKB=this.handleSeaechKB.bind(this);
+    this.HandelOnenCloseDetailsCollapse = this.HandelOnenCloseDetailsCollapse.bind(
+      this
+    );
+    this.handleGetCategoryList = this.handleGetCategoryList.bind(this);
+    this.handleGetSubCategoryList = this.handleGetSubCategoryList.bind(this);
+    this.handleGetIssueTypeList = this.handleGetIssueTypeList.bind(this);
+    this.handleAddKB = this.handleAddKB.bind(this);
+    this.handleKBList = this.handleKBList.bind(this);
+    this.handleDeleteKB = this.handleDeleteKB.bind(this);
+    this.handleUpdateKB = this.handleUpdateKB.bind(this);
+    this.handleRejectKB = this.handleRejectKB.bind(this);
+    this.handleSeaechKB = this.handleSeaechKB.bind(this);
   }
   opneSearchModal() {
     this.setState({ searchmodal: true });
@@ -107,48 +110,45 @@ var row;
   }
 
   openEditAproveBModal(rowdata) {
-   
-    this.setState({ editapprove: true,
-    selectedCategory:this.state.updateCategoryValue });
-   
-   this.setUpdateData(rowdata);
-   
- 
+    this.setState({
+      editapprove: true,
+      selectedCategory: this.state.updateCategoryValue
+    });
+
+    this.setUpdateData(rowdata);
   }
   closeEditAproveModal() {
     this.setState({ editapprove: false });
   }
 
-  openEditAproveBModal1(approvedata,bit) {
-   
+  openEditAproveBModal1(approvedata, bit) {
     this.setState({ editapprove1: true });
-   this.state.approveID=approvedata.kbid;
-  this.state.approvebit=bit;
-  this.setApproveData(approvedata)
+    this.state.approveID = approvedata.kbid;
+    this.state.approvebit = bit;
+    this.setApproveData(approvedata);
   }
   closeEditAproveModal1() {
     this.setState({ editapprove1: false });
   }
 
   openAddNewKBModal() {
-    this.setState({ addnewkbmodal: true, categoryCompulsion: '',
-    subCategoryCompulsion: '',
-    issueTypeCompulsion: '',
-    subjectCompulsion: '' });
+    this.setState({
+      addnewkbmodal: true,
+      categoryCompulsion: "",
+      subCategoryCompulsion: "",
+      issueTypeCompulsion: "",
+      subjectCompulsion: ""
+    });
   }
   closeAddNewKBModal() {
     this.setState({ addnewkbmodal: false });
   }
   componentDidMount() {
     debugger;
-    
+
     this.handleGetCategoryList();
     this.handleKBList();
   }
-
- 
-
-
 
   HandelFirstTabClick() {
     this.setState({
@@ -159,77 +159,95 @@ var row;
       tabcolor1: "#4A4A4A"
     });
   }
-setUpdateData(individualData){
-  debugger;
-      
-  let updateKBID=individualData.kbid,
-   updateCategoryValue= individualData.categoryID,
-      updateCategoryName=individualData.categoryName,
-      updateSubCategoryValue=individualData.subCategoryID,
-       updateSubCategoryName=individualData.subCategoryName,
-       updateIssurTypeValue=individualData.issueTypeID,
-       updateIssueTypeName=individualData.issueTypeName,
-       updateSubject=individualData.subject,
-       updateDescription=individualData.description,
-       ckeditorUpdate=updateDescription,
-       selectedCategory=updateCategoryValue,
-  selectedSubCategory=updateSubCategoryValue,
-  selectedIssueType=updateIssurTypeValue;;
+  setUpdateData(individualData) {
+    debugger;
 
-  this.setState({
-    updateKBID, updateCategoryValue, updateCategoryName, updateSubCategoryValue,updateSubCategoryName,
-    updateIssurTypeValue,updateIssueTypeName,updateSubject,updateDescription,ckeditorUpdate,
-    selectedCategory,selectedSubCategory,selectedIssueType
-  })
-  
-}
-setApproveData(individualData){
-  debugger;
-      
-  let approveKBID=individualData.kbid,
-  approveCategoryValue= individualData.categoryID,
-  approveCategoryName=individualData.categoryName,
-  approveSubCategoryValue=individualData.subCategoryID,
-  approveSubCategoryName=individualData.subCategoryName,
-  approveIssurTypeValue=individualData.issueTypeID,
-  approveIssueTypeName=individualData.issueTypeName,
-  approveSubject=individualData.subject,
-  approveDescription=individualData.description,
-  ckeditorApprove=approveDescription,
-       selectedCategory=approveCategoryValue,
-  selectedSubCategory=approveSubCategoryValue,
-  selectedIssueType=approveIssurTypeValue;;
+    let updateKBID = individualData.kbid,
+      updateCategoryValue = individualData.categoryID,
+      updateCategoryName = individualData.categoryName,
+      updateSubCategoryValue = individualData.subCategoryID,
+      updateSubCategoryName = individualData.subCategoryName,
+      updateIssurTypeValue = individualData.issueTypeID,
+      updateIssueTypeName = individualData.issueTypeName,
+      updateSubject = individualData.subject,
+      updateDescription = individualData.description,
+      ckeditorUpdate = updateDescription,
+      selectedCategory = updateCategoryValue,
+      selectedSubCategory = updateSubCategoryValue,
+      selectedIssueType = updateIssurTypeValue;
 
-  this.setState({
-    approveKBID, approveCategoryValue, approveCategoryName, approveSubCategoryValue,approveSubCategoryName,
-    approveIssurTypeValue,approveIssueTypeName,approveSubject,approveDescription,ckeditorApprove,
-    selectedCategory,selectedSubCategory,selectedIssueType
-  })
-  
-}
+    this.setState({
+      updateKBID,
+      updateCategoryValue,
+      updateCategoryName,
+      updateSubCategoryValue,
+      updateSubCategoryName,
+      updateIssurTypeValue,
+      updateIssueTypeName,
+      updateSubject,
+      updateDescription,
+      ckeditorUpdate,
+      selectedCategory,
+      selectedSubCategory,
+      selectedIssueType
+    });
+  }
+  setApproveData(individualData) {
+    debugger;
 
-onAddCKEditorChange = (evt) => {
-  debugger;
-  var newContent = evt.editor.getData();
-  this.setState({
-    ckeditorAdd: newContent
-  });
-}
+    let approveKBID = individualData.kbid,
+      approveCategoryValue = individualData.categoryID,
+      approveCategoryName = individualData.categoryName,
+      approveSubCategoryValue = individualData.subCategoryID,
+      approveSubCategoryName = individualData.subCategoryName,
+      approveIssurTypeValue = individualData.issueTypeID,
+      approveIssueTypeName = individualData.issueTypeName,
+      approveSubject = individualData.subject,
+      approveDescription = individualData.description,
+      ckeditorApprove = approveDescription,
+      selectedCategory = approveCategoryValue,
+      selectedSubCategory = approveSubCategoryValue,
+      selectedIssueType = approveIssurTypeValue;
 
-onUpdateCKEditorChange = (evt) => {
-  debugger;
-  var newContent = evt.editor.getData();
-  this.setState({
-    ckeditorUpdate: newContent
-  });
-}
-onApproveCKEditorChange = (evt) => {
-  debugger;
-  var newContent = evt.editor.getData();
-  this.setState({
-    ckeditorApprove: newContent
-  });
-}
+    this.setState({
+      approveKBID,
+      approveCategoryValue,
+      approveCategoryName,
+      approveSubCategoryValue,
+      approveSubCategoryName,
+      approveIssurTypeValue,
+      approveIssueTypeName,
+      approveSubject,
+      approveDescription,
+      ckeditorApprove,
+      selectedCategory,
+      selectedSubCategory,
+      selectedIssueType
+    });
+  }
+
+  onAddCKEditorChange = evt => {
+    debugger;
+    var newContent = evt.editor.getData();
+    this.setState({
+      ckeditorAdd: newContent
+    });
+  };
+
+  onUpdateCKEditorChange = evt => {
+    debugger;
+    var newContent = evt.editor.getData();
+    this.setState({
+      ckeditorUpdate: newContent
+    });
+  };
+  onApproveCKEditorChange = evt => {
+    debugger;
+    var newContent = evt.editor.getData();
+    this.setState({
+      ckeditorApprove: newContent
+    });
+  };
 
   HandelSecoundTabClick() {
     this.setState({
@@ -250,7 +268,7 @@ onApproveCKEditorChange = (evt) => {
       }
     }, 1);
   };
- 
+
   setSubCategoryValue = e => {
     let subCategoryValue = e.currentTarget.value;
     this.setState({ selectedSubCategory: subCategoryValue });
@@ -259,33 +277,32 @@ onApproveCKEditorChange = (evt) => {
         this.handleGetIssueTypeList();
       }
     }, 1);
-};
-
-setIssueType = e => {
-  let issuetype = e.currentTarget.value;
-  this.setState({ selectedIssueType: issuetype });
-} 
-
-setSubjectValue = e => {
-let subjectvalue =e.currentTarget.value;
-this.setState({selectedSubject:subjectvalue});
-};
-
-setUpdateSubjectValue = e => {
-  let subjectvalue =e.currentTarget.value;
-  this.setState({updateSubject:subjectvalue});
   };
 
-  setApproveSubjectValue =e =>{
-    let subjectvalue =e.currentTarget.value;
-  this.setState({approveSubject:subjectvalue});
+  setIssueType = e => {
+    let issuetype = e.currentTarget.value;
+    this.setState({ selectedIssueType: issuetype });
   };
 
+  setSubjectValue = e => {
+    let subjectvalue = e.currentTarget.value;
+    this.setState({ selectedSubject: subjectvalue });
+  };
 
-setDescriptionValue = e => {
-let descriptionvalue = e.currentTarget.value;
-this.setState({selectedDescription:descriptionvalue});
-};
+  setUpdateSubjectValue = e => {
+    let subjectvalue = e.currentTarget.value;
+    this.setState({ updateSubject: subjectvalue });
+  };
+
+  setApproveSubjectValue = e => {
+    let subjectvalue = e.currentTarget.value;
+    this.setState({ approveSubject: subjectvalue });
+  };
+
+  setDescriptionValue = e => {
+    let descriptionvalue = e.currentTarget.value;
+    this.setState({ selectedDescription: descriptionvalue });
+  };
   handleGetCategoryList() {
     debugger;
 
@@ -307,9 +324,9 @@ this.setState({selectedDescription:descriptionvalue});
   handleGetSubCategoryList() {
     debugger;
     let self = this;
-    
-    let cateId =this.state.selectedCategory;
-      
+
+    let cateId = this.state.selectedCategory;
+
     axios({
       method: "post",
       url: config.apiUrl + "/SubCategory/GetSubCategoryByCategoryID",
@@ -342,275 +359,267 @@ this.setState({selectedDescription:descriptionvalue});
       self.setState({ IssueTypeData: IssueTypeData });
     });
   }
-handleDeleteKB(id){
-  debugger;
-  let self=this;
- 
-  axios({
-    method:"post",
-    url: config.apiUrl + "/KnowledgeBase/DeleteKB",
-    headers: authHeader(),
-    params: {
-      KBID:id
-    }
-  }).then(function(res) {
+  handleDeleteKB(id) {
     debugger;
-    let Msg = res.data.message;
-    if (Msg === "Success") {
-      NotificationManager.success("Record Deleted successfully.");
-      self.handleKBList();
-    }
-  });
-}
+    let self = this;
 
-handleRejectKB(id,bit){
-  debugger;
-  let self=this;
-
-  if(bit===0){
-    var json={
-      KBID:id,
-      CategoryID : 0,
-      SubCategoryID:0,
-      IssueTypeID:0,
-      IsApproved:bit,
-      Subject:'',
-      Description:''
-      
-    };
     axios({
-      method:"post",
-      url: config.apiUrl + "/KnowledgeBase/RejectApproveKB",
+      method: "post",
+      url: config.apiUrl + "/KnowledgeBase/DeleteKB",
       headers: authHeader(),
-      data:json
+      params: {
+        KBID: id
+      }
     }).then(function(res) {
       debugger;
       let Msg = res.data.message;
-      
-        if (Msg === "Success") {
-         
-          NotificationManager.success("Record Rejected successfully.");
-          
-        
+      if (Msg === "Success") {
+        NotificationManager.success("Record Deleted successfully.");
+        self.handleKBList();
       }
-     
-      self.handleKBList();
     });
   }
-  else{
 
-  // }
-
-  if (
-    this.state.approveCategoryValue > 0 && this.state.approveSubCategoryValue > 0 && this.state.approveIssurTypeValue > 0 && this.state.approveSubject.length > 0
-  ) {
-  var json={
-    KBID:id,
-   
-    CategoryID : this.state.selectedCategory,
-    SubCategoryID:this.state.selectedSubCategory,
-    IssueTypeID:this.state.selectedIssueType,
-    IsApproved:bit,
-    Subject:this.state.approveSubject,
-    Description:this.state.ckeditorApprove
-   
-    
-  };
-  axios({
-    method:"post",
-    url: config.apiUrl + "/KnowledgeBase/RejectApproveKB",
-    headers: authHeader(),
-    data:json
-  }).then(function(res) {
+  handleRejectKB(id, bit) {
     debugger;
-    let Msg = res.data.message;
-    
-      if (Msg === "Success") {
-       
-        NotificationManager.success("Record Approved successfully.");
-      
+    let self = this;
+
+    if (bit === 0) {
+      var json = {
+        KBID: id,
+        CategoryID: 0,
+        SubCategoryID: 0,
+        IssueTypeID: 0,
+        IsApproved: bit,
+        Subject: "",
+        Description: ""
+      };
+      axios({
+        method: "post",
+        url: config.apiUrl + "/KnowledgeBase/RejectApproveKB",
+        headers: authHeader(),
+        data: json
+      }).then(function(res) {
+        debugger;
+        let Msg = res.data.message;
+
+        if (Msg === "Success") {
+          NotificationManager.success("Record Rejected successfully.");
+        }
+
+        self.handleKBList();
+      });
+    } else {
+      // }
+
+      if (
+        this.state.approveCategoryValue > 0 &&
+        this.state.approveSubCategoryValue > 0 &&
+        this.state.approveIssurTypeValue > 0 &&
+        this.state.approveSubject.length > 0
+      ) {
+        var json = {
+          KBID: id,
+
+          CategoryID: this.state.selectedCategory,
+          SubCategoryID: this.state.selectedSubCategory,
+          IssueTypeID: this.state.selectedIssueType,
+          IsApproved: bit,
+          Subject: this.state.approveSubject,
+          Description: this.state.ckeditorApprove
+        };
+        axios({
+          method: "post",
+          url: config.apiUrl + "/KnowledgeBase/RejectApproveKB",
+          headers: authHeader(),
+          data: json
+        }).then(function(res) {
+          debugger;
+          let Msg = res.data.message;
+
+          if (Msg === "Success") {
+            NotificationManager.success("Record Approved successfully.");
+          }
+          self.closeEditAproveModal1();
+          self.handleKBList();
+        });
+      } else {
+        this.setState({
+          approveCategoryCompulsion: "Category field is compulsory.",
+          approveSubCategoryCompulsion: "Sub Category field is compulsory.",
+          approveIssueTypeCompulsion: "Issue Type field is compulsory.",
+          approveSubjectCompulsion: "Subject field is compulsory."
+        });
+      }
     }
-    self.closeEditAproveModal1();
-    self.handleKBList();
-  });
-} else {
-  this.setState({
-    approveCategoryCompulsion: "Category field is compulsory.",
-    approveSubCategoryCompulsion: "Sub Category field is compulsory.",
-    approveIssueTypeCompulsion: "Issue Type field is compulsory.",
-    approveSubjectCompulsion: "Subject field is compulsory.",
-  });
-}
+  }
 
-}
-}
-
-handleKBList(){
-  debugger;
-  let self=this;
-  axios({
-    method:"post",
-    url:config.apiUrl + "/KnowledgeBase/KBList",
-    headers: authHeader()
-  }).then(function(res){
+  handleKBList() {
     debugger;
-    var approve=res.data.responseData.approved;
-    var notapprove=res.data.responseData.notApproved;
-    var approveconut=res.data.responseData.approved.length;
-  var notapproveconut=res.data.responseData.notApproved.length;
-    self.setState({
-      KBListData: approve,
-      KBListnotApproveData:notapprove,
-      countApprove:approveconut,
-      countNotApprove:notapproveconut
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/KnowledgeBase/KBList",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      var approve = res.data.responseData.approved;
+      var notapprove = res.data.responseData.notApproved;
+      var approveconut = res.data.responseData.approved.length;
+      var notapproveconut = res.data.responseData.notApproved.length;
+      self.setState({
+        KBListData: approve,
+        KBListnotApproveData: notapprove,
+        countApprove: approveconut,
+        countNotApprove: notapproveconut
+      });
     });
-  });
-}
+  }
 
-handleSeaechKB(){
-  debugger;
-  let self=this;
-  axios({
-    method:"post",
-    url:config.apiUrl + "/KnowledgeBase/SearchKB",
-    headers: authHeader(),
-    params: {
-      Category_ID:this.state.selectedCategory,
-      SubCategory_ID:this.state.selectedSubCategory,
-      type_ID:this.state.selectedIssueType
-    }
-  }).then(function(res){
+  handleSeaechKB() {
     debugger;
-        var approve=res.data.responseData.approved;   
-  var notapprove=res.data.responseData.notApproved;
-  var approveconut=res.data.responseData.approved.length;
-  var notapproveconut=res.data.responseData.notApproved.length;
-    self.setState({
-      KBListData: approve,
-      KBListnotApproveData:notapprove,
-      countApprove:approveconut,
-      countNotApprove:notapproveconut,
-      selectedCategory:'',
-      selectedSubCategory:'',
-      selectedIssueType:''
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/KnowledgeBase/SearchKB",
+      headers: authHeader(),
+      params: {
+        Category_ID: this.state.selectedCategory,
+        SubCategory_ID: this.state.selectedSubCategory,
+        type_ID: this.state.selectedIssueType
+      }
+    }).then(function(res) {
+      debugger;
+      var approve = res.data.responseData.approved;
+      var notapprove = res.data.responseData.notApproved;
+      var approveconut = res.data.responseData.approved.length;
+      var notapproveconut = res.data.responseData.notApproved.length;
+      self.setState({
+        KBListData: approve,
+        KBListnotApproveData: notapprove,
+        countApprove: approveconut,
+        countNotApprove: notapproveconut,
+        selectedCategory: "",
+        selectedSubCategory: "",
+        selectedIssueType: ""
+      });
+      self.closeSearchModal();
     });
-    self.closeSearchModal();
-  });
-}
+  }
 
-handleUpdateKB(kbid){
-
-  debugger;
-  if (
-    this.state.updateCategoryValue > 0 && this.state.updateSubCategoryValue > 0 && this.state.updateIssurTypeValue > 0 && this.state.updateSubject.length > 0
-  ) {
-  let self=this;
-  var json={
-    KBID:kbid,
-    KBCODE:"",
-    CategoryID : this.state.selectedCategory,
-    SubCategoryID:this.state.selectedSubCategory,
-    
-    Subject:this.state.updateSubject,
-    Description:this.state.ckeditorUpdate,
-   
-    IssueTypeID:this.state.selectedIssueType
-  };
-  axios({
-    method:"post",
-    url: config.apiUrl + "/KnowledgeBase/UpdateKB",
-    headers: authHeader(),
-    data:json
-  }).then(function(res) {
+  handleUpdateKB(kbid) {
     debugger;
-    let Msg = res.data.message;
-    if (Msg === "Success") {
-      NotificationManager.success("Record Updated successfully.");
-     
+    if (
+      this.state.updateCategoryValue > 0 &&
+      this.state.updateSubCategoryValue > 0 &&
+      this.state.updateIssurTypeValue > 0 &&
+      this.state.updateSubject.length > 0
+    ) {
+      let self = this;
+      var json = {
+        KBID: kbid,
+        KBCODE: "",
+        CategoryID: this.state.selectedCategory,
+        SubCategoryID: this.state.selectedSubCategory,
+
+        Subject: this.state.updateSubject,
+        Description: this.state.ckeditorUpdate,
+
+        IssueTypeID: this.state.selectedIssueType
+      };
+      axios({
+        method: "post",
+        url: config.apiUrl + "/KnowledgeBase/UpdateKB",
+        headers: authHeader(),
+        data: json
+      })
+        .then(function(res) {
+          debugger;
+          let Msg = res.data.message;
+          if (Msg === "Success") {
+            NotificationManager.success("Record Updated successfully.");
+          } else {
+            NotificationManager.error(
+              "Record not Selected OR Sequence is Wrong"
+            );
+          }
+          self.closeEditAproveModal();
+          self.handleKBList();
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    } else {
+      this.setState({
+        updateCategoryCompulsion: "Category field is compulsory.",
+        updateSubCategoryCompulsion: "Sub Category field is compulsory.",
+        updateIssueTypeCompulsion: "Issue Type field is compulsory.",
+        updateSubjectCompulsion: "Subject field is compulsory."
+      });
     }
-    else{
-    NotificationManager.error("Record not Selected OR Sequence is Wrong")
-    }
- self.closeEditAproveModal();
-    self.handleKBList();
-   
-  }).catch(error => {
-    console.log(error)
-});
-} else {
-  this.setState({
-    updateCategoryCompulsion: "Category field is compulsory.",
-    updateSubCategoryCompulsion: "Sub Category field is compulsory.",
-    updateIssueTypeCompulsion: "Issue Type field is compulsory.",
-    updateSubjectCompulsion: "Subject field is compulsory.",
-  });
-}
-}
+  }
 
-
-
-handleAddKB(){
-  debugger;
-  if (
-    this.state.selectedCategory.length > 0 && this.state.selectedSubCategory.length > 0 && this.state.selectedIssueType.length > 0 && this.state.selectedSubject.length > 0
-  ) {
-  let self=this;
-  var json={
-    KBCODE:"",
-    CategoryID:this.state.selectedCategory,
-    SubCategoryID:this.state.selectedSubCategory,
-    
-    Subject:this.state.selectedSubject,
-    Description:this.state.ckeditorAdd,
-    IsActive:1,
-    IssueTypeID:this.state.selectedIssueType
-  };
-  axios({
-    method:"post",
-    url: config.apiUrl + "/KnowledgeBase/AddKB",
-    headers: authHeader(),
-    data:json
-  }).then(function(res) {
+  handleAddKB() {
     debugger;
-    let Msg = res.data.message;
-    if (Msg === "Success") {
-     
-      NotificationManager.success("Record Saved successfully.");
-      
+    if (
+      this.state.selectedCategory.length > 0 &&
+      this.state.selectedSubCategory.length > 0 &&
+      this.state.selectedIssueType.length > 0 &&
+      this.state.selectedSubject.length > 0
+    ) {
+      let self = this;
+      var json = {
+        KBCODE: "",
+        CategoryID: this.state.selectedCategory,
+        SubCategoryID: this.state.selectedSubCategory,
+
+        Subject: this.state.selectedSubject,
+        Description: this.state.ckeditorAdd,
+        IsActive: 1,
+        IssueTypeID: this.state.selectedIssueType
+      };
+      axios({
+        method: "post",
+        url: config.apiUrl + "/KnowledgeBase/AddKB",
+        headers: authHeader(),
+        data: json
+      })
+        .then(function(res) {
+          debugger;
+          let Msg = res.data.message;
+          if (Msg === "Success") {
+            NotificationManager.success("Record Saved successfully.");
+          }
+          self.setState({
+            selectedCategory: "",
+            selectedSubCategory: "",
+            selectedIssueType: "",
+            selectedSubject: "",
+            ckeditorAdd: ""
+          });
+          self.closeAddNewKBModal();
+          self.handleKBList();
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    } else {
+      this.setState({
+        categoryCompulsion: "Category field is compulsory.",
+        subCategoryCompulsion: "Sub Category field is compulsory.",
+        issueTypeCompulsion: "Issue Type field is compulsory.",
+        subjectCompulsion: "Subject field is compulsory."
+      });
     }
-    self.setState({
-      
-      selectedCategory:'',
-      selectedSubCategory:'',
-      selectedIssueType:'',
-      selectedSubject:"",
-      ckeditorAdd:""
-    });
-    self.closeAddNewKBModal();
-    self.handleKBList();
-  }).catch(error => {
-
-    console.log(error)
-});
-} else {
-  this.setState({
-    categoryCompulsion: "Category field is compulsory.",
-    subCategoryCompulsion: "Sub Category field is compulsory.",
-    issueTypeCompulsion: "Issue Type field is compulsory.",
-    subjectCompulsion: "Subject field is compulsory.",
-  });
-}
-}
-
+  }
 
   HandelOnenCloseDetailsCollapse() {
     this.setState({ detailscollapse: !this.state.detailscollapse });
   }
   render() {
- 
     return (
       <Fragment>
-         <NotificationContainer />
+        <NotificationContainer />
         <div className="kb-header">
           <a href={Demo.BLANK_LINK} onClick={this.HandelFirstTabClick}>
             <label
@@ -633,7 +642,7 @@ handleAddKB(){
             className="kb-Header-button"
             onClick={this.openAddNewKBModal.bind(this)}
           >
-            <label className="add-new-kb">Add New KB</label>
+            Add New KB
           </button>
         </div>
         <div
@@ -642,197 +651,198 @@ handleAddKB(){
         >
           <div className="main-content-margin">
             <div className="row" style={{ padding: "35px 35px 10px 35px" }}>
-              <div className="col-md-6"> 
-              <label className="main-conenet-point">{this.state.countNotApprove} ITEMS</label>
-              <small className="clear-search" onClick={this.handleKBList.bind(this)}>
-                Clear Search
-              </small>
+              <div className="col-md-6">
+                <label className="main-conenet-point">
+                  {this.state.countNotApprove} ITEMS
+                </label>
+                <small
+                  className="clear-search"
+                  onClick={this.handleKBList.bind(this)}
+                >
+                  Clear Search
+                </small>
               </div>
-              <div className="col-md-6" style={{textAlign:"end"}}>
-              <label className="search-KB">
-                SEARCH
-              </label>
-              <img
-                src={SerachIcon}
-                alt="serach-icon"
-                className="searchicon"
-                onClick={this.opneSearchModal}
-              />
+              <div className="col-md-6" style={{ textAlign: "end" }}>
+                <label className="search-KB">SEARCH</label>
+                <img
+                  src={SerachIcon}
+                  alt="serach-icon"
+                  className="searchicon"
+                  onClick={this.opneSearchModal}
+                />
               </div>
             </div>
-            <div className="kb-table" style={{ padding: "0px 30px 0px 20px" }}>
-           
-            <ReactTable
-            
-                  data= {this.state.KBListnotApproveData}
-                 
-                  columns={[ 
-                    {
-                      Header: (
+            <div className="kb-table" style={{ padding: "0px 30px 20px 20px" }}>
+              <ReactTable
+                data={this.state.KBListnotApproveData}
+                columns={[
+                  {
+                    Header: (
+                      <span>
+                        <div>
+                          <label>ID</label>
+                        </div>
+                      </span>
+                    ),
+                    accessor: "kbid",
+                    Cell: row => {
+                      return (
                         <span>
-                          <div >
-                           
-                              
-                              <label >
-                                ID
-                              </label>
-                           
+                          <div>
+                            <label>{row.original.kbid}</label>
                           </div>
                         </span>
-                      ),
-                      accessor: "kbid",
-                      Cell: row => {
-                        return (
-                          <span>
-                            <div >
-                             
-                                
-                                <label >
-                                  {row.original.kbid}
-                                  
-                                </label>
-                              
-                            </div>
-                          </span>
-                        );
-                      }
-                    },
-                    {
-                      Header: (
-                        <span >
-                          <label >
-                                Details
-                              </label>
-                        </span>
-                      ),
-                      accessor: "subject",
-                      Cell: row => {
-                        return (
-                          <span className="table-details-data">
-                            <label className="table-details-data">{row.original.subject}</label>
-                           
-                            <img
-                        src={DownArrowIcon}
-                        alt="down-arrow-icon"
-                        className="down-icon-kb"
-                        onClick={this.HandelOnenCloseDetailsCollapse}
-                      />
-                      
-					  <Collapse isOpen={this.state.detailscollapse}>
-                        <Card>
-                          <CardBody>
-                            <span  className="table-details-data-1">
-                              {row.original.description}
-                            </span>
-                          </CardBody>
-                        </Card>
-                      </Collapse>
-                      
-                          </span>
-                        );
-                      }
-                    },
-                    {
-                      Header: (<span><label >
-                                Type
-                      </label></span>),
-                      accessor: "issueTypeName",
-                      
-                      Cell: row => {
-                        return (
-                          <span>
-                            <div >
-                             
-                                
-                                <label className="table-type-return">
-                                  {row.original.issueTypeName}
-                                  
-                                </label>
-                              
-                            </div>
-                          </span>
-                        );
-                      }
-                    },
-					  
-					  
-                    {
-                      Header: (
-                       
-					                 <span><label >
-                                Category
-                              </label></span>
-                      ),
-                      accessor: "categoryName",
-                      Cell: row => {
-                        return (
-                          <span>
-                            <label className="table-category">{row.original.categoryName}
-                           
-                            </label> </span>);
-                      }
-                    },
-                    {
-                      Header: (
-                        <span>
-                          <label >
-                                Sub catogory
-                              </label>
-                        </span>
-                      ),
-                      accessor: "subCategoryName",
-                      Cell: row => {
-                        return ( <span>
-                          <label className="table-subcategory">{row.original.subCategoryName} </label>
-
-                      
-                        </span>);
-                      }
-                    },
-                    {
-                      Header: (
-                        <span >
-                          <label className="pad">
-                                Action
-                              </label>
-                        </span>
-                      ),
-                      accessor: "kbid",
-                     Cell: row => {
-                      return ( <span>
-                        <button className="reject-button" value={row.original.kbid}
-                        onClick={this.handleRejectKB.bind(this,row.original.kbid,0)}>
-                        <label className="reject-button-text">reject</label>
-                      </button>
-                      <button
-                        className="aprove-button"
-                        value={row.original.kbid}
-                      onClick={this.openEditAproveBModal1.bind(this,row.original,1)}
-                      
-                      >
-                        <label className="approve-button-text">APPROVE</label>
-                      </button>
-
-                      
-                        </span>);
-                     }
-                    
+                      );
                     }
-                    
-                    
-                  ]}
-                  // resizable={false}
-                  defaultPageSize={10}
-                  minRows={2}
-                  showPagination={true}
-                  getTrProps={this.HandleRowClickPage}
-                />
+                  },
+                  {
+                    Header: (
+                      <span>
+                        <label>
+                          Details <FontAwesomeIcon icon={faCaretDown} />
+                        </label>
+                      </span>
+                    ),
+                    accessor: "subject",
+                    Cell: row => {
+                      return (
+                        <span className="table-details-data">
+                          <label className="table-details-data">
+                            {row.original.subject}
+                          </label>
 
+                          <img
+                            src={DownArrowIcon}
+                            alt="down-arrow-icon"
+                            className="down-icon-kb"
+                            onClick={this.HandelOnenCloseDetailsCollapse}
+                            id={"i" + row.original.kbid}
+                          />
 
+                          <UncontrolledCollapse
+                            toggler={"#i" + row.original.kbid}
+                          >
+                            <Card>
+                              <CardBody>
+                                <span className="table-details-data-1">
+                                  {row.original.description}
+                                </span>
+                              </CardBody>
+                            </Card>
+                          </UncontrolledCollapse>
+                        </span>
+                      );
+                    }
+                  },
+                  {
+                    Header: (
+                      <span>
+                        <label>
+                          Type <FontAwesomeIcon icon={faCaretDown} />
+                        </label>
+                      </span>
+                    ),
+                    accessor: "issueTypeName",
 
+                    Cell: row => {
+                      return (
+                        <span>
+                          <div>
+                            <label className="table-type-return">
+                              {row.original.issueTypeName}
+                            </label>
+                          </div>
+                        </span>
+                      );
+                    }
+                  },
+
+                  {
+                    Header: (
+                      <span>
+                        <label>
+                          Category <FontAwesomeIcon icon={faCaretDown} />
+                        </label>
+                      </span>
+                    ),
+                    accessor: "categoryName",
+                    Cell: row => {
+                      return (
+                        <span>
+                          <label className="table-category">
+                            {row.original.categoryName}
+                          </label>{" "}
+                        </span>
+                      );
+                    }
+                  },
+                  {
+                    Header: (
+                      <span>
+                        <label>
+                          Sub catogory <FontAwesomeIcon icon={faCaretDown} />
+                        </label>
+                      </span>
+                    ),
+                    accessor: "subCategoryName",
+                    Cell: row => {
+                      return (
+                        <span>
+                          <label className="table-subcategory">
+                            {row.original.subCategoryName}{" "}
+                          </label>
+                        </span>
+                      );
+                    }
+                  },
+                  {
+                    Header: (
+                      <span>
+                        <label className="pad">Action</label>
+                      </span>
+                    ),
+                    accessor: "kbid",
+                    Cell: row => {
+                      return (
+                        <span>
+                          <button
+                            className="reject-button"
+                            value={row.original.kbid}
+                            onClick={this.handleRejectKB.bind(
+                              this,
+                              row.original.kbid,
+                              0
+                            )}
+                          >
+                            <label className="reject-button-text">reject</label>
+                          </button>
+                          <button
+                            className="aprove-button"
+                            value={row.original.kbid}
+                            onClick={this.openEditAproveBModal1.bind(
+                              this,
+                              row.original,
+                              1
+                            )}
+                          >
+                            <label className="approve-button-text">
+                              APPROVE
+                            </label>
+                          </button>
+                        </span>
+                      );
+                    }
+                  }
+                ]}
+                // resizable={false}
+                defaultPageSize={10}
+                minRows={2}
+                showPagination={true}
+                getTrProps={this.HandleRowClickPage}
+              />
             </div>
           </div>
-          <div className="pagi">
+          {/* <div className="pagi">
             <ul>
               <li>
                 <a href={Demo.BLANK_LINK}>&lt;</a>
@@ -862,7 +872,7 @@ handleAddKB(){
                 <a href={Demo.BLANK_LINK}>&gt;</a>
               </li>
             </ul>
-          </div>
+          </div> */}
         </div>
 
         <div
@@ -870,198 +880,200 @@ handleAddKB(){
           style={{ display: this.state.headersecound }}
         >
           <div className="main-content-margin">
-          <div className="row" style={{ padding: "35px 35px 10px 35px" }}>
-            <div className="col-md-6">
-              <label className="main-conenet-point">{this.state.countApprove} ITEMS</label>
-              <small className="clear-search" onClick={this.handleKBList.bind(this)}>Clear Search</small>
+            <div className="row" style={{ padding: "35px 35px 10px 35px" }}>
+              <div className="col-md-6">
+                <label className="main-conenet-point">
+                  {this.state.countApprove} ITEMS
+                </label>
+                <small
+                  className="clear-search"
+                  onClick={this.handleKBList.bind(this)}
+                >
+                  Clear Search
+                </small>
               </div>
-              <div className="col-md-6" style={{textAlign:"end"}}>
-              <label className="search-KB">
-                SEARCH
-              </label>
-              <img
-                src={SerachIcon}
-                alt="serach-icon"
-                className="searchicon"
-                onClick={this.opneSearchModal}
-              />
+              <div className="col-md-6" style={{ textAlign: "end" }}>
+                <label className="search-KB">SEARCH</label>
+                <img
+                  src={SerachIcon}
+                  alt="serach-icon"
+                  className="searchicon"
+                  onClick={this.opneSearchModal}
+                />
               </div>
             </div>
 
-            <div className="kb-table" style={{ padding: "0px 30px 0px 20px" }}>
-            
-            <ReactTable
-                  data={this.state.KBListData}
-                
-                 columns= { 
-                  [ 
-                
-                    {
-                      
-                      Header: (
+            <div className="kb-table" style={{ padding: "0px 30px 20px 20px" }}>
+              <ReactTable
+                data={this.state.KBListData}
+                columns={[
+                  {
+                    Header: (
+                      <span>
+                        <div>
+                          <label>ID</label>
+                        </div>
+                      </span>
+                    ),
+                    accessor: "kbid",
+                    Cell: row => {
+                      return (
                         <span>
-                          <div >
-                           
-                              
-                              <label >
-                                ID
-                              </label>
-                           
+                          <div>
+                            <label>{row.original.kbid}</label>
                           </div>
                         </span>
-                      ),
-                      accessor: "kbid",
-                      Cell: row => {
-                       
-                        return (
-                          <span>
-                            <div >
-                             
-                                
-                                <label >
-                                  {row.original.kbid}
-                                  
-                                </label>
-                              
-                            </div>
-                          </span>
-                        );
-                      }
-                    },
-                    {
-                      Header: (
-                        <span >
-                          <label >
-                                Details
-                              </label>
-                        </span>
-                      ),
-                      accessor: "subject",
-                      Cell: row => {
-                        return (
-                          <span className="table-details-data">
-                            <label className="table-details-data">{row.original.subject}</label>
-                            <img
-                        src={DownArrowIcon}
-                        alt="down-arrow-icon"
-                        className="down-icon-kb"
-                        onClick={this.HandelOnenCloseDetailsCollapse}
-                      />
-					  <Collapse isOpen={this.state.detailscollapse}>
-                        <Card>
-                          <CardBody>
-                            <span  className="table-details-data-1">
-                              {row.original.description}
-                            </span>
-                          </CardBody>
-                        </Card>
-                      </Collapse>
-							
-                          </span>
-                        );
-                      }
-                    },
-                    {
-                      Header: (<span><label >
-                                Type
-                      </label></span>),
-                      accessor: "issueTypeName",
-                      
-                      Cell: row => {
-                        return (
-                          <span>
-                            <div >
-                             
-                                
-                                <label className="table-type-return">
-                                  {row.original.issueTypeName}
-                                  
-                                </label>
-                              
-                            </div>
-                          </span>
-                        );
-                      }
-                    },
-					  
-					  
-                    {
-                      Header: (
-                       
-					                 <span><label >
-                                Category
-                              </label></span>
-                      ),
-                      accessor: "categoryName",
-                      Cell: row => {
-                        return (
-                          <span>
-                            <label className="table-category">{row.original.categoryName}
-                           
-                            </label> </span>);
-                      }
-                    },
-                    {
-                      Header: (
-                        <span>
-                          <label >
-                                Sub catogory
-                              </label>
-                        </span>
-                      ),
-                      accessor: "subCategoryName",
-                      Cell: row => {
-                        return ( <span>
-                          <label className="table-subcategory">{row.original.subCategoryName} </label>
-
-                      
-                        </span>);
-                      }
-                    },
-                    {
-                      Header: (
-                        <span >
-                          <label className="pad">
-                                Action
-                              </label>
-                        </span>
-                      ),
-                      accessor: "kbid",
-                     Cell: row => {
-                      return ( <><span>
-                         <button className="reject-button"  value={row.original.kbid}
-                      
-                      onClick={this.handleDeleteKB.bind(this,row.original.kbid)}
-                      >
-                        <label className="reject-button-text">DELETE</label>
-                        </button>          
-                      <button className="aprove-button"  value={row.original.kbid}
-                      onClick={this.openEditAproveBModal.bind(this,row.original)}
-                      >
-                        <label className="approve-button-text" >EDIT</label> 
-                      </button>
-                      
-                      
-                        </span></>);
-                     }
-                    
+                      );
                     }
-                    
-                    
-                  ]}
-                  // resizable={false}
-                  
-                  defaultPageSize={10}
-                  showPagination={true}
-                  getTrProps={this.HandleRowClickPage}
-                />
+                  },
+                  {
+                    Header: (
+                      <span>
+                        <label>
+                          Details <FontAwesomeIcon icon={faCaretDown} />
+                        </label>
+                      </span>
+                    ),
+                    accessor: "subject",
+                    Cell: row => {
+                      return (
+                        <span className="table-details-data">
+                          <label className="table-details-data">
+                            {row.original.subject}
+                          </label>
+                          <img
+                            src={DownArrowIcon}
+                            alt="down-arrow-icon"
+                            className="down-icon-kb"
+                            onClick={this.HandelOnenCloseDetailsCollapse}
+                            id={"i" + row.original.kbid}
+                          />
+                          <UncontrolledCollapse
+                            toggler={"#i" + row.original.kbid}
+                          >
+                            <Card>
+                              <CardBody>
+                                <span className="table-details-data-1">
+                                  {row.original.description}
+                                </span>
+                              </CardBody>
+                            </Card>
+                          </UncontrolledCollapse>
+                        </span>
+                      );
+                    }
+                  },
+                  {
+                    Header: (
+                      <span>
+                        <label>
+                          Type <FontAwesomeIcon icon={faCaretDown} />
+                        </label>
+                      </span>
+                    ),
+                    accessor: "issueTypeName",
 
+                    Cell: row => {
+                      return (
+                        <span>
+                          <div>
+                            <label className="table-type-return">
+                              {row.original.issueTypeName}
+                            </label>
+                          </div>
+                        </span>
+                      );
+                    }
+                  },
 
+                  {
+                    Header: (
+                      <span>
+                        <label>
+                          Category <FontAwesomeIcon icon={faCaretDown} />
+                        </label>
+                      </span>
+                    ),
+                    accessor: "categoryName",
+                    Cell: row => {
+                      return (
+                        <span>
+                          <label className="table-category">
+                            {row.original.categoryName}
+                          </label>{" "}
+                        </span>
+                      );
+                    }
+                  },
+                  {
+                    Header: (
+                      <span>
+                        <label>
+                          Sub catogory <FontAwesomeIcon icon={faCaretDown} />
+                        </label>
+                      </span>
+                    ),
+                    accessor: "subCategoryName",
+                    Cell: row => {
+                      return (
+                        <span>
+                          <label className="table-subcategory">
+                            {row.original.subCategoryName}{" "}
+                          </label>
+                        </span>
+                      );
+                    }
+                  },
+                  {
+                    Header: (
+                      <span>
+                        <label className="pad">Action</label>
+                      </span>
+                    ),
+                    accessor: "kbid",
+                    Cell: row => {
+                      return (
+                        <>
+                          <span>
+                            <button
+                              className="reject-button"
+                              value={row.original.kbid}
+                              onClick={this.handleDeleteKB.bind(
+                                this,
+                                row.original.kbid
+                              )}
+                            >
+                              <label className="reject-button-text">
+                                DELETE
+                              </label>
+                            </button>
+                            <button
+                              className="aprove-button"
+                              value={row.original.kbid}
+                              onClick={this.openEditAproveBModal.bind(
+                                this,
+                                row.original
+                              )}
+                            >
+                              <label className="approve-button-text">
+                                EDIT
+                              </label>
+                            </button>
+                          </span>
+                        </>
+                      );
+                    }
+                  }
+                ]}
+                // resizable={false}
 
-
+                defaultPageSize={10}
+                showPagination={true}
+                getTrProps={this.HandleRowClickPage}
+              />
             </div>
           </div>
-          <div className="pagi">
+          {/* <div className="pagi">
             <ul>
               <li>
                 <a href={Demo.BLANK_LINK}>&lt;</a>
@@ -1091,7 +1103,7 @@ handleAddKB(){
                 <a href={Demo.BLANK_LINK}>&gt;</a>
               </li>
             </ul>
-          </div>
+          </div> */}
         </div>
         {/* ----------------------------------Search Modal------------------------------------ */}
         <Modal
@@ -1109,66 +1121,62 @@ handleAddKB(){
                 onClick={this.closeSearchModal}
               />
               <label className="search-modal-text">SEARCH</label>
-              <button className="search-button-modal" onClick={this.handleSeaechKB.bind(this)}>
+              <button
+                className="search-button-modal"
+                onClick={this.handleSeaechKB.bind(this)}
+              >
                 <label className="search-button-modal-text">APPLY</label>
               </button>
             </div>
             <br />
             <br />
-            
+
             <div className="row">
-            <select className="add-select-category"
-                  value={this.state.selectedCategory}
-                  onChange={this.setCategoryValue}
-                  >
-                    <option>Select Category</option>
-                    {this.state.CategoryData !== null &&
-                                      this.state.CategoryData.map((item, i) => (
-                                        <option key={i} value={item.categoryID}>
-                                          {item.categoryName}
-                                        </option>
-                                      ))}
-                  </select>
+              <select
+                className="add-select-category"
+                value={this.state.selectedCategory}
+                onChange={this.setCategoryValue}
+              >
+                <option>Select Category</option>
+                {this.state.CategoryData !== null &&
+                  this.state.CategoryData.map((item, i) => (
+                    <option key={i} value={item.categoryID}>
+                      {item.categoryName}
+                    </option>
+                  ))}
+              </select>
             </div>
             <br />
             <div className="row">
-            <select className="add-select-category"
-                  value={this.state.selectedSubCategory}
-                  onChange={this.setSubCategoryValue}
-                  >
-                    <option>Select Subcategory</option>
-                    {this.state.SubCategoryData !== null &&
-                                      this.state.SubCategoryData.map(
-                                        (item, i) => (
-                                          <option
-                                            key={i}
-                                            value={item.subCategoryID}
-                                          >
-                                            {item.subCategoryName}
-                                          </option>
-                                        )
-                                      )}
-                  </select>
+              <select
+                className="add-select-category"
+                value={this.state.selectedSubCategory}
+                onChange={this.setSubCategoryValue}
+              >
+                <option>Select Subcategory</option>
+                {this.state.SubCategoryData !== null &&
+                  this.state.SubCategoryData.map((item, i) => (
+                    <option key={i} value={item.subCategoryID}>
+                      {item.subCategoryName}
+                    </option>
+                  ))}
+              </select>
             </div>
             <br />
             <div className="row">
-            <select className="add-select-category"
-                   value={this.state.selectedIssueType}
-                   onChange={this.setIssueType}
-                  >
-                    <option>Select IssueType</option>
-                    {this.state.IssueTypeData !== null &&
-                            this.state.IssueTypeData.map((item, i) => (
-                              <option
-                                key={i}
-                                value={item.issueTypeID}
-                               
-                              >
-                                {item.issueTypeName}
-                              </option>
-                            ))}
-                   
-                  </select>
+              <select
+                className="add-select-category"
+                value={this.state.selectedIssueType}
+                onChange={this.setIssueType}
+              >
+                <option>Select IssueType</option>
+                {this.state.IssueTypeData !== null &&
+                  this.state.IssueTypeData.map((item, i) => (
+                    <option key={i} value={item.issueTypeID}>
+                      {item.issueTypeName}
+                    </option>
+                  ))}
+              </select>
             </div>
             <br />
           </div>
@@ -1198,149 +1206,140 @@ handleAddKB(){
 
               <div className="row">
                 <div className="col-md-6">
-                  <select className="add-select-category"
-                  value={this.state.selectedCategory}
-                  onChange={this.setCategoryValue}
+                  <select
+                    className="add-select-category"
+                    value={this.state.selectedCategory}
+                    onChange={this.setCategoryValue}
                   >
                     <option value="">Select Category</option>
                     {this.state.CategoryData !== null &&
-                                      this.state.CategoryData.map((item, i) => (
-                                        <option key={i} value={item.categoryID}>
-                                          {item.categoryName}
-                                        </option>
-                                      ))}
+                      this.state.CategoryData.map((item, i) => (
+                        <option key={i} value={item.categoryID}>
+                          {item.categoryName}
+                        </option>
+                      ))}
                   </select>
                   {this.state.selectedCategory.length === 0 && (
-                        <p style={{ color: "red", marginBottom: "0px" }}>
-                          {this.state.categoryCompulsion}
-                        </p>
-                      )}
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.categoryCompulsion}
+                    </p>
+                  )}
                 </div>
                 <div className="col-md-6">
-                  <select className="add-select-category"
-                  value={this.state.selectedSubCategory}
-                  onChange={this.setSubCategoryValue}
+                  <select
+                    className="add-select-category"
+                    value={this.state.selectedSubCategory}
+                    onChange={this.setSubCategoryValue}
                   >
                     <option value="">Select Subcategory</option>
                     {this.state.SubCategoryData !== null &&
-                                      this.state.SubCategoryData.map(
-                                        (item, i) => (
-                                          <option
-                                            key={i}
-                                            value={item.subCategoryID}
-                                          >
-                                            {item.subCategoryName}
-                                          </option>
-                                        )
-                                      )}
+                      this.state.SubCategoryData.map((item, i) => (
+                        <option key={i} value={item.subCategoryID}>
+                          {item.subCategoryName}
+                        </option>
+                      ))}
                   </select>
                   {this.state.selectedSubCategory.length === 0 && (
-                        <p style={{ color: "red", marginBottom: "0px" }}>
-                          {this.state.subCategoryCompulsion}
-                        </p>
-                      )}
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.subCategoryCompulsion}
+                    </p>
+                  )}
                 </div>
-               
               </div>
               <br></br>
               <div className="row">
-              <div className="col-md-6">
-                  <select className="add-select-category"
-                   value={this.state.selectedIssueType}
-                   onChange={this.setIssueType}
+                <div className="col-md-6">
+                  <select
+                    className="add-select-category"
+                    value={this.state.selectedIssueType}
+                    onChange={this.setIssueType}
                   >
-                    <option value=''>Select IssueType</option>
+                    <option value="">Select IssueType</option>
                     {this.state.IssueTypeData !== null &&
-                            this.state.IssueTypeData.map((item, i) => (
-                              <option
-                                key={i}
-                                value={item.issueTypeID}
-                               
-                              >
-                                {item.issueTypeName}
-                              </option>
-                            ))}
-                   
+                      this.state.IssueTypeData.map((item, i) => (
+                        <option key={i} value={item.issueTypeID}>
+                          {item.issueTypeName}
+                        </option>
+                      ))}
                   </select>
                   {this.state.selectedIssueType.length === 0 && (
-                        <p style={{ color: "red", marginBottom: "0px" }}>
-                          {this.state.issueTypeCompulsion}
-                        </p>
-                      )}
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.issueTypeCompulsion}
+                    </p>
+                  )}
                 </div>
-                </div>
+              </div>
 
               <div className="row">
                 <div className="col-md-12">
-                <input
-                  type="text"
-                  className="addkb-subject"
-                  placeholder=" Write subject here"
-                  value={this.state.selectedSubject}
-                  onChange={this.setSubjectValue}
-
-                />
-                {this.state.selectedSubject.length === 0 && (
-                        <p style={{ color: "red", marginBottom: "0px" }}>
-                          {this.state.subjectCompulsion}
-                        </p>
-                      )}
+                  <input
+                    type="text"
+                    className="addkb-subject"
+                    placeholder=" Write subject here"
+                    value={this.state.selectedSubject}
+                    onChange={this.setSubjectValue}
+                  />
+                  {this.state.selectedSubject.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.subjectCompulsion}
+                    </p>
+                  )}
                 </div>
               </div>
               <br />
               <div className="row">
                 <div className="col-md-12 KBas">
-                <CKEditor
-              data={this.state.ckeditorAdd}
-              onChange={this.onAddCKEditorChange}
-                 
-                  config={{
-                    
-                    toolbar: [
-                    {
-                      name: 'basicstyles',
-                      items: ['Bold', 'Italic','Strike']
-                    },
-                    {
-                      name: 'styles',
-                      items: ['Styles', 'Format']
-                    },
-                    {
-                      name: 'paragraph',
-                      items: ['NumberedList', 'BulletedList']
-                    },
-                    {
-                      name: 'links',
-                      items: ['Link', 'Unlink']
-                    },
-                    {
-                      name: 'insert',
-                      items: ['Image', 'Table']
-                    },
-                    {
-                      name: 'tools',
-                      items: ['Maximize']
-                    },
-                    {
-                      name: 'editing',
-                      items: ['Scayt']
-                    }
-                  ],
-                  }}
-                 
-                />
+                  <CKEditor
+                    data={this.state.ckeditorAdd}
+                    onChange={this.onAddCKEditorChange}
+                    config={{
+                      toolbar: [
+                        {
+                          name: "basicstyles",
+                          items: ["Bold", "Italic", "Strike"]
+                        },
+                        {
+                          name: "styles",
+                          items: ["Styles", "Format"]
+                        },
+                        {
+                          name: "paragraph",
+                          items: ["NumberedList", "BulletedList"]
+                        },
+                        {
+                          name: "links",
+                          items: ["Link", "Unlink"]
+                        },
+                        {
+                          name: "insert",
+                          items: ["Image", "Table"]
+                        },
+                        {
+                          name: "tools",
+                          items: ["Maximize"]
+                        },
+                        {
+                          name: "editing",
+                          items: ["Scayt"]
+                        }
+                      ]
+                    }}
+                  />
                 </div>
               </div>
               <br />
-              <div className="row" style={{ float:"right"}}>
-                <button type="button"
+              <div className="row" style={{ float: "right" }}>
+                <button
+                  type="button"
                   className="cancel-button-modalk"
                   onClick={this.closeAddNewKBModal.bind(this)}
                 >
                   CANCEL
                 </button>
-                <button className="add-kb-button-modal"
-                onClick={this.handleAddKB.bind(this)}>
+                <button
+                  className="add-kb-button-modal"
+                  onClick={this.handleAddKB.bind(this)}
+                >
                   <label className="add-kb-button-text-modal">SAVE</label>
                 </button>
               </div>
@@ -1370,158 +1369,162 @@ handleAddKB(){
               <br />
               <div className="row">
                 <div className="col-md-6">
-                <select className="add-select-category"
-                  value={this.state.selectedCategory}
-                  onChange={this.setCategoryValue}
+                  <select
+                    className="add-select-category"
+                    value={this.state.selectedCategory}
+                    onChange={this.setCategoryValue}
                   >
-                    <option value={this.state.updateCategoryValue} selected>{this.state.updateCategoryName}</option>
+                    <option value={this.state.updateCategoryValue} selected>
+                      {this.state.updateCategoryName}
+                    </option>
                     {this.state.CategoryData !== null &&
-                                      this.state.CategoryData.map((item, i) => (
-                                        <option key={i} value={item.categoryID}>
-                                          {item.categoryName}
-                                        </option>
-                                      ))}
-                                      {this.state.updateCategoryValue.length === 0 && (
-                        <p style={{ color: "red", marginBottom: "0px" }}>
-                          {this.state.updateCategoryCompulsion}
-                        </p>
-                      )}
+                      this.state.CategoryData.map((item, i) => (
+                        <option key={i} value={item.categoryID}>
+                          {item.categoryName}
+                        </option>
+                      ))}
+                    {this.state.updateCategoryValue.length === 0 && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.updateCategoryCompulsion}
+                      </p>
+                    )}
                   </select>
                 </div>
                 <div className="col-md-6">
-                <select className="add-select-category"
-                  value={this.state.selectedSubCategory}
-                  onChange={this.setSubCategoryValue}
-                  onClick={this.handleGetSubCategoryList.bind(this)}
+                  <select
+                    className="add-select-category"
+                    value={this.state.selectedSubCategory}
+                    onChange={this.setSubCategoryValue}
+                    onClick={this.handleGetSubCategoryList.bind(this)}
                   >
-                    <option value={this.state.updateSubCategoryValue} selected>{this.state.updateSubCategoryName} </option>
+                    <option value={this.state.updateSubCategoryValue} selected>
+                      {this.state.updateSubCategoryName}{" "}
+                    </option>
                     {this.state.SubCategoryData !== null &&
-                                      this.state.SubCategoryData.map(
-                                        (item, i) => (
-                                          <option
-                                            key={i}
-                                            value={item.subCategoryID}
-                                          >
-                                            {item.subCategoryName}
-                                          </option>
-                                        )
-                                      )}
+                      this.state.SubCategoryData.map((item, i) => (
+                        <option key={i} value={item.subCategoryID}>
+                          {item.subCategoryName}
+                        </option>
+                      ))}
                   </select>
                   {this.state.updateSubCategoryValue.length === 0 && (
-                        <p style={{ color: "red", marginBottom: "0px" }}>
-                          {this.state.updateSubCategoryCompulsion}
-                        </p>
-                      )}
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.updateSubCategoryCompulsion}
+                    </p>
+                  )}
                 </div>
               </div>
               <br></br>
               <div className="row">
-              <div className="col-md-6">
-              <select className="add-select-category"
-                   value={this.state.selectedIssueType}
-                   onChange={this.setIssueType}
-                   onClick={this.handleGetIssueTypeList.bind(this)}
+                <div className="col-md-6">
+                  <select
+                    className="add-select-category"
+                    value={this.state.selectedIssueType}
+                    onChange={this.setIssueType}
+                    onClick={this.handleGetIssueTypeList.bind(this)}
                   >
-                    <option value={this.state.updateIssurTypeValue} selected>{this.state.updateIssueTypeName}</option>
+                    <option value={this.state.updateIssurTypeValue} selected>
+                      {this.state.updateIssueTypeName}
+                    </option>
                     {this.state.IssueTypeData !== null &&
-                            this.state.IssueTypeData.map((item, i) => (
-                              <option
-                                key={i}
-                                value={item.issueTypeID}
-                               
-                              >
-                                {item.issueTypeName}
-                              </option>
-                            ))}
-                   
+                      this.state.IssueTypeData.map((item, i) => (
+                        <option key={i} value={item.issueTypeID}>
+                          {item.issueTypeName}
+                        </option>
+                      ))}
                   </select>
                   {this.state.updateIssurTypeValue.length === 0 && (
-                        <p style={{ color: "red", marginBottom: "0px" }}>
-                          {this.state.updateIssueTypeCompulsion}
-                        </p>
-                      )}
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.updateIssueTypeCompulsion}
+                    </p>
+                  )}
                 </div>
               </div>
               <div className="row">
-               <div className="col-md-12">
-                <input
-                  type="text"
-                  className="addkb-subject"
-                  
-                  placeholder="Can I purchase a domain through Google?"
-                  value={this.state.updateSubject}
-                  onChange={this.setUpdateSubjectValue}
-                />
-                {this.state.updateSubject.length === 0 && (
-                        <p style={{ color: "red", marginBottom: "0px" }}>
-                          {this.state.updateSubjectCompulsion}
-                        </p>
-                      )}
+                <div className="col-md-12">
+                  <input
+                    type="text"
+                    className="addkb-subject"
+                    placeholder="Can I purchase a domain through Google?"
+                    value={this.state.updateSubject}
+                    onChange={this.setUpdateSubjectValue}
+                  />
+                  {this.state.updateSubject.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.updateSubjectCompulsion}
+                    </p>
+                  )}
                 </div>
               </div>
               <br />
               <div className="row KBase">
-              <div className="col-md-12">
-              <CKEditor
-              data={this.state.updateDescription}
-              onChange={this.onUpdateCKEditorChange}
-                  config={{
-                    toolbar: [
-                    {
-                      name: 'basicstyles',
-                      items: ['Bold', 'Italic','Strike']
-                    },
-                    {
-                      name: 'styles',
-                      items: ['Styles', 'Format']
-                    },
-                    {
-                      name: 'paragraph',
-                      items: ['NumberedList', 'BulletedList']
-                    },
-                    {
-                      name: 'links',
-                      items: ['Link', 'Unlink']
-                    },
-                    {
-                      name: 'insert',
-                      items: ['Image', 'Table']
-                    },
-                    {
-                      name: 'tools',
-                      items: ['Maximize']
-                    },
-                    {
-                      name: 'editing',
-                      items: ['Scayt']
-                    }
-                  ],
-                  }}
-                />
+                <div className="col-md-12">
+                  <CKEditor
+                    data={this.state.updateDescription}
+                    onChange={this.onUpdateCKEditorChange}
+                    config={{
+                      toolbar: [
+                        {
+                          name: "basicstyles",
+                          items: ["Bold", "Italic", "Strike"]
+                        },
+                        {
+                          name: "styles",
+                          items: ["Styles", "Format"]
+                        },
+                        {
+                          name: "paragraph",
+                          items: ["NumberedList", "BulletedList"]
+                        },
+                        {
+                          name: "links",
+                          items: ["Link", "Unlink"]
+                        },
+                        {
+                          name: "insert",
+                          items: ["Image", "Table"]
+                        },
+                        {
+                          name: "tools",
+                          items: ["Maximize"]
+                        },
+                        {
+                          name: "editing",
+                          items: ["Scayt"]
+                        }
+                      ]
+                    }}
+                  />
                 </div>
               </div>
               <br />
-              <div className="row" style={{float:"right"}}>
-               <div className="col-md-12">
-                <button type="button"
-                  className="cancel-button-modalk"
-                  onClick={this.closeEditAproveModal.bind(this)}
-                >
-                  CANCEL
-                </button>
-                <button className="add-kb-button-modal"
-                onClick={this.handleUpdateKB.bind(this,this.state.updateKBID)}>
-                  <label className="add-kb-button-text-modal">EDIT</label>
-                </button>
+              <div className="row" style={{ float: "right" }}>
+                <div className="col-md-12">
+                  <button
+                    type="button"
+                    className="cancel-button-modalk"
+                    onClick={this.closeEditAproveModal.bind(this)}
+                  >
+                    CANCEL
+                  </button>
+                  <button
+                    className="add-kb-button-modal"
+                    onClick={this.handleUpdateKB.bind(
+                      this,
+                      this.state.updateKBID
+                    )}
+                  >
+                    <label className="add-kb-button-text-modal">EDIT</label>
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         </Modal>
         {/* -----------------------------------------------END---------------------------------------- */}
-         {/* ---------------------------------------Approve MODAL----------------------------------- */}
+        {/* ---------------------------------------Approve MODAL----------------------------------- */}
 
-         <Modal
+        <Modal
           onClose={this.closeEditAproveModal1.bind(this)}
           open={this.state.editapprove1}
           modalId="addkb-modal-popup"
@@ -1541,150 +1544,154 @@ handleAddKB(){
               <br />
               <div className="row">
                 <div className="col-md-6">
-                <select className="add-select-category"
-                  value={this.state.selectedCategory}
-                  onChange={this.setCategoryValue}
+                  <select
+                    className="add-select-category"
+                    value={this.state.selectedCategory}
+                    onChange={this.setCategoryValue}
                   >
-                    <option value={this.state.approveCategoryValue}>{this.state.approveCategoryName}</option>
+                    <option value={this.state.approveCategoryValue}>
+                      {this.state.approveCategoryName}
+                    </option>
                     {this.state.CategoryData !== null &&
-                                      this.state.CategoryData.map((item, i) => (
-                                        <option key={i} value={item.categoryID}>
-                                          {item.categoryName}
-                                        </option>
-                                      ))}
-                                      {this.state.approveCategoryValue.length === 0 && (
-                        <p style={{ color: "red", marginBottom: "0px" }}>
-                          {this.state.approveCategoryCompulsion}
-                        </p>
-                      )}
+                      this.state.CategoryData.map((item, i) => (
+                        <option key={i} value={item.categoryID}>
+                          {item.categoryName}
+                        </option>
+                      ))}
+                    {this.state.approveCategoryValue.length === 0 && (
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {this.state.approveCategoryCompulsion}
+                      </p>
+                    )}
                   </select>
                 </div>
                 <div className="col-md-6">
-                <select className="add-select-category"
-                  value={this.state.selectedSubCategory}
-                  onChange={this.setSubCategoryValue}
-                  onClick={this.handleGetSubCategoryList.bind(this)}
+                  <select
+                    className="add-select-category"
+                    value={this.state.selectedSubCategory}
+                    onChange={this.setSubCategoryValue}
+                    onClick={this.handleGetSubCategoryList.bind(this)}
                   >
-                    <option value={this.state.approveSubCategoryValue}>{this.state.approveSubCategoryName} </option>
+                    <option value={this.state.approveSubCategoryValue}>
+                      {this.state.approveSubCategoryName}{" "}
+                    </option>
                     {this.state.SubCategoryData !== null &&
-                                      this.state.SubCategoryData.map(
-                                        (item, i) => (
-                                          <option
-                                            key={i}
-                                            value={item.subCategoryID}
-                                          >
-                                            {item.subCategoryName}
-                                          </option>
-                                        )
-                                      )}
+                      this.state.SubCategoryData.map((item, i) => (
+                        <option key={i} value={item.subCategoryID}>
+                          {item.subCategoryName}
+                        </option>
+                      ))}
                   </select>
                   {this.state.approveSubCategoryValue.length === 0 && (
-                        <p style={{ color: "red", marginBottom: "0px" }}>
-                          {this.state.approveSubCategoryCompulsion}
-                        </p>
-                      )}
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.approveSubCategoryCompulsion}
+                    </p>
+                  )}
                 </div>
               </div>
               <br></br>
               <div className="row">
-              <div className="col-md-6">
-              <select className="add-select-category"
-                   value={this.state.selectedIssueType}
-                   onChange={this.setIssueType}
-                   onClick={this.handleGetIssueTypeList.bind(this)}
+                <div className="col-md-6">
+                  <select
+                    className="add-select-category"
+                    value={this.state.selectedIssueType}
+                    onChange={this.setIssueType}
+                    onClick={this.handleGetIssueTypeList.bind(this)}
                   >
-                    <option value={this.state.approveIssurTypeValue}>{this.state.approveIssueTypeName}</option>
+                    <option value={this.state.approveIssurTypeValue}>
+                      {this.state.approveIssueTypeName}
+                    </option>
                     {this.state.IssueTypeData !== null &&
-                            this.state.IssueTypeData.map((item, i) => (
-                              <option
-                                key={i}
-                                value={item.issueTypeID}
-                               
-                              >
-                                {item.issueTypeName}
-                              </option>
-                            ))}
-                   
+                      this.state.IssueTypeData.map((item, i) => (
+                        <option key={i} value={item.issueTypeID}>
+                          {item.issueTypeName}
+                        </option>
+                      ))}
                   </select>
                   {this.state.approveIssurTypeValue.length === 0 && (
-                        <p style={{ color: "red", marginBottom: "0px" }}>
-                          {this.state.approveIssueTypeCompulsion}
-                        </p>
-                      )}
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.approveIssueTypeCompulsion}
+                    </p>
+                  )}
                 </div>
               </div>
               <div className="row">
-               <div className="col-md-12">
-                <input
-                  type="text"
-                  className="addkb-subject"
-                  
-                  placeholder="Can I purchase a domain through Google?"
-                  value={this.state.approveSubject}
-                  onChange={this.setApproveSubjectValue}
-                />
-                {this.state.approveSubject.length === 0 && (
-                        <p style={{ color: "red", marginBottom: "0px" }}>
-                          {this.state.approveSubjectCompulsion}
-                        </p>
-                      )}
+                <div className="col-md-12">
+                  <input
+                    type="text"
+                    className="addkb-subject"
+                    placeholder="Can I purchase a domain through Google?"
+                    value={this.state.approveSubject}
+                    onChange={this.setApproveSubjectValue}
+                  />
+                  {this.state.approveSubject.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.approveSubjectCompulsion}
+                    </p>
+                  )}
                 </div>
               </div>
               <br />
               <div className="row KBase">
-              <div className="col-md-12">
-              <CKEditor
-              data={this.state.approveDescription}
-              onChange={this.onApproveCKEditorChange}
-                  config={{
-                    toolbar: [
-                    {
-                      name: 'basicstyles',
-                      items: ['Bold', 'Italic','Strike']
-                    },
-                    {
-                      name: 'styles',
-                      items: ['Styles', 'Format']
-                    },
-                    {
-                      name: 'paragraph',
-                      items: ['NumberedList', 'BulletedList']
-                    },
-                    {
-                      name: 'links',
-                      items: ['Link', 'Unlink']
-                    },
-                    {
-                      name: 'insert',
-                      items: ['Image', 'Table']
-                    },
-                    {
-                      name: 'tools',
-                      items: ['Maximize']
-                    },
-                    {
-                      name: 'editing',
-                      items: ['Scayt']
-                    }
-                  ],
-                  }}
-                />
+                <div className="col-md-12">
+                  <CKEditor
+                    data={this.state.approveDescription}
+                    onChange={this.onApproveCKEditorChange}
+                    config={{
+                      toolbar: [
+                        {
+                          name: "basicstyles",
+                          items: ["Bold", "Italic", "Strike"]
+                        },
+                        {
+                          name: "styles",
+                          items: ["Styles", "Format"]
+                        },
+                        {
+                          name: "paragraph",
+                          items: ["NumberedList", "BulletedList"]
+                        },
+                        {
+                          name: "links",
+                          items: ["Link", "Unlink"]
+                        },
+                        {
+                          name: "insert",
+                          items: ["Image", "Table"]
+                        },
+                        {
+                          name: "tools",
+                          items: ["Maximize"]
+                        },
+                        {
+                          name: "editing",
+                          items: ["Scayt"]
+                        }
+                      ]
+                    }}
+                  />
                 </div>
               </div>
               <br />
-              <div className="row" style={{float:"right"}}>
-               <div className="col-md-12">
-                <button type="button"
-                  className="cancel-button-modalk"
-                  onClick={this.closeEditAproveModal1.bind(this)}
-                >
-                  CANCEL
-                </button>
-                <button className="add-kb-button-modal"
-            onClick={this.handleRejectKB.bind(this,this.state.approveID,this.state.approvebit)}
-                >
-                  <label className="add-kb-button-text-modal">APPROVE</label>
-                </button>
+              <div className="row" style={{ float: "right" }}>
+                <div className="col-md-12">
+                  <button
+                    type="button"
+                    className="cancel-button-modalk"
+                    onClick={this.closeEditAproveModal1.bind(this)}
+                  >
+                    CANCEL
+                  </button>
+                  <button
+                    className="add-kb-button-modal"
+                    onClick={this.handleRejectKB.bind(
+                      this,
+                      this.state.approveID,
+                      this.state.approvebit
+                    )}
+                  >
+                    <label className="add-kb-button-text-modal">APPROVE</label>
+                  </button>
                 </div>
               </div>
             </div>

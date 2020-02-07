@@ -134,10 +134,12 @@ class Brands extends Component {
       }
     }).then(function(res) {
       debugger;
-      let status = res.data.message;
-      if (status === "Success") {
+      let status = res.data.statusCode;
+      if (status === 1010) {
         self.handleGetBrandList();
         NotificationManager.success("Brand delete successfully.");
+      }else{
+        NotificationManager.error(res.data.message);
       }
     });
   }
@@ -438,7 +440,7 @@ class Brands extends Component {
                                 >
                                   <button
                                     className="react-tabel-button"
-                                    type="button"
+                                    // type="button"
                                     onClick={this.handleGetDataForEdit.bind(
                                       this,
                                       row.original

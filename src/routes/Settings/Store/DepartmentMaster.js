@@ -130,7 +130,7 @@ class DepartmentMaster extends Component {
           return (
             <div>
               <Popover content={ActionDelete} placement="bottom" trigger="click">
-              <img src={DeleteIcon} alt="del-icon" className="downloadaction" />
+              <img src={DeleteIcon} alt="del-icon" className="downloadaction"  style={{marginRight: "5px"}}/>
               </Popover>
               <Popover content={DepartEdit} placement="bottom" trigger="click">
                 <button className="react-tabel-button editre" id={ids}>

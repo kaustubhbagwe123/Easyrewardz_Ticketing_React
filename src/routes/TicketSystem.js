@@ -336,7 +336,7 @@ class TicketSystem extends Component {
           IsActive: 1
         }
       }).then(function(res) {
-        // debugger;
+        debugger;
         let Message = res.data.message;
         if (Message === "Success") {
           NotificationManager.success("Record updated Successfull.");
@@ -516,8 +516,8 @@ class TicketSystem extends Component {
       }
     }).then(function(res) {
       debugger;
-      let IssueTypeData = res.data.responseData;
-      self.setState({ IssueTypeData: IssueTypeData });
+      let data = res.data.responseData;
+      self.setState({ IssueTypeData: data });
     });
   }
   handleGetTicketPriorityList() {
@@ -529,8 +529,13 @@ class TicketSystem extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let TicketPriorityData = res.data.responseData;
-      self.setState({ TicketPriorityData: TicketPriorityData });
+      let status=res.data.message;
+      let data = res.data.responseData;
+      if(status === "Success"){
+      self.setState({ TicketPriorityData: data });
+      }else{
+        self.setState({ TicketPriorityData: [] });
+      }
     });
   }
   handleGetChannelOfPurchaseList() {
@@ -588,9 +593,7 @@ class TicketSystem extends Component {
       var custId = customerDetails.customerId;
       this.setState({ customerDetails, customer_Id: custId });
       this.handleGetCustomerData(custId);
-      // this.handleGetTicketTitleList();
       this.handleGetBrandList();
-      // this.handleGetCategoryList();
       this.handleGetChannelOfPurchaseList();
       this.handleGetTicketPriorityList();
     } else {
@@ -848,7 +851,7 @@ class TicketSystem extends Component {
     this.setState({ selectedTicketPriority: ticketPriorityValue });
   };
   setTicketActionTypeValue = e => {
-    // debugger;
+   debugger;
     let ticketActionTypeValue = e.currentTarget.value;
     this.setState({ selectedTicketActionType: ticketActionTypeValue });
   };
@@ -885,7 +888,7 @@ class TicketSystem extends Component {
     }, 1);
   };
   setSubCategoryValue = e => {
-    // debugger;
+   debugger;
     let subCategoryValue = e.currentTarget.value;
     this.setState({ selectedSubCategory: subCategoryValue });
 

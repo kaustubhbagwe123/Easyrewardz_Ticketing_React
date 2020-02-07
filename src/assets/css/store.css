@@ -497,6 +497,7 @@
 .bill-graph-list li {
   padding: 4px 0;
   white-space: nowrap;
+  display: block;
   font-size: 15px;
 }
 .bill-graph-list li b {

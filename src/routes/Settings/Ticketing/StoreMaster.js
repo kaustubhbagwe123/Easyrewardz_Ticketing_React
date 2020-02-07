@@ -68,7 +68,7 @@ class StoreMaster extends Component {
   componentDidMount() {
     this.handleGetStoreMasterData();
     this.handleGetBrandList();
-    this.handleGetStateList();
+   this.handleGetStateList();
     this.handleGetRegionList();
     this.handleGetStoreTypeList();
   }

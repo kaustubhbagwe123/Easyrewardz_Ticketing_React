@@ -464,7 +464,7 @@ class TicketSystemStore extends Component {
                           filterAll: true
                         }
                       ]}
-                      resizable={true}
+                      // resizable={false}
                       defaultPageSize={5}
                       showPagination={false}
                     />
@@ -550,7 +550,7 @@ class TicketSystemStore extends Component {
                           )
                         }
                       ]}
-                      resizable={true}
+                      // resizable={false}
                       defaultPageSize={5}
                       showPagination={false}
                     />
@@ -611,7 +611,7 @@ class TicketSystemStore extends Component {
               </div>
             ) : null}
             {this.state.message === "Success" ? (
-              <div>
+              <div className="reacttableordermodal order-det">
                 <div
                   className="row m-t-10 m-b-10"
                   style={{ marginLeft: "0", marginRight: "0" }}
@@ -729,7 +729,7 @@ class TicketSystemStore extends Component {
                             Header: "All",
                             id: "all",
                             width: 0,
-                            resizable: true,
+                            resizable: false,
                             sortable: false,
                             Filter: () => {},
                             getProps: () => {
@@ -762,7 +762,7 @@ class TicketSystemStore extends Component {
                             filterAll: true
                           }
                         ]}
-                        resizable={true}
+                        // resizable={false}
                         defaultPageSize={5}
                         showPagination={false}
                       />
@@ -877,7 +877,7 @@ class TicketSystemStore extends Component {
                             Cell: row => <label>23,Aug 2019</label>
                           }
                         ]}
-                        resizable={true}
+                        // resizable={false}
                         defaultPageSize={5}
                         showPagination={false}
                       />

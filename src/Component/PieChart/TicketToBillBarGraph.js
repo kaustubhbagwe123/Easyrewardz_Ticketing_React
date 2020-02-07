@@ -72,7 +72,7 @@ class TicketToBillBarGraph extends Component {
   }
 
   handleGetDashboardGraphData() {
-    // debugger;
+   debugger;
     // let self = this;
     // axios({
     //   method: "post",

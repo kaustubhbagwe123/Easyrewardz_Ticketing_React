@@ -346,7 +346,7 @@ class Header extends Component {
           </div>
 
           <div className="header-right-icons">
-            <a href="#!">
+            <a href="#!" className="d-none">
               <img
                 src={HeadPhoneBlue}
                 alt="logo"
@@ -652,7 +652,7 @@ class Header extends Component {
               )}
             </Modal>
 
-            <a href="#!">
+            <a href="#!" className="d-none">
               <img
                 src={ChatLogo}
                 alt="logo"
