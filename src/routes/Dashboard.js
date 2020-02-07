@@ -2211,6 +2211,26 @@ class Dashboard extends Component {
       });
     }
   }
+
+  HandleRowClickPage = (rowInfo, column) => {
+    return {
+      onClick: e => {
+        debugger;
+        let Id = column.original["ticketID"];
+        let self = this;
+        self.setState({
+          ticketDetailID: Id
+        });
+        setTimeout(function() {
+          self.props.history.push({
+            pathname: "myticket",
+            ticketDetailID: Id
+          });
+        }, 100);
+      }
+    };
+  };
+
   handleGetSaveSearchList() {
     debugger;
     let self = this;
