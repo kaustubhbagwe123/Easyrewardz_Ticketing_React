@@ -21,13 +21,31 @@ class QaCrmRoles extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fileName: ""
+      fileName: "",
+      isOpen: false
     };
+    this.togglePopover = this.togglePopover.bind(this)
+  }
+
+  togglePopover() {
+    this.setState({ isOpen: !this.state.isOpen });
   }
 
   fileUpload = e => {
     this.setState({ fileName: e.target.files[0].name });
   };
+
+  hide(e, id) {
+    debugger;
+    // document.getElementById(id).style.display="none";
+    document.getElementById(id).parentElement.parentElement.parentElement.parentElement.parentElement.style.display = "none";
+  }
+  show(e, id) {
+    debugger;
+    if (document.getElementById(id))
+      // document.getElementById(id).style.display="block";
+      document.getElementById(id).parentElement.parentElement.parentElement.parentElement.parentElement.style.display = "block";
+  }
 
   render() {
     const dataQaCrmRole = [
@@ -119,17 +137,112 @@ class QaCrmRoles extends Component {
           var ids = row.original["id"];
           return (
             <div>
-              <Popover content={QaCrmDelete} placement="bottom" trigger="click">
+              <Popover content={<div className="samdel d-flex" id={"samdel" + ids}>
+                <div className="del-big-icon">
+                  <img src={BlackDeleteIcon} alt="del-icon" />
+                </div>
+                <div>
+                  <p className="font-weight-bold blak-clr">Delete file?</p>
+                  <p className="mt-1 fs-12">
+                    Are you sure you want to delete this file?
+                  </p>
+                  <div className="del-can">
+                    <a className="canblue" onClick={() => this.hide(this, "samdel" + ids)}>CANCEL</a>
+                    <button className="butn">Delete</button>
+                  </div>
+                </div>
+              </div>} placement="bottom" trigger="click">
                 <img
                   src={DeleteIcon}
                   alt="del-icon"
                   id={ids}
                   className="downloadaction"
+                  onClick={() => this.show(this, "samdel" + ids)}
                 />
               </Popover>
-              <Popover content={QaCrmEdit} placement="bottom" trigger="click">
-                <button className="react-tabel-button editre" id={ids}>
-                 EDIT
+              <Popover content={<div className="edtpadding" id={"edtpadding" + ids}>
+                <div className="">
+                  <label className="popover-header-text">EDIT CRM ROLE</label>
+                </div>
+                <div className="pop-over-div">
+                  <label className="edit-label-1">Role Name</label>
+                  <input
+                    type="text"
+                    className="txt-edit-popover"
+                    placeholder="Enter Role Name"
+                    maxLength={25}
+                  />
+                </div>
+
+                <div className="crm-margin-div">
+                  <div className="switch switch-primary d-inline m-r-10">
+                    <label className="storeRole-name-text">Dashboard</label>
+                    <input type="checkbox" id="Dashboard-po-1" />
+                    <label
+                      htmlFor="Dashboard-po-1"
+                      className="cr cr-float-auto"
+                    ></label>
+                  </div>
+                </div>
+                <div className="crm-margin-div">
+                  <div className="switch switch-primary d-inline m-r-10">
+                    <label className="storeRole-name-text">My Tickets</label>
+                    <input type="checkbox" id="Tickets-po-2" />
+                    <label htmlFor="Tickets-po-2" className="cr cr-float-auto"></label>
+                  </div>
+                </div>
+                <div className="crm-margin-div">
+                  <div className="switch switch-primary d-inline m-r-10">
+                    <label className="storeRole-name-text">Ticket Audit Page</label>
+                    <input type="checkbox" id="Knowledge-po-3" />
+                    <label
+                      htmlFor="Knowledge-po-3"
+                      className="cr cr-float-auto"
+                    ></label>
+                  </div>
+                </div>
+                <div className="crm-margin-div">
+                  <div className="switch switch-primary d-inline m-r-10">
+                    <label className="storeRole-name-text">Notification</label>
+                    <input type="checkbox" id="Claim-po-3" />
+                    <label htmlFor="Claim-po-3" className="cr cr-float-auto"></label>
+                  </div>
+                </div>
+                <div className="crm-margin-div">
+                  <div className="switch switch-primary d-inline m-r-10">
+                    <label className="storeRole-name-text">Settings</label>
+                    <input type="checkbox" id="Chat-po-5" />
+                    <label htmlFor="Chat-po-5" className="cr cr-float-auto"></label>
+                  </div>
+                </div>
+                <div className="crm-margin-div">
+                  <div className="switch switch-primary d-inline m-r-10">
+                    <label className="storeRole-name-text">Knowledge Base</label>
+                    <input type="checkbox" id="Notification-po-4" />
+                    <label
+                      htmlFor="Notification-po-4"
+                      className="cr cr-float-auto"
+                    ></label>
+                  </div>
+                </div>
+
+                <div className="pop-over-div">
+                  <label className="edit-label-1">Status</label>
+                  <select id="inputStatus" className="edit-dropDwon dropdown-setting">
+                    <option>Status</option>
+                    <option>Inactive</option>
+                  </select>
+                </div>
+                <br />
+                <div>
+                  <a className="pop-over-cancle canblue" onClick={() => this.hide(this, "edtpadding" + ids)}>CANCEL</a>
+                  <button className="pop-over-button">
+                    SAVE
+                   </button>
+                </div>
+              </div>} placement="bottom" trigger="click">
+                <button className="react-tabel-button editre" id={ids} onClick={() => this.show(this, "edtpadding" + ids)}>
+                  EDIT
                 </button>
               </Popover>
             </div>
@@ -168,24 +281,7 @@ class QaCrmRoles extends Component {
       </div>
     );
 
-    const QaCrmDelete = (
-      <div className="d-flex">
-        <div className="del-big-icon">
-          <img src={BlackDeleteIcon} alt="del-icon" />
-        </div>
-        <div>
-          <p className="font-weight-bold blak-clr">Delete file?</p>
-          <p className="mt-1 fs-12">
-            Are you sure you want to delete this file?
-          </p>
-          <div className="del-can">
-            <a href={Demo.BLANK_LINK}>CANCEL</a>
-            <button className="butn">Delete</button>
-          </div>
-        </div>
-      </div>
-    );
-
+   
     const QaCrmAdmin = (
       <div className="general-popover created-popover">
         <div>
@@ -199,89 +295,7 @@ class QaCrmRoles extends Component {
       </div>
     );
 
-    const QaCrmEdit = (
-      <div className="edtpadding">
-      <div className="">
-        <label className="popover-header-text">EDIT CRM ROLE</label>
-      </div>
-      <div className="pop-over-div">
-        <label className="edit-label-1">Role Name</label>
-        <input
-          type="text"
-          className="txt-edit-popover"
-          placeholder="Enter Role Name"
-          maxLength={25}
-        />
-      </div>
-
-      <div className="crm-margin-div">
-        <div className="switch switch-primary d-inline m-r-10">
-          <label className="storeRole-name-text">Dashboard</label>
-          <input type="checkbox" id="Dashboard-po-1" />
-          <label
-            htmlFor="Dashboard-po-1"
-            className="cr cr-float-auto"
-          ></label>
-        </div>
-      </div>
-      <div className="crm-margin-div">
-        <div className="switch switch-primary d-inline m-r-10">
-          <label className="storeRole-name-text">My Tickets</label>
-          <input type="checkbox" id="Tickets-po-2" />
-          <label htmlFor="Tickets-po-2" className="cr cr-float-auto"></label>
-        </div>
-      </div>
-      <div className="crm-margin-div">
-        <div className="switch switch-primary d-inline m-r-10">
-          <label className="storeRole-name-text">Ticket Audit Page</label>
-          <input type="checkbox" id="Knowledge-po-3" />
-          <label
-            htmlFor="Knowledge-po-3"
-            className="cr cr-float-auto"
-          ></label>
-        </div>
-      </div>
-      <div className="crm-margin-div">
-        <div className="switch switch-primary d-inline m-r-10">
-          <label className="storeRole-name-text">Notification</label>
-          <input type="checkbox" id="Claim-po-3" />
-          <label htmlFor="Claim-po-3" className="cr cr-float-auto"></label>
-        </div>
-      </div>
-      <div className="crm-margin-div">
-        <div className="switch switch-primary d-inline m-r-10">
-          <label className="storeRole-name-text">Settings</label>
-          <input type="checkbox" id="Chat-po-5" />
-          <label htmlFor="Chat-po-5" className="cr cr-float-auto"></label>
-        </div>
-      </div>
-      <div className="crm-margin-div">
-        <div className="switch switch-primary d-inline m-r-10">
-          <label className="storeRole-name-text">Knowledge Base</label>
-          <input type="checkbox" id="Notification-po-4" />
-          <label
-            htmlFor="Notification-po-4"
-            className="cr cr-float-auto"
-          ></label>
-        </div>
-      </div>
-
-      <div className="pop-over-div">
-        <label className="edit-label-1">Status</label>
-        <select id="inputStatus" className="edit-dropDwon dropdown-setting">
-          <option>Status</option>
-          <option>Inactive</option>
-        </select>
-      </div>
-      <br />
-      <div>
-      <a className="pop-over-cancle" href={Demo.BLANK_LINK} >CANCEL</a>
-        <button className="pop-over-button">
-          SAVE
-        </button>
-      </div>
-    </div>
-    );
+    
     return (
       <Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
@@ -472,13 +486,14 @@ class QaCrmRoles extends Component {
                           <div className="file-dtls">
                             <p className="file-name">{this.state.fileName}</p>
                             <div className="del-file" id="del-file-1">
-                              <img src={DelBlack} alt="delete-black" />
+                              <img src={DelBlack} alt="delete-black" onClick={this.togglePopover} />
                             </div>
                             <UncontrolledPopover
                               trigger="legacy"
                               placement="auto"
                               target="del-file-1"
                               className="general-popover delete-popover"
+                              isOpen={this.state.isOpen} toggle={this.togglePopover}
                             >
                               <PopoverBody className="d-flex">
                                 <div className="del-big-icon">
@@ -492,7 +507,7 @@ class QaCrmRoles extends Component {
                                     Are you sure you want to delete this file?
                                   </p>
                                   <div className="del-can">
-                                    <a href={Demo.BLANK_LINK}>CANCEL</a>
+                                    <a className="canblue" onClick={this.togglePopover}>CANCEL</a>
                                     <button className="butn">Delete</button>
                                   </div>
                                 </div>

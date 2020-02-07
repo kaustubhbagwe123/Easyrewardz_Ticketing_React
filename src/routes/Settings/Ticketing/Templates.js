@@ -26,7 +26,7 @@ import Select from "react-select";
 class Templates extends Component {
   constructor(props) {
     super(props)
-  
+
     this.state = {
       ConfigTabsModal: false,
       template: [],
@@ -37,10 +37,10 @@ class Templates extends Component {
       slaIssueType: [],
       selectedSlaIssueType: [],
       selectedIssueTypeCommaSeperated: "",
-      editStatus:"",
-      editIssueType:[],
-     
-      templateEdit:{}
+      editStatus: "",
+      editIssueType: [],
+
+      templateEdit: {}
     }
 
     this.handleGetTemplate = this.handleGetTemplate.bind(this);
@@ -55,28 +55,28 @@ class Templates extends Component {
   }
 
 
-  setTemplateEditData(editdata){
+  setTemplateEditData(editdata) {
     debugger;
-     var templateEdit=editdata;
-     templateEdit.template_ID=editdata.templateID;
-     templateEdit.template_Name=editdata.templateName;
-     templateEdit.issue_Type=editdata.issueType;
-     templateEdit.template_Status=editdata.templateStatus;
-      
-      var editIssueType= templateEdit.issue_Type.split(',').map(Number);
-     
-     
-      
-     if(templateEdit.template_Status==="Active"){
-      templateEdit.template_Status="true";
-     }
-     else{
-      templateEdit.template_Status="false";
-     }
-   
+    var templateEdit = editdata;
+    templateEdit.template_ID = editdata.templateID;
+    templateEdit.template_Name = editdata.templateName;
+    templateEdit.issue_Type = editdata.issueType;
+    templateEdit.template_Status = editdata.templateStatus;
 
-     this.setState({
-      templateEdit,editIssueType
+    var editIssueType = templateEdit.issue_Type.split(',').map(Number);
+
+
+
+    if (templateEdit.template_Status === "Active") {
+      templateEdit.template_Status = "true";
+    }
+    else {
+      templateEdit.template_Status = "false";
+    }
+
+
+    this.setState({
+      templateEdit, editIssueType
     })
 
   }
@@ -91,7 +91,7 @@ class Templates extends Component {
     this.setState({
       EditTemp: data
     });
-    
+
   };
   setIssueType = e => {
     debugger;
@@ -105,13 +105,13 @@ class Templates extends Component {
       selectedIssueTypeCommaSeperated
     });
   };
-  
+
   setEditIssueType = e => {
     debugger;
-    
+
     this.setState({
       editIssueType: e
-    
+
     });
   };
 
@@ -148,7 +148,7 @@ class Templates extends Component {
       method: "post",
       url: config.apiUrl + "/SLA/GetIssueType",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let slaIssueType = res.data.responseData;
       if (slaIssueType !== null && slaIssueType !== undefined) {
@@ -167,7 +167,7 @@ class Templates extends Component {
       params: {
         TemplateID: deleteId
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let status = res.data.message;
       if (status === "Success") {
@@ -182,7 +182,7 @@ class Templates extends Component {
   createTemplate() {
     debugger;
     let self = this;
-    this.setState({ConfigTabsModal:false})
+    this.setState({ ConfigTabsModal: false })
     let TemplateIsActive;
     if (this.state.TemplateIsActive === 'true') {
       TemplateIsActive = true
@@ -201,7 +201,7 @@ class Templates extends Component {
         issueTypes: this.state.selectedIssueTypeCommaSeperated,
         isTemplateActive: TemplateIsActive
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let status = res.data.message;
       if (status === "Success") {
@@ -220,7 +220,7 @@ class Templates extends Component {
       method: "post",
       url: config.apiUrl + "/Template/GetTemplate",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let template = res.data.responseData;
       if (template !== null && template !== undefined) {
@@ -229,11 +229,11 @@ class Templates extends Component {
     });
   }
 
-  handleConfigureTabsOpen(){
-    this.setState({ConfigTabsModal:true})
+  handleConfigureTabsOpen() {
+    this.setState({ ConfigTabsModal: true })
   }
-  handleConfigureTabsClose(){
-    this.setState({ConfigTabsModal:false})
+  handleConfigureTabsClose() {
+    this.setState({ ConfigTabsModal: false })
   }
   render() {
     const columns = [
@@ -269,7 +269,7 @@ class Templates extends Component {
           return (
             <>
               <span>
-              {row.original.createdBy}
+                {row.original.createdBy}
                 <Popover content={
                   <>
                     <div>
@@ -309,6 +309,8 @@ class Templates extends Component {
         accessor: "templateStatus"
       },
       {
+        Header: "Actions",
+        sortable: false,
         Cell: row => {
           var ids = row.original["id"];
           return (
@@ -316,20 +318,20 @@ class Templates extends Component {
               <span>
                 <Popover content={
                   <div className="d-flex general-popover popover-body">
-                  <div className="del-big-icon">
-                    <img src={DelBigIcon} alt="del-icon" />
-                  </div>
-                  <div>
-                    <p className="font-weight-bold blak-clr">Delete file?</p>
-                    <p className="mt-1 fs-12">
-                      Are you sure you want to delete this file?
+                    <div className="del-big-icon">
+                      <img src={DelBigIcon} alt="del-icon" />
+                    </div>
+                    <div>
+                      <p className="font-weight-bold blak-clr">Delete file?</p>
+                      <p className="mt-1 fs-12">
+                        Are you sure you want to delete this file?
                     </p>
-                    <div className="del-can">
-                      <a href={Demo.BLANK_LINK}>CANCEL</a>
-                      <button className="butn" onClick={this.deleteTemplate.bind(this, row.original.templateID)}>Delete</button>
+                      <div className="del-can">
+                        <a href={Demo.BLANK_LINK}>CANCEL</a>
+                        <button className="butn" onClick={this.deleteTemplate.bind(this, row.original.templateID)}>Delete</button>
+                      </div>
                     </div>
                   </div>
-                </div>
                 } placement="bottom" trigger="click">
                   <img
                     src={DeleteIcon}
@@ -339,75 +341,75 @@ class Templates extends Component {
                   />
                 </Popover>
                 <Popover content={<div className="edtpadding">
-        <div className="">
-          <label className="popover-header-text">EDIT TEMPLATES</label>
-        </div>
-        <div className="pop-over-div">
-          <label className="edit-label-1">Name</label>
-          <input
-            type="text"
-            className="txt-edit-popover"
-            placeholder="Enter Name"
-            maxLength={25}
-            name="template_Name"
-            value={this.state.templateEdit.template_Name}
-            onChange={this.handleOnChangeEditData}
-          />
-        </div>
-        <div className="pop-over-div">
-          <label className="edit-label-1">Issue Type</label>
-          <Select
-                            getOptionLabel={option =>
-                              option.issueTypeName
-                            }
-                            getOptionValue={
-                              option => option.issueTypeID //id
-                            }
-                            options={
-                              this.state
-                                .slaIssueType
-                            }
-                            placeholder="Select"
-                            // menuIsOpen={true}
-                            closeMenuOnSelect={
-                              false
-                            }
-                            onChange={this.setEditIssueType.bind(
-                              this
-                            )}
-                            value={
-                              this.state.editIssueType
-                                
-                            }
-                            
-                            // showNewOptionAtTop={false}
-                            defaultValue={{ label: "asd", value: 1 }}
-                            isMulti
-                          />
-        </div>
-        <div className="pop-over-div">
-          <label className="edit-label-1">Status</label>
-          <select id="inputStatus" className="edit-dropDwon dropdown-setting"
-          name="template_Status"
-          value={this.state.templateEdit.template_Status}
-          onChange={this.handleOnChangeEditData}
-          >
-            <option value="true">Active</option>
-            <option value="false">Inactive</option>
-          </select>
-        </div>
-        <br />
-        <div>
-        <a className="pop-over-cancle" onClick={this.hide}>CANCEL</a>
-          <button className="pop-over-button">
-            <label className="pop-over-btnsave-text">SAVE</label>
-          </button>
-        </div>
-      </div>} placement="bottom" trigger="click">
+                  <div className="">
+                    <label className="popover-header-text">EDIT TEMPLATES</label>
+                  </div>
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">Name</label>
+                    <input
+                      type="text"
+                      className="txt-edit-popover"
+                      placeholder="Enter Name"
+                      maxLength={25}
+                      name="template_Name"
+                      value={this.state.templateEdit.template_Name}
+                      onChange={this.handleOnChangeEditData}
+                    />
+                  </div>
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">Issue Type</label>
+                    <Select
+                      getOptionLabel={option =>
+                        option.issueTypeName
+                      }
+                      getOptionValue={
+                        option => option.issueTypeID //id
+                      }
+                      options={
+                        this.state
+                          .slaIssueType
+                      }
+                      placeholder="Select"
+                      // menuIsOpen={true}
+                      closeMenuOnSelect={
+                        false
+                      }
+                      onChange={this.setEditIssueType.bind(
+                        this
+                      )}
+                      value={
+                        this.state.editIssueType
+
+                      }
+
+                      // showNewOptionAtTop={false}
+                      defaultValue={{ label: "asd", value: 1 }}
+                      isMulti
+                    />
+                  </div>
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">Status</label>
+                    <select id="inputStatus" className="edit-dropDwon dropdown-setting"
+                      name="template_Status"
+                      value={this.state.templateEdit.template_Status}
+                      onChange={this.handleOnChangeEditData}
+                    >
+                      <option value="true">Active</option>
+                      <option value="false">Inactive</option>
+                    </select>
+                  </div>
+                  <br />
+                  <div>
+                    <a className="pop-over-cancle" onClick={this.hide}>CANCEL</a>
+                    <button className="pop-over-button">
+                      <label className="pop-over-btnsave-text">SAVE</label>
+                    </button>
+                  </div>
+                </div>} placement="bottom" trigger="click">
                   <button className="react-tabel-button editre" id="p-edit-pop-2"
-                  onClick={this.setTemplateEditData.bind(this,row.original)}
+                    onClick={this.setTemplateEditData.bind(this, row.original)}
                   >
-                  EDIT
+                    EDIT
                     {/* <label className="Table-action-edit-button-text">
                       EDIT
                     </label> */}
@@ -416,14 +418,13 @@ class Templates extends Component {
               </span>
             </>
           );
-        },
-        Header: "Actions",
-        sortable: false
-        //   className:"action-template",
+        }
+
+        //  className:"action-template",
       }
     ];
 
-    
+
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
@@ -536,7 +537,7 @@ class Templates extends Component {
                               this.state
                                 .selectedSlaIssueType
                             }
-                           
+
                             // showNewOptionAtTop={false}
                             isMulti
                           />
@@ -558,58 +559,58 @@ class Templates extends Component {
                       </div>
                     </div>
                     <div className="btnSpace">
-                      <button className="CreateADDBtn" 
-                      onClick={this.handleConfigureTabsOpen.bind(this)}
+                      <button className="CreateADDBtn"
+                        onClick={this.handleConfigureTabsOpen.bind(this)}
                       >
-                      CONFIGURE TEMPLATE
+                        CONFIGURE TEMPLATE
                         {/* <label className="addLable">CONFIGURE TEMPLATE</label> */}
                       </button>
                       <Modal
-                          size="lg"
-                          show={this.state.ConfigTabsModal}
-                          onHide={this.handleConfigureTabsClose.bind(this)}
+                        size="lg"
+                        show={this.state.ConfigTabsModal}
+                        onHide={this.handleConfigureTabsClose.bind(this)}
                       >
-                    <Modal.Header>
-                      <div className="row config-tab">
-                      <div className="col-md-9 templateName">
-                        <label className="template-text">TEMPLATE NAME : COMPLAINT STATUS</label>
-                      </div>
-                      <div className="col-md-3">
-                          <img src={CancelImg} alt="CancelImg" className="cancelImg-config"
-                          onClick={this.handleConfigureTabsClose.bind(this)}/> 
-                      </div>
-                      </div>
-                    </Modal.Header>
-                    <div className="temp-sub">
-                        <label className="designation-name">Template Subject</label>
-                        <input
-                          type="text"
-                          className="txt-1"
-                          placeholder="Enter Template Subject"
-                          maxLength={25}
-                          onChange={this.handleTemplateSubject}
-                        />
-                      </div>
-                    <Modal.Body>
-                      <div className="template-editor">
-                        <CKEditor
-                                
-                                content={this.state.editorContent}
-                                events={{
-                                  // "blur": this.onBlur,
-                                  // "afterPaste": this.afterPaste,
-                                  change: this.onEditorChange,
-                                  items: this.fileUpload
-                                }}
-                        />
-                      </div>
-                      <div className="config-button">
-                              <button className="config-buttontext" onClick={this.createTemplate.bind(this)} type="submit">
-                                SAVE & NEXT
+                        <Modal.Header>
+                          <div className="row config-tab">
+                            <div className="col-md-9 templateName">
+                              <label className="template-text">TEMPLATE NAME : COMPLAINT STATUS</label>
+                            </div>
+                            <div className="col-md-3">
+                              <img src={CancelImg} alt="CancelImg" className="cancelImg-config"
+                                onClick={this.handleConfigureTabsClose.bind(this)} />
+                            </div>
+                          </div>
+                        </Modal.Header>
+                        <div className="temp-sub">
+                          <label className="designation-name">Template Subject</label>
+                          <input
+                            type="text"
+                            className="txt-1"
+                            placeholder="Enter Template Subject"
+                            maxLength={25}
+                            onChange={this.handleTemplateSubject}
+                          />
+                        </div>
+                        <Modal.Body>
+                          <div className="template-editor">
+                            <CKEditor
+
+                              content={this.state.editorContent}
+                              events={{
+                                // "blur": this.onBlur,
+                                // "afterPaste": this.afterPaste,
+                                change: this.onEditorChange,
+                                items: this.fileUpload
+                              }}
+                            />
+                          </div>
+                          <div className="config-button">
+                            <button className="config-buttontext" onClick={this.createTemplate.bind(this)} type="submit">
+                              SAVE & NEXT
                               </button>
-                      </div>
-                    </Modal.Body>
-                  </Modal>
+                          </div>
+                        </Modal.Body>
+                      </Modal>
 
                     </div>
                   </div>
