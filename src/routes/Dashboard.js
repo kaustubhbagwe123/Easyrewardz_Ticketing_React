@@ -2657,7 +2657,7 @@ class Dashboard extends Component {
                               </span>
                             </div>
                           </div>
-                          {this.state.TotalNoOfChatShow && (
+                          {/* {this.state.TotalNoOfChatShow && ( */}
                             <div
                               className="col-md col-sm-4 col-6"
                               onClick={this.HandleChangeRedict.bind(this)}
@@ -2670,7 +2670,7 @@ class Dashboard extends Component {
                               </small>
                               </div>
                             </div>
-                          )}
+                           {/* )} */}
                         </div>
                       </div>
                       <div className="container-fluid btm-mar">
