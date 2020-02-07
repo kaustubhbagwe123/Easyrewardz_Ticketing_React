@@ -731,7 +731,7 @@ class CreateSLA extends Component {
                         <label className="reports-to">Issue Type</label>
                         <div className="dropdown">
                           <button
-                            className="btn"
+                            className="btn issuesladrop"
                             type="button"
                             data-toggle="dropdown"
                           >

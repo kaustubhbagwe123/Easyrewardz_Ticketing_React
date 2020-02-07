@@ -10575,3 +10575,7 @@ table tr th:last-child {
 .category-buttonbtm ul {
   margin-bottom: 0;
 }
+.issuesladrop {
+  background: #fff url("./../Images//table-arr.png") no-repeat right 20px center;
+  background-size: 18px;
+}
