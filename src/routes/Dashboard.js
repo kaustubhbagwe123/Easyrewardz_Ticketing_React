@@ -270,7 +270,28 @@ class Dashboard extends Component {
       loading: false,
       SearchNameCompulsory: "",
       loadingAbove: true,
-      FinalSaveSearchData: ""
+      modulesItems: [],
+      FinalSaveSearchData: "",
+
+      CreateDateShowRecord:"",
+      LastUpdatedDate:"",
+      Category:"",
+      SubCategory:"",
+      IssueType:"",
+      TicketSource:"",
+      TicketIDTitle:"",
+      TicketPriority:"",
+      TicketStatus:"",
+      SLAStatus:"",
+      ClaimID:"",
+      InvoiceNoSubOrderNo:"",
+      ItemID:"",
+      Didvisitstore:"",
+      Wanttovisitstore:"",
+      Email:"",
+      MobileNo:"",
+      AssignTo:"",
+      PurchaseStoreCodeAddress:""
     };
     this.handleAssignTo = this.handleAssignTo.bind(this);
     this.applyCallback = this.applyCallback.bind(this);
@@ -329,6 +350,7 @@ class Dashboard extends Component {
     this.handleMonthForWeek = this.handleMonthForWeek.bind(this);
     this.handleWeekly = this.handleWeekly.bind(this);
     this.handleWeeklyDays = this.handleWeeklyDays.bind(this);
+    this.handleAdvanceSearchOption = this.handleAdvanceSearchOption.bind(this);
     // this.toggleHoverState = this.toggleHoverState.bind(this);
   }
   // handleApply(event, picker) {
@@ -351,8 +373,10 @@ class Dashboard extends Component {
     this.handleGetBrandList();
     // this.handleGetDashboardNumberData();
     // this.handleGetDashboardGraphData();
-    this.handleGetAgentList();
+     this.handleGetAgentList();
     this.handleGetSaveSearchList();
+
+    this.handleAdvanceSearchOption();
   }
 
   clickCheckbox(evt) {
@@ -460,7 +484,152 @@ class Dashboard extends Component {
       selectedWeeklyDays: finalWeekList
     });
   };
+  handleAdvanceSearchOption() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Module/GetModulesItems",
+      headers: authHeader(),
+      params: {
+        ModuleID: 8
+      }
+    }).then(function (res) {
+      debugger;
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        self.setState({ modulesItems: data
+           });
+           self.setAdvanceSearch();
+      } else {
+        self.setState({ modulesItems: [] });
+      }
 
+    });
+  }
+  setAdvanceSearch(){
+    debugger;
+    var data=[];
+    data=this.state.modulesItems;
+    if(data[0].moduleItemisActive===true){
+      this.setState({ CreateDateShowRecord:"yes" });
+    }else{
+      this.setState({ CreateDateShowRecord:"none" });
+    }
+
+    if(data[1].moduleItemisActive===true){
+      this.setState({ LastUpdatedDate:"yes" });
+    }else{
+      this.setState({ LastUpdatedDate:"none" });
+    }
+
+    if(data[2].moduleItemisActive===true){
+      this.setState({ Category:"yes" });
+    }else{
+      this.setState({ Category:"none" });
+    }
+
+    if(data[3].moduleItemisActive===true){
+      this.setState({ SubCategory:"yes" });
+    }else{
+      this.setState({ SubCategory:"none" });
+    }
+
+    if(data[4].moduleItemisActive===true){
+      this.setState({ IssueType:"yes" });
+    }else{
+      this.setState({ IssueType:"none" });
+    }
+
+    if(data[5].moduleItemisActive===true){
+      this.setState({ TicketSource:"yes" });
+    }else{
+      this.setState({ TicketSource:"none" });
+    }
+
+    if(data[6].moduleItemisActive===true){
+      this.setState({ TicketIDTitle:"yes" });
+    }else{
+      this.setState({ TicketIDTitle:"none" });
+    }
+
+    if(data[7].moduleItemisActive===true){
+      this.setState({ TicketPriority:"yes" });
+    }else{
+      this.setState({ TicketPriority:"none" });
+    }
+
+    if(data[8].moduleItemisActive===true){
+      this.setState({ TicketStatus:"yes" });
+    }else{
+      this.setState({ TicketStatus:"none" });
+    }
+
+    if(data[9].moduleItemisActive===true){
+      this.setState({ SLAStatus:"yes" });
+    }else{
+      this.setState({ SLAStatus:"none" });
+    }
+
+    if(data[10].moduleItemisActive===true){
+      this.setState({ ClaimID:"yes" });
+    }else{
+      this.setState({ ClaimID:"none" });
+    }
+
+    if(data[11].moduleItemisActive===true){
+      this.setState({ InvoiceNoSubOrderNo:"yes" });
+    }else{
+      this.setState({ InvoiceNoSubOrderNo:"none" });
+    }
+
+    if(data[12].moduleItemisActive===true){
+      this.setState({ ItemID:"yes" });
+    }else{
+      this.setState({ ItemID:"none" });
+    }
+
+    if(data[13].moduleItemisActive===true){
+      this.setState({ Didvisitstore:"yes" });
+    }else{
+      this.setState({ Didvisitstore:"none" });
+    }
+
+    if(data[14].moduleItemisActive===true){
+      this.setState({ Wanttovisitstore:"yes" });
+    }else{
+      this.setState({ Wanttovisitstore:"none" });
+    }
+
+   
+
+    if(data[16].moduleItemisActive===true){
+      this.setState({ Email:"yes" });
+    }else{
+      this.setState({ Email:"none" });
+    }
+
+    if(data[17].moduleItemisActive===true){
+      this.setState({ MobileNo:"yes" });
+    }else{
+      this.setState({ MobileNo:"none" });
+    }
+
+    if(data[18].moduleItemisActive===true){
+      this.setState({ AssignTo:"yes" });
+    }else{
+      this.setState({ AssignTo:"none" });
+    }
+
+    if(data[19].moduleItemisActive===true){
+      this.setState({ PurchaseStoreCodeAddress:"yes" });
+    }else{
+      this.setState({ PurchaseStoreCodeAddress:"none" });
+    }
+
+
+  }
   handleGetDashboardNumberData() {
     this.setState({ loadingAbove: true });
     debugger;
@@ -481,7 +650,7 @@ class Dashboard extends Component {
         BrandID: this.state.BrandIds
         // BrandID: "26, 31"
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let DashboardNumberData = res.data.responseData;
       self.setState({ DashboardNumberData: DashboardNumberData });
@@ -513,7 +682,7 @@ class Dashboard extends Component {
         todate: moment(this.state.end._d).format("YYYY-MM-DD"),
         BrandID: this.state.BrandIds
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       if (res.data.responseData !== null) {
         let DashboardGraphData = res.data.responseData;
@@ -750,7 +919,7 @@ class Dashboard extends Component {
       method: "post",
       url: config.apiUrl + "/User/GetUserList",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let AgentData = res.data.responseData;
       self.setState({ AgentData: AgentData });
@@ -764,7 +933,7 @@ class Dashboard extends Component {
       method: "post",
       url: config.apiUrl + "/Brand/GetBrandList",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let BrandData = res.data.responseData;
       self.setState({ BrandData: BrandData });
@@ -814,7 +983,7 @@ class Dashboard extends Component {
       method: "post",
       url: config.apiUrl + "/User/GetUserList",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let AssignData = res.data.responseData;
 
@@ -919,7 +1088,7 @@ class Dashboard extends Component {
       method: "post",
       url: config.apiUrl + "/Master/GetChannelOfPurchaseList",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let ChannelOfPurchaseData = res.data.responseData;
       self.setState({ ChannelOfPurchaseData: ChannelOfPurchaseData });
@@ -943,7 +1112,7 @@ class Dashboard extends Component {
       params: {
         DepartmentId: this.state.selectedDepartment
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let FunctionData = res.data.responseData;
       self.setState({ FunctionData: FunctionData });
@@ -956,7 +1125,7 @@ class Dashboard extends Component {
       method: "post",
       url: config.apiUrl + "/Master/getDepartmentList",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let DepartmentData = res.data.responseData;
       self.setState({ DepartmentData: DepartmentData });
@@ -1029,7 +1198,7 @@ class Dashboard extends Component {
         Email: this.state.assignEmail.trim(),
         DesignationID: this.state.selectedDesignation
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let SearchAssignData = res.data.responseData;
       self.setState({
@@ -1061,7 +1230,7 @@ class Dashboard extends Component {
       method: "get",
       url: config.apiUrl + "/Priority/GetPriorityList",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let TicketPriorityData = res.data.responseData;
       self.setState({ TicketPriorityData: TicketPriorityData });
@@ -1395,7 +1564,7 @@ class Dashboard extends Component {
       method: "post",
       url: config.apiUrl + "/Designation/GetDesignationList",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let DesignationData = res.data.responseData;
       self.setState({ DesignationData: DesignationData });
@@ -1435,7 +1604,7 @@ class Dashboard extends Component {
         NameOfMonthForYear: this.state
           .selectedNameOfMonthForDailyYearCommaSeperated
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let messageData = res.data.message;
       if (messageData === "Success") {
@@ -1528,7 +1697,7 @@ class Dashboard extends Component {
         AgentID: this.state.agentId,
         Remark: this.state.agentRemark
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let messageData = res.data.message;
       if (messageData === "Success") {
@@ -1549,7 +1718,7 @@ class Dashboard extends Component {
       method: "post",
       url: config.apiUrl + "/SLA/GetSLAStatusList",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let SlaStatusData = res.data.responseData;
       self.setState({
@@ -1565,7 +1734,7 @@ class Dashboard extends Component {
       method: "post",
       url: config.apiUrl + "/Master/getTicketSources",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let TicketSourceData = res.data.responseData;
       self.setState({
@@ -1587,7 +1756,7 @@ class Dashboard extends Component {
       params: {
         SubCategoryID: this.state.selectedClaimSubCategory
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let ClaimIssueTypeData = res.data.responseData;
       self.setState({ ClaimIssueTypeData: ClaimIssueTypeData });
@@ -1613,7 +1782,7 @@ class Dashboard extends Component {
       params: {
         SubCategoryID: subCateId
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       // let IssueTypeData = res.data.responseData;
       // self.setState({ IssueTypeData: IssueTypeData });
@@ -1638,7 +1807,7 @@ class Dashboard extends Component {
       method: "post",
       url: config.apiUrl + "/Category/GetCategoryList",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let CategoryData = res.data;
       // let CategoryDataAll = res.data;
@@ -1665,7 +1834,7 @@ class Dashboard extends Component {
       params: {
         CategoryID: this.state.selectedClaimCategory
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let ClaimSubCategoryData = res.data.responseData;
       self.setState({
@@ -1698,7 +1867,7 @@ class Dashboard extends Component {
       params: {
         CategoryID: cateId
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       if (self.state.byCategoryFlag === 4) {
         var SubCategoryData = res.data.responseData;
@@ -1944,8 +2113,8 @@ class Dashboard extends Component {
       allTab["TaskStatusId"] = this.state.selectedTaskStatus;
       allTab["TaskDepartment_Id"] = this.state.selectedDepartment;
       allTab["TaskFunction_Id"] = this.state.selectedFunction;
-    }else{
-      allTab=null
+    } else {
+      allTab = null
     }
 
     // ----------------------SetState variable in Json Format for Apply Search------------------------------------
@@ -1980,7 +2149,7 @@ class Dashboard extends Component {
         searchDataByCategoryType: categoryType,
         searchDataByAll: allTab
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let status = res.data.message;
       let data = res.data.responseData;
@@ -2016,7 +2185,7 @@ class Dashboard extends Component {
     debugger;
     let self = this;
     if (this.state.SearchName.length > 0) {
-      
+
       axios({
         method: "post",
         url: config.apiUrl + "/Ticketing/savesearch",
@@ -2025,7 +2194,7 @@ class Dashboard extends Component {
           SearchSaveName: this.state.SearchName,
           parameter: this.state.FinalSaveSearchData
         }
-      }).then(function(res) {
+      }).then(function (res) {
         debugger;
         let Msg = res.data.message;
         if (Msg === "Success") {
@@ -2049,7 +2218,7 @@ class Dashboard extends Component {
       method: "post",
       url: config.apiUrl + "/Ticketing/listSavedSearch",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let SearchListData = res.data.responseData;
       self.setState({ SearchListData: SearchListData });
@@ -2069,7 +2238,7 @@ class Dashboard extends Component {
         isEscalation: 1
         // ticketStatus: ticketStatus
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let data = res.data.responseData;
       let Status = res.data.message;
@@ -2123,7 +2292,7 @@ class Dashboard extends Component {
       params: {
         SearchParamID: searchDeletId
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let Msg = res.data.message;
       if (Msg === "Success") {
@@ -2161,7 +2330,7 @@ class Dashboard extends Component {
       params: {
         SearchParamID: paramsID
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let data = res.data.responseData;
       self.setState({ ClaimIssueTypeData: data });
@@ -2197,8 +2366,8 @@ class Dashboard extends Component {
     const ImgChange = this.state.collapseSearch ? (
       <img className="search-icon" src={CancalImg} alt="search-icon" />
     ) : (
-      <img className="search-icon" src={SearchIcon} alt="search-icon" />
-    );
+        <img className="search-icon" src={SearchIcon} alt="search-icon" />
+      );
 
     let value = `${this.state.start.format(
       "DD-MM-YYYY"
@@ -2429,370 +2598,370 @@ class Dashboard extends Component {
                     <div className="loader-icon"></div>
                   </div>
                 ) : (
-                  <>
-                    <div className="container-fluid dash-tp-card btm-mar">
-                      <div className="row justify-content-center">
-                        <div className="col-md col-sm-4 col-6">
-                          <div className="dash-top-cards">
-                            <p className="card-head">All</p>
-                            <span className="card-value">
-                              {this.state.DashboardNumberData !== null
-                                ? this.state.DashboardNumberData.all !== null &&
-                                  this.state.DashboardNumberData.all < 9
-                                  ? "0" + this.state.DashboardNumberData.all
-                                  : this.state.DashboardNumberData.all
-                                : null}
-                            </span>
-                          </div>
-                        </div>
-                        <div className="col-md col-sm-4 col-6">
-                          <div className="dash-top-cards">
-                            <p className="card-head">Open</p>
-                            <span className="card-value">
-                              {this.state.DashboardNumberData !== null
-                                ? this.state.DashboardNumberData.open !==
-                                    null &&
-                                  this.state.DashboardNumberData.open < 9
-                                  ? "0" + this.state.DashboardNumberData.open
-                                  : this.state.DashboardNumberData.open
-                                : null}
-                            </span>
-                          </div>
-                        </div>
-                        <div className="col-md col-sm-4 col-6">
-                          <div className="dash-top-cards">
-                            <p className="card-head">Due Today</p>
-                            <span className="card-value">
-                              {this.state.DashboardNumberData !== null
-                                ? this.state.DashboardNumberData.dueToday !==
-                                    null &&
-                                  this.state.DashboardNumberData.dueToday < 9
-                                  ? "0" +
-                                    this.state.DashboardNumberData.dueToday
-                                  : this.state.DashboardNumberData.dueToday
-                                : null}
-                            </span>
-                          </div>
-                        </div>
-                        <div className="col-md col-sm-4 col-6">
-                          <div className="dash-top-cards">
-                            <p className="card-head">Over Due</p>
-                            <span className="card-value red-clr">
-                              {this.state.DashboardNumberData !== null
-                                ? this.state.DashboardNumberData.overDue !==
-                                    null &&
-                                  this.state.DashboardNumberData.overDue < 9
-                                  ? "0" + this.state.DashboardNumberData.overDue
-                                  : this.state.DashboardNumberData.overDue
-                                : null}
-                            </span>
-                          </div>
-                        </div>
-                        {this.state.TotalNoOfChatShow && (
-                          <div
-                            className="col-md col-sm-4 col-6"
-                            onClick={this.HandleChangeRedict.bind(this)}
-                          >
+                    <>
+                      <div className="container-fluid dash-tp-card btm-mar">
+                        <div className="row justify-content-center">
+                          <div className="col-md col-sm-4 col-6">
                             <div className="dash-top-cards">
-                              <p className="card-head">Total no of chat</p>
-                              <span className="card-value">102</span>
-                              <small className="blue-clr">
-                                View More Insights
-                              </small>
+                              <p className="card-head">All</p>
+                              <span className="card-value">
+                                {this.state.DashboardNumberData !== null
+                                  ? this.state.DashboardNumberData.all !== null &&
+                                    this.state.DashboardNumberData.all < 9
+                                    ? "0" + this.state.DashboardNumberData.all
+                                    : this.state.DashboardNumberData.all
+                                  : null}
+                              </span>
                             </div>
                           </div>
-                        )}
+                          <div className="col-md col-sm-4 col-6">
+                            <div className="dash-top-cards">
+                              <p className="card-head">Open</p>
+                              <span className="card-value">
+                                {this.state.DashboardNumberData !== null
+                                  ? this.state.DashboardNumberData.open !==
+                                    null &&
+                                    this.state.DashboardNumberData.open < 9
+                                    ? "0" + this.state.DashboardNumberData.open
+                                    : this.state.DashboardNumberData.open
+                                  : null}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="col-md col-sm-4 col-6">
+                            <div className="dash-top-cards">
+                              <p className="card-head">Due Today</p>
+                              <span className="card-value">
+                                {this.state.DashboardNumberData !== null
+                                  ? this.state.DashboardNumberData.dueToday !==
+                                    null &&
+                                    this.state.DashboardNumberData.dueToday < 9
+                                    ? "0" +
+                                    this.state.DashboardNumberData.dueToday
+                                    : this.state.DashboardNumberData.dueToday
+                                  : null}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="col-md col-sm-4 col-6">
+                            <div className="dash-top-cards">
+                              <p className="card-head">Over Due</p>
+                              <span className="card-value red-clr">
+                                {this.state.DashboardNumberData !== null
+                                  ? this.state.DashboardNumberData.overDue !==
+                                    null &&
+                                    this.state.DashboardNumberData.overDue < 9
+                                    ? "0" + this.state.DashboardNumberData.overDue
+                                    : this.state.DashboardNumberData.overDue
+                                  : null}
+                              </span>
+                            </div>
+                          </div>
+                          {this.state.TotalNoOfChatShow && (
+                            <div
+                              className="col-md col-sm-4 col-6"
+                              onClick={this.HandleChangeRedict.bind(this)}
+                            >
+                              <div className="dash-top-cards">
+                                <p className="card-head">Total no of chat</p>
+                                <span className="card-value">102</span>
+                                <small className="blue-clr">
+                                  View More Insights
+                              </small>
+                              </div>
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                    <div className="container-fluid btm-mar">
-                      <div className="row">
-                        <div className="col-lg-3 col-md-4">
-                          <div className="dash-top-cards prio-pie-cntr">
-                            <p className="card-head mb-0">Open By Priority</p>
-                            <div className="prio-pie-chart">
-                              {this.state.DashboardPriorityGraphData.length >
-                              0 ? (
-                                <OpenByPriorityPie
-                                  data={this.state.DashboardPriorityGraphData}
-                                />
+                      <div className="container-fluid btm-mar">
+                        <div className="row">
+                          <div className="col-lg-3 col-md-4">
+                            <div className="dash-top-cards prio-pie-cntr">
+                              <p className="card-head mb-0">Open By Priority</p>
+                              <div className="prio-pie-chart">
+                                {this.state.DashboardPriorityGraphData.length >
+                                  0 ? (
+                                    <OpenByPriorityPie
+                                      data={this.state.DashboardPriorityGraphData}
+                                    />
+                                  ) : null}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-lg-6 col-md-8">
+                            <div className="dash-top-cards p-0">
+                              <ul className="nav nav-tabs" role="tablist">
+                                <li className="nav-item">
+                                  <a
+                                    className="nav-link active"
+                                    data-toggle="tab"
+                                    href="#bill-graph-tab"
+                                    role="tab"
+                                    aria-controls="bill-graph-tab"
+                                    aria-selected="true"
+                                    onClick={this.handlechangebtntab.bind(this)}
+                                  >
+                                    Tickets to bill graph
+                                </a>
+                                </li>
+                                <li className="nav-item">
+                                  <a
+                                    className="nav-link tab2"
+                                    data-toggle="tab"
+                                    href="#source-tab"
+                                    role="tab"
+                                    aria-controls="source-tab"
+                                    aria-selected="false"
+                                    onClick={this.handlechangebtntab.bind(this)}
+                                  >
+                                    Tickets generation source tab
+                                </a>
+                                </li>
+                              </ul>
+                              <div className="tab-content mt-3">
+                                <div
+                                  className="tab-pane fade show active"
+                                  id="bill-graph-tab"
+                                  role="tabpanel"
+                                  aria-labelledby="bill-graph-tab"
+                                >
+                                  <div className="row">
+                                    <div className="col-md-3">
+                                      <ul className="bill-graph-list">
+                                        {this.state.DashboardBillGraphData !==
+                                          null &&
+                                          this.state.DashboardBillGraphData.map(
+                                            (item, i) => (
+                                              <li key={i}>
+                                                {item.ticketSourceName} :{" "}
+                                                <b>
+                                                  {item.ticketedBills}/
+                                                {item.totalBills}
+                                                </b>
+                                              </li>
+                                            )
+                                          )}
+                                      </ul>
+                                    </div>
+                                    <div className="col-md-9 tic-bill-graph">
+                                      {this.state.DashboardBillGraphData.length >
+                                        0 ? (
+                                          <TicketToBillBarGraph
+                                            data={this.state.DashboardBillGraphData}
+                                          />
+                                        ) : null}
+                                    </div>
+                                  </div>
+                                </div>
+                                <div
+                                  className="tab-pane fade"
+                                  id="source-tab"
+                                  role="tabpanel"
+                                  aria-labelledby="source-tab"
+                                >
+                                  <div className="row">
+                                    <div className="col-md-3">
+                                      <ul className="bill-graph-list">
+                                        {this.state.DashboardSourceGraphData !==
+                                          null &&
+                                          this.state.DashboardSourceGraphData.map(
+                                            (item, i) => (
+                                              <li key={i}>
+                                                {item.ticketSourceName} :{" "}
+                                                <b>{item.ticketSourceCount}</b>
+                                              </li>
+                                            )
+                                          )}
+                                      </ul>
+                                    </div>
+                                    <div className="col-md-9 ">
+                                      {this.state.DashboardSourceGraphData
+                                        .length > 0 ? (
+                                          <TicketGenerationSourceBar
+                                            data={
+                                              this.state.DashboardSourceGraphData
+                                            }
+                                          />
+                                        ) : null}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-lg-3">
+                            <div
+                              className="dash-top-cards"
+                              onMouseOver={this.handleMouseHover.bind(this)}
+                              onMouseLeave={this.handleMouseHover.bind(this)}
+                            >
+                              <p className="card-head">SLA</p>
+                              {this.state.DashboardNumberData !== null ? (
+                                Object.keys(this.state.DashboardNumberData)
+                                  .length > 0 ? (
+                                    <div className="resp-success">
+                                      <p className="card-head">
+                                        Response{" "}
+                                        {this.state.DashboardNumberData
+                                          .isResponseSuccess === true
+                                          ? "Success"
+                                          : "Failure"}
+                                      </p>
+                                      <span className="card-value">
+                                        <big>
+                                          {
+                                            this.state.DashboardNumberData
+                                              .responseRate
+                                          }
+                                        </big>
+                                      </span>
+                                      <p className="card-head mt-lg-4 mt-2">
+                                        Resolution{" "}
+                                        {this.state.DashboardNumberData
+                                          .isResolutionSuccess === true
+                                          ? "Success"
+                                          : "Failure"}{" "}
+                                        :
+                                    <span className="font-weight-bold">
+                                          {
+                                            this.state.DashboardNumberData
+                                              .resolutionRate
+                                          }
+                                        </span>
+                                      </p>
+                                    </div>
+                                  ) : null
                               ) : null}
                             </div>
                           </div>
-                        </div>
-                        <div className="col-lg-6 col-md-8">
-                          <div className="dash-top-cards p-0">
-                            <ul className="nav nav-tabs" role="tablist">
-                              <li className="nav-item">
-                                <a
-                                  className="nav-link active"
-                                  data-toggle="tab"
-                                  href="#bill-graph-tab"
-                                  role="tab"
-                                  aria-controls="bill-graph-tab"
-                                  aria-selected="true"
-                                  onClick={this.handlechangebtntab.bind(this)}
-                                >
-                                  Tickets to bill graph
-                                </a>
-                              </li>
-                              <li className="nav-item">
-                                <a
-                                  className="nav-link tab2"
-                                  data-toggle="tab"
-                                  href="#source-tab"
-                                  role="tab"
-                                  aria-controls="source-tab"
-                                  aria-selected="false"
-                                  onClick={this.handlechangebtntab.bind(this)}
-                                >
-                                  Tickets generation source tab
-                                </a>
-                              </li>
-                            </ul>
-                            <div className="tab-content mt-3">
-                              <div
-                                className="tab-pane fade show active"
-                                id="bill-graph-tab"
-                                role="tabpanel"
-                                aria-labelledby="bill-graph-tab"
-                              >
-                                <div className="row">
-                                  <div className="col-md-3">
-                                    <ul className="bill-graph-list">
-                                      {this.state.DashboardBillGraphData !==
-                                        null &&
-                                        this.state.DashboardBillGraphData.map(
-                                          (item, i) => (
-                                            <li key={i}>
-                                              {item.ticketSourceName} :{" "}
-                                              <b>
-                                                {item.ticketedBills}/
-                                                {item.totalBills}
-                                              </b>
-                                            </li>
-                                          )
-                                        )}
-                                    </ul>
-                                  </div>
-                                  <div className="col-md-9 tic-bill-graph">
-                                    {this.state.DashboardBillGraphData.length >
-                                    0 ? (
-                                      <TicketToBillBarGraph
-                                        data={this.state.DashboardBillGraphData}
-                                      />
-                                    ) : null}
-                                  </div>
-                                </div>
-                              </div>
-                              <div
-                                className="tab-pane fade"
-                                id="source-tab"
-                                role="tabpanel"
-                                aria-labelledby="source-tab"
-                              >
-                                <div className="row">
-                                  <div className="col-md-3">
-                                    <ul className="bill-graph-list">
-                                      {this.state.DashboardSourceGraphData !==
-                                        null &&
-                                        this.state.DashboardSourceGraphData.map(
-                                          (item, i) => (
-                                            <li key={i}>
-                                              {item.ticketSourceName} :{" "}
-                                              <b>{item.ticketSourceCount}</b>
-                                            </li>
-                                          )
-                                        )}
-                                    </ul>
-                                  </div>
-                                  <div className="col-md-9 ">
-                                    {this.state.DashboardSourceGraphData
-                                      .length > 0 ? (
-                                      <TicketGenerationSourceBar
-                                        data={
-                                          this.state.DashboardSourceGraphData
-                                        }
-                                      />
-                                    ) : null}
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-lg-3">
-                          <div
-                            className="dash-top-cards"
-                            onMouseOver={this.handleMouseHover.bind(this)}
-                            onMouseLeave={this.handleMouseHover.bind(this)}
-                          >
-                            <p className="card-head">SLA</p>
-                            {this.state.DashboardNumberData !== null ? (
-                              Object.keys(this.state.DashboardNumberData)
-                                .length > 0 ? (
-                                <div className="resp-success">
-                                  <p className="card-head">
-                                    Response{" "}
-                                    {this.state.DashboardNumberData
-                                      .isResponseSuccess === true
-                                      ? "Success"
-                                      : "Failure"}
-                                  </p>
+                          <div className="col-lg-3 col-sm-6">
+                            <div className="dash-top-cards">
+                              <p className="card-head">Task</p>
+                              <div className="aside-cont">
+                                <div>
                                   <span className="card-value">
-                                    <big>
-                                      {
-                                        this.state.DashboardNumberData
-                                          .responseRate
-                                      }
-                                    </big>
-                                  </span>
-                                  <p className="card-head mt-lg-4 mt-2">
-                                    Resolution{" "}
-                                    {this.state.DashboardNumberData
-                                      .isResolutionSuccess === true
-                                      ? "Success"
-                                      : "Failure"}{" "}
-                                    :
-                                    <span className="font-weight-bold">
-                                      {
-                                        this.state.DashboardNumberData
-                                          .resolutionRate
-                                      }
-                                    </span>
-                                  </p>
-                                </div>
-                              ) : null
-                            ) : null}
-                          </div>
-                        </div>
-                        <div className="col-lg-3 col-sm-6">
-                          <div className="dash-top-cards">
-                            <p className="card-head">Task</p>
-                            <div className="aside-cont">
-                              <div>
-                                <span className="card-value">
-                                  {this.state.DashboardNumberData !== null
-                                    ? this.state.DashboardNumberData.taskOpen <
-                                      9
-                                      ? "0" +
+                                    {this.state.DashboardNumberData !== null
+                                      ? this.state.DashboardNumberData.taskOpen <
+                                        9
+                                        ? "0" +
                                         this.state.DashboardNumberData.taskOpen
-                                      : this.state.DashboardNumberData.taskOpen
-                                    : null}
-                                </span>
-                                <small>Open</small>
-                              </div>
-                              <div>
-                                <span className="card-value">
-                                  {this.state.DashboardNumberData !== null
-                                    ? this.state.DashboardNumberData.taskClose <
-                                      9
-                                      ? "0" +
+                                        : this.state.DashboardNumberData.taskOpen
+                                      : null}
+                                  </span>
+                                  <small>Open</small>
+                                </div>
+                                <div>
+                                  <span className="card-value">
+                                    {this.state.DashboardNumberData !== null
+                                      ? this.state.DashboardNumberData.taskClose <
+                                        9
+                                        ? "0" +
                                         this.state.DashboardNumberData.taskClose
-                                      : this.state.DashboardNumberData.taskClose
-                                    : null}
-                                </span>
-                                <small>Closed</small>
+                                        : this.state.DashboardNumberData.taskClose
+                                      : null}
+                                  </span>
+                                  <small>Closed</small>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="col-lg-6 order-1 order-lg-0">
-                          <div className="dash-top-cards p-0">
-                            <ul className="nav nav-tabs" role="tablist">
-                              <li className="nav-item">
-                                <a
-                                  className="nav-link active"
-                                  data-toggle="tab"
-                                  href="#task-tab"
-                                  role="tab"
-                                  aria-controls="task-tab"
-                                  aria-selected="true"
-                                >
-                                  Ticket to Task
+                          <div className="col-lg-6 order-1 order-lg-0">
+                            <div className="dash-top-cards p-0">
+                              <ul className="nav nav-tabs" role="tablist">
+                                <li className="nav-item">
+                                  <a
+                                    className="nav-link active"
+                                    data-toggle="tab"
+                                    href="#task-tab"
+                                    role="tab"
+                                    aria-controls="task-tab"
+                                    aria-selected="true"
+                                  >
+                                    Ticket to Task
                                 </a>
-                              </li>
-                              <li className="nav-item">
-                                <a
-                                  className="nav-link"
-                                  data-toggle="tab"
-                                  href="#claim-tab"
-                                  role="tab"
-                                  aria-controls="claim-tab"
-                                  aria-selected="false"
-                                >
-                                  Ticket to claim
+                                </li>
+                                <li className="nav-item">
+                                  <a
+                                    className="nav-link"
+                                    data-toggle="tab"
+                                    href="#claim-tab"
+                                    role="tab"
+                                    aria-controls="claim-tab"
+                                    aria-selected="false"
+                                  >
+                                    Ticket to claim
                                 </a>
-                              </li>
-                            </ul>
-                            <div className="tab-content task-claim-cont">
-                              <div
-                                className="tab-pane fade show active"
-                                id="task-tab"
-                                role="tabpanel"
-                                aria-labelledby="task-tab"
-                              >
-                                {this.state.DashboardTaskGraphData.length >
-                                0 ? (
-                                  <MultiBarChart
-                                    data={this.state.DashboardTaskGraphData}
-                                  />
-                                ) : null}
-                                {/* {Object.keys(this.state.DashboardGraphData).length > 0 ? <MultiBarChart data={this.state.DashboardTaskGraphData} /> : null} */}
-                                {/* <MultiBarChart data={this.state.DashboardGraphData.tickettoTaskGraph} /> */}
-                              </div>
-                              <div
-                                className="tab-pane fade"
-                                id="claim-tab"
-                                role="tabpanel"
-                                aria-labelledby="claim-tab"
-                              >
-                                {this.state.DashboardClaimGraphData.length >
-                                0 ? (
-                                  <TicketToClaimMultiBar
-                                    data={this.state.DashboardClaimGraphData}
-                                  />
-                                ) : null}
+                                </li>
+                              </ul>
+                              <div className="tab-content task-claim-cont">
+                                <div
+                                  className="tab-pane fade show active"
+                                  id="task-tab"
+                                  role="tabpanel"
+                                  aria-labelledby="task-tab"
+                                >
+                                  {this.state.DashboardTaskGraphData.length >
+                                    0 ? (
+                                      <MultiBarChart
+                                        data={this.state.DashboardTaskGraphData}
+                                      />
+                                    ) : null}
+                                  {/* {Object.keys(this.state.DashboardGraphData).length > 0 ? <MultiBarChart data={this.state.DashboardTaskGraphData} /> : null} */}
+                                  {/* <MultiBarChart data={this.state.DashboardGraphData.tickettoTaskGraph} /> */}
+                                </div>
+                                <div
+                                  className="tab-pane fade"
+                                  id="claim-tab"
+                                  role="tabpanel"
+                                  aria-labelledby="claim-tab"
+                                >
+                                  {this.state.DashboardClaimGraphData.length >
+                                    0 ? (
+                                      <TicketToClaimMultiBar
+                                        data={this.state.DashboardClaimGraphData}
+                                      />
+                                    ) : null}
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="col-lg-3 col-sm-6">
-                          <div className="dash-top-cards">
-                            <p className="card-head">Claim</p>
-                            <div className="aside-cont">
-                              <div>
-                                <span className="card-value">
-                                  {this.state.DashboardNumberData !== null
-                                    ? this.state.DashboardNumberData.claimOpen <
-                                      9
-                                      ? "0" +
+                          <div className="col-lg-3 col-sm-6">
+                            <div className="dash-top-cards">
+                              <p className="card-head">Claim</p>
+                              <div className="aside-cont">
+                                <div>
+                                  <span className="card-value">
+                                    {this.state.DashboardNumberData !== null
+                                      ? this.state.DashboardNumberData.claimOpen <
+                                        9
+                                        ? "0" +
                                         this.state.DashboardNumberData.claimOpen
-                                      : this.state.DashboardNumberData.claimOpen
-                                    : null}
-                                </span>
-                                <small>Open</small>
-                              </div>
-                              <div>
-                                <span className="card-value">
-                                  {this.state.DashboardNumberData !== null
-                                    ? this.state.DashboardNumberData
+                                        : this.state.DashboardNumberData.claimOpen
+                                      : null}
+                                  </span>
+                                  <small>Open</small>
+                                </div>
+                                <div>
+                                  <span className="card-value">
+                                    {this.state.DashboardNumberData !== null
+                                      ? this.state.DashboardNumberData
                                         .claimClose < 9
-                                      ? "0" +
+                                        ? "0" +
                                         this.state.DashboardNumberData
                                           .claimClose
-                                      : this.state.DashboardNumberData
+                                        : this.state.DashboardNumberData
                                           .claimClose
-                                    : null}
-                                </span>
-                                <small>Closed</small>
+                                      : null}
+                                  </span>
+                                  <small>Closed</small>
+                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </>
-                )}
+                    </>
+                  )}
               </CardBody>
             </Card>
           </Collapse>
@@ -2972,7 +3141,7 @@ class Dashboard extends Component {
                           >
                             <div className="container-fluid">
                               <div className="row">
-                                <div className="col-md-3 col-sm-6">
+                                <div className="col-md-3 col-sm-6"  style={{display:this.state.CreateDateShowRecord}}>
                                   <DatePicker
                                     selected={this.state.ByDateCreatDate}
                                     onChange={this.handleByDateCreate.bind(
@@ -2983,10 +3152,11 @@ class Dashboard extends Component {
                                     showYearDropdown
                                     dateFormat="dd/MM/yyyy"
                                     value={this.state.ByDateCreatDate}
-                                    // className="form-control"
+                                  // className="form-control"
                                   />
                                 </div>
-                                <div className="col-md-3 col-sm-6">
+                               
+                                <div className="col-md-3 col-sm-6" style={{display:this.state.LastUpdatedDate}}>
                                   <DatePicker
                                     selected={this.state.ByDateSelectDate}
                                     onChange={this.handleChangeSelectDate.bind(
@@ -2998,7 +3168,7 @@ class Dashboard extends Component {
                                     dateFormat="dd/MM/yyyy"
                                     value={this.state.ByDateSelectDate}
                                     name="ByDateSelectDate"
-                                    // className="form-control"
+                                  // className="form-control"
                                   />
                                 </div>
                                 <div className="col-md-3 col-sm-6">
@@ -3529,7 +3699,7 @@ class Dashboard extends Component {
                           >
                             <div className="container-fluid">
                               <div className="row">
-                                <div className="col-md-3 col-sm-6">
+                                <div className="col-md-3 col-sm-6" style={{display:this.state.MobileNo}}>
                                   <input
                                     className="no-bg"
                                     type="text"
@@ -3540,7 +3710,7 @@ class Dashboard extends Component {
                                     maxLength={10}
                                   />
                                 </div>
-                                <div className="col-md-3 col-sm-6">
+                                <div className="col-md-3 col-sm-6" style={{display:this.state.Email}}>
                                   <input
                                     type="text"
                                     className="no-bg"
@@ -3550,7 +3720,7 @@ class Dashboard extends Component {
                                     onChange={this.handelOnchangeData}
                                   />
                                 </div>
-                                <div className="col-md-3 col-sm-6">
+                                <div className="col-md-3 col-sm-6" style={{display:this.state.TicketIDTitle}}>
                                   <input
                                     type="text"
                                     className="no-bg"
@@ -3560,7 +3730,7 @@ class Dashboard extends Component {
                                     onChange={this.handelOnchangeData}
                                   />
                                 </div>
-                                <div className="col-md-3 col-sm-6">
+                                <div className="col-md-3 col-sm-6" style={{display:this.state.TicketStatus}}>
                                   <select
                                     value={
                                       this.state.selectedTicketStatusByCustomer
@@ -3592,7 +3762,7 @@ class Dashboard extends Component {
                           >
                             <div className="container-fluid">
                               <div className="row">
-                                <div className="col-md-3 col-sm-6">
+                                <div className="col-md-3 col-sm-6" style={{display:this.state.TicketPriority}}>
                                   <select
                                     value={this.state.selectedPriority}
                                     onChange={this.setPriorityValue}
@@ -3611,7 +3781,7 @@ class Dashboard extends Component {
                                       )}
                                   </select>
                                 </div>
-                                <div className="col-md-3 col-sm-6">
+                                <div className="col-md-3 col-sm-6" style={{display:this.state.TicketSource}}>
                                   <select
                                     value={
                                       this.state.selectedTicketStatusByTicket
@@ -3691,7 +3861,7 @@ class Dashboard extends Component {
                           >
                             <div className="container-fluid">
                               <div className="row">
-                                <div className="col-md-3 col-sm-6">
+                                <div className="col-md-3 col-sm-6" style={{display:this.state.Category}}>
                                   <select
                                     value={this.state.selectedCategory}
                                     onChange={this.setCategoryValue}
@@ -3705,7 +3875,7 @@ class Dashboard extends Component {
                                       ))}
                                   </select>
                                 </div>
-                                <div className="col-md-3 col-sm-6">
+                                <div className="col-md-3 col-sm-6" style={{display:this.state.SubCategory}}>
                                   <select
                                     value={this.state.selectedSubCategory}
                                     onChange={this.setSubCategoryValue}
@@ -3724,7 +3894,7 @@ class Dashboard extends Component {
                                       )}
                                   </select>
                                 </div>
-                                <div className="col-md-3 col-sm-6">
+                                <div className="col-md-3 col-sm-6" style={{display:this.state.IssueType}}>
                                   <select
                                     value={this.state.selectedIssueType}
                                     onChange={this.setIssueTypeValue}
@@ -3743,7 +3913,7 @@ class Dashboard extends Component {
                                       )}
                                   </select>
                                 </div>
-                                <div className="col-md-3 col-sm-6">
+                                <div className="col-md-3 col-sm-6" style={{display:this.state.TicketStatus}}>
                                   <select
                                     value={
                                       this.state.selectedTicketStatusByCategory
@@ -3775,7 +3945,7 @@ class Dashboard extends Component {
                           >
                             <div className="container-fluid">
                               <div className="row">
-                                <div className="col-md-3 col-sm-6 allspc">
+                                <div className="col-md-3 col-sm-6 allspc" style={{display:this.state.CreateDateShowRecord}}>
                                   <DatePicker
                                     selected={this.state.ByAllCreateDate}
                                     placeholderText="Creation Date"
@@ -3786,10 +3956,10 @@ class Dashboard extends Component {
                                     onChange={this.handleAllCreateDate.bind(
                                       this
                                     )}
-                                    // className="form-control"
+                                  // className="form-control"
                                   />
                                 </div>
-                                <div className="col-md-3 col-sm-6">
+                                <div className="col-md-3 col-sm-6" style={{display:this.state.TicketSource}}>
                                   <select
                                     value={this.state.selectedTicketSource}
                                     onChange={this.setTicketSourceValue}
@@ -3808,7 +3978,7 @@ class Dashboard extends Component {
                                       )}
                                   </select>
                                 </div>
-                                <div className="col-md-3 col-sm-6">
+                                <div className="col-md-3 col-sm-6" style={{display:this.state.ClaimID}}>
                                   <input
                                     className="no-bg"
                                     type="text"
@@ -3818,7 +3988,7 @@ class Dashboard extends Component {
                                     onChange={this.handelOnchangeData}
                                   />
                                 </div>
-                                <div className="col-md-3 col-sm-6">
+                                <div className="col-md-3 col-sm-6" style={{display:this.state.Email}}>
                                   <input
                                     className="no-bg"
                                     type="text"
@@ -3828,7 +3998,7 @@ class Dashboard extends Component {
                                     onChange={this.handelOnchangeData}
                                   />
                                 </div>
-                                <div className="col-md-3 col-sm-6 allspc">
+                                <div className="col-md-3 col-sm-6 allspc" style={{display:this.state.LastUpdatedDate}}>
                                   <DatePicker
                                     selected={this.state.ByAllLastDate}
                                     onChange={this.handleAllLastDate.bind(this)}
@@ -3837,10 +4007,10 @@ class Dashboard extends Component {
                                     showYearDropdown
                                     dateFormat="dd/MM/yyyy"
                                     value={this.state.ByAllLastDate}
-                                    // className="form-control"
+                                  // className="form-control"
                                   />
                                 </div>
-                                <div className="col-md-3 col-sm-6">
+                                <div className="col-md-3 col-sm-6" style={{display:this.state.TicketIDTitle}}>
                                   <input
                                     className="no-bg"
                                     type="text"
@@ -3850,7 +4020,7 @@ class Dashboard extends Component {
                                     onChange={this.handelOnchangeData}
                                   />
                                 </div>
-                                <div className="col-md-3 col-sm-6">
+                                <div className="col-md-3 col-sm-6" style={{display:this.state.InvoiceNoSubOrderNo}}>
                                   <input
                                     className="no-bg"
                                     type="text"
@@ -3860,7 +4030,7 @@ class Dashboard extends Component {
                                     onChange={this.handelOnchangeData}
                                   />
                                 </div>
-                                <div className="col-md-3 col-sm-6">
+                                <div className="col-md-3 col-sm-6" style={{display:this.state.MobileNo}}>
                                   <input
                                     className="no-bg"
                                     type="text"
@@ -3870,7 +4040,7 @@ class Dashboard extends Component {
                                     onChange={this.handelOnchangeData}
                                   />
                                 </div>
-                                <div className="col-md-3 col-sm-6 allspc">
+                                <div className="col-md-3 col-sm-6 allspc" style={{display:this.state.Category}}>
                                   <select
                                     value={this.state.selectedCategoryAll}
                                     onChange={this.setCategoryAllValue}
@@ -3884,10 +4054,11 @@ class Dashboard extends Component {
                                       ))}
                                   </select>
                                 </div>
-                                <div className="col-md-3 col-sm-6">
+                                <div className="col-md-3 col-sm-6" style={{display:this.state.TicketPriority}}>
                                   <select
                                     value={this.state.selectedPriorityAll}
                                     onChange={this.setPriorityAllValue}
+
                                   >
                                     <option>Ticket Priority</option>
                                     {this.state.TicketPriorityData !== null &&
@@ -3903,7 +4074,7 @@ class Dashboard extends Component {
                                       )}
                                   </select>
                                 </div>
-                                <div className="col-md-3 col-sm-6">
+                                <div className="col-md-3 col-sm-6" style={{display:this.state.ItemID}}>
                                   <input
                                     className="no-bg"
                                     type="text"
@@ -3913,7 +4084,7 @@ class Dashboard extends Component {
                                     onChange={this.handelOnchangeData}
                                   />
                                 </div>
-                                <div className="col-md-3 col-sm-6">
+                                <div className="col-md-3 col-sm-6" style={{display:this.state.AssignTo}}>
                                   <select
                                     className="add-select-category"
                                     value={this.state.selectedAssignedTo}
@@ -3929,7 +4100,7 @@ class Dashboard extends Component {
                                       ))}
                                   </select>
                                 </div>
-                                <div className="col-md-3 col-sm-6 allspc">
+                                <div className="col-md-3 col-sm-6 allspc" style={{display:this.state.SubCategory}}>
                                   {/* <select>
                                           <option>Sub Category</option>
                                         </select> */}
@@ -3951,7 +4122,7 @@ class Dashboard extends Component {
                                       )}
                                   </select>
                                 </div>
-                                <div className="col-md-3 col-sm-6">
+                                <div className="col-md-3 col-sm-6" style={{display:this.state.TicketStatus}}>
                                   <select
                                     value={this.state.selectedTicketStatusAll}
                                     onChange={this.handleTicketStatusAll}
@@ -3970,7 +4141,7 @@ class Dashboard extends Component {
                                       )}
                                   </select>
                                 </div>
-                                <div className="col-md-3 col-sm-6">
+                                <div className="col-md-3 col-sm-6" style={{display:this.state.Didvisitstore}}>
                                   <select
                                     value={this.state.selectedVisitStoreAll}
                                     onChange={this.handleVisitStoreAll}
@@ -3983,7 +4154,7 @@ class Dashboard extends Component {
                                     </option>
                                   </select>
                                 </div>
-                                <div className="col-md-3 col-sm-6">
+                                <div className="col-md-3 col-sm-6" style={{display:this.state.PurchaseStoreCodeAddress}}>
                                   <input
                                     className="no-bg"
                                     type="text"
@@ -3997,7 +4168,7 @@ class Dashboard extends Component {
                                     }
                                   />
                                 </div>
-                                <div className="col-md-3 col-sm-6">
+                                <div className="col-md-3 col-sm-6" style={{display:this.state.IssueType}}>
                                   {/* <select>
                                           <option>Issue Type</option>
                                         </select> */}
@@ -4019,7 +4190,7 @@ class Dashboard extends Component {
                                       )}
                                   </select>
                                 </div>
-                                <div className="col-md-3 col-sm-6">
+                                <div className="col-md-3 col-sm-6" style={{display:this.state.SLAStatus}}>
                                   <select
                                     value={this.state.selectedSlaStatus}
                                     onChange={this.setSlaStatusValue}
@@ -4038,7 +4209,7 @@ class Dashboard extends Component {
                                       )}
                                   </select>
                                 </div>
-                                <div className="col-md-3 col-sm-6">
+                                <div className="col-md-3 col-sm-6" style={{display:this.state.Wanttovisitstore}}>
                                   <select
                                     value={
                                       this.state.selectedWantToVisitStoreAll
@@ -4053,7 +4224,7 @@ class Dashboard extends Component {
                                     </option>
                                   </select>
                                 </div>
-                                <div className="col-md-3 col-sm-6">
+                                <div className="col-md-3 col-sm-6" >
                                   <input
                                     className="no-bg"
                                     type="text"
@@ -4088,112 +4259,112 @@ class Dashboard extends Component {
                                         </select>
                                       </div>
                                       {this.state.selectedWithClaimAll ===
-                                      "yes" ? (
-                                        <React.Fragment>
-                                          <div className="m-b-25">
-                                            <select
-                                              value={
-                                                this.state.selectedClaimStatus
-                                              }
-                                              onChange={this.handleClaimStatus}
-                                            >
-                                              <option>Claim Status</option>
-                                              {this.state.ClaimStatusData !==
-                                                null &&
-                                                this.state.ClaimStatusData.map(
-                                                  (item, i) => (
-                                                    <option
-                                                      key={i}
-                                                      value={item.claimStatusID}
-                                                    >
-                                                      {item.claimStatusName}
-                                                    </option>
-                                                  )
-                                                )}
-                                            </select>
-                                          </div>
+                                        "yes" ? (
+                                          <React.Fragment>
+                                            <div className="m-b-25">
+                                              <select
+                                                value={
+                                                  this.state.selectedClaimStatus
+                                                }
+                                                onChange={this.handleClaimStatus}
+                                              >
+                                                <option>Claim Status</option>
+                                                {this.state.ClaimStatusData !==
+                                                  null &&
+                                                  this.state.ClaimStatusData.map(
+                                                    (item, i) => (
+                                                      <option
+                                                        key={i}
+                                                        value={item.claimStatusID}
+                                                      >
+                                                        {item.claimStatusName}
+                                                      </option>
+                                                    )
+                                                  )}
+                                              </select>
+                                            </div>
 
-                                          <div className="m-b-25">
-                                            <select
-                                              value={
-                                                this.state.selectedClaimCategory
-                                              }
-                                              onChange={
-                                                this.setClaimCategoryValue
-                                              }
-                                            >
-                                              <option>Claim Category</option>
-                                              {this.state.CategoryData !==
-                                                null &&
-                                                this.state.CategoryData.map(
-                                                  (item, i) => (
-                                                    <option
-                                                      key={i}
-                                                      value={item.categoryID}
-                                                    >
-                                                      {item.categoryName}
-                                                    </option>
-                                                  )
-                                                )}
-                                            </select>
-                                          </div>
+                                            <div className="m-b-25">
+                                              <select
+                                                value={
+                                                  this.state.selectedClaimCategory
+                                                }
+                                                onChange={
+                                                  this.setClaimCategoryValue
+                                                }
+                                              >
+                                                <option>Claim Category</option>
+                                                {this.state.CategoryData !==
+                                                  null &&
+                                                  this.state.CategoryData.map(
+                                                    (item, i) => (
+                                                      <option
+                                                        key={i}
+                                                        value={item.categoryID}
+                                                      >
+                                                        {item.categoryName}
+                                                      </option>
+                                                    )
+                                                  )}
+                                              </select>
+                                            </div>
 
-                                          <div className="m-b-25">
-                                            <select
-                                              value={
-                                                this.state
-                                                  .selectedClaimSubCategory
-                                              }
-                                              onChange={
-                                                this.setClaimSubCategoryValue
-                                              }
-                                            >
-                                              <option>
-                                                Claim Sub Category
+                                            <div className="m-b-25">
+                                              <select
+                                                value={
+                                                  this.state
+                                                    .selectedClaimSubCategory
+                                                }
+                                                onChange={
+                                                  this.setClaimSubCategoryValue
+                                                }
+                                              >
+                                                <option>
+                                                  Claim Sub Category
                                               </option>
-                                              {this.state
-                                                .ClaimSubCategoryData !==
-                                                null &&
-                                                this.state.ClaimSubCategoryData.map(
-                                                  (item, i) => (
-                                                    <option
-                                                      key={i}
-                                                      value={item.subCategoryID}
-                                                    >
-                                                      {item.subCategoryName}
-                                                    </option>
-                                                  )
-                                                )}
-                                            </select>
-                                          </div>
+                                                {this.state
+                                                  .ClaimSubCategoryData !==
+                                                  null &&
+                                                  this.state.ClaimSubCategoryData.map(
+                                                    (item, i) => (
+                                                      <option
+                                                        key={i}
+                                                        value={item.subCategoryID}
+                                                      >
+                                                        {item.subCategoryName}
+                                                      </option>
+                                                    )
+                                                  )}
+                                              </select>
+                                            </div>
 
-                                          <div className="">
-                                            <select
-                                              value={
-                                                this.state
-                                                  .selectedClaimIssueType
-                                              }
-                                              onChange={
-                                                this.setClaimIssueTypeValue
-                                              }
-                                            >
-                                              <option>Claim Issue Type</option>
-                                              {this.state.ClaimIssueTypeData !==
-                                                null &&
-                                                this.state.ClaimIssueTypeData.map(
-                                                  (item, i) => (
-                                                    <option
-                                                      key={i}
-                                                      value={item.issueTypeID}
-                                                    >
-                                                      {item.issueTypeName}
-                                                    </option>
-                                                  )
-                                                )}
-                                            </select>
-                                          </div>
-                                        </React.Fragment>
-                                      ) : null}
+                                            <div className="">
+                                              <select
+                                                value={
+                                                  this.state
+                                                    .selectedClaimIssueType
+                                                }
+                                                onChange={
+                                                  this.setClaimIssueTypeValue
+                                                }
+                                              >
+                                                <option>Claim Issue Type</option>
+                                                {this.state.ClaimIssueTypeData !==
+                                                  null &&
+                                                  this.state.ClaimIssueTypeData.map(
+                                                    (item, i) => (
+                                                      <option
+                                                        key={i}
+                                                        value={item.issueTypeID}
+                                                      >
+                                                        {item.issueTypeName}
+                                                      </option>
+                                                    )
+                                                  )}
+                                              </select>
+                                            </div>
+                                          </React.Fragment>
+                                        ) : null}
                                     </div>
                                     <div className="col-sm-6">
                                       <div className="m-b-25">
@@ -4211,78 +4382,78 @@ class Dashboard extends Component {
                                       </div>
 
                                       {this.state.selectedWithTaskAll ===
-                                      "yes" ? (
-                                        <React.Fragment>
-                                          <div className="m-b-25">
-                                            <select
-                                              value={
-                                                this.state.selectedTaskStatus
-                                              }
-                                              onChange={this.handleTaskStatus}
-                                            >
-                                              <option>Task Status</option>
-                                              {this.state.TaskStatusData !==
-                                                null &&
-                                                this.state.TaskStatusData.map(
-                                                  (item, i) => (
-                                                    <option
-                                                      key={i}
-                                                      value={item.taskStatusID}
-                                                    >
-                                                      {item.taskStatusName}
-                                                    </option>
-                                                  )
-                                                )}
-                                            </select>
-                                          </div>
+                                        "yes" ? (
+                                          <React.Fragment>
+                                            <div className="m-b-25">
+                                              <select
+                                                value={
+                                                  this.state.selectedTaskStatus
+                                                }
+                                                onChange={this.handleTaskStatus}
+                                              >
+                                                <option>Task Status</option>
+                                                {this.state.TaskStatusData !==
+                                                  null &&
+                                                  this.state.TaskStatusData.map(
+                                                    (item, i) => (
+                                                      <option
+                                                        key={i}
+                                                        value={item.taskStatusID}
+                                                      >
+                                                        {item.taskStatusName}
+                                                      </option>
+                                                    )
+                                                  )}
+                                              </select>
+                                            </div>
 
-                                          <div className="m-b-25">
-                                            <select
-                                              value={
-                                                this.state.selectedDepartment
-                                              }
-                                              onChange={this.setDepartmentValue}
-                                            >
-                                              <option>Task Department</option>
-                                              {this.state.DepartmentData !==
-                                                null &&
-                                                this.state.DepartmentData.map(
-                                                  (item, i) => (
-                                                    <option
-                                                      key={i}
-                                                      value={item.departmentID}
-                                                    >
-                                                      {item.departmentName}
-                                                    </option>
-                                                  )
-                                                )}
-                                            </select>
-                                          </div>
+                                            <div className="m-b-25">
+                                              <select
+                                                value={
+                                                  this.state.selectedDepartment
+                                                }
+                                                onChange={this.setDepartmentValue}
+                                              >
+                                                <option>Task Department</option>
+                                                {this.state.DepartmentData !==
+                                                  null &&
+                                                  this.state.DepartmentData.map(
+                                                    (item, i) => (
+                                                      <option
+                                                        key={i}
+                                                        value={item.departmentID}
+                                                      >
+                                                        {item.departmentName}
+                                                      </option>
+                                                    )
+                                                  )}
+                                              </select>
+                                            </div>
 
-                                          <div className="">
-                                            <select
-                                              value={
-                                                this.state.selectedFunction
-                                              }
-                                              onChange={this.setFunctionValue}
-                                            >
-                                              <option>Task Function</option>
-                                              {this.state.FunctionData !==
-                                                null &&
-                                                this.state.FunctionData.map(
-                                                  (item, i) => (
-                                                    <option
-                                                      key={i}
-                                                      value={item.functionID}
-                                                    >
-                                                      {item.funcationName}
-                                                    </option>
-                                                  )
-                                                )}
-                                            </select>
-                                          </div>
-                                        </React.Fragment>
-                                      ) : null}
+                                            <div className="">
+                                              <select
+                                                value={
+                                                  this.state.selectedFunction
+                                                }
+                                                onChange={this.setFunctionValue}
+                                              >
+                                                <option>Task Function</option>
+                                                {this.state.FunctionData !==
+                                                  null &&
+                                                  this.state.FunctionData.map(
+                                                    (item, i) => (
+                                                      <option
+                                                        key={i}
+                                                        value={item.functionID}
+                                                      >
+                                                        {item.funcationName}
+                                                      </option>
+                                                    )
+                                                  )}
+                                              </select>
+                                            </div>
+                                          </React.Fragment>
+                                        ) : null}
                                     </div>
                                   </div>
                                 </div>
@@ -4923,268 +5094,268 @@ class Dashboard extends Component {
                   <div className="loader-icon"></div>
                 </div>
               ) : (
-                <div className="MyTicketListReact">
-                  <ReactTable
-                    data={SearchTicketData}
-                    columns={[
-                      {
-                        Header: (
-                          <span>
-                            <div className="filter-type pink1 pinkmyticket">
-                              <div className="filter-checkbox pink2 pinkmargin">
-                                <input
-                                  type="checkbox"
-                                  id="fil-aball"
-                                  name="MyTicketListcheckbox[]"
-                                  // checked={this.state.CheckBoxChecked}
-                                  onChange={this.checkAllCheckbox.bind(this)}
-                                />
-                                <label htmlFor="fil-aball" className="ticketid">
-                                  ID
-                                </label>
-                              </div>
-                            </div>
-                          </span>
-                        ),
-                        accessor: "ticketID",
-                        Cell: row => {
-                          return (
-                            <span onClick={e => this.clickCheckbox(e)}>
+                  <div className="MyTicketListReact">
+                    <ReactTable
+                      data={SearchTicketData}
+                      columns={[
+                        {
+                          Header: (
+                            <span>
                               <div className="filter-type pink1 pinkmyticket">
                                 <div className="filter-checkbox pink2 pinkmargin">
                                   <input
                                     type="checkbox"
-                                    id={"j" + row.original.ticketID}
+                                    id="fil-aball"
                                     name="MyTicketListcheckbox[]"
                                     // checked={this.state.CheckBoxChecked}
-                                    attrIds={row.original.ticketID}
-                                    onChange={this.handelCheckBoxCheckedChange}
+                                    onChange={this.checkAllCheckbox.bind(this)}
                                   />
-                                  <label htmlFor={"j" + row.original.ticketID}>
-                                    <img
-                                      src={HeadPhone3}
-                                      alt="HeadPhone"
-                                      className="headPhone3"
-                                    />
-                                    {row.original.ticketID}
-                                  </label>
+                                  <label htmlFor="fil-aball" className="ticketid">
+                                    ID
+                                </label>
                                 </div>
                               </div>
                             </span>
-                          );
-                        }
-                      },
-                      {
-                        Header: (
-                          <span onClick={this.StatusOpenModel}>
-                            Status <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        accessor: "ticketStatus",
-                        Cell: row => {
-                          return (
-                            <span className="table-b table-blue-btn">
-                              <label>{row.original.ticketStatus}</label>
-                            </span>
-                          );
-                        }
-                      },
-                      {
-                        Header: <span></span>,
-                        accessor: "taskStatus",
-                        width: 45,
-                        Cell: row => {
-                          if (
-                            row.original.taskStatus === "0/0" &&
-                            row.original.taskStatus === null
-                          ) {
+                          ),
+                          accessor: "ticketID",
+                          Cell: row => {
                             return (
-                              <div>
-                                <img
-                                  className="task-icon-1 marginimg"
-                                  src={TaskIconGray}
-                                  alt="task-icon-gray"
-                                />
-                              </div>
-                            );
-                          } else {
-                            return (
-                              <div>
-                                <Popover
-                                  content={
-                                    <div className="dash-task-popup-new">
-                                      <div className="d-flex justify-content-between align-items-center">
-                                        <p className="m-b-0">
-                                          TASK:{row.original.taskStatus}
-                                        </p>
-                                        <div className="d-flex align-items-center">
-                                          2 NEW
-                                          <div className="nw-chat">
-                                            <img src={Chat} alt="chat" />
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <ProgressBar
-                                        className="task-progress"
-                                        now={70}
+                              <span onClick={e => this.clickCheckbox(e)}>
+                                <div className="filter-type pink1 pinkmyticket">
+                                  <div className="filter-checkbox pink2 pinkmargin">
+                                    <input
+                                      type="checkbox"
+                                      id={"j" + row.original.ticketID}
+                                      name="MyTicketListcheckbox[]"
+                                      // checked={this.state.CheckBoxChecked}
+                                      attrIds={row.original.ticketID}
+                                      onChange={this.handelCheckBoxCheckedChange}
+                                    />
+                                    <label htmlFor={"j" + row.original.ticketID}>
+                                      <img
+                                        src={HeadPhone3}
+                                        alt="HeadPhone"
+                                        className="headPhone3"
                                       />
-                                    </div>
-                                  }
-                                  placement="bottom"
-                                >
-                                  <img
-                                    className="task-icon-1 marginimg"
-                                    src={TaskIconBlue}
-                                    alt="task-icon-blue"
-                                  />
-                                </Popover>
-                              </div>
+                                      {row.original.ticketID}
+                                    </label>
+                                  </div>
+                                </div>
+                              </span>
                             );
                           }
-                        }
-                      },
-                      {
-                        Header: (
-                          <label className="ticketid">
-                            <span>Subject/</span>
-                            <span
-                              style={{
-                                fontWeight: "bold",
-                                fontSize: "11px !important"
-                              }}
-                            >
-                              Lastest Message
+                        },
+                        {
+                          Header: (
+                            <span onClick={this.StatusOpenModel}>
+                              Status <FontAwesomeIcon icon={faCaretDown} />
                             </span>
-                          </label>
-                        ),
-                        accessor: "message",
-                        Cell: row => {
-                          return <div>{row.original.message}</div>;
+                          ),
+                          accessor: "ticketStatus",
+                          Cell: row => {
+                            return (
+                              <span className="table-b table-blue-btn">
+                                <label>{row.original.ticketStatus}</label>
+                              </span>
+                            );
+                          }
+                        },
+                        {
+                          Header: <span></span>,
+                          accessor: "taskStatus",
+                          width: 45,
+                          Cell: row => {
+                            if (
+                              row.original.taskStatus === "0/0" &&
+                              row.original.taskStatus === null
+                            ) {
+                              return (
+                                <div>
+                                  <img
+                                    className="task-icon-1 marginimg"
+                                    src={TaskIconGray}
+                                    alt="task-icon-gray"
+                                  />
+                                </div>
+                              );
+                            } else {
+                              return (
+                                <div>
+                                  <Popover
+                                    content={
+                                      <div className="dash-task-popup-new">
+                                        <div className="d-flex justify-content-between align-items-center">
+                                          <p className="m-b-0">
+                                            TASK:{row.original.taskStatus}
+                                          </p>
+                                          <div className="d-flex align-items-center">
+                                            2 NEW
+                                          <div className="nw-chat">
+                                              <img src={Chat} alt="chat" />
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <ProgressBar
+                                          className="task-progress"
+                                          now={70}
+                                        />
+                                      </div>
+                                    }
+                                    placement="bottom"
+                                  >
+                                    <img
+                                      className="task-icon-1 marginimg"
+                                      src={TaskIconBlue}
+                                      alt="task-icon-blue"
+                                    />
+                                  </Popover>
+                                </div>
+                              );
+                            }
+                          }
+                        },
+                        {
+                          Header: (
+                            <label className="ticketid">
+                              <span>Subject/</span>
+                              <span
+                                style={{
+                                  fontWeight: "bold",
+                                  fontSize: "11px !important"
+                                }}
+                              >
+                                Lastest Message
+                            </span>
+                            </label>
+                          ),
+                          accessor: "message",
+                          Cell: row => {
+                            return <div>{row.original.message}</div>;
+                          }
+                        },
+                        {
+                          Header: (
+                            <span className="ticketid">
+                              Category <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          accessor: "category",
+                          Cell: row => (
+                            <span>
+                              <label>{row.original.category} </label>
+
+                              <Popover
+                                content={
+                                  <div className="dash-creation-popup-cntr">
+                                    <ul className="dash-category-popup dashnewpopup">
+                                      <li>
+                                        <p>Category</p>
+                                        <p>{row.original.category}</p>
+                                      </li>
+                                      <li>
+                                        <p>Sub Category</p>
+                                        <p>{row.original.subCategory}</p>
+                                      </li>
+                                      <li>
+                                        <p>Type</p>
+                                        <p>{row.original.issueType}</p>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                }
+                                placement="bottom"
+                              >
+                                <img
+                                  className="info-icon"
+                                  src={InfoIcon}
+                                  alt="info-icon"
+                                />
+                              </Popover>
+                            </span>
+                          )
+                        },
+                        {
+                          Header: (
+                            <span className="ticketid">
+                              Priority <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          accessor: "priority"
+                        },
+                        {
+                          Header: (
+                            <span className="ticketid">
+                              Assignee <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          accessor: "assignee"
+                        },
+                        {
+                          Header: (
+                            <span className="ticketid">
+                              Creation On <FontAwesomeIcon icon={faCaretDown} />
+                            </span>
+                          ),
+                          accessor: "createdOn",
+                          Cell: row => (
+                            <span>
+                              <label>{row.original.createdOn}</label>
+
+                              <Popover
+                                content={
+                                  <div className="insertpop1">
+                                    <ul className="dash-creation-popup">
+                                      <li className="title">Creation details</li>
+                                      <li>
+                                        <p>{row.original.createdBy} Created</p>
+                                        <p>{row.original.createdago}</p>
+                                      </li>
+                                      <li>
+                                        <p>
+                                          Assigned to {row.original.assignedTo}
+                                        </p>
+                                        <p>{row.original.assignedago}</p>
+                                      </li>
+                                      <li>
+                                        <p>{row.original.updatedBy} updated</p>
+                                        <p>{row.original.updatedago}</p>
+                                      </li>
+                                      <li>
+                                        <p>Response time remaining by</p>
+                                        <p>
+                                          {row.original.responseTimeRemainingBy}
+                                        </p>
+                                      </li>
+                                      <li>
+                                        <p>Response overdue by</p>
+                                        <p>{row.original.responseOverdueBy}</p>
+                                      </li>
+                                      <li>
+                                        <p>Resolution overdue by</p>
+                                        <p>{row.original.resolutionOverdueBy}</p>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                }
+                                placement="bottom"
+                              >
+                                <img
+                                  className="info-icon"
+                                  src={InfoIcon}
+                                  alt="info-icon"
+                                />
+                              </Popover>
+                            </span>
+                          )
                         }
-                      },
-                      {
-                        Header: (
-                          <span className="ticketid">
-                            Category <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        accessor: "category",
-                        Cell: row => (
-                          <span>
-                            <label>{row.original.category} </label>
-
-                            <Popover
-                              content={
-                                <div className="dash-creation-popup-cntr">
-                                  <ul className="dash-category-popup dashnewpopup">
-                                    <li>
-                                      <p>Category</p>
-                                      <p>{row.original.category}</p>
-                                    </li>
-                                    <li>
-                                      <p>Sub Category</p>
-                                      <p>{row.original.subCategory}</p>
-                                    </li>
-                                    <li>
-                                      <p>Type</p>
-                                      <p>{row.original.issueType}</p>
-                                    </li>
-                                  </ul>
-                                </div>
-                              }
-                              placement="bottom"
-                            >
-                              <img
-                                className="info-icon"
-                                src={InfoIcon}
-                                alt="info-icon"
-                              />
-                            </Popover>
-                          </span>
-                        )
-                      },
-                      {
-                        Header: (
-                          <span className="ticketid">
-                            Priority <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        accessor: "priority"
-                      },
-                      {
-                        Header: (
-                          <span className="ticketid">
-                            Assignee <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        accessor: "assignee"
-                      },
-                      {
-                        Header: (
-                          <span className="ticketid">
-                            Creation On <FontAwesomeIcon icon={faCaretDown} />
-                          </span>
-                        ),
-                        accessor: "createdOn",
-                        Cell: row => (
-                          <span>
-                            <label>{row.original.createdOn}</label>
-
-                            <Popover
-                              content={
-                                <div className="insertpop1">
-                                  <ul className="dash-creation-popup">
-                                    <li className="title">Creation details</li>
-                                    <li>
-                                      <p>{row.original.createdBy} Created</p>
-                                      <p>{row.original.createdago}</p>
-                                    </li>
-                                    <li>
-                                      <p>
-                                        Assigned to {row.original.assignedTo}
-                                      </p>
-                                      <p>{row.original.assignedago}</p>
-                                    </li>
-                                    <li>
-                                      <p>{row.original.updatedBy} updated</p>
-                                      <p>{row.original.updatedago}</p>
-                                    </li>
-                                    <li>
-                                      <p>Response time remaining by</p>
-                                      <p>
-                                        {row.original.responseTimeRemainingBy}
-                                      </p>
-                                    </li>
-                                    <li>
-                                      <p>Response overdue by</p>
-                                      <p>{row.original.responseOverdueBy}</p>
-                                    </li>
-                                    <li>
-                                      <p>Resolution overdue by</p>
-                                      <p>{row.original.resolutionOverdueBy}</p>
-                                    </li>
-                                  </ul>
-                                </div>
-                              }
-                              placement="bottom"
-                            >
-                              <img
-                                className="info-icon"
-                                src={InfoIcon}
-                                alt="info-icon"
-                              />
-                            </Popover>
-                          </span>
-                        )
-                      }
-                    ]}
-                    // resizable={false}
-                    defaultPageSize={10}
-                    showPagination={true}
-                    getTrProps={this.HandleRowClickPage}
-                    minRows={2}
-                  />
-                  {/* <div className="position-relative">
+                      ]}
+                      // resizable={false}
+                      defaultPageSize={10}
+                      showPagination={true}
+                      getTrProps={this.HandleRowClickPage}
+                      minRows={2}
+                    />
+                    {/* <div className="position-relative">
                         <div className="pagi">
                           <ul>
                             <li>
@@ -5222,8 +5393,8 @@ class Dashboard extends Component {
                           <p>Items per page</p>
                         </div>
                       </div> */}
-                </div>
-              )}
+                  </div>
+                )}
               <div className="float-search" onClick={this.toggleSearch}>
                 <small>{TitleChange}</small>
                 {ImgChange}
