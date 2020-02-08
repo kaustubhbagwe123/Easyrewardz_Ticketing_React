@@ -2687,7 +2687,7 @@ class MyTicket extends Component {
                                     data={this.state.orderDetailsData}
                                     columns={[
                                       {
-                                        Header: <span> </span>,
+                                        Header: <span></span>,
                                         accessor: "orderMasterID",
                                         Cell: row => (
                                           <div
@@ -2706,13 +2706,20 @@ class MyTicket extends Component {
                                                   row.original.orderMasterID
                                                 ] === true
                                               }
+                                              defaultChecked={true}
                                               onChange={this.handleCheckOrderID.bind(
                                                 this,
                                                 row.original.orderMasterID,
                                                 row.original
                                               )}
                                             />
-                                            <label></label>
+                                            <label
+                                              htmlFor={
+                                                "i" + row.original.orderMasterID
+                                              }
+                                            >
+                                              {row.original.invoiceNumber}
+                                            </label>
                                           </div>
                                         )
                                       },
@@ -2848,6 +2855,7 @@ class MyTicket extends Component {
                                                   row.original.orderMasterID
                                                 ] === true
                                               }
+                                              defaultChecked={true}
                                               onChange={this.handleCheckOrderID.bind(
                                                 this,
                                                 row.original.orderMasterID,
