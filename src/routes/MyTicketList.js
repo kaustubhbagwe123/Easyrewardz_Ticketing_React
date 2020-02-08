@@ -1052,10 +1052,11 @@ class MyTicketList extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let CategoryData = res.data;
-      if (CategoryData !== null) {
+      let data = res.data;
+
+      if (data !== null) {
         self.setState({
-          CategoryData: CategoryData
+          CategoryData: data
         });
       }
     });
@@ -1079,9 +1080,9 @@ class MyTicketList extends Component {
       }
     }).then(function(res) {
       debugger;
-      let ClaimSubCategoryData = res.data.responseData;
+      let data = res.data.responseData;
       self.setState({
-        ClaimSubCategoryData: ClaimSubCategoryData
+        ClaimSubCategoryData: data
       });
     });
   }
@@ -1113,14 +1114,14 @@ class MyTicketList extends Component {
     }).then(function(res) {
       debugger;
       if (self.state.byCategoryFlag === 4) {
-        var SubCategoryData = res.data.responseData;
+        var data = res.data.responseData;
         self.setState({
-          SubCategoryData: SubCategoryData
+          SubCategoryData: data
         });
       } else if (self.state.allFlag === 5) {
-        var SubCategoryAllData = res.data.responseData;
+        var data = res.data.responseData;
         self.setState({
-          SubCategoryAllData: SubCategoryAllData
+          SubCategoryAllData: data
         });
       }
     });

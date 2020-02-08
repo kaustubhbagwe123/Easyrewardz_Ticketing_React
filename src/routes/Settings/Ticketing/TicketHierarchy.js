@@ -384,7 +384,7 @@ class TicketHierarchy extends Component {
                                             onClick={this.handleDeleteHierarchy.bind(
                                               this,
                                               ids
-                                            )}
+                                            )} 
                                           >
                                             Delete
                                           </button>

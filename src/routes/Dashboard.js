@@ -5284,11 +5284,45 @@ class Dashboard extends Component {
                         accessor: "ticketStatus",
                         Cell: row => {
                           debugger
-                          return (
-                            <span className="table-b table-blue-btn">
-                              <label>{row.original.ticketStatus}</label>
-                            </span>
-                          );
+                          if (
+                            row.original.ticketStatus === "Open"  
+                          ) {
+                            return (
+                              <span className="table-b table-blue-btn">
+                                <label>{row.original.ticketStatus}</label>
+                              </span>
+                            );
+                          } else if (
+                            row.original.ticketStatus === "Resolved"  
+                          ) {
+                            return (
+                              <span className="table-b table-green-btn">
+                                <label>{row.original.ticketStatus}</label>
+                              </span>
+                            );
+                          }else if (
+                            row.original.ticketStatus === "New"  
+                          ) {
+                            return (
+                              <span className="table-b table-yellow-btn">
+                                <label>{row.original.ticketStatus}</label>
+                              </span>
+                            );
+                          }else if (
+                            row.original.ticketStatus === "Solved"  
+                          ) {
+                            return (
+                              <span className="table-b table-green-btn">
+                                <label>{row.original.ticketStatus}</label>
+                              </span>
+                            );
+                          }else{
+                            return (
+                              <span className="table-b table-green-btn">
+                                <label>{row.original.ticketStatus}</label>
+                              </span>
+                            );
+                          }
                         }
                       },
                       {

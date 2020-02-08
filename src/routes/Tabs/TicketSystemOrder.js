@@ -222,6 +222,7 @@ class TicketSystemOrder extends Component {
       self.setState({ finalData: finalData });
     });
   }
+  
   handleOrderSearchData() {
     debugger;
     let self = this;
@@ -239,11 +240,9 @@ class TicketSystemOrder extends Component {
         debugger;
         let Msg = res.data.message;
         let mainData = res.data.responseData;
-        // let subData = res.data.responseData[0].orderItems;
         self.setState({
           message: Msg,
           orderDetailsData: mainData
-          // OrderSubComponent: subData
         });
       });
     } else {
@@ -504,9 +503,7 @@ class TicketSystemOrder extends Component {
 
   render() {
     const { orderDetailsData } = this.state;
-    const defaultExpandedRows = orderDetailsData.map(() => {
-      return true;
-    });
+     
     return (
       <div className="ticketSycard">
         <div className="ticketSycard1">
@@ -657,9 +654,8 @@ class TicketSystemOrder extends Component {
                   {
                     columns: [
                       {
-                        Header: <span>Invoice Number</span>,
-                        accessor: "invoiceNumber",
-                        sortable: false,
+                        Header: <span></span>,
+                        accessor: "orderMasterID",
                         Cell: row => (
                           <div
                             className="filter-checkbox"
@@ -681,11 +677,16 @@ class TicketSystemOrder extends Component {
                                 row.original
                               )}
                             />
-                            <label htmlFor={"i" + row.original.orderMasterID}>
-                              {row.original.invoiceNumber}
+                            <label >
+                              
                             </label>
                           </div>
                         )
+                      },
+                      {
+                        Header: <span>Invoice Number</span>,
+                        accessor: "invoiceNumber"
+                       
                       },
                       {
                         Header: <span>Invoice Date</span>,
@@ -792,9 +793,8 @@ class TicketSystemOrder extends Component {
                   {
                     columns: [
                       {
-                        Header: <span>Invoice Number</span>,
-                        accessor: "invoiceNumber",
-                        sortable: false,
+                        Header: <span> </span>,
+                        accessor: "orderMasterID",
                         Cell: row => (
                           <div
                             className="filter-checkbox"
@@ -816,11 +816,14 @@ class TicketSystemOrder extends Component {
                                 row.original
                               )}
                             />
-                            <label htmlFor={"i" + row.original.orderMasterID}>
-                              {row.original.invoiceNumber}
+                            <label> 
                             </label>
                           </div>
                         )
+                      },
+                      {
+                        Header: <span>Invoice Number</span>,
+                        accessor: "invoiceNumber"
                       },
                       {
                         Header: <span>Invoice Date</span>,
@@ -1564,8 +1567,8 @@ class TicketSystemOrder extends Component {
                               // )
                             },
                             {
-                              Header: <span>Article Size</span>,
-                              accessor: "size"
+                              Header: <span>Article Name</span>,
+                              accessor: "articleNumber"
                             },
                             {
                               Header: <span>Article MRP</span>,
