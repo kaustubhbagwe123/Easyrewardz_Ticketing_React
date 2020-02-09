@@ -395,7 +395,7 @@ class TicketSystemStore extends Component {
                                       row.original
                                     )}
                                   />
-                                  <label></label>
+                                  <label htmlFor={"i" + row.original.storeID}></label>
                                 </div>
                               )
                             },
@@ -693,7 +693,7 @@ class TicketSystemStore extends Component {
                                         row.original
                                       )}
                                     />
-                                    <label></label>
+                                    <label htmlFor={"i" + row.original.storeID}></label>
                                   </div>
                                 )
                               },

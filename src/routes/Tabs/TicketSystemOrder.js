@@ -677,7 +677,7 @@ class TicketSystemOrder extends Component {
                                 row.original
                               )}
                             />
-                            <label >
+                            <label htmlFor={"i" + row.original.orderMasterID}>
                               
                             </label>
                           </div>
@@ -816,7 +816,7 @@ class TicketSystemOrder extends Component {
                                 row.original
                               )}
                             />
-                            <label> 
+                            <label htmlFor={"i" + row.original.orderMasterID}> 
                             </label>
                           </div>
                         )
@@ -1399,7 +1399,7 @@ class TicketSystemOrder extends Component {
                               row.original
                             )}
                           />
-                          <label></label>
+                          <label htmlFor={"i" + row.original.orderMasterID}></label>
                         </div>
                       )
                     },
@@ -1488,7 +1488,7 @@ class TicketSystemOrder extends Component {
                               row.original
                             )}
                           />
-                          <label></label>
+                          <label htmlFor={"i" + row.original.orderMasterID}></label>
                         </div>
                       )
                     },
