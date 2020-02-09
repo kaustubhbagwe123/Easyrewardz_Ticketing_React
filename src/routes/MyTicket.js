@@ -2636,9 +2636,9 @@ class MyTicket extends Component {
                             <span className="linestore1"></span>
                             <div className="newtabstore">
                               <div className="tab-content tabcontentstore">
-                                <div className="">
+                                <div className="row align-items-center mr-0">
                                   <ul
-                                    className="nav alert-nav-tabs3 store-nav-tabs"
+                                    className="nav alert-nav-tabs3 store-nav-tabs col-md-6"
                                     role="tablist"
                                   >
                                     <li className="nav-item fo">
@@ -2668,6 +2668,7 @@ class MyTicket extends Component {
                                       </li>
                                     ) : null}
 
+                                  </ul>
                                     <div className="col-md-6 m-b-10 m-t-10 text-right">
                                       <button
                                         type="button"
@@ -2679,7 +2680,6 @@ class MyTicket extends Component {
                                         Attach Product
                                       </button>
                                     </div>
-                                  </ul>
                                 </div>
                               </div>
                             </div>

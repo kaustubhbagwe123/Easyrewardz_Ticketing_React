@@ -8639,7 +8639,7 @@ table tr th:last-child {
   margin-left: 0px;
 }
 .store-nav-tabs .nav-link.active {
-  color: #2561a8;
+  color: #2561a8 !important;
   border: none;
 }
 .store-nav-tabs .nav-link {

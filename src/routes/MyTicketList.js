@@ -511,15 +511,17 @@ class MyTicketList extends Component {
       if (Status === "Record Not Found") {
         self.setState({ SearchTicketData: [], loading: false });
       } else {
-        self.setState({ SearchTicketData: data, loading: false });
-        for (let i = 0; i < CSVData.length; i++) {
-          delete CSVData[i].totalpages;
-          delete CSVData[i].responseTimeRemainingBy;
-          delete CSVData[i].responseOverdueBy;
-          delete CSVData[i].resolutionOverdueBy;
-          delete CSVData[i].ticketCommentCount;
+        if (data !== null) {
+          self.setState({ SearchTicketData: data, loading: false });
+          for (let i = 0; i < CSVData.length; i++) {
+            delete CSVData[i].totalpages;
+            delete CSVData[i].responseTimeRemainingBy;
+            delete CSVData[i].responseOverdueBy;
+            delete CSVData[i].resolutionOverdueBy;
+            delete CSVData[i].ticketCommentCount;
+          }
+          self.setState({ CSVDownload: CSVData });
         }
-        self.setState({ CSVDownload: CSVData });
       }
     });
   }
@@ -1284,6 +1286,7 @@ class MyTicketList extends Component {
   ViewSearchData(clrSrch) {
     debugger;
     let self = this;
+    this.setState({ loading: true });
 
     // ---------------By Date tab---------------------
     var dateTab = {};
@@ -1458,26 +1461,30 @@ class MyTicketList extends Component {
       }
 
       if (status === "Success") {
-        for (let i = 0; i < CSVData.length; i++) {
-          delete CSVData[i].totalpages;
-          delete CSVData[i].responseTimeRemainingBy;
-          delete CSVData[i].responseOverdueBy;
-          delete CSVData[i].resolutionOverdueBy;
-          delete CSVData[i].ticketCommentCount;
+        if (data !== null) {
+          for (let i = 0; i < CSVData.length; i++) {
+            delete CSVData[i].totalpages;
+            delete CSVData[i].responseTimeRemainingBy;
+            delete CSVData[i].responseOverdueBy;
+            delete CSVData[i].resolutionOverdueBy;
+            delete CSVData[i].ticketCommentCount;
+          }
+          self.setState({ CSVDownload: CSVData });
+          self.setState({
+            SearchTicketData: data
+          });
         }
-        self.setState({ CSVDownload: CSVData });
-        self.setState({
-          SearchTicketData: data
-        });
         if (clrSrch === 0) {
           self.setState({
-            resultCount: count
+            resultCount: count,
+            loading: false
           });
         }
       } else {
         self.setState({
           SearchTicketData: [],
-          resultCount: 0
+          resultCount: 0,
+          loading: false
         });
       }
     });
@@ -4382,12 +4389,47 @@ class MyTicketList extends Component {
                               ),
                               accessor: "ticketStatus",
                               Cell: row => {
-                                return (
-                                  <span className="table-b table-blue-btn">
-                                    <label>{row.original.ticketStatus}</label>
-                                  </span>
-                                );
-                              }
+                          debugger
+                          if (
+                            row.original.ticketStatus === "Open"  
+                          ) {
+                            return (
+                              <span className="table-b table-blue-btn">
+                                <label>{row.original.ticketStatus}</label>
+                              </span>
+                            );
+                          } else if (
+                            row.original.ticketStatus === "Resolved"  
+                          ) {
+                            return (
+                              <span className="table-b table-green-btn">
+                                <label>{row.original.ticketStatus}</label>
+                              </span>
+                            );
+                          }else if (
+                            row.original.ticketStatus === "New"  
+                          ) {
+                            return (
+                              <span className="table-b table-yellow-btn">
+                                <label>{row.original.ticketStatus}</label>
+                              </span>
+                            );
+                          }else if (
+                            row.original.ticketStatus === "Solved"  
+                          ) {
+                            return (
+                              <span className="table-b table-green-btn">
+                                <label>{row.original.ticketStatus}</label>
+                              </span>
+                            );
+                          }else{
+                            return (
+                              <span className="table-b table-green-btn">
+                                <label>{row.original.ticketStatus}</label>
+                              </span>
+                            );
+                          }
+                        }
                             },
                             {
                               Header: <span></span>,
