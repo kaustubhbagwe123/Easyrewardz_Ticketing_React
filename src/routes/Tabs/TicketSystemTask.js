@@ -504,7 +504,7 @@ class TicketSystemTask extends Component {
                       ]}
                       // resizable={false}
                       defaultPageSize={5}
-                      showPagination={false}
+                      showPagination={false} 
                       defaultSorted={[
                         {
                           id: "ID",
