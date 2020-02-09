@@ -436,8 +436,12 @@ class TicketSystemTask extends Component {
                 >
                   <div className="card-body systemtaskreact">
                     <ReactTable
-                      data={taskData}
+                      data={taskData} 
                       columns={[
+                        {
+                          Header: <span>ID</span>,
+                          accessor: "ID"
+                        },
                         {
                           Header: <span>Task Title</span>,
                           accessor: "taskTitle"
@@ -501,6 +505,12 @@ class TicketSystemTask extends Component {
                       // resizable={false}
                       defaultPageSize={5}
                       showPagination={false}
+                      defaultSorted={[
+                        {
+                          id: "ID",
+                          desc: true
+                        }
+                      ]}
                     />
                   </div>
                 </div>

@@ -65,14 +65,14 @@ class MyTicketTask extends Component {
     debugger;
     if(this.props.taskData.TicketData.TicketId !== 0){
       var Id = this.props.taskData.TicketData.TicketId;
-      // var GridData=this.props.taskData.TicketData.GridData;
+      /// var GridData=this.props.taskData.TicketData.GridData;
       this.handleGetTaskTableGrid(Id);
-      this.handleGetDepartmentList();
+     this.handleGetDepartmentList();
       this.handleGetTicketPriorityList();
       this.handleGetTaskTabDetails(Id);
       this.setState({
         tikcet_ID: Id,
-        // taskTableGrid:GridData
+        /// taskTableGrid:GridData
       });
     }else if(this.props.taskData.TicketData.TicketId === 0){
 

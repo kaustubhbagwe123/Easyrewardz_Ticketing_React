@@ -386,9 +386,10 @@ class CategoryMaster extends Component {
     }, 1);
   };
   handleEditDropDownChange = e =>{  
-    debugger
+    debugger;
     let name=e.target.name;
     let value=e.target.value;
+    this.setState({ name: value });
 
   }
   handleStatusChange = e => {
@@ -547,9 +548,10 @@ class CategoryMaster extends Component {
                                           </label>
                                           <select
                                             className="store-create-select"
+                                            
                                             value={this.state.selectBrand}
                                             onChange={this.handleEditDropDownChange}
-                                            name="brandId"
+                                            name="selectBrand"
                                           >
                                             <option>Select</option>
                                             {this.state.brandData !== null &&
@@ -568,29 +570,59 @@ class CategoryMaster extends Component {
                                         </div>
 
                                         <div className="pop-over-div">
-                                          <label className="edit-label-1">
-                                            Category
-                                          </label>
-                                          <select
-                                            className="store-create-select"
-                                            value={this.state.category_Id}
-                                            onChange={this.handleEditDropDownChange}
-                                            name="categoryId"
-                                          >
-                                            <option>Select</option>
-                                            {this.state.categoryDropData !== null &&
-                                              this.state.categoryDropData.map(
-                                                (item, i) => (
-                                                  <option
-                                                    key={i}
-                                                    value={item.categoryID}
-                                                    className="select-category-placeholder"
-                                                  >
-                                                    {item.categoryName}
-                                                  </option>
-                                                )
-                                              )}
-                                          </select>
+                                        <label className="reports-to reports-dis">
+                          Category
+                        </label>
+                        <Select
+                          showSearch={true}
+                          value={this.state.list1Value}
+                          style={{ width: "100%" }}
+                          onChange={this.handleCategoryChange}
+                        >
+                          {list1SelectOptions}
+                          <Option value={NEW_ITEM}>
+                            <span className="sweetAlert-inCategory">
+                              + ADD NEW
+                            </span>
+                          </Option>
+                        </Select>
+
+                        <SweetAlert
+                          show={this.state.showList1}
+                          style={{ width: "320px" }}
+                          title="Add New Category"
+                          text="Enter new Category"
+                          showCancelButton
+                          type="input"
+                          inputPlaceholder="Enter Category Name"
+                          animation="slide-from-top"
+                          validationMsg="Please enter a category!"
+                          onConfirm={inputValue => {
+                            debugger;
+                            inputValue = inputValue.trim();
+                            if (inputValue !== "") {
+                              this.setState({
+                                showList1: false,
+                                list1Value: inputValue
+                              });
+                              this.handleAddCategory(inputValue);
+                            } else {
+                              this.setState({
+                                showList1: false,
+                                list1Value: inputValue
+                              });
+                            }
+                          }}
+                          onCancel={() => {
+                            this.setState({ showList1: false });
+                          }}
+                          onEscapeKey={() =>
+                            this.setState({ showList1: false })
+                          }
+                          onOutsideClick={() =>
+                            this.setState({ showList1: false })
+                          }
+                        />
                                         </div>
                                         <div className="pop-over-div">
                                           <label className="edit-label-1">

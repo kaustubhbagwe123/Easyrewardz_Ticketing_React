@@ -20,7 +20,8 @@ import RedDeleteIcon from "./../../assets/Images/red-delete-icon.png";
 import BlackInfoIcon from "./../../assets/Images/Info-black.png";
 import CancelImg from "./../../assets/Images/Circle-cancel.png";
 import { Checkbox } from "antd";
-import CKEditor from "react-ckeditor-component";
+
+import CKEditor from "ckeditor4-react";
 import Modal from "react-bootstrap/Modal";
 import { authHeader } from "./../../helpers/authHeader";
 import axios from "axios";
@@ -99,21 +100,22 @@ class Alerts extends Component {
     
   };
 
-  setCKEditorCustomer = (evt) => {
+  setCKEditorCustomer = evt => {
     debugger;
     var newContent = evt.editor.getData();
     this.setState({
-      selectedCKCustomer: newContent
+    selectedCKCustomer: newContent
+    
     });
   }
-  setCKEditorInternal = (evt) => {
+  setCKEditorInternal = evt => {
     debugger;
     var newContent = evt.editor.getData();
     this.setState({
       selectedCKInternal: newContent
     });
   }
-  setCKEditorStore = (evt) => {
+  setCKEditorStore = evt => {
     debugger;
     var newContent = evt.editor.getData();
     this.setState({
@@ -1003,15 +1005,16 @@ class Alerts extends Component {
                                 </div>
                               </div>
                               <CKEditor
+                              name="selectedCKCustomer"
                                data={this.state.selectedCKCustomer}
-                               onChange={this.setCKEditorCustomer.bind(this)}
+                               onChange={this.setCKEditorCustomer}
                                 //content={this.state.content}
                                 events={{
                                   // "blur": this.onBlur,
                                   // "afterPaste": this.afterPaste,
                                  
                                   //change: this.onChange,
-                                  tems: this.fileUpload
+                                  items: this.fileUpload
                                  
                                 }}
                               
