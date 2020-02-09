@@ -468,6 +468,7 @@ class TicketSystemTask extends Component {
                           accessor: "AssignTo"
                         },
                         {
+                          
                           Header: <span>Actions</span>,
                           accessor: "actionReport",
                           Cell: row => {
