@@ -4613,6 +4613,7 @@ class Dashboard extends Component {
                                     : "csv-button csv-dis-btn"
                                 }
                                 data={this.state.CSVDownload}
+                                filename="Tickets_Data.csv"
                               >
                                 <img
                                   className="position-relative csv-icon"
