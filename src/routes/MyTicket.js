@@ -195,6 +195,14 @@ class MyTicket extends Component {
     }
   }
 
+    onAddCKEditorChange = evt => {
+    debugger;
+    var newContent = evt.editor.getData();
+    this.setState({
+      mailBodyData: newContent
+    });
+  };
+
   handleGetTicketDetails(ID) {
     debugger;
     let self = this;
@@ -1290,8 +1298,9 @@ class MyTicket extends Component {
         EmailID: this.state.ticketDetailsData.customerEmailId,
         Mailcc: this.state.mailFiled.userCC,
         Mailbcc: this.state.mailFiled.userBCC,
-        Mailsubject: subject,
-        MailBody: this.state.CkEditorTemplateDetails.templateBody,
+        Mailsubject: this.state.ticketDetailsData.ticketTitle,
+        // MailBody: this.state.CkEditorTemplateDetails.templateBody,
+        MailBody: this.state.mailBodyData,
         informStore: this.state.InformStore,
         storeID: ""
       }
@@ -3157,8 +3166,10 @@ class MyTicket extends Component {
                         <div className="">
                           <CKEditor
                             data={
-                              this.state.CkEditorTemplateDetails.templateBody
+                              // this.state.CkEditorTemplateDetails.templateBody
+                              this.state.mailBodyData
                             }
+                            onChange={this.onAddCKEditorChange}
                             config={{
                               toolbar: [
                                 {
