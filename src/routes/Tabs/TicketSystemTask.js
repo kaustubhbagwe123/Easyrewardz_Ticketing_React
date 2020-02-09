@@ -25,10 +25,10 @@ class TicketSystemTask extends Component {
       FunctionData: [],
       AssignToData: [],
       TicketPriorityData: [],
-      selectedDepartment: '',
-      selectedFunction: '',
-      selectedAssignTo: '',
-      selectedPriority: ''
+      selectedDepartment: "",
+      selectedFunction: "",
+      selectedAssignTo: "",
+      selectedPriority: ""
     };
     this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
     // this.handleTaskDelete = this.handleTaskDelete.bind(this);
@@ -104,11 +104,11 @@ class TicketSystemTask extends Component {
       }
     }).then(function(res) {
       debugger;
-      let status=res.data.message;
+      let status = res.data.message;
       let data = res.data.responseData;
-      if(status === "Success"){
+      if (status === "Success") {
         self.setState({ AssignToData: data });
-      }else{
+      } else {
         self.setState({ AssignToData: [] });
       }
     });
@@ -122,11 +122,11 @@ class TicketSystemTask extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let status=res.data.message;
+      let status = res.data.message;
       let data = res.data.responseData;
-      if(status === "Success"){
+      if (status === "Success") {
         self.setState({ TicketPriorityData: data });
-      }else{
+      } else {
         self.setState({ TicketPriorityData: [] });
       }
     });
@@ -199,10 +199,10 @@ class TicketSystemTask extends Component {
             Priority: "",
             AssignTo: ""
           },
-          selectedDepartment: '',
-          selectedFunction: '',
-          selectedAssignTo: '',
-          selectedPriority: ''
+          selectedDepartment: "",
+          selectedFunction: "",
+          selectedAssignTo: "",
+          selectedPriority: ""
         });
 
         NotificationManager.success("Task created successfully.");
@@ -219,6 +219,10 @@ class TicketSystemTask extends Component {
     taskData.splice(i - 1, 1);
     this.setState({ taskData });
   };
+  hide(e, id) {
+    debugger;
+    document.getElementById(id).parentElement.parentElement.parentElement.parentElement.parentElement.style.display = "none";
+  }
   render() {
     const { taskData } = this.state;
     return (
@@ -296,7 +300,10 @@ class TicketSystemTask extends Component {
                           value={this.state.selectedDepartment}
                           onChange={this.setDepartmentValue}
                         >
-                          <option value='' className="select-category-placeholder">
+                          <option
+                            value=""
+                            className="select-category-placeholder"
+                          >
                             Department
                           </option>
                           {this.state.DepartmentData !== null &&
@@ -323,7 +330,10 @@ class TicketSystemTask extends Component {
                           value={this.state.selectedFunction}
                           onChange={this.setFunctionValue}
                         >
-                          <option value='' className="select-sub-category-placeholder">
+                          <option
+                            value=""
+                            className="select-sub-category-placeholder"
+                          >
                             Function
                           </option>
                           {this.state.FunctionData !== null &&
@@ -352,7 +362,10 @@ class TicketSystemTask extends Component {
                           onChange={this.setAssignToValue}
                           className="category-select-system dropdown-label"
                         >
-                          <option value='' className="select-category-placeholder">
+                          <option
+                            value=""
+                            className="select-category-placeholder"
+                          >
                             Assign To
                           </option>
                           {this.state.AssignToData !== null &&
@@ -379,7 +392,10 @@ class TicketSystemTask extends Component {
                           onChange={this.setPriorityValue}
                           className="category-select-system dropdown-label"
                         >
-                          <option value='' className="select-sub-category-placeholder">
+                          <option
+                            value=""
+                            className="select-sub-category-placeholder"
+                          >
                             Priority
                           </option>
                           {this.state.TicketPriorityData !== null &&
@@ -454,53 +470,51 @@ class TicketSystemTask extends Component {
                         {
                           Header: <span>Actions</span>,
                           accessor: "actionReport",
-                          Cell: row => (
+                          Cell: row => {
+                            debugger
+                            var ids=row.original["ID"];
+                            return(
                             <div>
-                              {/* <img
-                                src={DeleteIcon}
-                                alt="del-icon"
-                                className="downloadaction"
-                                onClick={() => {
-                                  this.handleTaskDelete(row.original.ID);
-                                }}
-                              /> */}
                               <Popover
-                                    content={
-                                      <div className="d-flex general-popover popover-body">
-                                        <div>
-                                          <p className="font-weight-bold blak-clr">
-                                            Delete file?
-                                          </p>
-                                          <p className="mt-1 fs-12">
-                                            Are you sure you want to delete this
-                                            file?
-                                          </p>
-                                          <div className="del-can">
-                                            <a href={Demo.BLANK_LINK}>CANCEL</a>
-                                            <button
-                                              className="butn"
-                                              type="button"
-                                              onClick={() => {
-                                                this.handleTaskDelete(row.original.ID);
-                                              }}
-                                            >
-                                              Delete
-                                            </button>
-                                          </div>
-                                        </div>
+                                content={
+                                  <div className="d-flex general-popover popover-body">
+                                    <div>
+                                      <p className="font-weight-bold blak-clr">
+                                        Delete file?
+                                      </p>
+                                      <p className="mt-1 fs-12">
+                                        Are you sure you want to delete this
+                                        file?
+                                      </p>
+                                      <div className="del-can">
+                                      <a className="canblue" onClick={() => this.hide(this, "samdel" + ids)}>CANCEL</a>
+                                        <button
+                                          className="butn"
+                                          type="button"
+                                          onClick={() => {
+                                            this.handleTaskDelete(
+                                              row.original.ID
+                                            );
+                                          }}
+                                        >
+                                          Delete
+                                        </button>
                                       </div>
-                                    }
-                                    placement="bottom"
-                                    trigger="click"
-                                  >
-                                    <img
-                                src={DeleteIcon}
-                                alt="del-icon"
-                                className="downloadaction"
-                              />
-                                  </Popover>
+                                    </div>
+                                  </div>
+                                }
+                                placement="bottom"
+                                trigger="click"
+                              >
+                                <img
+                                  src={DeleteIcon}
+                                  alt="del-icon"
+                                  className="downloadaction"
+                                />
+                              </Popover>
                             </div>
-                          )
+                            )
+                        }
                         }
                       ]}
                       // resizable={false}

@@ -107,6 +107,9 @@ class SingIn extends Component {
             }, 400);
           } else {
             NotificationManager.error("In-Valid Login.");
+            self.setState({
+              loading: false
+              });
           }
         });
       }
