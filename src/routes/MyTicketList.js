@@ -1496,6 +1496,11 @@ class MyTicketList extends Component {
             resultCount: count,
             loading: false
           });
+        }else{
+          self.setState({
+            resultCount: count,
+            loading: false
+          });
         }
       } else {
         self.setState({
