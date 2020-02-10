@@ -1804,6 +1804,56 @@ class MyTicketList extends Component {
   }
 
 
+  setSortCheckStatus = e => {
+    debugger;
+   
+    var itemsArray=[];
+    var data=e.currentTarget.value;
+   if(data==="open"){
+    itemsArray=this.state.SearchTicketData.filter(a=>a.ticketStatus==="Open");
+   }
+   else if(data==="resolved"){
+    itemsArray=this.state.SearchTicketData.filter(a=>a.ticketStatus==="Resolved");
+   }
+   else if(data==="solved"){
+    itemsArray=this.state.SearchTicketData.filter(a=>a.ticketStatus==="Solved");
+   }
+   else if(data==="new"){
+    itemsArray=this.state.SearchTicketData.filter(a=>a.ticketStatus==="New");
+   }
+  
+  this.setState({
+    SearchTicketData: itemsArray
+  })
+  this.StatusCloseModel();
+  
+  };
+
+  sortStatusAtoZ(){
+    debugger;
+    var itemsArray=[];
+    itemsArray=this.state.SearchTicketData;
+    
+    itemsArray.sort((a,b) => {
+      return a.name > b.name;
+  });
+  this.setState({
+    SearchTicketData: itemsArray
+  })
+  this.StatusCloseModel();
+  }
+  sortStatusZtoA(){
+    debugger;
+    var itemsArray=[];
+    itemsArray=this.state.SearchTicketData;
+    itemsArray.sort((a,b) => {
+      return a.name < b.name;
+  });
+  this.setState({
+    SearchTicketData: itemsArray
+  })
+  this.StatusCloseModel();
+  }
   
   handleAssignTo() {
     debugger;
@@ -2057,13 +2107,13 @@ class MyTicketList extends Component {
             <div className="status-drop-down">
               <div className="sort-sctn">
                 <div className="d-flex">
-                  <a href={Demo.BLANK_LINK} className="sorting-icon">
+                  <a onClick={this.sortStatusAtoZ.bind(this)} className="sorting-icon">
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
                   <p>SORT BY A TO Z</p>
                 </div>
                 <div className="d-flex">
-                  <a href={Demo.BLANK_LINK} className="sorting-icon">
+                  <a onClick={this.sortStatusZtoA.bind(this)} className="sorting-icon">
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
                   <p>SORT BY Z TO A</p>
@@ -2072,21 +2122,39 @@ class MyTicketList extends Component {
               <div className="filter-type">
                 <p>FILTER BY TYPE</p>
                 <div className="filter-checkbox">
-                  <input type="checkbox" id="fil-open" name="filter-type" />
+                  <input type="checkbox" id="fil-open" name="filter-type"
+                   value="open"
+                   onChange={this.setSortCheckStatus}
+                  />
                   <label htmlFor="fil-open">
                     <span className="table-btn table-blue-btn">Open</span>
                   </label>
                 </div>
                 <div className="filter-checkbox">
-                  <input type="checkbox" id="fil-new" name="filter-type" />
+                  <input type="checkbox" id="fil-new" name="filter-type" 
+                  value="new"
+                  onChange={this.setSortCheckStatus}
+                  />
                   <label htmlFor="fil-new">
                     <span className="table-btn table-yellow-btn">New</span>
                   </label>
                 </div>
                 <div className="filter-checkbox">
-                  <input type="checkbox" id="fil-solved" name="filter-type" />
+                  <input type="checkbox" id="fil-solved" name="filter-type" 
+                   value="solved"
+                   onChange={this.setSortCheckStatus}
+                  />
                   <label htmlFor="fil-solved">
                     <span className="table-btn table-green-btn">Solved</span>
+                  </label>
+                </div>
+                <div className="filter-checkbox">
+                  <input type="checkbox" id="fil-solved" name="filter-type" 
+                   value="resolved"
+                   onChange={this.setSortCheckStatus}
+                  />
+                  <label htmlFor="fil-solved">
+                    <span className="table-btn table-green-btn">Resolved</span>
                   </label>
                 </div>
               </div>
