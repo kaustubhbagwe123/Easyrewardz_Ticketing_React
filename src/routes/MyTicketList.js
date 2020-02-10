@@ -2337,9 +2337,7 @@ class MyTicketList extends Component {
                 <label className="add-tickets">ADD TICKETS</label>
               </button>
             </div>
-            {this.state.loading === true ? (
-              <div className="loader-icon"></div>
-            ) : (
+           
               <div className="tab-content">
                 <div
                   className="tab-pane fade show active"
@@ -4342,7 +4340,10 @@ class MyTicketList extends Component {
                           </Card>
                         </Collapse>
                       </div>
-
+                      {this.state.loading === true ? (
+              <div className="loader-icon"></div>
+            ) : (
+              <div>
                       <div className="MyTicketListReact">
                         <ReactTable
                           data={SearchTicketData}
@@ -4709,6 +4710,8 @@ class MyTicketList extends Component {
                         <small>{TitleChange}</small>
                         {ImgChange}
                       </div>
+                      </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -4722,7 +4725,7 @@ class MyTicketList extends Component {
                   <MyTicketDraft draftData={DraftDetails} />
                 </div>
               </div>
-            )}
+           
           </div>
         </div>
         <NotificationContainer />
