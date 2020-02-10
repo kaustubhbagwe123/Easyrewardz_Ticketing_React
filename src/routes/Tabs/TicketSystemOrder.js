@@ -1311,13 +1311,22 @@ class TicketSystemOrder extends Component {
               </div>
 
               <div className="row m-b-10 m-l-10 m-r-10">
-                <div className="col-md-6">
+                <div className="col-md-3">
                   <button
                     type="button"
                     className="addmanual m-t-15"
                     onClick={this.hadleAddManuallyOrderData.bind(this)}
                   >
                     SAVE
+                  </button>
+                </div>
+                <div className="col-md-3">
+                  <button
+                    type="button"
+                    className="addmanual m-t-15"
+                   onClick={this.handleChangeToggle.bind(this)}
+                  >
+                    CANCEL
                   </button>
                 </div>
               </div>
