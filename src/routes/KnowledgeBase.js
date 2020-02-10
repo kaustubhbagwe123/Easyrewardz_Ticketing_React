@@ -568,13 +568,15 @@ class KnowledgeBase extends Component {
       this.state.selectedSubject.length > 0
     ) {
       let self = this;
+      var ck=this.state.ckeditorAdd.replace("<p>","");
+      var ckeditor=ck.replace("</p>","");
       var json = {
         KBCODE: "",
         CategoryID: this.state.selectedCategory,
         SubCategoryID: this.state.selectedSubCategory,
 
         Subject: this.state.selectedSubject,
-        Description: this.state.ckeditorAdd,
+        Description: ckeditor,
         IsActive: 1,
         IssueTypeID: this.state.selectedIssueType
       };
