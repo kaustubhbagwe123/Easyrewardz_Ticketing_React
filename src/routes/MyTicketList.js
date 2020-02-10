@@ -1380,12 +1380,29 @@ class MyTicketList extends Component {
       if (this.state.selectedWithTaskAll === "yes") {
         withTask = 1;
       }
-      allTab["CreatedDate"] = moment(this.state.ByAllCreateDate).format(
-        "YYYY-MM-DD"
-      );
-      allTab["ModifiedDate"] = moment(this.state.ByAllLastDate).format(
-        "YYYY-MM-DD"
-      );
+
+      if (
+        this.state.ByAllCreateDate === null ||
+        this.state.ByAllCreateDate === undefined ||
+        this.state.ByAllCreateDate === ""
+      ) {
+        allTab["CreatedDate"] = "";
+      } else {
+        allTab["CreatedDate"] = moment(this.state.ByAllCreateDate).format("YYYY-MM-DD");
+      }
+
+
+      if (
+        this.state.ByAllLastDate === null ||
+        this.state.ByAllLastDate === undefined ||
+        this.state.ByAllLastDate === ""
+      ) {
+        allTab["ModifiedDate"] = "";
+      } else {
+        allTab["ModifiedDate"] = moment(this.state.ByAllLastDate).format("YYYY-MM-DD");
+      }
+      // allTab["CreatedDate"] = moment(this.state.ByAllCreateDate).format("YYYY-MM-DD");
+      // allTab["ModifiedDate"] = moment(this.state.ByAllLastDate).format("YYYY-MM-DD");
       allTab["CategoryId"] = this.state.selectedCategoryAll;
       allTab["SubCategoryId"] = this.state.selectedSubCategoryAll;
       allTab["IssueTypeId"] = this.state.selectedIssueTypeAll;
@@ -1474,7 +1491,7 @@ class MyTicketList extends Component {
             SearchTicketData: data
           });
         }
-        if (clrSrch === 0) {
+        if (clrSrch === 1) {
           self.setState({
             resultCount: count,
             loading: false
@@ -4389,7 +4406,6 @@ class MyTicketList extends Component {
                               ),
                               accessor: "ticketStatus",
                               Cell: row => {
-                          debugger
                           if (
                             row.original.ticketStatus === "Open"  
                           ) {
