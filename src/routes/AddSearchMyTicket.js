@@ -366,11 +366,11 @@ class AddSearchMyTicket extends Component {
                       className="txt-1"
                       dateFormat="dd/MM/yyyy"
                     />
-                    {this.validator.message(
+                    {/* {this.validator.message(
                       "Date of Birth",
                       this.state.dob,
                       "required"
-                    )}
+                    )} */}
                     {/* <ModernDatepicker
                       date={this.state.startDate}
                       format={"DD-MM-YYYY"}
