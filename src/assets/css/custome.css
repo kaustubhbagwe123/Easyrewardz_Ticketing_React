@@ -7010,7 +7010,7 @@ table thead tr {
 .Add-Notes-textarea {
   background-color: #ecf2f4;
   border-radius: 4px;
-  width: 330px;
+  width: 100%;
   height: 198px;
   border: none;
   resize: none;
@@ -7028,7 +7028,7 @@ table thead tr {
 .notesbtn {
   background-color: #2561a8;
   border-radius: 4px;
-  width: 330px;
+  width: 100%;
   height: 43px;
   cursor: pointer;
 }
