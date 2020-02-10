@@ -481,7 +481,7 @@ class TicketSystemStore extends Component {
                       data={selectedStoreData}
                       columns={[
                         {
-                          Header: <span>Purpose</span>,
+                          Header: <span></span>,
                           accessor: "invoiceNumber",
                           Cell: row => (
                             <div
@@ -792,7 +792,7 @@ class TicketSystemStore extends Component {
                         data={selectedStoreData}
                         columns={[
                           {
-                            Header: <span>Purpose</span>,
+                            Header: <span></span>,
                             accessor: "invoiceNumber",
                             Cell: row => (
                               <div
