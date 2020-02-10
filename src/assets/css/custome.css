@@ -3439,6 +3439,9 @@ table tr th:last-child {
 .ReactTable.limit-react-table-body .rt-tbody::-webkit-scrollbar-thumb:hover{
   background: #555;
 }
+.ReactTable.limit-react-table-body .rt-thead .rt-tr {
+  text-align: left;
+}
 /* my ticket ends */
 
 /* .cke_editable {

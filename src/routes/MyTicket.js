@@ -723,6 +723,7 @@ class MyTicket extends Component {
       let messageData = res.data.message;
       if (messageData === "Success") {
         NotificationManager.success("Tickets assigned successfully.");
+        self.HandlelabelModalClose();
         // self.handleSearchTicket();
       }
     });
@@ -1563,13 +1564,15 @@ class MyTicket extends Component {
                     modalId="labelmodel-popup"
                     overlayId="logout-ovrly"
                   >
-                    <div className="myTicket-table remov varunoverflow cus-scroll agentlist">
+                    <div className="myTicket-table remov agentlist">
                       <ReactTable
+                      className="limit-react-table-body"
                         data={SearchAssignData}
                         columns={[
                           {
                             Header: <span>Emp Id</span>,
-                            accessor: "user_ID"
+                            accessor: "user_ID",
+                            width: 80
                           },
                           {
                             Header: <span>Name</span>,
@@ -1584,6 +1587,7 @@ class MyTicket extends Component {
                         minRows={1}
                         // defaultPageSize={5}
                         showPagination={false}
+                        resizable={false}
                         getTrProps={(rowInfo, column) => {
                           debugger;
                           const index = column
@@ -1592,8 +1596,9 @@ class MyTicket extends Component {
                           return {
                             onClick: e => {
                               debugger;
+                              this.selectedRow = index;
                               var agentId =
-                              rowInfo.data["user_ID"];
+                              column.original["user_ID"];
                               this.setState({ agentId });
                             },
                             style: {
