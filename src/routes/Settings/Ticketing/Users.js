@@ -14,6 +14,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Popover } from "antd";
 import ReactTable from "react-table";
 import BlackInfoIcon from "./../../../assets/Images/Info-black.png";
+import Modal from "react-responsive-modal";
 import { authHeader } from "./../../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../../helpers/config";
@@ -69,6 +70,7 @@ class Users extends Component {
       editreporteeDesign: 0,
 
       userEditData: {}
+     
 
 
     };
@@ -100,6 +102,7 @@ class Users extends Component {
     this.handleGetCRMRoleList();
    
   }
+ 
   togglePopover() {
     this.setState({ isOpen: !this.state.isOpen });
   }
@@ -517,6 +520,8 @@ class Users extends Component {
 
         NotificationManager.success("Record Saved successfully.");
 
+      }else{
+        NotificationManager.error("Record Not Saved .");
       }
       self.setState({
         selectUserName: "",
@@ -533,13 +538,13 @@ class Users extends Component {
   handleAddProfileDetails() {
     debugger;
     let self = this;
-
+     let id= this.state.getID;
     axios({
       method: "post",
       url: config.apiUrl + "/User/AddUserProfileDetail",
       headers: authHeader(),
       params: {
-        UserID: this.state.getID,
+        UserID:id,
         DesignationID: this.state.selectedDesignation,
         ReportTo: this.state.selectedReportTO
       }
@@ -557,7 +562,7 @@ class Users extends Component {
       }
       self.setState({
         selectedDesignation: 0,
-        selectedReportTO: 0
+        selectedReportTO: 0,getID:id
       });
       self.handleUserList();
     });
@@ -611,13 +616,16 @@ class Users extends Component {
     } else {
       activeStatus = 0;
     }
-
+    var brand=this.state.multibrandIDs.substring(0, this.state.multibrandIDs.length - 1);
+    var category=this.state.multicategoryIDs.substring(0, this.state.multicategoryIDs.length - 1);
+    var subcat=this.state.multisubcategoryIDs.substring(0, this.state.multisubcategoryIDs.length - 1);
+    var issue=finalIssueTypeId.substring(0, finalIssueTypeId.length - 1);
     var json = {
-      UserId: this.state.getID,
-      BrandIds: this.state.multibrandIDs,
-      categoryIds: this.state.multicategoryIDs,
-      subCategoryIds: this.state.multisubcategoryIDs,
-      IssuetypeIds: finalIssueTypeId,
+      UserId:this.state.getID,
+      BrandIds: brand,
+      categoryIds: category,
+      subCategoryIds: subcat,
+      IssuetypeIds:issue,
       RoleID: this.state.selectedCRMRoles,
       IsCopyEscalation: copyescn,
       IsAssignEscalation: assignescn,
@@ -640,12 +648,22 @@ class Users extends Component {
         NotificationManager.success("Record Saved successfully.");
 
       }
+      else{
+        NotificationManager.error("Record Not Saved .");
+      }
       self.setState({
-        selectUserName: "",
-        selectFirstName: "",
-        selectLastName: "",
-        selectMobile: "",
-        selectEmail: "",
+       selectedBrand:[],
+       selectedCategory:[],
+       selectedSubCategory:[],
+       selectedIssueType:[],
+       selectedCRMRoles:0,
+       selectedCopyEscalation:false,
+       selectedAssignEscalation:false,
+       selectedSupervisorAgent:"",
+       selectedAgent:0,
+       selectedStatus:"",
+
+
         getID: 0
       });
       self.handleUserList();
@@ -669,7 +687,9 @@ class Users extends Component {
         NotificationManager.success("Record Deleted successfully.");
         self.handleUserList();
       }
-
+      else{
+        NotificationManager.error("Record Not Deleted.");
+      }
     });
   }
 
@@ -900,7 +920,8 @@ class Users extends Component {
                     alt="del-icon"
                     className="del-btn"
                     id={ids}
-                    onClick={() => this.show(this, "samdel" + ids)}
+                    //onClick={() => this.show(this, "samdel" + ids)}
+                   
                   />
                 </Popover>
                 <Popover
@@ -1266,6 +1287,7 @@ class Users extends Component {
     return (
       <React.Fragment>
         <NotificationContainer />
+       
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="settings" className="header-path">Settings</Link>
           <span>&gt;</span>
@@ -1285,7 +1307,7 @@ class Users extends Component {
                     columns={columnsTickUser}
                     // resizable={false}
                     defaultPageSize={5}
-                    showPagination={false}
+                    showPagination={true}
                   />
 
 
@@ -1319,14 +1341,7 @@ class Users extends Component {
                         </li>
                       </ul>
                     </div>
-                    <div className="item-selection">
-                      <select>
-                        <option>30</option>
-                        <option>50</option>
-                        <option>100</option>
-                      </select>
-                      <p>Items per page</p>
-                    </div>
+                   
                   </div>
                 </div>
               </div>

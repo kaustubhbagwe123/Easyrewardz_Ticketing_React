@@ -4224,7 +4224,7 @@ class MyTicket extends Component {
                       className="row removemarg"
                       style={{ marginTop: "20px" }}
                     >
-                      <div className="col-12 col-xs-12 col-sm-5">
+                      <div className="col-12 col-xs-12 col-sm-4">
                         <textarea
                           className="Add-Notes-textarea"
                           placeholder="Add Notes"
@@ -4247,7 +4247,7 @@ class MyTicket extends Component {
                         </button>
                       </div>
 
-                      <div className="col-12 col-xs-12 col-sm-7 my-ticket-notes">
+                      <div className="col-12 col-xs-12 col-sm-8 my-ticket-notes">
                         {/* {this.state.loading === true ? (
                           <div className="loader-icon"></div>
                         ) : (
