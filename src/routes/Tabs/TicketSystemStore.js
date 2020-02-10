@@ -825,35 +825,35 @@ class TicketSystemStore extends Component {
                           },
                           {
                             Header: <span>Store Code</span>,
-                            accessor: "storeCode",
-                            Cell: row => (
-                              <div
-                                className="filter-checkbox"
-                                style={{ marginLeft: "15px" }}
-                              >
-                                <input
-                                  type="checkbox"
-                                  id={"selected" + row.original.storeID}
-                                  style={{ display: "none" }}
-                                  name="ticket-store"
-                                  checked={
-                                    this.state.CheckStoreID[
-                                      row.original.storeID
-                                    ] === true
-                                  }
-                                  onChange={this.handleCheckStoreID.bind(
-                                    this,
-                                    row.original.storeID,
-                                    row.original
-                                  )}
-                                />
-                                <label
-                                  htmlFor={"selected" + row.original.storeID}
-                                >
-                                  {row.original.storeID}
-                                </label>
-                              </div>
-                            )
+                            accessor: "storeCode"
+                            // Cell: row => (
+                            //   <div
+                            //     className="filter-checkbox"
+                            //     style={{ marginLeft: "15px" }}
+                            //   >
+                            //     <input
+                            //       type="checkbox"
+                            //       id={"selected" + row.original.storeID}
+                            //       style={{ display: "none" }}
+                            //       name="ticket-store"
+                            //       checked={
+                            //         this.state.CheckStoreID[
+                            //           row.original.storeID
+                            //         ] === true
+                            //       }
+                            //       onChange={this.handleCheckStoreID.bind(
+                            //         this,
+                            //         row.original.storeID,
+                            //         row.original
+                            //       )}
+                            //     />
+                            //     <label
+                            //       htmlFor={"selected" + row.original.storeID}
+                            //     >
+                            //       {row.original.storeID}
+                            //     </label>
+                            //   </div>
+                            // )
                           },
                           {
                             Header: <span>Store Name</span>,
@@ -882,11 +882,11 @@ class TicketSystemStore extends Component {
                         showPagination={false}
                       />
                     </div>
-                    <div className="storedetailtabsbutton">
+                    {/* <div className="storedetailtabsbutton">
                       <button type="button" className="addstoretabsbtn">
                         REMOVE STORE
                       </button>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>

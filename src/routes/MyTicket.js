@@ -15,7 +15,7 @@ import Down1Img from "./../assets/Images/down-1.png";
 import PlusImg from "./../assets/Images/plus.png";
 import MinusImg from "./../assets/Images/minus.png";
 import RightImg from "./../assets/Images/right.png";
-import DeleteImg from "./../assets/Images/del-black.png";
+// import DeleteImg from "./../assets/Images/del-black.png";
 import Up1Img from "./../assets/Images/up-1.png";
 import Loading1Img from "./../assets/Images/loading1.png";
 import FacebookImg from "./../assets/Images/facebook.png";
@@ -23,7 +23,7 @@ import ClipImg from "./../assets/Images/clip.png";
 import PencilImg from "./../assets/Images/pencil.png";
 import CancelImg from "./../assets/Images/cancel.png";
 import { Collapse, CardBody, Card } from "reactstrap";
-import { Drawer } from "antd";
+// import { Drawer } from "antd";
 import CustomerIcon from "./../assets/Images/customer-icon.png";
 import UserIcon from "./../assets/Images/UserIcon.png";
 import CrossIcon from "./../assets/Images/cancel.png";
@@ -150,7 +150,8 @@ class MyTicket extends Component {
       userBccCount: 0,
       mailFiled: {},
       orderNumber: "",
-      orderDetailsData: []
+      orderDetailsData: [],
+      validOrdernumber: ""
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -195,7 +196,7 @@ class MyTicket extends Component {
     }
   }
 
-    onAddCKEditorChange = evt => {
+  onAddCKEditorChange = evt => {
     debugger;
     var newContent = evt.editor.getData();
     this.setState({
@@ -312,9 +313,10 @@ class MyTicket extends Component {
       let status = res.data.message;
       if (status === "Success") {
         let data = res.data.responseData;
-
+        // let demo = res.data.responseData[1];
         self.setState({
-          messageDetails: data
+          messageDetails: data,
+          // messageDetails: demo
         });
       } else {
         self.setState({
@@ -463,22 +465,27 @@ class MyTicket extends Component {
   handleOrderSearchData() {
     debugger;
     let self = this;
-
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Order/getOrderListWithItemDetails",
-      headers: authHeader(),
-      params: {
-        OrderNumber: this.state.orderNumber,
-        CustomerID: this.state.custID
-      }
-    }).then(function(res) {
-      debugger;
-      let data = res.data.responseData;
-      self.setState({
-        orderDetailsData: data
+    if (this.state.orderNumber.length > 0) {
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Order/getOrderListWithItemDetails",
+        headers: authHeader(),
+        params: {
+          OrderNumber: this.state.orderNumber,
+          CustomerID: this.state.custID
+        }
+      }).then(function(res) {
+        debugger;
+        let data = res.data.responseData;
+        self.setState({
+          orderDetailsData: data
+        });
       });
-    });
+    } else {
+      self.setState({
+        validOrdernumber: "Please Enter Order Number"
+      });
+    }
   }
 
   handleNoteOnChange = e => {
@@ -764,12 +771,12 @@ class MyTicket extends Component {
   HandleComment1CollapseOpen() {
     this.setState(state => ({ Comment1Collapse: !state.Comment1Collapse }));
   }
-  handleCommentsDrawerOpen() {
-    this.setState({ CommentsDrawer: true });
-  }
-  handleCommentsDrawerClose() {
-    this.setState({ CommentsDrawer: false });
-  }
+  // handleCommentsDrawerOpen() {
+  //   this.setState({ CommentsDrawer: true });
+  // }
+  // handleCommentsDrawerClose() {
+  //   this.setState({ CommentsDrawer: false });
+  // }
   handleBillImgModalOpen() {
     this.handleGetOrderDetails();
     this.setState({ BillInvoiceModal: true });
@@ -1009,93 +1016,93 @@ class MyTicket extends Component {
     }));
   }
 
-  handleRemoveForm(i) {
-    let values = [...this.state.values];
-    values.splice(i, 1);
-    this.setState({ values });
-  }
-  CreateUIForm() {
-    return this.state.values.map((el, i) => (
-      <div key={i}>
-        <div className="comment-padding">
-          <label className="cmt-lbl" value={el || ""}>
-            Task {i + 1}
-          </label>
-          <img
-            src={DeleteImg}
-            alt="DeleteImg"
-            className="deleteImg"
-            onClick={this.handleRemoveForm.bind(this, i)}
-          />
-          <div className="frm-margin">
-            <input
-              type="text"
-              name="taskTitle"
-              className="cmdtxt-2"
-              placeholder="Task Title"
-              value={el.taskTitle || ""}
-              onChange={this.handleChange.bind(this, i)}
-            />
-          </div>
-          <div className="frm-margin1">
-            <textarea
-              rows="6"
-              className="cmt-textarea"
-              placeholder="Task Description"
-              value={el.taskDescription || ""}
-              name="taskDescription"
-              onChange={this.handleChange.bind(this, i)}
-            ></textarea>
-          </div>
-          <div className="row frm-margin1">
-            <div className="col-md-6">
-              <select
-                className="cmt-regtangleDDL select-CmtDDl"
-                name="department"
-                // value={el.department || ""}
-                defaultValue={el.department || ""}
-                onChange={this.handleChange.bind(this, i)}
-              >
-                <option>Select</option>
-                <option>Department</option>
-              </select>
-            </div>
-            <div className="col-md-6">
-              <select
-                className="cmt-regtangleDDL select-CmtDDl"
-                name="type"
-                defaultValue={el.type || ""}
-                onChange={this.handleChange.bind(this, i)}
-              >
-                <option>Select</option>
-                <option>Type</option>
-              </select>
-            </div>
-          </div>
-          <div className="row frm-margin1">
-            <div className="col-md-6">
-              <select
-                className="cmt-regtangleDDL select-CmtDDl"
-                name="assign"
-                defaultValue={el.assign || ""}
-                onChange={this.handleChange.bind(this, i)}
-              >
-                <option>Select</option>
-                <option>Assign to</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <hr />
-      </div>
-    ));
-  }
-  handleChange(i, e) {
-    const { name, value } = e.target;
-    let values = [...this.state.values];
-    values[i] = { ...values[i], [name]: value };
-    this.setState({ values });
-  }
+  // handleRemoveForm(i) {
+  //   let values = [...this.state.values];
+  //   values.splice(i, 1);
+  //   this.setState({ values });
+  // }
+  // CreateUIForm() {
+  //   return this.state.values.map((el, i) => (
+  //     <div key={i}>
+  //       <div className="comment-padding">
+  //         <label className="cmt-lbl" value={el || ""}>
+  //           Task {i + 1}
+  //         </label>
+  //         <img
+  //           src={DeleteImg}
+  //           alt="DeleteImg"
+  //           className="deleteImg"
+  //           onClick={this.handleRemoveForm.bind(this, i)}
+  //         />
+  //         <div className="frm-margin">
+  //           <input
+  //             type="text"
+  //             name="taskTitle"
+  //             className="cmdtxt-2"
+  //             placeholder="Task Title"
+  //             value={el.taskTitle || ""}
+  //             onChange={this.handleChange.bind(this, i)}
+  //           />
+  //         </div>
+  //         <div className="frm-margin1">
+  //           <textarea
+  //             rows="6"
+  //             className="cmt-textarea"
+  //             placeholder="Task Description"
+  //             value={el.taskDescription || ""}
+  //             name="taskDescription"
+  //             onChange={this.handleChange.bind(this, i)}
+  //           ></textarea>
+  //         </div>
+  //         <div className="row frm-margin1">
+  //           <div className="col-md-6">
+  //             <select
+  //               className="cmt-regtangleDDL select-CmtDDl"
+  //               name="department"
+  //               // value={el.department || ""}
+  //               defaultValue={el.department || ""}
+  //               onChange={this.handleChange.bind(this, i)}
+  //             >
+  //               <option>Select</option>
+  //               <option>Department</option>
+  //             </select>
+  //           </div>
+  //           <div className="col-md-6">
+  //             <select
+  //               className="cmt-regtangleDDL select-CmtDDl"
+  //               name="type"
+  //               defaultValue={el.type || ""}
+  //               onChange={this.handleChange.bind(this, i)}
+  //             >
+  //               <option>Select</option>
+  //               <option>Type</option>
+  //             </select>
+  //           </div>
+  //         </div>
+  //         <div className="row frm-margin1">
+  //           <div className="col-md-6">
+  //             <select
+  //               className="cmt-regtangleDDL select-CmtDDl"
+  //               name="assign"
+  //               defaultValue={el.assign || ""}
+  //               onChange={this.handleChange.bind(this, i)}
+  //             >
+  //               <option>Select</option>
+  //               <option>Assign to</option>
+  //             </select>
+  //           </div>
+  //         </div>
+  //       </div>
+  //       <hr />
+  //     </div>
+  //   ));
+  // }
+  // handleChange(i, e) {
+  //   const { name, value } = e.target;
+  //   let values = [...this.state.values];
+  //   values[i] = { ...values[i], [name]: value };
+  //   this.setState({ values });
+  // }
 
   setTicketActionTypeValue = e => {
     this.setState({ selectedTicketActionType: e });
@@ -2630,6 +2637,16 @@ class MyTicket extends Component {
                                     this
                                   )}
                                 />
+                                {this.state.orderNumber.length === 0 && (
+                                  <p
+                                    style={{
+                                      color: "red",
+                                      marginBottom: "0px"
+                                    }}
+                                  >
+                                    {this.state.validOrdernumber}
+                                  </p>
+                                )}
                               </div>
                             </div>
 
@@ -2667,19 +2684,18 @@ class MyTicket extends Component {
                                         </a>
                                       </li>
                                     ) : null}
-
                                   </ul>
-                                    <div className="col-md-6 m-b-10 m-t-10 text-right">
-                                      <button
-                                        type="button"
-                                        className="myticket-submit-solve-button m-0"
-                                        onClick={this.handleAttachProductData.bind(
-                                          this
-                                        )}
-                                      >
-                                        Attach Product
-                                      </button>
-                                    </div>
+                                  <div className="col-md-6 m-b-10 m-t-10 text-right">
+                                    <button
+                                      type="button"
+                                      className="myticket-submit-solve-button m-0"
+                                      onClick={this.handleAttachProductData.bind(
+                                        this
+                                      )}
+                                    >
+                                      Attach Product
+                                    </button>
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -3594,111 +3610,88 @@ class MyTicket extends Component {
                         <div className="v3"></div>
                       </div>
                       <div className="col-md-2">
-                        <label className="today-02">TODAY 02</label>
+                        <label className="today-02">Today 02</label>
+                        {/* <label className="today-02">
+                          {messageDetails.updatedDate} &nbsp;
+                          {messageDetails.messageCount < 9
+                            ? "0" + messageDetails.messageCount
+                            : messageDetails.messageCount}
+                        </label> */}
                       </div>
                       <div className="col-md-5">
                         <div className="v4"></div>
                       </div>
                     </div>
-                    <div className="row top-margin">
-                      <div className="col-12 col-xs-12 col-sm-4 col-md-3">
-                        <div className="row" style={{ marginTop: "0" }}>
-                          <div className="oval-5-1">
+                    {/* {this.state.messageDetails !== null &&
+                    this.state.messageDetails.messageDetails.map((item,i)=>{
+                      return()
+                    })} */}
+                    <div>
+                      <div className="row top-margin">
+                        <div className="col-12 col-xs-12 col-sm-4 col-md-3">
+                          <div className="row" style={{ marginTop: "0" }}>
+                            <div className="oval-5-1">
+                              <img
+                                src={RightImg}
+                                alt="right"
+                                className="right-icon"
+                              />
+                            </div>
+                            <label
+                              className="solved-by-naman-r"
+                              style={{ marginLeft: "7px" }}
+                            >
+                              Solved by NamanR
+                            </label>
                             <img
-                              src={RightImg}
+                              src={MsgImg}
                               alt="right"
-                              className="right-icon"
+                              className="smg-Img1"
                             />
                           </div>
-                          <label
-                            className="solved-by-naman-r"
-                            style={{ marginLeft: "7px" }}
-                          >
-                            Solved by NamanR
+                        </div>
+                        <div className="col-12 col-xs-12 col-sm-6 col-md-7">
+                          <label className="i-have-solved-this-i">
+                            I Have solved this issue
                           </label>
-                          <img src={MsgImg} alt="right" className="smg-Img1" />
+                        </div>
+                        <div className="col-12 col-xs-12 col-sm-2 col-md-2 mob-flex">
+                          {HidecollapsUp}
+                          <label className="comment">Comment</label>
                         </div>
                       </div>
-                      <div className="col-12 col-xs-12 col-sm-6 col-md-7">
-                        <label className="i-have-solved-this-i">
-                          I Have solved this issue
-                        </label>
-                      </div>
-                      <div className="col-12 col-xs-12 col-sm-2 col-md-2 mob-flex">
-                        {HidecollapsUp}
-                        <label
-                          className="comment"
-                          onClick={this.handleCommentsDrawerOpen.bind(this)}
-                        >
-                          Comment
-                        </label>
-                      </div>
-                      <Drawer
-                        placement="right"
-                        closable={false}
-                        onClose={this.handleCommentsDrawerClose.bind(this)}
-                        visible={this.state.CommentsDrawer}
-                        className="commentsDwarer"
-                      >
-                        <div className="drawer-header-1">
-                          <label className="lblHeader-drawer">Task</label>
-                          <button
-                            type="button"
-                            className="btn-addMoreTask"
-                            onClick={this.handleAddNewForm.bind(this)}
-                          >
-                            ADD MORE TASK
-                          </button>
-                        </div>
-                        <form onSubmit={this.handleSubmitForm.bind(this)}>
-                          {this.CreateUIForm()}
-                        </form>
-                      </Drawer>
-                    </div>
-                    <div className="row card-op-out">
-                      <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
-                      <div className="col-12 col-xs-12 col-sm-6 col-md-7">
-                        <Collapse isOpen={this.state.collapseUp}>
-                          <Card>
-                            <CardBody>
-                              <div className="card-details">
-                                <div className="card-details-1">
-                                  <label className="label-5">
-                                    Dear Matthew,
-                                  </label>
-                                  <label className="label-5">
-                                    We're always working to make Shopify exactly
-                                    what you need for your retails business.
-                                    Your feedback helps us decide which features
-                                    to build, and what improvements should be
-                                    made to our platform.
-                                    <br />
-                                    <br />
-                                    To help us make Shopify the best it can be,
-                                    we want your feedback today, take a few
-                                    minutes to fill out survays before
-                                    Tuesday,July 7th.
-                                  </label>
+                      <div className="row card-op-out">
+                        <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
+                        <div className="col-12 col-xs-12 col-sm-6 col-md-7">
+                          <Collapse isOpen={this.state.collapseUp}>
+                            <Card>
+                              <CardBody>
+                                <div className="card-details">
+                                  <div className="card-details-1">
+                                    <label className="label-5">
+                                      {messageDetails.ticketMailBody}
+                                    </label>
+                                  </div>
                                 </div>
-                              </div>
-                            </CardBody>
-                          </Card>
-                        </Collapse>
+                              </CardBody>
+                            </Card>
+                          </Collapse>
+                        </div>
+                        <div className="col-12 col-xs-12 col-sm-2"></div>
                       </div>
-                      <div className="col-12 col-xs-12 col-sm-2"></div>
-                    </div>
 
-                    <div className="row">
-                      <div className="col-md-5">
-                        <div className="v3"></div>
-                      </div>
-                      <div className="col-md-2">
-                        <label className="yesterday-02">
-                          {messageDetails.updatedAt}
-                        </label>
-                      </div>
-                      <div className="col-md-5">
-                        <div className="v6"></div>
+                      <div className="row">
+                        <div className="col-md-5">
+                          <div className="v3"></div>
+                        </div>
+                        <div className="col-md-2">
+                          <label className="yesterday-02">
+                            {messageDetails.updatedAt}
+                          </label>
+                        </div>
+                        <div className="col-md-5">
+                          <div className="v6"></div>
+                        </div>
                       </div>
                     </div>
 
@@ -3922,13 +3915,6 @@ class MyTicket extends Component {
                                   Subject: &nbsp;
                                 </span>
                                 <input type="text" className="CCdi" />
-                                {/* Subject: &nbsp;
-                                <span>
-                                  {messageDetails.length > 0 ? (
-                                    <>{messageDetails[0].ticketMailSubject}</>
-                                  ) : null}
-                                  {this.state.messageDetails.ticketMailSubject}
-                                </span> */}
                               </h3>
                               <div
                                 className="mob-float"
@@ -3954,18 +3940,6 @@ class MyTicket extends Component {
                             <div className="col-md-12">
                               <CKEditor
                                 data={this.state.messageDetails.ticketMailBody}
-                                // data={
-                                //   this.state.messageDetails.length > 0 ? (
-                                //     <div>
-                                //
-                                //       {
-                                //         this.state.messageDetails[0]
-                                //           .ticketMailBody
-                                //       }
-                                //
-                                //     </div>
-                                //   ) : null
-                                // }
                                 config={{
                                   toolbar: [
                                     {
@@ -4121,7 +4095,7 @@ class MyTicket extends Component {
                         </Card>
                       </Collapse>
                     </div>
-                    {this.state.messageDetails !== null &&
+                    {/* {this.state.messageDetails !== null &&
                       this.state.messageDetails.map((item, i) => {
                         return (
                           <div
@@ -4135,7 +4109,7 @@ class MyTicket extends Component {
                                 className="oval-56"
                               />
                               <label className="rashmi-c">
-                                {item.commentBy}
+                                  {item.commentBy}  
                               </label>
                               <img
                                 src={FacebookImg}
@@ -4166,7 +4140,7 @@ class MyTicket extends Component {
                             </div>
                           </div>
                         );
-                      })}
+                      })} */}
 
                     <div className="row row-spacing new-top-bottom-margin">
                       <div className="col-12 col-xs-12 col-sm-4 col-md-3">

@@ -825,6 +825,7 @@ class MyTicketList extends Component {
         selectedAssignedToAll: "",
         selectedSubCategoryAll: 0,
         selectedTicketStatusAll: 0,
+        selectedAssignedTo:0,
         selectedVisitStoreAll: "yes",
         selectedPurchaseStoreCodeAddressAll: "",
         selectedIssueTypeAll: 0,
@@ -1442,7 +1443,7 @@ class MyTicketList extends Component {
     var ShowDataparam = {};
 
     ShowDataparam.HeaderStatusId = this.state.headerActiveId;
-    ShowDataparam.ActiveTabI = this.state.ActiveTabId;
+    ShowDataparam.ActiveTabId = this.state.ActiveTabId;
     ShowDataparam.searchDataByDate = dateTab;
     ShowDataparam.searchDataByCustomerType = customerType;
     ShowDataparam.searchDataByTicketType = ticketType;
@@ -1822,7 +1823,7 @@ class MyTicketList extends Component {
 
   handelCheckBoxCheckedChange = async () => {
     debugger;
-    var checkboxes = document.getElementsByName("MyTicketListcheckbox[]");
+    var checkboxes = document.getElementsByName("ListCheckbox");
     var strIds = "";
     for (var i in checkboxes) {
       if (isNaN(i) === false) {
@@ -1841,7 +1842,7 @@ class MyTicketList extends Component {
     debugger;
     var strIds = "";
     const allCheckboxChecked = event.target.checked;
-    var checkboxes = document.getElementsByName("MyTicketListcheckbox[]");
+    var checkboxes = document.getElementsByName("ListCheckbox");
     if (allCheckboxChecked) {
       for (var i in checkboxes) {
         if (checkboxes[i].checked === false) {
@@ -3076,7 +3077,7 @@ class MyTicketList extends Component {
                                               this
                                             )}
                                           >
-                                            <option>Select Assigned To</option>
+                                            <option value={0}>Select Assigned To</option>
                                             {this.state.AssignToData !== null &&
                                               this.state.AssignToData.map(
                                                 (item, i) => (
@@ -3206,8 +3207,8 @@ class MyTicketList extends Component {
                                                     key={i}
                                                     value={item.SLAId}
                                                   >
-                                                    {item.SLAResponseTime} /
-                                                    {item.SLARequestTime}
+                                                    {item.slaRequestResponse} 
+                                                    {/* {item.SLARequestTime} */}
                                                   </option>
                                                 )
                                               )}
@@ -3546,9 +3547,9 @@ class MyTicketList extends Component {
                                     <div className="col-auto d-flex align-items-center">
                                       <p className="font-weight-bold mr-3">
                                         <span className="blue-clr">
-                                          {this.state.resultCount < 9
+                                          {this.state.resultCount < 10
                                             ? "0" + this.state.resultCount
-                                            : this.state.resultCount}
+                                            : this.state.resultCount}&nbsp;
                                         </span>
                                         Results
                                       </p>
@@ -4356,7 +4357,7 @@ class MyTicketList extends Component {
                                       <input
                                         type="checkbox"
                                         id="fil-aball"
-                                        name="MyTicketListcheckbox[]"
+                                        name="ListCheckbox"
                                         // checked={this.state.CheckBoxChecked}
                                         onChange={this.checkAllCheckbox.bind(
                                           this
@@ -4381,8 +4382,8 @@ class MyTicketList extends Component {
                                         <input
                                           type="checkbox"
                                           id={"i" + row.original.ticketID}
-                                          name="MyTicketListcheckbox[]"
-                                          // checked={this.state.CheckBoxChecked}
+                                          name="ListCheckbox"
+                                          // checked={row.original.ticketID}
                                           attrIds={row.original.ticketID}
                                           onChange={
                                             this.handelCheckBoxCheckedChange
