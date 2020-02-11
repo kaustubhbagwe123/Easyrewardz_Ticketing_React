@@ -67,8 +67,11 @@ class CreatePriority extends Component {
     this.setState({ loading: true });
     axios({
       method: "get",
-      url: config.apiUrl + "/Priority/GetPriorityList",
-      headers: authHeader()
+      url: config.apiUrl + "/Priority/PriorityList",
+      headers: authHeader(),
+      params: {
+        PriorityFor:1
+      }
     }).then(function(res) {
       debugger;
       let status = res.data.message;

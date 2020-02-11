@@ -7,7 +7,7 @@ import HeadPhone3 from "./../assets/Images/headphone3.png";
 import BlackLeftArrow from "./../assets/Images/black-left-arrow.png";
 import SearchBlackImg from "./../assets/Images/searchBlack.png";
 import Headphone2Img from "./../assets/Images/headphone2.png";
-import Demo from "../store/Hashtag.js";
+// import Demo from "../store/Hashtag.js";
 import Sorting from "./../assets/Images/sorting.png";
 import DelSearch from "./../assets/Images/del-search.png";
 import moment from "moment";
@@ -1130,13 +1130,12 @@ class MyTicketList extends Component {
       }
     }).then(function(res) {
       debugger;
+      var data = res.data.responseData;
       if (self.state.byCategoryFlag === 4) {
-        var data = res.data.responseData;
         self.setState({
           SubCategoryData: data
         });
       } else if (self.state.allFlag === 5) {
-        var data = res.data.responseData;
         self.setState({
           SubCategoryAllData: data
         });
@@ -2751,6 +2750,7 @@ class MyTicketList extends Component {
                                           className="no-bg"
                                           placeholder="Ticket ID"
                                           name="TicketIdByCustType"
+                                          maxLength={9}
                                           value={this.state.TicketIdByCustType}
                                           onChange={this.handelOnchangeData}
                                         />
