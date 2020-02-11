@@ -1177,8 +1177,13 @@ class Dashboard extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let DepartmentData = res.data.responseData;
-      self.setState({ DepartmentData: DepartmentData });
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        self.setState({ DepartmentData: data });
+      } else {
+        self.setState({ DepartmentData: [] });
+      }
     });
   }
   handleWithTaskAll = e => {
@@ -1282,8 +1287,8 @@ class Dashboard extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let TicketPriorityData = res.data.responseData;
-      self.setState({ TicketPriorityData: TicketPriorityData });
+      let data = res.data.responseData;
+      self.setState({ TicketPriorityData: data });
     });
   }
   handleTicketStatusAll = e => {
@@ -1755,9 +1760,6 @@ class Dashboard extends Component {
         NotificationManager.success("Tickets assigned successfully.");
         self.handleSearchTicketEscalation();
       }
-      // self.setState({
-      //   SlaStatusData: SlaStatusData
-      // });
     });
   }
   handleGetSlaStatusList() {
@@ -1770,10 +1772,17 @@ class Dashboard extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let SlaStatusData = res.data.responseData;
-      self.setState({
-        SlaStatusData: SlaStatusData
-      });
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        self.setState({
+          SlaStatusData: data
+        });
+      } else {
+        self.setState({
+          SlaStatusData: []
+        });
+      }
     });
   }
   handleGetTicketSourceList() {
@@ -2007,6 +2016,7 @@ class Dashboard extends Component {
           selectedCategoryAll: 0,
           selectedPriorityAll: 0,
           ItemIdByAll: "",
+          selectedAssignedTo: 0,
           selectedAssignedToAll: "",
           selectedSubCategoryAll: 0,
           selectedTicketStatusAll: 0,
@@ -2326,7 +2336,7 @@ class Dashboard extends Component {
     });
   }
   handleSearchTicketEscalation() {
-    debugger
+    debugger;
     this.setState({ loading: true });
     let self = this;
     axios({
@@ -2345,10 +2355,18 @@ class Dashboard extends Component {
       let data = res.data.responseData;
       let Status = res.data.message;
       let CSVData = data;
+      let count = 0;
+      if (res.data.responseData != null) {
+        count = res.data.responseData.length;
+      }
       if (Status === "Record Not Found") {
-        self.setState({ SearchTicketData: [], loading: false });
+        self.setState({ SearchTicketData: [], loading: false, resultCount: 0 });
       } else if (data !== null) {
-        self.setState({ SearchTicketData: data, loading: false });
+        self.setState({
+          SearchTicketData: data,
+          loading: false,
+          resultCount: count
+        });
         for (let i = 0; i < CSVData.length; i++) {
           delete CSVData[i].totalpages;
           delete CSVData[i].responseTimeRemainingBy;
@@ -4259,6 +4277,7 @@ class Dashboard extends Component {
                                     className="no-bg"
                                     type="text"
                                     placeholder="Mobile"
+                                    maxLength={10}
                                     value={this.state.MobileByAll}
                                     name="MobileByAll"
                                     onChange={this.handelOnchangeData}
@@ -4456,8 +4475,7 @@ class Dashboard extends Component {
                                       this.state.SlaStatusData.map(
                                         (item, i) => (
                                           <option key={i} value={item.SLAId}>
-                                            {item.SLAResponseTime} /
-                                            {item.SLARequestTime}
+                                            {item.slaRequestResponse}
                                           </option>
                                         )
                                       )}
@@ -5460,7 +5478,7 @@ class Dashboard extends Component {
                         accessor: "taskStatus",
                         width: 45,
                         Cell: row => {
-                          debugger;
+                          // debugger;
                           // if(row.original.claimStatus === "0/0"){
                           //   return (
                           //     <div>

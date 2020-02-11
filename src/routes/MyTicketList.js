@@ -3293,7 +3293,6 @@ class MyTicketList extends Component {
                                                   value={item.SLAId}
                                                 >
                                                   {item.slaRequestResponse}
-                                                  {/* {item.SLARequestTime} */}
                                                 </option>
                                               )
                                             )}
@@ -4526,10 +4525,7 @@ class MyTicketList extends Component {
                                 accessor: "taskStatus",
                                 width: 45,
                                 Cell: row => {
-                                  if (
-                                    row.original.taskStatus === "0/0" &&
-                                    row.original.taskStatus === null
-                                  ) {
+                                  if ( row.original.taskStatus === "0/0" ) {
                                     return (
                                       <div>
                                         <img
