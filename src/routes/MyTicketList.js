@@ -2077,8 +2077,14 @@ class MyTicketList extends Component {
       }
     }).then(function(res) {
       debugger;
+      let status=res.data.message;
       let data = res.data.responseData;
-      self.setState({ ClaimIssueTypeData: data });
+      if(status === "Success"){
+        self.setState({ SearchTicketData: data });
+        self.onCloseModal()
+      }else{
+        self.setState({ SearchTicketData: [] });
+      }
     });
   }
 

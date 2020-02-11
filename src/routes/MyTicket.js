@@ -1592,6 +1592,7 @@ class MyTicket extends Component {
                           return {
                             onClick: e => {
                               debugger;
+                              this.selectedRow = index;
                               var agentId =
                               rowInfo.data["user_ID"];
                               this.setState({ agentId });
