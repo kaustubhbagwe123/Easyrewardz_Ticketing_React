@@ -6,6 +6,7 @@ import HeadphoneImg from "./../assets/Images/headphone.png";
 import Headphone2Img from "./../assets/Images/headphone2.png";
 import BlackUserIcon from "./../assets/Images/avatar.png";
 import DownImg from "./../assets/Images/down.png";
+import moment from "moment";
 import SearchBlackImg from "./../assets/Images/searchBlack.png";
 import LoadingImg from "./../assets/Images/loading.png";
 import EyeImg from "./../assets/Images/eye.png";
@@ -1499,6 +1500,7 @@ class MyTicket extends Component {
                       closeIconId="sdsg"
                       modalId="Historical-popup"
                       overlayId="logout-ovrly"
+                      classNames={{'modal' : 'historical-popup'}}
                     >
                       <label className="lblHistorical">Ticket Historical</label>
                       <img
@@ -1514,7 +1516,8 @@ class MyTicket extends Component {
                           columns={[
                             {
                               Header: <span>Name</span>,
-                              accessor: "name"
+                              accessor: "name",
+                              width: 150
                             },
                             {
                               Header: <span>Action</span>,
@@ -1522,7 +1525,16 @@ class MyTicket extends Component {
                             },
                             {
                               Header: <span>Time & Date</span>,
-                              accessor: "dateandTime"
+                              accessor: "dateandTime",
+                              width: 200,
+                              Cell: row => {
+                                var date = row.original["dateandTime"];
+                                return (
+                                    <span>
+                                      {moment(date).format("M/D/YYYY")} &nbsp;{moment(date).format("HH:mm")}
+                                    </span>
+                                );
+                              }
                             }
                           ]}
                           resizable={false}
