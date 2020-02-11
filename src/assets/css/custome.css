@@ -3419,6 +3419,29 @@ table tr th:last-child {
 .my-ticket-notes::-webkit-scrollbar-thumb:hover {
   background: #a5a3a3;
 }
+.ReactTable.limit-react-table-body .rt-tbody {
+  max-height: 300px;
+}
+.ReactTable.limit-react-table-body .rt-thead {
+  margin-right: 4px;
+}
+.ReactTable.limit-react-table-body .rt-tbody::-webkit-scrollbar{
+  width: 4px;
+}
+.ReactTable.limit-react-table-body .rt-tbody::-webkit-scrollbar-track{
+  background: #ddd;
+  border-radius: 10px;
+}
+.ReactTable.limit-react-table-body .rt-tbody::-webkit-scrollbar-thumb{
+  background: #888;
+  border-radius: 10px;
+}
+.ReactTable.limit-react-table-body .rt-tbody::-webkit-scrollbar-thumb:hover{
+  background: #555;
+}
+.ReactTable.limit-react-table-body .rt-thead .rt-tr {
+  text-align: left;
+}
 /* my ticket ends */
 
 /* .cke_editable {
