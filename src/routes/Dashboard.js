@@ -2286,8 +2286,13 @@ class Dashboard extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let SearchListData = res.data.responseData;
-      self.setState({ SearchListData: SearchListData });
+      let status=res.data.message;
+      let data = res.data.responseData;
+      if(status === "Success"){
+        self.setState({ SearchListData: data });
+      }else{
+        self.setState({ SearchListData: [] });
+      }
     });
   }
   handleSearchTicketEscalation() {
@@ -5356,7 +5361,6 @@ class Dashboard extends Component {
                         ),
                         accessor: "ticketStatus",
                         Cell: row => {
-                          debugger
                           if (
                             row.original.ticketStatus === "Open"  
                           ) {
