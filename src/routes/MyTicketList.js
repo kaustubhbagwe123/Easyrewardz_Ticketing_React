@@ -496,11 +496,6 @@ class MyTicketList extends Component {
       url: config.apiUrl + "/Search/GetTicketsOnPageLoad",
       headers: authHeader(),
       params: {
-        // isByStatus: this.state.isByStatus,
-        // pageSize: this.state.advPageSize,
-        // pageNo: this.state.advPageNo,
-        // isEscalation: isEscalation,
-        // ticketStatus: ticketStatus
         HeaderStatusID: ticketStatus
       }
     }).then(function(res) {
@@ -508,20 +503,18 @@ class MyTicketList extends Component {
       let data = res.data.responseData;
       let CSVData = data;
       let Status = res.data.message;
-      if (Status === "Record Not Found") {
-        self.setState({ SearchTicketData: [], loading: false });
-      } else {
-        if (data !== null) {
-          self.setState({ SearchTicketData: data, loading: false });
-          for (let i = 0; i < CSVData.length; i++) {
-            delete CSVData[i].totalpages;
-            delete CSVData[i].responseTimeRemainingBy;
-            delete CSVData[i].responseOverdueBy;
-            delete CSVData[i].resolutionOverdueBy;
-            delete CSVData[i].ticketCommentCount;
-          }
-          self.setState({ CSVDownload: CSVData });
+      if(Status === "Success"){
+        self.setState({ SearchTicketData: data, loading: false });
+        for (let i = 0; i < CSVData.length; i++) {
+          delete CSVData[i].totalpages;
+          delete CSVData[i].responseTimeRemainingBy;
+          delete CSVData[i].responseOverdueBy;
+          delete CSVData[i].resolutionOverdueBy;
+          delete CSVData[i].ticketCommentCount;
         }
+        self.setState({ CSVDownload: CSVData });
+      }else{
+        self.setState({ SearchTicketData: [], loading: false });
       }
     });
   }
@@ -569,16 +562,7 @@ class MyTicketList extends Component {
       }
     });
   }
-
-  // handleTicketDetails = (rowInfo, column) => {
-  //   return {
-  //     onClick: e => {
-  //       debugger;
-  //       var agentId = column.original["user_ID"];
-  //       this.setState({ agentId });
-  //     }
-  //   };
-  // };
+ 
   handleAssignRemark(e) {
     debugger;
     this.setState({
@@ -592,43 +576,36 @@ class MyTicketList extends Component {
     });
   }
   handleWeekly(e) {
-    debugger;
     this.setState({
       selectedNoOfWeek: e.currentTarget.value
     });
   }
   handleDaysForMonth(e) {
-    debugger;
     this.setState({
       selectedNoOfDaysForMonth: e.currentTarget.value
     });
   }
   handleMonthForMonth(e) {
-    debugger;
     this.setState({
       selectedNoOfMonthForMonth: e.currentTarget.value
     });
   }
   handleWeekForWeek(e) {
-    debugger;
     this.setState({
       selectedNoOfWeekForWeek: e.currentTarget.value
     });
   }
   handleWeekForYear(e) {
-    debugger;
     this.setState({
       selectedNoOfWeekForYear: e.currentTarget.value
     });
   }
   handleDayForYear(e) {
-    debugger;
     this.setState({
       selectedNoOfDayForDailyYear: e.currentTarget.value
     });
   }
   handleMonthForWeek(e) {
-    debugger;
     this.setState({
       selectedNoOfMonthForWeek: e.currentTarget.value
     });
@@ -742,7 +719,6 @@ class MyTicketList extends Component {
   }
   handleAssignTickets() {
     debugger;
-
     let self = this;
     var ticketIdsComma = this.state.ticketIds;
     var ticketIds = ticketIdsComma.substring(0, ticketIdsComma.length - 1);
@@ -2096,8 +2072,12 @@ class MyTicketList extends Component {
       debugger;
       let status = res.data.message;
       let data = res.data.responseData;
+      let count = 0;
+      if (res.data.responseData != null) {
+        count = res.data.responseData.length;
+      }
       if (status === "Success") {
-        self.setState({ SearchTicketData: data });
+        self.setState({ SearchTicketData: data,resultCount: count  });
         self.onCloseModal();
       } else {
         self.setState({ SearchTicketData: [] });
@@ -4088,12 +4068,7 @@ class MyTicketList extends Component {
                                             </div>
                                           ) : null}
 
-                                          {/* <input
-                                              type="text"
-                                              className="txt-1 txt1Place txt1Time"
-                                              placeholder="11AM"
-                                              onChange={this.handleScheduleTime}
-                                            /> */}
+                                          
                                           <div className="dash-timepicker">
                                             <DatePicker
                                               selected={
@@ -4525,7 +4500,7 @@ class MyTicketList extends Component {
                                 accessor: "taskStatus",
                                 width: 45,
                                 Cell: row => {
-                                  if ( row.original.taskStatus === "0/0" ) {
+                                  if (row.original.taskStatus === "0/0") {
                                     return (
                                       <div>
                                         <img

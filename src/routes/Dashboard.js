@@ -2274,7 +2274,7 @@ class Dashboard extends Component {
     if (this.state.SearchName.length > 0) {
       axios({
         method: "post",
-        url: config.apiUrl + "/Ticketing/savesearch",
+        url: config.apiUrl + "/DashBoard/DashBoardSaveSearch",
         headers: authHeader(),
         params: {
           SearchSaveName: this.state.SearchName,
@@ -2322,7 +2322,7 @@ class Dashboard extends Component {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/Ticketing/listSavedSearch",
+      url: config.apiUrl + "/DashBoard/GetDashBoardSavedSearch",
       headers: authHeader()
     }).then(function(res) {
       debugger;
@@ -2404,10 +2404,9 @@ class Dashboard extends Component {
   hadleSearchDeleteData(searchDeletId) {
     debugger;
     let self = this;
-
     axios({
       method: "post",
-      url: config.apiUrl + "/Ticketing/deletesavedsearch",
+      url: config.apiUrl + "/DashBoard/DeleteDashBoardSavedSearch",
       headers: authHeader(),
       params: {
         SearchParamID: searchDeletId
@@ -2445,15 +2444,25 @@ class Dashboard extends Component {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/Search/GetTicketsOnSavedSearch",
+      url: config.apiUrl + "/DashBoard/GetDashBoardTicketsOnSavedSearch",
       headers: authHeader(),
       params: {
         SearchParamID: paramsID
       }
     }).then(function(res) {
       debugger;
+      let status = res.data.message;
       let data = res.data.responseData;
-      self.setState({ ClaimIssueTypeData: data });
+       let count = 0;
+      if (res.data.responseData != null) {
+        count = res.data.responseData.length;
+      }
+      if (status === "Success") {
+        self.setState({ SearchTicketData: data,resultCount: count });
+        self.onCloseModal();
+      } else {
+        self.setState({ SearchTicketData: [] });
+      }
     });
   }
 
