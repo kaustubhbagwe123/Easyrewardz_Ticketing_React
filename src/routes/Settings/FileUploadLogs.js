@@ -43,68 +43,6 @@ class FileUploadLogs extends Component {
   }
 
   render() {
-    const dataTickFileUpload = [
-      {
-        id: "FU1",
-        Type: (
-          <span>User</span>
-        ),
-        fileName: (
-          <span>User.xls</span>
-        ),
-        status: (
-          <span>Inprogress</span>
-        ),
-      },
-      {
-        id: "FU2",
-        Type: (
-          <span>SLA</span>
-        ),
-        fileName: (
-          <span>SLA.xls</span>
-        ),
-        status: (
-          <span>Completed</span>
-        ),
-      },
-      {
-        id: "FU3",
-        Type: (
-          <span>Category</span>
-        ),
-        fileName: (
-          <span>Category.xls</span>
-        ),
-        status: (
-          <span>Completed</span>
-        ),
-      },
-      {
-        id: "FU4",
-        Type: (
-          <span>Store</span>
-        ),
-        fileName: (
-          <span>Store.xls</span>
-        ),
-        status: (
-          <span>Completed</span>
-        ),
-      },
-      {
-        id: "FU5",
-        Type: (
-          <span>ItemMaster</span>
-        ),
-        fileName: (
-          <span>Item Master.xls</span>
-        ),
-        status: (
-          <span>Completed</span>
-        ),
-      }
-    ];
 
     const columnsTickFileUpload = [
       {
@@ -205,23 +143,6 @@ class FileUploadLogs extends Component {
         ),
       },
     ];
-
-    const popoverData = (
-      <>
-        <div>
-          <b>
-            <p className="title">Created By: Admin</p>
-          </b>
-          <p className="sub-title">Created Date: 12 March 2018</p>
-        </div>
-        <div>
-          <b>
-            <p className="title">Updated By: Manager</p>
-          </b>
-          <p className="sub-title">Updated Date: 12 March 2018</p>
-        </div>
-      </>
-    );
    
 
     return (
