@@ -125,7 +125,10 @@ class CreateSLA extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/SLA/GetSLA",
-      headers: authHeader()
+      headers: authHeader(),
+      params: {
+        SLAFor: 1
+      }
     }).then(function(res) {
       debugger;
       let status = res.data.message;
