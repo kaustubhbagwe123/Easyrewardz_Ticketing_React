@@ -258,7 +258,7 @@ class MyTicketList extends Component {
       FollowUp: "",
       Draft: ""
     };
-    this.handleAssignTo = this.handleAssignTo.bind(this);
+    this.handleGetAssignTo = this.handleGetAssignTo.bind(this);
     this.clearSearch = this.clearSearch.bind(this);
     this.handleAdvSearchFlag = this.handleAdvSearchFlag.bind(this);
     this.toggleSearch = this.toggleSearch.bind(this);
@@ -319,6 +319,7 @@ class MyTicketList extends Component {
     this.handleGetTicketSourceList();
     this.handleGetCategoryList();
     this.handleGetSlaStatusList();
+    this.handleGetAssignTo();
     this.handleGetDraftDetails();
     this.handleGetDepartmentList();
     this.handleGetSaveSearchList();
@@ -1873,9 +1874,8 @@ class MyTicketList extends Component {
     this.StatusCloseModel();
   }
 
-  handleAssignTo() {
+  handleGetAssignTo() {
     debugger;
-
     let self = this;
     axios({
       method: "post",
@@ -3159,9 +3159,6 @@ class MyTicketList extends Component {
                                           className="add-select-category"
                                           value={this.state.selectedAssignedTo}
                                           onChange={this.setAssignedToValue}
-                                          onClick={this.handleAssignTo.bind(
-                                            this
-                                          )}
                                         >
                                           <option value={0}>
                                             Select Assigned To
