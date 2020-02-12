@@ -5501,6 +5501,12 @@ class Dashboard extends Component {
                                           <p className="m-b-0">
                                             CLAIM:{row.original.claimStatus}
                                           </p>
+                                          <div className="d-flex align-items-center">
+                                            2 NEW
+                                            <div className="nw-chat">
+                                              <img src={Chat} alt="chat" />
+                                            </div>
+                                          </div>
                                         </div>
                                         <ProgressBar
                                           className="task-progress"
@@ -5511,7 +5517,7 @@ class Dashboard extends Component {
                                     placement="bottom"
                                   >
                                     <img
-                                      className="task-icon-1 marginimg"
+                                      className="task-icon-1 marginimg claim-icon-1"
                                       src={CliamIconBlue}
                                       alt="task-icon-blue"
                                     />
@@ -5522,7 +5528,7 @@ class Dashboard extends Component {
                             return (
                               <div>
                                 <img
-                                  className="task-icon-1 marginimg"
+                                  className="task-icon-1 marginimg claim-icon-1"
                                   src={CliamIconGray}
                                   alt="task-icon-gray"
                                 />

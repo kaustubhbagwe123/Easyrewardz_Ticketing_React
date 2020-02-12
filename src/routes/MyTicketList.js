@@ -3,6 +3,8 @@ import SearchIcon from "./../assets/Images/search-icon.png";
 import InfoIcon from "./../assets/Images/info-icon.png";
 import TaskIconBlue from "./../assets/Images/task-icon-blue.png";
 import TaskIconGray from "./../assets/Images/task-icon-gray.png";
+import CliamIconBlue from "./../assets/Images/cliam-icon-blue.png";
+import CliamIconGray from "./../assets/Images/claim-icon-gray.png";
 import HeadPhone3 from "./../assets/Images/headphone3.png";
 import BlackLeftArrow from "./../assets/Images/black-left-arrow.png";
 import SearchBlackImg from "./../assets/Images/searchBlack.png";
@@ -4506,6 +4508,57 @@ class MyTicketList extends Component {
                                           {row.original.ticketStatus}
                                         </label>
                                       </span>
+                                    );
+                                  }
+                                }
+                              },
+                              {
+                                Header: <span></span>,
+                                accessor: "taskStatus",
+                                width: 45,
+                                Cell: row => {
+                                    if (row.original.claimStatus !== "0/0") {
+                                      return (
+                                        <div>
+                                          <Popover
+                                            content={
+                                              <div className="dash-task-popup-new">
+                                                <div className="d-flex justify-content-between align-items-center">
+                                                  <p className="m-b-0">
+                                                    CLAIM:{row.original.claimStatus}
+                                                  </p>
+                                                  <div className="d-flex align-items-center">
+                                                    2 NEW
+                                                    <div className="nw-chat">
+                                                      <img src={Chat} alt="chat" />
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                                <ProgressBar
+                                                  className="task-progress"
+                                                  now={70}
+                                                />
+                                              </div>
+                                            }
+                                            placement="bottom"
+                                          >
+                                            <img
+                                              className="task-icon-1 marginimg claim-icon-1"
+                                              src={CliamIconBlue}
+                                              alt="task-icon-blue"
+                                            />
+                                          </Popover>
+                                        </div>
+                                      );
+                                    } else {
+                                    return (
+                                      <div>
+                                        <img
+                                          className="task-icon-1 marginimg claim-icon-1"
+                                          src={CliamIconGray}
+                                          alt="task-icon-gray"
+                                        />
+                                      </div>
                                     );
                                   }
                                 }
