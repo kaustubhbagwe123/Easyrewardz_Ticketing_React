@@ -56,7 +56,8 @@ class CreateSLA extends Component {
       PriorityData: [],
       FinalDataOfSlaTarget: [],
       finalData: [],
-      indiSla: ''
+      indiSla: '',
+      searchSla: ''
     };
 
     this.handleGetSLA = this.handleGetSLA.bind(this);
@@ -378,6 +379,32 @@ class CreateSLA extends Component {
   handleAddNoteCheck = e => {
     e.preventDefault();
     e.stopPropagation();
+  };
+  handleSearchSla = e => {
+    debugger;
+    this.setState({
+      searchSla: e.target.value
+    });
+    let self = this;
+    if (e.target.value.length > 3) {
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Search/SearchTicket",
+        headers: authHeader(),
+        params: {
+          SearchText: this.state.searchSla
+        }
+      }).then(function(res) {
+        debugger;
+        // let status = res.data.message;
+        // if (status === "Success") {
+        //   NotificationManager.success("SLA deleted successfully.");
+        //   self.handleGetSLA();
+        // } else {
+        //   NotificationManager.error("SLA not deleted.");
+        // }
+      });
+    }
   };
 
   render() {
@@ -817,6 +844,7 @@ class CreateSLA extends Component {
                                 placeholder="Search"
                                 maxLength={10}
                                 name="store_code"
+                                onChange={this.handleSearchSla}
                               />
                               <div className="filter-checkbox category-scroll">
                                 <ul>
