@@ -4737,6 +4737,12 @@ class MyTicketList extends Component {
                           showPagination={true}
                           getTrProps={this.HandleRowClickPage}
                           minRows={2}
+                          defaultSorted={[
+                            {
+                              id: "ticketID",
+                              desc: true
+                            }
+                          ]}
                         />
                         {/* <div className="position-relative">
                         <div className="pagi">

@@ -24,6 +24,7 @@ import {
 } from "react-notifications";
 import Select from "react-select";
 import { CSVLink, CSVDownload } from "react-csv";
+import { string } from "prop-types";
 
 class Users extends Component {
   constructor(props) {
@@ -52,8 +53,11 @@ class Users extends Component {
       selectedCategory: [],
       selectedSubCategory: [],
       selectedIssueType: [],
-      GetUserData:[],
+      GetUserData: [],
       editBrand: [],
+      editCategory: [],
+      editSubCategory: [],
+      editIssuetype: [],
       EditBrandData: [],
       selectedDesignation: 0,
       selectedCopyEscalation: false,
@@ -69,8 +73,14 @@ class Users extends Component {
       multisubcategoryIDs: "",
       editreporteeDesign: 0,
 
-      userEditData: {}
-     
+      userEditData: {},
+      editmodel: false,
+      selectedAgentRadio: false,
+      selectedSupervisorRadio: false,
+      editAgentRadio: true,
+      editSupervisorRadio: false,
+      forEditID: 0,
+      test: ""
 
 
     };
@@ -89,9 +99,9 @@ class Users extends Component {
     this.handleGetAgentList = this.handleGetAgentList.bind(this);
     this.handleAddMapCategory = this.handleAddMapCategory.bind(this);
     this.handleDeleteUser = this.handleDeleteUser.bind(this);
-    this.handleUpdateUser = this.handleUpdateUser.bind(this);
-    this.handleGetUserListByID=this.handleGetUserListByID.bind(this);
+    this.handleGetUserListByID = this.handleGetUserListByID.bind(this);
     this.togglePopover = this.togglePopover.bind(this);
+    this.closeEditModal = this.closeEditModal.bind(this);
   }
   componentDidMount() {
     debugger;
@@ -100,9 +110,18 @@ class Users extends Component {
 
     this.handleGetDesignationList();
     this.handleGetCRMRoleList();
-   
+    this.handleGetReportTOList();
+
   }
- 
+
+  opneEditModal=()=> {
+    this.setState({ editmodel: true });
+
+  }
+  closeEditModal() {
+    this.setState({ editmodel: false });
+  }
+
   togglePopover() {
     this.setState({ isOpen: !this.state.isOpen });
   }
@@ -118,50 +137,140 @@ class Users extends Component {
       // document.getElementById(id).style.display="block";
       document.getElementById(id).parentElement.parentElement.parentElement.parentElement.parentElement.style.display = "block";
   }
-  setUserEditData(editdata) {
-   
+  setUserEditData = (e) => {
+
     debugger;
-    var userEditData = editdata;
-    userEditData.user_Id = editdata.userId;
-    userEditData.user_Name = editdata.userName;
-    userEditData.first_Name = editdata.firstName;
-    userEditData.last_Name = editdata.lastName;
-    userEditData.mobile_Number = editdata.mobileNumber;
-    userEditData.email_ID = editdata.emailID;
-    userEditData.designation_ID = editdata.designationID;
-    userEditData.reportee_ID = editdata.reporteeID;
-    userEditData.brand_IDs = editdata.brandIDs;
-    userEditData.category_IDs = editdata.categoryIDs;
-    userEditData.subCategory_IDs = editdata.subCategoryIDs;
-    userEditData.issueType_IDs = editdata.issueTypeIDs;
-    userEditData.is_Copy_Escalation = editdata.is_CopyEscalation;
-    userEditData.is_Assign_Escalation = editdata.is_AssignEscalation;
-    userEditData.role_ID = editdata.roleID;
-    userEditData.assign_ID = editdata.assignID;
-    userEditData.is_Active = editdata.isActive;
+    let self =this
+    var brand = [];
+    var cat = [];
+    var subcat = [];
+    var issue = [];
+    var userEditData = e;
+    userEditData.user_Id = userEditData.userId;
+    // userEditData.user_Name = userEditData.userName;
+    userEditData.selectUserName = userEditData.userName;
+    userEditData.first_Name = userEditData.firstName;
+    userEditData.last_Name = userEditData.lastName;
+    userEditData.mobile_Number = userEditData.mobileNumber;
+    userEditData.email_ID = userEditData.emailID;
+    userEditData.designation_ID = userEditData.designationID;
+    userEditData.reportee_ID = userEditData.reporteeID;
+    userEditData.brand_IDs = userEditData.brandIDs;
+    userEditData.brand_Names = userEditData.brandNames;
+    userEditData.category_IDs = userEditData.categoryIDs;
+    userEditData.category_Names = userEditData.categoryNames;
+    userEditData.subCategory_IDs = userEditData.subCategoryIDs;
+    userEditData.subCategory_Names = userEditData.subCategoryNames;
+    userEditData.issueType_IDs = userEditData.issueTypeIDs;
+    userEditData.issueType_Names = userEditData.issueTypeNames;
+    userEditData.is_Copy_Escalation = userEditData.is_CopyEscalation;
+    userEditData.is_Assign_Escalation = userEditData.is_AssignEscalation;
+    userEditData.role_ID = userEditData.roleID;
+    userEditData.assign_ID = userEditData.assignID;
+    userEditData.assign_Escalation = userEditData.assignEscalation;
+    userEditData.assign_Name = userEditData.assignName;
 
+    if (userEditData.isActive === true) {
+      userEditData.is_Active = "true";
+    } else {
+      userEditData.is_Active = "false";
+    }
+    if (userEditData.assign_Escalation === "Agent") {
+      var agent = true;
+    }
+    else if (userEditData.assign_Escalation === "Supervisor") {
+      var supervi = true;
+    }
+    var bname = userEditData.brand_Names.split(',');
+    var bid = userEditData.brand_IDs.split(',').map(Number);
 
-    this.setState({
-      userEditData
+    var catname = userEditData.category_Names.split(',');
+    var catid = userEditData.category_IDs.split(',').map(Number);
+
+    var subcatname = userEditData.subCategory_Names.split(',');
+    var subcatid = userEditData.subCategory_IDs.split(',').map(Number);
+
+    var issuename = userEditData.issueType_Names.split(',');
+    var issueid = userEditData.issueType_IDs.split(',').map(Number);
+
+    for (let i = 0; i < bid.length; i++) {
+      brand.push({ brandID: bid[i], brandName: bname[i] });
+    }
+
+    for (let i = 0; i < catid.length; i++) {
+      cat.push({ categoryID: catid[i], categoryName: catname[i] });
+    }
+
+    for (let i = 0; i < subcatid.length; i++) {
+      subcat.push({ subCategoryID: subcatid[i], subCategoryName: subcatname[i] });
+    }
+    for (let i = 0; i < issueid.length; i++) {
+      issue.push({ issueTypeID: issueid[i], issueTypeName: issuename[i] });
+    }
+    debugger
+  
+    self.setState({
+      userEditData, editBrand: brand, editCategory: cat, editSubCategory: subcat, editIssuetype: issue, editAgentRadio: agent,
+      editSupervisorRadio: supervi
     })
+
+    self.opneEditModal();
 
   }
 
-  handleSuperAgentValue = e => {
+  handleAgentValue = e => {
     debugger;
-    let subjectvalue = e.currentTarget.value;
-    this.setState({ selectedSupervisorAgent: subjectvalue });
+    let subjectvalue = e.currentTarget.checked;
+    this.setState({ selectedAgentRadio: subjectvalue });
     setTimeout(() => {
-      if (this.state.selectedSupervisorAgent === "agent") {
+      if (this.state.selectedAgentRadio === true) {
         this.handleGetAgentList();
       }
     }, 1);
   };
+
+  handleSuperValue = e => {
+    debugger;
+    let subjectvalue = e.currentTarget.checked;
+    this.setState({ selectedSupervisorRadio: subjectvalue });
+
+  };
+
+  editAgentValue = e => {
+    debugger;
+    let subjectvalue = e.currentTarget.checked;
+    this.setState({ editAgentRadio: subjectvalue });
+    setTimeout(() => {
+      if (this.state.editAgentRadio === true) {
+        this.handleGetAgentList();
+      }
+    }, 1);
+  };
+
+  editSuperValue = e => {
+    debugger;
+    let subjectvalue = e.currentTarget.checked;
+    this.setState({ editSupervisorRadio: subjectvalue });
+
+  };
+
   setEscn = e => {
     debugger;
 
     this.setState({ [e.target.name]: e.currentTarget.checked });
 
+  };
+
+  
+  editsetEscn = e => {
+    debugger;
+    var name = e.target.name;
+    var value = e.target.checked;
+    var data = e.currentTarget.checked;
+    var data = this.state.userEditData;
+    data[name] = value;
+    this.setState({ EditTemp: data});
+    
   };
 
 
@@ -177,18 +286,8 @@ class Users extends Component {
     this.setState({
       EditTemp: data
     });
-    setTimeout(() => {
-      if (this.state.userEditData.designation_ID) {
-        this.state.editreporteeDesign=this.state.userEditData.designation_ID;
-        this.handleGetReporteedesignationList();
-
-      }
-    }, 1);
-    setTimeout(() => {
-      if (this.state.editreporteeDesign) {
-        this.handleGetReportTOList();
-      }
-    }, 1);
+   
+    
   };
 
   handleOnChangeUserData = e => {
@@ -199,56 +298,110 @@ class Users extends Component {
       [e.target.name]: e.target.value,
 
     });
-    setTimeout(() => {
-      if (this.state.selectedDesignation) {
-        this.handleGetReporteedesignationList();
-
-      }
-    }, 1);
+   
     setTimeout(() => {
       if (this.state.selectedReporteeDesign) {
         this.handleGetReportTOList();
       }
     }, 1);
+    setTimeout(() => {
+      if (this.state.editreporteeDesign) {
+        this.handleGetReportTOList();
+      }
+    }, 1);
   };
-  handleBrandChange = e => {
+handleDesination =(data,e)  =>{
+  debugger;
+
+
+  this.setState({
+    [e.target.name]: e.target.value,
+
+  });
+  setTimeout(() => {
+    if (this.state.selectedDesignation) {
+      this.handleGetReporteedesignationList(data);
+
+    }
+  }, 1);
+};
+handleEditDesination =(data,e)  =>{
+  debugger;
+  var name = e.target.name;
+  var value = e.target.value;
+
+  var data = this.state.userEditData;
+  data[name] = value;
+
+  this.setState({
+    EditTemp: data
+  });
+  setTimeout(() => {
+    if (this.state.userEditData.designation_ID) {
+      this.handleGetReporteedesignationList(data);
+
+    }
+  }, 1);
+};
+
+  handleBrandChange = (data, e) => {
     debugger;
 
     this.setState({ selectedBrand: e });
     setTimeout(() => {
       if (this.state.selectedBrand) {
-        this.handleGetCategoryList();
+        this.handleGetCategoryList(data);
       }
     }, 1);
   };
-  handleEditBrandChange (e) {
-    debugger
-   
-    this.setState({ selectedBrand: e });
-    // setTimeout(() => {
-    //   if (this.state.editBrand) {
-    //     this.handleGetCategoryList();
-    //   }
-    // }, 1);
+  handleEditBrandChange = (data, e) => {
+    debugger;
+
+    this.setState({ editBrand: e });
+    setTimeout(() => {
+      if (this.state.editBrand) {
+        this.handleGetCategoryList(data);
+      }
+    }, 1);
 
   };
-  handleCategoryChange = e => {
+  handleCategoryChange = (data, e) => {
     debugger;
 
     this.setState({ selectedCategory: e });
     setTimeout(() => {
       if (this.state.selectedCategory) {
-        this.handleGetSubCategoryList();
+        this.handleGetSubCategoryList(data);
       }
     }, 1);
   };
-  handleSubCategoryChange = e => {
+  handleEditCategoryChange = (data, e) => {
+    debugger;
+
+    this.setState({ editCategory: e });
+    setTimeout(() => {
+      if (this.state.editCategory) {
+        this.handleGetSubCategoryList(data);
+      }
+    }, 1);
+  };
+  handleSubCategoryChange = (data, e) => {
     debugger;
 
     this.setState({ selectedSubCategory: e });
     setTimeout(() => {
       if (this.state.selectedSubCategory) {
-        this.handleGetIssueTypeList();
+        this.handleGetIssueTypeList(data);
+      }
+    }, 1);
+  };
+  handleEditSubCategoryChange = (data, e) => {
+    debugger;
+
+    this.setState({ editSubCategory: e });
+    setTimeout(() => {
+      if (this.state.editSubCategory) {
+        this.handleGetIssueTypeList(data);
       }
     }, 1);
   };
@@ -256,6 +409,11 @@ class Users extends Component {
     debugger;
 
     this.setState({ selectedIssueType: e });
+  };
+  handleEditIssueTypeChange = e => {
+    debugger;
+
+    this.setState({ editIssuetype: e });
   };
   handleGetCRMRoleList() {
     debugger;
@@ -293,12 +451,17 @@ class Users extends Component {
       });
     });
   }
-  handleGetReporteedesignationList() {
+  handleGetReporteedesignationList(data) {
     debugger;
 
     let self = this;
-
-    let id = this.state.selectedDesignation;
+    let id;
+     if(data==="add"){
+       id = this.state.selectedDesignation;
+     }else if(data==="edit"){
+     id = this.state.userEditData.designation_ID;
+     }
+    
     axios({
       method: "post",
       url: config.apiUrl + "/Designation/GetReporteeDesignation",
@@ -354,17 +517,30 @@ class Users extends Component {
       }
     });
   }
-  handleGetCategoryList() {
+  handleGetCategoryList(data) {
     debugger;
 
     let self = this;
     var finalBrandId = "";
 
-    if (this.state.selectedBrand !== null) {
-      for (let i = 0; i < this.state.selectedBrand.length; i++) {
-        finalBrandId += this.state.selectedBrand[i].brandID + ",";
+    if (data === "add") {
+
+      if (this.state.selectedBrand !== null) {
+        for (let i = 0; i < this.state.selectedBrand.length; i++) {
+          finalBrandId += this.state.selectedBrand[i].brandID + ",";
+        }
+      }
+
+    } else if (data === "edit") {
+
+      if (this.state.editBrand !== null) {
+        for (let i = 0; i < this.state.editBrand.length; i++) {
+          finalBrandId += this.state.editBrand[i].brandID + ",";
+        }
       }
     }
+
+
     axios({
       method: "post",
       url: config.apiUrl + "/Category/GetCategoryListByMultiBrandID",
@@ -382,16 +558,26 @@ class Users extends Component {
       });
     });
   }
-  handleGetSubCategoryList() {
+  handleGetSubCategoryList(data) {
     debugger;
     let self = this;
     var finalCategoryId = "";
 
-    if (this.state.selectedCategory !== null) {
-      for (let i = 0; i < this.state.selectedCategory.length; i++) {
-        finalCategoryId += this.state.selectedCategory[i].categoryID + ",";
+    if (data === "add") {
+      if (this.state.selectedCategory !== null) {
+        for (let i = 0; i < this.state.selectedCategory.length; i++) {
+          finalCategoryId += this.state.selectedCategory[i].categoryID + ",";
+        }
+      }
+    } else if (data === "edit") {
+      if (this.state.editCategory !== null) {
+        for (let i = 0; i < this.state.editCategory.length; i++) {
+          finalCategoryId += this.state.editCategory[i].categoryID + ",";
+        }
       }
     }
+
+
 
     axios({
       method: "post",
@@ -409,16 +595,26 @@ class Users extends Component {
       });
     });
   }
-  handleGetIssueTypeList() {
+  handleGetIssueTypeList(data) {
     debugger;
     let self = this;
     var finalSubCategoryId = "";
 
-    if (this.state.selectedSubCategory !== null) {
-      for (let i = 0; i < this.state.selectedSubCategory.length; i++) {
-        finalSubCategoryId += this.state.selectedSubCategory[i].subCategoryID + ",";
+    if (data === "add") {
+      if (this.state.selectedSubCategory !== null) {
+        for (let i = 0; i < this.state.selectedSubCategory.length; i++) {
+          finalSubCategoryId += this.state.selectedSubCategory[i].subCategoryID + ",";
+        }
+      }
+    } else if (data === "edit") {
+      if (this.state.editSubCategory !== null) {
+        for (let i = 0; i < this.state.editSubCategory.length; i++) {
+          finalSubCategoryId += this.state.editSubCategory[i].subCategoryID + ",";
+        }
       }
     }
+
+
     axios({
       method: "post",
       url: config.apiUrl + "/IssueType/GetIssueTypeListByMultiSubCategoryID",
@@ -446,8 +642,16 @@ class Users extends Component {
 
     }).then(function (res) {
       debugger;
-      let agentdata = res.data.responseData;
-      self.setState({ AgentData: agentdata });
+      var array = [];
+      var agentdata = res.data.responseData;
+      var value = self.state.selectedAgentRadio;
+      if (value === true) {
+        array = agentdata.filter(a => a.designation === "Agent");
+      } else {
+        array = agentdata.filter(a => a.designation === "Supervisor");
+      }
+
+      self.setState({ AgentData: array });
     });
   }
   handleUserList() {
@@ -460,39 +664,48 @@ class Users extends Component {
     }).then(function (res) {
       debugger;
       var userdata = res.data.responseData;
-
-      self.setState({
-        userData: userdata
-      });
+      var status = res.data.message;
+      if(status === "Success"){
+        self.setState({
+          userData:userdata
+        });
+        
+      }else{
+        self.setState({
+          userData:[]
+        });
+        
+      }
+      
     });
   }
 
   handleGetUserListByID(id) {
     debugger;
-    
+
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/User/GetUserDetailsById",
       headers: authHeader(),
-      params:{
-        UserID:id
+      params: {
+        UserID: id
       }
     }).then(function (res) {
       debugger;
-      var status=res.data.message;
+      var status = res.data.message;
       var userdata = res.data.responseData;
-      if(status==="Success"){
+      if (status === "Success") {
         self.setState({
           GetUserData: userdata
         });
-        self.setUserEditData(userdata);
-      }else{
+        self.setUserEditData(userdata, id);
+      } else {
         self.setState({
           GetUserData: []
         });
       }
-     
+
     });
   }
 
@@ -520,7 +733,7 @@ class Users extends Component {
 
         NotificationManager.success("Record Saved successfully.");
 
-      }else{
+      } else {
         NotificationManager.error("Record Not Saved .");
       }
       self.setState({
@@ -538,13 +751,13 @@ class Users extends Component {
   handleAddProfileDetails() {
     debugger;
     let self = this;
-     let id= this.state.getID;
+    let id = this.state.getID;
     axios({
       method: "post",
       url: config.apiUrl + "/User/AddUserProfileDetail",
       headers: authHeader(),
       params: {
-        UserID:id,
+        UserID: id,
         DesignationID: this.state.selectedDesignation,
         ReportTo: this.state.selectedReportTO
       }
@@ -562,7 +775,7 @@ class Users extends Component {
       }
       self.setState({
         selectedDesignation: 0,
-        selectedReportTO: 0,getID:id
+        selectedReportTO: 0, getID: id
       });
       self.handleUserList();
     });
@@ -572,7 +785,7 @@ class Users extends Component {
     debugger;
     let self = this;
     var finalIssueTypeId = "";
-   
+
 
 
     if (this.state.selectedIssueType !== null) {
@@ -584,8 +797,8 @@ class Users extends Component {
     var copyescn = 0;
     var assignescn = 0;
     var SuperAgent = 0;
-    var superAgentValue = this.state.selectedSupervisorAgent;
-    if (superAgentValue === "agent") {
+    var superAgentValue = this.state.selectedAgentRadio;
+    if (superAgentValue === true) {
       SuperAgent = 1;
     }
     else {
@@ -616,16 +829,16 @@ class Users extends Component {
     } else {
       activeStatus = 0;
     }
-    var brand=this.state.multibrandIDs.substring(0, this.state.multibrandIDs.length - 1);
-    var category=this.state.multicategoryIDs.substring(0, this.state.multicategoryIDs.length - 1);
-    var subcat=this.state.multisubcategoryIDs.substring(0, this.state.multisubcategoryIDs.length - 1);
-    var issue=finalIssueTypeId.substring(0, finalIssueTypeId.length - 1);
+    var brand = this.state.multibrandIDs.substring(0, this.state.multibrandIDs.length - 1);
+    var category = this.state.multicategoryIDs.substring(0, this.state.multicategoryIDs.length - 1);
+    var subcat = this.state.multisubcategoryIDs.substring(0, this.state.multisubcategoryIDs.length - 1);
+    var issue = finalIssueTypeId.substring(0, finalIssueTypeId.length - 1);
     var json = {
-      UserId:this.state.getID,
+      UserId: this.state.getID,
       BrandIds: brand,
       categoryIds: category,
       subCategoryIds: subcat,
-      IssuetypeIds:issue,
+      IssuetypeIds: issue,
       RoleID: this.state.selectedCRMRoles,
       IsCopyEscalation: copyescn,
       IsAssignEscalation: assignescn,
@@ -648,20 +861,20 @@ class Users extends Component {
         NotificationManager.success("Record Saved successfully.");
 
       }
-      else{
+      else {
         NotificationManager.error("Record Not Saved .");
       }
       self.setState({
-       selectedBrand:[],
-       selectedCategory:[],
-       selectedSubCategory:[],
-       selectedIssueType:[],
-       selectedCRMRoles:0,
-       selectedCopyEscalation:false,
-       selectedAssignEscalation:false,
-       selectedSupervisorAgent:"",
-       selectedAgent:0,
-       selectedStatus:"",
+        selectedBrand: [],
+        selectedCategory: [],
+        selectedSubCategory: [],
+        selectedIssueType: [],
+        selectedCRMRoles: 0,
+        selectedCopyEscalation: false,
+        selectedAssignEscalation: false,
+        selectedSupervisorAgent: "",
+        selectedAgent: 0,
+        selectedStatus: "",
 
 
         getID: 0
@@ -687,48 +900,131 @@ class Users extends Component {
         NotificationManager.success("Record Deleted successfully.");
         self.handleUserList();
       }
-      else{
+      else {
         NotificationManager.error("Record Not Deleted.");
       }
     });
   }
 
-  handleUpdateUser(id) {
+  handleUpdateUser() {
 
     debugger;
     let self = this;
+    // this.setState(prevState => ({
+    //   values: [
+    //     ...prevState.values,
+    //     {
+    //       test: "amit"          
+    //     }
+    //   ]
+    // }));
+    // self.setState({test:"dfddd,fffddd"});
+
+    var finalIssueTypeId = "";
+    var finalBrandId = "";
+    var finalCategoryId = "";
+    var finalSubCategoryId = "";
+    var copyescn = 0;
+    var assignescn = 0;
+    var activeStatus = 0;
+
+    if (this.state.editBrand !== null) {
+      for (let i = 0; i < this.state.editBrand.length; i++) {
+        finalBrandId += this.state.editBrand[i].brandID + ",";
+
+      }
+    }
+
+    if (this.state.editCategory !== null) {
+      for (let i = 0; i < this.state.editCategory.length; i++) {
+        finalCategoryId += this.state.editCategory[i].categoryID + ",";
+      }
+    }
+
+    if (this.state.editIssuetype !== null) {
+      for (let i = 0; i < this.state.editIssuetype.length; i++) {
+        finalIssueTypeId += this.state.editIssuetype[i].issueTypeID + ",";
+      }
+    }
+    if (this.state.editSubCategory !== null) {
+      for (let i = 0; i < this.state.editSubCategory.length; i++) {
+        finalSubCategoryId += this.state.editSubCategory[i].subCategoryID + ",";
+      }
+    }
+    var CopyE = this.state.userEditData.is_Copy_Escalation;
+    var AssignE = this.state.userEditData.is_Assign_Escalation;
+    if (CopyE === true && AssignE === false) {
+      copyescn = 1;
+      assignescn = 0;
+    }
+    else if (CopyE === false && AssignE === true) {
+      copyescn = 0;
+      assignescn = 1;
+    }
+    else if (CopyE === true && AssignE === true) {
+      copyescn = 1;
+      assignescn = 1;
+    }
+    else if (CopyE === false && AssignE === false) {
+      copyescn = 0;
+      assignescn = 0;
+    }
+    var SuperAgent = 0;
+    var superAgentValue = this.state.editAgentRadio;
+    if (superAgentValue === true) {
+      SuperAgent = 1;
+    }
+    else {
+      SuperAgent = 0;
+    }
+    var status = this.state.userEditData.is_Active;
+    if (status === "true") {
+      activeStatus = 1;
+    } else {
+      activeStatus = 0;
+    }
+
+    var brand = finalBrandId.substring(0, finalBrandId.length - 1);
+    var category = finalCategoryId.substring(0, finalCategoryId.length - 1);
+    var subcat = finalSubCategoryId.substring(0, finalSubCategoryId.length - 1);
+    var issue = finalIssueTypeId.substring(0, finalIssueTypeId.length - 1);
     var json = {
-      UserID: id,
+      UserID: this.state.userEditData.userId,
       DesignationID: this.state.userEditData.designation_ID,
       ReporteeID: this.state.userEditData.reportee_ID,
-      UserName: this.state.userEditData.userName,
+      // UserName: this.state.userEditData.userName,
+      UserName: this.state.userEditData.selectUserName,
       EmailID: this.state.userEditData.email_ID,
       MobileNo: this.state.userEditData.mobile_Number,
       FirstName: this.state.userEditData.first_Name,
       LastName: this.state.userEditData.last_Name,
-      BrandIds: "",
-      categoryIds: "",
-      subCategoryIds: "",
-      IssuetypeIds: "",
-      RoleID: "",
-      IsCopyEscalation: this.state.userEditData.email_ID,
-      IsAssignEscalation: this.state.userEditData.email_ID,
-      IsAgent: this.state.userEditData.email_ID,
+      BrandIds: brand,
+      categoryIds: category,
+      subCategoryIds: subcat,
+      IssuetypeIds: issue,
+      RoleID: this.state.userEditData.role_ID,
+      IsCopyEscalation: copyescn,
+      IsAssignEscalation: assignescn,
+      IsAgent: SuperAgent,
       EscalateAssignToId: this.state.userEditData.assign_ID,
-      IsActive: this.state.userEditData.is_Active,
+      IsActive: activeStatus
 
     };
     axios({
       method: "post",
       url: config.apiUrl + "/User/EditUserDetails",
       headers: authHeader(),
-      data: null
+      data: json
     }).then(function (res) {
       debugger;
       let Msg = res.data.message;
       if (Msg === "Success") {
         NotificationManager.success("Record Updated successfully.");
-
+        self.setState({
+          multibrandIDs: finalBrandId,
+          multicategoryIDs: finalCategoryId,
+          multisubcategoryIDs: finalSubCategoryId
+        });
       }
       else {
         NotificationManager.error("Record not Selected OR Sequence is Wrong")
@@ -758,536 +1054,365 @@ class Users extends Component {
 
   render() {
 
-    const dataTickUser = this.state.userData
-
-    const columnsTickUser = [
-      {
-        Header: (
-          <span>
-            User Name
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "userName",
-        Cell: row => <span>{row.original.userName}</span>
-      },
-      {
-        Header: (
-          <span>
-            Mobile No.
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "mobileNumber",
-        Cell: row => <span>{row.original.mobileNumber}</span>
-      },
-      {
-        Header: (
-          <span>
-            Email ID
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "emailID",
-        Cell: row => <span>{row.original.emailID}</span>
-      },
-      {
-        Header: (
-          <span>
-            Designation
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "designation",
-        Cell: row => {
-          var ids = row.original["userId"];
-          return (
-            <div>
-              <span>
-                {row.original.designation}
-                <Popover content={<>
-                  <div className=" row d-flex">
-                    <div className="col-md-6">
-
-                      <p className="title">Reportee Designation: <b>Admin</b></p>
-                    </div>
-                    <div className="col-md-6">
-                      <p className="sub-title mx-2">Issue Type: <b>{row.original.issueTypeNames}</b></p>
-                    </div>
-                  </div>
-
-                  <div className="row d-flex">
-                    <div className="col-md-6">
-
-                      <p className="title">Report To: <b>{row.original.reportTo}</b></p>
-                    </div>
-                    <div className="col-md-6">
-                      <p className="sub-title mx-2">CRM Role: <b>{row.original.crmRoleName}</b></p>
-                    </div>
-
-                  </div>
-
-                  <div className="row d-flex">
-                    <div className="col-md-6">
-
-                      <p className="title">Brand: <b>{row.original.brandNames}</b></p>
-                    </div>
-                    <div className="col-md-6">
-                      <p className="sub-title mx-2">Copy Escalation: <b>{row.original.is_CopyEscalation}</b></p>
-                    </div>
-                  </div>
-                  <div className="row d-flex">
-                    <div className="col-md-6">
-
-                      <p className="title">Category: <b>{row.original.categoryNames}</b></p>
-                    </div>
-                    <div className="col-md-6">
-                      <p className="sub-title mx-2">Assign Escalation: <b>{row.original.assignEscalation}</b></p>
-                    </div>
-                  </div>
-                  <div className="row d-flex">
-                    <div className="col-md-6">
-
-                      <p className="title">Sub Category: <b>{row.original.subCategoryNames}</b></p>
-                    </div>
-                    <div className="col-md-6">
-                      <p className="sub-title mx-2">Agent Name: 12 March 2018</p>
-                    </div>
-                  </div>
-                  <div className="row d-flex">
-                    <div className="col-md-6">
-
-                      <p className="title">Created By: <b>{row.original.createdBy}</b></p>
-                    </div>
-                    <div className="col-md-6">
-                      <p className="sub-title mx-2">Updated By: <b>{row.original.updatedBy}</b></p>
-                    </div>
-                  </div>
-                  <div className="row d-flex">
-                    <div className="col-md-6">
-
-                      <p className="title">Created Date: <b>{row.original.createdDate}</b></p>
-                    </div>
-                    <div className="col-md-6">
-                      <p className="sub-title mx-2">Updated Date: <b>{row.original.updatedDate}</b></p>
-                    </div>
-                  </div>
-                </>} placement="bottom" >
-                  <img
-                    className="info-icon-cp"
-                    src={BlackInfoIcon}
-                    alt="info-icon"
-                    id={ids}
-
-                  />
-                </Popover>
-              </span>
-            </div>
-          );
-        }
-      },
-      {
-        Header: <span>Actions</span>,
-        accessor: "userId",
-        Cell: row => {
-          var ids = row.original["userId"];
-          return (
-
-            <>
-              <span>
-
-                <Popover
-                  content={<div className="samdel d-flex general-popover popover-body" id={"samdel" + ids}>
-                    <div className="del-big-icon">
-                      <img src={DelBigIcon} alt="del-icon" />
-                    </div>
-                    <div>
-                      <p className="font-weight-bold blak-clr">Delete file?</p>
-                      <p className="mt-1 fs-12">
-                        Are you sure you want to delete this file?
-                    </p>
-                      <div className="del-can">
-                        <a className="canblue" onClick={() => this.hide(this, "samdel" + ids)}>CANCEL</a>
-                        <button className="butn" onClick={this.handleDeleteUser.bind(this, row.original.userId)}>Delete</button>
-                      </div>
-                    </div>
-                  </div>}
-                  placement="bottom"
-                  trigger="click"
-                >
-                  <img
-                    src={RedDeleteIcon}
-                    alt="del-icon"
-                    className="del-btn"
-                    id={ids}
-                    //onClick={() => this.show(this, "samdel" + ids)}
-                   
-                  />
-                </Popover>
-                <Popover
-                  content={
-                    <div className="edtpadding EditButtonUSer">
-                                        <div className="">
-                                          <label className="popover-header-text">EDIT USER</label>
-                                        </div>
-                    
-                                        <div className="right-sect-div right-sect-collapse">
-                                          <div className="collapse-cntr">
-                                            <div className="pop-over-div">
-                                              <a
-                                                className="collapse-title mx-0"
-                                                data-toggle="collapse"
-                                                href="#personal-detailsNew"
-                                                role="button"
-                                                aria-expanded="true"
-                                                aria-controls="personal-detailsNew"
-                                              >
-                                                Personal Details
-                                            </a>
-                                            </div>
-                                            <div className="multi-collapse show" id="personal-detailsNew">
-                                              <div className="pop-over-div">
-                                                <label className="edit-label-1">User Name</label>
-                                                <input type="text" className="txt-edit-popover" maxLength={25}
-                                                  name="user_Name"
-                                                  value={this.state.userEditData.user_Name}
-                                                  onChange={this.handleOnChangeEditData}
-                                                />
-                                              </div>
-                                              <div className="pop-over-div">
-                                                <label>First Name</label>
-                                                <input type="text" maxLength={25}
-                                                  name="first_Name"
-                                                  value={this.state.userEditData.first_Name}
-                                                  onChange={this.handleOnChangeEditData}
-                                                />
-                                              </div>
-                                              <div className="pop-over-div">
-                                                <label>Last Name</label>
-                                                <input type="text" maxLength={25}
-                                                  name="last_Name"
-                                                  value={this.state.userEditData.last_Name}
-                                                  onChange={this.handleOnChangeEditData}
-                                                />
-                                              </div>
-                                              <div className="pop-over-div">
-                                                <label className="edit-label-1">Mobile Number</label>
-                                                <input type="text" className="txt-edit-popover" maxLength={10}
-                                                  name="mobile_Number"
-                                                  value={this.state.userEditData.mobile_Number}
-                                                  onChange={this.handleOnChangeEditData}
-                                                />
-                                              </div>
-                                              <div className="pop-over-div">
-                                                <label className="edit-label-1">Email ID</label>
-                                                <input type="text" className="txt-edit-popover" maxLength={100}
-                                                  name="email_ID"
-                                                  value={this.state.userEditData.email_ID}
-                                                  onChange={this.handleOnChangeEditData}
-                                                />
-                                              </div>
-                                              <div className="pop-over-div">
-                                                <button
-                                                  data-target="#profile-detailsNEW1"
-                                                  data-toggle="collapse"
-                                                  className="butn"
-                                                >
-                                                  SAVE &amp; NEXT
-                                                      </button>
-                                              </div>
-                                            </div>
-                                          </div>
-                                          <div className="collapse-cntr">
-                                            <a
-                                              className="collapse-title mx-0"
-                                              data-toggle="collapse"
-                                              href="#profile-detailsNEW1"
-                                              role="button"
-                                              aria-expanded="false"
-                                              aria-controls="profile-detailsNEW1"
-                                            >
-                                              Profile Details
-                                                  </a>
-                                            <div
-                                              className="collapse multi-collapse"
-                                              id="profile-detailsNEW1"
-                                            >
-                                              <div className="pop-over-div">
-                                                <label className="edit-label-1">User Designation</label>
-                                                <select className="add-select-category"
-                                                  name="designation_ID"
-                                                  value={this.state.userEditData.designation_ID}
-                                                  onChange={this.handleOnChangeEditData}
-                                                >
-                                                  <option>Select Designation</option>
-                                                  {this.state.DesignationData !== null &&
-                                                    this.state.DesignationData.map((item, i) => (
-                                                      <option key={i} value={item.designationID}>
-                                                        {item.designationName}
-                                                      </option>
-                                                    ))}
-                                                </select>
-                                              </div>
-                                              <div className="pop-over-div">
-                                                <label className="edit-label-1">Reportee Designation</label>
-                                                <select className="add-select-category"
-                                                  name="editreporteeDesign"
-                                                  value={this.state.editreporteeDesign}
-                                                  onChange={this.handleOnChangeEditData}
-                                                >
-                                                  <option>Select Reportee Designation</option>
-                                                  {this.state.ReporteeDesignData !== null &&
-                                                    this.state.ReporteeDesignData.map((item, i) => (
-                                                      <option key={i} value={item.designationID}>
-                                                        {item.designationName}
-                                                      </option>
-                                                    ))}
-                                                </select>
-                                              </div>
-                                              <div className="pop-over-div">
-                                                <label className="edit-label-1">Report To</label>
-                                                <select className="add-select-category"
-                                                  name="reportee_ID"
-                                                  value={this.state.userEditData.reportee_ID}
-                                                  onChange={this.handleOnChangeEditData}
-                                                >
-                                                  <option>Select Report To</option>
-                                                  {this.state.ReportToData !== null &&
-                                                    this.state.ReportToData.map((item, i) => (
-                                                      <option key={i} value={item.user_ID}>
-                                                        {item.agentName}
-                                                      </option>
-                                                    ))}
-                                                </select>
-                                              </div>
-                                              <div className="pop-over-div">
-                                                <button
-                                                  data-target="#mapped-categoryNew"
-                                                  data-toggle="collapse"
-                                                  className="butn"
-                                                >
-                                                  SAVE &amp; NEXT
-                                                      </button>
-                                              </div>
-                                            </div>
-                                          </div>
-                                          <div className="collapse-cntr">
-                                            <a
-                                              className="collapse-title mx-0"
-                                              data-toggle="collapse"
-                                              href="#mapped-categoryNew"
-                                              role="button"
-                                              aria-expanded="false"
-                                              aria-controls="mapped-categoryNew"
-                                            >
-                                              Mapped Category
-                                                  </a>
-                                            <div
-                                              className="collapse multi-collapse"
-                                              id="mapped-categoryNew"
-                                            >
-                                              <div className="pop-over-div">
-                                                <label className="edit-label-1">Brand</label>
-                                                { <Select
-                                                  getOptionLabel={option => option.brandName}
-                                                  getOptionValue={option => option.brandID}
-                                                  options={this.state.brandData}
-                                                  placeholder="Select"
-                                                  // menuIsOpen={true}
-                                                  closeMenuOnSelect={false}
-                                                  name="editBrand"
-                                                  onChange={this.handleEditBrandChange}
-                                                  value={this.state.editBrand}
-                                                  // showNewOptionAtTop={false}
-                                                  isMulti
-                                                /> }
-                                                {/*<Select
-                                                  getOptionLabel={option => option.brandName}
-                                                  getOptionValue={option => option.brandID}
-                                                  options={this.state.brandData}
-                                                  placeholder="Select"
-                                                  // menuIsOpen={true}
-                                                  closeMenuOnSelect={false}
-                                                  name="selectedBrand"
-                                                  onChange={this.handleEditBrandChange.bind(this)}
-                                                  value={this.state.selectedBrand}
-                                                  // showNewOptionAtTop={false}
-                                                  isMulti
-                                                />*/}
-                                              </div>
-                                              <div className="pop-over-div">
-                                                <label className="edit-label-1">Categories</label>
-                                                <select className="txt-edit-popover">
-                                                  <option>Compliant</option>
-                                                  <option>Compliant</option>
-                                                  <option>Compliant</option>
-                                                </select>
-                                              </div>
-                                              <div className="pop-over-div">
-                                                <label className="edit-label-1">Sub Categories</label>
-                                                <select className="txt-edit-popover">
-                                                  <option>Payments</option>
-                                                  <option>Payments</option>
-                                                  <option>Payments</option>
-                                                </select>
-                                              </div>
-                                              <div className="pop-over-div">
-                                                <label className="edit-label-1">Issue Type</label>
-                                                <select className="txt-edit-popover">
-                                                  <option>Not Processed</option>
-                                                  <option>Not Processed</option>
-                                                  <option>Not Processed</option>
-                                                </select>
-                                              </div>
-                                              <div className="mapped-cate-extra">
-                                                <div className="pop-over-div">
-                                                  <label className="edit-label-1">CRM Role</label>
-                                                  <select className="add-select-category"
-                                                    name="role_ID"
-                                                    value={this.state.userEditData.role_ID}
-                                                    onChange={this.handleOnChangeEditData}
-                                                  >
-                                                    <option>Select Designation</option>
-                                                    {this.state.CRMRoleData !== null &&
-                                                      this.state.CRMRoleData.map((item, i) => (
-                                                        <option key={i} value={item.crmRoleID}>
-                                                          {item.roleName}
-                                                        </option>
-                                                      ))}
-                                                  </select>
-                                                </div>
-                                                <div className="pop-over-div escalation-options">
-                                                  <div className="filter-checkbox">
-                                                    <input
-                                                      type="checkbox"
-                                                      id="copy-esc1"
-                                                      name="is_Copy_Escalation"
-                                                      value={this.state.userEditData.is_Copy_Escalation}
-                                                      onChange={this.setEscn}
-                                                    />
-                                                    <label htmlFor="copy-esc1">Copy Escalation</label>
-                                                  </div>
-                                                  <div className="filter-checkbox">
-                                                    <input
-                                                      type="checkbox"
-                                                      id="assign-esc1"
-                                                      name="is_Assign_Escalation"
-                                                      value={this.state.userEditData.is_Assign_Escalation}
-                                                      onChange={this.setEscn}
-                                                    />
-                                                    <label htmlFor="assign-esc1">
-                                                      Assign Escalation
-                                                          </label>
-                                                  </div>
-                                                  <div className="sup-agent-cntr">
-                                                    <div className="status-options">
-                                                      <input
-                                                        type="radio"
-                                                        name="supervisor-agent"
-                                                        id="supervisor1"
-                                                        value="supervisor"
-                                                        onChange={this.handleSuperAgentValue}
-                                                      />
-                                                      <label
-                                                        htmlFor="supervisor1"
-                                                        className="logout-label"
-                                                      >
-                                                        Supervisor
-                                                            </label>
-                                                    </div>
-                                                    <div className="status-options">
-                                                      <input
-                                                        type="radio"
-                                                        name="supervisor-agent"
-                                                        id="agent1"
-                                                        value="agent"
-                                                        onChange={this.handleSuperAgentValue}
-                                                      />
-                                                      <label htmlFor="agent1" className="logout-label">
-                                                        Agent
-                                                            </label>
-                                                    </div>
-                                                  </div>
-                                                </div>
-                                                <div className="pop-over-div">
-                                                  <label className="edit-label-1">Select Agent</label>
-                                                  <select className="add-select-category"
-                                                    name="assign_ID"
-                                                    value={this.state.userEditData.assign_ID}
-                                                    onChange={this.handleOnChangeEditData}
-                    
-                                                  >
-                                                    <option>Select Agent</option>
-                                                    {this.state.AgentData !== null &&
-                                                      this.state.AgentData.map((item, i) => (
-                                                        <option key={i} value={item.user_ID}>
-                                                          {item.agentName}
-                                                        </option>
-                                                      ))}
-                                                  </select>
-                                                </div>
-                                                <div className="pop-over-div">
-                                                  <label className="edit-label-1">Status</label>
-                                                  <select className="txt-edit-popover"
-                                                    name="is_Active"
-                                                    value={this.state.userEditData.is_Active}
-                                                    onChange={this.handleOnChangeEditData}
-                                                  >
-                    
-                                                    <option value="true">Active</option>
-                                                    <option value="false">Inactive</option>
-                                                  </select>
-                                                </div>
-                                              </div>
-                                              <div className="pop-over-div">
-                                                <button className="butn">ADD</button>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                    
-                    
-                                        <br />
-                                        <div>
-                                          <a className="pop-over-cancle canblue">CANCEL</a>
-                                          {/* <label className="pop-over-cancle">CANCEL</label> */}
-                                          <button className="pop-over-button" onClick={this.handleUpdateUser.bind(this, row.original.userId)}>
-                                            SAVE
-                                        </button>
-                                        </div>
-                                      </div> }
-                  
-               
-                  placement="bottom"
-                  trigger="click"
-                >
-                  <button className="react-tabel-button editre" id="p-edit-pop-2"
-                    onClick={this.handleGetUserListByID.bind(this, row.original.userId)}
-                  >
-                    EDIT
-                    {/* <label className="Table-action-edit-button-text">
-                      EDIT
-                    </label> */}
-                  </button>
-                </Popover>
-              </span>
-            </>
-          );
-        }
-      }
-    ];
-
-
-
-
-
-
+    const {userData} = this.state
 
 
     return (
       <React.Fragment>
         <NotificationContainer />
-       
+        {/* ----------------------------------edit Modal------------------------------------ */}
+        <Modal
+          onClose={this.closeEditModal}
+          open={this.state.editmodel}
+          modalId="addkb-modal-popup"
+          overlayId="addkb-modal-ovrly"
+        >
+
+          <div className="row right-sect-div right-sect-collapse">
+
+            <div className='col-md-4'>
+              <div className="collapse-cntr">
+                <div className="pop-over-div">
+                  <a
+                    className="collapse-title mx-0"
+                    data-toggle="collapse"
+                    href="#personal-detailsNew"
+                    role="button"
+                    aria-expanded="true"
+                    aria-controls="personal-detailsNew"
+                  >
+                    Personal Details
+                                            </a>
+                </div>
+                <div className="multi-collapse show" id="personal-detailsNew">
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">User Name</label>
+                    <input type="text" className="txt-edit-popover" maxLength={25}
+                      name="selectUserName"
+                      value={this.state.userEditData.selectUserName}
+                      onChange={this.handleOnChangeEditData}
+                    />
+                  </div>
+                  <div className="pop-over-div">
+                    <label>First Name</label>
+                    <input type="text" maxLength={25}
+                      name="first_Name"
+                      value={this.state.userEditData.first_Name}
+                      onChange={this.handleOnChangeEditData}
+                    />
+                  </div>
+                  <div className="pop-over-div">
+                    <label>Last Name</label>
+                    <input type="text" maxLength={25}
+                      name="last_Name"
+                      value={this.state.userEditData.last_Name}
+                      onChange={this.handleOnChangeEditData}
+                    />
+                  </div>
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">Mobile Number</label>
+                    <input type="text" className="txt-edit-popover" maxLength={10}
+                      name="mobile_Number"
+                      value={this.state.userEditData.mobile_Number}
+                      onChange={this.handleOnChangeEditData}
+                    />
+                  </div>
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">Email ID</label>
+                    <input type="text" className="txt-edit-popover" maxLength={100}
+                      name="email_ID"
+                      value={this.state.userEditData.email_ID}
+                      onChange={this.handleOnChangeEditData}
+                    />
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <div className='col-md-4'>
+              <div className="collapse-cntr">
+                <a
+                  className="collapse-title mx-0"
+                  data-toggle="collapse"
+                  href="#profile-detailsNEW1"
+                  role="button"
+                  aria-expanded="false"
+                  aria-controls="profile-detailsNEW1"
+                >
+                  Profile Details
+                                                  </a>
+                <div
+                  className="collapse multi-collapse"
+                  id="profile-detailsNEW1"
+                >
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">User Designation</label>
+                    <select className="add-select-category"
+                      name="designation_ID"
+                      value={this.state.userEditData.designation_ID}
+                      onChange={this.handleEditDesination.bind(this,"edit")}
+                    >
+                      <option>Select Designation</option>
+                      {this.state.DesignationData !== null &&
+                        this.state.DesignationData.map((item, i) => (
+                          <option key={i} value={item.designationID}>
+                            {item.designationName}
+                          </option>
+                        ))}
+                    </select>
+                  </div>
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">Reportee Designation</label>
+                    <select className="add-select-category"
+                      name="editreporteeDesign"
+                      value={this.state.editreporteeDesign}
+                      onChange={this.handleOnChangeUserData}
+                    >
+                      <option>Select Reportee Designation</option>
+                      {this.state.ReporteeDesignData !== null &&
+                        this.state.ReporteeDesignData.map((item, i) => (
+                          <option key={i} value={item.designationID}>
+                            {item.designationName}
+                          </option>
+                        ))}
+                    </select>
+                  </div>
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">Report To</label>
+                    <select className="add-select-category"
+                      name="reportee_ID"
+                      value={this.state.userEditData.reportee_ID}
+                      onChange={this.handleOnChangeEditData}
+                    >
+                      <option>Select Report To</option>
+                      {this.state.ReportToData !== null &&
+                        this.state.ReportToData.map((item, i) => (
+                          <option key={i} value={item.user_ID}>
+                            {item.agentName}
+                          </option>
+                        ))}
+                    </select>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <div className='col-md-4'>
+              <div className="collapse-cntr">
+                <a
+                  className="collapse-title mx-0"
+                  data-toggle="collapse"
+                  href="#mapped-categoryNew"
+                  role="button"
+                  aria-expanded="false"
+                  aria-controls="mapped-categoryNew"
+                >
+                  Mapped Category
+                                                  </a>
+                <div
+                  className="collapse multi-collapse"
+                  id="mapped-categoryNew"
+                >
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">Brand</label>
+                    {<Select
+                      getOptionLabel={option => option.brandName}
+                      getOptionValue={option => option.brandID}
+                      options={this.state.brandData}
+                      placeholder="Select"
+
+                      closeMenuOnSelect={false}
+                      name="editBrand"
+                      onChange={this.handleEditBrandChange.bind(this, "edit")}
+                      value={this.state.editBrand}
+
+                      isMulti
+                    />}
+
+                  </div>
+                  <div className="pop-over-div">
+                    <label>Categories</label>
+
+                    <Select
+                      getOptionLabel={option => option.categoryName}
+                      getOptionValue={option => option.categoryID}
+                      options={this.state.CategoryData}
+                      placeholder="Select"
+                      // menuIsOpen={true}
+                      name="editCategory"
+                      closeMenuOnSelect={false}
+                      onChange={this.handleEditCategoryChange.bind(this, "edit")}
+                      value={this.state.editCategory}
+                      // showNewOptionAtTop={false}
+                      isMulti
+                    />
+                  </div>
+                  <div className="pop-over-div">
+                    <label>Sub Categories</label>
+
+                    <Select
+                      getOptionLabel={option => option.subCategoryName}
+                      getOptionValue={option => option.subCategoryID}
+                      options={this.state.SubCategoryData}
+                      placeholder="Select"
+                      // menuIsOpen={true}
+                      name="selectedSubCategory"
+                      closeMenuOnSelect={false}
+                      onChange={this.handleEditSubCategoryChange.bind(this, "edit")}
+                      value={this.state.editSubCategory}
+                      // showNewOptionAtTop={false}
+                      isMulti
+                    />
+                  </div>
+                  <div className="pop-over-div">
+                    <label>Issue Type</label>
+
+                    <Select
+                      getOptionLabel={option => option.issueTypeName}
+                      getOptionValue={option => option.issueTypeID}
+                      options={this.state.IssueTypeData}
+                      placeholder="Select"
+                      // menuIsOpen={true}
+                      name="selectedIssueType"
+                      closeMenuOnSelect={false}
+                      onChange={this.handleEditIssueTypeChange.bind(this)}
+                      value={this.state.editIssuetype}
+                      // showNewOptionAtTop={false}
+                      isMulti
+                    />
+                  </div>
+                  <div className="mapped-cate-extra">
+                    <div className="pop-over-div">
+                      <label className="edit-label-1">CRM Role</label>
+                      <select className="add-select-category"
+                        name="role_ID"
+                        value={this.state.userEditData.role_ID}
+                        onChange={this.handleOnChangeEditData}
+                      >
+                        <option>Select Designation</option>
+                        {this.state.CRMRoleData !== null &&
+                          this.state.CRMRoleData.map((item, i) => (
+                            <option key={i} value={item.crmRoleID}>
+                              {item.roleName}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
+                    <div className="pop-over-div escalation-options">
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          id="copy-esc1"
+                          name="is_Copy_Escalation"
+                          checked={
+                            this.state.userEditData.is_Copy_Escalation
+                          }
+                          value={this.state.userEditData.is_Copy_Escalation}
+                          onChange={this.editsetEscn}
+                        />
+                        <label htmlFor="copy-esc1">Copy Escalation</label>
+                      </div>
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          id="assign-esc1"
+                          name="is_Assign_Escalation"
+                          checked={
+                            this.state.userEditData.is_Assign_Escalation
+                          }
+                          value={this.state.userEditData.is_Assign_Escalation}
+                          onChange={this.editsetEscn}
+                        />
+                        <label htmlFor="assign-esc1">
+                          Assign Escalation
+                                                          </label>
+                      </div>
+                      {this.state.userEditData.is_Assign_Escalation===true ?(
+                         <div className="sup-agent-cntr">
+                         <div className="status-options">
+                           <input
+                             type="radio"
+                             name="selectedSupervisoragent"
+                             id="supervisor1"
+                             checked={this.state.editSupervisorRadio}
+                             value={this.state.editSupervisorRadio}
+                             onChange={this.editSuperValue}
+                           />
+                           <label
+                             htmlFor="supervisor1"
+                             className="logout-label"
+                           >
+                             Supervisor
+                                                             </label>
+                         </div>
+                         <div className="status-options">
+                           <input
+                             type="radio"
+                             name="selectedSupervisoragent"
+                             id="agent1"
+                             checked={this.state.editAgentRadio}
+                             value={this.state.editAgentRadio}
+                             onChange={this.editAgentValue}
+                           />
+                           <label htmlFor="agent1" className="logout-label">
+                             Agent
+                                                             </label>
+                         </div>
+                       </div>
+                      ):null}
+                     
+                    </div>
+                    <div className="pop-over-div">
+                      <label className="edit-label-1">Select Agent</label>
+                      <select className="add-select-category"
+                        name="assign_ID"
+                        value={this.state.userEditData.assign_ID}
+                        onChange={this.handleOnChangeEditData}
+
+                      >
+                        <option>Select Agent</option>
+                        {this.state.AgentData !== null &&
+                          this.state.AgentData.map((item, i) => (
+                            <option key={i} value={item.user_ID}>
+                              {item.agentName}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
+                    <div className="pop-over-div">
+                      <label className="edit-label-1">Status</label>
+                      <select className="txt-edit-popover"
+                        name="is_Active"
+                        value={this.state.userEditData.is_Active}
+                        onChange={this.handleOnChangeEditData}
+                      >
+
+                        <option value="true">Active</option>
+                        <option value="false">Inactive</option>
+                      </select>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <br />
+            <br />
+            <div>
+              <a className="pop-over-cancle canblue" onClick={this.closeEditModal.bind(this)}>CANCEL</a>
+
+              <button className="pop-over-button" onClick={this.handleUpdateUser.bind(this)}>
+                SAVE
+                                        </button>
+            </div>
+          </div>
+
+
+
+
+        </Modal>
+
+        {/* ----------------------------------end------------------------------------ */}
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="settings" className="header-path">Settings</Link>
           <span>&gt;</span>
@@ -1303,8 +1428,185 @@ class Users extends Component {
               <div className="col-md-8">
                 <div className="table-cntr table-height TicketUserReact">
                   <ReactTable
-                    data={dataTickUser}
-                    columns={columnsTickUser}
+                    data={userData}
+                    columns={[
+                      {
+                        Header: (
+                          <span>
+                            User Name
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "userName",
+                        Cell: row => <span>{row.original.userName}</span>
+                      },
+                      {
+                        Header: (
+                          <span>
+                            Mobile No.
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "mobileNumber",
+                        Cell: row => <span>{row.original.mobileNumber}</span>
+                      },
+                      {
+                        Header: (
+                          <span>
+                            Email ID
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "emailID",
+                        Cell: row => <span>{row.original.emailID}</span>
+                      },
+                      {
+                        Header: (
+                          <span>
+                            Designation
+                            <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "designation",
+                        Cell: row => {
+                          var ids = row.original["userId"];
+                          return (
+                            <div>
+                              <span>
+                                {row.original.designation}
+                                <Popover content={<>
+                                  <div className=" row d-flex">
+                                    <div className="col-md-6">
+
+                                      <p className="title">Reportee Designation: <b>Admin</b></p>
+                                    </div>
+                                    <div className="col-md-6">
+                                      <p className="sub-title mx-2">Issue Type: <b>{row.original.issueTypeNames}</b></p>
+                                    </div>
+                                  </div>
+
+                                  <div className="row d-flex">
+                                    <div className="col-md-6">
+
+                                      <p className="title">Report To: <b>{row.original.reportTo}</b></p>
+                                    </div>
+                                    <div className="col-md-6">
+                                      <p className="sub-title mx-2">CRM Role: <b>{row.original.crmRoleName}</b></p>
+                                    </div>
+
+                                  </div>
+
+                                  <div className="row d-flex">
+                                    <div className="col-md-6">
+
+                                      <p className="title">Brand: <b>{row.original.brandNames}</b></p>
+                                    </div>
+                                    <div className="col-md-6">
+                                      <p className="sub-title mx-2">Copy Escalation: <b>{row.original.is_CopyEscalation}</b></p>
+                                    </div>
+                                  </div>
+                                  <div className="row d-flex">
+                                    <div className="col-md-6">
+
+                                      <p className="title">Category: <b>{row.original.categoryNames}</b></p>
+                                    </div>
+                                    <div className="col-md-6">
+                                      <p className="sub-title mx-2">Assign Escalation: <b>{row.original.assignEscalation}</b></p>
+                                    </div>
+                                  </div>
+                                  <div className="row d-flex">
+                                    <div className="col-md-6">
+
+                                      <p className="title">Sub Category: <b>{row.original.subCategoryNames}</b></p>
+                                    </div>
+                                    <div className="col-md-6">
+                                      <p className="sub-title mx-2">Agent Name: 12 March 2018</p>
+                                    </div>
+                                  </div>
+                                  <div className="row d-flex">
+                                    <div className="col-md-6">
+
+                                      <p className="title">Created By: <b>{row.original.createdBy}</b></p>
+                                    </div>
+                                    <div className="col-md-6">
+                                      <p className="sub-title mx-2">Updated By: <b>{row.original.updatedBy}</b></p>
+                                    </div>
+                                  </div>
+                                  <div className="row d-flex">
+                                    <div className="col-md-6">
+
+                                      <p className="title">Created Date: <b>{row.original.createdDate}</b></p>
+                                    </div>
+                                    <div className="col-md-6">
+                                      <p className="sub-title mx-2">Updated Date: <b>{row.original.updatedDate}</b></p>
+                                    </div>
+                                  </div>
+                                </>} placement="bottom" >
+                                  <img
+                                    className="info-icon-cp"
+                                    src={BlackInfoIcon}
+                                    alt="info-icon"
+                                    id={ids}
+
+                                  />
+                                </Popover>
+                              </span>
+                            </div>
+                          );
+                        }
+                      },
+                      {
+                        Header: <span>Actions</span>,
+                        accessor: "userId",
+                        Cell: row => {
+                          var ids = row.original["userId"];
+                          return (
+
+                            <>
+                              <span>
+
+                                <Popover
+                                  content={<div className="samdel d-flex general-popover popover-body" id={"samdel" + ids}>
+                                    <div className="del-big-icon">
+                                      <img src={DelBigIcon} alt="del-icon" />
+                                    </div>
+                                    <div>
+                                      <p className="font-weight-bold blak-clr">Delete file?</p>
+                                      <p className="mt-1 fs-12">
+                                        Are you sure you want to delete this file?
+                                    </p>
+                                      <div className="del-can">
+                                        <a className="canblue" onClick={() => this.hide(this, "samdel" + ids)}>CANCEL</a>
+                                        <button className="butn" onClick={this.handleDeleteUser.bind(this, row.original.userId)}>Delete</button>
+                                      </div>
+                                    </div>
+                                  </div>}
+                                  placement="bottom"
+                                  trigger="click"
+                                >
+                                  <img
+                                    src={RedDeleteIcon}
+                                    alt="del-icon"
+                                    className="del-btn"
+                                    id={ids}
+                                  //onClick={() => this.show(this, "samdel" + ids)}
+
+                                  />
+                                </Popover>
+
+                                <button className="react-tabel-button editre"
+                                  onClick={this.handleGetUserListByID.bind(this, row.original.userId)}
+                                >
+                                  EDIT
+
+                                </button>
+
+                              </span>
+                            </>
+                          );
+                        }
+                      }
+                    ]}
                     // resizable={false}
                     defaultPageSize={5}
                     showPagination={true}
@@ -1341,7 +1643,7 @@ class Users extends Component {
                         </li>
                       </ul>
                     </div>
-                   
+
                   </div>
                 </div>
               </div>
@@ -1432,7 +1734,7 @@ class Users extends Component {
                         <select className="add-select-category"
                           name="selectedDesignation"
                           value={this.state.selectedDesignation}
-                          onChange={this.handleOnChangeUserData}
+                          onChange={this.handleDesination.bind(this,"add")}
                         >
                           <option>Select Designation</option>
                           {this.state.DesignationData !== null &&
@@ -1512,7 +1814,7 @@ class Users extends Component {
                           // menuIsOpen={true}
                           closeMenuOnSelect={false}
                           name="selectedBrand"
-                          onChange={this.handleBrandChange}
+                          onChange={this.handleBrandChange.bind(this, "add")}
                           value={this.state.selectedBrand}
                           // showNewOptionAtTop={false}
                           isMulti
@@ -1529,7 +1831,7 @@ class Users extends Component {
                           // menuIsOpen={true}
                           name="selectedCategory"
                           closeMenuOnSelect={false}
-                          onChange={this.handleCategoryChange}
+                          onChange={this.handleCategoryChange.bind(this, "add")}
                           value={this.state.selectedCategory}
                           // showNewOptionAtTop={false}
                           isMulti
@@ -1546,7 +1848,7 @@ class Users extends Component {
                           // menuIsOpen={true}
                           name="selectedSubCategory"
                           closeMenuOnSelect={false}
-                          onChange={this.handleSubCategoryChange}
+                          onChange={this.handleSubCategoryChange.bind(this, "add")}
                           value={this.state.selectedSubCategory}
                           // showNewOptionAtTop={false}
                           isMulti
@@ -1611,35 +1913,39 @@ class Users extends Component {
                               Assign Escalation
                             </label>
                           </div>
-                          <div className="sup-agent-cntr">
-                            <div className="status-options">
-                              <input
-                                type="radio"
-                                name="selectedSupervisorAgent"
-                                id="supervisor"
-                                value="supervisor"
-                                onChange={this.handleSuperAgentValue}
-                              />
-                              <label
-                                htmlFor="supervisor"
-                                className="logout-label"
-                              >
-                                Supervisor
-                              </label>
+                          {this.state.selectedAssignEscalation === true ? (
+                            <div className="sup-agent-cntr">
+                              <div className="status-options">
+                                <input
+                                  type="radio"
+                                  name="selectedSupervisorAgent"
+                                  id="supervisor"
+                                  value={this.state.selectedSupervisorRadio}
+                                  onChange={this.handleSuperValue}
+                                />
+                                <label
+                                  htmlFor="supervisor"
+                                  className="logout-label"
+                                >
+                                  Supervisor
+                            </label>
+                              </div>
+                              <div className="status-options">
+                                <input
+                                  type="radio"
+                                  name="selectedSupervisorAgent"
+                                  id="agent"
+                                  value={this.state.selectedAgentRadio}
+                                  onChange={this.handleAgentValue}
+                                />
+                                <label htmlFor="agent" className="logout-label">
+                                  Agent
+                            </label>
+                              </div>
                             </div>
-                            <div className="status-options">
-                              <input
-                                type="radio"
-                                name="selectedSupervisorAgent"
-                                id="agent"
-                                value="agent"
-                                onChange={this.handleSuperAgentValue}
-                              />
-                              <label htmlFor="agent" className="logout-label">
-                                Agent
-                              </label>
-                            </div>
-                          </div>
+
+                          ) : null}
+
                         </div>
                         <div className="div-cntr">
                           <label>Select Agent</label>
@@ -1685,8 +1991,8 @@ class Users extends Component {
                     <div className="down-excel">
                       <p>Template</p>
                       <CSVLink filename={"User.csv"} data={config.userTemplate}>
-                       <img src={DownExcel} alt="download icon" />
-                    </CSVLink>
+                        <img src={DownExcel} alt="download icon" />
+                      </CSVLink>
                     </div>
                   </div>
                   <input
