@@ -2000,6 +2000,7 @@ class Dashboard extends Component {
         },
         () => {
           this.handleSearchTicketEscalation();
+          this.handleGetSubCategoryList();
         }
       );
     } else if (this.state.allFlag === 5) {
@@ -2039,6 +2040,8 @@ class Dashboard extends Component {
         },
         () => {
           this.handleSearchTicketEscalation();
+          this.handleGetSubCategoryList();
+        this.handleGetClaimSubCategoryList()
         }
       );
     }
