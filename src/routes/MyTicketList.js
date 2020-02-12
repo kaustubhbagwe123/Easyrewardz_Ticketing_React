@@ -788,8 +788,8 @@ class MyTicketList extends Component {
       this.setState(
         {
           selectedCategory: 0,
-          selectedSubCategory: 0,
-          selectedIssueType: 0,
+          selectedSubCategory: [],
+          selectedIssueType: [],
           selectedTicketStatusByCategory: 0,
           resultCount: 0
         },

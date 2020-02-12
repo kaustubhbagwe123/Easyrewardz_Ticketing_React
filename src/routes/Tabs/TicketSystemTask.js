@@ -472,7 +472,7 @@ class TicketSystemTask extends Component {
                           Header: <span>Actions</span>,
                           accessor: "actionReport",
                           Cell: row => {
-                            debugger
+                            // debugger
                             var ids=row.original["ID"];
                             return(
                             <div>

@@ -141,7 +141,8 @@ class TicketSystem extends Component {
       subCategoryKbCompulsion: "",
       issueTypeKbCompulsion: "",
       userCcCount: 0,
-      userBccCount: 0
+      userBccCount: 0,
+      FileData:[]
     };
     this.validator = new SimpleReactValidator();
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
@@ -666,7 +667,8 @@ class TicketSystem extends Component {
     }
     for (let i = 0; i < e.target.files.length; i++) {
       debugger;
-
+      // const formData = new FormData();
+     
       var objFile = new Object();
       var name = e.target.files[i].name;
       var type = name.substring(name.lastIndexOf(".") + 1, name.length);
@@ -674,8 +676,17 @@ class TicketSystem extends Component {
       objFile.name = name;
 
       objFile.File = e.target.files[i];
+      const file=e.target.files[i]
 
       this.state.file.push(objFile);
+      this.state.FileData.push(file)
+      // formData.append("data",this.state.FileData);
+      // axios({
+      //   method: "post",
+      //   url: config.apiUrl + "/Ticketing/createTicket",
+      //   headers: authHeader(),
+      //   data: formData
+      // });
     }
 
     // -------------------------Image View code end-----------------------
@@ -763,7 +774,8 @@ class TicketSystem extends Component {
         ticketingMailerQues: mailData
       };
       formData.append("ticketingDetails", JSON.stringify(paramData));
-      formData.append("Form", this.state.file[0]);
+      // formData.append("data", this.state.file[0]);
+      formData.append("data",this.state.FileData);
       axios({
         method: "post",
         url: config.apiUrl + "/Ticketing/createTicket",
