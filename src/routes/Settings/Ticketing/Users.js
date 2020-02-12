@@ -453,7 +453,6 @@ handleEditDesination =(data,e)  =>{
   }
   handleGetReporteedesignationList(data) {
     debugger;
-
     let self = this;
     let id;
      if(data==="add"){
