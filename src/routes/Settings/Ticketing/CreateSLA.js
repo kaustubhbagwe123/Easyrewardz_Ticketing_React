@@ -56,7 +56,9 @@ class CreateSLA extends Component {
       PriorityData: [],
       FinalDataOfSlaTarget: [],
       finalData: [],
-      indiSla: ''
+      indiSla: '',
+      // searchSla: '',
+      searchedSla: []
     };
 
     this.handleGetSLA = this.handleGetSLA.bind(this);
@@ -75,7 +77,50 @@ class CreateSLA extends Component {
     debugger;
     if (event.target.checked) {
       var indiSla = this.state.indiSla;
-      indiSla += issueId + ",";
+      // indiSla += issueId + ",";
+      var separator = ",";
+      var values = indiSla.split(separator);
+      var flag = values.includes(issueId.toString());
+      if (!flag) {
+        values.unshift(issueId);
+        indiSla = values.join(separator);
+      }
+      await this.setState({
+        indiSla
+      });
+      document.getElementById('issueTypeValue').textContent = (this.state.indiSla.split(',').length - 1) + ' selected';
+    } else {
+      var indiSla = this.state.indiSla;
+      var separator = ",";
+      var values = indiSla.split(separator);
+      for(var i = 0 ; i < values.length ; i++) {
+        if(values[i] == issueId) {
+          values.splice(i, 1);
+          indiSla = values.join(separator);
+        }
+      }
+      await this.setState({
+        indiSla
+      });
+      if (this.state.indiSla.split(',').length - 1 !== 0) {
+        document.getElementById('issueTypeValue').textContent = (this.state.indiSla.split(',').length - 1) + ' selected';
+      } else {
+        document.getElementById('issueTypeValue').textContent = 'Select';
+      }
+    }
+  };
+
+  selectAboveIndividualSLA = async (issueId, event) => {
+    debugger;
+    if (event.target.checked) {
+      var indiSla = this.state.indiSla;
+      var separator = ",";
+      var values = indiSla.split(separator);
+      var flag = values.includes(issueId.toString());
+      if (!flag) {
+        values.unshift(issueId);
+        indiSla = values.join(separator);
+      }
       await this.setState({
         indiSla
       });
@@ -134,6 +179,15 @@ class CreateSLA extends Component {
     await this.setState({
       indiSla: ''
     });
+  };
+  selectNoAboveSLA = async event => {
+    debugger;
+    var checkboxes = document.getElementsByName("searchedSla");
+    for (var i in checkboxes) {
+      if (checkboxes[i].checked === true) {
+        checkboxes[i].checked = false;
+      }
+    }
   };
 
   handleSlaTargets = (i, e) => {
@@ -227,9 +281,9 @@ class CreateSLA extends Component {
           tempData.priortyName = data[i].priortyName;
           tempData.SlaBreach = "";
           tempData.Rerspondtime = "";
-          tempData.RerspondType = 0;
+          tempData.RerspondType = 'M';
           tempData.ResolveTime = "";
-          tempData.ResolveType = "";
+          tempData.ResolveType = "M";
 
           temp.push(tempData);
         }
@@ -305,6 +359,8 @@ class CreateSLA extends Component {
     debugger;
     let self = this;
     let SlaIsActive;
+    let indiSla = this.state.indiSla;
+    let commaSeperatedSla = indiSla.substring(0, indiSla.length - 1);
     if (this.state.SlaIsActive === "true") {
       SlaIsActive = true;
     } else if (this.state.SlaIsActive === "false") {
@@ -315,12 +371,12 @@ class CreateSLA extends Component {
     var paramData=[];
     for (let i = 0; i < data.length; i++) {
       var temp={}; 
-          temp.PriorityID= data[i].priorityID;
-          temp.SLABreachPercent= data[i].SlaBreach;
-          temp.PriorityRespondValue= data[i].Rerspondtime;
-          temp.PriorityRespondDuration=data[i].RerspondType;
-          temp.PriorityResolutionValue= data[i].ResolveTime;
-          temp.PriorityResolutionDuration= data[i].ResolveType
+      temp.PriorityID= data[i].priorityID;
+      temp.SLABreachPercent= data[i].SlaBreach;
+      temp.PriorityRespondValue= data[i].Rerspondtime;
+      temp.PriorityRespondDuration=data[i].RerspondType;
+      temp.PriorityResolutionValue= data[i].ResolveTime;
+      temp.PriorityResolutionDuration= data[i].ResolveType
       paramData.push(temp)
     }
 
@@ -329,9 +385,10 @@ class CreateSLA extends Component {
       url: config.apiUrl + "/SLA/CreateSLA",
       headers: authHeader(),
       data: {
-        IssueTypeID: this.state.selectedSlaIssueType,
+        IssueTypeID: commaSeperatedSla,
         isSLAActive: SlaIsActive,
-        SLATarget: paramData
+        SLATarget: paramData,
+        SLAFor: 1
       }
     }).then(function(res) {
       debugger;
@@ -344,6 +401,8 @@ class CreateSLA extends Component {
         });
         self.handleGetSLA();
         self.handleGetPriorityList();
+        self.selectNoSLA();
+        self.selectNoAboveSLA();
       } else {
         NotificationManager.error("SLA not added.");
       }
@@ -376,8 +435,37 @@ class CreateSLA extends Component {
     this.setState({ fileName: e.target.files[0].name });
   };
   handleAddNoteCheck = e => {
-    e.preventDefault();
-    e.stopPropagation();
+
+  };
+  handleSearchSla = e => {
+    debugger;
+    // this.setState({
+    //   searchSla: e.target.value
+    // });
+    let self = this;
+    if (e.target.value.length > 3) {
+      axios({
+        method: "post",
+        url: config.apiUrl + "/SLA/SearchIssueType",
+        headers: authHeader(),
+        params: {
+          SearchText: e.target.value
+        }
+      }).then(function(res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            searchedSla: data
+          });
+        } else {
+          self.setState({
+            searchedSla: []
+          });
+        }
+      });
+    }
   };
 
   render() {
@@ -817,84 +905,29 @@ class CreateSLA extends Component {
                                 placeholder="Search"
                                 maxLength={10}
                                 name="store_code"
+                                onChange={this.handleSearchSla}
                               />
                               <div className="filter-checkbox category-scroll">
                                 <ul>
-                                  <li>
-                                    <input
-                                      type="checkbox"
-                                      id="fil-add"
-                                      name="filter-type"
-                                      style={{ display: "none" }}
-                                      onChange={this.handleAddNoteCheck}
-                                    />
-                                    <label
-                                      htmlFor="fil-add"
-                                      style={{ paddingLeft: "25px" }}
-                                    >
-                                      <span className="add-note">Add Note</span>
-                                    </label>
-                                  </li>
-                                  <li>
-                                    <input
-                                      type="checkbox"
-                                      id="fil-add"
-                                      name="filter-type"
-                                      style={{ display: "none" }}
-                                      onChange={this.handleAddNoteCheck}
-                                    />
-                                    <label
-                                      htmlFor="fil-add"
-                                      style={{ paddingLeft: "25px" }}
-                                    >
-                                      <span className="add-note">Add Note</span>
-                                    </label>
-                                  </li>
-                                  <li>
-                                    <input
-                                      type="checkbox"
-                                      id="fil-add"
-                                      name="filter-type"
-                                      style={{ display: "none" }}
-                                      onChange={this.handleAddNoteCheck}
-                                    />
-                                    <label
-                                      htmlFor="fil-add"
-                                      style={{ paddingLeft: "25px" }}
-                                    >
-                                      <span className="add-note">Add Note</span>
-                                    </label>
-                                  </li>
-                                  <li>
-                                    <input
-                                      type="checkbox"
-                                      id="fil-add"
-                                      name="filter-type"
-                                      style={{ display: "none" }}
-                                      onChange={this.handleAddNoteCheck}
-                                    />
-                                    <label
-                                      htmlFor="fil-add"
-                                      style={{ paddingLeft: "25px" }}
-                                    >
-                                      <span className="add-note">Add Note</span>
-                                    </label>
-                                  </li>
-                                  <li>
-                                    <input
-                                      type="checkbox"
-                                      id="fil-add"
-                                      name="filter-type"
-                                      style={{ display: "none" }}
-                                      onChange={this.handleAddNoteCheck}
-                                    />
-                                    <label
-                                      htmlFor="fil-add"
-                                      style={{ paddingLeft: "25px" }}
-                                    >
-                                      <span className="add-note">Add Note</span>
-                                    </label>
-                                  </li>
+                                {this.state.searchedSla !== null &&
+                                  this.state.searchedSla.map((item, i) => (
+                                    <li key={i}>
+                                        <input
+                                        type="checkbox"
+                                        id={"j" + item.issueTypeID}
+                                        name="searchedSla"
+                                        style={{ display: "none" }}
+                                        onChange={this.handleAddNoteCheck}
+                                        onChange={this.selectAboveIndividualSLA.bind(this, item.issueTypeID)}
+                                      />
+                                      <label
+                                        htmlFor={"j" + item.issueTypeID}
+                                        style={{ paddingLeft: "25px" }}
+                                      >
+                                        <span className="add-note">{item.issueTypeName}</span>
+                                      </label>
+                                    </li>
+                                  ))}
                                 </ul>
                               </div>
                               <div className="category-button">
