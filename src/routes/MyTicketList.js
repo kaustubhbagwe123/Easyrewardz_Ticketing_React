@@ -788,13 +788,14 @@ class MyTicketList extends Component {
       this.setState(
         {
           selectedCategory: 0,
-          selectedSubCategory: [],
-          selectedIssueType: [],
+          selectedSubCategory: 0,
+          selectedIssueType: 0,
           selectedTicketStatusByCategory: 0,
           resultCount: 0
         },
         () => {
           this.ViewSearchData(1);
+          this.handleGetSubCategoryList()
         }
       );
     } else if (this.state.allFlag === 5) {
@@ -833,6 +834,8 @@ class MyTicketList extends Component {
       },
       () => {
         this.ViewSearchData(1);
+        this.handleGetSubCategoryList();
+        this.handleGetClaimSubCategoryList()
       });
     }
   }
@@ -1674,6 +1677,7 @@ class MyTicketList extends Component {
     this.setState({ selectedSlaStatus: slaStatusValue });
   };
   setCategoryValue = e => {
+    debugger
     let categoryValue = e.currentTarget.value;
     this.setState({ selectedCategory: categoryValue });
     setTimeout(() => {
@@ -2625,6 +2629,7 @@ class MyTicketList extends Component {
                                           showMonthDropdown
                                           showYearDropdown
                                           dateFormat="dd/MM/yyyy"
+                                          autoComplete="off"
                                           value={this.state.ByDateCreatDate}
                                           // className="form-control"
                                         />
@@ -2641,6 +2646,7 @@ class MyTicketList extends Component {
                                           dateFormat="dd/MM/yyyy"
                                           value={this.state.ByDateSelectDate}
                                           name="ByDateSelectDate"
+                                          autoComplete="off"
                                           // className="form-control"
                                         />
                                       </div>
@@ -2711,6 +2717,7 @@ class MyTicketList extends Component {
                                           name="MobileNoByCustType"
                                           value={this.state.MobileNoByCustType}
                                           onChange={this.handelOnchangeData}
+                                          autoComplete="off"
                                           maxLength={10}
                                         />
                                       </div>
@@ -2720,6 +2727,7 @@ class MyTicketList extends Component {
                                           className="no-bg"
                                           placeholder="Customer Email ID"
                                           name="EmailIdByCustType"
+                                          autoComplete="off"
                                           value={this.state.EmailIdByCustType}
                                           onChange={this.handelOnchangeData}
                                         />
@@ -2731,6 +2739,7 @@ class MyTicketList extends Component {
                                           placeholder="Ticket ID"
                                           name="TicketIdByCustType"
                                           maxLength={9}
+                                          autoComplete="off"
                                           value={this.state.TicketIdByCustType}
                                           onChange={this.handelOnchangeData}
                                         />
@@ -2890,7 +2899,7 @@ class MyTicketList extends Component {
                                           value={this.state.selectedCategory}
                                           onChange={this.setCategoryValue}
                                         >
-                                          <option value="0">Category</option>
+                                          <option value={0}>Category</option>
                                           {this.state.CategoryData !== null &&
                                             this.state.CategoryData.map(
                                               (item, i) => (
@@ -2909,7 +2918,7 @@ class MyTicketList extends Component {
                                           value={this.state.selectedSubCategory}
                                           onChange={this.setSubCategoryValue}
                                         >
-                                          <option value="0">
+                                          <option value={0}>
                                             Sub Category
                                           </option>
                                           {this.state.SubCategoryData !==
@@ -3026,6 +3035,7 @@ class MyTicketList extends Component {
                                           placeholder="Claim ID"
                                           value={this.state.ClaimIdByAll}
                                           name="ClaimIdByAll"
+                                          autoComplete="off"
                                           onChange={this.handelOnchangeData}
                                         />
                                       </div>
@@ -3036,6 +3046,7 @@ class MyTicketList extends Component {
                                           placeholder="Email"
                                           value={this.state.EmailByAll}
                                           name="EmailByAll"
+                                          autoComplete="off"
                                           onChange={this.handelOnchangeData}
                                         />
                                       </div>
@@ -3060,6 +3071,7 @@ class MyTicketList extends Component {
                                           placeholder="Ticket Id/Title"
                                           value={this.state.TicketIdTitleByAll}
                                           name="TicketIdTitleByAll"
+                                          autoComplete="off"
                                           onChange={this.handelOnchangeData}
                                         />
                                       </div>
@@ -3068,6 +3080,7 @@ class MyTicketList extends Component {
                                           className="no-bg"
                                           type="text"
                                           placeholder="Invoice Number/Sub Order No"
+                                          autoComplete="off"
                                           value={
                                             this.state.InvoiceSubOrderByAll
                                           }
@@ -3082,6 +3095,7 @@ class MyTicketList extends Component {
                                           placeholder="Mobile"
                                           value={this.state.MobileByAll}
                                           name="MobileByAll"
+                                          autoComplete="off"
                                           onChange={this.handelOnchangeData}
                                         />
                                       </div>
@@ -3131,6 +3145,7 @@ class MyTicketList extends Component {
                                           placeholder="Item ID"
                                           value={this.state.ItemIdByAll}
                                           name="ItemIdByAll"
+                                          autoComplete="off"
                                           onChange={this.handelOnchangeData}
                                         />
                                       </div>
@@ -3413,7 +3428,7 @@ class MyTicketList extends Component {
                                                         .setClaimSubCategoryValue
                                                     }
                                                   >
-                                                    <option value="0">
+                                                    <option value={0}>
                                                       Claim Sub Category
                                                     </option>
                                                     {this.state
