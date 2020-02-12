@@ -155,7 +155,8 @@ class MyTicket extends Component {
       validOrdernumber: "",
       StoreName: "",
       ProductName: "",
-      agentId:0
+      agentId:0,
+      // ticketingMailerData:[]
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -235,6 +236,7 @@ class MyTicket extends Component {
         var ticketIssueTypeID = data.issueTypeID;
         var storeData = data.stores;
         var productData=data.products;
+        var MailDetails=data.ticketingMailerQue;
         var selectetedParameters = {
           ticketStatusID: ticketStatus,
           priorityID: ticketPriority,
@@ -262,6 +264,7 @@ class MyTicket extends Component {
           selectetedParameters,
           StoreName: Storedetails,
           ProductName:ProductDetails,
+          mailFiled:MailDetails,
           loading: false
         });
 
@@ -1249,7 +1252,7 @@ class MyTicket extends Component {
   }
   handleSendMailData() {
     debugger;
-    var subject = "Demo Mail";
+    // var subject = "Demo Mail";
     axios({
       method: "post",
       url: config.apiUrl + "/Ticketing/SendMail",
@@ -1601,13 +1604,13 @@ class MyTicket extends Component {
                         showPagination={false}
                         resizable={false}
                         getTrProps={(rowInfo, column) => {
-                          debugger;
+                          // debugger;
                           const index = column
                           ? column.index
                           : -1;
                           return {
                             onClick: e => {
-                              debugger;
+                              // debugger;
                               this.selectedRow = index;
                               var agentId =
                               column.original["user_ID"];
@@ -3147,7 +3150,6 @@ class MyTicket extends Component {
                         <div className="">
                           <CKEditor
                             data={
-                              // this.state.CkEditorTemplateDetails.templateBody
                               this.state.mailBodyData
                             }
                             onChange={this.onAddCKEditorChange}
@@ -3207,6 +3209,7 @@ class MyTicket extends Component {
                                     type="text"
                                     className="CCdi1"
                                     name="userCC"
+                                    autoComplete="off"
                                     value={this.state.mailFiled.userCC}
                                     onChange={this.handleMailOnChange.bind(
                                       this,
@@ -3234,6 +3237,7 @@ class MyTicket extends Component {
                                     type="text"
                                     className="CCdi1"
                                     name="userBCC"
+                                    autoComplete="off"
                                     value={this.state.mailFiled.userBCC}
                                     onChange={this.handleMailOnChange.bind(
                                       this,

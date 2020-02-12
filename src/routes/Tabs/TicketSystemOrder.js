@@ -178,7 +178,7 @@ class TicketSystemOrder extends Component {
 
   handleCheckOrder = e => {
     this.setState({
-      custAttachOrder: 0,
+      custAttachOrder: 1,
       SwitchBtnStatus: e.target.checked
     });
     {

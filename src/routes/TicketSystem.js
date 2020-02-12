@@ -87,7 +87,7 @@ class TicketSystem extends Component {
       selectedIssueType: "",
       selectedIssueTypeKB: "",
       selectedTicketPriority: 0,
-      customerAttachOrder: 0,
+      customerAttachOrder: 1,
       customerStoreStatus: 0,
       selectTicketTemplateId: 0,
       selectedTicketActionType: "200",
@@ -207,6 +207,7 @@ class TicketSystem extends Component {
     });
   };
   handleCustomerAttachamentStatus(custAttachOrder) {
+    debugger
     this.setState({
       customerAttachOrder: custAttachOrder
     });
@@ -653,6 +654,7 @@ class TicketSystem extends Component {
   handleFileUpload(e) {
     debugger;
     // -------------------------Image View code start-----------------------
+    // const formData = new FormData();
     if (e.target.files && e.target.files[0]) {
       const filesAmount = e.target.files.length;
       for (let i = 0; i < filesAmount; i++) {
@@ -667,7 +669,7 @@ class TicketSystem extends Component {
     }
     for (let i = 0; i < e.target.files.length; i++) {
       debugger;
-      // const formData = new FormData();
+     
      
       var objFile = new Object();
       var name = e.target.files[i].name;
@@ -680,17 +682,17 @@ class TicketSystem extends Component {
 
       this.state.file.push(objFile);
       this.state.FileData.push(file)
-      // formData.append("data",this.state.FileData);
-      // axios({
-      //   method: "post",
-      //   url: config.apiUrl + "/Ticketing/createTicket",
-      //   headers: authHeader(),
-      //   data: formData
-      // });
+      // formData.append("data",e.target.files[i]);
+     
     }
-
+    // axios({
+    //   method: "post",
+    //   url: config.apiUrl + "/Ticketing/createTicket",
+    //   headers: authHeader(),
+    //   data: formData
+    // });
     // -------------------------Image View code end-----------------------
-    this.setState({ fileText: this.state.file.length });
+    this.setState({ fileText: this.state.file.length,FileData:this.state.FileData });
   }
   handleRemoveImage(i) {
     debugger;
@@ -737,7 +739,7 @@ class TicketSystem extends Component {
       var mailData = [];
       mailData = this.state.mailData;
       this.state.mailFiled["ToEmail"] = this.state.customerData.customerEmailId;
-      this.state.mailFiled["TikcketMailSubject"] = "Demo Subject";
+      this.state.mailFiled["TikcketMailSubject"] = this.state.titleSuggValue;
       this.state.mailFiled["TicketMailBody"] = this.state.tempName;
       this.state.mailFiled["PriorityID"] = this.state.selectedTicketPriority;
       this.state.mailFiled["IsInforToStore"] = this.state.InformStore;
@@ -746,8 +748,8 @@ class TicketSystem extends Component {
       // var Already = this.state.AlreadycustVisit;
       // var uploadFiles = [];
       // uploadFiles = this.state.file;
-      var formData = new FormData();
-
+      
+      const formData = new FormData();
       var paramData = {
         // TicketTitle: this.state.ticketSuggestion.ticketTitle,
         TicketTitle: this.state.titleSuggValue,
@@ -775,7 +777,15 @@ class TicketSystem extends Component {
       };
       formData.append("ticketingDetails", JSON.stringify(paramData));
       // formData.append("data", this.state.file[0]);
+      
       formData.append("data",this.state.FileData);
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Ticketing/createTicket",
+        headers: authHeader(),
+        data: formData
+      });
+      formData.append("data1",this.state.FileData);
       axios({
         method: "post",
         url: config.apiUrl + "/Ticketing/createTicket",
@@ -1566,6 +1576,7 @@ class TicketSystem extends Component {
                                     className="CCdi1"
                                     name="userCC"
                                     value={this.state.mailFiled.userCC}
+                                    autoComplete="off"
                                     onChange={this.handleMailOnChange.bind(
                                       this,
                                       "userCC"
@@ -1592,6 +1603,7 @@ class TicketSystem extends Component {
                                     className="CCdi1"
                                     name="userBCC"
                                     value={this.state.mailFiled.userBCC}
+                                    autoComplete="off"
                                     onChange={this.handleMailOnChange.bind(
                                       this,
                                       "userBCC"
