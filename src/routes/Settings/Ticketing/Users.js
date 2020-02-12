@@ -451,7 +451,7 @@ handleEditDesination =(data,e)  =>{
       });
     });
   }
-  
+
   handleGetReporteedesignationList(data) {
     debugger;
     let self = this;
@@ -1029,7 +1029,7 @@ handleEditDesination =(data,e)  =>{
       else {
         NotificationManager.error("Record not Selected OR Sequence is Wrong")
       }
-
+      self.closeEditModal();
       self.handleUserList();
 
     }).catch(error => {
@@ -1064,8 +1064,7 @@ handleEditDesination =(data,e)  =>{
         <Modal
           onClose={this.closeEditModal}
           open={this.state.editmodel}
-          modalId="addkb-modal-popup"
-          overlayId="addkb-modal-ovrly"
+         
         >
 
           <div className="row right-sect-div right-sect-collapse">
