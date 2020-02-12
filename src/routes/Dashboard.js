@@ -9,7 +9,7 @@ import InfoIcon from "./../assets/Images/info-icon.png";
 import TaskIconBlue from "./../assets/Images/task-icon-blue.png";
 import TaskIconGray from "./../assets/Images/task-icon-gray.png";
 import Sorting from "./../assets/Images/sorting.png";
-// import CliamIconBlue from "./../assets/Images/cliam-icon-blue.png";
+import CliamIconBlue from "./../assets/Images/cliam-icon-blue.png";
 import Chat from "./../assets/Images/chat.png";
 import csv from "./../assets/Images/csv.png";
 import Schedule from "./../assets/Images/schedule.png";
@@ -293,9 +293,8 @@ class Dashboard extends Component {
       MobileNo: "",
       AssignTo: "",
       PurchaseStoreCodeAddress: ""
-      
     };
-    this.handleAssignTo = this.handleAssignTo.bind(this);
+    this.handleGetAssignTo = this.handleGetAssignTo.bind(this);
     this.applyCallback = this.applyCallback.bind(this);
     // this.handleApply = this.handleApply.bind(this);
     this.toggle = this.toggle.bind(this);
@@ -373,7 +372,7 @@ class Dashboard extends Component {
     this.handleGetTicketPriorityList();
     this.handleGetChannelOfPurchaseList();
     this.handleGetBrandList();
-    // this.handleGetDashboardNumberData();
+    this.handleGetAssignTo();
     // this.handleGetDashboardGraphData();
     this.handleGetAgentList();
     this.handleGetSaveSearchList();
@@ -489,53 +488,57 @@ class Dashboard extends Component {
 
   setSortCheckStatus = e => {
     debugger;
-   
-    var itemsArray=[];
-    var data=e.currentTarget.value;
-   if(data==="open"){
-    itemsArray=this.state.SearchTicketData.filter(a=>a.ticketStatus==="Open");
-   }
-   else if(data==="resolved"){
-    itemsArray=this.state.SearchTicketData.filter(a=>a.ticketStatus==="Resolved");
-   }
-   else if(data==="solved"){
-    itemsArray=this.state.SearchTicketData.filter(a=>a.ticketStatus==="Solved");
-   }
-   else if(data==="new"){
-    itemsArray=this.state.SearchTicketData.filter(a=>a.ticketStatus==="New");
-   }
-  
-  this.setState({
-    SearchTicketData: itemsArray
-  })
-  this.StatusCloseModel();
-  
+
+    var itemsArray = [];
+    var data = e.currentTarget.value;
+    if (data === "open") {
+      itemsArray = this.state.SearchTicketData.filter(
+        a => a.ticketStatus === "Open"
+      );
+    } else if (data === "resolved") {
+      itemsArray = this.state.SearchTicketData.filter(
+        a => a.ticketStatus === "Resolved"
+      );
+    } else if (data === "solved") {
+      itemsArray = this.state.SearchTicketData.filter(
+        a => a.ticketStatus === "Solved"
+      );
+    } else if (data === "new") {
+      itemsArray = this.state.SearchTicketData.filter(
+        a => a.ticketStatus === "New"
+      );
+    }
+
+    this.setState({
+      SearchTicketData: itemsArray
+    });
+    this.StatusCloseModel();
   };
 
-  sortStatusAtoZ(){
+  sortStatusAtoZ() {
     debugger;
-    var itemsArray=[];
-    itemsArray=this.state.SearchTicketData;
-    
-    itemsArray.sort((a,b) => {
+    var itemsArray = [];
+    itemsArray = this.state.SearchTicketData;
+
+    itemsArray.sort((a, b) => {
       return a.name > b.name;
-  });
-  this.setState({
-    SearchTicketData: itemsArray
-  })
-  this.StatusCloseModel();
+    });
+    this.setState({
+      SearchTicketData: itemsArray
+    });
+    this.StatusCloseModel();
   }
-  sortStatusZtoA(){
+  sortStatusZtoA() {
     debugger;
-    var itemsArray=[];
-    itemsArray=this.state.SearchTicketData;
-    itemsArray.sort((a,b) => {
+    var itemsArray = [];
+    itemsArray = this.state.SearchTicketData;
+    itemsArray.sort((a, b) => {
       return a.name < b.name;
-  });
-  this.setState({
-    SearchTicketData: itemsArray
-  })
-  this.StatusCloseModel();
+    });
+    this.setState({
+      SearchTicketData: itemsArray
+    });
+    this.StatusCloseModel();
   }
   handleAdvanceSearchOption() {
     debugger;
@@ -1022,7 +1025,7 @@ class Dashboard extends Component {
     this.setState({ selectedAssignedTo: assign });
   };
 
-  handleAssignTo() {
+  handleGetAssignTo() {
     debugger;
 
     let self = this;
@@ -1174,8 +1177,13 @@ class Dashboard extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let DepartmentData = res.data.responseData;
-      self.setState({ DepartmentData: DepartmentData });
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        self.setState({ DepartmentData: data });
+      } else {
+        self.setState({ DepartmentData: [] });
+      }
     });
   }
   handleWithTaskAll = e => {
@@ -1279,8 +1287,8 @@ class Dashboard extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let TicketPriorityData = res.data.responseData;
-      self.setState({ TicketPriorityData: TicketPriorityData });
+      let data = res.data.responseData;
+      self.setState({ TicketPriorityData: data });
     });
   }
   handleTicketStatusAll = e => {
@@ -1752,9 +1760,6 @@ class Dashboard extends Component {
         NotificationManager.success("Tickets assigned successfully.");
         self.handleSearchTicketEscalation();
       }
-      // self.setState({
-      //   SlaStatusData: SlaStatusData
-      // });
     });
   }
   handleGetSlaStatusList() {
@@ -1767,10 +1772,17 @@ class Dashboard extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let SlaStatusData = res.data.responseData;
-      self.setState({
-        SlaStatusData: SlaStatusData
-      });
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        self.setState({
+          SlaStatusData: data
+        });
+      } else {
+        self.setState({
+          SlaStatusData: []
+        });
+      }
     });
   }
   handleGetTicketSourceList() {
@@ -1783,10 +1795,17 @@ class Dashboard extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let TicketSourceData = res.data.responseData;
-      self.setState({
-        TicketSourceData: TicketSourceData
-      });
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        self.setState({
+          TicketSourceData: data
+        });
+      } else {
+        self.setState({
+          TicketSourceData: []
+        });
+      }
     });
   }
   handleGetClaimIssueTypeList() {
@@ -1932,75 +1951,99 @@ class Dashboard extends Component {
   clearSearch() {
     debugger;
     if (this.state.byDateFlag === 1) {
-      this.setState({
-        ByDateCreatDate: "",
-        ByDateSelectDate: "",
-        selectedSlaDueByDate: 0,
-        selectedTicketStatusByDate: 0,
-        resultCount: 0
-      });
-      this.handleSearchTicketEscalation();
+      this.setState(
+        {
+          ByDateCreatDate: "",
+          ByDateSelectDate: "",
+          selectedSlaDueByDate: 0,
+          selectedTicketStatusByDate: 0,
+          resultCount: 0
+        },
+        () => {
+          this.handleSearchTicketEscalation();
+        }
+      );
     } else if (this.state.byCustomerTypeFlag === 2) {
-      this.setState({
-        MobileNoByCustType: "",
-        EmailIdByCustType: "",
-        TicketIdByCustType: "",
-        selectedTicketStatusByCustomer: 0,
-        resultCount: 0
-      });
-      this.handleSearchTicketEscalation();
+      this.setState(
+        {
+          MobileNoByCustType: "",
+          EmailIdByCustType: "",
+          TicketIdByCustType: "",
+          selectedTicketStatusByCustomer: 0,
+          resultCount: 0
+        },
+        () => {
+          this.handleSearchTicketEscalation();
+        }
+      );
     } else if (this.state.byTicketTypeFlag === 3) {
-      this.setState({
-        selectedPriority: 0,
-        selectedTicketStatusByTicket: 0,
-        selectedChannelOfPurchase: [],
-        selectedTicketActionType: [],
-        resultCount: 0
-      });
-      this.handleSearchTicketEscalation();
+      this.setState(
+        {
+          selectedPriority: 0,
+          selectedTicketStatusByTicket: 0,
+          selectedChannelOfPurchase: [],
+          selectedTicketActionType: [],
+          resultCount: 0
+        },
+        () => {
+          this.handleSearchTicketEscalation();
+        }
+      );
     } else if (this.state.byCategoryFlag === 4) {
-      this.setState({
-        selectedCategory: 0,
-        selectedSubCategory: 0,
-        selectedIssueType: 0,
-        selectedTicketStatusByCategory: 0,
-        resultCount: 0
-      });
-      this.handleSearchTicketEscalation();
+      this.setState(
+        {
+          selectedCategory: 0,
+          selectedSubCategory: 0,
+          selectedIssueType: 0,
+          selectedTicketStatusByCategory: 0,
+          resultCount: 0
+        },
+        () => {
+          this.handleSearchTicketEscalation();
+          this.handleGetSubCategoryList();
+        }
+      );
     } else if (this.state.allFlag === 5) {
-      this.setState({
-        ByAllCreateDate: "",
-        selectedTicketSource: 0,
-        ClaimIdByAll: "",
-        EmailByAll: "",
-        ByAllLastDate: "",
-        TicketIdTitleByAll: "",
-        InvoiceSubOrderByAll: "",
-        MobileByAll: "",
-        selectedCategoryAll: 0,
-        selectedPriorityAll: 0,
-        ItemIdByAll: "",
-        selectedAssignedToAll: "",
-        selectedSubCategoryAll: 0,
-        selectedTicketStatusAll: 0,
-        selectedVisitStoreAll: "yes",
-        selectedPurchaseStoreCodeAddressAll: "",
-        selectedIssueTypeAll: 0,
-        selectedSlaStatus: 0,
-        selectedWantToVisitStoreAll: "yes",
-        selectedVisitStoreCodeAddressAll: "",
-        selectedWithClaimAll: "no",
-        selectedClaimStatus: 0,
-        selectedClaimCategory: 0,
-        selectedClaimSubCategory: 0,
-        selectedClaimIssueType: 0,
-        selectedWithTaskAll: "no",
-        selectedTaskStatus: 0,
-        selectedDepartment: 0,
-        selectedFunction: 0,
-        resultCount: 0
-      });
-      this.handleSearchTicketEscalation();
+      this.setState(
+        {
+          ByAllCreateDate: "",
+          selectedTicketSource: 0,
+          ClaimIdByAll: "",
+          EmailByAll: "",
+          ByAllLastDate: "",
+          TicketIdTitleByAll: "",
+          InvoiceSubOrderByAll: "",
+          MobileByAll: "",
+          selectedCategoryAll: 0,
+          selectedPriorityAll: 0,
+          ItemIdByAll: "",
+          selectedAssignedTo: 0,
+          selectedAssignedToAll: "",
+          selectedSubCategoryAll: 0,
+          selectedTicketStatusAll: 0,
+          selectedVisitStoreAll: "yes",
+          selectedPurchaseStoreCodeAddressAll: "",
+          selectedIssueTypeAll: 0,
+          selectedSlaStatus: 0,
+          selectedWantToVisitStoreAll: "yes",
+          selectedVisitStoreCodeAddressAll: "",
+          selectedWithClaimAll: "no",
+          selectedClaimStatus: 0,
+          selectedClaimCategory: 0,
+          selectedClaimSubCategory: 0,
+          selectedClaimIssueType: 0,
+          selectedWithTaskAll: "no",
+          selectedTaskStatus: 0,
+          selectedDepartment: 0,
+          selectedFunction: 0,
+          resultCount: 0
+        },
+        () => {
+          this.handleSearchTicketEscalation();
+          this.handleGetSubCategoryList();
+        this.handleGetClaimSubCategoryList()
+        }
+      );
     }
   }
   ViewSearchData() {
@@ -2234,7 +2277,7 @@ class Dashboard extends Component {
     if (this.state.SearchName.length > 0) {
       axios({
         method: "post",
-        url: config.apiUrl + "/Ticketing/savesearch",
+        url: config.apiUrl + "/DashBoard/DashBoardSaveSearch",
         headers: authHeader(),
         params: {
           SearchSaveName: this.state.SearchName,
@@ -2282,15 +2325,21 @@ class Dashboard extends Component {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/Ticketing/listSavedSearch",
+      url: config.apiUrl + "/DashBoard/GetDashBoardSavedSearch",
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let SearchListData = res.data.responseData;
-      self.setState({ SearchListData: SearchListData });
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        self.setState({ SearchListData: data });
+      } else {
+        self.setState({ SearchListData: [] });
+      }
     });
   }
   handleSearchTicketEscalation() {
+    debugger;
     this.setState({ loading: true });
     let self = this;
     axios({
@@ -2309,10 +2358,18 @@ class Dashboard extends Component {
       let data = res.data.responseData;
       let Status = res.data.message;
       let CSVData = data;
+      let count = 0;
+      if (res.data.responseData != null) {
+        count = res.data.responseData.length;
+      }
       if (Status === "Record Not Found") {
-        self.setState({ SearchTicketData: [], loading: false });
+        self.setState({ SearchTicketData: [], loading: false, resultCount: 0 });
       } else if (data !== null) {
-        self.setState({ SearchTicketData: data, loading: false });
+        self.setState({
+          SearchTicketData: data,
+          loading: false,
+          resultCount: count
+        });
         for (let i = 0; i < CSVData.length; i++) {
           delete CSVData[i].totalpages;
           delete CSVData[i].responseTimeRemainingBy;
@@ -2350,10 +2407,9 @@ class Dashboard extends Component {
   hadleSearchDeleteData(searchDeletId) {
     debugger;
     let self = this;
-
     axios({
       method: "post",
-      url: config.apiUrl + "/Ticketing/deletesavedsearch",
+      url: config.apiUrl + "/DashBoard/DeleteDashBoardSavedSearch",
       headers: authHeader(),
       params: {
         SearchParamID: searchDeletId
@@ -2391,15 +2447,25 @@ class Dashboard extends Component {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/Search/GetTicketsOnSavedSearch",
+      url: config.apiUrl + "/DashBoard/GetDashBoardTicketsOnSavedSearch",
       headers: authHeader(),
       params: {
         SearchParamID: paramsID
       }
     }).then(function(res) {
       debugger;
+      let status = res.data.message;
       let data = res.data.responseData;
-      self.setState({ ClaimIssueTypeData: data });
+       let count = 0;
+      if (res.data.responseData != null) {
+        count = res.data.responseData.length;
+      }
+      if (status === "Success") {
+        self.setState({ SearchTicketData: data,resultCount: count });
+        self.onCloseModal();
+      } else {
+        self.setState({ SearchTicketData: [] });
+      }
     });
   }
 
@@ -2452,13 +2518,19 @@ class Dashboard extends Component {
             <div className="status-drop-down">
               <div className="sort-sctn">
                 <div className="d-flex">
-                  <a onClick={this.sortStatusAtoZ.bind(this)} className="sorting-icon">
+                  <a
+                    onClick={this.sortStatusAtoZ.bind(this)}
+                    className="sorting-icon"
+                  >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
                   <p>SORT BY A TO Z</p>
                 </div>
                 <div className="d-flex">
-                  <a onClick={this.sortStatusZtoA.bind(this)} className="sorting-icon">
+                  <a
+                    onClick={this.sortStatusZtoA.bind(this)}
+                    className="sorting-icon"
+                  >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
                   <p>SORT BY Z TO A</p>
@@ -2467,43 +2539,53 @@ class Dashboard extends Component {
               <div className="filter-type">
                 <p>FILTER BY TYPE</p>
                 <div className="filter-checkbox">
-                  <input type="checkbox" id="fil-open" name="filter-type"
-                 
-                  value="open"
-                  onChange={this.setSortCheckStatus}
+                  <input
+                    type="checkbox"
+                    id="fil-open"
+                    name="filter-type"
+                    value="open"
+                    onChange={this.setSortCheckStatus}
                   />
                   <label htmlFor="fil-open">
                     <span className="table-btn table-blue-btn">Open</span>
                   </label>
                 </div>
                 <div className="filter-checkbox">
-                  <input type="checkbox" id="fil-new" name="filter-type"
-                   value="new"
-                   onChange={this.setSortCheckStatus}
+                  <input
+                    type="checkbox"
+                    id="fil-new"
+                    name="filter-type"
+                    value="new"
+                    onChange={this.setSortCheckStatus}
                   />
                   <label htmlFor="fil-new">
                     <span className="table-btn table-yellow-btn">New</span>
                   </label>
                 </div>
                 <div className="filter-checkbox">
-                  <input type="checkbox" id="fil-solved" name="filter-type" 
-                   value="solved"
-                   onChange={this.setSortCheckStatus}
+                  <input
+                    type="checkbox"
+                    id="fil-solved"
+                    name="filter-type"
+                    value="solved"
+                    onChange={this.setSortCheckStatus}
                   />
                   <label htmlFor="fil-solved">
                     <span className="table-btn table-green-btn">Solved</span>
                   </label>
                 </div>
                 <div className="filter-checkbox">
-                  <input type="checkbox" id="fil-solved" name="filter-type" 
-                   value="resolved"
-                   onChange={this.setSortCheckStatus}
+                  <input
+                    type="checkbox"
+                    id="fil-solved"
+                    name="filter-type"
+                    value="resolved"
+                    onChange={this.setSortCheckStatus}
                   />
                   <label htmlFor="fil-solved">
                     <span className="table-btn table-green-btn">Resolved</span>
                   </label>
                 </div>
-               
               </div>
               <div className="filter-type filter-color">
                 <p>FILTER BY COLOR</p>
@@ -2662,7 +2744,7 @@ class Dashboard extends Component {
                         placeholder="Enter text"
                         style={{ cursor: "pointer" }}
                         disabled={disabled}
-                        value={value}
+                        defaultValue={value}
                       />
                     </DateTimeRangeContainer>
                   </Col>
@@ -2673,9 +2755,23 @@ class Dashboard extends Component {
           </div>
         </div>
         <section className="dash-cntr">
-          <div className={this.state.collapse ? "dashboard-collapse-icon" : "dashboard-collapse-icon dashboard-collapse-icon-inv"} onClick={this.toggle}>
-            {this.state.collapse ? <img src={Dash} alt="dash-icon" /> :
-            <img src={CollapseIcon} alt="dash-icon" className="collapse-icon" />}
+          <div
+            className={
+              this.state.collapse
+                ? "dashboard-collapse-icon"
+                : "dashboard-collapse-icon dashboard-collapse-icon-inv"
+            }
+            onClick={this.toggle}
+          >
+            {this.state.collapse ? (
+              <img src={Dash} alt="dash-icon" />
+            ) : (
+              <img
+                src={CollapseIcon}
+                alt="dash-icon"
+                className="collapse-icon"
+              />
+            )}
           </div>
           <Collapse isOpen={this.state.collapse}>
             <Card>
@@ -2744,20 +2840,20 @@ class Dashboard extends Component {
                             </span>
                           </div>
                         </div>
-                        {/* {this.state.TotalNoOfChatShow && ( */}
-                        <div
-                          className="col-md col-sm-4 col-6"
-                          onClick={this.HandleChangeRedict.bind(this)}
-                        >
-                          <div className="dash-top-cards">
-                            <p className="card-head">Total no of chat</p>
-                            <span className="card-value">102</span>
-                            <small className="blue-clr">
-                              View More Insights
-                            </small>
+                        {this.state.TotalNoOfChatShow && (
+                          <div
+                            className="col-md col-sm-4 col-6"
+                            onClick={this.HandleChangeRedict.bind(this)}
+                          >
+                            <div className="dash-top-cards">
+                              <p className="card-head">Total no of chat</p>
+                              <span className="card-value">102</span>
+                              <small className="blue-clr">
+                                View More Insights
+                              </small>
+                            </div>
                           </div>
-                        </div>
-                        {/* )} */}
+                        )}
                       </div>
                     </div>
                     <div className="container-fluid btm-mar">
@@ -3832,6 +3928,7 @@ class Dashboard extends Component {
                                     className="no-bg"
                                     placeholder="Ticket ID"
                                     name="TicketIdByCustType"
+                                    maxLength={9}
                                     value={this.state.TicketIdByCustType}
                                     onChange={this.handelOnchangeData}
                                   />
@@ -4192,6 +4289,7 @@ class Dashboard extends Component {
                                     className="no-bg"
                                     type="text"
                                     placeholder="Mobile"
+                                    maxLength={10}
                                     value={this.state.MobileByAll}
                                     name="MobileByAll"
                                     onChange={this.handelOnchangeData}
@@ -4257,7 +4355,6 @@ class Dashboard extends Component {
                                     className="add-select-category"
                                     value={this.state.selectedAssignedTo}
                                     onChange={this.setAssignedToValue}
-                                    onClick={this.handleAssignTo.bind(this)}
                                   >
                                     <option>Select Assigned To</option>
                                     {this.state.AssignToData !== null &&
@@ -4390,8 +4487,7 @@ class Dashboard extends Component {
                                       this.state.SlaStatusData.map(
                                         (item, i) => (
                                           <option key={i} value={item.SLAId}>
-                                            {item.SLAResponseTime} /
-                                            {item.SLARequestTime}
+                                            {item.slaRequestResponse}
                                           </option>
                                         )
                                       )}
@@ -5356,40 +5452,31 @@ class Dashboard extends Component {
                         ),
                         accessor: "ticketStatus",
                         Cell: row => {
-                          debugger
-                          if (
-                            row.original.ticketStatus === "Open"  
-                          ) {
+                          if (row.original.ticketStatus === "Open") {
                             return (
                               <span className="table-b table-blue-btn">
                                 <label>{row.original.ticketStatus}</label>
                               </span>
                             );
-                          } else if (
-                            row.original.ticketStatus === "Resolved"  
-                          ) {
+                          } else if (row.original.ticketStatus === "Resolved") {
                             return (
                               <span className="table-b table-green-btn">
                                 <label>{row.original.ticketStatus}</label>
                               </span>
                             );
-                          }else if (
-                            row.original.ticketStatus === "New"  
-                          ) {
+                          } else if (row.original.ticketStatus === "New") {
                             return (
                               <span className="table-b table-yellow-btn">
                                 <label>{row.original.ticketStatus}</label>
                               </span>
                             );
-                          }else if (
-                            row.original.ticketStatus === "Solved"  
-                          ) {
+                          } else if (row.original.ticketStatus === "Solved") {
                             return (
                               <span className="table-b table-green-btn">
                                 <label>{row.original.ticketStatus}</label>
                               </span>
                             );
-                          }else{
+                          } else {
                             return (
                               <span className="table-b table-green-btn">
                                 <label>{row.original.ticketStatus}</label>
@@ -5403,10 +5490,64 @@ class Dashboard extends Component {
                         accessor: "taskStatus",
                         width: 45,
                         Cell: row => {
-                          if (
-                            row.original.taskStatus === "0/0" &&
-                            row.original.taskStatus === null
-                          ) {
+                          // debugger;
+                          // if(row.original.claimStatus === "0/0"){
+                          //   return (
+                          //     <div>
+                          //       <Popover
+                          //         content={
+                          //           <div className="dash-task-popup-new">
+                          //             <div className="d-flex justify-content-between align-items-center">
+                          //               <p className="m-b-0">
+                          //                 CLAIM:{row.original.claimStatus}
+                          //               </p>
+                          //             </div>
+                          //             <ProgressBar
+                          //               className="task-progress"
+                          //               now={70}
+                          //             />
+                          //           </div>
+                          //         }
+                          //         placement="bottom"
+                          //       >
+                          //         <img
+                          //           className="task-icon-1 marginimg"
+                          //           src={CliamIconBlue}
+                          //           alt="task-icon-blue"
+                          //         />
+                          //       </Popover>
+                          //     </div>
+                          //   );
+                          // }
+                          if (row.original.taskStatus === "0/0") {
+                            if (row.original.claimStatus !== "0/0") {
+                              return (
+                                <div>
+                                  <Popover
+                                    content={
+                                      <div className="dash-task-popup-new">
+                                        <div className="d-flex justify-content-between align-items-center">
+                                          <p className="m-b-0">
+                                            CLAIM:{row.original.claimStatus}
+                                          </p>
+                                        </div>
+                                        <ProgressBar
+                                          className="task-progress"
+                                          now={70}
+                                        />
+                                      </div>
+                                    }
+                                    placement="bottom"
+                                  >
+                                    <img
+                                      className="task-icon-1 marginimg"
+                                      src={CliamIconBlue}
+                                      alt="task-icon-blue"
+                                    />
+                                  </Popover>
+                                </div>
+                              );
+                            }
                             return (
                               <div>
                                 <img
@@ -5417,6 +5558,34 @@ class Dashboard extends Component {
                               </div>
                             );
                           } else {
+                            if (row.original.claimStatus !== "0/0") {
+                              return (
+                                <div>
+                                  <Popover
+                                    content={
+                                      <div className="dash-task-popup-new">
+                                        <div className="d-flex justify-content-between align-items-center">
+                                          <p className="m-b-0">
+                                            CLAIM:{row.original.claimStatus}
+                                          </p>
+                                        </div>
+                                        <ProgressBar
+                                          className="task-progress"
+                                          now={70}
+                                        />
+                                      </div>
+                                    }
+                                    placement="bottom"
+                                  >
+                                    <img
+                                      className="task-icon-1 marginimg"
+                                      src={CliamIconBlue}
+                                      alt="task-icon-blue"
+                                    />
+                                  </Popover>
+                                </div>
+                              );
+                            }
                             return (
                               <div>
                                 <Popover

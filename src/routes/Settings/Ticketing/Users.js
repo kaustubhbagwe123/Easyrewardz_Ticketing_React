@@ -451,6 +451,7 @@ handleEditDesination =(data,e)  =>{
       });
     });
   }
+  
   handleGetReporteedesignationList(data) {
     debugger;
     let self = this;

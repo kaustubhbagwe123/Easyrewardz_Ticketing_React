@@ -521,7 +521,8 @@ a {
   padding: 10;
   margin-right: 150px;
   margin-top: 45px;
-  width: 400px;
+  width: 450px;
+  /* width: 400px; */
   /* margin-bottom: 4px; */
   display: inline-block;
 }
@@ -3419,6 +3420,29 @@ table tr th:last-child {
 .my-ticket-notes::-webkit-scrollbar-thumb:hover {
   background: #a5a3a3;
 }
+.ReactTable.limit-react-table-body .rt-tbody {
+  max-height: 300px;
+}
+.ReactTable.limit-react-table-body .rt-thead {
+  margin-right: 4px;
+}
+.ReactTable.limit-react-table-body .rt-tbody::-webkit-scrollbar{
+  width: 4px;
+}
+.ReactTable.limit-react-table-body .rt-tbody::-webkit-scrollbar-track{
+  background: #ddd;
+  border-radius: 10px;
+}
+.ReactTable.limit-react-table-body .rt-tbody::-webkit-scrollbar-thumb{
+  background: #888;
+  border-radius: 10px;
+}
+.ReactTable.limit-react-table-body .rt-tbody::-webkit-scrollbar-thumb:hover{
+  background: #555;
+}
+.ReactTable.limit-react-table-body .rt-thead .rt-tr {
+  text-align: left;
+}
 /* my ticket ends */
 
 /* .cke_editable {
@@ -3443,6 +3467,18 @@ table tr th:last-child {
   background-position: right 12px center;
 }
 /* settings ends */
+
+/* sla starts */
+.category-box input:checked + label img {
+  display: block;
+}
+.category-box input + label img {
+  display: none;
+}
+.category-box input {
+  display: none;
+}
+/* sla ends */
 
 /* chetan css end */
 /******************************************************/
@@ -3856,6 +3892,10 @@ progress::-webkit-progress-bar {
   margin-top: 0;
   margin-bottom: 0;
   display: inline-block;
+}
+.historical-popup {
+  margin-right: auto !important;
+  min-width: 60%;
 }
 /* ---------------------------Deepak Savani Task:Claim Tab Ticket View-----------------------------   */
 
