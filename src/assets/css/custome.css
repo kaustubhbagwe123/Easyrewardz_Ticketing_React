@@ -3468,6 +3468,18 @@ table tr th:last-child {
 }
 /* settings ends */
 
+/* sla starts */
+.category-box input:checked + label img {
+  display: block;
+}
+.category-box input + label img {
+  display: none;
+}
+.category-box input {
+  display: none;
+}
+/* sla ends */
+
 /* chetan css end */
 /******************************************************/
 
