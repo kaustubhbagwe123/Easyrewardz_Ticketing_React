@@ -341,20 +341,21 @@ class MyTicketList extends Component {
     }).then(function(res) {
       debugger;
       let status = res.data.message;
-      let data = res.data.responseData;
+      let data1 = res.data.responseData;
       if (status === "Success") {
-        self.setState({ modulesItemsMyticket: data });
-        self.setMyTicketSearch();
+        self.setState({ modulesItemsMyticket: data1 });
+        self.setMyTicketSearch(data1);
       } else {
         self.setState({ modulesItemsMyticket: [] });
       }
     });
   }
 
-  setMyTicketSearch() {
+  setMyTicketSearch(data1) {
     debugger;
     var data = [];
-    data = this.state.modulesItemsMyticket;
+    data = data1;
+    if(data.length > 0) {
     if(data[0].moduleItemisActive!==undefined){
       if (data[0].moduleItemisActive === true) {
         this.setState({ Escalation: "yes" });
@@ -419,7 +420,9 @@ class MyTicketList extends Component {
       this.setState({ Draft: "none" });
     }
   }
+}
   }
+
   handleSearchTicketAllTabCount() {
     let self = this;
     axios({

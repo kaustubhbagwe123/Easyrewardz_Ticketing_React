@@ -554,19 +554,20 @@ class Dashboard extends Component {
     }).then(function(res) {
       debugger;
       let status = res.data.message;
-      let data = res.data.responseData;
+      let data1 = res.data.responseData;
       if (status === "Success") {
-        self.setState({ modulesItems: data });
-        self.setAdvanceSearch();
+        self.setState({ modulesItems: data1 });
+        self.setAdvanceSearch(data1);
       } else {
         self.setState({ modulesItems: [] });
       }
     });
   }
-  setAdvanceSearch() {
+  setAdvanceSearch(data1) {
     debugger;
     var data = [];
-    data = this.state.modulesItems;
+    data =data1;
+    if(data.length > 0) {
     if(data[0].moduleItemisActive!== undefined){
     if (data[0].moduleItemisActive === true) {
       this.setState({ CreateDateShowRecord: "yes" });
@@ -700,6 +701,7 @@ class Dashboard extends Component {
       this.setState({ PurchaseStoreCodeAddress: "none" });
     }
   }
+}
   }
   handleGetDashboardNumberData() {
     this.setState({ loadingAbove: true });
