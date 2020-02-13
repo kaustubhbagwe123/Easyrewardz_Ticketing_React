@@ -1380,7 +1380,7 @@ if(datar==="add"){
                         value={this.state.userEditData.is_Active}
                         onChange={this.handleOnChangeEditData}
                       >
-
+ 
                         <option value="true">Active</option>
                         <option value="false">Inactive</option>
                       </select>
