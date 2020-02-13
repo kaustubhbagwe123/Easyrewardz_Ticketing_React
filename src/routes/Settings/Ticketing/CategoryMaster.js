@@ -833,7 +833,7 @@ class CategoryMaster extends Component {
                           }
                         />
                       </div> */}
-                       <div className="dropDrownSpace">
+                       {/* <div className="dropDrownSpace">
                         <label className="reports-to reports-dis">
                           Category
                         </label>
@@ -887,7 +887,7 @@ class CategoryMaster extends Component {
                             this.setState({ showList1: false})
                           }
                         />
-                      </div>
+                      </div> */}
                     </div>
                     <div className="divSpace">
                       <div className="dropDrownSpace">

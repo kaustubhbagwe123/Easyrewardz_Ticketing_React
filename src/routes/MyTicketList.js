@@ -1418,24 +1418,24 @@ class MyTicketList extends Component {
       allTab["SubCategoryId"] = this.state.selectedSubCategoryAll;
       allTab["IssueTypeId"] = this.state.selectedIssueTypeAll;
       allTab["TicketSourceTypeID"] = this.state.selectedTicketSource;
-      allTab["TicketIdORTitle"] = this.state.TicketIdTitleByAll;
+      allTab["TicketIdORTitle"] = this.state.TicketIdTitleByAll.trim();
       allTab["PriorityId"] = this.state.selectedPriorityAll;
       allTab["TicketSatutsID"] = this.state.selectedTicketStatusAll;
       allTab["SLAStatus"] = this.state.selectedSlaStatus;
       allTab["ClaimId"] = this.state.selectedClaimStatus;
-      allTab["InvoiceNumberORSubOrderNo"] = this.state.InvoiceSubOrderByAll;
-      allTab["OrderItemId"] = this.state.ItemIdByAll;
+      allTab["InvoiceNumberORSubOrderNo"] = this.state.InvoiceSubOrderByAll.trim();
+      allTab["OrderItemId"] = this.state.ItemIdByAll.trim();
       allTab["IsVisitStore"] = this.state.selectedVisitStoreAll;
       allTab["IsWantVistingStore"] = this.state.selectedWantToVisitStoreAll;
-      allTab["CustomerEmailID"] = this.state.EmailByAll;
-      allTab["CustomerMobileNo"] = this.state.MobileByAll;
+      allTab["CustomerEmailID"] = this.state.EmailByAll.trim();
+      allTab["CustomerMobileNo"] = this.state.MobileByAll.trim();
       allTab["AssignTo"] = this.state.selectedAssignedTo;
       allTab[
         "StoreCodeORAddress"
-      ] = this.state.selectedPurchaseStoreCodeAddressAll;
+      ] = this.state.selectedPurchaseStoreCodeAddressAll.trim();
       allTab[
         "WantToStoreCodeORAddress"
-      ] = this.state.selectedVisitStoreCodeAddressAll;
+      ] = this.state.selectedVisitStoreCodeAddressAll.trim();
       allTab["HaveClaim"] = withClaim;
       allTab["ClaimStatusId"] = this.state.selectedClaimStatus;
       allTab["ClaimCategoryId"] = this.state.selectedClaimCategory;
@@ -3112,6 +3112,7 @@ class MyTicketList extends Component {
                                           value={this.state.MobileByAll}
                                           name="MobileByAll"
                                           autoComplete="off"
+                                          maxLength={10}
                                           onChange={this.handelOnchangeData}
                                         />
                                       </div>
