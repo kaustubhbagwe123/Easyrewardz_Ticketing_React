@@ -3,6 +3,8 @@ import SearchIcon from "./../assets/Images/search-icon.png";
 import InfoIcon from "./../assets/Images/info-icon.png";
 import TaskIconBlue from "./../assets/Images/task-icon-blue.png";
 import TaskIconGray from "./../assets/Images/task-icon-gray.png";
+import CliamIconBlue from "./../assets/Images/cliam-icon-blue.png";
+import CliamIconGray from "./../assets/Images/claim-icon-gray.png";
 import HeadPhone3 from "./../assets/Images/headphone3.png";
 import BlackLeftArrow from "./../assets/Images/black-left-arrow.png";
 import SearchBlackImg from "./../assets/Images/searchBlack.png";
@@ -4515,6 +4517,57 @@ class MyTicketList extends Component {
                                 accessor: "taskStatus",
                                 width: 45,
                                 Cell: row => {
+                                    if (row.original.claimStatus !== "0/0") {
+                                      return (
+                                        <div>
+                                          <Popover
+                                            content={
+                                              <div className="dash-task-popup-new">
+                                                <div className="d-flex justify-content-between align-items-center">
+                                                  <p className="m-b-0">
+                                                    CLAIM:{row.original.claimStatus}
+                                                  </p>
+                                                  <div className="d-flex align-items-center">
+                                                    2 NEW
+                                                    <div className="nw-chat">
+                                                      <img src={Chat} alt="chat" />
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                                <ProgressBar
+                                                  className="task-progress"
+                                                  now={70}
+                                                />
+                                              </div>
+                                            }
+                                            placement="bottom"
+                                          >
+                                            <img
+                                              className="task-icon-1 marginimg claim-icon-1"
+                                              src={CliamIconBlue}
+                                              alt="task-icon-blue"
+                                            />
+                                          </Popover>
+                                        </div>
+                                      );
+                                    } else {
+                                    return (
+                                      <div>
+                                        <img
+                                          className="task-icon-1 marginimg claim-icon-1"
+                                          src={CliamIconGray}
+                                          alt="task-icon-gray"
+                                        />
+                                      </div>
+                                    );
+                                  }
+                                }
+                              },
+                              {
+                                Header: <span></span>,
+                                accessor: "taskStatus",
+                                width: 45,
+                                Cell: row => {
                                   if (row.original.taskStatus === "0/0") {
                                     return (
                                       <div>
@@ -4656,6 +4709,81 @@ class MyTicketList extends Component {
                                   <span>
                                     <label>{row.original.createdOn}</label>
 
+                                  <Popover
+                                    content={
+                                      <div className="insertpop1">
+                                        <ul className="dash-creation-popup">
+                                          <li className="title">
+                                            Creation details
+                                          </li>
+                                          <li>
+                                            <p>
+                                              {row.original.createdBy} Created
+                                            </p>
+                                            <p>{row.original.createdago}</p>
+                                          </li>
+                                          <li>
+                                            <p>
+                                              Assigned to{" "}
+                                              {row.original.assignedTo}
+                                            </p>
+                                            <p>{row.original.assignedago}</p>
+                                          </li>
+                                          <li>
+                                            <p>
+                                              {row.original.updatedBy} updated
+                                            </p>
+                                            <p>{row.original.updatedago}</p>
+                                          </li>
+                                          <li>
+                                            <p>Response time remaining by</p>
+                                            <p>
+                                              {
+                                                row.original
+                                                  .responseTimeRemainingBy
+                                              }
+                                            </p>
+                                          </li>
+                                          <li>
+                                            <p>Response overdue by</p>
+                                            <p>
+                                              {row.original.responseOverdueBy}
+                                            </p>
+                                          </li>
+                                          <li>
+                                            <p>Resolution overdue by</p>
+                                            <p>
+                                              {row.original.resolutionOverdueBy}
+                                            </p>
+                                          </li>
+                                        </ul>
+                                      </div>
+                                    }
+                                    placement="left"
+                                  >
+                                    <img
+                                      className="info-icon"
+                                      src={InfoIcon}
+                                      alt="info-icon"
+                                    />
+                                  </Popover>
+                                </span>
+                              )
+                            }
+                          ]}
+                          // resizable={false} 
+                          defaultPageSize={10}
+                          showPagination={true}
+                          getTrProps={this.HandleRowClickPage}
+                          minRows={2}
+                          defaultSorted={[
+                            {
+                              id: "ticketID",
+                              desc: true
+                            }
+                          ]}
+                        />
+                        {/* <div className="position-relative">
                                     <Popover
                                       content={
                                         <div className="insertpop1">

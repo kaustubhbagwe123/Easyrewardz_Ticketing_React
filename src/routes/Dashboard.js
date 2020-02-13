@@ -10,6 +10,7 @@ import TaskIconBlue from "./../assets/Images/task-icon-blue.png";
 import TaskIconGray from "./../assets/Images/task-icon-gray.png";
 import Sorting from "./../assets/Images/sorting.png";
 import CliamIconBlue from "./../assets/Images/cliam-icon-blue.png";
+import CliamIconGray from "./../assets/Images/claim-icon-gray.png";
 import Chat from "./../assets/Images/chat.png";
 import csv from "./../assets/Images/csv.png";
 import Schedule from "./../assets/Images/schedule.png";
@@ -5490,6 +5491,7 @@ class Dashboard extends Component {
                         accessor: "taskStatus",
                         width: 45,
                         Cell: row => {
+<<<<<<< HEAD
                           // debugger;
                           // if(row.original.claimStatus === "0/0"){
                           //   return (
@@ -5520,6 +5522,8 @@ class Dashboard extends Component {
                           //   );
                           // }
                           if (row.original.taskStatus === "0/0") {
+=======
+>>>>>>> fa7890ffaefbbd8db08adf7df9c9eb00aa2710c9
                             if (row.original.claimStatus !== "0/0") {
                               return (
                                 <div>
@@ -5530,6 +5534,12 @@ class Dashboard extends Component {
                                           <p className="m-b-0">
                                             CLAIM:{row.original.claimStatus}
                                           </p>
+                                          <div className="d-flex align-items-center">
+                                            2 NEW
+                                            <div className="nw-chat">
+                                              <img src={Chat} alt="chat" />
+                                            </div>
+                                          </div>
                                         </div>
                                         <ProgressBar
                                           className="task-progress"
@@ -5540,54 +5550,34 @@ class Dashboard extends Component {
                                     placement="bottom"
                                   >
                                     <img
-                                      className="task-icon-1 marginimg"
+                                      className="task-icon-1 marginimg claim-icon-1"
                                       src={CliamIconBlue}
                                       alt="task-icon-blue"
                                     />
                                   </Popover>
                                 </div>
                               );
-                            }
+                            } else {
                             return (
                               <div>
                                 <img
-                                  className="task-icon-1 marginimg"
-                                  src={TaskIconGray}
+                                  className="task-icon-1 marginimg claim-icon-1"
+                                  src={CliamIconGray}
                                   alt="task-icon-gray"
                                 />
                               </div>
                             );
-                          } else {
-                            if (row.original.claimStatus !== "0/0") {
+                          }
+                        }
+                      },
+                      {
+                        Header: <span></span>,
+                        accessor: "taskStatus",
+                        width: 45,
+                        Cell: row => {
+                            if (row.original.taskStatus !== "0/0") {
                               return (
                                 <div>
-                                  <Popover
-                                    content={
-                                      <div className="dash-task-popup-new">
-                                        <div className="d-flex justify-content-between align-items-center">
-                                          <p className="m-b-0">
-                                            CLAIM:{row.original.claimStatus}
-                                          </p>
-                                        </div>
-                                        <ProgressBar
-                                          className="task-progress"
-                                          now={70}
-                                        />
-                                      </div>
-                                    }
-                                    placement="bottom"
-                                  >
-                                    <img
-                                      className="task-icon-1 marginimg"
-                                      src={CliamIconBlue}
-                                      alt="task-icon-blue"
-                                    />
-                                  </Popover>
-                                </div>
-                              );
-                            }
-                            return (
-                              <div>
                                 <Popover
                                   content={
                                     <div className="dash-task-popup-new">
@@ -5617,6 +5607,16 @@ class Dashboard extends Component {
                                   />
                                 </Popover>
                               </div>
+                              );
+                            } else {
+                            return (
+                              <div>
+                              <img
+                                className="task-icon-1 marginimg"
+                                src={TaskIconGray}
+                                alt="task-icon-gray"
+                              />
+                            </div>
                             );
                           }
                         }
