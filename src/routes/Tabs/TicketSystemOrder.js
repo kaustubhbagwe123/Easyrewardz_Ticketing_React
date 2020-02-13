@@ -40,7 +40,7 @@ class TicketSystemOrder extends Component {
       size: "",
       requiredSize: "",
       selectedTicketSource: 0,
-      custAttachOrder: 1,
+      custAttachOrder: 0,
       SwitchBtnStatus: false,
       OrdItmBtnStatus: false,
       purchaseFrmStorAddress: "",
@@ -177,6 +177,7 @@ class TicketSystemOrder extends Component {
   }
 
   handleCheckOrder = e => {
+    debugger
     this.setState({
       custAttachOrder: 1,
       SwitchBtnStatus: e.target.checked
@@ -989,6 +990,7 @@ class TicketSystemOrder extends Component {
                     name="orderNumber"
                     value={this.state.orderNumber}
                     onChange={this.handleOrderChange.bind(this)}
+                    // disabled
                   />
 
                   <img

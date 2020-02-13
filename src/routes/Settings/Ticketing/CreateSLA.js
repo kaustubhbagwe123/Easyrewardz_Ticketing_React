@@ -75,10 +75,10 @@ class CreateSLA extends Component {
 
   selectIndividualSLA = async (issueId, event) => {
     debugger;
+    var indiSla = this.state.indiSla;
+    var separator = ",";
     if (event.target.checked) {
-      var indiSla = this.state.indiSla;
       // indiSla += issueId + ",";
-      var separator = ",";
       var values = indiSla.split(separator);
       var flag = values.includes(issueId.toString());
       if (!flag) {
@@ -90,11 +90,11 @@ class CreateSLA extends Component {
       });
       document.getElementById('issueTypeValue').textContent = (this.state.indiSla.split(',').length - 1) + ' selected';
     } else {
-      var indiSla = this.state.indiSla;
-      var separator = ",";
+      // var indiSla = this.state.indiSla;
+      // var separator = ",";
       var values = indiSla.split(separator);
       for(var i = 0 ; i < values.length ; i++) {
-        if(values[i] == issueId) {
+        if(values[i] === issueId) {
           values.splice(i, 1);
           indiSla = values.join(separator);
         }
@@ -130,7 +130,7 @@ class CreateSLA extends Component {
       var separator = ",";
       var values = indiSla.split(separator);
       for(var i = 0 ; i < values.length ; i++) {
-        if(values[i] == issueId) {
+        if(values[i] === issueId) {
           values.splice(i, 1);
           indiSla = values.join(separator);
         }
@@ -469,7 +469,7 @@ class CreateSLA extends Component {
   };
 
   render() {
-    const { slaIssueType, value } = this.state;
+    // const { slaIssueType, value } = this.state;
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">

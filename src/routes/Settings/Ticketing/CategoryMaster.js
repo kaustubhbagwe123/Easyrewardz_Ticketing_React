@@ -37,6 +37,7 @@ class CategoryMaster extends Component {
       catmulti: false,
       activeData: ActiveStatus(),
       list1Value: "",
+      inputValue: "",
       showList1: false,
       ListOfSubCate: "",
       ListOfIssue: "",
@@ -53,7 +54,7 @@ class CategoryMaster extends Component {
       selectBrand: 0,
       subCategory_Id: 0,
       issueType_Id: 0,
-      selectetedParameters:{}
+      selectetedParameters: {}
     };
     this.handleGetCategoryGridData = this.handleGetCategoryGridData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -202,7 +203,9 @@ class CategoryMaster extends Component {
       if (status === "Success") {
         NotificationManager.success("Category added successfully.");
         self.setState({
-          category_Id: data
+          category_Id: data,
+          inputValue: "",
+          list1Value: ""
         });
       } else {
         NotificationManager.error("Category not added.");
@@ -346,7 +349,7 @@ class CategoryMaster extends Component {
         if (this.state.list1Value) {
           this.handleGetSubCategoryList();
         }
-      }, 1);
+      }, 1); 
     } else {
       this.setState({ showList1: true });
     }
@@ -385,13 +388,12 @@ class CategoryMaster extends Component {
       }
     }, 1);
   };
-  handleEditDropDownChange = e =>{  
+  handleEditDropDownChange = e => {
     debugger;
-    let name=e.target.name;
-    let value=e.target.value;
+    let name = e.target.name;
+    let value = e.target.value;
     this.setState({ name: value });
-
-  }
+  };
   handleStatusChange = e => {
     let value = e.target.value;
     this.setState({ selectStatus: value });
@@ -548,9 +550,10 @@ class CategoryMaster extends Component {
                                           </label>
                                           <select
                                             className="store-create-select"
-                                            
                                             value={this.state.selectBrand}
-                                            onChange={this.handleEditDropDownChange}
+                                            onChange={
+                                              this.handleEditDropDownChange
+                                            }
                                             name="selectBrand"
                                           >
                                             <option>Select</option>
@@ -570,59 +573,67 @@ class CategoryMaster extends Component {
                                         </div>
 
                                         <div className="pop-over-div">
-                                        <label className="reports-to reports-dis">
-                          Category
-                        </label>
-                        <Select
-                          showSearch={true}
-                          value={this.state.list1Value}
-                          style={{ width: "100%" }}
-                          onChange={this.handleCategoryChange}
-                        >
-                          {list1SelectOptions}
-                          <Option value={NEW_ITEM}>
-                            <span className="sweetAlert-inCategory">
-                              + ADD NEW
-                            </span>
-                          </Option>
-                        </Select>
+                                          <label className="reports-to reports-dis">
+                                            Category
+                                          </label>
+                                          <Select
+                                            showSearch={true}
+                                            value={this.state.list1Value}
+                                            style={{ width: "100%" }}
+                                            onChange={this.handleCategoryChange}
+                                          >
+                                            {list1SelectOptions}
+                                            <Option value={NEW_ITEM}>
+                                              <span className="sweetAlert-inCategory">
+                                                + ADD NEW
+                                              </span>
+                                            </Option>
+                                          </Select>
 
-                        <SweetAlert
-                          show={this.state.showList1}
-                          style={{ width: "320px" }}
-                          title="Add New Category"
-                          text="Enter new Category"
-                          showCancelButton
-                          type="input"
-                          inputPlaceholder="Enter Category Name"
-                          animation="slide-from-top"
-                          validationMsg="Please enter a category!"
-                          onConfirm={inputValue => {
-                            debugger;
-                            inputValue = inputValue.trim();
-                            if (inputValue !== "") {
-                              this.setState({
-                                showList1: false,
-                                list1Value: inputValue
-                              });
-                              this.handleAddCategory(inputValue);
-                            } else {
-                              this.setState({
-                                showList1: false,
-                                list1Value: inputValue
-                              });
-                            }
-                          }}
-                          onCancel={() => {
-                            this.setState({ showList1: false });
-                          }}
-                          onEscapeKey={() =>
-                            this.setState({ showList1: false })
-                          }
-                          onOutsideClick={() =>
-                            this.setState({ showList1: false })
-                          }
-                        />
+                                          <SweetAlert
+                                            show={this.state.showList1}
+                                            style={{ width: "320px" }}
+                                            title="Add New Category"
+                                            text="Enter new Category"
+                                            showCancelButton
+                                            type="input"
+                                            inputPlaceholder="Enter Category Name"
+                                            animation="slide-from-top"
+                                            validationMsg="Please enter a category!"
+                                            onConfirm={inputValue => {
+                                              debugger;
+                                              inputValue = inputValue.trim();
+                                              if (inputValue !== "") {
+                                                this.setState({
+                                                  showList1: false,
+                                                  list1Value: inputValue
+                                                });
+                                                this.handleAddCategory(
+                                                  inputValue
+                                                );
+                                              } else {
+                                                this.setState({
+                                                  showList1: false,
+                                                  list1Value: inputValue
+                                                });
+                                              }
+                                            }}
+                                            onCancel={() => {
+                                              this.setState({
+                                                showList1: false
+                                              });
+                                            }}
+                                            onEscapeKey={() =>
+                                              this.setState({
+                                                showList1: false
+                                              })
+                                            }
+                                            onOutsideClick={() =>
+                                              this.setState({
+                                                showList1: false
+                                              })
+                                            }
+                                          />
                                         </div>
                                         <div className="pop-over-div">
                                           <label className="edit-label-1">
@@ -808,13 +819,13 @@ class CategoryMaster extends Component {
                             }
                           }}
                           onCancel={() => {
-                            this.setState({ showList1: false });
+                            this.setState({ showList1: false});
                           }}
                           onEscapeKey={() =>
-                            this.setState({ showList1: false })
+                            this.setState({ showList1: false})
                           }
                           onOutsideClick={() =>
-                            this.setState({ showList1: false })
+                            this.setState({ showList1: false})
                           }
                         />
                       </div>
@@ -966,9 +977,12 @@ class CategoryMaster extends Component {
                     <h3>Bulk Upload</h3>
                     <div className="down-excel">
                       <p>Template</p>
-                      <CSVLink filename={"Category.csv"}  data={config.categoryTemplate}>
-                       <img src={DownExcel} alt="download icon" />
-                    </CSVLink>
+                      <CSVLink
+                        filename={"Category.csv"}
+                        data={config.categoryTemplate}
+                      >
+                        <img src={DownExcel} alt="download icon" />
+                      </CSVLink>
                     </div>
                     <input
                       id="file-upload"
