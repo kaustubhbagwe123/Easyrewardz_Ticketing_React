@@ -53,7 +53,8 @@ class TicketSystemStore extends Component {
   handleStoreStatus = e => {
     debugger;
     this.setState({
-      SwitchBtnStatus: e.target.checked
+      SwitchBtnStatus: e.target.checked,
+      SearchData:[]
     });
     {
       this.props.CustStoreStatus(
@@ -570,6 +571,7 @@ class TicketSystemStore extends Component {
                   name="SrchStoreNameCode"
                   value={this.state.SrchStoreNameCode}
                   onChange={this.handleStoreChange}
+                  disabled={this.state.SwitchBtnStatus === true}
                 />
 
                 <img

@@ -5491,39 +5491,6 @@ class Dashboard extends Component {
                         accessor: "taskStatus",
                         width: 45,
                         Cell: row => {
-<<<<<<< HEAD
-                          // debugger;
-                          // if(row.original.claimStatus === "0/0"){
-                          //   return (
-                              // <div>
-                              //   <Popover
-                              //     content={
-                              //       <div className="dash-task-popup-new">
-                              //         <div className="d-flex justify-content-between align-items-center">
-                              //           <p className="m-b-0">
-                              //             CLAIM:{row.original.claimStatus}
-                              //           </p>
-                              //         </div>
-                              //         <ProgressBar
-                              //           className="task-progress"
-                              //           now={70}
-                              //         />
-                              //       </div>
-                              //     }
-                              //     placement="bottom"
-                              //   >
-                              //     <img
-                              //       className="task-icon-1 marginimg"
-                              //       src={CliamIconBlue}
-                              //       alt="task-icon-blue"
-                              //     />
-                              //   </Popover>
-                              // </div>
-                          //   );
-                          // }
-                          if (row.original.taskStatus === "0/0") {
-=======
->>>>>>> fa7890ffaefbbd8db08adf7df9c9eb00aa2710c9
                             if (row.original.claimStatus !== "0/0") {
                               return (
                                 <div>
