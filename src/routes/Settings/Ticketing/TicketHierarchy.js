@@ -255,7 +255,7 @@ class TicketHierarchy extends Component {
             Settings
           </Link>
           <span>&gt;</span>
-          <a href={Demo.BLANK_LINK} className="header-path">
+          <a href="settings" className="header-path">
             Ticketing
           </a>
           <span>&gt;</span>

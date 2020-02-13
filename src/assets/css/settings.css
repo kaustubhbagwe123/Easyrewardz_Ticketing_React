@@ -3120,6 +3120,26 @@
 .canblue{
   color: #2561a8 !important;
 }
+.Save-Use {
+    background-color: #2561a8;
+    border-radius: 4px;
+    min-width: 75px;
+    height: 30px;
+    line-height: 1;
+    cursor: pointer;
+    color: #fff;
+    margin: 0 5px;
+}
+#UsEdit-popup {
+  border-radius: 8px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+  padding: 10px;
+  margin: 100px auto;
+  display: inline-block;
+}
+#UsEdit-popup .tab-content {
+  padding: 15px 35px;
+}
 /* Akasha css end */
 
 
