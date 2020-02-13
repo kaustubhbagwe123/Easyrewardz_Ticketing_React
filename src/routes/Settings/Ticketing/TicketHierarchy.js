@@ -461,11 +461,7 @@ class TicketHierarchy extends Component {
                                           }
                                           onChange={this.handleOnChangeData}
                                         />
-                                         {this.state.hierarchyEditData.designation_Name.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.editdesignationNameCompulsion}
-                    </p>
-                  )}
+                                        
                                       </div>
                                       <div className="pop-over-div">
                                         <label className="edit-label-1">
@@ -683,7 +679,7 @@ class TicketHierarchy extends Component {
                             </option>
                           ))}
                       </select>
-                      {this.state.selectStatus.length === 0 && (
+                      {this.state.selectStatus === 0 && (
                     <p style={{ color: "red", marginBottom: "0px" }}>
                       {this.state.statusCompulsion}
                     </p>
