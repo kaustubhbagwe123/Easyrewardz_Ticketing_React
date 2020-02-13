@@ -152,7 +152,7 @@ class FileUploadLogs extends Component {
             Settings
           </Link>
           <span>&gt;</span>
-          <Link to={Demo.BLANK_LINK} className="header-path">
+          <Link to="settings" className="header-path">
             Ticketing
           </Link>
           <span>&gt;</span>
