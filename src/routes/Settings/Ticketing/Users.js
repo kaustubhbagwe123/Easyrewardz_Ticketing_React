@@ -218,40 +218,48 @@ class Users extends Component {
 
   }
 
-  handleAgentValue = e => {
+  handleAgentValue =(datar,e)  => {
     debugger;
     let subjectvalue = e.currentTarget.checked;
-    this.setState({ selectedAgentRadio: subjectvalue });
+    this.setState({selectedSupervisorRadio:false, selectedAgentRadio: subjectvalue });
     setTimeout(() => {
       if (this.state.selectedAgentRadio === true) {
-        this.handleGetAgentList();
+        this.handleGetAgentList(datar);
       }
     }, 1);
   };
 
-  handleSuperValue = e => {
+  handleSuperValue =(datar,e)=> {
     debugger;
     let subjectvalue = e.currentTarget.checked;
-    this.setState({ selectedSupervisorRadio: subjectvalue });
-
+    this.setState({ selectedAgentRadio:false, selectedSupervisorRadio: subjectvalue });
+    setTimeout(() => {
+      if (this.state.selectedSupervisorRadio === true) {
+        this.handleGetAgentList(datar);
+      }
+    }, 1);
   };
 
-  editAgentValue = e => {
+  editAgentValue =(datar,e)=> {
     debugger;
     let subjectvalue = e.currentTarget.checked;
-    this.setState({ editAgentRadio: subjectvalue });
+    this.setState({editSupervisorRadio:false, editAgentRadio: subjectvalue });
     setTimeout(() => {
       if (this.state.editAgentRadio === true) {
-        this.handleGetAgentList();
+        this.handleGetAgentList(datar);
       }
     }, 1);
   };
 
-  editSuperValue = e => {
+  editSuperValue =(datar,e)=> {
     debugger;
     let subjectvalue = e.currentTarget.checked;
-    this.setState({ editSupervisorRadio: subjectvalue });
-
+    this.setState({editAgentRadio:false, editSupervisorRadio: subjectvalue });
+    setTimeout(() => {
+      if (this.state.editSupervisorRadio === true) {
+        this.handleGetAgentList(datar);
+      }
+    }, 1);
   };
 
   setEscn = e => {
@@ -299,18 +307,27 @@ class Users extends Component {
 
     });
    
+  };
+  handleReporteeDesgnDropDown=(data2,e)=>{
+    debugger;
+    
+    this.setState({
+      [e.target.name]: e.target.value,
+
+    });
+   
     setTimeout(() => {
       if (this.state.selectedReporteeDesign) {
-        this.handleGetReportTOList();
+        this.handleGetReportTOList(data2);
       }
     }, 1);
     setTimeout(() => {
       if (this.state.editreporteeDesign) {
-        this.handleGetReportTOList();
+        this.handleGetReportTOList(data2);
       }
     }, 1);
   };
-handleDesination =(data,e)  =>{
+handleDesination =(data1,e)  =>{
   debugger;
 
 
@@ -320,12 +337,12 @@ handleDesination =(data,e)  =>{
   });
   setTimeout(() => {
     if (this.state.selectedDesignation) {
-      this.handleGetReporteedesignationList(data);
+      this.handleGetReporteedesignationList(data1);
 
     }
   }, 1);
 };
-handleEditDesination =(data,e)  =>{
+handleEditDesination =(data1,e)  =>{
   debugger;
   var name = e.target.name;
   var value = e.target.value;
@@ -338,8 +355,8 @@ handleEditDesination =(data,e)  =>{
   });
   setTimeout(() => {
     if (this.state.userEditData.designation_ID) {
-      this.handleGetReporteedesignationList(data);
-
+      this.handleGetReporteedesignationList(data1);
+      this.handleGetReportTOList(data1)
     }
   }, 1);
 };
@@ -452,13 +469,13 @@ handleEditDesination =(data,e)  =>{
     });
   }
 
-  handleGetReporteedesignationList(data) {
+  handleGetReporteedesignationList(data1) {
     debugger;
     let self = this;
     let id;
-     if(data==="add"){
+     if(data1==="add"){
        id = this.state.selectedDesignation;
-     }else if(data==="edit"){
+     }else if(data1==="edit"){
      id = this.state.userEditData.designation_ID;
      }
     
@@ -479,10 +496,17 @@ handleEditDesination =(data,e)  =>{
       });
     });
   }
-  handleGetReportTOList() {
+  handleGetReportTOList(data2) {
     debugger;
-    let id = this.state.selectedReporteeDesign;
     let self = this;
+    let id;
+    if(data2==="add"){
+  id = this.state.selectedReporteeDesign;
+    }else if(data2==="edit"){
+    id= this.state.editreporteeDesign;
+    }
+   
+    
     axios({
       method: "post",
       url: config.apiUrl + "/Designation/GetReportTo",
@@ -631,7 +655,7 @@ handleEditDesination =(data,e)  =>{
       });
     });
   }
-  handleGetAgentList() {
+  handleGetAgentList(datar) {
     debugger;
     let self = this;
 
@@ -644,12 +668,25 @@ handleEditDesination =(data,e)  =>{
       debugger;
       var array = [];
       var agentdata = res.data.responseData;
-      var value = self.state.selectedAgentRadio;
-      if (value === true) {
-        array = agentdata.filter(a => a.designation === "Agent");
-      } else {
-        array = agentdata.filter(a => a.designation === "Supervisor");
-      }
+      var addvalue1 = self.state.selectedAgentRadio;
+      var addvalue2 = self.state.selectedSupervisorRadio;
+      var editvalue1 = self.state.editAgentRadio;
+      var editvalue2 = self.state.editSupervisorRadio;
+if(datar==="add"){
+  if (addvalue1 === true) {
+    array = agentdata.filter(a => a.designation === "Agent");
+  } else if(addvalue2 === true) {
+    array = agentdata.filter(a => a.designation === "Supervisor");
+  }
+
+}else if(datar==="edit"){
+  if (editvalue1 === true) {
+    array = agentdata.filter(a => a.designation === "Agent");
+  } else if(editvalue2 === true) {
+    array = agentdata.filter(a => a.designation === "Supervisor");
+  }
+}
+      
 
       self.setState({ AgentData: array });
     });
@@ -1165,7 +1202,7 @@ handleEditDesination =(data,e)  =>{
                     <select className="add-select-category"
                       name="editreporteeDesign"
                       value={this.state.editreporteeDesign}
-                      onChange={this.handleOnChangeUserData}
+                      onChange={this.handleReporteeDesgnDropDown.bind(this,"edit")}
                     >
                       <option>Select Reportee Designation</option>
                       {this.state.ReporteeDesignData !== null &&
@@ -1335,7 +1372,7 @@ handleEditDesination =(data,e)  =>{
                              id="supervisor1"
                              checked={this.state.editSupervisorRadio}
                              value={this.state.editSupervisorRadio}
-                             onChange={this.editSuperValue}
+                             onChange={this.editSuperValue.bind(this,"edit")}
                            />
                            <label
                              htmlFor="supervisor1"
@@ -1351,7 +1388,7 @@ handleEditDesination =(data,e)  =>{
                              id="agent1"
                              checked={this.state.editAgentRadio}
                              value={this.state.editAgentRadio}
-                             onChange={this.editAgentValue}
+                             onChange={this.editAgentValue.bind(this,"edit")}
                            />
                            <label htmlFor="agent1" className="logout-label">
                              Agent
@@ -1749,7 +1786,7 @@ handleEditDesination =(data,e)  =>{
                         <select className="add-select-category"
                           name="selectedReporteeDesign"
                           value={this.state.selectedReporteeDesign}
-                          onChange={this.handleOnChangeUserData}
+                          onChange={this.handleReporteeDesgnDropDown.bind(this,"add")}
                         >
                           <option>Select Reportee Designation</option>
                           {this.state.ReporteeDesignData !== null &&
@@ -1920,7 +1957,7 @@ handleEditDesination =(data,e)  =>{
                                   name="selectedSupervisorAgent"
                                   id="supervisor"
                                   value={this.state.selectedSupervisorRadio}
-                                  onChange={this.handleSuperValue}
+                                  onChange={this.handleSuperValue.bind(this,"add")}
                                 />
                                 <label
                                   htmlFor="supervisor"
@@ -1935,7 +1972,7 @@ handleEditDesination =(data,e)  =>{
                                   name="selectedSupervisorAgent"
                                   id="agent"
                                   value={this.state.selectedAgentRadio}
-                                  onChange={this.handleAgentValue}
+                                  onChange={this.handleAgentValue.bind(this,"add")}
                                 />
                                 <label htmlFor="agent" className="logout-label">
                                   Agent
