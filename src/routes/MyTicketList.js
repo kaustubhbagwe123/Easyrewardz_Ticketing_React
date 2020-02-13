@@ -355,59 +355,70 @@ class MyTicketList extends Component {
     debugger;
     var data = [];
     data = this.state.modulesItemsMyticket;
-    if (data[0].moduleItemisActive === true) {
-      this.setState({ Escalation: "yes" });
-    } else {
-      this.setState({ Escalation: "none" });
+    if(data[0].moduleItemisActive!==undefined){
+      if (data[0].moduleItemisActive === true) {
+        this.setState({ Escalation: "yes" });
+      } else {
+        this.setState({ Escalation: "none" });
+      }
     }
-
+    
+    if(data[1].moduleItemisActive!==undefined){
     if (data[1].moduleItemisActive === true) {
       this.setState({ New: "yes" });
     } else {
       this.setState({ New: "none" });
     }
-
+  }
+  if(data[2].moduleItemisActive!==undefined){
     if (data[2].moduleItemisActive === true) {
       this.setState({ Open: "yes" });
     } else {
       this.setState({ Open: "none" });
     }
-
+  }
+  if(data[3].moduleItemisActive!==undefined){
     if (data[3].moduleItemisActive === true) {
       this.setState({ Resolved: "yes" });
     } else {
       this.setState({ Resolved: "none" });
     }
-
+  }
+  if(data[4].moduleItemisActive!==undefined){
     if (data[4].moduleItemisActive === true) {
       this.setState({ ReassignedByMe: "yes" });
     } else {
       this.setState({ ReassignedByMe: "none" });
     }
-
+  }
+  if(data[5].moduleItemisActive!==undefined){
     if (data[5].moduleItemisActive === true) {
       this.setState({ Closed: "yes" });
     } else {
       this.setState({ Closed: "none" });
     }
-
+  }
+  if(data[6].moduleItemisActive!==undefined){
     if (data[6].moduleItemisActive === true) {
       this.setState({ All: "yes" });
     } else {
       this.setState({ All: "none" });
     }
-
+  }
+  if(data[7].moduleItemisActive!==undefined){
     if (data[7].moduleItemisActive === true) {
       this.setState({ FollowUp: "yes" });
     } else {
       this.setState({ FollowUp: "none" });
     }
-
+  }
+  if(data[8].moduleItemisActive!==undefined){
     if (data[8].moduleItemisActive === true) {
       this.setState({ Draft: "yes" });
     } else {
       this.setState({ Draft: "none" });
     }
+  }
   }
   handleSearchTicketAllTabCount() {
     let self = this;

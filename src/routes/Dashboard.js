@@ -567,119 +567,139 @@ class Dashboard extends Component {
     debugger;
     var data = [];
     data = this.state.modulesItems;
+    if(data[0].moduleItemisActive!== undefined){
     if (data[0].moduleItemisActive === true) {
       this.setState({ CreateDateShowRecord: "yes" });
     } else {
       this.setState({ CreateDateShowRecord: "none" });
     }
-
+  }
+    if(data[1].moduleItemisActive!== undefined){
     if (data[1].moduleItemisActive === true) {
       this.setState({ LastUpdatedDate: "yes" });
     } else {
       this.setState({ LastUpdatedDate: "none" });
     }
-
+  }
+  if(data[2].moduleItemisActive!== undefined){
     if (data[2].moduleItemisActive === true) {
       this.setState({ Category: "yes" });
     } else {
       this.setState({ Category: "none" });
     }
-
+  }
+  if(data[3].moduleItemisActive!== undefined){
     if (data[3].moduleItemisActive === true) {
       this.setState({ SubCategory: "yes" });
     } else {
       this.setState({ SubCategory: "none" });
     }
-
+  }
+  if(data[4].moduleItemisActive!== undefined){
     if (data[4].moduleItemisActive === true) {
       this.setState({ IssueType: "yes" });
     } else {
       this.setState({ IssueType: "none" });
     }
-
+  }
+  if(data[5].moduleItemisActive!== undefined){
     if (data[5].moduleItemisActive === true) {
       this.setState({ TicketSource: "yes" });
     } else {
       this.setState({ TicketSource: "none" });
     }
-
+  }
+  if(data[6].moduleItemisActive!== undefined){
     if (data[6].moduleItemisActive === true) {
       this.setState({ TicketIDTitle: "yes" });
     } else {
       this.setState({ TicketIDTitle: "none" });
     }
-
+  }
+  if(data[7].moduleItemisActive!== undefined){
     if (data[7].moduleItemisActive === true) {
       this.setState({ TicketPriority: "yes" });
     } else {
       this.setState({ TicketPriority: "none" });
     }
-
+  }
+  if(data[8].moduleItemisActive!== undefined){
     if (data[8].moduleItemisActive === true) {
       this.setState({ TicketStatus: "yes" });
     } else {
       this.setState({ TicketStatus: "none" });
     }
-
+  }
+  if(data[9].moduleItemisActive!== undefined){
     if (data[9].moduleItemisActive === true) {
       this.setState({ SLAStatus: "yes" });
     } else {
       this.setState({ SLAStatus: "none" });
     }
-
+  }
+  if(data[10].moduleItemisActive!== undefined){
     if (data[10].moduleItemisActive === true) {
       this.setState({ ClaimID: "yes" });
     } else {
       this.setState({ ClaimID: "none" });
     }
-
+  }
+  if(data[11].moduleItemisActive!== undefined){
     if (data[11].moduleItemisActive === true) {
       this.setState({ InvoiceNoSubOrderNo: "yes" });
     } else {
       this.setState({ InvoiceNoSubOrderNo: "none" });
     }
-
+  }
+  if(data[12].moduleItemisActive!== undefined){
     if (data[12].moduleItemisActive === true) {
       this.setState({ ItemID: "yes" });
     } else {
       this.setState({ ItemID: "none" });
     }
-
+  }
+  if(data[13].moduleItemisActive!== undefined){
     if (data[13].moduleItemisActive === true) {
       this.setState({ Didvisitstore: "yes" });
     } else {
       this.setState({ Didvisitstore: "none" });
     }
-
+  }
+  if(data[14].moduleItemisActive!== undefined){
     if (data[14].moduleItemisActive === true) {
       this.setState({ Wanttovisitstore: "yes" });
     } else {
       this.setState({ Wanttovisitstore: "none" });
     }
-
+  }
+  if(data[16].moduleItemisActive!== undefined){
     if (data[16].moduleItemisActive === true) {
       this.setState({ Email: "yes" });
     } else {
       this.setState({ Email: "none" });
     }
-
+  }
+  if(data[17].moduleItemisActive!== undefined){
     if (data[17].moduleItemisActive === true) {
       this.setState({ MobileNo: "yes" });
     } else {
       this.setState({ MobileNo: "none" });
     }
-
+  }
+  if(data[18].moduleItemisActive!== undefined){
     if (data[18].moduleItemisActive === true) {
       this.setState({ AssignTo: "yes" });
     } else {
       this.setState({ AssignTo: "none" });
     }
-
+  }
+  if(data[19].moduleItemisActive!== undefined){
     if (data[19].moduleItemisActive === true) {
       this.setState({ PurchaseStoreCodeAddress: "yes" });
     } else {
       this.setState({ PurchaseStoreCodeAddress: "none" });
     }
+  }
   }
   handleGetDashboardNumberData() {
     this.setState({ loadingAbove: true });
@@ -5491,39 +5511,6 @@ class Dashboard extends Component {
                         accessor: "taskStatus",
                         width: 45,
                         Cell: row => {
-<<<<<<< HEAD
-                          // debugger;
-                          // if(row.original.claimStatus === "0/0"){
-                          //   return (
-                              // <div>
-                              //   <Popover
-                              //     content={
-                              //       <div className="dash-task-popup-new">
-                              //         <div className="d-flex justify-content-between align-items-center">
-                              //           <p className="m-b-0">
-                              //             CLAIM:{row.original.claimStatus}
-                              //           </p>
-                              //         </div>
-                              //         <ProgressBar
-                              //           className="task-progress"
-                              //           now={70}
-                              //         />
-                              //       </div>
-                              //     }
-                              //     placement="bottom"
-                              //   >
-                              //     <img
-                              //       className="task-icon-1 marginimg"
-                              //       src={CliamIconBlue}
-                              //       alt="task-icon-blue"
-                              //     />
-                              //   </Popover>
-                              // </div>
-                          //   );
-                          // }
-                          if (row.original.taskStatus === "0/0") {
-=======
->>>>>>> fa7890ffaefbbd8db08adf7df9c9eb00aa2710c9
                             if (row.original.claimStatus !== "0/0") {
                               return (
                                 <div>
