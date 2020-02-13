@@ -25,6 +25,7 @@ import {
 import Select from "react-select";
 import { CSVLink, CSVDownload } from "react-csv";
 import { string } from "prop-types";
+import { Tabs, Tab } from "react-bootstrap-tabs/dist";
 
 class Users extends Component {
   constructor(props) {
@@ -1099,13 +1100,301 @@ if(datar==="add"){
         <NotificationContainer />
         {/* ----------------------------------edit Modal------------------------------------ */}
         <Modal
-          onClose={this.closeEditModal}
           open={this.state.editmodel}
-         
+          onClose={this.closeEditModal}
+          modalId="UsEdit-popup"
         >
+        <div>
+          <Tabs>
+            <Tab label="Personal Details">
+                <div>
+                  <h4 style={{textAlign:"center"}}>Personal Details</h4>
+                <div className="pop-over-div">
+                    <label className="edit-label-1">User Name</label>
+                    <input type="text" className="txt-edit-popover" maxLength={25}
+                      name="selectUserName"
+                      value={this.state.userEditData.selectUserName}
+                      onChange={this.handleOnChangeEditData}
+                    />
+                  </div>
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">First Name</label>
+                    <input type="text" className="txt-edit-popover" maxLength={25}
+                      name="first_Name"
+                      value={this.state.userEditData.first_Name}
+                      onChange={this.handleOnChangeEditData}
+                    />
+                  </div>
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">Last Name</label>
+                    <input type="text" className="txt-edit-popover" maxLength={25}
+                      name="last_Name"
+                      value={this.state.userEditData.last_Name}
+                      onChange={this.handleOnChangeEditData}
+                    />
+                  </div>
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">Mobile Number</label>
+                    <input type="text" className="txt-edit-popover" maxLength={10}
+                      name="mobile_Number"
+                      value={this.state.userEditData.mobile_Number}
+                      onChange={this.handleOnChangeEditData}
+                    />
+                  </div>
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">Email ID</label>
+                    <input type="text" className="txt-edit-popover" maxLength={100}
+                      name="email_ID"
+                      value={this.state.userEditData.email_ID}
+                      onChange={this.handleOnChangeEditData}
+                    />
+                  </div>
+                </div>
+            </Tab>
+            <Tab label="Profile Details">
+              <div>
+              <h4 style={{textAlign:"center"}}>Profile Details</h4>
+              <div className="pop-over-div">
+                    <label className="edit-label-1">User Designation</label>
+                    <select className="add-select-category"
+                      name="designation_ID"
+                      value={this.state.userEditData.designation_ID}
+                      onChange={this.handleEditDesination.bind(this,"edit")}
+                    >
+                      <option>Select Designation</option>
+                      {this.state.DesignationData !== null &&
+                        this.state.DesignationData.map((item, i) => (
+                          <option key={i} value={item.designationID}>
+                            {item.designationName}
+                          </option>
+                        ))}
+                    </select>
+                  </div>
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">Reportee Designation</label>
+                    <select className="add-select-category"
+                      name="editreporteeDesign"
+                      value={this.state.editreporteeDesign}
+                      onChange={this.handleReporteeDesgnDropDown.bind(this,"edit")}
+                    >
+                      <option>Select Reportee Designation</option>
+                      {this.state.ReporteeDesignData !== null &&
+                        this.state.ReporteeDesignData.map((item, i) => (
+                          <option key={i} value={item.designationID}>
+                            {item.designationName}
+                          </option>
+                        ))}
+                    </select>
+                  </div>
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">Report To</label>
+                    <select className="add-select-category"
+                      name="reportee_ID"
+                      value={this.state.userEditData.reportee_ID}
+                      onChange={this.handleOnChangeEditData}
+                    >
+                      <option>Select Report To</option>
+                      {this.state.ReportToData !== null &&
+                        this.state.ReportToData.map((item, i) => (
+                          <option key={i} value={item.user_ID}>
+                            {item.agentName}
+                          </option>
+                        ))}
+                    </select>
+                  </div>
+              </div>
+            </Tab>
+            <Tab label="Mapped Category">
+                <div>
+                <h4 style={{textAlign:"center"}}>Mapped Category</h4>
+                <div className="pop-over-div">
+                    <label className="edit-label-1">Brand</label>
+                    {<Select
+                      getOptionLabel={option => option.brandName}
+                      getOptionValue={option => option.brandID}
+                      options={this.state.brandData}
+                      placeholder="Select"
 
-          <div className="row right-sect-div right-sect-collapse">
+                      closeMenuOnSelect={false}
+                      name="editBrand"
+                      onChange={this.handleEditBrandChange.bind(this, "edit")}
+                      value={this.state.editBrand}
 
+                      isMulti
+                    />}
+
+                  </div>
+                  <div className="pop-over-div">
+                    <label>Categories</label>
+
+                    <Select
+                      getOptionLabel={option => option.categoryName}
+                      getOptionValue={option => option.categoryID}
+                      options={this.state.CategoryData}
+                      placeholder="Select"
+                      // menuIsOpen={true}
+                      name="editCategory"
+                      closeMenuOnSelect={false}
+                      onChange={this.handleEditCategoryChange.bind(this, "edit")}
+                      value={this.state.editCategory}
+                      // showNewOptionAtTop={false}
+                      isMulti
+                    />
+                  </div>
+                  <div className="pop-over-div">
+                    <label>Sub Categories</label>
+
+                    <Select
+                      getOptionLabel={option => option.subCategoryName}
+                      getOptionValue={option => option.subCategoryID}
+                      options={this.state.SubCategoryData}
+                      placeholder="Select"
+                      // menuIsOpen={true}
+                      name="selectedSubCategory"
+                      closeMenuOnSelect={false}
+                      onChange={this.handleEditSubCategoryChange.bind(this, "edit")}
+                      value={this.state.editSubCategory}
+                      // showNewOptionAtTop={false}
+                      isMulti
+                    />
+                  </div>
+                  <div className="pop-over-div">
+                    <label>Issue Type</label>
+
+                    <Select
+                      getOptionLabel={option => option.issueTypeName}
+                      getOptionValue={option => option.issueTypeID}
+                      options={this.state.IssueTypeData}
+                      placeholder="Select"
+                      // menuIsOpen={true}
+                      name="selectedIssueType"
+                      closeMenuOnSelect={false}
+                      onChange={this.handleEditIssueTypeChange.bind(this)}
+                      value={this.state.editIssuetype}
+                      // showNewOptionAtTop={false}
+                      isMulti
+                    />
+                  </div>
+                  <div className="mapped-cate-extra">
+                    <div className="pop-over-div">
+                      <label className="edit-label-1">CRM Role</label>
+                      <select className="add-select-category"
+                        name="role_ID"
+                        value={this.state.userEditData.role_ID}
+                        onChange={this.handleOnChangeEditData}
+                      >
+                        <option>Select Designation</option>
+                        {this.state.CRMRoleData !== null &&
+                          this.state.CRMRoleData.map((item, i) => (
+                            <option key={i} value={item.crmRoleID}>
+                              {item.roleName}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
+                    <div className="pop-over-div escalation-options">
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          id="copy-esc1"
+                          name="is_Copy_Escalation"
+                          checked={
+                            this.state.userEditData.is_Copy_Escalation
+                          }
+                          value={this.state.userEditData.is_Copy_Escalation}
+                          onChange={this.editsetEscn}
+                        />
+                        <label htmlFor="copy-esc1">Copy Escalation</label>
+                      </div>
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          id="assign-esc1"
+                          name="is_Assign_Escalation"
+                          checked={
+                            this.state.userEditData.is_Assign_Escalation
+                          }
+                          value={this.state.userEditData.is_Assign_Escalation}
+                          onChange={this.editsetEscn}
+                        />
+                        <label htmlFor="assign-esc1">
+                          Assign Escalation
+                                                          </label>
+                      </div>
+                      {this.state.userEditData.is_Assign_Escalation===true ?(
+                         <div className="sup-agent-cntr">
+                         <div className="status-options">
+                           <input
+                             type="radio"
+                             name="selectedSupervisoragent"
+                             id="supervisor1"
+                             checked={this.state.editSupervisorRadio}
+                             value={this.state.editSupervisorRadio}
+                             onChange={this.editSuperValue.bind(this,"edit")}
+                           />
+                           <label
+                             htmlFor="supervisor1"
+                             className="logout-label"
+                           >
+                             Supervisor
+                                                             </label>
+                         </div>
+                         <div className="status-options">
+                           <input
+                             type="radio"
+                             name="selectedSupervisoragent"
+                             id="agent1"
+                             checked={this.state.editAgentRadio}
+                             value={this.state.editAgentRadio}
+                             onChange={this.editAgentValue.bind(this,"edit")}
+                           />
+                           <label htmlFor="agent1" className="logout-label">
+                             Agent
+                                                             </label>
+                         </div>
+                       </div>
+                      ):null}
+                     
+                    </div>
+                    <div className="pop-over-div">
+                      <label className="edit-label-1">Select Agent</label>
+                      <select className="add-select-category"
+                        name="assign_ID"
+                        value={this.state.userEditData.assign_ID}
+                        onChange={this.handleOnChangeEditData}
+
+                      >
+                        <option>Select Agent</option>
+                        {this.state.AgentData !== null &&
+                          this.state.AgentData.map((item, i) => (
+                            <option key={i} value={item.user_ID}>
+                              {item.agentName}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
+                    <div className="pop-over-div">
+                      <label className="edit-label-1">Status</label>
+                      <select className="txt-edit-popover"
+                        name="is_Active"
+                        value={this.state.userEditData.is_Active}
+                        onChange={this.handleOnChangeEditData}
+                      >
+
+                        <option value="true">Active</option>
+                        <option value="false">Inactive</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+            </Tab>
+          </Tabs>
+          <div style={{textAlign:"center"}}>
+              <a className="pop-over-cancle canblue" onClick={this.closeEditModal.bind(this)}>CANCEL</a>
+              <button className="Save-Use" onClick={this.handleUpdateUser.bind(this)}>SAVE</button>
+            </div>
+        </div>
+          {/* <div className="row right-sect-div right-sect-collapse">
             <div className='col-md-4'>
               <div className="collapse-cntr">
                 <div className="pop-over-div">
@@ -1441,7 +1730,7 @@ if(datar==="add"){
                 SAVE
                                         </button>
             </div>
-          </div>
+          </div> */}
 
 
 
