@@ -142,7 +142,7 @@ class TicketSystem extends Component {
       issueTypeKbCompulsion: "",
       userCcCount: 0,
       userBccCount: 0,
-      FileData:[]
+      FileData: []
     };
     this.validator = new SimpleReactValidator();
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
@@ -207,7 +207,7 @@ class TicketSystem extends Component {
     });
   };
   handleCustomerAttachamentStatus(custAttachOrder) {
-    debugger
+    debugger;
     this.setState({
       customerAttachOrder: custAttachOrder
     });
@@ -531,11 +531,11 @@ class TicketSystem extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let status=res.data.message;
+      let status = res.data.message;
       let data = res.data.responseData;
-      if(status === "Success"){
-      self.setState({ TicketPriorityData: data });
-      }else{
+      if (status === "Success") {
+        self.setState({ TicketPriorityData: data });
+      } else {
         self.setState({ TicketPriorityData: [] });
       }
     });
@@ -653,8 +653,13 @@ class TicketSystem extends Component {
   };
   handleFileUpload(e) {
     debugger;
+    var allFiles = [];
+    var selectedFiles = e.target.files;
+    for (let i = 0; i < selectedFiles.length; i++) {
+      allFiles.push(selectedFiles[i]);
+    }
+  
     // -------------------------Image View code start-----------------------
-    // const formData = new FormData();
     if (e.target.files && e.target.files[0]) {
       const filesAmount = e.target.files.length;
       for (let i = 0; i < filesAmount; i++) {
@@ -669,8 +674,7 @@ class TicketSystem extends Component {
     }
     for (let i = 0; i < e.target.files.length; i++) {
       debugger;
-     
-     
+
       var objFile = new Object();
       var name = e.target.files[i].name;
       var type = name.substring(name.lastIndexOf(".") + 1, name.length);
@@ -678,29 +682,21 @@ class TicketSystem extends Component {
       objFile.name = name;
 
       objFile.File = e.target.files[i];
-      const file=e.target.files[i]
+      const file = e.target.files[i];
 
       this.state.file.push(objFile);
-      this.state.FileData.push(file)
-      // formData.append("data",e.target.files[i]);
-     
+      this.state.FileData.push(file);
     }
-    // axios({
-    //   method: "post",
-    //   url: config.apiUrl + "/Ticketing/createTicket",
-    //   headers: authHeader(),
-    //   data: formData
-    // });
-    // -------------------------Image View code end-----------------------
-    this.setState({ fileText: this.state.file.length,FileData:this.state.FileData });
+    //-------------------Image View code end-----------------------
+    this.setState({ fileText: this.state.file.length,FileData:allFiles });
   }
   handleRemoveImage(i) {
     debugger;
     let file = this.state.file;
     file.splice(i, 1);
-    var fileText=file.length;
+    var fileText = file.length;
     setTimeout(() => {
-      this.setState({file,fileText});
+      this.setState({ file, fileText });
     }, 100);
   }
 
@@ -748,10 +744,9 @@ class TicketSystem extends Component {
       // var Already = this.state.AlreadycustVisit;
       // var uploadFiles = [];
       // uploadFiles = this.state.file;
-      
+
       const formData = new FormData();
       var paramData = {
-        // TicketTitle: this.state.ticketSuggestion.ticketTitle,
         TicketTitle: this.state.titleSuggValue,
         Ticketdescription: this.state.ticketDetails,
         CustomerID: this.state.customer_Id,
@@ -776,16 +771,10 @@ class TicketSystem extends Component {
         ticketingMailerQues: mailData
       };
       formData.append("ticketingDetails", JSON.stringify(paramData));
-      // formData.append("data", this.state.file[0]);
-      
-      formData.append("data",this.state.FileData);
-      axios({
-        method: "post",
-        url: config.apiUrl + "/Ticketing/createTicket",
-        headers: authHeader(),
-        data: formData
-      });
-      formData.append("data1",this.state.FileData);
+      for (let j = 0; j < this.state.FileData.length; j++) {
+        formData.append("Filedata", this.state.FileData[j]);
+      }
+
       axios({
         method: "post",
         url: config.apiUrl + "/Ticketing/createTicket",
@@ -796,10 +785,10 @@ class TicketSystem extends Component {
         let Msg = res.data.status;
         self.setState({ loading: false });
         if (Msg) {
-          NotificationManager.success(res.data.message);
+          NotificationManager.success(res.data.message, '', 2000);
           setTimeout(function() {
-            self.props.history.push("myTicketlist");
-          }, 100);
+          self.props.history.push("myTicketlist");
+          }, 2000);
         } else {
           NotificationManager.error(res.data.message);
         }
@@ -873,7 +862,7 @@ class TicketSystem extends Component {
     this.setState({ selectedTicketPriority: ticketPriorityValue });
   };
   setTicketActionTypeValue = e => {
-   debugger;
+    debugger;
     let ticketActionTypeValue = e.currentTarget.value;
     this.setState({ selectedTicketActionType: ticketActionTypeValue });
   };
@@ -910,7 +899,7 @@ class TicketSystem extends Component {
     }, 1);
   };
   setSubCategoryValue = e => {
-   debugger;
+    debugger;
     let subCategoryValue = e.currentTarget.value;
     this.setState({ selectedSubCategory: subCategoryValue });
 

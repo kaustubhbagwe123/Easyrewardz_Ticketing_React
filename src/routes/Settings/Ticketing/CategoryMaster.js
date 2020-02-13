@@ -63,6 +63,7 @@ class CategoryMaster extends Component {
     this.handleAddCategory = this.handleAddCategory.bind(this);
     this.handleAddSubCategory = this.handleAddSubCategory.bind(this);
     this.handleAddIssueType = this.handleAddIssueType.bind(this);
+    this.handleGetIssueTypeList=this.handleGetIssueTypeList.bind(this)
   }
   componentDidMount() {
     this.handleGetCategoryGridData();
@@ -204,9 +205,10 @@ class CategoryMaster extends Component {
         NotificationManager.success("Category added successfully.");
         self.setState({
           category_Id: data,
-          inputValue: "",
-          list1Value: ""
+          // inputValue: "",
+          // list1Value: ""
         });
+        self.handleGetCategoryList()
       } else {
         NotificationManager.error("Category not added.");
       }
@@ -238,6 +240,7 @@ class CategoryMaster extends Component {
         self.setState({
           subCategory_Id: data
         });
+        self.handleGetSubCategoryList()
       } else {
         NotificationManager.error("SubCategory not added.");
       }
@@ -270,6 +273,7 @@ class CategoryMaster extends Component {
         self.setState({
           issueType_Id: data
         });
+        self.handleGetIssueTypeList();
       } else {
         NotificationManager.error("Issue Type not added.");
       }
@@ -424,7 +428,7 @@ class CategoryMaster extends Component {
             Settings
           </Link>
           <span>&gt;</span>
-          <Link to={Demo.BLANK_LINK} className="header-path">
+          <Link to="settings" className="header-path">
             Ticketing
           </Link>
           <span>&gt;</span>
@@ -774,7 +778,62 @@ class CategoryMaster extends Component {
                       </div>
                     </div>
                     <div className="divSpace">
-                      <div className="dropDrownSpace">
+                      {/* <div className="dropDrownSpace">
+                        <label className="reports-to reports-dis">
+                          Category
+                        </label>
+                        <Select
+                          showSearch={true}
+                          value={this.state.list1Value}
+                          style={{ width: "100%" }}
+                          onChange={this.handleCategoryChange}
+                        >
+                          {list1SelectOptions}
+                          <Option value={NEW_ITEM}>
+                            <span className="sweetAlert-inCategory">
+                              + ADD NEW
+                            </span>
+                          </Option>
+                        </Select>
+
+                        <SweetAlert
+                          show={this.state.showList1}
+                          style={{ width: "320px" }}
+                          title="Add New Category"
+                          text="Enter new Category"
+                          showCancelButton
+                          type="input"
+                          inputPlaceholder="Enter Category Name"
+                          animation="slide-from-top"
+                          validationMsg="Please enter a category!"
+                          onConfirm={inputValue => {
+                            debugger;
+                            inputValue = inputValue.trim();
+                            if (inputValue !== "") {
+                              this.setState({
+                                showList1: false,
+                                list1Value: inputValue
+                              });
+                              this.handleAddCategory(inputValue);
+                            } else {
+                              this.setState({
+                                showList1: false,
+                                list1Value: inputValue
+                              });
+                            }
+                          }}
+                          onCancel={() => {
+                            this.setState({ showList1: false});
+                          }}
+                          onEscapeKey={() =>
+                            this.setState({ showList1: false})
+                          }
+                          onOutsideClick={() =>
+                            this.setState({ showList1: false})
+                          }
+                        />
+                      </div> */}
+                       <div className="dropDrownSpace">
                         <label className="reports-to reports-dis">
                           Category
                         </label>

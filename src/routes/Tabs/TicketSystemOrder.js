@@ -180,6 +180,7 @@ class TicketSystemOrder extends Component {
     debugger
     this.setState({
       custAttachOrder: 1,
+      orderDetailsData:[],
       SwitchBtnStatus: e.target.checked
     });
     {
@@ -990,7 +991,7 @@ class TicketSystemOrder extends Component {
                     name="orderNumber"
                     value={this.state.orderNumber}
                     onChange={this.handleOrderChange.bind(this)}
-                    // disabled
+                    disabled={this.state.custAttachOrder === 1}
                   />
 
                   <img
