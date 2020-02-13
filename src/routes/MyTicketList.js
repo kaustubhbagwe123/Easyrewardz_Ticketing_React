@@ -1330,9 +1330,9 @@ class MyTicketList extends Component {
     // --------------------By Customer Type Tab---------------
     var customerType = {};
     if (this.state.ActiveTabId === 2) {
-      customerType["CustomerMobileNo"] = this.state.MobileNoByCustType;
-      customerType["CustomerEmailID"] = this.state.EmailIdByCustType;
-      customerType["TicketID"] = this.state.TicketIdByCustType;
+      customerType["CustomerMobileNo"] = this.state.MobileNoByCustType.trim();
+      customerType["CustomerEmailID"] = this.state.EmailIdByCustType.trim();
+      customerType["TicketID"] = this.state.TicketIdByCustType.trim();
       customerType[
         "TicketStatusID"
       ] = this.state.selectedTicketStatusByCustomer;
