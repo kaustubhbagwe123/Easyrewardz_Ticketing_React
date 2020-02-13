@@ -341,74 +341,88 @@ class MyTicketList extends Component {
     }).then(function(res) {
       debugger;
       let status = res.data.message;
-      let data = res.data.responseData;
+      let data1 = res.data.responseData;
       if (status === "Success") {
-        self.setState({ modulesItemsMyticket: data });
-        self.setMyTicketSearch();
+        self.setState({ modulesItemsMyticket: data1 });
+        self.setMyTicketSearch(data1);
       } else {
         self.setState({ modulesItemsMyticket: [] });
       }
     });
   }
 
-  setMyTicketSearch() {
+  setMyTicketSearch(data1) {
     debugger;
     var data = [];
-    data = this.state.modulesItemsMyticket;
-    if (data[0].moduleItemisActive === true) {
-      this.setState({ Escalation: "yes" });
-    } else {
-      this.setState({ Escalation: "none" });
+    data = data1;
+    if(data.length > 0) {
+    if(data[0].moduleItemisActive!==undefined){
+      if (data[0].moduleItemisActive === true) {
+        this.setState({ Escalation: "yes" });
+      } else {
+        this.setState({ Escalation: "none" });
+      }
     }
-
+    
+    if(data[1].moduleItemisActive!==undefined){
     if (data[1].moduleItemisActive === true) {
       this.setState({ New: "yes" });
     } else {
       this.setState({ New: "none" });
     }
-
+  }
+  if(data[2].moduleItemisActive!==undefined){
     if (data[2].moduleItemisActive === true) {
       this.setState({ Open: "yes" });
     } else {
       this.setState({ Open: "none" });
     }
-
+  }
+  if(data[3].moduleItemisActive!==undefined){
     if (data[3].moduleItemisActive === true) {
       this.setState({ Resolved: "yes" });
     } else {
       this.setState({ Resolved: "none" });
     }
-
+  }
+  if(data[4].moduleItemisActive!==undefined){
     if (data[4].moduleItemisActive === true) {
       this.setState({ ReassignedByMe: "yes" });
     } else {
       this.setState({ ReassignedByMe: "none" });
     }
-
+  }
+  if(data[5].moduleItemisActive!==undefined){
     if (data[5].moduleItemisActive === true) {
       this.setState({ Closed: "yes" });
     } else {
       this.setState({ Closed: "none" });
     }
-
+  }
+  if(data[6].moduleItemisActive!==undefined){
     if (data[6].moduleItemisActive === true) {
       this.setState({ All: "yes" });
     } else {
       this.setState({ All: "none" });
     }
-
+  }
+  if(data[7].moduleItemisActive!==undefined){
     if (data[7].moduleItemisActive === true) {
       this.setState({ FollowUp: "yes" });
     } else {
       this.setState({ FollowUp: "none" });
     }
-
+  }
+  if(data[8].moduleItemisActive!==undefined){
     if (data[8].moduleItemisActive === true) {
       this.setState({ Draft: "yes" });
     } else {
       this.setState({ Draft: "none" });
     }
   }
+}
+  }
+
   handleSearchTicketAllTabCount() {
     let self = this;
     axios({

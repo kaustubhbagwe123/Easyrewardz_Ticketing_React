@@ -10268,6 +10268,9 @@ table tr th:last-child {
   background-size: 60px;
   z-index: 5;
 }
+.loader-icon-height {
+  height: 200px;
+}
 .tic-history .ReactTable {
   border: none;
 }
