@@ -315,14 +315,29 @@ class TicketSystemStore extends Component {
                     type="text"
                     className="systemordersearch"
                     placeholder="Search By Store Name, Pin Code, Store Code"
-                    value={this.state.filterAll}
-                    onChange={this.filterAll}
+                    // value={this.state.filterAll}
+                    // onChange={this.filterAll}
+                    name="SrchStoreNameCode"
+                    value={this.state.SrchStoreNameCode}
+                    onChange={this.handleStoreChange}
+                    disabled={this.state.SwitchBtnStatus === true}
                   />
                   <img
                     src={SearchBlackImg}
                     alt="Search"
                     className="systemorder-imgsearch"
+                    onClick={this.handleSearchStoreDetails.bind(this)}
                   />
+                  {this.state.SrchStoreNameCode.length === 0 && (
+                    <p
+                    style={{
+                    color: "red",
+                    marginBottom: "0px"
+                    }}
+                    >
+                    {this.state.byValideStoreData}
+                    </p>
+                  )}
                 </div>
               </div>
               <span className="linestore1"></span>

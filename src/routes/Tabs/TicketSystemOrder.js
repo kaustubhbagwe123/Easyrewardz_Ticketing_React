@@ -65,7 +65,8 @@ class TicketSystemOrder extends Component {
       expanded: {},
       expandedOrderPopup: {},
       validPurchaseStoreName: "",
-      requiredSize: ''
+      requiredSize: '',
+      ChannelOfPurchaseData: []
     };
     this.validator = new SimpleReactValidator();
     this.onFilteredChange = this.onFilteredChange.bind(this);
@@ -79,11 +80,15 @@ class TicketSystemOrder extends Component {
     this.handleGetManuallyTableData = this.handleGetManuallyTableData.bind(
       this
     );
+    this.handleGetChannelOfPurchaseList = this.handleGetChannelOfPurchaseList.bind(
+      this
+      );
   }
 
   componentDidMount() {
     this.handleModeOfPaymentDropDown();
     this.handleGetTicketSourceList();
+    this.handleGetChannelOfPurchaseList();
   }
 
   handleRequireSize(e, rowData) {
@@ -98,6 +103,18 @@ class TicketSystemOrder extends Component {
     this.setState({ OrderSubItem });
   }
 
+  handleGetChannelOfPurchaseList() {
+    let self = this;
+    axios({
+    method: "post",
+    url: config.apiUrl + "/Master/GetChannelOfPurchaseList",
+    headers: authHeader()
+    }).then(function(res) {
+    debugger;
+    let ChannelOfPurchaseData = res.data.responseData;
+    self.setState({ ChannelOfPurchaseData: ChannelOfPurchaseData });
+    });
+    }
 
   handleOrderTableOpen() {
     this.setState({ OrderTable: true });
@@ -1132,7 +1149,7 @@ class TicketSystemOrder extends Component {
                   )}
                 </div>
                 <div className="col-md-6">
-                  <select
+                  {/* <select
                     value={this.state.selectedTicketSource}
                     onChange={this.setTicketSourceValue}
                     className="category-select-system dropdown-label"
@@ -1144,6 +1161,24 @@ class TicketSystemOrder extends Component {
                           {item.ticketSourceName}
                         </option>
                       ))}
+                  </select> */}
+                  <select
+                    value={this.state.selectedTicketSource}
+                    onChange={this.setTicketSourceValue}
+                    className="category-select-system dropdown-label"
+                    >
+                    <option>
+                    Channel Of Purchase
+                    </option>
+                    {this.state.ChannelOfPurchaseData !== null &&
+                    this.state.ChannelOfPurchaseData.map((item, i) => (
+                    <option
+                    key={i}
+                    value={item.channelOfPurchaseID}
+                    >
+                    {item.nameOfChannel}
+                    </option>
+                    ))}
                   </select>
                   {this.validator.message(
                     "Source",
