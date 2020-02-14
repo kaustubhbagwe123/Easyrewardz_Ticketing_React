@@ -5375,8 +5375,8 @@ class Dashboard extends Component {
                                             </div>
                                           </div>
                                         </span>
-                                        <div className="row mt-3">
-                                          <div className="col-md-5">
+                                        <div className="row mt-3" style={{ position: 'relative' }}>
+                                          <div className="col-md-6">
                                             <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
                                               <Select
                                                 getOptionLabel={option =>
@@ -5404,15 +5404,14 @@ class Dashboard extends Component {
                                             </div>
                                           </div>
                                           <label
-                                            className="every1"
+                                            className="every1 last-to"
                                             style={{
-                                              lineHeight: "40px",
-                                              marginLeft: "14px"
+                                              lineHeight: "40px"
                                             }}
                                           >
                                             to
                                           </label>
-                                          <div className="col-md-5">
+                                          <div className="col-md-6">
                                             <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
                                               <Select
                                                 getOptionLabel={option =>
