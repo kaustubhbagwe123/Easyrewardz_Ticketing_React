@@ -2336,9 +2336,9 @@ class MyTicketList extends Component {
                   </span>
                 </a>
               </li>
-              <li className="nav-item">
+              <li className="nav-item" style={{ display: this.state.ReassignedByMe }}>
                 <a
-                  style={{ display: this.state.ReassignedByMe }}
+                  // style={{ display: this.state.ReassignedByMe }}
                   className="nav-link"
                   data-toggle="tab"
                   href="#Escalation-tab"
