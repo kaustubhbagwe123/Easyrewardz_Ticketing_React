@@ -54,7 +54,7 @@ class AddSearchMyTicket extends Component {
     this.validator = new SimpleReactValidator();
   }
   handleCopyToaster() {
-    debugger;
+    //debugger;
     setTimeout(() => {
       if (
         this.state.copied &&
@@ -81,7 +81,7 @@ class AddSearchMyTicket extends Component {
     this.validator.hideMessages();
   }
   handleSearchCustomer() {
-    debugger;
+    //debugger;
     if (this.state.SrchEmailPhone.length > 0) {
     let self = this;
     axios({
@@ -92,7 +92,7 @@ class AddSearchMyTicket extends Component {
         SearchText: this.state.SrchEmailPhone.trim()
       }
     }).then(function(res) {
-      debugger;
+      //debugger;
       let SearchData = res.data.responseData[0];
       // let GetCustId = SearchData.customerID;
       if (SearchData) {
@@ -121,7 +121,7 @@ class AddSearchMyTicket extends Component {
   }
   }
   CheckValidCustomerEmailPhoneNo() {
-    debugger;
+    //debugger;
     let self = this;
     if (this.validator.allValid()) {
       axios({
@@ -133,7 +133,7 @@ class AddSearchMyTicket extends Component {
           Cust_PhoneNumber: this.state.customerPhoneNumber.trim()
         }
       }).then(function(res) {
-        debugger;
+        //debugger;
         let validCheck =res.data.message;
         if (validCheck === "Success") {
           self.handleAddCustomerSave();
@@ -149,7 +149,7 @@ class AddSearchMyTicket extends Component {
   }
 
   handleAddCustomerSave() {
-    debugger;
+    //debugger;
     let self = this;
 
     axios({
@@ -170,14 +170,14 @@ class AddSearchMyTicket extends Component {
         ModifiedDate: "2019-12-17"
       }
     }).then(function(res) {
-      debugger;
+      //debugger;
       let responseMessage = res.data.message;
       let custId = res.data.responseData;
       self.setState({
         loading: true
       });
       if (responseMessage === "Success") {
-        debugger
+        //debugger
         NotificationManager.success("New Customer added successfully.");
         setTimeout(function() {
           self.props.history.push({
@@ -197,7 +197,7 @@ class AddSearchMyTicket extends Component {
     });
   };
   handleChange(date) {
-    debugger;
+    //debugger;
     this.setState({
       dob: date
     });

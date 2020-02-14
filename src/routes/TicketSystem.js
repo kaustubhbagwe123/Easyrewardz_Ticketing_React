@@ -677,9 +677,11 @@ class TicketSystem extends Component {
 
       var objFile = new Object();
       var name = e.target.files[i].name;
+      var value=e.target.value;
       var type = name.substring(name.lastIndexOf(".") + 1, name.length);
       objFile.Type = type;
       objFile.name = name;
+      objFile.value = value;
 
       objFile.File = e.target.files[i];
       const file = e.target.files[i];
@@ -1319,6 +1321,7 @@ class TicketSystem extends Component {
                           </div>
 
                           <div>
+                            <a href={item.value} target='_blank'>
                             <img
                               src={
                                 item.Type === "docx"
@@ -1335,6 +1338,7 @@ class TicketSystem extends Component {
                               alt="thumb"
                               className="thumbtick"
                             />
+                            </a>
                           </div>
                         </div>
                       ) : (

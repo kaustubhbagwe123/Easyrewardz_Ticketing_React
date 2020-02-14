@@ -171,7 +171,7 @@ class Header extends Component {
       url: config.apiUrl + "/Account/Logout",
       headers: authHeader()
     }).then(function(res) {
-      debugger;
+      //debugger;
       var status = res.data.status;
       // var Msg=res.data.message
       if (status === true) {
@@ -183,7 +183,7 @@ class Header extends Component {
   }
 
   handleLoggedInUserDetails = () => {
-    debugger;
+    //debugger;
     let self = this;
     var data = "";
     axios({
@@ -191,7 +191,7 @@ class Header extends Component {
       url: config.apiUrl + "/DashBoard/LoggedInAccountDetails",
       headers: authHeader()
     }).then(function(res) {
-      debugger;
+      //debugger;
       data = res.data.responseData;
       var status = res.data.message;
       if (status === "Success") {
@@ -229,14 +229,14 @@ class Header extends Component {
   };
 
   handleGetNotificationList() {
-    debugger;
+    //debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Notification/GetNotifications",
       headers: authHeader()
     }).then(function(res) {
-      debugger;
+      //debugger;
       let status = res.data.message;
       if (status === "Success") {
         let Count1 = res.data.responseData[0].ticketCount;

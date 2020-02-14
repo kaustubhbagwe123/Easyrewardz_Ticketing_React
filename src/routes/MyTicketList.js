@@ -141,6 +141,8 @@ class MyTicketList extends Component {
       byResolvedCount: 0,
       byReassignedCount: 0,
       byClosedCount: 0,
+      byReOpenCount: 0,
+      
       byAllCount: 0,
       byFollowUpCount: 0,
       draftCountStatus: 0,
@@ -443,6 +445,8 @@ class MyTicketList extends Component {
         var AllCount = data[6].ticketCount;
         var FollowUpCount = data[7].ticketCount;
         var draftCountStatus = data[8].ticketCount;
+        var byReOpenCount=data[9].ticketCount;
+
         self.setState({
           byEscalationCount: EscalationCount,
           byNewCount: NewCount,
@@ -452,7 +456,8 @@ class MyTicketList extends Component {
           byClosedCount: ClosedCount,
           byAllCount: AllCount,
           byFollowUpCount: FollowUpCount,
-          draftCountStatus: draftCountStatus
+          draftCountStatus: draftCountStatus,
+          byReOpenCount
         });
       }
     });
@@ -487,7 +492,14 @@ class MyTicketList extends Component {
       this.setState({
         headerActiveId: 104
       });
-    } else if (TabId === "Reassigned") {
+    }
+    else if (TabId === "ReOpen") {
+      ticketStatus = 105;
+      this.setState({
+        headerActiveId: 105
+      });
+    }  
+    else if (TabId === "Reassigned") {
       ticketStatus = 1004;
       this.setState({
         headerActiveId: 1004
@@ -2365,6 +2377,28 @@ class MyTicketList extends Component {
                     {this.state.byClosedCount < 9
                       ? "0" + this.state.byClosedCount
                       : this.state.byClosedCount}
+                  </span>
+                </a>
+              </li>
+              <li className="nav-item">
+                <a
+                  style={{ display: this.state.ReOpen }}
+                  className="nav-link"
+                  data-toggle="tab"
+                  href="#Escalation-tab"
+                  role="tab"
+                  aria-controls="Escalation-tab"
+                  aria-selected="false"
+                  name="ReOpen"
+                  onClick={() => {
+                    this.handleSearchTicket("ReOpen");
+                  }}
+                >
+                  ReOpen:{" "}
+                  <span className="myTciket-tab-span">
+                    {this.state.byReOpenCount < 9
+                      ? "0" + this.state.byReOpenCount
+                      : this.state.byReOpenCount}
                   </span>
                 </a>
               </li>
@@ -4301,7 +4335,7 @@ class MyTicketList extends Component {
                                               maxWidth: "auto"
                                             }
                                           ]}
-                                          resizable={false}
+                                          // resizable={false}
                                           className="assign-ticket-table"
                                           defaultPageSize={5}
                                           minRows={3}
@@ -4790,7 +4824,7 @@ class MyTicketList extends Component {
                           defaultPageSize={10}
                           showPagination={true}
                           getTrProps={this.HandleRowClickPage}
-                          minRows={2}
+                          minRows={1}
                           defaultSorted={[
                             {
                               id: "ticketID",
