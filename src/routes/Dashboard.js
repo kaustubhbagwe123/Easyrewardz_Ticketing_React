@@ -305,6 +305,12 @@ class Dashboard extends Component {
     this.handleSearchTicketEscalation = this.handleSearchTicketEscalation.bind(
       this
     );
+    this.handleTicketsOnLoad = this.handleTicketsOnLoad.bind(
+      this
+    );
+    this.handleTicketsOnLoadLoader = this.handleTicketsOnLoadLoader.bind(
+      this
+    );
     this.handleAdvSearchFlag = this.handleAdvSearchFlag.bind(this);
     this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
     this.handleSchedulePopup = this.handleSchedulePopup.bind(this);
@@ -364,7 +370,9 @@ class Dashboard extends Component {
 
   componentDidMount() {
     debugger;
-    this.handleSearchTicketEscalation();
+    // this.handleSearchTicketEscalation();   // this is called for bydefault content
+    // this.handleTicketsOnLoad();
+    this.handleTicketsOnLoadLoader();
     this.handleGetDepartmentList();
     this.handleGetTicketSourceList();
     this.handleGetCategoryList();
@@ -379,6 +387,236 @@ class Dashboard extends Component {
     this.handleGetSaveSearchList();
 
     this.handleAdvanceSearchOption();
+  }
+
+  handleTicketsOnLoadLoader() {
+    this.setState({ loading: true });
+  }
+
+  handleTicketsOnLoad() {
+    debugger;
+    let self = this;
+    this.setState({ loading: true });
+
+    // ---------------By Date tab---------------------
+    var dateTab = {};
+    if (this.state.ActiveTabId === 1) {
+      if (
+        this.state.ByDateCreatDate === null ||
+        this.state.ByDateCreatDate === undefined ||
+        this.state.ByDateCreatDate === ""
+      ) {
+        dateTab["Ticket_CreatedOn"] = "";
+      } else {
+        dateTab["Ticket_CreatedOn"] = moment(this.state.ByDateCreatDate).format(
+          "YYYY-MM-DD"
+        );
+      }
+      if (
+        this.state.ByDateSelectDate === null ||
+        this.state.ByDateSelectDate === undefined ||
+        this.state.ByDateSelectDate === ""
+      ) {
+        dateTab["Ticket_ModifiedOn"] = "";
+      } else {
+        dateTab["Ticket_ModifiedOn"] = moment(
+          this.state.ByDateSelectDate
+        ).format("YYYY-MM-DD");
+      }
+      dateTab["SLA_DueON"] = this.state.selectedSlaDueByDate;
+      dateTab["Ticket_StatusID"] = this.state.selectedTicketStatusByDate;
+    } else {
+      dateTab = null;
+    }
+
+    // --------------------By Customer Type Tab---------------
+    var customerType = {};
+    if (this.state.ActiveTabId === 2) {
+      customerType["CustomerMobileNo"] = this.state.MobileNoByCustType.trim();
+      customerType["CustomerEmailID"] = this.state.EmailIdByCustType.trim();
+      customerType["TicketID"] = this.state.TicketIdByCustType.trim();
+      customerType[
+        "TicketStatusID"
+      ] = this.state.selectedTicketStatusByCustomer;
+    } else {
+      customerType = null;
+    }
+
+    // --------------------By Ticket Type Tab-----------------
+    var ticketType = {};
+    if (this.state.ActiveTabId === 3) {
+      let purchaseIds = "";
+      let actionTypeIds = "";
+
+      if (this.state.selectedChannelOfPurchase != null) {
+        for (let i = 0; i < this.state.selectedChannelOfPurchase.length; i++) {
+          purchaseIds +=
+            this.state.selectedChannelOfPurchase[i].channelOfPurchaseID + ",";
+        }
+      }
+      if (this.state.selectedTicketActionType != null) {
+        for (let i = 0; i < this.state.selectedTicketActionType.length; i++) {
+          actionTypeIds +=
+            this.state.selectedTicketActionType[i].ticketActionTypeID + ",";
+        }
+      }
+
+      ticketType["TicketPriorityID"] = this.state.selectedPriority;
+      ticketType["TicketStatusID"] = this.state.selectedTicketStatusByTicket;
+      ticketType["ChannelOfPurchaseIds"] = purchaseIds;
+      ticketType["ActionTypes"] = actionTypeIds;
+    } else {
+      ticketType = null;
+    }
+
+    // --------------------By Category Tab-------------------
+    var categoryType = {};
+    if (this.state.ActiveTabId === 4) {
+      categoryType["CategoryId"] = this.state.selectedCategory;
+      categoryType["SubCategoryId"] = this.state.selectedSubCategory;
+      categoryType["IssueTypeId"] = this.state.selectedIssueType;
+      categoryType[
+        "TicketStatusID"
+      ] = this.state.selectedTicketStatusByCategory;
+    } else {
+      categoryType = null;
+    }
+    //---------------------By Ticket All Tab---------------------
+    var allTab = {};
+
+    if (this.state.ActiveTabId === 5) {
+      let withClaim = 0;
+      let withTask = 0;
+      if (this.state.selectedWithClaimAll === "yes") {
+        withClaim = 1;
+      }
+      if (this.state.selectedWithTaskAll === "yes") {
+        withTask = 1;
+      }
+
+      // --------------------Check null date----------------------------------
+      if (
+        this.state.ByAllCreateDate === null ||
+        this.state.ByAllCreateDate === undefined ||
+        this.state.ByAllCreateDate === ""
+      ) {
+        allTab["CreatedDate"] = "";
+      } else {
+        allTab["CreatedDate"] = moment(this.state.ByAllCreateDate).format(
+          "YYYY-MM-DD"
+        );
+      }
+      // --------------------Check null date----------------------------------
+      if (
+        this.state.ByAllLastDate === null ||
+        this.state.ByAllLastDate === undefined ||
+        this.state.ByAllLastDate === ""
+      ) {
+        allTab["ModifiedDate"] = "";
+      } else {
+        allTab["ModifiedDate"] = moment(this.state.ByAllLastDate).format(
+          "YYYY-MM-DD"
+        );
+      }
+
+      allTab["CategoryId"] = this.state.selectedCategoryAll;
+      allTab["SubCategoryId"] = this.state.selectedSubCategoryAll;
+      allTab["IssueTypeId"] = this.state.selectedIssueTypeAll;
+      allTab["TicketSourceTypeID"] = this.state.selectedTicketSource;
+      allTab["TicketIdORTitle"] = this.state.TicketIdTitleByAll.trim();
+      allTab["PriorityId"] = this.state.selectedPriorityAll;
+      allTab["TicketSatutsID"] = this.state.selectedTicketStatusAll;
+      allTab["SLAStatus"] = this.state.selectedSlaStatus;
+      allTab["ClaimId"] = this.state.selectedClaimStatus;
+      allTab["InvoiceNumberORSubOrderNo"] = this.state.InvoiceSubOrderByAll.trim();
+      allTab["OrderItemId"] = this.state.ItemIdByAll.trim();
+      allTab["IsVisitStore"] = this.state.selectedVisitStoreAll;
+      allTab["IsWantVistingStore"] = this.state.selectedWantToVisitStoreAll;
+      allTab["CustomerEmailID"] = this.state.EmailByAll.trim();
+      allTab["CustomerMobileNo"] = this.state.MobileByAll.trim();
+      allTab["AssignTo"] = this.state.selectedAssignedTo;
+      allTab[
+        "StoreCodeORAddress"
+      ] = this.state.selectedPurchaseStoreCodeAddressAll.trim();
+      allTab[
+        "WantToStoreCodeORAddress"
+      ] = this.state.selectedVisitStoreCodeAddressAll.trim();
+      allTab["HaveClaim"] = withClaim;
+      allTab["ClaimStatusId"] = this.state.selectedClaimStatus;
+      allTab["ClaimCategoryId"] = this.state.selectedClaimCategory;
+      allTab["ClaimSubCategoryId"] = this.state.selectedClaimSubCategory;
+      allTab["ClaimIssueTypeId"] = this.state.selectedClaimIssueType;
+      allTab["HaveTask"] = withTask;
+      allTab["TaskStatusId"] = this.state.selectedTaskStatus;
+      allTab["TaskDepartment_Id"] = this.state.selectedDepartment;
+      allTab["TaskFunction_Id"] = this.state.selectedFunction;
+    } else {
+      allTab = null;
+    }
+
+    // ----------------------SetState variable in Json Format for Apply Search------------------------------------
+    var ShowDataparam = {};
+
+    ShowDataparam.AssigntoId = this.state.AgentIds;
+    ShowDataparam.BrandId = this.state.BrandIds;
+    ShowDataparam.ActiveTabId = this.state.ActiveTabId;
+    ShowDataparam.searchDataByDate = dateTab;
+    ShowDataparam.searchDataByCustomerType = customerType;
+    ShowDataparam.searchDataByTicketType = ticketType;
+    ShowDataparam.searchDataByCategoryType = categoryType;
+    ShowDataparam.searchDataByAll = allTab;
+
+    var FinalSaveSearchData = JSON.stringify(ShowDataparam);
+    this.setState({
+      FinalSaveSearchData
+    });
+    // ----------------------------------------------------------
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/DashBoard/DashBoardSearchTicket",
+      headers: authHeader(),
+      data: {
+        AssigntoId: this.state.AgentIds,
+        BrandId: this.state.BrandIds,
+        ActiveTabId: this.state.ActiveTabId,
+        searchDataByDate: dateTab,
+        searchDataByCustomerType: customerType,
+        searchDataByTicketType: ticketType,
+        searchDataByCategoryType: categoryType,
+        searchDataByAll: allTab
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      let data = res.data.responseData;
+      let CSVData = data;
+      let count = 0;
+      if (res.data.responseData != null) {
+        count = res.data.responseData.length;
+      }
+      if (status === "Success") {
+        self.setState({
+          SearchTicketData: data,
+          resultCount: count,
+          loading: false
+        });
+        for (let i = 0; i < CSVData.length; i++) {
+          delete CSVData[i].totalpages;
+          delete CSVData[i].responseTimeRemainingBy;
+          delete CSVData[i].responseOverdueBy;
+          delete CSVData[i].resolutionOverdueBy;
+          delete CSVData[i].ticketCommentCount;
+        }
+        self.setState({ CSVDownload: CSVData });
+      } else {
+        self.setState({
+          SearchTicketData: [],
+          resultCount: 0,
+          loading: false
+        });
+      }
+    });
   }
 
   clickCheckbox(evt) {
@@ -821,6 +1059,7 @@ class Dashboard extends Component {
     if (this.state.AgentIds !== "" && this.state.BrandIds !== "") {
       this.handleGetDashboardNumberData();
       this.handleGetDashboardGraphData();
+      this.handleTicketsOnLoad();
     }
   }
   checkAllBrandStart(event) {
@@ -842,6 +1081,7 @@ class Dashboard extends Component {
     if (this.state.AgentIds !== "" && this.state.BrandIds !== "") {
       this.handleGetDashboardNumberData();
       this.handleGetDashboardGraphData();
+      this.handleTicketsOnLoad();
     }
   }
   checkIndividualAgent = event => {
@@ -880,6 +1120,7 @@ class Dashboard extends Component {
       () => {
         this.handleGetDashboardNumberData();
         this.handleGetDashboardGraphData();
+        this.ViewSearchData();
       }
     );
   };
@@ -921,6 +1162,7 @@ class Dashboard extends Component {
       () => {
         this.handleGetDashboardNumberData();
         this.handleGetDashboardGraphData();
+        this.ViewSearchData();
       }
     );
   };
@@ -953,6 +1195,7 @@ class Dashboard extends Component {
     });
     this.handleGetDashboardNumberData();
     this.handleGetDashboardGraphData();
+    this.ViewSearchData();
   };
   checkAllBrand = async event => {
     debugger;
@@ -984,6 +1227,7 @@ class Dashboard extends Component {
     });
     this.handleGetDashboardNumberData();
     this.handleGetDashboardGraphData();
+    this.ViewSearchData();
   };
   handleGetAgentList() {
     debugger;
@@ -1781,7 +2025,8 @@ class Dashboard extends Component {
       if (messageData === "Success") {
         self.handleAssignModalClose();
         NotificationManager.success("Tickets assigned successfully.");
-        self.handleSearchTicketEscalation();
+        // self.handleSearchTicketEscalation();
+        self.ViewSearchData();
       }
     });
   }
@@ -1983,7 +2228,8 @@ class Dashboard extends Component {
           resultCount: 0
         },
         () => {
-          this.handleSearchTicketEscalation();
+          // this.handleSearchTicketEscalation();
+          this.ViewSearchData();
         }
       );
     } else if (this.state.byCustomerTypeFlag === 2) {
@@ -1996,7 +2242,8 @@ class Dashboard extends Component {
           resultCount: 0
         },
         () => {
-          this.handleSearchTicketEscalation();
+          // this.handleSearchTicketEscalation();
+          this.ViewSearchData();
         }
       );
     } else if (this.state.byTicketTypeFlag === 3) {
@@ -2009,7 +2256,8 @@ class Dashboard extends Component {
           resultCount: 0
         },
         () => {
-          this.handleSearchTicketEscalation();
+          // this.handleSearchTicketEscalation();
+          this.ViewSearchData();
         }
       );
     } else if (this.state.byCategoryFlag === 4) {
@@ -2022,7 +2270,8 @@ class Dashboard extends Component {
           resultCount: 0
         },
         () => {
-          this.handleSearchTicketEscalation();
+          // this.handleSearchTicketEscalation();
+          this.ViewSearchData();
           this.handleGetSubCategoryList();
         }
       );
@@ -2062,7 +2311,8 @@ class Dashboard extends Component {
           resultCount: 0
         },
         () => {
-          this.handleSearchTicketEscalation();
+          // this.handleSearchTicketEscalation();
+          this.ViewSearchData();
           this.handleGetSubCategoryList();
         this.handleGetClaimSubCategoryList()
         }
