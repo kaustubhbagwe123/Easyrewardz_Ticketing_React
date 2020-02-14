@@ -232,6 +232,9 @@ class Users extends Component {
     })
     self.handleGetReporteedesignationList("edit");
     self.handleGetReportTOList("edit");
+    self.handleGetCategoryList("edit");
+    self.handleGetSubCategoryList("edit");
+    self.handleGetIssueTypeList("edit");
     self.opneEditModal();
 
   }
@@ -2076,7 +2079,7 @@ if(datar==="add"){
 
 
 
-                  <div className="position-relative">
+                  {/* <div className="position-relative">
                     <div className="pagi">
                       <ul>
                         <li>
@@ -2106,7 +2109,7 @@ if(datar==="add"){
                       </ul>
                     </div>
 
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="col-md-4 cus-drp">
