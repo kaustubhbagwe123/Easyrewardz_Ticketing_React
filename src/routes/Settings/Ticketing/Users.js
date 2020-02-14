@@ -68,7 +68,7 @@ class Users extends Component {
       selectedReporteeDesign: 0,
       selectedReportTO: 0,
       selectedAgent: 0,
-      selectedStatus: false,
+      selectedStatus: true,
       multibrandIDs: "",
       multicategoryIDs: "",
       multisubcategoryIDs: "",
@@ -80,8 +80,18 @@ class Users extends Component {
       selectedSupervisorRadio: false,
       editAgentRadio: true,
       editSupervisorRadio: false,
+      buttonToggle:false,
+      buttonProfileToggle:false,
       forEditID: 0,
-      test: ""
+      test: "",
+      usernameCompulsion:"",
+      firstnameCompulsion:"",
+      lastnameCompulsion:"",
+      mobilenumberCompulsion:"",
+      emailCompulsion:"",
+      userdesignCompulsion:"",
+      reporteeDesignCompulsion:"",
+      reportToCompulsion:""
 
 
     };
@@ -108,9 +118,12 @@ class Users extends Component {
     debugger;
     this.handleUserList();
     this.handleGetBrandList();
-
+    // this.handleGetCategoryList();
+    // this.handleGetSubCategoryList();
+    // this.handleGetIssueTypeList();
     this.handleGetDesignationList();
     this.handleGetCRMRoleList();
+    this.handleGetReporteedesignationList();
     this.handleGetReportTOList();
 
   }
@@ -170,6 +183,7 @@ class Users extends Component {
     userEditData.assign_ID = userEditData.assignID;
     userEditData.assign_Escalation = userEditData.assignEscalation;
     userEditData.assign_Name = userEditData.assignName;
+    userEditData.reporteeDesignation_ID = userEditData.reporteeDesignationID;
 
     if (userEditData.isActive === true) {
       userEditData.is_Active = "true";
@@ -178,9 +192,11 @@ class Users extends Component {
     }
     if (userEditData.assign_Escalation === "Agent") {
       var agent = true;
+      var supervi = false;
     }
     else if (userEditData.assign_Escalation === "Supervisor") {
       var supervi = true;
+      var agent = false;
     }
     var bname = userEditData.brand_Names.split(',');
     var bid = userEditData.brand_IDs.split(',').map(Number);
@@ -212,9 +228,10 @@ class Users extends Component {
   
     self.setState({
       userEditData, editBrand: brand, editCategory: cat, editSubCategory: subcat, editIssuetype: issue, editAgentRadio: agent,
-      editSupervisorRadio: supervi
+      editSupervisorRadio: supervi,
     })
-
+    self.handleGetReporteedesignationList("edit");
+    self.handleGetReportTOList("edit");
     self.opneEditModal();
 
   }
@@ -322,8 +339,23 @@ class Users extends Component {
         this.handleGetReportTOList(data2);
       }
     }, 1);
+   
+  };
+  handleEditReporteeDesgnDropDown=(data2,e)=>{
+    debugger;
+    var name = e.target.name;
+    var value = e.target.value;
+
+    var data = this.state.userEditData;
+    data[name] = value;
+
+    this.setState({
+      EditTemp: data
+
+    });
+   
     setTimeout(() => {
-      if (this.state.editreporteeDesign) {
+      if (this.state.userEditData.reporteeDesignation_ID) {
         this.handleGetReportTOList(data2);
       }
     }, 1);
@@ -352,12 +384,12 @@ handleEditDesination =(data1,e)  =>{
   data[name] = value;
 
   this.setState({
-    EditTemp: data
+    EditTemp: data,
   });
   setTimeout(() => {
     if (this.state.userEditData.designation_ID) {
       this.handleGetReporteedesignationList(data1);
-      this.handleGetReportTOList(data1)
+      
     }
   }, 1);
 };
@@ -455,6 +487,7 @@ handleEditDesination =(data1,e)  =>{
     debugger;
 
     let self = this;
+   
     axios({
       method: "post",
       url: config.apiUrl + "/Designation/GetDesignationList",
@@ -467,6 +500,7 @@ handleEditDesination =(data1,e)  =>{
         DesignationData: designationdata
 
       });
+      
     });
   }
 
@@ -504,7 +538,7 @@ handleEditDesination =(data1,e)  =>{
     if(data2==="add"){
   id = this.state.selectedReporteeDesign;
     }else if(data2==="edit"){
-    id= this.state.editreporteeDesign;
+    id= this.state.userEditData.reporteeDesignation_ID;
     }
    
     
@@ -749,6 +783,13 @@ if(datar==="add"){
 
   handleAddPersonalDetails() {
     debugger;
+    if(
+      this.state.selectUserName.length > 0 && 
+      this.state.selectFirstName.length > 0 &&
+      this.state.selectLastName.length > 0 &&
+      this.state.selectMobile.length > 0 &&
+      this.state.selectEmail.length > 0
+    ){
     let self = this;
     var json = {
       UserName: this.state.selectUserName,
@@ -775,19 +816,84 @@ if(datar==="add"){
         NotificationManager.error("Record Not Saved .");
       }
       self.setState({
-        selectUserName: "",
-        selectFirstName: "",
-        selectLastName: "",
-        selectMobile: "",
-        selectEmail: "",
-        getID: id
+       
+        getID: id,
+        buttonToggle:true
       });
       self.handleUserList();
     });
+  }else{
+    this.setState({
+      usernameCompulsion:"Please Enter User Name.",
+      firstnameCompulsion:"Please Enter Fisrt Name.",
+      lastnameCompulsion:"Please Enter Last Name.",
+      mobilenumberCompulsion:"Please Enter Mobile Number.",
+      emailCompulsion:"Please Enter EmailID."
+    });
+  }
+  }
+
+  handleEditPersonalDetails() {
+    debugger;
+    if(
+      this.state.selectUserName.length > 0 && 
+      this.state.selectFirstName.length > 0 &&
+      this.state.selectLastName.length > 0 &&
+      this.state.selectMobile.length > 0 &&
+      this.state.selectEmail.length > 0
+    ){
+    let self = this;
+    var id=this.state.getID;
+    var json = {
+      UserName: this.state.selectUserName,
+      FirstName: this.state.selectFirstName,
+      LastName: this.state.selectLastName,
+      MobileNo: this.state.selectMobile,
+      EmailID: this.state.selectEmail,
+      UserID:id
+
+    };
+    axios({
+      method: "post",
+      url: config.apiUrl + "/User/EditUserPersonalDetail",
+      headers: authHeader(),
+      data: json
+    }).then(function (res) {
+      debugger;
+      
+      let Msg = res.data.message;
+      if (Msg === "Success") {
+
+        NotificationManager.success("Record Updated successfully.");
+
+      } else {
+        NotificationManager.error("Record Not Updated.");
+      }
+      self.setState({
+       
+        getID:id,
+        buttonToggle:true
+      });
+      self.handleUserList();
+    });
+  }else{
+    this.setState({
+      usernameCompulsion:"Please Enter User Name.",
+      firstnameCompulsion:"Please Enter Fisrt Name.",
+      lastnameCompulsion:"Please Enter Last Name.",
+      mobilenumberCompulsion:"Please Enter Mobile Number.",
+      emailCompulsion:"Please Enter EmailID."
+    });
+  }
   }
 
   handleAddProfileDetails() {
     debugger;
+    if(
+      this.state.selectedDesignation > 0 &&
+      this.state.selectedReporteeDesign > 0 &&
+      this.state.selectedReportTO > 0 
+    ){
     let self = this;
     let id = this.state.getID;
     axios({
@@ -803,20 +909,41 @@ if(datar==="add"){
       debugger;
 
       let Msg = res.data.message;
-      if (Msg === "Success") {
+      if(self.state.buttonProfileToggle===true){
+        if (Msg === "Success") {
 
-        NotificationManager.success("Record Saved successfully.");
+          NotificationManager.success("Record Updated successfully.");
+  
+        }
+        else {
+          NotificationManager.error("Please Add Personal Details.");
+        }
+      }else{
+        if (Msg === "Success") {
 
+          NotificationManager.success("Record Saved successfully.");
+  
+        }
+        else {
+          NotificationManager.error("Please Add Personal Details.");
+        }
       }
-      else {
-        NotificationManager.error("Please Add Personal Details.");
-      }
+      
       self.setState({
-        selectedDesignation: 0,
-        selectedReportTO: 0, getID: id
+        
+         getID: id,
+         buttonProfileToggle:true
+
       });
       self.handleUserList();
     });
+  }else{
+    this.setState({
+      userdesignCompulsion:"Please Select Designation.",
+      reporteeDesignCompulsion:"Please Select Reportee Designation.",
+      reportToCompulsion:"Please select Reportee"
+    });
+  }
   }
 
   handleAddMapCategory() {
@@ -896,13 +1023,21 @@ if(datar==="add"){
       let Msg = res.data.message;
       if (Msg === "Success") {
 
-        NotificationManager.success("Record Saved successfully.");
+        NotificationManager.success("User Created successfully.");
 
       }
       else {
-        NotificationManager.error("Record Not Saved .");
+        NotificationManager.error("User Not Created .");
       }
       self.setState({
+        selectUserName:"",
+        selectFirstName:"",
+        selectLastName:"",
+        selectMobile:"",
+        selectEmail:"",
+        selectedDesignation:0,
+        selectedReporteeDesign:0,
+        selectedReportTO:0,
         selectedBrand: [],
         selectedCategory: [],
         selectedSubCategory: [],
@@ -913,7 +1048,8 @@ if(datar==="add"){
         selectedSupervisorAgent: "",
         selectedAgent: 0,
         selectedStatus: "",
-
+        buttonToggle:false,
+        buttonProfileToggle:false,
 
         getID: 0
       });
@@ -1173,11 +1309,11 @@ if(datar==="add"){
                   <div className="pop-over-div">
                     <label className="edit-label-1">Reportee Designation</label>
                     <select className="add-select-category"
-                      name="editreporteeDesign"
-                      value={this.state.editreporteeDesign}
-                      onChange={this.handleReporteeDesgnDropDown.bind(this,"edit")}
+                      name="reporteeDesignation_ID"
+                      value={this.state.userEditData.reporteeDesignation_ID}
+                      onChange={this.handleEditReporteeDesgnDropDown.bind(this,"edit")}
                     >
-                      <option>Select Reportee Designation</option>
+                      <option value="">Select Reportee Designation</option>
                       {this.state.ReporteeDesignData !== null &&
                         this.state.ReporteeDesignData.map((item, i) => (
                           <option key={i} value={item.designationID}>
@@ -1390,7 +1526,7 @@ if(datar==="add"){
                 </div>
             </Tab>
           </Tabs>
-          <div style={{textAlign:"center"}}>
+          <div style={{textAlign:"center",margin:"10px 0"}}>
               <a className="pop-over-cancle canblue" onClick={this.closeEditModal.bind(this)}>CANCEL</a>
               <button className="Save-Use" onClick={this.handleUpdateUser.bind(this)}>SAVE</button>
             </div>
@@ -1846,7 +1982,7 @@ if(datar==="add"){
                                       <p className="title">Sub Category: <b>{row.original.subCategoryNames}</b></p>
                                     </div>
                                     <div className="col-md-6">
-                                      <p className="sub-title mx-2">Agent Name: 12 March 2018</p>
+                                      <p className="sub-title mx-2">Agent Name: </p>
                                     </div>
                                   </div>
                                   <div className="row d-flex">
@@ -1995,6 +2131,11 @@ if(datar==="add"){
                           value={this.state.selectUserName}
                           onChange={this.handleOnChangeUserData}
                         />
+                         {this.state.selectUserName.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.usernameCompulsion}
+                    </p>
+                  )}
                       </div>
                       <div className="div-cntr">
                         <label>First Name</label>
@@ -2003,6 +2144,11 @@ if(datar==="add"){
                           value={this.state.selectFirstName}
                           onChange={this.handleOnChangeUserData}
                         />
+                         {this.state.selectFirstName.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.firstnameCompulsion}
+                    </p>
+                  )}
                       </div>
                       <div className="div-cntr">
                         <label>Last Name</label>
@@ -2011,6 +2157,11 @@ if(datar==="add"){
                           value={this.state.selectLastName}
                           onChange={this.handleOnChangeUserData}
                         />
+                         {this.state.selectLastName.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.lastnameCompulsion}
+                    </p>
+                  )}
                       </div>
                       <div className="div-cntr">
                         <label>Mobile Number</label>
@@ -2019,6 +2170,11 @@ if(datar==="add"){
                           value={this.state.selectMobile}
                           onChange={this.handleOnChangeUserData}
                         />
+                         {this.state.selectMobile.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.mobilenumberCompulsion}
+                    </p>
+                  )}
                       </div>
                       <div className="div-cntr">
                         <label>Email ID</label>
@@ -2027,9 +2183,31 @@ if(datar==="add"){
                           value={this.state.selectEmail}
                           onChange={this.handleOnChangeUserData}
                         />
+                        {this.state.selectEmail.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.emailCompulsion}
+                    </p>
+                  )}
                       </div>
-                      <div className="btn-coll">
+                     
+                       {this.state.buttonToggle===true ? (
+                           <div className="btn-coll">
+                           <button
+                            data-toggle="collapse"
+                            href="#personal-details"
+                             //data-target="#profile-details"
+                             //data-toggle="collapse"
+                             className="butn"
+                             onClick={this.handleEditPersonalDetails.bind(this)}
+                           >
+                             EDIT
+                           </button>
+                         </div>
+                       ):(
+                        <div className="btn-coll">
                         <button
+                          data-toggle="collapse"
+                          href="#personal-details"
                           //data-target="#profile-details"
                           //data-toggle="collapse"
                           className="butn"
@@ -2038,6 +2216,10 @@ if(datar==="add"){
                           SAVE &amp; NEXT
                         </button>
                       </div>
+                       )}
+                         
+                      
+                         
                     </div>
                   </div>
                   <div className="collapse-cntr">
@@ -2070,6 +2252,11 @@ if(datar==="add"){
                               </option>
                             ))}
                         </select>
+                        {this.state.selectedDesignation === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.userdesignCompulsion}
+                    </p>
+                  )}
                       </div>
                       <div className="div-cntr">
                         <label>Reportee Designation</label>
@@ -2086,6 +2273,11 @@ if(datar==="add"){
                               </option>
                             ))}
                         </select>
+                        {this.state.selectedReporteeDesign === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.reporteeDesignCompulsion}
+                    </p>
+                  )}
                       </div>
                       <div className="div-cntr">
                         <label>Report To</label>
@@ -2102,17 +2294,39 @@ if(datar==="add"){
                               </option>
                             ))}
                         </select>
+                        {this.state.selectedReportTO === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.reportToCompulsion}
+                    </p>
+                  )}
                       </div>
-                      <div className="btn-coll">
+                      {this.state.buttonProfileToggle===true ? (
+                         <div className="btn-coll">
+                         <button
+                          data-toggle="collapse"
+                          href="#profile-details"
+                           //data-target="#mapped-category"
+                           //data-toggle="collapse"
+                           className="butn"
+                           onClick={this.handleAddProfileDetails.bind(this)}
+                         >
+                           EDIT
+                         </button>
+                       </div>
+                      ):(
+                        <div className="btn-coll">
                         <button
                           //data-target="#mapped-category"
-                          //data-toggle="collapse"
+                          data-toggle="collapse"
+                          href="#profile-details"
                           className="butn"
                           onClick={this.handleAddProfileDetails.bind(this)}
                         >
                           SAVE &amp; NEXT
                         </button>
                       </div>
+                      )}
+                      
                     </div>
                   </div>
                   <div className="collapse-cntr">
