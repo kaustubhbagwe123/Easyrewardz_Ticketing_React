@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import HeadphoneImg from "./../assets/Images/headphone.png";
 import Headphone2Img from "./../assets/Images/headphone2.png";
 import BlackUserIcon from "./../assets/Images/avatar.png";
+import Cancel from "./../assets/Images/CancelBlue.png";
 import DownImg from "./../assets/Images/down.png";
 import moment from "moment";
 import SearchBlackImg from "./../assets/Images/searchBlack.png";
@@ -1579,7 +1580,7 @@ class MyTicket extends Component {
                     modalId="labelmodel-popup"
                     overlayId="logout-ovrly"
                   >
-                    <div className="myTicket-table remov agentlist">
+                    <div className="myTicket-table remov agentlist" id="tic-det-assign">
                       <ReactTable
                       className="limit-react-table-body"
                         data={SearchAssignData}
@@ -1633,6 +1634,9 @@ class MyTicket extends Component {
                         >
                           SELECT
                         </button>
+                      </div>
+                      <div className="cancel-assign" onClick={this.HandlelabelModalClose.bind(this)}>
+                        <img src={Cancel} alt="cancel" />
                       </div>
                     </div>
                   </Modal>

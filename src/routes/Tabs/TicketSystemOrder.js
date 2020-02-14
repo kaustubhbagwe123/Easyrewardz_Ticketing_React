@@ -48,6 +48,7 @@ class TicketSystemOrder extends Component {
       modeOfPayment: [],
       SearchItem: [],
       orderDetailsData: [],
+      OrderSubItem: [],
       OrderSubComponent: [],
       selectedDataRow: [],
       CheckOrderID: {},
@@ -63,7 +64,9 @@ class TicketSystemOrder extends Component {
       validOrdernumber: "",
       expanded: {},
       expandedOrderPopup: {},
-      validPurchaseStoreName: ""
+      validPurchaseStoreName: "",
+      requiredSize: '',
+      ChannelOfPurchaseData: []
     };
     this.validator = new SimpleReactValidator();
     this.onFilteredChange = this.onFilteredChange.bind(this);
@@ -77,14 +80,42 @@ class TicketSystemOrder extends Component {
     this.handleGetManuallyTableData = this.handleGetManuallyTableData.bind(
       this
     );
+    this.handleGetChannelOfPurchaseList = this.handleGetChannelOfPurchaseList.bind(
+      this
+      );
   }
 
   componentDidMount() {
     this.handleModeOfPaymentDropDown();
     this.handleGetTicketSourceList();
+    this.handleGetChannelOfPurchaseList();
   }
 
- 
+  handleRequireSize(e, rowData) {
+    debugger;
+
+    var id = rowData.original.orderItemID;
+    var value = document.getElementById("requireSizeTxt" + id).value;
+    var index = rowData.index;
+    var OrderSubItem = this.state.OrderSubItem;
+    OrderSubItem[index].requireSize = value
+
+    this.setState({ OrderSubItem });
+  }
+
+  handleGetChannelOfPurchaseList() {
+    let self = this;
+    axios({
+    method: "post",
+    url: config.apiUrl + "/Master/GetChannelOfPurchaseList",
+    headers: authHeader()
+    }).then(function(res) {
+    debugger;
+    let ChannelOfPurchaseData = res.data.responseData;
+    self.setState({ ChannelOfPurchaseData: ChannelOfPurchaseData });
+    });
+    }
+
   handleOrderTableOpen() {
     this.setState({ OrderTable: true });
   }
@@ -132,7 +163,7 @@ class TicketSystemOrder extends Component {
     this.setState({ selectedTicketSource: ticketSourceValue });
   };
   handleCheckOrderID(orderMasterID, rowData) {
-   debugger;
+    debugger;
     const newSelected = Object.assign({}, this.state.CheckOrderID);
     newSelected[orderMasterID] = !this.state.CheckOrderID[orderMasterID];
     this.setState({
@@ -170,7 +201,7 @@ class TicketSystemOrder extends Component {
 
     this.setState({
       selectedDataRow: selectedRow
-    }); 
+    });
     {
       this.props.getOrderId(selectedRow);
     }
@@ -180,7 +211,7 @@ class TicketSystemOrder extends Component {
     debugger
     this.setState({
       custAttachOrder: 1,
-      orderDetailsData:[],
+      orderDetailsData: [],
       SwitchBtnStatus: e.target.checked
     });
     {
@@ -196,8 +227,8 @@ class TicketSystemOrder extends Component {
       method: "post",
       url: config.apiUrl + "/Master/getTicketSources",
       headers: authHeader()
-    }).then(function(res) {
-     debugger;
+    }).then(function (res) {
+      debugger;
       let status = res.data.message;
       let data = res.data.responseData;
       if (status === "Success") {
@@ -212,19 +243,19 @@ class TicketSystemOrder extends Component {
     });
   }
   handleGetManuallyTableData() {
-   debugger;
+    debugger;
     let self = this;
     axios({
       method: "post",
       headers: authHeader(),
       url: config.apiUrl + "/Master/getPaymentMode"
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let finalData = res.data.data;
       self.setState({ finalData: finalData });
     });
   }
-  
+
   handleOrderSearchData() {
     debugger;
     let self = this;
@@ -238,13 +269,29 @@ class TicketSystemOrder extends Component {
           OrderNumber: this.state.orderNumber,
           CustomerID: CustID
         }
-      }).then(function(res) {
-        debugger;
+      }).then(function (res) {
+
         let Msg = res.data.message;
         let mainData = res.data.responseData;
+
+        var OrderSubItem = [];
+
+        for (let i = 0; i < mainData.length; i++) {
+
+          if (mainData[i].orderItems.length > 0) {
+
+            for (let j = 0; j < mainData[i].orderItems.length; j++) {
+
+              OrderSubItem.push(mainData[i].orderItems[j]);
+            }
+          }
+
+
+        }
         self.setState({
           message: Msg,
-          orderDetailsData: mainData
+          orderDetailsData: mainData,
+          OrderSubItem
         });
       });
     } else {
@@ -281,7 +328,7 @@ class TicketSystemOrder extends Component {
             Size: this.state.size,
             RequireSize: this.state.requiredSize
           }
-        }).then(function(res) {
+        }).then(function (res) {
           debugger;
           let status = res.data.message;
 
@@ -305,7 +352,7 @@ class TicketSystemOrder extends Component {
           }
         });
       } else {
-        NotificationManager.error("Order not added."); 
+        NotificationManager.error("Order not added.");
         self.setState({
           validPurchaseStoreName: "Store name not exist"
         });
@@ -316,7 +363,7 @@ class TicketSystemOrder extends Component {
     }
   }
   handlePurchaseStoreName(field, e) {
-   debugger;
+    debugger;
     let self = this;
     let SearchData = this.state.purchaseFrmStorName;
     SearchData[field] = e.target.value;
@@ -329,7 +376,7 @@ class TicketSystemOrder extends Component {
         params: {
           SearchText: SearchData[field]
         }
-      }).then(function(res) {
+      }).then(function (res) {
         debugger;
         let status = res.data.message;
         var data = res.data.responseData;
@@ -350,7 +397,7 @@ class TicketSystemOrder extends Component {
     }
   }
   HandleSelectdata(e, field, value, id) {
-   debugger;
+    debugger;
     let SearchData = this.state.SearchData;
     SearchData[field] = value;
 
@@ -370,13 +417,13 @@ class TicketSystemOrder extends Component {
       method: "post",
       url: config.apiUrl + "/Master/getPaymentMode",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       let modeData = res.data.responseData;
       self.setState({ modeData: modeData });
     });
   }
   onFilteredChange(filtered) {
-   debugger;
+    debugger;
     if (filtered.length > 1 && this.state.filterAll.length) {
       // NOTE: this removes any FILTER ALL filter
       const filterAll = "";
@@ -388,7 +435,7 @@ class TicketSystemOrder extends Component {
   }
 
   filterAll(e) {
-   debugger;
+    debugger;
     const { value } = e.target;
     const filterAll = value;
     const filtered = [{ id: "all", value: filterAll }];
@@ -408,7 +455,7 @@ class TicketSystemOrder extends Component {
     });
   }
   handleNumberOnchange = e => {
-   debugger;
+    debugger;
     var values = e.target.value;
     var names = e.target.name;
 
@@ -465,7 +512,7 @@ class TicketSystemOrder extends Component {
   };
 
   handleChangeOrderItem = e => {
-   debugger;
+    debugger;
     var values = e.target.checked;
     if (values) {
       var x = document.getElementById("ordertable");
@@ -484,7 +531,7 @@ class TicketSystemOrder extends Component {
     });
   };
   handleChangeModalOrderItem = e => {
-   debugger;
+    debugger;
     var values = e.target.checked;
     if (values) {
       var x = document.getElementById("Modalordertable");
@@ -505,7 +552,7 @@ class TicketSystemOrder extends Component {
 
   render() {
     const { orderDetailsData } = this.state;
-     
+
     return (
       <div className="ticketSycard">
         <div className="ticketSycard1">
@@ -670,7 +717,7 @@ class TicketSystemOrder extends Component {
                               name="ticket-order"
                               checked={
                                 this.state.CheckOrderID[
-                                  row.original.orderMasterID
+                                row.original.orderMasterID
                                 ] === true
                               }
                               onChange={this.handleCheckOrderID.bind(
@@ -680,7 +727,7 @@ class TicketSystemOrder extends Component {
                               )}
                             />
                             <label htmlFor={"i" + row.original.orderMasterID}>
-                              
+
                             </label>
                           </div>
                         )
@@ -688,7 +735,7 @@ class TicketSystemOrder extends Component {
                       {
                         Header: <span>Invoice Number</span>,
                         accessor: "invoiceNumber"
-                       
+
                       },
                       {
                         Header: <span>Invoice Date</span>,
@@ -727,14 +774,14 @@ class TicketSystemOrder extends Component {
                     width: 0,
                     resizable: false,
                     sortable: false,
-                    Filter: () => {},
+                    Filter: () => { },
                     getProps: () => {
                       return {
                         // style: { padding: "0px"}
                       };
                     },
                     filterMethod: (filter, rows) => {
-                     debugger;
+                      debugger;
                       var result = matchSorter(rows, filter.value, {
                         keys: [
                           "invoiceNumber",
@@ -749,10 +796,10 @@ class TicketSystemOrder extends Component {
                         threshold: matchSorter.rankings.WORD_STARTS_WITH
                       });
                       if (result.length > 0) {
-                       debugger;
+                        debugger;
                         return result;
                       } else {
-                       debugger;
+                        debugger;
                         result = [{ itemPrice: "No Record Found" }];
                         return result;
                       }
@@ -809,7 +856,7 @@ class TicketSystemOrder extends Component {
                               name="ticket-order"
                               checked={
                                 this.state.CheckOrderID[
-                                  row.original.orderMasterID
+                                row.original.orderMasterID
                                 ] === true
                               }
                               onChange={this.handleCheckOrderID.bind(
@@ -818,7 +865,7 @@ class TicketSystemOrder extends Component {
                                 row.original
                               )}
                             />
-                            <label htmlFor={"i" + row.original.orderMasterID}> 
+                            <label htmlFor={"i" + row.original.orderMasterID}>
                             </label>
                           </div>
                         )
@@ -864,14 +911,14 @@ class TicketSystemOrder extends Component {
                     width: 0,
                     resizable: false,
                     sortable: false,
-                    Filter: () => {},
+                    Filter: () => { },
                     getProps: () => {
                       return {
                         // style: { padding: "0px"}
                       };
                     },
                     filterMethod: (filter, rows) => {
-                     debugger;
+                      debugger;
                       var result = matchSorter(rows, filter.value, {
                         keys: [
                           "invoiceNumber",
@@ -886,10 +933,10 @@ class TicketSystemOrder extends Component {
                         threshold: matchSorter.rankings.WORD_STARTS_WITH
                       });
                       if (result.length > 0) {
-                       debugger;
+                        debugger;
                         return result;
                       } else {
-                       debugger;
+                        debugger;
                         result = [{ itemPrice: "No Record Found" }];
                         return result;
                       }
@@ -904,7 +951,7 @@ class TicketSystemOrder extends Component {
                   return (
                     <div style={{ padding: "20px" }}>
                       <ReactTable
-                        data={row.original.orderItems}
+                        data={this.state.OrderSubItem.filter(x => x.orderMasterID == row.original.orderMasterID)}
                         columns={[
                           {
                             Header: <span>Article Number</span>,
@@ -921,7 +968,7 @@ class TicketSystemOrder extends Component {
                                   name="ticket-order"
                                   checked={
                                     this.state.CheckOrderID[
-                                      row.original.orderItemID
+                                    row.original.orderItemID
                                     ] === true
                                   }
                                   onChange={this.handleCheckOrderID.bind(
@@ -959,9 +1006,10 @@ class TicketSystemOrder extends Component {
                             Header: <span>Required Size</span>,
                             accessor: "requireSize",
                             Cell: row => {
+                              // debugger;
                               return (
                                 <div>
-                                  <input type="text" name="requiredize" />
+                                  <input type="text" id={"requireSizeTxt" + row.original.orderItemID} value={row.original.requireSize || ''} name='requiredSize' onChange={() => { this.handleRequireSize(this, row) }} />
                                 </div>
                               );
                             }
@@ -1101,7 +1149,7 @@ class TicketSystemOrder extends Component {
                   )}
                 </div>
                 <div className="col-md-6">
-                  <select
+                  {/* <select
                     value={this.state.selectedTicketSource}
                     onChange={this.setTicketSourceValue}
                     className="category-select-system dropdown-label"
@@ -1113,6 +1161,24 @@ class TicketSystemOrder extends Component {
                           {item.ticketSourceName}
                         </option>
                       ))}
+                  </select> */}
+                  <select
+                    value={this.state.selectedTicketSource}
+                    onChange={this.setTicketSourceValue}
+                    className="category-select-system dropdown-label"
+                    >
+                    <option>
+                    Channel Of Purchase
+                    </option>
+                    {this.state.ChannelOfPurchaseData !== null &&
+                    this.state.ChannelOfPurchaseData.map((item, i) => (
+                    <option
+                    key={i}
+                    value={item.channelOfPurchaseID}
+                    >
+                    {item.nameOfChannel}
+                    </option>
+                    ))}
                   </select>
                   {this.validator.message(
                     "Source",
@@ -1157,7 +1223,7 @@ class TicketSystemOrder extends Component {
                     showMonthDropdown
                     showYearDropdown
                     className="addmanuallytext1"
-                    // className="form-control"
+                  // className="form-control"
                   />
                 </div>
               </div>
@@ -1267,7 +1333,7 @@ class TicketSystemOrder extends Component {
                         {item.storeName}
                       </div>
                     )}
-                    renderInput={function(props) {
+                    renderInput={function (props) {
                       return (
                         <input
                           placeholder="Purchase from Store name"
@@ -1327,7 +1393,7 @@ class TicketSystemOrder extends Component {
                   <button
                     type="button"
                     className="addmanual m-t-15"
-                   onClick={this.handleChangeToggle.bind(this)}
+                    onClick={this.handleChangeToggle.bind(this)}
                   >
                     CANCEL
                   </button>
@@ -1402,7 +1468,7 @@ class TicketSystemOrder extends Component {
                             name="ticket-order"
                             checked={
                               this.state.CheckOrderID[
-                                row.original.orderMasterID
+                              row.original.orderMasterID
                               ] === true
                             }
                             onChange={this.handleCheckOrderID.bind(
@@ -1491,7 +1557,7 @@ class TicketSystemOrder extends Component {
                             name="ticket-order"
                             checked={
                               this.state.CheckOrderID[
-                                row.original.orderMasterID
+                              row.original.orderMasterID
                               ] === true
                             }
                             onChange={this.handleCheckOrderID.bind(
