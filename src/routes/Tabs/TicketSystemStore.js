@@ -30,7 +30,8 @@ class TicketSystemStore extends Component {
       filterAll: "",
       filtered: [],
       byVisitDate: "",
-      byValideStoreData: ""
+      byValideStoreData: "",
+      modifiedDate:""
     };
     this.handleOrderStoreTableOpen = this.handleOrderStoreTableOpen.bind(this);
     this.handleOrderStoreTableClose = this.handleOrderStoreTableClose.bind(
@@ -48,6 +49,15 @@ class TicketSystemStore extends Component {
   }
   handleByvisitDate(date) {
     debugger;
+    // var id = rowData.original.storeID;
+    // var value = document.getElementById("visitDate" + id);
+    // var value=date;
+    // var value = document.getElementById('modifiedDate'+ id);
+    // // var index = rowData.index;
+    // var selectedStoreData = this.state.byVisitDate;
+    // selectedStoreData["modifiedDate"] = date
+
+    // this.setState({ selectedStoreData });
     this.setState({ byVisitDate: date });
   }
   handleStoreStatus = e => {
@@ -536,9 +546,23 @@ class TicketSystemStore extends Component {
                         {
                           Header: <span>Visit Date</span>,
                           accessor: "visitDate",
-                          Cell: row => (
-                            <div className="col-sm-12 p-0">
-                              <DatePicker
+                          Cell:row=>{
+                            return(
+                              <div className="col-sm-12 p-0">
+                              {/* <DatePicker
+                                // selected={this.state.byVisitDate}
+                                selected={row.original.modifiedDate}
+                                placeholderText="Visited Date"
+                                showMonthDropdown
+                                showYearDropdown
+                                dateFormat="dd/MM/yyyy"
+                                id={"modifiedDate" + row.original.storeID}
+                                value={row.original.modifiedDate}
+                                // value={this.state.byVisitDate}
+                                name="modifiedDate"
+                                onChange={this.handleByvisitDate.bind(this,row)}
+                              /> */}
+                               <DatePicker
                                 selected={this.state.byVisitDate}
                                 onChange={this.handleByvisitDate.bind(this)}
                                 placeholderText="Visited Date"
@@ -548,7 +572,8 @@ class TicketSystemStore extends Component {
                                 value={this.state.byVisitDate}
                               />
                             </div>
-                          )
+                            )
+                          }
                         }
                       ]}
                       // resizable={false}

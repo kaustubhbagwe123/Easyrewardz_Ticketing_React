@@ -42,9 +42,9 @@ class TicketToBillBarGraph extends Component {
             }
           }
         },
-        tooltip: {
-          enabled: false
-        }
+        // tooltip: {
+        //   enabled: false
+        // }
       },
       seriesMixedChart: [
         {
