@@ -2780,6 +2780,9 @@ table tr th:last-child {
 .dash-timepicker .react-datepicker-wrapper, .dash-timepicker input {
   width: 100% !important;
 }
+.dash-timepicker {
+  margin-bottom: 12px;
+}
 .collapse-icon {
   width: 15px;
 }
@@ -4450,7 +4453,7 @@ progress::-webkit-progress-bar {
   border-radius: 4px;
   /* width: 245px; */
   height: 43px;
-  margin-top: 25px;
+  margin-top: 12px;
   cursor: pointer;
   width: 100%;
 }

@@ -145,7 +145,7 @@ class Dashboard extends Component {
       selectedPriority: 0,
       selectedPriorityAll: 0,
       selectedTicketStatusByDate: 0,
-      selectedNoOfDay: "",
+      selectedNoOfDay: 0,
       selectedScheduleTime: "",
       selectedSlaDueByDate: 0,
       selectedClaimStatus: 0,
@@ -236,6 +236,7 @@ class Dashboard extends Component {
       selectedNameOfDayForWeek: [],
       selectedNameOfMonthForYear: [],
       selectedNameOfMonthForDailyYear: [],
+      selectedNameOfDayForYear: [],
       NameOfDayForWeek: [
         {
           days: "Sunday"
@@ -293,7 +294,9 @@ class Dashboard extends Component {
       Email: "",
       MobileNo: "",
       AssignTo: "",
-      PurchaseStoreCodeAddress: ""
+      PurchaseStoreCodeAddress: "",
+      scheduleRequired: '',
+      agentSelection: ''
     };
     this.handleGetAssignTo = this.handleGetAssignTo.bind(this);
     this.applyCallback = this.applyCallback.bind(this);
@@ -314,6 +317,7 @@ class Dashboard extends Component {
     this.handleAdvSearchFlag = this.handleAdvSearchFlag.bind(this);
     this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
     this.handleSchedulePopup = this.handleSchedulePopup.bind(this);
+    this.handleSchedulePopupSuccess = this.handleSchedulePopupSuccess.bind(this);
     this.handleAssignTickets = this.handleAssignTickets.bind(this);
     this.handelOnchangeData = this.handelOnchangeData.bind(this);
     this.clearSearch = this.clearSearch.bind(this);
@@ -1280,7 +1284,7 @@ class Dashboard extends Component {
         debugger;
         this.selectedRow = index;
         var agentId = column.original["user_ID"];
-        this.setState({ agentId });
+        this.setState({ agentId, agentSelection: '' });
       },
       style: {
         background: this.selectedRow === index ? "#ECF2F4" : null
@@ -1894,6 +1898,65 @@ class Dashboard extends Component {
   }
   handleSchedulePopup() {
     debugger;
+    // if (this.state.selectedTeamMember.length > 0 && ) {
+      
+    // }
+    if (this.state.selectScheduleDate === 0 || this.state.selectScheduleDate === '100') {
+      this.setState({
+        scheduleRequired: 'All fields are required'
+      });
+    } else if (this.state.selectScheduleDate === '230') {
+      if (this.state.selectedTeamMember.length === 0 || this.state.selectedScheduleTime === '' || this.state.selectedNoOfDay === 0) {
+        this.setState({
+          scheduleRequired: 'All fields are required'
+        });
+      } else {
+      this.handleSchedulePopupSuccess();
+      }
+    } else if (this.state.selectScheduleDate === '231') {
+      if (this.state.selectedTeamMember.length === 0 || this.state.selectedScheduleTime === '' || this.state.selectedNoOfWeek === 0 || this.state.selectedWeeklyDays === '') {
+        this.setState({
+          scheduleRequired: 'All fields are required'
+        });
+      } else {
+      this.handleSchedulePopupSuccess();
+      }
+    } else if (this.state.selectScheduleDate === '232') {
+      if (this.state.selectedTeamMember.length === 0 || this.state.selectedScheduleTime === '' || this.state.selectedNoOfDaysForMonth === 0 || this.state.selectedNoOfMonthForMonth === 0) {
+        this.setState({
+          scheduleRequired: 'All fields are required'
+        });
+      } else {
+      this.handleSchedulePopupSuccess();
+      }
+    } else if (this.state.selectScheduleDate === '233') {
+      if (this.state.selectedTeamMember.length === 0 || this.state.selectedScheduleTime === '' || this.state.selectedNoOfMonthForWeek === 0 || this.state.selectedNoOfWeekForWeek === 0 || this.state.selectedNameOfDayForWeek.length === 0) {
+        this.setState({
+          scheduleRequired: 'All fields are required'
+        });
+      } else {
+      this.handleSchedulePopupSuccess();
+      }
+    } else if (this.state.selectScheduleDate === '234') {
+      if (this.state.selectedTeamMember.length === 0 || this.state.selectedScheduleTime === '' || this.state.selectedNoOfDayForDailyYear === 0 || this.state.selectedNameOfMonthForYear.length === 0) {
+        this.setState({
+          scheduleRequired: 'All fields are required'
+        });
+      } else {
+      this.handleSchedulePopupSuccess();
+      }
+    } else if (this.state.selectScheduleDate === '235') {
+      if (this.state.selectedTeamMember.length === 0 || this.state.selectedScheduleTime === '' || this.state.selectedNoOfWeekForYear === 0 || this.state.selectedNameOfDayForYear.length === 0 || this.state.selectedNameOfMonthForDailyYear.length === 0) {
+        this.setState({
+          scheduleRequired: 'All fields are required'
+        });
+      } else {
+      this.handleSchedulePopupSuccess();
+      }
+    }
+  }
+  handleSchedulePopupSuccess() {
+    debugger;
 
     let self = this;
     axios({
@@ -1932,6 +1995,9 @@ class Dashboard extends Component {
       if (messageData === "Success") {
         self.ScheduleCloseModel();
         NotificationManager.success("Scheduled successfully.");
+        self.setState({
+          scheduleRequired: ''
+        });
       }
     });
   }
@@ -2006,7 +2072,7 @@ class Dashboard extends Component {
   };
   handleAssignTickets() {
     debugger;
-
+    if (this.state.agentId !== 0) {
     let self = this;
     var ticketIdsComma = this.state.ticketIds;
     var ticketIds = ticketIdsComma.substring(0, ticketIdsComma.length - 1);
@@ -2029,6 +2095,11 @@ class Dashboard extends Component {
         self.ViewSearchData();
       }
     });
+  } else {
+    this.setState({
+      agentSelection: 'Agent Selection is required'
+    })
+  }
   }
   handleGetSlaStatusList() {
     debugger;
@@ -5468,6 +5539,8 @@ class Dashboard extends Component {
                                       />
                                     </div>
 
+                                    <p style={{color: 'red', marginBottom: '0', textAlign: 'center'}}>{this.state.scheduleRequired}</p>
+
                                     <div>
                                       <button
                                         className="scheduleBtn"
@@ -5637,7 +5710,7 @@ class Dashboard extends Component {
                                     getTrProps={this.handleTicketDetails}
                                     className="assign-ticket-table"
                                   />
-
+<p style={{marginTop: this.state.agentSelection === '' ? '0px' : '10px', color: 'red', marginBottom: '0', textAlign: 'center'}}>{this.state.agentSelection}</p>
                                   <textarea
                                     className="assign-modal-textArea"
                                     placeholder="Add Remarks"

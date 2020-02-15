@@ -206,6 +206,7 @@ class MyTicketList extends Component {
       selectedNameOfDayForWeek: [],
       selectedNameOfMonthForYear: [],
       selectedNameOfMonthForDailyYear: [],
+      selectedNameOfDayForYear: [],
       agentId: 0,
       agentRemark: "",
       ticketIds: "",
@@ -260,7 +261,9 @@ class MyTicketList extends Component {
       Closed: "",
       All: "",
       FollowUp: "",
-      Draft: ""
+      Draft: "",
+      scheduleRequired: '',
+      agentSelection: ''
     };
     this.handleGetAssignTo = this.handleGetAssignTo.bind(this);
     this.clearSearch = this.clearSearch.bind(this);
@@ -288,6 +291,7 @@ class MyTicketList extends Component {
       this
     );
     this.handleGetDraftDetails = this.handleGetDraftDetails.bind(this);
+    this.handleSchedulePopupSuccess = this.handleSchedulePopupSuccess.bind(this);
     this.handelOnchangeData = this.handelOnchangeData.bind(this);
     this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
     this.handleGetFunctionList = this.handleGetFunctionList.bind(this);
@@ -549,6 +553,66 @@ class MyTicketList extends Component {
 
   handleSchedulePopup() {
     debugger;
+    // if (this.state.selectedTeamMember.length > 0 && ) {
+      
+    // }
+    if (this.state.selectScheduleDate === 0 || this.state.selectScheduleDate === '100') {
+      this.setState({
+        scheduleRequired: 'All fields are required'
+      });
+    } else if (this.state.selectScheduleDate === '230') {
+      if (this.state.selectedTeamMember.length === 0 || this.state.selectedScheduleTime === '' || this.state.selectedNoOfDay === 0) {
+        this.setState({
+          scheduleRequired: 'All fields are required'
+        });
+      } else {
+      this.handleSchedulePopupSuccess();
+      }
+    } else if (this.state.selectScheduleDate === '231') {
+      if (this.state.selectedTeamMember.length === 0 || this.state.selectedScheduleTime === '' || this.state.selectedNoOfWeek === 0 || this.state.selectedWeeklyDays === '') {
+        this.setState({
+          scheduleRequired: 'All fields are required'
+        });
+      } else {
+      this.handleSchedulePopupSuccess();
+      }
+    } else if (this.state.selectScheduleDate === '232') {
+      if (this.state.selectedTeamMember.length === 0 || this.state.selectedScheduleTime === '' || this.state.selectedNoOfDaysForMonth === 0 || this.state.selectedNoOfMonthForMonth === 0) {
+        this.setState({
+          scheduleRequired: 'All fields are required'
+        });
+      } else {
+      this.handleSchedulePopupSuccess();
+      }
+    } else if (this.state.selectScheduleDate === '233') {
+      if (this.state.selectedTeamMember.length === 0 || this.state.selectedScheduleTime === '' || this.state.selectedNoOfMonthForWeek === 0 || this.state.selectedNoOfWeekForWeek === 0 || this.state.selectedNameOfDayForWeek.length === 0) {
+        this.setState({
+          scheduleRequired: 'All fields are required'
+        });
+      } else {
+      this.handleSchedulePopupSuccess();
+      }
+    } else if (this.state.selectScheduleDate === '234') {
+      if (this.state.selectedTeamMember.length === 0 || this.state.selectedScheduleTime === '' || this.state.selectedNoOfDayForDailyYear === 0 || this.state.selectedNameOfMonthForYear.length === 0) {
+        this.setState({
+          scheduleRequired: 'All fields are required'
+        });
+      } else {
+      this.handleSchedulePopupSuccess();
+      }
+    } else if (this.state.selectScheduleDate === '235') {
+      if (this.state.selectedTeamMember.length === 0 || this.state.selectedScheduleTime === '' || this.state.selectedNoOfWeekForYear === 0 || this.state.selectedNameOfDayForYear.length === 0 || this.state.selectedNameOfMonthForDailyYear.length === 0) {
+        this.setState({
+          scheduleRequired: 'All fields are required'
+        });
+      } else {
+      this.handleSchedulePopupSuccess();
+      }
+    }
+  }
+
+  handleSchedulePopupSuccess() {
+    debugger;
 
     let self = this;
     axios({
@@ -587,6 +651,9 @@ class MyTicketList extends Component {
       if (messageData === "Success") {
         self.ScheduleCloseModel();
         NotificationManager.success("Scheduled successfully.");
+        self.setState({
+          scheduleRequired: ''
+        });
       }
     });
   }
@@ -747,6 +814,7 @@ class MyTicketList extends Component {
   }
   handleAssignTickets() {
     debugger;
+    if (this.state.agentId !== 0) {
     let self = this;
     var ticketIdsComma = this.state.ticketIds;
     var ticketIds = ticketIdsComma.substring(0, ticketIdsComma.length - 1);
@@ -769,6 +837,11 @@ class MyTicketList extends Component {
         self.handleSearchTicket();
       }
     });
+  } else {
+    this.setState({
+      agentSelection: 'Agent Selection is required'
+    })
+  }
   }
 
   clearSearch() {
@@ -4154,6 +4227,7 @@ class MyTicketList extends Component {
                                               }
                                             />
                                           </div>
+                                          <p style={{color: 'red', marginBottom: '0', textAlign: 'center'}}>{this.state.scheduleRequired}</p>
                                           <div>
                                             <button
                                               className="scheduleBtn"
@@ -4349,7 +4423,7 @@ class MyTicketList extends Component {
                                                 this.selectedRow = index;
                                                 var agentId =
                                                   column.original["user_ID"];
-                                                this.setState({ agentId });
+                                                this.setState({ agentId, agentSelection: '' });
                                               },
                                               style: {
                                                 background:
@@ -4360,6 +4434,7 @@ class MyTicketList extends Component {
                                             };
                                           }}
                                         />
+                                        <p style={{marginTop: this.state.agentSelection === '' ? '0px' : '10px', color: 'red', marginBottom: '0', textAlign: 'center'}}>{this.state.agentSelection}</p>
                                         {/* <div className="position-relative">
                                             <div className="pagi">
                                               <ul>
