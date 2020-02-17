@@ -91,7 +91,31 @@ class Users extends Component {
       emailCompulsion:"",
       userdesignCompulsion:"",
       reporteeDesignCompulsion:"",
-      reportToCompulsion:""
+      reportToCompulsion:"",
+      brandCompulsion:"",
+      categoryCompulsion:"",
+      subcategoryCompulsion:"",
+      isuuetypeCompulsion:"",
+      crmroleCompulsion:"",
+      copyescCompulsion:"",
+      assignescCompulsion:"",
+      agentCompulsion:"",
+      editusernameCompulsion:"",
+      editfirstnameCompulsion:"",
+      editlastnameCompulsion:"",
+      editmobilenumberCompulsion:"",
+      editemailCompulsion:"",
+      edituserdesignCompulsion:"",
+      editreporteeDesignCompulsion:"",
+      editreportToCompulsion:"",
+      editbrandCompulsion:"",
+      editcategoryCompulsion:"",
+      editsubcategoryCompulsion:"",
+      editisuuetypeCompulsion:"",
+      editcrmroleCompulsion:"",
+      editcopyescCompulsion:"",
+      editassignescCompulsion:"",
+      editagentCompulsion:""
 
 
     };
@@ -118,9 +142,7 @@ class Users extends Component {
     debugger;
     this.handleUserList();
     this.handleGetBrandList();
-    // this.handleGetCategoryList();
-    // this.handleGetSubCategoryList();
-    // this.handleGetIssueTypeList();
+   
     this.handleGetDesignationList();
     this.handleGetCRMRoleList();
     this.handleGetReporteedesignationList();
@@ -951,6 +973,16 @@ if(datar==="add"){
 
   handleAddMapCategory() {
     debugger;
+    if(
+      this.state.selectedBrand !== null &&
+      this.state.selectedCategory  !== null &&
+      this.state.selectedSubCategory  !== null &&
+      this.state.selectedIssueType  !== null &&
+      this.state.selectedCRMRoles > 0 &&
+      this.state.selectedCopyEscalation ===true &&
+      this.state.selectedAssignEscalation === true &&
+      this.state.selectedAgent > 0
+    ){
     let self = this;
     var finalIssueTypeId = "";
 
@@ -1058,6 +1090,19 @@ if(datar==="add"){
       });
       self.handleUserList();
     });
+  }else{
+    this.setState({
+      brandCompulsion:"Please Select Brands",
+      categoryCompulsion:"Please Select category",
+      subcategoryCompulsion:"Please Select SubCategory",
+      isuuetypeCompulsion:"Please Select IssueType",
+      crmroleCompulsion:"Please Select  CRM Roles",
+      copyescCompulsion:"Please Select Copy Escalation",
+      assignescCompulsion:"Please Select Assign escalation",
+      agentCompulsion:"Please Select Agent"
+
+    });
+  }
   }
   handleDeleteUser(id) {
     debugger;
@@ -1086,17 +1131,26 @@ if(datar==="add"){
   handleUpdateUser() {
 
     debugger;
+    if(
+      this.state.userEditData.selectUserName.length > 0 &&
+      this.state.userEditData.first_Name.length > 0 &&
+      this.state.userEditData.last_Name.length > 0 &&
+      this.state.userEditData.mobile_Number.length > 0 &&
+      this.state.userEditData.email_ID.length > 0 &&
+      this.state.userEditData.designation_ID > 0 &&
+      this.state.userEditData.reporteeDesignation_ID > 0 &&
+      this.state.userEditData.reportee_ID > 0 &&
+      this.state.editBrand !== null &&
+      this.state.editCategory !== null &&
+      this.state.editSubCategory !== null &&
+      this.state.editIssuetype !== null &&
+      this.state.userEditData.role_ID > 0 &&
+      this.state.userEditData.is_Copy_Escalation === true &&
+      this.state.userEditData.is_Assign_Escalation === true &&
+      this.state.userEditData.assign_ID > 0 
+    ){
     let self = this;
-    // this.setState(prevState => ({
-    //   values: [
-    //     ...prevState.values,
-    //     {
-    //       test: "amit"          
-    //     }
-    //   ]
-    // }));
-    // self.setState({test:"dfddd,fffddd"});
-
+    
     var finalIssueTypeId = "";
     var finalBrandId = "";
     var finalCategoryId = "";
@@ -1212,6 +1266,26 @@ if(datar==="add"){
     }).catch(error => {
       console.log(error)
     });
+  }else{
+    this.setState({
+      editusernameCompulsion:"Please Enter User Name.",
+      editfirstnameCompulsion:"Please Enter Fisrt Name.",
+      editlastnameCompulsion:"Please Enter Last Name.",
+      editmobilenumberCompulsion:"Please Enter Mobile Number.",
+      editemailCompulsion:"Please Enter EmailID.",
+      edituserdesignCompulsion:"Please Select Designation.",
+      editreporteeDesignCompulsion:"Please Select Reportee Designation.",
+      editreportToCompulsion:"Please select Reportee",
+      editbrandCompulsion:"Please Select Brands",
+      editcategoryCompulsion:"Please Select category",
+      editsubcategoryCompulsion:"Please Select SubCategory",
+      editisuuetypeCompulsion:"Please Select IssueType",
+      editcrmroleCompulsion:"Please Select  CRM Roles",
+      editcopyescCompulsion:"Please Select Copy Escalation",
+      editassignescCompulsion:"Please Select Assign escalation",
+      editagentCompulsion:"Please Select Agent"
+    });
+  }
   }
 
 
@@ -1255,6 +1329,11 @@ if(datar==="add"){
                       value={this.state.userEditData.selectUserName}
                       onChange={this.handleOnChangeEditData}
                     />
+                      {this.state.userEditData.selectUserName === "" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.editusernameCompulsion}
+                    </p>
+                  )} 
                   </div>
                   <div className="pop-over-div">
                     <label className="edit-label-1">First Name</label>
@@ -1263,6 +1342,11 @@ if(datar==="add"){
                       value={this.state.userEditData.first_Name}
                       onChange={this.handleOnChangeEditData}
                     />
+                     {this.state.userEditData.first_Name === "" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.editfirstnameCompulsion}
+                    </p>
+                  )} 
                   </div>
                   <div className="pop-over-div">
                     <label className="edit-label-1">Last Name</label>
@@ -1271,6 +1355,11 @@ if(datar==="add"){
                       value={this.state.userEditData.last_Name}
                       onChange={this.handleOnChangeEditData}
                     />
+                     {this.state.userEditData.last_Name === "" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.editlastnameCompulsion}
+                    </p>
+                  )} 
                   </div>
                   <div className="pop-over-div">
                     <label className="edit-label-1">Mobile Number</label>
@@ -1279,6 +1368,11 @@ if(datar==="add"){
                       value={this.state.userEditData.mobile_Number}
                       onChange={this.handleOnChangeEditData}
                     />
+               {this.state.userEditData.mobile_Number === "" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.editmobilenumberCompulsion}
+                    </p>
+                  )}
                   </div>
                   <div className="pop-over-div">
                     <label className="edit-label-1">Email ID</label>
@@ -1287,6 +1381,11 @@ if(datar==="add"){
                       value={this.state.userEditData.email_ID}
                       onChange={this.handleOnChangeEditData}
                     />
+                    {this.state.userEditData.email_ID === "" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.editemailCompulsion}
+                    </p>
+                  )}
                   </div>
                 </div>
             </Tab>
@@ -1300,7 +1399,7 @@ if(datar==="add"){
                       value={this.state.userEditData.designation_ID}
                       onChange={this.handleEditDesination.bind(this,"edit")}
                     >
-                      <option>Select Designation</option>
+                      <option value={0}>Select Designation</option>
                       {this.state.DesignationData !== null &&
                         this.state.DesignationData.map((item, i) => (
                           <option key={i} value={item.designationID}>
@@ -1308,6 +1407,11 @@ if(datar==="add"){
                           </option>
                         ))}
                     </select>
+                    {this.state.userEditData.designation_ID === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.edituserdesignCompulsion}
+                    </p>
+                  )}
                   </div>
                   <div className="pop-over-div">
                     <label className="edit-label-1">Reportee Designation</label>
@@ -1324,6 +1428,11 @@ if(datar==="add"){
                           </option>
                         ))}
                     </select>
+                    {this.state.userEditData.reporteeDesignation_ID === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.editreporteeDesignCompulsion}
+                    </p>
+                  )}
                   </div>
                   <div className="pop-over-div">
                     <label className="edit-label-1">Report To</label>
@@ -1340,6 +1449,11 @@ if(datar==="add"){
                           </option>
                         ))}
                     </select>
+                    {this.state.userEditData.reportee_ID === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.editreportToCompulsion}
+                    </p>
+                  )}
                   </div>
               </div>
             </Tab>
@@ -1361,6 +1475,11 @@ if(datar==="add"){
 
                       isMulti
                     />}
+                    {this.state.editBrand.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.editbrandCompulsion}
+                    </p>
+                  )}
 
                   </div>
                   <div className="pop-over-div">
@@ -1379,6 +1498,11 @@ if(datar==="add"){
                       // showNewOptionAtTop={false}
                       isMulti
                     />
+                    {this.state.editCategory.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.editcategoryCompulsion}
+                    </p>
+                  )}
                   </div>
                   <div className="pop-over-div">
                     <label>Sub Categories</label>
@@ -1396,6 +1520,11 @@ if(datar==="add"){
                       // showNewOptionAtTop={false}
                       isMulti
                     />
+                     {this.state.editSubCategory.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.editsubcategoryCompulsion}
+                    </p>
+                  )}
                   </div>
                   <div className="pop-over-div">
                     <label>Issue Type</label>
@@ -1413,6 +1542,11 @@ if(datar==="add"){
                       // showNewOptionAtTop={false}
                       isMulti
                     />
+                     {this.state.editIssuetype.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.editisuuetypeCompulsion}
+                    </p>
+                  )}
                   </div>
                   <div className="mapped-cate-extra">
                     <div className="pop-over-div">
@@ -1422,7 +1556,7 @@ if(datar==="add"){
                         value={this.state.userEditData.role_ID}
                         onChange={this.handleOnChangeEditData}
                       >
-                        <option>Select Designation</option>
+                        <option value={0}>Select Designation</option>
                         {this.state.CRMRoleData !== null &&
                           this.state.CRMRoleData.map((item, i) => (
                             <option key={i} value={item.crmRoleID}>
@@ -1430,6 +1564,11 @@ if(datar==="add"){
                             </option>
                           ))}
                       </select>
+                      {this.state.userEditData.role_ID === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.editcrmroleCompulsion}
+                    </p>
+                  )}
                     </div>
                     <div className="pop-over-div escalation-options">
                       <div className="filter-checkbox">
@@ -1444,7 +1583,14 @@ if(datar==="add"){
                           onChange={this.editsetEscn}
                         />
                         <label htmlFor="copy-esc1">Copy Escalation</label>
+
                       </div>
+                      {this.state.userEditData.is_Copy_Escalation === false && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.editcopyescCompulsion}
+                    </p>
+                  )}
+
                       <div className="filter-checkbox">
                         <input
                           type="checkbox"
@@ -1460,6 +1606,11 @@ if(datar==="add"){
                           Assign Escalation
                                                           </label>
                       </div>
+                      {this.state.userEditData.is_Assign_Escalation === false && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.editassignescCompulsion}
+                    </p>
+                  )}
                       {this.state.userEditData.is_Assign_Escalation===true ?(
                          <div className="sup-agent-cntr">
                          <div className="status-options">
@@ -1511,6 +1662,11 @@ if(datar==="add"){
                             </option>
                           ))}
                       </select>
+                      {this.state.userEditData.assign_ID === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.editagentCompulsion}
+                    </p>
+                  )}
                     </div>
                     <div className="pop-over-div">
                       <label className="edit-label-1">Status</label>
@@ -2362,6 +2518,11 @@ if(datar==="add"){
                           // showNewOptionAtTop={false}
                           isMulti
                         />
+                         {this.state.selectedBrand.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.brandCompulsion}
+                    </p>
+                  )}
                       </div>
                       <div className="div-cntr">
                         <label>Categories</label>
@@ -2379,6 +2540,11 @@ if(datar==="add"){
                           // showNewOptionAtTop={false}
                           isMulti
                         />
+                        {this.state.selectedCategory.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.categoryCompulsion}
+                    </p>
+                  )}
                       </div>
                       <div className="div-cntr">
                         <label>Sub Categories</label>
@@ -2396,6 +2562,11 @@ if(datar==="add"){
                           // showNewOptionAtTop={false}
                           isMulti
                         />
+                        {this.state.selectedSubCategory.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.subcategoryCompulsion}
+                    </p>
+                  )}
                       </div>
                       <div className="div-cntr">
                         <label>Issue Type</label>
@@ -2413,6 +2584,11 @@ if(datar==="add"){
                           // showNewOptionAtTop={false}
                           isMulti
                         />
+                         {this.state.selectedIssueType.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.isuuetypeCompulsion}
+                    </p>
+                  )}
                       </div>
                       <div className="mapped-cate-extra">
                         <div className="div-cntr">
@@ -2430,6 +2606,11 @@ if(datar==="add"){
                                 </option>
                               ))}
                           </select>
+                          {this.state.selectedCRMRoles === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.crmroleCompulsion}
+                    </p>
+                  )}
                         </div>
                         <div className="div-cntr escalation-options">
                           <div className="filter-checkbox">
@@ -2441,8 +2622,14 @@ if(datar==="add"){
                               onChange={this.setEscn}
 
                             />
+                             
                             <label htmlFor="copy-esc">Copy Escalation</label>
                           </div>
+                          {this.state.selectedCopyEscalation === false && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.copyescCompulsion}
+                    </p>
+                  )}
                           <div className="filter-checkbox">
                             <input
                               type="checkbox"
@@ -2452,10 +2639,16 @@ if(datar==="add"){
                               onChange={this.setEscn}
 
                             />
+                            
                             <label htmlFor="assign-esc">
                               Assign Escalation
                             </label>
                           </div>
+                          {this.state.selectedAssignEscalation === false && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.assignescCompulsion}
+                    </p>
+                  )}
                           {this.state.selectedAssignEscalation === true ? (
                             <div className="sup-agent-cntr">
                               <div className="status-options">
@@ -2506,6 +2699,11 @@ if(datar==="add"){
                                 </option>
                               ))}
                           </select>
+                          {this.state.selectedAgent ===0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.agentCompulsion}
+                    </p>
+                  )}
                         </div>
                         <div className="div-cntr">
                           <label>Status</label>
