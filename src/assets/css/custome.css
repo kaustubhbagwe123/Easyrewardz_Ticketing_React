@@ -1091,7 +1091,7 @@ table tr th:last-child {
   font-size: 12px;
   font-weight: 700;
   line-height: 14px;
-  display: block;
+  display: inherit;
   margin-bottom: 5px;
   text-align: left;
 }
@@ -1140,7 +1140,7 @@ table tr th:last-child {
 .storeSpacing {
   padding-left: 0;
   padding-top: 0;
-  display: block;
+  display: inherit;
 }
 .pencilImg {
   width: 13px;
@@ -2154,6 +2154,11 @@ table td span {
   position: relative;
   left: 2px;
   bottom: 1px;
+  margin-left: 3px;
+}
+.info-iconcus {
+  float:right;
+  margin-top: 3px;
 }
 .table-btn {
   border-radius: 15px;
@@ -6417,6 +6422,7 @@ font-weight: normal;
 .ReactTable .rt-thead.-header {
   box-shadow: none !important;
   background-color: #f8f8f8;
+  /* background-color: #E5E9ED; */
   border-bottom: 1px solid #eeeeee;
 }
 .ReactTable {
@@ -6850,6 +6856,7 @@ table thead tr {
   width: 4%;
   display: inline-block;
   background: rgb(232, 240, 254);
+  height: 43px;
   padding-top: 11px;
   padding-bottom: 11px;
   border-radius: 4px;
@@ -9725,7 +9732,7 @@ table tr th:last-child {
 /* MyTicketList ReactTable Start Kalpesh */
 .MyTicketListReact .table-b {
   border-radius: 15px;
-  width: 76px;
+  width: 85px;
   display: inline-block;
   padding: 4px 10px;
   text-transform: uppercase;
