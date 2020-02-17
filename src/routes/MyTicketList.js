@@ -9,6 +9,9 @@ import HeadPhone3 from "./../assets/Images/headphone3.png";
 import BlackLeftArrow from "./../assets/Images/black-left-arrow.png";
 import SearchBlackImg from "./../assets/Images/searchBlack.png";
 import Headphone2Img from "./../assets/Images/headphone2.png";
+import CallImg from "./../assets/Images/call.png";
+import MailImg from "./../assets/Images/msg.png";
+import FacebookImg from "./../assets/Images/facebook.png";
 // import Demo from "../store/Hashtag.js";
 import Sorting from "./../assets/Images/sorting.png";
 import DelSearch from "./../assets/Images/del-search.png";
@@ -142,7 +145,7 @@ class MyTicketList extends Component {
       byReassignedCount: 0,
       byClosedCount: 0,
       byReOpenCount: 0,
-      
+
       byAllCount: 0,
       byFollowUpCount: 0,
       draftCountStatus: 0,
@@ -262,8 +265,8 @@ class MyTicketList extends Component {
       All: "",
       FollowUp: "",
       Draft: "",
-      scheduleRequired: '',
-      agentSelection: ''
+      scheduleRequired: "",
+      agentSelection: ""
     };
     this.handleGetAssignTo = this.handleGetAssignTo.bind(this);
     this.clearSearch = this.clearSearch.bind(this);
@@ -291,7 +294,9 @@ class MyTicketList extends Component {
       this
     );
     this.handleGetDraftDetails = this.handleGetDraftDetails.bind(this);
-    this.handleSchedulePopupSuccess = this.handleSchedulePopupSuccess.bind(this);
+    this.handleSchedulePopupSuccess = this.handleSchedulePopupSuccess.bind(
+      this
+    );
     this.handelOnchangeData = this.handelOnchangeData.bind(this);
     this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
     this.handleGetFunctionList = this.handleGetFunctionList.bind(this);
@@ -361,72 +366,72 @@ class MyTicketList extends Component {
     debugger;
     var data = [];
     data = data1;
-    if(data.length > 0) {
-    if(data[0].moduleItemisActive!==undefined){
-      if (data[0].moduleItemisActive === true) {
-        this.setState({ Escalation: "yes" });
-      } else {
-        this.setState({ Escalation: "none" });
+    if (data.length > 0) {
+      if (data[0].moduleItemisActive !== undefined) {
+        if (data[0].moduleItemisActive === true) {
+          this.setState({ Escalation: "yes" });
+        } else {
+          this.setState({ Escalation: "none" });
+        }
+      }
+
+      if (data[1].moduleItemisActive !== undefined) {
+        if (data[1].moduleItemisActive === true) {
+          this.setState({ New: "yes" });
+        } else {
+          this.setState({ New: "none" });
+        }
+      }
+      if (data[2].moduleItemisActive !== undefined) {
+        if (data[2].moduleItemisActive === true) {
+          this.setState({ Open: "yes" });
+        } else {
+          this.setState({ Open: "none" });
+        }
+      }
+      if (data[3].moduleItemisActive !== undefined) {
+        if (data[3].moduleItemisActive === true) {
+          this.setState({ Resolved: "yes" });
+        } else {
+          this.setState({ Resolved: "none" });
+        }
+      }
+      if (data[4].moduleItemisActive !== undefined) {
+        if (data[4].moduleItemisActive === true) {
+          this.setState({ ReassignedByMe: "yes" });
+        } else {
+          this.setState({ ReassignedByMe: "none" });
+        }
+      }
+      if (data[5].moduleItemisActive !== undefined) {
+        if (data[5].moduleItemisActive === true) {
+          this.setState({ Closed: "yes" });
+        } else {
+          this.setState({ Closed: "none" });
+        }
+      }
+      if (data[6].moduleItemisActive !== undefined) {
+        if (data[6].moduleItemisActive === true) {
+          this.setState({ All: "yes" });
+        } else {
+          this.setState({ All: "none" });
+        }
+      }
+      if (data[7].moduleItemisActive !== undefined) {
+        if (data[7].moduleItemisActive === true) {
+          this.setState({ FollowUp: "yes" });
+        } else {
+          this.setState({ FollowUp: "none" });
+        }
+      }
+      if (data[8].moduleItemisActive !== undefined) {
+        if (data[8].moduleItemisActive === true) {
+          this.setState({ Draft: "yes" });
+        } else {
+          this.setState({ Draft: "none" });
+        }
       }
     }
-    
-    if(data[1].moduleItemisActive!==undefined){
-    if (data[1].moduleItemisActive === true) {
-      this.setState({ New: "yes" });
-    } else {
-      this.setState({ New: "none" });
-    }
-  }
-  if(data[2].moduleItemisActive!==undefined){
-    if (data[2].moduleItemisActive === true) {
-      this.setState({ Open: "yes" });
-    } else {
-      this.setState({ Open: "none" });
-    }
-  }
-  if(data[3].moduleItemisActive!==undefined){
-    if (data[3].moduleItemisActive === true) {
-      this.setState({ Resolved: "yes" });
-    } else {
-      this.setState({ Resolved: "none" });
-    }
-  }
-  if(data[4].moduleItemisActive!==undefined){
-    if (data[4].moduleItemisActive === true) {
-      this.setState({ ReassignedByMe: "yes" });
-    } else {
-      this.setState({ ReassignedByMe: "none" });
-    }
-  }
-  if(data[5].moduleItemisActive!==undefined){
-    if (data[5].moduleItemisActive === true) {
-      this.setState({ Closed: "yes" });
-    } else {
-      this.setState({ Closed: "none" });
-    }
-  }
-  if(data[6].moduleItemisActive!==undefined){
-    if (data[6].moduleItemisActive === true) {
-      this.setState({ All: "yes" });
-    } else {
-      this.setState({ All: "none" });
-    }
-  }
-  if(data[7].moduleItemisActive!==undefined){
-    if (data[7].moduleItemisActive === true) {
-      this.setState({ FollowUp: "yes" });
-    } else {
-      this.setState({ FollowUp: "none" });
-    }
-  }
-  if(data[8].moduleItemisActive!==undefined){
-    if (data[8].moduleItemisActive === true) {
-      this.setState({ Draft: "yes" });
-    } else {
-      this.setState({ Draft: "none" });
-    }
-  }
-}
   }
 
   handleSearchTicketAllTabCount() {
@@ -449,7 +454,7 @@ class MyTicketList extends Component {
         var AllCount = data[6].ticketCount;
         var FollowUpCount = data[7].ticketCount;
         var draftCountStatus = data[8].ticketCount;
-        var byReOpenCount=data[9].ticketCount;
+        var byReOpenCount = data[9].ticketCount;
 
         self.setState({
           byEscalationCount: EscalationCount,
@@ -496,14 +501,12 @@ class MyTicketList extends Component {
       this.setState({
         headerActiveId: 104
       });
-    }
-    else if (TabId === "ReOpen") {
+    } else if (TabId === "ReOpen") {
       ticketStatus = 105;
       this.setState({
         headerActiveId: 105
       });
-    }  
-    else if (TabId === "Reassigned") {
+    } else if (TabId === "Reassigned") {
       ticketStatus = 1004;
       this.setState({
         headerActiveId: 1004
@@ -535,7 +538,7 @@ class MyTicketList extends Component {
       let data = res.data.responseData;
       let CSVData = data;
       let Status = res.data.message;
-      if(Status === "Success"){
+      if (Status === "Success") {
         self.setState({ SearchTicketData: data, loading: false });
         for (let i = 0; i < CSVData.length; i++) {
           delete CSVData[i].totalpages;
@@ -545,7 +548,7 @@ class MyTicketList extends Component {
           delete CSVData[i].ticketCommentCount;
         }
         self.setState({ CSVDownload: CSVData });
-      }else{
+      } else {
         self.setState({ SearchTicketData: [], loading: false });
       }
     });
@@ -554,59 +557,93 @@ class MyTicketList extends Component {
   handleSchedulePopup() {
     debugger;
     // if (this.state.selectedTeamMember.length > 0 && ) {
-      
+
     // }
-    if (this.state.selectScheduleDate === 0 || this.state.selectScheduleDate === '100') {
+    if (
+      this.state.selectScheduleDate === 0 ||
+      this.state.selectScheduleDate === "100"
+    ) {
       this.setState({
-        scheduleRequired: 'All fields are required'
+        scheduleRequired: "All fields are required"
       });
-    } else if (this.state.selectScheduleDate === '230') {
-      if (this.state.selectedTeamMember.length === 0 || this.state.selectedScheduleTime === '' || this.state.selectedNoOfDay === 0) {
+    } else if (this.state.selectScheduleDate === "230") {
+      if (
+        this.state.selectedTeamMember.length === 0 ||
+        this.state.selectedScheduleTime === "" ||
+        this.state.selectedNoOfDay === 0
+      ) {
         this.setState({
-          scheduleRequired: 'All fields are required'
+          scheduleRequired: "All fields are required"
         });
       } else {
-      this.handleSchedulePopupSuccess();
+        this.handleSchedulePopupSuccess();
       }
-    } else if (this.state.selectScheduleDate === '231') {
-      if (this.state.selectedTeamMember.length === 0 || this.state.selectedScheduleTime === '' || this.state.selectedNoOfWeek === 0 || this.state.selectedWeeklyDays === '') {
+    } else if (this.state.selectScheduleDate === "231") {
+      if (
+        this.state.selectedTeamMember.length === 0 ||
+        this.state.selectedScheduleTime === "" ||
+        this.state.selectedNoOfWeek === 0 ||
+        this.state.selectedWeeklyDays === ""
+      ) {
         this.setState({
-          scheduleRequired: 'All fields are required'
+          scheduleRequired: "All fields are required"
         });
       } else {
-      this.handleSchedulePopupSuccess();
+        this.handleSchedulePopupSuccess();
       }
-    } else if (this.state.selectScheduleDate === '232') {
-      if (this.state.selectedTeamMember.length === 0 || this.state.selectedScheduleTime === '' || this.state.selectedNoOfDaysForMonth === 0 || this.state.selectedNoOfMonthForMonth === 0) {
+    } else if (this.state.selectScheduleDate === "232") {
+      if (
+        this.state.selectedTeamMember.length === 0 ||
+        this.state.selectedScheduleTime === "" ||
+        this.state.selectedNoOfDaysForMonth === 0 ||
+        this.state.selectedNoOfMonthForMonth === 0
+      ) {
         this.setState({
-          scheduleRequired: 'All fields are required'
+          scheduleRequired: "All fields are required"
         });
       } else {
-      this.handleSchedulePopupSuccess();
+        this.handleSchedulePopupSuccess();
       }
-    } else if (this.state.selectScheduleDate === '233') {
-      if (this.state.selectedTeamMember.length === 0 || this.state.selectedScheduleTime === '' || this.state.selectedNoOfMonthForWeek === 0 || this.state.selectedNoOfWeekForWeek === 0 || this.state.selectedNameOfDayForWeek.length === 0) {
+    } else if (this.state.selectScheduleDate === "233") {
+      if (
+        this.state.selectedTeamMember.length === 0 ||
+        this.state.selectedScheduleTime === "" ||
+        this.state.selectedNoOfMonthForWeek === 0 ||
+        this.state.selectedNoOfWeekForWeek === 0 ||
+        this.state.selectedNameOfDayForWeek.length === 0
+      ) {
         this.setState({
-          scheduleRequired: 'All fields are required'
+          scheduleRequired: "All fields are required"
         });
       } else {
-      this.handleSchedulePopupSuccess();
+        this.handleSchedulePopupSuccess();
       }
-    } else if (this.state.selectScheduleDate === '234') {
-      if (this.state.selectedTeamMember.length === 0 || this.state.selectedScheduleTime === '' || this.state.selectedNoOfDayForDailyYear === 0 || this.state.selectedNameOfMonthForYear.length === 0) {
+    } else if (this.state.selectScheduleDate === "234") {
+      if (
+        this.state.selectedTeamMember.length === 0 ||
+        this.state.selectedScheduleTime === "" ||
+        this.state.selectedNoOfDayForDailyYear === 0 ||
+        this.state.selectedNameOfMonthForYear.length === 0
+      ) {
         this.setState({
-          scheduleRequired: 'All fields are required'
+          scheduleRequired: "All fields are required"
         });
       } else {
-      this.handleSchedulePopupSuccess();
+        this.handleSchedulePopupSuccess();
       }
-    } else if (this.state.selectScheduleDate === '235') {
-      if (this.state.selectedTeamMember.length === 0 || this.state.selectedScheduleTime === '' || this.state.selectedNoOfWeekForYear === 0 || this.state.selectedNameOfDayForYear.length === 0 || this.state.selectedNameOfMonthForDailyYear.length === 0) {
+    } else if (this.state.selectScheduleDate === "235") {
+      if (
+        this.state.selectedTeamMember.length === 0 ||
+        this.state.selectedScheduleTime === "" ||
+        this.state.selectedNoOfWeekForYear === 0 ||
+        this.state.selectedNameOfDayForYear.length === 0 ||
+        this.state.selectedNameOfMonthForDailyYear.length === 0
+      ) {
         this.setState({
-          scheduleRequired: 'All fields are required'
+          scheduleRequired: "All fields are required"
         });
       } else {
-      this.handleSchedulePopupSuccess();
+        this.handleSchedulePopupSuccess();
       }
     }
   }
@@ -652,12 +689,12 @@ class MyTicketList extends Component {
         self.ScheduleCloseModel();
         NotificationManager.success("Scheduled successfully.");
         self.setState({
-          scheduleRequired: ''
+          scheduleRequired: ""
         });
       }
     });
   }
- 
+
   handleAssignRemark(e) {
     debugger;
     this.setState({
@@ -815,33 +852,33 @@ class MyTicketList extends Component {
   handleAssignTickets() {
     debugger;
     if (this.state.agentId !== 0) {
-    let self = this;
-    var ticketIdsComma = this.state.ticketIds;
-    var ticketIds = ticketIdsComma.substring(0, ticketIdsComma.length - 1);
+      let self = this;
+      var ticketIdsComma = this.state.ticketIds;
+      var ticketIds = ticketIdsComma.substring(0, ticketIdsComma.length - 1);
 
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Ticketing/AssignTickets",
-      headers: authHeader(),
-      params: {
-        TicketID: ticketIds,
-        AgentID: this.state.agentId,
-        Remark: this.state.agentRemark
-      }
-    }).then(function(res) {
-      debugger;
-      let messageData = res.data.message;
-      if (messageData === "Success") {
-        self.handleAssignModalClose();
-        NotificationManager.success("Tickets assigned successfully.");
-        self.handleSearchTicket();
-      }
-    });
-  } else {
-    this.setState({
-      agentSelection: 'Agent Selection is required'
-    })
-  }
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Ticketing/AssignTickets",
+        headers: authHeader(),
+        params: {
+          TicketID: ticketIds,
+          AgentID: this.state.agentId,
+          Remark: this.state.agentRemark
+        }
+      }).then(function(res) {
+        debugger;
+        let messageData = res.data.message;
+        if (messageData === "Success") {
+          self.handleAssignModalClose();
+          NotificationManager.success("Tickets assigned successfully.");
+          self.handleSearchTicket();
+        }
+      });
+    } else {
+      this.setState({
+        agentSelection: "Agent Selection is required"
+      });
+    }
   }
 
   clearSearch() {
@@ -896,48 +933,50 @@ class MyTicketList extends Component {
         },
         () => {
           this.ViewSearchData(1);
-          this.handleGetSubCategoryList()
+          this.handleGetSubCategoryList();
         }
       );
     } else if (this.state.allFlag === 5) {
-      this.setState({
-        ByAllCreateDate: "",
-        selectedTicketSource: 0,
-        ClaimIdByAll: "",
-        EmailByAll: "",
-        ByAllLastDate: "",
-        TicketIdTitleByAll: "",
-        InvoiceSubOrderByAll: "",
-        MobileByAll: "",
-        selectedCategoryAll: 0,
-        selectedPriorityAll: 0,
-        ItemIdByAll: "",
-        selectedAssignedToAll: "",
-        selectedSubCategoryAll: 0,
-        selectedTicketStatusAll: 0,
-        selectedAssignedTo: 0,
-        selectedVisitStoreAll: "all",
-        selectedPurchaseStoreCodeAddressAll: "",
-        selectedIssueTypeAll: 0,
-        selectedSlaStatus: 0,
-        selectedWantToVisitStoreAll: "all",
-        selectedVisitStoreCodeAddressAll: "",
-        selectedWithClaimAll: "no",
-        selectedClaimStatus: 0,
-        selectedClaimCategory: 0,
-        selectedClaimSubCategory: 0,
-        selectedClaimIssueType: 0,
-        selectedWithTaskAll: "no",
-        selectedTaskStatus: 0,
-        selectedDepartment: 0,
-        selectedFunction: 0,
-        resultCount: 0
-      },
-      () => {
-        this.ViewSearchData(1);
-        this.handleGetSubCategoryList();
-        this.handleGetClaimSubCategoryList()
-      });
+      this.setState(
+        {
+          ByAllCreateDate: "",
+          selectedTicketSource: 0,
+          ClaimIdByAll: "",
+          EmailByAll: "",
+          ByAllLastDate: "",
+          TicketIdTitleByAll: "",
+          InvoiceSubOrderByAll: "",
+          MobileByAll: "",
+          selectedCategoryAll: 0,
+          selectedPriorityAll: 0,
+          ItemIdByAll: "",
+          selectedAssignedToAll: "",
+          selectedSubCategoryAll: 0,
+          selectedTicketStatusAll: 0,
+          selectedAssignedTo: 0,
+          selectedVisitStoreAll: "all",
+          selectedPurchaseStoreCodeAddressAll: "",
+          selectedIssueTypeAll: 0,
+          selectedSlaStatus: 0,
+          selectedWantToVisitStoreAll: "all",
+          selectedVisitStoreCodeAddressAll: "",
+          selectedWithClaimAll: "no",
+          selectedClaimStatus: 0,
+          selectedClaimCategory: 0,
+          selectedClaimSubCategory: 0,
+          selectedClaimIssueType: 0,
+          selectedWithTaskAll: "no",
+          selectedTaskStatus: 0,
+          selectedDepartment: 0,
+          selectedFunction: 0,
+          resultCount: 0
+        },
+        () => {
+          this.ViewSearchData(1);
+          this.handleGetSubCategoryList();
+          this.handleGetClaimSubCategoryList();
+        }
+      );
     }
   }
 
@@ -1508,7 +1547,9 @@ class MyTicketList extends Component {
       allTab["TicketSatutsID"] = this.state.selectedTicketStatusAll;
       allTab["SLAStatus"] = this.state.selectedSlaStatus;
       allTab["ClaimId"] = this.state.selectedClaimStatus;
-      allTab["InvoiceNumberORSubOrderNo"] = this.state.InvoiceSubOrderByAll.trim();
+      allTab[
+        "InvoiceNumberORSubOrderNo"
+      ] = this.state.InvoiceSubOrderByAll.trim();
       allTab["OrderItemId"] = this.state.ItemIdByAll.trim();
       allTab["IsVisitStore"] = this.state.selectedVisitStoreAll;
       allTab["IsWantVistingStore"] = this.state.selectedWantToVisitStoreAll;
@@ -1778,7 +1819,7 @@ class MyTicketList extends Component {
     this.setState({ selectedSlaStatus: slaStatusValue });
   };
   setCategoryValue = e => {
-    debugger
+    debugger;
     let categoryValue = e.currentTarget.value;
     this.setState({ selectedCategory: categoryValue });
     setTimeout(() => {
@@ -2182,7 +2223,7 @@ class MyTicketList extends Component {
         count = res.data.responseData.length;
       }
       if (status === "Success") {
-        self.setState({ SearchTicketData: data,resultCount: count  });
+        self.setState({ SearchTicketData: data, resultCount: count });
         self.onCloseModal();
       } else {
         self.setState({ SearchTicketData: [] });
@@ -2409,7 +2450,10 @@ class MyTicketList extends Component {
                   </span>
                 </a>
               </li>
-              <li className="nav-item" style={{ display: this.state.ReassignedByMe }}>
+              <li
+                className="nav-item"
+                style={{ display: this.state.ReassignedByMe }}
+              >
                 <a
                   // style={{ display: this.state.ReassignedByMe }}
                   className="nav-link"
@@ -4137,7 +4181,10 @@ class MyTicketList extends Component {
                                                   </div>
                                                 </div>
                                               </span>
-                                              <div className="row mt-3" style={{ position: 'relative' }}>
+                                              <div
+                                                className="row mt-3"
+                                                style={{ position: "relative" }}
+                                              >
                                                 <div className="col-md-6">
                                                   <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
                                                     <Select
@@ -4206,7 +4253,6 @@ class MyTicketList extends Component {
                                             </div>
                                           ) : null}
 
-                                          
                                           <div className="dash-timepicker">
                                             <DatePicker
                                               selected={
@@ -4227,7 +4273,15 @@ class MyTicketList extends Component {
                                               }
                                             />
                                           </div>
-                                          <p style={{color: 'red', marginBottom: '0', textAlign: 'center'}}>{this.state.scheduleRequired}</p>
+                                          <p
+                                            style={{
+                                              color: "red",
+                                              marginBottom: "0",
+                                              textAlign: "center"
+                                            }}
+                                          >
+                                            {this.state.scheduleRequired}
+                                          </p>
                                           <div>
                                             <button
                                               className="scheduleBtn"
@@ -4423,7 +4477,10 @@ class MyTicketList extends Component {
                                                 this.selectedRow = index;
                                                 var agentId =
                                                   column.original["user_ID"];
-                                                this.setState({ agentId, agentSelection: '' });
+                                                this.setState({
+                                                  agentId,
+                                                  agentSelection: ""
+                                                });
                                               },
                                               style: {
                                                 background:
@@ -4434,7 +4491,19 @@ class MyTicketList extends Component {
                                             };
                                           }}
                                         />
-                                        <p style={{marginTop: this.state.agentSelection === '' ? '0px' : '10px', color: 'red', marginBottom: '0', textAlign: 'center'}}>{this.state.agentSelection}</p>
+                                        <p
+                                          style={{
+                                            marginTop:
+                                              this.state.agentSelection === ""
+                                                ? "0px"
+                                                : "10px",
+                                            color: "red",
+                                            marginBottom: "0",
+                                            textAlign: "center"
+                                          }}
+                                        >
+                                          {this.state.agentSelection}
+                                        </p>
                                         {/* <div className="position-relative">
                                             <div className="pagi">
                                               <ul>
@@ -4564,11 +4633,47 @@ class MyTicketList extends Component {
                                               "i" + row.original.ticketID
                                             }
                                           >
-                                            <img
-                                              src={HeadPhone3}
-                                              alt="HeadPhone"
-                                              className="headPhone3"
-                                            />
+                                            {row.original.ticketSourceType ===
+                                            "Calls" ? (
+                                              <img
+                                                src={CallImg}
+                                                alt="HeadPhone"
+                                                className="headPhone3"
+                                              />
+                                            ) : row.original
+                                                .ticketSourceType ===
+                                              "Mails" ? (
+                                              <img
+                                                src={MailImg}
+                                                alt="HeadPhone"
+                                                className="headPhone3"
+                                              />
+                                            ) : row.original
+                                                .ticketSourceType ===
+                                              "Facebook" ? (
+                                              <img
+                                                src={FacebookImg}
+                                                alt="HeadPhone"
+                                                className="headPhone3"
+                                              />
+                                            ) : row.original
+                                                .ticketSourceType ===
+                                              "ChatBot" ? (
+                                              <img
+                                                src={Chat}
+                                                alt="HeadPhone"
+                                                className="headPhone3"
+                                              />
+                                            ) : row.original
+                                                .ticketSourceType ===
+                                              "Twitter" ? (
+                                              <img
+                                                src={HeadPhone3}
+                                                alt="HeadPhone"
+                                                className="headPhone3"
+                                              />
+                                            ) : null}
+
                                             {row.original.ticketID}
                                           </label>
                                         </div>
@@ -4640,40 +4745,44 @@ class MyTicketList extends Component {
                                 accessor: "taskStatus",
                                 width: 45,
                                 Cell: row => {
-                                    if (row.original.claimStatus !== "0/0") {
-                                      return (
-                                        <div>
-                                          <Popover
-                                            content={
-                                              <div className="dash-task-popup-new">
-                                                <div className="d-flex justify-content-between align-items-center">
-                                                  <p className="m-b-0">
-                                                    CLAIM:{row.original.claimStatus}
-                                                  </p>
-                                                  <div className="d-flex align-items-center">
-                                                    2 NEW
-                                                    <div className="nw-chat">
-                                                      <img src={Chat} alt="chat" />
-                                                    </div>
+                                  if (row.original.claimStatus !== "0/0") {
+                                    return (
+                                      <div>
+                                        <Popover
+                                          content={
+                                            <div className="dash-task-popup-new">
+                                              <div className="d-flex justify-content-between align-items-center">
+                                                <p className="m-b-0">
+                                                  CLAIM:
+                                                  {row.original.claimStatus}
+                                                </p>
+                                                <div className="d-flex align-items-center">
+                                                  2 NEW
+                                                  <div className="nw-chat">
+                                                    <img
+                                                      src={Chat}
+                                                      alt="chat"
+                                                    />
                                                   </div>
                                                 </div>
-                                                <ProgressBar
-                                                  className="task-progress"
-                                                  now={70}
-                                                />
                                               </div>
-                                            }
-                                            placement="bottom"
-                                          >
-                                            <img
-                                              className="task-icon-1 marginimg claim-icon-1"
-                                              src={CliamIconBlue}
-                                              alt="task-icon-blue"
-                                            />
-                                          </Popover>
-                                        </div>
-                                      );
-                                    } else {
+                                              <ProgressBar
+                                                className="task-progress"
+                                                now={70}
+                                              />
+                                            </div>
+                                          }
+                                          placement="bottom"
+                                        >
+                                          <img
+                                            className="task-icon-1 marginimg claim-icon-1"
+                                            src={CliamIconBlue}
+                                            alt="task-icon-blue"
+                                          />
+                                        </Popover>
+                                      </div>
+                                    );
+                                  } else {
                                     return (
                                       <div>
                                         <img
@@ -4711,15 +4820,22 @@ class MyTicketList extends Component {
                                                 <p className="m-b-0">
                                                   TASK:{row.original.taskStatus}
                                                 </p>
-                                                {row.original.ticketCommentCount > 0 ? <div className="d-flex align-items-center">
-                                                {row.original.ticketCommentCount} NEW
-                                                  <div className="nw-chat">
-                                                    <img
-                                                      src={Chat}
-                                                      alt="chat"
-                                                    />
+                                                {row.original
+                                                  .ticketCommentCount > 0 ? (
+                                                  <div className="d-flex align-items-center">
+                                                    {
+                                                      row.original
+                                                        .ticketCommentCount
+                                                    }{" "}
+                                                    NEW
+                                                    <div className="nw-chat">
+                                                      <img
+                                                        src={Chat}
+                                                        alt="chat"
+                                                      />
+                                                    </div>
                                                   </div>
-                                                </div> : null}
+                                                ) : null}
                                               </div>
                                               <ProgressBar
                                                 className="task-progress"
@@ -4769,7 +4885,9 @@ class MyTicketList extends Component {
                                 accessor: "category",
                                 Cell: row => (
                                   <span className="one-line-outer">
-                                    <label className="one-line">{row.original.category} </label>
+                                    <label className="one-line">
+                                      {row.original.category}{" "}
+                                    </label>
 
                                     <Popover
                                       content={
@@ -4831,83 +4949,88 @@ class MyTicketList extends Component {
                                 accessor: "createdOn",
                                 Cell: row => (
                                   <span className="one-line-outer">
-                                    <label className="one-line">{row.original.createdOn}</label>
+                                    <label className="one-line">
+                                      {row.original.createdOn}
+                                    </label>
 
-                                  <Popover
-                                    content={
-                                      <div className="insertpop1">
-                                        <ul className="dash-creation-popup">
-                                          <li className="title">
-                                            Creation details
-                                          </li>
-                                          <li>
-                                            <p>
-                                              {row.original.createdBy} Created
-                                            </p>
-                                            <p>{row.original.createdago}</p>
-                                          </li>
-                                          <li>
-                                            <p>
-                                              Assigned to{" "}
-                                              {row.original.assignedTo}
-                                            </p>
-                                            <p>{row.original.assignedago}</p>
-                                          </li>
-                                          <li>
-                                            <p>
-                                              {row.original.updatedBy} updated
-                                            </p>
-                                            <p>{row.original.updatedago}</p>
-                                          </li>
-                                          <li>
-                                            <p>Response time remaining by</p>
-                                            <p>
-                                              {
-                                                row.original
-                                                  .responseTimeRemainingBy
-                                              }
-                                            </p>
-                                          </li>
-                                          <li>
-                                            <p>Response overdue by</p>
-                                            <p>
-                                              {row.original.responseOverdueBy}
-                                            </p>
-                                          </li>
-                                          <li>
-                                            <p>Resolution overdue by</p>
-                                            <p>
-                                              {row.original.resolutionOverdueBy}
-                                            </p>
-                                          </li>
-                                        </ul>
-                                      </div>
-                                    }
-                                    placement="left"
-                                  >
-                                    <img
-                                      className="info-icon info-iconcus"
-                                      src={InfoIcon}
-                                      alt="info-icon"
-                                    />
-                                  </Popover>
-                                </span>
-                              )
-                            }
-                          ]}
-                          // resizable={false} 
-                          defaultPageSize={10}
-                          showPagination={true}
-                          getTrProps={this.HandleRowClickPage}
-                          minRows={1}
-                          defaultSorted={[
-                            {
-                              id: "ticketID",
-                              desc: true
-                            }
-                          ]}
-                        />
-                        {/* <div className="position-relative">
+                                    <Popover
+                                      content={
+                                        <div className="insertpop1">
+                                          <ul className="dash-creation-popup">
+                                            <li className="title">
+                                              Creation details
+                                            </li>
+                                            <li>
+                                              <p>
+                                                {row.original.createdBy} Created
+                                              </p>
+                                              <p>{row.original.createdago}</p>
+                                            </li>
+                                            <li>
+                                              <p>
+                                                Assigned to{" "}
+                                                {row.original.assignedTo}
+                                              </p>
+                                              <p>{row.original.assignedago}</p>
+                                            </li>
+                                            <li>
+                                              <p>
+                                                {row.original.updatedBy} updated
+                                              </p>
+                                              <p>{row.original.updatedago}</p>
+                                            </li>
+                                            <li>
+                                              <p>Response time remaining by</p>
+                                              <p>
+                                                {
+                                                  row.original
+                                                    .responseTimeRemainingBy
+                                                }
+                                              </p>
+                                            </li>
+                                            <li>
+                                              <p>Response overdue by</p>
+                                              <p>
+                                                {row.original.responseOverdueBy}
+                                              </p>
+                                            </li>
+                                            <li>
+                                              <p>Resolution overdue by</p>
+                                              <p>
+                                                {
+                                                  row.original
+                                                    .resolutionOverdueBy
+                                                }
+                                              </p>
+                                            </li>
+                                          </ul>
+                                        </div>
+                                      }
+                                      placement="left"
+                                    >
+                                      <img
+                                        className="info-icon info-iconcus"
+                                        src={InfoIcon}
+                                        alt="info-icon"
+                                      />
+                                    </Popover>
+                                  </span>
+                                )
+                              }
+                            ]}
+                            // resizable={false}
+                            defaultPageSize={10}
+                            showPagination={true}
+                            getTrProps={this.HandleRowClickPage}
+                            minRows={1}
+                            defaultSorted={[
+                              {
+                                id: "ticketID",
+                                desc: true
+                              }
+                            ]}
+                          />
+                          {/* <div className="position-relative">
                                     <Popover
                                       content={
                                         <div className="insertpop1">
