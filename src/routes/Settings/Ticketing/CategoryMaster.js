@@ -54,7 +54,12 @@ class CategoryMaster extends Component {
       selectBrand: 0,
       subCategory_Id: 0,
       issueType_Id: 0,
-      selectetedParameters: {}
+      selectetedParameters: {},
+      brandCompulsion:"",
+      categoryCompulsion:"",
+      subcategoryCompulsion:"",
+      issueCompulsion:"",
+      statusCompulsion:""
     };
     this.handleGetCategoryGridData = this.handleGetCategoryGridData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -189,6 +194,7 @@ class CategoryMaster extends Component {
 
   handleAddCategory(value) {
     debugger;
+   
     let self = this;
     axios({
       method: "post",
@@ -283,6 +289,13 @@ class CategoryMaster extends Component {
 
   handleSubmitData() {
     debugger;
+    if(
+      this.state.selectBrand > 0 &&
+      this.state.list1Value > 0 && 
+      this.state.ListOfSubCate > 0 &&
+      this.state.ListOfIssue > 0 &&
+      this.state.selectStatus > 0
+    ){
     let self = this;
     var activeStatus = 0;
     var categorydata = 0;
@@ -338,6 +351,15 @@ class CategoryMaster extends Component {
         });
       }
     });
+  }else{
+    this.setState({
+      brandCompulsion:"Please Select Brand",
+      categoryCompulsion:"Please Select category",
+      subcategoryCompulsion:"Please Select SubCategory",
+      issueCompulsion:"Please Select IssueType",
+      statusCompulsion:"Please Select Status"
+    });
+  }
   }
 
   HandleMultiSelect() {
@@ -777,6 +799,11 @@ class CategoryMaster extends Component {
                               </option>
                             ))}
                         </select>
+                        {this.state.selectBrand === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.brandCompulsion}
+                    </p>
+                  )}
                       </div>
                     </div>
                     <div className="divSpace">
@@ -797,6 +824,11 @@ class CategoryMaster extends Component {
                             </span>
                           </Option>
                         </Select>
+                        {this.state.list1Value === "" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.categoryCompulsion}
+                    </p>
+                  )}
 
                         <SweetAlert
                           show={this.state.showList1}
@@ -854,6 +886,11 @@ class CategoryMaster extends Component {
                             </span>
                           </Option>
                         </Select>
+                        {this.state.ListOfSubCate === "" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.subcategoryCompulsion}
+                    </p>
+                  )}
 
                         <SweetAlert
                           show={this.state.ShowSubCate}
@@ -909,6 +946,11 @@ class CategoryMaster extends Component {
                             </span>
                           </Option>
                         </Select>
+                        {this.state.ListOfIssue === "" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.issueCompulsion}
+                    </p>
+                  )}
                         <SweetAlert
                           show={this.state.ShowIssuetype}
                           style={{ width: "320px" }}
@@ -962,6 +1004,11 @@ class CategoryMaster extends Component {
                               </option>
                             ))}
                         </select>
+                        {this.state.selectStatus === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.statusCompulsion}
+                    </p>
+                  )}
                       </div>
                     </div>
                     <div className="btnSpace">

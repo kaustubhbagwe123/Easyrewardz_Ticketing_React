@@ -27,7 +27,10 @@ class Brands extends Component {
       brand_name: "",
       selectedStatus: 0,
       loading: false,
-      activeData: ActiveStatus()
+      activeData: ActiveStatus(),
+      brandcodeCompulsion:"",
+      brandnameCompulsion:"",
+      statusCompulsion:""
     };
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
   }
@@ -92,6 +95,11 @@ class Brands extends Component {
   }
   handleSubmitData() {
     debugger;
+    if(
+      this.state.brand_Code.length > 0 &&
+      this.state.brand_name.length > 0 &&
+      this.state.selectedStatus > 0 
+    ){
     let self = this;
     var activeStatus = 0;
     var status = this.state.selectedStatus;
@@ -122,6 +130,13 @@ class Brands extends Component {
         });
       }
     });
+  }else{
+    this.setState({
+      brandcodeCompulsion:"Please Enter Brand Code",
+      brandnameCompulsion:"Please Enter Brand Name",
+      statusCompulsion:"Please Select Status"
+    });
+  }
   }
   handleDeleteBrandData(brand_Id) {
     let self = this;
@@ -515,6 +530,11 @@ class Brands extends Component {
                         value={this.state.brand_Code}
                         onChange={this.handleBrandOnchange}
                       />
+                       {this.state.brand_Code.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.brandcodeCompulsion}
+                    </p>
+                  )}
                     </div>
                     <div className="divSpace">
                       <div className="dropDrownSpace">
@@ -528,6 +548,11 @@ class Brands extends Component {
                           value={this.state.brand_name}
                           onChange={this.handleBrandOnchange}
                         />
+                         {this.state.brand_name.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.brandnameCompulsion}
+                    </p>
+                  )}
                       </div>
                     </div>
                     <div className="dropDrownSpace">
@@ -546,6 +571,11 @@ class Brands extends Component {
                             </option>
                           ))}
                       </select>
+                      {this.state.selectedStatus === "select" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.statusCompulsion}
+                    </p>
+                  )}
                     </div>
                     <div className="btnSpace">
                       <button

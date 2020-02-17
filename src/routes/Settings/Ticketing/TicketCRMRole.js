@@ -48,6 +48,7 @@ class TicketCRMRole extends Component {
       updateModulesEnabled: '',
       updateModulesDisabled: '',
       updateModulesList: [],
+      crmrolesCompulsion:""
       
     };
 
@@ -160,7 +161,7 @@ class TicketCRMRole extends Component {
 
   createUpdateCrmRole(addUpdate, crmRoleId) {
     debugger;
-    // if (this.validator.allValid()) {
+     if (this.validator.allValid()) {
       let self=this;
       let RoleisActive, CRMRoleID, RoleName, ModulesEnabled, ModulesDisabled;
       if (addUpdate === 'add') {
@@ -223,10 +224,10 @@ class TicketCRMRole extends Component {
           }
         }
       });
-    // } else {
-    //   this.validator.showMessages();
-    //   this.forceUpdate();
-    // }
+     } else {
+       this.validator.showMessages();
+       this.forceUpdate();
+     }
   }
 
   deleteCrmRole(deleteId) {
