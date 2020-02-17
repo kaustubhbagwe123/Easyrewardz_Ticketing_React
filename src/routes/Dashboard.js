@@ -6060,7 +6060,7 @@ class Dashboard extends Component {
                               placement="left"
                             >
                               <img
-                                className="info-icon"
+                                className="info-icon info-iconcus"
                                 src={InfoIcon}
                                 alt="info-icon"
                               />

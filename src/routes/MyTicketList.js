@@ -4515,7 +4515,7 @@ class MyTicketList extends Component {
                       <div className="loader-icon"></div>
                     ) : (
                       <div>
-                        <div className="MyTicketListReact">
+                        <div className="MyTicketListReact cus-head">
                           <ReactTable
                             data={SearchTicketData}
                             columns={[
@@ -4885,7 +4885,7 @@ class MyTicketList extends Component {
                                     placement="left"
                                   >
                                     <img
-                                      className="info-icon"
+                                      className="info-icon info-iconcus"
                                       src={InfoIcon}
                                       alt="info-icon"
                                     />
