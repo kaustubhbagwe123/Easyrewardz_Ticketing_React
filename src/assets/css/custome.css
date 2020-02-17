@@ -3228,6 +3228,15 @@ table tr th:last-child {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+.one-line-outer {
+  display: flex;
+  align-items: flex-end;
+}
+.one-line {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 /* my ticket list ends */
 
 /* ticket system starts */
