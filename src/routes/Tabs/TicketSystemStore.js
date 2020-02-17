@@ -64,7 +64,8 @@ class TicketSystemStore extends Component {
     debugger;
     this.setState({
       SwitchBtnStatus: e.target.checked,
-      SearchData:[]
+      SearchData:[],
+      SrchStoreNameCode:''
     });
     {
       this.props.CustStoreStatus(
@@ -86,33 +87,36 @@ class TicketSystemStore extends Component {
   };
   handleSearchStoreDetails() {
     debugger;
-    let self = this;
-    if (this.state.SrchStoreNameCode.length > 0) {
-      axios({
-        method: "post",
-        url: config.apiUrl + "/Store/searchStoreDetail",
-        headers: authHeader(),
-        params: {
-          SearchText: this.state.SrchStoreNameCode.trim()
-        }
-      }).then(function(res) {
-        debugger;
-        let data = res.data.responseData;
-        let Msg = res.data.message;
-        if (Msg === "Success") {
-          self.setState({ SearchData: data, message: Msg });
-        } else {
-          self.setState({
-            message: res.data.message,
-            SearchData: []
-          });
-        }
-      });
-    } else {
-      self.setState({
-        byValideStoreData: "Please Enter Store Details."
-      });
+    if(this.state.SwitchBtnStatus === false){
+      let self = this;
+      if (this.state.SrchStoreNameCode.length > 0) {
+        axios({
+          method: "post",
+          url: config.apiUrl + "/Store/searchStoreDetail",
+          headers: authHeader(),
+          params: {
+            SearchText: this.state.SrchStoreNameCode.trim()
+          }
+        }).then(function(res) {
+          debugger;
+          let data = res.data.responseData;
+          let Msg = res.data.message;
+          if (Msg === "Success") {
+            self.setState({ SearchData: data, message: Msg });
+          } else {
+            self.setState({
+              message: res.data.message,
+              SearchData: []
+            });
+          }
+        });
+      } else {
+        self.setState({
+          byValideStoreData: "Please Enter Store Details."
+        });
+      }
     }
+    
   }
   hanldeStatusChange(e) {
     debugger;

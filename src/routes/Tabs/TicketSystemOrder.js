@@ -210,9 +210,10 @@ class TicketSystemOrder extends Component {
   handleCheckOrder = e => {
     debugger
     this.setState({
-      custAttachOrder: 1,
+      custAttachOrder: this.state.custAttachOrder === 1 ? 0 : 1,
       orderDetailsData: [],
-      SwitchBtnStatus: e.target.checked
+      SwitchBtnStatus: e.target.checked,
+      orderNumber:''
     });
     {
       this.props.AttachOrder(
@@ -258,47 +259,50 @@ class TicketSystemOrder extends Component {
 
   handleOrderSearchData() {
     debugger;
-    let self = this;
-    if (this.state.orderNumber.length > 0) {
-      var CustID = this.props.custDetails;
-      axios({
-        method: "post",
-        url: config.apiUrl + "/Order/getOrderListWithItemDetails",
-        headers: authHeader(),
-        params: {
-          OrderNumber: this.state.orderNumber,
-          CustomerID: CustID
-        }
-      }).then(function (res) {
-
-        let Msg = res.data.message;
-        let mainData = res.data.responseData;
-
-        var OrderSubItem = [];
-
-        for (let i = 0; i < mainData.length; i++) {
-
-          if (mainData[i].orderItems.length > 0) {
-
-            for (let j = 0; j < mainData[i].orderItems.length; j++) {
-
-              OrderSubItem.push(mainData[i].orderItems[j]);
-            }
+    if(this.state.custAttachOrder === 0){
+      let self = this;
+      if (this.state.orderNumber.length > 0) {
+        var CustID = this.props.custDetails;
+        axios({
+          method: "post",
+          url: config.apiUrl + "/Order/getOrderListWithItemDetails",
+          headers: authHeader(),
+          params: {
+            OrderNumber: this.state.orderNumber,
+            CustomerID: CustID
           }
-
-
-        }
-        self.setState({
-          message: Msg,
-          orderDetailsData: mainData,
-          OrderSubItem
+        }).then(function (res) {
+  
+          let Msg = res.data.message;
+          let mainData = res.data.responseData;
+  
+          var OrderSubItem = [];
+  
+          for (let i = 0; i < mainData.length; i++) {
+  
+            if (mainData[i].orderItems.length > 0) {
+  
+              for (let j = 0; j < mainData[i].orderItems.length; j++) {
+  
+                OrderSubItem.push(mainData[i].orderItems[j]);
+              }
+            }
+  
+  
+          }
+          self.setState({
+            message: Msg,
+            orderDetailsData: mainData,
+            OrderSubItem
+          });
         });
-      });
-    } else {
-      self.setState({
-        validOrdernumber: "Please Enter Order Number"
-      });
+      } else {
+        self.setState({
+          validOrdernumber: "Please Enter Order Number"
+        });
+      }
     }
+    
   }
   hadleAddManuallyOrderData() {
     debugger;
@@ -1039,14 +1043,15 @@ class TicketSystemOrder extends Component {
                     name="orderNumber"
                     value={this.state.orderNumber}
                     onChange={this.handleOrderChange.bind(this)}
-                    disabled={this.state.custAttachOrder === 1}
+                    disabled={this.state.custAttachOrder === 1 ? true : false}
                   />
 
                   <img
                     src={SearchBlackImg}
                     alt="Search"
                     className="systemorder-imgsearch"
-                    onClick={this.handleOrderSearchData.bind(this)}
+                    onClick={this.handleOrderSearchData.bind(this)} 
+                    // disabled={this.state.custAttachOrder === 1 ? true : false}
                   />
                   {this.state.orderNumber.length === 0 && (
                     <p
