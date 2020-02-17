@@ -55,7 +55,11 @@ class CreatePriority extends Component {
       finalData: {},
       priority_name: "",
       selectedActiveStatus: 0,
-      loading: false
+      loading: false,
+      priorityNameCompulsion:"",
+      statusCompulsion:"",
+      editpriorityNameCompulsion:"",
+      editstatusCompulsion:""
     };
   }
   componentDidMount() {
@@ -89,6 +93,10 @@ class CreatePriority extends Component {
   }
   handleSubmitData() {
     debugger;
+    if(
+      this.state.priority_name.length > 0 &&
+      this.state.selectedActiveStatus > 0
+    ){
     let self = this;
     var activeStatus = 0;
     var status = this.state.selectedActiveStatus;
@@ -117,6 +125,12 @@ class CreatePriority extends Component {
         });
       }
     });
+  }else{
+    this.setState({
+      priorityNameCompulsion:"Please Enter Priority Name",
+      statusCompulsion:"Please Select Status"
+    });
+  }
   }
   handleDeleteData(priority_ID) {
     debugger;
@@ -141,6 +155,10 @@ class CreatePriority extends Component {
   }
   handleUpdateData(priority_ID) {
     debugger;
+    if(
+      this.state.finalData.name.length > 0 &&
+      this.state.finalData.status.length  > 0
+    ){
     let self = this;
     var activeStatus = 0;
     var status = this.state.finalData.status;
@@ -170,6 +188,12 @@ class CreatePriority extends Component {
         });
       }
     });
+  }else{
+    this.setState({
+      editpriorityNameCompulsion:"Please Enter Priority Name",
+      editstatusCompulsion:"Please Select Status"
+    });
+  }
   }
 
   onMouseDown(e) {
@@ -481,6 +505,12 @@ class CreatePriority extends Component {
                                         value={this.state.finalData.name}
                                         onChange={this.handleOnChangeData}
                                       />
+                                      {this.state.finalData.name === "" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.editpriorityNameCompulsion}
+                    </p>
+                  )}
+                                      
                                     </div>
                                     <div className=" pop-over-div">
                                       <label className="pop-over-lbl-text">
@@ -492,7 +522,7 @@ class CreatePriority extends Component {
                                         value={this.state.finalData.status}
                                         onChange={this.handleOnChangeData}
                                       >
-                                        <option>select</option>
+                                        <option value="" >select</option>
                                         {this.state.activeData !== null &&
                                           this.state.activeData.map(
                                             (item, j) => (
@@ -505,6 +535,11 @@ class CreatePriority extends Component {
                                             )
                                           )}
                                       </select>
+                                      {this.state.finalData.status === "" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.editstatusCompulsion}
+                    </p>
+                  )}
                                     </div>
                                     <br />
                                     <div>
@@ -601,6 +636,11 @@ class CreatePriority extends Component {
                         value={this.state.priority_name}
                         onChange={this.handleCreateOnChange}
                       />
+                       {this.state.priority_name.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.priorityNameCompulsion}
+                    </p>
+                  )}
                     </div>
                     <div className="dropDrownSpace">
                       <label className="reports-to">Status</label>
@@ -617,6 +657,11 @@ class CreatePriority extends Component {
                             </option>
                           ))}
                       </select>
+                      {this.state.selectedActiveStatus === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.statusCompulsion}
+                    </p>
+                  )}
                     </div>
                     <div className="btnSpace">
                       <button
