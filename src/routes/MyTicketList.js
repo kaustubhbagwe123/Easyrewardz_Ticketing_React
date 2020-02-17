@@ -2467,7 +2467,7 @@ class MyTicketList extends Component {
                     this.handleSearchTicket("ReOpen");
                   }}
                 >
-                  ReOpen:{" "}
+                  Reopen:{" "}
                   <span className="myTciket-tab-span">
                     {this.state.byReOpenCount < 9
                       ? "0" + this.state.byReOpenCount
