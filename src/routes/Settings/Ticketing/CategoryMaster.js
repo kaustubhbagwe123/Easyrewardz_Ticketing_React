@@ -195,7 +195,8 @@ class CategoryMaster extends Component {
       url: config.apiUrl + "/Category/AddCategory",
       headers: authHeader(),
       params: {
-        category: value
+        category: value,
+        BrandID:this.state.selectBrand
       }
     }).then(function(res) {
       debugger;
@@ -217,18 +218,18 @@ class CategoryMaster extends Component {
   handleAddSubCategory(value) {
     debugger;
     let self = this;
-    var finalId = 0;
-    if (this.state.category_Id === 0) {
-      finalId = this.state.list1Value;
-    } else {
-      finalId = this.state.category_Id;
-    }
+    // var finalId = 0;
+    // if (this.state.category_Id === 1) {
+    //   finalId = this.state.list1Value;
+    // } else {
+    //   finalId = this.state.category_Id;
+    // }
     axios({
       method: "post",
       url: config.apiUrl + "/SubCategory/AddSubCategory",
       headers: authHeader(),
       params: {
-        categoryID: finalId,
+        categoryID: this.state.list1Value,
         SubcategoryName: value
       }
     }).then(function(res) {
@@ -250,18 +251,18 @@ class CategoryMaster extends Component {
   handleAddIssueType(value) {
     debugger;
     let self = this;
-    var finalId = 0;
-    if (this.state.subCategory_Id === 0) {
-      finalId = this.state.ListOfSubCate;
-    } else {
-      finalId = this.state.subCategory_Id;
-    }
+    // var finalId = 0;
+    // if (this.state.subCategory_Id === 0) {
+    //   finalId = this.state.ListOfSubCate;
+    // } else {
+    //   finalId = this.state.subCategory_Id;
+    // }
     axios({
       method: "post",
       url: config.apiUrl + "/IssueType/AddIssueType",
       headers: authHeader(),
       params: {
-        SubcategoryID: finalId,
+        SubcategoryID: this.state.ListOfSubCate,
         IssuetypeName: value
       }
     }).then(function(res) {
@@ -384,7 +385,8 @@ class CategoryMaster extends Component {
     this.setState({
       selectBrand: value,
       categoryDropData: [],
-      SubCategoryDropData: []
+      SubCategoryDropData: [],
+      ListOfIssueData:[]
     });
     setTimeout(() => {
       if (this.state.selectBrand) {
@@ -778,61 +780,6 @@ class CategoryMaster extends Component {
                       </div>
                     </div>
                     <div className="divSpace">
-                      {/* <div className="dropDrownSpace">
-                        <label className="reports-to reports-dis">
-                          Category
-                        </label>
-                        <Select
-                          showSearch={true}
-                          value={this.state.list1Value}
-                          style={{ width: "100%" }}
-                          onChange={this.handleCategoryChange}
-                        >
-                          {list1SelectOptions}
-                          <Option value={NEW_ITEM}>
-                            <span className="sweetAlert-inCategory">
-                              + ADD NEW
-                            </span>
-                          </Option>
-                        </Select>
-
-                        <SweetAlert
-                          show={this.state.showList1}
-                          style={{ width: "320px" }}
-                          title="Add New Category"
-                          text="Enter new Category"
-                          showCancelButton
-                          type="input"
-                          inputPlaceholder="Enter Category Name"
-                          animation="slide-from-top"
-                          validationMsg="Please enter a category!"
-                          onConfirm={inputValue => {
-                            debugger;
-                            inputValue = inputValue.trim();
-                            if (inputValue !== "") {
-                              this.setState({
-                                showList1: false,
-                                list1Value: inputValue
-                              });
-                              this.handleAddCategory(inputValue);
-                            } else {
-                              this.setState({
-                                showList1: false,
-                                list1Value: inputValue
-                              });
-                            }
-                          }}
-                          onCancel={() => {
-                            this.setState({ showList1: false});
-                          }}
-                          onEscapeKey={() =>
-                            this.setState({ showList1: false})
-                          }
-                          onOutsideClick={() =>
-                            this.setState({ showList1: false})
-                          }
-                        />
-                      </div> */}
                        <div className="dropDrownSpace">
                         <label className="reports-to reports-dis">
                           Category
