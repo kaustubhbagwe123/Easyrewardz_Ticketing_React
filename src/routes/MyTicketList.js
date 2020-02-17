@@ -8,6 +8,7 @@ import CliamIconGray from "./../assets/Images/claim-icon-gray.png";
 import HeadPhone3 from "./../assets/Images/headphone3.png";
 import BlackLeftArrow from "./../assets/Images/black-left-arrow.png";
 import SearchBlackImg from "./../assets/Images/searchBlack.png";
+import Twitter from "./../assets/Images/twitter.png";
 import Headphone2Img from "./../assets/Images/headphone2.png";
 import CallImg from "./../assets/Images/call.png";
 import MailImg from "./../assets/Images/msg.png";
@@ -4668,9 +4669,9 @@ class MyTicketList extends Component {
                                                 .ticketSourceType ===
                                               "Twitter" ? (
                                               <img
-                                                src={HeadPhone3}
+                                                src={Twitter}
                                                 alt="HeadPhone"
-                                                className="headPhone3"
+                                                className="headPhone3 black-twitter"
                                               />
                                             ) : null}
 

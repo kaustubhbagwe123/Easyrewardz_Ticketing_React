@@ -2791,6 +2791,9 @@ table tr th:last-child {
 .collapse-icon {
   width: 15px;
 }
+.black-twitter {
+  filter: brightness(0);
+}
 /* dashboard ends */
 
 /* chatbot starts */

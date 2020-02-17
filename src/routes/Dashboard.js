@@ -12,6 +12,7 @@ import Sorting from "./../assets/Images/sorting.png";
 import CliamIconBlue from "./../assets/Images/cliam-icon-blue.png";
 import CliamIconGray from "./../assets/Images/claim-icon-gray.png";
 import Chat from "./../assets/Images/chat.png";
+import Twitter from "./../assets/Images/twitter.png";
 import csv from "./../assets/Images/csv.png";
 import Schedule from "./../assets/Images/schedule.png";
 import Assign from "./../assets/Images/assign.png";
@@ -5820,9 +5821,9 @@ class Dashboard extends Component {
                                                 .ticketSourceType ===
                                               "Twitter" ? (
                                               <img
-                                                src={HeadPhone3}
+                                                src={Twitter}
                                                 alt="HeadPhone"
-                                                className="headPhone3"
+                                                className="headPhone3 black-twitter"
                                               />
                                             ) : null}
                                     {row.original.ticketID}
