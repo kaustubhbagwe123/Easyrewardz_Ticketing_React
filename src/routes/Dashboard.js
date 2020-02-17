@@ -2663,7 +2663,7 @@ class Dashboard extends Component {
         }, 100);
       },
       style: {
-        background: column.original["isEscalation"] === 0 ? 'white' : '#FFDFDF'
+        background: column.original["isEscalation"] === 1 ? '#FFDFDF' : column.original["isReassigned"] === true ? '#DEF3FF' : 'white'
       }
     };
   }
