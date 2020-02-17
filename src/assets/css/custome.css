@@ -1091,7 +1091,7 @@ table tr th:last-child {
   font-size: 12px;
   font-weight: 700;
   line-height: 14px;
-  display: block;
+  display: inherit;
   margin-bottom: 5px;
   text-align: left;
 }
@@ -1140,7 +1140,7 @@ table tr th:last-child {
 .storeSpacing {
   padding-left: 0;
   padding-top: 0;
-  display: block;
+  display: inherit;
 }
 .pencilImg {
   width: 13px;
