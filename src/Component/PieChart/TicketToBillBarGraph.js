@@ -42,9 +42,11 @@ class TicketToBillBarGraph extends Component {
             }
           }
         },
-        // tooltip: {
-        //   enabled: false
-        // }
+        tooltip: {
+          marker: {
+            fillColors: ['#75A5DE', '#2561A8']
+          }
+        }
       },
       seriesMixedChart: [
         {

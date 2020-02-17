@@ -2646,6 +2646,7 @@ class Dashboard extends Component {
   }
 
   HandleRowClickPage = (rowInfo, column) => {
+    if (rowInfo, column) {
     return {
       onClick: e => {
         debugger;
@@ -2660,8 +2661,13 @@ class Dashboard extends Component {
             ticketDetailID: Id
           });
         }, 100);
+      },
+      style: {
+        background: column.original["isEscalation"] === 0 ? 'white' : '#FFDFDF'
       }
     };
+  }
+  return {};
   };
 
   handleGetSaveSearchList() {
@@ -5896,12 +5902,12 @@ class Dashboard extends Component {
                                         <p className="m-b-0">
                                           TASK:{row.original.taskStatus}
                                         </p>
-                                        <div className="d-flex align-items-center">
-                                          2 NEW
+                                        {row.original.ticketCommentCount > 0 ? <div className="d-flex align-items-center">
+                                          {row.original.ticketCommentCount} NEW
                                           <div className="nw-chat">
                                             <img src={Chat} alt="chat" />
                                           </div>
-                                        </div>
+                                        </div> : null}
                                       </div>
                                       <ProgressBar
                                         className="task-progress"

@@ -4711,15 +4711,15 @@ class MyTicketList extends Component {
                                                 <p className="m-b-0">
                                                   TASK:{row.original.taskStatus}
                                                 </p>
-                                                <div className="d-flex align-items-center">
-                                                  2 NEW
+                                                {row.original.ticketCommentCount > 0 ? <div className="d-flex align-items-center">
+                                                {row.original.ticketCommentCount} NEW
                                                   <div className="nw-chat">
                                                     <img
                                                       src={Chat}
                                                       alt="chat"
                                                     />
                                                   </div>
-                                                </div>
+                                                </div> : null}
                                               </div>
                                               <ProgressBar
                                                 className="task-progress"
