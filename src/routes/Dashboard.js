@@ -145,7 +145,7 @@ class Dashboard extends Component {
       selectedPriority: 0,
       selectedPriorityAll: 0,
       selectedTicketStatusByDate: 0,
-      selectedNoOfDay: "",
+      selectedNoOfDay: 0,
       selectedScheduleTime: "",
       selectedSlaDueByDate: 0,
       selectedClaimStatus: 0,
@@ -236,6 +236,7 @@ class Dashboard extends Component {
       selectedNameOfDayForWeek: [],
       selectedNameOfMonthForYear: [],
       selectedNameOfMonthForDailyYear: [],
+      selectedNameOfDayForYear: [],
       NameOfDayForWeek: [
         {
           days: "Sunday"
@@ -293,7 +294,9 @@ class Dashboard extends Component {
       Email: "",
       MobileNo: "",
       AssignTo: "",
-      PurchaseStoreCodeAddress: ""
+      PurchaseStoreCodeAddress: "",
+      scheduleRequired: '',
+      agentSelection: ''
     };
     this.handleGetAssignTo = this.handleGetAssignTo.bind(this);
     this.applyCallback = this.applyCallback.bind(this);
@@ -305,9 +308,16 @@ class Dashboard extends Component {
     this.handleSearchTicketEscalation = this.handleSearchTicketEscalation.bind(
       this
     );
+    this.handleTicketsOnLoad = this.handleTicketsOnLoad.bind(
+      this
+    );
+    this.handleTicketsOnLoadLoader = this.handleTicketsOnLoadLoader.bind(
+      this
+    );
     this.handleAdvSearchFlag = this.handleAdvSearchFlag.bind(this);
     this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
     this.handleSchedulePopup = this.handleSchedulePopup.bind(this);
+    this.handleSchedulePopupSuccess = this.handleSchedulePopupSuccess.bind(this);
     this.handleAssignTickets = this.handleAssignTickets.bind(this);
     this.handelOnchangeData = this.handelOnchangeData.bind(this);
     this.clearSearch = this.clearSearch.bind(this);
@@ -364,7 +374,9 @@ class Dashboard extends Component {
 
   componentDidMount() {
     debugger;
-    this.handleSearchTicketEscalation();
+    // this.handleSearchTicketEscalation();   // this is called for bydefault content
+    // this.handleTicketsOnLoad();
+    this.handleTicketsOnLoadLoader();
     this.handleGetDepartmentList();
     this.handleGetTicketSourceList();
     this.handleGetCategoryList();
@@ -379,6 +391,236 @@ class Dashboard extends Component {
     this.handleGetSaveSearchList();
 
     this.handleAdvanceSearchOption();
+  }
+
+  handleTicketsOnLoadLoader() {
+    this.setState({ loading: true });
+  }
+
+  handleTicketsOnLoad() {
+    debugger;
+    let self = this;
+    this.setState({ loading: true });
+
+    // ---------------By Date tab---------------------
+    var dateTab = {};
+    if (this.state.ActiveTabId === 1) {
+      if (
+        this.state.ByDateCreatDate === null ||
+        this.state.ByDateCreatDate === undefined ||
+        this.state.ByDateCreatDate === ""
+      ) {
+        dateTab["Ticket_CreatedOn"] = "";
+      } else {
+        dateTab["Ticket_CreatedOn"] = moment(this.state.ByDateCreatDate).format(
+          "YYYY-MM-DD"
+        );
+      }
+      if (
+        this.state.ByDateSelectDate === null ||
+        this.state.ByDateSelectDate === undefined ||
+        this.state.ByDateSelectDate === ""
+      ) {
+        dateTab["Ticket_ModifiedOn"] = "";
+      } else {
+        dateTab["Ticket_ModifiedOn"] = moment(
+          this.state.ByDateSelectDate
+        ).format("YYYY-MM-DD");
+      }
+      dateTab["SLA_DueON"] = this.state.selectedSlaDueByDate;
+      dateTab["Ticket_StatusID"] = this.state.selectedTicketStatusByDate;
+    } else {
+      dateTab = null;
+    }
+
+    // --------------------By Customer Type Tab---------------
+    var customerType = {};
+    if (this.state.ActiveTabId === 2) {
+      customerType["CustomerMobileNo"] = this.state.MobileNoByCustType.trim();
+      customerType["CustomerEmailID"] = this.state.EmailIdByCustType.trim();
+      customerType["TicketID"] = this.state.TicketIdByCustType.trim();
+      customerType[
+        "TicketStatusID"
+      ] = this.state.selectedTicketStatusByCustomer;
+    } else {
+      customerType = null;
+    }
+
+    // --------------------By Ticket Type Tab-----------------
+    var ticketType = {};
+    if (this.state.ActiveTabId === 3) {
+      let purchaseIds = "";
+      let actionTypeIds = "";
+
+      if (this.state.selectedChannelOfPurchase != null) {
+        for (let i = 0; i < this.state.selectedChannelOfPurchase.length; i++) {
+          purchaseIds +=
+            this.state.selectedChannelOfPurchase[i].channelOfPurchaseID + ",";
+        }
+      }
+      if (this.state.selectedTicketActionType != null) {
+        for (let i = 0; i < this.state.selectedTicketActionType.length; i++) {
+          actionTypeIds +=
+            this.state.selectedTicketActionType[i].ticketActionTypeID + ",";
+        }
+      }
+
+      ticketType["TicketPriorityID"] = this.state.selectedPriority;
+      ticketType["TicketStatusID"] = this.state.selectedTicketStatusByTicket;
+      ticketType["ChannelOfPurchaseIds"] = purchaseIds;
+      ticketType["ActionTypes"] = actionTypeIds;
+    } else {
+      ticketType = null;
+    }
+
+    // --------------------By Category Tab-------------------
+    var categoryType = {};
+    if (this.state.ActiveTabId === 4) {
+      categoryType["CategoryId"] = this.state.selectedCategory;
+      categoryType["SubCategoryId"] = this.state.selectedSubCategory;
+      categoryType["IssueTypeId"] = this.state.selectedIssueType;
+      categoryType[
+        "TicketStatusID"
+      ] = this.state.selectedTicketStatusByCategory;
+    } else {
+      categoryType = null;
+    }
+    //---------------------By Ticket All Tab---------------------
+    var allTab = {};
+
+    if (this.state.ActiveTabId === 5) {
+      let withClaim = 0;
+      let withTask = 0;
+      if (this.state.selectedWithClaimAll === "yes") {
+        withClaim = 1;
+      }
+      if (this.state.selectedWithTaskAll === "yes") {
+        withTask = 1;
+      }
+
+      // --------------------Check null date----------------------------------
+      if (
+        this.state.ByAllCreateDate === null ||
+        this.state.ByAllCreateDate === undefined ||
+        this.state.ByAllCreateDate === ""
+      ) {
+        allTab["CreatedDate"] = "";
+      } else {
+        allTab["CreatedDate"] = moment(this.state.ByAllCreateDate).format(
+          "YYYY-MM-DD"
+        );
+      }
+      // --------------------Check null date----------------------------------
+      if (
+        this.state.ByAllLastDate === null ||
+        this.state.ByAllLastDate === undefined ||
+        this.state.ByAllLastDate === ""
+      ) {
+        allTab["ModifiedDate"] = "";
+      } else {
+        allTab["ModifiedDate"] = moment(this.state.ByAllLastDate).format(
+          "YYYY-MM-DD"
+        );
+      }
+
+      allTab["CategoryId"] = this.state.selectedCategoryAll;
+      allTab["SubCategoryId"] = this.state.selectedSubCategoryAll;
+      allTab["IssueTypeId"] = this.state.selectedIssueTypeAll;
+      allTab["TicketSourceTypeID"] = this.state.selectedTicketSource;
+      allTab["TicketIdORTitle"] = this.state.TicketIdTitleByAll.trim();
+      allTab["PriorityId"] = this.state.selectedPriorityAll;
+      allTab["TicketSatutsID"] = this.state.selectedTicketStatusAll;
+      allTab["SLAStatus"] = this.state.selectedSlaStatus;
+      allTab["ClaimId"] = this.state.selectedClaimStatus;
+      allTab["InvoiceNumberORSubOrderNo"] = this.state.InvoiceSubOrderByAll.trim();
+      allTab["OrderItemId"] = this.state.ItemIdByAll.trim();
+      allTab["IsVisitStore"] = this.state.selectedVisitStoreAll;
+      allTab["IsWantVistingStore"] = this.state.selectedWantToVisitStoreAll;
+      allTab["CustomerEmailID"] = this.state.EmailByAll.trim();
+      allTab["CustomerMobileNo"] = this.state.MobileByAll.trim();
+      allTab["AssignTo"] = this.state.selectedAssignedTo;
+      allTab[
+        "StoreCodeORAddress"
+      ] = this.state.selectedPurchaseStoreCodeAddressAll.trim();
+      allTab[
+        "WantToStoreCodeORAddress"
+      ] = this.state.selectedVisitStoreCodeAddressAll.trim();
+      allTab["HaveClaim"] = withClaim;
+      allTab["ClaimStatusId"] = this.state.selectedClaimStatus;
+      allTab["ClaimCategoryId"] = this.state.selectedClaimCategory;
+      allTab["ClaimSubCategoryId"] = this.state.selectedClaimSubCategory;
+      allTab["ClaimIssueTypeId"] = this.state.selectedClaimIssueType;
+      allTab["HaveTask"] = withTask;
+      allTab["TaskStatusId"] = this.state.selectedTaskStatus;
+      allTab["TaskDepartment_Id"] = this.state.selectedDepartment;
+      allTab["TaskFunction_Id"] = this.state.selectedFunction;
+    } else {
+      allTab = null;
+    }
+
+    // ----------------------SetState variable in Json Format for Apply Search------------------------------------
+    var ShowDataparam = {};
+
+    ShowDataparam.AssigntoId = this.state.AgentIds;
+    ShowDataparam.BrandId = this.state.BrandIds;
+    ShowDataparam.ActiveTabId = this.state.ActiveTabId;
+    ShowDataparam.searchDataByDate = dateTab;
+    ShowDataparam.searchDataByCustomerType = customerType;
+    ShowDataparam.searchDataByTicketType = ticketType;
+    ShowDataparam.searchDataByCategoryType = categoryType;
+    ShowDataparam.searchDataByAll = allTab;
+
+    var FinalSaveSearchData = JSON.stringify(ShowDataparam);
+    this.setState({
+      FinalSaveSearchData
+    });
+    // ----------------------------------------------------------
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/DashBoard/DashBoardSearchTicket",
+      headers: authHeader(),
+      data: {
+        AssigntoId: this.state.AgentIds,
+        BrandId: this.state.BrandIds,
+        ActiveTabId: this.state.ActiveTabId,
+        searchDataByDate: dateTab,
+        searchDataByCustomerType: customerType,
+        searchDataByTicketType: ticketType,
+        searchDataByCategoryType: categoryType,
+        searchDataByAll: allTab
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      let data = res.data.responseData;
+      let CSVData = data;
+      let count = 0;
+      if (res.data.responseData != null) {
+        count = res.data.responseData.length;
+      }
+      if (status === "Success") {
+        self.setState({
+          SearchTicketData: data,
+          resultCount: count,
+          loading: false
+        });
+        for (let i = 0; i < CSVData.length; i++) {
+          delete CSVData[i].totalpages;
+          delete CSVData[i].responseTimeRemainingBy;
+          delete CSVData[i].responseOverdueBy;
+          delete CSVData[i].resolutionOverdueBy;
+          delete CSVData[i].ticketCommentCount;
+        }
+        self.setState({ CSVDownload: CSVData });
+      } else {
+        self.setState({
+          SearchTicketData: [],
+          resultCount: 0,
+          loading: false
+        });
+      }
+    });
   }
 
   clickCheckbox(evt) {
@@ -821,6 +1063,7 @@ class Dashboard extends Component {
     if (this.state.AgentIds !== "" && this.state.BrandIds !== "") {
       this.handleGetDashboardNumberData();
       this.handleGetDashboardGraphData();
+      this.handleTicketsOnLoad();
     }
   }
   checkAllBrandStart(event) {
@@ -842,6 +1085,7 @@ class Dashboard extends Component {
     if (this.state.AgentIds !== "" && this.state.BrandIds !== "") {
       this.handleGetDashboardNumberData();
       this.handleGetDashboardGraphData();
+      this.handleTicketsOnLoad();
     }
   }
   checkIndividualAgent = event => {
@@ -880,6 +1124,7 @@ class Dashboard extends Component {
       () => {
         this.handleGetDashboardNumberData();
         this.handleGetDashboardGraphData();
+        this.ViewSearchData();
       }
     );
   };
@@ -921,6 +1166,7 @@ class Dashboard extends Component {
       () => {
         this.handleGetDashboardNumberData();
         this.handleGetDashboardGraphData();
+        this.ViewSearchData();
       }
     );
   };
@@ -953,6 +1199,7 @@ class Dashboard extends Component {
     });
     this.handleGetDashboardNumberData();
     this.handleGetDashboardGraphData();
+    this.ViewSearchData();
   };
   checkAllBrand = async event => {
     debugger;
@@ -984,6 +1231,7 @@ class Dashboard extends Component {
     });
     this.handleGetDashboardNumberData();
     this.handleGetDashboardGraphData();
+    this.ViewSearchData();
   };
   handleGetAgentList() {
     debugger;
@@ -1036,7 +1284,7 @@ class Dashboard extends Component {
         debugger;
         this.selectedRow = index;
         var agentId = column.original["user_ID"];
-        this.setState({ agentId });
+        this.setState({ agentId, agentSelection: '' });
       },
       style: {
         background: this.selectedRow === index ? "#ECF2F4" : null
@@ -1650,6 +1898,65 @@ class Dashboard extends Component {
   }
   handleSchedulePopup() {
     debugger;
+    // if (this.state.selectedTeamMember.length > 0 && ) {
+      
+    // }
+    if (this.state.selectScheduleDate === 0 || this.state.selectScheduleDate === '100') {
+      this.setState({
+        scheduleRequired: 'All fields are required'
+      });
+    } else if (this.state.selectScheduleDate === '230') {
+      if (this.state.selectedTeamMember.length === 0 || this.state.selectedScheduleTime === '' || this.state.selectedNoOfDay === 0) {
+        this.setState({
+          scheduleRequired: 'All fields are required'
+        });
+      } else {
+      this.handleSchedulePopupSuccess();
+      }
+    } else if (this.state.selectScheduleDate === '231') {
+      if (this.state.selectedTeamMember.length === 0 || this.state.selectedScheduleTime === '' || this.state.selectedNoOfWeek === 0 || this.state.selectedWeeklyDays === '') {
+        this.setState({
+          scheduleRequired: 'All fields are required'
+        });
+      } else {
+      this.handleSchedulePopupSuccess();
+      }
+    } else if (this.state.selectScheduleDate === '232') {
+      if (this.state.selectedTeamMember.length === 0 || this.state.selectedScheduleTime === '' || this.state.selectedNoOfDaysForMonth === 0 || this.state.selectedNoOfMonthForMonth === 0) {
+        this.setState({
+          scheduleRequired: 'All fields are required'
+        });
+      } else {
+      this.handleSchedulePopupSuccess();
+      }
+    } else if (this.state.selectScheduleDate === '233') {
+      if (this.state.selectedTeamMember.length === 0 || this.state.selectedScheduleTime === '' || this.state.selectedNoOfMonthForWeek === 0 || this.state.selectedNoOfWeekForWeek === 0 || this.state.selectedNameOfDayForWeek.length === 0) {
+        this.setState({
+          scheduleRequired: 'All fields are required'
+        });
+      } else {
+      this.handleSchedulePopupSuccess();
+      }
+    } else if (this.state.selectScheduleDate === '234') {
+      if (this.state.selectedTeamMember.length === 0 || this.state.selectedScheduleTime === '' || this.state.selectedNoOfDayForDailyYear === 0 || this.state.selectedNameOfMonthForYear.length === 0) {
+        this.setState({
+          scheduleRequired: 'All fields are required'
+        });
+      } else {
+      this.handleSchedulePopupSuccess();
+      }
+    } else if (this.state.selectScheduleDate === '235') {
+      if (this.state.selectedTeamMember.length === 0 || this.state.selectedScheduleTime === '' || this.state.selectedNoOfWeekForYear === 0 || this.state.selectedNameOfDayForYear.length === 0 || this.state.selectedNameOfMonthForDailyYear.length === 0) {
+        this.setState({
+          scheduleRequired: 'All fields are required'
+        });
+      } else {
+      this.handleSchedulePopupSuccess();
+      }
+    }
+  }
+  handleSchedulePopupSuccess() {
+    debugger;
 
     let self = this;
     axios({
@@ -1688,6 +1995,9 @@ class Dashboard extends Component {
       if (messageData === "Success") {
         self.ScheduleCloseModel();
         NotificationManager.success("Scheduled successfully.");
+        self.setState({
+          scheduleRequired: ''
+        });
       }
     });
   }
@@ -1762,7 +2072,7 @@ class Dashboard extends Component {
   };
   handleAssignTickets() {
     debugger;
-
+    if (this.state.agentId !== 0) {
     let self = this;
     var ticketIdsComma = this.state.ticketIds;
     var ticketIds = ticketIdsComma.substring(0, ticketIdsComma.length - 1);
@@ -1781,9 +2091,15 @@ class Dashboard extends Component {
       if (messageData === "Success") {
         self.handleAssignModalClose();
         NotificationManager.success("Tickets assigned successfully.");
-        self.handleSearchTicketEscalation();
+        // self.handleSearchTicketEscalation();
+        self.ViewSearchData();
       }
     });
+  } else {
+    this.setState({
+      agentSelection: 'Agent Selection is required'
+    })
+  }
   }
   handleGetSlaStatusList() {
     debugger;
@@ -1983,7 +2299,8 @@ class Dashboard extends Component {
           resultCount: 0
         },
         () => {
-          this.handleSearchTicketEscalation();
+          // this.handleSearchTicketEscalation();
+          this.ViewSearchData();
         }
       );
     } else if (this.state.byCustomerTypeFlag === 2) {
@@ -1996,7 +2313,8 @@ class Dashboard extends Component {
           resultCount: 0
         },
         () => {
-          this.handleSearchTicketEscalation();
+          // this.handleSearchTicketEscalation();
+          this.ViewSearchData();
         }
       );
     } else if (this.state.byTicketTypeFlag === 3) {
@@ -2009,7 +2327,8 @@ class Dashboard extends Component {
           resultCount: 0
         },
         () => {
-          this.handleSearchTicketEscalation();
+          // this.handleSearchTicketEscalation();
+          this.ViewSearchData();
         }
       );
     } else if (this.state.byCategoryFlag === 4) {
@@ -2022,7 +2341,8 @@ class Dashboard extends Component {
           resultCount: 0
         },
         () => {
-          this.handleSearchTicketEscalation();
+          // this.handleSearchTicketEscalation();
+          this.ViewSearchData();
           this.handleGetSubCategoryList();
         }
       );
@@ -2062,7 +2382,8 @@ class Dashboard extends Component {
           resultCount: 0
         },
         () => {
-          this.handleSearchTicketEscalation();
+          // this.handleSearchTicketEscalation();
+          this.ViewSearchData();
           this.handleGetSubCategoryList();
         this.handleGetClaimSubCategoryList()
         }
@@ -2325,6 +2646,7 @@ class Dashboard extends Component {
   }
 
   HandleRowClickPage = (rowInfo, column) => {
+    if (rowInfo, column) {
     return {
       onClick: e => {
         debugger;
@@ -2339,8 +2661,13 @@ class Dashboard extends Component {
             ticketDetailID: Id
           });
         }, 100);
+      },
+      style: {
+        background: column.original["isEscalation"] === 0 ? 'white' : '#FFDFDF'
       }
     };
+  }
+  return {};
   };
 
   handleGetSaveSearchList() {
@@ -5125,8 +5452,8 @@ class Dashboard extends Component {
                                             </div>
                                           </div>
                                         </span>
-                                        <div className="row mt-3">
-                                          <div className="col-md-5">
+                                        <div className="row mt-3" style={{ position: 'relative' }}>
+                                          <div className="col-md-6">
                                             <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
                                               <Select
                                                 getOptionLabel={option =>
@@ -5154,15 +5481,14 @@ class Dashboard extends Component {
                                             </div>
                                           </div>
                                           <label
-                                            className="every1"
+                                            className="every1 last-to"
                                             style={{
-                                              lineHeight: "40px",
-                                              marginLeft: "14px"
+                                              lineHeight: "40px"
                                             }}
                                           >
                                             to
                                           </label>
-                                          <div className="col-md-5">
+                                          <div className="col-md-6">
                                             <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
                                               <Select
                                                 getOptionLabel={option =>
@@ -5218,6 +5544,8 @@ class Dashboard extends Component {
                                         value={this.state.selectedScheduleTime}
                                       />
                                     </div>
+
+                                    <p style={{color: 'red', marginBottom: '0', textAlign: 'center'}}>{this.state.scheduleRequired}</p>
 
                                     <div>
                                       <button
@@ -5388,7 +5716,7 @@ class Dashboard extends Component {
                                     getTrProps={this.handleTicketDetails}
                                     className="assign-ticket-table"
                                   />
-
+<p style={{marginTop: this.state.agentSelection === '' ? '0px' : '10px', color: 'red', marginBottom: '0', textAlign: 'center'}}>{this.state.agentSelection}</p>
                                   <textarea
                                     className="assign-modal-textArea"
                                     placeholder="Add Remarks"
@@ -5574,12 +5902,12 @@ class Dashboard extends Component {
                                         <p className="m-b-0">
                                           TASK:{row.original.taskStatus}
                                         </p>
-                                        <div className="d-flex align-items-center">
-                                          2 NEW
+                                        {row.original.ticketCommentCount > 0 ? <div className="d-flex align-items-center">
+                                          {row.original.ticketCommentCount} NEW
                                           <div className="nw-chat">
                                             <img src={Chat} alt="chat" />
                                           </div>
-                                        </div>
+                                        </div> : null}
                                       </div>
                                       <ProgressBar
                                         className="task-progress"

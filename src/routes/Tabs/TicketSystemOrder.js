@@ -66,7 +66,8 @@ class TicketSystemOrder extends Component {
       expandedOrderPopup: {},
       validPurchaseStoreName: "",
       requiredSize: '',
-      ChannelOfPurchaseData: []
+      ChannelOfPurchaseData: [],
+      idSizeArray: []
     };
     this.validator = new SimpleReactValidator();
     this.onFilteredChange = this.onFilteredChange.bind(this);
@@ -96,10 +97,33 @@ class TicketSystemOrder extends Component {
 
     var id = rowData.original.orderItemID;
     var value = document.getElementById("requireSizeTxt" + id).value;
-    var index = rowData.index;
+    var index = this.state.OrderSubItem.findIndex(x=>x.orderItemID===rowData.original.orderItemID)   
+    
     var OrderSubItem = this.state.OrderSubItem;
-    OrderSubItem[index].requireSize = value
+    OrderSubItem[index].requireSize = value;
 
+    // var idSize, idSizeArray, idSizeArrayLength;
+    // idSizeArray = this.state.idSizeArray;
+    // idSizeArrayLength = this.state.idSizeArray.length;
+    // idSize = id + '|' + value;
+    // if (idSizeArray.length > 0) {
+    //   for (let i = 0; i < idSizeArrayLength; i++) {
+    //     var splittedVal = idSizeArray[i].split('|');
+    //     var leftVal = splittedVal[0];
+    //     var leftValNum = parseInt(leftVal);
+    //     if (leftValNum === id) {
+    //       debugger;
+    //       idSizeArray.splice(i,1);
+    //     } else {
+    //       debugger;
+    //     }
+    //   }
+    //   idSizeArray.push(idSize);
+    // } else {
+    //   idSizeArray.push(idSize);
+    // }
+
+    // this.setState({ OrderSubItem, idSizeArray });
     this.setState({ OrderSubItem });
   }
 
@@ -171,26 +195,26 @@ class TicketSystemOrder extends Component {
     });
     var selectedRow = [];
     if (this.state.selectedDataRow.length === 0) {
-      selectedRow.push(rowData.orderMasterID);
+      selectedRow.push(rowData);
       this.setState({
         selectedDataRow: selectedRow
       });
     } else {
       if (newSelected[orderMasterID] === true) {
         for (var i = 0; i < this.state.selectedDataRow.length; i++) {
-          if (this.state.selectedDataRow[i] === rowData.orderMasterID) {
+          if (this.state.selectedDataRow[i] === rowData) {
             selectedRow.splice(i, 1);
 
             break;
           } else {
             selectedRow = this.state.selectedDataRow;
-            selectedRow.push(rowData.orderMasterID);
+            selectedRow.push(rowData);
             break;
           }
         }
       } else {
         for (var j = 0; j < this.state.selectedDataRow.length; j++) {
-          if (this.state.selectedDataRow[j] === rowData.orderMasterID) {
+          if (this.state.selectedDataRow[j] === rowData) {
             selectedRow = this.state.selectedDataRow;
             selectedRow.splice(j, 1);
             break;
@@ -203,7 +227,7 @@ class TicketSystemOrder extends Component {
       selectedDataRow: selectedRow
     });
     {
-      this.props.getOrderId(selectedRow);
+      this.props.getOrderId(selectedRow, this.state.idSizeArray);
     }
   }
 

@@ -142,7 +142,8 @@ class TicketSystem extends Component {
       issueTypeKbCompulsion: "",
       userCcCount: 0,
       userBccCount: 0,
-      FileData: []
+      FileData: [],
+      idSizeArray: []
     };
     this.validator = new SimpleReactValidator();
     this.showAddNoteFuncation = this.showAddNoteFuncation.bind(this);
@@ -212,9 +213,11 @@ class TicketSystem extends Component {
       customerAttachOrder: custAttachOrder
     });
   }
-  handleGetOrderId = selectedDataRow => {
+  handleGetOrderId = (selectedDataRow, idSizeArray) => {
+    debugger;
     this.setState({
-      selectedDataIds: selectedDataRow
+      selectedDataIds: selectedDataRow,
+      idSizeArray: idSizeArray
     });
   };
   handleGetStoreId = selectedStoreData => {
@@ -719,7 +722,7 @@ class TicketSystem extends Component {
       // var OID = this.state.selectedTicketPriority;
       var selectedRow = "";
       for (var i = 0; i < this.state.selectedDataIds.length; i++) {
-        selectedRow += this.state.selectedDataIds[i] + ",";
+        selectedRow += this.state.selectedDataIds[i].orderItemID + "|" + this.state.selectedDataIds[i].requireSize + ",";
       }
 
       var selectedStore = "";
@@ -769,6 +772,7 @@ class TicketSystem extends Component {
         IsAlreadyVisitedStore: this.state.AlreadycustVisit,
         TicketSourceID: 1,
         OrderItemID: selectedRow.substring(",", selectedRow.length - 1),
+        // OrderItemID: this.state.idSizeArray.join(),
         StoreID: selectedStore.substring(",", selectedStore.length - 1),
         ticketingMailerQues: mailData
       };

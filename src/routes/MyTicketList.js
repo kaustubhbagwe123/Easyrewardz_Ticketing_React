@@ -206,6 +206,7 @@ class MyTicketList extends Component {
       selectedNameOfDayForWeek: [],
       selectedNameOfMonthForYear: [],
       selectedNameOfMonthForDailyYear: [],
+      selectedNameOfDayForYear: [],
       agentId: 0,
       agentRemark: "",
       ticketIds: "",
@@ -260,7 +261,9 @@ class MyTicketList extends Component {
       Closed: "",
       All: "",
       FollowUp: "",
-      Draft: ""
+      Draft: "",
+      scheduleRequired: '',
+      agentSelection: ''
     };
     this.handleGetAssignTo = this.handleGetAssignTo.bind(this);
     this.clearSearch = this.clearSearch.bind(this);
@@ -288,6 +291,7 @@ class MyTicketList extends Component {
       this
     );
     this.handleGetDraftDetails = this.handleGetDraftDetails.bind(this);
+    this.handleSchedulePopupSuccess = this.handleSchedulePopupSuccess.bind(this);
     this.handelOnchangeData = this.handelOnchangeData.bind(this);
     this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
     this.handleGetFunctionList = this.handleGetFunctionList.bind(this);
@@ -549,6 +553,66 @@ class MyTicketList extends Component {
 
   handleSchedulePopup() {
     debugger;
+    // if (this.state.selectedTeamMember.length > 0 && ) {
+      
+    // }
+    if (this.state.selectScheduleDate === 0 || this.state.selectScheduleDate === '100') {
+      this.setState({
+        scheduleRequired: 'All fields are required'
+      });
+    } else if (this.state.selectScheduleDate === '230') {
+      if (this.state.selectedTeamMember.length === 0 || this.state.selectedScheduleTime === '' || this.state.selectedNoOfDay === 0) {
+        this.setState({
+          scheduleRequired: 'All fields are required'
+        });
+      } else {
+      this.handleSchedulePopupSuccess();
+      }
+    } else if (this.state.selectScheduleDate === '231') {
+      if (this.state.selectedTeamMember.length === 0 || this.state.selectedScheduleTime === '' || this.state.selectedNoOfWeek === 0 || this.state.selectedWeeklyDays === '') {
+        this.setState({
+          scheduleRequired: 'All fields are required'
+        });
+      } else {
+      this.handleSchedulePopupSuccess();
+      }
+    } else if (this.state.selectScheduleDate === '232') {
+      if (this.state.selectedTeamMember.length === 0 || this.state.selectedScheduleTime === '' || this.state.selectedNoOfDaysForMonth === 0 || this.state.selectedNoOfMonthForMonth === 0) {
+        this.setState({
+          scheduleRequired: 'All fields are required'
+        });
+      } else {
+      this.handleSchedulePopupSuccess();
+      }
+    } else if (this.state.selectScheduleDate === '233') {
+      if (this.state.selectedTeamMember.length === 0 || this.state.selectedScheduleTime === '' || this.state.selectedNoOfMonthForWeek === 0 || this.state.selectedNoOfWeekForWeek === 0 || this.state.selectedNameOfDayForWeek.length === 0) {
+        this.setState({
+          scheduleRequired: 'All fields are required'
+        });
+      } else {
+      this.handleSchedulePopupSuccess();
+      }
+    } else if (this.state.selectScheduleDate === '234') {
+      if (this.state.selectedTeamMember.length === 0 || this.state.selectedScheduleTime === '' || this.state.selectedNoOfDayForDailyYear === 0 || this.state.selectedNameOfMonthForYear.length === 0) {
+        this.setState({
+          scheduleRequired: 'All fields are required'
+        });
+      } else {
+      this.handleSchedulePopupSuccess();
+      }
+    } else if (this.state.selectScheduleDate === '235') {
+      if (this.state.selectedTeamMember.length === 0 || this.state.selectedScheduleTime === '' || this.state.selectedNoOfWeekForYear === 0 || this.state.selectedNameOfDayForYear.length === 0 || this.state.selectedNameOfMonthForDailyYear.length === 0) {
+        this.setState({
+          scheduleRequired: 'All fields are required'
+        });
+      } else {
+      this.handleSchedulePopupSuccess();
+      }
+    }
+  }
+
+  handleSchedulePopupSuccess() {
+    debugger;
 
     let self = this;
     axios({
@@ -587,6 +651,9 @@ class MyTicketList extends Component {
       if (messageData === "Success") {
         self.ScheduleCloseModel();
         NotificationManager.success("Scheduled successfully.");
+        self.setState({
+          scheduleRequired: ''
+        });
       }
     });
   }
@@ -747,6 +814,7 @@ class MyTicketList extends Component {
   }
   handleAssignTickets() {
     debugger;
+    if (this.state.agentId !== 0) {
     let self = this;
     var ticketIdsComma = this.state.ticketIds;
     var ticketIds = ticketIdsComma.substring(0, ticketIdsComma.length - 1);
@@ -769,6 +837,11 @@ class MyTicketList extends Component {
         self.handleSearchTicket();
       }
     });
+  } else {
+    this.setState({
+      agentSelection: 'Agent Selection is required'
+    })
+  }
   }
 
   clearSearch() {
@@ -2336,9 +2409,9 @@ class MyTicketList extends Component {
                   </span>
                 </a>
               </li>
-              <li className="nav-item">
+              <li className="nav-item" style={{ display: this.state.ReassignedByMe }}>
                 <a
-                  style={{ display: this.state.ReassignedByMe }}
+                  // style={{ display: this.state.ReassignedByMe }}
                   className="nav-link"
                   data-toggle="tab"
                   href="#Escalation-tab"
@@ -4064,8 +4137,8 @@ class MyTicketList extends Component {
                                                   </div>
                                                 </div>
                                               </span>
-                                              <div className="row mt-3">
-                                                <div className="col-md-5">
+                                              <div className="row mt-3" style={{ position: 'relative' }}>
+                                                <div className="col-md-6">
                                                   <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
                                                     <Select
                                                       getOptionLabel={option =>
@@ -4094,15 +4167,14 @@ class MyTicketList extends Component {
                                                   </div>
                                                 </div>
                                                 <label
-                                                  className="every1"
+                                                  className="every1 last-to"
                                                   style={{
-                                                    lineHeight: "40px",
-                                                    marginLeft: "14px"
+                                                    lineHeight: "40px"
                                                   }}
                                                 >
                                                   to
                                                 </label>
-                                                <div className="col-md-5">
+                                                <div className="col-md-6">
                                                   <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
                                                     <Select
                                                       getOptionLabel={option =>
@@ -4155,6 +4227,7 @@ class MyTicketList extends Component {
                                               }
                                             />
                                           </div>
+                                          <p style={{color: 'red', marginBottom: '0', textAlign: 'center'}}>{this.state.scheduleRequired}</p>
                                           <div>
                                             <button
                                               className="scheduleBtn"
@@ -4350,7 +4423,7 @@ class MyTicketList extends Component {
                                                 this.selectedRow = index;
                                                 var agentId =
                                                   column.original["user_ID"];
-                                                this.setState({ agentId });
+                                                this.setState({ agentId, agentSelection: '' });
                                               },
                                               style: {
                                                 background:
@@ -4361,6 +4434,7 @@ class MyTicketList extends Component {
                                             };
                                           }}
                                         />
+                                        <p style={{marginTop: this.state.agentSelection === '' ? '0px' : '10px', color: 'red', marginBottom: '0', textAlign: 'center'}}>{this.state.agentSelection}</p>
                                         {/* <div className="position-relative">
                                             <div className="pagi">
                                               <ul>
@@ -4637,15 +4711,15 @@ class MyTicketList extends Component {
                                                 <p className="m-b-0">
                                                   TASK:{row.original.taskStatus}
                                                 </p>
-                                                <div className="d-flex align-items-center">
-                                                  2 NEW
+                                                {row.original.ticketCommentCount > 0 ? <div className="d-flex align-items-center">
+                                                {row.original.ticketCommentCount} NEW
                                                   <div className="nw-chat">
                                                     <img
                                                       src={Chat}
                                                       alt="chat"
                                                     />
                                                   </div>
-                                                </div>
+                                                </div> : null}
                                               </div>
                                               <ProgressBar
                                                 className="task-progress"
