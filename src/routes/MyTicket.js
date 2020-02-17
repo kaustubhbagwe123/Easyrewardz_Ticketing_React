@@ -1504,7 +1504,7 @@ class MyTicket extends Component {
                       closeIconId="sdsg"
                       modalId="Historical-popup"
                       overlayId="logout-ovrly"
-                      classNames={{'modal' : 'historical-popup'}}
+                      classNames={{ modal: "historical-popup" }}
                     >
                       <label className="lblHistorical">Ticket Historical</label>
                       <img
@@ -1534,9 +1534,10 @@ class MyTicket extends Component {
                               Cell: row => {
                                 var date = row.original["dateandTime"];
                                 return (
-                                    <span>
-                                      {moment(date).format("M/D/YYYY")} &nbsp;{moment(date).format("HH:mm")}
-                                    </span>
+                                  <span>
+                                    {moment(date).format("M/D/YYYY")} &nbsp;
+                                    {moment(date).format("HH:mm")}
+                                  </span>
                                 );
                               }
                             }
@@ -1580,9 +1581,12 @@ class MyTicket extends Component {
                     modalId="labelmodel-popup"
                     overlayId="logout-ovrly"
                   >
-                    <div className="myTicket-table remov agentlist" id="tic-det-assign">
+                    <div
+                      className="myTicket-table remov agentlist"
+                      id="tic-det-assign"
+                    >
                       <ReactTable
-                      className="limit-react-table-body"
+                        className="limit-react-table-body"
                         data={SearchAssignData}
                         columns={[
                           {
@@ -1606,22 +1610,17 @@ class MyTicket extends Component {
                         resizable={false}
                         getTrProps={(rowInfo, column) => {
                           // debugger;
-                          const index = column
-                          ? column.index
-                          : -1;
+                          const index = column ? column.index : -1;
                           return {
                             onClick: e => {
                               // debugger;
                               this.selectedRow = index;
-                              var agentId =
-                              column.original["user_ID"];
+                              var agentId = column.original["user_ID"];
                               this.setState({ agentId });
                             },
                             style: {
                               background:
-                                this.selectedRow === index
-                                  ? "#ECF2F4"
-                                  : null
+                                this.selectedRow === index ? "#ECF2F4" : null
                             }
                           };
                         }}
@@ -1635,12 +1634,14 @@ class MyTicket extends Component {
                           SELECT
                         </button>
                       </div>
-                      <div className="cancel-assign" onClick={this.HandlelabelModalClose.bind(this)}>
+                      <div
+                        className="cancel-assign"
+                        onClick={this.HandlelabelModalClose.bind(this)}
+                      >
                         <img src={Cancel} alt="cancel" />
                       </div>
                     </div>
                   </Modal>
-                 
                 </div>
               </div>
             </div>
@@ -2213,7 +2214,13 @@ class MyTicket extends Component {
                             className="bata-rajouri-garden"
                             onClick={this.HandleStoreModalOpen.bind(this)}
                           >
-                            {this.state.StoreName}
+                            {this.state.StoreName === "" ? (
+                              <label className="label-4 storeSpacing">
+                                No Store Attached
+                              </label>
+                            ) : (
+                              this.state.StoreName
+                            )}
                             &nbsp;
                             <img
                               src={PencilImg}
@@ -2517,7 +2524,14 @@ class MyTicket extends Component {
                             className="bata-rajouri-garden"
                             onClick={this.handleOrderTableOpen.bind(this)}
                           >
-                            {this.state.ProductName}&nbsp;
+                            {this.state.ProductName === "" ? (
+                              <label className="label-4">
+                                No Product Attached
+                              </label>
+                            ) : (
+                              this.state.ProductName
+                            )}
+                            &nbsp;
                             <img
                               src={PencilImg}
                               alt="Pencile"
@@ -3153,9 +3167,7 @@ class MyTicket extends Component {
                       <CardBody>
                         <div className="">
                           <CKEditor
-                            data={
-                              this.state.mailBodyData
-                            }
+                            data={this.state.mailBodyData}
                             onChange={this.onAddCKEditorChange}
                             config={{
                               toolbar: [

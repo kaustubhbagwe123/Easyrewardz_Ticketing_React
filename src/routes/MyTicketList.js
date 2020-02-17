@@ -2467,7 +2467,7 @@ class MyTicketList extends Component {
                     this.handleSearchTicket("ReOpen");
                   }}
                 >
-                  ReOpen:{" "}
+                  Reopen:{" "}
                   <span className="myTciket-tab-span">
                     {this.state.byReOpenCount < 9
                       ? "0" + this.state.byReOpenCount
@@ -4750,7 +4750,7 @@ class MyTicketList extends Component {
                                         fontSize: "11px !important"
                                       }}
                                     >
-                                      Lastest Message
+                                      Latest Message
                                     </span>
                                   </label>
                                 ),
@@ -4768,8 +4768,8 @@ class MyTicketList extends Component {
                                 ),
                                 accessor: "category",
                                 Cell: row => (
-                                  <span>
-                                    <label>{row.original.category} </label>
+                                  <span className="one-line-outer">
+                                    <label className="one-line">{row.original.category} </label>
 
                                     <Popover
                                       content={
@@ -4808,7 +4808,8 @@ class MyTicketList extends Component {
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
                                 ),
-                                accessor: "priority"
+                                accessor: "priority",
+                                minWidth: 50
                                 // Cell: props => <span>High</span>
                               },
                               {
@@ -4829,8 +4830,8 @@ class MyTicketList extends Component {
                                 ),
                                 accessor: "createdOn",
                                 Cell: row => (
-                                  <span>
-                                    <label>{row.original.createdOn}</label>
+                                  <span className="one-line-outer">
+                                    <label className="one-line">{row.original.createdOn}</label>
 
                                   <Popover
                                     content={

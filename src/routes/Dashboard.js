@@ -5943,7 +5943,7 @@ class Dashboard extends Component {
                           <label className="ticketid">
                             <span>Subject/</span>
                             <span style={{ fontSize: "10px !important" }}>
-                              Lastest Message
+                              Latest Message
                             </span>
                           </label>
                         ),
@@ -5960,8 +5960,8 @@ class Dashboard extends Component {
                         ),
                         accessor: "category",
                         Cell: row => (
-                          <span>
-                            <label>{row.original.category} </label>
+                          <span className="one-line-outer">
+                            <label className="one-line">{row.original.category} </label>
 
                             <Popover
                               content={
@@ -6018,8 +6018,8 @@ class Dashboard extends Component {
                         ),
                         accessor: "createdOn",
                         Cell: row => (
-                          <span>
-                            <label>{row.original.createdOn}</label>
+                          <span className="one-line-outer">
+                            <label className="one-line">{row.original.createdOn}</label>
 
                             <Popover
                               content={
