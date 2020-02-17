@@ -20,6 +20,9 @@ import DelSearch from "./../assets/Images/del-search.png";
 import BlackLeftArrow from "./../assets/Images/black-left-arrow.png";
 import SearchBlackImg from "./../assets/Images/searchBlack.png";
 import Headphone2Img from "./../assets/Images/headphone2.png";
+import CallImg from "./../assets/Images/call.png";
+import MailImg from "./../assets/Images/msg.png";
+import FacebookImg from "./../assets/Images/facebook.png";
 import { Collapse, CardBody, Card } from "reactstrap";
 import Demo from "../store/Hashtag.js";
 // import { UncontrolledPopover, PopoverBody } from "reactstrap";
@@ -5782,11 +5785,46 @@ class Dashboard extends Component {
                                     onChange={this.handelCheckBoxCheckedChange}
                                   />
                                   <label htmlFor={"j" + row.original.ticketID}>
-                                    <img
-                                      src={HeadPhone3}
-                                      alt="HeadPhone"
-                                      className="headPhone3"
-                                    />
+                                  {row.original.ticketSourceType ===
+                                            "Calls" ? (
+                                              <img
+                                                src={CallImg}
+                                                alt="HeadPhone"
+                                                className="headPhone3"
+                                              />
+                                            ) : row.original
+                                                .ticketSourceType ===
+                                              "Mails" ? (
+                                              <img
+                                                src={MailImg}
+                                                alt="HeadPhone"
+                                                className="headPhone3"
+                                              />
+                                            ) : row.original
+                                                .ticketSourceType ===
+                                              "Facebook" ? (
+                                              <img
+                                                src={FacebookImg}
+                                                alt="HeadPhone"
+                                                className="headPhone3"
+                                              />
+                                            ) : row.original
+                                                .ticketSourceType ===
+                                              "ChatBot" ? (
+                                              <img
+                                                src={Chat}
+                                                alt="HeadPhone"
+                                                className="headPhone3"
+                                              />
+                                            ) : row.original
+                                                .ticketSourceType ===
+                                              "Twitter" ? (
+                                              <img
+                                                src={HeadPhone3}
+                                                alt="HeadPhone"
+                                                className="headPhone3"
+                                              />
+                                            ) : null}
                                     {row.original.ticketID}
                                   </label>
                                 </div>
