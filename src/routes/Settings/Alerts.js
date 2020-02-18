@@ -861,10 +861,11 @@ class Alerts extends Component {
                     data={this.state.alert}
                     columns={columns}
                     // resizable={false}
-                    defaultPageSize={5}
-                    showPagination={false}
+                    defaultPageSize={10}
+                    showPagination={true}
+                    minRows={1}
                   />
-
+{/* 
                   <div className="position-relative">
                     <div className="pagi">
                       <ul>
@@ -902,7 +903,7 @@ class Alerts extends Component {
                       </select>
                       <p>Items per page</p>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="col-md-4">
