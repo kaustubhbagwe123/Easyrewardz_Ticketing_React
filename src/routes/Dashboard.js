@@ -300,7 +300,8 @@ class Dashboard extends Component {
       AssignTo: "",
       PurchaseStoreCodeAddress: "",
       scheduleRequired: "",
-      agentSelection: ""
+      agentSelection: "",
+      ShowGridCheckBox: false
     };
     this.handleGetAssignTo = this.handleGetAssignTo.bind(this);
     this.applyCallback = this.applyCallback.bind(this);
@@ -1246,9 +1247,22 @@ class Dashboard extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let AgentData = res.data.responseData;
-      self.setState({ AgentData: AgentData });
-      self.checkAllAgentStart();
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        self.setState({
+          AgentData: data,
+          AssignToData: data,
+          TeamMemberData: data
+        });
+        self.checkAllAgentStart();
+      } else {
+        self.setState({
+          AgentData: [],
+          AssignToData: [],
+          TeamMemberData: []
+        });
+      }
     });
   }
   handleGetBrandList() {
@@ -1381,6 +1395,7 @@ class Dashboard extends Component {
     this.setState(state => ({ collapse: !state.collapse }));
   }
   toggleSearch() {
+    this.handleGetSaveSearchList();
     this.setState(state => ({ collapseSearch: !state.collapseSearch }));
   }
   onOpenModal = () => {
@@ -1535,8 +1550,8 @@ class Dashboard extends Component {
         SearchAssignData: SearchAssignData,
         assignFirstName: "",
         assignLastName: "",
-        assignEmail: "",
-        selectedDesignation: 0
+        assignEmail: ""
+        // selectedDesignation: 0
       });
     });
   }
@@ -2002,6 +2017,7 @@ class Dashboard extends Component {
       url: config.apiUrl + "/Ticketing/Schedule",
       headers: authHeader(),
       data: {
+        SearchInputParams: this.state.FinalSaveSearchData,
         ScheduleFor: this.state.selectedTeamMemberCommaSeperated,
         ScheduleType: this.state.selectScheduleDate,
         NoOfDay: this.state.selectedNoOfDay,
@@ -2034,7 +2050,8 @@ class Dashboard extends Component {
         self.ScheduleCloseModel();
         NotificationManager.success("Scheduled successfully.");
         self.setState({
-          scheduleRequired: ""
+          scheduleRequired: "",
+          selectedTeamMemberCommaSeperated: ""
         });
       }
     });
@@ -2636,6 +2653,7 @@ class Dashboard extends Component {
         self.setState({
           SearchTicketData: data,
           resultCount: count,
+          ShowGridCheckBox: true,
           loading: false
         });
         for (let i = 0; i < CSVData.length; i++) {
@@ -5338,20 +5356,27 @@ class Dashboard extends Component {
                       {
                         Header: (
                           <span>
-                            <div className="filter-type pink1 pinkmyticket">
-                              <div className="filter-checkbox pink2 pinkmargin">
-                                <input
-                                  type="checkbox"
-                                  id="fil-aball"
-                                  name="MyTicketListcheckbox[]"
-                                  // checked={this.state.CheckBoxChecked}
-                                  onChange={this.checkAllCheckbox.bind(this)}
-                                />
-                                <label htmlFor="fil-aball" className="ticketid">
-                                  ID
-                                </label>
+                            
+                              <div className="filter-type pink1 pinkmyticket">
+                                <div className="filter-checkbox pink2 pinkmargin">
+                                {this.state.ShowGridCheckBox === true ? (
+                                  <input
+                                    type="checkbox"
+                                    id="fil-aball"
+                                    name="MyTicketListcheckbox[]"
+                                    // checked={this.state.CheckBoxChecked}
+                                    onChange={this.checkAllCheckbox.bind(this)}
+                                  />
+                                  ) : null}
+                                  <label
+                                    htmlFor="fil-aball"
+                                    className="ticketid"
+                                  >
+                                    ID
+                                  </label>
+                                </div>
                               </div>
-                            </div>
+                            
                           </span>
                         ),
                         accessor: "ticketID",
@@ -5360,14 +5385,19 @@ class Dashboard extends Component {
                             <span onClick={e => this.clickCheckbox(e)}>
                               <div className="filter-type pink1 pinkmyticket">
                                 <div className="filter-checkbox pink2 pinkmargin">
-                                  <input
-                                    type="checkbox"
-                                    id={"j" + row.original.ticketID}
-                                    name="MyTicketListcheckbox[]"
-                                    // checked={this.state.CheckBoxChecked}
-                                    attrIds={row.original.ticketID}
-                                    onChange={this.handelCheckBoxCheckedChange}
-                                  />
+                                  {this.state.ShowGridCheckBox === true ? (
+                                    <input
+                                      type="checkbox"
+                                      id={"j" + row.original.ticketID}
+                                      name="MyTicketListcheckbox[]"
+                                      // checked={this.state.CheckBoxChecked}
+                                      attrIds={row.original.ticketID}
+                                      onChange={
+                                        this.handelCheckBoxCheckedChange
+                                      }
+                                    />
+                                  ) : null}
+
                                   <label htmlFor={"j" + row.original.ticketID}>
                                     {row.original.ticketSourceType ===
                                     "Calls" ? (

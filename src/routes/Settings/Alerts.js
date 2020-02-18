@@ -53,7 +53,7 @@ class Alerts extends Component {
       selectedEmailStore:false,
       selectedSMSCustomer:false,
       selectedNotifInternal:false,
-      selectedStatus:"",
+      selectedStatus:"true",
       selectedToCustomer:"",
       selectedCCCustomer:"",
       selectedBCCCustomer:"",
@@ -70,7 +70,21 @@ class Alerts extends Component {
       selectedSubjectStore:"",
       selectedCKStore:"",
       selectedSMSContent:"",
-      selectedNotifContent:""
+      selectedNotifContent:"",
+      alertTypeCompulsion:"",
+      statusCompulsion:"",
+      communicationModeCompulsion:"",
+      toCustomerCompulsion:"",
+      subjectCustomerCompulsion:"",
+      ckCustomerCompulsion:"",
+      toInternalCompulsion:"",
+      subjectInternalCompulsion:"",
+      ckInternalCompulsion:"",
+      toStoreCompulsion:"",
+      subjectStoreCompulsion:"",
+      ckStoreCompulsion:"",
+      SMSContentCompulsion:"",
+      NotifContentCompulsion:""
 
 
     };
@@ -141,28 +155,35 @@ class Alerts extends Component {
         [val]: false
       });
     }
-    if(val==='emailCust'){
-     
-      this.state.selectedEmailCustomer=true;
-     
-     
-    }
+    if(val==='emailCust' && check===true ){
+     this.state.selectedEmailCustomer=true;
+     }else if(val==='emailCust' && check===false){
+      this.state.selectedEmailCustomer=false;
+     }
     
-    if(val==='emailInt'){
+    if(val==='emailInt' && check===true){
       this.state.selectedEmailInternal=true;
      
-    }
-    if(val==='emailStore'){
+    }else if(val==='emailInt' && check===false){
+      this.state.selectedEmailInternal=false;
+     }
+    if(val==='emailStore' && check===true){
       this.state.selectedEmailStore=true;
      
+    }else if(val==='emailStore' && check===false){
+      this.state.selectedEmailStore=false;
     }
-    if(val==='smsCust'){
+    if(val==='smsCust' && check===true){
       this.state.selectedSMSCustomer=true;
      
+    }else if(val==='smsCust' && check===false){
+      this.state.selectedSMSCustomer=false;
     }
-    if(val==='notiInt'){
+    if(val==='notiInt'  && check===true){
       this.state.selectedNotifInternal=true;
      
+    }else if(val==='notiInt'  && check===false){
+      this.state.selectedNotifInternal=false;
     }
    
   };
@@ -269,7 +290,25 @@ class Alerts extends Component {
     e.preventDefault();
   };
   handleAddAlertTabsOpen() {
-    this.setState({ AddAlertTabsPopup: true,tabIndex:0 });
+    debugger;
+    if(
+        this.state.selectedAlertType.length > 0 &&
+        this.state.selectedStatus !== "" &&
+        this.state.selectedEmailCustomer===true ||
+        this.state.selectedEmailInternal  === true ||
+        this.state.selectedEmailStore  === true ||
+        this.state.selectedSMSCustomer  === true ||
+        this.state.selectedNotifInternal  === true 
+    ){
+      this.setState({ AddAlertTabsPopup: true,tabIndex:0 });
+    }else{
+   this.setState({
+     alertTypeCompulsion:"Please Enter Alert Type",
+     statusCompulsion:"Please Select Status",
+     communicationModeCompulsion:"Please Select Any Communication Mode"
+   });
+    }
+    
   }
   handleAddAlertTabsClose() {
     this.setState({ AddAlertTabsPopup: false });
@@ -291,8 +330,91 @@ class Alerts extends Component {
       tabIndex:index
     })
   }
+  validationInsertAlert(){
+    debugger;
+   var checkboxvalue=[];
+   var validation=[];
+   if(this.state.selectedEmailCustomer===true){
+       checkboxvalue.push("1");
+    if(
+        
+      this.state.selectedToCustomer.length > 0 &&
+      this.state.selectedSubjectCustomer.length > 0 &&
+      this.state.selectedCKCustomer.length > 0
+    ){
+      validation.push("1");  
+    }
+   }
+
+   if(this.state.selectedEmailInternal===true){
+    checkboxvalue.push("1");
+ if(
+     
+      this.state.selectedToInternal.length > 0 &&
+      this.state.selectedSubjectInternal.length > 0 &&
+      this.state.selectedCKInternal.length > 0
+ ){
+   validation.push("1");  
+ }
+   }
+
+   if(this.state.selectedEmailStore===true){
+    checkboxvalue.push("1");
+ if(
+     
+      this.state.selectedToStore.length > 0 &&
+      this.state.selectedSubjectStore.length > 0 &&
+      this.state.selectedCKStore.length > 0
+ ){
+   validation.push("1");  
+ }
+   }
+
+   if(this.state.selectedSMSCustomer===true){
+    checkboxvalue.push("1");
+ if(
+     
+      this.state.selectedSMSContent.length > 0
+     
+ ){
+   validation.push("1");  
+ }
+   }
+
+   
+   if(this.state.selectedNotifInternal===true){
+    checkboxvalue.push("1");
+ if(
+     
+      this.state.selectedNotifContent.length > 0
+     
+ ){
+   validation.push("1");  
+ }
+   }
+
+ if(checkboxvalue.length===validation.length){
+   this.handleInsertAlert();
+ }else{
+  this.setState({
+    toCustomerCompulsion:"Please Enter EmailID.",
+    subjectCustomerCompulsion:"Please Enter Subject.",
+    ckCustomerCompulsion:"Please Enter Description.",
+    toInternalCompulsion:"Please Enter EmailID.",
+    subjectInternalCompulsion:"Please Enter Subject.",
+    ckInternalCompulsion:"Please Enter Description.",
+    toStoreCompulsion:"Please Enter EmailID.",
+    subjectStoreCompulsion:"Please Enter Subject.",
+    ckStoreCompulsion:"Please Enter Description.",
+    SMSContentCompulsion:"Please Enter Message.",
+    NotifContentCompulsion:"Please Enter Notification"
+  });
+ }
+
+  }
   handleInsertAlert() {
     debugger;
+   
     let self = this;
     var setstatus=false;
     var status=this.state.selectedStatus;
@@ -385,6 +507,7 @@ class Alerts extends Component {
       self.handleAddAlertTabsClose();
       
     });
+ 
   }
   render() {
     const data = [
@@ -792,8 +915,23 @@ class Alerts extends Component {
                     value={this.state.selectedAlertType}
                     onChange={this.setDataOnChangeAlert}
                     />
+                    {this.state.selectedAlertType.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.alertTypeCompulsion}
+                    </p>
+                  )}
                   </div>
                   <h4>Communication Mode</h4>
+                  { this.state.selectedEmailCustomer===false &&
+                    this.state.selectedEmailInternal  === false &&
+                    this.state.selectedEmailStore  === false &&
+                    this.state.selectedSMSCustomer  === false &&
+                    this.state.selectedNotifInternal  === false 
+                     && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.communicationModeCompulsion}
+                    </p>
+                  )}
                   <div className="div-cntr">
                     <label>Email</label>
                     <br />
@@ -818,10 +956,15 @@ class Alerts extends Component {
                      value={this.state.selectedStatus}
                      onChange={this.setDataOnChangeAlert}
                     >
-                      <option >Select</option>
+                      <option value="">Select</option>
                       <option value="true">Active</option>
                       <option value="false">Inactive</option>
                     </select>
+                    {this.state.selectedStatus === "" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.statusCompulsion}
+                    </p>
+                  )}
                   </div>
                   <button
                     className="butn"
@@ -951,7 +1094,7 @@ class Alerts extends Component {
                                   <label className="label-color-alert">
                                     To
                                   </label>
-                                  <div className="col-sm-6 m-t1">
+                                  <div className="col-sm-8 m-t1 d-flex">
                                     <input
                                       type="text"
                                       className="textbox-email-editor"
@@ -959,6 +1102,11 @@ class Alerts extends Component {
                      value={this.state.selectedToCustomer}
                      onChange={this.setDataOnChangeAlert}
                                     />
+                                     {this.state.selectedToCustomer.length === 0 && (
+                    <p style={{ color: "red", margin: "6px" }}>
+                      {this.state.toCustomerCompulsion}
+                    </p>
+                  )}
                                   </div>
                                 </div>
                                 <div className="form-group row">
@@ -993,7 +1141,7 @@ class Alerts extends Component {
                                   <label className="label-color-alert">
                                     Subject
                                   </label>
-                                  <div className="col-sm-6">
+                                  <div className="col-sm-6" >
                                     <input
                                       type="text"
                                       className="textbox-email-editor text-box4"
@@ -1001,6 +1149,11 @@ class Alerts extends Component {
                                       value={this.state.selectedSubjectCustomer}
                                       onChange={this.setDataOnChangeAlert}
                                     />
+                                    {this.state.selectedSubjectCustomer.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.subjectCustomerCompulsion}
+                    </p>
+                  )}
                                   </div>
                                 </div>
                               </div>
@@ -1020,6 +1173,11 @@ class Alerts extends Component {
                               
                                 
                               />
+                              {this.state.selectedCKCustomer.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.ckCustomerCompulsion}
+                    </p>
+                  )}
                               
                                {/* <div className="div-button1">
                                 <button
@@ -1057,6 +1215,11 @@ class Alerts extends Component {
                                       value={this.state.selectedToInternal}
                                       onChange={this.setDataOnChangeAlert}
                                     />
+                                    {this.state.selectedToInternal.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.toInternalCompulsion}
+                    </p>
+                  )}
                                   </div>
                                 </div>
                                 <div className="form-group row">
@@ -1099,6 +1262,11 @@ class Alerts extends Component {
                                       value={this.state.selectedSubjectInternal}
                                       onChange={this.setDataOnChangeAlert}
                                     />
+                                    {this.state.selectedSubjectInternal.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.subjectInternalCompulsion}
+                    </p>
+                  )}
                                   </div>
                                 </div>
                               </div>
@@ -1114,6 +1282,11 @@ class Alerts extends Component {
                                 data={this.state.selectedCKInternal}
                                 onChange={this.setCKEditorInternal}
                               />
+                              {this.state.selectedCKInternal.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.ckInternalCompulsion}
+                    </p>
+                  )}
                              {/* <div className="div-button1">
                                 <button
                                   className="butn-2"
@@ -1148,6 +1321,11 @@ class Alerts extends Component {
                                       value={this.state.selectedToStore}
                                       onChange={this.setDataOnChangeAlert}
                                     />
+                                     {this.state.selectedToStore.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.toStoreCompulsion}
+                    </p>
+                  )}
                                   </div>
                                 </div>
                                 <div className="form-group row">
@@ -1190,6 +1368,11 @@ class Alerts extends Component {
                                       value={this.state.selectedSubjectStore}
                                       onChange={this.setDataOnChangeAlert}
                                     />
+                                    {this.state.selectedSubjectStore.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.subjectStoreCompulsion}
+                    </p>
+                  )}
                                   </div>
                                 </div>
                               </div>
@@ -1207,6 +1390,11 @@ class Alerts extends Component {
 
 
                               />
+                              {this.state.selectedCKStore.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.ckStoreCompulsion}
+                    </p>
+                  )}
                               {/*<div className="div-button1">
                                 <button
                                   className="butn-2"
@@ -1235,6 +1423,11 @@ class Alerts extends Component {
                                       value={this.state.selectedSMSContent}
                                       onChange={this.setDataOnChangeAlert}
                             ></textarea>
+                            {this.state.selectedSMSContent.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.SMSContentCompulsion}
+                    </p>
+                  )}
                             {/*<div className="div-button1">
                               <button className="butn-2" type="submit" 
                               onClick={this.handleTabChange.bind(this,2)}
@@ -1259,6 +1452,11 @@ class Alerts extends Component {
                                       value={this.state.selectedNotifContent}
                                       onChange={this.setDataOnChangeAlert}
                             ></textarea>
+                            {this.state.selectedNotifContent.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.NotifContentCompulsion}
+                    </p>
+                  )}
                            {/* <div className="div-button1">
                               <button className="butn-2" type="submit"
                              
@@ -1271,7 +1469,7 @@ class Alerts extends Component {
                         </div>
                          <div className="div-button1">
                               <button className="butn-2" type="submit"
-                              onClick={this.handleInsertAlert.bind(this)}
+                              onClick={this.validationInsertAlert.bind(this)}
                               >
                                 SAVE
                               </button>

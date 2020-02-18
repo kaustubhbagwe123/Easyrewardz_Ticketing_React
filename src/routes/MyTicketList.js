@@ -644,6 +644,7 @@ class MyTicketList extends Component {
       url: config.apiUrl + "/Ticketing/Schedule",
       headers: authHeader(),
       data: {
+        SearchInputParams:this.state.FinalSaveSearchData,
         ScheduleFor: this.state.selectedTeamMemberCommaSeperated,
         ScheduleType: this.state.selectScheduleDate,
         NoOfDay: this.state.selectedNoOfDay,
