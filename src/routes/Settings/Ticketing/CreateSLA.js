@@ -58,7 +58,9 @@ class CreateSLA extends Component {
       finalData: [],
       indiSla: '',
       // searchSla: '',
-      searchedSla: []
+      searchedSla: [],
+      slaShow: false,
+      slaOvrlayShow: false,
     };
 
     this.handleGetSLA = this.handleGetSLA.bind(this);
@@ -466,6 +468,31 @@ class CreateSLA extends Component {
         }
       });
     }
+  };
+  handleSlaButton() {
+    debugger;
+    // let ele = document.getElementsByClassName('dropdown-menu')[0];
+    // let overlay = document.getElementById('overlaySla');
+    // let bool = ele.classList.contains('show');
+    // let boolOverlay = overlay.classList.contains('show');
+    // if (bool) {
+    //   ele.classList.remove('show');
+    // } else {
+    //   ele.classList.add('show');
+    // }
+    // if (boolOverlay) {
+    //   overlay.classList.remove('show');
+    // } else {
+    //   overlay.classList.add('show');
+    // }
+    let slaShowOriginal = this.state.slaShow;
+    let slaShow = !slaShowOriginal;
+    let slaOvrlayShowOriginal = this.state.slaOvrlayShow;
+    let slaOvrlayShow = !slaOvrlayShowOriginal;
+    this.setState({
+      slaShow,
+      slaOvrlayShow
+    })
   };
 
   render() {
@@ -893,11 +920,12 @@ class CreateSLA extends Component {
                             type="button"
                             data-toggle="dropdown"
                             id="issueTypeValue"
+                            onClick={this.handleSlaButton.bind(this)}
                           >
                             Select
                             <span className="caret"></span>
                           </button>
-                          <div className="dropdown-menu">
+                          <div className={this.state.slaShow ? "dropdown-menu dropdown-menu-sla show" : "dropdown-menu dropdown-menu-sla"}>
                             <div className="cat-mainbox">
                               <input
                                 type="text"
@@ -980,6 +1008,7 @@ class CreateSLA extends Component {
                                   <li>
                                     <button
                                       className="cancel"
+                                      onClick={this.handleSlaButton.bind(this)}
                                     >
                                         Cancel
                                     </button>
@@ -987,6 +1016,7 @@ class CreateSLA extends Component {
                                   <li style={{float: "right"}}>
                                     <button
                                       className="done"
+                                      onClick={this.handleSlaButton.bind(this)}
                                     >Done
                                     </button>
                                   </li>
@@ -1206,6 +1236,7 @@ class CreateSLA extends Component {
           </div>
         </div>
         <NotificationContainer />
+        <div id="overlaySla" className={this.state.slaOvrlayShow ? 'show' : ''} onClick={this.handleSlaButton.bind(this)} />
       </React.Fragment>
     );
   }
