@@ -157,7 +157,7 @@ class MyTicket extends Component {
       StoreName: "",
       ProductName: "",
       agentId:0,
-      // ticketingMailerData:[]
+      AttachementrData:[]
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -238,6 +238,9 @@ class MyTicket extends Component {
         var storeData = data.stores;
         var productData=data.products;
         var MailDetails=data.ticketingMailerQue;
+        var attachementDetails=data.attachment;
+        var AssignDateTime=moment(data.ticketAssignDate).format('LTS');
+        var ResponseDateTime=moment(data.targetResponseDate).format('LTS');
         var selectetedParameters = {
           ticketStatusID: ticketStatus,
           priorityID: ticketPriority,
@@ -248,6 +251,10 @@ class MyTicket extends Component {
           ticketActionTypeID: ticketActionType,
           issueTypeID: ticketIssueTypeID
         };
+
+        // var resultDate = ResponseDateTime.subtract(AssignDateTime);
+
+
         var Storedetails="";
         for (let i = 0; i < storeData.length; i++) {
           Storedetails += storeData[i].storename + ",";
@@ -266,6 +273,7 @@ class MyTicket extends Component {
           StoreName: Storedetails,
           ProductName:ProductDetails,
           mailFiled:MailDetails,
+          file:attachementDetails,
           loading: false
         });
 
