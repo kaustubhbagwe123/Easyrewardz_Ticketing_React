@@ -4875,7 +4875,7 @@ class MyTicketList extends Component {
                                 ),
                                 accessor: "message",
                                 Cell: row => {
-                                  return <div>{row.original.message}</div>;
+                                  return <div>{row.original.message.split('-')[0]}/<span style={{color: '#666'}}>{row.original.message.split('-')[1]}</span></div>;
                                 }
                               },
                               {
