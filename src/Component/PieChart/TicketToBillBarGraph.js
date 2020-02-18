@@ -129,7 +129,7 @@ class TicketToBillBarGraph extends Component {
               options={this.state.optionsMixedChart}
               series={this.state.seriesMixedChart}
               type="line"
-              width="400"
+              // width="400"
               height="180"
               className="ticketToTask-chart-1"
             />

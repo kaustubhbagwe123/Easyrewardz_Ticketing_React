@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from "react";
+// import "../../node_modules/jquery/dist/jquery.js";
 import { ProgressBar } from "react-bootstrap";
 import Modal from "react-responsive-modal";
 import SearchIcon from "./../assets/Images/search-icon.png";
@@ -20,11 +21,11 @@ import DelSearch from "./../assets/Images/del-search.png";
 import BlackLeftArrow from "./../assets/Images/black-left-arrow.png";
 import SearchBlackImg from "./../assets/Images/searchBlack.png";
 import Headphone2Img from "./../assets/Images/headphone2.png";
-// import CallImg from "./../assets/Images/call.png";
+import CallImg from "./../assets/Images/call.png";
 import MailImg from "./../assets/Images/msg.png";
 import FacebookImg from "./../assets/Images/facebook.png";
 import { Collapse, CardBody, Card } from "reactstrap";
-// import Demo from "../store/Hashtag.js";
+import Demo from "../store/Hashtag.js";
 // import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import MultiBarChart from "../Component/PieChart/MultiBarChart.js";
 import TicketToBillBarGraph from "../Component/PieChart/TicketToBillBarGraph";
@@ -128,7 +129,20 @@ class Dashboard extends Component {
       assignEmail: "",
       selectedAssignedTo: 0,
       AssignToData: [],
-      TeamMemberData: [],
+      TeamMemberData: [
+        {
+          department: "Team Member 1"
+        },
+        {
+          department: "Team Member 2"
+        },
+        {
+          department: "Team Member 3"
+        },
+        {
+          department: "Team Member 4"
+        }
+      ],
       selectedTicketStatusAll: 0,
       selectedDesignation: 0,
       ChannelOfPurchaseData: [],
@@ -265,6 +279,7 @@ class Dashboard extends Component {
       loadingAbove: true,
       modulesItems: [],
       FinalSaveSearchData: "",
+
       CreateDateShowRecord: "",
       LastUpdatedDate: "",
       Category: "",
@@ -288,6 +303,7 @@ class Dashboard extends Component {
       agentSelection: "",
       ShowGridCheckBox: false
     };
+    this.handleGetAssignTo = this.handleGetAssignTo.bind(this);
     this.applyCallback = this.applyCallback.bind(this);
     // this.handleApply = this.handleApply.bind(this);
     this.toggle = this.toggle.bind(this);
@@ -350,7 +366,14 @@ class Dashboard extends Component {
     this.handleWeekly = this.handleWeekly.bind(this);
     this.handleWeeklyDays = this.handleWeeklyDays.bind(this);
     this.handleAdvanceSearchOption = this.handleAdvanceSearchOption.bind(this);
+    // this.toggleHoverState = this.toggleHoverState.bind(this);
   }
+  // handleApply(event, picker) {
+  //   this.setState({
+  //     startDate: picker.startDate,
+  //     endDate: picker.endDate,
+  //   });
+  // }
 
   componentDidMount() {
     debugger;
@@ -365,8 +388,11 @@ class Dashboard extends Component {
     this.handleGetTicketPriorityList();
     this.handleGetChannelOfPurchaseList();
     this.handleGetBrandList();
+    this.handleGetAssignTo();
     // this.handleGetDashboardGraphData();
     this.handleGetAgentList();
+    this.handleGetSaveSearchList();
+
     this.handleAdvanceSearchOption();
   }
 
@@ -1212,7 +1238,6 @@ class Dashboard extends Component {
     this.handleGetDashboardGraphData();
     this.ViewSearchData();
   };
-
   handleGetAgentList() {
     debugger;
     let self = this;
@@ -1288,6 +1313,24 @@ class Dashboard extends Component {
     let assign = e.currentTarget.value;
     this.setState({ selectedAssignedTo: assign });
   };
+
+  handleGetAssignTo() {
+    debugger;
+
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/User/GetUserList",
+      headers: authHeader()
+    }).then(function(res) {
+      debugger;
+      let AssignData = res.data.responseData;
+
+      self.setState({
+        AssignToData: AssignData
+      });
+    });
+  }
 
   setScheduleFor = e => {
     let scheduleForValue = e.currentTarget.value;
@@ -1874,6 +1917,9 @@ class Dashboard extends Component {
   }
   handleSchedulePopup() {
     debugger;
+    // if (this.state.selectedTeamMember.length > 0 && ) {
+
+    // }
     if (
       this.state.selectScheduleDate === 0 ||
       this.state.selectScheduleDate === "100"
@@ -2032,7 +2078,7 @@ class Dashboard extends Component {
     debugger;
     if (e !== null) {
       var selectedTeamMemberCommaSeperated = Array.prototype.map
-        .call(e, s => s.fullName)
+        .call(e, s => s.department)
         .toString();
     }
     this.setState({ selectedTeamMember: e, selectedTeamMemberCommaSeperated });
@@ -3767,6 +3813,7 @@ class Dashboard extends Component {
                                   </select>
                                 </div>
                               </div>
+                         
                             </div>
                           </div>
                           <div
@@ -4703,10 +4750,10 @@ class Dashboard extends Component {
                                     <div className="normal-dropdown dropdown-setting1 schedule-multi">
                                       <Select
                                         getOptionLabel={option =>
-                                          option.fullName
+                                          option.department
                                         }
                                         getOptionValue={
-                                          option => option.userID //id
+                                          option => option.department //id
                                         }
                                         options={this.state.TeamMemberData}
                                         placeholder="Team Member"
@@ -5355,7 +5402,7 @@ class Dashboard extends Component {
                                     {row.original.ticketSourceType ===
                                     "Calls" ? (
                                       <img
-                                        src={HeadPhone3}
+                                        src={CallImg}
                                         alt="HeadPhone"
                                         className="headPhone3"
                                         title="Calls"
