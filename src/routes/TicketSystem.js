@@ -368,8 +368,14 @@ class TicketSystem extends Component {
       }
     }).then(function(res) {
       debugger;
-      let TicketTitleData = res.data.responseData;
-      self.setState({ TicketTitleData: TicketTitleData });
+      let status=res.data.message;
+      let data = res.data.responseData;
+      if(status === "Success"){
+        self.setState({ TicketTitleData: data });
+      }else{
+        self.setState({ TicketTitleData: [] });
+      }
+     
     });
   }
   handleCkEditorTemplate() {
@@ -1052,7 +1058,7 @@ class TicketSystem extends Component {
                           </p>
                         )}
 
-                        {this.state.TicketTitleData !== null &&
+                      {this.state.TicketTitleData !== null &&
                           this.state.TicketTitleData.length > 0 &&
                           this.state.titleSuggValue.length > 0 && (
                             <div className="custom-ticket-title-suggestions">
@@ -1061,6 +1067,7 @@ class TicketSystem extends Component {
                                   <span
                                     key={i}
                                     onClick={this.handleAppendTicketSuggestion}
+                                    title={item.ticketTitleToolTip}
                                   >
                                     {item.ticketTitle}
                                   </span>
