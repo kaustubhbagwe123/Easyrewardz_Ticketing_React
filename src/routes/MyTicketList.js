@@ -2360,9 +2360,8 @@ class MyTicketList extends Component {
               role="tablist"
               style={{ display: "inline" }}
             >
-              <li className="nav-item">
+              <li className="nav-item" style={{ display: this.state.Escalation }}>
                 <a
-                  style={{ display: this.state.Escalation }}
                   className="nav-link active"
                   data-toggle="tab"
                   href="#Escalation-tab"
@@ -2382,9 +2381,8 @@ class MyTicketList extends Component {
                   </span>
                 </a>
               </li>
-              <li className="nav-item">
+              <li className="nav-item" style={{ display: this.state.New }}>
                 <a
-                  style={{ display: this.state.New }}
                   className="nav-link"
                   data-toggle="tab"
                   href="#Escalation-tab"
@@ -2404,9 +2402,8 @@ class MyTicketList extends Component {
                   </span>
                 </a>
               </li>
-              <li className="nav-item">
+              <li className="nav-item" style={{ display: this.state.Open }}>
                 <a
-                  style={{ display: this.state.Open }}
                   className="nav-link"
                   data-toggle="tab"
                   href="#Escalation-tab"
@@ -2426,9 +2423,8 @@ class MyTicketList extends Component {
                   </span>
                 </a>
               </li>
-              <li className="nav-item">
+              <li className="nav-item" style={{ display: this.state.Resolved }}>
                 <a
-                  style={{ display: this.state.Resolved }}
                   className="nav-link"
                   data-toggle="tab"
                   href="#Escalation-tab"
@@ -2473,9 +2469,9 @@ class MyTicketList extends Component {
                   </span>
                 </a>
               </li>
-              <li className="nav-item">
+              <li className="nav-item" style={{ display: this.state.Closed }}>
                 <a
-                  style={{ display: this.state.Closed }}
+                  
                   className="nav-link"
                   data-toggle="tab"
                   href="#Escalation-tab"
@@ -2495,9 +2491,9 @@ class MyTicketList extends Component {
                   </span>
                 </a>
               </li>
-              <li className="nav-item">
+              <li className="nav-item" style={{ display: this.state.ReOpen }}>
                 <a
-                  style={{ display: this.state.ReOpen }}
+                  
                   className="nav-link"
                   data-toggle="tab"
                   href="#Escalation-tab"
@@ -2517,9 +2513,9 @@ class MyTicketList extends Component {
                   </span>
                 </a>
               </li>
-              <li className="nav-item">
+              <li className="nav-item" style={{ display: this.state.All }}>
                 <a
-                  style={{ display: this.state.All }}
+                  
                   className="nav-link"
                   data-toggle="tab"
                   href="#Escalation-tab"
@@ -2539,9 +2535,9 @@ class MyTicketList extends Component {
                   </span>
                 </a>
               </li>
-              <li className="nav-item">
+              <li className="nav-item" style={{ display: this.state.FollowUp }}>
                 <a
-                  style={{ display: this.state.FollowUp }}
+                  
                   className="nav-link"
                   data-toggle="tab"
                   href="#Escalation-tab"
@@ -2561,9 +2557,9 @@ class MyTicketList extends Component {
                   </span>
                 </a>
               </li>
-              <li className="nav-item">
+              <li className="nav-item" style={{ display: this.state.Draft }}>
                 <a
-                  style={{ display: this.state.Draft }}
+                  
                   className="nav-link"
                   data-toggle="tab"
                   href="#Draft-tab"
