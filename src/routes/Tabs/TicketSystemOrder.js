@@ -65,7 +65,7 @@ class TicketSystemOrder extends Component {
       expanded: {},
       expandedOrderPopup: {},
       validPurchaseStoreName: "",
-      requiredSize: "",
+      // requiredSize: "",
       ChannelOfPurchaseData: [],
       idSizeArray: []
     };
@@ -465,10 +465,10 @@ class TicketSystemOrder extends Component {
     }
     var splitText = values.split(".");
     var index = values.indexOf(".");
-    if (index != -1) {
+    if (index !== -1) {
       if (splitText) {
         if (splitText[1].length <= 2) {
-          if (index != -1 && splitText.length === 2) {
+          if (index !== -1 && splitText.length === 2) {
             if (names === "orderMRP") {
               this.setState({ orderMRP: values });
             } else if (names === "pricePaid") {
@@ -522,10 +522,10 @@ class TicketSystemOrder extends Component {
       x.style.display = "block";
       x1.style.display = "none";
     } else {
-      var x = document.getElementById("ordertable");
-      var x1 = document.getElementById("orderitemtable");
-      x.style.display = "none";
-      x1.style.display = "block ";
+      var i = document.getElementById("ordertable");
+      var j = document.getElementById("orderitemtable");
+      i.style.display = "none";
+      j.style.display = "block ";
     }
     this.setState({
       OrdItmBtnStatus: e.target.checked

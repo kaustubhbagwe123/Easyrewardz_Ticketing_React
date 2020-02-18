@@ -1507,7 +1507,7 @@ class Dashboard extends Component {
         assignFirstName: "",
         assignLastName: "",
         assignEmail: "",
-        selectedDesignation: 0
+        // selectedDesignation: 0
       });
     });
   }
