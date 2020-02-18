@@ -33,8 +33,6 @@ class Reports extends Component {
     this.state = {
       AddReportPopup: false,
       NextPopup: false,
-      ReportCreateDate: "",
-      ReportLastDate: "",
       ChatDate: "",
       tabIndex:0,
       ReportData:[],
@@ -49,18 +47,14 @@ class Reports extends Component {
       ClaimStatusData: ClaimStatus(),
       TaskStatusData: TaskStatus(),
       TicketStatusData: TicketStatus(),
+
+      ReportCreateDate: "",
+      ReportLastDate: "",
       selectBrand:0,
       selectedCategory:0,
       selectedSubCategory:0,
       selectedIssueType:0,
       selectedClaimID:"",
-      selectedWithClaim:"no",
-      selectedClaimStatus: 0,
-      selectedWithTaskAll:"no",
-      selectedTaskStatus:0,
-      selectedClaimCategory:0,
-      selectedClaimSubCategory:0,
-      selectedClaimIssueType:0,
       selectedTicketSource:0,
       selectedInvoiceNo:"",
       selectedEmailID:"",
@@ -68,17 +62,26 @@ class Reports extends Component {
       selectedMobileNo:"",
       selectedItemID:"",
       selectedPriority:0,
-      selectedTaskPriority:0,
       selectedVisitStore:"",
       selectedAssignedTo:0,
       selectedWantVisitStore:"",
       selectedTicketStatus:0,
       selectedVisitStoreAddress:"",
       selectedPurchaseStore:"",
-      selectedDepartment:0,
+
       selectedTeamMember:"",
       selectedReportName:"",
       selectedSLAStatus:"",
+      
+      selectedWithClaim:"no",
+      selectedWithTaskAll:"no",
+      selectedClaimStatus: 0,
+      selectedClaimCategory:0,
+      selectedClaimSubCategory:0,
+      selectedClaimIssueType:0,
+      selectedTaskStatus:0,
+      selectedTaskPriority:0,
+      selectedDepartment:0,
       selectedFunction:0,
       TeamMemberData: [
         {
@@ -162,7 +165,36 @@ class Reports extends Component {
       resultCount: 0,
       loading: false,
       SearchNameCompulsory:'',
-      loadingAbove: true
+      loadingAbove: true,
+
+      CreateDateCompulsion: "",
+      LastDateCompulsion: "",
+      BrandCompulsion:"",
+      CategoryCompulsion:"",
+      SubCategoryCompulsion:"",
+      IssueTypeCompulsion:"",
+      ClaimIDCompulsion:"",
+      TicketSourceCompulsion:"",
+      InvoiceNoCompulsion:"",
+      EmailIDCompulsion:"",
+      TicketIDCompulsion:"",
+      MobileNoCompulsion:"",
+      ItemIDCompulsion:"",
+      PriorityCompulsion:"",
+      VisitStoreCompulsion:"",
+      AssignedToCompulsion:"",
+      WantVisitStoreCompulsion:"",
+      TicketStatusCompulsion:"",
+      VisitStoreAddressCompulsion:"",
+      PurchaseStoreCompulsion:"",
+      ClaimStatusCompulsion: "",
+      ClaimCategoryCompulsion:"",
+      ClaimSubCategoryCompulsion:"",
+      ClaimIssueTypeCompulsion:"",
+      TaskStatusCompulsion:"",
+      TaskPriorityCompulsion:"",
+      DepartmentCompulsion:"",
+      FunctionCompulsion:""
     };
 
     this.handleAddReportOpen = this.handleAddReportOpen.bind(this);
@@ -335,9 +367,89 @@ class Reports extends Component {
     });
   }
   handleChangeTab(index){
-    this.setState({
-      tabIndex:index
-    })
+    debugger;
+    var value1=[];
+    var value2=[];
+   
+    if(this.state.selectedWithClaim==="yes")
+    {
+      value1.push("1");
+      if(
+        this.state.selectedClaimStatus > 0 &&
+        this.state.selectedClaimCategory > 0 &&
+        this.state.selectedClaimSubCategory > 0 &&
+        this.state.selectedClaimIssueType > 0
+      ){ value2.push("1") }
+    };
+    if(this.state.selectedWithTaskAll==="yes")
+    {
+      value1.push("1");
+      if(
+        this.state.selectedTaskStatus > 0 &&
+        this.state.selectedTaskPriority > 0 &&
+        this.state.selectedDepartment > 0
+        
+      ){ value2.push("1") }
+    };
+    if(
+      value1.length===value2.length &&
+      this.state.ReportCreateDate.length > 0  &&
+      this.state.ReportLastDate.length > 0 &&
+      this.state.selectBrand > 0 &&
+      this.state.selectedCategory > 0 &&
+      this.state.selectedSubCategory > 0 &&
+      this.state.selectedIssueType > 0 &&
+      this.state.selectedClaimID.length > 0 &&
+      this.state.selectedTicketSource > 0 &&
+      this.state.selectedInvoiceNo.length > 0 &&
+      this.state.selectedEmailID.length > 0 &&
+      this.state.selectedTicketID.length > 0 &&
+      this.state.selectedMobileNo.length > 0 &&
+      this.state.selectedItemID.length > 0 &&
+      this.state.selectedPriority > 0 &&
+      this.state.selectedVisitStore.length > 0 &&
+      this.state.selectedAssignedTo > 0 &&
+      this.state.selectedWantVisitStore.length > 0 &&
+      this.state.selectedTicketStatus > 0 &&
+      this.state.selectedVisitStoreAddress.length > 0 &&
+      this.state.selectedPurchaseStore.length > 0
+    ){
+      this.setState({
+        tabIndex:index
+      })
+    }else{
+          this.setState({
+      CreateDateCompulsion: "Please Select Date.",
+      LastDateCompulsion: "Please Select Date.",
+      BrandCompulsion:"Please Select Brand.",
+      CategoryCompulsion:"Please Select Category.",
+      SubCategoryCompulsion:"Please Select SubCategory.",
+      IssueTypeCompulsion:"Please Select IssueType.",
+      ClaimIDCompulsion:"Please Enter ClaimID.",
+      TicketSourceCompulsion:"Please Select Ticket Source.",
+      InvoiceNoCompulsion:"Please Enter Invoice Number.",
+      EmailIDCompulsion:"Please Enter EmailID.",
+      TicketIDCompulsion:"Please Enter ticketID.",
+      MobileNoCompulsion:"Please Enter Mobile Number.",
+      ItemIDCompulsion:"Please Enter ItemID.",
+      PriorityCompulsion:"Please Select Priority.",
+      VisitStoreCompulsion:"Please Select Visit Store.",
+      AssignedToCompulsion:"Please Select Assign User.",
+      WantVisitStoreCompulsion:"Please Select Visit .",
+      TicketStatusCompulsion:"Please Select Ticket Status.",
+      VisitStoreAddressCompulsion:"Please Enter Visit Address.",
+      PurchaseStoreCompulsion:"Please Enter Purchase Store.",
+      ClaimStatusCompulsion: "Please Select Claim Status.",
+      ClaimCategoryCompulsion:"Please Select Claim Category.",
+      ClaimSubCategoryCompulsion:"Please Select Claim SubCategory.",
+      ClaimIssueTypeCompulsion:"Please Select IsuueType.",
+      TaskStatusCompulsion:"Please Select Task Status.",
+      TaskPriorityCompulsion:"Please Select Priority.",
+      DepartmentCompulsion:"Please Select Department.",
+      FunctionCompulsion:"Please Select Function."
+          });
+    }
+    
   }
   handleWeeklyDays = async e => {
     debugger;
@@ -1094,6 +1206,11 @@ class Reports extends Component {
                                                 )
                                               )}
                                           </select>
+                                          {this.state.selectBrand === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.BrandCompulsion}
+                    </p>
+                  )}
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Ticket Source</label>
@@ -1115,6 +1232,11 @@ class Reports extends Component {
                                         )
                                       )}
                                   </select>
+                                  {this.state.selectedTicketSource === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.TicketSourceCompulsion}
+                    </p>
+                  )}
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Invoice No/Sub Order No</label>
@@ -1123,6 +1245,11 @@ class Reports extends Component {
                       value={this.state.selectedInvoiceNo}
                       onChange={this.setOnChangeReportData}
                       />
+                       {this.state.selectedInvoiceNo.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.InvoiceNoCompulsion}
+                    </p>
+                  )}
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Customer Email Id</label>
@@ -1131,6 +1258,11 @@ class Reports extends Component {
                       value={this.state.selectedEmailID}
                       onChange={this.setOnChangeReportData}
                       />
+                      {this.state.selectedEmailID.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.EmailIDCompulsion}
+                    </p>
+                  )}
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Creation Date</label>
@@ -1146,6 +1278,11 @@ class Reports extends Component {
                         
                         // className="form-control"
                       />
+                      {this.state.ReportCreateDate.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.CreateDateCompulsion}
+                    </p>
+                  )}
                       </div>
                     </div>
                     <div className="col-md-3 ticketreport">
@@ -1155,6 +1292,11 @@ class Reports extends Component {
                       value={this.state.selectedTicketID}
                       onChange={this.setOnChangeReportData}
                       />
+                      {this.state.selectedTicketID.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.TicketIDCompulsion}
+                    </p>
+                  )}
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Item Id</label>
@@ -1163,6 +1305,11 @@ class Reports extends Component {
                        value={this.state.selectedItemID}
                        onChange={this.setOnChangeReportData}
                       />
+                      {this.state.selectedItemID.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.ItemIDCompulsion}
+                    </p>
+                  )}
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Customer Mobile No.</label>
@@ -1171,6 +1318,11 @@ class Reports extends Component {
                        value={this.state.selectedMobileNo}
                        onChange={this.setOnChangeReportData}
                       />
+                       {this.state.selectedMobileNo.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.MobileNoCompulsion}
+                    </p>
+                  )}
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Last Updated Date</label>
@@ -1185,6 +1337,11 @@ class Reports extends Component {
                                     value={this.state.ReportLastDate}
                         // className="form-control"
                       />
+                      {this.state.ReportLastDate.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.LastDateCompulsion}
+                    </p>
+                  )}
                       </div>
                     </div>
                     <div className="col-md-3 ticketreport">
@@ -1207,6 +1364,11 @@ class Reports extends Component {
                                         )
                                       )}
                                   </select>
+                                  {this.state.selectedPriority === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.PriorityCompulsion}
+                    </p>
+                  )}
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Visited Store</label>
@@ -1222,6 +1384,11 @@ class Reports extends Component {
                                      No
                                     </option>
                                   </select>
+                                  {this.state.selectedVisitStore === "" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.VisitStoreCompulsion}
+                    </p>
+                  )}
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Ticket Assigned To</label>
@@ -1239,6 +1406,11 @@ class Reports extends Component {
                                         </option>
                                       ))}
                                   </select>
+                                  {this.state.selectedAssignedTo === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.AssignedToCompulsion}
+                    </p>
+                  )}
                     </div>
                   </div>
 
@@ -1258,6 +1430,11 @@ class Reports extends Component {
                                         </option>
                                       ))}
                   </select>
+                  {this.state.selectedCategory === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.CategoryCompulsion}
+                    </p>
+                  )}
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Status</label>
@@ -1278,6 +1455,11 @@ class Reports extends Component {
                                         )
                                       )}
                                   </select>
+                                  {this.state.selectedTicketStatus === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.TicketStatusCompulsion}
+                    </p>
+                  )}
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Want To Visit Store</label>
@@ -1289,6 +1471,11 @@ class Reports extends Component {
                         <option value="yes">Yes</option>
                         <option value="no">No</option>
                       </select>
+                      {this.state.selectedWantVisitStore === "" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.WantVisitStoreCompulsion}
+                    </p>
+                  )}
                     </div>
                   </div>
                   <div className="row">
@@ -1312,6 +1499,11 @@ class Reports extends Component {
                                         )
                                       )}
                   </select>
+                  {this.state.selectedSubCategory === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.SubCategoryCompulsion}
+                    </p>
+                  )}
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>SLA Status</label>
@@ -1331,6 +1523,11 @@ class Reports extends Component {
                       value={this.state.selectedVisitStoreAddress}
                       onChange={this.setOnChangeReportData}
                       />
+                      {this.state.selectedVisitStoreAddress.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.VisitStoreAddressCompulsion}
+                    </p>
+                  )}
                     </div>
                   </div>
 
@@ -1355,6 +1552,11 @@ class Reports extends Component {
                             ))}
                    
                   </select>
+                  {this.state.selectedIssueType === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.IssueTypeCompulsion}
+                    </p>
+                  )}
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Claim ID</label>
@@ -1363,6 +1565,11 @@ class Reports extends Component {
                       value={this.state.selectedClaimID}
                       onChange={this.setOnChangeReportData}
                       />
+                      {this.state.selectedClaimID.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.ClaimIDCompulsion}
+                    </p>
+                  )}
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Purchase Store</label>
@@ -1371,6 +1578,11 @@ class Reports extends Component {
                        value={this.state.selectedPurchaseStore}
                        onChange={this.setOnChangeReportData}
                       />
+                      {this.state.selectedPurchaseStore.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.PurchaseStoreCompulsion}
+                    </p>
+                  )}
                     </div>
                   </div>
                   <div className="row borderbottom">
@@ -1434,6 +1646,11 @@ class Reports extends Component {
                                                   )
                                                 )}
                                             </select>
+                                            {this.state.selectedClaimStatus === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.ClaimStatusCompulsion}
+                    </p>
+                  )}
                                             </>
                         ) : null}
                      
@@ -1463,7 +1680,13 @@ class Reports extends Component {
                                                       </option>
                                                     )
                                                   )}
-                                              </select></>
+                                              </select>
+                                              {this.state.selectedTaskStatus === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.TaskStatusCompulsion}
+                    </p>
+                  )}
+                  </>
 
                       ):null}
                       
@@ -1499,6 +1722,11 @@ class Reports extends Component {
                                                   )
                                                 )}
                                             </select>
+                                            {this.state.selectedClaimCategory === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.ClaimCategoryCompulsion}
+                    </p>
+                  )}
                                             </>
 
                     ):null}
@@ -1524,7 +1752,13 @@ class Reports extends Component {
                                           </option>
                                         )
                                       )}
-                                  </select></>
+                                  </select>
+                                  {this.state.selectedTaskPriority === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.TaskPriorityCompulsion}
+                    </p>
+                  )}
+                                  </>
                     ):null}
                       
                     </div>
@@ -1560,7 +1794,13 @@ class Reports extends Component {
                                                    </option>
                                                  )
                                                )}
-                                           </select></>
+                                           </select>
+                                           {this.state.selectedClaimSubCategory === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.ClaimSubCategoryCompulsion}
+                    </p>
+                  )}
+                                           </>
 
                     ):null}
                       
@@ -1588,7 +1828,13 @@ class Reports extends Component {
                                                     </option>
                                                   )
                                                 )}
-                                            </select></>
+                                            </select>
+                                            {this.state.selectedDepartment === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.DepartmentCompulsion}
+                    </p>
+                  )}
+                                            </>
                     ):null}
                      
                     </div>
@@ -1621,7 +1867,13 @@ class Reports extends Component {
                                                     </option>
                                                   )
                                                 )}
-                                            </select></>
+                                            </select>
+                                            {this.state.selectedClaimIssueType === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.ClaimIssueTypeCompulsion}
+                    </p>
+                  )}
+                                            </>
                     ):null}
                       
                     </div>
