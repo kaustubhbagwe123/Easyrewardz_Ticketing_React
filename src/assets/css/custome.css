@@ -3521,6 +3521,21 @@ table tr th:last-child {
 .category-box input {
   display: none;
 }
+#overlaySla{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  display: none;
+}
+#overlaySla.show{
+  display: block;
+}
+.dropdown-menu-sla {
+  z-index: 1001;
+}
 /* sla ends */
 
 /* chetan css end */
