@@ -26,7 +26,6 @@ import Select from "react-select";
 import { Checkbox } from "antd";
 import ScheduleDateDropDown from "./../../ScheduleDateDropDown";
 
-
 class Reports extends Component {
   constructor(props) {
     super(props);
@@ -34,55 +33,52 @@ class Reports extends Component {
       AddReportPopup: false,
       NextPopup: false,
       ChatDate: "",
-      tabIndex:0,
-      ReportData:[],
-      brandData:[],
-      CategoryData:[],
-      SubCategoryData:[],
-      IssueTypeData:[],
-      TicketSourceData:[],
-      TicketPriorityData:[],
-      AssignToData:[],
-      DepartmentData:[],
+      tabIndex: 0,
+      ReportData: [],
+      brandData: [],
+      CategoryData: [],
+      SubCategoryData: [],
+      IssueTypeData: [],
+      TicketSourceData: [],
+      TicketPriorityData: [],
+      AssignToData: [],
+      DepartmentData: [],
       ClaimStatusData: ClaimStatus(),
       TaskStatusData: TaskStatus(),
       TicketStatusData: TicketStatus(),
-
       ReportCreateDate: "",
       ReportLastDate: "",
-      selectBrand:0,
-      selectedCategory:0,
-      selectedSubCategory:0,
-      selectedIssueType:0,
-      selectedClaimID:"",
-      selectedTicketSource:0,
-      selectedInvoiceNo:"",
-      selectedEmailID:"",
-      selectedTicketID:"",
-      selectedMobileNo:"",
-      selectedItemID:"",
-      selectedPriority:0,
-      selectedVisitStore:"",
-      selectedAssignedTo:0,
-      selectedWantVisitStore:"",
-      selectedTicketStatus:0,
-      selectedVisitStoreAddress:"",
-      selectedPurchaseStore:"",
-
-      selectedTeamMember:"",
-      selectedReportName:"",
-      selectedSLAStatus:"",
-      
-      selectedWithClaim:"no",
-      selectedWithTaskAll:"no",
+      selectBrand: 0,
+      selectedCategory: 0,
+      selectedSubCategory: 0,
+      selectedIssueType: 0,
+      selectedClaimID: "",
+      selectedTicketSource: 0,
+      selectedInvoiceNo: "",
+      selectedEmailID: "",
+      selectedTicketID: "",
+      selectedMobileNo: "",
+      selectedItemID: "",
+      selectedPriority: 0,
+      selectedVisitStore: "",
+      selectedAssignedTo: 0,
+      selectedWantVisitStore: "",
+      selectedTicketStatus: 0,
+      selectedVisitStoreAddress: "",
+      selectedPurchaseStore: "",
+      selectedTeamMember: "",
+      selectedReportName: "",
+      selectedSLAStatus: "",
+      selectedWithClaim: "no",
+      selectedWithTaskAll: "no",
       selectedClaimStatus: 0,
-      selectedClaimCategory:0,
-      selectedClaimSubCategory:0,
-      selectedClaimIssueType:0,
-      selectedTaskStatus:0,
-      selectedTaskPriority:0,
-      selectedDepartment:0,
-      selectedFunction:0,
+      selectedClaimCategory: 0,
+      selectedClaimSubCategory: 0,
+      selectedClaimIssueType: 0,
+      selectedTaskStatus: 0,
+      selectedTaskPriority: 0,
+      selectedDepartment: 0,
+      selectedFunction: 0,
       TeamMemberData: [
         {
           department: "Team Member 1"
@@ -117,7 +113,7 @@ class Reports extends Component {
       Fri: "",
       Sat: "",
       Sun: "",
-      selectedNoOfDay:0,
+      selectedNoOfDay: 0,
       selectedNoOfDaysForMonth: 0,
       selectedNoOfMonthForMonth: 0,
       selectedNoOfMonthForWeek: 0,
@@ -125,7 +121,7 @@ class Reports extends Component {
       selectedNoOfDayForDailyYear: 0,
       selectedNoOfWeekForYear: 0,
       selectedNameOfMonthForDailyYear: "",
-      selectScheduleDate:"",
+      selectScheduleDate: "",
       selectedNameOfDayForWeek: [],
       selectedNameOfMonthForYear: [],
       selectedNameOfMonthForDailyYear: [],
@@ -164,54 +160,55 @@ class Reports extends Component {
       ],
       resultCount: 0,
       loading: false,
-      SearchNameCompulsory:'',
+      SearchNameCompulsory: "",
       loadingAbove: true,
-
       CreateDateCompulsion: "",
       LastDateCompulsion: "",
-      BrandCompulsion:"",
-      CategoryCompulsion:"",
-      SubCategoryCompulsion:"",
-      IssueTypeCompulsion:"",
-      ClaimIDCompulsion:"",
-      TicketSourceCompulsion:"",
-      InvoiceNoCompulsion:"",
-      EmailIDCompulsion:"",
-      TicketIDCompulsion:"",
-      MobileNoCompulsion:"",
-      ItemIDCompulsion:"",
-      PriorityCompulsion:"",
-      VisitStoreCompulsion:"",
-      AssignedToCompulsion:"",
-      WantVisitStoreCompulsion:"",
-      TicketStatusCompulsion:"",
-      VisitStoreAddressCompulsion:"",
-      PurchaseStoreCompulsion:"",
+      BrandCompulsion: "",
+      CategoryCompulsion: "",
+      SubCategoryCompulsion: "",
+      IssueTypeCompulsion: "",
+      ClaimIDCompulsion: "",
+      TicketSourceCompulsion: "",
+      InvoiceNoCompulsion: "",
+      EmailIDCompulsion: "",
+      TicketIDCompulsion: "",
+      MobileNoCompulsion: "",
+      ItemIDCompulsion: "",
+      PriorityCompulsion: "",
+      VisitStoreCompulsion: "",
+      AssignedToCompulsion: "",
+      WantVisitStoreCompulsion: "",
+      TicketStatusCompulsion: "",
+      VisitStoreAddressCompulsion: "",
+      PurchaseStoreCompulsion: "",
       ClaimStatusCompulsion: "",
-      ClaimCategoryCompulsion:"",
-      ClaimSubCategoryCompulsion:"",
-      ClaimIssueTypeCompulsion:"",
-      TaskStatusCompulsion:"",
-      TaskPriorityCompulsion:"",
-      DepartmentCompulsion:"",
-      FunctionCompulsion:""
+      ClaimCategoryCompulsion: "",
+      ClaimSubCategoryCompulsion: "",
+      ClaimIssueTypeCompulsion: "",
+      TaskStatusCompulsion: "",
+      TaskPriorityCompulsion: "",
+      DepartmentCompulsion: "",
+      FunctionCompulsion: ""
     };
 
     this.handleAddReportOpen = this.handleAddReportOpen.bind(this);
     this.handleAddReportClose = this.handleAddReportClose.bind(this);
     this.handleNextPopupOpen = this.handleNextPopupOpen.bind(this);
     this.handleNextPopupClose = this.handleNextPopupClose.bind(this);
-    this.handleReportList=this.handleReportList.bind(this);
-    this.handleDeleteReport=this.handleDeleteReport.bind(this);
-    this.handleGetBrandList=this.handleGetBrandList.bind(this);
-    this.handleGetCategoryList=this.handleGetCategoryList.bind(this);
-    this.handleGetSubCategoryList=this.handleGetSubCategoryList.bind(this);
-    this.handleGetIssueTypeList=this.handleGetIssueTypeList.bind(this);
-    this.handleGetTicketSourceList=this.handleGetTicketSourceList.bind(this);
-    this.handleGetTicketPriorityList=this.handleGetTicketPriorityList.bind(this);
-    this.handleAssignTo=this.handleAssignTo.bind(this);
-    this.handleGetDepartmentList=this.handleGetDepartmentList.bind(this);
-    this.handleInsertReport=this.handleInsertReport.bind(this);
+    this.handleReportList = this.handleReportList.bind(this);
+    this.handleDeleteReport = this.handleDeleteReport.bind(this);
+    this.handleGetBrandList = this.handleGetBrandList.bind(this);
+    this.handleGetCategoryList = this.handleGetCategoryList.bind(this);
+    this.handleGetSubCategoryList = this.handleGetSubCategoryList.bind(this);
+    this.handleGetIssueTypeList = this.handleGetIssueTypeList.bind(this);
+    this.handleGetTicketSourceList = this.handleGetTicketSourceList.bind(this);
+    this.handleGetTicketPriorityList = this.handleGetTicketPriorityList.bind(
+      this
+    );
+    this.handleAssignTo = this.handleAssignTo.bind(this);
+    this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
+    this.handleInsertReport = this.handleInsertReport.bind(this);
   }
   componentDidMount() {
     debugger;
@@ -219,21 +216,26 @@ class Reports extends Component {
     this.handleGetBrandList();
     this.handleGetCategoryList();
     this.handleGetTicketSourceList();
-   this.handleGetTicketPriorityList();
-   this.handleAssignTo();
-   this.handleGetDepartmentList();
-   
+    this.handleGetTicketPriorityList();
+    this.handleAssignTo();
+    this.handleGetDepartmentList();
   }
   hide(e, id) {
     debugger;
     // document.getElementById(id).style.display="none";
-    document.getElementById(id).parentElement.parentElement.parentElement.parentElement.parentElement.style.display = "none";
+    document.getElementById(
+      id
+    ).parentElement.parentElement.parentElement.parentElement.parentElement.style.display =
+      "none";
   }
   show(e, id) {
     debugger;
     if (document.getElementById(id))
       // document.getElementById(id).style.display="block";
-      document.getElementById(id).parentElement.parentElement.parentElement.parentElement.parentElement.style.display = "block";
+      document.getElementById(
+        id
+      ).parentElement.parentElement.parentElement.parentElement.parentElement.style.display =
+        "block";
   }
   ScheduleOpenModel = () => {
     this.setState({ Schedule: true });
@@ -243,7 +245,7 @@ class Reports extends Component {
   };
 
   handleAddReportOpen() {
-    this.setState({ AddReportPopup: true ,tabIndex :0});
+    this.setState({ AddReportPopup: true, tabIndex: 0 });
   }
   handleAddReportClose() {
     this.setState({ AddReportPopup: false });
@@ -366,34 +368,35 @@ class Reports extends Component {
       selectedScheduleTime: e
     });
   }
-  handleChangeTab(index){
+  handleChangeTab(index) {
     debugger;
-    var value1=[];
-    var value2=[];
-   
-    if(this.state.selectedWithClaim==="yes")
-    {
+    var value1 = [];
+    var value2 = [];
+
+    if (this.state.selectedWithClaim === "yes") {
       value1.push("1");
-      if(
+      if (
         this.state.selectedClaimStatus > 0 &&
         this.state.selectedClaimCategory > 0 &&
         this.state.selectedClaimSubCategory > 0 &&
         this.state.selectedClaimIssueType > 0
-      ){ value2.push("1") }
-    };
-    if(this.state.selectedWithTaskAll==="yes")
-    {
+      ) {
+        value2.push("1");
+      }
+    }
+    if (this.state.selectedWithTaskAll === "yes") {
       value1.push("1");
-      if(
+      if (
         this.state.selectedTaskStatus > 0 &&
         this.state.selectedTaskPriority > 0 &&
         this.state.selectedDepartment > 0
-        
-      ){ value2.push("1") }
-    };
-    if(
-      value1.length===value2.length &&
-      this.state.ReportCreateDate.length > 0  &&
+      ) {
+        value2.push("1");
+      }
+    }
+    if (
+      value1.length === value2.length &&
+      this.state.ReportCreateDate.length > 0 &&
       this.state.ReportLastDate.length > 0 &&
       this.state.selectBrand > 0 &&
       this.state.selectedCategory > 0 &&
@@ -413,43 +416,42 @@ class Reports extends Component {
       this.state.selectedTicketStatus > 0 &&
       this.state.selectedVisitStoreAddress.length > 0 &&
       this.state.selectedPurchaseStore.length > 0
-    ){
+    ) {
       this.setState({
-        tabIndex:index
-      })
-    }else{
-          this.setState({
-      CreateDateCompulsion: "Please Select Date.",
-      LastDateCompulsion: "Please Select Date.",
-      BrandCompulsion:"Please Select Brand.",
-      CategoryCompulsion:"Please Select Category.",
-      SubCategoryCompulsion:"Please Select SubCategory.",
-      IssueTypeCompulsion:"Please Select IssueType.",
-      ClaimIDCompulsion:"Please Enter ClaimID.",
-      TicketSourceCompulsion:"Please Select Ticket Source.",
-      InvoiceNoCompulsion:"Please Enter Invoice Number.",
-      EmailIDCompulsion:"Please Enter EmailID.",
-      TicketIDCompulsion:"Please Enter ticketID.",
-      MobileNoCompulsion:"Please Enter Mobile Number.",
-      ItemIDCompulsion:"Please Enter ItemID.",
-      PriorityCompulsion:"Please Select Priority.",
-      VisitStoreCompulsion:"Please Select Visit Store.",
-      AssignedToCompulsion:"Please Select Assign User.",
-      WantVisitStoreCompulsion:"Please Select Visit .",
-      TicketStatusCompulsion:"Please Select Ticket Status.",
-      VisitStoreAddressCompulsion:"Please Enter Visit Address.",
-      PurchaseStoreCompulsion:"Please Enter Purchase Store.",
-      ClaimStatusCompulsion: "Please Select Claim Status.",
-      ClaimCategoryCompulsion:"Please Select Claim Category.",
-      ClaimSubCategoryCompulsion:"Please Select Claim SubCategory.",
-      ClaimIssueTypeCompulsion:"Please Select IsuueType.",
-      TaskStatusCompulsion:"Please Select Task Status.",
-      TaskPriorityCompulsion:"Please Select Priority.",
-      DepartmentCompulsion:"Please Select Department.",
-      FunctionCompulsion:"Please Select Function."
-          });
+        tabIndex: index
+      });
+    } else {
+      this.setState({
+        CreateDateCompulsion: "Please Select Date.",
+        LastDateCompulsion: "Please Select Date.",
+        BrandCompulsion: "Please Select Brand.",
+        CategoryCompulsion: "Please Select Category.",
+        SubCategoryCompulsion: "Please Select SubCategory.",
+        IssueTypeCompulsion: "Please Select IssueType.",
+        ClaimIDCompulsion: "Please Enter ClaimID.",
+        TicketSourceCompulsion: "Please Select Ticket Source.",
+        InvoiceNoCompulsion: "Please Enter Invoice Number.",
+        EmailIDCompulsion: "Please Enter EmailID.",
+        TicketIDCompulsion: "Please Enter ticketID.",
+        MobileNoCompulsion: "Please Enter Mobile Number.",
+        ItemIDCompulsion: "Please Enter ItemID.",
+        PriorityCompulsion: "Please Select Priority.",
+        VisitStoreCompulsion: "Please Select Visit Store.",
+        AssignedToCompulsion: "Please Select Assign User.",
+        WantVisitStoreCompulsion: "Please Select Visit .",
+        TicketStatusCompulsion: "Please Select Ticket Status.",
+        VisitStoreAddressCompulsion: "Please Enter Visit Address.",
+        PurchaseStoreCompulsion: "Please Enter Purchase Store.",
+        ClaimStatusCompulsion: "Please Select Claim Status.",
+        ClaimCategoryCompulsion: "Please Select Claim Category.",
+        ClaimSubCategoryCompulsion: "Please Select Claim SubCategory.",
+        ClaimIssueTypeCompulsion: "Please Select IsuueType.",
+        TaskStatusCompulsion: "Please Select Task Status.",
+        TaskPriorityCompulsion: "Please Select Priority.",
+        DepartmentCompulsion: "Please Select Department.",
+        FunctionCompulsion: "Please Select Function."
+      });
     }
-    
   }
   handleWeeklyDays = async e => {
     debugger;
@@ -559,10 +561,10 @@ class Reports extends Component {
       this.setState({
         IsDaily: true,
         IsWeekly: false,
-        IsDailyForMonth:false,
-        IsDailyForYear:false,
-        IsWeeklyForMonth:false,
-        IsWeeklyForYear:false,
+        IsDailyForMonth: false,
+        IsDailyForYear: false,
+        IsWeeklyForMonth: false,
+        IsWeeklyForYear: false,
         selectedNoOfWeek: 0,
         selectedNoOfDaysForMonth: 0,
         selectedNoOfMonthForMonth: 0,
@@ -580,11 +582,11 @@ class Reports extends Component {
       this.setState({
         IsWeekly: true,
         IsDaily: false,
-        selectedNoOfDay:false,
-        IsDailyForMonth:false,
-        IsDailyForYear:false,
-        IsWeeklyForMonth:false,
-        IsWeeklyForYear:false,
+        selectedNoOfDay: false,
+        IsDailyForMonth: false,
+        IsDailyForYear: false,
+        IsWeeklyForMonth: false,
+        IsWeeklyForYear: false,
         selectedNoOfDaysForMonth: 0,
         selectedNoOfMonthForMonth: 0,
         selectedNoOfMonthForWeek: 0,
@@ -600,12 +602,12 @@ class Reports extends Component {
       this.setState({
         IsDailyForMonth: true,
         IsDaily: false,
-        IsDailyForYear:false,
-        IsWeeklyForMonth:false,
-        IsWeeklyForYear:false,
+        IsDailyForYear: false,
+        IsWeeklyForMonth: false,
+        IsWeeklyForYear: false,
         selectedNoOfDay: 0,
         selectedNoOfWeek: 0,
-        IsWeekly:false,
+        IsWeekly: false,
         selectedNoOfMonthForWeek: 0,
         selectedNoOfWeekForWeek: 0,
         selectedNoOfDayForDailyYear: 0,
@@ -619,13 +621,13 @@ class Reports extends Component {
     } else if (SelectData === "233") {
       this.setState({
         IsWeeklyForMonth: true,
-        IsDaily:false,
-        IsDailyForMonth:false,
-        IsWeeklyForYear:false,
-        selectedNoOfDay:0,
+        IsDaily: false,
+        IsDailyForMonth: false,
+        IsWeeklyForYear: false,
+        selectedNoOfDay: 0,
         selectedNoOfWeek: 0,
-        IsWeekly:false,
-        IsDailyForYear:false,
+        IsWeekly: false,
+        IsDailyForYear: false,
         selectedNoOfDayForDailyYear: 0,
         selectedNoOfWeekForYear: 0,
         selectedNameOfDayForYearCommaSeperated: "",
@@ -635,7 +637,7 @@ class Reports extends Component {
       });
     } else if (SelectData === "234") {
       this.setState({
-        IsDailyForYear:true,
+        IsDailyForYear: true,
         IsDaily: false,
         IsDailyForMonth: false,
         selectedNoOfDay: 0,
@@ -656,12 +658,12 @@ class Reports extends Component {
       this.setState({
         IsWeeklyForYear: true,
         IsDaily: false,
-        IsDailyForMonth:false,
+        IsDailyForMonth: false,
         selectedNoOfDay: 0,
         selectedNoOfWeek: 0,
-        IsWeekly:false,
-        IsWeeklyForMonth:false,
-        IsDailyForYear:false,
+        IsWeekly: false,
+        IsWeeklyForMonth: false,
+        IsDailyForYear: false,
         selectedWeeklyDays: "",
         selectedNoOfDaysForMonth: 0,
         selectedNameOfMonthForYearCommaSeperated: "",
@@ -688,13 +690,11 @@ class Reports extends Component {
   setOnChangeReportData = e => {
     debugger;
 
-
     this.setState({
-      [e.target.name]: e.target.value,
-
+      [e.target.name]: e.target.value
     });
     setTimeout(() => {
-      if (this.state.selectedCategory ) {
+      if (this.state.selectedCategory) {
         this.handleGetSubCategoryList();
       }
     }, 1);
@@ -704,7 +704,7 @@ class Reports extends Component {
       }
     }, 1);
     setTimeout(() => {
-      if (this.state.selectedClaimCategory ) {
+      if (this.state.selectedClaimCategory) {
         this.handleGetSubCategoryList();
       }
     }, 1);
@@ -713,7 +713,6 @@ class Reports extends Component {
         this.handleGetIssueTypeList();
       }
     }, 1);
-    
   };
   handleGetDepartmentList() {
     debugger;
@@ -728,10 +727,9 @@ class Reports extends Component {
       self.setState({ DepartmentData: DepartmentData });
     });
   }
-  
+
   handleAssignTo() {
     debugger;
-
     let self = this;
     axios({
       method: "post",
@@ -779,19 +777,21 @@ class Reports extends Component {
   handleReportList() {
     debugger;
     let self = this;
+    this.setState({ loading: true });
     axios({
       method: "post",
       url: config.apiUrl + "/Report/GetReports",
       headers: authHeader()
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       var reportdata = res.data.responseData;
-       
-      if(reportdata==null){
-        reportdata=[]
+
+      if (reportdata == null) {
+        reportdata = [];
       }
-      self.setState({        
-        ReportData: reportdata
+      self.setState({
+        ReportData: reportdata,
+        loading: false
       });
     });
   }
@@ -806,14 +806,13 @@ class Reports extends Component {
       params: {
         ReportID: id
       }
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
       let Msg = res.data.message;
       if (Msg === "Success") {
         NotificationManager.success("Record Deleted successfully.");
         self.handleReportList();
       }
-
     });
   }
   handleGetBrandList() {
@@ -845,10 +844,9 @@ class Reports extends Component {
     }).then(function(res) {
       debugger;
       let CategoryData = res.data;
-      
+
       self.setState({
         CategoryData: CategoryData
-        
       });
     });
   }
@@ -856,21 +854,21 @@ class Reports extends Component {
   handleGetSubCategoryList() {
     debugger;
     let self = this;
-    
-    let cateId =this.state.selectedCategory;
-   
-    if(this.state.selectedCategory!==0){
-      cateId=this.state.selectedCategory;
-    }else{
-      cateId=this.state.selectedClaimCategory;
+
+    let cateId = this.state.selectedCategory;
+
+    if (this.state.selectedCategory !== 0) {
+      cateId = this.state.selectedCategory;
+    } else {
+      cateId = this.state.selectedClaimCategory;
     }
-      
+
     axios({
       method: "post",
       url: config.apiUrl + "/SubCategory/GetSubCategoryByCategoryID",
       headers: authHeader(),
       params: {
-        CategoryID: cateId 
+        CategoryID: cateId
       }
     }).then(function(res) {
       debugger;
@@ -884,10 +882,9 @@ class Reports extends Component {
     debugger;
     let self = this;
     let subCateId = this.state.selectedSubCategory;
-    if(this.state.selectedSubCategory!==0){
+    if (this.state.selectedSubCategory !== 0) {
       subCateId = this.state.selectedSubCategory;
-    }
-    else{
+    } else {
       subCateId = this.state.selectedClaimSubCategory;
     }
     axios({
@@ -904,87 +901,81 @@ class Reports extends Component {
     });
   }
 
-  handleInsertReport(){
-    debugger
+  handleInsertReport() {
+    debugger;
     let self = this;
     var ReportParams = {};
     let withClaim = 0;
-      let withTask = 0;
-      if (this.state.selectedWithClaim === "yes") {
-        withClaim = 1;
-        ReportParams["ClaimStatusId"] = this.state.selectedClaimStatus;
-        ReportParams["ClaimCategoryId"] = this.state.selectedClaimCategory;
-        ReportParams["ClaimSubCategoryId"] = this.state.selectedClaimSubCategory;
-        ReportParams["ClaimIssueTypeId"] = this.state.selectedClaimIssueType;
-      }
-      if (this.state.selectedWithTaskAll === "yes") {
-        withTask = 1;
-        ReportParams["TaskStatusId"] = this.state.selectedTaskStatus;
+    let withTask = 0;
+    if (this.state.selectedWithClaim === "yes") {
+      withClaim = 1;
+      ReportParams["ClaimStatusId"] = this.state.selectedClaimStatus;
+      ReportParams["ClaimCategoryId"] = this.state.selectedClaimCategory;
+      ReportParams["ClaimSubCategoryId"] = this.state.selectedClaimSubCategory;
+      ReportParams["ClaimIssueTypeId"] = this.state.selectedClaimIssueType;
+    }
+    if (this.state.selectedWithTaskAll === "yes") {
+      withTask = 1;
+      ReportParams["TaskStatusId"] = this.state.selectedTaskStatus;
       ReportParams["TaskDepartment_Id"] = this.state.selectedDepartment;
       ReportParams["TaskFunction_Id"] = this.state.selectedFunction;
-      }
-      ReportParams["BrandID"] = this.state.selectBrand;
-      ReportParams["CreatedDate"] = this.state.ReportCreateDate;
-      ReportParams["ModifiedDate"] = this.state.ReportLastDate;
-      ReportParams["CategoryId"] = this.state.selectedCategory;
-      ReportParams["SubCategoryId"] = this.state.selectedSubCategory;
-      ReportParams["IssueTypeId"] = this.state.selectedIssueType;
-      ReportParams["TicketSourceTypeID"] = this.state.selectedTicketSource;
-      ReportParams["TicketIdORTitle"] = this.state.selectedTicketID;
-      ReportParams["PriorityId"] = this.state.selectedPriority;
-      ReportParams["TicketSatutsID"] = this.state.selectedTicketStatus;
-      ReportParams["SLAStatus"] = this.state.selectedSLAStatus;
-      ReportParams["ClaimId"] = this.state.selectedClaimID;
-      ReportParams["InvoiceNumberORSubOrderNo"] = this.state.selectedInvoiceNo;
-      
-      ReportParams["IsVisitStore"] = this.state.selectedVisitStore;
-      ReportParams["IsWantVistingStore"] = this.state.selectedWantVisitStore;
-      ReportParams["CustomerEmailID"] = this.state.selectedEmailID;
-      ReportParams["CustomerMobileNo"] = this.state.selectedMobileNo;
-      ReportParams["AssignTo"] = this.state.selectedAssignedTo;
-      ReportParams[
-        "StoreCodeORAddress"
-      ] = this.state.selectedPurchaseStore;
-      ReportParams[
-        "WantToStoreCodeORAddress"
-      ] = this.state.selectedVisitStoreAddress;
-      ReportParams["HaveClaim"] = withClaim;
-     
-      ReportParams["HaveTask"] = withTask;
-      
-   
+    }
+    ReportParams["BrandID"] = this.state.selectBrand;
+    ReportParams["CreatedDate"] = this.state.ReportCreateDate;
+    ReportParams["ModifiedDate"] = this.state.ReportLastDate;
+    ReportParams["CategoryId"] = this.state.selectedCategory;
+    ReportParams["SubCategoryId"] = this.state.selectedSubCategory;
+    ReportParams["IssueTypeId"] = this.state.selectedIssueType;
+    ReportParams["TicketSourceTypeID"] = this.state.selectedTicketSource;
+    ReportParams["TicketIdORTitle"] = this.state.selectedTicketID;
+    ReportParams["PriorityId"] = this.state.selectedPriority;
+    ReportParams["TicketSatutsID"] = this.state.selectedTicketStatus;
+    ReportParams["SLAStatus"] = this.state.selectedSLAStatus;
+    ReportParams["ClaimId"] = this.state.selectedClaimID;
+    ReportParams["InvoiceNumberORSubOrderNo"] = this.state.selectedInvoiceNo;
+
+    ReportParams["IsVisitStore"] = this.state.selectedVisitStore;
+    ReportParams["IsWantVistingStore"] = this.state.selectedWantVisitStore;
+    ReportParams["CustomerEmailID"] = this.state.selectedEmailID;
+    ReportParams["CustomerMobileNo"] = this.state.selectedMobileNo;
+    ReportParams["AssignTo"] = this.state.selectedAssignedTo;
+    ReportParams["StoreCodeORAddress"] = this.state.selectedPurchaseStore;
+    ReportParams[
+      "WantToStoreCodeORAddress"
+    ] = this.state.selectedVisitStoreAddress;
+    ReportParams["HaveClaim"] = withClaim;
+
+    ReportParams["HaveTask"] = withTask;
+
     axios({
       method: "post",
       url: config.apiUrl + "/Report/CreateReport",
       headers: authHeader(),
       params: {
-        ReportName:this.state.selectedReportName,
-        isReportActive:true,
-        TicketReportParams:ReportParams,
-        IsDaily:this.state.IsDaily,
-        IsDailyForMonth:this.state.IsDailyForMonth,
-        IsWeekly:this.state.IsWeekly,
-        IsWeeklyForMonth:this.state.IsWeeklyForMonth,
-        IsDailyForYear:this.state.IsDailyForYear,
-        IsWeeklyForYear:this.state.IsWeeklyForYear
-
-        
+        ReportName: this.state.selectedReportName,
+        isReportActive: true,
+        TicketReportParams: ReportParams,
+        IsDaily: this.state.IsDaily,
+        IsDailyForMonth: this.state.IsDailyForMonth,
+        IsWeekly: this.state.IsWeekly,
+        IsWeeklyForMonth: this.state.IsWeeklyForMonth,
+        IsDailyForYear: this.state.IsDailyForYear,
+        IsWeeklyForYear: this.state.IsWeeklyForYear
       }
     }).then(function(res) {
       debugger;
       let status = res.data.message;
       if (status === "Success") {
-       
         NotificationManager.success("Report saved successfully.");
         self.setState({
-          selectedReportName:"",
-          ReportParams:{},
-          IsDaily:false,
-          IsDailyForMonth:false,
-          IsWeekly:false,
-          IsWeeklyForMonth:false,
-          IsDailyForYear:false,
-          IsWeeklyForYear:false
+          selectedReportName: "",
+          ReportParams: {},
+          IsDaily: false,
+          IsDailyForMonth: false,
+          IsWeekly: false,
+          IsWeeklyForMonth: false,
+          IsDailyForYear: false,
+          IsWeeklyForYear: false
         });
       }
     });
@@ -992,122 +983,6 @@ class Reports extends Component {
 
   render() {
     const datareport = this.state.ReportData;
-
-    const columnsreport = [
-      {
-        Header: (
-          <span>
-            Name
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "reportName"
-      },
-      {
-        Header: (
-          <span>
-            Schedule Status
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "scheduleStatus"
-      },
-      {
-        Header: (
-          <span>
-            Created by
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "createdBy",
-        Cell: row => {
-          var ids = row.original["reportID"];
-          return (
-            <div>
-              <span>
-                Admin
-                <Popover content={<>
-        <div>
-          <b>
-            <p className="title">Created By: {row.original.createdBy}</p>
-          </b>
-          <p className="sub-title">Created Date: {row.original.createdDate}</p>
-        </div>
-        <div>
-          <b>
-            <p className="title">Updated By: {row.original.modifiedBy}</p>
-          </b>
-          <p className="sub-title">Updated Date: {row.original.modifiedDate}</p>
-        </div>
-      </>} placement="bottom">
-                  <img
-                    className="info-icon-cp"
-                    src={BlackInfoIcon}
-                    alt="info-icon"
-                    id={ids}
-                  />
-                </Popover>
-              </span>
-            </div>
-          );
-        }
-      },
-      {
-        Header: (
-          <span>
-            Status
-            <FontAwesomeIcon icon={faCaretDown} />
-          </span>
-        ),
-        accessor: "reportStatus"
-      },
-      {
-        Header: <span>Actions</span>,
-        accessor: "actionReport",
-        Cell: row => (
-          <span>
-            <img
-              src={DownExcel}
-              alt="download icon"
-              className="downloadaction"
-            />
-            <Popover content={<div className="samdel d-flex general-popover popover-body" >
-        <div className="del-big-icon">
-          <img src={DelBigIcon} alt="del-icon" />
-        </div>
-        <div>
-          <p className="font-weight-bold blak-clr">Delete file?</p>
-          <p className="mt-1 fs-12">
-            Are you sure you want to delete this file?
-          </p>
-          <div className="del-can">
-            <a >CANCEL</a>
-            <button className="butn" onClick={this.handleDeleteReport.bind(this,row.original.reportID)}  >Delete</button>
-          </div>
-        </div>
-      </div>} placement="bottom" trigger="click">
-                  <img
-                    src={RedDeleteIcon}
-                    alt="del-icon"
-                    className="del-btn"
-                    // onClick={() => this.show(this, "samdel" + ids)}
-                  />
-                </Popover>
-               
-                <button className="react-tabel-button editre" id="p-edit-pop-2"
-                 onClick={this.handleAddReportOpen}
-                >
-                   EDIT
-                   {/* <label className="Table-action-edit-button-text">EDIT</label> */}
-                   </button>
-               
-            
-          </span>
-        )
-      }
-    ];
-    
-   
     return (
       <Fragment>
         <NotificationContainer />
@@ -1130,7 +1005,7 @@ class Reports extends Component {
                 className="addplusbtnReport"
                 onClick={this.handleAddReportOpen}
               >
-              + Add
+                + Add
               </button>
             </div>
           </div>
@@ -1145,7 +1020,8 @@ class Reports extends Component {
               <ul className="nav nav-tabs margin-report" role="tablist">
                 <li className="nav-item">
                   <a
-                    className={`nav-link ${this.state.tabIndex ===0 && 'active'} `}
+                    className={`nav-link ${this.state.tabIndex === 0 &&
+                      "active"} `}
                     data-toggle="tab"
                     href="#ticket-tab"
                     role="tab"
@@ -1157,7 +1033,8 @@ class Reports extends Component {
                 </li>
                 <li className="nav-item">
                   <a
-                    className={`nav-link ${this.state.tabIndex ===1 && 'active'} `}
+                    className={`nav-link ${this.state.tabIndex === 1 &&
+                      "active"} `}
                     data-toggle="tab"
                     href="#chat-tab"
                     role="tab"
@@ -1177,7 +1054,8 @@ class Reports extends Component {
             </div>
             <div className="tab-content">
               <div
-                className={`tab-pane fade ${this.state.tabIndex === 0 && 'show active'}`}
+                className={`tab-pane fade ${this.state.tabIndex === 0 &&
+                  "show active"}`}
                 id="ticket-tab"
                 role="tabpanel"
                 aria-labelledby="ticket-tab"
@@ -1187,330 +1065,320 @@ class Reports extends Component {
                     <div className="col-md-3 ticketreport">
                       <label>Selected Brand</label>
                       <select
-                                            className="store-create-select"
-                                            value={this.state.selectBrand}
-                                            onChange={this.setOnChangeReportData}
-                                            name="selectBrand"
-                                          >
-                                            <option>Select</option>
-                                            {this.state.brandData !== null &&
-                                              this.state.brandData.map(
-                                                (item, i) => (
-                                                  <option
-                                                    key={i}
-                                                    value={item.brandID}
-                                                    className="select-category-placeholder"
-                                                  >
-                                                    {item.brandName}
-                                                  </option>
-                                                )
-                                              )}
-                                          </select>
-                                          {this.state.selectBrand === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.BrandCompulsion}
-                    </p>
-                  )}
+                        className="store-create-select"
+                        value={this.state.selectBrand}
+                        onChange={this.setOnChangeReportData}
+                        name="selectBrand"
+                      >
+                        <option>Select</option>
+                        {this.state.brandData !== null &&
+                          this.state.brandData.map((item, i) => (
+                            <option
+                              key={i}
+                              value={item.brandID}
+                              className="select-category-placeholder"
+                            >
+                              {item.brandName}
+                            </option>
+                          ))}
+                      </select>
+                      {this.state.selectBrand === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.BrandCompulsion}
+                        </p>
+                      )}
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Ticket Source</label>
                       <select
-                      name="selectedTicketSource"
-                                    value={this.state.selectedTicketSource}
-                                    onChange={this.setOnChangeReportData}
-                                  >
-                                    <option>Ticket Source</option>
-                                    {this.state.TicketSourceData !== null &&
-                                      this.state.TicketSourceData.map(
-                                        (item, i) => (
-                                          <option
-                                            key={i}
-                                            value={item.ticketSourceId}
-                                          >
-                                            {item.ticketSourceName}
-                                          </option>
-                                        )
-                                      )}
-                                  </select>
-                                  {this.state.selectedTicketSource === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.TicketSourceCompulsion}
-                    </p>
-                  )}
+                        name="selectedTicketSource"
+                        value={this.state.selectedTicketSource}
+                        onChange={this.setOnChangeReportData}
+                      >
+                        <option>Ticket Source</option>
+                        {this.state.TicketSourceData !== null &&
+                          this.state.TicketSourceData.map((item, i) => (
+                            <option key={i} value={item.ticketSourceId}>
+                              {item.ticketSourceName}
+                            </option>
+                          ))}
+                      </select>
+                      {this.state.selectedTicketSource === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.TicketSourceCompulsion}
+                        </p>
+                      )}
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Invoice No/Sub Order No</label>
-                      <input className="no-bg" type="text" maxLength={25} 
-                      name="selectedInvoiceNo"
-                      value={this.state.selectedInvoiceNo}
-                      onChange={this.setOnChangeReportData}
+                      <input
+                        className="no-bg"
+                        type="text"
+                        maxLength={25}
+                        name="selectedInvoiceNo"
+                        value={this.state.selectedInvoiceNo}
+                        onChange={this.setOnChangeReportData}
                       />
-                       {this.state.selectedInvoiceNo.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.InvoiceNoCompulsion}
-                    </p>
-                  )}
+                      {this.state.selectedInvoiceNo.length === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.InvoiceNoCompulsion}
+                        </p>
+                      )}
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Customer Email Id</label>
-                      <input className="no-bg" type="text" maxLength={100} 
-                      name="selectedEmailID"
-                      value={this.state.selectedEmailID}
-                      onChange={this.setOnChangeReportData}
+                      <input
+                        className="no-bg"
+                        type="text"
+                        maxLength={100}
+                        name="selectedEmailID"
+                        value={this.state.selectedEmailID}
+                        onChange={this.setOnChangeReportData}
                       />
                       {this.state.selectedEmailID.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.EmailIDCompulsion}
-                    </p>
-                  )}
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.EmailIDCompulsion}
+                        </p>
+                      )}
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Creation Date</label>
                       <div className="ticketreportdat">
-                      <DatePicker
-                        selected={this.state.ReportCreateDate}
-                        onChange={this.handleReportCreateDate.bind(this)}
-                        placeholderText="Creation Date"
-                        showMonthDropdown
-                        showYearDropdown
-                        dateFormat="dd/MM/yyyy"
-                        value={this.state.ReportCreateDate}
-                        
-                        // className="form-control"
-                      />
-                      {this.state.ReportCreateDate.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.CreateDateCompulsion}
-                    </p>
-                  )}
+                        <DatePicker
+                          selected={this.state.ReportCreateDate}
+                          onChange={this.handleReportCreateDate.bind(this)}
+                          placeholderText="Creation Date"
+                          showMonthDropdown
+                          showYearDropdown
+                          dateFormat="dd/MM/yyyy"
+                          value={this.state.ReportCreateDate}
+
+                          // className="form-control"
+                        />
+                        {this.state.ReportCreateDate.length === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.CreateDateCompulsion}
+                          </p>
+                        )}
                       </div>
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Ticket Id/title</label>
-                      <input className="no-bg" type="text" maxLength={11}
-                      name="selectedTicketID"
-                      value={this.state.selectedTicketID}
-                      onChange={this.setOnChangeReportData}
+                      <input
+                        className="no-bg"
+                        type="text"
+                        maxLength={11}
+                        name="selectedTicketID"
+                        value={this.state.selectedTicketID}
+                        onChange={this.setOnChangeReportData}
                       />
                       {this.state.selectedTicketID.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.TicketIDCompulsion}
-                    </p>
-                  )}
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.TicketIDCompulsion}
+                        </p>
+                      )}
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Item Id</label>
-                      <input className="no-bg" type="text" maxLength={11} 
-                       name="selectedItemID"
-                       value={this.state.selectedItemID}
-                       onChange={this.setOnChangeReportData}
+                      <input
+                        className="no-bg"
+                        type="text"
+                        maxLength={11}
+                        name="selectedItemID"
+                        value={this.state.selectedItemID}
+                        onChange={this.setOnChangeReportData}
                       />
                       {this.state.selectedItemID.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.ItemIDCompulsion}
-                    </p>
-                  )}
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.ItemIDCompulsion}
+                        </p>
+                      )}
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Customer Mobile No.</label>
-                      <input className="no-bg" type="text" maxLength={10}
-                       name="selectedMobileNo"
-                       value={this.state.selectedMobileNo}
-                       onChange={this.setOnChangeReportData}
+                      <input
+                        className="no-bg"
+                        type="text"
+                        maxLength={10}
+                        name="selectedMobileNo"
+                        value={this.state.selectedMobileNo}
+                        onChange={this.setOnChangeReportData}
                       />
-                       {this.state.selectedMobileNo.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.MobileNoCompulsion}
-                    </p>
-                  )}
+                      {this.state.selectedMobileNo.length === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.MobileNoCompulsion}
+                        </p>
+                      )}
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Last Updated Date</label>
                       <div className="ticketreportdat">
-                      <DatePicker
-                        selected={this.state.ReportLastDate}
-                        onChange={this.handleReportLastDate.bind(this)}
-                        placeholderText="Last Updated Date"
-                        showMonthDropdown
-                        showYearDropdown
-                        dateFormat="dd/MM/yyyy"
-                                    value={this.state.ReportLastDate}
-                        // className="form-control"
-                      />
-                      {this.state.ReportLastDate.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.LastDateCompulsion}
-                    </p>
-                  )}
+                        <DatePicker
+                          selected={this.state.ReportLastDate}
+                          onChange={this.handleReportLastDate.bind(this)}
+                          placeholderText="Last Updated Date"
+                          showMonthDropdown
+                          showYearDropdown
+                          dateFormat="dd/MM/yyyy"
+                          value={this.state.ReportLastDate}
+                          // className="form-control"
+                        />
+                        {this.state.ReportLastDate.length === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.LastDateCompulsion}
+                          </p>
+                        )}
                       </div>
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Priority</label>
                       <select
-                      name="selectedPriority"
-                                    value={this.state.selectedPriority}
-                                    onChange={this.setOnChangeReportData}
-                                  >
-                                    <option> Priority</option>
-                                    {this.state.TicketPriorityData !== null &&
-                                      this.state.TicketPriorityData.map(
-                                        (item, i) => (
-                                          <option
-                                            key={i}
-                                            value={item.priorityID}
-                                          >
-                                            {item.priortyName}
-                                          </option>
-                                        )
-                                      )}
-                                  </select>
-                                  {this.state.selectedPriority === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.PriorityCompulsion}
-                    </p>
-                  )}
+                        name="selectedPriority"
+                        value={this.state.selectedPriority}
+                        onChange={this.setOnChangeReportData}
+                      >
+                        <option> Priority</option>
+                        {this.state.TicketPriorityData !== null &&
+                          this.state.TicketPriorityData.map((item, i) => (
+                            <option key={i} value={item.priorityID}>
+                              {item.priortyName}
+                            </option>
+                          ))}
+                      </select>
+                      {this.state.selectedPriority === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.PriorityCompulsion}
+                        </p>
+                      )}
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Visited Store</label>
                       <select
-                      name="selectedVisitStore"
-                                    value={this.state.selectedVisitStore}
-                                    onChange={this.setOnChangeReportData}
-                                  >
-                                    <option value="yes">
-                                     Yes
-                                    </option>
-                                    <option value="no">
-                                     No
-                                    </option>
-                                  </select>
-                                  {this.state.selectedVisitStore === "" && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.VisitStoreCompulsion}
-                    </p>
-                  )}
+                        name="selectedVisitStore"
+                        value={this.state.selectedVisitStore}
+                        onChange={this.setOnChangeReportData}
+                      >
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                      </select>
+                      {this.state.selectedVisitStore === "" && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.VisitStoreCompulsion}
+                        </p>
+                      )}
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Ticket Assigned To</label>
                       <select
-                                   name="selectedAssignedTo"
-                                    value={this.state.selectedAssignedTo}
-                                    onChange={this.setOnChangeReportData}
-                                    
-                                  >
-                                    <option>Select Assigned To</option>
-                                    {this.state.AssignToData !== null &&
-                                      this.state.AssignToData.map((item, i) => (
-                                        <option key={i} value={item.userID}>
-                                          {item.fullName}
-                                        </option>
-                                      ))}
-                                  </select>
-                                  {this.state.selectedAssignedTo === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.AssignedToCompulsion}
-                    </p>
-                  )}
+                        name="selectedAssignedTo"
+                        value={this.state.selectedAssignedTo}
+                        onChange={this.setOnChangeReportData}
+                      >
+                        <option>Select Assigned To</option>
+                        {this.state.AssignToData !== null &&
+                          this.state.AssignToData.map((item, i) => (
+                            <option key={i} value={item.userID}>
+                              {item.fullName}
+                            </option>
+                          ))}
+                      </select>
+                      {this.state.selectedAssignedTo === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.AssignedToCompulsion}
+                        </p>
+                      )}
                     </div>
                   </div>
 
                   <div className="row">
                     <div className="col-md-3 ticketreport">
                       <label>Category</label>
-                      <select className="add-select-category"
-                      name="selectedCategory"
-                  value={this.state.selectedCategory}
-                  onChange={this.setOnChangeReportData}
-                  >
-                    <option>Select Category</option>
-                    {this.state.CategoryData !== null &&
-                                      this.state.CategoryData.map((item, i) => (
-                                        <option key={i} value={item.categoryID}>
-                                          {item.categoryName}
-                                        </option>
-                                      ))}
-                  </select>
-                  {this.state.selectedCategory === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.CategoryCompulsion}
-                    </p>
-                  )}
+                      <select
+                        className="add-select-category"
+                        name="selectedCategory"
+                        value={this.state.selectedCategory}
+                        onChange={this.setOnChangeReportData}
+                      >
+                        <option>Select Category</option>
+                        {this.state.CategoryData !== null &&
+                          this.state.CategoryData.map((item, i) => (
+                            <option key={i} value={item.categoryID}>
+                              {item.categoryName}
+                            </option>
+                          ))}
+                      </select>
+                      {this.state.selectedCategory === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.CategoryCompulsion}
+                        </p>
+                      )}
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Status</label>
                       <select
-                                    value={this.state.selectedTicketStatus}
-                                    onChange={this.setOnChangeReportData}
-                                  >
-                                    <option> Status</option>
-                                    {this.state.TicketStatusData !== null &&
-                                      this.state.TicketStatusData.map(
-                                        (item, i) => (
-                                          <option
-                                            key={i}
-                                            value={item.ticketStatusID}
-                                          >
-                                            {item.ticketStatusName}
-                                          </option>
-                                        )
-                                      )}
-                                  </select>
-                                  {this.state.selectedTicketStatus === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.TicketStatusCompulsion}
-                    </p>
-                  )}
+                        value={this.state.selectedTicketStatus}
+                        onChange={this.setOnChangeReportData}
+                      >
+                        <option> Status</option>
+                        {this.state.TicketStatusData !== null &&
+                          this.state.TicketStatusData.map((item, i) => (
+                            <option key={i} value={item.ticketStatusID}>
+                              {item.ticketStatusName}
+                            </option>
+                          ))}
+                      </select>
+                      {this.state.selectedTicketStatus === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.TicketStatusCompulsion}
+                        </p>
+                      )}
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Want To Visit Store</label>
                       <select
-                      name="selectedWantVisitStore"
-                      value={this.state.selectedWantVisitStore}
-                      onChange={this.setOnChangeReportData}
+                        name="selectedWantVisitStore"
+                        value={this.state.selectedWantVisitStore}
+                        onChange={this.setOnChangeReportData}
                       >
                         <option value="yes">Yes</option>
                         <option value="no">No</option>
                       </select>
                       {this.state.selectedWantVisitStore === "" && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.WantVisitStoreCompulsion}
-                    </p>
-                  )}
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.WantVisitStoreCompulsion}
+                        </p>
+                      )}
                     </div>
                   </div>
                   <div className="row">
                     <div className="col-md-3 ticketreport">
                       <label>Sub Category</label>
-                      <select className="add-select-category"
-                      name="selectedSubCategory"
-                  value={this.state.selectedSubCategory}
-                  onChange={this.setOnChangeReportData}
-                  >
-                    <option>Select Subcategory</option>
-                    {this.state.SubCategoryData !== null &&
-                                      this.state.SubCategoryData.map(
-                                        (item, i) => (
-                                          <option
-                                            key={i}
-                                            value={item.subCategoryID}
-                                          >
-                                            {item.subCategoryName}
-                                          </option>
-                                        )
-                                      )}
-                  </select>
-                  {this.state.selectedSubCategory === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.SubCategoryCompulsion}
-                    </p>
-                  )}
+                      <select
+                        className="add-select-category"
+                        name="selectedSubCategory"
+                        value={this.state.selectedSubCategory}
+                        onChange={this.setOnChangeReportData}
+                      >
+                        <option>Select Subcategory</option>
+                        {this.state.SubCategoryData !== null &&
+                          this.state.SubCategoryData.map((item, i) => (
+                            <option key={i} value={item.subCategoryID}>
+                              {item.subCategoryName}
+                            </option>
+                          ))}
+                      </select>
+                      {this.state.selectedSubCategory === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.SubCategoryCompulsion}
+                        </p>
+                      )}
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>SLA Status</label>
                       <select
-                      name="selectedSLAStatus"
-                      value={this.state.selectedSLAStatus}
-                      onChange={this.setOnChangeReportData}
+                        name="selectedSLAStatus"
+                        value={this.state.selectedSLAStatus}
+                        onChange={this.setOnChangeReportData}
                       >
                         <option>2 Days</option>
                         <option>3 Days</option>
@@ -1518,383 +1386,314 @@ class Reports extends Component {
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Want To Visit Store Code/Addres</label>
-                      <input className="no-bg" type="text" 
-                      name="selectedVisitStoreAddress"
-                      value={this.state.selectedVisitStoreAddress}
-                      onChange={this.setOnChangeReportData}
+                      <input
+                        className="no-bg"
+                        type="text"
+                        name="selectedVisitStoreAddress"
+                        value={this.state.selectedVisitStoreAddress}
+                        onChange={this.setOnChangeReportData}
                       />
                       {this.state.selectedVisitStoreAddress.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.VisitStoreAddressCompulsion}
-                    </p>
-                  )}
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.VisitStoreAddressCompulsion}
+                        </p>
+                      )}
                     </div>
                   </div>
 
                   <div className="row">
                     <div className="col-md-3 ticketreport">
                       <label>Issue Type</label>
-                      <select className="add-select-category"
-                      name="selectedIssueType"
-                   value={this.state.selectedIssueType}
-                   onChange={this.setOnChangeReportData}
-                  >
-                    <option>Select IssueType</option>
-                    {this.state.IssueTypeData !== null &&
-                            this.state.IssueTypeData.map((item, i) => (
-                              <option
-                                key={i}
-                                value={item.issueTypeID}
-                               
-                              >
-                                {item.issueTypeName}
-                              </option>
-                            ))}
-                   
-                  </select>
-                  {this.state.selectedIssueType === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.IssueTypeCompulsion}
-                    </p>
-                  )}
+                      <select
+                        className="add-select-category"
+                        name="selectedIssueType"
+                        value={this.state.selectedIssueType}
+                        onChange={this.setOnChangeReportData}
+                      >
+                        <option>Select IssueType</option>
+                        {this.state.IssueTypeData !== null &&
+                          this.state.IssueTypeData.map((item, i) => (
+                            <option key={i} value={item.issueTypeID}>
+                              {item.issueTypeName}
+                            </option>
+                          ))}
+                      </select>
+                      {this.state.selectedIssueType === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.IssueTypeCompulsion}
+                        </p>
+                      )}
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Claim ID</label>
-                      <input className="no-bg" type="text" maxLength={11}
-                      name="selectedClaimID"
-                      value={this.state.selectedClaimID}
-                      onChange={this.setOnChangeReportData}
+                      <input
+                        className="no-bg"
+                        type="text"
+                        maxLength={11}
+                        name="selectedClaimID"
+                        value={this.state.selectedClaimID}
+                        onChange={this.setOnChangeReportData}
                       />
                       {this.state.selectedClaimID.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.ClaimIDCompulsion}
-                    </p>
-                  )}
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.ClaimIDCompulsion}
+                        </p>
+                      )}
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Purchase Store</label>
-                      <input className="no-bg" type="text"
-                       name="selectedPurchaseStore"
-                       value={this.state.selectedPurchaseStore}
-                       onChange={this.setOnChangeReportData}
+                      <input
+                        className="no-bg"
+                        type="text"
+                        name="selectedPurchaseStore"
+                        value={this.state.selectedPurchaseStore}
+                        onChange={this.setOnChangeReportData}
                       />
                       {this.state.selectedPurchaseStore.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.PurchaseStoreCompulsion}
-                    </p>
-                  )}
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.PurchaseStoreCompulsion}
+                        </p>
+                      )}
                     </div>
                   </div>
                   <div className="row borderbottom">
-                      <div className="col-md-12">
-
-                      </div>
+                    <div className="col-md-12"></div>
                   </div>
-                  
+
                   <div className="row">
                     <div className="col-md-3 ticketreport">
                       <label>With Claim</label>
                       <select
-                      name="selectedWithClaim"
-                      value={this.state.selectedWithClaim}
-                      onChange={this.setOnChangeReportData}
+                        name="selectedWithClaim"
+                        value={this.state.selectedWithClaim}
+                        onChange={this.setOnChangeReportData}
                       >
                         <option value="no">No</option>
                         <option value="yes">Yes</option>
-                        
                       </select>
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>With Task</label>
                       <select
-                       name="selectedWithTaskAll"
-                                          value={this.state.selectedWithTaskAll}
-                                          onChange={this.setOnChangeReportData}
-                                        >
-                                          <option value="no">
-                                             No
-                                          </option>
-                                          <option value="yes">
-                                            Yes
-                                          </option>
-                                        </select>
-                    </div>
-                  </div>
-
-                  <div className="row">
-                   
-                      <div className="col-md-3 ticketreport" >
-                        {this.state.selectedWithClaim==="yes"? (
-                          <>
-                          <label>Claim Status</label>
-                      <select
-                      name="selectedClaimStatus"
-                          value={this.state.selectedClaimStatus}
-                           onChange={this.setOnChangeReportData}
-                                            >
-                                              <option>Claim Status</option>
-                                              {this.state.ClaimStatusData !==
-                                                null &&
-                                                this.state.ClaimStatusData.map(
-                                                  (item, i) => (
-                                                    <option
-                                                      key={i}
-                                                      value={item.claimStatusID}
-                                                    >
-                                                      {item.claimStatusName}
-                                                    </option>
-                                                  )
-                                                )}
-                                            </select>
-                                            {this.state.selectedClaimStatus === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.ClaimStatusCompulsion}
-                    </p>
-                  )}
-                                            </>
-                        ) : null}
-                     
-                    </div>
-                   
-                    
-                    <div className="col-md-3 ticketreport">
-                      {this.state.selectedWithTaskAll==="yes"?(<>
-                        <label>Task Status</label>
-                        <select
-                        name="selectedTaskStatus"
-                                                value={
-                                                  this.state.selectedTaskStatus
-                                                }
-                                                onChange={this.setOnChangeReportData}
-                                              >
-                                                <option>Task Status</option>
-                                                {this.state.TaskStatusData !==
-                                                  null &&
-                                                  this.state.TaskStatusData.map(
-                                                    (item, i) => (
-                                                      <option
-                                                        key={i}
-                                                        value={item.taskStatusID}
-                                                      >
-                                                        {item.taskStatusName}
-                                                      </option>
-                                                    )
-                                                  )}
-                                              </select>
-                                              {this.state.selectedTaskStatus === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.TaskStatusCompulsion}
-                    </p>
-                  )}
-                  </>
-
-                      ):null}
-                      
-                    </div>
-                    </div>
-
-                  <div className="row">
-                 
-                    <div className="col-md-3 ticketreport">
-                    {this.state.selectedWithClaim==="yes"? (
-                      <>
-                      <label>Claim Category</label>
-                      <select
-                      name="selectedClaimCategory"
-                                              value={
-                                                this.state.selectedClaimCategory
-                                              }
-                                              onChange={
-                                                this.setOnChangeReportData
-                                              }
-                                            >
-                                              <option>Claim Category</option>
-                                              {this.state.CategoryData !==
-                                                null &&
-                                                this.state.CategoryData.map(
-                                                  (item, i) => (
-                                                    <option
-                                                      key={i}
-                                                      value={item.categoryID}
-                                                    >
-                                                      {item.categoryName}
-                                                    </option>
-                                                  )
-                                                )}
-                                            </select>
-                                            {this.state.selectedClaimCategory === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.ClaimCategoryCompulsion}
-                    </p>
-                  )}
-                                            </>
-
-                    ):null}
-                     
-                    </div>
-                    <div className="col-md-3 ticketreport">
-                    {this.state.selectedWithTaskAll==="yes"?(<>
-                      <label>Task Priority</label>
-                      <select
-                      name="selectedTaskPriority"
-                                    value={this.state.selectedTaskPriority}
-                                    onChange={this.setOnChangeReportData}
-                                  >
-                                    <option>Task Priority</option>
-                                    {this.state.TicketPriorityData !== null &&
-                                      this.state.TicketPriorityData.map(
-                                        (item, i) => (
-                                          <option
-                                            key={i}
-                                            value={item.priorityID}
-                                          >
-                                            {item.priortyName}
-                                          </option>
-                                        )
-                                      )}
-                                  </select>
-                                  {this.state.selectedTaskPriority === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.TaskPriorityCompulsion}
-                    </p>
-                  )}
-                                  </>
-                    ):null}
-                      
-                    </div>
-                  </div>
-
-                  <div className="row">
-                    <div className="col-md-3 ticketreport">
-                    {this.state.selectedWithClaim==="yes"? (<>
-                     <label>Claim Sub Category</label>
-                     <select
-                     name="selectedClaimSubCategory"
-                                             value={
-                                               this.state
-                                                 .selectedClaimSubCategory
-                                             }
-                                             onChange={
-                                               this.setOnChangeReportData
-                                             }
-                                           >
-                                             <option>
-                                               Claim Sub Category
-                                             </option>
-                                             {this.state
-                                               .SubCategoryData !==
-                                               null &&
-                                               this.state.SubCategoryData.map(
-                                                 (item, i) => (
-                                                   <option
-                                                     key={i}
-                                                     value={item.subCategoryID}
-                                                   >
-                                                     {item.subCategoryName}
-                                                   </option>
-                                                 )
-                                               )}
-                                           </select>
-                                           {this.state.selectedClaimSubCategory === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.ClaimSubCategoryCompulsion}
-                    </p>
-                  )}
-                                           </>
-
-                    ):null}
-                      
-                    </div>
-                    <div className="col-md-3 ticketreport">
-                    {this.state.selectedWithTaskAll==="yes"?(<>
-                      <label>Task Department</label>
-                      <select
-                      name="selectedDepartment"
-                                              value={
-                                                this.state.selectedDepartment
-                                              }
-                                              onChange={this.setOnChangeReportData}
-                                            >
-                                              <option>Task Department</option>
-                                              {this.state.DepartmentData !==
-                                                null &&
-                                                this.state.DepartmentData.map(
-                                                  (item, i) => (
-                                                    <option
-                                                      key={i}
-                                                      value={item.departmentID}
-                                                    >
-                                                      {item.departmentName}
-                                                    </option>
-                                                  )
-                                                )}
-                                            </select>
-                                            {this.state.selectedDepartment === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.DepartmentCompulsion}
-                    </p>
-                  )}
-                                            </>
-                    ):null}
-                     
-                    </div>
-                  </div>
-
-                  <div className="row">
-                    <div className="col-md-3 ticketreport">
-                    {this.state.selectedWithClaim==="yes"? (<>
-                      <label>Claim Issue Type</label>
-                      <select
-                      name="selectedClaimIssueType"
-                                              value={
-                                                this.state
-                                                  .selectedClaimIssueType
-                                              }
-                                              onChange={
-                                                this.setOnChangeReportData
-                                              }
-                                            >
-                                              <option>Claim Issue Type</option>
-                                              {this.state.IssueTypeData !==
-                                                null &&
-                                                this.state.IssueTypeData.map(
-                                                  (item, i) => (
-                                                    <option
-                                                      key={i}
-                                                      value={item.issueTypeID}
-                                                    >
-                                                      {item.issueTypeName}
-                                                    </option>
-                                                  )
-                                                )}
-                                            </select>
-                                            {this.state.selectedClaimIssueType === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.ClaimIssueTypeCompulsion}
-                    </p>
-                  )}
-                                            </>
-                    ):null}
-                      
-                    </div>
-                    <div className="col-md-3 ticketreport">
-                    {this.state.selectedWithTaskAll==="yes"?(<>
-                      <label>Task Function</label>
-                      <select
-                      name="selectedFunction"
-                      value={this.state.selectedFunction}
-                      onChange={this.setOnChangeReportData}
+                        name="selectedWithTaskAll"
+                        value={this.state.selectedWithTaskAll}
+                        onChange={this.setOnChangeReportData}
                       >
-                        <option>Attandance</option>
-                        <option>Attandance1</option>
-                      </select></>
-                    ):null}
-                      
+                        <option value="no">No</option>
+                        <option value="yes">Yes</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-md-3 ticketreport">
+                      {this.state.selectedWithClaim === "yes" ? (
+                        <>
+                          <label>Claim Status</label>
+                          <select
+                            name="selectedClaimStatus"
+                            value={this.state.selectedClaimStatus}
+                            onChange={this.setOnChangeReportData}
+                          >
+                            <option>Claim Status</option>
+                            {this.state.ClaimStatusData !== null &&
+                              this.state.ClaimStatusData.map((item, i) => (
+                                <option key={i} value={item.claimStatusID}>
+                                  {item.claimStatusName}
+                                </option>
+                              ))}
+                          </select>
+                          {this.state.selectedClaimStatus === 0 && (
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.ClaimStatusCompulsion}
+                            </p>
+                          )}
+                        </>
+                      ) : null}
+                    </div>
+
+                    <div className="col-md-3 ticketreport">
+                      {this.state.selectedWithTaskAll === "yes" ? (
+                        <>
+                          <label>Task Status</label>
+                          <select
+                            name="selectedTaskStatus"
+                            value={this.state.selectedTaskStatus}
+                            onChange={this.setOnChangeReportData}
+                          >
+                            <option>Task Status</option>
+                            {this.state.TaskStatusData !== null &&
+                              this.state.TaskStatusData.map((item, i) => (
+                                <option key={i} value={item.taskStatusID}>
+                                  {item.taskStatusName}
+                                </option>
+                              ))}
+                          </select>
+                          {this.state.selectedTaskStatus === 0 && (
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.TaskStatusCompulsion}
+                            </p>
+                          )}
+                        </>
+                      ) : null}
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-md-3 ticketreport">
+                      {this.state.selectedWithClaim === "yes" ? (
+                        <>
+                          <label>Claim Category</label>
+                          <select
+                            name="selectedClaimCategory"
+                            value={this.state.selectedClaimCategory}
+                            onChange={this.setOnChangeReportData}
+                          >
+                            <option>Claim Category</option>
+                            {this.state.CategoryData !== null &&
+                              this.state.CategoryData.map((item, i) => (
+                                <option key={i} value={item.categoryID}>
+                                  {item.categoryName}
+                                </option>
+                              ))}
+                          </select>
+                          {this.state.selectedClaimCategory === 0 && (
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.ClaimCategoryCompulsion}
+                            </p>
+                          )}
+                        </>
+                      ) : null}
+                    </div>
+                    <div className="col-md-3 ticketreport">
+                      {this.state.selectedWithTaskAll === "yes" ? (
+                        <>
+                          <label>Task Priority</label>
+                          <select
+                            name="selectedTaskPriority"
+                            value={this.state.selectedTaskPriority}
+                            onChange={this.setOnChangeReportData}
+                          >
+                            <option>Task Priority</option>
+                            {this.state.TicketPriorityData !== null &&
+                              this.state.TicketPriorityData.map((item, i) => (
+                                <option key={i} value={item.priorityID}>
+                                  {item.priortyName}
+                                </option>
+                              ))}
+                          </select>
+                          {this.state.selectedTaskPriority === 0 && (
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.TaskPriorityCompulsion}
+                            </p>
+                          )}
+                        </>
+                      ) : null}
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-md-3 ticketreport">
+                      {this.state.selectedWithClaim === "yes" ? (
+                        <>
+                          <label>Claim Sub Category</label>
+                          <select
+                            name="selectedClaimSubCategory"
+                            value={this.state.selectedClaimSubCategory}
+                            onChange={this.setOnChangeReportData}
+                          >
+                            <option>Claim Sub Category</option>
+                            {this.state.SubCategoryData !== null &&
+                              this.state.SubCategoryData.map((item, i) => (
+                                <option key={i} value={item.subCategoryID}>
+                                  {item.subCategoryName}
+                                </option>
+                              ))}
+                          </select>
+                          {this.state.selectedClaimSubCategory === 0 && (
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.ClaimSubCategoryCompulsion}
+                            </p>
+                          )}
+                        </>
+                      ) : null}
+                    </div>
+                    <div className="col-md-3 ticketreport">
+                      {this.state.selectedWithTaskAll === "yes" ? (
+                        <>
+                          <label>Task Department</label>
+                          <select
+                            name="selectedDepartment"
+                            value={this.state.selectedDepartment}
+                            onChange={this.setOnChangeReportData}
+                          >
+                            <option>Task Department</option>
+                            {this.state.DepartmentData !== null &&
+                              this.state.DepartmentData.map((item, i) => (
+                                <option key={i} value={item.departmentID}>
+                                  {item.departmentName}
+                                </option>
+                              ))}
+                          </select>
+                          {this.state.selectedDepartment === 0 && (
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.DepartmentCompulsion}
+                            </p>
+                          )}
+                        </>
+                      ) : null}
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-md-3 ticketreport">
+                      {this.state.selectedWithClaim === "yes" ? (
+                        <>
+                          <label>Claim Issue Type</label>
+                          <select
+                            name="selectedClaimIssueType"
+                            value={this.state.selectedClaimIssueType}
+                            onChange={this.setOnChangeReportData}
+                          >
+                            <option>Claim Issue Type</option>
+                            {this.state.IssueTypeData !== null &&
+                              this.state.IssueTypeData.map((item, i) => (
+                                <option key={i} value={item.issueTypeID}>
+                                  {item.issueTypeName}
+                                </option>
+                              ))}
+                          </select>
+                          {this.state.selectedClaimIssueType === 0 && (
+                            <p style={{ color: "red", marginBottom: "0px" }}>
+                              {this.state.ClaimIssueTypeCompulsion}
+                            </p>
+                          )}
+                        </>
+                      ) : null}
+                    </div>
+                    <div className="col-md-3 ticketreport">
+                      {this.state.selectedWithTaskAll === "yes" ? (
+                        <>
+                          <label>Task Function</label>
+                          <select
+                            name="selectedFunction"
+                            value={this.state.selectedFunction}
+                            onChange={this.setOnChangeReportData}
+                          >
+                            <option>Attandance</option>
+                            <option>Attandance1</option>
+                          </select>
+                        </>
+                      ) : null}
                     </div>
                   </div>
                   <div className="row nextbutton1">
                     <div className="nextbutton">
-                      <button className="nextbutton-text" type="submit" onClick={this.handleChangeTab.bind(this,1)}>
+                      <button
+                        className="nextbutton-text"
+                        type="submit"
+                        onClick={this.handleChangeTab.bind(this, 1)}
+                      >
                         NEXT
                       </button>
                     </div>
@@ -1902,7 +1701,8 @@ class Reports extends Component {
                 </div>
               </div>
               <div
-                className={`tab-pane fade ${this.state.tabIndex === 1 && 'show active'}`}
+                className={`tab-pane fade ${this.state.tabIndex === 1 &&
+                  "show active"}`}
                 id="chat-tab"
                 role="tabpanel"
                 aria-labelledby="chat-tab"
@@ -1932,15 +1732,15 @@ class Reports extends Component {
                     <div className="col-md-4 ticketreport">
                       <label>Chat Date</label>
                       <div className="ticketreportdat">
-                      <DatePicker
-                        selected={this.state.ChatDate}
-                        onChange={this.handleChatDate.bind(this)}
-                        placeholderText="Chat Date"
-                        showMonthDropdown
-                        showYearDropdown
-                        // className="form-control"
-                      />
-                      {/* <input className="no-bg" type="text" /> */}
+                        <DatePicker
+                          selected={this.state.ChatDate}
+                          onChange={this.handleChatDate.bind(this)}
+                          placeholderText="Chat Date"
+                          showMonthDropdown
+                          showYearDropdown
+                          // className="form-control"
+                        />
+                        {/* <input className="no-bg" type="text" /> */}
                       </div>
                     </div>
                     <div className="col-md-4 ticketreport">
@@ -2026,429 +1826,365 @@ class Reports extends Component {
                     />
                   </div>
                   <div className="buttonschdulesave">
-                    <button className="Schedulenext"
-                     onClick={this.ScheduleOpenModel}
-                    >SCHEDULE</button>
+                    <button
+                      className="Schedulenext"
+                      onClick={this.ScheduleOpenModel}
+                    >
+                      SCHEDULE
+                    </button>
                   </div>
                   <Modal
-                                onClose={this.ScheduleCloseModel}
-                                open={this.state.Schedule}
-                                modalId="ScheduleModel"
-                                classNames={{
-                                  modal: "schedule-width"
-                                }}
-                                overlayId="logout-ovrly"
+                    onClose={this.ScheduleCloseModel}
+                    open={this.state.Schedule}
+                    modalId="ScheduleModel"
+                    classNames={{
+                      modal: "schedule-width"
+                    }}
+                    overlayId="logout-ovrly"
+                  >
+                    <div>
+                      <label>
+                        <b>Schedule date to</b>
+                      </label>
+                      <div>
+                        <div className="normal-dropdown dropdown-setting1 schedule-multi">
+                          <Select
+                            getOptionLabel={option => option.department}
+                            getOptionValue={
+                              option => option.department //id
+                            }
+                            options={this.state.TeamMemberData}
+                            placeholder="Team Member"
+                            // menuIsOpen={true}
+                            closeMenuOnSelect={false}
+                            onChange={this.setTeamMember.bind(this)}
+                            value={this.state.selectedTeamMember}
+                            // showNewOptionAtTop={false}
+                            isMulti
+                          />
+                        </div>
+                        <select
+                          id="inputState"
+                          className="form-control dropdown-setting1 ScheduleDate-to"
+                          value={this.state.selectScheduleDate}
+                          onChange={this.handleScheduleDateChange}
+                        >
+                          {this.state.ScheduleOption !== null &&
+                            this.state.ScheduleOption.map((item, i) => (
+                              <option key={i} value={item.scheduleID}>
+                                {item.scheduleName}
+                              </option>
+                            ))}
+                        </select>
+                        {this.state.selectScheduleDate === "230" ? (
+                          <div className="ScheduleDate-to">
+                            <span>
+                              <label className="every1">Every</label>
+                              <input
+                                type="text"
+                                className="Every"
+                                placeholder="1"
+                                name="selectedNoOfDay"
+                                value={this.state.selectedNoOfDay}
+                                onChange={this.setOnChangeReportData}
+                              />
+                              <label className="every1">Day</label>
+                            </span>
+                          </div>
+                        ) : null}
+                        {this.state.selectScheduleDate === "231" ? (
+                          <div className="ScheduleDate-to">
+                            <span>
+                              <label className="every1">Every</label>
+                              <input
+                                type="text"
+                                className="Every"
+                                placeholder="1"
+                                value={this.state.selectedNoOfWeek}
+                                onChange={this.handleWeekly}
+                              />
+                              <label className="every1">Week on</label>
+                            </span>
+                            <div
+                              style={{
+                                marginTop: "10px"
+                              }}
+                            >
+                              <Checkbox
+                                onChange={this.handleWeeklyDays}
+                                value="Mon"
                               >
-                                <div>
-                                  <label>
-                                    <b>Schedule date to</b>
-                                  </label>
-                                  <div>
-                                    <div className="normal-dropdown dropdown-setting1 schedule-multi">
-                                      <Select
-                                        getOptionLabel={option =>
-                                          option.department
-                                        }
-                                        getOptionValue={
-                                          option => option.department //id
-                                        }
-                                        options={this.state.TeamMemberData}
-                                        placeholder="Team Member"
-                                        // menuIsOpen={true}
-                                        closeMenuOnSelect={false}
-                                        onChange={this.setTeamMember.bind(this)}
-                                        value={this.state.selectedTeamMember}
-                                        // showNewOptionAtTop={false}
-                                        isMulti
-                                      />
-                                    </div>
-                                    <select
-                                      id="inputState"
-                                      className="form-control dropdown-setting1 ScheduleDate-to"
-                                      value={this.state.selectScheduleDate}
-                                      onChange={this.handleScheduleDateChange}
-                                    >
-                                      {this.state.ScheduleOption !== null &&
-                                        this.state.ScheduleOption.map(
-                                          (item, i) => (
-                                            <option
-                                              key={i}
-                                              value={item.scheduleID}
-                                            >
-                                              {item.scheduleName}
-                                            </option>
-                                          )
-                                        )}
-                                    </select>
-                                    {this.state.selectScheduleDate === "230" ? (
-                                      <div className="ScheduleDate-to">
-                                        <span>
-                                          <label className="every1">
-                                            Every
-                                          </label>
-                                          <input
-                                            type="text"
-                                            className="Every"
-                                            placeholder="1"
-                                            name="selectedNoOfDay"
-                                            value={this.state.selectedNoOfDay}
-                                            onChange={this.setOnChangeReportData}
-                                          />
-                                          <label className="every1">Day</label>
-                                        </span>
-                                      </div>
-                                    ) : null}
-                                    {this.state.selectScheduleDate === "231" ? (
-                                      <div className="ScheduleDate-to">
-                                        <span>
-                                          <label className="every1">
-                                            Every
-                                          </label>
-                                          <input
-                                            type="text"
-                                            className="Every"
-                                            placeholder="1"
-                                            value={this.state.selectedNoOfWeek}
-                                            onChange={this.handleWeekly}
-                                          />
-                                          <label className="every1">
-                                            Week on
-                                          </label>
-                                        </span>
-                                        <div
-                                          style={{
-                                            marginTop: "10px"
-                                          }}
-                                        >
-                                          <Checkbox
-                                            onChange={this.handleWeeklyDays}
-                                            value="Mon"
-                                          >
-                                            Mon
-                                          </Checkbox>
-                                          <Checkbox
-                                            onChange={this.handleWeeklyDays}
-                                            value="Tue"
-                                          >
-                                            Tue
-                                          </Checkbox>
-                                          <Checkbox
-                                            onChange={this.handleWeeklyDays}
-                                            value="Wed"
-                                          >
-                                            Wed
-                                          </Checkbox>
-                                          <Checkbox
-                                            onChange={this.handleWeeklyDays}
-                                            value="Thu"
-                                          >
-                                            Thu
-                                          </Checkbox>
-                                          <Checkbox
-                                            onChange={this.handleWeeklyDays}
-                                            value="Fri"
-                                          >
-                                            Fri
-                                          </Checkbox>
-                                          <Checkbox
-                                            onChange={this.handleWeeklyDays}
-                                            value="Sat"
-                                          >
-                                            Sat
-                                          </Checkbox>
-                                          <Checkbox
-                                            onChange={this.handleWeeklyDays}
-                                            value="Sun"
-                                          >
-                                            Sun
-                                          </Checkbox>
-                                        </div>
-                                      </div>
-                                    ) : null}
-                                    {this.state.selectScheduleDate === "232" ? (
-                                      <div className="ScheduleDate-to">
-                                        <span>
-                                          <label className="every1">Day</label>
-                                          <input
-                                            type="text"
-                                            className="Every"
-                                            placeholder="9"
-                                            onChange={this.handleDaysForMonth}
-                                          />
-                                          <label className="every1">
-                                            of every
-                                          </label>
-                                          <input
-                                            type="text"
-                                            className="Every"
-                                            placeholder="1"
-                                            onChange={this.handleMonthForMonth}
-                                          />
-                                          <label className="every1">
-                                            months
-                                          </label>
-                                        </span>
-                                      </div>
-                                    ) : null}
-                                    {this.state.selectScheduleDate === "233" ? (
-                                      <div className="ScheduleDate-to">
-                                        <span>
-                                          <label className="every1">
-                                            Every
-                                          </label>
-                                          <input
-                                            type="text"
-                                            className="Every"
-                                            placeholder="1"
-                                            onChange={this.handleMonthForWeek}
-                                          />
-                                          <label className="every1">
-                                            month on the
-                                          </label>
-                                        </span>
-                                        <div className="row mt-3">
-                                          <div className="col-md-6">
-                                            <select
-                                              id="inputState"
-                                              className="form-control dropdown-setting1"
-                                              onChange={this.handleWeekForWeek}
-                                              value={
-                                                this.state
-                                                  .selectedNoOfWeekForWeek
-                                              }
-                                            >
-                                              <option value="0">Select</option>
-                                              <option value="2">Second</option>
-                                              <option value="4">Four</option>
-                                            </select>
-                                          </div>
-                                          <div className="col-md-6">
-                                            <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                                              <Select
-                                                getOptionLabel={option =>
-                                                  option.days
-                                                }
-                                                getOptionValue={
-                                                  option => option.days //id
-                                                }
-                                                options={
-                                                  this.state.NameOfDayForWeek
-                                                }
-                                                placeholder="Select"
-                                                // menuIsOpen={true}
-                                                closeMenuOnSelect={false}
-                                                onChange={this.setNameOfDayForWeek.bind(
-                                                  this
-                                                )}
-                                                value={
-                                                  this.state
-                                                    .selectedNameOfDayForWeek
-                                                }
-                                                // showNewOptionAtTop={false}
-                                                isMulti
-                                              />
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    ) : null}
-                                    {this.state.selectScheduleDate === "234" ? (
-                                      <div className="ScheduleDate-to">
-                                        <div className="row m-0">
-                                          <label
-                                            className="every1"
-                                            style={{
-                                              lineHeight: "40px"
-                                            }}
-                                          >
-                                            on
-                                          </label>
-                                          <div className="col-md-7">
-                                            <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                                              <Select
-                                                getOptionLabel={option =>
-                                                  option.month
-                                                }
-                                                getOptionValue={
-                                                  option => option.month //id
-                                                }
-                                                options={
-                                                  this.state.NameOfMonthForYear
-                                                }
-                                                placeholder="Select"
-                                                // menuIsOpen={true}
-                                                closeMenuOnSelect={false}
-                                                onChange={this.setNameOfMonthForYear.bind(
-                                                  this
-                                                )}
-                                                value={
-                                                  this.state
-                                                    .selectedNameOfMonthForYear
-                                                }
-                                                // showNewOptionAtTop={false}
-                                                isMulti
-                                              />
-                                            </div>
-                                          </div>
-                                          <input
-                                            type="text"
-                                            className="Every"
-                                            placeholder="1"
-                                            onChange={this.handleDayForYear}
-                                          />
-                                        </div>
-                                      </div>
-                                    ) : null}
-                                    {this.state.selectScheduleDate === "235" ? (
-                                      <div className="ScheduleDate-to">
-                                        <span>
-                                          <div className="row m-0">
-                                            <label
-                                              className="every1"
-                                              style={{
-                                                lineHeight: "40px"
-                                              }}
-                                            >
-                                              on the
-                                            </label>
-                                            <div className="col-md-7">
-                                              <select
-                                                id="inputState"
-                                                className="form-control dropdown-setting1"
-                                                onChange={
-                                                  this.handleWeekForYear
-                                                }
-                                                value={
-                                                  this.state
-                                                    .selectedNoOfWeekForYear
-                                                }
-                                              >
-                                                <option value="0">
-                                                  Select
-                                                </option>
-                                                <option value="2">
-                                                  Second
-                                                </option>
-                                                <option value="4">Four</option>
-                                              </select>
-                                            </div>
-                                          </div>
-                                        </span>
-                                        <div className="row mt-3">
-                                          <div className="col-md-5">
-                                            <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                                              <Select
-                                                getOptionLabel={option =>
-                                                  option.days
-                                                }
-                                                getOptionValue={
-                                                  option => option.days //id
-                                                }
-                                                options={
-                                                  this.state.NameOfDayForYear
-                                                }
-                                                placeholder="Select"
-                                                // menuIsOpen={true}
-                                                closeMenuOnSelect={false}
-                                                onChange={this.setNameOfDayForYear.bind(
-                                                  this
-                                                )}
-                                                value={
-                                                  this.state
-                                                    .selectedNameOfDayForYear
-                                                }
-                                                // showNewOptionAtTop={false}
-                                                isMulti
-                                              />
-                                            </div>
-                                          </div>
-                                          <label
-                                            className="every1"
-                                            style={{
-                                              lineHeight: "40px",
-                                              marginLeft: "14px"
-                                            }}
-                                          >
-                                            to
-                                          </label>
-                                          <div className="col-md-5">
-                                            <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                                              <Select
-                                                getOptionLabel={option =>
-                                                  option.month
-                                                }
-                                                getOptionValue={
-                                                  option => option.month //id
-                                                }
-                                                options={
-                                                  this.state
-                                                    .NameOfMonthForDailyYear
-                                                }
-                                                placeholder="Select"
-                                                // menuIsOpen={true}
-                                                closeMenuOnSelect={false}
-                                                onChange={this.setNameOfMonthForDailyYear.bind(
-                                                  this
-                                                )}
-                                                value={
-                                                  this.state
-                                                    .selectedNameOfMonthForDailyYear
-                                                }
-                                                // showNewOptionAtTop={false}
-                                                isMulti
-                                              />
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    ) : null}
+                                Mon
+                              </Checkbox>
+                              <Checkbox
+                                onChange={this.handleWeeklyDays}
+                                value="Tue"
+                              >
+                                Tue
+                              </Checkbox>
+                              <Checkbox
+                                onChange={this.handleWeeklyDays}
+                                value="Wed"
+                              >
+                                Wed
+                              </Checkbox>
+                              <Checkbox
+                                onChange={this.handleWeeklyDays}
+                                value="Thu"
+                              >
+                                Thu
+                              </Checkbox>
+                              <Checkbox
+                                onChange={this.handleWeeklyDays}
+                                value="Fri"
+                              >
+                                Fri
+                              </Checkbox>
+                              <Checkbox
+                                onChange={this.handleWeeklyDays}
+                                value="Sat"
+                              >
+                                Sat
+                              </Checkbox>
+                              <Checkbox
+                                onChange={this.handleWeeklyDays}
+                                value="Sun"
+                              >
+                                Sun
+                              </Checkbox>
+                            </div>
+                          </div>
+                        ) : null}
+                        {this.state.selectScheduleDate === "232" ? (
+                          <div className="ScheduleDate-to">
+                            <span>
+                              <label className="every1">Day</label>
+                              <input
+                                type="text"
+                                className="Every"
+                                placeholder="9"
+                                onChange={this.handleDaysForMonth}
+                              />
+                              <label className="every1">of every</label>
+                              <input
+                                type="text"
+                                className="Every"
+                                placeholder="1"
+                                onChange={this.handleMonthForMonth}
+                              />
+                              <label className="every1">months</label>
+                            </span>
+                          </div>
+                        ) : null}
+                        {this.state.selectScheduleDate === "233" ? (
+                          <div className="ScheduleDate-to">
+                            <span>
+                              <label className="every1">Every</label>
+                              <input
+                                type="text"
+                                className="Every"
+                                placeholder="1"
+                                onChange={this.handleMonthForWeek}
+                              />
+                              <label className="every1">month on the</label>
+                            </span>
+                            <div className="row mt-3">
+                              <div className="col-md-6">
+                                <select
+                                  id="inputState"
+                                  className="form-control dropdown-setting1"
+                                  onChange={this.handleWeekForWeek}
+                                  value={this.state.selectedNoOfWeekForWeek}
+                                >
+                                  <option value="0">Select</option>
+                                  <option value="2">Second</option>
+                                  <option value="4">Four</option>
+                                </select>
+                              </div>
+                              <div className="col-md-6">
+                                <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                                  <Select
+                                    getOptionLabel={option => option.days}
+                                    getOptionValue={
+                                      option => option.days //id
+                                    }
+                                    options={this.state.NameOfDayForWeek}
+                                    placeholder="Select"
+                                    // menuIsOpen={true}
+                                    closeMenuOnSelect={false}
+                                    onChange={this.setNameOfDayForWeek.bind(
+                                      this
+                                    )}
+                                    value={this.state.selectedNameOfDayForWeek}
+                                    // showNewOptionAtTop={false}
+                                    isMulti
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ) : null}
+                        {this.state.selectScheduleDate === "234" ? (
+                          <div className="ScheduleDate-to">
+                            <div className="row m-0">
+                              <label
+                                className="every1"
+                                style={{
+                                  lineHeight: "40px"
+                                }}
+                              >
+                                on
+                              </label>
+                              <div className="col-md-7">
+                                <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                                  <Select
+                                    getOptionLabel={option => option.month}
+                                    getOptionValue={
+                                      option => option.month //id
+                                    }
+                                    options={this.state.NameOfMonthForYear}
+                                    placeholder="Select"
+                                    // menuIsOpen={true}
+                                    closeMenuOnSelect={false}
+                                    onChange={this.setNameOfMonthForYear.bind(
+                                      this
+                                    )}
+                                    value={
+                                      this.state.selectedNameOfMonthForYear
+                                    }
+                                    // showNewOptionAtTop={false}
+                                    isMulti
+                                  />
+                                </div>
+                              </div>
+                              <input
+                                type="text"
+                                className="Every"
+                                placeholder="1"
+                                onChange={this.handleDayForYear}
+                              />
+                            </div>
+                          </div>
+                        ) : null}
+                        {this.state.selectScheduleDate === "235" ? (
+                          <div className="ScheduleDate-to">
+                            <span>
+                              <div className="row m-0">
+                                <label
+                                  className="every1"
+                                  style={{
+                                    lineHeight: "40px"
+                                  }}
+                                >
+                                  on the
+                                </label>
+                                <div className="col-md-7">
+                                  <select
+                                    id="inputState"
+                                    className="form-control dropdown-setting1"
+                                    onChange={this.handleWeekForYear}
+                                    value={this.state.selectedNoOfWeekForYear}
+                                  >
+                                    <option value="0">Select</option>
+                                    <option value="2">Second</option>
+                                    <option value="4">Four</option>
+                                  </select>
+                                </div>
+                              </div>
+                            </span>
+                            <div className="row mt-3">
+                              <div className="col-md-5">
+                                <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                                  <Select
+                                    getOptionLabel={option => option.days}
+                                    getOptionValue={
+                                      option => option.days //id
+                                    }
+                                    options={this.state.NameOfDayForYear}
+                                    placeholder="Select"
+                                    // menuIsOpen={true}
+                                    closeMenuOnSelect={false}
+                                    onChange={this.setNameOfDayForYear.bind(
+                                      this
+                                    )}
+                                    value={this.state.selectedNameOfDayForYear}
+                                    // showNewOptionAtTop={false}
+                                    isMulti
+                                  />
+                                </div>
+                              </div>
+                              <label
+                                className="every1"
+                                style={{
+                                  lineHeight: "40px",
+                                  marginLeft: "14px"
+                                }}
+                              >
+                                to
+                              </label>
+                              <div className="col-md-5">
+                                <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                                  <Select
+                                    getOptionLabel={option => option.month}
+                                    getOptionValue={
+                                      option => option.month //id
+                                    }
+                                    options={this.state.NameOfMonthForDailyYear}
+                                    placeholder="Select"
+                                    // menuIsOpen={true}
+                                    closeMenuOnSelect={false}
+                                    onChange={this.setNameOfMonthForDailyYear.bind(
+                                      this
+                                    )}
+                                    value={
+                                      this.state.selectedNameOfMonthForDailyYear
+                                    }
+                                    // showNewOptionAtTop={false}
+                                    isMulti
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ) : null}
 
-                                    {/* <input
+                        {/* <input
                                       type="text"
                                       className="txt-1 txt1Place txt1Time"
                                       placeholder="11AM"
                                       onChange={this.handleScheduleTime}
                                     /> */}
-                                    <div className="dash-timepicker">
-                                      <DatePicker
-                                        selected={
-                                          this.state.selectedScheduleTime
-                                        }
-                                        onChange={this.handleScheduleTime.bind(
-                                          this
-                                        )}
-                                        placeholderText="11 AM"
-                                        showTimeSelect
-                                        showTimeSelectOnly
-                                        timeIntervals={60}
-                                        timeCaption="Select Time"
-                                        dateFormat="h:mm aa"
-                                        className="txt-1 txt1Place txt1Time"
-                                        value={this.state.selectedScheduleTime}
-                                      />
-                                    </div>
+                        <div className="dash-timepicker">
+                          <DatePicker
+                            selected={this.state.selectedScheduleTime}
+                            onChange={this.handleScheduleTime.bind(this)}
+                            placeholderText="11 AM"
+                            showTimeSelect
+                            showTimeSelectOnly
+                            timeIntervals={60}
+                            timeCaption="Select Time"
+                            dateFormat="h:mm aa"
+                            className="txt-1 txt1Place txt1Time"
+                            value={this.state.selectedScheduleTime}
+                          />
+                        </div>
 
-                                    <div>
-                                      <button
-                                        className="scheduleBtn"
-                                        onClick={this.handleInsertReport.bind(this)}
-                                      >
-                                        <label className="addLable">
-                                          SCHEDULE
-                                        </label>
-                                      </button>
-                                    </div>
-                                    <div onClick={this.ScheduleCloseModel}>
-                                      <button
-                                        type="button"
-                                        className="scheduleBtncancel"
-                                      >
-                                        CANCEL
-                                      </button>
-                                    </div>
-                                  </div>
-                                </div>
-                              </Modal>
+                        <div>
+                          <button
+                            className="scheduleBtn"
+                            onClick={this.handleInsertReport.bind(this)}
+                          >
+                            <label className="addLable">SCHEDULE</label>
+                          </button>
+                        </div>
+                        <div onClick={this.ScheduleCloseModel}>
+                          <button type="button" className="scheduleBtncancel">
+                            CANCEL
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </Modal>
                   <div className="buttonschdulesave1">
                     <button className="Schedulenext1">SAVE</button>
                   </div>
@@ -2460,53 +2196,196 @@ class Reports extends Component {
         </div>
         <div className="container-fluid">
           <div className="store-settings-cntr reactreport">
-          <div style={{backgroundColor:"#fff"}}>
-            <ReactTable
-              data={datareport}
-              columns={columnsreport}
-              // resizable={false}
-              defaultPageSize={5}
-              showPagination={false}
-            />
-             <div className="position-relative">
-                    <div className="pagi">
-                      <ul>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&lt;</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>1</a>
-                        </li>
-                        <li className="active">
-                          <a href={Demo.BLANK_LINK}>2</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>3</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>4</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>5</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>6</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&gt;</a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="item-selection">
-                      <select>
-                        <option>30</option>
-                        <option>50</option>
-                        <option>100</option>
-                      </select>
-                      <p>Items per page</p>
-                    </div>
-                  </div>
-                  </div>
+            <div style={{ backgroundColor: "#fff" }}>
+            {this.state.loading === true ? (
+                  <div className="loader-icon"></div>
+                ) : (
+              <ReactTable
+                data={datareport}
+                columns={[
+                  {
+                    Header: (
+                      <span>
+                        Name
+                        <FontAwesomeIcon icon={faCaretDown} />
+                      </span>
+                    ),
+                    accessor: "reportName"
+                  },
+                  {
+                    Header: (
+                      <span>
+                        Schedule Status
+                        <FontAwesomeIcon icon={faCaretDown} />
+                      </span>
+                    ),
+                    accessor: "scheduleStatus"
+                  },
+                  {
+                    Header: (
+                      <span>
+                        Created by
+                        <FontAwesomeIcon icon={faCaretDown} />
+                      </span>
+                    ),
+                    accessor: "createdBy",
+                    Cell: row => {
+                      var ids = row.original["reportID"];
+                      return (
+                        <div>
+                          <span>
+                            Admin
+                            <Popover
+                              content={
+                                <>
+                                  <div>
+                                    <b>
+                                      <p className="title">
+                                        Created By: {row.original.createdBy}
+                                      </p>
+                                    </b>
+                                    <p className="sub-title">
+                                      Created Date: {row.original.createdDate}
+                                    </p>
+                                  </div>
+                                  <div>
+                                    <b>
+                                      <p className="title">
+                                        Updated By: {row.original.modifiedBy}
+                                      </p>
+                                    </b>
+                                    <p className="sub-title">
+                                      Updated Date: {row.original.modifiedDate}
+                                    </p>
+                                  </div>
+                                </>
+                              }
+                              placement="bottom"
+                            >
+                              <img
+                                className="info-icon-cp"
+                                src={BlackInfoIcon}
+                                alt="info-icon"
+                                id={ids}
+                              />
+                            </Popover>
+                          </span>
+                        </div>
+                      );
+                    }
+                  },
+                  {
+                    Header: (
+                      <span>
+                        Status
+                        <FontAwesomeIcon icon={faCaretDown} />
+                      </span>
+                    ),
+                    accessor: "reportStatus"
+                  },
+                  {
+                    Header: <span>Actions</span>,
+                    accessor: "actionReport",
+                    Cell: row => (
+                      <span>
+                        <img
+                          src={DownExcel}
+                          alt="download icon"
+                          className="downloadaction"
+                        />
+                        <Popover
+                          content={
+                            <div className="samdel d-flex general-popover popover-body">
+                              <div className="del-big-icon">
+                                <img src={DelBigIcon} alt="del-icon" />
+                              </div>
+                              <div>
+                                <p className="font-weight-bold blak-clr">Delete file?</p>
+                                <p className="mt-1 fs-12">
+                                  Are you sure you want to delete this file?
+                                </p>
+                                <div className="del-can">
+                                  <a>CANCEL</a>
+                                  <button
+                                    className="butn"
+                                    onClick={this.handleDeleteReport.bind(
+                                      this,
+                                      row.original.reportID
+                                    )}
+                                  >
+                                    Delete
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          }
+                          placement="bottom"
+                          trigger="click"
+                        >
+                          <img
+                            src={RedDeleteIcon}
+                            alt="del-icon"
+                            className="del-btn"
+                            // onClick={() => this.show(this, "samdel" + ids)}
+                          />
+                        </Popover>
+            
+                        <button
+                          className="react-tabel-button editre"
+                          id="p-edit-pop-2"
+                          onClick={this.handleAddReportOpen}
+                        >
+                          EDIT
+                          {/* <label className="Table-action-edit-button-text">EDIT</label> */}
+                        </button>
+                      </span>
+                    )
+                  }
+                ]}
+                // resizable={false}
+                defaultPageSize={10}
+                showPagination={true}
+                minRows={1}
+              />)}
+              {/* <div className="position-relative">
+                <div className="pagi">
+                  <ul>
+                    <li>
+                      <a href={Demo.BLANK_LINK}>&lt;</a>
+                    </li>
+                    <li>
+                      <a href={Demo.BLANK_LINK}>1</a>
+                    </li>
+                    <li className="active">
+                      <a href={Demo.BLANK_LINK}>2</a>
+                    </li>
+                    <li>
+                      <a href={Demo.BLANK_LINK}>3</a>
+                    </li>
+                    <li>
+                      <a href={Demo.BLANK_LINK}>4</a>
+                    </li>
+                    <li>
+                      <a href={Demo.BLANK_LINK}>5</a>
+                    </li>
+                    <li>
+                      <a href={Demo.BLANK_LINK}>6</a>
+                    </li>
+                    <li>
+                      <a href={Demo.BLANK_LINK}>&gt;</a>
+                    </li>
+                  </ul>
+                </div>
+                <div className="item-selection">
+                  <select>
+                    <option>30</option>
+                    <option>50</option>
+                    <option>100</option>
+                  </select>
+                  <p>Items per page</p>
+                </div>
+              </div> */}
+            </div>
           </div>
         </div>
       </Fragment>
