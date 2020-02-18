@@ -4640,6 +4640,7 @@ class MyTicketList extends Component {
                                                 src={CallImg}
                                                 alt="HeadPhone"
                                                 className="headPhone3"
+                                                title="Calls"
                                               />
                                             ) : row.original
                                                 .ticketSourceType ===
@@ -4648,6 +4649,7 @@ class MyTicketList extends Component {
                                                 src={MailImg}
                                                 alt="HeadPhone"
                                                 className="headPhone3"
+                                                title="Mails"
                                               />
                                             ) : row.original
                                                 .ticketSourceType ===
@@ -4656,6 +4658,7 @@ class MyTicketList extends Component {
                                                 src={FacebookImg}
                                                 alt="HeadPhone"
                                                 className="headPhone3"
+                                                title="Facebook"
                                               />
                                             ) : row.original
                                                 .ticketSourceType ===
@@ -4664,6 +4667,7 @@ class MyTicketList extends Component {
                                                 src={Chat}
                                                 alt="HeadPhone"
                                                 className="headPhone3"
+                                                title="ChatBot"
                                               />
                                             ) : row.original
                                                 .ticketSourceType ===
@@ -4672,6 +4676,7 @@ class MyTicketList extends Component {
                                                 src={Twitter}
                                                 alt="HeadPhone"
                                                 className="headPhone3 black-twitter"
+                                                title="Twitter"
                                               />
                                             ) : null}
 
