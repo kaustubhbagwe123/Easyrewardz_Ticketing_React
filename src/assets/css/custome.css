@@ -3522,7 +3522,7 @@ table tr th:last-child {
   display: none;
 }
 #overlaySla{
-  position: absolute;
+  position: fixed;
   width: 100%;
   height: 100%;
   top: 0;
