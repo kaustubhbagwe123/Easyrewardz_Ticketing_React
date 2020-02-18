@@ -10,7 +10,7 @@ import BlackLeftArrow from "./../assets/Images/black-left-arrow.png";
 import SearchBlackImg from "./../assets/Images/searchBlack.png";
 import Twitter from "./../assets/Images/twitter.png";
 import Headphone2Img from "./../assets/Images/headphone2.png";
-import CallImg from "./../assets/Images/call.png";
+// import CallImg from "./../assets/Images/call.png";
 import MailImg from "./../assets/Images/msg.png";
 import FacebookImg from "./../assets/Images/facebook.png";
 // import Demo from "../store/Hashtag.js";
@@ -161,20 +161,7 @@ class MyTicketList extends Component {
       selectedAssignedTo: 0,
       AssignToData: [],
       resultCount: 0,
-      TeamMemberData: [
-        {
-          department: "Team Member 1"
-        },
-        {
-          department: "Team Member 2"
-        },
-        {
-          department: "Team Member 3"
-        },
-        {
-          department: "Team Member 4"
-        }
-      ],
+      TeamMemberData: [],
       NameOfDayForWeek: [
         {
           days: "Sunday"
@@ -336,7 +323,6 @@ class MyTicketList extends Component {
     this.handleGetAssignTo();
     this.handleGetDraftDetails();
     this.handleGetDepartmentList();
-    this.handleGetSaveSearchList();
     this.handleMyTicketsearchOption();
   }
 
@@ -1694,7 +1680,7 @@ class MyTicketList extends Component {
     debugger;
     if (e !== null) {
       var selectedTeamMemberCommaSeperated = Array.prototype.map
-        .call(e, s => s.department)
+        .call(e, s => s.fullName)
         .toString();
     }
     this.setState({ selectedTeamMember: e, selectedTeamMemberCommaSeperated });
@@ -1897,6 +1883,8 @@ class MyTicketList extends Component {
     this.setState({ StatusModel: false });
   }
   toggleSearch() {
+    debugger
+    this.handleGetSaveSearchList()
     this.setState(state => ({ collapseSearch: !state.collapseSearch }));
   }
   handleByDateCreate(date) {
@@ -2005,11 +1993,19 @@ class MyTicketList extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let AssignData = res.data.responseData;
-
-      self.setState({
-        AssignToData: AssignData
-      });
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        self.setState({
+          AssignToData: data,
+          TeamMemberData: data
+        });
+      } else {
+        self.setState({
+          AssignToData: [],
+          TeamMemberData: []
+        });
+      }
     });
   }
 
@@ -3843,10 +3839,10 @@ class MyTicketList extends Component {
                                           <div className="normal-dropdown dropdown-setting1 schedule-multi">
                                             <Select
                                               getOptionLabel={option =>
-                                                option.department
+                                                option.fullName
                                               }
                                               getOptionValue={
-                                                option => option.department //id
+                                                option => option.userID //id
                                               }
                                               options={
                                                 this.state.TeamMemberData
@@ -4637,7 +4633,7 @@ class MyTicketList extends Component {
                                             {row.original.ticketSourceType ===
                                             "Calls" ? (
                                               <img
-                                                src={CallImg}
+                                                src={HeadPhone3}
                                                 alt="HeadPhone"
                                                 className="headPhone3"
                                                 title="Calls"
