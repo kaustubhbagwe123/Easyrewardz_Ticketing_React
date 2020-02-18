@@ -115,8 +115,8 @@ class TicketHierarchy extends Component {
     debugger;
     if(
         this.state.designation_name.length > 0 &&
-        this.state.selectReportTo > 0 &&
-        this.state.selectStatus > 0 
+        this.state.selectReportTo.length > 0 &&
+        this.state.selectStatus !== 0 
 
     ){
 
