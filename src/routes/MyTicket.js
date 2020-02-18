@@ -737,7 +737,8 @@ class MyTicket extends Component {
       if (messageData === "Success") {
         NotificationManager.success("Tickets assigned successfully.");
         self.HandlelabelModalClose();
-        // self.handleSearchTicket();
+       
+        self.componentDidMount();
       }
     });
   }
@@ -1621,7 +1622,7 @@ class MyTicket extends Component {
                           const index = column ? column.index : -1;
                           return {
                             onClick: e => {
-                              // debugger;
+                              debugger;
                               this.selectedRow = index;
                               var agentId = column.original["user_ID"];
                               this.setState({ agentId });
