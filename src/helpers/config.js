@@ -12,9 +12,9 @@ let config = {
     ["Low","In-Active"],
     ],
     userTemplate:[
-    ["UserName","MobileNo","EmailID","Designation"],
-    ["Shlok barot","9665958061","shlok@gmail.com","Manager"],
-    ["Vipin singh","9665958062","vipin@gmail.com","Agent"],
+    ["UserName","MobileNo","UserEmailID","UserDesignation","ReporteeDesignation","ReportsTo","CRMRole","CopyEscalation","EscalationAgentName","Status"],
+    ["Shlok.barot","9665958061","shlok@gmail.com","Manager","mangesh@gmail.com","Executive","yes","Chetan","Active"],
+    ["Vipin.Singh","9665958061","vipin@gmail.com","Manager","vipin@gmail.com","Agent","no","Mangesh","In-Active"],
     
     ],
     alertTemplate:[

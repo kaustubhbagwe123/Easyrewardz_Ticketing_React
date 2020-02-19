@@ -79,8 +79,7 @@ class ProgramCodeSignIn extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  render() {
-    
+  render() {    
     return (     
       <div className="auth-wrapper">
       <NotificationContainer></NotificationContainer>
