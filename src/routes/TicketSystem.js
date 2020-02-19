@@ -712,7 +712,6 @@ class TicketSystem extends Component {
 
   handleCREATE_TICKET(StatusID) {
     debugger;
-    // this.setState({ loading: true });
     if (
       this.state.titleSuggValue.length > 0 &&
       this.state.ticketDetails.length > 0 &&
@@ -728,10 +727,12 @@ class TicketSystem extends Component {
       var selectedRow = "";
       for (var i = 0; i < this.state.selectedDataIds.length; i++) {
         selectedRow +=
+        this.state.selectedDataIds[i].orderMasterID + "|" +
           this.state.selectedDataIds[i].orderItemID +
           "|" +
           this.state.selectedDataIds[i].requireSize +
           ",";
+       
       }
 
       var selectedStore = "";
