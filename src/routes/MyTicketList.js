@@ -644,7 +644,7 @@ class MyTicketList extends Component {
       url: config.apiUrl + "/Ticketing/Schedule",
       headers: authHeader(),
       data: {
-        SearchInputParams:this.state.FinalSaveSearchData,
+        SearchInputParams: this.state.FinalSaveSearchData,
         ScheduleFor: this.state.selectedTeamMemberCommaSeperated,
         ScheduleType: this.state.selectScheduleDate,
         NoOfDay: this.state.selectedNoOfDay,
@@ -1326,7 +1326,7 @@ class MyTicketList extends Component {
         SearchAssignData: SearchAssignData,
         assignFirstName: "",
         assignLastName: "",
-        assignEmail: "",
+        assignEmail: ""
         // selectedDesignation: 0
       });
     });
@@ -1884,8 +1884,8 @@ class MyTicketList extends Component {
     this.setState({ StatusModel: false });
   }
   toggleSearch() {
-    debugger
-    this.handleGetSaveSearchList()
+    debugger;
+    this.handleGetSaveSearchList();
     this.setState(state => ({ collapseSearch: !state.collapseSearch }));
   }
   handleByDateCreate(date) {
@@ -2360,7 +2360,10 @@ class MyTicketList extends Component {
               role="tablist"
               style={{ display: "inline" }}
             >
-              <li className="nav-item" style={{ display: this.state.Escalation }}>
+              <li
+                className="nav-item"
+                style={{ display: this.state.Escalation }}
+              >
                 <a
                   className="nav-link active"
                   data-toggle="tab"
@@ -2444,6 +2447,49 @@ class MyTicketList extends Component {
                   </span>
                 </a>
               </li>
+
+              <li className="nav-item" style={{ display: this.state.Closed }}>
+                <a
+                  className="nav-link"
+                  data-toggle="tab"
+                  href="#Escalation-tab"
+                  role="tab"
+                  aria-controls="Escalation-tab"
+                  aria-selected="false"
+                  name="Closed"
+                  onClick={() => {
+                    this.handleSearchTicket("Closed");
+                  }}
+                >
+                  Closed:{" "}
+                  <span className="myTciket-tab-span">
+                    {this.state.byClosedCount < 9
+                      ? "0" + this.state.byClosedCount
+                      : this.state.byClosedCount}
+                  </span>
+                </a>
+              </li>
+              <li className="nav-item" style={{ display: this.state.ReOpen }}>
+                <a
+                  className="nav-link"
+                  data-toggle="tab"
+                  href="#Escalation-tab"
+                  role="tab"
+                  aria-controls="Escalation-tab"
+                  aria-selected="false"
+                  name="ReOpen"
+                  onClick={() => {
+                    this.handleSearchTicket("ReOpen");
+                  }}
+                >
+                  Reopen:{" "}
+                  <span className="myTciket-tab-span">
+                    {this.state.byReOpenCount < 9
+                      ? "0" + this.state.byReOpenCount
+                      : this.state.byReOpenCount}
+                  </span>
+                </a>
+              </li>
               <li
                 className="nav-item"
                 style={{ display: this.state.ReassignedByMe }}
@@ -2469,53 +2515,8 @@ class MyTicketList extends Component {
                   </span>
                 </a>
               </li>
-              <li className="nav-item" style={{ display: this.state.Closed }}>
-                <a
-                  
-                  className="nav-link"
-                  data-toggle="tab"
-                  href="#Escalation-tab"
-                  role="tab"
-                  aria-controls="Escalation-tab"
-                  aria-selected="false"
-                  name="Closed"
-                  onClick={() => {
-                    this.handleSearchTicket("Closed");
-                  }}
-                >
-                  Closed:{" "}
-                  <span className="myTciket-tab-span">
-                    {this.state.byClosedCount < 9
-                      ? "0" + this.state.byClosedCount
-                      : this.state.byClosedCount}
-                  </span>
-                </a>
-              </li>
-              <li className="nav-item" style={{ display: this.state.ReOpen }}>
-                <a
-                  
-                  className="nav-link"
-                  data-toggle="tab"
-                  href="#Escalation-tab"
-                  role="tab"
-                  aria-controls="Escalation-tab"
-                  aria-selected="false"
-                  name="ReOpen"
-                  onClick={() => {
-                    this.handleSearchTicket("ReOpen");
-                  }}
-                >
-                  Reopen:{" "}
-                  <span className="myTciket-tab-span">
-                    {this.state.byReOpenCount < 9
-                      ? "0" + this.state.byReOpenCount
-                      : this.state.byReOpenCount}
-                  </span>
-                </a>
-              </li>
               <li className="nav-item" style={{ display: this.state.All }}>
                 <a
-                  
                   className="nav-link"
                   data-toggle="tab"
                   href="#Escalation-tab"
@@ -2537,7 +2538,6 @@ class MyTicketList extends Component {
               </li>
               <li className="nav-item" style={{ display: this.state.FollowUp }}>
                 <a
-                  
                   className="nav-link"
                   data-toggle="tab"
                   href="#Escalation-tab"
@@ -2559,7 +2559,6 @@ class MyTicketList extends Component {
               </li>
               <li className="nav-item" style={{ display: this.state.Draft }}>
                 <a
-                  
                   className="nav-link"
                   data-toggle="tab"
                   href="#Draft-tab"
@@ -4871,7 +4870,14 @@ class MyTicketList extends Component {
                                 ),
                                 accessor: "message",
                                 Cell: row => {
-                                  return <div>{row.original.message.split('-')[0]}/<span style={{color: '#666'}}>{row.original.message.split('-')[1]}</span></div>;
+                                  return (
+                                    <div>
+                                      {row.original.message.split("-")[0]}/
+                                      <span style={{ color: "#666" }}>
+                                        {row.original.message.split("-")[1]}
+                                      </span>
+                                    </div>
+                                  );
                                 }
                               },
                               {

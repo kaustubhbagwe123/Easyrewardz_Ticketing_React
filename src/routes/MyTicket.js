@@ -3612,9 +3612,9 @@ class MyTicket extends Component {
                               {/* <label className="today-02">Today 02</label> */}
                               <label className="today-02">
                                 {item.updatedDate} &nbsp;
-                                {item.messageCount < 9
+                                ({item.messageCount < 9
                                   ? "0" + item.messageCount
-                                  : item.messageCount}
+                                  : item.messageCount})
                               </label>
                             </div>
                             <div className="col-md-5">
@@ -3670,7 +3670,7 @@ class MyTicket extends Component {
                                             <div className="card-details">
                                               <div className="card-details-1">
                                                 <label className="label-5">
-                                                {details.ticketMailBody}
+                                                  {details.ticketMailBody}
                                                 </label>
                                               </div>
                                             </div>
@@ -4072,41 +4072,43 @@ class MyTicket extends Component {
                         </Card>
                       </Collapse>
                     </div>
-                    <div className="row row-spacing new-top-bottom-margin">
-                      <div className="col-12 col-xs-12 col-sm-4 col-md-3">
-                        <img
-                          src={BlackUserIcon}
-                          alt="Avatar"
-                          className="oval-6"
-                        />
-                        <label className="rashmi-c">
-                          {this.state.messageDetails.commentBy}
-                        </label>
-                        <img
-                          src={Headphone2Img}
-                          alt="headphone"
-                          className="headphone1"
-                        />
-                      </div>
-                      <div className="col-12 col-xs-12 col-sm-6 col-md-7">
-                        <label className="need-to-change-my-sh">
-                          Need to change my shipping address
-                        </label>
-                      </div>
-                      <div className="col-12 col-xs-12 col-sm-2">
-                        {this.state.messageDetails.isCustomerComment === 1 ? (
-                          <label
-                            className="reply-comment"
-                            onClick={this.hanldeCommentOpen2.bind(this)}
-                          >
-                            Reply
+                    {/* <div>
+                      <div className="row row-spacing new-top-bottom-margin">
+                        <div className="col-12 col-xs-12 col-sm-4 col-md-3">
+                          <img
+                            src={BlackUserIcon}
+                            alt="Avatar"
+                            className="oval-6"
+                          />
+                          <label className="rashmi-c">
+                            {this.state.messageDetails.commentBy}
                           </label>
-                        ) : null}
+                          <img
+                            src={Headphone2Img}
+                            alt="headphone"
+                            className="headphone1"
+                          />
+                        </div>
+                        <div className="col-12 col-xs-12 col-sm-6 col-md-7">
+                          <label className="need-to-change-my-sh">
+                            Need to change my shipping address
+                          </label>
+                        </div>
+                        <div className="col-12 col-xs-12 col-sm-2">
+                          {this.state.messageDetails.isCustomerComment === 1 ? (
+                            <label
+                              className="reply-comment"
+                              onClick={this.hanldeCommentOpen2.bind(this)}
+                            >
+                              Reply
+                            </label>
+                          ) : null}
 
-                        <br />
-                        <label className="reply-comment">Comment</label>
+                          <br />
+                          <label className="reply-comment">Comment</label>
+                        </div>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
 
                   <div
