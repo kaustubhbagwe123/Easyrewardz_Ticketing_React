@@ -16,7 +16,7 @@ import CKEditor from "ckeditor4-react";
 import PlusImg from "./../assets/Images/plus.png";
 import CircleCancel from "./../assets/Images/Circle-cancel.png";
 // import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
-// import moment from "moment";
+import moment from "moment";
 import FileUpload from "./../assets/Images/file.png";
 import ThumbTick from "./../assets/Images/thumbticket.png"; // Don't comment this line
 import PDF from "./../assets/Images/pdf.png"; // Don't comment this line
@@ -749,7 +749,7 @@ class TicketSystem extends Component {
           "|" +
           PurposeID +
           "|" +
-          this.state.selectedStoreIDs[j]["VisitedDate"] +
+          moment(this.state.selectedStoreIDs[j]["VisitedDate"]).format("YYYY-MM-DD") +
           ",";
       }
       var actionStatusId = 0;
