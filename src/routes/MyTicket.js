@@ -3562,7 +3562,8 @@ class MyTicket extends Component {
                     </div>
                   </div>
                 </div>
-                <div className="tab-content p-0 tabpadtick">
+                {/* <div className="tab-content p-0 tabpadtick"> */}
+                <div className="tab-content p-0">
                   <div
                     className="tab-pane fade"
                     id="Claim-tab"
@@ -4268,7 +4269,7 @@ class MyTicket extends Component {
               </div>
             </Modal>
 
-            <div className="row" style={{ margin: "0" }}>
+            <div className="row d-none" style={{ margin: "0" }}>
               <div className="TicketTabs">
                 <ul className="mb-0">
                   <li className="SubR">
