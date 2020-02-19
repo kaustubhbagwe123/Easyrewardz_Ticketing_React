@@ -532,7 +532,7 @@ class MyTicketList extends Component {
           delete CSVData[i].responseTimeRemainingBy;
           delete CSVData[i].responseOverdueBy;
           delete CSVData[i].resolutionOverdueBy;
-          delete CSVData[i].ticketCommentCount;
+          // delete CSVData[i].ticketCommentCount;
         }
         self.setState({ CSVDownload: CSVData });
       } else {
@@ -1596,6 +1596,7 @@ class MyTicketList extends Component {
       debugger;
       let status = res.data.message;
       let data = res.data.responseData;
+      console.log(data);
       let CSVData = data;
       let count = 0;
       if (res.data.responseData != null) {
@@ -1607,9 +1608,9 @@ class MyTicketList extends Component {
           for (let i = 0; i < CSVData.length; i++) {
             delete CSVData[i].totalpages;
             delete CSVData[i].responseTimeRemainingBy;
-            delete CSVData[i].responseOverdueBy;
+            delete CSVData[i].responseOverdueBy;  
             delete CSVData[i].resolutionOverdueBy;
-            delete CSVData[i].ticketCommentCount;
+            // delete CSVData[i].ticketCommentCount;
           }
           self.setState({ CSVDownload: CSVData });
           self.setState({
@@ -2058,6 +2059,7 @@ class MyTicketList extends Component {
     });
   }
   HandleRowClickPage = (rowInfo, column) => {
+    if ((rowInfo, column)) {
     return {
       onClick: e => {
         debugger;
@@ -2073,8 +2075,18 @@ class MyTicketList extends Component {
             ticketDetailID: Id
           });
         }, 100);
+      },
+      style: {
+        background:
+          column.original["isEscalation"] === 1
+            ? "#FFDFDF" : column.original["isSLANearBreach"] === true ? '#FFF3DF'
+              : column.original["isReassigned"] === true
+                ? "#DEF3FF"
+                : "white"
       }
     };
+  }
+  return {};
   };
   handleScheduleDateChange = e => {
     debugger;
@@ -4821,10 +4833,7 @@ class MyTicketList extends Component {
                                                 {row.original
                                                   .ticketCommentCount > 0 ? (
                                                   <div className="d-flex align-items-center">
-                                                    {
-                                                      row.original
-                                                        .ticketCommentCount
-                                                    }{" "}
+                                                    {row.original.ticketCommentCount}
                                                     NEW
                                                     <div className="nw-chat">
                                                       <img
