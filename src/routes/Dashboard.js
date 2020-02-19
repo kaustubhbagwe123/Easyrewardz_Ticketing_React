@@ -9,8 +9,10 @@ import InfoIcon from "./../assets/Images/info-icon.png";
 import TaskIconBlue from "./../assets/Images/task-icon-blue.png";
 import TaskIconGray from "./../assets/Images/task-icon-gray.png";
 import Sorting from "./../assets/Images/sorting.png";
-// import CliamIconBlue from "./../assets/Images/cliam-icon-blue.png";
+import CliamIconBlue from "./../assets/Images/cliam-icon-blue.png";
+import CliamIconGray from "./../assets/Images/claim-icon-gray.png";
 import Chat from "./../assets/Images/chat.png";
+import Twitter from "./../assets/Images/twitter.png";
 import csv from "./../assets/Images/csv.png";
 import Schedule from "./../assets/Images/schedule.png";
 import Assign from "./../assets/Images/assign.png";
@@ -19,6 +21,9 @@ import DelSearch from "./../assets/Images/del-search.png";
 import BlackLeftArrow from "./../assets/Images/black-left-arrow.png";
 import SearchBlackImg from "./../assets/Images/searchBlack.png";
 import Headphone2Img from "./../assets/Images/headphone2.png";
+import CallImg from "./../assets/Images/call.png";
+import MailImg from "./../assets/Images/msg.png";
+import FacebookImg from "./../assets/Images/facebook.png";
 import { Collapse, CardBody, Card } from "reactstrap";
 import Demo from "../store/Hashtag.js";
 // import { UncontrolledPopover, PopoverBody } from "reactstrap";
@@ -144,7 +149,7 @@ class Dashboard extends Component {
       selectedPriority: 0,
       selectedPriorityAll: 0,
       selectedTicketStatusByDate: 0,
-      selectedNoOfDay: "",
+      selectedNoOfDay: 0,
       selectedScheduleTime: "",
       selectedSlaDueByDate: 0,
       selectedClaimStatus: 0,
@@ -235,6 +240,7 @@ class Dashboard extends Component {
       selectedNameOfDayForWeek: [],
       selectedNameOfMonthForYear: [],
       selectedNameOfMonthForDailyYear: [],
+      selectedNameOfDayForYear: [],
       NameOfDayForWeek: [
         {
           days: "Sunday"
@@ -292,9 +298,12 @@ class Dashboard extends Component {
       Email: "",
       MobileNo: "",
       AssignTo: "",
-      PurchaseStoreCodeAddress: ""
+      PurchaseStoreCodeAddress: "",
+      scheduleRequired: "",
+      agentSelection: "",
+      ShowGridCheckBox: false
     };
-    this.handleAssignTo = this.handleAssignTo.bind(this);
+    this.handleGetAssignTo = this.handleGetAssignTo.bind(this);
     this.applyCallback = this.applyCallback.bind(this);
     // this.handleApply = this.handleApply.bind(this);
     this.toggle = this.toggle.bind(this);
@@ -304,9 +313,14 @@ class Dashboard extends Component {
     this.handleSearchTicketEscalation = this.handleSearchTicketEscalation.bind(
       this
     );
+    this.handleTicketsOnLoad = this.handleTicketsOnLoad.bind(this);
+    this.handleTicketsOnLoadLoader = this.handleTicketsOnLoadLoader.bind(this);
     this.handleAdvSearchFlag = this.handleAdvSearchFlag.bind(this);
     this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
     this.handleSchedulePopup = this.handleSchedulePopup.bind(this);
+    this.handleSchedulePopupSuccess = this.handleSchedulePopupSuccess.bind(
+      this
+    );
     this.handleAssignTickets = this.handleAssignTickets.bind(this);
     this.handelOnchangeData = this.handelOnchangeData.bind(this);
     this.clearSearch = this.clearSearch.bind(this);
@@ -363,7 +377,9 @@ class Dashboard extends Component {
 
   componentDidMount() {
     debugger;
-    this.handleSearchTicketEscalation();
+    // this.handleSearchTicketEscalation();   // this is called for bydefault content
+    // this.handleTicketsOnLoad();
+    this.handleTicketsOnLoadLoader();
     this.handleGetDepartmentList();
     this.handleGetTicketSourceList();
     this.handleGetCategoryList();
@@ -372,12 +388,244 @@ class Dashboard extends Component {
     this.handleGetTicketPriorityList();
     this.handleGetChannelOfPurchaseList();
     this.handleGetBrandList();
-    // this.handleGetDashboardNumberData();
+    this.handleGetAssignTo();
     // this.handleGetDashboardGraphData();
     this.handleGetAgentList();
     this.handleGetSaveSearchList();
 
     this.handleAdvanceSearchOption();
+  }
+
+  handleTicketsOnLoadLoader() {
+    this.setState({ loading: true });
+  }
+
+  handleTicketsOnLoad() {
+    debugger;
+    let self = this;
+    this.setState({ loading: true });
+
+    // ---------------By Date tab---------------------
+    var dateTab = {};
+    if (this.state.ActiveTabId === 1) {
+      if (
+        this.state.ByDateCreatDate === null ||
+        this.state.ByDateCreatDate === undefined ||
+        this.state.ByDateCreatDate === ""
+      ) {
+        dateTab["Ticket_CreatedOn"] = "";
+      } else {
+        dateTab["Ticket_CreatedOn"] = moment(this.state.ByDateCreatDate).format(
+          "YYYY-MM-DD"
+        );
+      }
+      if (
+        this.state.ByDateSelectDate === null ||
+        this.state.ByDateSelectDate === undefined ||
+        this.state.ByDateSelectDate === ""
+      ) {
+        dateTab["Ticket_ModifiedOn"] = "";
+      } else {
+        dateTab["Ticket_ModifiedOn"] = moment(
+          this.state.ByDateSelectDate
+        ).format("YYYY-MM-DD");
+      }
+      dateTab["SLA_DueON"] = this.state.selectedSlaDueByDate;
+      dateTab["Ticket_StatusID"] = this.state.selectedTicketStatusByDate;
+    } else {
+      dateTab = null;
+    }
+
+    // --------------------By Customer Type Tab---------------
+    var customerType = {};
+    if (this.state.ActiveTabId === 2) {
+      customerType["CustomerMobileNo"] = this.state.MobileNoByCustType.trim();
+      customerType["CustomerEmailID"] = this.state.EmailIdByCustType.trim();
+      customerType["TicketID"] = this.state.TicketIdByCustType.trim();
+      customerType[
+        "TicketStatusID"
+      ] = this.state.selectedTicketStatusByCustomer;
+    } else {
+      customerType = null;
+    }
+
+    // --------------------By Ticket Type Tab-----------------
+    var ticketType = {};
+    if (this.state.ActiveTabId === 3) {
+      let purchaseIds = "";
+      let actionTypeIds = "";
+
+      if (this.state.selectedChannelOfPurchase != null) {
+        for (let i = 0; i < this.state.selectedChannelOfPurchase.length; i++) {
+          purchaseIds +=
+            this.state.selectedChannelOfPurchase[i].channelOfPurchaseID + ",";
+        }
+      }
+      if (this.state.selectedTicketActionType != null) {
+        for (let i = 0; i < this.state.selectedTicketActionType.length; i++) {
+          actionTypeIds +=
+            this.state.selectedTicketActionType[i].ticketActionTypeID + ",";
+        }
+      }
+
+      ticketType["TicketPriorityID"] = this.state.selectedPriority;
+      ticketType["TicketStatusID"] = this.state.selectedTicketStatusByTicket;
+      ticketType["ChannelOfPurchaseIds"] = purchaseIds;
+      ticketType["ActionTypes"] = actionTypeIds;
+    } else {
+      ticketType = null;
+    }
+
+    // --------------------By Category Tab-------------------
+    var categoryType = {};
+    if (this.state.ActiveTabId === 4) {
+      categoryType["CategoryId"] = this.state.selectedCategory;
+      categoryType["SubCategoryId"] = this.state.selectedSubCategory;
+      categoryType["IssueTypeId"] = this.state.selectedIssueType;
+      categoryType[
+        "TicketStatusID"
+      ] = this.state.selectedTicketStatusByCategory;
+    } else {
+      categoryType = null;
+    }
+    //---------------------By Ticket All Tab---------------------
+    var allTab = {};
+
+    if (this.state.ActiveTabId === 5) {
+      let withClaim = 0;
+      let withTask = 0;
+      if (this.state.selectedWithClaimAll === "yes") {
+        withClaim = 1;
+      }
+      if (this.state.selectedWithTaskAll === "yes") {
+        withTask = 1;
+      }
+
+      // --------------------Check null date----------------------------------
+      if (
+        this.state.ByAllCreateDate === null ||
+        this.state.ByAllCreateDate === undefined ||
+        this.state.ByAllCreateDate === ""
+      ) {
+        allTab["CreatedDate"] = "";
+      } else {
+        allTab["CreatedDate"] = moment(this.state.ByAllCreateDate).format(
+          "YYYY-MM-DD"
+        );
+      }
+      // --------------------Check null date----------------------------------
+      if (
+        this.state.ByAllLastDate === null ||
+        this.state.ByAllLastDate === undefined ||
+        this.state.ByAllLastDate === ""
+      ) {
+        allTab["ModifiedDate"] = "";
+      } else {
+        allTab["ModifiedDate"] = moment(this.state.ByAllLastDate).format(
+          "YYYY-MM-DD"
+        );
+      }
+
+      allTab["CategoryId"] = this.state.selectedCategoryAll;
+      allTab["SubCategoryId"] = this.state.selectedSubCategoryAll;
+      allTab["IssueTypeId"] = this.state.selectedIssueTypeAll;
+      allTab["TicketSourceTypeID"] = this.state.selectedTicketSource;
+      allTab["TicketIdORTitle"] = this.state.TicketIdTitleByAll.trim();
+      allTab["PriorityId"] = this.state.selectedPriorityAll;
+      allTab["TicketSatutsID"] = this.state.selectedTicketStatusAll;
+      allTab["SLAStatus"] = this.state.selectedSlaStatus;
+      allTab["ClaimId"] = this.state.selectedClaimStatus;
+      allTab[
+        "InvoiceNumberORSubOrderNo"
+      ] = this.state.InvoiceSubOrderByAll.trim();
+      allTab["OrderItemId"] = this.state.ItemIdByAll.trim();
+      allTab["IsVisitStore"] = this.state.selectedVisitStoreAll;
+      allTab["IsWantVistingStore"] = this.state.selectedWantToVisitStoreAll;
+      allTab["CustomerEmailID"] = this.state.EmailByAll.trim();
+      allTab["CustomerMobileNo"] = this.state.MobileByAll.trim();
+      allTab["AssignTo"] = this.state.selectedAssignedTo;
+      allTab[
+        "StoreCodeORAddress"
+      ] = this.state.selectedPurchaseStoreCodeAddressAll.trim();
+      allTab[
+        "WantToStoreCodeORAddress"
+      ] = this.state.selectedVisitStoreCodeAddressAll.trim();
+      allTab["HaveClaim"] = withClaim;
+      allTab["ClaimStatusId"] = this.state.selectedClaimStatus;
+      allTab["ClaimCategoryId"] = this.state.selectedClaimCategory;
+      allTab["ClaimSubCategoryId"] = this.state.selectedClaimSubCategory;
+      allTab["ClaimIssueTypeId"] = this.state.selectedClaimIssueType;
+      allTab["HaveTask"] = withTask;
+      allTab["TaskStatusId"] = this.state.selectedTaskStatus;
+      allTab["TaskDepartment_Id"] = this.state.selectedDepartment;
+      allTab["TaskFunction_Id"] = this.state.selectedFunction;
+    } else {
+      allTab = null;
+    }
+
+    // ----------------------SetState variable in Json Format for Apply Search------------------------------------
+    var ShowDataparam = {};
+
+    ShowDataparam.AssigntoId = this.state.AgentIds;
+    ShowDataparam.BrandId = this.state.BrandIds;
+    ShowDataparam.ActiveTabId = this.state.ActiveTabId;
+    ShowDataparam.searchDataByDate = dateTab;
+    ShowDataparam.searchDataByCustomerType = customerType;
+    ShowDataparam.searchDataByTicketType = ticketType;
+    ShowDataparam.searchDataByCategoryType = categoryType;
+    ShowDataparam.searchDataByAll = allTab;
+
+    var FinalSaveSearchData = JSON.stringify(ShowDataparam);
+    this.setState({
+      FinalSaveSearchData
+    });
+    // ----------------------------------------------------------
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/DashBoard/DashBoardSearchTicket",
+      headers: authHeader(),
+      data: {
+        AssigntoId: this.state.AgentIds,
+        BrandId: this.state.BrandIds,
+        ActiveTabId: this.state.ActiveTabId,
+        searchDataByDate: dateTab,
+        searchDataByCustomerType: customerType,
+        searchDataByTicketType: ticketType,
+        searchDataByCategoryType: categoryType,
+        searchDataByAll: allTab
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      let data = res.data.responseData;
+      let CSVData = data;
+      let count = 0;
+      if (res.data.responseData != null) {
+        count = res.data.responseData.length;
+      }
+      if (status === "Success") {
+        self.setState({
+          SearchTicketData: data,
+          resultCount: count,
+          loading: false
+        });
+        for (let i = 0; i < CSVData.length; i++) {
+          delete CSVData[i].totalpages;
+          delete CSVData[i].responseTimeRemainingBy;
+          delete CSVData[i].responseOverdueBy;
+          delete CSVData[i].resolutionOverdueBy;
+          delete CSVData[i].ticketCommentCount;
+        }
+        self.setState({ CSVDownload: CSVData });
+      } else {
+        self.setState({
+          SearchTicketData: [],
+          resultCount: 0,
+          loading: false
+        });
+      }
+    });
   }
 
   clickCheckbox(evt) {
@@ -485,6 +733,61 @@ class Dashboard extends Component {
       selectedWeeklyDays: finalWeekList
     });
   };
+
+  setSortCheckStatus = e => {
+    debugger;
+
+    var itemsArray = [];
+    var data = e.currentTarget.value;
+    if (data === "open") {
+      itemsArray = this.state.SearchTicketData.filter(
+        a => a.ticketStatus === "Open"
+      );
+    } else if (data === "resolved") {
+      itemsArray = this.state.SearchTicketData.filter(
+        a => a.ticketStatus === "Resolved"
+      );
+    } else if (data === "solved") {
+      itemsArray = this.state.SearchTicketData.filter(
+        a => a.ticketStatus === "Solved"
+      );
+    } else if (data === "new") {
+      itemsArray = this.state.SearchTicketData.filter(
+        a => a.ticketStatus === "New"
+      );
+    }
+
+    this.setState({
+      SearchTicketData: itemsArray
+    });
+    this.StatusCloseModel();
+  };
+
+  sortStatusAtoZ() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.SearchTicketData;
+
+    itemsArray.sort((a, b) => {
+      return a.name > b.name;
+    });
+    this.setState({
+      SearchTicketData: itemsArray
+    });
+    this.StatusCloseModel();
+  }
+  sortStatusZtoA() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.SearchTicketData;
+    itemsArray.sort((a, b) => {
+      return a.name < b.name;
+    });
+    this.setState({
+      SearchTicketData: itemsArray
+    });
+    this.StatusCloseModel();
+  }
   handleAdvanceSearchOption() {
     debugger;
     let self = this;
@@ -498,131 +801,153 @@ class Dashboard extends Component {
     }).then(function(res) {
       debugger;
       let status = res.data.message;
-      let data = res.data.responseData;
+      let data1 = res.data.responseData;
       if (status === "Success") {
-        self.setState({ modulesItems: data });
-        self.setAdvanceSearch();
+        self.setState({ modulesItems: data1 });
+        self.setAdvanceSearch(data1);
       } else {
         self.setState({ modulesItems: [] });
       }
     });
   }
-  setAdvanceSearch() {
+  setAdvanceSearch(data1) {
     debugger;
     var data = [];
-    data = this.state.modulesItems;
-    if (data[0].moduleItemisActive === true) {
-      this.setState({ CreateDateShowRecord: "yes" });
-    } else {
-      this.setState({ CreateDateShowRecord: "none" });
-    }
-
-    if (data[1].moduleItemisActive === true) {
-      this.setState({ LastUpdatedDate: "yes" });
-    } else {
-      this.setState({ LastUpdatedDate: "none" });
-    }
-
-    if (data[2].moduleItemisActive === true) {
-      this.setState({ Category: "yes" });
-    } else {
-      this.setState({ Category: "none" });
-    }
-
-    if (data[3].moduleItemisActive === true) {
-      this.setState({ SubCategory: "yes" });
-    } else {
-      this.setState({ SubCategory: "none" });
-    }
-
-    if (data[4].moduleItemisActive === true) {
-      this.setState({ IssueType: "yes" });
-    } else {
-      this.setState({ IssueType: "none" });
-    }
-
-    if (data[5].moduleItemisActive === true) {
-      this.setState({ TicketSource: "yes" });
-    } else {
-      this.setState({ TicketSource: "none" });
-    }
-
-    if (data[6].moduleItemisActive === true) {
-      this.setState({ TicketIDTitle: "yes" });
-    } else {
-      this.setState({ TicketIDTitle: "none" });
-    }
-
-    if (data[7].moduleItemisActive === true) {
-      this.setState({ TicketPriority: "yes" });
-    } else {
-      this.setState({ TicketPriority: "none" });
-    }
-
-    if (data[8].moduleItemisActive === true) {
-      this.setState({ TicketStatus: "yes" });
-    } else {
-      this.setState({ TicketStatus: "none" });
-    }
-
-    if (data[9].moduleItemisActive === true) {
-      this.setState({ SLAStatus: "yes" });
-    } else {
-      this.setState({ SLAStatus: "none" });
-    }
-
-    if (data[10].moduleItemisActive === true) {
-      this.setState({ ClaimID: "yes" });
-    } else {
-      this.setState({ ClaimID: "none" });
-    }
-
-    if (data[11].moduleItemisActive === true) {
-      this.setState({ InvoiceNoSubOrderNo: "yes" });
-    } else {
-      this.setState({ InvoiceNoSubOrderNo: "none" });
-    }
-
-    if (data[12].moduleItemisActive === true) {
-      this.setState({ ItemID: "yes" });
-    } else {
-      this.setState({ ItemID: "none" });
-    }
-
-    if (data[13].moduleItemisActive === true) {
-      this.setState({ Didvisitstore: "yes" });
-    } else {
-      this.setState({ Didvisitstore: "none" });
-    }
-
-    if (data[14].moduleItemisActive === true) {
-      this.setState({ Wanttovisitstore: "yes" });
-    } else {
-      this.setState({ Wanttovisitstore: "none" });
-    }
-
-    if (data[16].moduleItemisActive === true) {
-      this.setState({ Email: "yes" });
-    } else {
-      this.setState({ Email: "none" });
-    }
-
-    if (data[17].moduleItemisActive === true) {
-      this.setState({ MobileNo: "yes" });
-    } else {
-      this.setState({ MobileNo: "none" });
-    }
-
-    if (data[18].moduleItemisActive === true) {
-      this.setState({ AssignTo: "yes" });
-    } else {
-      this.setState({ AssignTo: "none" });
-    }
-
-    if (data[19].moduleItemisActive === true) {
-      this.setState({ PurchaseStoreCodeAddress: "yes" });
-    } else {
-      this.setState({ PurchaseStoreCodeAddress: "none" });
+    data = data1;
+    if (data.length > 0) {
+      if (data[0].moduleItemisActive !== undefined) {
+        if (data[0].moduleItemisActive === true) {
+          this.setState({ CreateDateShowRecord: "yes" });
+        } else {
+          this.setState({ CreateDateShowRecord: "none" });
+        }
+      }
+      if (data[1].moduleItemisActive !== undefined) {
+        if (data[1].moduleItemisActive === true) {
+          this.setState({ LastUpdatedDate: "yes" });
+        } else {
+          this.setState({ LastUpdatedDate: "none" });
+        }
+      }
+      if (data[2].moduleItemisActive !== undefined) {
+        if (data[2].moduleItemisActive === true) {
+          this.setState({ Category: "yes" });
+        } else {
+          this.setState({ Category: "none" });
+        }
+      }
+      if (data[3].moduleItemisActive !== undefined) {
+        if (data[3].moduleItemisActive === true) {
+          this.setState({ SubCategory: "yes" });
+        } else {
+          this.setState({ SubCategory: "none" });
+        }
+      }
+      if (data[4].moduleItemisActive !== undefined) {
+        if (data[4].moduleItemisActive === true) {
+          this.setState({ IssueType: "yes" });
+        } else {
+          this.setState({ IssueType: "none" });
+        }
+      }
+      if (data[5].moduleItemisActive !== undefined) {
+        if (data[5].moduleItemisActive === true) {
+          this.setState({ TicketSource: "yes" });
+        } else {
+          this.setState({ TicketSource: "none" });
+        }
+      }
+      if (data[6].moduleItemisActive !== undefined) {
+        if (data[6].moduleItemisActive === true) {
+          this.setState({ TicketIDTitle: "yes" });
+        } else {
+          this.setState({ TicketIDTitle: "none" });
+        }
+      }
+      if (data[7].moduleItemisActive !== undefined) {
+        if (data[7].moduleItemisActive === true) {
+          this.setState({ TicketPriority: "yes" });
+        } else {
+          this.setState({ TicketPriority: "none" });
+        }
+      }
+      if (data[8].moduleItemisActive !== undefined) {
+        if (data[8].moduleItemisActive === true) {
+          this.setState({ TicketStatus: "yes" });
+        } else {
+          this.setState({ TicketStatus: "none" });
+        }
+      }
+      if (data[9].moduleItemisActive !== undefined) {
+        if (data[9].moduleItemisActive === true) {
+          this.setState({ SLAStatus: "yes" });
+        } else {
+          this.setState({ SLAStatus: "none" });
+        }
+      }
+      if (data[10].moduleItemisActive !== undefined) {
+        if (data[10].moduleItemisActive === true) {
+          this.setState({ ClaimID: "yes" });
+        } else {
+          this.setState({ ClaimID: "none" });
+        }
+      }
+      if (data[11].moduleItemisActive !== undefined) {
+        if (data[11].moduleItemisActive === true) {
+          this.setState({ InvoiceNoSubOrderNo: "yes" });
+        } else {
+          this.setState({ InvoiceNoSubOrderNo: "none" });
+        }
+      }
+      if (data[12].moduleItemisActive !== undefined) {
+        if (data[12].moduleItemisActive === true) {
+          this.setState({ ItemID: "yes" });
+        } else {
+          this.setState({ ItemID: "none" });
+        }
+      }
+      if (data[13].moduleItemisActive !== undefined) {
+        if (data[13].moduleItemisActive === true) {
+          this.setState({ Didvisitstore: "yes" });
+        } else {
+          this.setState({ Didvisitstore: "none" });
+        }
+      }
+      if (data[14].moduleItemisActive !== undefined) {
+        if (data[14].moduleItemisActive === true) {
+          this.setState({ Wanttovisitstore: "yes" });
+        } else {
+          this.setState({ Wanttovisitstore: "none" });
+        }
+      }
+      if (data[16].moduleItemisActive !== undefined) {
+        if (data[16].moduleItemisActive === true) {
+          this.setState({ Email: "yes" });
+        } else {
+          this.setState({ Email: "none" });
+        }
+      }
+      if (data[17].moduleItemisActive !== undefined) {
+        if (data[17].moduleItemisActive === true) {
+          this.setState({ MobileNo: "yes" });
+        } else {
+          this.setState({ MobileNo: "none" });
+        }
+      }
+      if (data[18].moduleItemisActive !== undefined) {
+        if (data[18].moduleItemisActive === true) {
+          this.setState({ AssignTo: "yes" });
+        } else {
+          this.setState({ AssignTo: "none" });
+        }
+      }
+      if (data[19].moduleItemisActive !== undefined) {
+        if (data[19].moduleItemisActive === true) {
+          this.setState({ PurchaseStoreCodeAddress: "yes" });
+        } else {
+          this.setState({ PurchaseStoreCodeAddress: "none" });
+        }
+      }
     }
   }
   handleGetDashboardNumberData() {
@@ -743,6 +1068,7 @@ class Dashboard extends Component {
     if (this.state.AgentIds !== "" && this.state.BrandIds !== "") {
       this.handleGetDashboardNumberData();
       this.handleGetDashboardGraphData();
+      this.handleTicketsOnLoad();
     }
   }
   checkAllBrandStart(event) {
@@ -764,6 +1090,7 @@ class Dashboard extends Component {
     if (this.state.AgentIds !== "" && this.state.BrandIds !== "") {
       this.handleGetDashboardNumberData();
       this.handleGetDashboardGraphData();
+      this.handleTicketsOnLoad();
     }
   }
   checkIndividualAgent = event => {
@@ -802,6 +1129,7 @@ class Dashboard extends Component {
       () => {
         this.handleGetDashboardNumberData();
         this.handleGetDashboardGraphData();
+        this.ViewSearchData();
       }
     );
   };
@@ -843,6 +1171,7 @@ class Dashboard extends Component {
       () => {
         this.handleGetDashboardNumberData();
         this.handleGetDashboardGraphData();
+        this.ViewSearchData();
       }
     );
   };
@@ -875,6 +1204,7 @@ class Dashboard extends Component {
     });
     this.handleGetDashboardNumberData();
     this.handleGetDashboardGraphData();
+    this.ViewSearchData();
   };
   checkAllBrand = async event => {
     debugger;
@@ -906,6 +1236,7 @@ class Dashboard extends Component {
     });
     this.handleGetDashboardNumberData();
     this.handleGetDashboardGraphData();
+    this.ViewSearchData();
   };
   handleGetAgentList() {
     debugger;
@@ -916,9 +1247,22 @@ class Dashboard extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let AgentData = res.data.responseData;
-      self.setState({ AgentData: AgentData });
-      self.checkAllAgentStart();
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        self.setState({
+          AgentData: data,
+          AssignToData: data,
+          TeamMemberData: data
+        });
+        self.checkAllAgentStart();
+      } else {
+        self.setState({
+          AgentData: [],
+          AssignToData: [],
+          TeamMemberData: []
+        });
+      }
     });
   }
   handleGetBrandList() {
@@ -958,7 +1302,7 @@ class Dashboard extends Component {
         debugger;
         this.selectedRow = index;
         var agentId = column.original["user_ID"];
-        this.setState({ agentId });
+        this.setState({ agentId, agentSelection: "" });
       },
       style: {
         background: this.selectedRow === index ? "#ECF2F4" : null
@@ -970,7 +1314,7 @@ class Dashboard extends Component {
     this.setState({ selectedAssignedTo: assign });
   };
 
-  handleAssignTo() {
+  handleGetAssignTo() {
     debugger;
 
     let self = this;
@@ -1051,6 +1395,7 @@ class Dashboard extends Component {
     this.setState(state => ({ collapse: !state.collapse }));
   }
   toggleSearch() {
+    this.handleGetSaveSearchList();
     this.setState(state => ({ collapseSearch: !state.collapseSearch }));
   }
   onOpenModal = () => {
@@ -1122,8 +1467,13 @@ class Dashboard extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let DepartmentData = res.data.responseData;
-      self.setState({ DepartmentData: DepartmentData });
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        self.setState({ DepartmentData: data });
+      } else {
+        self.setState({ DepartmentData: [] });
+      }
     });
   }
   handleWithTaskAll = e => {
@@ -1200,8 +1550,8 @@ class Dashboard extends Component {
         SearchAssignData: SearchAssignData,
         assignFirstName: "",
         assignLastName: "",
-        assignEmail: "",
-        selectedDesignation: 0
+        assignEmail: ""
+        // selectedDesignation: 0
       });
     });
   }
@@ -1227,8 +1577,8 @@ class Dashboard extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let TicketPriorityData = res.data.responseData;
-      self.setState({ TicketPriorityData: TicketPriorityData });
+      let data = res.data.responseData;
+      self.setState({ TicketPriorityData: data });
     });
   }
   handleTicketStatusAll = e => {
@@ -1567,6 +1917,99 @@ class Dashboard extends Component {
   }
   handleSchedulePopup() {
     debugger;
+    // if (this.state.selectedTeamMember.length > 0 && ) {
+
+    // }
+    if (
+      this.state.selectScheduleDate === 0 ||
+      this.state.selectScheduleDate === "100"
+    ) {
+      this.setState({
+        scheduleRequired: "All fields are required"
+      });
+    } else if (this.state.selectScheduleDate === "230") {
+      if (
+        this.state.selectedTeamMember.length === 0 ||
+        this.state.selectedScheduleTime === "" ||
+        this.state.selectedNoOfDay === 0
+      ) {
+        this.setState({
+          scheduleRequired: "All fields are required"
+        });
+      } else {
+        this.handleSchedulePopupSuccess();
+      }
+    } else if (this.state.selectScheduleDate === "231") {
+      if (
+        this.state.selectedTeamMember.length === 0 ||
+        this.state.selectedScheduleTime === "" ||
+        this.state.selectedNoOfWeek === 0 ||
+        this.state.selectedWeeklyDays === ""
+      ) {
+        this.setState({
+          scheduleRequired: "All fields are required"
+        });
+      } else {
+        this.handleSchedulePopupSuccess();
+      }
+    } else if (this.state.selectScheduleDate === "232") {
+      if (
+        this.state.selectedTeamMember.length === 0 ||
+        this.state.selectedScheduleTime === "" ||
+        this.state.selectedNoOfDaysForMonth === 0 ||
+        this.state.selectedNoOfMonthForMonth === 0
+      ) {
+        this.setState({
+          scheduleRequired: "All fields are required"
+        });
+      } else {
+        this.handleSchedulePopupSuccess();
+      }
+    } else if (this.state.selectScheduleDate === "233") {
+      if (
+        this.state.selectedTeamMember.length === 0 ||
+        this.state.selectedScheduleTime === "" ||
+        this.state.selectedNoOfMonthForWeek === 0 ||
+        this.state.selectedNoOfWeekForWeek === 0 ||
+        this.state.selectedNameOfDayForWeek.length === 0
+      ) {
+        this.setState({
+          scheduleRequired: "All fields are required"
+        });
+      } else {
+        this.handleSchedulePopupSuccess();
+      }
+    } else if (this.state.selectScheduleDate === "234") {
+      if (
+        this.state.selectedTeamMember.length === 0 ||
+        this.state.selectedScheduleTime === "" ||
+        this.state.selectedNoOfDayForDailyYear === 0 ||
+        this.state.selectedNameOfMonthForYear.length === 0
+      ) {
+        this.setState({
+          scheduleRequired: "All fields are required"
+        });
+      } else {
+        this.handleSchedulePopupSuccess();
+      }
+    } else if (this.state.selectScheduleDate === "235") {
+      if (
+        this.state.selectedTeamMember.length === 0 ||
+        this.state.selectedScheduleTime === "" ||
+        this.state.selectedNoOfWeekForYear === 0 ||
+        this.state.selectedNameOfDayForYear.length === 0 ||
+        this.state.selectedNameOfMonthForDailyYear.length === 0
+      ) {
+        this.setState({
+          scheduleRequired: "All fields are required"
+        });
+      } else {
+        this.handleSchedulePopupSuccess();
+      }
+    }
+  }
+  handleSchedulePopupSuccess() {
+    debugger;
 
     let self = this;
     axios({
@@ -1574,6 +2017,7 @@ class Dashboard extends Component {
       url: config.apiUrl + "/Ticketing/Schedule",
       headers: authHeader(),
       data: {
+        SearchInputParams: this.state.FinalSaveSearchData,
         ScheduleFor: this.state.selectedTeamMemberCommaSeperated,
         ScheduleType: this.state.selectScheduleDate,
         NoOfDay: this.state.selectedNoOfDay,
@@ -1605,6 +2049,10 @@ class Dashboard extends Component {
       if (messageData === "Success") {
         self.ScheduleCloseModel();
         NotificationManager.success("Scheduled successfully.");
+        self.setState({
+          scheduleRequired: "",
+          selectedTeamMemberCommaSeperated: ""
+        });
       }
     });
   }
@@ -1679,31 +2127,34 @@ class Dashboard extends Component {
   };
   handleAssignTickets() {
     debugger;
-
-    let self = this;
-    var ticketIdsComma = this.state.ticketIds;
-    var ticketIds = ticketIdsComma.substring(0, ticketIdsComma.length - 1);
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Ticketing/AssignTickets",
-      headers: authHeader(),
-      params: {
-        TicketID: ticketIds,
-        AgentID: this.state.agentId,
-        Remark: this.state.agentRemark
-      }
-    }).then(function(res) {
-      debugger;
-      let messageData = res.data.message;
-      if (messageData === "Success") {
-        self.handleAssignModalClose();
-        NotificationManager.success("Tickets assigned successfully.");
-        self.handleSearchTicketEscalation();
-      }
-      // self.setState({
-      //   SlaStatusData: SlaStatusData
-      // });
-    });
+    if (this.state.agentId !== 0) {
+      let self = this;
+      var ticketIdsComma = this.state.ticketIds;
+      var ticketIds = ticketIdsComma.substring(0, ticketIdsComma.length - 1);
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Ticketing/AssignTickets",
+        headers: authHeader(),
+        params: {
+          TicketID: ticketIds,
+          AgentID: this.state.agentId,
+          Remark: this.state.agentRemark
+        }
+      }).then(function(res) {
+        debugger;
+        let messageData = res.data.message;
+        if (messageData === "Success") {
+          self.handleAssignModalClose();
+          NotificationManager.success("Tickets assigned successfully.");
+          // self.handleSearchTicketEscalation();
+          self.ViewSearchData();
+        }
+      });
+    } else {
+      this.setState({
+        agentSelection: "Agent Selection is required"
+      });
+    }
   }
   handleGetSlaStatusList() {
     debugger;
@@ -1715,10 +2166,17 @@ class Dashboard extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let SlaStatusData = res.data.responseData;
-      self.setState({
-        SlaStatusData: SlaStatusData
-      });
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        self.setState({
+          SlaStatusData: data
+        });
+      } else {
+        self.setState({
+          SlaStatusData: []
+        });
+      }
     });
   }
   handleGetTicketSourceList() {
@@ -1731,10 +2189,17 @@ class Dashboard extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let TicketSourceData = res.data.responseData;
-      self.setState({
-        TicketSourceData: TicketSourceData
-      });
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        self.setState({
+          TicketSourceData: data
+        });
+      } else {
+        self.setState({
+          TicketSourceData: []
+        });
+      }
     });
   }
   handleGetClaimIssueTypeList() {
@@ -1880,75 +2345,104 @@ class Dashboard extends Component {
   clearSearch() {
     debugger;
     if (this.state.byDateFlag === 1) {
-      this.setState({
-        ByDateCreatDate: "",
-        ByDateSelectDate: "",
-        selectedSlaDueByDate: 0,
-        selectedTicketStatusByDate: 0,
-        resultCount: 0
-      });
-      this.handleSearchTicketEscalation();
+      this.setState(
+        {
+          ByDateCreatDate: "",
+          ByDateSelectDate: "",
+          selectedSlaDueByDate: 0,
+          selectedTicketStatusByDate: 0,
+          resultCount: 0
+        },
+        () => {
+          // this.handleSearchTicketEscalation();
+          this.ViewSearchData();
+        }
+      );
     } else if (this.state.byCustomerTypeFlag === 2) {
-      this.setState({
-        MobileNoByCustType: "",
-        EmailIdByCustType: "",
-        TicketIdByCustType: "",
-        selectedTicketStatusByCustomer: 0,
-        resultCount: 0
-      });
-      this.handleSearchTicketEscalation();
+      this.setState(
+        {
+          MobileNoByCustType: "",
+          EmailIdByCustType: "",
+          TicketIdByCustType: "",
+          selectedTicketStatusByCustomer: 0,
+          resultCount: 0
+        },
+        () => {
+          // this.handleSearchTicketEscalation();
+          this.ViewSearchData();
+        }
+      );
     } else if (this.state.byTicketTypeFlag === 3) {
-      this.setState({
-        selectedPriority: 0,
-        selectedTicketStatusByTicket: 0,
-        selectedChannelOfPurchase: [],
-        selectedTicketActionType: [],
-        resultCount: 0
-      });
-      this.handleSearchTicketEscalation();
+      this.setState(
+        {
+          selectedPriority: 0,
+          selectedTicketStatusByTicket: 0,
+          selectedChannelOfPurchase: [],
+          selectedTicketActionType: [],
+          resultCount: 0
+        },
+        () => {
+          // this.handleSearchTicketEscalation();
+          this.ViewSearchData();
+        }
+      );
     } else if (this.state.byCategoryFlag === 4) {
-      this.setState({
-        selectedCategory: 0,
-        selectedSubCategory: 0,
-        selectedIssueType: 0,
-        selectedTicketStatusByCategory: 0,
-        resultCount: 0
-      });
-      this.handleSearchTicketEscalation();
+      this.setState(
+        {
+          selectedCategory: 0,
+          selectedSubCategory: 0,
+          selectedIssueType: 0,
+          selectedTicketStatusByCategory: 0,
+          resultCount: 0
+        },
+        () => {
+          // this.handleSearchTicketEscalation();
+          this.ViewSearchData();
+          this.handleGetSubCategoryList();
+        }
+      );
     } else if (this.state.allFlag === 5) {
-      this.setState({
-        ByAllCreateDate: "",
-        selectedTicketSource: 0,
-        ClaimIdByAll: "",
-        EmailByAll: "",
-        ByAllLastDate: "",
-        TicketIdTitleByAll: "",
-        InvoiceSubOrderByAll: "",
-        MobileByAll: "",
-        selectedCategoryAll: 0,
-        selectedPriorityAll: 0,
-        ItemIdByAll: "",
-        selectedAssignedToAll: "",
-        selectedSubCategoryAll: 0,
-        selectedTicketStatusAll: 0,
-        selectedVisitStoreAll: "yes",
-        selectedPurchaseStoreCodeAddressAll: "",
-        selectedIssueTypeAll: 0,
-        selectedSlaStatus: 0,
-        selectedWantToVisitStoreAll: "yes",
-        selectedVisitStoreCodeAddressAll: "",
-        selectedWithClaimAll: "no",
-        selectedClaimStatus: 0,
-        selectedClaimCategory: 0,
-        selectedClaimSubCategory: 0,
-        selectedClaimIssueType: 0,
-        selectedWithTaskAll: "no",
-        selectedTaskStatus: 0,
-        selectedDepartment: 0,
-        selectedFunction: 0,
-        resultCount: 0
-      });
-      this.handleSearchTicketEscalation();
+      this.setState(
+        {
+          ByAllCreateDate: "",
+          selectedTicketSource: 0,
+          ClaimIdByAll: "",
+          EmailByAll: "",
+          ByAllLastDate: "",
+          TicketIdTitleByAll: "",
+          InvoiceSubOrderByAll: "",
+          MobileByAll: "",
+          selectedCategoryAll: 0,
+          selectedPriorityAll: 0,
+          ItemIdByAll: "",
+          selectedAssignedTo: 0,
+          selectedAssignedToAll: "",
+          selectedSubCategoryAll: 0,
+          selectedTicketStatusAll: 0,
+          selectedVisitStoreAll: "yes",
+          selectedPurchaseStoreCodeAddressAll: "",
+          selectedIssueTypeAll: 0,
+          selectedSlaStatus: 0,
+          selectedWantToVisitStoreAll: "yes",
+          selectedVisitStoreCodeAddressAll: "",
+          selectedWithClaimAll: "no",
+          selectedClaimStatus: 0,
+          selectedClaimCategory: 0,
+          selectedClaimSubCategory: 0,
+          selectedClaimIssueType: 0,
+          selectedWithTaskAll: "no",
+          selectedTaskStatus: 0,
+          selectedDepartment: 0,
+          selectedFunction: 0,
+          resultCount: 0
+        },
+        () => {
+          // this.handleSearchTicketEscalation();
+          this.ViewSearchData();
+          this.handleGetSubCategoryList();
+          this.handleGetClaimSubCategoryList();
+        }
+      );
     }
   }
   ViewSearchData() {
@@ -1990,9 +2484,9 @@ class Dashboard extends Component {
     // --------------------By Customer Type Tab---------------
     var customerType = {};
     if (this.state.ActiveTabId === 2) {
-      customerType["CustomerMobileNo"] = this.state.MobileNoByCustType;
-      customerType["CustomerEmailID"] = this.state.EmailIdByCustType;
-      customerType["TicketID"] = this.state.TicketIdByCustType;
+      customerType["CustomerMobileNo"] = this.state.MobileNoByCustType.trim();
+      customerType["CustomerEmailID"] = this.state.EmailIdByCustType.trim();
+      customerType["TicketID"] = this.state.TicketIdByCustType.trim();
       customerType[
         "TicketStatusID"
       ] = this.state.selectedTicketStatusByCustomer;
@@ -2081,24 +2575,26 @@ class Dashboard extends Component {
       allTab["SubCategoryId"] = this.state.selectedSubCategoryAll;
       allTab["IssueTypeId"] = this.state.selectedIssueTypeAll;
       allTab["TicketSourceTypeID"] = this.state.selectedTicketSource;
-      allTab["TicketIdORTitle"] = this.state.TicketIdTitleByAll;
+      allTab["TicketIdORTitle"] = this.state.TicketIdTitleByAll.trim();
       allTab["PriorityId"] = this.state.selectedPriorityAll;
       allTab["TicketSatutsID"] = this.state.selectedTicketStatusAll;
       allTab["SLAStatus"] = this.state.selectedSlaStatus;
       allTab["ClaimId"] = this.state.selectedClaimStatus;
-      allTab["InvoiceNumberORSubOrderNo"] = this.state.InvoiceSubOrderByAll;
-      allTab["OrderItemId"] = this.state.ItemIdByAll;
+      allTab[
+        "InvoiceNumberORSubOrderNo"
+      ] = this.state.InvoiceSubOrderByAll.trim();
+      allTab["OrderItemId"] = this.state.ItemIdByAll.trim();
       allTab["IsVisitStore"] = this.state.selectedVisitStoreAll;
       allTab["IsWantVistingStore"] = this.state.selectedWantToVisitStoreAll;
-      allTab["CustomerEmailID"] = this.state.EmailByAll;
-      allTab["CustomerMobileNo"] = this.state.MobileByAll;
+      allTab["CustomerEmailID"] = this.state.EmailByAll.trim();
+      allTab["CustomerMobileNo"] = this.state.MobileByAll.trim();
       allTab["AssignTo"] = this.state.selectedAssignedTo;
       allTab[
         "StoreCodeORAddress"
-      ] = this.state.selectedPurchaseStoreCodeAddressAll;
+      ] = this.state.selectedPurchaseStoreCodeAddressAll.trim();
       allTab[
         "WantToStoreCodeORAddress"
-      ] = this.state.selectedVisitStoreCodeAddressAll;
+      ] = this.state.selectedVisitStoreCodeAddressAll.trim();
       allTab["HaveClaim"] = withClaim;
       allTab["ClaimStatusId"] = this.state.selectedClaimStatus;
       allTab["ClaimCategoryId"] = this.state.selectedClaimCategory;
@@ -2157,6 +2653,7 @@ class Dashboard extends Component {
         self.setState({
           SearchTicketData: data,
           resultCount: count,
+          ShowGridCheckBox: true,
           loading: false
         });
         for (let i = 0; i < CSVData.length; i++) {
@@ -2182,7 +2679,7 @@ class Dashboard extends Component {
     if (this.state.SearchName.length > 0) {
       axios({
         method: "post",
-        url: config.apiUrl + "/Ticketing/savesearch",
+        url: config.apiUrl + "/DashBoard/DashBoardSaveSearch",
         headers: authHeader(),
         params: {
           SearchSaveName: this.state.SearchName,
@@ -2207,22 +2704,33 @@ class Dashboard extends Component {
   }
 
   HandleRowClickPage = (rowInfo, column) => {
-    return {
-      onClick: e => {
-        debugger;
-        let Id = column.original["ticketID"];
-        let self = this;
-        self.setState({
-          ticketDetailID: Id
-        });
-        setTimeout(function() {
-          self.props.history.push({
-            pathname: "myticket",
+    if ((rowInfo, column)) {
+      return {
+        onClick: e => {
+          debugger;
+          let Id = column.original["ticketID"];
+          let self = this;
+          self.setState({
             ticketDetailID: Id
           });
-        }, 100);
-      }
-    };
+          setTimeout(function() {
+            self.props.history.push({
+              pathname: "myticket",
+              ticketDetailID: Id
+            });
+          }, 100);
+        },
+        style: {
+          background:
+            column.original["isEscalation"] === 1
+              ? "#FFDFDF"
+              : column.original["isReassigned"] === true
+              ? "#DEF3FF"
+              : "white"
+        }
+      };
+    }
+    return {};
   };
 
   handleGetSaveSearchList() {
@@ -2230,15 +2738,21 @@ class Dashboard extends Component {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/Ticketing/listSavedSearch",
+      url: config.apiUrl + "/DashBoard/GetDashBoardSavedSearch",
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let SearchListData = res.data.responseData;
-      self.setState({ SearchListData: SearchListData });
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        self.setState({ SearchListData: data });
+      } else {
+        self.setState({ SearchListData: [] });
+      }
     });
   }
   handleSearchTicketEscalation() {
+    debugger;
     this.setState({ loading: true });
     let self = this;
     axios({
@@ -2257,10 +2771,18 @@ class Dashboard extends Component {
       let data = res.data.responseData;
       let Status = res.data.message;
       let CSVData = data;
+      let count = 0;
+      if (res.data.responseData != null) {
+        count = res.data.responseData.length;
+      }
       if (Status === "Record Not Found") {
-        self.setState({ SearchTicketData: [], loading: false });
+        self.setState({ SearchTicketData: [], loading: false, resultCount: 0 });
       } else if (data !== null) {
-        self.setState({ SearchTicketData: data, loading: false });
+        self.setState({
+          SearchTicketData: data,
+          loading: false,
+          resultCount: count
+        });
         for (let i = 0; i < CSVData.length; i++) {
           delete CSVData[i].totalpages;
           delete CSVData[i].responseTimeRemainingBy;
@@ -2298,10 +2820,9 @@ class Dashboard extends Component {
   hadleSearchDeleteData(searchDeletId) {
     debugger;
     let self = this;
-
     axios({
       method: "post",
-      url: config.apiUrl + "/Ticketing/deletesavedsearch",
+      url: config.apiUrl + "/DashBoard/DeleteDashBoardSavedSearch",
       headers: authHeader(),
       params: {
         SearchParamID: searchDeletId
@@ -2339,15 +2860,25 @@ class Dashboard extends Component {
     let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/Search/GetTicketsOnSavedSearch",
+      url: config.apiUrl + "/DashBoard/GetDashBoardTicketsOnSavedSearch",
       headers: authHeader(),
       params: {
         SearchParamID: paramsID
       }
     }).then(function(res) {
       debugger;
+      let status = res.data.message;
       let data = res.data.responseData;
-      self.setState({ ClaimIssueTypeData: data });
+      let count = 0;
+      if (res.data.responseData != null) {
+        count = res.data.responseData.length;
+      }
+      if (status === "Success") {
+        self.setState({ SearchTicketData: data, resultCount: count });
+        self.onCloseModal();
+      } else {
+        self.setState({ SearchTicketData: [] });
+      }
     });
   }
 
@@ -2400,13 +2931,19 @@ class Dashboard extends Component {
             <div className="status-drop-down">
               <div className="sort-sctn">
                 <div className="d-flex">
-                  <a href={Demo.BLANK_LINK} className="sorting-icon">
+                  <a
+                    onClick={this.sortStatusAtoZ.bind(this)}
+                    className="sorting-icon"
+                  >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
                   <p>SORT BY A TO Z</p>
                 </div>
                 <div className="d-flex">
-                  <a href={Demo.BLANK_LINK} className="sorting-icon">
+                  <a
+                    onClick={this.sortStatusZtoA.bind(this)}
+                    className="sorting-icon"
+                  >
                     <img src={Sorting} alt="sorting-icon" />
                   </a>
                   <p>SORT BY Z TO A</p>
@@ -2415,21 +2952,51 @@ class Dashboard extends Component {
               <div className="filter-type">
                 <p>FILTER BY TYPE</p>
                 <div className="filter-checkbox">
-                  <input type="checkbox" id="fil-open" name="filter-type" />
+                  <input
+                    type="checkbox"
+                    id="fil-open"
+                    name="filter-type"
+                    value="open"
+                    onChange={this.setSortCheckStatus}
+                  />
                   <label htmlFor="fil-open">
                     <span className="table-btn table-blue-btn">Open</span>
                   </label>
                 </div>
                 <div className="filter-checkbox">
-                  <input type="checkbox" id="fil-new" name="filter-type" />
+                  <input
+                    type="checkbox"
+                    id="fil-new"
+                    name="filter-type"
+                    value="new"
+                    onChange={this.setSortCheckStatus}
+                  />
                   <label htmlFor="fil-new">
                     <span className="table-btn table-yellow-btn">New</span>
                   </label>
                 </div>
                 <div className="filter-checkbox">
-                  <input type="checkbox" id="fil-solved" name="filter-type" />
+                  <input
+                    type="checkbox"
+                    id="fil-solved"
+                    name="filter-type"
+                    value="solved"
+                    onChange={this.setSortCheckStatus}
+                  />
                   <label htmlFor="fil-solved">
                     <span className="table-btn table-green-btn">Solved</span>
+                  </label>
+                </div>
+                <div className="filter-checkbox">
+                  <input
+                    type="checkbox"
+                    id="fil-solved"
+                    name="filter-type"
+                    value="resolved"
+                    onChange={this.setSortCheckStatus}
+                  />
+                  <label htmlFor="fil-solved">
+                    <span className="table-btn table-green-btn">Resolved</span>
                   </label>
                 </div>
               </div>
@@ -2590,7 +3157,7 @@ class Dashboard extends Component {
                         placeholder="Enter text"
                         style={{ cursor: "pointer" }}
                         disabled={disabled}
-                        value={value}
+                        defaultValue={value}
                       />
                     </DateTimeRangeContainer>
                   </Col>
@@ -2601,9 +3168,23 @@ class Dashboard extends Component {
           </div>
         </div>
         <section className="dash-cntr">
-          <div className={this.state.collapse ? "dashboard-collapse-icon" : "dashboard-collapse-icon dashboard-collapse-icon-inv"} onClick={this.toggle}>
-            {this.state.collapse ? <img src={Dash} alt="dash-icon" /> :
-            <img src={CollapseIcon} alt="dash-icon" className="collapse-icon" />}
+          <div
+            className={
+              this.state.collapse
+                ? "dashboard-collapse-icon"
+                : "dashboard-collapse-icon dashboard-collapse-icon-inv"
+            }
+            onClick={this.toggle}
+          >
+            {this.state.collapse ? (
+              <img src={Dash} alt="dash-icon" />
+            ) : (
+              <img
+                src={CollapseIcon}
+                alt="dash-icon"
+                className="collapse-icon"
+              />
+            )}
           </div>
           <Collapse isOpen={this.state.collapse}>
             <Card>
@@ -2672,20 +3253,20 @@ class Dashboard extends Component {
                             </span>
                           </div>
                         </div>
-                        {/* {this.state.TotalNoOfChatShow && ( */}
-                        <div
-                          className="col-md col-sm-4 col-6"
-                          onClick={this.HandleChangeRedict.bind(this)}
-                        >
-                          <div className="dash-top-cards">
-                            <p className="card-head">Total no of chat</p>
-                            <span className="card-value">102</span>
-                            <small className="blue-clr">
-                              View More Insights
-                            </small>
+                        {this.state.TotalNoOfChatShow && (
+                          <div
+                            className="col-md col-sm-4 col-6"
+                            onClick={this.HandleChangeRedict.bind(this)}
+                          >
+                            <div className="dash-top-cards">
+                              <p className="card-head">Total no of chat</p>
+                              <span className="card-value">102</span>
+                              <small className="blue-clr">
+                                View More Insights
+                              </small>
+                            </div>
                           </div>
-                        </div>
-                        {/* )} */}
+                        )}
                       </div>
                     </div>
                     <div className="container-fluid btm-mar">
@@ -2693,12 +3274,15 @@ class Dashboard extends Component {
                         <div className="col-lg-3 col-md-4">
                           <div className="dash-top-cards prio-pie-cntr">
                             <p className="card-head mb-0">Open By Priority</p>
-                            <div className="prio-pie-chart">
+                            <div className="prio-pie-chart" style={{position: 'relative'}}>
                               {this.state.DashboardPriorityGraphData.length >
                               0 ? (
+                                <>
+                                <p className="pie-chart-count"><span>{this.state.DashboardGraphData.openPriorityTicketCount}</span> Tickets</p>
                                 <OpenByPriorityPie
                                   data={this.state.DashboardPriorityGraphData}
                                 />
+                                </>
                               ) : null}
                             </div>
                           </div>
@@ -3232,488 +3816,7 @@ class Dashboard extends Component {
                                   </select>
                                 </div>
                               </div>
-                              {/* <div className="row justify-content-between">
-                                      <div className="col-auto d-flex align-items-center">
-                                        <p className="font-weight-bold mr-3">
-                                          <span className="blue-clr">04</span>{" "}
-                                          Results
-                                        </p>
-                                        <p className="blue-clr fs-14">
-                                          CLEAR SEARCH
-                                        </p>
-                                      </div>
-                                      <div className="col-auto mob-mar-btm">
-                                        <button>
-                                          <img
-                                            className="position-relative csv-icon"
-                                            src={csv}
-                                            alt="csv-icon"
-                                          />
-                                          CSV
-                                        </button>
-                                        <button
-                                          type="button"
-                                          onClick={this.ScheduleOpenModel}
-                                        >
-                                          <img
-                                            className="sch-icon"
-                                            src={Schedule}
-                                            alt="schedule-icon"
-                                          />
-                                          Schedule
-                                        </button>
-                                        <Modal
-                                          onClose={this.ScheduleCloseModel}
-                                          open={this.state.Schedule}
-                                          modalId="ScheduleModel"
-                                          overlayId="logout-ovrly"
-                                        >
-                                          <div>
-                                            <label>
-                                              <b>Schedule date to</b>
-                                            </label>
-                                            <div>
-                                              <select
-                                                id="inputState"
-                                                className="form-control dropdown-setting1 ScheduleDate-to"
-                                              >
-                                                <option>Team Member</option>
-                                                <option>Team Member 1</option>
-                                              </select>
-                                              <select
-                                                id="inputState"
-                                                className="form-control dropdown-setting1 ScheduleDate-to"
-                                                value={
-                                                  this.state.selectScheduleDate
-                                                }
-                                                onChange={
-                                                  this.handleScheduleDateChange
-                                                }
-                                              >
-                                                {this.state.ScheduleOption !==
-                                                  null &&
-                                                  this.state.ScheduleOption.map(
-                                                    (item, i) => (
-                                                      <option
-                                                        key={i}
-                                                        value={item.scheduleID}
-                                                      >
-                                                        {item.scheduleName}
-                                                      </option>
-                                                    )
-                                                  )}
-                                              </select>
-                                              {this.state.selectScheduleDate ===
-                                              "111" ? (
-                                                <div className="ScheduleDate-to">
-                                                  <span>
-                                                    <label className="every1">
-                                                      Every
-                                                    </label>
-                                                    <input
-                                                      type="text"
-                                                      className="Every"
-                                                      placeholder="1"
-                                                    />
-                                                    <label className="every1">
-                                                      Day
-                                                    </label>
-                                                  </span>
-                                                </div>
-                                              ) : null}
-                                              {this.state.selectScheduleDate ===
-                                              "222" ? (
-                                                <div className="ScheduleDate-to">
-                                                  <span>
-                                                    <label className="every1">
-                                                      Every
-                                                    </label>
-                                                    <input
-                                                      type="text"
-                                                      className="Every"
-                                                      placeholder="1"
-                                                    />
-                                                    <label className="every1">
-                                                      Week on
-                                                    </label>
-                                                  </span>
-                                                  <div
-                                                    style={{
-                                                      marginTop: "10px"
-                                                    }}
-                                                  >
-                                                    <Checkbox>Mon</Checkbox>
-                                                    <Checkbox>Tue</Checkbox>
-                                                    <Checkbox>Wed</Checkbox>
-                                                    <Checkbox>Thu</Checkbox>
-                                                    <Checkbox>Fri</Checkbox>
-                                                    <Checkbox>Sat</Checkbox>
-                                                    <Checkbox>Sun</Checkbox>
-                                                  </div>
-                                                </div>
-                                              ) : null}
-                                              {this.state.selectScheduleDate ===
-                                              "333" ? (
-                                                <div className="ScheduleDate-to">
-                                                  <span>
-                                                    <label className="every1">
-                                                      Day
-                                                    </label>
-                                                    <input
-                                                      type="text"
-                                                      className="Every"
-                                                      placeholder="9"
-                                                    />
-                                                    <label className="every1">
-                                                      of every
-                                                    </label>
-                                                    <input
-                                                      type="text"
-                                                      className="Every"
-                                                      placeholder="1"
-                                                    />
-                                                    <label className="every1">
-                                                      months
-                                                    </label>
-                                                  </span>
-                                                </div>
-                                              ) : null}
-                                              {this.state.selectScheduleDate ===
-                                              "444" ? (
-                                                <div className="ScheduleDate-to">
-                                                  <span>
-                                                    <label className="every1">
-                                                      Every
-                                                    </label>
-                                                    <input
-                                                      type="text"
-                                                      className="Every"
-                                                      placeholder="1"
-                                                    />
-                                                    <label className="every1">
-                                                      month on the
-                                                    </label>
-                                                  </span>
-                                                  <div className="row mt-3">
-                                                    <div className="col-md-6">
-                                                      <select
-                                                        id="inputState"
-                                                        className="form-control dropdown-setting1"
-                                                      >
-                                                        <option>Second</option>
-                                                        <option>Four</option>
-                                                      </select>
-                                                    </div>
-                                                    <div className="col-md-6">
-                                                      <select
-                                                        id="inputState"
-                                                        className="form-control dropdown-setting1"
-                                                      >
-                                                        <option>Sunday</option>
-                                                        <option>Monday</option>
-                                                      </select>
-                                                    </div>
-                                                  </div>
-                                                </div>
-                                              ) : null}
-                                              {this.state.selectScheduleDate ===
-                                              "555" ? (
-                                                <div className="ScheduleDate-to">
-                                                  <div className="row m-0">
-                                                    <label
-                                                      className="every1"
-                                                      style={{
-                                                        lineHeight: "40px"
-                                                      }}
-                                                    >
-                                                      on
-                                                    </label>
-                                                    <div className="col-md-7">
-                                                      <select
-                                                        id="inputState"
-                                                        className="form-control dropdown-setting1"
-                                                      >
-                                                        <option>
-                                                          Septmber
-                                                        </option>
-                                                        <option>
-                                                          Octomber
-                                                        </option>
-                                                      </select>
-                                                    </div>
-                                                    <input
-                                                      type="text"
-                                                      className="Every"
-                                                      placeholder="1"
-                                                    />
-                                                  </div>
-                                                </div>
-                                              ) : null}
-                                              {this.state.selectScheduleDate ===
-                                              "666" ? (
-                                                <div className="ScheduleDate-to">
-                                                  <span>
-                                                    <div className="row m-0">
-                                                      <label
-                                                        className="every1"
-                                                        style={{
-                                                          lineHeight: "40px"
-                                                        }}
-                                                      >
-                                                        on the
-                                                      </label>
-                                                      <div className="col-md-7">
-                                                        <select
-                                                          id="inputState"
-                                                          className="form-control dropdown-setting1"
-                                                        >
-                                                          <option>
-                                                            Second
-                                                          </option>
-                                                          <option>Four</option>
-                                                        </select>
-                                                      </div>
-                                                    </div>
-                                                  </span>
-                                                  <div className="row mt-3">
-                                                    <div className="col-md-5">
-                                                      <select
-                                                        id="inputState"
-                                                        className="form-control dropdown-setting1"
-                                                        style={{
-                                                          width: "100px"
-                                                        }}
-                                                      >
-                                                        <option>Sunday</option>
-                                                        <option>Monday</option>
-                                                      </select>
-                                                    </div>
-                                                    <label
-                                                      className="every1"
-                                                      style={{
-                                                        lineHeight: "40px",
-                                                        marginLeft: "14px"
-                                                      }}
-                                                    >
-                                                      to
-                                                    </label>
-                                                    <div className="col-md-5">
-                                                      <select
-                                                        id="inputState"
-                                                        className="form-control dropdown-setting1"
-                                                        style={{
-                                                          width: "100px"
-                                                        }}
-                                                      >
-                                                        <option>
-                                                          Septmber
-                                                        </option>
-                                                        <option>
-                                                          Octomber
-                                                        </option>
-                                                      </select>
-                                                    </div>
-                                                  </div>
-                                                </div>
-                                              ) : null}
-                                              <input
-                                                type="text"
-                                                className="txt-1 txt1Place txt1Time"
-                                                placeholder="11AM"
-                                              />
-                                              <div>
-                                                <button className="scheduleBtn">
-                                                  <label className="addLable">
-                                                    SCHEDULE
-                                                  </label>
-                                                </button>
-                                              </div>
-                                              <div>
-                                                <button
-                                                  type="button"
-                                                  className="scheduleBtncancel"
-                                                >
-                                                  CANCEL
-                                                </button>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </Modal>
-                                        <button
-                                          className={
-                                            this.state.CheckBoxChecked
-                                              ? "btn-inv"
-                                              : "dis-btn"
-                                          }
-                                          onClick={
-                                            this.state.CheckBoxChecked
-                                              ? this.handleAssignModalOpen.bind(
-                                                  this
-                                                )
-                                              : null
-                                          }
-                                        >
-                                          <img
-                                            src={Assign}
-                                            className="assign-icon"
-                                            alt="assign-icon"
-                                          />
-                                          Assign
-                                        </button>
-                                        <Modal
-                                          onClose={this.handleAssignModalClose.bind(
-                                            this
-                                          )}
-                                          open={this.state.AssignModal}
-                                          modalId="AssignPop-up"
-                                        >
-                                          <div className="assign-modal-headerDashboard">
-                                            <img
-                                              src={BlackLeftArrow}
-                                              alt="black-left-arrow-icon"
-                                              className="black-left-arrow"
-                                              onClick={this.handleAssignModalClose.bind(
-                                                this
-                                              )}
-                                            />
-                                            <label className="claim-details">
-                                              Assign Tickets To
-                                            </label>
-                                            <img
-                                              src={SearchBlackImg}
-                                              alt="SearchBlack"
-                                              className="black-left-arrow srch-mleft-spc"
-                                            />
-                                          </div>
-                                          <div className="assign-modal-div">
-                                            <input
-                                              type="text"
-                                              className="txt-1 txt-btmSpace"
-                                              placeholder="First Name"
-                                              name="assignFirstName"
-                                              value={this.state.assignFirstName}
-                                              onChange={this.handelOnchangeData}
-                                            />
-                                            <input
-                                              type="text"
-                                              className="txt-1 txt-btmSpace"
-                                              placeholder="Last Name"
-                                              name="assignLastName"
-                                              value={this.state.assignLastName}
-                                              onChange={this.handelOnchangeData}
-                                            />
-                                            <input
-                                              type="text"
-                                              className="txt-1 txt-btmSpace"
-                                              placeholder="Email"
-                                              name="assignEmail"
-                                              value={this.state.assignEmail}
-                                              onChange={this.handelOnchangeData}
-                                            />
-                                            <div className="txt-btmSpace">
-                                              <select
-                                                id="inputState"
-                                                className="form-control dropdown-setting"
-                                                value={
-                                                  this.state.selectedDesignation
-                                                }
-                                                onChange={
-                                                  this.setDesignationValue
-                                                }
-                                              >
-                                                
-                                                <option>Designation</option>
-                                                {this.state.DesignationData !==
-                                                  null &&
-                                                  this.state.DesignationData.map(
-                                                    (item, i) => (
-                                                      <option
-                                                        key={i}
-                                                        value={
-                                                          item.designationID
-                                                        }
-                                                      >
-                                                        {item.designationName}
-                                                      </option>
-                                                    )
-                                                  )}
-                                              </select>
-                                            </div>
-                                            <button
-                                              className="butn assign-btn"
-                                              type="button"
-                                              onClick={this.handleAssignSearchData.bind(
-                                                this
-                                              )}
-                                            >
-                                              SEARCH
-                                            </button>
-                                            <a
-                                              href="#!"
-                                              className="anchorTag-clear"
-                                            >
-                                              CLEAR
-                                            </a>
-                                          </div>
-                                          <div className="assign-modal-body">
-                                            <ReactTable
-                                              data={SearchAssignData}
-                                              columns={[
-                                                {
-                                                  Header: <span>Agent</span>,
-                                                  accessor: "agent",
-                                                  Cell: row => {
-                                                    var ids =
-                                                      row.original["user_ID"];
-                                                    return (
-                                                      <div>
-                                                        <span>
-                                                          <img
-                                                            src={Headphone2Img}
-                                                            alt="headphone"
-                                                            className="oval-55 assign-hdphone"
-                                                            id={ids}
-                                                          />
-                                                          {
-                                                            row.original[
-                                                              "agentName"
-                                                            ]
-                                                          }
-                                                        </span>
-                                                      </div>
-                                                    );
-                                                  }
-                                                },
-                                                {
-                                                  Header: (
-                                                    <span>Designation</span>
-                                                  ),
-                                                  accessor: "designation"
-                                                },
-                                                {
-                                                  Header: <span>Email</span>,
-                                                  accessor: "email"
-                                                }
-                                              ]}
-                                              
-                                              defaultPageSize={5}
-                                              showPagination={false}
-                                            />
-                                            <textarea
-                                              className="assign-modal-textArea"
-                                              placeholder="Add Remarks"
-                                            ></textarea>
-                                            <button
-                                              className="assign-butn btn-assign-tikcet"
-                                              type="button"
-                                            >
-                                              ASSIGN TICKETS
-                                            </button>
-                                          </div>
-                                        </Modal>
-                                      </div>
-                                    </div>
-                                   */}
+                         
                             </div>
                           </div>
                           <div
@@ -3760,6 +3863,7 @@ class Dashboard extends Component {
                                     className="no-bg"
                                     placeholder="Ticket ID"
                                     name="TicketIdByCustType"
+                                    maxLength={9}
                                     value={this.state.TicketIdByCustType}
                                     onChange={this.handelOnchangeData}
                                   />
@@ -4120,6 +4224,7 @@ class Dashboard extends Component {
                                     className="no-bg"
                                     type="text"
                                     placeholder="Mobile"
+                                    maxLength={10}
                                     value={this.state.MobileByAll}
                                     name="MobileByAll"
                                     onChange={this.handelOnchangeData}
@@ -4185,7 +4290,6 @@ class Dashboard extends Component {
                                     className="add-select-category"
                                     value={this.state.selectedAssignedTo}
                                     onChange={this.setAssignedToValue}
-                                    onClick={this.handleAssignTo.bind(this)}
                                   >
                                     <option>Select Assigned To</option>
                                     {this.state.AssignToData !== null &&
@@ -4318,8 +4422,7 @@ class Dashboard extends Component {
                                       this.state.SlaStatusData.map(
                                         (item, i) => (
                                           <option key={i} value={item.SLAId}>
-                                            {item.SLAResponseTime} /
-                                            {item.SLARequestTime}
+                                            {item.slaRequestResponse}
                                           </option>
                                         )
                                       )}
@@ -4934,8 +5037,11 @@ class Dashboard extends Component {
                                             </div>
                                           </div>
                                         </span>
-                                        <div className="row mt-3">
-                                          <div className="col-md-5">
+                                        <div
+                                          className="row mt-3"
+                                          style={{ position: "relative" }}
+                                        >
+                                          <div className="col-md-6">
                                             <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
                                               <Select
                                                 getOptionLabel={option =>
@@ -4963,15 +5069,14 @@ class Dashboard extends Component {
                                             </div>
                                           </div>
                                           <label
-                                            className="every1"
+                                            className="every1 last-to"
                                             style={{
-                                              lineHeight: "40px",
-                                              marginLeft: "14px"
+                                              lineHeight: "40px"
                                             }}
                                           >
                                             to
                                           </label>
-                                          <div className="col-md-5">
+                                          <div className="col-md-6">
                                             <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
                                               <Select
                                                 getOptionLabel={option =>
@@ -5027,6 +5132,16 @@ class Dashboard extends Component {
                                         value={this.state.selectedScheduleTime}
                                       />
                                     </div>
+
+                                    <p
+                                      style={{
+                                        color: "red",
+                                        marginBottom: "0",
+                                        textAlign: "center"
+                                      }}
+                                    >
+                                      {this.state.scheduleRequired}
+                                    </p>
 
                                     <div>
                                       <button
@@ -5197,7 +5312,19 @@ class Dashboard extends Component {
                                     getTrProps={this.handleTicketDetails}
                                     className="assign-ticket-table"
                                   />
-
+                                  <p
+                                    style={{
+                                      marginTop:
+                                        this.state.agentSelection === ""
+                                          ? "0px"
+                                          : "10px",
+                                      color: "red",
+                                      marginBottom: "0",
+                                      textAlign: "center"
+                                    }}
+                                  >
+                                    {this.state.agentSelection}
+                                  </p>
                                   <textarea
                                     className="assign-modal-textArea"
                                     placeholder="Add Remarks"
@@ -5232,20 +5359,27 @@ class Dashboard extends Component {
                       {
                         Header: (
                           <span>
-                            <div className="filter-type pink1 pinkmyticket">
-                              <div className="filter-checkbox pink2 pinkmargin">
-                                <input
-                                  type="checkbox"
-                                  id="fil-aball"
-                                  name="MyTicketListcheckbox[]"
-                                  // checked={this.state.CheckBoxChecked}
-                                  onChange={this.checkAllCheckbox.bind(this)}
-                                />
-                                <label htmlFor="fil-aball" className="ticketid">
-                                  ID
-                                </label>
+                            
+                              <div className="filter-type pink1 pinkmyticket">
+                                <div className="filter-checkbox pink2 pinkmargin">
+                                {this.state.ShowGridCheckBox === true ? (
+                                  <input
+                                    type="checkbox"
+                                    id="fil-aball"
+                                    name="MyTicketListcheckbox[]"
+                                    // checked={this.state.CheckBoxChecked}
+                                    onChange={this.checkAllCheckbox.bind(this)}
+                                  />
+                                  ) : null}
+                                  <label
+                                    htmlFor="fil-aball"
+                                    className="ticketid"
+                                  >
+                                    ID
+                                  </label>
+                                </div>
                               </div>
-                            </div>
+                            
                           </span>
                         ),
                         accessor: "ticketID",
@@ -5254,20 +5388,61 @@ class Dashboard extends Component {
                             <span onClick={e => this.clickCheckbox(e)}>
                               <div className="filter-type pink1 pinkmyticket">
                                 <div className="filter-checkbox pink2 pinkmargin">
-                                  <input
-                                    type="checkbox"
-                                    id={"j" + row.original.ticketID}
-                                    name="MyTicketListcheckbox[]"
-                                    // checked={this.state.CheckBoxChecked}
-                                    attrIds={row.original.ticketID}
-                                    onChange={this.handelCheckBoxCheckedChange}
-                                  />
-                                  <label htmlFor={"j" + row.original.ticketID}>
-                                    <img
-                                      src={HeadPhone3}
-                                      alt="HeadPhone"
-                                      className="headPhone3"
+                                  {this.state.ShowGridCheckBox === true ? (
+                                    <input
+                                      type="checkbox"
+                                      id={"j" + row.original.ticketID}
+                                      name="MyTicketListcheckbox[]"
+                                      // checked={this.state.CheckBoxChecked}
+                                      attrIds={row.original.ticketID}
+                                      onChange={
+                                        this.handelCheckBoxCheckedChange
+                                      }
                                     />
+                                  ) : null}
+
+                                  <label htmlFor={"j" + row.original.ticketID}>
+                                    {row.original.ticketSourceType ===
+                                    "Calls" ? (
+                                      <img
+                                        src={CallImg}
+                                        alt="HeadPhone"
+                                        className="headPhone3"
+                                        title="Calls"
+                                      />
+                                    ) : row.original.ticketSourceType ===
+                                      "Mails" ? (
+                                      <img
+                                        src={MailImg}
+                                        alt="HeadPhone"
+                                        className="headPhone3"
+                                        title="Mails"
+                                      />
+                                    ) : row.original.ticketSourceType ===
+                                      "Facebook" ? (
+                                      <img
+                                        src={FacebookImg}
+                                        alt="HeadPhone"
+                                        className="headPhone3"
+                                        title="Facebook"
+                                      />
+                                    ) : row.original.ticketSourceType ===
+                                      "ChatBot" ? (
+                                      <img
+                                        src={Chat}
+                                        alt="HeadPhone"
+                                        className="headPhone3"
+                                        title="ChatBot"
+                                      />
+                                    ) : row.original.ticketSourceType ===
+                                      "Twitter" ? (
+                                      <img
+                                        src={Twitter}
+                                        alt="HeadPhone"
+                                        className="headPhone3 black-twitter"
+                                        title="Twitter"
+                                      />
+                                    ) : null}
                                     {row.original.ticketID}
                                   </label>
                                 </div>
@@ -5284,40 +5459,31 @@ class Dashboard extends Component {
                         ),
                         accessor: "ticketStatus",
                         Cell: row => {
-                          debugger
-                          if (
-                            row.original.ticketStatus === "Open"  
-                          ) {
+                          if (row.original.ticketStatus === "Open") {
                             return (
                               <span className="table-b table-blue-btn">
                                 <label>{row.original.ticketStatus}</label>
                               </span>
                             );
-                          } else if (
-                            row.original.ticketStatus === "Resolved"  
-                          ) {
+                          } else if (row.original.ticketStatus === "Resolved") {
                             return (
                               <span className="table-b table-green-btn">
                                 <label>{row.original.ticketStatus}</label>
                               </span>
                             );
-                          }else if (
-                            row.original.ticketStatus === "New"  
-                          ) {
+                          } else if (row.original.ticketStatus === "New") {
                             return (
                               <span className="table-b table-yellow-btn">
                                 <label>{row.original.ticketStatus}</label>
                               </span>
                             );
-                          }else if (
-                            row.original.ticketStatus === "Solved"  
-                          ) {
+                          } else if (row.original.ticketStatus === "Solved") {
                             return (
                               <span className="table-b table-green-btn">
                                 <label>{row.original.ticketStatus}</label>
                               </span>
                             );
-                          }else{
+                          } else {
                             return (
                               <span className="table-b table-green-btn">
                                 <label>{row.original.ticketStatus}</label>
@@ -5331,20 +5497,7 @@ class Dashboard extends Component {
                         accessor: "taskStatus",
                         width: 45,
                         Cell: row => {
-                          if (
-                            row.original.taskStatus === "0/0" &&
-                            row.original.taskStatus === null
-                          ) {
-                            return (
-                              <div>
-                                <img
-                                  className="task-icon-1 marginimg"
-                                  src={TaskIconGray}
-                                  alt="task-icon-gray"
-                                />
-                              </div>
-                            );
-                          } else {
+                          if (row.original.claimStatus !== "0/0") {
                             return (
                               <div>
                                 <Popover
@@ -5352,7 +5505,7 @@ class Dashboard extends Component {
                                     <div className="dash-task-popup-new">
                                       <div className="d-flex justify-content-between align-items-center">
                                         <p className="m-b-0">
-                                          TASK:{row.original.taskStatus}
+                                          CLAIM:{row.original.claimStatus}
                                         </p>
                                         <div className="d-flex align-items-center">
                                           2 NEW
@@ -5370,11 +5523,75 @@ class Dashboard extends Component {
                                   placement="bottom"
                                 >
                                   <img
+                                    className="task-icon-1 marginimg claim-icon-1"
+                                    src={CliamIconBlue}
+                                    alt="task-icon-blue"
+                                  />
+                                </Popover>
+                              </div>
+                            );
+                          } else {
+                            return (
+                              <div>
+                                <img
+                                  className="task-icon-1 marginimg claim-icon-1"
+                                  src={CliamIconGray}
+                                  alt="task-icon-gray"
+                                />
+                              </div>
+                            );
+                          }
+                        }
+                      },
+                      {
+                        Header: <span></span>,
+                        accessor: "taskStatus",
+                        width: 45,
+                        Cell: row => {
+                          if (row.original.taskStatus !== "0/0") {
+                            return (
+                              <div>
+                                <Popover
+                                  content={
+                                    <div className="dash-task-popup-new">
+                                      <div className="d-flex justify-content-between align-items-center">
+                                        <p className="m-b-0">
+                                          TASK:{row.original.taskStatus}
+                                        </p>
+                                        {row.original.ticketCommentCount > 0 ? (
+                                          <div className="d-flex align-items-center">
+                                            {row.original.ticketCommentCount}{" "}
+                                            NEW
+                                            <div className="nw-chat">
+                                              <img src={Chat} alt="chat" />
+                                            </div>
+                                          </div>
+                                        ) : null}
+                                      </div>
+                                      <ProgressBar
+                                        className="task-progress"
+                                        now={70}
+                                      />
+                                    </div>
+                                  }
+                                  placement="bottom"
+                                >
+                                  <img
                                     className="task-icon-1 marginimg"
                                     src={TaskIconBlue}
                                     alt="task-icon-blue"
                                   />
                                 </Popover>
+                              </div>
+                            );
+                          } else {
+                            return (
+                              <div>
+                                <img
+                                  className="task-icon-1 marginimg"
+                                  src={TaskIconGray}
+                                  alt="task-icon-gray"
+                                />
                               </div>
                             );
                           }
@@ -5385,13 +5602,13 @@ class Dashboard extends Component {
                           <label className="ticketid">
                             <span>Subject/</span>
                             <span style={{ fontSize: "10px !important" }}>
-                              Lastest Message
+                              Latest Message
                             </span>
                           </label>
                         ),
                         accessor: "message",
                         Cell: row => {
-                          return <div>{row.original.message}</div>;
+                          return <div>{row.original.message.split('-')[0]}/<span style={{color: '#666'}}>{row.original.message.split('-')[1]}</span></div>;
                         }
                       },
                       {
@@ -5402,8 +5619,10 @@ class Dashboard extends Component {
                         ),
                         accessor: "category",
                         Cell: row => (
-                          <span>
-                            <label>{row.original.category} </label>
+                          <span className="one-line-outer">
+                            <label className="one-line">
+                              {row.original.category}{" "}
+                            </label>
 
                             <Popover
                               content={
@@ -5460,8 +5679,10 @@ class Dashboard extends Component {
                         ),
                         accessor: "createdOn",
                         Cell: row => (
-                          <span>
-                            <label>{row.original.createdOn}</label>
+                          <span className="one-line-outer">
+                            <label className="one-line">
+                              {row.original.createdOn}
+                            </label>
 
                             <Popover
                               content={
@@ -5502,7 +5723,7 @@ class Dashboard extends Component {
                               placement="left"
                             >
                               <img
-                                className="info-icon"
+                                className="info-icon info-iconcus"
                                 src={InfoIcon}
                                 alt="info-icon"
                               />

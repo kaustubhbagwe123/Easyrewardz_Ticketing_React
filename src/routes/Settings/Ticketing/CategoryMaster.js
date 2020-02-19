@@ -37,6 +37,7 @@ class CategoryMaster extends Component {
       catmulti: false,
       activeData: ActiveStatus(),
       list1Value: "",
+      inputValue: "",
       showList1: false,
       ListOfSubCate: "",
       ListOfIssue: "",
@@ -53,7 +54,12 @@ class CategoryMaster extends Component {
       selectBrand: 0,
       subCategory_Id: 0,
       issueType_Id: 0,
-      selectetedParameters:{}
+      selectetedParameters: {},
+      brandCompulsion:"",
+      categoryCompulsion:"",
+      subcategoryCompulsion:"",
+      issueCompulsion:"",
+      statusCompulsion:""
     };
     this.handleGetCategoryGridData = this.handleGetCategoryGridData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -62,6 +68,7 @@ class CategoryMaster extends Component {
     this.handleAddCategory = this.handleAddCategory.bind(this);
     this.handleAddSubCategory = this.handleAddSubCategory.bind(this);
     this.handleAddIssueType = this.handleAddIssueType.bind(this);
+    this.handleGetIssueTypeList=this.handleGetIssueTypeList.bind(this)
   }
   componentDidMount() {
     this.handleGetCategoryGridData();
@@ -187,13 +194,15 @@ class CategoryMaster extends Component {
 
   handleAddCategory(value) {
     debugger;
+   
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Category/AddCategory",
       headers: authHeader(),
       params: {
-        category: value
+        category: value,
+        BrandID:this.state.selectBrand
       }
     }).then(function(res) {
       debugger;
@@ -202,8 +211,11 @@ class CategoryMaster extends Component {
       if (status === "Success") {
         NotificationManager.success("Category added successfully.");
         self.setState({
-          category_Id: data
+          category_Id: data,
+          // inputValue: "",
+          // list1Value: ""
         });
+        self.handleGetCategoryList()
       } else {
         NotificationManager.error("Category not added.");
       }
@@ -212,18 +224,18 @@ class CategoryMaster extends Component {
   handleAddSubCategory(value) {
     debugger;
     let self = this;
-    var finalId = 0;
-    if (this.state.category_Id === 0) {
-      finalId = this.state.list1Value;
-    } else {
-      finalId = this.state.category_Id;
-    }
+    // var finalId = 0;
+    // if (this.state.category_Id === 1) {
+    //   finalId = this.state.list1Value;
+    // } else {
+    //   finalId = this.state.category_Id;
+    // }
     axios({
       method: "post",
       url: config.apiUrl + "/SubCategory/AddSubCategory",
       headers: authHeader(),
       params: {
-        categoryID: finalId,
+        categoryID: this.state.list1Value,
         SubcategoryName: value
       }
     }).then(function(res) {
@@ -235,6 +247,7 @@ class CategoryMaster extends Component {
         self.setState({
           subCategory_Id: data
         });
+        self.handleGetSubCategoryList()
       } else {
         NotificationManager.error("SubCategory not added.");
       }
@@ -244,18 +257,18 @@ class CategoryMaster extends Component {
   handleAddIssueType(value) {
     debugger;
     let self = this;
-    var finalId = 0;
-    if (this.state.subCategory_Id === 0) {
-      finalId = this.state.ListOfSubCate;
-    } else {
-      finalId = this.state.subCategory_Id;
-    }
+    // var finalId = 0;
+    // if (this.state.subCategory_Id === 0) {
+    //   finalId = this.state.ListOfSubCate;
+    // } else {
+    //   finalId = this.state.subCategory_Id;
+    // }
     axios({
       method: "post",
       url: config.apiUrl + "/IssueType/AddIssueType",
       headers: authHeader(),
       params: {
-        SubcategoryID: finalId,
+        SubcategoryID: this.state.ListOfSubCate,
         IssuetypeName: value
       }
     }).then(function(res) {
@@ -267,6 +280,7 @@ class CategoryMaster extends Component {
         self.setState({
           issueType_Id: data
         });
+        self.handleGetIssueTypeList();
       } else {
         NotificationManager.error("Issue Type not added.");
       }
@@ -275,6 +289,13 @@ class CategoryMaster extends Component {
 
   handleSubmitData() {
     debugger;
+    if(
+      this.state.selectBrand.length > 0 &&
+      this.state.list1Value > 0 && 
+      this.state.ListOfSubCate > 0 &&
+      this.state.ListOfIssue > 0 &&
+      this.state.selectStatus.length > 0
+    ){
     let self = this;
     var activeStatus = 0;
     var categorydata = 0;
@@ -330,6 +351,15 @@ class CategoryMaster extends Component {
         });
       }
     });
+  }else{
+    this.setState({
+      brandCompulsion:"Please Select Brand",
+      categoryCompulsion:"Please Select category",
+      subcategoryCompulsion:"Please Select SubCategory",
+      issueCompulsion:"Please Select IssueType",
+      statusCompulsion:"Please Select Status"
+    });
+  }
   }
 
   HandleMultiSelect() {
@@ -346,7 +376,7 @@ class CategoryMaster extends Component {
         if (this.state.list1Value) {
           this.handleGetSubCategoryList();
         }
-      }, 1);
+      }, 1); 
     } else {
       this.setState({ showList1: true });
     }
@@ -377,7 +407,8 @@ class CategoryMaster extends Component {
     this.setState({
       selectBrand: value,
       categoryDropData: [],
-      SubCategoryDropData: []
+      SubCategoryDropData: [],
+      ListOfIssueData:[]
     });
     setTimeout(() => {
       if (this.state.selectBrand) {
@@ -385,13 +416,12 @@ class CategoryMaster extends Component {
       }
     }, 1);
   };
-  handleEditDropDownChange = e =>{  
+  handleEditDropDownChange = e => {
     debugger;
-    let name=e.target.name;
-    let value=e.target.value;
+    let name = e.target.name;
+    let value = e.target.value;
     this.setState({ name: value });
-
-  }
+  };
   handleStatusChange = e => {
     let value = e.target.value;
     this.setState({ selectStatus: value });
@@ -422,7 +452,7 @@ class CategoryMaster extends Component {
             Settings
           </Link>
           <span>&gt;</span>
-          <Link to={Demo.BLANK_LINK} className="header-path">
+          <Link to="settings" className="header-path">
             Ticketing
           </Link>
           <span>&gt;</span>
@@ -548,9 +578,10 @@ class CategoryMaster extends Component {
                                           </label>
                                           <select
                                             className="store-create-select"
-                                            
                                             value={this.state.selectBrand}
-                                            onChange={this.handleEditDropDownChange}
+                                            onChange={
+                                              this.handleEditDropDownChange
+                                            }
                                             name="selectBrand"
                                           >
                                             <option>Select</option>
@@ -570,59 +601,67 @@ class CategoryMaster extends Component {
                                         </div>
 
                                         <div className="pop-over-div">
-                                        <label className="reports-to reports-dis">
-                          Category
-                        </label>
-                        <Select
-                          showSearch={true}
-                          value={this.state.list1Value}
-                          style={{ width: "100%" }}
-                          onChange={this.handleCategoryChange}
-                        >
-                          {list1SelectOptions}
-                          <Option value={NEW_ITEM}>
-                            <span className="sweetAlert-inCategory">
-                              + ADD NEW
-                            </span>
-                          </Option>
-                        </Select>
+                                          <label className="reports-to reports-dis">
+                                            Category
+                                          </label>
+                                          <Select
+                                            showSearch={true}
+                                            value={this.state.list1Value}
+                                            style={{ width: "100%" }}
+                                            onChange={this.handleCategoryChange}
+                                          >
+                                            {list1SelectOptions}
+                                            <Option value={NEW_ITEM}>
+                                              <span className="sweetAlert-inCategory">
+                                                + ADD NEW
+                                              </span>
+                                            </Option>
+                                          </Select>
 
-                        <SweetAlert
-                          show={this.state.showList1}
-                          style={{ width: "320px" }}
-                          title="Add New Category"
-                          text="Enter new Category"
-                          showCancelButton
-                          type="input"
-                          inputPlaceholder="Enter Category Name"
-                          animation="slide-from-top"
-                          validationMsg="Please enter a category!"
-                          onConfirm={inputValue => {
-                            debugger;
-                            inputValue = inputValue.trim();
-                            if (inputValue !== "") {
-                              this.setState({
-                                showList1: false,
-                                list1Value: inputValue
-                              });
-                              this.handleAddCategory(inputValue);
-                            } else {
-                              this.setState({
-                                showList1: false,
-                                list1Value: inputValue
-                              });
-                            }
-                          }}
-                          onCancel={() => {
-                            this.setState({ showList1: false });
-                          }}
-                          onEscapeKey={() =>
-                            this.setState({ showList1: false })
-                          }
-                          onOutsideClick={() =>
-                            this.setState({ showList1: false })
-                          }
-                        />
+                                          <SweetAlert
+                                            show={this.state.showList1}
+                                            style={{ width: "320px" }}
+                                            title="Add New Category"
+                                            text="Enter new Category"
+                                            showCancelButton
+                                            type="input"
+                                            inputPlaceholder="Enter Category Name"
+                                            animation="slide-from-top"
+                                            validationMsg="Please enter a category!"
+                                            onConfirm={inputValue => {
+                                              debugger;
+                                              inputValue = inputValue.trim();
+                                              if (inputValue !== "") {
+                                                this.setState({
+                                                  showList1: false,
+                                                  list1Value: inputValue
+                                                });
+                                                this.handleAddCategory(
+                                                  inputValue
+                                                );
+                                              } else {
+                                                this.setState({
+                                                  showList1: false,
+                                                  list1Value: inputValue
+                                                });
+                                              }
+                                            }}
+                                            onCancel={() => {
+                                              this.setState({
+                                                showList1: false
+                                              });
+                                            }}
+                                            onEscapeKey={() =>
+                                              this.setState({
+                                                showList1: false
+                                              })
+                                            }
+                                            onOutsideClick={() =>
+                                              this.setState({
+                                                showList1: false
+                                              })
+                                            }
+                                          />
                                         </div>
                                         <div className="pop-over-div">
                                           <label className="edit-label-1">
@@ -760,10 +799,15 @@ class CategoryMaster extends Component {
                               </option>
                             ))}
                         </select>
+                        {this.state.selectBrand === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.brandCompulsion}
+                    </p>
+                  )}
                       </div>
                     </div>
                     <div className="divSpace">
-                      <div className="dropDrownSpace">
+                       <div className="dropDrownSpace">
                         <label className="reports-to reports-dis">
                           Category
                         </label>
@@ -780,6 +824,11 @@ class CategoryMaster extends Component {
                             </span>
                           </Option>
                         </Select>
+                        {this.state.list1Value === "" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.categoryCompulsion}
+                    </p>
+                  )}
 
                         <SweetAlert
                           show={this.state.showList1}
@@ -808,13 +857,13 @@ class CategoryMaster extends Component {
                             }
                           }}
                           onCancel={() => {
-                            this.setState({ showList1: false });
+                            this.setState({ showList1: false});
                           }}
                           onEscapeKey={() =>
-                            this.setState({ showList1: false })
+                            this.setState({ showList1: false})
                           }
                           onOutsideClick={() =>
-                            this.setState({ showList1: false })
+                            this.setState({ showList1: false})
                           }
                         />
                       </div>
@@ -837,6 +886,11 @@ class CategoryMaster extends Component {
                             </span>
                           </Option>
                         </Select>
+                        {this.state.ListOfSubCate === "" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.subcategoryCompulsion}
+                    </p>
+                  )}
 
                         <SweetAlert
                           show={this.state.ShowSubCate}
@@ -892,6 +946,11 @@ class CategoryMaster extends Component {
                             </span>
                           </Option>
                         </Select>
+                        {this.state.ListOfIssue === "" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.issueCompulsion}
+                    </p>
+                  )}
                         <SweetAlert
                           show={this.state.ShowIssuetype}
                           style={{ width: "320px" }}
@@ -945,6 +1004,11 @@ class CategoryMaster extends Component {
                               </option>
                             ))}
                         </select>
+                        {this.state.selectStatus === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.statusCompulsion}
+                    </p>
+                  )}
                       </div>
                     </div>
                     <div className="btnSpace">
@@ -966,9 +1030,12 @@ class CategoryMaster extends Component {
                     <h3>Bulk Upload</h3>
                     <div className="down-excel">
                       <p>Template</p>
-                      <CSVLink filename={"Category.csv"}  data={config.categoryTemplate}>
-                       <img src={DownExcel} alt="download icon" />
-                    </CSVLink>
+                      <CSVLink
+                        filename={"Category.csv"}
+                        data={config.categoryTemplate}
+                      >
+                        <img src={DownExcel} alt="download icon" />
+                      </CSVLink>
                     </div>
                     <input
                       id="file-upload"

@@ -40,7 +40,12 @@ class Templates extends Component {
       editStatus: "",
       editIssueType: [],
 
-      templateEdit: {}
+      templateEdit: {},
+      templatenamecopulsion:"",
+      issurtupeCompulsion:"",
+      statusCompulsion:"",
+      templatesubjectCompulsion:"",
+      templatebodyCompulsion:""
     }
 
     this.handleGetTemplate = this.handleGetTemplate.bind(this);
@@ -181,6 +186,13 @@ class Templates extends Component {
 
   createTemplate() {
     debugger;
+    if(
+     
+     this.state.TemplateSubject.length > 0 &&
+     this.state.editorContent.length > 0
+
+
+    ){
     let self = this;
     this.setState({ ConfigTabsModal: false })
     let TemplateIsActive;
@@ -211,6 +223,13 @@ class Templates extends Component {
         NotificationManager.error("Template not added.");
       }
     });
+  }else{
+    this.setState({
+     
+      templatesubjectCompulsion:"Please Enter Subject",
+      templatebodyCompulsion:"Please Enter Descriptions"
+    });
+  }
   }
 
   handleGetTemplate() {
@@ -230,7 +249,19 @@ class Templates extends Component {
   }
 
   handleConfigureTabsOpen() {
-    this.setState({ ConfigTabsModal: true })
+    debugger;
+    if(
+      this.state.TemplateName.length > 0 &&
+      this.state.selectedSlaIssueType !== null
+    ){
+      this.setState({ ConfigTabsModal: true })
+    }else{
+      this.setState({
+        templatenamecopulsion:"Please Enter Template Name",
+        issurtupeCompulsion:"Plaese Select IssueType"
+      });
+      
+    }
   }
   handleConfigureTabsClose() {
     this.setState({ ConfigTabsModal: false })
@@ -430,7 +461,7 @@ class Templates extends Component {
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="settings" className="header-path">Settings</Link>
           <span>&gt;</span>
-          <Link to={Demo.BLANK_LINK} className="header-path">Ticketing</Link>
+          <Link to="settings" className="header-path">Ticketing</Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="header-path active">
             Templates
@@ -501,8 +532,14 @@ class Templates extends Component {
                         className="txt-1"
                         placeholder="Enter Name"
                         maxLength={25}
+                        value={this.state.TemplateName}
                         onChange={this.handleTemplateName}
                       />
+                      {this.state.TemplateName.length === 0  && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.templatenamecopulsion}
+                    </p>
+                  )}
                     </div>
                     <div className="divSpace">
                       <div className="dropDrownSpace">
@@ -541,6 +578,11 @@ class Templates extends Component {
                             // showNewOptionAtTop={false}
                             isMulti
                           />
+                          {this.state.selectedSlaIssueType.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.issurtupeCompulsion}
+                    </p>
+                  )}
                         </div>
                       </div>
                     </div>
@@ -556,6 +598,7 @@ class Templates extends Component {
                           <option value="true">Active</option>
                           <option value="false">Inactive</option>
                         </select>
+
                       </div>
                     </div>
                     <div className="btnSpace">
@@ -590,6 +633,11 @@ class Templates extends Component {
                             maxLength={25}
                             onChange={this.handleTemplateSubject}
                           />
+                          {this.state.TemplateSubject.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.templatesubjectCompulsion}
+                    </p>
+                  )}
                         </div>
                         <Modal.Body>
                           <div className="template-editor">
@@ -603,6 +651,11 @@ class Templates extends Component {
                                 items: this.fileUpload
                               }}
                             />
+                            {this.state.editorContent.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.templatebodyCompulsion}
+                    </p>
+                  )}
                           </div>
                           <div className="config-button">
                             <button className="config-buttontext" onClick={this.createTemplate.bind(this)} type="submit">

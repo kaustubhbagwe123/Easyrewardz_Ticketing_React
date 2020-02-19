@@ -521,7 +521,8 @@ a {
   padding: 10;
   margin-right: 150px;
   margin-top: 45px;
-  width: 400px;
+  width: 450px;
+  /* width: 400px; */
   /* margin-bottom: 4px; */
   display: inline-block;
 }
@@ -1090,7 +1091,7 @@ table tr th:last-child {
   font-size: 12px;
   font-weight: 700;
   line-height: 14px;
-  display: block;
+  display: inherit;
   margin-bottom: 5px;
   text-align: left;
 }
@@ -1139,7 +1140,7 @@ table tr th:last-child {
 .storeSpacing {
   padding-left: 0;
   padding-top: 0;
-  display: block;
+  display: inherit;
 }
 .pencilImg {
   width: 13px;
@@ -2153,6 +2154,11 @@ table td span {
   position: relative;
   left: 2px;
   bottom: 1px;
+  margin-left: 3px;
+}
+.info-iconcus {
+  float:right;
+  margin-top: 3px;
 }
 .table-btn {
   border-radius: 15px;
@@ -2187,6 +2193,9 @@ table td span {
 .claim-icon {
   width: 16px;
   margin-right: 6px;
+}
+.claim-icon-1 {
+  width: 17px;
 }
 .table-img-cntr {
   width: 44px;
@@ -2758,6 +2767,21 @@ table tr th:last-child {
   display: inline-block;
   margin-top: -10px;
 }
+.pie-chart-count {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  margin-left: -18px;
+  padding: 0 !important;
+  margin-top: -2px;
+}
+.pie-chart-count span {
+  font-weight: 700;
+  font-size: 16px;
+  display: block;
+}
 .prio-pie-chart .nv-label text {
   fill: #4a4a4a !important;
   font-size: 12px;
@@ -2773,8 +2797,17 @@ table tr th:last-child {
 .dash-timepicker .react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box, .dash-timepicker .react-datepicker__time-container {
   width: 185px !important;
 }
+.dash-timepicker .react-datepicker-wrapper, .dash-timepicker input {
+  width: 100% !important;
+}
+.dash-timepicker {
+  margin-bottom: 12px;
+}
 .collapse-icon {
   width: 15px;
+}
+.black-twitter {
+  filter: brightness(0);
 }
 /* dashboard ends */
 
@@ -3208,7 +3241,24 @@ table tr th:last-child {
   color: #9b9b9b;
 }
 .schedule-width {
-  max-width: 283px;
+  /* max-width: 283px; */
+  max-width: 360px;
+  width: 100%;
+}
+.last-to {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.one-line-outer {
+  display: flex;
+  align-items: flex-end;
+}
+.one-line {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 /* my ticket list ends */
 
@@ -3419,6 +3469,38 @@ table tr th:last-child {
 .my-ticket-notes::-webkit-scrollbar-thumb:hover {
   background: #a5a3a3;
 }
+.ReactTable.limit-react-table-body .rt-tbody {
+  max-height: 300px;
+}
+.ReactTable.limit-react-table-body .rt-thead {
+  margin-right: 4px;
+}
+.ReactTable.limit-react-table-body .rt-tbody::-webkit-scrollbar{
+  width: 4px;
+}
+.ReactTable.limit-react-table-body .rt-tbody::-webkit-scrollbar-track{
+  background: #ddd;
+  border-radius: 10px;
+}
+.ReactTable.limit-react-table-body .rt-tbody::-webkit-scrollbar-thumb{
+  background: #888;
+  border-radius: 10px;
+}
+.ReactTable.limit-react-table-body .rt-tbody::-webkit-scrollbar-thumb:hover{
+  background: #555;
+}
+.ReactTable.limit-react-table-body .rt-thead .rt-tr {
+  text-align: left;
+}
+.cancel-assign {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 20px;
+}
+.cancel-assign img {
+  width: 100%;
+}
 /* my ticket ends */
 
 /* .cke_editable {
@@ -3443,6 +3525,33 @@ table tr th:last-child {
   background-position: right 12px center;
 }
 /* settings ends */
+
+/* sla starts */
+.category-box input:checked + label img {
+  display: block;
+}
+.category-box input + label img {
+  display: none;
+}
+.category-box input {
+  display: none;
+}
+#overlaySla{
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  display: none;
+}
+#overlaySla.show{
+  display: block;
+}
+.dropdown-menu-sla {
+  z-index: 1001;
+}
+/* sla ends */
 
 /* chetan css end */
 /******************************************************/
@@ -3856,6 +3965,10 @@ progress::-webkit-progress-bar {
   margin-top: 0;
   margin-bottom: 0;
   display: inline-block;
+}
+.historical-popup {
+  margin-right: auto !important;
+  min-width: 60%;
 }
 /* ---------------------------Deepak Savani Task:Claim Tab Ticket View-----------------------------   */
 
@@ -4372,9 +4485,10 @@ progress::-webkit-progress-bar {
 }
 
 .ScheduleDate-to {
-  width: 245px;
+  /* width: 245px; */
   margin-bottom: 17px;
   margin-top: 20px;
+  width: 100%;
 }
 .txt1Place {
   padding-left: 10px;
@@ -4384,10 +4498,11 @@ progress::-webkit-progress-bar {
 .scheduleBtn {
   background-color: #2561a8;
   border-radius: 4px;
-  width: 245px;
+  /* width: 245px; */
   height: 43px;
-  margin-top: 25px;
+  margin-top: 12px;
   cursor: pointer;
+  width: 100%;
 }
 
 .obpml {
@@ -6340,6 +6455,7 @@ font-weight: normal;
 .ReactTable .rt-thead.-header {
   box-shadow: none !important;
   background-color: #f8f8f8;
+  /* background-color: #E5E9ED; */
   border-bottom: 1px solid #eeeeee;
 }
 .ReactTable {
@@ -6409,6 +6525,18 @@ font-weight: normal;
   font-weight: 600;
   text-align: left;
   font-size: 13px; */
+}
+#tic-det-assign .ReactTable .rt-td {
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  padding-top: 9px !important;
+  padding-bottom: 9px !important;
+}
+#tic-det-assign .ReactTable .rt-th {
+  font-weight: 700 !important;
+  color: #9b9b9b !important;
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
 }
 .react-tabel-button {
   background-color: #2561a8;
@@ -6761,6 +6889,7 @@ table thead tr {
   width: 4%;
   display: inline-block;
   background: rgb(232, 240, 254);
+  height: 43px;
   padding-top: 11px;
   padding-bottom: 11px;
   border-radius: 4px;
@@ -6987,8 +7116,9 @@ table thead tr {
   background: #ffffff;
   background-clip: padding-box;
   box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.25);
-  margin-left: 800px;
+  /* margin-left: 800px; */
   /* margin-left: 815px; */
+  margin-right: 0;
   padding-right: 0;
   padding-left: 0;
 }
@@ -9635,7 +9765,7 @@ table tr th:last-child {
 /* MyTicketList ReactTable Start Kalpesh */
 .MyTicketListReact .table-b {
   border-radius: 15px;
-  width: 76px;
+  width: 85px;
   display: inline-block;
   padding: 4px 10px;
   text-transform: uppercase;
@@ -10096,7 +10226,7 @@ table tr th:last-child {
   margin: 0 5px;
 }
 .dashallbrand1 .dropdown-menu.show {
-  min-width: 115px;
+  min-width: 155px;
 }
 .DashTimeRange .inputDate form-control {
   margin: 0 0 0 100px;
@@ -10128,7 +10258,8 @@ table tr th:last-child {
 #ScheduleModel .scheduleBtncancel {
   background-color: #FFF;
   border-radius: 4px;
-  width: 245px;
+  /* width: 245px; */
+  width: 100%;
   height: 43px;
   color: #2561A8;
   font-family: Lato;
@@ -10224,6 +10355,9 @@ table tr th:last-child {
     center;
   background-size: 60px;
   z-index: 5;
+}
+.loader-icon-height {
+  height: 200px;
 }
 .tic-history .ReactTable {
   border: none;

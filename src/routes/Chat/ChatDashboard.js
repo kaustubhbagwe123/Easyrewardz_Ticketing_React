@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import TableArr from "./../../assets/Images/gray-down-icon.png";
+// import TableArr from "./../../assets/Images/gray-down-icon.png";
 import ChartStatusLive from "./Charts/ChartStatusLive.js";
 import DateTimeRangeContainer from "react-advanced-datetimerange-picker";
 import LineTotalChat from "./Charts/LineTotalChat";

@@ -5,7 +5,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import HeadphoneImg from "./../assets/Images/headphone.png";
 import Headphone2Img from "./../assets/Images/headphone2.png";
 import BlackUserIcon from "./../assets/Images/avatar.png";
+import Cancel from "./../assets/Images/CancelBlue.png";
 import DownImg from "./../assets/Images/down.png";
+import moment from "moment";
 import SearchBlackImg from "./../assets/Images/searchBlack.png";
 import LoadingImg from "./../assets/Images/loading.png";
 import EyeImg from "./../assets/Images/eye.png";
@@ -151,7 +153,11 @@ class MyTicket extends Component {
       mailFiled: {},
       orderNumber: "",
       orderDetailsData: [],
-      validOrdernumber: ""
+      validOrdernumber: "",
+      StoreName: "",
+      ProductName: "",
+      agentId:0,
+      AttachementrData:[]
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -229,6 +235,12 @@ class MyTicket extends Component {
         var ticketChannelOfPurchaseID = data.channelOfPurchaseID;
         var ticketActionType = data.ticketActionTypeID;
         var ticketIssueTypeID = data.issueTypeID;
+        var storeData = data.stores;
+        var productData=data.products;
+        var MailDetails=data.ticketingMailerQue;
+        var attachementDetails=data.attachment;
+        var AssignDateTime=moment(data.ticketAssignDate).format('LTS');
+        var ResponseDateTime=moment(data.targetResponseDate).format('LTS');
         var selectetedParameters = {
           ticketStatusID: ticketStatus,
           priorityID: ticketPriority,
@@ -239,10 +251,29 @@ class MyTicket extends Component {
           ticketActionTypeID: ticketActionType,
           issueTypeID: ticketIssueTypeID
         };
+
+        // var resultDate = ResponseDateTime.subtract(AssignDateTime);
+
+
+        var Storedetails="";
+        for (let i = 0; i < storeData.length; i++) {
+          Storedetails += storeData[i].storename + ",";
+        }
+        Storedetails=Storedetails.substring(",",Storedetails.length-1);
+        var ProductDetails="";
+        for (let j = 0; j < productData.length; j++) {
+          ProductDetails +=productData[j].itemName + ",";          
+        }
+        ProductDetails=ProductDetails.substring(",",ProductDetails.length-1);
+
         self.setState({
           ticketDetailsData: data,
           custID: customer_Id,
           selectetedParameters,
+          StoreName: Storedetails,
+          ProductName:ProductDetails,
+          mailFiled:MailDetails,
+          file:attachementDetails,
           loading: false
         });
 
@@ -315,7 +346,7 @@ class MyTicket extends Component {
         let data = res.data.responseData;
         // let demo = res.data.responseData[1];
         self.setState({
-          messageDetails: data,
+          messageDetails: data
           // messageDetails: demo
         });
       } else {
@@ -687,7 +718,30 @@ class MyTicket extends Component {
       }
     });
   }
+  handleAssignTickets(){
+    debugger;
+    let self = this;
 
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Ticketing/AssignTickets",
+      headers: authHeader(),
+      params: {
+        TicketID: this.state.ticket_Id,
+        AgentID: this.state.agentId,
+        Remark: ""
+      }
+    }).then(function(res) {
+      debugger;
+      let messageData = res.data.message;
+      if (messageData === "Success") {
+        NotificationManager.success("Tickets assigned successfully.");
+        self.HandlelabelModalClose();
+       
+        self.componentDidMount();
+      }
+    });
+  }
   fileDragEnter = e => {
     e.preventDefault();
   };
@@ -1016,94 +1070,6 @@ class MyTicket extends Component {
     }));
   }
 
-  // handleRemoveForm(i) {
-  //   let values = [...this.state.values];
-  //   values.splice(i, 1);
-  //   this.setState({ values });
-  // }
-  // CreateUIForm() {
-  //   return this.state.values.map((el, i) => (
-  //     <div key={i}>
-  //       <div className="comment-padding">
-  //         <label className="cmt-lbl" value={el || ""}>
-  //           Task {i + 1}
-  //         </label>
-  //         <img
-  //           src={DeleteImg}
-  //           alt="DeleteImg"
-  //           className="deleteImg"
-  //           onClick={this.handleRemoveForm.bind(this, i)}
-  //         />
-  //         <div className="frm-margin">
-  //           <input
-  //             type="text"
-  //             name="taskTitle"
-  //             className="cmdtxt-2"
-  //             placeholder="Task Title"
-  //             value={el.taskTitle || ""}
-  //             onChange={this.handleChange.bind(this, i)}
-  //           />
-  //         </div>
-  //         <div className="frm-margin1">
-  //           <textarea
-  //             rows="6"
-  //             className="cmt-textarea"
-  //             placeholder="Task Description"
-  //             value={el.taskDescription || ""}
-  //             name="taskDescription"
-  //             onChange={this.handleChange.bind(this, i)}
-  //           ></textarea>
-  //         </div>
-  //         <div className="row frm-margin1">
-  //           <div className="col-md-6">
-  //             <select
-  //               className="cmt-regtangleDDL select-CmtDDl"
-  //               name="department"
-  //               // value={el.department || ""}
-  //               defaultValue={el.department || ""}
-  //               onChange={this.handleChange.bind(this, i)}
-  //             >
-  //               <option>Select</option>
-  //               <option>Department</option>
-  //             </select>
-  //           </div>
-  //           <div className="col-md-6">
-  //             <select
-  //               className="cmt-regtangleDDL select-CmtDDl"
-  //               name="type"
-  //               defaultValue={el.type || ""}
-  //               onChange={this.handleChange.bind(this, i)}
-  //             >
-  //               <option>Select</option>
-  //               <option>Type</option>
-  //             </select>
-  //           </div>
-  //         </div>
-  //         <div className="row frm-margin1">
-  //           <div className="col-md-6">
-  //             <select
-  //               className="cmt-regtangleDDL select-CmtDDl"
-  //               name="assign"
-  //               defaultValue={el.assign || ""}
-  //               onChange={this.handleChange.bind(this, i)}
-  //             >
-  //               <option>Select</option>
-  //               <option>Assign to</option>
-  //             </select>
-  //           </div>
-  //         </div>
-  //       </div>
-  //       <hr />
-  //     </div>
-  //   ));
-  // }
-  // handleChange(i, e) {
-  //   const { name, value } = e.target;
-  //   let values = [...this.state.values];
-  //   values[i] = { ...values[i], [name]: value };
-  //   this.setState({ values });
-  // }
-
   setTicketActionTypeValue = e => {
     this.setState({ selectedTicketActionType: e });
   };
@@ -1296,7 +1262,7 @@ class MyTicket extends Component {
   }
   handleSendMailData() {
     debugger;
-    var subject = "Demo Mail";
+    // var subject = "Demo Mail";
     axios({
       method: "post",
       url: config.apiUrl + "/Ticketing/SendMail",
@@ -1547,6 +1513,7 @@ class MyTicket extends Component {
                       closeIconId="sdsg"
                       modalId="Historical-popup"
                       overlayId="logout-ovrly"
+                      classNames={{ modal: "historical-popup" }}
                     >
                       <label className="lblHistorical">Ticket Historical</label>
                       <img
@@ -1562,7 +1529,8 @@ class MyTicket extends Component {
                           columns={[
                             {
                               Header: <span>Name</span>,
-                              accessor: "name"
+                              accessor: "name",
+                              width: 150
                             },
                             {
                               Header: <span>Action</span>,
@@ -1570,7 +1538,17 @@ class MyTicket extends Component {
                             },
                             {
                               Header: <span>Time & Date</span>,
-                              accessor: "dateandTime"
+                              accessor: "dateandTime",
+                              width: 200,
+                              Cell: row => {
+                                var date = row.original["dateandTime"];
+                                return (
+                                  <span>
+                                    {moment(date).format("M/D/YYYY")} &nbsp;
+                                    {moment(date).format("HH:mm")}
+                                  </span>
+                                );
+                              }
                             }
                           ]}
                           resizable={false}
@@ -1612,13 +1590,18 @@ class MyTicket extends Component {
                     modalId="labelmodel-popup"
                     overlayId="logout-ovrly"
                   >
-                    <div className="myTicket-table remov varunoverflow cus-scroll agentlist">
+                    <div
+                      className="myTicket-table remov agentlist"
+                      id="tic-det-assign"
+                    >
                       <ReactTable
+                        className="limit-react-table-body"
                         data={SearchAssignData}
                         columns={[
                           {
                             Header: <span>Emp Id</span>,
-                            accessor: "user_ID"
+                            accessor: "user_ID",
+                            width: 80
                           },
                           {
                             Header: <span>Name</span>,
@@ -1633,43 +1616,41 @@ class MyTicket extends Component {
                         minRows={1}
                         // defaultPageSize={5}
                         showPagination={false}
+                        resizable={false}
+                        getTrProps={(rowInfo, column) => {
+                          // debugger;
+                          const index = column ? column.index : -1;
+                          return {
+                            onClick: e => {
+                              debugger;
+                              this.selectedRow = index;
+                              var agentId = column.original["user_ID"];
+                              this.setState({ agentId });
+                            },
+                            style: {
+                              background:
+                                this.selectedRow === index ? "#ECF2F4" : null
+                            }
+                          };
+                        }}
                       />
                       <div className="button-margin">
                         <button
                           type="button"
                           className="btn btn-outline-primary"
+                          onClick={this.handleAssignTickets.bind(this)}
                         >
                           SELECT
                         </button>
                       </div>
+                      <div
+                        className="cancel-assign"
+                        onClick={this.HandlelabelModalClose.bind(this)}
+                      >
+                        <img src={Cancel} alt="cancel" />
+                      </div>
                     </div>
                   </Modal>
-                  {/* <Modal
-                open={this.state.headPhoneTable}
-                onClose={this.HandleHeadePhoneModalClose.bind(this)}
-                closeIconId="close"
-                modalId="HeadePhone-popup"
-                overlayId="logout-ovrly"
-              >
-                <div className="store-hdrtMdal">
-                  <div className="row">
-                    <label
-                      className="modal-lbl"
-                      onClick={() => this.handleUpdateTicketStatus(103)}
-                    >
-                      Submit as <span className="modal-lbl-1">Solved</span>
-                    </label>
-                  </div>
-                  <div className="row" style={{ marginTop: "8px" }}>
-                    <label
-                      className="modal-lbl"
-                      onClick={() => this.handleUpdateTicketStatus(104)}
-                    >
-                      Submit as <span className="modal-lbl-2">Closed</span>
-                    </label>
-                  </div>
-                </div>
-              </Modal> */}
                 </div>
               </div>
             </div>
@@ -2242,7 +2223,14 @@ class MyTicket extends Component {
                             className="bata-rajouri-garden"
                             onClick={this.HandleStoreModalOpen.bind(this)}
                           >
-                            Bata Rajouri Garden &nbsp;
+                            {this.state.StoreName === "" ? (
+                              <label className="label-4 storeSpacing">
+                                No Store Attached
+                              </label>
+                            ) : (
+                              this.state.StoreName
+                            )}
+                            &nbsp;
                             <img
                               src={PencilImg}
                               alt="Pencile"
@@ -2545,7 +2533,14 @@ class MyTicket extends Component {
                             className="bata-rajouri-garden"
                             onClick={this.handleOrderTableOpen.bind(this)}
                           >
-                            Red Tennis Coca Cola White Monogr...&nbsp;
+                            {this.state.ProductName === "" ? (
+                              <label className="label-4">
+                                No Product Attached
+                              </label>
+                            ) : (
+                              this.state.ProductName
+                            )}
+                            &nbsp;
                             <img
                               src={PencilImg}
                               alt="Pencile"
@@ -3181,10 +3176,7 @@ class MyTicket extends Component {
                       <CardBody>
                         <div className="">
                           <CKEditor
-                            data={
-                              // this.state.CkEditorTemplateDetails.templateBody
-                              this.state.mailBodyData
-                            }
+                            data={this.state.mailBodyData}
                             onChange={this.onAddCKEditorChange}
                             config={{
                               toolbar: [
@@ -3242,6 +3234,7 @@ class MyTicket extends Component {
                                     type="text"
                                     className="CCdi1"
                                     name="userCC"
+                                    autoComplete="off"
                                     value={this.state.mailFiled.userCC}
                                     onChange={this.handleMailOnChange.bind(
                                       this,
@@ -3269,6 +3262,7 @@ class MyTicket extends Component {
                                     type="text"
                                     className="CCdi1"
                                     name="userBCC"
+                                    autoComplete="off"
                                     value={this.state.mailFiled.userBCC}
                                     onChange={this.handleMailOnChange.bind(
                                       this,

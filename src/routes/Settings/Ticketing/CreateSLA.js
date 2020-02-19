@@ -43,24 +43,29 @@ class CreateSLA extends Component {
       // PriorityRespondValueHigh: 0,
       // PriorityRespondValueMedium: 0,
       // PriorityRespondValueLow: 0,
-     // PriorityResolutionValueHigh: 0,
-     // PriorityResolutionValueMedium: 0,
-     // PriorityResolutionValueLow: 0,
-     // PriorityRespondDurationHigh: "M",
-     // PriorityRespondDurationMedium: "M",
-     // PriorityRespondDurationLow: "M",
-     // PriorityResolutionDurationHigh: "M",
-     // PriorityResolutionDurationMedium: "M",
-     // PriorityResolutionDurationLow: "M",
+      // PriorityResolutionValueHigh: 0,
+      // PriorityResolutionValueMedium: 0,
+      // PriorityResolutionValueLow: 0,
+      // PriorityRespondDurationHigh: "M",
+      // PriorityRespondDurationMedium: "M",
+      // PriorityRespondDurationLow: "M",
+      // PriorityResolutionDurationHigh: "M",
+      // PriorityResolutionDurationMedium: "M",
+      // PriorityResolutionDurationLow: "M",
       value: null,
       PriorityData: [],
       FinalDataOfSlaTarget: [],
-      finalData: []
+      finalData: [],
+      indiSla: '',
+      // searchSla: '',
+      searchedSla: [],
+      slaShow: false,
+      slaOvrlayShow: false,
     };
 
     this.handleGetSLA = this.handleGetSLA.bind(this);
     this.handleGetSLAIssueType = this.handleGetSLAIssueType.bind(this);
-    // this.handleSlaTargetsDropdowns = this.handleSlaTargetsDropdowns.bind(this);
+    this.handleSlaButton = this.handleSlaButton.bind(this);
     this.handleGetPriorityList = this.handleGetPriorityList.bind(this);
   }
 
@@ -69,6 +74,123 @@ class CreateSLA extends Component {
     this.handleGetSLAIssueType();
     this.handleGetPriorityList();
   }
+
+  selectIndividualSLA = async (issueId, event) => {
+    debugger;
+    var indiSla = this.state.indiSla;
+    var separator = ",";
+    if (event.target.checked) {
+      // indiSla += issueId + ",";
+      var values = indiSla.split(separator);
+      var flag = values.includes(issueId.toString());
+      if (!flag) {
+        values.unshift(issueId);
+        indiSla = values.join(separator);
+      }
+      await this.setState({
+        indiSla
+      });
+      document.getElementById('issueTypeValue').textContent = (this.state.indiSla.split(',').length - 1) + ' selected';
+    } else {
+      // var indiSla = this.state.indiSla;
+      // var separator = ",";
+      var values = indiSla.split(separator);
+      for (var i = 0; i < values.length; i++) {
+        if (values[i] === issueId) {
+          values.splice(i, 1);
+          indiSla = values.join(separator);
+        }
+      }
+      await this.setState({
+        indiSla
+      });
+      if (this.state.indiSla.split(',').length - 1 !== 0) {
+        document.getElementById('issueTypeValue').textContent = (this.state.indiSla.split(',').length - 1) + ' selected';
+      } else {
+        document.getElementById('issueTypeValue').textContent = 'Select';
+      }
+    }
+  };
+
+  selectAboveIndividualSLA = async (issueId, event) => {
+    debugger;
+    if (event.target.checked) {
+      var indiSla = this.state.indiSla;
+      var separator = ",";
+      var values = indiSla.split(separator);
+      var flag = values.includes(issueId.toString());
+      if (!flag) {
+        values.unshift(issueId);
+        indiSla = values.join(separator);
+      }
+      await this.setState({
+        indiSla
+      });
+      document.getElementById('issueTypeValue').textContent = (this.state.indiSla.split(',').length - 1) + ' selected';
+    } else {
+      var indiSla = this.state.indiSla;
+      var separator = ",";
+      var values = indiSla.split(separator);
+      for (var i = 0; i < values.length; i++) {
+        if (values[i] === issueId) {
+          values.splice(i, 1);
+          indiSla = values.join(separator);
+        }
+      }
+      await this.setState({
+        indiSla
+      });
+      if (this.state.indiSla.split(',').length - 1 !== 0) {
+        document.getElementById('issueTypeValue').textContent = (this.state.indiSla.split(',').length - 1) + ' selected';
+      } else {
+        document.getElementById('issueTypeValue').textContent = 'Select';
+      }
+    }
+  };
+
+  selectAllSLA = async event => {
+    debugger;
+    var indiSla = '';
+    var checkboxes = document.getElementsByName("allSla");
+    document.getElementById("issueTypeValue").textContent = "All Selected";
+    for (var i in checkboxes) {
+      if (checkboxes[i].checked === false) {
+        checkboxes[i].checked = true;
+      }
+    }
+    if (this.state.slaIssueType !== null) {
+      this.state.slaIssueType.forEach(allSlaId);
+      function allSlaId(item) {
+        indiSla += item.issueTypeID + ',';
+      }
+    }
+    await this.setState({
+      indiSla
+    });
+  };
+
+  selectNoSLA = async event => {
+    debugger;
+    var checkboxes = document.getElementsByName("allSla");
+    document.getElementById("issueTypeValue").textContent = "Select";
+    for (var i in checkboxes) {
+      if (checkboxes[i].checked === true) {
+        checkboxes[i].checked = false;
+      }
+    }
+    await this.setState({
+      indiSla: ''
+    });
+  };
+  selectNoAboveSLA = async event => {
+    debugger;
+    var checkboxes = document.getElementsByName("searchedSla");
+    for (var i in checkboxes) {
+      if (checkboxes[i].checked === true) {
+        checkboxes[i].checked = false;
+      }
+    }
+  };
 
   handleSlaTargets = (i, e) => {
     debugger;
@@ -96,7 +218,7 @@ class CreateSLA extends Component {
       method: "post",
       url: config.apiUrl + "/SLA/GetIssueType",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let slaIssueType = res.data.responseData;
       let selectedSlaIssueType = slaIssueType[0].issueTypeID;
@@ -125,8 +247,11 @@ class CreateSLA extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/SLA/GetSLA",
-      headers: authHeader()
-    }).then(function(res) {
+      headers: authHeader(),
+      params: {
+        SLAFor: 1
+      }
+    }).then(function (res) {
       debugger;
       let status = res.data.message;
       let data = res.data.responseData;
@@ -144,7 +269,7 @@ class CreateSLA extends Component {
       method: "get",
       url: config.apiUrl + "/Priority/GetPriorityList",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let status = res.data.message;
       let data = res.data.responseData;
@@ -158,9 +283,9 @@ class CreateSLA extends Component {
           tempData.priortyName = data[i].priortyName;
           tempData.SlaBreach = "";
           tempData.Rerspondtime = "";
-          tempData.RerspondType = 0;
+          tempData.RerspondType = 'M';
           tempData.ResolveTime = "";
-          tempData.ResolveType = "";
+          tempData.ResolveType = "M";
 
           temp.push(tempData);
         }
@@ -208,10 +333,10 @@ class CreateSLA extends Component {
       debugger;
       let status = res.data.message;
       if (status === "Success") {
-        NotificationManager.success("SLA updated successfully.");
+        NotificationManager.success("SLA updated successfully.", '', 2000);
         this.handleGetSLA();
       } else {
-        NotificationManager.error("SLA not updated.");
+        NotificationManager.error("SLA not updated.", '', 2000);
       }
     });
   }
@@ -236,22 +361,24 @@ class CreateSLA extends Component {
     debugger;
     let self = this;
     let SlaIsActive;
+    let indiSla = this.state.indiSla;
+    let commaSeperatedSla = indiSla.substring(0, indiSla.length - 1);
     if (this.state.SlaIsActive === "true") {
       SlaIsActive = true;
     } else if (this.state.SlaIsActive === "false") {
       SlaIsActive = false;
     }
-    var data=this.state.finalData;
+    var data = this.state.finalData;
 
-    var paramData=[];
+    var paramData = [];
     for (let i = 0; i < data.length; i++) {
-      var temp={}; 
-          temp.PriorityID= data[i].priorityID;
-          temp.SLABreachPercent= data[i].SlaBreach;
-          temp.PriorityRespondValue= data[i].Rerspondtime;
-          temp.PriorityRespondDuration=data[i].RerspondType;
-          temp.PriorityResolutionValue= data[i].ResolveTime;
-          temp.PriorityResolutionDuration= data[i].ResolveType
+      var temp = {};
+      temp.PriorityID = data[i].priorityID;
+      temp.SLABreachPercent = data[i].SlaBreach;
+      temp.PriorityRespondValue = data[i].Rerspondtime;
+      temp.PriorityRespondDuration = data[i].RerspondType;
+      temp.PriorityResolutionValue = data[i].ResolveTime;
+      temp.PriorityResolutionDuration = data[i].ResolveType
       paramData.push(temp)
     }
 
@@ -260,23 +387,26 @@ class CreateSLA extends Component {
       url: config.apiUrl + "/SLA/CreateSLA",
       headers: authHeader(),
       data: {
-        IssueTypeID: this.state.selectedSlaIssueType,
+        IssueTypeID: commaSeperatedSla,
         isSLAActive: SlaIsActive,
-        SLATarget: paramData
+        SLATarget: paramData,
+        SLAFor: 1
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let status = res.data.message;
       if (status === "Success") {
-        NotificationManager.success("SLA added successfully.");
+        NotificationManager.success("SLA added successfully.", '', 2000);
         self.setState({
           selectedSlaIssueType: 0,
           SlaIsActive: "true"
         });
         self.handleGetSLA();
         self.handleGetPriorityList();
+        self.selectNoSLA();
+        self.selectNoAboveSLA();
       } else {
-        NotificationManager.error("SLA not added.");
+        NotificationManager.error("SLA not added.", '', 2000);
       }
     });
   }
@@ -291,11 +421,11 @@ class CreateSLA extends Component {
       params: {
         SLAID: deleteId
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let status = res.data.message;
       if (status === "Success") {
-        NotificationManager.success("SLA deleted successfully.");
+        NotificationManager.success("SLA deleted successfully.", '', 2000);
         self.handleGetSLA();
       } else {
         NotificationManager.error("SLA not deleted.");
@@ -307,12 +437,66 @@ class CreateSLA extends Component {
     this.setState({ fileName: e.target.files[0].name });
   };
   handleAddNoteCheck = e => {
-    e.preventDefault();
-    e.stopPropagation();
+
+  };
+  handleSearchSla = e => {
+    debugger;
+    // this.setState({
+    //   searchSla: e.target.value
+    // });
+    let self = this;
+    if (e.target.value.length > 3) {
+      axios({
+        method: "post",
+        url: config.apiUrl + "/SLA/SearchIssueType",
+        headers: authHeader(),
+        params: {
+          SearchText: e.target.value
+        }
+      }).then(function (res) {
+        debugger;
+        let status = res.data.message;
+        let data = res.data.responseData;
+        if (status === "Success") {
+          self.setState({
+            searchedSla: data
+          });
+        } else {
+          self.setState({
+            searchedSla: []
+          });
+        }
+      });
+    }
+  };
+  handleSlaButton() {
+    debugger;
+    // let ele = document.getElementsByClassName('dropdown-menu')[0];
+    // let overlay = document.getElementById('overlaySla');
+    // let bool = ele.classList.contains('show');
+    // let boolOverlay = overlay.classList.contains('show');
+    // if (bool) {
+    //   ele.classList.remove('show');
+    // } else {
+    //   ele.classList.add('show');
+    // }
+    // if (boolOverlay) {
+    //   overlay.classList.remove('show');
+    // } else {
+    //   overlay.classList.add('show');
+    // }
+    let slaShowOriginal = this.state.slaShow;
+    let slaShow = !slaShowOriginal;
+    let slaOvrlayShowOriginal = this.state.slaOvrlayShow;
+    let slaOvrlayShow = !slaOvrlayShowOriginal;
+    this.setState({
+      slaShow,
+      slaOvrlayShow
+    })
   };
 
   render() {
-    const { slaIssueType, value } = this.state;
+    // const { slaIssueType, value } = this.state;
     return (
       <React.Fragment>
         <div className="container-fluid setting-title setting-breadcrumb">
@@ -320,7 +504,7 @@ class CreateSLA extends Component {
             Settings
           </Link>
           <span>&gt;</span>
-          <Link to={Demo.BLANK_LINK} className="header-path">
+          <Link to="settings" className="header-path">
             Ticketing
           </Link>
           <span>&gt;</span>
@@ -422,8 +606,8 @@ class CreateSLA extends Component {
                                     />
                                   </Popover>
                                 ) : (
-                                  ""
-                                )}
+                                    ""
+                                  )}
                               </span>
                             </div>
                           );
@@ -577,48 +761,48 @@ class CreateSLA extends Component {
 
                                       {this.state.updateSlaTarget.length >
                                         0 && (
-                                        <div className="pop-over-div m-t-10">
-                                          <div>
-                                            <label className="slatargettext-1">
-                                              SLA TARGETS
+                                          <div className="pop-over-div m-t-10">
+                                            <div>
+                                              <label className="slatargettext-1">
+                                                SLA TARGETS
                                             </label>
+                                            </div>
+                                            <div>
+                                              <label className="createhead-text-1">
+                                                Priority
+                                            </label>
+                                              <label className="createhead-text-1">
+                                                %SLA
+                                            </label>
+                                              <label className="createhead-text-1">
+                                                Respond
+                                            </label>
+                                              <label className="createhead-text-1">
+                                                Resolve
+                                            </label>
+                                            </div>
+                                            {this.state.updateSlaTarget !==
+                                              null &&
+                                              this.state.updateSlaTarget.map(
+                                                (item, i) => (
+                                                  <div key={i}>
+                                                    <label className="slatemp-textpopup-1">
+                                                      {item.priorityName}
+                                                    </label>
+                                                    <label className="slatemp-textpopup-1">
+                                                      {item.slaBreachPercent}
+                                                    </label>
+                                                    <label className="slatemp-textpopup-1">
+                                                      {item.priorityRespond}
+                                                    </label>
+                                                    <label className="slatemp-textpopup-1">
+                                                      {item.priorityResolution}
+                                                    </label>
+                                                  </div>
+                                                )
+                                              )}
                                           </div>
-                                          <div>
-                                            <label className="createhead-text-1">
-                                              Priority
-                                            </label>
-                                            <label className="createhead-text-1">
-                                              %SLA
-                                            </label>
-                                            <label className="createhead-text-1">
-                                              Respond
-                                            </label>
-                                            <label className="createhead-text-1">
-                                              Resolve
-                                            </label>
-                                          </div>
-                                          {this.state.updateSlaTarget !==
-                                            null &&
-                                            this.state.updateSlaTarget.map(
-                                              (item, i) => (
-                                                <div key={i}>
-                                                  <label className="slatemp-textpopup-1">
-                                                    {item.priorityName}
-                                                  </label>
-                                                  <label className="slatemp-textpopup-1">
-                                                    {item.slaBreachPercent}
-                                                  </label>
-                                                  <label className="slatemp-textpopup-1">
-                                                    {item.priorityRespond}
-                                                  </label>
-                                                  <label className="slatemp-textpopup-1">
-                                                    {item.priorityResolution}
-                                                  </label>
-                                                </div>
-                                              )
-                                            )}
-                                        </div>
-                                      )}
+                                        )}
 
                                       <div className="pop-over-div">
                                         <label className="edit-label-1">
@@ -734,12 +918,14 @@ class CreateSLA extends Component {
                           <button
                             className="btn issuesladrop"
                             type="button"
-                            data-toggle="dropdown"
+                            // data-toggle="dropdown"
+                            id="issueTypeValue"
+                            onClick={this.handleSlaButton}
                           >
-                            Broken Shoe
+                            Select
                             <span className="caret"></span>
                           </button>
-                          <div className="dropdown-menu">
+                          <div className={this.state.slaShow ? "dropdown-menu dropdown-menu-sla show" : "dropdown-menu dropdown-menu-sla"}>
                             <div className="cat-mainbox">
                               <input
                                 type="text"
@@ -747,100 +933,55 @@ class CreateSLA extends Component {
                                 placeholder="Search"
                                 maxLength={10}
                                 name="store_code"
+                                onChange={this.handleSearchSla}
                               />
                               <div className="filter-checkbox category-scroll">
                                 <ul>
-                                  <li>
-                                    <input
-                                      type="checkbox"
-                                      id="fil-add"
-                                      name="filter-type"
-                                      style={{ display: "none" }}
-                                      onChange={this.handleAddNoteCheck}
-                                    />
-                                    <label
-                                      htmlFor="fil-add"
-                                      style={{ paddingLeft: "25px" }}
-                                    >
-                                      <span className="add-note">Add Note</span>
-                                    </label>
-                                  </li>
-                                  <li>
-                                    <input
-                                      type="checkbox"
-                                      id="fil-add"
-                                      name="filter-type"
-                                      style={{ display: "none" }}
-                                      onChange={this.handleAddNoteCheck}
-                                    />
-                                    <label
-                                      htmlFor="fil-add"
-                                      style={{ paddingLeft: "25px" }}
-                                    >
-                                      <span className="add-note">Add Note</span>
-                                    </label>
-                                  </li>
-                                  <li>
-                                    <input
-                                      type="checkbox"
-                                      id="fil-add"
-                                      name="filter-type"
-                                      style={{ display: "none" }}
-                                      onChange={this.handleAddNoteCheck}
-                                    />
-                                    <label
-                                      htmlFor="fil-add"
-                                      style={{ paddingLeft: "25px" }}
-                                    >
-                                      <span className="add-note">Add Note</span>
-                                    </label>
-                                  </li>
-                                  <li>
-                                    <input
-                                      type="checkbox"
-                                      id="fil-add"
-                                      name="filter-type"
-                                      style={{ display: "none" }}
-                                      onChange={this.handleAddNoteCheck}
-                                    />
-                                    <label
-                                      htmlFor="fil-add"
-                                      style={{ paddingLeft: "25px" }}
-                                    >
-                                      <span className="add-note">Add Note</span>
-                                    </label>
-                                  </li>
-                                  <li>
-                                    <input
-                                      type="checkbox"
-                                      id="fil-add"
-                                      name="filter-type"
-                                      style={{ display: "none" }}
-                                      onChange={this.handleAddNoteCheck}
-                                    />
-                                    <label
-                                      htmlFor="fil-add"
-                                      style={{ paddingLeft: "25px" }}
-                                    >
-                                      <span className="add-note">Add Note</span>
-                                    </label>
-                                  </li>
+                                  {this.state.searchedSla !== null &&
+                                    this.state.searchedSla.map((item, i) => (
+                                      <li key={i}>
+                                        <input
+                                          type="checkbox"
+                                          id={"j" + item.issueTypeID}
+                                          name="searchedSla"
+                                          style={{ display: "none" }}
+                                          onChange={this.handleAddNoteCheck}
+                                          onChange={this.selectAboveIndividualSLA.bind(this, item.issueTypeID)}
+                                        />
+                                        <label
+                                          htmlFor={"j" + item.issueTypeID}
+                                          style={{ paddingLeft: "25px" }}
+                                        >
+                                          <span className="add-note">{item.issueTypeName}</span>
+                                        </label>
+                                      </li>
+                                    ))}
                                 </ul>
                               </div>
                               <div className="category-button">
                                 <ul>
                                   <li>
-                                    <label>Select All</label>
+                                    <label onClick={this.selectAllSLA.bind(this)}>Select All</label>
                                   </li>
                                   <li>
-                                    <label>Clear</label>
+                                    <label onClick={this.selectNoSLA.bind(this)}>Clear</label>
                                   </li>
                                 </ul>
                               </div>
                               <div className="category-box category-scroll">
                                 <ul>
-                                  <li>
-                                    <label>Broken Shoe <img src={Correct} alt="Checked" /></label>
+                                  {this.state.slaIssueType !== null &&
+                                    this.state.slaIssueType.map((item, i) => (
+                                      <li key={i}>
+                                        <input type="checkbox" id={"i" + item.issueTypeID} name="allSla" onChange={this.selectIndividualSLA.bind(this, item.issueTypeID)} />
+                                        <label htmlFor={"i" + item.issueTypeID}>{item.issueTypeName} <img src={Correct} alt="Checked" /></label>
+                                        <span>{item.categoryName}</span>
+                                        <span>{item.subCategoryName}</span>
+                                      </li>
+                                    ))}
+                                  {/* <li>
+                                    <input type="checkbox" id="uio" />
+                                    <label htmlFor="uio">Broken Shoe <img src={Correct} alt="Checked" /></label>
                                     <span>Defective article</span>
                                     <span>Complaint</span>
                                   </li>
@@ -858,27 +999,29 @@ class CreateSLA extends Component {
                                     <label>Broken Shoe <img src={Correct} alt="Checked" /></label>
                                     <span>Defective article</span>
                                     <span>Complaint</span>
-                                  </li>
+                                  </li> */}
                                 </ul>
                               </div>
                             </div>
-                              <div className="category-buttonbtm">
-                                <ul>
-                                  <li>
-                                    <button
-                                      className="cancel"
-                                    >
-                                        Cancel
+                            <div className="category-buttonbtm">
+                              <ul>
+                                <li>
+                                  <button
+                                    className="cancel"
+                                    onClick={this.handleSlaButton}
+                                  >
+                                    Cancel
                                     </button>
-                                  </li>
-                                  <li style={{float: "right"}}>
-                                    <button
-                                      className="done"
-                                    >Done
+                                </li>
+                                <li style={{ float: "right" }}>
+                                  <button
+                                    className="done"
+                                    onClick={this.handleSlaButton}
+                                  >Done
                                     </button>
-                                  </li>
-                                </ul>
-                              </div>
+                                </li>
+                              </ul>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -971,7 +1114,7 @@ class CreateSLA extends Component {
                         </div>
                       ))}
 
-                   
+
                     <div className="divSpace-3">
                       <div className="dropDrownSpace">
                         <label className="reports-to">Status</label>
@@ -1093,6 +1236,7 @@ class CreateSLA extends Component {
           </div>
         </div>
         <NotificationContainer />
+        <div id="overlaySla" className={this.state.slaOvrlayShow ? 'show' : ''}  onClick={this.handleSlaButton} />
       </React.Fragment>
     );
   }

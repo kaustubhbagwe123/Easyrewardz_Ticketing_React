@@ -87,10 +87,10 @@ class StoreMaster extends Component {
         debugger;
         if(data!=null)
         {
-          // self.setState({
-          //   storeData: data,
-          //   loading: false
-          // });
+          self.setState({
+            storeData: data,
+            loading: false
+          });
         }
        
       
@@ -465,7 +465,7 @@ class StoreMaster extends Component {
             <div className="row">
               <div className="col-md-8">
                 {this.state.loading === true ? (
-                  <div className="loader-icon"></div>
+                  <div className="loader-icon loader-icon-height"></div>
                 ) : (
                   <div className="table-cntr table-height TicketStoreReact">
                     <ReactTable

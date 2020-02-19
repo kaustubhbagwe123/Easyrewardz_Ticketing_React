@@ -36,7 +36,13 @@ class TicketHierarchy extends Component {
       hierarchyData: [],
       reportToData: [],
       activeData: ActiveStatus(),
-      hierarchyEditData: {}
+      hierarchyEditData: {},
+      designationNameCompulsion:"",
+      reportToCompulsion:"",
+      statusCompulsion:"",
+      editdesignationNameCompulsion:"",
+      editreportToCompulsion:"",
+      editstatusCompulsion:""
     };
     this.togglePopover = this.togglePopover.bind(this);
     this.handleGetHierarchyData = this.handleGetHierarchyData.bind(this);
@@ -107,6 +113,14 @@ class TicketHierarchy extends Component {
   }
   handleSubmitData() {
     debugger;
+    if(
+        this.state.designation_name.length > 0 &&
+        this.state.selectReportTo.length > 0 &&
+        this.state.selectStatus !== 0 
+
+    ){
+
+    
     let self = this;
     var activeStatus = 0;
     var status = this.state.selectStatus;
@@ -137,6 +151,16 @@ class TicketHierarchy extends Component {
         });
       }
     });
+  }else{
+
+    this.setState({
+      designationNameCompulsion: "Designation Name field is compulsory.",
+      reportToCompulsion: "ReportTo field is compulsory.",
+      statusCompulsion: "Status field is compulsory."
+      
+    });
+
+  }
   }
   handleDeleteHierarchy(hierarchy_Id) {
     debugger;
@@ -161,7 +185,12 @@ class TicketHierarchy extends Component {
     });
   }
   handleUpdateHierarchyData(hierarchy_Id){
-    debugger
+    debugger;
+    if(
+      this.state.hierarchyEditData.designation_Name.length > 0 &&
+      this.state.hierarchyEditData.report_To > 0 &&
+      this.state.hierarchyEditData.designation_status > 0
+    ){
     let self = this;
     var activeStatus = 0;
     var status = this.state.hierarchyEditData.designation_status;
@@ -193,6 +222,14 @@ class TicketHierarchy extends Component {
         });
       }
     });
+  }else{
+    this.setState({
+      editdesignationNameCompulsion: "Designation Name field is compulsory.",
+      editreportToCompulsion:"ReportTo field is compulsory.",
+      editstatusCompulsion: "Status field is compulsory."
+    });
+   
+  }
   }
   handleGetEditData(data) {
     debugger;
@@ -255,7 +292,7 @@ class TicketHierarchy extends Component {
             Settings
           </Link>
           <span>&gt;</span>
-          <a href={Demo.BLANK_LINK} className="header-path">
+          <a href="settings" className="header-path">
             Ticketing
           </a>
           <span>&gt;</span>
@@ -424,6 +461,7 @@ class TicketHierarchy extends Component {
                                           }
                                           onChange={this.handleOnChangeData}
                                         />
+                                        
                                       </div>
                                       <div className="pop-over-div">
                                         <label className="edit-label-1">
@@ -452,6 +490,11 @@ class TicketHierarchy extends Component {
                                               )
                                             )}
                                         </select>
+                                        {this.state.hierarchyEditData.report_To === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.editreportToCompulsion}
+                    </p>
+                  )}
                                       </div>
                                       <div className="pop-over-div">
                                         <label className="edit-label-1">
@@ -479,6 +522,11 @@ class TicketHierarchy extends Component {
                                               )
                                             )}
                                         </select>
+                                        {this.state.hierarchyEditData.designation_status === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.editstatusCompulsion}
+                    </p>
+                  )}
                                       </div>
                                       <br />
                                       <div>
@@ -585,6 +633,11 @@ class TicketHierarchy extends Component {
                         value={this.state.designation_name}
                         onChange={this.handleOnChangeHierarchyData}
                       />
+                       {this.state.designation_name.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.designationNameCompulsion}
+                    </p>
+                  )}
                     </div>
                     <div className="divSpace">
                       <div className="dropDrownSpace">
@@ -603,6 +656,11 @@ class TicketHierarchy extends Component {
                               </option>
                             ))}
                         </select>
+                        {this.state.selectReportTo === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.reportToCompulsion}
+                    </p>
+                  )}
                       </div>
                     </div>
                     <div className="dropDrownSpace">
@@ -611,8 +669,10 @@ class TicketHierarchy extends Component {
                         className="form-control dropdown-setting"
                         value={this.state.selectStatus}
                         onChange={this.handleStatusChange}
+                        
                       >
-                        <option>select</option>
+                        
+                        <option >select</option>
                         {this.state.activeData !== null &&
                           this.state.activeData.map((item, j) => (
                             <option key={j} value={item.ActiveID}>
@@ -620,6 +680,11 @@ class TicketHierarchy extends Component {
                             </option>
                           ))}
                       </select>
+                      {this.state.selectStatus === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.statusCompulsion}
+                    </p>
+                  )}
                     </div>
                     <div className="btnSpace">
                       <button
