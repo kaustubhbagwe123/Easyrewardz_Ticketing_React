@@ -3274,12 +3274,15 @@ class Dashboard extends Component {
                         <div className="col-lg-3 col-md-4">
                           <div className="dash-top-cards prio-pie-cntr">
                             <p className="card-head mb-0">Open By Priority</p>
-                            <div className="prio-pie-chart">
+                            <div className="prio-pie-chart" style={{position: 'relative'}}>
                               {this.state.DashboardPriorityGraphData.length >
                               0 ? (
+                                <>
+                                <p className="pie-chart-count"><span>{this.state.DashboardGraphData.openPriorityTicketCount}</span> Tickets</p>
                                 <OpenByPriorityPie
                                   data={this.state.DashboardPriorityGraphData}
                                 />
+                                </>
                               ) : null}
                             </div>
                           </div>

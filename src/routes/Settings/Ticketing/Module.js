@@ -299,7 +299,7 @@ class Module extends Component {
                             <label htmlFor={'i' + item.moduleItemID} className="cr"></label>
                           </div>
                         </div>
-                      ))} 
+                      ))}
 
 
                     </Tab>

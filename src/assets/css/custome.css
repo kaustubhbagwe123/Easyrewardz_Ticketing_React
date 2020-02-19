@@ -2767,6 +2767,21 @@ table tr th:last-child {
   display: inline-block;
   margin-top: -10px;
 }
+.pie-chart-count {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  margin-left: -18px;
+  padding: 0 !important;
+  margin-top: -2px;
+}
+.pie-chart-count span {
+  font-weight: 700;
+  font-size: 16px;
+  display: block;
+}
 .prio-pie-chart .nv-label text {
   fill: #4a4a4a !important;
   font-size: 12px;

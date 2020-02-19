@@ -48,18 +48,17 @@ class TicketSystemStore extends Component {
   handleOrderStoreTableClose() {
     this.setState({ OrderStoreTable: false });
   }
-  handleByvisitDate(date) {
+  handleByvisitDate(e, rowData) {
     debugger;
-    // var id = rowData.original.storeID;
-    // var value = document.getElementById("visitDate" + id);
-    // var value=date;
-    // var value = document.getElementById('modifiedDate'+ id);
-    // // var index = rowData.index;
-    // var selectedStoreData = this.state.byVisitDate;
-    // selectedStoreData["modifiedDate"] = date
+    var id = e.original.storeID;
+    var index = this.state.selectedStoreData.findIndex(
+      x => x.storeID === id
+    );
+    this.state.selectedStoreData["VisitedDate"]=rowData
+    var selectedStoreData = this.state.selectedStoreData;
+    selectedStoreData[index].VisitedDate = rowData;
 
-    // this.setState({ selectedStoreData });
-    this.setState({ byVisitDate: date });
+    this.setState({ selectedStoreData });
   }
   handleStoreStatus = e => {
     debugger;
@@ -579,28 +578,18 @@ class TicketSystemStore extends Component {
                           Cell: row => {
                             return (
                               <div className="col-sm-12 p-0">
-                                {/* <DatePicker
-                                // selected={this.state.byVisitDate}
-                                selected={row.original.modifiedDate}
+                                <DatePicker
+                                selected={row.original.VisitedDate}
                                 placeholderText="Visited Date"
                                 showMonthDropdown
                                 showYearDropdown
                                 dateFormat="dd/MM/yyyy"
-                                id={"modifiedDate" + row.original.storeID}
-                                value={row.original.modifiedDate}
-                                // value={this.state.byVisitDate}
-                                name="modifiedDate"
+                                id={"visitDate" + row.original.storeID}
+                                value={row.original.VisitedDate}
+                                name="visitDate"
                                 onChange={this.handleByvisitDate.bind(this,row)}
-                              /> */}
-                                <DatePicker
-                                  selected={this.state.byVisitDate}
-                                  onChange={this.handleByvisitDate.bind(this)}
-                                  placeholderText="Visited Date"
-                                  showMonthDropdown
-                                  showYearDropdown
-                                  dateFormat="dd/MM/yyyy"
-                                  value={this.state.byVisitDate}
-                                />
+                              />
+                               
                               </div>
                             )
                           }
