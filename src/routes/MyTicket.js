@@ -73,7 +73,7 @@ class MyTicket extends Component {
     this.state = {
       open: false,
       InformStore: false,
-      collapseUp: true,
+      collapseUp: false,
       profilemodal: false,
       storemodal: false,
       storeproductsearch: false,
