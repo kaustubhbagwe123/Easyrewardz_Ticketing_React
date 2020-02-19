@@ -1844,16 +1844,16 @@ class Reports extends Component {
                   >
                     <div>
                       <label>
-                        <b>Schedule date to</b>
+                        <b>Schedule date to1</b>
                       </label>
                       <div>
                         <div className="normal-dropdown dropdown-setting1 schedule-multi">
                           <Select
-                            getOptionLabel={option => option.department}
+                            getOptionLabel={option => option.fullName}
                             getOptionValue={
-                              option => option.department //id
+                              option => option.userID //id
                             }
-                            options={this.state.TeamMemberData}
+                            options={this.state.AssignToData}
                             placeholder="Team Member"
                             // menuIsOpen={true}
                             closeMenuOnSelect={false}
