@@ -2222,7 +2222,146 @@ class Reports extends Component {
           <div style={{backgroundColor:"#fff"}}>
             <ReactTable
               data={datareport}
-              columns={columnsreport}
+              columns={[
+                {
+                Header: (
+                <span>
+                Name
+                <FontAwesomeIcon icon={faCaretDown} />
+                </span>
+                ),
+                accessor: "reportName"
+                },
+                {
+                Header: (
+                <span>
+                Schedule Status
+                <FontAwesomeIcon icon={faCaretDown} />
+                </span>
+                ),
+                accessor: "scheduleStatus"
+                },
+                {
+                Header: (
+                <span>
+                Created by
+                <FontAwesomeIcon icon={faCaretDown} />
+                </span>
+                ),
+                accessor: "createdBy",
+                Cell: row => {
+                var ids = row.original["reportID"];
+                return (
+                <div>
+                <span>
+                Admin
+                <Popover
+                content={
+                <>
+                <div>
+                <b>
+                <p className="title">
+                Created By: {row.original.createdBy}
+                </p>
+                </b>
+                <p className="sub-title">
+                Created Date: {row.original.createdDate}
+                </p>
+                </div>
+                <div>
+                <b>
+                <p className="title">
+                Updated By: {row.original.modifiedBy}
+                </p>
+                </b>
+                <p className="sub-title">
+                Updated Date: {row.original.modifiedDate}
+                </p>
+                </div>
+                </>
+                }
+                placement="bottom"
+                >
+                <img
+                className="info-icon-cp"
+                src={BlackInfoIcon}
+                alt="info-icon"
+                id={ids}
+                />
+                </Popover>
+                </span>
+                </div>
+                );
+                }
+                },
+                {
+                Header: (
+                <span>
+                Status
+                <FontAwesomeIcon icon={faCaretDown} />
+                </span>
+                ),
+                accessor: "reportStatus"
+                },
+                {
+                Header: <span>Actions</span>,
+                accessor: "actionReport",
+                Cell: row => (
+                <span>
+                <img
+                src={DownExcel}
+                alt="download icon"
+                className="downloadaction"
+                />
+                <Popover
+                content={
+                <div className="samdel d-flex general-popover popover-body">
+                <div className="del-big-icon">
+                <img src={DelBigIcon} alt="del-icon" />
+                </div>
+                <div>
+                <p className="font-weight-bold blak-clr">Delete file?</p>
+                <p className="mt-1 fs-12">
+                Are you sure you want to delete this file?
+                </p>
+                <div className="del-can">
+                <a>CANCEL</a>
+                <button
+                className="butn"
+                onClick={this.handleDeleteReport.bind(
+                this,
+                row.original.reportID
+                )}
+                >
+                Delete
+                </button>
+                </div>
+                </div>
+                </div>
+                }
+                placement="bottom"
+                trigger="click"
+                >
+                <img
+                src={RedDeleteIcon}
+                alt="del-icon"
+                className="del-btn"
+                // onClick={() => this.show(this, "samdel" + ids)}
+                />
+                </Popover>
+                
+                <button
+                className="react-tabel-button editre"
+                id="p-edit-pop-2"
+                onClick={this.handleAddReportOpen}
+                >
+                EDIT
+               
+                </button>
+                </span>
+                )
+                }
+                ]}
               // resizable={false}
               defaultPageSize={5}
               showPagination={true}
