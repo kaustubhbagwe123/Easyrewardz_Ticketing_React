@@ -290,11 +290,11 @@ class CategoryMaster extends Component {
   handleSubmitData() {
     debugger;
     if(
-      this.state.selectBrand > 0 &&
+      this.state.selectBrand.length > 0 &&
       this.state.list1Value > 0 && 
       this.state.ListOfSubCate > 0 &&
       this.state.ListOfIssue > 0 &&
-      this.state.selectStatus > 0
+      this.state.selectStatus.length > 0
     ){
     let self = this;
     var activeStatus = 0;

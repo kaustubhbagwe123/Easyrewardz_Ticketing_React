@@ -418,6 +418,8 @@ class KnowledgeBase extends Component {
         this.state.approveIssurTypeValue > 0 &&
         this.state.approveSubject.length > 0
       ) {
+        var ck=this.state.ckeditorApprove.replace(/<[^>]+>/g,"");
+      var ckeditor=ck.replace(/&nbsp;/gi," ");
         var json = {
           KBID: id,
 
@@ -426,7 +428,7 @@ class KnowledgeBase extends Component {
           IssueTypeID: this.state.selectedIssueType,
           IsApproved: bit,
           Subject: this.state.approveSubject,
-          Description: this.state.ckeditorApprove
+          Description: ckeditor
         };
         axios({
           method: "post",
@@ -516,6 +518,8 @@ class KnowledgeBase extends Component {
       this.state.updateSubject.length > 0
     ) {
       let self = this;
+      var ck=this.state.ckeditorUpdate.replace(/<[^>]+>/g,"");
+      var ckeditor=ck.replace(/&nbsp;/gi," ");
       var json = {
         KBID: kbid,
         KBCODE: "",
@@ -523,7 +527,7 @@ class KnowledgeBase extends Component {
         SubCategoryID: this.state.selectedSubCategory,
 
         Subject: this.state.updateSubject,
-        Description: this.state.ckeditorUpdate,
+        Description: ckeditor,
 
         IssueTypeID: this.state.selectedIssueType
       };
@@ -568,8 +572,11 @@ class KnowledgeBase extends Component {
       this.state.selectedSubject.length > 0
     ) {
       let self = this;
-      var ck=this.state.ckeditorAdd.replace("<p>","");
-      var ckeditor=ck.replace("</p>","");
+      //var ck=this.state.ckeditorAdd.replace("<p>","");
+      //var ckeditor=ck.replace("</p>","");
+      var ck=this.state.ckeditorAdd.replace(/<[^>]+>/g,"");
+      var ckeditor=ck.replace(/&nbsp;/gi," ");
+      
       var json = {
         KBCODE: "",
         CategoryID: this.state.selectedCategory,

@@ -98,7 +98,7 @@ class Brands extends Component {
     if(
       this.state.brand_Code.length > 0 &&
       this.state.brand_name.length > 0 &&
-      this.state.selectedStatus > 0 
+      this.state.selectedStatus !== 0 
     ){
     let self = this;
     var activeStatus = 0;
@@ -126,7 +126,7 @@ class Brands extends Component {
         self.setState({
           brand_Code: "",
           brand_name: "",
-          selectedStatus: 1
+          selectedStatus: 0
         });
       }
     });
@@ -571,7 +571,7 @@ class Brands extends Component {
                             </option>
                           ))}
                       </select>
-                      {this.state.selectedStatus === "select" && (
+                      {this.state.selectedStatus === 0 && (
                     <p style={{ color: "red", marginBottom: "0px" }}>
                       {this.state.statusCompulsion}
                     </p>

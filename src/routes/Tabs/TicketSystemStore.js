@@ -32,7 +32,7 @@ class TicketSystemStore extends Component {
       byVisitDate: "",
       byValideStoreData: "",
       modifiedDate: "",
-      CustStoreStatusDrop: "0",
+      CustStoreStatusDrop: "0"
     };
     this.handleOrderStoreTableOpen = this.handleOrderStoreTableOpen.bind(this);
     this.handleOrderStoreTableClose = this.handleOrderStoreTableClose.bind(
@@ -65,7 +65,7 @@ class TicketSystemStore extends Component {
     this.setState({
       SwitchBtnStatus: e.target.checked,
       SearchData: [],
-      SrchStoreNameCode: ''
+      SrchStoreNameCode: ""
     });
     {
       this.props.CustStoreStatus(
@@ -97,7 +97,7 @@ class TicketSystemStore extends Component {
           params: {
             SearchText: this.state.SrchStoreNameCode.trim()
           }
-        }).then(function (res) {
+        }).then(function(res) {
           debugger;
           let data = res.data.responseData;
           let Msg = res.data.message;
@@ -116,14 +116,13 @@ class TicketSystemStore extends Component {
         });
       }
     }
-
   }
   hanldeStatusChange(e) {
     debugger;
     var SelectValue = e.target.value;
     if (SelectValue === "1") {
       this.setState({
-        CustStoreStatusDrop:SelectValue,
+        CustStoreStatusDrop: SelectValue,
         WantVisit: 1,
         AlreadyCustomerVisit: 0
       });
@@ -131,10 +130,9 @@ class TicketSystemStore extends Component {
       this.setState({
         WantVisit: 0,
         AlreadyCustomerVisit: 1,
-        CustStoreStatusDrop:SelectValue,
+        CustStoreStatusDrop: SelectValue
       });
     }
-  
   }
 
   handleShowSearchSelectDetails() {
@@ -155,7 +153,7 @@ class TicketSystemStore extends Component {
       CheckStoreID: storeMasterID ? newSelected : false
     });
     var selectedRow = [];
-    rowData["purposeId"] = this.state.CustStoreStatusDrop
+    rowData["purposeId"] = this.state.CustStoreStatusDrop;
     if (this.state.selectedStoreData.length === 0) {
       selectedRow.push(rowData);
       this.setState({
@@ -213,12 +211,12 @@ class TicketSystemStore extends Component {
 
     this.setState({ filterAll, filtered });
   }
-  handleCustomerStoreStatus = (e) => {
-    debugger
+  handleCustomerStoreStatus = e => {
+    debugger;
     this.setState({
       CustStoreStatusDrop: e.target.value
-    })
-  }
+    });
+  };
   render() {
     const { SearchData, selectedStoreData } = this.state;
     return (
@@ -230,6 +228,7 @@ class TicketSystemStore extends Component {
                 <select
                   className="systemstoredropdown"
                   // value={this.state.custmerStoreStatus}
+                  value={this.state.CustStoreStatusDrop}
                   onChange={this.hanldeStatusChange.bind(this)}
                 >
                   <option value="0">Customer Want to visit store</option>
@@ -275,7 +274,11 @@ class TicketSystemStore extends Component {
             >
               <div className="row storemainrow">
                 <div className="col-md-12">
-                  <select className="systemstoredropdown1" onChange={this.handleCustomerStoreStatus}>
+                  <select
+                    className="systemstoredropdown1"
+                    onChange={this.handleCustomerStoreStatus}
+                    value={this.state.CustStoreStatusDrop}
+                  >
                     <option value="0">Customer Want to visit store</option>
                     <option value="1">Customer Already visited store</option>
                   </select>
@@ -426,7 +429,7 @@ class TicketSystemStore extends Component {
                                     name="ticket-store"
                                     checked={
                                       this.state.CheckStoreID[
-                                      row.original.storeID
+                                        row.original.storeID
                                       ] === true
                                     }
                                     onChange={this.handleCheckStoreID.bind(
@@ -435,7 +438,9 @@ class TicketSystemStore extends Component {
                                       row.original
                                     )}
                                   />
-                                  <label htmlFor={"i" + row.original.storeID}></label>
+                                  <label
+                                    htmlFor={"i" + row.original.storeID}
+                                  ></label>
                                 </div>
                               )
                             },
@@ -473,7 +478,7 @@ class TicketSystemStore extends Component {
                           width: 0,
                           resizable: true,
                           sortable: false,
-                          Filter: () => { },
+                          Filter: () => {},
                           getProps: () => {
                             return {
                               // style: { padding: "0px"}
@@ -521,7 +526,9 @@ class TicketSystemStore extends Component {
                       data={selectedStoreData}
                       columns={[
                         {
-                          Header: <span style={{paddingLeft: '50px'}}>Purpose</span>,
+                          Header: (
+                            <span style={{ paddingLeft: "50px" }}>Purpose</span>
+                          ),
                           accessor: "purposeId",
                           Cell: row => (
                             <div
@@ -535,7 +542,7 @@ class TicketSystemStore extends Component {
                                 name="ticket-store"
                                 checked={
                                   this.state.CheckStoreID[
-                                  row.original.storeID
+                                    row.original.storeID
                                   ] === true
                                 }
                                 onChange={this.handleCheckStoreID.bind(
@@ -547,7 +554,9 @@ class TicketSystemStore extends Component {
                               <label
                                 htmlFor={"selected" + row.original.storeID}
                               >
-                                {row.original.purposeId === "0" ? "Customer Want to visit store" : "Customer Already visited store"}
+                                {row.original.purposeId === "0"
+                                  ? "Customer Want to visit store"
+                                  : "Customer Already visited store"}
                               </label>
                             </div>
                           )
@@ -591,7 +600,7 @@ class TicketSystemStore extends Component {
                               />
                                
                               </div>
-                            )
+                            );
                           }
                         }
                       ]}
@@ -730,7 +739,7 @@ class TicketSystemStore extends Component {
                                       name="ticket-store"
                                       checked={
                                         this.state.CheckStoreID[
-                                        row.original.storeID
+                                          row.original.storeID
                                         ] === true
                                       }
                                       onChange={this.handleCheckStoreID.bind(
@@ -739,7 +748,9 @@ class TicketSystemStore extends Component {
                                         row.original
                                       )}
                                     />
-                                    <label htmlFor={"i" + row.original.storeID}></label>
+                                    <label
+                                      htmlFor={"i" + row.original.storeID}
+                                    ></label>
                                   </div>
                                 )
                               },
@@ -777,7 +788,7 @@ class TicketSystemStore extends Component {
                             width: 0,
                             resizable: false,
                             sortable: false,
-                            Filter: () => { },
+                            Filter: () => {},
                             getProps: () => {
                               return {
                                 // style: { padding: "0px"}
@@ -852,7 +863,7 @@ class TicketSystemStore extends Component {
                                   name="ticket-store"
                                   checked={
                                     this.state.CheckStoreID[
-                                    row.original.storeID
+                                      row.original.storeID
                                     ] === true
                                   }
                                   onChange={this.handleCheckStoreID.bind(
@@ -878,10 +889,12 @@ class TicketSystemStore extends Component {
                                 style={{ marginLeft: "15px" }}
                               >
                                 <label
-                                htmlFor={"selected" + row.original.storeID}
-                              >
-                                {row.original.purposeId === "0" ? "Customer Want to visit store" : "Customer Already visited store"}
-                              </label>
+                                  htmlFor={"selected" + row.original.storeID}
+                                >
+                                  {row.original.purposeId === "0"
+                                    ? "Customer Want to visit store"
+                                    : "Customer Already visited store"}
+                                </label>
                               </div>
                             )
                           },

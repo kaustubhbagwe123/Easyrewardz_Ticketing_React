@@ -333,10 +333,10 @@ class CreateSLA extends Component {
       debugger;
       let status = res.data.message;
       if (status === "Success") {
-        NotificationManager.success("SLA updated successfully.");
+        NotificationManager.success("SLA updated successfully.", '', 2000);
         this.handleGetSLA();
       } else {
-        NotificationManager.error("SLA not updated.");
+        NotificationManager.error("SLA not updated.", '', 2000);
       }
     });
   }
@@ -396,7 +396,7 @@ class CreateSLA extends Component {
       debugger;
       let status = res.data.message;
       if (status === "Success") {
-        NotificationManager.success("SLA added successfully.");
+        NotificationManager.success("SLA added successfully.", '', 2000);
         self.setState({
           selectedSlaIssueType: 0,
           SlaIsActive: "true"
@@ -406,7 +406,7 @@ class CreateSLA extends Component {
         self.selectNoSLA();
         self.selectNoAboveSLA();
       } else {
-        NotificationManager.error("SLA not added.");
+        NotificationManager.error("SLA not added.", '', 2000);
       }
     });
   }
@@ -425,7 +425,7 @@ class CreateSLA extends Component {
       debugger;
       let status = res.data.message;
       if (status === "Success") {
-        NotificationManager.success("SLA deleted successfully.");
+        NotificationManager.success("SLA deleted successfully.", '', 2000);
         self.handleGetSLA();
       } else {
         NotificationManager.error("SLA not deleted.");

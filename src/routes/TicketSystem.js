@@ -368,8 +368,14 @@ class TicketSystem extends Component {
       }
     }).then(function (res) {
       debugger;
-      let TicketTitleData = res.data.responseData;
-      self.setState({ TicketTitleData: TicketTitleData });
+      let status=res.data.message;
+      let data = res.data.responseData;
+      if(status === "Success"){
+        self.setState({ TicketTitleData: data });
+      }else{
+        self.setState({ TicketTitleData: [] });
+      }
+     
     });
   }
   handleCkEditorTemplate() {
@@ -1029,27 +1035,44 @@ class TicketSystem extends Component {
                         // showNewOptionAtTop={false}
                       />
                     </div> */}
-                        <div
-                          className="custom-ticket-title"
-                          onClick={() => this.toggleTitleSuggestion()}
-                          ref={this.setWrapperRef}
-                        >
-                          <input
-                            placeholder="Suggestions"
-                            value={this.state.titleSuggValue}
-                            type="text"
-                            onChange={this.handleTicSugg}
-                            ref={input => {
-                              this.searchInput = input;
-                            }}
-                            id="titleSuggestion"
-                            autoComplete="off"
-                            style={{ marginBottom: "5px" }}
-                          />
-                          {this.state.titleSuggValue.length === 0 && (
-                            <p style={{ color: "red", marginBottom: "0px" }}>
-                              {this.state.ticketTitleCompulsion}
-                            </p>
+                      <div
+                        className="custom-ticket-title"
+                        onClick={() => this.toggleTitleSuggestion()}
+                        ref={this.setWrapperRef}
+                      >
+                        <input
+                          placeholder="Suggestions"
+                          value={this.state.titleSuggValue}
+                          type="text"
+                          onChange={this.handleTicSugg}
+                          ref={input => {
+                            this.searchInput = input;
+                          }}
+                          id="titleSuggestion"
+                          autoComplete="off"
+                          style={{ marginBottom: "5px" }}
+                        />
+                        {this.state.titleSuggValue.length === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.ticketTitleCompulsion}
+                          </p>
+                        )}
+
+                      {this.state.TicketTitleData !== null &&
+                          this.state.TicketTitleData.length > 0 &&
+                          this.state.titleSuggValue.length > 0 && (
+                            <div className="custom-ticket-title-suggestions">
+                              {this.state.TicketTitleData !== null &&
+                                this.state.TicketTitleData.map((item, i) => (
+                                  <span
+                                    key={i}
+                                    onClick={this.handleAppendTicketSuggestion}
+                                    title={item.ticketTitleToolTip}
+                                  >
+                                    {item.ticketTitle}
+                                  </span>
+                                ))}
+                            </div>
                           )}
 
                           {this.state.TicketTitleData !== null &&
