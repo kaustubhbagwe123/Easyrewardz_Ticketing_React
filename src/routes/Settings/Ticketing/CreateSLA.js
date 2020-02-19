@@ -33,7 +33,7 @@ class CreateSLA extends Component {
       fileName: "",
       sla: [],
       slaIssueType: [],
-      selectedSlaIssueType: 0,
+      // selectedSlaIssueType: 0,
       updateIssueTypeId: 0,
       updateSlaisActive: "",
       updateSlaTarget: [],
@@ -226,9 +226,16 @@ class CreateSLA extends Component {
     }).then(function (res) {
       debugger;
       let slaIssueType = res.data.responseData;
-      let selectedSlaIssueType = slaIssueType[0].issueTypeID;
+      // let selectedSlaIssueType = slaIssueType[0].issueTypeID;
       if (slaIssueType !== null && slaIssueType !== undefined) {
-        self.setState({ slaIssueType, selectedSlaIssueType });
+        self.setState({ slaIssueType });
+        // self.setState({ slaIssueType, selectedSlaIssueType });
+        var checkboxes = document.getElementsByName("allSla");
+        for (var i in checkboxes) {
+          if (checkboxes[i].checked === true) {
+            checkboxes[i].checked = false;
+          }
+        }
       }
     });
   }
@@ -301,10 +308,10 @@ class CreateSLA extends Component {
     });
   }
 
-  handleSlaIssueType = e => {
-    let slaIssueType = e.currentTarget.value;
-    this.setState({ selectedSlaIssueType: slaIssueType });
-  };
+  // handleSlaIssueType = e => {
+  //   let slaIssueType = e.currentTarget.value;
+  //   this.setState({ selectedSlaIssueType: slaIssueType });
+  // };
   handleUpdateSlaIssueType = e => {
     let updateSlaIssueType = e.currentTarget.value;
     this.setState({ updateIssueTypeId: updateSlaIssueType });
@@ -403,7 +410,7 @@ class CreateSLA extends Component {
       if (status === "Success") {
         NotificationManager.success("SLA added successfully.", '', 2000);
         self.setState({
-          selectedSlaIssueType: 0,
+          // selectedSlaIssueType: 0,
           SlaIsActive: "true",
           SearchText: ''
         });
