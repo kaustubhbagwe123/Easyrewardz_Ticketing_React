@@ -183,13 +183,14 @@ class Reports extends Component {
       VisitStoreAddressCompulsion: "",
       PurchaseStoreCompulsion: "",
       ClaimStatusCompulsion: "",
-      ClaimCategoryCompulsion: "",
-      ClaimSubCategoryCompulsion: "",
-      ClaimIssueTypeCompulsion: "",
-      TaskStatusCompulsion: "",
-      TaskPriorityCompulsion: "",
-      DepartmentCompulsion: "",
-      FunctionCompulsion: ""
+      ClaimCategoryCompulsion:"",
+      ClaimSubCategoryCompulsion:"",
+      ClaimIssueTypeCompulsion:"",
+      TaskStatusCompulsion:"",
+      TaskPriorityCompulsion:"",
+      DepartmentCompulsion:"",
+      FunctionCompulsion:"",
+      reportNameCompulsion:""
     };
 
     this.handleAddReportOpen = this.handleAddReportOpen.bind(this);
@@ -238,7 +239,16 @@ class Reports extends Component {
         "block";
   }
   ScheduleOpenModel = () => {
+    debugger;
+    if(
+      this.state.selectedReportName.length > 0
+    ){
     this.setState({ Schedule: true });
+    }else{
+       this.setState({
+         reportNameCompulsion:"Please Enter Report Name."
+       });
+    }
   };
   ScheduleCloseModel = () => {
     this.setState({ Schedule: false });
@@ -258,9 +268,11 @@ class Reports extends Component {
     this.setState({ NextPopup: false });
   }
   handleReportCreateDate(date) {
+    debugger;
     this.setState({ ReportCreateDate: date });
   }
   handleReportLastDate(date) {
+    debugger;
     this.setState({ ReportLastDate: date });
   }
   handleChatDate(date) {
@@ -1316,22 +1328,28 @@ class Reports extends Component {
                     <div className="col-md-3 ticketreport">
                       <label>Status</label>
                       <select
-                        value={this.state.selectedTicketStatus}
-                        onChange={this.setOnChangeReportData}
-                      >
-                        <option> Status</option>
-                        {this.state.TicketStatusData !== null &&
-                          this.state.TicketStatusData.map((item, i) => (
-                            <option key={i} value={item.ticketStatusID}>
-                              {item.ticketStatusName}
-                            </option>
-                          ))}
-                      </select>
-                      {this.state.selectedTicketStatus === 0 && (
-                        <p style={{ color: "red", marginBottom: "0px" }}>
-                          {this.state.TicketStatusCompulsion}
-                        </p>
-                      )}
+                                    name="selectedTicketStatus"
+                                    value={this.state.selectedTicketStatus}
+                                    onChange={this.setOnChangeReportData}
+                                  >
+                                    <option> Status</option>
+                                    {this.state.TicketStatusData !== null &&
+                                      this.state.TicketStatusData.map(
+                                        (item, i) => (
+                                          <option
+                                            key={i}
+                                            value={item.ticketStatusID}
+                                          >
+                                            {item.ticketStatusName}
+                                          </option>
+                                        )
+                                      )}
+                                  </select>
+                                  {this.state.selectedTicketStatus === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.TicketStatusCompulsion}
+                    </p>
+                  )}
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Want To Visit Store</label>
@@ -1824,6 +1842,11 @@ class Reports extends Component {
                       value={this.state.selectedReportName}
                       onChange={this.setOnChangeReportData}
                     />
+                    {this.state.selectedReportName.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.reportNameCompulsion}
+                    </p>
+                  )}
                   </div>
                   <div className="buttonschdulesave">
                     <button
@@ -1844,16 +1867,16 @@ class Reports extends Component {
                   >
                     <div>
                       <label>
-                        <b>Schedule date to</b>
+                        <b>Schedule date to1</b>
                       </label>
                       <div>
                         <div className="normal-dropdown dropdown-setting1 schedule-multi">
                           <Select
-                            getOptionLabel={option => option.department}
+                            getOptionLabel={option => option.fullName}
                             getOptionValue={
-                              option => option.department //id
+                              option => option.userID //id
                             }
-                            options={this.state.TeamMemberData}
+                            options={this.state.AssignToData}
                             placeholder="Team Member"
                             // menuIsOpen={true}
                             closeMenuOnSelect={false}
@@ -2196,6 +2219,185 @@ class Reports extends Component {
         </div>
         <div className="container-fluid">
           <div className="store-settings-cntr reactreport">
+          <div style={{backgroundColor:"#fff"}}>
+            <ReactTable
+              data={datareport}
+              columns={[
+                {
+                Header: (
+                <span>
+                Name
+                <FontAwesomeIcon icon={faCaretDown} />
+                </span>
+                ),
+                accessor: "reportName"
+                },
+                {
+                Header: (
+                <span>
+                Schedule Status
+                <FontAwesomeIcon icon={faCaretDown} />
+                </span>
+                ),
+                accessor: "scheduleStatus"
+                },
+                {
+                Header: (
+                <span>
+                Created by
+                <FontAwesomeIcon icon={faCaretDown} />
+                </span>
+                ),
+                accessor: "createdBy",
+                Cell: row => {
+                var ids = row.original["reportID"];
+                return (
+                <div>
+                <span>
+                Admin
+                <Popover
+                content={
+                <>
+                <div>
+                <b>
+                <p className="title">
+                Created By: {row.original.createdBy}
+                </p>
+                </b>
+                <p className="sub-title">
+                Created Date: {row.original.createdDate}
+                </p>
+                </div>
+                <div>
+                <b>
+                <p className="title">
+                Updated By: {row.original.modifiedBy}
+                </p>
+                </b>
+                <p className="sub-title">
+                Updated Date: {row.original.modifiedDate}
+                </p>
+                </div>
+                </>
+                }
+                placement="bottom"
+                >
+                <img
+                className="info-icon-cp"
+                src={BlackInfoIcon}
+                alt="info-icon"
+                id={ids}
+                />
+                </Popover>
+                </span>
+                </div>
+                );
+                }
+                },
+                {
+                Header: (
+                <span>
+                Status
+                <FontAwesomeIcon icon={faCaretDown} />
+                </span>
+                ),
+                accessor: "reportStatus"
+                },
+                {
+                Header: <span>Actions</span>,
+                accessor: "actionReport",
+                Cell: row => (
+                <span>
+                <img
+                src={DownExcel}
+                alt="download icon"
+                className="downloadaction"
+                />
+                <Popover
+                content={
+                <div className="samdel d-flex general-popover popover-body">
+                <div className="del-big-icon">
+                <img src={DelBigIcon} alt="del-icon" />
+                </div>
+                <div>
+                <p className="font-weight-bold blak-clr">Delete file?</p>
+                <p className="mt-1 fs-12">
+                Are you sure you want to delete this file?
+                </p>
+                <div className="del-can">
+                <a>CANCEL</a>
+                <button
+                className="butn"
+                onClick={this.handleDeleteReport.bind(
+                this,
+                row.original.reportID
+                )}
+                >
+                Delete
+                </button>
+                </div>
+                </div>
+                </div>
+                }
+                placement="bottom"
+                trigger="click"
+                >
+                <img
+                src={RedDeleteIcon}
+                alt="del-icon"
+                className="del-btn"
+                // onClick={() => this.show(this, "samdel" + ids)}
+                />
+                </Popover>
+                
+                <button
+                className="react-tabel-button editre"
+                id="p-edit-pop-2"
+                onClick={this.handleAddReportOpen}
+                >
+                EDIT
+               
+                </button>
+                </span>
+                )
+                }
+                ]}
+              // resizable={false}
+              defaultPageSize={5}
+              showPagination={true}
+            />
+             {/* <div className="position-relative">
+                    <div className="pagi">
+                      <ul>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>&lt;</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>1</a>
+                        </li>
+                        <li className="active">
+                          <a href={Demo.BLANK_LINK}>2</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>3</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>4</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>5</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>6</a>
+                        </li>
+                        <li>
+                          <a href={Demo.BLANK_LINK}>&gt;</a>
+                        </li>
+                      </ul>
+                    </div>
+                    
+                  </div> */}
+                  </div>
             <div style={{ backgroundColor: "#fff" }}>
             {this.state.loading === true ? (
                   <div className="loader-icon"></div>

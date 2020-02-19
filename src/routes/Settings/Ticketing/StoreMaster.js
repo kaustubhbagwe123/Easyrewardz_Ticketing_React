@@ -35,7 +35,7 @@ class StoreMaster extends Component {
       selectCity: 0,
       selectedBrand: [],
       EditBrand: [],
-      selectStatus: 0,
+      selectStatus: "",
       storeData: [],
       storeEditData: {},
       brandData: [],
@@ -55,7 +55,20 @@ class StoreMaster extends Component {
       contact_email: "",
       contact_Phone: "",
       loading: false,
-      userEditData: {}
+      userEditData: {},
+      store_codeCompulsion: "",
+      store_nameCompulsion: "",
+      pin_codeCompulsion: "",
+      store_AddressCompulsion: "",
+      RegionCompulsion: "",
+      ZoneCompulsion: "",
+      store_typeCompulsion: "",
+      contact_emailCompulsion: "",
+      contact_PhoneCompulsion: "",
+      StateCompulsion: "",
+      CityCompulsion: "",
+      brandCompulsion:"",
+      statusCompulsion:""
     };
     this.handleGetStoreMasterData = this.handleGetStoreMasterData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -67,12 +80,13 @@ class StoreMaster extends Component {
   }
   componentDidMount() {
     this.handleGetStoreMasterData();
-    this.handleGetBrandList();
-   this.handleGetStateList();
+     this.handleGetBrandList();
+    this.handleGetStateList();
     this.handleGetRegionList();
     this.handleGetStoreTypeList();
   }
   handleGetStoreMasterData() {
+    debugger;
     let self = this;
     this.setState({ loading: true });
     axios({
@@ -85,11 +99,15 @@ class StoreMaster extends Component {
       let data = res.data.responseData;
       if (status === "Success") {
         debugger;
-        if(data!=null)
+        if(data!==null)
         {
           self.setState({
             storeData: data,
             loading: false
+          });
+        }else{
+          self.setState({
+            storeData: []
           });
         }
        
@@ -212,6 +230,22 @@ class StoreMaster extends Component {
   }
   handleSubmitData() {
     debugger;
+    if(
+      this.state.selectedBrand !== null &&
+      this.state.store_code.length > 0 &&
+      this.state.store_name.length > 0 &&
+      this.state.pin_code.length > 0 &&
+      this.state.store_Address.length > 0 &&
+      this.state.selectRegion > 0 &&
+      this.state.selectZone > 0 &&
+      this.state.store_type > 0 &&
+      this.state.contact_email.length > 0 &&
+      this.state.contact_Phone.length > 0 &&
+      this.state.selectState > 0 &&
+      this.state.selectCity > 0 &&
+      this.state.selectStatus !== ""
+
+    ){
     let self = this;
     var activeStatus = 0;
     var finalBrandId = "";
@@ -264,8 +298,28 @@ class StoreMaster extends Component {
           contact_email: "",
           contact_Phone: ""
         });
+      }else{
+        NotificationManager.error("Store Not added.");
       }
     });
+  }else{
+    this.setState({
+      store_codeCompulsion: "Please Enter Store Code.",
+      store_nameCompulsion: "Please Enter Store Name.",
+      pin_codeCompulsion: "Please Enter PinCode.",
+      store_AddressCompulsion: "Please Enter Address.",
+      RegionCompulsion: "Please Select Region.",
+      ZoneCompulsion: "Please Select Zone.",
+      store_typeCompulsion: "Please Select Store Type.",
+      contact_emailCompulsion: "Please Enter EmailID.",
+      contact_PhoneCompulsion: "Please Enter Phone Number.",
+      StateCompulsion: "Please Select State.",
+      CityCompulsion: "Please Select City.",
+      brandCompulsion:"Please Select Brand.",
+      statusCompulsion:"Please Select Status."
+
+    });
+  }
   }
 
   handleUpdateData(id) {
@@ -452,7 +506,7 @@ class StoreMaster extends Component {
             Settings
           </Link>
           <span>&gt;</span>
-          <Link to={Demo.BLANK_LINK} className="header-path">
+          <Link to="settings"  className="header-path">
             Ticketing
           </Link>
           <span>&gt;</span>
@@ -528,6 +582,8 @@ class StoreMaster extends Component {
                                   </span>
                                 </div>
                               );
+                            }else{
+                              return null;
                             }
                           }
                         },
@@ -1032,6 +1088,11 @@ class StoreMaster extends Component {
                         // showNewOptionAtTop={false}
                         isMulti
                       />
+                      {this.state.selectedBrand.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.brandCompulsion}
+                    </p>
+                  )}
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">Store Code</label>
@@ -1044,6 +1105,11 @@ class StoreMaster extends Component {
                         value={this.state.store_code}
                         onChange={this.hanldeOnChangeData}
                       />
+                      {this.state.store_code.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.store_codeCompulsion}
+                    </p>
+                  )}
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">Store Name</label>
@@ -1056,6 +1122,11 @@ class StoreMaster extends Component {
                         value={this.state.store_name}
                         onChange={this.hanldeOnChangeData}
                       />
+                       {this.state.store_name.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.store_nameCompulsion}
+                    </p>
+                  )}
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">State</label>
@@ -1076,6 +1147,11 @@ class StoreMaster extends Component {
                             </option>
                           ))}
                       </select>
+                      {this.state.selectState === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.StateCompulsion}
+                    </p>
+                  )}
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">City</label>
@@ -1096,6 +1172,11 @@ class StoreMaster extends Component {
                             </option>
                           ))}
                       </select>
+                      {this.state.selectCity === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.CityCompulsion}
+                    </p>
+                  )}
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">Pin Code</label>
@@ -1108,6 +1189,11 @@ class StoreMaster extends Component {
                         value={this.state.pin_code}
                         onChange={this.hanldeOnChangeData}
                       />
+                      {this.state.pin_code.length ===  0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.pin_codeCompulsion}
+                    </p>
+                  )}
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">Address</label>
@@ -1121,6 +1207,11 @@ class StoreMaster extends Component {
                         value={this.state.store_Address}
                         onChange={this.hanldeOnChangeData}
                       ></textarea>
+                      {this.state.store_Address.length ===  0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.store_AddressCompulsion}
+                    </p>
+                  )}
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">Region</label>
@@ -1137,6 +1228,11 @@ class StoreMaster extends Component {
                             </option>
                           ))}
                       </select>
+                      {this.state.selectRegion === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.RegionCompulsion}
+                    </p>
+                  )}
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">Zone</label>
@@ -1153,6 +1249,11 @@ class StoreMaster extends Component {
                             </option>
                           ))}
                       </select>
+                      {this.state.selectZone === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.ZoneCompulsion}
+                    </p>
+                  )}
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">Store Type</label>
@@ -1169,6 +1270,11 @@ class StoreMaster extends Component {
                             </option>
                           ))}
                       </select>
+                      {this.state.store_type === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.store_typeCompulsion}
+                    </p>
+                  )}
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">
@@ -1183,6 +1289,11 @@ class StoreMaster extends Component {
                         value={this.state.contact_email}
                         onChange={this.hanldeOnChangeData}
                       />
+                      {this.state.contact_email.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.contact_emailCompulsion}
+                    </p>
+                  )}
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">
@@ -1197,6 +1308,11 @@ class StoreMaster extends Component {
                         value={this.state.contact_Phone}
                         onChange={this.hanldeOnChangeData}
                       />
+                      {this.state.contact_Phone.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.contact_PhoneCompulsion}
+                    </p>
+                  )}
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">Status</label>
@@ -1205,7 +1321,7 @@ class StoreMaster extends Component {
                         value={this.state.selectStatus}
                         onChange={this.handleStatusChange}
                       >
-                        <option>select</option>
+                        <option value="">select</option>
                         {this.state.activeData !== null &&
                           this.state.activeData.map((item, j) => (
                             <option key={j} value={item.ActiveID}>
@@ -1213,6 +1329,12 @@ class StoreMaster extends Component {
                             </option>
                           ))}
                       </select>
+                      
+                      {this.state.selectStatus === "" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.statusCompulsion}
+                    </p>
+                  )}
                     </div>
                     <div className="btnSpace">
                       <button

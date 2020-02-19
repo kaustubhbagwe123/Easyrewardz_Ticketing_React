@@ -16,7 +16,7 @@ import CKEditor from "ckeditor4-react";
 import PlusImg from "./../assets/Images/plus.png";
 import CircleCancel from "./../assets/Images/Circle-cancel.png";
 // import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
-// import moment from "moment";
+import moment from "moment";
 import FileUpload from "./../assets/Images/file.png";
 import ThumbTick from "./../assets/Images/thumbticket.png"; // Don't comment this line
 import PDF from "./../assets/Images/pdf.png"; // Don't comment this line
@@ -712,7 +712,6 @@ class TicketSystem extends Component {
 
   handleCREATE_TICKET(StatusID) {
     debugger;
-    // this.setState({ loading: true });
     if (
       this.state.titleSuggValue.length > 0 &&
       this.state.ticketDetails.length > 0 &&
@@ -728,10 +727,12 @@ class TicketSystem extends Component {
       var selectedRow = "";
       for (var i = 0; i < this.state.selectedDataIds.length; i++) {
         selectedRow +=
+        this.state.selectedDataIds[i].orderMasterID + "|" +
           this.state.selectedDataIds[i].orderItemID +
           "|" +
           this.state.selectedDataIds[i].requireSize +
           ",";
+       
       }
 
       var selectedStore = "";
@@ -749,7 +750,7 @@ class TicketSystem extends Component {
           "|" +
           PurposeID +
           "|" +
-          this.state.selectedStoreIDs[j]["VisitedDate"] +
+          moment(this.state.selectedStoreIDs[j]["VisitedDate"]).format("YYYY-MM-DD") +
           ",";
       }
       var actionStatusId = 0;

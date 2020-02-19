@@ -3551,6 +3551,15 @@ table tr th:last-child {
 .dropdown-menu-sla {
   z-index: 1001;
 }
+.sla-cancel-search {
+  position: relative;
+}
+.sla-cancel-search img {
+  position: absolute;
+  top: 15px;
+    right: 10px;
+    width: 12px;
+}
 /* sla ends */
 
 /* chetan css end */
@@ -10609,6 +10618,7 @@ table tr th:last-child {
   border: 1px solid #E1E1E1;
   padding: 10px;
   margin-bottom: 10px;
+  padding-right: 30px;
 }
 .issuetype-cusdrp .searchf::placeholder {
   color: #000;
