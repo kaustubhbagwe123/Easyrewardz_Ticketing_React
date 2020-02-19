@@ -156,8 +156,8 @@ class MyTicket extends Component {
       validOrdernumber: "",
       StoreName: "",
       ProductName: "",
-      agentId:0,
-      AttachementrData:[]
+      agentId: 0,
+      AttachementrData: []
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -236,11 +236,11 @@ class MyTicket extends Component {
         var ticketActionType = data.ticketActionTypeID;
         var ticketIssueTypeID = data.issueTypeID;
         var storeData = data.stores;
-        var productData=data.products;
-        var MailDetails=data.ticketingMailerQue;
-        var attachementDetails=data.attachment;
-        var AssignDateTime=moment(data.ticketAssignDate).format('LTS');
-        var ResponseDateTime=moment(data.targetResponseDate).format('LTS');
+        var productData = data.products;
+        var MailDetails = data.ticketingMailerQue;
+        var attachementDetails = data.attachment;
+        var AssignDateTime = moment(data.ticketAssignDate).format("LTS");
+        var ResponseDateTime = moment(data.targetResponseDate).format("LTS");
         var selectetedParameters = {
           ticketStatusID: ticketStatus,
           priorityID: ticketPriority,
@@ -254,26 +254,28 @@ class MyTicket extends Component {
 
         // var resultDate = ResponseDateTime.subtract(AssignDateTime);
 
-
-        var Storedetails="";
+        var Storedetails = "";
         for (let i = 0; i < storeData.length; i++) {
           Storedetails += storeData[i].storename + ",";
         }
-        Storedetails=Storedetails.substring(",",Storedetails.length-1);
-        var ProductDetails="";
+        Storedetails = Storedetails.substring(",", Storedetails.length - 1);
+        var ProductDetails = "";
         for (let j = 0; j < productData.length; j++) {
-          ProductDetails +=productData[j].itemName + ",";          
+          ProductDetails += productData[j].itemName + ",";
         }
-        ProductDetails=ProductDetails.substring(",",ProductDetails.length-1);
+        ProductDetails = ProductDetails.substring(
+          ",",
+          ProductDetails.length - 1
+        );
 
         self.setState({
           ticketDetailsData: data,
           custID: customer_Id,
           selectetedParameters,
           StoreName: Storedetails,
-          ProductName:ProductDetails,
-          mailFiled:MailDetails,
-          file:attachementDetails,
+          ProductName: ProductDetails,
+          mailFiled: MailDetails,
+          file: attachementDetails,
           loading: false
         });
 
@@ -347,7 +349,6 @@ class MyTicket extends Component {
         // let demo = res.data.responseData[1];
         self.setState({
           messageDetails: data
-          // messageDetails: demo
         });
       } else {
         self.setState({
@@ -718,7 +719,7 @@ class MyTicket extends Component {
       }
     });
   }
-  handleAssignTickets(){
+  handleAssignTickets() {
     debugger;
     let self = this;
 
@@ -737,7 +738,7 @@ class MyTicket extends Component {
       if (messageData === "Success") {
         NotificationManager.success("Tickets assigned successfully.");
         self.HandlelabelModalClose();
-       
+
         self.componentDidMount();
       }
     });
@@ -3599,97 +3600,107 @@ class MyTicket extends Component {
                         <label className="action-label">Action</label>
                       </div>
                     </div>
-                    <div className="row top-margin">
-                      <div className="col-md-5">
-                        <div className="v3"></div>
-                      </div>
-                      <div className="col-md-2">
-                        <label className="today-02">Today 02</label>
-                        {/* <label className="today-02">
-                          {messageDetails.updatedDate} &nbsp;
-                          {messageDetails.messageCount < 9
-                            ? "0" + messageDetails.messageCount
-                            : messageDetails.messageCount}
-                        </label> */}
-                      </div>
-                      <div className="col-md-5">
-                        <div className="v4"></div>
-                      </div>
-                    </div>
-                    {/* {this.state.messageDetails !== null &&
-                    this.state.messageDetails.messageDetails.map((item,i)=>{
-                      return()
-                    })} */}
-                    <div>
-                      <div className="row top-margin">
-                        <div className="col-12 col-xs-12 col-sm-4 col-md-3">
-                          <div className="row" style={{ marginTop: "0" }}>
-                            <div className="oval-5-1">
-                              <img
-                                src={RightImg}
-                                alt="right"
-                                className="right-icon"
-                              />
+                    {this.state.messageDetails.map((item, i) => {
+                      return (
+                        <div>
+                          <div className="row top-margin">
+                            <div className="col-md-5">
+                              <div className="v3"></div>
                             </div>
-                            <label
-                              className="solved-by-naman-r"
-                              style={{ marginLeft: "7px" }}
-                            >
-                              Solved by NamanR
-                            </label>
-                            <img
-                              src={MsgImg}
-                              alt="right"
-                              className="smg-Img1"
-                            />
+                            <div className="col-md-2">
+                              {/* <label className="today-02">Today 02</label> */}
+                              <label className="today-02">
+                                {item.updatedDate} &nbsp;
+                                {item.messageCount < 9
+                                  ? "0" + item.messageCount
+                                  : item.messageCount}
+                              </label>
+                            </div>
+                            <div className="col-md-5">
+                              <div className="v4"></div>
+                            </div>
                           </div>
-                        </div>
-                        <div className="col-12 col-xs-12 col-sm-6 col-md-7">
-                          <label className="i-have-solved-this-i">
-                            I Have solved this issue
-                          </label>
-                        </div>
-                        <div className="col-12 col-xs-12 col-sm-2 col-md-2 mob-flex">
-                          {HidecollapsUp}
-                          <label className="comment">Comment</label>
-                        </div>
-                      </div>
-                      <div className="row card-op-out">
-                        <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
-                        <div className="col-12 col-xs-12 col-sm-6 col-md-7">
-                          <Collapse isOpen={this.state.collapseUp}>
-                            <Card>
-                              <CardBody>
-                                <div className="card-details">
-                                  <div className="card-details-1">
-                                    <label className="label-5">
-                                      {messageDetails.ticketMailBody}
-                                    </label>
+                          {item.customTicketMessages.map((details, j) => {
+                            return (
+                              <div>
+                                <div>
+                                  <div className="row top-margin">
+                                    <div className="col-12 col-xs-12 col-sm-4 col-md-3">
+                                      <div
+                                        className="row"
+                                        style={{ marginTop: "0" }}
+                                      >
+                                        <div className="oval-5-1">
+                                          <img
+                                            src={RightImg}
+                                            alt="right"
+                                            className="right-icon"
+                                          />
+                                        </div>
+                                        <label
+                                          className="solved-by-naman-r"
+                                          style={{ marginLeft: "7px" }}
+                                        >
+                                          {details.commentBy}
+                                        </label>
+                                        <img
+                                          src={MsgImg}
+                                          alt="right"
+                                          className="smg-Img1"
+                                        />
+                                      </div>
+                                    </div>
+                                    <div className="col-12 col-xs-12 col-sm-6 col-md-7">
+                                      <label className="i-have-solved-this-i">
+                                        {details.ticketMailSubject}
+                                      </label>
+                                    </div>
+                                    <div className="col-12 col-xs-12 col-sm-2 col-md-2 mob-flex">
+                                      {HidecollapsUp}
+                                      <label className="comment">Comment</label>
+                                    </div>
+                                  </div>
+                                  <div className="row card-op-out">
+                                    <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
+                                    <div className="col-12 col-xs-12 col-sm-6 col-md-7">
+                                      <Collapse isOpen={this.state.collapseUp}>
+                                        <Card>
+                                          <CardBody>
+                                            <div className="card-details">
+                                              <div className="card-details-1">
+                                                <label className="label-5">
+                                                {details.ticketMailBody}
+                                                </label>
+                                              </div>
+                                            </div>
+                                          </CardBody>
+                                        </Card>
+                                      </Collapse>
+                                    </div>
+                                    <div className="col-12 col-xs-12 col-sm-2"></div>
                                   </div>
                                 </div>
-                              </CardBody>
-                            </Card>
-                          </Collapse>
+                              </div>
+                            );
+                          })}
                         </div>
-                        <div className="col-12 col-xs-12 col-sm-2"></div>
-                      </div>
+                      );
+                    })}
+                    {/* <div className="row">
+                                <div className="col-md-5">
+                                  <div className="v3"></div>
+                                </div>
+                                <div className="col-md-2">
+                                  <label className="yesterday-02">
+                                    {messageDetails.updatedAt}
+                                  </label>
+                                </div>
+                                <div className="col-md-5">
+                                  <div className="v6"></div>
+                                </div>
+                              </div> */}
 
-                      <div className="row">
-                        <div className="col-md-5">
-                          <div className="v3"></div>
-                        </div>
-                        <div className="col-md-2">
-                          <label className="yesterday-02">
-                            {messageDetails.updatedAt}
-                          </label>
-                        </div>
-                        <div className="col-md-5">
-                          <div className="v6"></div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="row new-top-bottom-margin">
+                    {/* <div className="row new-top-bottom-margin">
                       <div className="col-12 col-xs-12 col-sm-4 col-md-3">
                         <img
                           src={Loading1Img}
@@ -3788,7 +3799,7 @@ class MyTicket extends Component {
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </div> */}
 
                     <div className="myTicketCommentCollapse myTicketEmail">
                       <Collapse isOpen={this.state.CommentCollapse2}>
@@ -3982,12 +3993,7 @@ class MyTicket extends Component {
                                     </div>
                                   </label>
                                 </li>
-                                {/* <li>
-                                  <label>
-                                    To: &nbsp;
-                                    {ticketDetailsData.customerEmailId}
-                                  </label>
-                                </li> */}
+
                                 <li>
                                   <label className="">
                                     <div className="input-group">
@@ -4003,10 +4009,7 @@ class MyTicket extends Component {
                                 </li>
                                 <li>
                                   <label className="">
-                                    <div
-                                      className="input-group"
-                                      // style={{ display: "block" }}
-                                    >
+                                    <div className="input-group">
                                       <span className="input-group-addon inputcc">
                                         BCC:
                                       </span>
@@ -4017,28 +4020,7 @@ class MyTicket extends Component {
                                     </div>
                                   </label>
                                 </li>
-                                {/* <li>
-                                  <label>
-                                    CC: diwarkar@gmail.com
-                                    <span
-                                      style={{ border: "none" }}
-                                      className="input-group-addon inputcc-one"
-                                    >
-                                      +1
-                                    </span>
-                                  </label>
-                                </li>
-                                <li>
-                                  <label>
-                                    BCC: diwarkar@gmail.com
-                                    <span
-                                      style={{ border: "none" }}
-                                      className="input-group-addon inputcc-one"
-                                    >
-                                      +1
-                                    </span>
-                                  </label>
-                                </li> */}
+
                                 <li>
                                   <div className="filter-checkbox">
                                     <input
@@ -4089,53 +4071,6 @@ class MyTicket extends Component {
                         </Card>
                       </Collapse>
                     </div>
-                    {/* {this.state.messageDetails !== null &&
-                      this.state.messageDetails.map((item, i) => {
-                        return (
-                          <div
-                            className="row row-spacing new-top-bottom-margin"
-                            key={i}
-                          >
-                            <div className="col-12 col-xs-12 col-sm-4 col-md-3">
-                              <img
-                                src={Headphone2Img}
-                                alt="headphone"
-                                className="oval-56"
-                              />
-                              <label className="rashmi-c">
-                                  {item.commentBy}  
-                              </label>
-                              <img
-                                src={FacebookImg}
-                                alt="facebook"
-                                className="facebook"
-                              />
-                            </div>
-                            <div className="col-12 col-xs-12 col-sm-6 col-md-7">
-                              {item.hasAttachment === 1 ? (
-                                <img
-                                  src={ClipImg}
-                                  alt="clip"
-                                  className="clip"
-                                />
-                              ) : null}
-
-                              <label className="hi-diwakar-i-really2">
-                                &nbsp;{item.ticketMailBody}
-                              </label>
-                            </div>
-                            <div className="col-12 col-xs-12 col-sm-2">
-                              <label
-                                className="comment-text1"
-                                onClick={this.hanldeCommentOpen2.bind(this)}
-                              >
-                                Comment
-                              </label>
-                            </div>
-                          </div>
-                        );
-                      })} */}
-
                     <div className="row row-spacing new-top-bottom-margin">
                       <div className="col-12 col-xs-12 col-sm-4 col-md-3">
                         <img
@@ -4158,21 +4093,6 @@ class MyTicket extends Component {
                         </label>
                       </div>
                       <div className="col-12 col-xs-12 col-sm-2">
-                        {/* {this.state.messageDetails.length > 0 ? (
-                          <>
-                                                                  
-                            {this.state.messageDetails.isCustomerComment ===
-                            1 ? (
-                              <label
-                                className="reply-comment"
-                                onClick={this.hanldeCommentOpen2.bind(this)}
-                              >
-                                Reply
-                              </label>
-                            ) : null}
-                                                                
-                          </>
-                        ) : null} */}
                         {this.state.messageDetails.isCustomerComment === 1 ? (
                           <label
                             className="reply-comment"
@@ -4242,10 +4162,6 @@ class MyTicket extends Component {
                       </div>
 
                       <div className="col-12 col-xs-12 col-sm-8 my-ticket-notes">
-                        {/* {this.state.loading === true ? (
-                          <div className="loader-icon"></div>
-                        ) : (
-                          <> */}
                         {this.state.Notesdetails !== null &&
                           this.state.Notesdetails.map((item, i) => (
                             <div className="row my-ticket-notes-row" key={i}>
@@ -4272,8 +4188,6 @@ class MyTicket extends Component {
                               </div>
                             </div>
                           ))}
-                        {/* </>
-                        )} */}
                       </div>
                     </div>
                   </div>
