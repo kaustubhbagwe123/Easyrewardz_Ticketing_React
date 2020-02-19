@@ -16,7 +16,7 @@ import CKEditor from "ckeditor4-react";
 import PlusImg from "./../assets/Images/plus.png";
 import CircleCancel from "./../assets/Images/Circle-cancel.png";
 // import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
-// import moment from "moment";
+import moment from "moment";
 import FileUpload from "./../assets/Images/file.png";
 import ThumbTick from "./../assets/Images/thumbticket.png"; // Don't comment this line
 import PDF from "./../assets/Images/pdf.png"; // Don't comment this line
@@ -368,14 +368,13 @@ class TicketSystem extends Component {
       }
     }).then(function(res) {
       debugger;
-      let status=res.data.message;
+      let status = res.data.message;
       let data = res.data.responseData;
-      if(status === "Success"){
+      if (status === "Success") {
         self.setState({ TicketTitleData: data });
-      }else{
+      } else {
         self.setState({ TicketTitleData: [] });
       }
-     
     });
   }
   handleCkEditorTemplate() {
@@ -667,7 +666,7 @@ class TicketSystem extends Component {
     for (let i = 0; i < selectedFiles.length; i++) {
       allFiles.push(selectedFiles[i]);
     }
-  
+
     // -------------------------Image View code start-----------------------
     if (e.target.files && e.target.files[0]) {
       const filesAmount = e.target.files.length;
@@ -686,7 +685,7 @@ class TicketSystem extends Component {
 
       var objFile = new Object();
       var name = e.target.files[i].name;
-      var value=e.target.value;
+      var value = e.target.value;
       var type = name.substring(name.lastIndexOf(".") + 1, name.length);
       objFile.Type = type;
       objFile.name = name;
@@ -699,7 +698,7 @@ class TicketSystem extends Component {
       this.state.FileData.push(file);
     }
     //-------------------Image View code end-----------------------
-    this.setState({ fileText: this.state.file.length,FileData:allFiles });
+    this.setState({ fileText: this.state.file.length, FileData: allFiles });
   }
   handleRemoveImage(i) {
     debugger;
@@ -728,12 +727,30 @@ class TicketSystem extends Component {
       // var OID = this.state.selectedTicketPriority;
       var selectedRow = "";
       for (var i = 0; i < this.state.selectedDataIds.length; i++) {
-        selectedRow += this.state.selectedDataIds[i].orderItemID + "|" + this.state.selectedDataIds[i].requireSize + ",";
+        selectedRow +=
+          this.state.selectedDataIds[i].orderItemID +
+          "|" +
+          this.state.selectedDataIds[i].requireSize +
+          ",";
       }
 
       var selectedStore = "";
       for (let j = 0; j < this.state.selectedStoreIDs.length; j++) {
-        selectedStore += this.state.selectedStoreIDs[j]["storeID"] + ",";
+        var PurposeID = this.state.selectedStoreIDs[j]["purposeId"];
+
+        if (PurposeID === "0") {  // Send Id as 1 and 2 from API 
+          PurposeID = 1;
+        } else {
+          PurposeID = 2;
+        }
+
+        selectedStore +=
+          this.state.selectedStoreIDs[j]["storeID"] +
+          "|" +
+          PurposeID +
+          "|" +
+          moment(this.state.selectedStoreIDs[j]["VisitedDate"]).format("YYYY-MM-DD") +
+          ",";
       }
       var actionStatusId = 0;
       if (StatusID === "200") {
@@ -797,9 +814,9 @@ class TicketSystem extends Component {
         let Msg = res.data.status;
         self.setState({ loading: false });
         if (Msg) {
-          NotificationManager.success(res.data.message, '', 2000);
+          NotificationManager.success(res.data.message, "", 2000);
           setTimeout(function() {
-          self.props.history.push("myTicketlist");
+            self.props.history.push("myTicketlist");
           }, 2000);
         } else {
           NotificationManager.error(res.data.message);
@@ -1058,7 +1075,7 @@ class TicketSystem extends Component {
                           </p>
                         )}
 
-                      {this.state.TicketTitleData !== null &&
+                        {this.state.TicketTitleData !== null &&
                           this.state.TicketTitleData.length > 0 &&
                           this.state.titleSuggValue.length > 0 && (
                             <div className="custom-ticket-title-suggestions">
@@ -1068,6 +1085,22 @@ class TicketSystem extends Component {
                                     key={i}
                                     onClick={this.handleAppendTicketSuggestion}
                                     title={item.ticketTitleToolTip}
+                                  >
+                                    {item.ticketTitle}
+                                  </span>
+                                ))}
+                            </div>
+                          )}
+
+                        {this.state.TicketTitleData !== null &&
+                          this.state.TicketTitleData.length > 0 &&
+                          this.state.titleSuggValue.length > 0 && (
+                            <div className="custom-ticket-title-suggestions">
+                              {this.state.TicketTitleData !== null &&
+                                this.state.TicketTitleData.map((item, i) => (
+                                  <span
+                                    key={i}
+                                    onClick={this.handleAppendTicketSuggestion}
                                   >
                                     {item.ticketTitle}
                                   </span>
@@ -1332,23 +1365,23 @@ class TicketSystem extends Component {
                           </div>
 
                           <div>
-                            <a href={item.value} target='_blank'>
-                            <img
-                              src={
-                                item.Type === "docx"
-                                  ? require("./../assets/Images/word.png")
-                                  : item.Type === "xlsx"
-                                  ? require("./../assets/Images/excel.png")
-                                  : item.Type === "pdf"
-                                  ? require("./../assets/Images/pdf.png")
-                                  : item.Type === "txt"
-                                  ? require("./../assets/Images/TxtIcon.png")
-                                  : require("./../assets/Images/thumbticket.png")
-                              }
-                              title={item.name}
-                              alt="thumb"
-                              className="thumbtick"
-                            />
+                            <a href={item.value} target="_blank">
+                              <img
+                                src={
+                                  item.Type === "docx"
+                                    ? require("./../assets/Images/word.png")
+                                    : item.Type === "xlsx"
+                                    ? require("./../assets/Images/excel.png")
+                                    : item.Type === "pdf"
+                                    ? require("./../assets/Images/pdf.png")
+                                    : item.Type === "txt"
+                                    ? require("./../assets/Images/TxtIcon.png")
+                                    : require("./../assets/Images/thumbticket.png")
+                                }
+                                title={item.name}
+                                alt="thumb"
+                                className="thumbtick"
+                              />
                             </a>
                           </div>
                         </div>

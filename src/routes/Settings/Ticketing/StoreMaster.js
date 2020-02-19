@@ -1329,6 +1329,7 @@ class StoreMaster extends Component {
                             </option>
                           ))}
                       </select>
+                      
                       {this.state.selectStatus === "" && (
                     <p style={{ color: "red", marginBottom: "0px" }}>
                       {this.state.statusCompulsion}
