@@ -194,7 +194,8 @@ class Reports extends Component {
       TaskStatusCompulsion:"",
       TaskPriorityCompulsion:"",
       DepartmentCompulsion:"",
-      FunctionCompulsion:""
+      FunctionCompulsion:"",
+      reportNameCompulsion:""
     };
 
     this.handleAddReportOpen = this.handleAddReportOpen.bind(this);
@@ -236,7 +237,16 @@ class Reports extends Component {
       document.getElementById(id).parentElement.parentElement.parentElement.parentElement.parentElement.style.display = "block";
   }
   ScheduleOpenModel = () => {
+    debugger;
+    if(
+      this.state.selectedReportName.length > 0
+    ){
     this.setState({ Schedule: true });
+    }else{
+       this.setState({
+         reportNameCompulsion:"Please Enter Report Name."
+       });
+    }
   };
   ScheduleCloseModel = () => {
     this.setState({ Schedule: false });
@@ -256,9 +266,11 @@ class Reports extends Component {
     this.setState({ NextPopup: false });
   }
   handleReportCreateDate(date) {
+    debugger;
     this.setState({ ReportCreateDate: date });
   }
   handleReportLastDate(date) {
+    debugger;
     this.setState({ ReportLastDate: date });
   }
   handleChatDate(date) {
@@ -391,64 +403,64 @@ class Reports extends Component {
         
       ){ value2.push("1") }
     };
-    if(
-      value1.length===value2.length &&
-      this.state.ReportCreateDate.length > 0  &&
-      this.state.ReportLastDate.length > 0 &&
-      this.state.selectBrand > 0 &&
-      this.state.selectedCategory > 0 &&
-      this.state.selectedSubCategory > 0 &&
-      this.state.selectedIssueType > 0 &&
-      this.state.selectedClaimID.length > 0 &&
-      this.state.selectedTicketSource > 0 &&
-      this.state.selectedInvoiceNo.length > 0 &&
-      this.state.selectedEmailID.length > 0 &&
-      this.state.selectedTicketID.length > 0 &&
-      this.state.selectedMobileNo.length > 0 &&
-      this.state.selectedItemID.length > 0 &&
-      this.state.selectedPriority > 0 &&
-      this.state.selectedVisitStore.length > 0 &&
-      this.state.selectedAssignedTo > 0 &&
-      this.state.selectedWantVisitStore.length > 0 &&
-      this.state.selectedTicketStatus > 0 &&
-      this.state.selectedVisitStoreAddress.length > 0 &&
-      this.state.selectedPurchaseStore.length > 0
-    ){
+    // if(
+    //   value1.length===value2.length &&
+    //   this.state.ReportCreateDate !== ""  &&
+    //   this.state.ReportLastDate !== "" &&
+    //   this.state.selectBrand > 0 &&
+    //   this.state.selectedCategory > 0 &&
+    //   this.state.selectedSubCategory > 0 &&
+    //   this.state.selectedIssueType > 0 &&
+    //   this.state.selectedClaimID.length > 0 &&
+    //   this.state.selectedTicketSource > 0 &&
+    //   this.state.selectedInvoiceNo.length > 0 &&
+    //   this.state.selectedEmailID.length > 0 &&
+    //   this.state.selectedTicketID.length > 0 &&
+    //   this.state.selectedMobileNo.length > 0 &&
+    //   this.state.selectedItemID.length > 0 &&
+    //   this.state.selectedPriority > 0 &&
+    //   this.state.selectedVisitStore.length > 0 &&
+    //   this.state.selectedAssignedTo > 0 &&
+    //   this.state.selectedWantVisitStore.length > 0 &&
+    //   this.state.selectedTicketStatus > 0 &&
+    //   this.state.selectedVisitStoreAddress.length > 0 &&
+    //   this.state.selectedPurchaseStore.length > 0
+    // ){
       this.setState({
         tabIndex:index
       })
-    }else{
-          this.setState({
-      CreateDateCompulsion: "Please Select Date.",
-      LastDateCompulsion: "Please Select Date.",
-      BrandCompulsion:"Please Select Brand.",
-      CategoryCompulsion:"Please Select Category.",
-      SubCategoryCompulsion:"Please Select SubCategory.",
-      IssueTypeCompulsion:"Please Select IssueType.",
-      ClaimIDCompulsion:"Please Enter ClaimID.",
-      TicketSourceCompulsion:"Please Select Ticket Source.",
-      InvoiceNoCompulsion:"Please Enter Invoice Number.",
-      EmailIDCompulsion:"Please Enter EmailID.",
-      TicketIDCompulsion:"Please Enter ticketID.",
-      MobileNoCompulsion:"Please Enter Mobile Number.",
-      ItemIDCompulsion:"Please Enter ItemID.",
-      PriorityCompulsion:"Please Select Priority.",
-      VisitStoreCompulsion:"Please Select Visit Store.",
-      AssignedToCompulsion:"Please Select Assign User.",
-      WantVisitStoreCompulsion:"Please Select Visit .",
-      TicketStatusCompulsion:"Please Select Ticket Status.",
-      VisitStoreAddressCompulsion:"Please Enter Visit Address.",
-      PurchaseStoreCompulsion:"Please Enter Purchase Store.",
-      ClaimStatusCompulsion: "Please Select Claim Status.",
-      ClaimCategoryCompulsion:"Please Select Claim Category.",
-      ClaimSubCategoryCompulsion:"Please Select Claim SubCategory.",
-      ClaimIssueTypeCompulsion:"Please Select IsuueType.",
-      TaskStatusCompulsion:"Please Select Task Status.",
-      TaskPriorityCompulsion:"Please Select Priority.",
-      DepartmentCompulsion:"Please Select Department.",
-      FunctionCompulsion:"Please Select Function."
-          });
-    }
+    // }else{
+    //       this.setState({
+    //   CreateDateCompulsion: "Please Select Date.",
+    //   LastDateCompulsion: "Please Select Date.",
+    //   BrandCompulsion:"Please Select Brand.",
+    //   CategoryCompulsion:"Please Select Category.",
+    //   SubCategoryCompulsion:"Please Select SubCategory.",
+    //   IssueTypeCompulsion:"Please Select IssueType.",
+    //   ClaimIDCompulsion:"Please Enter ClaimID.",
+    //   TicketSourceCompulsion:"Please Select Ticket Source.",
+    //   InvoiceNoCompulsion:"Please Enter Invoice Number.",
+    //   EmailIDCompulsion:"Please Enter EmailID.",
+    //   TicketIDCompulsion:"Please Enter ticketID.",
+    //   MobileNoCompulsion:"Please Enter Mobile Number.",
+    //   ItemIDCompulsion:"Please Enter ItemID.",
+    //   PriorityCompulsion:"Please Select Priority.",
+    //   VisitStoreCompulsion:"Please Select Visit Store.",
+    //   AssignedToCompulsion:"Please Select Assign User.",
+    //   WantVisitStoreCompulsion:"Please Select Visit .",
+    //   TicketStatusCompulsion:"Please Select Ticket Status.",
+    //   VisitStoreAddressCompulsion:"Please Enter Visit Address.",
+    //   PurchaseStoreCompulsion:"Please Enter Purchase Store.",
+    //   ClaimStatusCompulsion: "Please Select Claim Status.",
+    //   ClaimCategoryCompulsion:"Please Select Claim Category.",
+    //   ClaimSubCategoryCompulsion:"Please Select Claim SubCategory.",
+    //   ClaimIssueTypeCompulsion:"Please Select IsuueType.",
+    //   TaskStatusCompulsion:"Please Select Task Status.",
+    //   TaskPriorityCompulsion:"Please Select Priority.",
+    //   DepartmentCompulsion:"Please Select Department.",
+    //   FunctionCompulsion:"Please Select Function."
+    //       });
+    // }
     
   }
   handleWeeklyDays = async e => {
@@ -1439,6 +1451,7 @@ class Reports extends Component {
                     <div className="col-md-3 ticketreport">
                       <label>Status</label>
                       <select
+                                    name="selectedTicketStatus"
                                     value={this.state.selectedTicketStatus}
                                     onChange={this.setOnChangeReportData}
                                   >
@@ -2024,6 +2037,11 @@ class Reports extends Component {
                       value={this.state.selectedReportName}
                       onChange={this.setOnChangeReportData}
                     />
+                    {this.state.selectedReportName.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.reportNameCompulsion}
+                    </p>
+                  )}
                   </div>
                   <div className="buttonschdulesave">
                     <button className="Schedulenext"
@@ -2466,9 +2484,9 @@ class Reports extends Component {
               columns={columnsreport}
               // resizable={false}
               defaultPageSize={5}
-              showPagination={false}
+              showPagination={true}
             />
-             <div className="position-relative">
+             {/* <div className="position-relative">
                     <div className="pagi">
                       <ul>
                         <li>
@@ -2497,15 +2515,8 @@ class Reports extends Component {
                         </li>
                       </ul>
                     </div>
-                    <div className="item-selection">
-                      <select>
-                        <option>30</option>
-                        <option>50</option>
-                        <option>100</option>
-                      </select>
-                      <p>Items per page</p>
-                    </div>
-                  </div>
+                    
+                  </div> */}
                   </div>
           </div>
         </div>

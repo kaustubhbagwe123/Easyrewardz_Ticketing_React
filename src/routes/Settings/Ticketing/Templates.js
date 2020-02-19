@@ -476,10 +476,10 @@ class Templates extends Component {
                     data={this.state.template}
                     columns={columns}
                     // resizable={false}
-                    defaultPageSize={10}
-                    showPagination={false}
+                    defaultPageSize={5}
+                    showPagination={true}
                   />
-                  <div className="position-relative1">
+                  {/* <div className="position-relative1">
                     <div className="pagi">
                       <ul>
                         <li>
@@ -516,7 +516,7 @@ class Templates extends Component {
                       </select>
                       <p>Items per page</p>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="col-md-4">
