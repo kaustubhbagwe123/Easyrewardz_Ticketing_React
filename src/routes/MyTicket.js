@@ -73,7 +73,7 @@ class MyTicket extends Component {
     this.state = {
       open: false,
       InformStore: false,
-      collapseUp: true,
+      collapseUp: false,
       profilemodal: false,
       storemodal: false,
       storeproductsearch: false,
@@ -1357,9 +1357,8 @@ class MyTicket extends Component {
       orderDetails,
       selectedProduct,
       storeDetails,
-      selectedStore,
-      messageDetails
-    } = this.state;
+      selectedStore
+     } = this.state;
     const HidecollapsUp = this.state.collapseUp ? (
       <img
         src={Up1Img}
@@ -3611,10 +3610,11 @@ class MyTicket extends Component {
                             <div className="col-md-2">
                               {/* <label className="today-02">Today 02</label> */}
                               <label className="today-02">
-                                {item.updatedDate} &nbsp;
-                                ({item.messageCount < 9
+                                {item.updatedDate} &nbsp; (
+                                {item.messageCount < 9
                                   ? "0" + item.messageCount
-                                  : item.messageCount})
+                                  : item.messageCount}
+                                )
                               </label>
                             </div>
                             <div className="col-md-5">

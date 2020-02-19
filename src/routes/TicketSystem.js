@@ -727,19 +727,20 @@ class TicketSystem extends Component {
       var selectedRow = "";
       for (var i = 0; i < this.state.selectedDataIds.length; i++) {
         selectedRow +=
-        this.state.selectedDataIds[i].orderMasterID + "|" +
+          this.state.selectedDataIds[i].orderMasterID +
+          "|" +
           this.state.selectedDataIds[i].orderItemID +
           "|" +
           this.state.selectedDataIds[i].requireSize +
           ",";
-       
       }
 
       var selectedStore = "";
       for (let j = 0; j < this.state.selectedStoreIDs.length; j++) {
         var PurposeID = this.state.selectedStoreIDs[j]["purposeId"];
 
-        if (PurposeID === "0") {  // Send Id as 1 and 2 from API 
+        if (PurposeID === "0") {
+          // Send Id as 1 and 2 from API
           PurposeID = 1;
         } else {
           PurposeID = 2;
@@ -748,9 +749,11 @@ class TicketSystem extends Component {
         selectedStore +=
           this.state.selectedStoreIDs[j]["storeID"] +
           "|" +
-          PurposeID +
+          moment(this.state.selectedStoreIDs[j]["VisitedDate"]).format(
+            "YYYY-MM-DD"
+          ) +
           "|" +
-          moment(this.state.selectedStoreIDs[j]["VisitedDate"]).format("YYYY-MM-DD") +
+          PurposeID +
           ",";
       }
       var actionStatusId = 0;

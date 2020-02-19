@@ -55,7 +55,7 @@ class Templates extends Component {
   }
 
   componentDidMount() {
-    this.handleGetTemplate();
+   this.handleGetTemplate();
     this.handleGetSLAIssueType();
   }
 
@@ -149,10 +149,14 @@ class Templates extends Component {
   handleGetSLAIssueType() {
     debugger;
     let self = this;
+    var data='';
     axios({
       method: "post",
       url: config.apiUrl + "/SLA/GetIssueType",
-      headers: authHeader()
+      headers: authHeader(),
+      params: {
+        SearchText:data
+      }
     }).then(function (res) {
       debugger;
       let slaIssueType = res.data.responseData;
@@ -195,7 +199,7 @@ class Templates extends Component {
     ){
     let self = this;
     this.setState({ ConfigTabsModal: false })
-    let TemplateIsActive;
+    var TemplateIsActive;
     if (this.state.TemplateIsActive === 'true') {
       TemplateIsActive = true
     } else if (this.state.TemplateIsActive === 'false') {
@@ -219,6 +223,12 @@ class Templates extends Component {
       if (status === "Success") {
         NotificationManager.success("Template added successfully.");
         self.handleGetTemplate();
+        self.setState({
+          TemplateSubject:"",
+          editorContent:"",
+          TemplateName:"",
+          selectedSlaIssueType:[]
+        });
       } else {
         NotificationManager.error("Template not added.");
       }

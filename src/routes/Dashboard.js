@@ -303,7 +303,6 @@ class Dashboard extends Component {
       agentSelection: "",
       ShowGridCheckBox: false
     };
-    this.handleGetAssignTo = this.handleGetAssignTo.bind(this);
     this.applyCallback = this.applyCallback.bind(this);
     // this.handleApply = this.handleApply.bind(this);
     this.toggle = this.toggle.bind(this);
@@ -388,7 +387,6 @@ class Dashboard extends Component {
     this.handleGetTicketPriorityList();
     this.handleGetChannelOfPurchaseList();
     this.handleGetBrandList();
-    this.handleGetAssignTo();
     // this.handleGetDashboardGraphData();
     this.handleGetAgentList();
     this.handleGetSaveSearchList();
@@ -1313,24 +1311,6 @@ class Dashboard extends Component {
     let assign = e.currentTarget.value;
     this.setState({ selectedAssignedTo: assign });
   };
-
-  handleGetAssignTo() {
-    debugger;
-
-    let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/User/GetUserList",
-      headers: authHeader()
-    }).then(function (res) {
-      debugger;
-      let AssignData = res.data.responseData;
-
-      self.setState({
-        AssignToData: AssignData
-      });
-    });
-  }
 
   setScheduleFor = e => {
     let scheduleForValue = e.currentTarget.value;
@@ -4753,10 +4733,10 @@ class Dashboard extends Component {
                                     <div className="normal-dropdown dropdown-setting1 schedule-multi">
                                       <Select
                                         getOptionLabel={option =>
-                                          option.department
+                                          option.fullName
                                         }
                                         getOptionValue={
-                                          option => option.department //id
+                                          option => option.userID //id
                                         }
                                         options={this.state.TeamMemberData}
                                         placeholder="Team Member"

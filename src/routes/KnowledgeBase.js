@@ -418,7 +418,7 @@ class KnowledgeBase extends Component {
         this.state.approveIssurTypeValue > 0 &&
         this.state.approveSubject.length > 0
       ) {
-        var ck=this.state.ckeditorApprove.replace(/<[^>]+>/g,"");
+        var ck=this.state.ckeditorApprove.replace(/<[^>]+>/g,""); 
       var ckeditor=ck.replace(/&nbsp;/gi," ");
         var json = {
           KBID: id,
