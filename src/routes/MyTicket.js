@@ -1358,7 +1358,7 @@ class MyTicket extends Component {
       selectedProduct,
       storeDetails,
       selectedStore
-     } = this.state;
+    } = this.state;
     const HidecollapsUp = this.state.collapseUp ? (
       <img
         src={Up1Img}
@@ -3602,13 +3602,12 @@ class MyTicket extends Component {
                     </div>
                     {this.state.messageDetails.map((item, i) => {
                       return (
-                        <div>
+                        <div key={i}>
                           <div className="row top-margin">
                             <div className="col-md-5">
                               <div className="v3"></div>
                             </div>
                             <div className="col-md-2">
-                              {/* <label className="today-02">Today 02</label> */}
                               <label className="today-02">
                                 {item.updatedDate} &nbsp; (
                                 {item.messageCount < 9
@@ -3623,7 +3622,7 @@ class MyTicket extends Component {
                           </div>
                           {item.customTicketMessages.map((details, j) => {
                             return (
-                              <div>
+                              <div key={j}>
                                 <div>
                                   <div className="row top-margin">
                                     <div className="col-12 col-xs-12 col-sm-4 col-md-3">
@@ -3631,19 +3630,26 @@ class MyTicket extends Component {
                                         className="row"
                                         style={{ marginTop: "0" }}
                                       >
-                                        <div className="oval-5-1">
+                                        {details.isCustomerComment === 1 ? (
                                           <img
-                                            src={RightImg}
-                                            alt="right"
-                                            className="right-icon"
+                                            src={BlackUserIcon}
+                                            alt="Avatar"
+                                            className="oval-6"
                                           />
-                                        </div>
+                                        ) : (
+                                          <img
+                                            src={Headphone2Img}
+                                            alt="headphone"
+                                            className="oval-55"
+                                          />
+                                        )}
                                         <label
                                           className="solved-by-naman-r"
                                           style={{ marginLeft: "7px" }}
                                         >
                                           {details.commentBy}
                                         </label>
+
                                         <img
                                           src={MsgImg}
                                           alt="right"
@@ -3658,7 +3664,27 @@ class MyTicket extends Component {
                                     </div>
                                     <div className="col-12 col-xs-12 col-sm-2 col-md-2 mob-flex">
                                       {HidecollapsUp}
-                                      <label className="comment">Comment</label>
+                                      <div className="inlineGridTicket">
+                                        {details.isCustomerComment === 1 ? (
+                                          <label
+                                            className="reply-comment"
+                                            onClick={this.hanldeCommentOpen2.bind(
+                                              this
+                                            )}
+                                          >
+                                            Reply
+                                          </label>
+                                        ) : null}
+
+                                        <label
+                                          className="comment-text"
+                                          onClick={this.handleCommentCollapseOpen.bind(
+                                            this
+                                          )}
+                                        >
+                                          Comment
+                                        </label>
+                                      </div>
                                     </div>
                                   </div>
                                   <div className="row card-op-out">
@@ -3687,6 +3713,57 @@ class MyTicket extends Component {
                         </div>
                       );
                     })}
+                    <div className="row" style={{ width: "100%" }}>
+                      <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
+                      <div className="col-12 col-xs-12 col-sm-8 col-md-9">
+                        <div className="commentcollapseTicket">
+                          <Collapse isOpen={this.state.CommentCollapse}>
+                            <Card>
+                              <CardBody>
+                                <div className="commenttextborder">
+                                  <div className="Commentlabel">
+                                    <label className="Commentlabel1">
+                                      Comment
+                                    </label>
+                                  </div>
+                                  <div>
+                                    <span className="comment-line"></span>
+                                    <div
+                                      style={{
+                                        float: "right",
+                                        cursor: "pointer",
+                                        height: "30px",
+                                        marginTop: "-33px"
+                                      }}
+                                    >
+                                      <img
+                                        src={MinusImg}
+                                        alt="Minus"
+                                        className="CommentMinus-img"
+                                        onClick={this.handleCommentCollapseOpen.bind(
+                                          this
+                                        )}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="commenttextmessage">
+                                          Demo Text
+                                  </div>
+                                  <div className="SendCommentBtn">
+                                    <button
+                                      className="SendCommentBtn1"
+                                      // onClick={this.handleCommentCollapseOpen2.bind(this)}
+                                    >
+                                      SEND
+                                    </button>
+                                  </div>
+                                </div>
+                              </CardBody>
+                            </Card>
+                          </Collapse>
+                        </div>
+                      </div>
+                    </div>
                     {/* <div className="row">
                                 <div className="col-md-5">
                                   <div className="v3"></div>

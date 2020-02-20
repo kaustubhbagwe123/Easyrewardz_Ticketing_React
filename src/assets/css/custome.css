@@ -1222,8 +1222,13 @@ table tr th:last-child {
   font-weight: 700;
   line-height: 16px;
   text-align: right;
-  float: right;
+  /* float: right; */
+  display: block;
   cursor: pointer;
+}
+.inlineGridTicket{
+  display: inline-grid;
+  float: right;
 }
 .btn-primary1 {
   background-color: #2561a8;
