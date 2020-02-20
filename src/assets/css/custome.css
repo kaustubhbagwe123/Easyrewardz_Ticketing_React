@@ -3567,6 +3567,11 @@ table tr th:last-child {
 }
 /* sla ends */
 
+.kb-search-cntr {
+  display: inline-block;
+  cursor: pointer;
+}
+
 /* chetan css end */
 /******************************************************/
 
@@ -5556,6 +5561,7 @@ font-weight: normal;
   line-height: 19px;
   text-align: left;
   padding-left: 0;
+  cursor: pointer;
 }
 
 .table-id-data {

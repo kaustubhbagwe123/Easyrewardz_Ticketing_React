@@ -613,7 +613,7 @@ class Dashboard extends Component {
           delete CSVData[i].responseTimeRemainingBy;
           delete CSVData[i].responseOverdueBy;
           delete CSVData[i].resolutionOverdueBy;
-          delete CSVData[i].ticketCommentCount;
+          // delete CSVData[i].ticketCommentCount;
         }
         self.setState({ CSVDownload: CSVData });
       } else {
@@ -2641,7 +2641,7 @@ class Dashboard extends Component {
           delete CSVData[i].responseTimeRemainingBy;
           delete CSVData[i].responseOverdueBy;
           delete CSVData[i].resolutionOverdueBy;
-          delete CSVData[i].ticketCommentCount;
+          // delete CSVData[i].ticketCommentCount;
         }
         self.setState({ CSVDownload: CSVData });
       } else {
@@ -2768,7 +2768,7 @@ class Dashboard extends Component {
           delete CSVData[i].responseTimeRemainingBy;
           delete CSVData[i].responseOverdueBy;
           delete CSVData[i].resolutionOverdueBy;
-          delete CSVData[i].ticketCommentCount;
+          // delete CSVData[i].ticketCommentCount;
         }
         self.setState({ CSVDownload: CSVData });
       }

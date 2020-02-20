@@ -83,7 +83,10 @@ class KnowledgeBase extends Component {
       updateCategoryCompulsion: "",
       updateSubCategoryCompulsion: "",
       updateIssueTypeCompulsion: "",
-      updateSubjectCompulsion: ""
+      updateSubjectCompulsion: "",
+      kbClearNew: false,
+      kbClearList: false,
+      tabCount: 1
     };
     this.HandelFirstTabClick = this.HandelFirstTabClick.bind(this);
     this.HandelSecoundTabClick = this.HandelSecoundTabClick.bind(this);
@@ -156,7 +159,8 @@ class KnowledgeBase extends Component {
       headersecound: "none",
       detailscollapse: false,
       tabcolor: "#2561A8",
-      tabcolor1: "#4A4A4A"
+      tabcolor1: "#4A4A4A",
+      tabCount: 1
     });
   }
   setUpdateData(individualData) {
@@ -255,7 +259,8 @@ class KnowledgeBase extends Component {
       headersecound: "block",
       detailscollapse: false,
       tabcolor: "#4A4A4A",
-      tabcolor1: "#2561A8"
+      tabcolor1: "#2561A8",
+      tabCount: 2
     });
   }
 
@@ -418,7 +423,7 @@ class KnowledgeBase extends Component {
         this.state.approveIssurTypeValue > 0 &&
         this.state.approveSubject.length > 0
       ) {
-        var ck=this.state.ckeditorApprove.replace(/<[^>]+>/g,"");
+        var ck=this.state.ckeditorApprove.replace(/<[^>]+>/g,""); 
       var ckeditor=ck.replace(/&nbsp;/gi," ");
         var json = {
           KBID: id,
@@ -475,6 +480,15 @@ class KnowledgeBase extends Component {
         countApprove: approveconut,
         countNotApprove: notapproveconut
       });
+      if (self.state.tabCount === 1) {
+        self.setState({
+          kbClearNew: false
+        });
+      } else {
+        self.setState({
+          kbClearList: false
+        });
+      }
     });
   }
 
@@ -505,6 +519,15 @@ class KnowledgeBase extends Component {
         selectedSubCategory: "",
         selectedIssueType: ""
       });
+      if (self.state.tabCount === 1) {
+        self.setState({
+          kbClearNew: true
+        })
+      } else {
+        self.setState({
+          kbClearList: true
+        })
+      }
       self.closeSearchModal();
     });
   }
@@ -664,21 +687,22 @@ class KnowledgeBase extends Component {
                 <label className="main-conenet-point">
                   {this.state.countNotApprove} ITEMS
                 </label>
-                <small
+                {this.state.kbClearNew && <small
                   className="clear-search"
                   onClick={this.handleKBList.bind(this)}
                 >
                   Clear Search
-                </small>
+                </small>}
               </div>
               <div className="col-md-6" style={{ textAlign: "end" }}>
+                <div className="kb-search-cntr" onClick={this.opneSearchModal}>
                 <label className="search-KB">SEARCH</label>
                 <img
                   src={SerachIcon}
                   alt="serach-icon"
                   className="searchicon"
-                  onClick={this.opneSearchModal}
                 />
+                </div>
               </div>
             </div>
             <div className="kb-table" style={{ padding: "0px 30px 20px 20px" }}>
@@ -894,21 +918,22 @@ class KnowledgeBase extends Component {
                 <label className="main-conenet-point">
                   {this.state.countApprove} ITEMS
                 </label>
-                <small
+                {this.state.kbClearList && <small
                   className="clear-search"
                   onClick={this.handleKBList.bind(this)}
                 >
                   Clear Search
-                </small>
+                </small>}
               </div>
               <div className="col-md-6" style={{ textAlign: "end" }}>
+              <div className="kb-search-cntr" onClick={this.opneSearchModal}>
                 <label className="search-KB">SEARCH</label>
                 <img
                   src={SerachIcon}
                   alt="serach-icon"
                   className="searchicon"
-                  onClick={this.opneSearchModal}
                 />
+                </div>
               </div>
             </div>
 
