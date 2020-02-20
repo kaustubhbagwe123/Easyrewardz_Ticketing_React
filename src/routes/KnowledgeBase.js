@@ -511,21 +511,25 @@ class KnowledgeBase extends Component {
       var approveconut = res.data.responseData.approved.length;
       var notapproveconut = res.data.responseData.notApproved.length;
       self.setState({
-        KBListData: approve,
-        KBListnotApproveData: notapprove,
-        countApprove: approveconut,
-        countNotApprove: notapproveconut,
+        // KBListData: approve,
+        // KBListnotApproveData: notapprove,
+        // countApprove: approveconut,
+        // countNotApprove: notapproveconut,
         selectedCategory: "",
         selectedSubCategory: "",
         selectedIssueType: ""
       });
       if (self.state.tabCount === 1) {
         self.setState({
-          kbClearNew: true
+          kbClearNew: true,
+          KBListnotApproveData: notapprove,
+          countNotApprove: notapproveconut,
         })
       } else {
         self.setState({
-          kbClearList: true
+          kbClearList: true,
+          KBListData: approve,
+          countApprove: approveconut,
         })
       }
       self.closeSearchModal();
