@@ -204,10 +204,9 @@ class TicketSystemOrder extends Component {
     }
 
     this.setState({
-      selectedDataRow: selectedRow
-    });
+      selectedDataRow: selectedRow,    });
     {
-      this.props.getOrderId(selectedRow, this.state.idSizeArray);
+      this.props.getOrderId(selectedRow,this.state.idSizeArray);
     }
   }
 
@@ -1628,35 +1627,35 @@ class TicketSystemOrder extends Component {
                           columns={[
                             {
                               Header: <span>Article Number</span>,
-                              accessor: "invoiceNo"
-                              // Cell: row => (
-                              //   <div
-                              //     className="filter-checkbox"
-                              //     style={{ marginLeft: "15px" }}
-                              //   >
-                              //     <input
-                              //       type="checkbox"
-                              //       id={"order" + row.original.orderItemID}
-                              //       style={{ display: "none" }}
-                              //       name="ticket-order"
-                              //       checked={
-                              //         this.state.CheckOrderID[
-                              //         row.original.orderItemID
-                              //         ] === true
-                              //       }
-                              //       onChange={this.handleCheckOrderID.bind(
-                              //         this,
-                              //         row.original.orderItemID,
-                              //         row.original
-                              //       )}
-                              //     />
-                              //     <label
-                              //       htmlFor={"order" + row.original.orderItemID}
-                              //     >
-                              //       {row.original.invoiceNo}
-                              //     </label>
-                              //   </div>
-                              // )
+                              accessor: "invoiceNo",
+                              Cell: row => (
+                                <div
+                                  className="filter-checkbox"
+                                  style={{ marginLeft: "15px" }}
+                                >
+                                  <input
+                                    type="checkbox"
+                                    id={"order" + row.original.orderItemID}
+                                    style={{ display: "none" }}
+                                    name="ticket-order"
+                                    checked={
+                                      this.state.CheckOrderID[
+                                      row.original.orderItemID
+                                      ] === true
+                                    }
+                                    onChange={this.handleCheckOrderID.bind(
+                                      this,
+                                      row.original.orderItemID,
+                                      row.original
+                                    )}
+                                  />
+                                  <label
+                                    htmlFor={"order" + row.original.orderItemID}
+                                  >
+                                    {row.original.invoiceNo}
+                                  </label>
+                                </div>
+                              )
                             },
                             {
                               Header: <span>Article Name</span>,

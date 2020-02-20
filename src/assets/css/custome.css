@@ -9591,6 +9591,9 @@ table tr th:last-child {
 .MyTicketListReact .ReactTable .rt-thead.-header .pinkmargin {
   margin-left: 5px;
 }
+.MyTicketListReact .rt-th {
+  text-align: left;
+}
 .newReact .rt-tbody .pinkmargin {
   margin-left: 5px;
 }

@@ -5712,7 +5712,7 @@ class Dashboard extends Component {
                           )
                         }
                       ]}
-                      // resizable={false}
+                      resizable={false}
                       defaultPageSize={10}
                       showPagination={true}
                       getTrProps={this.HandleRowClickPage}
