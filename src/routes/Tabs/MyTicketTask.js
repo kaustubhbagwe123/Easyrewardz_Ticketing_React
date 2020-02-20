@@ -307,13 +307,15 @@ class MyTicketTask extends Component {
               selectedPriority: 0
             });
             {
-              this.props.callBackTaskLenght(self.state.tikcet_ID);
+              self.props.callBackTaskLenght(self.state.tikcet_ID);
             }
           } else {
             NotificationManager.error("Task not created.", "", 1500);
+            {
+              self.props.callBackTaskLenght(self.state.tikcet_ID);
+            }
           }
-        })
-        .catch(function(res) {
+        }).catch(function(res) {
           //handle error
           console.log(res);
         });
@@ -327,6 +329,7 @@ class MyTicketTask extends Component {
         taskPriorityCompulsion: "The Priority field is compulsary."
       });
     }
+   
   }
   handleTaskAddComments() {
     debugger;

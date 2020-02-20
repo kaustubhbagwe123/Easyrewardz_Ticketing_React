@@ -204,7 +204,7 @@ class TicketSystemOrder extends Component {
     }
 
     this.setState({
-      selectedDataRow: selectedRow,    });
+      selectedDataRow: selectedRow});
     {
       this.props.getOrderId(selectedRow,this.state.idSizeArray);
     }

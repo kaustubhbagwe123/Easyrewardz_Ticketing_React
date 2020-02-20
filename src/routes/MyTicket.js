@@ -4265,7 +4265,7 @@ class MyTicket extends Component {
                             TabActiveId: this.state.TaskTab
                           }
                         }}
-                        callBackTaskLenght={this.handleGetCountOfTabs()}
+                        callBackTaskLenght={this.handleGetCountOfTabs(this.state.ticket_Id)}
                       />
                     ) : (
                       ""
