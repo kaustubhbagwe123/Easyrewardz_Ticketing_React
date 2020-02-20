@@ -284,6 +284,13 @@
   border: none;
   width: 100%;
 }
+.ticketMSGCmt-textarea {
+  background-color: #FFFF;
+  border-radius: 2px;
+  border: none;
+  width: 100%;
+  resize: none;
+}
 
 .store-create-button {
   background-color: #2561a8;

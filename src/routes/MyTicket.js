@@ -157,7 +157,8 @@ class MyTicket extends Component {
       StoreName: "",
       ProductName: "",
       agentId: 0,
-      AttachementrData: []
+      AttachementrData: [],
+      ticketcommentMSG: ""
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -324,9 +325,13 @@ class MyTicket extends Component {
       let status = res.data.status;
       if (status === true) {
         if (ticStaId === 103) {
-          NotificationManager.success("The ticket has been resolved.");
+          NotificationManager.success(
+            "The ticket has been resolved.",
+            "",
+            2000
+          );
         } else if (ticStaId === 104) {
-          NotificationManager.success("The ticket has been closed.");
+          NotificationManager.success("The ticket has been closed.", "", 2000);
         }
       }
     });
@@ -444,6 +449,7 @@ class MyTicket extends Component {
     });
   }
   handleGetCountOfTabs(ID) {
+    debugger
     let self = this;
     axios({
       method: "post",
@@ -486,10 +492,10 @@ class MyTicket extends Component {
       debugger;
       let status = res.data.message;
       if (status === "Success") {
-        NotificationManager.success("Ticket updated successfully.");
+        NotificationManager.success("Ticket updated successfully.", "", 2000);
         self.props.history.push("myticket");
       } else {
-        NotificationManager.error("Ticket not update");
+        NotificationManager.error("Ticket not update", "", 2000);
       }
     });
   }
@@ -736,10 +742,12 @@ class MyTicket extends Component {
       debugger;
       let messageData = res.data.message;
       if (messageData === "Success") {
-        NotificationManager.success("Tickets assigned successfully.");
+        NotificationManager.success("Tickets assigned successfully.", "", 1500);
         self.HandlelabelModalClose();
 
-        self.componentDidMount();
+        setTimeout(function() {
+          self.componentDidMount();
+          }, 1500);
       }
     });
   }
@@ -901,13 +909,13 @@ class MyTicket extends Component {
         if (status === true) {
           var id = self.state.ticket_Id;
           self.handleGetNotesTabDetails(id);
-          NotificationManager.success("Comment added successfully.");
+          NotificationManager.success("Comment added successfully.", "", 2000);
           self.setState({
             NoteAddComment: "",
             notesCommentCompulsion: ""
           });
         } else {
-          NotificationManager.error("Comment not added.");
+          NotificationManager.error("Comment not added.", "", 2000);
         }
       });
     } else {
@@ -1001,9 +1009,9 @@ class MyTicket extends Component {
       let status = res.data.message;
       // let details = res.data.responseData;
       if (status === "Success") {
-        NotificationManager.success("Store attached successfully.");
+        NotificationManager.success("Store attached successfully.", "", 2000);
       } else {
-        NotificationManager.error("Store not attached");
+        NotificationManager.error("Store not attached", "", 2000);
       }
     });
   }
@@ -1028,9 +1036,9 @@ class MyTicket extends Component {
       let status = res.data.message;
       // let details = res.data.responseData;
       if (status === "Success") {
-        NotificationManager.success("Product attached successfully.");
+        NotificationManager.success("Product attached successfully.", "", 2000);
       } else {
-        NotificationManager.error("Product not attached");
+        NotificationManager.error("Product not attached", "", 2000);
       }
     });
   }
@@ -1175,7 +1183,7 @@ class MyTicket extends Component {
       debugger;
       let KbPopupData = res.data.responseData;
       if (KbPopupData.length === 0 || KbPopupData === null) {
-        NotificationManager.error("No Record Found.");
+        NotificationManager.error("No Record Found.", "", 2000);
       }
       self.setState({ KbPopupData: KbPopupData });
     });
@@ -1264,27 +1272,59 @@ class MyTicket extends Component {
   handleSendMailData() {
     debugger;
     // var subject = "Demo Mail";
+    let self=this
     axios({
       method: "post",
-      url: config.apiUrl + "/Ticketing/SendMail",
+      url: config.apiUrl + "/Ticketing/MessageComment",
       headers: authHeader(),
-      params: {
-        EmailID: this.state.ticketDetailsData.customerEmailId,
-        Mailcc: this.state.mailFiled.userCC,
-        Mailbcc: this.state.mailFiled.userBCC,
-        Mailsubject: this.state.ticketDetailsData.ticketTitle,
-        // MailBody: this.state.CkEditorTemplateDetails.templateBody,
-        MailBody: this.state.mailBodyData,
+      data: {
+        TicketID:this.state.ticket_Id,
+        ToEmail: this.state.ticketDetailsData.customerEmailId,
+        UserCC: this.state.mailFiled.userCC,
+        UserBCC: this.state.mailFiled.userBCC,
+        TikcketMailSubject: this.state.ticketDetailsData.ticketTitle,
+        TicketMailBody: this.state.mailBodyData,
         informStore: this.state.InformStore,
-        storeID: ""
+        IsSent:0,
+        IsCustomerComment:1
       }
     }).then(function(res) {
       debugger;
-      let status = res.data.status;
-      if (status === true) {
-        NotificationManager.success(res.data.responseData);
-      } else {
-        NotificationManager.error(res.data.responseData);
+      let status = res.data.message;
+      if(status === "Success"){
+        self.handleGetMessageDetails(self.state.ticket_Id)
+      }else{
+        NotificationManager.error(status, "", 2000);
+      }
+      
+      // if (status === true) {
+      //   NotificationManager.success(res.data.responseData, "", 2000);
+      // } else {
+      //   NotificationManager.error(res.data.responseData, "", 2000);
+      // }
+    });
+  }
+
+  handleSendMessagaData() {
+    debugger;
+    let self=this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Ticketing/MessageComment",
+      headers: authHeader(),
+      data: {
+        TicketID: this.state.ticket_Id,
+        TicketMailBody: this.state.ticketcommentMSG,
+        IsSent: 1,
+        IsCustomerComment: 1
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      if(status === "Success"){
+        self.handleGetMessageDetails(self.state.ticket_Id)
+      }else{
+        NotificationManager.error(status, "", 2000);
       }
     });
   }
@@ -3661,6 +3701,12 @@ class MyTicket extends Component {
                                       <label className="i-have-solved-this-i">
                                         {details.ticketMailSubject}
                                       </label>
+                                      <label
+                                        className="label-5"
+                                        style={{ display: "block" }}
+                                      >
+                                        {details.ticketMailBody}
+                                      </label>
                                     </div>
                                     <div className="col-12 col-xs-12 col-sm-2 col-md-2 mob-flex">
                                       {HidecollapsUp}
@@ -3695,7 +3741,13 @@ class MyTicket extends Component {
                                           <CardBody>
                                             <div className="card-details">
                                               <div className="card-details-1">
-                                                <label className="label-5">
+                                                <label className="i-have-solved-this-i">
+                                                  {details.ticketMailSubject}
+                                                </label>
+                                                <label
+                                                  className="label-5"
+                                                  style={{ display: "block" }}
+                                                >
                                                   {details.ticketMailBody}
                                                 </label>
                                               </div>
@@ -3747,12 +3799,22 @@ class MyTicket extends Component {
                                     </div>
                                   </div>
                                   <div className="commenttextmessage">
-                                          Demo Text
+                                    <textarea
+                                      cols="31"
+                                      rows="3"
+                                      className="ticketMSGCmt-textarea"
+                                      name="ticketcommentMSG"
+                                      maxLength={300}
+                                      value={this.state.ticketcommentMSG}
+                                      onChange={this.handleNoteOnChange}
+                                    ></textarea>
                                   </div>
                                   <div className="SendCommentBtn">
                                     <button
                                       className="SendCommentBtn1"
-                                      // onClick={this.handleCommentCollapseOpen2.bind(this)}
+                                      onClick={this.handleSendMessagaData.bind(
+                                        this
+                                      )}
                                     >
                                       SEND
                                     </button>
@@ -4203,6 +4265,7 @@ class MyTicket extends Component {
                             TabActiveId: this.state.TaskTab
                           }
                         }}
+                        callBackTaskLenght={this.handleGetCountOfTabs()}
                       />
                     ) : (
                       ""
