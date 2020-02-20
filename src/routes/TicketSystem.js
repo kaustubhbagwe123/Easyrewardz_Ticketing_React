@@ -213,7 +213,7 @@ class TicketSystem extends Component {
       customerAttachOrder: custAttachOrder
     });
   }
-  handleGetOrderId = (selectedDataRow, idSizeArray) => {
+  handleGetOrderId = (selectedDataRow,idSizeArray) => {
     debugger;
     this.setState({
       selectedDataIds: selectedDataRow,
