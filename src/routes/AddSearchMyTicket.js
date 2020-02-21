@@ -116,7 +116,7 @@ class AddSearchMyTicket extends Component {
     });
   } else {
     this.setState({
-      searchCompulsion: 'Search field is compulsary.'
+      searchCompulsion: 'Search field is compulsory.'
     })
   }
   }

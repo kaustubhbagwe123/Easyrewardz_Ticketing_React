@@ -48,7 +48,8 @@ class MyTicketTask extends Component {
       taskDepartmentCompulsion: "",
       taskFunctionCompulsion: "",
       taskAssignToCompulsion: "",
-      taskPriorityCompulsion: ""
+      taskPriorityCompulsion: "",
+      addcommentCompulsion:""
     };
     this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
     this.handleGetFunctionList = this.handleGetFunctionList.bind(this);
@@ -321,18 +322,21 @@ class MyTicketTask extends Component {
         });
     } else {
       this.setState({
-        taskTitleCompulsion: "The Title field is compulsary.",
-        taskDescCompulsion: "The Description field is compulsary.",
-        taskDepartmentCompulsion: "The Department field is compulsary.",
-        taskFunctionCompulsion: "The Function field is compulsary.",
-        taskAssignToCompulsion: "The Assign To field is compulsary.",
-        taskPriorityCompulsion: "The Priority field is compulsary."
+        taskTitleCompulsion: "The Title field is compulsory.",
+        taskDescCompulsion: "The Description field is compulsory.",
+        taskDepartmentCompulsion: "The Department field is compulsory.",
+        taskFunctionCompulsion: "The Function field is compulsory.",
+        taskAssignToCompulsion: "The Assign To field is compulsory.",
+        taskPriorityCompulsion: "The Priority field is compulsory."
       });
     }
    
   }
   handleTaskAddComments() {
     debugger;
+    if(
+      this.state.taskAddComment.length > 0
+    ){
     var TaskData = this.props.taskData.TicketData.TabActiveId;
     let self = this;
     axios({
@@ -357,6 +361,11 @@ class MyTicketTask extends Component {
         NotificationManager.error("Comment not added.", "", 2000);
       }
     });
+  }else{
+    this.setState({
+      addcommentCompulsion:"Please Add Comment."
+    });
+  }
   }
 
   render() {
@@ -708,6 +717,11 @@ class MyTicketTask extends Component {
                 value={this.state.taskAddComment}
                 onChange={this.handleTaskOnchangeData}
               ></textarea>
+              {this.state.taskAddComment.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.addcommentCompulsion}
+                    </p>
+                  )}
               <button
                 className="assign-butn btn-assign-tikcet"
                 type="button"
