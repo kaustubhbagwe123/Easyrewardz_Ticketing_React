@@ -1106,6 +1106,7 @@ if(datar==="add"){
     });
   }
   }
+
   
   handleDeleteUser(id) {
     debugger;

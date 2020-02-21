@@ -213,7 +213,7 @@ class TicketSystem extends Component {
       customerAttachOrder: custAttachOrder
     });
   }
-  handleGetOrderId = (selectedDataRow, idSizeArray) => {
+  handleGetOrderId = (selectedDataRow,idSizeArray) => {
     debugger;
     this.setState({
       selectedDataIds: selectedDataRow,
@@ -344,7 +344,7 @@ class TicketSystem extends Component {
         debugger;
         let Message = res.data.message;
         if (Message === "Success") {
-          NotificationManager.success("Record updated Successfull.");
+          NotificationManager.success("Record updated Successfull.", "", 2000);
 
           self.componentDidMount();
 
@@ -434,7 +434,7 @@ class TicketSystem extends Component {
         debugger;
         let KbPopupData = res.data.responseData;
         if (KbPopupData.length === 0 || KbPopupData === null) {
-          NotificationManager.error("No Record Found.");
+          NotificationManager.error("No Record Found.", "", 2000);
         }
         self.setState({ KbPopupData: KbPopupData });
       });
@@ -727,8 +727,8 @@ class TicketSystem extends Component {
       var selectedRow = "";
       for (var i = 0; i < this.state.selectedDataIds.length; i++) {
         selectedRow +=
-          this.state.selectedDataIds[i].orderMasterID +
-          "|" +
+          // this.state.selectedDataIds[i].orderMasterID +
+          // "|" +
           this.state.selectedDataIds[i].orderItemID +
           "|" +
           this.state.selectedDataIds[i].requireSize +
@@ -823,7 +823,7 @@ class TicketSystem extends Component {
             self.props.history.push("myTicketlist");
           }, 2000);
         } else {
-          NotificationManager.error(res.data.message);
+          NotificationManager.error(res.data.message, "", 2000);
         }
       });
     } else {

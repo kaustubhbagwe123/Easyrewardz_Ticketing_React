@@ -340,7 +340,7 @@ class Brands extends Component {
                                           file?
                                         </p>
                                         <div className="del-can">
-                                          <a className="canblue" onClick={() => this.hide(this, "samdel" + brand_ID)}>CANCEL</a>
+                                          <a href="#!" className="canblue" onClick={() => this.hide(this, "samdel" + brand_ID)}>CANCEL</a>
                                           <button
                                             className="butn"
                                             type="button"

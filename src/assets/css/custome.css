@@ -1222,8 +1222,13 @@ table tr th:last-child {
   font-weight: 700;
   line-height: 16px;
   text-align: right;
-  float: right;
+  /* float: right; */
+  display: block;
   cursor: pointer;
+}
+.inlineGridTicket{
+  display: inline-grid;
+  float: right;
 }
 .btn-primary1 {
   background-color: #2561a8;
@@ -3562,6 +3567,11 @@ table tr th:last-child {
 }
 /* sla ends */
 
+.kb-search-cntr {
+  display: inline-block;
+  cursor: pointer;
+}
+
 /* chetan css end */
 /******************************************************/
 
@@ -5551,6 +5561,7 @@ font-weight: normal;
   line-height: 19px;
   text-align: left;
   padding-left: 0;
+  cursor: pointer;
 }
 
 .table-id-data {
@@ -9579,6 +9590,9 @@ table tr th:last-child {
 }
 .MyTicketListReact .ReactTable .rt-thead.-header .pinkmargin {
   margin-left: 5px;
+}
+.MyTicketListReact .rt-th {
+  text-align: left;
 }
 .newReact .rt-tbody .pinkmargin {
   margin-left: 5px;

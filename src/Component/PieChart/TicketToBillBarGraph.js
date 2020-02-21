@@ -27,6 +27,11 @@ class TicketToBillBarGraph extends Component {
           colors: ['#75A5DE', '#2561A8'],
           opacity: 1
         },
+        plotOptions: {
+          bar: {
+            columnWidth: '0%'
+          }
+        },
         stroke: {
           show: false
         },

@@ -59,6 +59,7 @@ import TicketStatus from "./TicketStatus";
 import TicketActionType from "./TicketActionType";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import CircleCancel from "./../assets/Images/Circle-cancel.png";
+import DatePicker from "react-datepicker";
 import ThumbTick from "./../assets/Images/thumbticket.png"; // Don't comment this line
 import PDF from "./../assets/Images/pdf.png"; // Don't comment this line
 import CSVi from "./../assets/Images/csvicon.png"; // Don't comment this line
@@ -157,7 +158,9 @@ class MyTicket extends Component {
       StoreName: "",
       ProductName: "",
       agentId: 0,
-      AttachementrData: []
+      AttachementrData: [],
+      ticketcommentMSG: "",
+      CustStoreStatusDrop: "0"
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -324,9 +327,13 @@ class MyTicket extends Component {
       let status = res.data.status;
       if (status === true) {
         if (ticStaId === 103) {
-          NotificationManager.success("The ticket has been resolved.");
+          NotificationManager.success(
+            "The ticket has been resolved.",
+            "",
+            2000
+          );
         } else if (ticStaId === 104) {
-          NotificationManager.success("The ticket has been closed.");
+          NotificationManager.success("The ticket has been closed.", "", 2000);
         }
       }
     });
@@ -444,6 +451,7 @@ class MyTicket extends Component {
     });
   }
   handleGetCountOfTabs(ID) {
+    debugger;
     let self = this;
     axios({
       method: "post",
@@ -486,10 +494,10 @@ class MyTicket extends Component {
       debugger;
       let status = res.data.message;
       if (status === "Success") {
-        NotificationManager.success("Ticket updated successfully.");
+        NotificationManager.success("Ticket updated successfully.", "", 2000);
         self.props.history.push("myticket");
       } else {
-        NotificationManager.error("Ticket not update");
+        NotificationManager.error("Ticket not update", "", 2000);
       }
     });
   }
@@ -535,6 +543,20 @@ class MyTicket extends Component {
   fileDragOver = e => {
     e.preventDefault();
   };
+
+  hanldeStatusChange(e) {
+    debugger;
+    var SelectValue = e.target.value;
+    if (SelectValue === "1") {
+      this.setState({
+        CustStoreStatusDrop: 1
+      });
+    } else {
+      this.setState({
+        CustStoreStatusDrop: 2
+      });
+    }
+  }
   handleDropDownChange = e => {
     debugger;
     let name = e.target.name;
@@ -736,10 +758,12 @@ class MyTicket extends Component {
       debugger;
       let messageData = res.data.message;
       if (messageData === "Success") {
-        NotificationManager.success("Tickets assigned successfully.");
+        NotificationManager.success("Tickets assigned successfully.", "", 1500);
         self.HandlelabelModalClose();
 
-        self.componentDidMount();
+        setTimeout(function() {
+          self.componentDidMount();
+        }, 1500);
       }
     });
   }
@@ -901,13 +925,13 @@ class MyTicket extends Component {
         if (status === true) {
           var id = self.state.ticket_Id;
           self.handleGetNotesTabDetails(id);
-          NotificationManager.success("Comment added successfully.");
+          NotificationManager.success("Comment added successfully.", "", 2000);
           self.setState({
             NoteAddComment: "",
             notesCommentCompulsion: ""
           });
         } else {
-          NotificationManager.error("Comment not added.");
+          NotificationManager.error("Comment not added.", "", 2000);
         }
       });
     } else {
@@ -1001,9 +1025,9 @@ class MyTicket extends Component {
       let status = res.data.message;
       // let details = res.data.responseData;
       if (status === "Success") {
-        NotificationManager.success("Store attached successfully.");
+        NotificationManager.success("Store attached successfully.", "", 2000);
       } else {
-        NotificationManager.error("Store not attached");
+        NotificationManager.error("Store not attached", "", 2000);
       }
     });
   }
@@ -1028,9 +1052,9 @@ class MyTicket extends Component {
       let status = res.data.message;
       // let details = res.data.responseData;
       if (status === "Success") {
-        NotificationManager.success("Product attached successfully.");
+        NotificationManager.success("Product attached successfully.", "", 2000);
       } else {
-        NotificationManager.error("Product not attached");
+        NotificationManager.error("Product not attached", "", 2000);
       }
     });
   }
@@ -1175,7 +1199,7 @@ class MyTicket extends Component {
       debugger;
       let KbPopupData = res.data.responseData;
       if (KbPopupData.length === 0 || KbPopupData === null) {
-        NotificationManager.error("No Record Found.");
+        NotificationManager.error("No Record Found.", "", 2000);
       }
       self.setState({ KbPopupData: KbPopupData });
     });
@@ -1264,27 +1288,59 @@ class MyTicket extends Component {
   handleSendMailData() {
     debugger;
     // var subject = "Demo Mail";
+    let self = this;
     axios({
       method: "post",
-      url: config.apiUrl + "/Ticketing/SendMail",
+      url: config.apiUrl + "/Ticketing/MessageComment",
       headers: authHeader(),
-      params: {
-        EmailID: this.state.ticketDetailsData.customerEmailId,
-        Mailcc: this.state.mailFiled.userCC,
-        Mailbcc: this.state.mailFiled.userBCC,
-        Mailsubject: this.state.ticketDetailsData.ticketTitle,
-        // MailBody: this.state.CkEditorTemplateDetails.templateBody,
-        MailBody: this.state.mailBodyData,
+      data: {
+        TicketID: this.state.ticket_Id,
+        ToEmail: this.state.ticketDetailsData.customerEmailId,
+        UserCC: this.state.mailFiled.userCC,
+        UserBCC: this.state.mailFiled.userBCC,
+        TikcketMailSubject: this.state.ticketDetailsData.ticketTitle,
+        TicketMailBody: this.state.mailBodyData,
         informStore: this.state.InformStore,
-        storeID: ""
+        IsSent: 0,
+        IsCustomerComment: 1
       }
     }).then(function(res) {
       debugger;
-      let status = res.data.status;
-      if (status === true) {
-        NotificationManager.success(res.data.responseData);
+      let status = res.data.message;
+      if (status === "Success") {
+        self.handleGetMessageDetails(self.state.ticket_Id);
       } else {
-        NotificationManager.error(res.data.responseData);
+        NotificationManager.error(status, "", 2000);
+      }
+
+      // if (status === true) {
+      //   NotificationManager.success(res.data.responseData, "", 2000);
+      // } else {
+      //   NotificationManager.error(res.data.responseData, "", 2000);
+      // }
+    });
+  }
+
+  handleSendMessagaData() {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Ticketing/MessageComment",
+      headers: authHeader(),
+      data: {
+        TicketID: this.state.ticket_Id,
+        TicketMailBody: this.state.ticketcommentMSG,
+        IsSent: 1,
+        IsCustomerComment: 1
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      if (status === "Success") {
+        self.handleGetMessageDetails(self.state.ticket_Id);
+      } else {
+        NotificationManager.error(status, "", 2000);
       }
     });
   }
@@ -1338,6 +1394,17 @@ class MyTicket extends Component {
     this.setState({ fileText: this.state.file.length });
   }
 
+  handleByvisitDate(e, rowData) {
+    debugger;
+    var id = e.original.storeID;
+    var index = this.state.selectedStoreData.findIndex(x => x.storeID === id);
+    this.state.selectedStoreData["VisitedDate"] = rowData;
+    var selectedStoreData = this.state.selectedStoreData;
+    selectedStoreData[index].VisitedDate = rowData;
+
+    this.setState({ selectedStoreData });
+  }
+
   handleRemoveImage(i) {
     debugger;
     let file = this.state.file;
@@ -1358,7 +1425,7 @@ class MyTicket extends Component {
       selectedProduct,
       storeDetails,
       selectedStore
-     } = this.state;
+    } = this.state;
     const HidecollapsUp = this.state.collapseUp ? (
       <img
         src={Up1Img}
@@ -2246,9 +2313,15 @@ class MyTicket extends Component {
                           >
                             <div className="row storemainrow">
                               <div className="col-md-12">
-                                <select className="systemstoredropdown1">
-                                  <option>Customer Want to visit store</option>
-                                  <option>
+                                <select
+                                  className="systemstoredropdown1"
+                                  value={this.state.CustStoreStatusDrop}
+                                  onChange={this.hanldeStatusChange.bind(this)}
+                                >
+                                  <option value="1">
+                                    Customer Want to visit store
+                                  </option>
+                                  <option value="2">
                                     Customer Already visited store
                                   </option>
                                 </select>
@@ -2379,38 +2452,43 @@ class MyTicket extends Component {
                                     columns={[
                                       {
                                         Header: <span>Purpose</span>,
-                                        accessor: "invoiceNumber",
-                                        Cell: row => (
-                                          <div
-                                            className="filter-checkbox"
-                                            style={{ marginLeft: "15px" }}
-                                          >
-                                            <input
-                                              type="checkbox"
-                                              id={"i" + row.original.storeID}
-                                              style={{ display: "none" }}
-                                              name="ticket-store"
-                                              checked={
-                                                this.state.CheckStoreID[
-                                                  row.original.storeID
-                                                ] === true
-                                              }
-                                              onChange={this.handleCheckStoreID.bind(
-                                                this,
-                                                row.original.storeID,
-                                                row.original
-                                              )}
-                                              defaultChecked={true}
-                                            />
-                                            <label
-                                              htmlFor={
-                                                "i" + row.original.storeID
-                                              }
+                                        accessor: "purpose",
+                                        Cell: row => {
+                                          debugger;
+                                          return (
+                                            <div
+                                              className="filter-checkbox"
+                                              style={{ marginLeft: "15px" }}
                                             >
-                                              {row.original.storeID}
-                                            </label>
-                                          </div>
-                                        )
+                                              <input
+                                                type="checkbox"
+                                                id={"i" + row.original.storeID}
+                                                style={{ display: "none" }}
+                                                name="ticket-store"
+                                                checked={
+                                                  this.state.CheckStoreID[
+                                                    row.original.storeID
+                                                  ] === true
+                                                }
+                                                onChange={this.handleCheckStoreID.bind(
+                                                  this,
+                                                  row.original.storeID,
+                                                  row.original
+                                                )}
+                                                defaultChecked={true}
+                                              />
+                                              <label
+                                                htmlFor={
+                                                  "i" + row.original.storeID
+                                                }
+                                              >
+                                                {row.original.purpose === 1
+                                                  ? "Customer Want to visit store"
+                                                  : "Customer Already visited store"}
+                                              </label>
+                                            </div>
+                                          );
+                                        }
                                       },
                                       {
                                         Header: <span>Store Code</span>,
@@ -2435,7 +2513,31 @@ class MyTicket extends Component {
                                       {
                                         Header: <span>Visit Date</span>,
                                         accessor: "visitDate",
-                                        Cell: row => <label>23,Aug 2019</label>
+                                        Cell: row => {
+                                          return (
+                                            <div className="col-sm-12 p-0">
+                                              <DatePicker
+                                                selected={
+                                                  row.original.VisitedDate
+                                                }
+                                                placeholderText="Visited Date"
+                                                showMonthDropdown
+                                                showYearDropdown
+                                                dateFormat="dd/MM/yyyy"
+                                                id={
+                                                  "visitDate" +
+                                                  row.original.storeID
+                                                }
+                                                value={row.original.VisitedDate}
+                                                name="visitDate"
+                                                onChange={this.handleByvisitDate.bind(
+                                                  this,
+                                                  row
+                                                )}
+                                              />
+                                            </div>
+                                          );
+                                        }
                                       }
                                     ]}
                                     // resizable={false}
@@ -2515,7 +2617,31 @@ class MyTicket extends Component {
                                       {
                                         Header: <span>Visit Date</span>,
                                         accessor: "visitDate",
-                                        Cell: row => <label>23,Aug 2019</label>
+                                        // Cell: row => {
+                                        //   return (
+                                        //     <div className="col-sm-12 p-0">
+                                        //       <DatePicker
+                                        //         selected={
+                                        //           row.original.VisitedDate
+                                        //         }
+                                        //         placeholderText="Visited Date"
+                                        //         showMonthDropdown
+                                        //         showYearDropdown
+                                        //         dateFormat="dd/MM/yyyy"
+                                        //         id={
+                                        //           "visitDate" +
+                                        //           row.original.storeID
+                                        //         }
+                                        //         value={row.original.VisitedDate}
+                                        //         name="visitDate"
+                                        //         onChange={this.handleByvisitDate.bind(
+                                        //           this,
+                                        //           row
+                                        //         )}
+                                        //       />
+                                        //     </div>
+                                        //   );
+                                        // }
                                       }
                                     ]}
                                     // resizable={false}
@@ -3602,13 +3728,12 @@ class MyTicket extends Component {
                     </div>
                     {this.state.messageDetails.map((item, i) => {
                       return (
-                        <div>
+                        <div key={i}>
                           <div className="row top-margin">
                             <div className="col-md-5">
                               <div className="v3"></div>
                             </div>
                             <div className="col-md-2">
-                              {/* <label className="today-02">Today 02</label> */}
                               <label className="today-02">
                                 {item.updatedDate} &nbsp; (
                                 {item.messageCount < 9
@@ -3623,7 +3748,7 @@ class MyTicket extends Component {
                           </div>
                           {item.customTicketMessages.map((details, j) => {
                             return (
-                              <div>
+                              <div key={j}>
                                 <div>
                                   <div className="row top-margin">
                                     <div className="col-12 col-xs-12 col-sm-4 col-md-3">
@@ -3631,19 +3756,26 @@ class MyTicket extends Component {
                                         className="row"
                                         style={{ marginTop: "0" }}
                                       >
-                                        <div className="oval-5-1">
+                                        {details.isCustomerComment === 1 ? (
                                           <img
-                                            src={RightImg}
-                                            alt="right"
-                                            className="right-icon"
+                                            src={BlackUserIcon}
+                                            alt="Avatar"
+                                            className="oval-6"
                                           />
-                                        </div>
+                                        ) : (
+                                          <img
+                                            src={Headphone2Img}
+                                            alt="headphone"
+                                            className="oval-55"
+                                          />
+                                        )}
                                         <label
                                           className="solved-by-naman-r"
                                           style={{ marginLeft: "7px" }}
                                         >
                                           {details.commentBy}
                                         </label>
+
                                         <img
                                           src={MsgImg}
                                           alt="right"
@@ -3655,10 +3787,36 @@ class MyTicket extends Component {
                                       <label className="i-have-solved-this-i">
                                         {details.ticketMailSubject}
                                       </label>
+                                      <label
+                                        className="label-5"
+                                        style={{ display: "block" }}
+                                      >
+                                        {details.ticketMailBody}
+                                      </label>
                                     </div>
                                     <div className="col-12 col-xs-12 col-sm-2 col-md-2 mob-flex">
                                       {HidecollapsUp}
-                                      <label className="comment">Comment</label>
+                                      <div className="inlineGridTicket">
+                                        {details.isCustomerComment === 1 ? (
+                                          <label
+                                            className="reply-comment"
+                                            onClick={this.hanldeCommentOpen2.bind(
+                                              this
+                                            )}
+                                          >
+                                            Reply
+                                          </label>
+                                        ) : null}
+
+                                        <label
+                                          className="comment-text"
+                                          onClick={this.handleCommentCollapseOpen.bind(
+                                            this
+                                          )}
+                                        >
+                                          Comment
+                                        </label>
+                                      </div>
                                     </div>
                                   </div>
                                   <div className="row card-op-out">
@@ -3669,7 +3827,13 @@ class MyTicket extends Component {
                                           <CardBody>
                                             <div className="card-details">
                                               <div className="card-details-1">
-                                                <label className="label-5">
+                                                <label className="i-have-solved-this-i">
+                                                  {details.ticketMailSubject}
+                                                </label>
+                                                <label
+                                                  className="label-5"
+                                                  style={{ display: "block" }}
+                                                >
                                                   {details.ticketMailBody}
                                                 </label>
                                               </div>
@@ -3687,6 +3851,67 @@ class MyTicket extends Component {
                         </div>
                       );
                     })}
+                    <div className="row" style={{ width: "100%" }}>
+                      <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
+                      <div className="col-12 col-xs-12 col-sm-8 col-md-9">
+                        <div className="commentcollapseTicket">
+                          <Collapse isOpen={this.state.CommentCollapse}>
+                            <Card>
+                              <CardBody>
+                                <div className="commenttextborder">
+                                  <div className="Commentlabel">
+                                    <label className="Commentlabel1">
+                                      Comment
+                                    </label>
+                                  </div>
+                                  <div>
+                                    <span className="comment-line"></span>
+                                    <div
+                                      style={{
+                                        float: "right",
+                                        cursor: "pointer",
+                                        height: "30px",
+                                        marginTop: "-33px"
+                                      }}
+                                    >
+                                      <img
+                                        src={MinusImg}
+                                        alt="Minus"
+                                        className="CommentMinus-img"
+                                        onClick={this.handleCommentCollapseOpen.bind(
+                                          this
+                                        )}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="commenttextmessage">
+                                    <textarea
+                                      cols="31"
+                                      rows="3"
+                                      className="ticketMSGCmt-textarea"
+                                      name="ticketcommentMSG"
+                                      maxLength={300}
+                                      value={this.state.ticketcommentMSG}
+                                      onChange={this.handleNoteOnChange}
+                                    ></textarea>
+                                  </div>
+                                  <div className="SendCommentBtn">
+                                    <button
+                                      className="SendCommentBtn1"
+                                      onClick={this.handleSendMessagaData.bind(
+                                        this
+                                      )}
+                                    >
+                                      SEND
+                                    </button>
+                                  </div>
+                                </div>
+                              </CardBody>
+                            </Card>
+                          </Collapse>
+                        </div>
+                      </div>
+                    </div>
                     {/* <div className="row">
                                 <div className="col-md-5">
                                   <div className="v3"></div>
@@ -4126,6 +4351,7 @@ class MyTicket extends Component {
                             TabActiveId: this.state.TaskTab
                           }
                         }}
+                        // callBackTaskLenght={this.handleGetCountOfTabs(this.state.ticket_Id)}
                       />
                     ) : (
                       ""

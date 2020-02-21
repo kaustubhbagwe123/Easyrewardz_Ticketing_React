@@ -283,7 +283,7 @@ class ChatThemes extends Component {
                     </div>
                     <br />
                     <div>
-                      <a className="pop-over-cancle canblue" onClick={() => this.hide(this, "edtpadding" + ids)}>CANCEL</a>
+                      <a href="#!" className="pop-over-cancle canblue" onClick={() => this.hide(this, "edtpadding" + ids)}>CANCEL</a>
                       <button className="pop-over-button">
                         SAVE
             </button>
