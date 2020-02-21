@@ -1107,7 +1107,7 @@ if(datar==="add"){
   }
   }
 
-  
+
   handleDeleteUser(id) {
     debugger;
     let self = this;
@@ -2462,6 +2462,7 @@ if(datar==="add"){
                       {this.state.reporteeDesignCompulsion}
                     </p>
                   )}
+                  
                       </div>
                       <div className="div-cntr">
                         <label>Report To</label>
