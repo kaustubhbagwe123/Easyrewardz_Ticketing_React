@@ -29,7 +29,7 @@ class TicketToBillBarGraph extends Component {
         },
         plotOptions: {
           bar: {
-            columnWidth: '0%'
+            columnWidth: '90%'
           }
         },
         stroke: {
