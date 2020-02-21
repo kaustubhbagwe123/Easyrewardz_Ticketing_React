@@ -2216,6 +2216,8 @@ class MyTicketList extends Component {
   handleApplySearch(paramsID) {
     debugger;
     let self = this;
+    this.setState({ loading: true });
+    self.onCloseModal();
 
     axios({
       method: "post",
@@ -2233,10 +2235,10 @@ class MyTicketList extends Component {
         count = res.data.responseData.length;
       }
       if (status === "Success") {
-        self.setState({ SearchTicketData: data, resultCount: count });
-        self.onCloseModal();
+        self.setState({ SearchTicketData: data, resultCount: count, loading: false });
+        // self.onCloseModal();
       } else {
-        self.setState({ SearchTicketData: [] });
+        self.setState({ SearchTicketData: [], loading: false });
       }
     });
   }
@@ -4586,7 +4588,9 @@ class MyTicketList extends Component {
                       </Collapse>
                     </div>
                     {this.state.loading === true ? (
-                      <div className="loader-icon"></div>
+                      <div className="loader-icon-cntr">
+                        <div className="loader-icon"></div>
+                      </div>
                     ) : (
                       <div>
                         <div className="MyTicketListReact cus-head">

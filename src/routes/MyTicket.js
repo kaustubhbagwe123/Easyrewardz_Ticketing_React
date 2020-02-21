@@ -149,6 +149,7 @@ class MyTicket extends Component {
       messageDetails: [],
       fileText: 0,
       file: [],
+      fileDummy: [],
       userCcCount: 0,
       userBccCount: 0,
       mailFiled: {},
@@ -278,7 +279,7 @@ class MyTicket extends Component {
           StoreName: Storedetails,
           ProductName: ProductDetails,
           mailFiled: MailDetails,
-          file: attachementDetails,
+          fileDummy: attachementDetails,
           loading: false
         });
 
@@ -286,6 +287,7 @@ class MyTicket extends Component {
           self.handleGetCategoryList();
           self.handleGetSubCategoryList();
           self.handleGetIssueTypeList();
+          self.handleOnLoadFiles();
         }, 100);
       } else {
         self.setState({
@@ -294,6 +296,22 @@ class MyTicket extends Component {
         });
       }
     });
+  }
+  handleOnLoadFiles() {
+    debugger;
+    for (let i = 0; i < this.state.fileDummy.length; i++) {
+      debugger;
+
+      var objFile = new Object();
+      var name = this.state.fileDummy[i].attachmentName;
+      var type = name.substring(name.lastIndexOf(".") + 1, name.length);
+      objFile.Type = type;
+      objFile.name = name;
+
+      objFile.File = this.state.fileDummy[i];
+
+      this.state.file.push(objFile);
+    }
   }
   handleAssignDataList() {
     debugger;
@@ -3104,7 +3122,7 @@ class MyTicket extends Component {
                           />
                         </div>
 
-                        <div>
+                        <a href={item.name} download>
                           <img
                             src={
                               item.Type === "docx"
@@ -3121,7 +3139,7 @@ class MyTicket extends Component {
                             alt="thumb"
                             className="thumbtick"
                           />
-                        </div>
+                        </a>
                       </div>
                     ) : (
                       ""
