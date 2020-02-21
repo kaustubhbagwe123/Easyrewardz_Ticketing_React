@@ -25,13 +25,13 @@ import CallImg from "./../assets/Images/call.png";
 import MailImg from "./../assets/Images/msg.png";
 import FacebookImg from "./../assets/Images/facebook.png";
 import { Collapse, CardBody, Card } from "reactstrap";
-import Demo from "../store/Hashtag.js";
+// import Demo from "../store/Hashtag.js";
 // import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import MultiBarChart from "../Component/PieChart/MultiBarChart.js";
 import TicketToBillBarGraph from "../Component/PieChart/TicketToBillBarGraph";
 import TicketGenerationSourceBar from "../Component/PieChart/TicketGenerationSourceBar";
 import TicketToClaimMultiBar from "../Component/PieChart/TicketToClaimMultiBar";
-import HeadPhone3 from "./../assets/Images/headphone3.png";
+// import HeadPhone3 from "./../assets/Images/headphone3.png";
 import DatePicker from "react-datepicker";
 // import "react-datepicker/dist/react-datepicker.css";
 import OpenByPriorityPie from "../Component/PieChart/PieChart";
@@ -2911,7 +2911,7 @@ class Dashboard extends Component {
             <div className="status-drop-down">
               <div className="sort-sctn">
                 <div className="d-flex">
-                  <a
+                  <a href="#!"
                     onClick={this.sortStatusAtoZ.bind(this)}
                     className="sorting-icon"
                   >
@@ -2920,7 +2920,7 @@ class Dashboard extends Component {
                   <p>SORT BY A TO Z</p>
                 </div>
                 <div className="d-flex">
-                  <a
+                  <a href="#!"
                     onClick={this.sortStatusZtoA.bind(this)}
                     className="sorting-icon"
                   >

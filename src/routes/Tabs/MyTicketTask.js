@@ -306,14 +306,14 @@ class MyTicketTask extends Component {
               selectedAssignTo: 0,
               selectedPriority: 0
             });
-            {
-              self.props.callBackTaskLenght(self.state.tikcet_ID);
-            }
+            // {
+            //   self.props.callBackTaskLenght(self.state.tikcet_ID);
+            // }
           } else {
             NotificationManager.error("Task not created.", "", 1500);
-            {
-              self.props.callBackTaskLenght(self.state.tikcet_ID);
-            }
+            // {
+            //   self.props.callBackTaskLenght(self.state.tikcet_ID);
+            // }
           }
         }).catch(function(res) {
           //handle error

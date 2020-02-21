@@ -441,7 +441,7 @@ class Templates extends Component {
                   </div>
                   <br />
                   <div>
-                    <a className="pop-over-cancle" onClick={this.hide}>CANCEL</a>
+                    <a href="#!" className="pop-over-cancle" onClick={this.hide}>CANCEL</a>
                     <button className="pop-over-button">
                       <label className="pop-over-btnsave-text">SAVE</label>
                     </button>

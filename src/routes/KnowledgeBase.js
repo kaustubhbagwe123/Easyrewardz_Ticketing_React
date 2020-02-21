@@ -425,7 +425,7 @@ class KnowledgeBase extends Component {
       ) {
         var ck=this.state.ckeditorApprove.replace(/<[^>]+>/g,""); 
       var ckeditor=ck.replace(/&nbsp;/gi," ");
-        var json = {
+        var jsonData = {
           KBID: id,
 
           CategoryID: this.state.selectedCategory,
@@ -439,7 +439,7 @@ class KnowledgeBase extends Component {
           method: "post",
           url: config.apiUrl + "/KnowledgeBase/RejectApproveKB",
           headers: authHeader(),
-          data: json
+          data: jsonData
         }).then(function(res) {
           debugger;
           let Msg = res.data.message;

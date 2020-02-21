@@ -540,10 +540,10 @@ class TicketSystemOrder extends Component {
       x.style.display = "block";
       x1.style.display = "none";
     } else {
-      var x = document.getElementById("Modalordertable");
-      var x1 = document.getElementById("Modalorderitemtable");
-      x.style.display = "none";
-      x1.style.display = "block ";
+      var i = document.getElementById("Modalordertable");
+      var j = document.getElementById("Modalorderitemtable");
+      i.style.display = "none";
+      j.style.display = "block ";
     }
     this.setState({
       OrdItmBtnStatus: e.target.checked
@@ -952,7 +952,7 @@ class TicketSystemOrder extends Component {
                     <div style={{ padding: "20px" }}>
                       <ReactTable
                         data={this.state.OrderSubItem.filter(
-                          x => x.orderMasterID == row.original.orderMasterID
+                          x => x.orderMasterID === row.original.orderMasterID
                         )}
                         columns={[
                           {
