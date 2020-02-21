@@ -571,7 +571,7 @@ class KnowledgeBase extends Component {
             NotificationManager.success("Record Updated successfully.");
           } else {
             NotificationManager.error(
-              "Record not Selected OR Sequence is Wrong"
+              "Record Not Updated."
             );
           }
           self.closeEditAproveModal();

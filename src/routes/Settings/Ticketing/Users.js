@@ -68,7 +68,7 @@ class Users extends Component {
       selectedReporteeDesign: 0,
       selectedReportTO: 0,
       selectedAgent: 0,
-      selectedStatus: true,
+      selectedStatus: "true",
       multibrandIDs: "",
       multicategoryIDs: "",
       multisubcategoryIDs: "",
@@ -137,6 +137,7 @@ class Users extends Component {
     this.handleGetUserListByID = this.handleGetUserListByID.bind(this);
     this.togglePopover = this.togglePopover.bind(this);
     this.closeEditModal = this.closeEditModal.bind(this);
+    this.handleSendMail=this.handleSendMail.bind(this);
   }
   componentDidMount() {
     debugger;
@@ -1059,6 +1060,7 @@ if(datar==="add"){
       if (Msg === "Success") {
 
         NotificationManager.success("User Created successfully.");
+        self.handleSendMail(self.state.getID);
 
       }
       else {
@@ -1104,6 +1106,8 @@ if(datar==="add"){
     });
   }
   }
+
+  
   handleDeleteUser(id) {
     debugger;
     let self = this;
@@ -1127,7 +1131,28 @@ if(datar==="add"){
       }
     });
   }
-
+  handleSendMail(id) {
+    debugger;
+    let self = this;
+    
+   
+    
+    axios({
+      method: "post",
+      url: config.apiUrl + "/User/SendMailforchangepassword",
+      headers: authHeader(),
+      params: {
+        userID: id
+      }
+    }).then(function (res) {
+      debugger;
+      let reportto = res.data.responseData;
+       if(reportto==="Mail sent successfully"){
+        NotificationManager.success("Please Check Email.");
+       }
+      
+    });
+  }
   handleUpdateUser() {
 
     debugger;

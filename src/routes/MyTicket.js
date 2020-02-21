@@ -964,7 +964,7 @@ class MyTicket extends Component {
       });
     } else {
       this.setState({
-        notesCommentCompulsion: "The Notes field is compulsary."
+        notesCommentCompulsion: "The Notes field is compulsory."
       });
     }
   }
