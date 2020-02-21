@@ -1319,9 +1319,6 @@ class MyTicket extends Component {
     var str = this.state.mailBodyData;
     var stringBody = str.replace(/<\/?p[^>]*>/g, "");
     if (isSend === 1) {
-      // let self = this;
-      // var str12 = this.state.mailBodyData;
-      // var finalString = str12.replace(/<\/?p[^>]*>/g, "");
       axios({
         method: "post",
         url: config.apiUrl + "/Ticketing/MessageComment",
@@ -1342,6 +1339,41 @@ class MyTicket extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetMessageDetails(self.state.ticket_Id);
+          self.setState({
+            mailFiled: {},
+            mailSubject: "",
+            mailBodyData: ""
+          });
+        } else {
+          NotificationManager.error(status, "", 1500);
+        }
+      });
+    } else if (isSend === 2) {
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Ticketing/MessageComment",
+        headers: authHeader(),
+        data: {
+          TicketID: this.state.ticket_Id,
+          ToEmail: this.state.ticketDetailsData.customerEmailId,
+          UserCC: this.state.mailFiled.userCC,
+          UserBCC: this.state.mailFiled.userBCC,
+          TikcketMailSubject: this.state.ticketDetailsData.ticketTitle,
+          TicketMailBody: stringBody,
+          informStore: this.state.InformStore,
+          IsSent: 1,
+          IsCustomerComment: 1
+        }
+      }).then(function(res) {
+        debugger;
+        let status = res.data.message;
+        if (status === "Success") {
+          self.handleGetMessageDetails(self.state.ticket_Id);
+          self.setState({
+            mailFiled: {},
+            mailSubject: "",
+            mailBodyData: ""
+          });
         } else {
           NotificationManager.error(status, "", 1500);
         }
@@ -1367,6 +1399,11 @@ class MyTicket extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetMessageDetails(self.state.ticket_Id);
+          self.setState({
+            mailFiled: {},
+            mailSubject: "",
+            mailBodyData: ""
+          });
         } else {
           NotificationManager.error(status, "", 1500);
         }
@@ -1394,6 +1431,9 @@ class MyTicket extends Component {
         NotificationManager.success("Comment Added successfully.", "", 2000);
         self.handleGetMessageDetails(self.state.ticket_Id);
         self.handleCommentCollapseOpen();
+        self.setState({
+          ticketcommentMSG: ""
+        });
       } else {
         NotificationManager.error(status, "", 2000);
       }
@@ -2477,18 +2517,20 @@ class MyTicket extends Component {
                                         Store Details
                                       </a>
                                     </li>
-                                    <li className="nav-item fo">
-                                      <a
-                                        className="nav-link"
-                                        data-toggle="tab"
-                                        href="#selectedstore-tab"
-                                        role="tab"
-                                        aria-controls="selectedstore-tab"
-                                        aria-selected="false"
-                                      >
-                                        Selected Store
-                                      </a>
-                                    </li>
+                                    {selectedStore.length > 0 ? (
+                                      <li className="nav-item fo">
+                                        <a
+                                          className="nav-link"
+                                          data-toggle="tab"
+                                          href="#selectedstore-tab"
+                                          role="tab"
+                                          aria-controls="selectedstore-tab"
+                                          aria-selected="false"
+                                        >
+                                          Selected Store
+                                        </a>
+                                      </li>
+                                    ) : null}
                                   </ul>
                                 </div>
                               </div>
@@ -3635,7 +3677,7 @@ class MyTicket extends Component {
                               <button
                                 className="send1"
                                 type="button"
-                                onClick={this.handleSendMailData.bind(this)}
+                                onClick={this.handleSendMailData.bind(this, 2)}
                               >
                                 Send
                               </button>
@@ -4433,9 +4475,9 @@ class MyTicket extends Component {
                                         )}
                                       />
                                       <span className="input-group-addon inputcc-one">
-                                      {this.state.userCcCount < 1
-                                      ? "+" + this.state.userCcCount
-                                      : "+" + this.state.userCcCount}
+                                        {this.state.userCcCount < 1
+                                          ? "+" + this.state.userCcCount
+                                          : "+" + this.state.userCcCount}
                                       </span>
                                     </div>
                                   </label>
@@ -4457,9 +4499,9 @@ class MyTicket extends Component {
                                         )}
                                       />
                                       <span className="input-group-addon inputcc-one">
-                                      {this.state.userBccCount < 1
-                                      ? "+" + this.state.userBccCount
-                                      : "+" + this.state.userBccCount}
+                                        {this.state.userBccCount < 1
+                                          ? "+" + this.state.userBccCount
+                                          : "+" + this.state.userBccCount}
                                       </span>
                                     </div>
                                   </label>

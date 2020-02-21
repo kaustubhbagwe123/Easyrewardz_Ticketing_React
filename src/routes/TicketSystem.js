@@ -1096,21 +1096,6 @@ class TicketSystem extends Component {
                             </div>
                           )}
 
-                        {this.state.TicketTitleData !== null &&
-                          this.state.TicketTitleData.length > 0 &&
-                          this.state.titleSuggValue.length > 0 && (
-                            <div className="custom-ticket-title-suggestions">
-                              {this.state.TicketTitleData !== null &&
-                                this.state.TicketTitleData.map((item, i) => (
-                                  <span
-                                    key={i}
-                                    onClick={this.handleAppendTicketSuggestion}
-                                  >
-                                    {item.ticketTitle}
-                                  </span>
-                                ))}
-                            </div>
-                          )}
                       </div>
                     </div>
                   </div>
