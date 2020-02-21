@@ -24,7 +24,7 @@ import {
 import { authHeader } from "../../../helpers/authHeader";
 import ActiveStatus from "../../activeStatus";
 import ZoneType from "./ZoneType";
-import { CSVLink, CSVDownload } from "react-csv";
+import { CSVLink } from "react-csv";
 
 class StoreMaster extends Component {
   constructor(props) {

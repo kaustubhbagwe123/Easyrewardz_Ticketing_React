@@ -750,7 +750,7 @@ class TicketSystemOrder extends Component {
                       },
                       {
                         Header: <span>Price Paid</span>,
-                        accessor: "orderPricePaid"
+                        accessor: "pricePaid"
                       },
                       {
                         Header: <span>Store Code</span>,
@@ -888,7 +888,7 @@ class TicketSystemOrder extends Component {
                       },
                       {
                         Header: <span>Price Paid</span>,
-                        accessor: "orderPricePaid"
+                        accessor: "pricePaid"
                       },
                       {
                         Header: <span>Store Code</span>,
@@ -997,7 +997,7 @@ class TicketSystemOrder extends Component {
                           },
                           {
                             Header: <span>Price Paid</span>,
-                            accessor: "orderPricePaid"
+                            accessor: "pricePaid"
                           },
                           {
                             Header: <span>Discount</span>,
@@ -1510,7 +1510,7 @@ class TicketSystemOrder extends Component {
                     },
                     {
                       Header: <span>Price Paid</span>,
-                      accessor: "orderPricePaid"
+                      accessor: "pricePaid"
                     },
                     {
                       Header: <span>Store Code</span>,
@@ -1601,7 +1601,7 @@ class TicketSystemOrder extends Component {
                     },
                     {
                       Header: <span>Price Paid</span>,
-                      accessor: "orderPricePaid"
+                      accessor: "pricePaid"
                     },
                     {
                       Header: <span>Store Code</span>,
@@ -1667,7 +1667,7 @@ class TicketSystemOrder extends Component {
                             },
                             {
                               Header: <span>Price Paid</span>,
-                              accessor: "orderPricePaid"
+                              accessor: "pricePaid"
                             },
                             {
                               Header: <span>Discount</span>,

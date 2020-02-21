@@ -118,8 +118,8 @@ class Dashboard extends Component {
       TicketActionTypeData: TicketActionType(),
       selectedWithClaimAll: "no",
       selectedWithTaskAll: "no",
-      selectedVisitStoreAll: "yes",
-      selectedWantToVisitStoreAll: "yes",
+      selectedVisitStoreAll: "all",
+      selectedWantToVisitStoreAll: "all",
       ClaimStatusData: ClaimStatus(),
       TaskStatusData: TaskStatus(),
       DepartmentData: [],
@@ -2399,11 +2399,11 @@ class Dashboard extends Component {
           selectedAssignedToAll: "",
           selectedSubCategoryAll: 0,
           selectedTicketStatusAll: 0,
-          selectedVisitStoreAll: "yes",
+          selectedVisitStoreAll: "all",
           selectedPurchaseStoreCodeAddressAll: "",
           selectedIssueTypeAll: 0,
           selectedSlaStatus: 0,
-          selectedWantToVisitStoreAll: "yes",
+          selectedWantToVisitStoreAll: "all",
           selectedVisitStoreCodeAddressAll: "",
           selectedWithClaimAll: "no",
           selectedClaimStatus: 0,
@@ -4335,6 +4335,9 @@ class Dashboard extends Component {
                                     value={this.state.selectedVisitStoreAll}
                                     onChange={this.handleVisitStoreAll}
                                   >
+                                    <option value="all">
+                                            Did Visit Store : All
+                                          </option>
                                     <option value="yes">
                                       Did Visit Store : Yes
                                     </option>
@@ -4420,6 +4423,9 @@ class Dashboard extends Component {
                                     }
                                     onChange={this.handleWantToVisitStoreAll}
                                   >
+                                    <option value="all">
+                                            Want to Visit Store : All
+                                          </option>
                                     <option value="yes">
                                       Want to Visit Store : Yes
                                     </option>
