@@ -161,7 +161,9 @@ class MyTicket extends Component {
       agentId: 0,
       AttachementrData: [],
       ticketcommentMSG: "",
-      CustStoreStatusDrop: "0"
+      CustStoreStatusDrop: "0",
+      OrderSubItem: [],
+      mailSubject: ""
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -519,7 +521,20 @@ class MyTicket extends Component {
       }
     });
   }
+  handleRequireSize(e, rowData) {
+    debugger;
 
+    var id = rowData.original.orderItemID;
+    var value = document.getElementById("requireSizeTxt" + id).value;
+    var index = this.state.OrderSubItem.findIndex(
+      x => x.orderItemID === rowData.original.orderItemID
+    );
+
+    var OrderSubItem = this.state.OrderSubItem;
+    OrderSubItem[index].requireSize = value;
+
+    this.setState({ OrderSubItem });
+  }
   handleOrderSearchData() {
     debugger;
     let self = this;
@@ -534,9 +549,22 @@ class MyTicket extends Component {
         }
       }).then(function(res) {
         debugger;
-        let data = res.data.responseData;
+        let Msg = res.data.message;
+        let mainData = res.data.responseData;
+
+        var OrderSubItem = [];
+
+        for (let i = 0; i < mainData.length; i++) {
+          if (mainData[i].orderItems.length > 0) {
+            for (let j = 0; j < mainData[i].orderItems.length; j++) {
+              OrderSubItem.push(mainData[i].orderItems[j]);
+            }
+          }
+        }
         self.setState({
-          orderDetailsData: data
+          message: Msg,
+          orderDetailsData: mainData,
+          OrderSubItem
         });
       });
     } else {
@@ -1303,40 +1331,65 @@ class MyTicket extends Component {
       });
     });
   }
-  handleSendMailData() {
+  handleSendMailData(isSend) {
     debugger;
-    // var subject = "Demo Mail";
     let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Ticketing/MessageComment",
-      headers: authHeader(),
-      data: {
-        TicketID: this.state.ticket_Id,
-        ToEmail: this.state.ticketDetailsData.customerEmailId,
-        UserCC: this.state.mailFiled.userCC,
-        UserBCC: this.state.mailFiled.userBCC,
-        TikcketMailSubject: this.state.ticketDetailsData.ticketTitle,
-        TicketMailBody: this.state.mailBodyData,
-        informStore: this.state.InformStore,
-        IsSent: 0,
-        IsCustomerComment: 1
-      }
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      if (status === "Success") {
-        self.handleGetMessageDetails(self.state.ticket_Id);
-      } else {
-        NotificationManager.error(status, "", 2000);
-      }
-
-      // if (status === true) {
-      //   NotificationManager.success(res.data.responseData, "", 2000);
-      // } else {
-      //   NotificationManager.error(res.data.responseData, "", 2000);
-      // }
-    });
+    var str = this.state.mailBodyData;
+    var stringBody = str.replace(/<\/?p[^>]*>/g, "");
+    if (isSend === 1) {
+      // let self = this;
+      // var str12 = this.state.mailBodyData;
+      // var finalString = str12.replace(/<\/?p[^>]*>/g, "");
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Ticketing/MessageComment",
+        headers: authHeader(),
+        data: {
+          TicketID: this.state.ticket_Id,
+          ToEmail: this.state.ticketDetailsData.customerEmailId,
+          UserCC: this.state.mailFiled.userCC,
+          UserBCC: this.state.mailFiled.userBCC,
+          TikcketMailSubject: this.state.mailSubject,
+          TicketMailBody: stringBody,
+          informStore: this.state.InformStore,
+          IsSent: isSend,
+          IsCustomerComment: 0
+        }
+      }).then(function(res) {
+        debugger;
+        let status = res.data.message;
+        if (status === "Success") {
+          self.handleGetMessageDetails(self.state.ticket_Id);
+        } else {
+          NotificationManager.error(status, "", 1500);
+        }
+      });
+    } else {
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Ticketing/MessageComment",
+        headers: authHeader(),
+        data: {
+          TicketID: this.state.ticket_Id,
+          ToEmail: this.state.ticketDetailsData.customerEmailId,
+          UserCC: this.state.mailFiled.userCC,
+          UserBCC: this.state.mailFiled.userBCC,
+          TikcketMailSubject: this.state.ticketDetailsData.ticketTitle,
+          TicketMailBody: stringBody,
+          informStore: this.state.InformStore,
+          IsSent: 0,
+          IsCustomerComment: 1
+        }
+      }).then(function(res) {
+        debugger;
+        let status = res.data.message;
+        if (status === "Success") {
+          self.handleGetMessageDetails(self.state.ticket_Id);
+        } else {
+          NotificationManager.error(status, "", 1500);
+        }
+      });
+    }
   }
 
   handleSendMessagaData() {
@@ -1356,7 +1409,9 @@ class MyTicket extends Component {
       debugger;
       let status = res.data.message;
       if (status === "Success") {
+        NotificationManager.success("Comment Added successfully.", "", 2000);
         self.handleGetMessageDetails(self.state.ticket_Id);
+        self.handleCommentCollapseOpen();
       } else {
         NotificationManager.error(status, "", 2000);
       }
@@ -2634,7 +2689,7 @@ class MyTicket extends Component {
                                       },
                                       {
                                         Header: <span>Visit Date</span>,
-                                        accessor: "visitDate",
+                                        accessor: "visitDate"
                                         // Cell: row => {
                                         //   return (
                                         //     <div className="col-sm-12 p-0">
@@ -2924,68 +2979,82 @@ class MyTicket extends Component {
                                     minRows={1}
                                     defaultPageSize={5}
                                     showPagination={false}
-                                    // SubComponent={row => {
-                                    //   return (
-                                    //     <div style={{ padding: "20px" }}>
-                                    //       <ReactTable
-                                    //         data={row.original.orderItems}
-                                    //         columns={[
-                                    //           {
-                                    //             Header: <span>Article Number</span>,
-                                    //             accessor: "invoiceNo",
-                                    //             Cell: row => {
-                                    //               return (
-                                    //                 <div
-                                    //                   className="filter-checkbox"
-                                    //                   style={{ marginLeft: "15px" }}
-                                    //                 >
-                                    //                   <input
-                                    //                     type="checkbox"
-                                    //                     style={{ display: "none" }}
-                                    //                     id={
-                                    //                       row.original.orderItemID
-                                    //                     }
-                                    //                     // name="dashboardcheckbox[]"
-                                    //                   />
-                                    //                   <label
-                                    //                     htmlFor={
-                                    //                       row.original.orderItemID
-                                    //                     }
-                                    //                   >
-                                    //                     {row.original.invoiceNo}
-                                    //                   </label>
-                                    //                 </div>
-                                    //               );
-                                    //             }
-                                    //           },
-                                    //           {
-                                    //             Header: <span>Article Size</span>,
-                                    //             accessor: "size"
-                                    //           },
-                                    //           {
-                                    //             Header: <span>Article MRP</span>,
-                                    //             accessor: "itemPrice"
-                                    //           },
-                                    //           {
-                                    //             Header: <span>Price Paid</span>,
-                                    //             accessor: "pricePaid"
-                                    //           },
-                                    //           {
-                                    //             Header: <span>Discount</span>,
-                                    //             accessor: "discount"
-                                    //           },
-                                    //           {
-                                    //             Header: <span>Required Size</span>,
-                                    //             accessor: "requireSize"
-                                    //           }
-                                    //         ]}
-                                    //         defaultPageSize={2}
-                                    //         minRows={1}
-                                    //         showPagination={false}
-                                    //       />
-                                    //     </div>
-                                    //   );
-                                    // }}
+                                    SubComponent={row => {
+                                      return (
+                                        <div style={{ padding: "20px" }}>
+                                          <ReactTable
+                                            data={row.original.orderItems}
+                                            columns={[
+                                              {
+                                                Header: (
+                                                  <span>Article Number</span>
+                                                ),
+                                                accessor: "invoiceNo",
+                                                Cell: row => {
+                                                  return (
+                                                    <div
+                                                      className="filter-checkbox"
+                                                      style={{
+                                                        marginLeft: "15px"
+                                                      }}
+                                                    >
+                                                      <input
+                                                        type="checkbox"
+                                                        style={{
+                                                          display: "none"
+                                                        }}
+                                                        id={
+                                                          row.original
+                                                            .orderItemID
+                                                        }
+                                                        // name="dashboardcheckbox[]"
+                                                      />
+                                                      <label
+                                                        htmlFor={
+                                                          row.original
+                                                            .orderItemID
+                                                        }
+                                                      >
+                                                        {row.original.invoiceNo}
+                                                      </label>
+                                                    </div>
+                                                  );
+                                                }
+                                              },
+                                              {
+                                                Header: (
+                                                  <span>Article Size</span>
+                                                ),
+                                                accessor: "size"
+                                              },
+                                              {
+                                                Header: (
+                                                  <span>Article MRP</span>
+                                                ),
+                                                accessor: "itemPrice"
+                                              },
+                                              {
+                                                Header: <span>Price Paid</span>,
+                                                accessor: "pricePaid"
+                                              },
+                                              {
+                                                Header: <span>Discount</span>,
+                                                accessor: "discount"
+                                              },
+                                              {
+                                                Header: (
+                                                  <span>Required Size</span>
+                                                ),
+                                                accessor: "requireSize"
+                                              }
+                                            ]}
+                                            defaultPageSize={2}
+                                            minRows={1}
+                                            showPagination={false}
+                                          />
+                                        </div>
+                                      );
+                                    }}
                                   />
                                 </div>
                               </div>
@@ -3030,9 +3099,7 @@ class MyTicket extends Component {
                                               htmlFor={
                                                 "i" + row.original.orderMasterID
                                               }
-                                            >
-                                              {row.original.invoiceNumber}
-                                            </label>
+                                            ></label>
                                           </div>
                                         )
                                       },
@@ -3073,6 +3140,122 @@ class MyTicket extends Component {
                                     minRows={1}
                                     defaultPageSize={5}
                                     showPagination={false}
+                                    SubComponent={row => {
+                                      return (
+                                        <div style={{ padding: "20px" }}>
+                                          <ReactTable
+                                            data={this.state.OrderSubItem.filter(
+                                              x =>
+                                                x.orderMasterID ===
+                                                row.original.orderMasterID
+                                            )}
+                                            columns={[
+                                              {
+                                                Header: (
+                                                  <span>Article Number</span>
+                                                ),
+                                                accessor: "orderItemID",
+                                                Cell: row => (
+                                                  <div
+                                                    className="filter-checkbox"
+                                                    style={{
+                                                      marginLeft: "15px"
+                                                    }}
+                                                  >
+                                                    <input
+                                                      type="checkbox"
+                                                      id={
+                                                        "order" +
+                                                        row.original.orderItemID
+                                                      }
+                                                      style={{
+                                                        display: "none"
+                                                      }}
+                                                      name="ticket-order"
+                                                      checked={
+                                                        this.state.CheckOrderID[
+                                                          row.original
+                                                            .orderItemID
+                                                        ] === true
+                                                      }
+                                                      onChange={this.handleCheckOrderID.bind(
+                                                        this,
+                                                        row.original
+                                                          .orderItemID,
+                                                        row.original
+                                                      )}
+                                                    />
+                                                    <label
+                                                      htmlFor={
+                                                        "order" +
+                                                        row.original.orderItemID
+                                                      }
+                                                    >
+                                                      {row.original.orderItemID}
+                                                    </label>
+                                                  </div>
+                                                )
+                                              },
+                                              {
+                                                Header: (
+                                                  <span>Article Size</span>
+                                                ),
+                                                accessor: "size"
+                                              },
+                                              {
+                                                Header: (
+                                                  <span>Article MRP</span>
+                                                ),
+                                                accessor: "itemPrice"
+                                              },
+                                              {
+                                                Header: <span>Price Paid</span>,
+                                                accessor: "pricePaid"
+                                              },
+                                              {
+                                                Header: <span>Discount</span>,
+                                                accessor: "discount",
+                                                sortable: true
+                                              },
+                                              {
+                                                Header: (
+                                                  <span>Required Size</span>
+                                                ),
+                                                accessor: "requireSize",
+                                                Cell: row => {
+                                                  debugger;
+                                                  return (
+                                                    <div>
+                                                      <input
+                                                        type="text"
+                                                        id={
+                                                          "requireSizeTxt" +
+                                                          row.original
+                                                            .orderItemID
+                                                        }
+                                                        value={
+                                                          row.original
+                                                            .requireSize || ""
+                                                        }
+                                                        name="requiredSize"
+                                                        onChange={() => {
+                                                          this.handleRequireSize(
+                                                            this,
+                                                            row
+                                                          );
+                                                        }}
+                                                      />
+                                                    </div>
+                                                  );
+                                                }
+                                              }
+                                            ]}
+                                            defaultPageSize={2}
+                                            showPagination={false}
+                                          />
+                                        </div>
+                                      );
+                                    }}
                                   />
                                 </div>
                               </div>
@@ -3367,10 +3550,7 @@ class MyTicket extends Component {
                             </li>
                             <li>
                               <label className="">
-                                <div
-                                  className="input-group"
-                                  // style={{ display: "block" }}
-                                >
+                                <div className="input-group">
                                   <span className="input-group-addon inputcc">
                                     CC:
                                   </span>
@@ -4163,7 +4343,13 @@ class MyTicket extends Component {
                                 >
                                   Subject: &nbsp;
                                 </span>
-                                <input type="text" className="CCdi" />
+                                <input
+                                  type="text"
+                                  className="CCdi"
+                                  name="mailSubject"
+                                  value={this.state.mailSubject}
+                                  onChange={this.handleNoteOnChange}
+                                />
                               </h3>
                               <div
                                 className="mob-float"
@@ -4188,7 +4374,9 @@ class MyTicket extends Component {
                           <CardBody>
                             <div className="col-md-12">
                               <CKEditor
-                                data={this.state.messageDetails.ticketMailBody}
+                                // data={this.state.messageDetails.ticketMailBody}
+                                data={this.state.mailBodyData}
+                                onChange={this.onAddCKEditorChange}
                                 config={{
                                   toolbar: [
                                     {
@@ -4227,14 +4415,21 @@ class MyTicket extends Component {
                           <div className="row colladrowa">
                             <div className="col-md-12 colladrow">
                               <ul style={{ padding: "0 15px" }}>
-                                <li>
+                                {/* <li>
                                   <label className="">
                                     <div className="input-group">
                                       <span className="input-group-addon inputcc">
                                         To: &nbsp;
                                       </span>
-                                      <input type="text" className="CCdi" />
+                                       <input type="text" className="CCdi" value={this.state.ticketDetailsData.customerEmailId}/> 
+                                       
                                     </div>
+                                  </label>
+                                </li> */}
+                                <li>
+                                  <label>
+                                    To: &nbsp;
+                                    {ticketDetailsData.customerEmailId}
                                   </label>
                                 </li>
 
@@ -4244,9 +4439,21 @@ class MyTicket extends Component {
                                       <span className="input-group-addon inputcc">
                                         CC:
                                       </span>
-                                      <input type="text" className="CCdi" />
+                                      <input
+                                        type="text"
+                                        className="CCdi1"
+                                        name="userCC"
+                                        autoComplete="off"
+                                        value={this.state.mailFiled.userCC}
+                                        onChange={this.handleMailOnChange.bind(
+                                          this,
+                                          "userCC"
+                                        )}
+                                      />
                                       <span className="input-group-addon inputcc-one">
-                                        +1
+                                      {this.state.userCcCount < 1
+                                      ? "+" + this.state.userCcCount
+                                      : "+" + this.state.userCcCount}
                                       </span>
                                     </div>
                                   </label>
@@ -4257,9 +4464,20 @@ class MyTicket extends Component {
                                       <span className="input-group-addon inputcc">
                                         BCC:
                                       </span>
-                                      <input type="text" className="CCdi" />
+                                      <input
+                                        type="text"
+                                        className="CCdi"
+                                        name="userBCC"
+                                        value={this.state.mailFiled.userBCC}
+                                        onChange={this.handleMailOnChange.bind(
+                                          this,
+                                          "userBCC"
+                                        )}
+                                      />
                                       <span className="input-group-addon inputcc-one">
-                                        +1
+                                      {this.state.userBccCount < 1
+                                      ? "+" + this.state.userBccCount
+                                      : "+" + this.state.userBccCount}
                                       </span>
                                     </div>
                                   </label>
@@ -4269,12 +4487,17 @@ class MyTicket extends Component {
                                   <div className="filter-checkbox">
                                     <input
                                       type="checkbox"
-                                      id="fil-open1"
+                                      id="custRply"
                                       name="filter-type"
                                       style={{ display: "none" }}
+                                      onChange={() =>
+                                        this.showInformStoreFuncation()
+                                      }
+
+                                      // disabled={this.state.selectedStoreIDs.length === 0}
                                     />
                                     <label
-                                      htmlFor="fil-open1"
+                                      htmlFor="custRply"
                                       style={{ paddingLeft: "25px" }}
                                     >
                                       <span>Inform Store</span>
@@ -4307,7 +4530,16 @@ class MyTicket extends Component {
                                   </label>
                                 </li>
                                 <li style={{ float: "right" }}>
-                                  <button className="send">Send</button>
+                                  <button
+                                    className="send"
+                                    type="button"
+                                    onClick={this.handleSendMailData.bind(
+                                      this,
+                                      1
+                                    )}
+                                  >
+                                    Send
+                                  </button>
                                 </li>
                               </ul>
                             </div>
