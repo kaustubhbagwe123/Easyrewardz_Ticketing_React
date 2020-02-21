@@ -1,4 +1,5 @@
 export function encryption(plainText, type = "enc") {
+ 
   var CryptoJS = require("crypto-js");
   var key = CryptoJS.enc.Utf8.parse('sblw-3hn8-sqoy19');
     var iv = CryptoJS.enc.Utf8.parse('sblw-3hn8-sqoy19');
@@ -21,6 +22,7 @@ export function encryption(plainText, type = "enc") {
         mode: CryptoJS.mode.CBC,
         padding: CryptoJS.pad.Pkcs7
     });
+   
     return Decrpttext;
   }
 }
