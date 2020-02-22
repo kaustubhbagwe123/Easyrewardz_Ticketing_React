@@ -841,7 +841,7 @@ class Header extends Component {
               </label>
             </div>
             <div className="viewticketspeadding">
-              <Link to="myTicketlist">
+              <Link to="myTicketlist" onClick={this.closeModal}>
                 <label className="md-4 view-tickets">VIEW TICKETS</label>
               </Link>
             </div>
@@ -875,7 +875,7 @@ class Header extends Component {
               </label>
             </div>
             <div className="viewticketspeadding">
-              <Link to="myTicketlist">
+              <Link to="myTicketlist" onClick={this.closeModal}>
                 <label className="md-4 view-tickets">VIEW TICKETS</label>
               </Link>
             </div>
