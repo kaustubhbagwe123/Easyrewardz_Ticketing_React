@@ -386,21 +386,21 @@ class Dashboard extends Component {
     debugger;
     // this.handleSearchTicketEscalation();   // this is called for bydefault content
     // this.handleTicketsOnLoad();
-    this.ViewSearchData();
-    // this.handleTicketsOnLoadLoader();
-    // this.handleGetDepartmentList();
-    // this.handleGetTicketSourceList();
-    // this.handleGetCategoryList();
-    // this.handleGetSlaStatusList();
-    // this.handleGetDesignationList();
-    // this.handleGetTicketPriorityList();
-    // this.handleGetChannelOfPurchaseList();
-    // this.handleGetBrandList();
-    // // this.handleGetDashboardGraphData();
-    // this.handleGetAgentList();
-    // this.handleGetSaveSearchList();
+   
+    this.handleTicketsOnLoadLoader();
+    this.handleGetDepartmentList();
+    this.handleGetTicketSourceList();
+    this.handleGetCategoryList();
+    this.handleGetSlaStatusList();
+    this.handleGetDesignationList();
+    this.handleGetTicketPriorityList();
+    this.handleGetChannelOfPurchaseList();
+    this.handleGetBrandList();
+    // this.handleGetDashboardGraphData();
+    this.handleGetAgentList();
+    this.handleGetSaveSearchList();
 
-    // this.handleAdvanceSearchOption();
+    this.handleAdvanceSearchOption();
   }
 
   handleTicketsOnLoadLoader() {
@@ -3021,7 +3021,6 @@ class Dashboard extends Component {
                   <p>SORT BY Z TO A</p>
                 </div>
               </div>
-              
               <div className="filter-type">
         
                 <p>FILTER BY TYPE</p>
