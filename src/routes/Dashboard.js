@@ -310,6 +310,7 @@ class Dashboard extends Component {
       sortcreatedOnData:[],
       sortAssigneeData:[],
       sortAllData:[]
+
     };
     this.applyCallback = this.applyCallback.bind(this);
     // this.handleApply = this.handleApply.bind(this);
@@ -386,7 +387,7 @@ class Dashboard extends Component {
     debugger;
     // this.handleSearchTicketEscalation();   // this is called for bydefault content
     // this.handleTicketsOnLoad();
-
+   this.ViewSearchData();
     this.handleTicketsOnLoadLoader();
     this.handleGetDepartmentList();
     this.handleGetTicketSourceList();
@@ -401,6 +402,7 @@ class Dashboard extends Component {
     this.handleGetSaveSearchList();
 
     this.handleAdvanceSearchOption();
+   
   }
 
   handleTicketsOnLoadLoader() {
@@ -614,7 +616,7 @@ class Dashboard extends Component {
       if (status === "Success") {
         self.setState({
           SearchTicketData: data,
-          sortTicketData:data,
+         
           resultCount: count,
           loading: false
         });
