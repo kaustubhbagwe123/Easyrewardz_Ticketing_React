@@ -1676,6 +1676,7 @@ class MyTicketList extends Component {
   };
 
   setChannelOfPurchaseValue = e => {
+    debugger;
     this.setState({ selectedChannelOfPurchase: e });
   };
   setTeamMember = e => {
@@ -2229,14 +2230,167 @@ class MyTicketList extends Component {
     }).then(function(res) {
       debugger;
       let status = res.data.message;
-      let data = res.data.responseData;
+      let data = res.data.responseData.ticketList;
+      let dataSearch = JSON.parse(res.data.responseData.searchParams);
       let count = 0;
-      if (res.data.responseData != null) {
-        count = res.data.responseData.length;
+      if (res.data.responseData.ticketList != null) {
+        count = res.data.responseData.ticketList.length;
       }
       if (status === "Success") {
         self.setState({ SearchTicketData: data, resultCount: count, loading: false });
         // self.onCloseModal();
+        if (dataSearch.searchDataByDate === null) {
+          self.setState(
+            {
+              ByDateCreatDate: "",
+              ByDateSelectDate: "",
+              selectedSlaDueByDate: 0,
+              selectedTicketStatusByDate: 0
+            }
+          );
+        } else {
+          self.setState(
+            {
+              ByDateCreatDate: dataSearch.searchDataByDate.Ticket_CreatedOn,
+              ByDateSelectDate: dataSearch.searchDataByDate.Ticket_ModifiedOn,
+              selectedSlaDueByDate: dataSearch.searchDataByDate.SLA_DueON,
+              selectedTicketStatusByDate: dataSearch.searchDataByDate.Ticket_StatusID
+            }
+          );
+        }
+
+        if (dataSearch.searchDataByCustomerType === null) {
+          self.setState(
+            {
+              MobileNoByCustType: "",
+              EmailIdByCustType: "",
+              TicketIdByCustType: "",
+              selectedTicketStatusByCustomer: 0
+            }
+          );
+        } else {
+          self.setState(
+            {
+              MobileNoByCustType: dataSearch.searchDataByCustomerType.CustomerMobileNo,
+              EmailIdByCustType: dataSearch.searchDataByCustomerType.CustomerEmailID,
+              TicketIdByCustType: dataSearch.searchDataByCustomerType.TicketID,
+              selectedTicketStatusByCustomer: dataSearch.searchDataByCustomerType.TicketStatusID
+            }
+          );
+        }
+
+        if (dataSearch.searchDataByTicketType === null) {
+          self.setState(
+            {
+              selectedPriority: 0,
+              selectedTicketStatusByTicket: 0,
+              selectedChannelOfPurchase: [],
+              selectedTicketActionType: []
+            }
+          );
+        } else {
+          self.setState(
+            {
+              selectedPriority: dataSearch.searchDataByTicketType.TicketPriorityID,
+              selectedTicketStatusByTicket: dataSearch.searchDataByTicketType.TicketStatusID,
+              selectedChannelOfPurchase: dataSearch.searchDataByTicketType.ChannelOfPurchaseIds,
+              selectedTicketActionType: dataSearch.searchDataByTicketType.ActionTypes
+            }
+          );
+        }
+
+        if (dataSearch.searchDataByCategoryType === null) {
+          self.setState(
+            {
+              selectedCategory: 0,
+              selectedSubCategory: 0,
+              selectedIssueType: 0,
+              selectedTicketStatusByCategory: 0
+            }
+          );
+        } else {
+          self.setState(
+            {
+              selectedCategory: dataSearch.searchDataByCategoryType.CategoryId,
+              selectedSubCategory: dataSearch.searchDataByCategoryType.SubCategoryId,
+              selectedIssueType: dataSearch.searchDataByCategoryType.IssueTypeId,
+              selectedTicketStatusByCategory: dataSearch.searchDataByCategoryType.TicketStatusID
+            }
+          );
+        }
+
+        if (dataSearch.SearchDataByAll === null) {
+          self.setState(
+            {
+              ByAllCreateDate: "",
+          selectedTicketSource: 0,
+          ClaimIdByAll: "",
+          EmailByAll: "",
+          ByAllLastDate: "",
+          TicketIdTitleByAll: "",
+          InvoiceSubOrderByAll: "",
+          MobileByAll: "",
+          selectedCategoryAll: 0,
+          selectedPriorityAll: 0,
+          ItemIdByAll: "",
+          selectedAssignedTo: 0,
+          selectedAssignedToAll: "",
+          selectedSubCategoryAll: 0,
+          selectedTicketStatusAll: 0,
+          selectedVisitStoreAll: "all",
+          selectedPurchaseStoreCodeAddressAll: "",
+          selectedIssueTypeAll: 0,
+          selectedSlaStatus: 0,
+          selectedWantToVisitStoreAll: "all",
+          selectedVisitStoreCodeAddressAll: "",
+          selectedWithClaimAll: "no",
+          selectedClaimStatus: 0,
+          selectedClaimCategory: 0,
+          selectedClaimSubCategory: 0,
+          selectedClaimIssueType: 0,
+          selectedWithTaskAll: "no",
+          selectedTaskStatus: 0,
+          selectedDepartment: 0,
+          selectedFunction: 0
+            }
+          );
+        } else {
+          self.setState(
+            {
+              ByAllCreateDate: dataSearch.SearchDataByAll.CreatedDate,
+          selectedTicketSource: dataSearch.SearchDataByAll.TicketSourceTypeID,
+          ClaimIdByAll: dataSearch.SearchDataByAll.ClaimId,
+          EmailByAll: dataSearch.SearchDataByAll.CustomerEmailID,
+          ByAllLastDate: dataSearch.SearchDataByAll.ModifiedDate,
+          TicketIdTitleByAll: dataSearch.SearchDataByAll.TicketIdORTitle,
+          InvoiceSubOrderByAll: dataSearch.SearchDataByAll.InvoiceNumberORSubOrderNo,
+          MobileByAll: dataSearch.SearchDataByAll.CustomerMobileNo,
+          selectedCategoryAll: dataSearch.SearchDataByAll.CategoryId,
+          selectedPriorityAll: dataSearch.SearchDataByAll.PriorityId,
+          ItemIdByAll: dataSearch.SearchDataByAll.OrderItemId,
+          selectedAssignedTo: dataSearch.SearchDataByAll.AssignTo,
+          // selectedAssignedToAll: "",
+          selectedSubCategoryAll: dataSearch.SearchDataByAll.SubCategoryId,
+          selectedTicketStatusAll: dataSearch.SearchDataByAll.TicketSatutsID,
+          selectedVisitStoreAll: dataSearch.SearchDataByAll.IsVisitStore,
+          selectedPurchaseStoreCodeAddressAll: dataSearch.SearchDataByAll.StoreCodeORAddress,
+          selectedIssueTypeAll: dataSearch.SearchDataByAll.IssueTypeId,
+          selectedSlaStatus: dataSearch.SearchDataByAll.SLAStatus,
+          selectedWantToVisitStoreAll: dataSearch.SearchDataByAll.IsWantVistingStore,
+          selectedVisitStoreCodeAddressAll: dataSearch.SearchDataByAll.WantToStoreCodeORAddress,
+          selectedWithClaimAll: dataSearch.SearchDataByAll.HaveClaim === 0 ? "no" : "yes",
+          selectedClaimStatus: dataSearch.SearchDataByAll.ClaimStatusId,
+          selectedClaimCategory: dataSearch.SearchDataByAll.ClaimCategoryId,
+          selectedClaimSubCategory: dataSearch.SearchDataByAll.ClaimSubCategoryId,
+          selectedClaimIssueType: dataSearch.SearchDataByAll.ClaimIssueTypeId,
+          selectedWithTaskAll: dataSearch.SearchDataByAll.HaveTask === 0 ? "no" : "yes",
+          selectedTaskStatus: dataSearch.SearchDataByAll.TaskStatusId,
+          selectedDepartment: dataSearch.SearchDataByAll.TaskDepartment_Id,
+          selectedFunction: dataSearch.SearchDataByAll.TaskFunction_Id
+            }
+          );
+        }
+
       } else {
         self.setState({ SearchTicketData: [], loading: false });
       }
