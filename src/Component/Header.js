@@ -14,6 +14,7 @@ import NotificationLogo from "./../assets/Images/Notification.png";
 import SettingLogo from "./../assets/Images/setting.png";
 import SettingLogoBlue from "./../assets/Images/setting-blue.png";
 import UserLogo from "./../assets/Images/user-img.jpg";
+import DefaultUser from "./../assets/Images/defaultUser.png";
 import StatusLogo from "./../assets/Images/status.png";
 import Hamb from "./../assets/Images/hamb.png";
 import CancelIcon from "./../assets/Images/cancel.png";
@@ -55,6 +56,7 @@ class Header extends Component {
       ChatDetailModel: false,
       NextButtonModal: false,
       WaitingCall: false,
+      userProfile: "",
       notifiCount1: 0,
       notifiCount2: 0,
       notifiCount3: 0,
@@ -185,14 +187,13 @@ class Header extends Component {
   handleLoggedInUserDetails = () => {
     //debugger;
     let self = this;
-    var data = "";
     axios({
       method: "post",
       url: config.apiUrl + "/DashBoard/LoggedInAccountDetails",
       headers: authHeader()
     }).then(function(res) {
-      //debugger;
-      data = res.data.responseData;
+      debugger;
+      var data = res.data.responseData;
       var status = res.data.message;
       if (status === "Success") {
         var strTag = data.agentName.split(" ");
@@ -200,9 +201,15 @@ class Header extends Component {
         if (strTag.length > 0) {
           nameTag += strTag[1].charAt(0).toUpperCase();
         }
-        let nume = (data.loggedInDurationInHours * 60) + data.loggedInDurationInMinutes;
-        let deno = (data.shiftDurationInHour * 60) + data.shiftDurationInMinutes;
+        let nume =
+          data.loggedInDurationInHours * 60 + data.loggedInDurationInMinutes;
+        let deno = data.shiftDurationInHour * 60 + data.shiftDurationInMinutes;
         let percentLog = ((nume / deno) * 100).toFixed(2);
+        var profile = data.profilePicture;
+        var finalPath = profile.substring(
+          profile.lastIndexOf("\\") + 1,
+          profile.length
+        );
         self.setState({
           Email: data.agentEmailId,
           UserName: data.agentName,
@@ -213,6 +220,7 @@ class Header extends Component {
           AvgResponse: data.avgResponseTime,
           LogoutTime: data.logoutTime,
           NameTag: nameTag,
+          userProfile: finalPath,
           percentLog
         });
       }
@@ -884,7 +892,15 @@ class Header extends Component {
             <div className="logout-block">
               <div>
                 <div className="user-img">
-                  <img src={UserLogo} alt="User" />
+                  <img
+                    src={
+                      this.state.userProfile === "user-img.jpg"
+                        ? require("./../assets/Images/user-img.jpg")
+                        : require("./../assets/Images/defaultUser.png")
+                    }
+                    alt="User"
+                    style={{width:'61px'}}
+                  />
                 </div>
                 <div className="logout-flex">
                   <div>
@@ -950,8 +966,14 @@ class Header extends Component {
                     </p>
                   </div>
                 </div>
-                <ProgressBar className="logout-progress" now={this.state.percentLog} />
-                <p className="logout-label font-weight-bold prog-indi" style={{ width: this.state.percentLog + '%' }}>
+                <ProgressBar
+                  className="logout-progress"
+                  now={this.state.percentLog}
+                />
+                <p
+                  className="logout-label font-weight-bold prog-indi"
+                  style={{ width: this.state.percentLog + "%" }}
+                >
                   {this.state.LoggedInDuration}
                 </p>
               </div>

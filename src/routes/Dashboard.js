@@ -31,7 +31,7 @@ import MultiBarChart from "../Component/PieChart/MultiBarChart.js";
 import TicketToBillBarGraph from "../Component/PieChart/TicketToBillBarGraph";
 import TicketGenerationSourceBar from "../Component/PieChart/TicketGenerationSourceBar";
 import TicketToClaimMultiBar from "../Component/PieChart/TicketToClaimMultiBar";
-// import HeadPhone3 from "./../assets/Images/headphone3.png";
+import HeadPhone3 from "./../assets/Images/headphone3.png";
 import DatePicker from "react-datepicker";
 // import "react-datepicker/dist/react-datepicker.css";
 import OpenByPriorityPie from "../Component/PieChart/PieChart";
@@ -1400,7 +1400,7 @@ class Dashboard extends Component {
   }
   toggleSearch() {
     this.handleGetSaveSearchList();
-    this.setState(state => ({ collapseSearch: !state.collapseSearch }));
+    this.setState(state => ({ collapseSearch: !state.collapseSearch, ShowGridCheckBox : false }));
   }
   onOpenModal = () => {
     this.setState({ open: true });
@@ -2361,7 +2361,7 @@ class Dashboard extends Component {
         },
         () => {
           // this.handleSearchTicketEscalation();
-          this.ViewSearchData();
+          this.ViewSearchData(1);
         }
       );
     } else if (this.state.byCustomerTypeFlag === 2) {
@@ -2375,7 +2375,7 @@ class Dashboard extends Component {
         },
         () => {
           // this.handleSearchTicketEscalation();
-          this.ViewSearchData();
+          this.ViewSearchData(1);
         }
       );
     } else if (this.state.byTicketTypeFlag === 3) {
@@ -2389,7 +2389,7 @@ class Dashboard extends Component {
         },
         () => {
           // this.handleSearchTicketEscalation();
-          this.ViewSearchData();
+          this.ViewSearchData(1);
         }
       );
     } else if (this.state.byCategoryFlag === 4) {
@@ -2403,7 +2403,7 @@ class Dashboard extends Component {
         },
         () => {
           // this.handleSearchTicketEscalation();
-          this.ViewSearchData();
+          this.ViewSearchData(1);
           this.handleGetSubCategoryList();
         }
       );
@@ -2444,14 +2444,15 @@ class Dashboard extends Component {
         },
         () => {
           // this.handleSearchTicketEscalation();
-          this.ViewSearchData();
+          this.ViewSearchData(1);
           this.handleGetSubCategoryList();
           this.handleGetClaimSubCategoryList();
         }
       );
     }
   }
-  ViewSearchData() {
+
+  ViewSearchData(Shwcheck) {
     debugger;
     let self = this;
     this.setState({ loading: true });
@@ -2720,12 +2721,22 @@ class Dashboard extends Component {
 
 
       if (status === "Success") {
-        self.setState({
-          SearchTicketData: data,
-          resultCount: count,
-          ShowGridCheckBox: true,
-          loading: false
-        });
+        if(Shwcheck === 1){
+          self.setState({
+            SearchTicketData: data,
+            resultCount: count,
+            ShowGridCheckBox: false,
+            loading: false
+          });
+        }else{
+          self.setState({
+            SearchTicketData: data,
+            resultCount: count,
+            ShowGridCheckBox: true,
+            loading: false
+          });
+        }
+        
         for (let i = 0; i < CSVData.length; i++) {
           delete CSVData[i].totalpages;
           delete CSVData[i].responseTimeRemainingBy;
@@ -5524,7 +5535,6 @@ class Dashboard extends Component {
                         {
                           Header: (
                             <span>
-
                               <div className="filter-type pink1 pinkmyticket">
                                 <div className="filter-checkbox pink2 pinkmargin">
                                   {this.state.ShowGridCheckBox === true ? (
@@ -5570,7 +5580,7 @@ class Dashboard extends Component {
                                       {row.original.ticketSourceType ===
                                         "Calls" ? (
                                           <img
-                                            src={CallImg}
+                                            src={HeadPhone3}
                                             alt="HeadPhone"
                                             className="headPhone3"
                                             title="Calls"

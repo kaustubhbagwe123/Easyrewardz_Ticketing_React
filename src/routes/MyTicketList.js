@@ -1676,6 +1676,7 @@ class MyTicketList extends Component {
   };
 
   setChannelOfPurchaseValue = e => {
+    debugger;
     this.setState({ selectedChannelOfPurchase: e });
   };
   setTeamMember = e => {
@@ -2216,6 +2217,8 @@ class MyTicketList extends Component {
   handleApplySearch(paramsID) {
     debugger;
     let self = this;
+    this.setState({ loading: true });
+    self.onCloseModal();
 
     axios({
       method: "post",
@@ -2227,17 +2230,238 @@ class MyTicketList extends Component {
     }).then(function(res) {
       debugger;
       let status = res.data.message;
-      let data = res.data.responseData;
+      let data = res.data.responseData.ticketList;
+      let dataSearch = JSON.parse(res.data.responseData.searchParams);
       let count = 0;
-      if (res.data.responseData != null) {
-        count = res.data.responseData.length;
+      if (res.data.responseData.ticketList != null) {
+        count = res.data.responseData.ticketList.length;
       }
       if (status === "Success") {
-        self.setState({ SearchTicketData: data, resultCount: count });
-        self.onCloseModal();
+        self.setState({ SearchTicketData: data, resultCount: count, loading: false });
+        // self.onCloseModal();
+
+        let lowerTabs = document.querySelectorAll('.lower-tabs .nav-link');
+        let activeTabId = dataSearch.ActiveTabId;
+        for (let i = 0; i < lowerTabs.length; i++) {
+          lowerTabs[i].classList.remove('active');
+          if (activeTabId - 1 == i) {
+            lowerTabs[i].classList.add('active');
+          }
+        }
+
+        let lowerTabsPane = document.querySelectorAll('.lower-tabs-pane .tab-pane');
+        for (let i = 0; i < lowerTabsPane.length; i++) {
+          lowerTabsPane[i].classList.remove('active');
+          lowerTabsPane[i].classList.remove('show');
+          if (activeTabId - 1 == i) {
+            lowerTabsPane[i].classList.add('active');
+            lowerTabsPane[i].classList.add('show');
+          }
+        }
+
+        let upperTabs = document.querySelectorAll('.upper-tabs .nav-link');
+        let headerStatusId = dataSearch.HeaderStatusId;
+        for (let i = 0; i < upperTabs.length; i++) {
+          upperTabs[i].classList.remove('active');
+        }
+        if (headerStatusId == 1001) {
+          document.getElementsByName('Escalation')[0].classList.add('active');
+        } else if (headerStatusId == 101) {
+          document.getElementsByName('New')[0].classList.add('active');
+        } else if (headerStatusId == 102) {
+          document.getElementsByName('Open')[0].classList.add('active');
+        } else if (headerStatusId == 103) {
+          document.getElementsByName('Resolved')[0].classList.add('active');
+        } else if (headerStatusId == 104) {
+          document.getElementsByName('Closed')[0].classList.add('active');
+        } else if (headerStatusId == 105) {
+          document.getElementsByName('ReOpen')[0].classList.add('active');
+        } else if (headerStatusId == 1004) {
+          document.getElementsByName('Reassigned')[0].classList.add('active');
+        } else if (headerStatusId == 1002) {
+          document.getElementsByName('All')[0].classList.add('active');
+        } else if (headerStatusId == 1003) {
+          document.getElementsByName('FollowUp')[0].classList.add('active');
+        }
+
+        if (dataSearch.searchDataByDate === null) {
+          self.setState(
+            {
+              ByDateCreatDate: "",
+              ByDateSelectDate: "",
+              selectedSlaDueByDate: 0,
+              selectedTicketStatusByDate: 0
+            }
+          );
+        } else {
+          self.setState(
+            {
+              ByDateCreatDate: dataSearch.searchDataByDate.Ticket_CreatedOn,
+              ByDateSelectDate: dataSearch.searchDataByDate.Ticket_ModifiedOn,
+              selectedSlaDueByDate: dataSearch.searchDataByDate.SLA_DueON,
+              selectedTicketStatusByDate: dataSearch.searchDataByDate.Ticket_StatusID
+            }
+          );
+        }
+  
+        if (dataSearch.searchDataByCustomerType === null) {
+          self.setState(
+            {
+              MobileNoByCustType: "",
+              EmailIdByCustType: "",
+              TicketIdByCustType: "",
+              selectedTicketStatusByCustomer: 0
+            }
+          );
+        } else {
+          self.setState(
+            {
+              MobileNoByCustType: dataSearch.searchDataByCustomerType.CustomerMobileNo,
+              EmailIdByCustType: dataSearch.searchDataByCustomerType.CustomerEmailID,
+              TicketIdByCustType: dataSearch.searchDataByCustomerType.TicketID,
+              selectedTicketStatusByCustomer: dataSearch.searchDataByCustomerType.TicketStatusID
+            }
+          );
+        }
+  
+        if (dataSearch.searchDataByTicketType === null) {
+          self.setState(
+            {
+              selectedPriority: 0,
+              selectedTicketStatusByTicket: 0,
+              selectedChannelOfPurchase: [],
+              selectedTicketActionType: []
+            }
+          );
+        } else {
+          let purchaseArr = [];
+          let purchaseId = dataSearch.searchDataByTicketType.ChannelOfPurchaseIds.split(',');
+          for (let i = 0; i < purchaseId.length - 1; i++) {
+            const element = purchaseId[i];
+            for (let j = 0; j < self.state.ChannelOfPurchaseData.length; j++) {
+              if (element == self.state.ChannelOfPurchaseData[j].channelOfPurchaseID) {
+                purchaseArr.push(self.state.ChannelOfPurchaseData[j]);
+              }
+            }
+          }
+  
+          let actionArr = [];
+          let actionId = dataSearch.searchDataByTicketType.ActionTypes.split(',');
+          for (let i = 0; i < actionId.length - 1; i++) {
+            const element = actionId[i];
+            for (let j = 0; j < self.state.TicketActionTypeData.length; j++) {
+              if (element == self.state.TicketActionTypeData[j].ticketActionTypeID) {
+                actionArr.push(self.state.TicketActionTypeData[j]);
+              }
+            }
+          }
+          
+          self.setState(
+            {
+              selectedPriority: dataSearch.searchDataByTicketType.TicketPriorityID,
+              selectedTicketStatusByTicket: dataSearch.searchDataByTicketType.TicketStatusID,
+              selectedChannelOfPurchase: purchaseArr,
+              selectedTicketActionType: actionArr
+            }
+          );
+        }
+  
+        if (dataSearch.searchDataByCategoryType === null) {
+          self.setState(
+            {
+              selectedCategory: 0,
+              selectedSubCategory: 0,
+              selectedIssueType: 0,
+              selectedTicketStatusByCategory: 0
+            }
+          );
+        } else {
+          self.setState(
+            {
+              selectedCategory: dataSearch.searchDataByCategoryType.CategoryId,
+              selectedSubCategory: dataSearch.searchDataByCategoryType.SubCategoryId,
+              selectedIssueType: dataSearch.searchDataByCategoryType.IssueTypeId,
+              selectedTicketStatusByCategory: dataSearch.searchDataByCategoryType.TicketStatusID
+            }
+          );
+        }
+  
+        if (dataSearch.SearchDataByAll === null) {
+          self.setState(
+            {
+              ByAllCreateDate: "",
+          selectedTicketSource: 0,
+          ClaimIdByAll: "",
+          EmailByAll: "",
+          ByAllLastDate: "",
+          TicketIdTitleByAll: "",
+          InvoiceSubOrderByAll: "",
+          MobileByAll: "",
+          selectedCategoryAll: 0,
+          selectedPriorityAll: 0,
+          ItemIdByAll: "",
+          selectedAssignedTo: 0,
+          selectedAssignedToAll: "",
+          selectedSubCategoryAll: 0,
+          selectedTicketStatusAll: 0,
+          selectedVisitStoreAll: "all",
+          selectedPurchaseStoreCodeAddressAll: "",
+          selectedIssueTypeAll: 0,
+          selectedSlaStatus: 0,
+          selectedWantToVisitStoreAll: "all",
+          selectedVisitStoreCodeAddressAll: "",
+          selectedWithClaimAll: "no",
+          selectedClaimStatus: 0,
+          selectedClaimCategory: 0,
+          selectedClaimSubCategory: 0,
+          selectedClaimIssueType: 0,
+          selectedWithTaskAll: "no",
+          selectedTaskStatus: 0,
+          selectedDepartment: 0,
+          selectedFunction: 0
+            }
+          );
+        } else {
+          self.setState(
+            {
+              ByAllCreateDate: dataSearch.SearchDataByAll.CreatedDate,
+          selectedTicketSource: dataSearch.SearchDataByAll.TicketSourceTypeID,
+          ClaimIdByAll: dataSearch.SearchDataByAll.ClaimId,
+          EmailByAll: dataSearch.SearchDataByAll.CustomerEmailID,
+          ByAllLastDate: dataSearch.SearchDataByAll.ModifiedDate,
+          TicketIdTitleByAll: dataSearch.SearchDataByAll.TicketIdORTitle,
+          InvoiceSubOrderByAll: dataSearch.SearchDataByAll.InvoiceNumberORSubOrderNo,
+          MobileByAll: dataSearch.SearchDataByAll.CustomerMobileNo,
+          selectedCategoryAll: dataSearch.SearchDataByAll.CategoryId,
+          selectedPriorityAll: dataSearch.SearchDataByAll.PriorityId,
+          ItemIdByAll: dataSearch.SearchDataByAll.OrderItemId,
+          selectedAssignedTo: dataSearch.SearchDataByAll.AssignTo,
+          // selectedAssignedToAll: "",
+          selectedSubCategoryAll: dataSearch.SearchDataByAll.SubCategoryId,
+          selectedTicketStatusAll: dataSearch.SearchDataByAll.TicketSatutsID,
+          selectedVisitStoreAll: dataSearch.SearchDataByAll.IsVisitStore,
+          selectedPurchaseStoreCodeAddressAll: dataSearch.SearchDataByAll.StoreCodeORAddress,
+          selectedIssueTypeAll: dataSearch.SearchDataByAll.IssueTypeId,
+          selectedSlaStatus: dataSearch.SearchDataByAll.SLAStatus,
+          selectedWantToVisitStoreAll: dataSearch.SearchDataByAll.IsWantVistingStore,
+          selectedVisitStoreCodeAddressAll: dataSearch.SearchDataByAll.WantToStoreCodeORAddress,
+          selectedWithClaimAll: dataSearch.SearchDataByAll.HaveClaim === 0 ? "no" : "yes",
+          selectedClaimStatus: dataSearch.SearchDataByAll.ClaimStatusId,
+          selectedClaimCategory: dataSearch.SearchDataByAll.ClaimCategoryId,
+          selectedClaimSubCategory: dataSearch.SearchDataByAll.ClaimSubCategoryId,
+          selectedClaimIssueType: dataSearch.SearchDataByAll.ClaimIssueTypeId,
+          selectedWithTaskAll: dataSearch.SearchDataByAll.HaveTask === 0 ? "no" : "yes",
+          selectedTaskStatus: dataSearch.SearchDataByAll.TaskStatusId,
+          selectedDepartment: dataSearch.SearchDataByAll.TaskDepartment_Id,
+          selectedFunction: dataSearch.SearchDataByAll.TaskFunction_Id
+            }
+          );
+        }
+
       } else {
-        self.setState({ SearchTicketData: [] });
+        self.setState({ SearchTicketData: [], loading: false });
       }
+      
     });
   }
 
@@ -2368,7 +2592,7 @@ class MyTicketList extends Component {
         <div className="myticketlist-header" style={{ marginTop: "-21px" }}>
           <div className="setting-tabs esc esc1">
             <ul
-              className="nav nav-tabs es"
+              className="nav nav-tabs upper-tabs es"
               role="tablist"
               style={{ display: "inline" }}
             >
@@ -2624,7 +2848,7 @@ class MyTicketList extends Component {
                           <CardBody>
                             <div className="myticlist-expand-sect">
                               <div className="position-relative">
-                                <ul className="nav nav-tabs" role="tablist">
+                                <ul className="nav nav-tabs lower-tabs" role="tablist">
                                   <li className="nav-item">
                                     <a
                                       className="nav-link active"
@@ -2782,7 +3006,7 @@ class MyTicketList extends Component {
                                   </ul>
                                 </div>
                               </Modal>
-                              <div className="tab-content p-0">
+                              <div className="tab-content lower-tabs-pane p-0">
                                 <div
                                   className="tab-pane fade show active"
                                   id="date-tab"
@@ -4586,7 +4810,9 @@ class MyTicketList extends Component {
                       </Collapse>
                     </div>
                     {this.state.loading === true ? (
-                      <div className="loader-icon"></div>
+                      <div className="loader-icon-cntr">
+                        <div className="loader-icon"></div>
+                      </div>
                     ) : (
                       <div>
                         <div className="MyTicketListReact cus-head">
