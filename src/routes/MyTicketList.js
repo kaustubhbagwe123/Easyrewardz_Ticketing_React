@@ -2300,9 +2300,15 @@ class MyTicketList extends Component {
             selectedTicketStatusByDate: 0
           });
         } else {
+          let createdDate = dataSearch.searchDataByDate.Ticket_CreatedOn;
+          let createdDateArray = createdDate.split('-');
+          let createdDateFinal = new Date(createdDateArray[0],createdDateArray[1] - 1,createdDateArray[2]);
+          let modifiedDate = dataSearch.searchDataByDate.Ticket_ModifiedOn;
+          let modifiedDateArray = modifiedDate.split('-');
+          let modifiedDateFinal = new Date(modifiedDateArray[0],modifiedDateArray[1] - 1,modifiedDateArray[2]);
           self.setState({
-            ByDateCreatDate: dataSearch.searchDataByDate.Ticket_CreatedOn,
-            ByDateSelectDate: dataSearch.searchDataByDate.Ticket_ModifiedOn,
+            ByDateCreatDate: createdDateFinal,
+            ByDateSelectDate: modifiedDateFinal,
             selectedSlaDueByDate: dataSearch.searchDataByDate.SLA_DueON,
             selectedTicketStatusByDate:
               dataSearch.searchDataByDate.Ticket_StatusID
@@ -2428,12 +2434,18 @@ class MyTicketList extends Component {
             selectedFunction: 0
           });
         } else {
+          let createdDate = dataSearch.SearchDataByAll.CreatedDate;
+          let createdDateArray = createdDate.split('-');
+          let createdDateFinal = new Date(createdDateArray[0],createdDateArray[1] - 1,createdDateArray[2]);
+          let modifiedDate = dataSearch.SearchDataByAll.ModifiedDate;
+          let modifiedDateArray = modifiedDate.split('-');
+          let modifiedDateFinal = new Date(modifiedDateArray[0],modifiedDateArray[1] - 1,modifiedDateArray[2]);
           self.setState({
-            ByAllCreateDate: dataSearch.SearchDataByAll.CreatedDate,
+            ByAllCreateDate: createdDateFinal,
             selectedTicketSource: dataSearch.SearchDataByAll.TicketSourceTypeID,
             ClaimIdByAll: dataSearch.SearchDataByAll.ClaimId,
             EmailByAll: dataSearch.SearchDataByAll.CustomerEmailID,
-            ByAllLastDate: dataSearch.SearchDataByAll.ModifiedDate,
+            ByAllLastDate: modifiedDateFinal,
             TicketIdTitleByAll: dataSearch.SearchDataByAll.TicketIdORTitle,
             InvoiceSubOrderByAll:
               dataSearch.SearchDataByAll.InvoiceNumberORSubOrderNo,

@@ -3347,7 +3347,7 @@ class MyTicket extends Component {
                           />
                         </div>
 
-                        <a href={item.name} download>
+                        <a href={item.name} target="_blank" download>
                           <img
                             src={
                               item.Type === "docx"
