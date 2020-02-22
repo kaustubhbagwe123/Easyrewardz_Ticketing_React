@@ -3021,6 +3021,7 @@ class Dashboard extends Component {
                   <p>SORT BY Z TO A</p>
                 </div>
               </div>
+              
               <div className="filter-type">
         
                 <p>FILTER BY TYPE</p>
