@@ -92,6 +92,7 @@ class Dashboard extends Component {
       range: "",
       CSVDownload: [],
       SearchTicketData: [],
+      
       SearchListData: [],
       SlaDueData: SlaDue(),
       TicketStatusData: TicketStatus(),
@@ -301,7 +302,14 @@ class Dashboard extends Component {
       PurchaseStoreCodeAddress: "",
       scheduleRequired: "",
       agentSelection: "",
-      ShowGridCheckBox: false
+      ShowGridCheckBox: false,
+      sortColumnName:"",
+      sortTicketData:[],
+      sortCategoryData:[],
+      sortPriorityData:[],
+      sortcreatedOnData:[],
+      sortAssigneeData:[],
+      sortAllData:[]
     };
     this.applyCallback = this.applyCallback.bind(this);
     // this.handleApply = this.handleApply.bind(this);
@@ -378,6 +386,7 @@ class Dashboard extends Component {
     debugger;
     // this.handleSearchTicketEscalation();   // this is called for bydefault content
     // this.handleTicketsOnLoad();
+
     this.handleTicketsOnLoadLoader();
     this.handleGetDepartmentList();
     this.handleGetTicketSourceList();
@@ -605,6 +614,7 @@ class Dashboard extends Component {
       if (status === "Success") {
         self.setState({
           SearchTicketData: data,
+          sortTicketData:data,
           resultCount: count,
           loading: false
         });
@@ -619,6 +629,7 @@ class Dashboard extends Component {
       } else {
         self.setState({
           SearchTicketData: [],
+          
           resultCount: 0,
           loading: false
         });
@@ -732,29 +743,42 @@ class Dashboard extends Component {
     });
   };
 
-  setSortCheckStatus = e => {
+  setSortCheckStatus = (column,e) => {
     debugger;
-
+    
     var itemsArray = [];
     var data = e.currentTarget.value;
-    if (data === "open") {
-      itemsArray = this.state.SearchTicketData.filter(
-        a => a.ticketStatus === "Open"
-      );
-    } else if (data === "resolved") {
-      itemsArray = this.state.SearchTicketData.filter(
-        a => a.ticketStatus === "Resolved"
-      );
-    } else if (data === "solved") {
-      itemsArray = this.state.SearchTicketData.filter(
-        a => a.ticketStatus === "Solved"
-      );
-    } else if (data === "new") {
-      itemsArray = this.state.SearchTicketData.filter(
-        a => a.ticketStatus === "New"
-      );
-    }
-
+    if(column==="all"){
+      itemsArray=this.state.sortAllData;
+     
+    }else if(column==="status"){
+        this.state.SearchTicketData=this.state.sortAllData;
+        itemsArray = this.state.SearchTicketData.filter(
+          a => a.ticketStatus === data
+        );
+      }else if(column==="category"){
+        this.state.SearchTicketData=this.state.sortAllData;
+        itemsArray = this.state.SearchTicketData.filter(
+          a => a.category === data
+        );
+      }else if(column==="priority"){
+        this.state.SearchTicketData=this.state.sortAllData;
+        itemsArray = this.state.SearchTicketData.filter(
+          a => a.priority === data
+        );
+      }else if(column==="assignedTo"){
+        this.state.SearchTicketData=this.state.sortAllData;
+        itemsArray = this.state.SearchTicketData.filter(
+          a => a.assignedTo === data
+        );
+      }else if(column==="createdOn"){
+        this.state.SearchTicketData=this.state.sortAllData;
+        itemsArray = this.state.SearchTicketData.filter(
+          a => a.createdOn === data
+        );
+      }
+     
+    
     this.setState({
       SearchTicketData: itemsArray
     });
@@ -1592,8 +1616,10 @@ class Dashboard extends Component {
   closeModal = () => {
     this.setState({ modalIsOpen: false });
   };
-  StatusOpenModel() {
-    this.setState({ StatusModel: true });
+  StatusOpenModel(data) {
+    debugger;
+  
+    this.setState({ StatusModel: true,sortColumnName:data });
   }
   StatusCloseModel() {
     this.setState({ StatusModel: false });
@@ -2625,11 +2651,75 @@ class Dashboard extends Component {
       debugger;
       let status = res.data.message;
       let data = res.data.responseData;
+      
       let CSVData = data;
       let count = 0;
       if (res.data.responseData != null) {
         count = res.data.responseData.length;
       }
+   
+     self.state.sortAllData=data;
+      var unique=[];
+    var distinct = [];
+    for( let i = 0; i < data.length; i++ ){
+      if( !unique[data[i].ticketStatus]){
+        distinct.push(data[i].ticketStatus);
+        unique[data[i].ticketStatus]=1;
+      }
+    }
+    for (let i = 0; i < distinct.length; i++) {
+      self.state.sortTicketData.push({ ticketStatus: distinct[i] });
+    }
+
+    var unique=[];
+    var distinct = [];
+    for( let i = 0; i < data.length; i++ ){
+      if( !unique[data[i].category]){
+        distinct.push(data[i].category);
+        unique[data[i].category]=1;
+      }
+    }
+    for (let i = 0; i < distinct.length; i++) {
+      self.state.sortCategoryData.push({ category: distinct[i] });
+    }
+   
+    var unique=[];
+    var distinct = [];
+    for( let i = 0; i < data.length; i++ ){
+      if( !unique[data[i].priority]){
+        distinct.push(data[i].priority);
+        unique[data[i].priority]=1;
+      }
+    }
+    for (let i = 0; i < distinct.length; i++) {
+      self.state.sortPriorityData.push({ priority: distinct[i] });
+    }
+
+    var unique=[];
+    var distinct = [];
+    for( let i = 0; i < data.length; i++ ){
+      if( !unique[data[i].createdOn]){
+        distinct.push(data[i].createdOn);
+        unique[data[i].createdOn]=1;
+      }
+    }
+    for (let i = 0; i < distinct.length; i++) {
+      self.state.sortcreatedOnData.push({ createdOn: distinct[i] });
+    }
+     
+    var unique=[];
+    var distinct = [];
+    for( let i = 0; i < data.length; i++ ){
+      if( !unique[data[i].assignedTo]){
+        distinct.push(data[i].assignedTo);
+        unique[data[i].assignedTo]=1;
+      }
+    }
+    for (let i = 0; i < distinct.length; i++) {
+      self.state.sortAssigneeData.push({ assignedTo: distinct[i] });
+    }
+
+
       if (status === "Success") {
         if(Shwcheck === 1){
           self.setState({
@@ -2658,6 +2748,7 @@ class Dashboard extends Component {
       } else {
         self.setState({
           SearchTicketData: [],
+         
           resultCount: 0,
           loading: false
         });
@@ -2771,6 +2862,7 @@ class Dashboard extends Component {
       } else if (data !== null) {
         self.setState({
           SearchTicketData: data,
+          sortTicketData:data,
           loading: false,
           resultCount: count
         });
@@ -2941,57 +3033,141 @@ class Dashboard extends Component {
                 </div>
               </div>
               <div className="filter-type">
+        
                 <p>FILTER BY TYPE</p>
-                <div className="filter-checkbox">
+                 <div className="filter-checkbox">
+                <input
+                    type="checkbox"
+                    
+                    name="filter-type"
+                    id={"fil-open" }
+                  
+                    value="all"
+                    onChange={this.setSortCheckStatus.bind(this,"all")}
+                  />
+                  <label htmlFor={"fil-open"}>
+                    <span className="table-btn table-blue-btn">ALL</span>
+                  </label>
+                  </div>
+                {this.state.sortColumnName==="status" ? 
+                
+                this.state.sortTicketData !== null && 
+                  this.state.sortTicketData.map((item, i) => ( 
+                    <div className="filter-checkbox">
+                      
                   <input
                     type="checkbox"
-                    id="fil-open"
+                    
                     name="filter-type"
-                    value="open"
-                    onChange={this.setSortCheckStatus}
+                    id={"fil-open" + item.ticketStatus}
+                  
+                    value={item.ticketStatus}
+                    onChange={this.setSortCheckStatus.bind(this,"status")}
                   />
-                  <label htmlFor="fil-open">
-                    <span className="table-btn table-blue-btn">Open</span>
+                  <label htmlFor={"fil-open" + item.ticketStatus}>
+                    <span className="table-btn table-blue-btn">{item.ticketStatus}</span>
                   </label>
                 </div>
-                <div className="filter-checkbox">
+                  ))
+
+                :null}
+
+                { this.state.sortColumnName==="category" ? 
+                
+                this.state.sortCategoryData !== null && 
+                  this.state.sortCategoryData.map((item, i) => ( 
+                    <div className="filter-checkbox">
+                      
                   <input
                     type="checkbox"
-                    id="fil-new"
+                    
                     name="filter-type"
-                    value="new"
-                    onChange={this.setSortCheckStatus}
+                    id={"fil-open" + item.category}
+                  
+                    value={item.category}
+                    onChange={this.setSortCheckStatus.bind(this,"category")}
                   />
-                  <label htmlFor="fil-new">
-                    <span className="table-btn table-yellow-btn">New</span>
+                  <label htmlFor={"fil-open" + item.category}>
+                    <span className="table-btn table-blue-btn">{item.category}</span>
                   </label>
                 </div>
-                <div className="filter-checkbox">
+                  ))
+
+                :null}
+
+               { this.state.sortColumnName==="priority" ? 
+                
+                this.state.sortPriorityData !== null && 
+                  this.state.sortPriorityData.map((item, i) => ( 
+                    <div className="filter-checkbox">
+                      
                   <input
                     type="checkbox"
-                    id="fil-solved"
+                    
                     name="filter-type"
-                    value="solved"
-                    onChange={this.setSortCheckStatus}
+                    id={"fil-open" + item.priority}
+                  
+                    value={item.priority}
+                    onChange={this.setSortCheckStatus.bind(this,"priority")}
                   />
-                  <label htmlFor="fil-solved">
-                    <span className="table-btn table-green-btn">Solved</span>
+                  <label htmlFor={"fil-open" + item.priority}>
+                    <span className="table-btn table-blue-btn">{item.priority}</span>
                   </label>
                 </div>
-                <div className="filter-checkbox">
+                  ))
+
+                :null}
+
+                 { this.state.sortColumnName==="createdOn" ? 
+                
+                this.state.sortcreatedOnData !== null && 
+                  this.state.sortcreatedOnData.map((item, i) => ( 
+                    <div className="filter-checkbox">
+                      
                   <input
                     type="checkbox"
-                    id="fil-solved"
+                    
                     name="filter-type"
-                    value="resolved"
-                    onChange={this.setSortCheckStatus}
+                    id={"fil-open" + item.createdOn}
+                  
+                    value={item.createdOn}
+                    onChange={this.setSortCheckStatus.bind(this,"createdOn")}
                   />
-                  <label htmlFor="fil-solved">
-                    <span className="table-btn table-green-btn">Resolved</span>
+                  <label htmlFor={"fil-open" + item.createdOn}>
+                    <span className="table-btn table-blue-btn">{item.createdOn}</span>
                   </label>
                 </div>
+                  ))
+
+                :null}
+
+              { this.state.sortColumnName==="assignedTo" ? 
+                
+                this.state.sortAssigneeData !== null && 
+                  this.state.sortAssigneeData.map((item, i) => ( 
+                    <div className="filter-checkbox">
+                      
+                  <input
+                    type="checkbox"
+                    
+                    name="filter-type"
+                    id={"fil-open" + item.assignedTo}
+                  
+                    value={item.assignedTo}
+                    onChange={this.setSortCheckStatus.bind(this,"assignedTo")}
+                  />
+                  <label htmlFor={"fil-open" + item.assignedTo}>
+                    <span className="table-btn table-blue-btn">{item.assignedTo}</span>
+                  </label>
+                </div>
+                  ))
+
+                :null}
+                
+
               </div>
-              <div className="filter-type filter-color">
+              {this.state.sortColumnName==="status" ? (
+                <div className="filter-type filter-color">
                 <p>FILTER BY COLOR</p>
                 <div className="filter-checkbox">
                   <input type="checkbox" id="fil-red" name="filter-color" />
@@ -3018,6 +3194,9 @@ class Dashboard extends Component {
                   </label>
                 </div>
               </div>
+
+              ):null}
+              
             </div>
           </Modal>
         </div>
@@ -5449,7 +5628,7 @@ class Dashboard extends Component {
                         },
                         {
                           Header: (
-                            <span onClick={this.StatusOpenModel}>
+                            <span onClick={this.StatusOpenModel.bind(this,"status")}>
                               Status <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -5609,7 +5788,7 @@ class Dashboard extends Component {
                         },
                         {
                           Header: (
-                            <span className="ticketid">
+                            <span className="ticketid" onClick={this.StatusOpenModel.bind(this,"category")} >
                               Category <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -5652,7 +5831,7 @@ class Dashboard extends Component {
                         },
                         {
                           Header: (
-                            <span className="ticketid">
+                            <span className="ticketid" onClick={this.StatusOpenModel.bind(this,"priority")} >
                               Priority <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -5661,7 +5840,7 @@ class Dashboard extends Component {
                         },
                         {
                           Header: (
-                            <span className="ticketid">
+                            <span className="ticketid" onClick={this.StatusOpenModel.bind(this,"assignedTo")}>
                               Assignee <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),
@@ -5669,7 +5848,7 @@ class Dashboard extends Component {
                         },
                         {
                           Header: (
-                            <span className="ticketid">
+                            <span className="ticketid"  onClick={this.StatusOpenModel.bind(this,"createdOn")}>
                               Creation On <FontAwesomeIcon icon={faCaretDown} />
                             </span>
                           ),

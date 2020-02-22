@@ -107,7 +107,8 @@ class Module extends Component {
         inactiveIds.push(ids);
       }
     }
-    await this.setState({
+    
+    await this.setState({ 
       activeID:activeIds,
       inactiveID:inactiveIds,
       
