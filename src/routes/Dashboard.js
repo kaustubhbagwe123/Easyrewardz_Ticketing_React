@@ -3022,7 +3022,7 @@ class Dashboard extends Component {
                 </div>
               </div>
               <div className="filter-type">
-                
+        
                 <p>FILTER BY TYPE</p>
                  <div className="filter-checkbox">
                 <input
