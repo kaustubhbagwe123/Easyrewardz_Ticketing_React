@@ -2740,7 +2740,7 @@ class MyTicket extends Component {
                                                   "visitDate" +
                                                   row.original.storeID
                                                 }
-                                                // value={moment(row.original.storeVisitDate).format("")}
+                                                // value={row.original.storeVisitDate}
                                                 name="visitDate"
                                                 onChange={this.handleByvisitDate.bind(
                                                   this,
@@ -3361,7 +3361,7 @@ class MyTicket extends Component {
                           />
                         </div>
 
-                        <a href={item.name} target="_blank" download>
+                        <a href={item.name} download>
                           <img
                             src={
                               item.Type === "docx"
