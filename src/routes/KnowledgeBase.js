@@ -163,7 +163,7 @@ class KnowledgeBase extends Component {
   componentDidMount() {
     debugger;
 
-    //this.handleGetCategoryList();
+    this.handleGetCategoryList();
     this.handleKBList();
   }
 

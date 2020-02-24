@@ -98,7 +98,7 @@ class Alerts extends Component {
   }
 
   componentDidMount() {
-   // this.handleGetAlert();
+    this.handleGetAlert();
     this.handleAlertData();
     this.handleAlertTabs = this.handleAlertTabs.bind(this);
   }
