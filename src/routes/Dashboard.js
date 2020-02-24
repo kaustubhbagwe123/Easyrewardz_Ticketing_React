@@ -812,12 +812,12 @@ class Dashboard extends Component {
     var itemsArray = [];
     itemsArray = this.state.SearchTicketData;
 
-    itemsArray.sort(function(a, b) {
-      if(a.ticketStatus.toUpperCase() > b.ticketStatus.toUpperCase()){
-        return 1;
-      }
-      
-    });
+    itemsArray.sort(function(a, b)  {
+      return    a.ticketStatus > b.ticketStatus ? 1:-1;
+        });
+
+    
+
     this.setState({
       SearchTicketData: itemsArray
     });
@@ -827,10 +827,10 @@ class Dashboard extends Component {
     debugger;
     var itemsArray = [];
     itemsArray = this.state.SearchTicketData;
-    itemsArray.sort(function(a, b) {
-      if(a.ticketStatus.toUpperCase() < b.ticketStatus.toUpperCase()){
-        return -1;
-      }
+    itemsArray.sort((a, b)=> {
+      return a.ticketStatus < b.ticketStatus
+         
+      
     });
     this.setState({
       SearchTicketData: itemsArray
