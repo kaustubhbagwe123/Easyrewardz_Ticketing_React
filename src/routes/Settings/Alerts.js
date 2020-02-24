@@ -47,7 +47,7 @@ class Alerts extends Component {
       emailStore: false,
       smsCust: false,
       notiInt: false,
-      selectedAlertType: "",
+      selectedAlertType: 0,
       selectedEmailCustomer: false,
       selectedEmailInternal: false,
       selectedEmailStore: false,
@@ -84,7 +84,8 @@ class Alerts extends Component {
       subjectStoreCompulsion: "",
       ckStoreCompulsion: "",
       SMSContentCompulsion: "",
-      NotifContentCompulsion: ""
+      NotifContentCompulsion: "",
+      alertData:[]
     };
     this.updateContent = this.updateContent.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -93,10 +94,12 @@ class Alerts extends Component {
     this.handleGetAlert = this.handleGetAlert.bind(this);
     this.handleUpdateAlertTypeName = this.handleUpdateAlertTypeName.bind(this);
     this.handleInsertAlert = this.handleInsertAlert.bind(this);
+    this.handleAlertData=this.handleAlertData.bind(this);
   }
 
   componentDidMount() {
-    this.handleGetAlert();
+   // this.handleGetAlert();
+    this.handleAlertData();
     this.handleAlertTabs = this.handleAlertTabs.bind(this);
   }
 
@@ -129,6 +132,34 @@ class Alerts extends Component {
       selectedCKStore: newContent
     });
   };
+
+  handleAlertData() {
+    debugger;
+    let self = this;
+
+    
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Alert/BindAlerts",
+      headers: authHeader()
+     
+    }).then(function(res) {
+      debugger;
+      var data = res.data.responseData;
+      var msg=res.data.message;
+      if(msg==="Success"){
+        self.setState({
+          alertData: data
+        });
+      }else{
+        self.setState({
+          alertData: []
+        });
+      }
+     
+    });
+  }
 
   handleAlertTabs = e => {
     debugger;
@@ -285,7 +316,7 @@ class Alerts extends Component {
   handleAddAlertTabsOpen() {
     debugger;
     if (
-      (this.state.selectedAlertType.length > 0 &&
+      (this.state.selectedAlertType > 0 &&
         this.state.selectedStatus !== "" &&
         this.state.selectedEmailCustomer === true) ||
       this.state.selectedEmailInternal === true ||
@@ -776,15 +807,22 @@ class Alerts extends Component {
                   <h3>Create ALERTS</h3>
                   <div className="div-cntr">
                     <label>Alert Type</label>
-                    <input
-                      type="text"
-                      placeholder="Enter alert type"
-                      maxLength={25}
-                      name="selectedAlertType"
-                      value={this.state.selectedAlertType}
-                      onChange={this.setDataOnChangeAlert}
-                    />
-                    {this.state.selectedAlertType.length === 0 && (
+                   
+                    <select
+                                          className="add-select-category"
+                                          name="selectedAlertType"
+                                          value={this.state.selectedAlertType}
+                                          onChange={this.setDataOnChangeAlert}
+                                        >
+                                          <option >Select Alert</option>
+                    {this.state.alertData !== null &&
+                      this.state.alertData.map((item, i) => (
+                        <option key={i} value={item.alertID}>
+                          {item.alertTypeName}
+                        </option>
+                      ))}
+                                        </select>
+                    {this.state.selectedAlertType === 0 && (
                       <p style={{ color: "red", marginBottom: "0px" }}>
                         {this.state.alertTypeCompulsion}
                       </p>

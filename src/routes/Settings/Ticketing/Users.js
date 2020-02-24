@@ -904,11 +904,11 @@ if(datar==="add"){
     });
   }else{
     this.setState({
-      usernameCompulsion:"Please Enter User Name.",
-      firstnameCompulsion:"Please Enter Fisrt Name.",
-      lastnameCompulsion:"Please Enter Last Name.",
-      mobilenumberCompulsion:"Please Enter Mobile Number.",
-      emailCompulsion:"Please Enter EmailID."
+      usernameCompulsion:"Please enter user name.",
+      firstnameCompulsion:"Please enter first name.",
+      lastnameCompulsion:"Please enter last name.",
+      mobilenumberCompulsion:"Please enter mobile number.",
+      emailCompulsion:"Please enter emailID."
     });
   }
   }
@@ -965,9 +965,9 @@ if(datar==="add"){
     });
   }else{
     this.setState({
-      userdesignCompulsion:"Please Select Designation.",
-      reporteeDesignCompulsion:"Please Select Reportee Designation.",
-      reportToCompulsion:"Please select Reportee"
+      userdesignCompulsion:"Please select designation.",
+      reporteeDesignCompulsion:"Please select reportee designation.",
+      reportToCompulsion:"Please select reportee"
     });
   }
   }
@@ -1094,14 +1094,14 @@ if(datar==="add"){
     });
   }else{
     this.setState({
-      brandCompulsion:"Please Select Brands",
-      categoryCompulsion:"Please Select category",
-      subcategoryCompulsion:"Please Select SubCategory",
-      isuuetypeCompulsion:"Please Select IssueType",
-      crmroleCompulsion:"Please Select  CRM Roles",
-      copyescCompulsion:"Please Select Copy Escalation",
-      assignescCompulsion:"Please Select Assign escalation",
-      agentCompulsion:"Please Select Agent"
+      brandCompulsion:"Please select brands",
+      categoryCompulsion:"Please select category",
+      subcategoryCompulsion:"Please select subcategory",
+      isuuetypeCompulsion:"Please select issuetype",
+      crmroleCompulsion:"Please select  crm roles",
+      copyescCompulsion:"Please select copy escalation",
+      assignescCompulsion:"Please select assign escalation",
+      agentCompulsion:"Please select agent"
 
     });
   }
@@ -1293,22 +1293,22 @@ if(datar==="add"){
     });
   }else{
     this.setState({
-      editusernameCompulsion:"Please Enter User Name.",
-      editfirstnameCompulsion:"Please Enter Fisrt Name.",
-      editlastnameCompulsion:"Please Enter Last Name.",
-      editmobilenumberCompulsion:"Please Enter Mobile Number.",
-      editemailCompulsion:"Please Enter EmailID.",
-      edituserdesignCompulsion:"Please Select Designation.",
-      editreporteeDesignCompulsion:"Please Select Reportee Designation.",
-      editreportToCompulsion:"Please select Reportee",
-      editbrandCompulsion:"Please Select Brands",
-      editcategoryCompulsion:"Please Select category",
-      editsubcategoryCompulsion:"Please Select SubCategory",
-      editisuuetypeCompulsion:"Please Select IssueType",
-      editcrmroleCompulsion:"Please Select  CRM Roles",
-      editcopyescCompulsion:"Please Select Copy Escalation",
-      editassignescCompulsion:"Please Select Assign escalation",
-      editagentCompulsion:"Please Select Agent"
+      editusernameCompulsion:"Please enter user name.",
+      editfirstnameCompulsion:"Please enter fisrt name.",
+      editlastnameCompulsion:"Please enter last name.",
+      editmobilenumberCompulsion:"Please enter mobile number.",
+      editemailCompulsion:"Please enter emailID.",
+      edituserdesignCompulsion:"Please select designation.",
+      editreporteeDesignCompulsion:"Please select reportee designation.",
+      editreportToCompulsion:"Please select reportee",
+      editbrandCompulsion:"Please select brands",
+      editcategoryCompulsion:"Please select category",
+      editsubcategoryCompulsion:"Please select subcategory",
+      editisuuetypeCompulsion:"Please select issuetype",
+      editcrmroleCompulsion:"Please select  crm roles",
+      editcopyescCompulsion:"Please select copy escalation",
+      editassignescCompulsion:"Please select assign escalation",
+      editagentCompulsion:"Please select agent"
     });
   }
   }
@@ -2384,7 +2384,7 @@ if(datar==="add"){
                              className="butn"
                              onClick={this.handleEditPersonalDetails.bind(this)}
                            >
-                             EDIT
+                             Update &amp;Next
                            </button>
                          </div>
                        ):(
@@ -2495,7 +2495,7 @@ if(datar==="add"){
                            className="butn"
                            onClick={this.handleAddProfileDetails.bind(this)}
                          >
-                           EDIT
+                          Update &amp;Next
                          </button>
                        </div>
                       ):(
