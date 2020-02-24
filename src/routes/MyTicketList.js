@@ -2300,6 +2300,7 @@ class MyTicketList extends Component {
             selectedTicketStatusByDate: 0
           });
         } else {
+          debugger;
           let createdDate = dataSearch.searchDataByDate.Ticket_CreatedOn;
           let createdDateArray = createdDate.split('-');
           let createdDateFinal = new Date(createdDateArray[0],createdDateArray[1] - 1,createdDateArray[2]);
