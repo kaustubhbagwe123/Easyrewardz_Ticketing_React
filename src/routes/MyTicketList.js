@@ -254,7 +254,14 @@ class MyTicketList extends Component {
       FollowUp: "",
       Draft: "",
       scheduleRequired: "",
-      agentSelection: ""
+      agentSelection: "",
+      sortColumnName:"",
+      sortTicketData:[],
+      sortCategoryData:[],
+      sortPriorityData:[],
+      sortcreatedOnData:[],
+      sortAssigneeData:[],
+      sortAllData:[]
     };
     this.handleGetAssignTo = this.handleGetAssignTo.bind(this);
     this.clearSearch = this.clearSearch.bind(this);
@@ -312,6 +319,7 @@ class MyTicketList extends Component {
 
   componentDidMount() {
     debugger;
+    this.ViewSearchData();
     this.handleSearchTicketAllTabCount();
     this.handleSearchTicket();
     this.handleGetDesignationList();
@@ -1603,6 +1611,68 @@ class MyTicketList extends Component {
         count = res.data.responseData.length;
       }
 
+      self.state.sortAllData=data;
+      var unique=[];
+    var distinct = [];
+    for( let i = 0; i < data.length; i++ ){
+      if( !unique[data[i].ticketStatus]){
+        distinct.push(data[i].ticketStatus);
+        unique[data[i].ticketStatus]=1;
+      }
+    }
+    for (let i = 0; i < distinct.length; i++) {
+      self.state.sortTicketData.push({ ticketStatus: distinct[i] });
+    }
+
+    var unique=[];
+    var distinct = [];
+    for( let i = 0; i < data.length; i++ ){
+      if( !unique[data[i].category]){
+        distinct.push(data[i].category);
+        unique[data[i].category]=1;
+      }
+    }
+    for (let i = 0; i < distinct.length; i++) {
+      self.state.sortCategoryData.push({ category: distinct[i] });
+    }
+   
+    var unique=[];
+    var distinct = [];
+    for( let i = 0; i < data.length; i++ ){
+      if( !unique[data[i].priority]){
+        distinct.push(data[i].priority);
+        unique[data[i].priority]=1;
+      }
+    }
+    for (let i = 0; i < distinct.length; i++) {
+      self.state.sortPriorityData.push({ priority: distinct[i] });
+    }
+
+    var unique=[];
+    var distinct = [];
+    for( let i = 0; i < data.length; i++ ){
+      if( !unique[data[i].createdOn]){
+        distinct.push(data[i].createdOn);
+        unique[data[i].createdOn]=1;
+      }
+    }
+    for (let i = 0; i < distinct.length; i++) {
+      self.state.sortcreatedOnData.push({ createdOn: distinct[i] });
+    }
+     
+    var unique=[];
+    var distinct = [];
+    for( let i = 0; i < data.length; i++ ){
+      if( !unique[data[i].assignedTo]){
+        distinct.push(data[i].assignedTo);
+        unique[data[i].assignedTo]=1;
+      }
+    }
+    for (let i = 0; i < distinct.length; i++) {
+      self.state.sortAssigneeData.push({ assignedTo: distinct[i] });
+    }
+
+
       if (status === "Success") {
         if (data !== null) {
           for (let i = 0; i < CSVData.length; i++) {
@@ -1879,8 +1949,8 @@ class MyTicketList extends Component {
     this.setState({ selectedIssueTypeAll: issueTypeAllValue });
   };
 
-  StatusOpenModel() {
-    this.setState({ StatusModel: true });
+  StatusOpenModel(data) {
+    this.setState({ StatusModel: true,sortColumnName:data  });
   }
   StatusCloseModel() {
     this.setState({ StatusModel: false });
@@ -1932,29 +2002,62 @@ class MyTicketList extends Component {
     evt.stopPropagation();
   }
 
-  setSortCheckStatus = e => {
+  setSortCheckStatus = (column,e) => {
     debugger;
-
+    
     var itemsArray = [];
     var data = e.currentTarget.value;
-    if (data === "open") {
-      itemsArray = this.state.SearchTicketData.filter(
-        a => a.ticketStatus === "Open"
-      );
-    } else if (data === "resolved") {
-      itemsArray = this.state.SearchTicketData.filter(
-        a => a.ticketStatus === "Resolved"
-      );
-    } else if (data === "solved") {
-      itemsArray = this.state.SearchTicketData.filter(
-        a => a.ticketStatus === "Solved"
-      );
-    } else if (data === "new") {
-      itemsArray = this.state.SearchTicketData.filter(
-        a => a.ticketStatus === "New"
-      );
-    }
-
+    if(column==="all"){
+      itemsArray=this.state.sortAllData;
+     
+    }else if(column==="status"){
+        this.state.SearchTicketData=this.state.sortAllData;
+        itemsArray = this.state.SearchTicketData.filter(
+          a => a.ticketStatus === data
+        );
+      }else if(column==="category"){
+        this.state.SearchTicketData=this.state.sortAllData;
+        itemsArray = this.state.SearchTicketData.filter(
+          a => a.category === data
+        );
+      }else if(column==="priority"){
+        this.state.SearchTicketData=this.state.sortAllData;
+        itemsArray = this.state.SearchTicketData.filter(
+          a => a.priority === data
+        );
+      }else if(column==="assignedTo"){
+        this.state.SearchTicketData=this.state.sortAllData;
+        itemsArray = this.state.SearchTicketData.filter(
+          a => a.assignedTo === data
+        );
+      }else if(column==="createdOn"){
+        this.state.SearchTicketData=this.state.sortAllData;
+        itemsArray = this.state.SearchTicketData.filter(
+          a => a.createdOn === data
+        );
+      }else if(column==="colorred"){
+        this.state.SearchTicketData=this.state.sortAllData;
+        itemsArray = this.state.SearchTicketData.filter(
+          a => a.isEscalation === 1
+        );
+      }else if(column==="colororange"){
+        this.state.SearchTicketData=this.state.sortAllData;
+        itemsArray = this.state.SearchTicketData.filter(
+          a => a.isSLANearBreach === true
+        );
+      }else if(column==="colorwhite"){
+        this.state.SearchTicketData=this.state.sortAllData;
+        itemsArray = this.state.SearchTicketData.filter(
+          a => a.isEscalation === 0 && a.isSLANearBreach===false && a.isReassigned===false
+        );
+      }else if(column==="colorgreen"){
+        this.state.SearchTicketData=this.state.sortAllData;
+        itemsArray = this.state.SearchTicketData.filter(
+          a => a.isReassigned === true && a.isEscalation === 0
+        );
+      }
+     
+    
     this.setState({
       SearchTicketData: itemsArray
     });
@@ -2300,9 +2403,15 @@ class MyTicketList extends Component {
             selectedTicketStatusByDate: 0
           });
         } else {
+          let createdDate = dataSearch.searchDataByDate.Ticket_CreatedOn;
+          let createdDateArray = createdDate.split('-');
+          let createdDateFinal = new Date(createdDateArray[0],createdDateArray[1] - 1,createdDateArray[2]);
+          let modifiedDate = dataSearch.searchDataByDate.Ticket_ModifiedOn;
+          let modifiedDateArray = modifiedDate.split('-');
+          let modifiedDateFinal = new Date(modifiedDateArray[0],modifiedDateArray[1] - 1,modifiedDateArray[2]);
           self.setState({
-            ByDateCreatDate: dataSearch.searchDataByDate.Ticket_CreatedOn,
-            ByDateSelectDate: dataSearch.searchDataByDate.Ticket_ModifiedOn,
+            ByDateCreatDate: createdDateFinal,
+            ByDateSelectDate: modifiedDateFinal,
             selectedSlaDueByDate: dataSearch.searchDataByDate.SLA_DueON,
             selectedTicketStatusByDate:
               dataSearch.searchDataByDate.Ticket_StatusID
@@ -2428,12 +2537,18 @@ class MyTicketList extends Component {
             selectedFunction: 0
           });
         } else {
+          let createdDate = dataSearch.SearchDataByAll.CreatedDate;
+          let createdDateArray = createdDate.split('-');
+          let createdDateFinal = new Date(createdDateArray[0],createdDateArray[1] - 1,createdDateArray[2]);
+          let modifiedDate = dataSearch.SearchDataByAll.ModifiedDate;
+          let modifiedDateArray = modifiedDate.split('-');
+          let modifiedDateFinal = new Date(modifiedDateArray[0],modifiedDateArray[1] - 1,modifiedDateArray[2]);
           self.setState({
-            ByAllCreateDate: dataSearch.SearchDataByAll.CreatedDate,
+            ByAllCreateDate: createdDateFinal,
             selectedTicketSource: dataSearch.SearchDataByAll.TicketSourceTypeID,
             ClaimIdByAll: dataSearch.SearchDataByAll.ClaimId,
             EmailByAll: dataSearch.SearchDataByAll.CustomerEmailID,
-            ByAllLastDate: dataSearch.SearchDataByAll.ModifiedDate,
+            ByAllLastDate: modifiedDateFinal,
             TicketIdTitleByAll: dataSearch.SearchDataByAll.TicketIdORTitle,
             InvoiceSubOrderByAll:
               dataSearch.SearchDataByAll.InvoiceNumberORSubOrderNo,
@@ -2520,81 +2635,181 @@ class MyTicketList extends Component {
               <div className="filter-type">
                 <p>FILTER BY TYPE</p>
                 <div className="filter-checkbox">
+                <input
+                    type="checkbox"
+                    
+                    name="filter-type"
+                    id={"fil-open" }
+                  
+                    value="all"
+                    onChange={this.setSortCheckStatus.bind(this,"all")}
+                  />
+                  <label htmlFor={"fil-open"}>
+                    <span className="table-btn table-blue-btn">ALL</span>
+                  </label>
+                  </div>
+                {this.state.sortColumnName==="status" ? 
+                
+                this.state.sortTicketData !== null && 
+                  this.state.sortTicketData.map((item, i) => ( 
+                    <div className="filter-checkbox">
+                      
                   <input
                     type="checkbox"
-                    id="fil-open"
+                    
                     name="filter-type"
-                    value="open"
-                    onChange={this.setSortCheckStatus}
+                    id={"fil-open" + item.ticketStatus}
+                  
+                    value={item.ticketStatus}
+                    onChange={this.setSortCheckStatus.bind(this,"status")}
                   />
-                  <label htmlFor="fil-open">
-                    <span className="table-btn table-blue-btn">Open</span>
+                  <label htmlFor={"fil-open" + item.ticketStatus}>
+                    <span className="table-btn table-blue-btn">{item.ticketStatus}</span>
                   </label>
                 </div>
-                <div className="filter-checkbox">
+                  ))
+
+                :null}
+
+                { this.state.sortColumnName==="category" ? 
+                
+                this.state.sortCategoryData !== null && 
+                  this.state.sortCategoryData.map((item, i) => ( 
+                    <div className="filter-checkbox">
+                      
                   <input
                     type="checkbox"
-                    id="fil-new"
+                    
                     name="filter-type"
-                    value="new"
-                    onChange={this.setSortCheckStatus}
+                    id={"fil-open" + item.category}
+                  
+                    value={item.category}
+                    onChange={this.setSortCheckStatus.bind(this,"category")}
                   />
-                  <label htmlFor="fil-new">
-                    <span className="table-btn table-yellow-btn">New</span>
+                  <label htmlFor={"fil-open" + item.category}>
+                    <span className="table-btn table-blue-btn">{item.category}</span>
                   </label>
                 </div>
-                <div className="filter-checkbox">
+                  ))
+
+                :null}
+
+               { this.state.sortColumnName==="priority" ? 
+                
+                this.state.sortPriorityData !== null && 
+                  this.state.sortPriorityData.map((item, i) => ( 
+                    <div className="filter-checkbox">
+                      
                   <input
                     type="checkbox"
-                    id="fil-solved"
+                    
                     name="filter-type"
-                    value="solved"
-                    onChange={this.setSortCheckStatus}
+                    id={"fil-open" + item.priority}
+                  
+                    value={item.priority}
+                    onChange={this.setSortCheckStatus.bind(this,"priority")}
                   />
-                  <label htmlFor="fil-solved">
-                    <span className="table-btn table-green-btn">Solved</span>
+                  <label htmlFor={"fil-open" + item.priority}>
+                    <span className="table-btn table-blue-btn">{item.priority}</span>
                   </label>
                 </div>
-                <div className="filter-checkbox">
+                  ))
+
+                :null}
+
+                 { this.state.sortColumnName==="createdOn" ? 
+                
+                this.state.sortcreatedOnData !== null && 
+                  this.state.sortcreatedOnData.map((item, i) => ( 
+                    <div className="filter-checkbox">
+                      
                   <input
                     type="checkbox"
-                    id="fil-solved"
+                    
                     name="filter-type"
-                    value="resolved"
-                    onChange={this.setSortCheckStatus}
+                    id={"fil-open" + item.createdOn}
+                  
+                    value={item.createdOn}
+                    onChange={this.setSortCheckStatus.bind(this,"createdOn")}
                   />
-                  <label htmlFor="fil-solved">
-                    <span className="table-btn table-green-btn">Resolved</span>
+                  <label htmlFor={"fil-open" + item.createdOn}>
+                    <span className="table-btn table-blue-btn">{item.createdOn}</span>
                   </label>
                 </div>
+                  ))
+
+                :null}
+
+              { this.state.sortColumnName==="assignedTo" ? 
+                
+                this.state.sortAssigneeData !== null && 
+                  this.state.sortAssigneeData.map((item, i) => ( 
+                    <div className="filter-checkbox">
+                      
+                  <input
+                    type="checkbox"
+                    
+                    name="filter-type"
+                    id={"fil-open" + item.assignedTo}
+                  
+                    value={item.assignedTo}
+                    onChange={this.setSortCheckStatus.bind(this,"assignedTo")}
+                  />
+                  <label htmlFor={"fil-open" + item.assignedTo}>
+                    <span className="table-btn table-blue-btn">{item.assignedTo}</span>
+                  </label>
+                </div>
+                  ))
+
+                :null}
+                
+
               </div>
-              <div className="filter-type filter-color">
+             
+                <div className="filter-type filter-color">
                 <p>FILTER BY COLOR</p>
                 <div className="filter-checkbox">
-                  <input type="checkbox" id="fil-red" name="filter-color" />
+                  <input type="checkbox"
+                   id="fil-red"
+                    name="filter-color" 
+                    value="isEscalation"
+                    onChange={this.setSortCheckStatus.bind(this,"colorred")}
+                    />
                   <label htmlFor="fil-red">
                     <span className="fil-color-red fil-color-bg"></span>
                   </label>
                 </div>
                 <div className="filter-checkbox">
-                  <input type="checkbox" id="fil-orange" name="filter-color" />
+                  <input type="checkbox" id="fil-orange" name="filter-color"
+                   value="isSLANearBreach"
+                   onChange={this.setSortCheckStatus.bind(this,"colororange")}
+                  />
                   <label htmlFor="fil-orange">
                     <span className="fil-color-orange fil-color-bg"></span>
                   </label>
                 </div>
                 <div className="filter-checkbox">
-                  <input type="checkbox" id="fil-white" name="filter-color" />
+                  <input type="checkbox" id="fil-white" name="filter-color" 
+                  value="white"
+                  onChange={this.setSortCheckStatus.bind(this,"colorwhite")}
+                  />
                   <label htmlFor="fil-white">
                     <span className="fil-color-white fil-color-bg"></span>
                   </label>
                 </div>
                 <div className="filter-checkbox">
-                  <input type="checkbox" id="fil-green" name="filter-color" />
+                  <input type="checkbox" id="fil-green" name="filter-color" 
+                  value="isReassigned"
+                  onChange={this.setSortCheckStatus.bind(this,"colorgreen")}
+                  />
                   <label htmlFor="fil-green">
                     <span className="fil-color-green fil-color-bg"></span>
                   </label>
                 </div>
               </div>
+
+             
+              
             </div>
           </Modal>
         </div>
@@ -4932,7 +5147,7 @@ class MyTicketList extends Component {
                               },
                               {
                                 Header: (
-                                  <span onClick={this.StatusOpenModel}>
+                                  <span onClick={this.StatusOpenModel.bind(this,"status")}>
                                     Status{" "}
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
@@ -5132,7 +5347,7 @@ class MyTicketList extends Component {
                               },
                               {
                                 Header: (
-                                  <span className="ticketid">
+                                  <span className="ticketid" onClick={this.StatusOpenModel.bind(this,"category")}>
                                     Category{" "}
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
@@ -5176,7 +5391,7 @@ class MyTicketList extends Component {
                               },
                               {
                                 Header: (
-                                  <span className="ticketid">
+                                  <span className="ticketid" onClick={this.StatusOpenModel.bind(this,"priority")} >
                                     Priority{" "}
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
@@ -5187,7 +5402,7 @@ class MyTicketList extends Component {
                               },
                               {
                                 Header: (
-                                  <span className="ticketid">
+                                  <span className="ticketid" onClick={this.StatusOpenModel.bind(this,"assignedTo")}>
                                     Assignee{" "}
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>
@@ -5196,7 +5411,7 @@ class MyTicketList extends Component {
                               },
                               {
                                 Header: (
-                                  <span className="ticketid">
+                                  <span className="ticketid" onClick={this.StatusOpenModel.bind(this,"createdOn")}>
                                     Creation On{" "}
                                     <FontAwesomeIcon icon={faCaretDown} />
                                   </span>

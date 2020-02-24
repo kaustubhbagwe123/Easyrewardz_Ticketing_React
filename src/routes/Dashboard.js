@@ -310,6 +310,7 @@ class Dashboard extends Component {
       sortcreatedOnData:[],
       sortAssigneeData:[],
       sortAllData:[]
+
     };
     this.applyCallback = this.applyCallback.bind(this);
     // this.handleApply = this.handleApply.bind(this);
@@ -386,7 +387,7 @@ class Dashboard extends Component {
     debugger;
     // this.handleSearchTicketEscalation();   // this is called for bydefault content
     // this.handleTicketsOnLoad();
-
+   this.ViewSearchData();
     this.handleTicketsOnLoadLoader();
     this.handleGetDepartmentList();
     this.handleGetTicketSourceList();
@@ -401,6 +402,7 @@ class Dashboard extends Component {
     this.handleGetSaveSearchList();
 
     this.handleAdvanceSearchOption();
+   
   }
 
   handleTicketsOnLoadLoader() {
@@ -614,7 +616,7 @@ class Dashboard extends Component {
       if (status === "Success") {
         self.setState({
           SearchTicketData: data,
-          sortTicketData:data,
+         
           resultCount: count,
           loading: false
         });
@@ -776,6 +778,26 @@ class Dashboard extends Component {
         itemsArray = this.state.SearchTicketData.filter(
           a => a.createdOn === data
         );
+      }else if(column==="colorred"){
+        this.state.SearchTicketData=this.state.sortAllData;
+        itemsArray = this.state.SearchTicketData.filter(
+          a => a.isEscalation === 1
+        );
+      }else if(column==="colororange"){
+        this.state.SearchTicketData=this.state.sortAllData;
+        itemsArray = this.state.SearchTicketData.filter(
+          a => a.isSLANearBreach === true
+        );
+      }else if(column==="colorwhite"){
+        this.state.SearchTicketData=this.state.sortAllData;
+        itemsArray = this.state.SearchTicketData.filter(
+          a => a.isEscalation === 0 && a.isSLANearBreach===false && a.isReassigned===false
+        );
+      }else if(column==="colorgreen"){
+        this.state.SearchTicketData=this.state.sortAllData;
+        itemsArray = this.state.SearchTicketData.filter(
+          a => a.isReassigned === true && a.isEscalation === 0
+        );
       }
      
     
@@ -790,9 +812,12 @@ class Dashboard extends Component {
     var itemsArray = [];
     itemsArray = this.state.SearchTicketData;
 
-    itemsArray.sort((a, b) => {
-      return a.name > b.name;
-    });
+    itemsArray.sort(function(a, b)  {
+      return    a.ticketStatus > b.ticketStatus ? 1:-1;
+        });
+
+    
+
     this.setState({
       SearchTicketData: itemsArray
     });
@@ -802,8 +827,10 @@ class Dashboard extends Component {
     debugger;
     var itemsArray = [];
     itemsArray = this.state.SearchTicketData;
-    itemsArray.sort((a, b) => {
-      return a.name < b.name;
+    itemsArray.sort((a, b)=> {
+      return a.ticketStatus < b.ticketStatus
+         
+      
     });
     this.setState({
       SearchTicketData: itemsArray
@@ -3166,36 +3193,50 @@ class Dashboard extends Component {
                 
 
               </div>
-              {this.state.sortColumnName==="status" ? (
+             
                 <div className="filter-type filter-color">
                 <p>FILTER BY COLOR</p>
                 <div className="filter-checkbox">
-                  <input type="checkbox" id="fil-red" name="filter-color" />
+                  <input type="checkbox"
+                   id="fil-red"
+                    name="filter-color" 
+                    value="isEscalation"
+                    onChange={this.setSortCheckStatus.bind(this,"colorred")}
+                    />
                   <label htmlFor="fil-red">
                     <span className="fil-color-red fil-color-bg"></span>
                   </label>
                 </div>
                 <div className="filter-checkbox">
-                  <input type="checkbox" id="fil-orange" name="filter-color" />
+                  <input type="checkbox" id="fil-orange" name="filter-color"
+                   value="isSLANearBreach"
+                   onChange={this.setSortCheckStatus.bind(this,"colororange")}
+                  />
                   <label htmlFor="fil-orange">
                     <span className="fil-color-orange fil-color-bg"></span>
                   </label>
                 </div>
                 <div className="filter-checkbox">
-                  <input type="checkbox" id="fil-white" name="filter-color" />
+                  <input type="checkbox" id="fil-white" name="filter-color" 
+                  value="white"
+                  onChange={this.setSortCheckStatus.bind(this,"colorwhite")}
+                  />
                   <label htmlFor="fil-white">
                     <span className="fil-color-white fil-color-bg"></span>
                   </label>
                 </div>
                 <div className="filter-checkbox">
-                  <input type="checkbox" id="fil-green" name="filter-color" />
+                  <input type="checkbox" id="fil-green" name="filter-color" 
+                  value="isReassigned"
+                  onChange={this.setSortCheckStatus.bind(this,"colorgreen")}
+                  />
                   <label htmlFor="fil-green">
                     <span className="fil-color-green fil-color-bg"></span>
                   </label>
                 </div>
               </div>
 
-              ):null}
+             
               
             </div>
           </Modal>
@@ -5912,6 +5953,7 @@ class Dashboard extends Component {
                       showPagination={true}
                       getTrProps={this.HandleRowClickPage}
                       minRows={2}
+                      
                     />
                     {/* <div className="position-relative">
                         <div className="pagi">
