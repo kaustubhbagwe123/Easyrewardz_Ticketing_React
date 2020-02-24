@@ -118,9 +118,7 @@ class MyTicket extends Component {
       TicketStatusData: TicketStatus(),
       selectedTicketActionType: [],
       TicketActionTypeData: TicketActionType(),
-      // taskTableGrid: [],
       SearchAssignData: [],
-      // selectetedParameters: {},
       claimDetailsData: [],
       selectetedParameters: {},
       KbPopupData: [],
@@ -163,7 +161,9 @@ class MyTicket extends Component {
       ticketcommentMSG: "",
       CustStoreStatusDrop: "0",
       OrderSubItem: [],
-      mailSubject: ""
+      mailSubject: "",
+      expanded: {},
+      mailId: 0
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -209,7 +209,6 @@ class MyTicket extends Component {
   }
 
   onAddCKEditorChange = evt => {
-    debugger;
     var newContent = evt.editor.getData();
     this.setState({
       mailBodyData: newContent
@@ -373,7 +372,6 @@ class MyTicket extends Component {
       let status = res.data.message;
       if (status === "Success") {
         let data = res.data.responseData;
-        // let demo = res.data.responseData[1];
         self.setState({
           messageDetails: data
         });
@@ -382,7 +380,6 @@ class MyTicket extends Component {
           messageDetails: []
         });
       }
-      // let status=res.data.status;
     });
   }
   handleGetOrderDetails() {
@@ -459,6 +456,7 @@ class MyTicket extends Component {
         SearchText: this.state.SearchStore
       }
     }).then(function(res) {
+      debugger;
       let data = res.data.responseData;
       let Msg = res.data.message;
       if (Msg === "Success") {
@@ -813,6 +811,18 @@ class MyTicket extends Component {
       }
     });
   }
+  expand_row(row) {
+    var expanded = { ...this.state.expanded };
+    if (expanded[row.index]) {
+      expanded[row.index] = !expanded[row.index];
+    } else {
+      expanded[row.index] = true;
+    }
+
+    this.setState({
+      expanded: expanded
+    });
+  }
   fileDragEnter = e => {
     e.preventDefault();
   };
@@ -883,8 +893,8 @@ class MyTicket extends Component {
   handleCommentCollapseClose() {
     this.setState(state => ({ CommentCollapse: false }));
   }
-  hanldeCommentOpen2() {
-    this.setState({ CommentCollapse2: true });
+  hanldeCommentOpen2(Mail_Id) {
+    this.setState({ CommentCollapse2: true, mailId: Mail_Id });
   }
   hanldeCommentClose2() {
     this.setState({ CommentCollapse2: false });
@@ -1056,7 +1066,15 @@ class MyTicket extends Component {
     // let self = this;
     var selectedStore = "";
     for (let j = 0; j < this.state.selectedStoreData.length; j++) {
-      selectedStore += this.state.selectedStoreData[j]["storeID"] + ",";
+      selectedStore +=
+        this.state.selectedStoreData[j]["storeID"] +
+        "|" +
+        moment(this.state.selectedStoreIDs[j]["storeVisitDate"]).format(
+          "YYYY-MM-DD"
+        ) +
+        "|" +
+        this.state.selectedStoreData[j]["purpose"] +
+        ",";
     }
     axios({
       method: "post",
@@ -1195,6 +1213,7 @@ class MyTicket extends Component {
       CheckStoreID: storeMasterID ? newSelected : false
     });
     var selectedRow = [];
+    rowData["Purpose_Id"] = this.state.CustStoreStatusDrop;
     if (this.state.selectedStoreData.length === 0) {
       selectedRow.push(rowData);
       this.setState({
@@ -1350,13 +1369,15 @@ class MyTicket extends Component {
           TicketMailBody: stringBody,
           informStore: this.state.InformStore,
           IsSent: isSend,
-          IsCustomerComment: 0
+          IsCustomerComment: 0,
+          MailID: this.state.mailId
         }
       }).then(function(res) {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetMessageDetails(self.state.ticket_Id);
+          self.hanldeCommentClose2();
           self.setState({
             mailFiled: {},
             mailSubject: "",
@@ -1380,7 +1401,8 @@ class MyTicket extends Component {
           TicketMailBody: stringBody,
           informStore: this.state.InformStore,
           IsSent: 1,
-          IsCustomerComment: 1
+          IsCustomerComment: 1,
+          MailID: 0
         }
       }).then(function(res) {
         debugger;
@@ -1410,7 +1432,8 @@ class MyTicket extends Component {
           TicketMailBody: stringBody,
           informStore: this.state.InformStore,
           IsSent: 0,
-          IsCustomerComment: 1
+          IsCustomerComment: 1,
+          MailID: 0
         }
       }).then(function(res) {
         debugger;
@@ -1511,9 +1534,9 @@ class MyTicket extends Component {
     debugger;
     var id = e.original.storeID;
     var index = this.state.selectedStoreData.findIndex(x => x.storeID === id);
-    this.state.selectedStoreData["VisitedDate"] = rowData;
+    // this.state.selectedStoreData["VisitedDate"] = rowData;
     var selectedStoreData = this.state.selectedStoreData;
-    selectedStoreData[index].VisitedDate = rowData;
+    selectedStoreData[index].storeVisitDate = rowData;
 
     this.setState({ selectedStoreData });
   }
@@ -2566,14 +2589,14 @@ class MyTicket extends Component {
                                     data={storeDetails}
                                     columns={[
                                       {
-                                        Header: <span>Purpose</span>,
+                                        Header: <span></span>,
                                         accessor: "purpose",
                                         Cell: row => {
-                                          debugger;
+                                          // debugger;
                                           return (
                                             <div
                                               className="filter-checkbox"
-                                              style={{ marginLeft: "15px" }}
+                                              // style={{ marginLeft: "15px" }}
                                             >
                                               <input
                                                 type="checkbox"
@@ -2597,9 +2620,6 @@ class MyTicket extends Component {
                                                   "i" + row.original.storeID
                                                 }
                                               >
-                                                {row.original.purpose === 1
-                                                  ? "Customer Want to visit store"
-                                                  : "Customer Already visited store"}
                                               </label>
                                             </div>
                                           );
@@ -2624,40 +2644,11 @@ class MyTicket extends Component {
                                       {
                                         Header: <span>Store Addres</span>,
                                         accessor: "address"
-                                      },
-                                      {
-                                        Header: <span>Visit Date</span>,
-                                        accessor: "visitDate",
-                                        Cell: row => {
-                                          return (
-                                            <div className="col-sm-12 p-0">
-                                              <DatePicker
-                                                selected={
-                                                  row.original.VisitedDate
-                                                }
-                                                placeholderText="Visited Date"
-                                                showMonthDropdown
-                                                showYearDropdown
-                                                dateFormat="dd/MM/yyyy"
-                                                id={
-                                                  "visitDate" +
-                                                  row.original.storeID
-                                                }
-                                                value={row.original.VisitedDate}
-                                                name="visitDate"
-                                                onChange={this.handleByvisitDate.bind(
-                                                  this,
-                                                  row
-                                                )}
-                                              />
-                                            </div>
-                                          );
-                                        }
-                                      }
+                                      } 
                                     ]}
                                     // resizable={false}
                                     defaultPageSize={5}
-                                    showPagination={false}
+                                    showPagination={true}
                                   />
                                 </div>
                               </div>
@@ -2667,12 +2658,12 @@ class MyTicket extends Component {
                                 role="tabpanel"
                                 aria-labelledby="selectedstore-tab"
                               >
-                                <div className="reactstoreselect">
+                                <div className="reactstoreselect datePickertable">
                                   {/* {this.state.loading === true ? (
                                     <div className="loader-icon"></div>
                                   ) : ( */}
                                   <ReactTable
-                                    data={selectedStore}
+                                    data={this.state.selectedStoreData}
                                     columns={[
                                       {
                                         Header: <span>Purpose</span>,
@@ -2700,12 +2691,14 @@ class MyTicket extends Component {
                                               defaultChecked={true}
                                             />
                                             <label
-                                              htmlFor={
-                                                "i" + row.original.storeID
-                                              }
-                                            >
-                                              {row.original.storeID}
-                                            </label>
+                                                htmlFor={
+                                                  "i" + row.original.storeID
+                                                }
+                                              >
+                                                { row.original.Purpose_Id === 1
+                                                  ? "Customer Want to visit store"
+                                                  : "Customer Already visited store"}
+                                              </label>
                                           </div>
                                         )
                                       },
@@ -2731,37 +2724,37 @@ class MyTicket extends Component {
                                       },
                                       {
                                         Header: <span>Visit Date</span>,
-                                        accessor: "visitDate"
-                                        // Cell: row => {
-                                        //   return (
-                                        //     <div className="col-sm-12 p-0">
-                                        //       <DatePicker
-                                        //         selected={
-                                        //           row.original.VisitedDate
-                                        //         }
-                                        //         placeholderText="Visited Date"
-                                        //         showMonthDropdown
-                                        //         showYearDropdown
-                                        //         dateFormat="dd/MM/yyyy"
-                                        //         id={
-                                        //           "visitDate" +
-                                        //           row.original.storeID
-                                        //         }
-                                        //         value={row.original.VisitedDate}
-                                        //         name="visitDate"
-                                        //         onChange={this.handleByvisitDate.bind(
-                                        //           this,
-                                        //           row
-                                        //         )}
-                                        //       />
-                                        //     </div>
-                                        //   );
-                                        // }
+                                        accessor: "storeVisitDate",
+                                        Cell: row => {
+                                          return (
+                                            <div className="col-sm-12 p-0">
+                                              <DatePicker
+                                                selected={
+                                                  row.original.storeVisitDate
+                                                }
+                                                placeholderText="Visited Date"
+                                                showMonthDropdown
+                                                showYearDropdown
+                                                dateFormat="dd/MM/yyyy"
+                                                id={
+                                                  "visitDate" +
+                                                  row.original.storeID
+                                                }
+                                                // value={row.original.storeVisitDate}
+                                                name="visitDate"
+                                                onChange={this.handleByvisitDate.bind(
+                                                  this,
+                                                  row
+                                                )}
+                                              />
+                                            </div>
+                                          );
+                                        }
                                       }
                                     ]}
                                     // resizable={false}
                                     defaultPageSize={5}
-                                    showPagination={false}
+                                    showPagination={true}
                                   />
                                 </div>
                               </div>
@@ -3087,7 +3080,33 @@ class MyTicket extends Component {
                                                 Header: (
                                                   <span>Required Size</span>
                                                 ),
-                                                accessor: "requireSize"
+                                                accessor: "requireSize",
+                                                Cell: row => {
+                                                  debugger;
+                                                  return (
+                                                    <div>
+                                                      <input
+                                                        type="text"
+                                                        id={
+                                                          "requireSizeTxt" +
+                                                          row.original
+                                                            .orderItemID
+                                                        }
+                                                        value={
+                                                          row.original
+                                                            .requireSize || ""
+                                                        }
+                                                        name="requiredSize"
+                                                        onChange={() => {
+                                                          this.handleRequireSize(
+                                                            this,
+                                                            row
+                                                          );
+                                                        }}
+                                                      />
+                                                    </div>
+                                                  );
+                                                }
                                               }
                                             ]}
                                             defaultPageSize={2}
@@ -3109,6 +3128,27 @@ class MyTicket extends Component {
                                 <div className="reactstoreselect">
                                   <ReactTable
                                     data={selectedProduct}
+                                    expanded={this.state.expanded}
+                                    onExpandedChange={(
+                                      newExpanded,
+                                      index,
+                                      event
+                                    ) => {
+                                      if (newExpanded[index[0]] === false) {
+                                        newExpanded = {};
+                                      } else {
+                                        Object.keys(newExpanded).map(k => {
+                                          newExpanded[k] =
+                                            parseInt(k) === index[0]
+                                              ? {}
+                                              : false;
+                                        });
+                                      }
+                                      this.setState({
+                                        ...this.state,
+                                        expanded: newExpanded
+                                      });
+                                    }}
                                     columns={[
                                       {
                                         Header: <span></span>,
@@ -3263,33 +3303,7 @@ class MyTicket extends Component {
                                                 Header: (
                                                   <span>Required Size</span>
                                                 ),
-                                                accessor: "requireSize",
-                                                Cell: row => {
-                                                  debugger;
-                                                  return (
-                                                    <div>
-                                                      <input
-                                                        type="text"
-                                                        id={
-                                                          "requireSizeTxt" +
-                                                          row.original
-                                                            .orderItemID
-                                                        }
-                                                        value={
-                                                          row.original
-                                                            .requireSize || ""
-                                                        }
-                                                        name="requiredSize"
-                                                        onChange={() => {
-                                                          this.handleRequireSize(
-                                                            this,
-                                                            row
-                                                          );
-                                                        }}
-                                                      />
-                                                    </div>
-                                                  );
-                                                }
+                                                accessor: "requireSize"
                                               }
                                             ]}
                                             defaultPageSize={2}
@@ -3347,7 +3361,7 @@ class MyTicket extends Component {
                           />
                         </div>
 
-                        <a href={item.name} target="_blank" download>
+                        <a href={item.name} download>
                           <img
                             src={
                               item.Type === "docx"
@@ -3443,6 +3457,10 @@ class MyTicket extends Component {
                   <div className="mask1">
                     <div className="mail-mask">
                       <div className="dropdown" style={{ display: "inherit" }}>
+                       
+                      </div>
+
+                      {/* <div className="dropdown" style={{ display: "inherit" }}>
                         <button
                           className="dropdown-toggle my-tic-email"
                           type="button"
@@ -3485,7 +3503,7 @@ class MyTicket extends Component {
                             </a>
                           </li>
                         </ul>
-                      </div>
+                      </div> */}
 
                       <div
                         className="mob-float"
@@ -4041,7 +4059,8 @@ class MyTicket extends Component {
                                           <label
                                             className="reply-comment"
                                             onClick={this.hanldeCommentOpen2.bind(
-                                              this
+                                              this,
+                                              details.mailID
                                             )}
                                           >
                                             Reply
