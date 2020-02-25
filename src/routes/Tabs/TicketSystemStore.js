@@ -461,12 +461,7 @@ class TicketSystemStore extends Component {
                             {
                               Header: <span>Store Addres</span>,
                               accessor: "address"
-                            },
-                            {
-                              Header: <span>Visit Date</span>,
-                              accessor: "visitDate",
-                              Cell: row => <label>23 Aug 2019</label>
-                            }
+                            } 
                           ]
                         },
                         {
@@ -773,12 +768,8 @@ class TicketSystemStore extends Component {
                               {
                                 Header: <span>Store Addres</span>,
                                 accessor: "address"
-                              },
-                              {
-                                Header: <span>Visit Date</span>,
-                                accessor: "visitDate",
-                                Cell: row => <label>23 Aug 2019</label>
                               }
+                              
                             ]
                           },
                           {
@@ -917,11 +908,6 @@ class TicketSystemStore extends Component {
                           {
                             Header: <span>Store Addres</span>,
                             accessor: "address"
-                          },
-                          {
-                            Header: <span>Visit Date</span>,
-                            accessor: "visitDate",
-                            Cell: row => <label>23 Aug 2019</label>
                           }
                         ]}
                         // resizable={false}
