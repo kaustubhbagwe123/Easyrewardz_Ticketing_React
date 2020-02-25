@@ -420,6 +420,8 @@ class MyTicket extends Component {
       if (Msg === "Success") {
         const newSelected = Object.assign({}, self.state.CheckOrderID);
         debugger;
+
+        var OrderSubItem = [];
         var selectedRow = [];
         for (let i = 0; i < data.length; i++) {
           if (data[i].orderMasterID) {
@@ -431,13 +433,16 @@ class MyTicket extends Component {
               CheckOrderID: data[i].orderMasterID ? newSelected : false
             });
           }
+          if (data[i].orderItems.length > 0) {
+            for (let j = 0; j < data[i].orderItems.length; j++) {
+              OrderSubItem.push(data[i].orderItems[j]);
+            }
+          }
         }
         self.setState({
           selectedDataRow: selectedRow,
-          selectedProduct: data
-        });
-        self.setState({
-          selectedProduct: data
+          selectedProduct: data,
+          OrderSubItem
         });
       } else {
         self.setState({
@@ -1083,7 +1088,7 @@ class MyTicket extends Component {
         ) +
         "|" +
         PurposeID +
-        ","
+        ",";
     }
     axios({
       method: "post",
@@ -1108,9 +1113,31 @@ class MyTicket extends Component {
   handleAttachProductData() {
     debugger;
     // let self = this;
-    var selectedProduct = "";
-    for (let j = 0; j < this.state.selectedDataRow.length; j++) {
-      selectedProduct += this.state.selectedDataRow[j]["orderMasterID"] + ",";
+    // var selectedProduct = "";
+    // for (let j = 0; j < this.state.selectedDataRow.length; j++) {
+    //   selectedProduct += this.state.selectedDataRow[j]["orderMasterID"] + ",";
+    // }
+    var selectedRow = "";
+
+    for (let i = 0; i < this.state.selectedDataRow.length; i++) {
+      var data = this.state.selectedDataRow.filter(
+        x => x.orderMasterID == this.state.selectedDataRow[i].orderMasterID
+      );
+      if (data.length === 1) {
+        selectedRow += this.state.selectedDataRow[i]["orderMasterID"] + "|0|1,";
+      } else if (data === 0) {
+      } else {
+        if (
+          "orderMasterID" in this.state.selectedDataRow[i] &&
+          "orderItemID" in this.state.selectedDataRow[i]
+        ) {
+          selectedRow +=
+            this.state.selectedDataRow[i]["orderItemID"] +
+            "|" +
+            this.state.selectedDataRow[i]["requireSize"] +
+            "|0,";
+        }
+      }
     }
     axios({
       method: "post",
@@ -1118,7 +1145,7 @@ class MyTicket extends Component {
       headers: authHeader(),
       params: {
         TicketId: this.state.ticket_Id,
-        OrderID: selectedProduct.substring(",", selectedProduct.length - 1)
+        OrderID: selectedRow.substring(",", selectedRow.length - 1)
       }
     }).then(function(res) {
       debugger;
@@ -1665,29 +1692,6 @@ class MyTicket extends Component {
       }
     ];
 
-    const columns1 = [
-      {
-        Header: <span className="historyTable-header ">SKU</span>,
-        accessor: "sku"
-      },
-      {
-        id: "createdBy",
-        Header: <span className="historyTable-header">Name</span>,
-        accessor: "Name"
-      },
-      {
-        Header: <span className="historyTable-header">Price</span>,
-        accessor: "Price"
-      },
-      {
-        Header: <span className="historyTable-header">Quantity</span>,
-        accessor: "Quantity"
-      },
-      {
-        Header: <span className="historyTable-header">MOP</span>,
-        accessor: "Mop"
-      }
-    ];
     return (
       <Fragment>
         {this.state.loading === true ? (
@@ -2145,9 +2149,51 @@ class MyTicket extends Component {
                                   <div className="tablehistrical tablehistricaldetail">
                                     <ReactTable
                                       data={data1}
-                                      columns={columns1}
+                                      columns={[
+                                        {
+                                          Header: (
+                                            <span className="historyTable-header ">
+                                              SKU
+                                            </span>
+                                          ),
+                                          accessor: "sku"
+                                        },
+                                        {
+                                          id: "createdBy",
+                                          Header: (
+                                            <span className="historyTable-header">
+                                              Name
+                                            </span>
+                                          ),
+                                          accessor: "Name"
+                                        },
+                                        {
+                                          Header: (
+                                            <span className="historyTable-header">
+                                              Price
+                                            </span>
+                                          ),
+                                          accessor: "Price"
+                                        },
+                                        {
+                                          Header: (
+                                            <span className="historyTable-header">
+                                              Quantity
+                                            </span>
+                                          ),
+                                          accessor: "Quantity"
+                                        },
+                                        {
+                                          Header: (
+                                            <span className="historyTable-header">
+                                              MOP
+                                            </span>
+                                          ),
+                                          accessor: "Mop"
+                                        }
+                                      ]}
                                       // resizable={false}
-                                      defaultPageSize={2}
+                                      defaultPageSize={5}
                                       showPagination={false}
                                     />
                                   </div>
@@ -2910,7 +2956,7 @@ class MyTicket extends Component {
                                         Product Details
                                       </a>
                                     </li>
-                                    {this.state.selectedProduct.length > 0 ? (
+                                    {this.state.selectedDataRow.length > 0 || this.state.selectedProduct.length > 0 ? (
                                       <li className="nav-item fo">
                                         <a
                                           className="nav-link"
@@ -3091,36 +3137,36 @@ class MyTicket extends Component {
                                                 Header: (
                                                   <span>Required Size</span>
                                                 ),
-                                                accessor: "requireSize",
-                                                Cell: row => {
-                                                  debugger;
-                                                  return (
-                                                    <div>
-                                                      <input
-                                                        type="text"
-                                                        id={
-                                                          "requireSizeTxt" +
-                                                          row.original
-                                                            .orderItemID
-                                                        }
-                                                        value={
-                                                          row.original
-                                                            .requireSize || ""
-                                                        }
-                                                        name="requiredSize"
-                                                        onChange={() => {
-                                                          this.handleRequireSize(
-                                                            this,
-                                                            row
-                                                          );
-                                                        }}
-                                                      />
-                                                    </div>
-                                                  );
-                                                }
+                                                accessor: "requireSize"
+                                                // Cell: row => {
+                                                //   // debugger;
+                                                //   return (
+                                                //     <div>
+                                                //       <input
+                                                //         type="text"
+                                                //         id={
+                                                //           "requireSizeTxt" +
+                                                //           row.original
+                                                //             .orderItemID
+                                                //         }
+                                                //         value={
+                                                //           row.original
+                                                //             .requireSize || ""
+                                                //         }
+                                                //         name="requiredSize"
+                                                //         onChange={() => {
+                                                //           this.handleRequireSize(
+                                                //             this,
+                                                //             row
+                                                //           );
+                                                //         }}
+                                                //       />
+                                                //     </div>
+                                                //   );
+                                                // }
                                               }
                                             ]}
-                                            defaultPageSize={2}
+                                            defaultPageSize={5}
                                             minRows={1}
                                             showPagination={false}
                                           />
@@ -3138,7 +3184,8 @@ class MyTicket extends Component {
                               >
                                 <div className="reactstoreselect">
                                   <ReactTable
-                                    data={selectedProduct}
+                                    // data={selectedProduct}
+                                    data={this.state.selectedDataRow}
                                     expanded={this.state.expanded}
                                     onExpandedChange={(
                                       newExpanded,
@@ -3314,11 +3361,38 @@ class MyTicket extends Component {
                                                 Header: (
                                                   <span>Required Size</span>
                                                 ),
-                                                accessor: "requireSize"
+                                                accessor: "requireSize",
+                                                Cell: row => {
+                                                  // debugger;
+                                                  return (
+                                                    <div>
+                                                      <input
+                                                        type="text"
+                                                        id={
+                                                          "requireSizeTxt" +
+                                                          row.original
+                                                            .orderItemID
+                                                        }
+                                                        value={
+                                                          row.original
+                                                            .requireSize || ""
+                                                        }
+                                                        name="requiredSize"
+                                                        onChange={() => {
+                                                          this.handleRequireSize(
+                                                            this,
+                                                            row
+                                                          );
+                                                        }}
+                                                      />
+                                                    </div>
+                                                  );
+                                                }
                                               }
                                             ]}
-                                            defaultPageSize={2}
+                                            defaultPageSize={5}
                                             showPagination={false}
+                                            minRows={1}
                                           />
                                         </div>
                                       );
