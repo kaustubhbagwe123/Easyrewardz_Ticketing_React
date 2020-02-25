@@ -115,7 +115,9 @@ class Users extends Component {
       editcrmroleCompulsion:"",
       editcopyescCompulsion:"",
       editassignescCompulsion:"",
-      editagentCompulsion:""
+      editagentCompulsion:"",
+      emailValidation:"",
+      mobileValidation:""
 
 
     };
@@ -138,6 +140,7 @@ class Users extends Component {
     this.togglePopover = this.togglePopover.bind(this);
     this.closeEditModal = this.closeEditModal.bind(this);
     this.handleSendMail=this.handleSendMail.bind(this);
+    this.handleValidationEmailIdMob=this.handleValidationEmailIdMob.bind(this);
   }
   componentDidMount() {
     debugger;
@@ -805,6 +808,61 @@ if(datar==="add"){
       }
 
     });
+  }
+
+  handleValidationEmailIdMob() {
+    debugger;
+    if(
+      this.state.selectUserName.length > 0 && 
+      this.state.selectFirstName.length > 0 &&
+      this.state.selectLastName.length > 0 &&
+      this.state.selectMobile.length > 0 &&
+      this.state.selectEmail.length > 0
+    ){
+    this.state.emailValidation="";
+    this.state.mobileValidation="";
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/User/validateUserExist",
+      headers: authHeader(),
+      params: {
+        UserEmailID:this.state.selectEmail,
+        UserMobile:this.state.selectMobile
+      }
+    }).then(function (res) {
+      debugger;
+      var status = res.data.message;
+      var userdata = res.data.responseData;
+      if (status === "Success") {
+        if(userdata==="Email Id already exist!"){
+          self.setState({
+          emailValidation:"Email Id already exist!"
+          });
+        }else if(userdata==="Phone number already exist!"){
+          self.setState({
+            mobileValidation:"Phone number already exist!"
+          });
+        }else if(userdata==="Email Id and Phone number both are already exist!"){
+          self.setState({
+            emailValidation:"Email Id already exist!",
+            mobileValidation:"Phone number already exist!"
+          });
+        }else if(userdata==="Not Exist"){
+          self.handleAddPersonalDetails();
+        }  
+      } 
+
+    });
+  }else{
+    this.setState({
+      usernameCompulsion:"Please Enter User Name.",
+      firstnameCompulsion:"Please Enter Fisrt Name.",
+      lastnameCompulsion:"Please Enter Last Name.",
+      mobilenumberCompulsion:"Please Enter Mobile Number.",
+      emailCompulsion:"Please Enter EmailID."
+    });
+  }
   }
 
   handleAddPersonalDetails() {
@@ -2311,6 +2369,7 @@ if(datar==="add"){
                       <div className="div-cntr">
                         <label>User Name</label>
                         <input type="text" maxLength={25}
+                       
                           name="selectUserName"
                           value={this.state.selectUserName}
                           onChange={this.handleOnChangeUserData}
@@ -2359,6 +2418,10 @@ if(datar==="add"){
                       {this.state.mobilenumberCompulsion}
                     </p>
                   )}
+                   <p style={{ color: "red", marginBottom: "0px" }}>
+                   {this.state.mobileValidation}
+                    </p>
+                 
                       </div>
                       <div className="div-cntr">
                         <label>Email ID</label>
@@ -2372,6 +2435,10 @@ if(datar==="add"){
                       {this.state.emailCompulsion}
                     </p>
                   )}
+                  <p style={{ color: "red", marginBottom: "0px" }}>
+                  {this.state.emailValidation}
+                    </p>
+                 
                       </div>
                      
                        {this.state.buttonToggle===true ? (
@@ -2390,12 +2457,12 @@ if(datar==="add"){
                        ):(
                         <div className="btn-coll">
                         <button
-                          data-toggle="collapse"
-                          href="#personal-details"
+                         // data-toggle="collapse"
+                         // href="#personal-details"
                           //data-target="#profile-details"
                           //data-toggle="collapse"
                           className="butn"
-                          onClick={this.handleAddPersonalDetails.bind(this)}
+                          onClick={this.handleValidationEmailIdMob.bind(this)}
                         >
                           SAVE &amp; NEXT
                         </button>
@@ -2424,6 +2491,7 @@ if(datar==="add"){
                       <div className="div-cntr">
                         <label>User Designation</label>
                         <select className="add-select-category"
+                        
                           name="selectedDesignation"
                           value={this.state.selectedDesignation}
                           onChange={this.handleDesination.bind(this,"add")}
