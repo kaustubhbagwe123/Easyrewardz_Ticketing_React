@@ -247,12 +247,12 @@ class Header extends Component {
       debugger;
       let status = res.data.message;
       if (status === "Success") {
-        let Count1 = res.data.responseData[0].ticketCount;
-        let Count2 = res.data.responseData[1].ticketCount;
-        let Count3 = res.data.responseData[2].ticketCount;
-        let Msg1 = res.data.responseData[0].notificationMessage;
-        let Msg2 = res.data.responseData[1].notificationMessage;
-        let Msg3 = res.data.responseData[2].notificationMessage;
+        let Count1 = res.data.responseData.ticketNotification[0].ticketCount;
+        let Count2 = res.data.responseData.ticketNotification[1].ticketCount;
+        let Count3 = res.data.responseData.ticketNotification[2].ticketCount;
+        let Msg1 = res.data.responseData.ticketNotification[0].notificationMessage;
+        let Msg2 = res.data.responseData.ticketNotification[1].notificationMessage;
+        let Msg3 = res.data.responseData.ticketNotification[2].notificationMessage;
 
         self.setState({
           notifiCount1: Count1,
@@ -847,7 +847,7 @@ class Header extends Component {
               <Link to={{
                 pathname: 'myTicketlist',
                 state: {
-                  isFromHeader: true
+                  isHeaderNew: true
                 }
               }} onClick={this.closeModal}>
                 <label className="md-4 view-tickets">VIEW TICKETS</label>
@@ -866,7 +866,12 @@ class Header extends Component {
               </label>
             </div>
             <div className="viewticketspeadding">
-              <Link to="myTicketlist">
+              <Link to={{
+                pathname: 'myTicketlist',
+                state: {
+                  isHeaderOpen: true
+                }
+              }} onClick={this.closeModal}>
                 <label className="md-4 view-tickets">VIEW TICKETS</label>
               </Link>
             </div>
