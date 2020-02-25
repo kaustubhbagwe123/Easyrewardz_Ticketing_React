@@ -319,6 +319,9 @@ class MyTicketList extends Component {
 
   componentDidMount() {
     debugger;
+    if (this.props.location.state && this.props.location.state.isFromHeader) {
+      this.newNotifications();
+    }
     this.ViewSearchData();
     this.handleSearchTicketAllTabCount();
     this.handleSearchTicket();
@@ -332,6 +335,15 @@ class MyTicketList extends Component {
     this.handleGetDraftDetails();
     this.handleGetDepartmentList();
     this.handleMyTicketsearchOption();
+  }
+
+  newNotifications() {
+    let upperTabs = document.querySelectorAll(".upper-tabs .nav-link");
+    for (let i = 0; i < upperTabs.length; i++) {
+      upperTabs[i].classList.remove("active");
+    }
+    document.getElementsByName("New")[0].classList.add("active");
+    this.handleSearchTicket("New");
   }
 
   handleMyTicketsearchOption() {
