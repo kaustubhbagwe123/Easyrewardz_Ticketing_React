@@ -120,6 +120,7 @@ class TicketSystemOrder extends Component {
   }
 
   handleOrderTableOpen() {
+    debugger
     this.setState({ OrderTable: true });
   }
   handleOrderTableClose() {
@@ -582,7 +583,8 @@ class TicketSystemOrder extends Component {
             </div>
             <div className="col-12 col-lg-2 col-xl-1">
               <div
-                className="storeplusline"
+                // className="storeplusline"
+                className={this.state.custAttachOrder === 1 ? "storeplusline-12" : "storeplusline"}
                 onClick={this.handleOrderTableOpen.bind(this)}
                 disabled={this.state.custAttachOrder === 1 ? true : false}
               >
