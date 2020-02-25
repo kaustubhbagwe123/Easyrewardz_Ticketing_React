@@ -4629,15 +4629,12 @@ class Dashboard extends Component {
                                     value={this.state.selectedSlaStatus}
                                     onChange={this.setSlaStatusValue}
                                   >
-                                    <option>
-                                      SLA Status : Response / Resolution
-                                    </option>
-                                    {this.state.SlaStatusData !== null &&
-                                      this.state.SlaStatusData.map(
-                                        (item, i) => (
-                                          <option key={i} value={item.SLAId}>
-                                            {item.slaRequestResponse}
-                                          </option>
+                                    <option value="0">SLA Due</option>
+                                    {this.state.SlaDueData !== null &&
+                                      this.state.SlaDueData.map((item, i) => (
+                                        <option key={i} value={item.slaDueID}>
+                                          {item.slaDueName}
+                                        </option>
                                         )
                                       )}
                                   </select>

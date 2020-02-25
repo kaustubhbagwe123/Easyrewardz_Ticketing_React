@@ -3902,17 +3902,15 @@ class MyTicketList extends Component {
                                           value={this.state.selectedSlaStatus}
                                           onChange={this.setSlaStatusValue}
                                         >
-                                          <option>
-                                            SLA Status : Response / Resolution
-                                          </option>
-                                          {this.state.SlaStatusData !== null &&
-                                            this.state.SlaStatusData.map(
+                                          <option value="0">SLA Due</option>
+                                          {this.state.SlaDueData !== null &&
+                                            this.state.SlaDueData.map(
                                               (item, i) => (
                                                 <option
                                                   key={i}
-                                                  value={item.SLAId}
+                                                  value={item.slaDueID}
                                                 >
-                                                  {item.slaRequestResponse}
+                                                  {item.slaDueName}
                                                 </option>
                                               )
                                             )}
