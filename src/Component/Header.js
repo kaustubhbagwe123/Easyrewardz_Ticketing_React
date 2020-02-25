@@ -847,7 +847,7 @@ class Header extends Component {
               <Link to={{
                 pathname: 'myTicketlist',
                 state: {
-                  isFromHeader: true
+                  isHeaderNew: true
                 }
               }} onClick={this.closeModal}>
                 <label className="md-4 view-tickets">VIEW TICKETS</label>
@@ -866,7 +866,12 @@ class Header extends Component {
               </label>
             </div>
             <div className="viewticketspeadding">
-              <Link to="myTicketlist">
+              <Link to={{
+                pathname: 'myTicketlist',
+                state: {
+                  isHeaderOpen: true
+                }
+              }} onClick={this.closeModal}>
                 <label className="md-4 view-tickets">VIEW TICKETS</label>
               </Link>
             </div>
