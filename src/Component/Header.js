@@ -63,6 +63,9 @@ class Header extends Component {
       notifiMsg1: "",
       notifiMsg2: "",
       notifiMsg3: "",
+      notifiTktIds1: "",
+      notifiTktIds2: "",
+      notifiTktIds3: "",
       percentLog: 0,
       cont: [
         {
@@ -244,7 +247,7 @@ class Header extends Component {
       url: config.apiUrl + "/Notification/GetNotifications",
       headers: authHeader()
     }).then(function (res) {
-      //debugger;
+      debugger;
       let status = res.data.message;
       if (status === "Success") {
         let Count1 = res.data.responseData.ticketNotification[0].ticketCount;
@@ -253,6 +256,10 @@ class Header extends Component {
         let Msg1 = res.data.responseData.ticketNotification[0].notificationMessage;
         let Msg2 = res.data.responseData.ticketNotification[1].notificationMessage;
         let Msg3 = res.data.responseData.ticketNotification[2].notificationMessage;
+        let TktIds1 = res.data.responseData.ticketNotification[0].ticketIDs;
+        let TktIds2 = res.data.responseData.ticketNotification[1].ticketIDs;
+        let TktIds3 = res.data.responseData.ticketNotification[2].ticketIDs;
+        let notiCount = res.data.responseData.notiCount;
 
         self.setState({
           notifiCount1: Count1,
@@ -260,7 +267,11 @@ class Header extends Component {
           notifiCount3: Count3,
           notifiMsg1: Msg1,
           notifiMsg2: Msg2,
-          notifiMsg3: Msg3
+          notifiMsg3: Msg3,
+          notifiTktIds1: TktIds1,
+          notifiTktIds2: TktIds2,
+          notifiTktIds3: TktIds3,
+          notiCount
         });
       } else {
         self.setState({
@@ -802,7 +813,7 @@ class Header extends Component {
                   className="notifi"
 
                 />
-                <span className="upper-noti-count">3</span>
+                {this.state.notiCount > 0 && <span className="upper-noti-count">{this.state.notiCount}</span>}
               </div>
               <span style={{ display: "none" }} className="icon-fullname">
                 Notifications
