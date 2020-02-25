@@ -103,7 +103,7 @@ class Header extends Component {
     let pageName, lastOne, lastValue, arr;
     arr = [...this.state.cont];
     setTimeout(
-      function() {
+      function () {
         pageName = window.location.pathname;
         lastOne = pageName.split("/");
         lastValue = lastOne[lastOne.length - 1];
@@ -172,7 +172,7 @@ class Header extends Component {
       method: "post",
       url: config.apiUrl + "/Account/Logout",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       //debugger;
       var status = res.data.status;
       // var Msg=res.data.message
@@ -191,7 +191,7 @@ class Header extends Component {
       method: "post",
       url: config.apiUrl + "/DashBoard/LoggedInAccountDetails",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       var data = res.data.responseData;
       var status = res.data.message;
@@ -243,7 +243,7 @@ class Header extends Component {
       method: "post",
       url: config.apiUrl + "/Notification/GetNotifications",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       //debugger;
       let status = res.data.message;
       if (status === "Success") {
@@ -474,44 +474,44 @@ class Header extends Component {
                   </div>
                 </div>
               ) : (
-                <div>
-                  <div className="row amitsinghcenter">
-                    <div className="col-md-12">
-                      <div className="status1">
-                        <input type="radio" name="logout-status" id="online" />
-                        <label
-                          htmlFor="online"
-                          className="logout-label1"
-                          style={{ marginRight: "25px" }}
-                        >
-                          Online
+                  <div>
+                    <div className="row amitsinghcenter">
+                      <div className="col-md-12">
+                        <div className="status1">
+                          <input type="radio" name="logout-status" id="online" />
+                          <label
+                            htmlFor="online"
+                            className="logout-label1"
+                            style={{ marginRight: "25px" }}
+                          >
+                            Online
                         </label>
 
-                        <input type="radio" name="logout-status" id="away" />
-                        <label htmlFor="away" className="logout-label1">
-                          Offline
+                          <input type="radio" name="logout-status" id="away" />
+                          <label htmlFor="away" className="logout-label1">
+                            Offline
                         </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row amitnextrow">
+                      <div className="col-md-12">
+                        <button
+                          className="loginbtnagent"
+                          onClick={this.handleNextButtonShow.bind(this)}
+                        >
+                          Next
+                      </button>
+                      </div>
+                    </div>
+                    <div className="row amitnextrow">
+                      <div className="col-md-12">
+                        <img src={LogoutImg} alt="logo" className="logoutImg" />
+                        <span className="logouttamitsingh">Logout</span>
                       </div>
                     </div>
                   </div>
-                  <div className="row amitnextrow">
-                    <div className="col-md-12">
-                      <button
-                        className="loginbtnagent"
-                        onClick={this.handleNextButtonShow.bind(this)}
-                      >
-                        Next
-                      </button>
-                    </div>
-                  </div>
-                  <div className="row amitnextrow">
-                    <div className="col-md-12">
-                      <img src={LogoutImg} alt="logo" className="logoutImg" />
-                      <span className="logouttamitsingh">Logout</span>
-                    </div>
-                  </div>
-                </div>
-              )}
+                )}
             </Modal>
 
             <Modal
@@ -602,62 +602,62 @@ class Header extends Component {
                   </div>
                 </div>
               ) : (
-                <div>
-                  <div className="row amitsinghcallrow">
-                    <div className="col-md-12">
-                      <input
-                        type="text"
-                        className="amitsinghwaiting"
-                        placeholder="Waiting for incoming call"
-                        onClick={this.handleWaitingShow.bind(this)}
-                      />
-                      <div className="row">
-                        <div className="col-md-8">
-                          <label className="idletimeamit">
-                            Idle Time: 02:24
+                  <div>
+                    <div className="row amitsinghcallrow">
+                      <div className="col-md-12">
+                        <input
+                          type="text"
+                          className="amitsinghwaiting"
+                          placeholder="Waiting for incoming call"
+                          onClick={this.handleWaitingShow.bind(this)}
+                        />
+                        <div className="row">
+                          <div className="col-md-8">
+                            <label className="idletimeamit">
+                              Idle Time: 02:24
                           </label>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="row amitnextbuttonrow">
-                    <div className="col-md-12">
-                      <button className="CallwrapBtn">Call Wrap</button>
+                    <div className="row amitnextbuttonrow">
+                      <div className="col-md-12">
+                        <button className="CallwrapBtn">Call Wrap</button>
+                      </div>
                     </div>
-                  </div>
-                  <div className="row amitnextbuttonrow1">
-                    <div className="col-md-12">
-                      <button className="SwitchToProgBtn">
-                        Switch to progressive
+                    <div className="row amitnextbuttonrow1">
+                      <div className="col-md-12">
+                        <button className="SwitchToProgBtn">
+                          Switch to progressive
                       </button>
+                      </div>
                     </div>
-                  </div>
-                  <div className="row amitnextrow">
-                    <div className="col-md-12">
-                      <div className="takeabreak">
-                        <img src={TakeBreak} alt="logo" className="logoutImg" />
-                        <span className="takebreaktext">Take a Breake</span>
+                    <div className="row amitnextrow">
+                      <div className="col-md-12">
+                        <div className="takeabreak">
+                          <img src={TakeBreak} alt="logo" className="logoutImg" />
+                          <span className="takebreaktext">Take a Breake</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="row backtohomelogoutrow">
+                      <div className="col-md-12">
+                        <img src={LogoutImg} alt="logo" className="logoutImg" />
+                        <span className="logoutbacktohome">Logout</span>
+                      </div>
+                    </div>
+
+                    <div className="row backtohomerow">
+                      <div className="col-md-12">
+                        <a href="#!" className="backtohometext">
+                          >>Back to Home
+                      </a>
                       </div>
                     </div>
                   </div>
-
-                  <div className="row backtohomelogoutrow">
-                    <div className="col-md-12">
-                      <img src={LogoutImg} alt="logo" className="logoutImg" />
-                      <span className="logoutbacktohome">Logout</span>
-                    </div>
-                  </div>
-
-                  <div className="row backtohomerow">
-                    <div className="col-md-12">
-                      <a href="#!" className="backtohometext">
-                        >>Back to Home
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              )}
+                )}
             </Modal>
 
             <a href="#!" className="d-none">
@@ -795,12 +795,15 @@ class Header extends Component {
             </div>
 
             <a href="#!">
-              <img
-                src={NotificationLogo}
-                alt="logo"
-                className="notifi"
-                onClick={this.openModal}
-              />
+              <div className="position-relative" onClick={this.openModal}>
+                <img
+                  src={NotificationLogo}
+                  alt="logo"
+                  className="notifi"
+
+                />
+                <span className="upper-noti-count">3</span>
+              </div>
               <span style={{ display: "none" }} className="icon-fullname">
                 Notifications
               </span>
@@ -835,13 +838,18 @@ class Header extends Component {
             </div>
             <div className="md-6 new-tickets-assigned tic-noti">
               <label>
-                <span style={{ fontSize: "17px", fontWeight: "bold" }}>
+                <span>
                   {this.state.notifiMsg1}
                 </span>
               </label>
             </div>
             <div className="viewticketspeadding">
-              <Link to="myTicketlist" onClick={this.closeModal}>
+              <Link to={{
+                pathname: 'myTicketlist',
+                state: {
+                  isFromHeader: true
+                }
+              }} onClick={this.closeModal}>
                 <label className="md-4 view-tickets">VIEW TICKETS</label>
               </Link>
             </div>
@@ -852,7 +860,7 @@ class Header extends Component {
             </div>
             <div className="md-6 new-tickets-assigned tic-noti">
               <label>
-                <span style={{ fontSize: "17px", fontWeight: "bold" }}>
+                <span>
                   {this.state.notifiMsg2}
                 </span>
               </label>
@@ -869,7 +877,7 @@ class Header extends Component {
             </div>
             <div className="md-6 new-tickets-assigned tic-noti">
               <label>
-                <span style={{ fontSize: "17px", fontWeight: "bold" }}>
+                <span>
                   {this.state.notifiMsg3}
                 </span>
               </label>
@@ -899,7 +907,7 @@ class Header extends Component {
                         : require("./../assets/Images/defaultUser.png")
                     }
                     alt="User"
-                    style={{width:'61px'}}
+                    style={{ width: '61px' }}
                   />
                 </div>
                 <div className="logout-flex">
