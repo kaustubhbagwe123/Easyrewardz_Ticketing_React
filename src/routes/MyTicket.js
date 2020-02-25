@@ -159,7 +159,7 @@ class MyTicket extends Component {
       agentId: 0,
       AttachementrData: [],
       ticketcommentMSG: "",
-      CustStoreStatusDrop: "1",
+      CustStoreStatusDrop: 1,
       OrderSubItem: [],
       mailSubject: "",
       expanded: {},
@@ -2570,6 +2570,7 @@ class MyTicket extends Component {
                                   placeholder="Search By Store Name, Pin Code, Store Code"
                                   value={this.state.SearchStore}
                                   name="SearchStore"
+                                  autoComplete="off"
                                   onChange={this.handleNoteOnChange}
                                 />
                                 <img
@@ -2812,6 +2813,7 @@ class MyTicket extends Component {
                                     // resizable={false}
                                     defaultPageSize={5}
                                     showPagination={true}
+                                    minRows={1}
                                   />
                                 </div>
                               </div>
