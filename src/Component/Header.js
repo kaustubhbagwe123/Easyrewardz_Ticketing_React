@@ -99,6 +99,7 @@ class Header extends Component {
     };
     this.handleLoggedInUserDetails = this.handleLoggedInUserDetails.bind(this);
     this.handleGetNotificationList = this.handleGetNotificationList.bind(this);
+    this.handleEditProfilePage=this.handleEditProfilePage.bind(this);
   }
 
   componentDidMount() {
@@ -169,6 +170,13 @@ class Header extends Component {
   closeModal = () => {
     this.setState({ modalIsOpen: false });
   };
+  handleEditProfilePage(){
+    debugger;
+    let self = this;
+    setTimeout(function() {
+      self.props.history.push("/admin/userprofile");
+    }, 400);
+  }
   handleLogoutMethod() {
     // let self = this;
     axios({
@@ -924,6 +932,8 @@ class Header extends Component {
                     }
                     alt="User"
                     style={{ width: '61px' }}
+                    title="Edit Profile"
+                   // onClick={this.handleEditProfilePage.bind(this)}
                   />
                 </div>
                 <div className="logout-flex">
@@ -1006,14 +1016,15 @@ class Header extends Component {
                   <p className="logout-label">SLA SCORE</p>
                   <p className="font-weight-bold">{this.state.SLAScore}</p>
                 </div>
+                {/* <div>
+                  <p className="logout-label">CSAT SCORE</p>
+                  <p className="font-weight-bold">{this.state.CSatScore}</p>
+                </div> */}
                 <div>
                   <p className="logout-label">Avg Response time</p>
                   <p className="font-weight-bold">{this.state.AvgResponse}</p>
                 </div>
-                <div>
-                  <p className="logout-label">CSAT SCORE</p>
-                  <p className="font-weight-bold">{this.state.CSatScore}</p>
-                </div>
+               
               </div>
             </div>
           </Modal>
