@@ -117,7 +117,9 @@ class Users extends Component {
       editassignescCompulsion:"",
       editagentCompulsion:"",
       emailValidation:"",
-      mobileValidation:""
+      mobileValidation:"",
+      personalReadOnly:false,
+      profileReadOnly:false
 
 
     };
@@ -512,6 +514,20 @@ handleEditDesination =(data1,e)  =>{
       });
     });
   }
+  editMethod(){
+    debugger;
+    this.setState({
+      personalReadOnly:false,
+      buttonToggle:true
+    });
+  }
+  editProfileMethod(){
+    debugger;
+    this.setState({
+      profileReadOnly:false,
+      buttonProfileToggle:true
+    });
+  }
   handleGetDesignationList() {
     debugger;
 
@@ -849,18 +865,21 @@ if(datar==="add"){
             mobileValidation:"Phone number already exist!"
           });
         }else if(userdata==="Not Exist"){
-          self.handleAddPersonalDetails();
+         
+            self.handleAddPersonalDetails();
+         
+         
         }  
       } 
 
     });
   }else{
     this.setState({
-      usernameCompulsion:"Please Enter User Name.",
-      firstnameCompulsion:"Please Enter Fisrt Name.",
-      lastnameCompulsion:"Please Enter Last Name.",
-      mobilenumberCompulsion:"Please Enter Mobile Number.",
-      emailCompulsion:"Please Enter EmailID."
+      usernameCompulsion:"Please enter user name.",
+      firstnameCompulsion:"Please enter first name.",
+      lastnameCompulsion:"Please enter last name.",
+      mobilenumberCompulsion:"Please enter mobile number.",
+      emailCompulsion:"Please enter emailID."
     });
   }
   }
@@ -902,17 +921,17 @@ if(datar==="add"){
       self.setState({
        
         getID: id,
-        buttonToggle:true
+        personalReadOnly:true
       });
       self.handleUserList();
     });
   }else{
     this.setState({
-      usernameCompulsion:"Please Enter User Name.",
-      firstnameCompulsion:"Please Enter Fisrt Name.",
-      lastnameCompulsion:"Please Enter Last Name.",
-      mobilenumberCompulsion:"Please Enter Mobile Number.",
-      emailCompulsion:"Please Enter EmailID."
+      usernameCompulsion:"Please enter user name.",
+      firstnameCompulsion:"Please enter first name.",
+      lastnameCompulsion:"Please enter last name.",
+      mobilenumberCompulsion:"Please enter mobile number.",
+      emailCompulsion:"Please enter emailID."
     });
   }
   }
@@ -956,7 +975,7 @@ if(datar==="add"){
       self.setState({
        
         getID:id,
-        buttonToggle:true
+        personalReadOnly:true
       });
       self.handleUserList();
     });
@@ -1016,7 +1035,7 @@ if(datar==="add"){
       self.setState({
         
          getID: id,
-         buttonProfileToggle:true
+         profileReadOnly:true
 
       });
       self.handleUserList();
@@ -1145,7 +1164,8 @@ if(datar==="add"){
         selectedStatus: "",
         buttonToggle:false,
         buttonProfileToggle:false,
-
+         personalReadOnly:false,
+         profileReadOnly:false,
         getID: 0
       });
       self.handleUserList();
@@ -1352,7 +1372,7 @@ if(datar==="add"){
   }else{
     this.setState({
       editusernameCompulsion:"Please enter user name.",
-      editfirstnameCompulsion:"Please enter fisrt name.",
+      editfirstnameCompulsion:"Please enter first name.",
       editlastnameCompulsion:"Please enter last name.",
       editmobilenumberCompulsion:"Please enter mobile number.",
       editemailCompulsion:"Please enter emailID.",
@@ -2369,7 +2389,7 @@ if(datar==="add"){
                       <div className="div-cntr">
                         <label>User Name</label>
                         <input type="text" maxLength={25}
-                       
+                          readOnly={this.state.personalReadOnly}
                           name="selectUserName"
                           value={this.state.selectUserName}
                           onChange={this.handleOnChangeUserData}
@@ -2383,6 +2403,7 @@ if(datar==="add"){
                       <div className="div-cntr">
                         <label>First Name</label>
                         <input type="text" maxLength={25}
+                        readOnly={this.state.personalReadOnly}
                           name="selectFirstName"
                           value={this.state.selectFirstName}
                           onChange={this.handleOnChangeUserData}
@@ -2396,6 +2417,7 @@ if(datar==="add"){
                       <div className="div-cntr">
                         <label>Last Name</label>
                         <input type="text" maxLength={25}
+                        readOnly={this.state.personalReadOnly}
                           name="selectLastName"
                           value={this.state.selectLastName}
                           onChange={this.handleOnChangeUserData}
@@ -2409,6 +2431,7 @@ if(datar==="add"){
                       <div className="div-cntr">
                         <label>Mobile Number</label>
                         <input type="text" maxLength={10}
+                        readOnly={this.state.personalReadOnly}
                           name="selectMobile"
                           value={this.state.selectMobile}
                           onChange={this.handleOnChangeUserData}
@@ -2426,6 +2449,7 @@ if(datar==="add"){
                       <div className="div-cntr">
                         <label>Email ID</label>
                         <input type="text" maxLength={100}
+                        readOnly={this.state.personalReadOnly}
                           name="selectEmail"
                           value={this.state.selectEmail}
                           onChange={this.handleOnChangeUserData}
@@ -2440,34 +2464,53 @@ if(datar==="add"){
                     </p>
                  
                       </div>
-                     
-                       {this.state.buttonToggle===true ? (
-                           <div className="btn-coll">
-                           <button
-                            data-toggle="collapse"
-                            href="#personal-details"
-                             //data-target="#profile-details"
-                             //data-toggle="collapse"
-                             className="butn"
-                             onClick={this.handleEditPersonalDetails.bind(this)}
-                           >
-                             Update &amp;Next
-                           </button>
-                         </div>
-                       ):(
-                        <div className="btn-coll">
-                        <button
-                         // data-toggle="collapse"
-                         // href="#personal-details"
-                          //data-target="#profile-details"
+
+                      {this.state.personalReadOnly===true ? (
+                         <div className="btn-coll">
+                         <button
                           //data-toggle="collapse"
-                          className="butn"
-                          onClick={this.handleValidationEmailIdMob.bind(this)}
-                        >
-                          SAVE &amp; NEXT
-                        </button>
-                      </div>
-                       )}
+                          //href="#personal-details"
+                           //data-target="#profile-details"
+                           //data-toggle="collapse"
+                           className="butn"
+                           onClick={this.editMethod.bind(this)}
+                         >
+                           Update 
+                         </button>
+                       </div>
+                      ):(
+
+                        this.state.buttonToggle===true ? (
+                          <div className="btn-coll">
+                          <button
+                           data-toggle="collapse"
+                           href="#personal-details"
+                            //data-target="#profile-details"
+                            //data-toggle="collapse"
+                            className="butn"
+                            onClick={this.handleEditPersonalDetails.bind(this)}
+                          >
+                            Update &amp;Next
+                          </button>
+                        </div>
+                      ):(
+                       <div className="btn-coll">
+                       <button
+                        // data-toggle="collapse"
+                        // href="#personal-details"
+                         //data-target="#profile-details"
+                         //data-toggle="collapse"
+                         className="butn"
+                         onClick={this.handleValidationEmailIdMob.bind(this)}
+                       >
+                         SAVE &amp; NEXT
+                       </button>
+                     </div>
+                      )
+
+                      )}
+                     
+                       
                          
                       
                          
@@ -2491,7 +2534,7 @@ if(datar==="add"){
                       <div className="div-cntr">
                         <label>User Designation</label>
                         <select className="add-select-category"
-                        
+                          disabled={this.state.profileReadOnly}
                           name="selectedDesignation"
                           value={this.state.selectedDesignation}
                           onChange={this.handleDesination.bind(this,"add")}
@@ -2513,6 +2556,7 @@ if(datar==="add"){
                       <div className="div-cntr">
                         <label>Reportee Designation</label>
                         <select className="add-select-category"
+                        disabled={this.state.profileReadOnly}
                           name="selectedReporteeDesign"
                           value={this.state.selectedReporteeDesign}
                           onChange={this.handleReporteeDesgnDropDown.bind(this,"add")}
@@ -2535,6 +2579,7 @@ if(datar==="add"){
                       <div className="div-cntr">
                         <label>Report To</label>
                         <select className="add-select-category"
+                          disabled={this.state.profileReadOnly}
                           name="selectedReportTO"
                           value={this.state.selectedReportTO}
                           onChange={this.handleOnChangeUserData}
@@ -2553,32 +2598,50 @@ if(datar==="add"){
                     </p>
                   )}
                       </div>
-                      {this.state.buttonProfileToggle===true ? (
+                      {this.state.profileReadOnly===true ? (
                          <div className="btn-coll">
                          <button
-                          data-toggle="collapse"
-                          href="#profile-details"
+                          //data-toggle="collapse"
+                          //href="#profile-details"
                            //data-target="#mapped-category"
                            //data-toggle="collapse"
                            className="butn"
-                           onClick={this.handleAddProfileDetails.bind(this)}
+                           onClick={this.editProfileMethod.bind(this)}
                          >
-                          Update &amp;Next
+                          Update 
                          </button>
                        </div>
                       ):(
-                        <div className="btn-coll">
-                        <button
-                          //data-target="#mapped-category"
-                          data-toggle="collapse"
-                          href="#profile-details"
-                          className="butn"
-                          onClick={this.handleAddProfileDetails.bind(this)}
-                        >
-                          SAVE &amp; NEXT
-                        </button>
-                      </div>
+
+                        this.state.buttonProfileToggle===true ? (
+                          <div className="btn-coll">
+                          <button
+                           data-toggle="collapse"
+                           href="#profile-details"
+                            //data-target="#mapped-category"
+                            //data-toggle="collapse"
+                            className="butn"
+                            onClick={this.handleAddProfileDetails.bind(this)}
+                          >
+                           Update &amp;Next
+                          </button>
+                        </div>
+                       ):(
+                         <div className="btn-coll">
+                         <button
+                           //data-target="#mapped-category"
+                          // data-toggle="collapse"
+                           //href="#profile-details"
+                           className="butn"
+                           onClick={this.handleAddProfileDetails.bind(this)}
+                         >
+                           SAVE &amp; NEXT
+                         </button>
+                       </div>
+                       )
+
                       )}
+                      
                       
                     </div>
                   </div>
