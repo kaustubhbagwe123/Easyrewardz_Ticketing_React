@@ -29,16 +29,18 @@ class Module extends Component {
       modulesNames: [],
       modulesItems: [],
       moduleID: 0,
-      activeID:[],
-      inactiveID:[],
-      moduleIDMyticket:0,
+      activeID: [],
+      inactiveID: [],
+      moduleIDMyticket: 0,
       modulesItemsMyticket: []
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleGetModulesNames = this.handleGetModulesNames.bind(this);
     this.handleGetModulesItems = this.handleGetModulesItems.bind(this);
-    this.handleGetModulesItemsMyTicket=this.handleGetModulesItemsMyTicket.bind(this);
-    this.handleUpdatedModule=this.handleUpdatedModule.bind(this);
+    this.handleGetModulesItemsMyTicket = this.handleGetModulesItemsMyTicket.bind(
+      this
+    );
+    this.handleUpdatedModule = this.handleUpdatedModule.bind(this);
   }
   //   handleChangeStart = () => {
   //     console.log('Change event started')
@@ -55,91 +57,84 @@ class Module extends Component {
     // this.handleGetModulesItems();
   }
 
-  checkModule = async (moduleItemID,moduleID) => {
+  checkModule = async (moduleItemID, moduleID) => {
     debugger;
-    var activeIds=[];
-    var inactiveIds=[];
-    let modulesItems = [... this.state.modulesItems], isActive;
+    var activeIds = [];
+    var inactiveIds = [];
+    let modulesItems = [...this.state.modulesItems],
+      isActive;
     for (let i = 0; i < modulesItems.length; i++) {
       if (modulesItems[i].moduleItemID === moduleItemID) {
         isActive = modulesItems[i].moduleItemisActive;
         modulesItems[i].moduleItemisActive = !isActive;
       }
     }
-    for (let i = 0; i < modulesItems.length; i++){
-      if( modulesItems[i].moduleItemisActive===true){
-         var ids =modulesItems[i].moduleItemID;
-         activeIds.push(ids);
-      }
-      else{
-        var ids =modulesItems[i].moduleItemID;
+    for (let i = 0; i < modulesItems.length; i++) {
+      if (modulesItems[i].moduleItemisActive === true) {
+        var MID = modulesItems[i].moduleItemID;
+        activeIds.push(MID);
+      } else {
+        var ids = modulesItems[i].moduleItemID;
         inactiveIds.push(ids);
       }
     }
     await this.setState({
       modulesItems,
-      activeID:activeIds,
-      inactiveID:inactiveIds,
-      
+      activeID: activeIds,
+      inactiveID: inactiveIds
     });
     this.handleUpdatedModule(moduleID);
-    
-  }
+  };
 
-  checkModuleMyTicket = async (moduleItemID,moduleID) => {
+  checkModuleMyTicket = async (moduleItemID, moduleID) => {
     debugger;
-    var activeIds=[];
-    var inactiveIds=[];
-    let modulesItemsMyticket = [... this.state.modulesItemsMyticket], isActive;
+    var activeIds = [];
+    var inactiveIds = [];
+    let modulesItemsMyticket = [...this.state.modulesItemsMyticket],
+      isActive;
     for (let i = 0; i < modulesItemsMyticket.length; i++) {
       if (modulesItemsMyticket[i].moduleItemID === moduleItemID) {
         isActive = modulesItemsMyticket[i].moduleItemisActive;
         modulesItemsMyticket[i].moduleItemisActive = !isActive;
       }
     }
-    for (let i = 0; i < modulesItemsMyticket.length; i++){
-      if( modulesItemsMyticket[i].moduleItemisActive===true){
-         var ids =modulesItemsMyticket[i].moduleItemID;
-         activeIds.push(ids);
-      }
-      else{
-        var ids =modulesItemsMyticket[i].moduleItemID;
+    for (let i = 0; i < modulesItemsMyticket.length; i++) {
+      if (modulesItemsMyticket[i].moduleItemisActive === true) {
+        var MId = modulesItemsMyticket[i].moduleItemID;
+        activeIds.push(MId);
+      } else {
+        var ids = modulesItemsMyticket[i].moduleItemID;
         inactiveIds.push(ids);
       }
     }
-    
-    await this.setState({ 
-      activeID:activeIds,
-      inactiveID:inactiveIds,
-      
+
+    await this.setState({
+      activeID: activeIds,
+      inactiveID: inactiveIds
     });
     this.handleUpdatedModule(moduleID);
-    
-    
-  }
+  };
 
-  
-  changeModuleTab = async (moduleID) => {
+  changeModuleTab = async moduleID => {
     debugger;
     await this.setState({
       moduleID
     });
     this.handleGetModulesItems();
-  }
+  };
 
-  
   handleUpdatedModule(id) {
     debugger;
     let self = this;
-    var activeitem="";
-    var inactiveitem="";
+    var activeitem = "";
+    var inactiveitem = "";
 
     if (this.state.activeID !== null) {
       for (let i = 0; i < this.state.activeID.length; i++) {
         activeitem += this.state.activeID[i] + ",";
       }
     }
-   
+
     if (this.state.inactiveID !== null) {
       for (let i = 0; i < this.state.inactiveID.length; i++) {
         inactiveitem += this.state.inactiveID[i] + ",";
@@ -149,30 +144,24 @@ class Module extends Component {
       method: "post",
       url: config.apiUrl + "/Module/ModifyModuleItems",
       headers: authHeader(),
-      params:{
-        ModuleID:id,
-        ModulesActive:activeitem,
-        ModuleInactive:inactiveitem
+      params: {
+        ModuleID: id,
+        ModulesActive: activeitem,
+        ModuleInactive: inactiveitem
       }
-      
-    }).then(function (res) {
+    }).then(function(res) {
       debugger;
-     
+
       let Msg = res.data.message;
       if (Msg === "Success") {
-
         NotificationManager.success("Record Updated successfully.");
-
-      }
-      else{
+      } else {
         NotificationManager.error("Record Not Updated");
-
       }
       self.setState({
-        activeID:[],
-        inactiveID:[]
+        activeID: [],
+        inactiveID: []
       });
-     
     });
   }
 
@@ -189,11 +178,9 @@ class Module extends Component {
       let data = res.data.responseData;
       let moduleID = data[0].moduleID;
       let moduleIDMyticket = data[1].moduleID;
-     
+
       if (status === "Success") {
-        self.setState({ modulesNames: data,moduleID,moduleIDMyticket
-           });
-          
+        self.setState({ modulesNames: data, moduleID, moduleIDMyticket });
       } else {
         self.setState({ modulesNames: [] });
       }
@@ -215,11 +202,9 @@ class Module extends Component {
       debugger;
       let status = res.data.message;
       let data = res.data.responseData;
-     
+
       if (status === "Success") {
-        self.setState({ modulesItems: data
-           });
-          
+        self.setState({ modulesItems: data });
       } else {
         self.setState({ modulesItems: [] });
       }
@@ -239,27 +224,27 @@ class Module extends Component {
       debugger;
       let status = res.data.message;
       let data = res.data.responseData;
-      
+
       if (status === "Success") {
-        self.setState({ modulesItemsMyticket: data
-           });
-          
+        self.setState({ modulesItemsMyticket: data });
       } else {
         self.setState({ modulesItemsMyticket: [] });
       }
     });
   }
 
-
   render() {
- 
     return (
       <Fragment>
         <NotificationContainer />
         <div className="container-fluid setting-title setting-breadcrumb">
-          <Link to="settings" className="header-path">Settings</Link>
+          <Link to="settings" className="header-path">
+            Settings
+          </Link>
           <span>&gt;</span>
-          <Link to="settings" className="header-path">Ticketing</Link>
+          <Link to="settings" className="header-path">
+            Ticketing
+          </Link>
           <span>&gt;</span>
           <Link to={Demo.BLANK_LINK} className="active header-path">
             Modules
@@ -269,47 +254,79 @@ class Module extends Component {
         <div className="paddmodule">
           <div className="module-tabs">
             <section>
-                {this.state.modulesNames.length > 0 && <Tabs onSelect={(index, label) => console.log(label + ' selected')}>
-                  {this.state.modulesNames !== null && 
-                  this.state.modulesNames.map((name, i) => (
-                    
-                    <Tab label={name.moduleName} key={i}>
-                    
-                      <div className="switch switch-primary">
-                        <label className="moduleswitchtext-main">Field Name</label>
-                        <label className="moduleswitchtext-main1">Show/Hide</label>
-                      </div>
-                  
-                      {this.state.modulesItems !== null &&  name.moduleID===8 &&
-                      this.state.modulesItems.map((item, i) => (
-                        <div className="module-switch" key={i}>
-                          <div className="switch switch-primary">
-                            <label className="moduleswitchtext">{item.moduleItemName}</label>
-                            <input name="moduleItems" checked={item.moduleItemisActive} type="checkbox" id={'i' + item.moduleItemID} onChange={this.checkModule.bind(this, item.moduleItemID,name.moduleID)} />
-                            <label htmlFor={'i' + item.moduleItemID} className="cr"></label>
-                          </div>
+              {this.state.modulesNames.length > 0 && (
+                <Tabs
+                  onSelect={(index, label) => console.log(label + " selected")}
+                >
+                  {this.state.modulesNames !== null &&
+                    this.state.modulesNames.map((name, i) => (
+                      <Tab label={name.moduleName} key={i}>
+                        <div className="switch switch-primary">
+                          <label className="moduleswitchtext-main">
+                            Field Name
+                          </label>
+                          <label className="moduleswitchtext-main1">
+                            Show/Hide
+                          </label>
                         </div>
-                      ))} 
 
-                       {this.state.modulesItemsMyticket !== null &&  name.moduleID===9 &&
-                      this.state.modulesItemsMyticket.map((item, i) => (
-                        <div className="module-switch" key={i}>
-                          <div className="switch switch-primary">
-                            <label className="moduleswitchtext">{item.moduleItemName}</label>
-                            <input name="moduleItems" checked={item.moduleItemisActive} type="checkbox" id={'i' + item.moduleItemID} onChange={this.checkModuleMyTicket.bind(this, item.moduleItemID,name.moduleID)}  />
-                            <label htmlFor={'i' + item.moduleItemID} className="cr"></label>
-                          </div>
-                        </div>
-                      ))}
+                        {this.state.modulesItems !== null &&
+                          name.moduleID === 8 &&
+                          this.state.modulesItems.map((item, i) => (
+                            <div className="module-switch" key={i}>
+                              <div className="switch switch-primary">
+                                <label className="moduleswitchtext">
+                                  {item.moduleItemName}
+                                </label>
+                                <input
+                                  name="moduleItems"
+                                  checked={item.moduleItemisActive}
+                                  type="checkbox"
+                                  id={"i" + item.moduleItemID}
+                                  onChange={this.checkModule.bind(
+                                    this,
+                                    item.moduleItemID,
+                                    name.moduleID
+                                  )}
+                                />
+                                <label
+                                  htmlFor={"i" + item.moduleItemID}
+                                  className="cr"
+                                ></label>
+                              </div>
+                            </div>
+                          ))}
 
-
-                    </Tab>
-
-                    
-
-
-                  ))}
-                </Tabs>}
+                        {this.state.modulesItemsMyticket !== null &&
+                          name.moduleID === 9 &&
+                          this.state.modulesItemsMyticket.map((item, i) => (
+                            <div className="module-switch" key={i}>
+                              <div className="switch switch-primary">
+                                <label className="moduleswitchtext">
+                                  {item.moduleItemName}
+                                </label>
+                                <input
+                                  name="moduleItems"
+                                  checked={item.moduleItemisActive}
+                                  type="checkbox"
+                                  id={"i" + item.moduleItemID}
+                                  onChange={this.checkModuleMyTicket.bind(
+                                    this,
+                                    item.moduleItemID,
+                                    name.moduleID
+                                  )}
+                                />
+                                <label
+                                  htmlFor={"i" + item.moduleItemID}
+                                  className="cr"
+                                ></label>
+                              </div>
+                            </div>
+                          ))}
+                      </Tab>
+                    ))}
+                </Tabs>
+              )}
               {/* <Tabs>
                 <Tab label="Advance Search">
                   <div className="switch switch-primary">

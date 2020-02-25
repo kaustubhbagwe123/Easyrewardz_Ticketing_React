@@ -81,9 +81,9 @@ class CreateSLA extends Component {
     debugger;
     var indiSla = this.state.indiSla;
     var separator = ",";
+    var values = indiSla.split(separator);
     if (event.target.checked) {
       // indiSla += issueId + ",";
-      var values = indiSla.split(separator);
       var flag = values.includes(issueId.toString());
       if (!flag) {
         values.unshift(issueId);
@@ -96,7 +96,7 @@ class CreateSLA extends Component {
     } else {
       // var indiSla = this.state.indiSla;
       // var separator = ",";
-      var values = indiSla.split(separator);
+      // var values = indiSla.split(separator);
       for (var i = 0; i < values.length; i++) {
         if (values[i] === issueId) {
           values.splice(i, 1);
@@ -116,10 +116,10 @@ class CreateSLA extends Component {
 
   selectAboveIndividualSLA = async (issueId, event) => {
     debugger;
+    var indiSla = this.state.indiSla;
+    var separator = ",";
+    var values = indiSla.split(separator);
     if (event.target.checked) {
-      var indiSla = this.state.indiSla;
-      var separator = ",";
-      var values = indiSla.split(separator);
       var flag = values.includes(issueId.toString());
       if (!flag) {
         values.unshift(issueId);
@@ -130,9 +130,9 @@ class CreateSLA extends Component {
       });
       document.getElementById('issueTypeValue').textContent = (this.state.indiSla.split(',').length - 1) + ' selected';
     } else {
-      var indiSla = this.state.indiSla;
-      var separator = ",";
-      var values = indiSla.split(separator);
+      // var indiSla = this.state.indiSla;
+      // var separator = ",";
+      // var values = indiSla.split(separator);
       for (var i = 0; i < values.length; i++) {
         if (values[i] === issueId) {
           values.splice(i, 1);
@@ -969,7 +969,7 @@ class CreateSLA extends Component {
                                   onChange={this.handleSearchSla}
                                   id="SlaInput"
                                 />
-                                <img src={Cancel} alt="cancel image" onClick={this.handleClearSearchSla} />
+                                <img src={Cancel} alt="cancelimg" onClick={this.handleClearSearchSla} />
                               </div>
                               {/* <div className="filter-checkbox category-scroll">
                                 <ul>

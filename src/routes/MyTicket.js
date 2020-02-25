@@ -74,7 +74,7 @@ class MyTicket extends Component {
     this.state = {
       open: false,
       InformStore: false,
-      collapseUp: false,
+      collapseUp: true,
       profilemodal: false,
       storemodal: false,
       storeproductsearch: false,
@@ -159,7 +159,7 @@ class MyTicket extends Component {
       agentId: 0,
       AttachementrData: [],
       ticketcommentMSG: "",
-      CustStoreStatusDrop: "0",
+      CustStoreStatusDrop: "1",
       OrderSubItem: [],
       mailSubject: "",
       expanded: {},
@@ -1066,15 +1066,24 @@ class MyTicket extends Component {
     // let self = this;
     var selectedStore = "";
     for (let j = 0; j < this.state.selectedStoreData.length; j++) {
+      var PurposeID = this.state.selectedStoreData[j]["Purpose_Id"];
+
+      if (PurposeID === "0") {
+        // Send Id as 1 and 2 from API
+        PurposeID = 1;
+      } else {
+        PurposeID = 2;
+      }
+
       selectedStore +=
         this.state.selectedStoreData[j]["storeID"] +
         "|" +
-        moment(this.state.selectedStoreIDs[j]["storeVisitDate"]).format(
+        moment(this.state.selectedStoreData[j]["storeVisitDate"]).format(
           "YYYY-MM-DD"
         ) +
         "|" +
-        this.state.selectedStoreData[j]["purpose"] +
-        ",";
+        PurposeID +
+        ","
     }
     axios({
       method: "post",
@@ -2558,7 +2567,8 @@ class MyTicket extends Component {
                                         Store Details
                                       </a>
                                     </li>
-                                    {selectedStore.length > 0 ? (
+                                    {this.state.selectedStoreData.length > 0 ||
+                                    selectedStore.length > 0 ? (
                                       <li className="nav-item fo">
                                         <a
                                           className="nav-link"
@@ -2619,8 +2629,7 @@ class MyTicket extends Component {
                                                 htmlFor={
                                                   "i" + row.original.storeID
                                                 }
-                                              >
-                                              </label>
+                                              ></label>
                                             </div>
                                           );
                                         }
@@ -2644,7 +2653,7 @@ class MyTicket extends Component {
                                       {
                                         Header: <span>Store Addres</span>,
                                         accessor: "address"
-                                      } 
+                                      }
                                     ]}
                                     // resizable={false}
                                     defaultPageSize={5}
@@ -2691,14 +2700,14 @@ class MyTicket extends Component {
                                               defaultChecked={true}
                                             />
                                             <label
-                                                htmlFor={
-                                                  "i" + row.original.storeID
-                                                }
-                                              >
-                                                { row.original.Purpose_Id === 1
-                                                  ? "Customer Want to visit store"
-                                                  : "Customer Already visited store"}
-                                              </label>
+                                              htmlFor={
+                                                "i" + row.original.storeID
+                                              }
+                                            >
+                                              {row.original.Purpose_Id === 1
+                                                ? "Customer Want to visit store"
+                                                : "Customer Already visited store"}
+                                            </label>
                                           </div>
                                         )
                                       },
@@ -2740,7 +2749,9 @@ class MyTicket extends Component {
                                                   "visitDate" +
                                                   row.original.storeID
                                                 }
-                                                // value={row.original.storeVisitDate}
+                                                value={
+                                                  row.original.storeVisitDate
+                                                }
                                                 name="visitDate"
                                                 onChange={this.handleByvisitDate.bind(
                                                   this,
@@ -3456,9 +3467,10 @@ class MyTicket extends Component {
                 <div className="row">
                   <div className="mask1">
                     <div className="mail-mask">
-                      <div className="dropdown" style={{ display: "inherit" }}>
-                       
-                      </div>
+                      <div
+                        className="dropdown"
+                        style={{ display: "inherit" }}
+                      ></div>
 
                       {/* <div className="dropdown" style={{ display: "inherit" }}>
                         <button
