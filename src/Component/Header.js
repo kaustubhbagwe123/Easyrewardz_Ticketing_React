@@ -244,7 +244,7 @@ class Header extends Component {
       url: config.apiUrl + "/Notification/GetNotifications",
       headers: authHeader()
     }).then(function (res) {
-      //debugger;
+      debugger;
       let status = res.data.message;
       if (status === "Success") {
         let Count1 = res.data.responseData[0].ticketCount;
