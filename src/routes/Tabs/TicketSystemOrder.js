@@ -963,8 +963,8 @@ class TicketSystemOrder extends Component {
                         )}
                         columns={[
                           {
-                            Header: <span>Article Number</span>,
-                            accessor: "invoiceNo",
+                            Header: <span> </span>,
+                            accessor: "orderMasterID",
                             Cell: row => (
                               <div
                                 className="filter-checkbox"
@@ -989,10 +989,15 @@ class TicketSystemOrder extends Component {
                                 <label
                                   htmlFor={"order" + row.original.orderItemID}
                                 >
-                                  {row.original.orderItemID}
+                                  
                                 </label>
                               </div>
                             )
+                          },
+                          {
+                            Header: <span>Article Number</span>,
+                            accessor: "orderMasterID"
+                           
                           },
                           {
                             Header: <span>Article Size</span>,
@@ -1633,8 +1638,8 @@ class TicketSystemOrder extends Component {
                           data={row.original.orderItems}
                           columns={[
                             {
-                              Header: <span>Article Number</span>,
-                              accessor: "invoiceNo",
+                              Header: <span> </span>,
+                              accessor: "orderMasterID",
                               Cell: row => (
                                 <div
                                   className="filter-checkbox"
@@ -1659,10 +1664,15 @@ class TicketSystemOrder extends Component {
                                   <label
                                     htmlFor={"order" + row.original.orderItemID}
                                   >
-                                    {row.original.invoiceNo}
+                                   
                                   </label>
                                 </div>
                               )
+                            },
+                            {
+                              Header: <span>Article Number</span>,
+                              accessor: "orderMasterID"
+                             
                             },
                             {
                               Header: <span>Article Name</span>,
