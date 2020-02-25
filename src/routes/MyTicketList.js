@@ -261,7 +261,8 @@ class MyTicketList extends Component {
       sortPriorityData:[],
       sortcreatedOnData:[],
       sortAssigneeData:[],
-      sortAllData:[]
+      sortAllData:[],
+      cSelectedRow: {}
     };
     this.handleGetAssignTo = this.handleGetAssignTo.bind(this);
     this.clearSearch = this.clearSearch.bind(this);
@@ -319,12 +320,17 @@ class MyTicketList extends Component {
 
   componentDidMount() {
     debugger;
-    if (this.props.location.state && this.props.location.state.isFromHeader) {
+    if (this.props.location.state && this.props.location.state.isHeaderNew) {
       this.newNotifications();
     }
-    this.ViewSearchData();
+    if (this.props.location.state && this.props.location.state.isHeaderOpen) {
+      this.openNotifications();
+    }
+    // this.ViewSearchData();
     this.handleSearchTicketAllTabCount();
-    this.handleSearchTicket();
+    if (!this.props.location.state) {
+      this.handleSearchTicket();
+    }
     this.handleGetDesignationList();
     this.handleGetTicketPriorityList();
     this.handleGetChannelOfPurchaseList();
@@ -344,6 +350,14 @@ class MyTicketList extends Component {
     }
     document.getElementsByName("New")[0].classList.add("active");
     this.handleSearchTicket("New");
+  }
+  openNotifications() {
+    let upperTabs = document.querySelectorAll(".upper-tabs .nav-link");
+    for (let i = 0; i < upperTabs.length; i++) {
+      upperTabs[i].classList.remove("active");
+    }
+    document.getElementsByName("Open")[0].classList.add("active");
+    this.handleSearchTicket("Open");
   }
 
   handleMyTicketsearchOption() {
@@ -546,7 +560,7 @@ class MyTicketList extends Component {
       let CSVData = data;
       let Status = res.data.message;
       if (Status === "Success") {
-        self.setState({ SearchTicketData: data, loading: false });
+        self.setState({ SearchTicketData: data, loading: false ,cSelectedRow:{}});
         for (let i = 0; i < CSVData.length; i++) {
           delete CSVData[i].totalpages;
           delete CSVData[i].responseTimeRemainingBy;
@@ -2127,7 +2141,7 @@ class MyTicketList extends Component {
     });
   }
 
-  handelCheckBoxCheckedChange = async () => {
+  handelCheckBoxCheckedChange = async (ticketID) => {
     debugger;
     var checkboxes = document.getElementsByName("ListCheckbox");
     var strIds = "";
@@ -2139,8 +2153,14 @@ class MyTicketList extends Component {
         }
       }
     }
+    // await this.setState({
+    //   ticketIds: strIds
+    // });
+    const newSelected = Object.assign({}, this.state.cSelectedRow);
+    newSelected[ticketID] = !this.state.cSelectedRow[ticketID];
+
     await this.setState({
-      ticketIds: strIds
+      cSelectedRow: ticketID ? newSelected : false,  ticketIds: strIds
     });
   };
 
@@ -5091,11 +5111,11 @@ class MyTicketList extends Component {
                                             type="checkbox"
                                             id={"i" + row.original.ticketID}
                                             name="ListCheckbox"
-                                            // checked={row.original.ticketID}
+                                            checked={this.state.cSelectedRow[row.original.ticketID]}
                                             attrIds={row.original.ticketID}
-                                            onChange={
-                                              this.handelCheckBoxCheckedChange
-                                            }
+                                            onChange={()=>this.handelCheckBoxCheckedChange(	
+                                              row.original.ticketID	
+                                            )}
                                           />
                                           <label
                                             htmlFor={

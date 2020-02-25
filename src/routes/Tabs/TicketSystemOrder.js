@@ -276,6 +276,7 @@ class TicketSystemOrder extends Component {
             CustomerID: CustID
           }
         }).then(function(res) {
+          debugger
           let Msg = res.data.message;
           let mainData = res.data.responseData;
 
