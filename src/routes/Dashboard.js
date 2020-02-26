@@ -2974,6 +2974,8 @@ class Dashboard extends Component {
   handleApplySearch(paramsID) {
     debugger;
     let self = this;
+    this.setState({ loading: true });
+    self.onCloseModal();
     axios({
       method: "post",
       url: config.apiUrl + "/DashBoard/GetDashBoardTicketsOnSavedSearch",
@@ -2984,16 +2986,236 @@ class Dashboard extends Component {
     }).then(function (res) {
       debugger;
       let status = res.data.message;
-      let data = res.data.responseData;
+      let data = res.data.responseData.dashboardTicketList;
       let count = 0;
-      if (res.data.responseData != null) {
-        count = res.data.responseData.length;
+      if (res.data.responseData.dashboardTicketList != null) {
+        count = res.data.responseData.dashboardTicketList.length;
       }
       if (status === "Success") {
-        self.setState({ SearchTicketData: data, resultCount: count });
-        self.onCloseModal();
+        let dataSearch = JSON.parse(res.data.responseData.dbsearchParams);
+        self.setState({ SearchTicketData: data, resultCount: count, loading: false });
+        // self.onCloseModal();
+
+        let lowerTabs = document.querySelectorAll(".lower-tabs .nav-link");
+        let activeTabId = dataSearch.ActiveTabId;
+        for (let i = 0; i < lowerTabs.length; i++) {
+          lowerTabs[i].classList.remove("active");
+          if (activeTabId - 1 === i) {
+            lowerTabs[i].classList.add("active");
+          }
+        }
+        let lowerTabsPane = document.querySelectorAll(
+          ".lower-tabs-pane .tab-pane"
+        );
+        for (let i = 0; i < lowerTabsPane.length; i++) {
+          lowerTabsPane[i].classList.remove("active");
+          lowerTabsPane[i].classList.remove("show");
+          if (activeTabId - 1 === i) {
+            lowerTabsPane[i].classList.add("active");
+            lowerTabsPane[i].classList.add("show");
+          }
+        }
+
+        if (dataSearch.searchDataByDate === null) {
+          self.setState({
+            ByDateCreatDate: "",
+            ByDateSelectDate: "",
+            selectedSlaDueByDate: 0,
+            selectedTicketStatusByDate: 0
+          });
+        } else {
+          debugger;
+          if (dataSearch.searchDataByDate.Ticket_CreatedOn !== "") {
+            let createdDate = dataSearch.searchDataByDate.Ticket_CreatedOn;
+            let createdDateArray = createdDate.split('-');
+            var createdDateFinal = new Date(createdDateArray[0], createdDateArray[1] - 1, createdDateArray[2]);
+          }
+          if (dataSearch.searchDataByDate.Ticket_ModifiedOn !== "") {
+            let modifiedDate = dataSearch.searchDataByDate.Ticket_ModifiedOn;
+            let modifiedDateArray = modifiedDate.split('-');
+            var modifiedDateFinal = new Date(modifiedDateArray[0], modifiedDateArray[1] - 1, modifiedDateArray[2]);
+          }
+          self.setState({
+            ByDateCreatDate: createdDateFinal,
+            ByDateSelectDate: modifiedDateFinal,
+            selectedSlaDueByDate: dataSearch.searchDataByDate.SLA_DueON,
+            selectedTicketStatusByDate:
+              dataSearch.searchDataByDate.Ticket_StatusID
+          });
+        }
+
+        if (dataSearch.searchDataByCustomerType === null) {
+          self.setState({
+            MobileNoByCustType: "",
+            EmailIdByCustType: "",
+            TicketIdByCustType: "",
+            selectedTicketStatusByCustomer: 0
+          });
+        } else {
+          self.setState({
+            MobileNoByCustType:
+              dataSearch.searchDataByCustomerType.CustomerMobileNo,
+            EmailIdByCustType:
+              dataSearch.searchDataByCustomerType.CustomerEmailID,
+            TicketIdByCustType: dataSearch.searchDataByCustomerType.TicketID,
+            selectedTicketStatusByCustomer:
+              dataSearch.searchDataByCustomerType.TicketStatusID
+          });
+        }
+
+        if (dataSearch.searchDataByTicketType === null) {
+          self.setState({
+            selectedPriority: 0,
+            selectedTicketStatusByTicket: 0,
+            selectedChannelOfPurchase: [],
+            selectedTicketActionType: []
+          });
+        } else {
+          let purchaseArr = [];
+          let purchaseId = dataSearch.searchDataByTicketType.ChannelOfPurchaseIds.split(
+            ","
+          );
+          for (let i = 0; i < purchaseId.length - 1; i++) {
+            const element = purchaseId[i];
+            for (let j = 0; j < self.state.ChannelOfPurchaseData.length; j++) {
+              if (
+                element ==
+                self.state.ChannelOfPurchaseData[j].channelOfPurchaseID
+              ) {
+                purchaseArr.push(self.state.ChannelOfPurchaseData[j]);
+              }
+            }
+          }
+
+          let actionArr = [];
+          let actionId = dataSearch.searchDataByTicketType.ActionTypes.split(
+            ","
+          );
+          for (let i = 0; i < actionId.length - 1; i++) {
+            const element = actionId[i];
+            for (let j = 0; j < self.state.TicketActionTypeData.length; j++) {
+              if (
+                element ==
+                self.state.TicketActionTypeData[j].ticketActionTypeID
+              ) {
+                actionArr.push(self.state.TicketActionTypeData[j]);
+              }
+            }
+          }
+
+          self.setState({
+            selectedPriority:
+              dataSearch.searchDataByTicketType.TicketPriorityID,
+            selectedTicketStatusByTicket:
+              dataSearch.searchDataByTicketType.TicketStatusID,
+            selectedChannelOfPurchase: purchaseArr,
+            selectedTicketActionType: actionArr
+          });
+        }
+
+        if (dataSearch.searchDataByCategoryType === null) {
+          self.setState({
+            selectedCategory: 0,
+            selectedSubCategory: 0,
+            selectedIssueType: 0,
+            selectedTicketStatusByCategory: 0
+          });
+        } else {
+          self.setState({
+            selectedCategory: dataSearch.searchDataByCategoryType.CategoryId,
+            selectedSubCategory: dataSearch.searchDataByCategoryType.SubCategoryId,
+            selectedIssueType: dataSearch.searchDataByCategoryType.IssueTypeId,
+            selectedTicketStatusByCategory: dataSearch.searchDataByCategoryType.TicketStatusID
+          });
+        }
+
+        if (dataSearch.searchDataByAll === null) {
+          self.setState({
+            ByAllCreateDate: "",
+            selectedTicketSource: 0,
+            ClaimIdByAll: "",
+            EmailByAll: "",
+            ByAllLastDate: "",
+            TicketIdTitleByAll: "",
+            InvoiceSubOrderByAll: "",
+            MobileByAll: "",
+            selectedCategoryAll: 0,
+            selectedPriorityAll: 0,
+            ItemIdByAll: "",
+            selectedAssignedTo: 0,
+            selectedAssignedToAll: "",
+            selectedSubCategoryAll: 0,
+            selectedTicketStatusAll: 0,
+            selectedVisitStoreAll: "all",
+            selectedPurchaseStoreCodeAddressAll: "",
+            selectedIssueTypeAll: 0,
+            selectedSlaStatus: 0,
+            selectedWantToVisitStoreAll: "all",
+            selectedVisitStoreCodeAddressAll: "",
+            selectedWithClaimAll: "no",
+            selectedClaimStatus: 0,
+            selectedClaimCategory: 0,
+            selectedClaimSubCategory: 0,
+            selectedClaimIssueType: 0,
+            selectedWithTaskAll: "no",
+            selectedTaskStatus: 0,
+            selectedDepartment: 0,
+            selectedFunction: 0
+          });
+        } else {
+          if (dataSearch.searchDataByAll.CreatedDate !== "") {
+            let createdDate = dataSearch.searchDataByAll.CreatedDate;
+            let createdDateArray = createdDate.split('-');
+            let createdDateFinal = new Date(createdDateArray[0], createdDateArray[1] - 1, createdDateArray[2]);
+          }
+          if (dataSearch.searchDataByAll.ModifiedDate !== "") {
+            let modifiedDate = dataSearch.searchDataByAll.ModifiedDate;
+            let modifiedDateArray = modifiedDate.split('-');
+            let modifiedDateFinal = new Date(modifiedDateArray[0], modifiedDateArray[1] - 1, modifiedDateArray[2]);
+          }
+          self.setState({
+            ByAllCreateDate: createdDateFinal,
+            selectedTicketSource: dataSearch.searchDataByAll.TicketSourceTypeID,
+            ClaimIdByAll: dataSearch.searchDataByAll.ClaimId,
+            EmailByAll: dataSearch.searchDataByAll.CustomerEmailID,
+            ByAllLastDate: modifiedDateFinal,
+            TicketIdTitleByAll: dataSearch.searchDataByAll.TicketIdORTitle,
+            InvoiceSubOrderByAll:
+              dataSearch.searchDataByAll.InvoiceNumberORSubOrderNo,
+            MobileByAll: dataSearch.searchDataByAll.CustomerMobileNo,
+            selectedCategoryAll: dataSearch.searchDataByAll.CategoryId,
+            selectedPriorityAll: dataSearch.searchDataByAll.PriorityId,
+            ItemIdByAll: dataSearch.searchDataByAll.OrderItemId,
+            selectedAssignedTo: dataSearch.searchDataByAll.AssignTo,
+            // selectedAssignedToAll: "",
+            selectedSubCategoryAll: dataSearch.searchDataByAll.SubCategoryId,
+            selectedTicketStatusAll: dataSearch.searchDataByAll.TicketSatutsID,
+            selectedVisitStoreAll: dataSearch.searchDataByAll.IsVisitStore,
+            selectedPurchaseStoreCodeAddressAll:
+              dataSearch.searchDataByAll.StoreCodeORAddress,
+            selectedIssueTypeAll: dataSearch.searchDataByAll.IssueTypeId,
+            selectedSlaStatus: dataSearch.searchDataByAll.SLAStatus,
+            selectedWantToVisitStoreAll:
+              dataSearch.searchDataByAll.IsWantVistingStore,
+            selectedVisitStoreCodeAddressAll:
+              dataSearch.searchDataByAll.WantToStoreCodeORAddress,
+            selectedWithClaimAll:
+              dataSearch.searchDataByAll.HaveClaim === 0 ? "no" : "yes",
+            selectedClaimStatus: dataSearch.searchDataByAll.ClaimStatusId,
+            selectedClaimCategory: dataSearch.searchDataByAll.ClaimCategoryId,
+            selectedClaimSubCategory:
+              dataSearch.searchDataByAll.ClaimSubCategoryId,
+            selectedClaimIssueType: dataSearch.searchDataByAll.ClaimIssueTypeId,
+            selectedWithTaskAll:
+              dataSearch.searchDataByAll.HaveTask === 0 ? "no" : "yes",
+            selectedTaskStatus: dataSearch.searchDataByAll.TaskStatusId,
+            selectedDepartment: dataSearch.searchDataByAll.TaskDepartment_Id,
+            selectedFunction: dataSearch.searchDataByAll.TaskFunction_Id
+          });
+        }
+
       } else {
-        self.setState({ SearchTicketData: [] });
+        self.setState({ SearchTicketData: [], loading: false });
       }
     });
   }
@@ -3439,6 +3661,7 @@ class Dashboard extends Component {
                                     : this.state.DashboardNumberData.open
                                   : null}
                               </span>
+                              <span className={this.state.TotalNoOfChatShow ? "dash-res" : "dash-res dash-res-opac"} style={{marginTop: '-3px'}}>Resolution : &nbsp;<span style={{fontWeight: '700'}}>{this.state.DashboardNumberData.resolutionRate}</span></span>
                             </div>
                           </div>
                           <div className="col-md col-sm-4 col-6">
@@ -3630,6 +3853,7 @@ class Dashboard extends Component {
                                               .responseRate
                                           }
                                         </big>
+                                        <span className={this.state.TotalNoOfChatShow ? "dash-res" : "dash-res dash-res-opac"} style={{marginTop: '-5px'}}>Avg. Response TAT &nbsp;<span style={{fontWeight: '700'}}>{this.state.DashboardNumberData.avgResponseTAT}</span></span>
                                       </span>
                                       <p className="card-head mt-lg-4 mt-2">
                                         Resolution{" "}
@@ -3644,6 +3868,7 @@ class Dashboard extends Component {
                                               .resolutionRate
                                           }
                                         </span>
+                                        <span className={this.state.TotalNoOfChatShow ? "dash-res" : "dash-res dash-res-opac"}>Avg. Resolution TAT &nbsp;<span style={{fontWeight: '700'}}>{this.state.DashboardNumberData.avgResolutionTAT}</span></span>
                                       </p>
                                     </div>
                                   ) : null
@@ -3792,7 +4017,7 @@ class Dashboard extends Component {
                     <CardBody>
                       <div className="myticlist-expand-sect">
                         <div className="position-relative">
-                          <ul className="nav nav-tabs" role="tablist">
+                          <ul className="nav nav-tabs lower-tabs" role="tablist">
                             <li className="nav-item">
                               <a
                                 className="nav-link active"
@@ -3948,7 +4173,7 @@ class Dashboard extends Component {
                             </ul>
                           </div>
                         </Modal>
-                        <div className="tab-content p-0">
+                        <div className="tab-content lower-tabs-pane p-0">
                           <div
                             className="tab-pane fade show active"
                             id="date-tab"

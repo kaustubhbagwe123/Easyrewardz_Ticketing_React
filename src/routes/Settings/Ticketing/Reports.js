@@ -22,6 +22,7 @@ import {
 import ClaimStatus from "./../../ClaimStatus";
 import TaskStatus from "./../../TaskStatus";
 import TicketStatus from "./../../TicketStatus";
+import moment from "moment";
 import Select from "react-select";
 import { Checkbox } from "antd";
 import ScheduleDateDropDown from "./../../ScheduleDateDropDown";
@@ -35,7 +36,9 @@ class Reports extends Component {
       ChatDate: "",
       tabIndex: 0,
       ReportData: [],
+      ReportParams:"",
       brandData: [],
+      Schedule_ID:0,
       CategoryData: [],
       SubCategoryData: [],
       IssueTypeData: [],
@@ -43,6 +46,7 @@ class Reports extends Component {
       TicketPriorityData: [],
       AssignToData: [],
       DepartmentData: [],
+      totalResultCount:0,
       ClaimStatusData: ClaimStatus(),
       TaskStatusData: TaskStatus(),
       TicketStatusData: TicketStatus(),
@@ -52,7 +56,7 @@ class Reports extends Component {
       selectedCategory: 0,
       selectedSubCategory: 0,
       selectedIssueType: 0,
-      selectedClaimID: "",
+      selectedClaimID: "0",
       selectedTicketSource: 0,
       selectedInvoiceNo: "",
       selectedEmailID: "",
@@ -60,15 +64,15 @@ class Reports extends Component {
       selectedMobileNo: "",
       selectedItemID: "",
       selectedPriority: 0,
-      selectedVisitStore: "",
+      selectedVisitStore: "yes",
       selectedAssignedTo: 0,
-      selectedWantVisitStore: "",
+      selectedWantVisitStore: "yes",
       selectedTicketStatus: 0,
       selectedVisitStoreAddress: "",
       selectedPurchaseStore: "",
       selectedTeamMember: "",
       selectedReportName: "",
-      selectedSLAStatus: "",
+      selectedSLAStatus: "0",
       selectedWithClaim: "no",
       selectedWithTaskAll: "no",
       selectedClaimStatus: 0,
@@ -183,14 +187,13 @@ class Reports extends Component {
       VisitStoreAddressCompulsion: "",
       PurchaseStoreCompulsion: "",
       ClaimStatusCompulsion: "",
-      ClaimCategoryCompulsion:"",
-      ClaimSubCategoryCompulsion:"",
-      ClaimIssueTypeCompulsion:"",
-      TaskStatusCompulsion:"",
-      TaskPriorityCompulsion:"",
-      DepartmentCompulsion:"",
-      FunctionCompulsion:"",
-      reportNameCompulsion:""
+      ClaimCategoryCompulsion: "",
+      ClaimSubCategoryCompulsion: "",
+      ClaimIssueTypeCompulsion: "",
+      TaskStatusCompulsion: "",
+      TaskPriorityCompulsion: "",
+      DepartmentCompulsion: "",
+      FunctionCompulsion: ""
     };
 
     this.handleAddReportOpen = this.handleAddReportOpen.bind(this);
@@ -207,7 +210,9 @@ class Reports extends Component {
     this.handleGetTicketPriorityList = this.handleGetTicketPriorityList.bind(
       this
     );
+    
     this.handleAssignTo = this.handleAssignTo.bind(this);
+    this.handleSave = this.handleSave.bind(this);
     this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
     this.handleInsertReport = this.handleInsertReport.bind(this);
   }
@@ -239,16 +244,7 @@ class Reports extends Component {
         "block";
   }
   ScheduleOpenModel = () => {
-    debugger;
-    if(
-      this.state.selectedReportName.length > 0
-    ){
     this.setState({ Schedule: true });
-    }else{
-       this.setState({
-         reportNameCompulsion:"Please Enter Report Name."
-       });
-    }
   };
   ScheduleCloseModel = () => {
     this.setState({ Schedule: false });
@@ -257,8 +253,135 @@ class Reports extends Component {
   handleAddReportOpen() {
     this.setState({ AddReportPopup: true, tabIndex: 0 });
   }
+  AddScheduler=()=>
+  {
+    debugger;
+    this.ClearParams();
+    this.setState({ AddReportPopup: true, tabIndex: 0 });
+  }
+  handleEditReport=(rowData)=>
+  {
+    debugger;    
+    let allTab=JSON.parse(rowData.reportSearchParams);     
+    this.setState({Schedule_ID:rowData.scheduleID}) 
+    let withClaim = 0;
+    let withTask = 0;
+   // allTab=objEdit;
+    withClaim=allTab["HaveClaim"];
+    withTask=allTab["HaveTask"];
+    this.state.selectBrand= allTab["BrandID"];
+    this.state.selectedIssueType=allTab["IssueType"];
+    this.state.selectedTaskPriority=allTab["TaskPriority"];
+    this.state.selectedWithClaim=allTab["HaveClaim"];
+    this.state.selectedWithTaskAll=allTab["HaveTask"];
+    if (this.state.selectedWithClaim === "yes") {
+      withClaim = 1;
+    }
+    if (this.state.selectedWithTaskAll === "yes") {
+      withTask = 1;
+    }
+   // this.state.ReportCreateDate="04/02/2020";
+    //this.state.ReportCreateDate=moment(allTab["CreatedDate"]).format("DD/MM/YYYY");
+                                                               
+       
+   // this.state.ReportLastDate=allTab["ModifiedDate"];
+    // // --------------------Check null date----------------------------------
+    // if (
+    //   this.state.ReportCreateDate === null ||
+    //   this.state.ReportCreateDate === undefined ||
+    //   this.state.ReportCreateDate === ""
+    // ) {
+    //   allTab["CreatedDate"] = "";
+    // } else {
+    //   allTab["CreatedDate"] = moment(this.state.ReportCreateDate).format(
+    //     "YYYY-MM-DD"
+    //   );
+    // }
+    // // --------------------Check null date----------------------------------
+    // if (
+    //   this.state.ReportLastDate === null ||
+    //   this.state.ReportLastDate === undefined ||
+    //   this.state.ReportLastDate === ""
+    // ) {
+    //   allTab["ModifiedDate"] = "";
+    // } else {
+    //   allTab["ModifiedDate"] = moment(this.state.ReportLastDate).format(
+    //     "YYYY-MM-DD"
+    //   );
+    // }
+    this.state.selectedReportName=rowData.reportName;
+    this.state.selectedTeamMemberCommaSeperated=rowData.scheduleFor;
+    this.state.selectBrand=allTab["BrandID"];
+    this.state.selectedIssueType=allTab["IssueType"];
+    this.state.selectedTaskPriority=allTab["TaskPriority"];
+    this.state.selectedCategory=allTab["CategoryId"];
+    //this.handleGetSubCategoryList();
+    this.state.selectedSubCategory=allTab["SubCategoryId"];
+    this.state.selectedIssueType=allTab["IssueTypeId"];
+    this.state.selectedTicketSource=allTab["TicketSourceTypeID"];
+    this.state.selectedTicketID=allTab["TicketIdORTitle"];
+    this.state.selectedPriority=allTab["PriorityId"];
+    this.state.selectedTicketStatus=allTab["TicketSatutsID"];
+    this.state.selectedSLAStatus=allTab["SLAStatus"];
+    this.state.selectedClaimID= allTab["ClaimId"];
+    this.state.selectedInvoiceNo=allTab["InvoiceNumberORSubOrderNo"];    
+    this.state.selectedItemID=allTab["OrderItemId"];
+    this.state.selectedVisitStore=allTab["IsVisitStore"];
+    this.state.selectedWantVisitStore=allTab["IsWantVistingStore"];
+    this.state.selectedEmailID=allTab["CustomerEmailID"];
+    this.state.selectedMobileNo=allTab["CustomerMobileNo"];
+    this.state.selectedAssignedTo=allTab["AssignTo"];   
+    this.state.selectedWantVisitStore=allTab["StoreCodeORAddress"];
+    this.state.selectedVisitStoreAddress=allTab["WantToStoreCodeORAddress"];
+   
+    this.state.selectedClaimStatus=allTab["ClaimStatusId"];
+    this.state.selectedClaimCategory=allTab["ClaimCategoryId"];
+    this.state.selectedClaimSubCategory=allTab["ClaimSubCategoryId"];
+    this.state.selectedClaimIssueType=allTab["ClaimIssueTypeId"];
+  
+    this.state.selectedTaskStatus=allTab["TaskStatusId"];
+    this.state.selectedDepartment=allTab["TaskDepartment_Id"];
+    this.state.selectedFunction=allTab["TaskFunction_Id"];
+    this.handleAddReportOpen();
+  }
   handleAddReportClose() {
     this.setState({ AddReportPopup: false });
+  }
+
+  ClearParams(){
+    this.state.selectedReportName="";
+    this.state.Schedule_ID=0;
+    this.state.selectBrand=0;
+    this.state.selectedIssueType=0;
+    this.state.selectedTaskPriority=0;
+    this.state.selectedCategory=0;
+    //this.handleGetSubCategoryList();
+    this.state.selectedSubCategory=0;
+    this.state.selectedIssueType=0;
+    this.state.selectedTicketSource=0;
+    this.state.selectedTicketID="";
+    this.state.selectedPriority=0;
+    this.state.selectedTicketStatus=0;
+    this.state.selectedSLAStatus=0;
+    this.state.selectedClaimID="";
+    this.state.selectedInvoiceNo="";    
+    this.state.selectedItemID="";
+    this.state.selectedVisitStore="";
+    this.state.selectedWantVisitStore=0;
+    this.state.selectedEmailID="";
+    this.state.selectedMobileNo="";
+    this.state.selectedAssignedTo=0;   
+    this.state.selectedWantVisitStore="";
+    this.state.selectedVisitStoreAddress="";
+   
+    this.state.selectedClaimStatus=0;
+    this.state.selectedClaimCategory=0;
+    this.state.selectedClaimSubCategory=0;
+    this.state.selectedClaimIssueType=0;
+  
+    this.state.selectedTaskStatus=0;
+    this.state.selectedDepartment=0;
+    this.state.selectedFunction=0;
   }
   handleNextPopupOpen() {
     this.handleAddReportClose();
@@ -266,13 +389,12 @@ class Reports extends Component {
   }
   handleNextPopupClose() {
     this.setState({ NextPopup: false });
+    this.handleReportList();
   }
   handleReportCreateDate(date) {
-    debugger;
     this.setState({ ReportCreateDate: date });
   }
   handleReportLastDate(date) {
-    debugger;
     this.setState({ ReportLastDate: date });
   }
   handleChatDate(date) {
@@ -302,13 +424,13 @@ class Reports extends Component {
       selectedNameOfDayForYearCommaSeperated
     });
   };
-  handleWeekForYear(e) {
+  handleWeekForYear=(e)=> {
     debugger;
     this.setState({
       selectedNoOfWeekForYear: e.currentTarget.value
     });
   }
-  handleDayForYear(e) {
+  handleDayForYear=(e)=> {
     debugger;
     this.setState({
       selectedNoOfDayForDailyYear: e.currentTarget.value
@@ -338,43 +460,46 @@ class Reports extends Component {
       selectedNameOfDayForWeekCommaSeperated
     });
   };
-  handleWeekForWeek(e) {
+  handleWeekForWeek=(e)=> {
     debugger;
     this.setState({
       selectedNoOfWeekForWeek: e.currentTarget.value
     });
   }
-  handleMonthForWeek(e) {
+  handleMonthForWeek=(e)=> {
     debugger;
     this.setState({
       selectedNoOfMonthForWeek: e.currentTarget.value
     });
   }
-  handleMonthForMonth(e) {
+  handleMonthForMonth=(e)=> {
     debugger;
     this.setState({
       selectedNoOfMonthForMonth: e.currentTarget.value
     });
   }
-  handleDaysForMonth(e) {
+  handleDaysForMonth=(e)=> {
     debugger;
     this.setState({
       selectedNoOfDaysForMonth: e.currentTarget.value
     });
   }
-  handleWeekly(e) {
+  handleWeekly=(e)=> {
     debugger;
     this.setState({
-      selectedNoOfWeek: e.currentTarget.value
+      selectedNoOfWeek: e.target.value
     });
+    // this.setState({
+    //   selectedNoOfWeek: e.currentTarget.value
+    // });
   }
-  handleDailyDay(e) {
+  handleDailyDay=(e)=> {
     debugger;
     this.setState({
       selectedNoOfDay: e.currentTarget.value
     });
   }
-  handleScheduleTime(e) {
+  handleScheduleTime=(e)=> {
     debugger;
     this.setState({
       selectedScheduleTime: e
@@ -382,89 +507,189 @@ class Reports extends Component {
   }
   handleChangeTab(index) {
     debugger;
-    var value1 = [];
-    var value2 = [];
+    // this.setState({ NextPopup: true });   
+    //   this.setState({
+    //     tabIndex: index
+    //   });   
 
-    if (this.state.selectedWithClaim === "yes") {
-      value1.push("1");
-      if (
-        this.state.selectedClaimStatus > 0 &&
-        this.state.selectedClaimCategory > 0 &&
-        this.state.selectedClaimSubCategory > 0 &&
-        this.state.selectedClaimIssueType > 0
-      ) {
-        value2.push("1");
+      var allTab = {};
+      allTab=this.SetSearchParametr();
+      this.setState({ReportParams:allTab});
+    let self=this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Report/ReportSearch",
+      headers: authHeader(),
+      data: {
+        AssigntoId: this.state.AgentIds,
+        BrandId: this.state.BrandIds,      
+        reportSearch: allTab
       }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      let data = res.data.responseData;
+      self.setState({totalResultCount:data});
+      self.handleNextPopupOpen();
+      //self.handleAddReportClose();     
+    });
+
+
+  }
+  EditSearchParameter(objEdit)
+  {
+    var allTab = {};
+    let withClaim = 0;
+    let withTask = 0;
+    allTab=objEdit;
+    this.state.selectBrand= allTab["BrandID"];
+    this.state.selectedIssueType=allTab["IssueType"];
+    this.state.selectedTaskPriority=allTab["TaskPriority"];
+    // if (this.state.selectedWithClaim === "yes") {
+    //   withClaim = 1;
+    // }
+    // if (this.state.selectedWithTaskAll === "yes") {
+    //   withTask = 1;
+    // }
+
+    // // --------------------Check null date----------------------------------
+    // if (
+    //   this.state.ReportCreateDate === null ||
+    //   this.state.ReportCreateDate === undefined ||
+    //   this.state.ReportCreateDate === ""
+    // ) {
+    //   allTab["CreatedDate"] = "";
+    // } else {
+    //   allTab["CreatedDate"] = moment(this.state.ReportCreateDate).format(
+    //     "YYYY-MM-DD"
+    //   );
+    // }
+    // // --------------------Check null date----------------------------------
+    // if (
+    //   this.state.ReportLastDate === null ||
+    //   this.state.ReportLastDate === undefined ||
+    //   this.state.ReportLastDate === ""
+    // ) {
+    //   allTab["ModifiedDate"] = "";
+    // } else {
+    //   allTab["ModifiedDate"] = moment(this.state.ReportLastDate).format(
+    //     "YYYY-MM-DD"
+    //   );
+    // }
+
+    allTab["BrandID"] = this.state.selectBrand;
+    allTab["IssueType"] = this.state.selectedIssueType;
+    allTab["TaskPriority"] = this.state.selectedTaskPriority;
+    allTab["CategoryId"] = this.state.selectedCategory;
+    allTab["SubCategoryId"] = this.state.selectedSubCategory;
+    allTab["IssueTypeId"] = this.state.selectedIssueType;
+    allTab["TicketSourceTypeID"] = this.state.selectedTicketSource;
+    allTab["TicketIdORTitle"] = this.state.selectedTicketID.trim();
+    allTab["PriorityId"] = this.state.selectedPriority;
+    allTab["TicketSatutsID"] = this.state.selectedTicketStatus;
+    allTab["SLAStatus"] = this.state.selectedSLAStatus;
+    allTab["ClaimId"] = this.state.selectedClaimID;
+    allTab[
+      "InvoiceNumberORSubOrderNo"
+    ] = this.state.selectedInvoiceNo.trim();
+    allTab["OrderItemId"] = this.state.selectedItemID.trim();
+    allTab["IsVisitStore"] = this.state.selectedVisitStore;
+    allTab["IsWantVistingStore"] = this.state.selectedWantVisitStore;
+    allTab["CustomerEmailID"] = this.state.selectedEmailID.trim();
+    allTab["CustomerMobileNo"] = this.state.selectedMobileNo.trim();
+    allTab["AssignTo"] = this.state.selectedAssignedTo;
+    allTab[
+      "StoreCodeORAddress"
+    ] = this.state.selectedWantVisitStore.trim();
+    allTab[
+      "WantToStoreCodeORAddress"
+    ] = this.state.selectedVisitStoreAddress.trim();
+    allTab["HaveClaim"] = withClaim;
+    allTab["ClaimStatusId"] = this.state.selectedClaimStatus;
+    allTab["ClaimCategoryId"] = this.state.selectedClaimCategory;
+    allTab["ClaimSubCategoryId"] = this.state.selectedClaimSubCategory;
+    allTab["ClaimIssueTypeId"] = this.state.selectedClaimIssueType;
+    allTab["HaveTask"] = withTask;
+    allTab["TaskStatusId"] = this.state.selectedTaskStatus;
+    allTab["TaskDepartment_Id"] = this.state.selectedDepartment;
+    allTab["TaskFunction_Id"] = this.state.selectedFunction;
+
+  }
+  SetSearchParametr(){
+    var allTab = {};
+    let withClaim = 0;
+    let withTask = 0;
+    if (this.state.selectedWithClaim === "yes") {
+      withClaim = 1;
     }
     if (this.state.selectedWithTaskAll === "yes") {
-      value1.push("1");
-      if (
-        this.state.selectedTaskStatus > 0 &&
-        this.state.selectedTaskPriority > 0 &&
-        this.state.selectedDepartment > 0
-      ) {
-        value2.push("1");
-      }
+      withTask = 1;
     }
+
+    // --------------------Check null date----------------------------------
     if (
-      value1.length === value2.length &&
-      this.state.ReportCreateDate.length > 0 &&
-      this.state.ReportLastDate.length > 0 &&
-      this.state.selectBrand > 0 &&
-      this.state.selectedCategory > 0 &&
-      this.state.selectedSubCategory > 0 &&
-      this.state.selectedIssueType > 0 &&
-      this.state.selectedClaimID.length > 0 &&
-      this.state.selectedTicketSource > 0 &&
-      this.state.selectedInvoiceNo.length > 0 &&
-      this.state.selectedEmailID.length > 0 &&
-      this.state.selectedTicketID.length > 0 &&
-      this.state.selectedMobileNo.length > 0 &&
-      this.state.selectedItemID.length > 0 &&
-      this.state.selectedPriority > 0 &&
-      this.state.selectedVisitStore.length > 0 &&
-      this.state.selectedAssignedTo > 0 &&
-      this.state.selectedWantVisitStore.length > 0 &&
-      this.state.selectedTicketStatus > 0 &&
-      this.state.selectedVisitStoreAddress.length > 0 &&
-      this.state.selectedPurchaseStore.length > 0
+      this.state.ReportCreateDate === null ||
+      this.state.ReportCreateDate === undefined ||
+      this.state.ReportCreateDate === ""
     ) {
-      this.setState({
-        tabIndex: index
-      });
+      allTab["CreatedDate"] = "";
     } else {
-      this.setState({
-        CreateDateCompulsion: "Please Select Date.",
-        LastDateCompulsion: "Please Select Date.",
-        BrandCompulsion: "Please Select Brand.",
-        CategoryCompulsion: "Please Select Category.",
-        SubCategoryCompulsion: "Please Select SubCategory.",
-        IssueTypeCompulsion: "Please Select IssueType.",
-        ClaimIDCompulsion: "Please Enter ClaimID.",
-        TicketSourceCompulsion: "Please Select Ticket Source.",
-        InvoiceNoCompulsion: "Please Enter Invoice Number.",
-        EmailIDCompulsion: "Please Enter EmailID.",
-        TicketIDCompulsion: "Please Enter ticketID.",
-        MobileNoCompulsion: "Please Enter Mobile Number.",
-        ItemIDCompulsion: "Please Enter ItemID.",
-        PriorityCompulsion: "Please Select Priority.",
-        VisitStoreCompulsion: "Please Select Visit Store.",
-        AssignedToCompulsion: "Please Select Assign User.",
-        WantVisitStoreCompulsion: "Please Select Visit .",
-        TicketStatusCompulsion: "Please Select Ticket Status.",
-        VisitStoreAddressCompulsion: "Please Enter Visit Address.",
-        PurchaseStoreCompulsion: "Please Enter Purchase Store.",
-        ClaimStatusCompulsion: "Please Select Claim Status.",
-        ClaimCategoryCompulsion: "Please Select Claim Category.",
-        ClaimSubCategoryCompulsion: "Please Select Claim SubCategory.",
-        ClaimIssueTypeCompulsion: "Please Select IsuueType.",
-        TaskStatusCompulsion: "Please Select Task Status.",
-        TaskPriorityCompulsion: "Please Select Priority.",
-        DepartmentCompulsion: "Please Select Department.",
-        FunctionCompulsion: "Please Select Function."
-      });
+      allTab["CreatedDate"] = moment(this.state.ReportCreateDate).format(
+        "YYYY-MM-DD"
+      );
     }
-  }
+    // --------------------Check null date----------------------------------
+    if (
+      this.state.ReportLastDate === null ||
+      this.state.ReportLastDate === undefined ||
+      this.state.ReportLastDate === ""
+    ) {
+      allTab["ModifiedDate"] = "";
+    } else {
+      allTab["ModifiedDate"] = moment(this.state.ReportLastDate).format(
+        "YYYY-MM-DD"
+      );
+    }
+
+    allTab["BrandID"] = this.state.selectBrand;
+    allTab["IssueType"] = this.state.selectedIssueType;
+    allTab["TaskPriority"] = this.state.selectedTaskPriority;
+    allTab["CategoryId"] = this.state.selectedCategory;
+    allTab["SubCategoryId"] = this.state.selectedSubCategory;
+    allTab["IssueTypeId"] = this.state.selectedIssueType;
+    allTab["TicketSourceTypeID"] = this.state.selectedTicketSource;
+    allTab["TicketIdORTitle"] = this.state.selectedTicketID.trim();
+    allTab["PriorityId"] = this.state.selectedPriority;
+    allTab["TicketSatutsID"] = this.state.selectedTicketStatus;
+    allTab["SLAStatus"] = this.state.selectedSLAStatus;
+    allTab["ClaimId"] = this.state.selectedClaimID;
+    allTab[
+      "InvoiceNumberORSubOrderNo"
+    ] = this.state.selectedInvoiceNo.trim();
+    allTab["OrderItemId"] = this.state.selectedItemID.trim();
+    allTab["IsVisitStore"] = this.state.selectedVisitStore;
+    allTab["IsWantVistingStore"] = this.state.selectedWantVisitStore;
+    allTab["CustomerEmailID"] = this.state.selectedEmailID.trim();
+    allTab["CustomerMobileNo"] = this.state.selectedMobileNo.trim();
+    allTab["AssignTo"] = this.state.selectedAssignedTo;
+    allTab[
+      "StoreCodeORAddress"
+    ] = this.state.selectedWantVisitStore.trim();
+    allTab[
+      "WantToStoreCodeORAddress"
+    ] = this.state.selectedVisitStoreAddress.trim();
+    allTab["HaveClaim"] = withClaim;
+    allTab["ClaimStatusId"] = this.state.selectedClaimStatus;
+    allTab["ClaimCategoryId"] = this.state.selectedClaimCategory;
+    allTab["ClaimSubCategoryId"] = this.state.selectedClaimSubCategory;
+    allTab["ClaimIssueTypeId"] = this.state.selectedClaimIssueType;
+    allTab["HaveTask"] = withTask;
+    allTab["TaskStatusId"] = this.state.selectedTaskStatus;
+    allTab["TaskDepartment_Id"] = this.state.selectedDepartment;
+    allTab["TaskFunction_Id"] = this.state.selectedFunction;
+
+    return allTab;
+  };
   handleWeeklyDays = async e => {
     debugger;
     let check = e.target.checked;
@@ -694,7 +919,7 @@ class Reports extends Component {
     debugger;
     if (e !== null) {
       var selectedTeamMemberCommaSeperated = Array.prototype.map
-        .call(e, s => s.department)
+        .call(e, s => s.userID)
         .toString();
     }
     this.setState({ selectedTeamMember: e, selectedTeamMemberCommaSeperated });
@@ -913,84 +1138,107 @@ class Reports extends Component {
     });
   }
 
-  handleInsertReport() {
+  handleSave(){
     debugger;
+    let self=this;
+    if(this.state.Schedule_ID>0)
+    {
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Report/SaveReportForDownload",
+        headers: authHeader(),
+        params: {
+          ScheduleID:this.state.Schedule_ID
+        }
+      }).then(function(res) {     
+       // this.handleReportList(); 
+        self.handleReportList();
+        self.handleNextPopupClose();
+        NotificationManager.success("Report saved successfully for download.");
+      });
+    }    
+    else{
+      NotificationManager.error("Please create scheduler");      
+    }
+  
+  }
+
+  handleInsertReport() {
+    
     let self = this;
-    var ReportParams = {};
-    let withClaim = 0;
-    let withTask = 0;
-    if (this.state.selectedWithClaim === "yes") {
-      withClaim = 1;
-      ReportParams["ClaimStatusId"] = this.state.selectedClaimStatus;
-      ReportParams["ClaimCategoryId"] = this.state.selectedClaimCategory;
-      ReportParams["ClaimSubCategoryId"] = this.state.selectedClaimSubCategory;
-      ReportParams["ClaimIssueTypeId"] = this.state.selectedClaimIssueType;
+    var SearchParams = {};   
+
+    SearchParams=JSON.stringify(this.state.ReportParams);
+    if(this.state.selectedReportName=="")
+    {
+      NotificationManager.error("Please add report name.");
+      return;
     }
-    if (this.state.selectedWithTaskAll === "yes") {
-      withTask = 1;
-      ReportParams["TaskStatusId"] = this.state.selectedTaskStatus;
-      ReportParams["TaskDepartment_Id"] = this.state.selectedDepartment;
-      ReportParams["TaskFunction_Id"] = this.state.selectedFunction;
+    if(SearchParams!="")
+    { 
+      debugger;   
+      self=this;  
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Ticketing/Schedule",
+        headers: authHeader(),
+        data: {          
+          PrimaryScheduleID:this.state.Schedule_ID,
+          ReportName:this.state.selectedReportName,
+          SearchInputParams:SearchParams,
+          ScheduleFor: this.state.selectedTeamMemberCommaSeperated,
+          ScheduleType: this.state.selectScheduleDate,
+          NoOfDay: this.state.selectedNoOfDay,
+          ScheduleTime: this.state.selectedScheduleTime,
+          IsDaily: this.state.IsDaily,
+          IsWeekly: this.state.IsWeekly,
+          NoOfWeek: this.state.selectedNoOfWeek,
+          DayIds: this.state.selectedWeeklyDays,
+          IsDailyForMonth: this.state.IsDailyForMonth,
+          NoOfDaysForMonth: this.state.selectedNoOfDaysForMonth,
+          NoOfMonthForMonth: this.state.selectedNoOfMonthForMonth,
+          IsWeeklyForMonth: this.state.IsWeeklyForMonth,
+          NoOfMonthForWeek: this.state.selectedNoOfMonthForWeek,
+          NoOfWeekForWeek: this.state.selectedNoOfWeekForWeek,
+          ScheduleFrom:3,
+          NameOfDayForWeek: this.state.selectedNameOfDayForWeekCommaSeperated,
+          IsDailyForYear: this.state.IsDailyForYear,
+          NoOfDayForDailyYear: this.state.selectedNoOfDayForDailyYear,
+          NameOfMonthForDailyYear: this.state
+            .selectedNameOfMonthForYearCommaSeperated,
+          IsWeeklyForYear: this.state.IsWeeklyForYear,
+          NoOfWeekForYear: this.state.selectedNoOfWeekForYear,
+          NameOfDayForYear: this.state.selectedNameOfDayForYearCommaSeperated,
+          NameOfMonthForYear: this.state
+            .selectedNameOfMonthForDailyYearCommaSeperated       
+        }
+      }).then(function(res) {
+        debugger;
+       
+        let status = res.data.message;
+        let scheduleId=res.data.responseData;
+        if (status === "Success") {
+          self.ScheduleCloseModel();
+         // this.handleReportList(); 
+          self.setState({Schedule_ID:scheduleId});
+          self.setState({ AddReportPopup: false });
+          NotificationManager.success("Scheduler created successfully.");
+          self.setState({         
+            ReportParams: {},
+            IsDaily: false,
+            IsDailyForMonth: false,
+            IsWeekly: false,
+            IsWeeklyForMonth: false,
+            IsDailyForYear: false,
+            IsWeeklyForYear: false
+          });
+        }
+      });
     }
-    ReportParams["BrandID"] = this.state.selectBrand;
-    ReportParams["CreatedDate"] = this.state.ReportCreateDate;
-    ReportParams["ModifiedDate"] = this.state.ReportLastDate;
-    ReportParams["CategoryId"] = this.state.selectedCategory;
-    ReportParams["SubCategoryId"] = this.state.selectedSubCategory;
-    ReportParams["IssueTypeId"] = this.state.selectedIssueType;
-    ReportParams["TicketSourceTypeID"] = this.state.selectedTicketSource;
-    ReportParams["TicketIdORTitle"] = this.state.selectedTicketID;
-    ReportParams["PriorityId"] = this.state.selectedPriority;
-    ReportParams["TicketSatutsID"] = this.state.selectedTicketStatus;
-    ReportParams["SLAStatus"] = this.state.selectedSLAStatus;
-    ReportParams["ClaimId"] = this.state.selectedClaimID;
-    ReportParams["InvoiceNumberORSubOrderNo"] = this.state.selectedInvoiceNo;
-
-    ReportParams["IsVisitStore"] = this.state.selectedVisitStore;
-    ReportParams["IsWantVistingStore"] = this.state.selectedWantVisitStore;
-    ReportParams["CustomerEmailID"] = this.state.selectedEmailID;
-    ReportParams["CustomerMobileNo"] = this.state.selectedMobileNo;
-    ReportParams["AssignTo"] = this.state.selectedAssignedTo;
-    ReportParams["StoreCodeORAddress"] = this.state.selectedPurchaseStore;
-    ReportParams[
-      "WantToStoreCodeORAddress"
-    ] = this.state.selectedVisitStoreAddress;
-    ReportParams["HaveClaim"] = withClaim;
-
-    ReportParams["HaveTask"] = withTask;
-
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Report/CreateReport",
-      headers: authHeader(),
-      params: {
-        ReportName: this.state.selectedReportName,
-        isReportActive: true,
-        TicketReportParams: ReportParams,
-        IsDaily: this.state.IsDaily,
-        IsDailyForMonth: this.state.IsDailyForMonth,
-        IsWeekly: this.state.IsWeekly,
-        IsWeeklyForMonth: this.state.IsWeeklyForMonth,
-        IsDailyForYear: this.state.IsDailyForYear,
-        IsWeeklyForYear: this.state.IsWeeklyForYear
-      }
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      if (status === "Success") {
-        NotificationManager.success("Report saved successfully.");
-        self.setState({
-          selectedReportName: "",
-          ReportParams: {},
-          IsDaily: false,
-          IsDailyForMonth: false,
-          IsWeekly: false,
-          IsWeeklyForMonth: false,
-          IsDailyForYear: false,
-          IsWeeklyForYear: false
-        });
-      }
-    });
+    else{
+      NotificationManager.error("Please add report for create scheduler.");
+    }
+    
   }
 
   render() {
@@ -1015,7 +1263,7 @@ class Reports extends Component {
               <button
                 type="button"
                 className="addplusbtnReport"
-                onClick={this.handleAddReportOpen}
+                onClick={this.AddScheduler}
               >
                 + Add
               </button>
@@ -1043,7 +1291,7 @@ class Reports extends Component {
                     Tickets
                   </a>
                 </li>
-                <li className="nav-item">
+                <li className="nav-item cls-hide">
                   <a
                     className={`nav-link ${this.state.tabIndex === 1 &&
                       "active"} `}
@@ -1328,28 +1576,23 @@ class Reports extends Component {
                     <div className="col-md-3 ticketreport">
                       <label>Status</label>
                       <select
-                                    name="selectedTicketStatus"
-                                    value={this.state.selectedTicketStatus}
-                                    onChange={this.setOnChangeReportData}
-                                  >
-                                    <option> Status</option>
-                                    {this.state.TicketStatusData !== null &&
-                                      this.state.TicketStatusData.map(
-                                        (item, i) => (
-                                          <option
-                                            key={i}
-                                            value={item.ticketStatusID}
-                                          >
-                                            {item.ticketStatusName}
-                                          </option>
-                                        )
-                                      )}
-                                  </select>
-                                  {this.state.selectedTicketStatus === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.TicketStatusCompulsion}
-                    </p>
-                  )}
+                        name="selectedTicketStatus"
+                        value={this.state.selectedTicketStatus}
+                        onChange={this.setOnChangeReportData}
+                      >
+                        <option> Status</option>
+                        {this.state.TicketStatusData !== null &&
+                          this.state.TicketStatusData.map((item, i) => (
+                            <option key={i} value={item.ticketStatusID}>
+                              {item.ticketStatusName}
+                            </option>
+                          ))}
+                      </select>
+                      {this.state.selectedTicketStatus === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.TicketStatusCompulsion}
+                        </p>
+                      )}
                     </div>
                     <div className="col-md-3 ticketreport">
                       <label>Want To Visit Store</label>
@@ -1698,8 +1941,8 @@ class Reports extends Component {
                             value={this.state.selectedFunction}
                             onChange={this.setOnChangeReportData}
                           >
-                            <option>Attandance</option>
-                            <option>Attandance1</option>
+                            <option value="1">Attandance</option>
+                            <option value="2">Attandance1</option>
                           </select>
                         </>
                       ) : null}
@@ -1827,7 +2070,7 @@ class Reports extends Component {
                 <div className="col-md-6">
                   <div className="totalresultcircle">
                     <label className="totalresult">Total Result</label>
-                    <span className="totalresultnumber">1242</span>
+                    <span className="totalresultnumber">{this.state.totalResultCount}</span>
                   </div>
                 </div>
                 <div className="col-md-6 rname">
@@ -1842,11 +2085,6 @@ class Reports extends Component {
                       value={this.state.selectedReportName}
                       onChange={this.setOnChangeReportData}
                     />
-                    {this.state.selectedReportName.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.reportNameCompulsion}
-                    </p>
-                  )}
                   </div>
                   <div className="buttonschdulesave">
                     <button
@@ -1867,7 +2105,7 @@ class Reports extends Component {
                   >
                     <div>
                       <label>
-                        <b>Schedule date to1</b>
+                        <b>Schedule date to</b>
                       </label>
                       <div>
                         <div className="normal-dropdown dropdown-setting1 schedule-multi">
@@ -1887,18 +2125,28 @@ class Reports extends Component {
                           />
                         </div>
                         <select
-                          id="inputState"
-                          className="form-control dropdown-setting1 ScheduleDate-to"
-                          value={this.state.selectScheduleDate}
-                          onChange={this.handleScheduleDateChange}
-                        >
-                          {this.state.ScheduleOption !== null &&
-                            this.state.ScheduleOption.map((item, i) => (
-                              <option key={i} value={item.scheduleID}>
+                        id="inputState"
+                        className="form-control dropdown-setting1 ScheduleDate-to"
+                        value={
+                          this.state.selectScheduleDate
+                        }
+                        onChange={
+                          this.handleScheduleDateChange
+                        }
+                      >
+                        {this.state.ScheduleOption !==
+                          null &&
+                          this.state.ScheduleOption.map(
+                            (item, i) => (
+                              <option
+                                key={i}
+                                value={item.scheduleID}
+                              >
                                 {item.scheduleName}
                               </option>
-                            ))}
-                        </select>
+                            )
+                          )}
+                      </select>
                         {this.state.selectScheduleDate === "230" ? (
                           <div className="ScheduleDate-to">
                             <span>
@@ -2209,7 +2457,7 @@ class Reports extends Component {
                     </div>
                   </Modal>
                   <div className="buttonschdulesave1">
-                    <button className="Schedulenext1">SAVE</button>
+                    <button onClick={this.handleSave} className="Schedulenext1">SAVE</button>
                   </div>
                 </div>
               </div>
@@ -2219,185 +2467,6 @@ class Reports extends Component {
         </div>
         <div className="container-fluid">
           <div className="store-settings-cntr reactreport">
-          <div style={{backgroundColor:"#fff"}}>
-            <ReactTable
-              data={datareport}
-              columns={[
-                {
-                Header: (
-                <span>
-                Name
-                <FontAwesomeIcon icon={faCaretDown} />
-                </span>
-                ),
-                accessor: "reportName"
-                },
-                {
-                Header: (
-                <span>
-                Schedule Status
-                <FontAwesomeIcon icon={faCaretDown} />
-                </span>
-                ),
-                accessor: "scheduleStatus"
-                },
-                {
-                Header: (
-                <span>
-                Created by
-                <FontAwesomeIcon icon={faCaretDown} />
-                </span>
-                ),
-                accessor: "createdBy",
-                Cell: row => {
-                var ids = row.original["reportID"];
-                return (
-                <div>
-                <span>
-                Admin
-                <Popover
-                content={
-                <>
-                <div>
-                <b>
-                <p className="title">
-                Created By: {row.original.createdBy}
-                </p>
-                </b>
-                <p className="sub-title">
-                Created Date: {row.original.createdDate}
-                </p>
-                </div>
-                <div>
-                <b>
-                <p className="title">
-                Updated By: {row.original.modifiedBy}
-                </p>
-                </b>
-                <p className="sub-title">
-                Updated Date: {row.original.modifiedDate}
-                </p>
-                </div>
-                </>
-                }
-                placement="bottom"
-                >
-                <img
-                className="info-icon-cp"
-                src={BlackInfoIcon}
-                alt="info-icon"
-                id={ids}
-                />
-                </Popover>
-                </span>
-                </div>
-                );
-                }
-                },
-                {
-                Header: (
-                <span>
-                Status
-                <FontAwesomeIcon icon={faCaretDown} />
-                </span>
-                ),
-                accessor: "reportStatus"
-                },
-                {
-                Header: <span>Actions</span>,
-                accessor: "actionReport",
-                Cell: row => (
-                <span>
-                <img
-                src={DownExcel}
-                alt="download icon"
-                className="downloadaction"
-                />
-                <Popover
-                content={
-                <div className="samdel d-flex general-popover popover-body">
-                <div className="del-big-icon">
-                <img src={DelBigIcon} alt="del-icon" />
-                </div>
-                <div>
-                <p className="font-weight-bold blak-clr">Delete file?</p>
-                <p className="mt-1 fs-12">
-                Are you sure you want to delete this file?
-                </p>
-                <div className="del-can">
-                <a>CANCEL</a>
-                <button
-                className="butn"
-                onClick={this.handleDeleteReport.bind(
-                this,
-                row.original.reportID
-                )}
-                >
-                Delete
-                </button>
-                </div>
-                </div>
-                </div>
-                }
-                placement="bottom"
-                trigger="click"
-                >
-                <img
-                src={RedDeleteIcon}
-                alt="del-icon"
-                className="del-btn"
-                // onClick={() => this.show(this, "samdel" + ids)}
-                />
-                </Popover>
-                
-                <button
-                className="react-tabel-button editre"
-                id="p-edit-pop-2"
-                onClick={this.handleAddReportOpen}
-                >
-                EDIT
-               
-                </button>
-                </span>
-                )
-                }
-                ]}
-              // resizable={false}
-              defaultPageSize={5}
-              showPagination={true}
-            />
-             {/* <div className="position-relative">
-                    <div className="pagi">
-                      <ul>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&lt;</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>1</a>
-                        </li>
-                        <li className="active">
-                          <a href={Demo.BLANK_LINK}>2</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>3</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>4</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>5</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>6</a>
-                        </li>
-                        <li>
-                          <a href={Demo.BLANK_LINK}>&gt;</a>
-                        </li>
-                      </ul>
-                    </div>
-                    
-                  </div> */}
-                  </div>
             <div style={{ backgroundColor: "#fff" }}>
             {this.state.loading === true ? (
                   <div className="loader-icon"></div>
@@ -2490,11 +2559,17 @@ class Reports extends Component {
                     accessor: "actionReport",
                     Cell: row => (
                       <span>
+                        {row.original.isDownloaded==1?
                         <img
                           src={DownExcel}
                           alt="download icon"
                           className="downloadaction"
-                        />
+                        /> : <img style={{display:"none"}}
+                        src={DownExcel}
+                        alt="download icon"
+                        className="downloadaction"
+                      />
+                        }
                         <Popover
                           content={
                             <div className="samdel d-flex general-popover popover-body">
@@ -2535,7 +2610,7 @@ class Reports extends Component {
                         <button
                           className="react-tabel-button editre"
                           id="p-edit-pop-2"
-                          onClick={this.handleAddReportOpen}
+                          onClick={this.handleEditReport.bind(this,row.original)}
                         >
                           EDIT
                           {/* <label className="Table-action-edit-button-text">EDIT</label> */}
