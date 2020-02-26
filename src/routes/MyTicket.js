@@ -142,10 +142,8 @@ class MyTicket extends Component {
       Plus: false,
       selectedStoreData: [],
       selectedDataRow: [],
-      selectedSUBDataRow: [],
       CheckStoreID: {},
       CheckOrderID: {},
-      CheckOrderITEMID: {},
       notesCommentCompulsion: "",
       userCC: "",
       userBCC: "",
@@ -1130,54 +1128,29 @@ class MyTicket extends Component {
     // let self = this;
 
     var selectedRow = "";
-    if (
-      this.state.selectedDataRow.length > 0 &&
-      this.state.selectedSUBDataRow.length > 0
-    ) {
-      // For loop for only Selected Master Data
-      for (let j = 0; j < this.state.selectedDataRow.length; j++) {
-        selectedRow += this.state.selectedDataRow[j]["orderMasterID"] + "|0|1,";
-      }
-      // For loop for ItemId data
-      for (let i = 0; i < this.state.selectedSUBDataRow.length; i++) {
-        selectedRow +=
-          this.state.selectedSUBDataRow[i]["orderItemID"] +
-          "|" +
-          this.state.selectedSUBDataRow[i]["requireSize"] +
-          "|0,";
+   
+
+
+    for (let i = 0; i < this.state.selectedDataRow.length; i++) {
+      var data = this.state.selectedDataRow.filter(
+        x => x.orderMasterID == this.state.selectedDataRow[i].orderMasterID
+      );
+      if (data.length === 1) {
+        selectedRow += this.state.selectedDataRow[i]["orderMasterID"] + "|0|1,";
+      } else if (data === 0) {
+      } else {
+        if (
+          "orderMasterID" in this.state.selectedDataRow[i] &&
+          "orderItemID" in this.state.selectedDataRow[i]
+        ) {
+          selectedRow +=
+            this.state.selectedDataRow[i]["orderItemID"] +
+            "|" +
+            this.state.selectedDataRow[i]["requireSize"] +
+            "|0,";
+        }
       }
     }
-
-    // if (this.state.selectedSUBDataRow.length > 0) {
-    //   for (let i = 0; i < this.state.selectedSUBDataRow.length; i++) {
-    //     selectedRow +=
-    //       this.state.selectedSUBDataRow[i]["orderItemID"] +
-    //       "|" +
-    //       this.state.selectedSUBDataRow[i]["requireSize"] +
-    //       "|0,";
-    //   }
-    // }
-
-    // for (let i = 0; i < this.state.selectedDataRow.length; i++) {
-    //   var data = this.state.selectedDataRow.filter(
-    //     x => x.orderMasterID == this.state.selectedDataRow[i].orderMasterID
-    //   );
-    //   if (data.length === 1) {
-    //     selectedRow += this.state.selectedDataRow[i]["orderMasterID"] + "|0|1,";
-    //   } else if (data === 0) {
-    //   } else {
-    //     if (
-    //       "orderMasterID" in this.state.selectedDataRow[i] &&
-    //       "orderItemID" in this.state.selectedDataRow[i]
-    //     ) {
-    //       selectedRow +=
-    //         this.state.selectedDataRow[i]["orderItemID"] +
-    //         "|" +
-    //         this.state.selectedDataRow[i]["requireSize"] +
-    //         "|0,";
-    //     }
-    //   }
-    // }
     axios({
       method: "post",
       url: config.apiUrl + "/Order/attachorder",
@@ -1237,47 +1210,7 @@ class MyTicket extends Component {
   setTicketActionTypeValue = e => {
     this.setState({ selectedTicketActionType: e });
   };
-  handleCheckOrderITEMID(orderITEMId, rowData) {
-    debugger;
-    const newSelected = Object.assign({}, this.state.CheckOrderITEMID);
-    newSelected[orderITEMId] = !this.state.CheckOrderITEMID[orderITEMId];
-    this.setState({
-      CheckOrderITEMID: orderITEMId ? newSelected : false
-    });
-    var selectedRow = [];
-    if (this.state.selectedSUBDataRow.length === 0) {
-      selectedRow.push(rowData);
-      this.setState({
-        selectedSUBDataRow: rowData
-      });
-    } else {
-      if (newSelected[orderITEMId] === true) {
-        for (var i = 0; i < this.state.selectedSUBDataRow.length; i++) {
-          if (this.state.selectedSUBDataRow[i] === rowData) {
-            selectedRow.splice(i, 1);
-
-            break;
-          } else {
-            selectedRow = this.state.selectedSUBDataRow;
-            selectedRow.push(rowData);
-            break;
-          }
-        }
-      } else {
-        for (var j = 0; j < this.state.selectedSUBDataRow.length; j++) {
-          if (this.state.selectedSUBDataRow[j] === rowData) {
-            selectedRow = this.state.selectedSUBDataRow;
-            selectedRow.splice(j, 1);
-            break;
-          }
-        }
-      }
-    }
-    this.setState({
-      selectedSUBDataRow: selectedRow
-    });
-  }
-
+   
   handleCheckOrderID(orderMasterID, rowData) {
     debugger;
     const newSelected = Object.assign({}, this.state.CheckOrderID);
@@ -3346,20 +3279,7 @@ class MyTicket extends Component {
                                                           row.original
                                                             .orderItemID
                                                         }
-                                                        checked={
-                                                          this.state
-                                                            .CheckOrderITEMID[
-                                                            row.original
-                                                              .orderItemID
-                                                          ] === true
-                                                        }
-                                                        defaultChecked={true}
-                                                        onChange={this.handleCheckOrderITEMID.bind(
-                                                          this,
-                                                          row.original
-                                                            .orderItemID,
-                                                          row.original
-                                                        )}
+                                                      
                                                       />
                                                       <label
                                                         htmlFor={
