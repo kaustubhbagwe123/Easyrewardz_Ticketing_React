@@ -99,7 +99,7 @@ class Header extends Component {
     };
     this.handleLoggedInUserDetails = this.handleLoggedInUserDetails.bind(this);
     this.handleGetNotificationList = this.handleGetNotificationList.bind(this);
-    this.handleEditProfilePage=this.handleEditProfilePage.bind(this);
+   
   }
 
   componentDidMount() {
@@ -192,13 +192,9 @@ class Header extends Component {
       });
     }
   };
-  handleEditProfilePage(){
-    debugger;
-    let self = this;
-    setTimeout(function() {
-      self.props.history.push("/admin/userprofile");
-    }, 400);
-  }
+ 
+
+  
   handleLogoutMethod() {
     // let self = this;
     axios({
@@ -215,7 +211,7 @@ class Header extends Component {
         window.location.href = "/";
       }
     });
-  }
+  };
 
   handleLoggedInUserDetails = () => {
     //debugger;
@@ -958,6 +954,7 @@ class Header extends Component {
             <div className="logout-block">
               <div>
                 <div className="user-img">
+                <Link to="userprofile">
                   <img
                     src={
                       this.state.userProfile === "user-img.jpg"
@@ -967,8 +964,9 @@ class Header extends Component {
                     alt="User"
                     style={{ width: '61px' }}
                     title="Edit Profile"
-                   // onClick={this.handleEditProfilePage.bind(this)}
+                    onClick={this.onCloseModal.bind(this)}
                   />
+                  </Link>
                 </div>
                 <div className="logout-flex">
                   <div>
