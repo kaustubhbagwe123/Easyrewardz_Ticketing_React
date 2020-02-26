@@ -2558,7 +2558,7 @@ class MyTicketList extends Component {
             const element = purchaseId[i];
             for (let j = 0; j < self.state.ChannelOfPurchaseData.length; j++) {
               if (
-                element ===
+                element ==
                 self.state.ChannelOfPurchaseData[j].channelOfPurchaseID
               ) {
                 purchaseArr.push(self.state.ChannelOfPurchaseData[j]);
@@ -2574,7 +2574,7 @@ class MyTicketList extends Component {
             const element = actionId[i];
             for (let j = 0; j < self.state.TicketActionTypeData.length; j++) {
               if (
-                element ===
+                element ==
                 self.state.TicketActionTypeData[j].ticketActionTypeID
               ) {
                 actionArr.push(self.state.TicketActionTypeData[j]);
@@ -2642,12 +2642,16 @@ class MyTicketList extends Component {
             selectedFunction: 0
           });
         } else {
-          let createdDate = dataSearch.SearchDataByAll.CreatedDate;
-          let createdDateArray = createdDate.split('-');
-          let createdDateFinal = new Date(createdDateArray[0], createdDateArray[1] - 1, createdDateArray[2]);
-          let modifiedDate = dataSearch.SearchDataByAll.ModifiedDate;
-          let modifiedDateArray = modifiedDate.split('-');
-          let modifiedDateFinal = new Date(modifiedDateArray[0], modifiedDateArray[1] - 1, modifiedDateArray[2]);
+          if (dataSearch.SearchDataByAll.CreatedDate !== "") {
+            let createdDate = dataSearch.SearchDataByAll.CreatedDate;
+            let createdDateArray = createdDate.split('-');
+            let createdDateFinal = new Date(createdDateArray[0], createdDateArray[1] - 1, createdDateArray[2]);
+          }
+          if (dataSearch.SearchDataByAll.ModifiedDate !== "") {
+            let modifiedDate = dataSearch.SearchDataByAll.ModifiedDate;
+            let modifiedDateArray = modifiedDate.split('-');
+            let modifiedDateFinal = new Date(modifiedDateArray[0], modifiedDateArray[1] - 1, modifiedDateArray[2]);
+          }
           self.setState({
             ByAllCreateDate: createdDateFinal,
             selectedTicketSource: dataSearch.SearchDataByAll.TicketSourceTypeID,

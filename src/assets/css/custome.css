@@ -2680,7 +2680,7 @@ table tr th:last-child {
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
   border-radius: 8px;
   padding: 0;
-  max-width: 335px;
+  width: 335px;
 }
 #save-search-popup .save-search {
   font-size: 16px;
@@ -2833,6 +2833,16 @@ table tr th:last-child {
 }
 .black-twitter {
   filter: brightness(0);
+}
+.dash-res {
+  display: block;
+  font-size: 11px;
+  margin-top: 3px;
+  opacity: 0;
+  font-weight: 300;
+}
+.dash-res-opac {
+  opacity: 1;
 }
 /* dashboard ends */
 
