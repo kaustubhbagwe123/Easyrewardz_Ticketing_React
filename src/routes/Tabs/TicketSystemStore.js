@@ -908,6 +908,30 @@ class TicketSystemStore extends Component {
                           {
                             Header: <span>Store Addres</span>,
                             accessor: "address"
+                          },
+                          {
+                            Header: <span>Visit Date</span>,
+                            accessor: "visitDate",
+                            Cell: row => {
+                              return (
+                                <div className="col-sm-12 p-0">
+                                  <DatePicker
+                                    selected={row.original.VisitedDate}
+                                    placeholderText="Visited Date"
+                                    showMonthDropdown
+                                    showYearDropdown
+                                    dateFormat="dd/MM/yyyy"
+                                    id={"visitDate" + row.original.storeID}
+                                    value={row.original.VisitedDate}
+                                    name="visitDate"
+                                    onChange={this.handleByvisitDate.bind(
+                                      this,
+                                      row
+                                    )}
+                                  />
+                                </div>
+                              );
+                            }
                           }
                         ]}
                         // resizable={false}

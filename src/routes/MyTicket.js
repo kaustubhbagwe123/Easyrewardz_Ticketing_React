@@ -59,13 +59,15 @@ import TicketStatus from "./TicketStatus";
 import TicketActionType from "./TicketActionType";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import CircleCancel from "./../assets/Images/Circle-cancel.png";
-import DatePicker from "react-datepicker";
+// import DatePicker from "react-datepicker";
 import ThumbTick from "./../assets/Images/thumbticket.png"; // Don't comment this line
 import PDF from "./../assets/Images/pdf.png"; // Don't comment this line
 import CSVi from "./../assets/Images/csvicon.png"; // Don't comment this line
 import Excel from "./../assets/Images/excel.png"; // Don't comment this line
 import Word from "./../assets/Images/word.png"; // Don't comment this line
 import TxtLogo from "./../assets/Images/TxtIcon.png"; // Don't comment this line
+
+import DatePicker from "react-date-picker";
 
 class MyTicket extends Component {
   constructor(props) {
@@ -74,7 +76,7 @@ class MyTicket extends Component {
     this.state = {
       open: false,
       InformStore: false,
-      collapseUp: true,
+      collapseUp: false,
       profilemodal: false,
       storemodal: false,
       storeproductsearch: false,
@@ -164,7 +166,8 @@ class MyTicket extends Component {
       OrderSubItem: [],
       mailSubject: "",
       expanded: {},
-      mailId: 0
+      mailId: 0,
+      selectProductOrd: true
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -267,7 +270,7 @@ class MyTicket extends Component {
         Storedetails = Storedetails.substring(",", Storedetails.length - 1);
         var ProductDetails = "";
         for (let j = 0; j < productData.length; j++) {
-          ProductDetails += productData[j].itemName + ",";
+          ProductDetails += productData[j].invoiceNumber + ",";
         }
         ProductDetails = ProductDetails.substring(
           ",",
@@ -1579,22 +1582,41 @@ class MyTicket extends Component {
   }
   handleChangeOrderItem = e => {
     debugger;
-    var values = e.target.checked;
-    if (values) {
-      var x = document.getElementById("ordertable");
-      var x1 = document.getElementById("orderitemtable");
 
-      x.style.display = "block";
-      x1.style.display = "none";
+    var values = e.target.checked;
+    if (!this.state.selectProductOrd) {
+      if (values) {
+        var x = document.getElementById("ordertbls");
+        var x1 = document.getElementById("orderitemtbl");
+
+        x.style.display = "block";
+        x1.style.display = "none";
+      } else {
+        var i = document.getElementById("ordertbls");
+        var j = document.getElementById("orderitemtbl");
+        i.style.display = "none";
+        j.style.display = "block ";
+      }
+      this.setState({
+        OrdItmBtnStatus: e.target.checked
+      });
     } else {
-      var i = document.getElementById("ordertable");
-      var j = document.getElementById("orderitemtable");
-      i.style.display = "none";
-      j.style.display = "block ";
+      if (values) {
+        var x = document.getElementById("ordertable");
+        var x1 = document.getElementById("orderitemtable");
+
+        x.style.display = "block";
+        x1.style.display = "none";
+      } else {
+        var i = document.getElementById("ordertable");
+        var j = document.getElementById("orderitemtable");
+        i.style.display = "none";
+        j.style.display = "block ";
+      }
+      this.setState({
+        OrdItmBtnStatus: e.target.checked
+      });
     }
-    this.setState({
-      OrdItmBtnStatus: e.target.checked
-    });
   };
 
   handleRemoveImage(i) {
@@ -1606,6 +1628,13 @@ class MyTicket extends Component {
       this.setState({ file, fileText });
     }, 50);
   }
+
+  handleSetDataTab = () => {
+    debugger;
+    this.setState({
+      selectProductOrd: !this.state.selectProductOrd
+    });
+  };
 
   render() {
     const {
@@ -2725,6 +2754,7 @@ class MyTicket extends Component {
                                     // resizable={false}
                                     defaultPageSize={5}
                                     showPagination={true}
+                                    minRows={1}
                                   />
                                 </div>
                               </div>
@@ -2805,21 +2835,22 @@ class MyTicket extends Component {
                                           return (
                                             <div className="col-sm-12 p-0">
                                               <DatePicker
-                                                selected={
-                                                  row.original.storeVisitDate
-                                                }
-                                                placeholderText="Visited Date"
-                                                showMonthDropdown
-                                                showYearDropdown
-                                                dateFormat="dd/MM/yyyy"
+                                                // selected={
+                                                //   row.original.storeVisitDate || new Date()
+                                                // }
+                                                // placeholderText="Visited Date"
+                                                // showMonthDropdown
+                                                // showYearDropdown
+                                                // dateFormat="dd/MM/yyyy"
                                                 id={
                                                   "visitDate" +
                                                   row.original.storeID
                                                 }
                                                 value={
-                                                  row.original.storeVisitDate
+                                                  row.original.storeVisitDate ||
+                                                  new Date()
                                                 }
-                                                name="visitDate"
+                                                // name="visitDate"
                                                 onChange={this.handleByvisitDate.bind(
                                                   this,
                                                   row
@@ -2976,6 +3007,7 @@ class MyTicket extends Component {
                                         role="tab"
                                         aria-controls="productdetail-tab"
                                         aria-selected="true"
+                                        onClick={this.handleSetDataTab}
                                       >
                                         Product Details
                                       </a>
@@ -2990,23 +3022,27 @@ class MyTicket extends Component {
                                           role="tab"
                                           aria-controls="selectedproduct-tab"
                                           aria-selected="false"
+                                          onClick={this.handleSetDataTab}
                                         >
                                           Selected Product
                                         </a>
                                       </li>
                                     ) : null}
                                   </ul>
-                                  <div className="col-md-6 m-b-10 m-t-10 text-right">
-                                    <button
-                                      type="button"
-                                      className="myticket-submit-solve-button m-0"
-                                      onClick={this.handleAttachProductData.bind(
-                                        this
-                                      )}
-                                    >
-                                      Attach Product
-                                    </button>
-                                  </div>
+                                  {this.state.selectedDataRow.length > 0 ||
+                                  this.state.selectedProduct.length > 0 ? (
+                                    <div className="col-md-6 m-b-10 m-t-10 text-right">
+                                      <button
+                                        type="button"
+                                        className="myticket-submit-solve-button m-0"
+                                        onClick={this.handleAttachProductData.bind(
+                                          this
+                                        )}
+                                      >
+                                        Attach Product
+                                      </button>
+                                    </div>
+                                  ) : null}
                                 </div>
                               </div>
                             </div>
@@ -3018,7 +3054,11 @@ class MyTicket extends Component {
                                 role="tabpanel"
                                 aria-labelledby="productdetail-tab"
                               >
-                                <div className="reactstoreselect" id="orderitemtable" style={{ display: "block" }}>
+                                <div
+                                  className="reactstoreselect"
+                                  id="orderitemtable"
+                                  style={{ display: "block" }}
+                                >
                                   <ReactTable
                                     data={this.state.orderDetailsData}
                                     columns={[
@@ -3054,7 +3094,7 @@ class MyTicket extends Component {
                                                 "i" + row.original.orderMasterID
                                               }
                                             >
-                                              {row.original.invoiceNumber}
+                                              {/* {row.original.invoiceNumber} */}
                                             </label>
                                           </div>
                                         )
@@ -3098,7 +3138,11 @@ class MyTicket extends Component {
                                     showPagination={false}
                                   />
                                 </div>
-                                <div className="reactstoreselect" id="ordertable" style={{ display: "none" }}>
+                                <div
+                                  className="reactstoreselect"
+                                  id="ordertable"
+                                  style={{ display: "none" }}
+                                >
                                   <ReactTable
                                     data={this.state.orderDetailsData}
                                     columns={[
@@ -3113,7 +3157,8 @@ class MyTicket extends Component {
                                             <input
                                               type="checkbox"
                                               id={
-                                                "i" + row.original.orderMasterID
+                                                "MID" +
+                                                row.original.orderMasterID
                                               }
                                               style={{ display: "none" }}
                                               name="ticket-order"
@@ -3131,10 +3176,11 @@ class MyTicket extends Component {
                                             />
                                             <label
                                               htmlFor={
-                                                "i" + row.original.orderMasterID
+                                                "MID" +
+                                                row.original.orderMasterID
                                               }
                                             >
-                                              {row.original.invoiceNumber}
+                                              {/* {row.original.invoiceNumber} */}
                                             </label>
                                           </div>
                                         )
@@ -3261,7 +3307,117 @@ class MyTicket extends Component {
                                 role="tabpanel"
                                 aria-labelledby="selectedproduct-tab"
                               >
-                                <div className="reactstoreselect">
+                                <div
+                                  className="reactstoreselect"
+                                  id="orderitemtbl"
+                                  style={{ display: "block" }}
+                                >
+                                  <ReactTable
+                                    // data={selectedProduct}
+                                    data={this.state.selectedDataRow}
+                                    expanded={this.state.expanded}
+                                    onExpandedChange={(
+                                      newExpanded,
+                                      index,
+                                      event
+                                    ) => {
+                                      if (newExpanded[index[0]] === false) {
+                                        newExpanded = {};
+                                      } else {
+                                        Object.keys(newExpanded).map(k => {
+                                          newExpanded[k] =
+                                            parseInt(k) === index[0]
+                                              ? {}
+                                              : false;
+                                        });
+                                      }
+                                      this.setState({
+                                        ...this.state,
+                                        expanded: newExpanded
+                                      });
+                                    }}
+                                    columns={[
+                                      {
+                                        Header: <span></span>,
+                                        accessor: "orderMasterID",
+                                        Cell: row => (
+                                          <div
+                                            className="filter-checkbox"
+                                            style={{ marginLeft: "15px" }}
+                                          >
+                                            <input
+                                              type="checkbox"
+                                              id={
+                                                "id" +
+                                                row.original.orderMasterID
+                                              }
+                                              style={{ display: "none" }}
+                                              name="ticket-order"
+                                              checked={
+                                                this.state.CheckOrderID[
+                                                  row.original.orderMasterID
+                                                ] === true
+                                              }
+                                              defaultChecked={true}
+                                              onChange={this.handleCheckOrderID.bind(
+                                                this,
+                                                row.original.orderMasterID,
+                                                row.original
+                                              )}
+                                            />
+                                            <label
+                                              htmlFor={
+                                                "id" +
+                                                row.original.orderMasterID
+                                              }
+                                            ></label>
+                                          </div>
+                                        )
+                                      },
+                                      {
+                                        Header: <span>Invoice Number</span>,
+                                        accessor: "invoiceNumber"
+                                      },
+                                      {
+                                        Header: <span>Invoice Date</span>,
+                                        accessor: "dateFormat"
+                                      },
+                                      {
+                                        Header: <span>Item Count</span>,
+                                        accessor: "itemCount"
+                                      },
+                                      {
+                                        Header: <span>Item Price</span>,
+                                        accessor: "ordeItemPrice"
+                                      },
+                                      {
+                                        Header: <span>Price Paid</span>,
+                                        accessor: "orderPricePaid"
+                                      },
+                                      {
+                                        Header: <span>Store Code</span>,
+                                        accessor: "storeCode"
+                                      },
+                                      {
+                                        Header: <span>Store Addres</span>,
+                                        accessor: "storeAddress"
+                                      },
+                                      {
+                                        Header: <span>Discount</span>,
+                                        accessor: "discount"
+                                      }
+                                    ]}
+                                    //resizable={false}
+                                    minRows={1}
+                                    defaultPageSize={5}
+                                    showPagination={false}
+                                  />
+                                </div>
+                                <div
+                                  className="reactstoreselect"
+                                  id="ordertbls"
+                                  style={{ display: "none" }}
+                                >
                                   <ReactTable
                                     // data={selectedProduct}
                                     data={this.state.selectedDataRow}
@@ -4170,6 +4326,7 @@ class MyTicket extends Component {
                             </div>
                           </div>
                           {item.customTicketMessages.map((details, j) => {
+                            debugger;
                             return (
                               <div key={j}>
                                 <div>
