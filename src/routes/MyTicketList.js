@@ -47,6 +47,7 @@ import {
 import ScheduleDateDropDown from "./ScheduleDateDropDown";
 import { authHeader } from "../helpers/authHeader";
 import { CSVLink } from "react-csv";
+import { withRouter } from "react-router";
 
 class MyTicketList extends Component {
   constructor(props) {
@@ -255,14 +256,15 @@ class MyTicketList extends Component {
       Draft: "",
       scheduleRequired: "",
       agentSelection: "",
-      sortColumnName:"",
-      sortTicketData:[],
-      sortCategoryData:[],
-      sortPriorityData:[],
-      sortcreatedOnData:[],
-      sortAssigneeData:[],
-      sortAllData:[],
-      cSelectedRow: {}
+      sortColumnName: "",
+      sortTicketData: [],
+      sortCategoryData: [],
+      sortPriorityData: [],
+      sortcreatedOnData: [],
+      sortAssigneeData: [],
+      sortAllData: [],
+      cSelectedRow: {},
+      notiType: ''
     };
     this.handleGetAssignTo = this.handleGetAssignTo.bind(this);
     this.clearSearch = this.clearSearch.bind(this);
@@ -320,12 +322,15 @@ class MyTicketList extends Component {
 
   componentDidMount() {
     debugger;
-    if (this.props.location.state && this.props.location.state.isHeaderNew) {
-      this.newNotifications();
+    if (this.props.location.state && this.props.location.state.isType) {
+      this.newNotifications(this.props.location.state.isType);
+      this.setState({
+        notiType: this.props.location.state.isType
+      });
     }
-    if (this.props.location.state && this.props.location.state.isHeaderOpen) {
-      this.openNotifications();
-    }
+    // if (this.props.location.state && this.props.location.state.isHeaderOpen) {
+    //   this.openNotifications();
+    // }
     // this.ViewSearchData();
     this.handleSearchTicketAllTabCount();
     if (!this.props.location.state) {
@@ -343,22 +348,38 @@ class MyTicketList extends Component {
     this.handleMyTicketsearchOption();
   }
 
-  newNotifications() {
+  componentDidUpdate() {
+    debugger;
+    console.log(this.state.notiType);
+    if (this.props.location.state) {
+
+      if (this.state.notiType !== this.props.location.state.isType) {
+        this.newNotifications(this.props.location.state.isType)
+      }
+    }
+
+  }
+
+  newNotifications(type) {
     let upperTabs = document.querySelectorAll(".upper-tabs .nav-link");
     for (let i = 0; i < upperTabs.length; i++) {
       upperTabs[i].classList.remove("active");
     }
-    document.getElementsByName("New")[0].classList.add("active");
-    this.handleSearchTicket("New");
+    document.getElementsByName(type)[0].classList.add("active");
+    this.setState({ notiType: type })
+    setTimeout(() => {
+      this.handleSearchTicket(type);
+    }, 100);
+
   }
-  openNotifications() {
-    let upperTabs = document.querySelectorAll(".upper-tabs .nav-link");
-    for (let i = 0; i < upperTabs.length; i++) {
-      upperTabs[i].classList.remove("active");
-    }
-    document.getElementsByName("Open")[0].classList.add("active");
-    this.handleSearchTicket("Open");
-  }
+  // openNotifications() {
+  //   let upperTabs = document.querySelectorAll(".upper-tabs .nav-link");
+  //   for (let i = 0; i < upperTabs.length; i++) {
+  //     upperTabs[i].classList.remove("active");
+  //   }
+  //   document.getElementsByName("Open")[0].classList.add("active");
+  //   this.handleSearchTicket("Open");
+  // }
 
   handleMyTicketsearchOption() {
     debugger;
@@ -370,7 +391,7 @@ class MyTicketList extends Component {
       params: {
         ModuleID: 9
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let status = res.data.message;
       let data1 = res.data.responseData;
@@ -461,7 +482,7 @@ class MyTicketList extends Component {
       method: "post",
       url: config.apiUrl + "/Search/TicketStatusCount",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let data = res.data.responseData;
       let Status = res.data.message;
@@ -554,13 +575,13 @@ class MyTicketList extends Component {
       params: {
         HeaderStatusID: ticketStatus
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let data = res.data.responseData;
       let CSVData = data;
       let Status = res.data.message;
       if (Status === "Success") {
-        self.setState({ SearchTicketData: data, loading: false ,cSelectedRow:{}});
+        self.setState({ SearchTicketData: data, loading: false, cSelectedRow: {} });
         for (let i = 0; i < CSVData.length; i++) {
           delete CSVData[i].totalpages;
           delete CSVData[i].responseTimeRemainingBy;
@@ -704,7 +725,7 @@ class MyTicketList extends Component {
         NameOfMonthForYear: this.state
           .selectedNameOfMonthForDailyYearCommaSeperated
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let messageData = res.data.message;
       if (messageData === "Success") {
@@ -887,7 +908,7 @@ class MyTicketList extends Component {
           AgentID: this.state.agentId,
           Remark: this.state.agentRemark
         }
-      }).then(function(res) {
+      }).then(function (res) {
         debugger;
         let messageData = res.data.message;
         if (messageData === "Success") {
@@ -1059,7 +1080,7 @@ class MyTicketList extends Component {
       method: "post",
       url: config.apiUrl + "/Ticketing/GetDraftDetails",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let details = res.data.responseData;
       let status = res.data.message;
@@ -1077,7 +1098,7 @@ class MyTicketList extends Component {
       method: "post",
       url: config.apiUrl + "/Master/getDepartmentList",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let data = res.data.responseData;
       let status = res.data.message;
@@ -1101,7 +1122,7 @@ class MyTicketList extends Component {
       params: {
         DepartmentId: this.state.selectedDepartment
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let FunctionData = res.data.responseData;
       self.setState({ FunctionData: FunctionData });
@@ -1120,7 +1141,7 @@ class MyTicketList extends Component {
       method: "post",
       url: config.apiUrl + "/Designation/GetDesignationList",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let data = res.data.responseData;
       let status = res.data.message;
@@ -1138,7 +1159,7 @@ class MyTicketList extends Component {
       method: "get",
       url: config.apiUrl + "/Priority/GetPriorityList",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let data = res.data.responseData;
       let stastus = res.data.message;
@@ -1155,7 +1176,7 @@ class MyTicketList extends Component {
       method: "post",
       url: config.apiUrl + "/Master/GetChannelOfPurchaseList",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let ChannelOfPurchaseData = res.data.responseData;
       self.setState({ ChannelOfPurchaseData: ChannelOfPurchaseData });
@@ -1169,7 +1190,7 @@ class MyTicketList extends Component {
       method: "post",
       url: config.apiUrl + "/Master/getTicketSources",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let data = res.data.responseData;
       let status = res.data.message;
@@ -1192,7 +1213,7 @@ class MyTicketList extends Component {
       method: "post",
       url: config.apiUrl + "/SLA/GetSLAStatusList",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let data = res.data.responseData;
       self.setState({
@@ -1208,7 +1229,7 @@ class MyTicketList extends Component {
       method: "post",
       url: config.apiUrl + "/Category/GetCategoryList",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let data = res.data;
 
@@ -1236,7 +1257,7 @@ class MyTicketList extends Component {
       params: {
         CategoryID: this.state.selectedClaimCategory
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let data = res.data.responseData;
       self.setState({
@@ -1269,7 +1290,7 @@ class MyTicketList extends Component {
       params: {
         CategoryID: cateId
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       var data = res.data.responseData;
       if (self.state.byCategoryFlag === 4) {
@@ -1297,7 +1318,7 @@ class MyTicketList extends Component {
       params: {
         SubCategoryID: this.state.selectedClaimSubCategory
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let ClaimIssueTypeData = res.data.responseData;
       self.setState({ ClaimIssueTypeData: ClaimIssueTypeData });
@@ -1323,7 +1344,7 @@ class MyTicketList extends Component {
       params: {
         SubCategoryID: subCateId
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       // let IssueTypeData = res.data.responseData;
       // self.setState({ IssueTypeData: IssueTypeData });
@@ -1353,7 +1374,7 @@ class MyTicketList extends Component {
         Email: this.state.assignEmail.trim(),
         DesignationID: this.state.selectedDesignation
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let SearchAssignData = res.data.responseData;
       self.setState({
@@ -1387,7 +1408,7 @@ class MyTicketList extends Component {
           SearchSaveName: this.state.SearchName,
           parameter: this.state.FinalSaveSearchData
         }
-      }).then(function(res) {
+      }).then(function (res) {
         debugger;
         let Msg = res.data.message;
         if (Msg === "Success") {
@@ -1411,7 +1432,7 @@ class MyTicketList extends Component {
       method: "post",
       url: config.apiUrl + "/Ticketing/listSavedSearch",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let data = res.data.responseData;
       self.setState({ SearchListData: data });
@@ -1428,7 +1449,7 @@ class MyTicketList extends Component {
       params: {
         SearchParamID: searchDeletId
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let Msg = res.data.message;
       if (Msg === "Success") {
@@ -1626,7 +1647,7 @@ class MyTicketList extends Component {
         searchDataByCategoryType: categoryType,
         SearchDataByAll: allTab
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let status = res.data.message;
       let data = res.data.responseData;
@@ -1637,66 +1658,66 @@ class MyTicketList extends Component {
         count = res.data.responseData.length;
       }
 
-      self.state.sortAllData=data;
-      var unique=[];
-    var distinct = [];
-    for( let i = 0; i < data.length; i++ ){
-      if( !unique[data[i].ticketStatus]){
-        distinct.push(data[i].ticketStatus);
-        unique[data[i].ticketStatus]=1;
+      self.state.sortAllData = data;
+      var unique = [];
+      var distinct = [];
+      for (let i = 0; i < data.length; i++) {
+        if (!unique[data[i].ticketStatus]) {
+          distinct.push(data[i].ticketStatus);
+          unique[data[i].ticketStatus] = 1;
+        }
       }
-    }
-    for (let i = 0; i < distinct.length; i++) {
-      self.state.sortTicketData.push({ ticketStatus: distinct[i] });
-    }
+      for (let i = 0; i < distinct.length; i++) {
+        self.state.sortTicketData.push({ ticketStatus: distinct[i] });
+      }
 
-    var unique=[];
-    var distinct = [];
-    for( let i = 0; i < data.length; i++ ){
-      if( !unique[data[i].category]){
-        distinct.push(data[i].category);
-        unique[data[i].category]=1;
+      var unique = [];
+      var distinct = [];
+      for (let i = 0; i < data.length; i++) {
+        if (!unique[data[i].category]) {
+          distinct.push(data[i].category);
+          unique[data[i].category] = 1;
+        }
       }
-    }
-    for (let i = 0; i < distinct.length; i++) {
-      self.state.sortCategoryData.push({ category: distinct[i] });
-    }
-   
-    var unique=[];
-    var distinct = [];
-    for( let i = 0; i < data.length; i++ ){
-      if( !unique[data[i].priority]){
-        distinct.push(data[i].priority);
-        unique[data[i].priority]=1;
+      for (let i = 0; i < distinct.length; i++) {
+        self.state.sortCategoryData.push({ category: distinct[i] });
       }
-    }
-    for (let i = 0; i < distinct.length; i++) {
-      self.state.sortPriorityData.push({ priority: distinct[i] });
-    }
 
-    var unique=[];
-    var distinct = [];
-    for( let i = 0; i < data.length; i++ ){
-      if( !unique[data[i].createdOn]){
-        distinct.push(data[i].createdOn);
-        unique[data[i].createdOn]=1;
+      var unique = [];
+      var distinct = [];
+      for (let i = 0; i < data.length; i++) {
+        if (!unique[data[i].priority]) {
+          distinct.push(data[i].priority);
+          unique[data[i].priority] = 1;
+        }
       }
-    }
-    for (let i = 0; i < distinct.length; i++) {
-      self.state.sortcreatedOnData.push({ createdOn: distinct[i] });
-    }
-     
-    var unique=[];
-    var distinct = [];
-    for( let i = 0; i < data.length; i++ ){
-      if( !unique[data[i].assignedTo]){
-        distinct.push(data[i].assignedTo);
-        unique[data[i].assignedTo]=1;
+      for (let i = 0; i < distinct.length; i++) {
+        self.state.sortPriorityData.push({ priority: distinct[i] });
       }
-    }
-    for (let i = 0; i < distinct.length; i++) {
-      self.state.sortAssigneeData.push({ assignedTo: distinct[i] });
-    }
+
+      var unique = [];
+      var distinct = [];
+      for (let i = 0; i < data.length; i++) {
+        if (!unique[data[i].createdOn]) {
+          distinct.push(data[i].createdOn);
+          unique[data[i].createdOn] = 1;
+        }
+      }
+      for (let i = 0; i < distinct.length; i++) {
+        self.state.sortcreatedOnData.push({ createdOn: distinct[i] });
+      }
+
+      var unique = [];
+      var distinct = [];
+      for (let i = 0; i < data.length; i++) {
+        if (!unique[data[i].assignedTo]) {
+          distinct.push(data[i].assignedTo);
+          unique[data[i].assignedTo] = 1;
+        }
+      }
+      for (let i = 0; i < distinct.length; i++) {
+        self.state.sortAssigneeData.push({ assignedTo: distinct[i] });
+      }
 
 
       if (status === "Success") {
@@ -1976,7 +1997,7 @@ class MyTicketList extends Component {
   };
 
   StatusOpenModel(data) {
-    this.setState({ StatusModel: true,sortColumnName:data  });
+    this.setState({ StatusModel: true, sortColumnName: data });
   }
   StatusCloseModel() {
     this.setState({ StatusModel: false });
@@ -2028,62 +2049,62 @@ class MyTicketList extends Component {
     evt.stopPropagation();
   }
 
-  setSortCheckStatus = (column,e) => {
+  setSortCheckStatus = (column, e) => {
     debugger;
-    
+
     var itemsArray = [];
     var data = e.currentTarget.value;
-    if(column==="all"){
-      itemsArray=this.state.sortAllData;
-     
-    }else if(column==="status"){
-        this.state.SearchTicketData=this.state.sortAllData;
-        itemsArray = this.state.SearchTicketData.filter(
-          a => a.ticketStatus === data
-        );
-      }else if(column==="category"){
-        this.state.SearchTicketData=this.state.sortAllData;
-        itemsArray = this.state.SearchTicketData.filter(
-          a => a.category === data
-        );
-      }else if(column==="priority"){
-        this.state.SearchTicketData=this.state.sortAllData;
-        itemsArray = this.state.SearchTicketData.filter(
-          a => a.priority === data
-        );
-      }else if(column==="assignedTo"){
-        this.state.SearchTicketData=this.state.sortAllData;
-        itemsArray = this.state.SearchTicketData.filter(
-          a => a.assignedTo === data
-        );
-      }else if(column==="createdOn"){
-        this.state.SearchTicketData=this.state.sortAllData;
-        itemsArray = this.state.SearchTicketData.filter(
-          a => a.createdOn === data
-        );
-      }else if(column==="colorred"){
-        this.state.SearchTicketData=this.state.sortAllData;
-        itemsArray = this.state.SearchTicketData.filter(
-          a => a.isEscalation === 1
-        );
-      }else if(column==="colororange"){
-        this.state.SearchTicketData=this.state.sortAllData;
-        itemsArray = this.state.SearchTicketData.filter(
-          a => a.isSLANearBreach === true
-        );
-      }else if(column==="colorwhite"){
-        this.state.SearchTicketData=this.state.sortAllData;
-        itemsArray = this.state.SearchTicketData.filter(
-          a => a.isEscalation === 0 && a.isSLANearBreach===false && a.isReassigned===false
-        );
-      }else if(column==="colorgreen"){
-        this.state.SearchTicketData=this.state.sortAllData;
-        itemsArray = this.state.SearchTicketData.filter(
-          a => a.isReassigned === true && a.isEscalation === 0
-        );
-      }
-     
-    
+    if (column === "all") {
+      itemsArray = this.state.sortAllData;
+
+    } else if (column === "status") {
+      this.state.SearchTicketData = this.state.sortAllData;
+      itemsArray = this.state.SearchTicketData.filter(
+        a => a.ticketStatus === data
+      );
+    } else if (column === "category") {
+      this.state.SearchTicketData = this.state.sortAllData;
+      itemsArray = this.state.SearchTicketData.filter(
+        a => a.category === data
+      );
+    } else if (column === "priority") {
+      this.state.SearchTicketData = this.state.sortAllData;
+      itemsArray = this.state.SearchTicketData.filter(
+        a => a.priority === data
+      );
+    } else if (column === "assignedTo") {
+      this.state.SearchTicketData = this.state.sortAllData;
+      itemsArray = this.state.SearchTicketData.filter(
+        a => a.assignedTo === data
+      );
+    } else if (column === "createdOn") {
+      this.state.SearchTicketData = this.state.sortAllData;
+      itemsArray = this.state.SearchTicketData.filter(
+        a => a.createdOn === data
+      );
+    } else if (column === "colorred") {
+      this.state.SearchTicketData = this.state.sortAllData;
+      itemsArray = this.state.SearchTicketData.filter(
+        a => a.isEscalation === 1
+      );
+    } else if (column === "colororange") {
+      this.state.SearchTicketData = this.state.sortAllData;
+      itemsArray = this.state.SearchTicketData.filter(
+        a => a.isSLANearBreach === true
+      );
+    } else if (column === "colorwhite") {
+      this.state.SearchTicketData = this.state.sortAllData;
+      itemsArray = this.state.SearchTicketData.filter(
+        a => a.isEscalation === 0 && a.isSLANearBreach === false && a.isReassigned === false
+      );
+    } else if (column === "colorgreen") {
+      this.state.SearchTicketData = this.state.sortAllData;
+      itemsArray = this.state.SearchTicketData.filter(
+        a => a.isReassigned === true && a.isEscalation === 0
+      );
+    }
+
+
     this.setState({
       SearchTicketData: itemsArray
     });
@@ -2123,7 +2144,7 @@ class MyTicketList extends Component {
       method: "post",
       url: config.apiUrl + "/User/GetUserList",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let status = res.data.message;
       let data = res.data.responseData;
@@ -2160,7 +2181,7 @@ class MyTicketList extends Component {
     newSelected[ticketID] = !this.state.cSelectedRow[ticketID];
 
     await this.setState({
-      cSelectedRow: ticketID ? newSelected : false,  ticketIds: strIds
+      cSelectedRow: ticketID ? newSelected : false, ticketIds: strIds
     });
   };
 
@@ -2205,7 +2226,7 @@ class MyTicketList extends Component {
           self.setState({
             ticketDetailID: Id
           });
-          setTimeout(function() {
+          setTimeout(function () {
             self.props.history.push({
               pathname: "myticket",
               ticketDetailID: Id
@@ -2217,10 +2238,10 @@ class MyTicketList extends Component {
             column.original["isEscalation"] === 1
               ? "#FFDFDF"
               : column.original["isSLANearBreach"] === true
-              ? "#FFF3DF"
-              : column.original["isReassigned"] === true
-              ? "#DEF3FF"
-              : "white"
+                ? "#FFF3DF"
+                : column.original["isReassigned"] === true
+                  ? "#DEF3FF"
+                  : "white"
         }
       };
     }
@@ -2364,7 +2385,7 @@ class MyTicketList extends Component {
       params: {
         SearchParamID: paramsID
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let status = res.data.message;
       let data = res.data.responseData.ticketList;
@@ -2438,10 +2459,10 @@ class MyTicketList extends Component {
           debugger;
           let createdDate = dataSearch.searchDataByDate.Ticket_CreatedOn;
           let createdDateArray = createdDate.split('-');
-          let createdDateFinal = new Date(createdDateArray[0],createdDateArray[1] - 1,createdDateArray[2]);
+          let createdDateFinal = new Date(createdDateArray[0], createdDateArray[1] - 1, createdDateArray[2]);
           let modifiedDate = dataSearch.searchDataByDate.Ticket_ModifiedOn;
           let modifiedDateArray = modifiedDate.split('-');
-          let modifiedDateFinal = new Date(modifiedDateArray[0],modifiedDateArray[1] - 1,modifiedDateArray[2]);
+          let modifiedDateFinal = new Date(modifiedDateArray[0], modifiedDateArray[1] - 1, modifiedDateArray[2]);
           self.setState({
             ByDateCreatDate: createdDateFinal,
             ByDateSelectDate: modifiedDateFinal,
@@ -2530,9 +2551,9 @@ class MyTicketList extends Component {
         } else {
           self.setState({
             selectedCategory: dataSearch.searchDataByCategoryType.CategoryId,
-            selectedSubCategory:dataSearch.searchDataByCategoryType.SubCategoryId,
+            selectedSubCategory: dataSearch.searchDataByCategoryType.SubCategoryId,
             selectedIssueType: dataSearch.searchDataByCategoryType.IssueTypeId,
-            selectedTicketStatusByCategory:dataSearch.searchDataByCategoryType.TicketStatusID
+            selectedTicketStatusByCategory: dataSearch.searchDataByCategoryType.TicketStatusID
           });
         }
 
@@ -2572,10 +2593,10 @@ class MyTicketList extends Component {
         } else {
           let createdDate = dataSearch.SearchDataByAll.CreatedDate;
           let createdDateArray = createdDate.split('-');
-          let createdDateFinal = new Date(createdDateArray[0],createdDateArray[1] - 1,createdDateArray[2]);
+          let createdDateFinal = new Date(createdDateArray[0], createdDateArray[1] - 1, createdDateArray[2]);
           let modifiedDate = dataSearch.SearchDataByAll.ModifiedDate;
           let modifiedDateArray = modifiedDate.split('-');
-          let modifiedDateFinal = new Date(modifiedDateArray[0],modifiedDateArray[1] - 1,modifiedDateArray[2]);
+          let modifiedDateFinal = new Date(modifiedDateArray[0], modifiedDateArray[1] - 1, modifiedDateArray[2]);
           self.setState({
             ByAllCreateDate: createdDateFinal,
             selectedTicketSource: dataSearch.SearchDataByAll.TicketSourceTypeID,
@@ -2632,8 +2653,8 @@ class MyTicketList extends Component {
     const ImgChange = this.state.collapseSearch ? (
       <img className="search-icon" src={CancalImg} alt="search-icon" />
     ) : (
-      <img className="search-icon" src={SearchIcon} alt="search-icon" />
-    );
+        <img className="search-icon" src={SearchIcon} alt="search-icon" />
+      );
 
     return (
       <Fragment>
@@ -2668,172 +2689,172 @@ class MyTicketList extends Component {
               <div className="filter-type">
                 <p>FILTER BY TYPE</p>
                 <div className="filter-checkbox">
-                <input
+                  <input
                     type="checkbox"
-                    
+
                     name="filter-type"
-                    id={"fil-open" }
-                  
+                    id={"fil-open"}
+
                     value="all"
-                    onChange={this.setSortCheckStatus.bind(this,"all")}
+                    onChange={this.setSortCheckStatus.bind(this, "all")}
                   />
                   <label htmlFor={"fil-open"}>
                     <span className="table-btn table-blue-btn">ALL</span>
                   </label>
-                  </div>
-                {this.state.sortColumnName==="status" ? 
-                
-                this.state.sortTicketData !== null && 
-                  this.state.sortTicketData.map((item, i) => ( 
-                    <div className="filter-checkbox">
-                      
-                  <input
-                    type="checkbox"
-                    
-                    name="filter-type"
-                    id={"fil-open" + item.ticketStatus}
-                  
-                    value={item.ticketStatus}
-                    onChange={this.setSortCheckStatus.bind(this,"status")}
-                  />
-                  <label htmlFor={"fil-open" + item.ticketStatus}>
-                    <span className="table-btn table-blue-btn">{item.ticketStatus}</span>
-                  </label>
                 </div>
+                {this.state.sortColumnName === "status" ?
+
+                  this.state.sortTicketData !== null &&
+                  this.state.sortTicketData.map((item, i) => (
+                    <div className="filter-checkbox">
+
+                      <input
+                        type="checkbox"
+
+                        name="filter-type"
+                        id={"fil-open" + item.ticketStatus}
+
+                        value={item.ticketStatus}
+                        onChange={this.setSortCheckStatus.bind(this, "status")}
+                      />
+                      <label htmlFor={"fil-open" + item.ticketStatus}>
+                        <span className="table-btn table-blue-btn">{item.ticketStatus}</span>
+                      </label>
+                    </div>
                   ))
 
-                :null}
+                  : null}
 
-                { this.state.sortColumnName==="category" ? 
-                
-                this.state.sortCategoryData !== null && 
-                  this.state.sortCategoryData.map((item, i) => ( 
+                {this.state.sortColumnName === "category" ?
+
+                  this.state.sortCategoryData !== null &&
+                  this.state.sortCategoryData.map((item, i) => (
                     <div className="filter-checkbox">
-                      
-                  <input
-                    type="checkbox"
-                    
-                    name="filter-type"
-                    id={"fil-open" + item.category}
-                  
-                    value={item.category}
-                    onChange={this.setSortCheckStatus.bind(this,"category")}
-                  />
-                  <label htmlFor={"fil-open" + item.category}>
-                    <span className="table-btn table-blue-btn">{item.category}</span>
-                  </label>
-                </div>
+
+                      <input
+                        type="checkbox"
+
+                        name="filter-type"
+                        id={"fil-open" + item.category}
+
+                        value={item.category}
+                        onChange={this.setSortCheckStatus.bind(this, "category")}
+                      />
+                      <label htmlFor={"fil-open" + item.category}>
+                        <span className="table-btn table-blue-btn">{item.category}</span>
+                      </label>
+                    </div>
                   ))
 
-                :null}
+                  : null}
 
-               { this.state.sortColumnName==="priority" ? 
-                
-                this.state.sortPriorityData !== null && 
-                  this.state.sortPriorityData.map((item, i) => ( 
+                {this.state.sortColumnName === "priority" ?
+
+                  this.state.sortPriorityData !== null &&
+                  this.state.sortPriorityData.map((item, i) => (
                     <div className="filter-checkbox">
-                      
-                  <input
-                    type="checkbox"
-                    
-                    name="filter-type"
-                    id={"fil-open" + item.priority}
-                  
-                    value={item.priority}
-                    onChange={this.setSortCheckStatus.bind(this,"priority")}
-                  />
-                  <label htmlFor={"fil-open" + item.priority}>
-                    <span className="table-btn table-blue-btn">{item.priority}</span>
-                  </label>
-                </div>
+
+                      <input
+                        type="checkbox"
+
+                        name="filter-type"
+                        id={"fil-open" + item.priority}
+
+                        value={item.priority}
+                        onChange={this.setSortCheckStatus.bind(this, "priority")}
+                      />
+                      <label htmlFor={"fil-open" + item.priority}>
+                        <span className="table-btn table-blue-btn">{item.priority}</span>
+                      </label>
+                    </div>
                   ))
 
-                :null}
+                  : null}
 
-                 { this.state.sortColumnName==="createdOn" ? 
-                
-                this.state.sortcreatedOnData !== null && 
-                  this.state.sortcreatedOnData.map((item, i) => ( 
+                {this.state.sortColumnName === "createdOn" ?
+
+                  this.state.sortcreatedOnData !== null &&
+                  this.state.sortcreatedOnData.map((item, i) => (
                     <div className="filter-checkbox">
-                      
-                  <input
-                    type="checkbox"
-                    
-                    name="filter-type"
-                    id={"fil-open" + item.createdOn}
-                  
-                    value={item.createdOn}
-                    onChange={this.setSortCheckStatus.bind(this,"createdOn")}
-                  />
-                  <label htmlFor={"fil-open" + item.createdOn}>
-                    <span className="table-btn table-blue-btn">{item.createdOn}</span>
-                  </label>
-                </div>
+
+                      <input
+                        type="checkbox"
+
+                        name="filter-type"
+                        id={"fil-open" + item.createdOn}
+
+                        value={item.createdOn}
+                        onChange={this.setSortCheckStatus.bind(this, "createdOn")}
+                      />
+                      <label htmlFor={"fil-open" + item.createdOn}>
+                        <span className="table-btn table-blue-btn">{item.createdOn}</span>
+                      </label>
+                    </div>
                   ))
 
-                :null}
+                  : null}
 
-              { this.state.sortColumnName==="assignedTo" ? 
-                
-                this.state.sortAssigneeData !== null && 
-                  this.state.sortAssigneeData.map((item, i) => ( 
+                {this.state.sortColumnName === "assignedTo" ?
+
+                  this.state.sortAssigneeData !== null &&
+                  this.state.sortAssigneeData.map((item, i) => (
                     <div className="filter-checkbox">
-                      
-                  <input
-                    type="checkbox"
-                    
-                    name="filter-type"
-                    id={"fil-open" + item.assignedTo}
-                  
-                    value={item.assignedTo}
-                    onChange={this.setSortCheckStatus.bind(this,"assignedTo")}
-                  />
-                  <label htmlFor={"fil-open" + item.assignedTo}>
-                    <span className="table-btn table-blue-btn">{item.assignedTo}</span>
-                  </label>
-                </div>
+
+                      <input
+                        type="checkbox"
+
+                        name="filter-type"
+                        id={"fil-open" + item.assignedTo}
+
+                        value={item.assignedTo}
+                        onChange={this.setSortCheckStatus.bind(this, "assignedTo")}
+                      />
+                      <label htmlFor={"fil-open" + item.assignedTo}>
+                        <span className="table-btn table-blue-btn">{item.assignedTo}</span>
+                      </label>
+                    </div>
                   ))
 
-                :null}
-                
+                  : null}
+
 
               </div>
-             
-                <div className="filter-type filter-color">
+
+              <div className="filter-type filter-color">
                 <p>FILTER BY COLOR</p>
                 <div className="filter-checkbox">
                   <input type="checkbox"
-                   id="fil-red"
-                    name="filter-color" 
+                    id="fil-red"
+                    name="filter-color"
                     value="isEscalation"
-                    onChange={this.setSortCheckStatus.bind(this,"colorred")}
-                    />
+                    onChange={this.setSortCheckStatus.bind(this, "colorred")}
+                  />
                   <label htmlFor="fil-red">
                     <span className="fil-color-red fil-color-bg"></span>
                   </label>
                 </div>
                 <div className="filter-checkbox">
                   <input type="checkbox" id="fil-orange" name="filter-color"
-                   value="isSLANearBreach"
-                   onChange={this.setSortCheckStatus.bind(this,"colororange")}
+                    value="isSLANearBreach"
+                    onChange={this.setSortCheckStatus.bind(this, "colororange")}
                   />
                   <label htmlFor="fil-orange">
                     <span className="fil-color-orange fil-color-bg"></span>
                   </label>
                 </div>
                 <div className="filter-checkbox">
-                  <input type="checkbox" id="fil-white" name="filter-color" 
-                  value="white"
-                  onChange={this.setSortCheckStatus.bind(this,"colorwhite")}
+                  <input type="checkbox" id="fil-white" name="filter-color"
+                    value="white"
+                    onChange={this.setSortCheckStatus.bind(this, "colorwhite")}
                   />
                   <label htmlFor="fil-white">
                     <span className="fil-color-white fil-color-bg"></span>
                   </label>
                 </div>
                 <div className="filter-checkbox">
-                  <input type="checkbox" id="fil-green" name="filter-color" 
-                  value="isReassigned"
-                  onChange={this.setSortCheckStatus.bind(this,"colorgreen")}
+                  <input type="checkbox" id="fil-green" name="filter-color"
+                    value="isReassigned"
+                    onChange={this.setSortCheckStatus.bind(this, "colorgreen")}
                   />
                   <label htmlFor="fil-green">
                     <span className="fil-color-green fil-color-bg"></span>
@@ -2841,8 +2862,8 @@ class MyTicketList extends Component {
                 </div>
               </div>
 
-             
-              
+
+
             </div>
           </Modal>
         </div>
@@ -3287,7 +3308,7 @@ class MyTicketList extends Component {
                                           dateFormat="dd/MM/yyyy"
                                           autoComplete="off"
                                           value={this.state.ByDateCreatDate}
-                                          // className="form-control"
+                                        // className="form-control"
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -3303,7 +3324,7 @@ class MyTicketList extends Component {
                                           value={this.state.ByDateSelectDate}
                                           name="ByDateSelectDate"
                                           autoComplete="off"
-                                          // className="form-control"
+                                        // className="form-control"
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -3659,7 +3680,7 @@ class MyTicketList extends Component {
                                           onChange={this.handleAllCreateDate.bind(
                                             this
                                           )}
-                                          // className="form-control"
+                                        // className="form-control"
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -3717,7 +3738,7 @@ class MyTicketList extends Component {
                                           showYearDropdown
                                           dateFormat="dd/MM/yyyy"
                                           value={this.state.ByAllLastDate}
-                                          // className="form-control"
+                                        // className="form-control"
                                         />
                                       </div>
                                       <div className="col-md-3 col-sm-6">
@@ -4007,138 +4028,138 @@ class MyTicketList extends Component {
                                               </select>
                                             </div>
                                             {this.state.selectedWithClaimAll ===
-                                            "yes" ? (
-                                              <React.Fragment>
-                                                <div className="m-b-25">
-                                                  <select
-                                                    value={
-                                                      this.state
-                                                        .selectedClaimStatus
-                                                    }
-                                                    onChange={
-                                                      this.handleClaimStatus
-                                                    }
-                                                  >
-                                                    <option>
-                                                      Claim Status
+                                              "yes" ? (
+                                                <React.Fragment>
+                                                  <div className="m-b-25">
+                                                    <select
+                                                      value={
+                                                        this.state
+                                                          .selectedClaimStatus
+                                                      }
+                                                      onChange={
+                                                        this.handleClaimStatus
+                                                      }
+                                                    >
+                                                      <option>
+                                                        Claim Status
                                                     </option>
-                                                    {this.state
-                                                      .ClaimStatusData !==
-                                                      null &&
-                                                      this.state.ClaimStatusData.map(
-                                                        (item, i) => (
-                                                          <option
-                                                            key={i}
-                                                            value={
-                                                              item.claimStatusID
-                                                            }
-                                                          >
-                                                            {
-                                                              item.claimStatusName
-                                                            }
-                                                          </option>
-                                                        )
-                                                      )}
-                                                  </select>
-                                                </div>
+                                                      {this.state
+                                                        .ClaimStatusData !==
+                                                        null &&
+                                                        this.state.ClaimStatusData.map(
+                                                          (item, i) => (
+                                                            <option
+                                                              key={i}
+                                                              value={
+                                                                item.claimStatusID
+                                                              }
+                                                            >
+                                                              {
+                                                                item.claimStatusName
+                                                              }
+                                                            </option>
+                                                          )
+                                                        )}
+                                                    </select>
+                                                  </div>
 
-                                                <div className="m-b-25">
-                                                  <select
-                                                    value={
-                                                      this.state
-                                                        .selectedClaimCategory
-                                                    }
-                                                    onChange={
-                                                      this.setClaimCategoryValue
-                                                    }
-                                                  >
-                                                    <option value="0">
-                                                      Claim Category
+                                                  <div className="m-b-25">
+                                                    <select
+                                                      value={
+                                                        this.state
+                                                          .selectedClaimCategory
+                                                      }
+                                                      onChange={
+                                                        this.setClaimCategoryValue
+                                                      }
+                                                    >
+                                                      <option value="0">
+                                                        Claim Category
                                                     </option>
-                                                    {this.state.CategoryData !==
-                                                      null &&
-                                                      this.state.CategoryData.map(
-                                                        (item, i) => (
-                                                          <option
-                                                            key={i}
-                                                            value={
-                                                              item.categoryID
-                                                            }
-                                                          >
-                                                            {item.categoryName}
-                                                          </option>
-                                                        )
-                                                      )}
-                                                  </select>
-                                                </div>
+                                                      {this.state.CategoryData !==
+                                                        null &&
+                                                        this.state.CategoryData.map(
+                                                          (item, i) => (
+                                                            <option
+                                                              key={i}
+                                                              value={
+                                                                item.categoryID
+                                                              }
+                                                            >
+                                                              {item.categoryName}
+                                                            </option>
+                                                          )
+                                                        )}
+                                                    </select>
+                                                  </div>
 
-                                                <div className="m-b-25">
-                                                  <select
-                                                    value={
-                                                      this.state
-                                                        .selectedClaimSubCategory
-                                                    }
-                                                    onChange={
-                                                      this
-                                                        .setClaimSubCategoryValue
-                                                    }
-                                                  >
-                                                    <option value={0}>
-                                                      Claim Sub Category
+                                                  <div className="m-b-25">
+                                                    <select
+                                                      value={
+                                                        this.state
+                                                          .selectedClaimSubCategory
+                                                      }
+                                                      onChange={
+                                                        this
+                                                          .setClaimSubCategoryValue
+                                                      }
+                                                    >
+                                                      <option value={0}>
+                                                        Claim Sub Category
                                                     </option>
-                                                    {this.state
-                                                      .ClaimSubCategoryData !==
-                                                      null &&
-                                                      this.state.ClaimSubCategoryData.map(
-                                                        (item, i) => (
-                                                          <option
-                                                            key={i}
-                                                            value={
-                                                              item.subCategoryID
-                                                            }
-                                                          >
-                                                            {
-                                                              item.subCategoryName
-                                                            }
-                                                          </option>
-                                                        )
-                                                      )}
-                                                  </select>
-                                                </div>
+                                                      {this.state
+                                                        .ClaimSubCategoryData !==
+                                                        null &&
+                                                        this.state.ClaimSubCategoryData.map(
+                                                          (item, i) => (
+                                                            <option
+                                                              key={i}
+                                                              value={
+                                                                item.subCategoryID
+                                                              }
+                                                            >
+                                                              {
+                                                                item.subCategoryName
+                                                              }
+                                                            </option>
+                                                          )
+                                                        )}
+                                                    </select>
+                                                  </div>
 
-                                                <div className="">
-                                                  <select
-                                                    value={
-                                                      this.state
-                                                        .selectedClaimIssueType
-                                                    }
-                                                    onChange={
-                                                      this
-                                                        .setClaimIssueTypeValue
-                                                    }
-                                                  >
-                                                    <option value="0">
-                                                      Claim Issue Type
+                                                  <div className="">
+                                                    <select
+                                                      value={
+                                                        this.state
+                                                          .selectedClaimIssueType
+                                                      }
+                                                      onChange={
+                                                        this
+                                                          .setClaimIssueTypeValue
+                                                      }
+                                                    >
+                                                      <option value="0">
+                                                        Claim Issue Type
                                                     </option>
-                                                    {this.state
-                                                      .ClaimIssueTypeData !==
-                                                      null &&
-                                                      this.state.ClaimIssueTypeData.map(
-                                                        (item, i) => (
-                                                          <option
-                                                            key={i}
-                                                            value={
-                                                              item.issueTypeID
-                                                            }
-                                                          >
-                                                            {item.issueTypeName}
-                                                          </option>
-                                                        )
-                                                      )}
-                                                  </select>
-                                                </div>
-                                              </React.Fragment>
-                                            ) : null}
+                                                      {this.state
+                                                        .ClaimIssueTypeData !==
+                                                        null &&
+                                                        this.state.ClaimIssueTypeData.map(
+                                                          (item, i) => (
+                                                            <option
+                                                              key={i}
+                                                              value={
+                                                                item.issueTypeID
+                                                              }
+                                                            >
+                                                              {item.issueTypeName}
+                                                            </option>
+                                                          )
+                                                        )}
+                                                    </select>
+                                                  </div>
+                                                </React.Fragment>
+                                              ) : null}
                                           </div>
                                           <div className="col-sm-6">
                                             <div className="m-b-25">
@@ -4160,103 +4181,103 @@ class MyTicketList extends Component {
                                             </div>
 
                                             {this.state.selectedWithTaskAll ===
-                                            "yes" ? (
-                                              <React.Fragment>
-                                                <div className="m-b-25">
-                                                  <select
-                                                    value={
-                                                      this.state
-                                                        .selectedTaskStatus
-                                                    }
-                                                    onChange={
-                                                      this.handleTaskStatus
-                                                    }
-                                                  >
-                                                    <option>Task Status</option>
-                                                    {this.state
-                                                      .TaskStatusData !==
-                                                      null &&
-                                                      this.state.TaskStatusData.map(
-                                                        (item, i) => (
-                                                          <option
-                                                            key={i}
-                                                            value={
-                                                              item.taskStatusID
-                                                            }
-                                                          >
-                                                            {
-                                                              item.taskStatusName
-                                                            }
-                                                          </option>
-                                                        )
-                                                      )}
-                                                  </select>
-                                                </div>
+                                              "yes" ? (
+                                                <React.Fragment>
+                                                  <div className="m-b-25">
+                                                    <select
+                                                      value={
+                                                        this.state
+                                                          .selectedTaskStatus
+                                                      }
+                                                      onChange={
+                                                        this.handleTaskStatus
+                                                      }
+                                                    >
+                                                      <option>Task Status</option>
+                                                      {this.state
+                                                        .TaskStatusData !==
+                                                        null &&
+                                                        this.state.TaskStatusData.map(
+                                                          (item, i) => (
+                                                            <option
+                                                              key={i}
+                                                              value={
+                                                                item.taskStatusID
+                                                              }
+                                                            >
+                                                              {
+                                                                item.taskStatusName
+                                                              }
+                                                            </option>
+                                                          )
+                                                        )}
+                                                    </select>
+                                                  </div>
 
-                                                <div className="m-b-25">
-                                                  <select
-                                                    value={
-                                                      this.state
-                                                        .selectedDepartment
-                                                    }
-                                                    onChange={
-                                                      this.setDepartmentValue
-                                                    }
-                                                  >
-                                                    <option>
-                                                      Task Department
+                                                  <div className="m-b-25">
+                                                    <select
+                                                      value={
+                                                        this.state
+                                                          .selectedDepartment
+                                                      }
+                                                      onChange={
+                                                        this.setDepartmentValue
+                                                      }
+                                                    >
+                                                      <option>
+                                                        Task Department
                                                     </option>
-                                                    {this.state
-                                                      .DepartmentData !==
-                                                      null &&
-                                                      this.state.DepartmentData.map(
-                                                        (item, i) => (
-                                                          <option
-                                                            key={i}
-                                                            value={
-                                                              item.departmentID
-                                                            }
-                                                          >
-                                                            {
-                                                              item.departmentName
-                                                            }
-                                                          </option>
-                                                        )
-                                                      )}
-                                                  </select>
-                                                </div>
+                                                      {this.state
+                                                        .DepartmentData !==
+                                                        null &&
+                                                        this.state.DepartmentData.map(
+                                                          (item, i) => (
+                                                            <option
+                                                              key={i}
+                                                              value={
+                                                                item.departmentID
+                                                              }
+                                                            >
+                                                              {
+                                                                item.departmentName
+                                                              }
+                                                            </option>
+                                                          )
+                                                        )}
+                                                    </select>
+                                                  </div>
 
-                                                <div className="">
-                                                  <select
-                                                    value={
-                                                      this.state
-                                                        .selectedFunction
-                                                    }
-                                                    onChange={
-                                                      this.setFunctionValue
-                                                    }
-                                                  >
-                                                    <option>
-                                                      Task Function
+                                                  <div className="">
+                                                    <select
+                                                      value={
+                                                        this.state
+                                                          .selectedFunction
+                                                      }
+                                                      onChange={
+                                                        this.setFunctionValue
+                                                      }
+                                                    >
+                                                      <option>
+                                                        Task Function
                                                     </option>
-                                                    {this.state.FunctionData !==
-                                                      null &&
-                                                      this.state.FunctionData.map(
-                                                        (item, i) => (
-                                                          <option
-                                                            key={i}
-                                                            value={
-                                                              item.functionID
-                                                            }
-                                                          >
-                                                            {item.funcationName}
-                                                          </option>
-                                                        )
-                                                      )}
-                                                  </select>
-                                                </div>
-                                              </React.Fragment>
-                                            ) : null}
+                                                      {this.state.FunctionData !==
+                                                        null &&
+                                                        this.state.FunctionData.map(
+                                                          (item, i) => (
+                                                            <option
+                                                              key={i}
+                                                              value={
+                                                                item.functionID
+                                                              }
+                                                            >
+                                                              {item.funcationName}
+                                                            </option>
+                                                          )
+                                                        )}
+                                                    </select>
+                                                  </div>
+                                                </React.Fragment>
+                                              ) : null}
                                           </div>
                                         </div>
                                       </div>
@@ -4374,266 +4395,214 @@ class MyTicketList extends Component {
                                               )}
                                           </select>
                                           {this.state.selectScheduleDate ===
-                                          "230" ? (
-                                            <div className="ScheduleDate-to">
-                                              <span>
-                                                <label className="every1">
-                                                  Every
+                                            "230" ? (
+                                              <div className="ScheduleDate-to">
+                                                <span>
+                                                  <label className="every1">
+                                                    Every
                                                 </label>
-                                                <input
-                                                  type="text"
-                                                  className="Every"
-                                                  placeholder="1"
-                                                  onChange={this.handleDailyDay}
-                                                />
-                                                <label className="every1">
-                                                  Day
+                                                  <input
+                                                    type="text"
+                                                    className="Every"
+                                                    placeholder="1"
+                                                    onChange={this.handleDailyDay}
+                                                  />
+                                                  <label className="every1">
+                                                    Day
                                                 </label>
-                                              </span>
-                                            </div>
-                                          ) : null}
-                                          {this.state.selectScheduleDate ===
-                                          "231" ? (
-                                            <div className="ScheduleDate-to">
-                                              <span>
-                                                <label className="every1">
-                                                  Every
-                                                </label>
-                                                <input
-                                                  type="text"
-                                                  className="Every"
-                                                  placeholder="1"
-                                                  onChange={this.handleWeekly}
-                                                />
-                                                <label className="every1">
-                                                  Week on
-                                                </label>
-                                              </span>
-                                              <div
-                                                style={{
-                                                  marginTop: "10px"
-                                                }}
-                                              >
-                                                <Checkbox
-                                                  onChange={
-                                                    this.handleWeeklyDays
-                                                  }
-                                                  value="Mon"
-                                                >
-                                                  Mon
-                                                </Checkbox>
-                                                <Checkbox
-                                                  onChange={
-                                                    this.handleWeeklyDays
-                                                  }
-                                                  value="Tue"
-                                                >
-                                                  Tue
-                                                </Checkbox>
-                                                <Checkbox
-                                                  onChange={
-                                                    this.handleWeeklyDays
-                                                  }
-                                                  value="Wed"
-                                                >
-                                                  Wed
-                                                </Checkbox>
-                                                <Checkbox
-                                                  onChange={
-                                                    this.handleWeeklyDays
-                                                  }
-                                                  value="Thu"
-                                                >
-                                                  Thu
-                                                </Checkbox>
-                                                <Checkbox
-                                                  onChange={
-                                                    this.handleWeeklyDays
-                                                  }
-                                                  value="Fri"
-                                                >
-                                                  Fri
-                                                </Checkbox>
-                                                <Checkbox
-                                                  onChange={
-                                                    this.handleWeeklyDays
-                                                  }
-                                                  value="Sat"
-                                                >
-                                                  Sat
-                                                </Checkbox>
-                                                <Checkbox
-                                                  onChange={
-                                                    this.handleWeeklyDays
-                                                  }
-                                                  value="Sun"
-                                                >
-                                                  Sun
-                                                </Checkbox>
+                                                </span>
                                               </div>
-                                            </div>
-                                          ) : null}
+                                            ) : null}
                                           {this.state.selectScheduleDate ===
-                                          "232" ? (
-                                            <div className="ScheduleDate-to">
-                                              <span>
-                                                <label className="every1">
-                                                  Day
+                                            "231" ? (
+                                              <div className="ScheduleDate-to">
+                                                <span>
+                                                  <label className="every1">
+                                                    Every
                                                 </label>
-                                                <input
-                                                  type="text"
-                                                  className="Every"
-                                                  placeholder="9"
-                                                  onChange={
-                                                    this.handleDaysForMonth
-                                                  }
-                                                />
-                                                <label className="every1">
-                                                  of every
+                                                  <input
+                                                    type="text"
+                                                    className="Every"
+                                                    placeholder="1"
+                                                    onChange={this.handleWeekly}
+                                                  />
+                                                  <label className="every1">
+                                                    Week on
                                                 </label>
-                                                <input
-                                                  type="text"
-                                                  className="Every"
-                                                  placeholder="1"
-                                                  onChange={
-                                                    this.handleMonthForMonth
-                                                  }
-                                                />
-                                                <label className="every1">
-                                                  months
-                                                </label>
-                                              </span>
-                                            </div>
-                                          ) : null}
-                                          {this.state.selectScheduleDate ===
-                                          "233" ? (
-                                            <div className="ScheduleDate-to">
-                                              <span>
-                                                <label className="every1">
-                                                  Every
-                                                </label>
-                                                <input
-                                                  type="text"
-                                                  className="Every"
-                                                  placeholder="1"
-                                                  onChange={
-                                                    this.handleMonthForWeek
-                                                  }
-                                                />
-                                                <label className="every1">
-                                                  month on the
-                                                </label>
-                                              </span>
-                                              <div className="row mt-3">
-                                                <div className="col-md-6">
-                                                  <select
-                                                    id="inputState"
-                                                    className="form-control dropdown-setting1"
-                                                    onChange={
-                                                      this.handleWeekForWeek
-                                                    }
-                                                    value={
-                                                      this.state
-                                                        .selectedNoOfWeekForWeek
-                                                    }
-                                                  >
-                                                    <option value="0">
-                                                      Select
-                                                    </option>
-                                                    <option value="2">
-                                                      Second
-                                                    </option>
-                                                    <option value="4">
-                                                      Four
-                                                    </option>
-                                                  </select>
-                                                </div>
-                                                <div className="col-md-6">
-                                                  <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                                                    <Select
-                                                      getOptionLabel={option =>
-                                                        option.days
-                                                      }
-                                                      getOptionValue={
-                                                        option => option.days //id
-                                                      }
-                                                      options={
-                                                        this.state
-                                                          .NameOfDayForWeek
-                                                      }
-                                                      placeholder="Select"
-                                                      // menuIsOpen={true}
-                                                      closeMenuOnSelect={false}
-                                                      onChange={this.setNameOfDayForWeek.bind(
-                                                        this
-                                                      )}
-                                                      value={
-                                                        this.state
-                                                          .selectedNameOfDayForWeek
-                                                      }
-                                                      // showNewOptionAtTop={false}
-                                                      isMulti
-                                                    />
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                          ) : null}
-                                          {this.state.selectScheduleDate ===
-                                          "234" ? (
-                                            <div className="ScheduleDate-to">
-                                              <div className="row m-0">
-                                                <label
-                                                  className="every1"
+                                                </span>
+                                                <div
                                                   style={{
-                                                    lineHeight: "40px"
+                                                    marginTop: "10px"
                                                   }}
                                                 >
-                                                  on
+                                                  <Checkbox
+                                                    onChange={
+                                                      this.handleWeeklyDays
+                                                    }
+                                                    value="Mon"
+                                                  >
+                                                    Mon
+                                                </Checkbox>
+                                                  <Checkbox
+                                                    onChange={
+                                                      this.handleWeeklyDays
+                                                    }
+                                                    value="Tue"
+                                                  >
+                                                    Tue
+                                                </Checkbox>
+                                                  <Checkbox
+                                                    onChange={
+                                                      this.handleWeeklyDays
+                                                    }
+                                                    value="Wed"
+                                                  >
+                                                    Wed
+                                                </Checkbox>
+                                                  <Checkbox
+                                                    onChange={
+                                                      this.handleWeeklyDays
+                                                    }
+                                                    value="Thu"
+                                                  >
+                                                    Thu
+                                                </Checkbox>
+                                                  <Checkbox
+                                                    onChange={
+                                                      this.handleWeeklyDays
+                                                    }
+                                                    value="Fri"
+                                                  >
+                                                    Fri
+                                                </Checkbox>
+                                                  <Checkbox
+                                                    onChange={
+                                                      this.handleWeeklyDays
+                                                    }
+                                                    value="Sat"
+                                                  >
+                                                    Sat
+                                                </Checkbox>
+                                                  <Checkbox
+                                                    onChange={
+                                                      this.handleWeeklyDays
+                                                    }
+                                                    value="Sun"
+                                                  >
+                                                    Sun
+                                                </Checkbox>
+                                                </div>
+                                              </div>
+                                            ) : null}
+                                          {this.state.selectScheduleDate ===
+                                            "232" ? (
+                                              <div className="ScheduleDate-to">
+                                                <span>
+                                                  <label className="every1">
+                                                    Day
                                                 </label>
-                                                <div className="col-md-7">
-                                                  <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                                                    <Select
-                                                      getOptionLabel={option =>
-                                                        option.month
+                                                  <input
+                                                    type="text"
+                                                    className="Every"
+                                                    placeholder="9"
+                                                    onChange={
+                                                      this.handleDaysForMonth
+                                                    }
+                                                  />
+                                                  <label className="every1">
+                                                    of every
+                                                </label>
+                                                  <input
+                                                    type="text"
+                                                    className="Every"
+                                                    placeholder="1"
+                                                    onChange={
+                                                      this.handleMonthForMonth
+                                                    }
+                                                  />
+                                                  <label className="every1">
+                                                    months
+                                                </label>
+                                                </span>
+                                              </div>
+                                            ) : null}
+                                          {this.state.selectScheduleDate ===
+                                            "233" ? (
+                                              <div className="ScheduleDate-to">
+                                                <span>
+                                                  <label className="every1">
+                                                    Every
+                                                </label>
+                                                  <input
+                                                    type="text"
+                                                    className="Every"
+                                                    placeholder="1"
+                                                    onChange={
+                                                      this.handleMonthForWeek
+                                                    }
+                                                  />
+                                                  <label className="every1">
+                                                    month on the
+                                                </label>
+                                                </span>
+                                                <div className="row mt-3">
+                                                  <div className="col-md-6">
+                                                    <select
+                                                      id="inputState"
+                                                      className="form-control dropdown-setting1"
+                                                      onChange={
+                                                        this.handleWeekForWeek
                                                       }
-                                                      getOptionValue={
-                                                        option => option.month //id
-                                                      }
-                                                      options={
-                                                        this.state
-                                                          .NameOfMonthForYear
-                                                      }
-                                                      placeholder="Select"
-                                                      // menuIsOpen={true}
-                                                      closeMenuOnSelect={false}
-                                                      onChange={this.setNameOfMonthForYear.bind(
-                                                        this
-                                                      )}
                                                       value={
                                                         this.state
-                                                          .selectedNameOfMonthForYear
+                                                          .selectedNoOfWeekForWeek
                                                       }
-                                                      // showNewOptionAtTop={false}
-                                                      isMulti
-                                                    />
+                                                    >
+                                                      <option value="0">
+                                                        Select
+                                                    </option>
+                                                      <option value="2">
+                                                        Second
+                                                    </option>
+                                                      <option value="4">
+                                                        Four
+                                                    </option>
+                                                    </select>
+                                                  </div>
+                                                  <div className="col-md-6">
+                                                    <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                                                      <Select
+                                                        getOptionLabel={option =>
+                                                          option.days
+                                                        }
+                                                        getOptionValue={
+                                                          option => option.days //id
+                                                        }
+                                                        options={
+                                                          this.state
+                                                            .NameOfDayForWeek
+                                                        }
+                                                        placeholder="Select"
+                                                        // menuIsOpen={true}
+                                                        closeMenuOnSelect={false}
+                                                        onChange={this.setNameOfDayForWeek.bind(
+                                                          this
+                                                        )}
+                                                        value={
+                                                          this.state
+                                                            .selectedNameOfDayForWeek
+                                                        }
+                                                        // showNewOptionAtTop={false}
+                                                        isMulti
+                                                      />
+                                                    </div>
                                                   </div>
                                                 </div>
-                                                <input
-                                                  type="text"
-                                                  className="Every"
-                                                  placeholder="1"
-                                                  onChange={
-                                                    this.handleDayForYear
-                                                  }
-                                                />
                                               </div>
-                                            </div>
-                                          ) : null}
+                                            ) : null}
                                           {this.state.selectScheduleDate ===
-                                          "235" ? (
-                                            <div className="ScheduleDate-to">
-                                              <span>
+                                            "234" ? (
+                                              <div className="ScheduleDate-to">
                                                 <div className="row m-0">
                                                   <label
                                                     className="every1"
@@ -4641,104 +4610,156 @@ class MyTicketList extends Component {
                                                       lineHeight: "40px"
                                                     }}
                                                   >
-                                                    on the
-                                                  </label>
-                                                  <div className="col-md-7">
-                                                    <select
-                                                      id="inputState"
-                                                      className="form-control dropdown-setting1"
-                                                      onChange={
-                                                        this.handleWeekForYear
-                                                      }
-                                                      value={
-                                                        this.state
-                                                          .selectedNoOfWeekForYear
-                                                      }
-                                                    >
-                                                      <option value="0">
-                                                        Select
-                                                      </option>
-                                                      <option value="2">
-                                                        Second
-                                                      </option>
-                                                      <option value="4">
-                                                        Four
-                                                      </option>
-                                                    </select>
-                                                  </div>
-                                                </div>
-                                              </span>
-                                              <div
-                                                className="row mt-3"
-                                                style={{ position: "relative" }}
-                                              >
-                                                <div className="col-md-6">
-                                                  <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                                                    <Select
-                                                      getOptionLabel={option =>
-                                                        option.days
-                                                      }
-                                                      getOptionValue={
-                                                        option => option.days //id
-                                                      }
-                                                      options={
-                                                        this.state
-                                                          .NameOfDayForYear
-                                                      }
-                                                      placeholder="Select"
-                                                      // menuIsOpen={true}
-                                                      closeMenuOnSelect={false}
-                                                      onChange={this.setNameOfDayForYear.bind(
-                                                        this
-                                                      )}
-                                                      value={
-                                                        this.state
-                                                          .selectedNameOfDayForYear
-                                                      }
-                                                      // showNewOptionAtTop={false}
-                                                      isMulti
-                                                    />
-                                                  </div>
-                                                </div>
-                                                <label
-                                                  className="every1 last-to"
-                                                  style={{
-                                                    lineHeight: "40px"
-                                                  }}
-                                                >
-                                                  to
+                                                    on
                                                 </label>
-                                                <div className="col-md-6">
-                                                  <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
-                                                    <Select
-                                                      getOptionLabel={option =>
-                                                        option.month
-                                                      }
-                                                      getOptionValue={
-                                                        option => option.month //id
-                                                      }
-                                                      options={
-                                                        this.state
-                                                          .NameOfMonthForDailyYear
-                                                      }
-                                                      placeholder="Select"
-                                                      // menuIsOpen={true}
-                                                      closeMenuOnSelect={false}
-                                                      onChange={this.setNameOfMonthForDailyYear.bind(
-                                                        this
-                                                      )}
-                                                      value={
-                                                        this.state
-                                                          .selectedNameOfMonthForDailyYear
-                                                      }
-                                                      // showNewOptionAtTop={false}
-                                                      isMulti
-                                                    />
+                                                  <div className="col-md-7">
+                                                    <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                                                      <Select
+                                                        getOptionLabel={option =>
+                                                          option.month
+                                                        }
+                                                        getOptionValue={
+                                                          option => option.month //id
+                                                        }
+                                                        options={
+                                                          this.state
+                                                            .NameOfMonthForYear
+                                                        }
+                                                        placeholder="Select"
+                                                        // menuIsOpen={true}
+                                                        closeMenuOnSelect={false}
+                                                        onChange={this.setNameOfMonthForYear.bind(
+                                                          this
+                                                        )}
+                                                        value={
+                                                          this.state
+                                                            .selectedNameOfMonthForYear
+                                                        }
+                                                        // showNewOptionAtTop={false}
+                                                        isMulti
+                                                      />
+                                                    </div>
+                                                  </div>
+                                                  <input
+                                                    type="text"
+                                                    className="Every"
+                                                    placeholder="1"
+                                                    onChange={
+                                                      this.handleDayForYear
+                                                    }
+                                                  />
+                                                </div>
+                                              </div>
+                                            ) : null}
+                                          {this.state.selectScheduleDate ===
+                                            "235" ? (
+                                              <div className="ScheduleDate-to">
+                                                <span>
+                                                  <div className="row m-0">
+                                                    <label
+                                                      className="every1"
+                                                      style={{
+                                                        lineHeight: "40px"
+                                                      }}
+                                                    >
+                                                      on the
+                                                  </label>
+                                                    <div className="col-md-7">
+                                                      <select
+                                                        id="inputState"
+                                                        className="form-control dropdown-setting1"
+                                                        onChange={
+                                                          this.handleWeekForYear
+                                                        }
+                                                        value={
+                                                          this.state
+                                                            .selectedNoOfWeekForYear
+                                                        }
+                                                      >
+                                                        <option value="0">
+                                                          Select
+                                                      </option>
+                                                        <option value="2">
+                                                          Second
+                                                      </option>
+                                                        <option value="4">
+                                                          Four
+                                                      </option>
+                                                      </select>
+                                                    </div>
+                                                  </div>
+                                                </span>
+                                                <div
+                                                  className="row mt-3"
+                                                  style={{ position: "relative" }}
+                                                >
+                                                  <div className="col-md-6">
+                                                    <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                                                      <Select
+                                                        getOptionLabel={option =>
+                                                          option.days
+                                                        }
+                                                        getOptionValue={
+                                                          option => option.days //id
+                                                        }
+                                                        options={
+                                                          this.state
+                                                            .NameOfDayForYear
+                                                        }
+                                                        placeholder="Select"
+                                                        // menuIsOpen={true}
+                                                        closeMenuOnSelect={false}
+                                                        onChange={this.setNameOfDayForYear.bind(
+                                                          this
+                                                        )}
+                                                        value={
+                                                          this.state
+                                                            .selectedNameOfDayForYear
+                                                        }
+                                                        // showNewOptionAtTop={false}
+                                                        isMulti
+                                                      />
+                                                    </div>
+                                                  </div>
+                                                  <label
+                                                    className="every1 last-to"
+                                                    style={{
+                                                      lineHeight: "40px"
+                                                    }}
+                                                  >
+                                                    to
+                                                </label>
+                                                  <div className="col-md-6">
+                                                    <div className="normal-dropdown mt-0 dropdown-setting1 schedule-multi">
+                                                      <Select
+                                                        getOptionLabel={option =>
+                                                          option.month
+                                                        }
+                                                        getOptionValue={
+                                                          option => option.month //id
+                                                        }
+                                                        options={
+                                                          this.state
+                                                            .NameOfMonthForDailyYear
+                                                        }
+                                                        placeholder="Select"
+                                                        // menuIsOpen={true}
+                                                        closeMenuOnSelect={false}
+                                                        onChange={this.setNameOfMonthForDailyYear.bind(
+                                                          this
+                                                        )}
+                                                        value={
+                                                          this.state
+                                                            .selectedNameOfMonthForDailyYear
+                                                        }
+                                                        // showNewOptionAtTop={false}
+                                                        isMulti
+                                                      />
+                                                    </div>
                                                   </div>
                                                 </div>
                                               </div>
-                                            </div>
-                                          ) : null}
+                                            ) : null}
 
                                           <div className="dash-timepicker">
                                             <DatePicker
@@ -4801,8 +4822,8 @@ class MyTicketList extends Component {
                                       onClick={
                                         this.state.ticketIds.length > 0
                                           ? this.handleAssignModalOpen.bind(
-                                              this
-                                            )
+                                            this
+                                          )
                                           : null
                                       }
                                     >
@@ -4929,7 +4950,7 @@ class MyTicketList extends Component {
                                                       />
                                                       {
                                                         row.original[
-                                                          "agentName"
+                                                        "agentName"
                                                         ]
                                                       }
                                                     </span>
@@ -5072,466 +5093,466 @@ class MyTicketList extends Component {
                         <div className="loader-icon"></div>
                       </div>
                     ) : (
-                      <div>
-                        <div className="MyTicketListReact cus-head">
-                          <ReactTable
-                            data={SearchTicketData}
-                            columns={[
-                              {
-                                Header: (
-                                  <span>
-                                    <div className="filter-type pink1 pinkmyticket">
-                                      <div className="filter-checkbox pink2 pinkmargin">
-                                        <input
-                                          type="checkbox"
-                                          id="fil-aball"
-                                          name="ListCheckbox"
-                                          // checked={this.state.CheckBoxChecked}
-                                          onChange={this.checkAllCheckbox.bind(
-                                            this
-                                          )}
-                                        />
-                                        <label
-                                          htmlFor="fil-aball"
-                                          className="ticketid"
-                                        >
-                                          ID
-                                        </label>
-                                      </div>
-                                    </div>
-                                  </span>
-                                ),
-                                accessor: "ticketID",
-                                Cell: row => {
-                                  return (
-                                    <span onClick={e => this.clickCheckbox(e)}>
+                        <div>
+                          <div className="MyTicketListReact cus-head">
+                            <ReactTable
+                              data={SearchTicketData}
+                              columns={[
+                                {
+                                  Header: (
+                                    <span>
                                       <div className="filter-type pink1 pinkmyticket">
                                         <div className="filter-checkbox pink2 pinkmargin">
                                           <input
                                             type="checkbox"
-                                            id={"i" + row.original.ticketID}
+                                            id="fil-aball"
                                             name="ListCheckbox"
-                                            checked={this.state.cSelectedRow[row.original.ticketID]}
-                                            attrIds={row.original.ticketID}
-                                            onChange={()=>this.handelCheckBoxCheckedChange(	
-                                              row.original.ticketID	
+                                            // checked={this.state.CheckBoxChecked}
+                                            onChange={this.checkAllCheckbox.bind(
+                                              this
                                             )}
                                           />
                                           <label
-                                            htmlFor={
-                                              "i" + row.original.ticketID
-                                            }
+                                            htmlFor="fil-aball"
+                                            className="ticketid"
                                           >
-                                            {row.original.ticketSourceType ===
-                                            "Calls" ? (
-                                              <img
-                                                src={HeadPhone3}
-                                                alt="HeadPhone"
-                                                className="headPhone3"
-                                                title="Calls"
-                                              />
-                                            ) : row.original
-                                                .ticketSourceType ===
-                                              "Mails" ? (
-                                              <img
-                                                src={MailImg}
-                                                alt="HeadPhone"
-                                                className="headPhone3"
-                                                title="Mails"
-                                              />
-                                            ) : row.original
-                                                .ticketSourceType ===
-                                              "Facebook" ? (
-                                              <img
-                                                src={FacebookImg}
-                                                alt="HeadPhone"
-                                                className="headPhone3"
-                                                title="Facebook"
-                                              />
-                                            ) : row.original
-                                                .ticketSourceType ===
-                                              "ChatBot" ? (
-                                              <img
-                                                src={Chat}
-                                                alt="HeadPhone"
-                                                className="headPhone3"
-                                                title="ChatBot"
-                                              />
-                                            ) : row.original
-                                                .ticketSourceType ===
-                                              "Twitter" ? (
-                                              <img
-                                                src={Twitter}
-                                                alt="HeadPhone"
-                                                className="headPhone3 black-twitter"
-                                                title="Twitter"
-                                              />
-                                            ) : null}
-
-                                            {row.original.ticketID}
-                                          </label>
+                                            ID
+                                        </label>
                                         </div>
                                       </div>
                                     </span>
-                                  );
-                                }
-                              },
-                              {
-                                Header: (
-                                  <span onClick={this.StatusOpenModel.bind(this,"status")}>
-                                    Status{" "}
-                                    <FontAwesomeIcon icon={faCaretDown} />
-                                  </span>
-                                ),
-                                accessor: "ticketStatus",
-                                Cell: row => {
-                                  if (row.original.ticketStatus === "Open") {
+                                  ),
+                                  accessor: "ticketID",
+                                  Cell: row => {
                                     return (
-                                      <span className="table-b table-blue-btn">
-                                        <label>
-                                          {row.original.ticketStatus}
-                                        </label>
-                                      </span>
-                                    );
-                                  } else if (
-                                    row.original.ticketStatus === "Resolved"
-                                  ) {
-                                    return (
-                                      <span className="table-b table-green-btn">
-                                        <label>
-                                          {row.original.ticketStatus}
-                                        </label>
-                                      </span>
-                                    );
-                                  } else if (
-                                    row.original.ticketStatus === "New"
-                                  ) {
-                                    return (
-                                      <span className="table-b table-yellow-btn">
-                                        <label>
-                                          {row.original.ticketStatus}
-                                        </label>
-                                      </span>
-                                    );
-                                  } else if (
-                                    row.original.ticketStatus === "Solved"
-                                  ) {
-                                    return (
-                                      <span className="table-b table-green-btn">
-                                        <label>
-                                          {row.original.ticketStatus}
-                                        </label>
-                                      </span>
-                                    );
-                                  } else {
-                                    return (
-                                      <span className="table-b table-green-btn">
-                                        <label>
-                                          {row.original.ticketStatus}
-                                        </label>
-                                      </span>
-                                    );
-                                  }
-                                }
-                              },
-                              {
-                                Header: <span></span>,
-                                accessor: "taskStatus",
-                                width: 45,
-                                Cell: row => {
-                                  if (row.original.claimStatus !== "0/0") {
-                                    return (
-                                      <div>
-                                        <Popover
-                                          content={
-                                            <div className="dash-task-popup-new">
-                                              <div className="d-flex justify-content-between align-items-center">
-                                                <p className="m-b-0">
-                                                  CLAIM:
-                                                  {row.original.claimStatus}
-                                                </p>
-                                                <div className="d-flex align-items-center">
-                                                  2 NEW
-                                                  <div className="nw-chat">
+                                      <span onClick={e => this.clickCheckbox(e)}>
+                                        <div className="filter-type pink1 pinkmyticket">
+                                          <div className="filter-checkbox pink2 pinkmargin">
+                                            <input
+                                              type="checkbox"
+                                              id={"i" + row.original.ticketID}
+                                              name="ListCheckbox"
+                                              checked={this.state.cSelectedRow[row.original.ticketID]}
+                                              attrIds={row.original.ticketID}
+                                              onChange={() => this.handelCheckBoxCheckedChange(
+                                                row.original.ticketID
+                                              )}
+                                            />
+                                            <label
+                                              htmlFor={
+                                                "i" + row.original.ticketID
+                                              }
+                                            >
+                                              {row.original.ticketSourceType ===
+                                                "Calls" ? (
+                                                  <img
+                                                    src={HeadPhone3}
+                                                    alt="HeadPhone"
+                                                    className="headPhone3"
+                                                    title="Calls"
+                                                  />
+                                                ) : row.original
+                                                  .ticketSourceType ===
+                                                  "Mails" ? (
                                                     <img
-                                                      src={Chat}
-                                                      alt="chat"
+                                                      src={MailImg}
+                                                      alt="HeadPhone"
+                                                      className="headPhone3"
+                                                      title="Mails"
                                                     />
-                                                  </div>
-                                                </div>
-                                              </div>
-                                              <ProgressBar
-                                                className="task-progress"
-                                                now={70}
-                                              />
-                                            </div>
-                                          }
-                                          placement="bottom"
-                                        >
-                                          <img
-                                            className="task-icon-1 marginimg claim-icon-1"
-                                            src={CliamIconBlue}
-                                            alt="task-icon-blue"
-                                          />
-                                        </Popover>
-                                      </div>
-                                    );
-                                  } else {
-                                    return (
-                                      <div>
-                                        <img
-                                          className="task-icon-1 marginimg claim-icon-1"
-                                          src={CliamIconGray}
-                                          alt="task-icon-gray"
-                                        />
-                                      </div>
+                                                  ) : row.original
+                                                    .ticketSourceType ===
+                                                    "Facebook" ? (
+                                                      <img
+                                                        src={FacebookImg}
+                                                        alt="HeadPhone"
+                                                        className="headPhone3"
+                                                        title="Facebook"
+                                                      />
+                                                    ) : row.original
+                                                      .ticketSourceType ===
+                                                      "ChatBot" ? (
+                                                        <img
+                                                          src={Chat}
+                                                          alt="HeadPhone"
+                                                          className="headPhone3"
+                                                          title="ChatBot"
+                                                        />
+                                                      ) : row.original
+                                                        .ticketSourceType ===
+                                                        "Twitter" ? (
+                                                          <img
+                                                            src={Twitter}
+                                                            alt="HeadPhone"
+                                                            className="headPhone3 black-twitter"
+                                                            title="Twitter"
+                                                          />
+                                                        ) : null}
+
+                                              {row.original.ticketID}
+                                            </label>
+                                          </div>
+                                        </div>
+                                      </span>
                                     );
                                   }
-                                }
-                              },
-                              {
-                                Header: <span></span>,
-                                accessor: "taskStatus",
-                                width: 45,
-                                Cell: row => {
-                                  if (row.original.taskStatus === "0/0") {
-                                    return (
-                                      <div>
-                                        <img
-                                          className="task-icon-1 marginimg"
-                                          src={TaskIconGray}
-                                          alt="task-icon-gray"
-                                        />
-                                      </div>
-                                    );
-                                  } else {
-                                    return (
-                                      <div>
-                                        <Popover
-                                          content={
-                                            <div className="dash-task-popup-new">
-                                              <div className="d-flex justify-content-between align-items-center">
-                                                <p className="m-b-0">
-                                                  TASK:{row.original.taskStatus}
-                                                </p>
-                                                {row.original
-                                                  .ticketCommentCount > 0 ? (
+                                },
+                                {
+                                  Header: (
+                                    <span onClick={this.StatusOpenModel.bind(this, "status")}>
+                                      Status{" "}
+                                      <FontAwesomeIcon icon={faCaretDown} />
+                                    </span>
+                                  ),
+                                  accessor: "ticketStatus",
+                                  Cell: row => {
+                                    if (row.original.ticketStatus === "Open") {
+                                      return (
+                                        <span className="table-b table-blue-btn">
+                                          <label>
+                                            {row.original.ticketStatus}
+                                          </label>
+                                        </span>
+                                      );
+                                    } else if (
+                                      row.original.ticketStatus === "Resolved"
+                                    ) {
+                                      return (
+                                        <span className="table-b table-green-btn">
+                                          <label>
+                                            {row.original.ticketStatus}
+                                          </label>
+                                        </span>
+                                      );
+                                    } else if (
+                                      row.original.ticketStatus === "New"
+                                    ) {
+                                      return (
+                                        <span className="table-b table-yellow-btn">
+                                          <label>
+                                            {row.original.ticketStatus}
+                                          </label>
+                                        </span>
+                                      );
+                                    } else if (
+                                      row.original.ticketStatus === "Solved"
+                                    ) {
+                                      return (
+                                        <span className="table-b table-green-btn">
+                                          <label>
+                                            {row.original.ticketStatus}
+                                          </label>
+                                        </span>
+                                      );
+                                    } else {
+                                      return (
+                                        <span className="table-b table-green-btn">
+                                          <label>
+                                            {row.original.ticketStatus}
+                                          </label>
+                                        </span>
+                                      );
+                                    }
+                                  }
+                                },
+                                {
+                                  Header: <span></span>,
+                                  accessor: "taskStatus",
+                                  width: 45,
+                                  Cell: row => {
+                                    if (row.original.claimStatus !== "0/0") {
+                                      return (
+                                        <div>
+                                          <Popover
+                                            content={
+                                              <div className="dash-task-popup-new">
+                                                <div className="d-flex justify-content-between align-items-center">
+                                                  <p className="m-b-0">
+                                                    CLAIM:
+                                                  {row.original.claimStatus}
+                                                  </p>
                                                   <div className="d-flex align-items-center">
-                                                    {
-                                                      row.original
-                                                        .ticketCommentCount
-                                                    }
-                                                    NEW
-                                                    <div className="nw-chat">
+                                                    2 NEW
+                                                  <div className="nw-chat">
                                                       <img
                                                         src={Chat}
                                                         alt="chat"
                                                       />
                                                     </div>
                                                   </div>
-                                                ) : null}
+                                                </div>
+                                                <ProgressBar
+                                                  className="task-progress"
+                                                  now={70}
+                                                />
                                               </div>
-                                              <ProgressBar
-                                                className="task-progress"
-                                                now={70}
-                                              />
-                                            </div>
-                                          }
-                                          placement="bottom"
-                                        >
+                                            }
+                                            placement="bottom"
+                                          >
+                                            <img
+                                              className="task-icon-1 marginimg claim-icon-1"
+                                              src={CliamIconBlue}
+                                              alt="task-icon-blue"
+                                            />
+                                          </Popover>
+                                        </div>
+                                      );
+                                    } else {
+                                      return (
+                                        <div>
+                                          <img
+                                            className="task-icon-1 marginimg claim-icon-1"
+                                            src={CliamIconGray}
+                                            alt="task-icon-gray"
+                                          />
+                                        </div>
+                                      );
+                                    }
+                                  }
+                                },
+                                {
+                                  Header: <span></span>,
+                                  accessor: "taskStatus",
+                                  width: 45,
+                                  Cell: row => {
+                                    if (row.original.taskStatus === "0/0") {
+                                      return (
+                                        <div>
                                           <img
                                             className="task-icon-1 marginimg"
-                                            src={TaskIconBlue}
-                                            alt="task-icon-blue"
+                                            src={TaskIconGray}
+                                            alt="task-icon-gray"
                                           />
-                                        </Popover>
+                                        </div>
+                                      );
+                                    } else {
+                                      return (
+                                        <div>
+                                          <Popover
+                                            content={
+                                              <div className="dash-task-popup-new">
+                                                <div className="d-flex justify-content-between align-items-center">
+                                                  <p className="m-b-0">
+                                                    TASK:{row.original.taskStatus}
+                                                  </p>
+                                                  {row.original
+                                                    .ticketCommentCount > 0 ? (
+                                                      <div className="d-flex align-items-center">
+                                                        {
+                                                          row.original
+                                                            .ticketCommentCount
+                                                        }
+                                                        NEW
+                                                    <div className="nw-chat">
+                                                          <img
+                                                            src={Chat}
+                                                            alt="chat"
+                                                          />
+                                                        </div>
+                                                      </div>
+                                                    ) : null}
+                                                </div>
+                                                <ProgressBar
+                                                  className="task-progress"
+                                                  now={70}
+                                                />
+                                              </div>
+                                            }
+                                            placement="bottom"
+                                          >
+                                            <img
+                                              className="task-icon-1 marginimg"
+                                              src={TaskIconBlue}
+                                              alt="task-icon-blue"
+                                            />
+                                          </Popover>
+                                        </div>
+                                      );
+                                    }
+                                  }
+                                },
+                                {
+                                  Header: (
+                                    <label className="ticketid">
+                                      <span>Subject/</span>
+                                      <span
+                                        style={{
+                                          fontWeight: "bold",
+                                          fontSize: "11px !important"
+                                        }}
+                                      >
+                                        Latest Message
+                                    </span>
+                                    </label>
+                                  ),
+                                  accessor: "message",
+                                  Cell: row => {
+                                    return (
+                                      <div>
+                                        {row.original.message.split("-")[0]}/
+                                      <span style={{ color: "#666" }}>
+                                          {row.original.message.split("-")[1]}
+                                        </span>
                                       </div>
                                     );
                                   }
-                                }
-                              },
-                              {
-                                Header: (
-                                  <label className="ticketid">
-                                    <span>Subject/</span>
-                                    <span
-                                      style={{
-                                        fontWeight: "bold",
-                                        fontSize: "11px !important"
-                                      }}
-                                    >
-                                      Latest Message
+                                },
+                                {
+                                  Header: (
+                                    <span className="ticketid" onClick={this.StatusOpenModel.bind(this, "category")}>
+                                      Category{" "}
+                                      <FontAwesomeIcon icon={faCaretDown} />
                                     </span>
-                                  </label>
-                                ),
-                                accessor: "message",
-                                Cell: row => {
-                                  return (
-                                    <div>
-                                      {row.original.message.split("-")[0]}/
-                                      <span style={{ color: "#666" }}>
-                                        {row.original.message.split("-")[1]}
-                                      </span>
-                                    </div>
-                                  );
+                                  ),
+                                  accessor: "category",
+                                  Cell: row => (
+                                    <span className="one-line-outer">
+                                      <label className="one-line">
+                                        {row.original.category}{" "}
+                                      </label>
+
+                                      <Popover
+                                        content={
+                                          <div className="dash-creation-popup-cntr">
+                                            <ul className="dash-category-popup dashnewpopup">
+                                              <li>
+                                                <p>Category</p>
+                                                <p>{row.original.category}</p>
+                                              </li>
+                                              <li>
+                                                <p>Sub Category</p>
+                                                <p>{row.original.subCategory}</p>
+                                              </li>
+                                              <li>
+                                                <p>Type</p>
+                                                <p>{row.original.issueType}</p>
+                                              </li>
+                                            </ul>
+                                          </div>
+                                        }
+                                        placement="bottom"
+                                      >
+                                        <img
+                                          className="info-icon"
+                                          src={InfoIcon}
+                                          alt="info-icon"
+                                        />
+                                      </Popover>
+                                    </span>
+                                  )
+                                },
+                                {
+                                  Header: (
+                                    <span className="ticketid" onClick={this.StatusOpenModel.bind(this, "priority")} >
+                                      Priority{" "}
+                                      <FontAwesomeIcon icon={faCaretDown} />
+                                    </span>
+                                  ),
+                                  accessor: "priority",
+                                  minWidth: 50
+                                  // Cell: props => <span>High</span>
+                                },
+                                {
+                                  Header: (
+                                    <span className="ticketid" onClick={this.StatusOpenModel.bind(this, "assignedTo")}>
+                                      Assignee{" "}
+                                      <FontAwesomeIcon icon={faCaretDown} />
+                                    </span>
+                                  ),
+                                  accessor: "assignee"
+                                },
+                                {
+                                  Header: (
+                                    <span className="ticketid" onClick={this.StatusOpenModel.bind(this, "createdOn")}>
+                                      Creation On{" "}
+                                      <FontAwesomeIcon icon={faCaretDown} />
+                                    </span>
+                                  ),
+                                  accessor: "createdOn",
+                                  Cell: row => (
+                                    <span className="one-line-outer">
+                                      <label className="one-line">
+                                        {row.original.createdOn}
+                                      </label>
+
+                                      <Popover
+                                        content={
+                                          <div className="insertpop1">
+                                            <ul className="dash-creation-popup">
+                                              <li className="title">
+                                                Creation details
+                                            </li>
+                                              <li>
+                                                <p>
+                                                  {row.original.createdBy} Created
+                                              </p>
+                                                <p>{row.original.createdago}</p>
+                                              </li>
+                                              <li>
+                                                <p>
+                                                  Assigned to{" "}
+                                                  {row.original.assignedTo}
+                                                </p>
+                                                <p>{row.original.assignedago}</p>
+                                              </li>
+                                              <li>
+                                                <p>
+                                                  {row.original.updatedBy} updated
+                                              </p>
+                                                <p>{row.original.updatedago}</p>
+                                              </li>
+                                              <li>
+                                                <p>Response time remaining by</p>
+                                                <p>
+                                                  {
+                                                    row.original
+                                                      .responseTimeRemainingBy
+                                                  }
+                                                </p>
+                                              </li>
+                                              <li>
+                                                <p>Response overdue by</p>
+                                                <p>
+                                                  {row.original.responseOverdueBy}
+                                                </p>
+                                              </li>
+                                              <li>
+                                                <p>Resolution overdue by</p>
+                                                <p>
+                                                  {
+                                                    row.original
+                                                      .resolutionOverdueBy
+                                                  }
+                                                </p>
+                                              </li>
+                                            </ul>
+                                          </div>
+                                        }
+                                        placement="left"
+                                      >
+                                        <img
+                                          className="info-icon info-iconcus"
+                                          src={InfoIcon}
+                                          alt="info-icon"
+                                        />
+                                      </Popover>
+                                    </span>
+                                  )
                                 }
-                              },
-                              {
-                                Header: (
-                                  <span className="ticketid" onClick={this.StatusOpenModel.bind(this,"category")}>
-                                    Category{" "}
-                                    <FontAwesomeIcon icon={faCaretDown} />
-                                  </span>
-                                ),
-                                accessor: "category",
-                                Cell: row => (
-                                  <span className="one-line-outer">
-                                    <label className="one-line">
-                                      {row.original.category}{" "}
-                                    </label>
-
-                                    <Popover
-                                      content={
-                                        <div className="dash-creation-popup-cntr">
-                                          <ul className="dash-category-popup dashnewpopup">
-                                            <li>
-                                              <p>Category</p>
-                                              <p>{row.original.category}</p>
-                                            </li>
-                                            <li>
-                                              <p>Sub Category</p>
-                                              <p>{row.original.subCategory}</p>
-                                            </li>
-                                            <li>
-                                              <p>Type</p>
-                                              <p>{row.original.issueType}</p>
-                                            </li>
-                                          </ul>
-                                        </div>
-                                      }
-                                      placement="bottom"
-                                    >
-                                      <img
-                                        className="info-icon"
-                                        src={InfoIcon}
-                                        alt="info-icon"
-                                      />
-                                    </Popover>
-                                  </span>
-                                )
-                              },
-                              {
-                                Header: (
-                                  <span className="ticketid" onClick={this.StatusOpenModel.bind(this,"priority")} >
-                                    Priority{" "}
-                                    <FontAwesomeIcon icon={faCaretDown} />
-                                  </span>
-                                ),
-                                accessor: "priority",
-                                minWidth: 50
-                                // Cell: props => <span>High</span>
-                              },
-                              {
-                                Header: (
-                                  <span className="ticketid" onClick={this.StatusOpenModel.bind(this,"assignedTo")}>
-                                    Assignee{" "}
-                                    <FontAwesomeIcon icon={faCaretDown} />
-                                  </span>
-                                ),
-                                accessor: "assignee"
-                              },
-                              {
-                                Header: (
-                                  <span className="ticketid" onClick={this.StatusOpenModel.bind(this,"createdOn")}>
-                                    Creation On{" "}
-                                    <FontAwesomeIcon icon={faCaretDown} />
-                                  </span>
-                                ),
-                                accessor: "createdOn",
-                                Cell: row => (
-                                  <span className="one-line-outer">
-                                    <label className="one-line">
-                                      {row.original.createdOn}
-                                    </label>
-
-                                    <Popover
-                                      content={
-                                        <div className="insertpop1">
-                                          <ul className="dash-creation-popup">
-                                            <li className="title">
-                                              Creation details
-                                            </li>
-                                            <li>
-                                              <p>
-                                                {row.original.createdBy} Created
-                                              </p>
-                                              <p>{row.original.createdago}</p>
-                                            </li>
-                                            <li>
-                                              <p>
-                                                Assigned to{" "}
-                                                {row.original.assignedTo}
-                                              </p>
-                                              <p>{row.original.assignedago}</p>
-                                            </li>
-                                            <li>
-                                              <p>
-                                                {row.original.updatedBy} updated
-                                              </p>
-                                              <p>{row.original.updatedago}</p>
-                                            </li>
-                                            <li>
-                                              <p>Response time remaining by</p>
-                                              <p>
-                                                {
-                                                  row.original
-                                                    .responseTimeRemainingBy
-                                                }
-                                              </p>
-                                            </li>
-                                            <li>
-                                              <p>Response overdue by</p>
-                                              <p>
-                                                {row.original.responseOverdueBy}
-                                              </p>
-                                            </li>
-                                            <li>
-                                              <p>Resolution overdue by</p>
-                                              <p>
-                                                {
-                                                  row.original
-                                                    .resolutionOverdueBy
-                                                }
-                                              </p>
-                                            </li>
-                                          </ul>
-                                        </div>
-                                      }
-                                      placement="left"
-                                    >
-                                      <img
-                                        className="info-icon info-iconcus"
-                                        src={InfoIcon}
-                                        alt="info-icon"
-                                      />
-                                    </Popover>
-                                  </span>
-                                )
-                              }
-                            ]}
-                            resizable={false}
-                            defaultPageSize={10}
-                            showPagination={true}
-                            getTrProps={this.HandleRowClickPage}
-                            minRows={1}
-                            defaultSorted={[
-                              {
-                                id: "ticketID",
-                                desc: true
-                              }
-                            ]}
-                          />
-                          {/* <div className="position-relative">
+                              ]}
+                              resizable={false}
+                              defaultPageSize={10}
+                              showPagination={true}
+                              getTrProps={this.HandleRowClickPage}
+                              minRows={1}
+                              defaultSorted={[
+                                {
+                                  id: "ticketID",
+                                  desc: true
+                                }
+                              ]}
+                            />
+                            {/* <div className="position-relative">
                                     <Popover
                                       content={
                                         <div className="insertpop1">
@@ -5641,16 +5662,16 @@ class MyTicketList extends Component {
                           <p>Items per page</p>
                         </div>
                       </div> */}
+                          </div>
+                          <div
+                            className="float-search"
+                            onClick={this.toggleSearch}
+                          >
+                            <small>{TitleChange}</small>
+                            {ImgChange}
+                          </div>
                         </div>
-                        <div
-                          className="float-search"
-                          onClick={this.toggleSearch}
-                        >
-                          <small>{TitleChange}</small>
-                          {ImgChange}
-                        </div>
-                      </div>
-                    )}
+                      )}
                   </div>
                 </div>
               </div>
@@ -5672,4 +5693,4 @@ class MyTicketList extends Component {
   }
 }
 
-export default MyTicketList;
+export default withRouter(MyTicketList);

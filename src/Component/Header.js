@@ -170,6 +170,28 @@ class Header extends Component {
   closeModal = () => {
     this.setState({ modalIsOpen: false });
   };
+  
+  onViewTicket = (notiIds) => {
+    debugger;
+    this.setState({ modalIsOpen: false });
+    if (notiIds !== "") {
+      let self = this;
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Notification/ReadNotification",
+        headers: authHeader(),
+        params: {
+          TicketIDS: notiIds
+        }
+      }).then(function(res) {
+        debugger;
+        let status = res.data.message;
+        if (status === "Success") {
+          self.handleGetNotificationList();
+        }
+      });
+    }
+  };
   handleEditProfilePage(){
     debugger;
     let self = this;
@@ -288,7 +310,10 @@ class Header extends Component {
           notifiCount3: "",
           notifiMsg1: "",
           notifiMsg2: "",
-          notifiMsg3: ""
+          notifiMsg3: "",
+          notifiTktIds1: "",
+          notifiTktIds2: "",
+          notifiTktIds3: ""
         });
       }
     });
@@ -866,9 +891,11 @@ class Header extends Component {
               <Link to={{
                 pathname: 'myTicketlist',
                 state: {
-                  isHeaderNew: true
+                  isType: 'New'
                 }
-              }} onClick={this.closeModal}>
+              }} 
+              onClick={() => this.onViewTicket(this.state.notifiTktIds1)}
+              >
                 <label className="md-4 view-tickets">VIEW TICKETS</label>
               </Link>
             </div>
@@ -888,9 +915,9 @@ class Header extends Component {
               <Link to={{
                 pathname: 'myTicketlist',
                 state: {
-                  isHeaderOpen: true
+                  isType: 'Open'
                 }
-              }} onClick={this.closeModal}>
+              }} onClick={() => this.onViewTicket(this.state.notifiTktIds2)}>
                 <label className="md-4 view-tickets">VIEW TICKETS</label>
               </Link>
             </div>
@@ -907,7 +934,14 @@ class Header extends Component {
               </label>
             </div>
             <div className="viewticketspeadding">
-              <Link to="myTicketlist" onClick={this.closeModal}>
+              <Link
+              to={{
+                pathname: 'myTicketlist',
+                state: {
+                  isType: 'Escalation'
+                }
+              }}
+              onClick={() => this.onViewTicket(this.state.notifiTktIds3)}>
                 <label className="md-4 view-tickets">VIEW TICKETS</label>
               </Link>
             </div>
