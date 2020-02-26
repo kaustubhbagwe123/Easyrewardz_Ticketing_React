@@ -726,33 +726,19 @@ class TicketSystem extends Component {
       // var OID = this.state.selectedTicketPriority;
       var selectedRow = "";
 
-      // for (let i = 0; i < this.state.selectedDataIds.length; i++) {
-      //   if("orderMasterID" in this.state.selectedDataIds[i] && "orderItemID" in this.state.selectedDataIds[i])
-      //   {
-      //     selectedRow += this.state.selectedDataIds[i]["orderItemID"] + "|"+this.state.selectedDataIds[i]["requireSize"]+"|0,"
-      //   }
-      //   else {
-      //     let isConti = true;
-      //     let splittedArray = selectedRow.split(',');
-      //     let splittedArrayLength = splittedArray.length;
-      //     for (let j = 0; j < splittedArrayLength - 1; j++) {
-      //       if (isConti) {
-      //         if  (this.state.selectedDataIds[i]["orderMasterID"] == splittedArrayLength[j]["orderMasterID"]) {
-      //           selectedRow += this.state.selectedDataIds[i]["orderMasterID"] + "|0|1,";
-      //           isConti = false;
-      //         }
-      //       }
-      //     }
-      //   }
-      // }
-      for (var i = 0; i < this.state.selectedDataIds.length; i++) {
-        selectedRow +=
-          // this.state.selectedDataIds[i].orderMasterID +
-          // "|" +
-          this.state.selectedDataIds[i].orderItemID +
-          "|" +
-          this.state.selectedDataIds[i].requireSize +
-          ",";
+      for (let i = 0; i < this.state.selectedDataIds.length; i++) {
+        var data = this.state.selectedDataIds.filter(x => x.orderMasterID == this.state.selectedDataIds[i].orderMasterID)
+        if (data.length === 1) {
+          selectedRow += this.state.selectedDataIds[i]["orderMasterID"] + "|0|1,"
+        }
+        else if(data===0){
+
+        }
+        else {
+          if ("orderMasterID" in this.state.selectedDataIds[i] && "orderItemID" in this.state.selectedDataIds[i]) {
+            selectedRow += this.state.selectedDataIds[i]["orderItemID"] + "|" + this.state.selectedDataIds[i]["requireSize"] + "|0,"
+          }
+        }
       }
 
       var selectedStore = "";

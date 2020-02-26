@@ -72,7 +72,6 @@ class TicketSystemOrder extends Component {
     this.validator = new SimpleReactValidator();
     this.onFilteredChange = this.onFilteredChange.bind(this);
     this.filterAll = this.filterAll.bind(this);
-    this.handleOrderTableOpen = this.handleOrderTableOpen.bind(this);
     this.handleOrderTableClose = this.handleOrderTableClose.bind(this);
     this.handleGetTicketSourceList = this.handleGetTicketSourceList.bind(this);
     this.handleModeOfPaymentDropDown = this.handleModeOfPaymentDropDown.bind(
@@ -121,6 +120,7 @@ class TicketSystemOrder extends Component {
   }
 
   handleOrderTableOpen() {
+    debugger
     this.setState({ OrderTable: true });
   }
   handleOrderTableClose() {
@@ -204,9 +204,10 @@ class TicketSystemOrder extends Component {
     }
 
     this.setState({
-      selectedDataRow: selectedRow});
+      selectedDataRow: selectedRow
+    });
     {
-      this.props.getOrderId(selectedRow,this.state.idSizeArray);
+      this.props.getOrderId(selectedRow, this.state.idSizeArray);
     }
   }
 
@@ -275,6 +276,7 @@ class TicketSystemOrder extends Component {
             CustomerID: CustID
           }
         }).then(function(res) {
+          debugger
           let Msg = res.data.message;
           let mainData = res.data.responseData;
 
@@ -582,12 +584,18 @@ class TicketSystemOrder extends Component {
             </div>
             <div className="col-12 col-lg-2 col-xl-1">
               <div
-                className="storeplusline"
-                onClick={this.handleOrderTableOpen}
+                // className="storeplusline"
+                className={this.state.custAttachOrder === 1 ? "storeplusline-12" : "storeplusline"}
+                onClick={this.handleOrderTableOpen.bind(this)}
+                disabled={this.state.custAttachOrder === 1 ? true : false}
               >
                 <span className="plusline1"></span>
-
-                <img src={ArrowImg} alt="Arrow" className="arrow-imgtask-1" />
+                <img
+                  src={ArrowImg}
+                  alt="Arrow"
+                  className="arrow-imgtask-1"
+                  
+                />
               </div>
             </div>
           </div>
@@ -956,8 +964,8 @@ class TicketSystemOrder extends Component {
                         )}
                         columns={[
                           {
-                            Header: <span>Article Number</span>,
-                            accessor: "invoiceNo",
+                            Header: <span> </span>,
+                            accessor: "orderMasterID",
                             Cell: row => (
                               <div
                                 className="filter-checkbox"
@@ -982,10 +990,15 @@ class TicketSystemOrder extends Component {
                                 <label
                                   htmlFor={"order" + row.original.orderItemID}
                                 >
-                                  {row.original.orderItemID}
+                                  
                                 </label>
                               </div>
                             )
+                          },
+                          {
+                            Header: <span>Article Number</span>,
+                            accessor: "orderMasterID"
+                           
                           },
                           {
                             Header: <span>Article Size</span>,
@@ -1626,8 +1639,8 @@ class TicketSystemOrder extends Component {
                           data={row.original.orderItems}
                           columns={[
                             {
-                              Header: <span>Article Number</span>,
-                              accessor: "invoiceNo",
+                              Header: <span> </span>,
+                              accessor: "orderMasterID",
                               Cell: row => (
                                 <div
                                   className="filter-checkbox"
@@ -1640,7 +1653,7 @@ class TicketSystemOrder extends Component {
                                     name="ticket-order"
                                     checked={
                                       this.state.CheckOrderID[
-                                      row.original.orderItemID
+                                        row.original.orderItemID
                                       ] === true
                                     }
                                     onChange={this.handleCheckOrderID.bind(
@@ -1652,10 +1665,15 @@ class TicketSystemOrder extends Component {
                                   <label
                                     htmlFor={"order" + row.original.orderItemID}
                                   >
-                                    {row.original.invoiceNo}
+                                    
                                   </label>
                                 </div>
                               )
+                            },
+                            {
+                              Header: <span>Article Number</span>,
+                              accessor: "orderMasterID"
+                             
                             },
                             {
                               Header: <span>Article Name</span>,

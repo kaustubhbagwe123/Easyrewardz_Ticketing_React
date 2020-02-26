@@ -8,9 +8,11 @@ import CancelIcon from "./../assets/Images/cancel.png";
 import { CardBody, UncontrolledCollapse } from "reactstrap";
 import { Card } from "react-bootstrap";
 import CKEditor from "ckeditor4-react";
+import Sorting from "./../assets/Images/sorting.png";
 import { authHeader } from "../helpers/authHeader";
 import axios from "axios";
 import config from "./../helpers/config";
+import { Popover } from "antd";
 import {
   NotificationContainer,
   NotificationManager
@@ -86,8 +88,11 @@ class KnowledgeBase extends Component {
       updateSubjectCompulsion: "",
       kbClearNew: false,
       kbClearList: false,
-      tabCount: 1
+      tabCount: 1,
+      StatusModel: false
     };
+    this.StatusOpenModel = this.StatusOpenModel.bind(this);
+    this.StatusCloseModel = this.StatusCloseModel.bind(this);
     this.HandelFirstTabClick = this.HandelFirstTabClick.bind(this);
     this.HandelSecoundTabClick = this.HandelSecoundTabClick.bind(this);
     this.opneSearchModal = this.opneSearchModal.bind(this);
@@ -105,6 +110,15 @@ class KnowledgeBase extends Component {
     this.handleRejectKB = this.handleRejectKB.bind(this);
     this.handleSeaechKB = this.handleSeaechKB.bind(this);
   }
+  StatusOpenModel() {
+    debugger;
+  
+    this.setState({ StatusModel: true });
+  }
+  StatusCloseModel() {
+    this.setState({ StatusModel: false });
+  }
+  
   opneSearchModal() {
     this.setState({ searchmodal: true });
   }
@@ -656,6 +670,49 @@ class KnowledgeBase extends Component {
     return (
       <Fragment>
         <NotificationContainer />
+        <div className="position-relative d-inline-block"  >
+          <Modal
+            onClose={this.StatusCloseModel}
+            open={this.state.StatusModel}
+            modalId="Status-popup"
+            overlayId="logout-ovrly"
+          >
+            <div className="status-drop-down">
+              <div className="sort-sctn">
+                <div className="d-flex">
+                  <a href="#!"
+                    //onClick={this.sortStatusAtoZ.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY A TO Z</p>
+                </div>
+                <div className="d-flex">
+                  <a href="#!"
+                    //onClick={this.sortStatusZtoA.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY Z TO A</p>
+                </div>
+              </div>
+              <div className="filter-type">
+        
+                <p>FILTER BY TYPE</p>
+                
+              
+                
+
+              </div>
+             
+
+             
+              
+            </div>
+          </Modal>
+        </div>
         <div className="kb-header">
           <a href={Demo.BLANK_LINK} onClick={this.HandelFirstTabClick}>
             <label
@@ -773,11 +830,15 @@ class KnowledgeBase extends Component {
                   },
                   {
                     Header: (
-                      <span>
+                      
+                      <span 
+                      //onClick={this.StatusOpenModel.bind(this)}
+                      >
                         <label>
                           Type <FontAwesomeIcon icon={faCaretDown} />
                         </label>
                       </span>
+                     
                     ),
                     accessor: "issueTypeName",
 

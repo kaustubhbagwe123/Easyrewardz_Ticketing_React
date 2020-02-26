@@ -309,8 +309,8 @@ class Dashboard extends Component {
       sortPriorityData:[],
       sortcreatedOnData:[],
       sortAssigneeData:[],
-      sortAllData:[]
-
+      sortAllData:[],
+      cSelectedRow: {}
     };
     this.applyCallback = this.applyCallback.bind(this);
     // this.handleApply = this.handleApply.bind(this);
@@ -618,7 +618,7 @@ class Dashboard extends Component {
           SearchTicketData: data,
          
           resultCount: count,
-          loading: false
+          loading: false,cSelectedRow:{}
         });
         for (let i = 0; i < CSVData.length; i++) {
           delete CSVData[i].totalpages;
@@ -1328,7 +1328,7 @@ class Dashboard extends Component {
       self.checkAllBrandStart();
     });
   }
-  handelCheckBoxCheckedChange = async () => {
+  handelCheckBoxCheckedChange = async (ticketID) => {
     debugger;
     var checkboxes = document.getElementsByName("MyTicketListcheckbox[]");
     var strIds = "";
@@ -1340,8 +1340,14 @@ class Dashboard extends Component {
         }
       }
     }
+    // await this.setState({
+    //   ticketIds: strIds
+    // });
+    const newSelected = Object.assign({}, this.state.cSelectedRow);
+    newSelected[ticketID] = !this.state.cSelectedRow[ticketID];
+
     await this.setState({
-      ticketIds: strIds
+      cSelectedRow: ticketID ? newSelected : false,  ticketIds: strIds
     });
   };
   handleTicketDetails = (rowInfo, column) => {
@@ -4629,15 +4635,12 @@ class Dashboard extends Component {
                                     value={this.state.selectedSlaStatus}
                                     onChange={this.setSlaStatusValue}
                                   >
-                                    <option>
-                                      SLA Status : Response / Resolution
-                                    </option>
-                                    {this.state.SlaStatusData !== null &&
-                                      this.state.SlaStatusData.map(
-                                        (item, i) => (
-                                          <option key={i} value={item.SLAId}>
-                                            {item.slaRequestResponse}
-                                          </option>
+                                    <option value="0">SLA Due</option>
+                                    {this.state.SlaDueData !== null &&
+                                      this.state.SlaDueData.map((item, i) => (
+                                        <option key={i} value={item.slaDueID}>
+                                          {item.slaDueName}
+                                        </option>
                                         )
                                       )}
                                   </select>
@@ -5609,11 +5612,11 @@ class Dashboard extends Component {
                                         type="checkbox"
                                         id={"j" + row.original.ticketID}
                                         name="MyTicketListcheckbox[]"
-                                        // checked={this.state.CheckBoxChecked}
+                                        checked={this.state.cSelectedRow[row.original.ticketID]}
                                         attrIds={row.original.ticketID}
-                                        onChange={
-                                          this.handelCheckBoxCheckedChange
-                                        }
+                                        onChange={()=>this.handelCheckBoxCheckedChange(	
+                                          row.original.ticketID	
+                                        )}
                                       />
                                     ) : null}
 
