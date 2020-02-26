@@ -22,7 +22,7 @@ import {
 } from "react-notifications";
 import { authHeader } from "../../../helpers/authHeader";
 import ActiveStatus from "../../activeStatus";
-import { CSVLink, CSVDownload } from "react-csv";
+import { CSVLink } from "react-csv";
 
 class TicketHierarchy extends Component {
   constructor(props) {
@@ -335,7 +335,7 @@ class TicketHierarchy extends Component {
                         ),
                         accessor: "createdbyperson",
                         Cell: row => {
-                          var ids = row.original["designationID"];
+                          // var ids = row.original["designationID"];
                           return (
                             <div>
                               <span>

@@ -424,13 +424,13 @@ class Reports extends Component {
       selectedNameOfDayForYearCommaSeperated
     });
   };
-  handleWeekForYear(e) {
+  handleWeekForYear=(e)=> {
     debugger;
     this.setState({
       selectedNoOfWeekForYear: e.currentTarget.value
     });
   }
-  handleDayForYear(e) {
+  handleDayForYear=(e)=> {
     debugger;
     this.setState({
       selectedNoOfDayForDailyYear: e.currentTarget.value
@@ -460,43 +460,46 @@ class Reports extends Component {
       selectedNameOfDayForWeekCommaSeperated
     });
   };
-  handleWeekForWeek(e) {
+  handleWeekForWeek=(e)=> {
     debugger;
     this.setState({
       selectedNoOfWeekForWeek: e.currentTarget.value
     });
   }
-  handleMonthForWeek(e) {
+  handleMonthForWeek=(e)=> {
     debugger;
     this.setState({
       selectedNoOfMonthForWeek: e.currentTarget.value
     });
   }
-  handleMonthForMonth(e) {
+  handleMonthForMonth=(e)=> {
     debugger;
     this.setState({
       selectedNoOfMonthForMonth: e.currentTarget.value
     });
   }
-  handleDaysForMonth(e) {
+  handleDaysForMonth=(e)=> {
     debugger;
     this.setState({
       selectedNoOfDaysForMonth: e.currentTarget.value
     });
   }
-  handleWeekly(e) {
+  handleWeekly=(e)=> {
     debugger;
     this.setState({
-      selectedNoOfWeek: e.currentTarget.value
+      selectedNoOfWeek: e.target.value
     });
+    // this.setState({
+    //   selectedNoOfWeek: e.currentTarget.value
+    // });
   }
-  handleDailyDay(e) {
+  handleDailyDay=(e)=> {
     debugger;
     this.setState({
       selectedNoOfDay: e.currentTarget.value
     });
   }
-  handleScheduleTime(e) {
+  handleScheduleTime=(e)=> {
     debugger;
     this.setState({
       selectedScheduleTime: e

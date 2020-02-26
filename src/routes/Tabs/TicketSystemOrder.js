@@ -204,10 +204,9 @@ class TicketSystemOrder extends Component {
     }
 
     this.setState({
-      selectedDataRow: selectedRow
-    });
+      selectedDataRow: selectedRow});
     {
-      this.props.getOrderId(selectedRow, this.state.idSizeArray);
+      this.props.getOrderId(selectedRow,this.state.idSizeArray);
     }
   }
 
@@ -541,10 +540,10 @@ class TicketSystemOrder extends Component {
       x.style.display = "block";
       x1.style.display = "none";
     } else {
-      var x = document.getElementById("Modalordertable");
-      var x1 = document.getElementById("Modalorderitemtable");
-      x.style.display = "none";
-      x1.style.display = "block ";
+      var i = document.getElementById("Modalordertable");
+      var j = document.getElementById("Modalorderitemtable");
+      i.style.display = "none";
+      j.style.display = "block ";
     }
     this.setState({
       OrdItmBtnStatus: e.target.checked
@@ -751,7 +750,7 @@ class TicketSystemOrder extends Component {
                       },
                       {
                         Header: <span>Price Paid</span>,
-                        accessor: "orderPricePaid"
+                        accessor: "pricePaid"
                       },
                       {
                         Header: <span>Store Code</span>,
@@ -889,7 +888,7 @@ class TicketSystemOrder extends Component {
                       },
                       {
                         Header: <span>Price Paid</span>,
-                        accessor: "orderPricePaid"
+                        accessor: "pricePaid"
                       },
                       {
                         Header: <span>Store Code</span>,
@@ -953,7 +952,7 @@ class TicketSystemOrder extends Component {
                     <div style={{ padding: "20px" }}>
                       <ReactTable
                         data={this.state.OrderSubItem.filter(
-                          x => x.orderMasterID == row.original.orderMasterID
+                          x => x.orderMasterID === row.original.orderMasterID
                         )}
                         columns={[
                           {
@@ -998,7 +997,7 @@ class TicketSystemOrder extends Component {
                           },
                           {
                             Header: <span>Price Paid</span>,
-                            accessor: "orderPricePaid"
+                            accessor: "pricePaid"
                           },
                           {
                             Header: <span>Discount</span>,
@@ -1511,7 +1510,7 @@ class TicketSystemOrder extends Component {
                     },
                     {
                       Header: <span>Price Paid</span>,
-                      accessor: "orderPricePaid"
+                      accessor: "pricePaid"
                     },
                     {
                       Header: <span>Store Code</span>,
@@ -1602,7 +1601,7 @@ class TicketSystemOrder extends Component {
                     },
                     {
                       Header: <span>Price Paid</span>,
-                      accessor: "orderPricePaid"
+                      accessor: "pricePaid"
                     },
                     {
                       Header: <span>Store Code</span>,
@@ -1628,35 +1627,35 @@ class TicketSystemOrder extends Component {
                           columns={[
                             {
                               Header: <span>Article Number</span>,
-                              accessor: "invoiceNo"
-                              // Cell: row => (
-                              //   <div
-                              //     className="filter-checkbox"
-                              //     style={{ marginLeft: "15px" }}
-                              //   >
-                              //     <input
-                              //       type="checkbox"
-                              //       id={"order" + row.original.orderItemID}
-                              //       style={{ display: "none" }}
-                              //       name="ticket-order"
-                              //       checked={
-                              //         this.state.CheckOrderID[
-                              //         row.original.orderItemID
-                              //         ] === true
-                              //       }
-                              //       onChange={this.handleCheckOrderID.bind(
-                              //         this,
-                              //         row.original.orderItemID,
-                              //         row.original
-                              //       )}
-                              //     />
-                              //     <label
-                              //       htmlFor={"order" + row.original.orderItemID}
-                              //     >
-                              //       {row.original.invoiceNo}
-                              //     </label>
-                              //   </div>
-                              // )
+                              accessor: "invoiceNo",
+                              Cell: row => (
+                                <div
+                                  className="filter-checkbox"
+                                  style={{ marginLeft: "15px" }}
+                                >
+                                  <input
+                                    type="checkbox"
+                                    id={"order" + row.original.orderItemID}
+                                    style={{ display: "none" }}
+                                    name="ticket-order"
+                                    checked={
+                                      this.state.CheckOrderID[
+                                      row.original.orderItemID
+                                      ] === true
+                                    }
+                                    onChange={this.handleCheckOrderID.bind(
+                                      this,
+                                      row.original.orderItemID,
+                                      row.original
+                                    )}
+                                  />
+                                  <label
+                                    htmlFor={"order" + row.original.orderItemID}
+                                  >
+                                    {row.original.invoiceNo}
+                                  </label>
+                                </div>
+                              )
                             },
                             {
                               Header: <span>Article Name</span>,
@@ -1668,7 +1667,7 @@ class TicketSystemOrder extends Component {
                             },
                             {
                               Header: <span>Price Paid</span>,
-                              accessor: "orderPricePaid"
+                              accessor: "pricePaid"
                             },
                             {
                               Header: <span>Discount</span>,

@@ -37,18 +37,19 @@ class MyTicketTask extends Component {
       FunctionData: [],
       AssignToData: [],
       TicketPriorityData: [],
-      selectedDepartment: '',
-      selectedFunction: '',
-      selectedAssignTo: '',
-      selectedPriority: '',
+      selectedDepartment: "",
+      selectedFunction: "",
+      selectedAssignTo: "",
+      selectedPriority: "",
       ticketTask_Id: 0,
       tikcet_ID: 0,
-      taskTitleCompulsion: '',
-      taskDescCompulsion: '',
-      taskDepartmentCompulsion: '',
-      taskFunctionCompulsion: '',
-      taskAssignToCompulsion: '',
-      taskPriorityCompulsion: '',
+      taskTitleCompulsion: "",
+      taskDescCompulsion: "",
+      taskDepartmentCompulsion: "",
+      taskFunctionCompulsion: "",
+      taskAssignToCompulsion: "",
+      taskPriorityCompulsion: "",
+      addcommentCompulsion:""
     };
     this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
     this.handleGetFunctionList = this.handleGetFunctionList.bind(this);
@@ -58,29 +59,28 @@ class MyTicketTask extends Component {
       this
     );
     this.handleGetTaskTableGrid = this.handleGetTaskTableGrid.bind(this);
-    this.handleGetTaskCommentsdetails=this.handleGetTaskCommentsdetails.bind(this)
+    this.handleGetTaskCommentsdetails = this.handleGetTaskCommentsdetails.bind(
+      this
+    );
   }
 
   componentDidMount() {
     debugger;
-    if(this.props.taskData.TicketData.TicketId !== 0){
+    if (this.props.taskData.TicketData.TicketId !== 0) {
       var Id = this.props.taskData.TicketData.TicketId;
       /// var GridData=this.props.taskData.TicketData.GridData;
       this.handleGetTaskTableGrid(Id);
-     this.handleGetDepartmentList();
+      this.handleGetDepartmentList();
       this.handleGetTicketPriorityList();
       this.handleGetTaskTabDetails(Id);
       this.setState({
-        tikcet_ID: Id,
+        tikcet_ID: Id
         /// taskTableGrid:GridData
       });
-    }else if(this.props.taskData.TicketData.TicketId === 0){
-
-    }
-    else{
+    } else if (this.props.taskData.TicketData.TicketId === 0) {
+    } else {
       this.props.history.push("myTicketlist");
     }
-    
   }
   handleAddTaskModalOpn() {
     this.setState({ AddTaskModal: true });
@@ -127,7 +127,7 @@ class MyTicketTask extends Component {
       let data = res.data.responseData;
       if (status === "Success") {
         self.setState({ taskTableGrid: data });
-      }else{
+      } else {
         self.setState({ taskTableGrid: [] });
       }
     });
@@ -153,7 +153,7 @@ class MyTicketTask extends Component {
       }
     });
   }
-  handleGetTaskCommentsdetails(ticketTaskId){
+  handleGetTaskCommentsdetails(ticketTaskId) {
     let self = this;
     axios({
       method: "post",
@@ -167,7 +167,7 @@ class MyTicketTask extends Component {
       let status = res.data.message;
       let data = res.data.responseData;
       if (status === "Success") {
-        self.setState({ Taskdetails: data});
+        self.setState({ Taskdetails: data });
       } else {
         self.setState({ Taskdetails: [] });
       }
@@ -182,11 +182,11 @@ class MyTicketTask extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let status=res.data.message
+      let status = res.data.message;
       let data = res.data.responseData;
-      if(status === "Success"){
+      if (status === "Success") {
         self.setState({ DepartmentData: data });
-      }else{
+      } else {
         self.setState({ DepartmentData: [] });
       }
     });
@@ -231,11 +231,11 @@ class MyTicketTask extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let status=res.data.message;
+      let status = res.data.message;
       let data = res.data.responseData;
-      if(status === "Success"){
+      if (status === "Success") {
         self.setState({ TicketPriorityData: data });
-      }else{
+      } else {
         self.setState({ TicketPriorityData: [] });
       }
     });
@@ -268,46 +268,75 @@ class MyTicketTask extends Component {
   };
   handleAddTaskTitle() {
     debugger;
-    if (this.state.taskTitle.length > 0 && this.state.taskDescription.length > 0 && this.state.selectedDepartment.length > 0 && this.state.selectedFunction.length > 0 && this.state.selectedAssignTo.length > 0 && this.state.selectedPriority.length > 0) {
-    let self = this;
-    let ticketId=this.state.tikcet_ID;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Task/createTask",
-      headers: authHeader(),
-      data: {
-        TaskTitle: this.state.taskTitle.trim(),
-        TaskDescription: this.state.taskDescription.trim(),
-        DepartmentId: this.state.selectedDepartment,
-        FunctionID: this.state.selectedFunction,
-        AssignToID: this.state.selectedAssignTo,
-        PriorityID: this.state.selectedPriority,
-        TicketID: this.state.tikcet_ID
-      }
-    }).then(function(res) {
-      debugger;
-      let status = res.data.status;
-      if (status === true) {
-        NotificationManager.success("Task created successfully.");
-        self.handleAddTaskModalCls();
-        self.handleGetTaskTableGrid(ticketId);
-      } else {
-        NotificationManager.error("Task not created.");
-      }
-    });
-  } else {
-    this.setState({
-      taskTitleCompulsion: 'The Title field is compulsary.',
-      taskDescCompulsion: 'The Description field is compulsary.',
-      taskDepartmentCompulsion: 'The Department field is compulsary.',
-      taskFunctionCompulsion: 'The Function field is compulsary.',
-      taskAssignToCompulsion: 'The Assign To field is compulsary.',
-      taskPriorityCompulsion: 'The Priority field is compulsary.',
-    })
-  }
+    if (
+      this.state.taskTitle.length > 0 &&
+      this.state.taskDescription.length > 0 &&
+      this.state.selectedDepartment.length > 0 &&
+      this.state.selectedFunction.length > 0 &&
+      this.state.selectedAssignTo.length > 0 &&
+      this.state.selectedPriority.length > 0
+    ) {
+      let self = this;
+      let ticketId = this.state.tikcet_ID;
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Task/createTask",
+        headers: authHeader(),
+        data: {
+          TaskTitle: this.state.taskTitle.trim(),
+          TaskDescription: this.state.taskDescription.trim(),
+          DepartmentId: this.state.selectedDepartment,
+          FunctionID: this.state.selectedFunction,
+          AssignToID: this.state.selectedAssignTo,
+          PriorityID: this.state.selectedPriority,
+          TicketID: this.state.tikcet_ID
+        }
+      })
+        .then(function(res) {
+          debugger;
+          let status = res.data.message;
+          if (status === "Success") {
+            NotificationManager.success("Task created successfully.", "", 1500);
+            self.handleAddTaskModalCls();
+            self.handleGetTaskTableGrid(ticketId);
+            self.setState({
+              taskTitle: "",
+              taskDescription: "",
+              selectedDepartment: 0,
+              selectedFunction: 0,
+              selectedAssignTo: 0,
+              selectedPriority: 0
+            });
+            // {
+            //   self.props.callBackTaskLenght(self.state.tikcet_ID);
+            // }
+          } else {
+            NotificationManager.error("Task not created.", "", 1500);
+            // {
+            //   self.props.callBackTaskLenght(self.state.tikcet_ID);
+            // }
+          }
+        }).catch(function(res) {
+          //handle error
+          console.log(res);
+        });
+    } else {
+      this.setState({
+        taskTitleCompulsion: "The Title field is compulsory.",
+        taskDescCompulsion: "The Description field is compulsory.",
+        taskDepartmentCompulsion: "The Department field is compulsory.",
+        taskFunctionCompulsion: "The Function field is compulsory.",
+        taskAssignToCompulsion: "The Assign To field is compulsory.",
+        taskPriorityCompulsion: "The Priority field is compulsory."
+      });
+    }
+   
   }
   handleTaskAddComments() {
     debugger;
+    if(
+      this.state.taskAddComment.length > 0
+    ){
     var TaskData = this.props.taskData.TicketData.TabActiveId;
     let self = this;
     axios({
@@ -323,15 +352,20 @@ class MyTicketTask extends Component {
       debugger;
       let status = res.data.message;
       if (status === "Success") {
-        NotificationManager.success("Comment added successfully.");
+        NotificationManager.success("Comment added successfully.", "", 2000);
         self.setState({
-          taskAddComment:""
-        })
+          taskAddComment: ""
+        });
         self.handleGetTaskCommentsdetails(self.state.ticketTask_Id);
       } else {
-        NotificationManager.error("Comment not added.");
+        NotificationManager.error("Comment not added.", "", 2000);
       }
     });
+  }else{
+    this.setState({
+      addcommentCompulsion:"Please Add Comment."
+    });
+  }
   }
 
   render() {
@@ -374,7 +408,11 @@ class MyTicketTask extends Component {
               onChange={this.handleTaskOnchangeData}
               maxLength="100"
             />
-            {this.state.taskTitle.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.taskTitleCompulsion}</p>}
+            {this.state.taskTitle.length === 0 && (
+              <p style={{ color: "red", marginBottom: "0px" }}>
+                {this.state.taskTitleCompulsion}
+              </p>
+            )}
             <textarea
               className="ClaimAddTadk-modal-textArea mb-0"
               placeholder="Task Description"
@@ -384,7 +422,11 @@ class MyTicketTask extends Component {
               onChange={this.handleTaskOnchangeData}
               maxLength="250"
             ></textarea>
-            {this.state.taskDescription.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.taskDescCompulsion}</p>}
+            {this.state.taskDescription.length === 0 && (
+              <p style={{ color: "red", marginBottom: "0px" }}>
+                {this.state.taskDescCompulsion}
+              </p>
+            )}
             <div className="row m-t-15">
               <div className="col-md-6">
                 <select
@@ -393,7 +435,7 @@ class MyTicketTask extends Component {
                   value={this.state.selectedDepartment}
                   onChange={this.setDepartmentValue}
                 >
-                  <option value='' className="select-category-placeholder">
+                  <option value="" className="select-category-placeholder">
                     Department
                   </option>
                   {this.state.DepartmentData !== null &&
@@ -407,7 +449,11 @@ class MyTicketTask extends Component {
                       </option>
                     ))}
                 </select>
-                {this.state.selectedDepartment.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.taskDepartmentCompulsion}</p>}
+                {this.state.selectedDepartment.length === 0 && (
+                  <p style={{ color: "red", marginBottom: "0px" }}>
+                    {this.state.taskDepartmentCompulsion}
+                  </p>
+                )}
               </div>
               <div className="col-md-6">
                 <select
@@ -416,7 +462,7 @@ class MyTicketTask extends Component {
                   value={this.state.selectedFunction}
                   onChange={this.setFunctionValue}
                 >
-                  <option value='' className="select-sub-category-placeholder">
+                  <option value="" className="select-sub-category-placeholder">
                     Function
                   </option>
                   {this.state.FunctionData !== null &&
@@ -430,7 +476,11 @@ class MyTicketTask extends Component {
                       </option>
                     ))}
                 </select>
-                {this.state.selectedFunction.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.taskFunctionCompulsion}</p>}
+                {this.state.selectedFunction.length === 0 && (
+                  <p style={{ color: "red", marginBottom: "0px" }}>
+                    {this.state.taskFunctionCompulsion}
+                  </p>
+                )}
               </div>
             </div>
             <div className="row m-t-15">
@@ -441,7 +491,7 @@ class MyTicketTask extends Component {
                   onChange={this.setAssignToValue}
                   className="category-select-system dropdown-label"
                 >
-                  <option value='' className="select-category-placeholder">
+                  <option value="" className="select-category-placeholder">
                     Assign To
                   </option>
                   {this.state.AssignToData !== null &&
@@ -455,7 +505,11 @@ class MyTicketTask extends Component {
                       </option>
                     ))}
                 </select>
-                {this.state.selectedAssignTo.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.taskAssignToCompulsion}</p>}
+                {this.state.selectedAssignTo.length === 0 && (
+                  <p style={{ color: "red", marginBottom: "0px" }}>
+                    {this.state.taskAssignToCompulsion}
+                  </p>
+                )}
               </div>
               <div className="col-md-6">
                 <select
@@ -478,7 +532,11 @@ class MyTicketTask extends Component {
                       </option>
                     ))}
                 </select>
-                {this.state.selectedPriority.length === 0 && <p style={{ 'color' : 'red', 'marginBottom' : '0px' }}>{this.state.taskPriorityCompulsion}</p>}
+                {this.state.selectedPriority.length === 0 && (
+                  <p style={{ color: "red", marginBottom: "0px" }}>
+                    {this.state.taskPriorityCompulsion}
+                  </p>
+                )}
               </div>
             </div>
             <div className="row m-t-20" style={{ float: "right" }}>
@@ -490,7 +548,11 @@ class MyTicketTask extends Component {
                 >
                   CANCEL
                 </button>
-                <button className="butn" type="button" onClick={this.handleAddTaskTitle.bind(this)}>
+                <button
+                  className="butn"
+                  type="button"
+                  onClick={this.handleAddTaskTitle.bind(this)}
+                >
                   CREATE TASK
                 </button>
               </div>
@@ -655,6 +717,11 @@ class MyTicketTask extends Component {
                 value={this.state.taskAddComment}
                 onChange={this.handleTaskOnchangeData}
               ></textarea>
+              {this.state.taskAddComment.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.addcommentCompulsion}
+                    </p>
+                  )}
               <button
                 className="assign-butn btn-assign-tikcet"
                 type="button"

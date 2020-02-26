@@ -51,10 +51,8 @@ class TicketSystemStore extends Component {
   handleByvisitDate(e, rowData) {
     debugger;
     var id = e.original.storeID;
-    var index = this.state.selectedStoreData.findIndex(
-      x => x.storeID === id
-    );
-    this.state.selectedStoreData["VisitedDate"]=rowData
+    var index = this.state.selectedStoreData.findIndex(x => x.storeID === id);
+    this.state.selectedStoreData["VisitedDate"] = rowData;
     var selectedStoreData = this.state.selectedStoreData;
     selectedStoreData[index].VisitedDate = rowData;
 
@@ -588,17 +586,19 @@ class TicketSystemStore extends Component {
                             return (
                               <div className="col-sm-12 p-0">
                                 <DatePicker
-                                selected={row.original.VisitedDate}
-                                placeholderText="Visited Date"
-                                showMonthDropdown
-                                showYearDropdown
-                                dateFormat="dd/MM/yyyy"
-                                id={"visitDate" + row.original.storeID}
-                                value={row.original.VisitedDate}
-                                name="visitDate"
-                                onChange={this.handleByvisitDate.bind(this,row)}
-                              />
-                               
+                                  selected={row.original.VisitedDate}
+                                  placeholderText="Visited Date"
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dateFormat="dd/MM/yyyy"
+                                  id={"visitDate" + row.original.storeID}
+                                  value={row.original.VisitedDate}
+                                  name="visitDate"
+                                  onChange={this.handleByvisitDate.bind(
+                                    this,
+                                    row
+                                  )}
+                                />
                               </div>
                             );
                           }

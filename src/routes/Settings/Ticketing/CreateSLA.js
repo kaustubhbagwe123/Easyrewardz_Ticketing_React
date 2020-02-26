@@ -8,6 +8,7 @@ import FileUpload from "./../../../assets/Images/file.png";
 import DelBlack from "./../../../assets/Images/del-black.png";
 import Correct from "./../../../assets/Images/correct.png";
 import UploadCancel from "./../../../assets/Images/upload-cancel.png";
+import Cancel from "./../../../assets/Images/cancel.png";
 import DownExcel from "./../../../assets/Images/csv.png";
 import { ProgressBar } from "react-bootstrap";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
@@ -32,7 +33,7 @@ class CreateSLA extends Component {
       fileName: "",
       sla: [],
       slaIssueType: [],
-      selectedSlaIssueType: 0,
+      // selectedSlaIssueType: 0,
       updateIssueTypeId: 0,
       updateSlaisActive: "",
       updateSlaTarget: [],
@@ -61,6 +62,7 @@ class CreateSLA extends Component {
       searchedSla: [],
       slaShow: false,
       slaOvrlayShow: false,
+      SearchText: ''
     };
 
     this.handleGetSLA = this.handleGetSLA.bind(this);
@@ -217,13 +219,23 @@ class CreateSLA extends Component {
     axios({
       method: "post",
       url: config.apiUrl + "/SLA/GetIssueType",
-      headers: authHeader()
+      headers: authHeader(),
+      params: {
+        SearchText: this.state.SearchText
+      }
     }).then(function (res) {
       debugger;
       let slaIssueType = res.data.responseData;
-      let selectedSlaIssueType = slaIssueType[0].issueTypeID;
+      // let selectedSlaIssueType = slaIssueType[0].issueTypeID;
       if (slaIssueType !== null && slaIssueType !== undefined) {
-        self.setState({ slaIssueType, selectedSlaIssueType });
+        self.setState({ slaIssueType });
+        // self.setState({ slaIssueType, selectedSlaIssueType });
+        var checkboxes = document.getElementsByName("allSla");
+        for (var i in checkboxes) {
+          if (checkboxes[i].checked === true) {
+            checkboxes[i].checked = false;
+          }
+        }
       }
     });
   }
@@ -296,10 +308,10 @@ class CreateSLA extends Component {
     });
   }
 
-  handleSlaIssueType = e => {
-    let slaIssueType = e.currentTarget.value;
-    this.setState({ selectedSlaIssueType: slaIssueType });
-  };
+  // handleSlaIssueType = e => {
+  //   let slaIssueType = e.currentTarget.value;
+  //   this.setState({ selectedSlaIssueType: slaIssueType });
+  // };
   handleUpdateSlaIssueType = e => {
     let updateSlaIssueType = e.currentTarget.value;
     this.setState({ updateIssueTypeId: updateSlaIssueType });
@@ -398,8 +410,9 @@ class CreateSLA extends Component {
       if (status === "Success") {
         NotificationManager.success("SLA added successfully.", '', 2000);
         self.setState({
-          selectedSlaIssueType: 0,
-          SlaIsActive: "true"
+          // selectedSlaIssueType: 0,
+          SlaIsActive: "true",
+          SearchText: ''
         });
         self.handleGetSLA();
         self.handleGetPriorityList();
@@ -439,35 +452,54 @@ class CreateSLA extends Component {
   handleAddNoteCheck = e => {
 
   };
-  handleSearchSla = e => {
+  // handleSearchSla = e => {
+  //   debugger;
+  //   let self = this;
+  //   if (e.target.value.length > 3) {
+  //     axios({
+  //       method: "post",
+  //       url: config.apiUrl + "/SLA/SearchIssueType",
+  //       headers: authHeader(),
+  //       params: {
+  //         SearchText: e.target.value
+  //       }
+  //     }).then(function (res) {
+  //       debugger;
+  //       let status = res.data.message;
+  //       let data = res.data.responseData;
+  //       if (status === "Success") {
+  //         self.setState({
+  //           searchedSla: data
+  //         });
+  //       } else {
+  //         self.setState({
+  //           searchedSla: []
+  //         });
+  //       }
+  //     });
+  //   }
+  // };
+  handleSearchSla = async e => {
     debugger;
-    // this.setState({
-    //   searchSla: e.target.value
-    // });
-    let self = this;
     if (e.target.value.length > 3) {
-      axios({
-        method: "post",
-        url: config.apiUrl + "/SLA/SearchIssueType",
-        headers: authHeader(),
-        params: {
-          SearchText: e.target.value
-        }
-      }).then(function (res) {
-        debugger;
-        let status = res.data.message;
-        let data = res.data.responseData;
-        if (status === "Success") {
-          self.setState({
-            searchedSla: data
-          });
-        } else {
-          self.setState({
-            searchedSla: []
-          });
-        }
+      await this.setState({
+        SearchText: e.target.value
       });
+      this.handleGetSLAIssueType();
+    } else {
+      await this.setState({
+        SearchText: ''
+      });
+      this.handleGetSLAIssueType();
     }
+  };
+  handleClearSearchSla = async e => {
+    debugger;
+    await this.setState({
+      SearchText: ''
+    });
+    document.getElementById('SlaInput').value = '';
+    this.handleGetSLAIssueType();
   };
   handleSlaButton() {
     debugger;
@@ -927,15 +959,19 @@ class CreateSLA extends Component {
                           </button>
                           <div className={this.state.slaShow ? "dropdown-menu dropdown-menu-sla show" : "dropdown-menu dropdown-menu-sla"}>
                             <div className="cat-mainbox">
-                              <input
-                                type="text"
-                                className="searchf"
-                                placeholder="Search"
-                                maxLength={10}
-                                name="store_code"
-                                onChange={this.handleSearchSla}
-                              />
-                              <div className="filter-checkbox category-scroll">
+                              <div className="sla-cancel-search">
+                                <input
+                                  type="text"
+                                  className="searchf"
+                                  placeholder="Search"
+                                  maxLength={10}
+                                  name="store_code"
+                                  onChange={this.handleSearchSla}
+                                  id="SlaInput"
+                                />
+                                <img src={Cancel} alt="cancel image" onClick={this.handleClearSearchSla} />
+                              </div>
+                              {/* <div className="filter-checkbox category-scroll">
                                 <ul>
                                   {this.state.searchedSla !== null &&
                                     this.state.searchedSla.map((item, i) => (
@@ -957,7 +993,7 @@ class CreateSLA extends Component {
                                       </li>
                                     ))}
                                 </ul>
-                              </div>
+                              </div> */}
                               <div className="category-button">
                                 <ul>
                                   <li>

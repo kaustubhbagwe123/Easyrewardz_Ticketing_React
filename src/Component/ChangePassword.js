@@ -16,7 +16,8 @@ export class ChangePassword extends Component {
 
     this.state = {
       newPassword: "",
-      confimPassword: ""
+      confimPassword: "",
+      oldPassword:""
     };
     this.handleCheckPassword = this.handleCheckPassword.bind(this);
     this.handlechange = this.handlechange.bind(this);
@@ -24,6 +25,7 @@ export class ChangePassword extends Component {
     this.validator = new SimpleReactValidator();
   }
   handlechange(e) {
+    debugger;
     this.setState({
       [e.target.name]: e.target.value
     });
@@ -51,21 +53,34 @@ export class ChangePassword extends Component {
   }
   handleChangePassword(newPassword) {
     debugger;
+    let self = this;
     // let emaiId=encryption(EmailID, "enc");
     let emaiId = window.location.href
       .slice(window.location.href.indexOf("?") + 1)
-      .split("=")[1];
+      .split(":")[1];
 
     axios({
       method: "post",
-      url: `${config.apiUrl}/Account/UpdatePassword`,
-      params: {
-        cipherEmailId: emaiId,
-        Password: newPassword
+      url: config.apiUrl+"/User/ChangePassword",
+      data: {
+        EmailID: emaiId,
+        Password:this.state.oldPassword,
+        NewPassword: newPassword
       },
-      headers: authHeader("no")
+      headers: authHeader()
     }).then(function(response) {
       // let data = response;
+      debugger;
+      let Msg = response.data.responseData;
+      if (Msg === true) {
+        NotificationManager.success("Password Changed successfully.");
+        setTimeout(function() {
+          self.props.history.push("/SignIn");
+        }, 400);
+      }
+      else {
+        NotificationManager.error("Password Not Changed.");
+      }
     });
   }
   render() {
@@ -91,6 +106,27 @@ export class ChangePassword extends Component {
                 </h3>
               </div>
               <form name="form" onSubmit={this.handleCheckPassword}>
+              <div className="input-group sb-2">
+                  <label className="col-mb-3 col-form-label col-form-label pt-0 chpass">
+                    Enter Old Password
+                  </label>
+                </div>
+                <div className="input-group mb-3">
+                  <input
+                    type="password"
+                    name="oldPassword"
+                    placeholder="Enter Old Password"
+                    className="program-code-textbox"
+                    value={this.state.oldPassword}
+                    onChange={this.handlechange}
+                    maxLength={25}
+                  />
+                 {/* {this.validator.message(
+                    "Old Password",
+                    this.state.oldPassword,
+                    "required"
+                  )} */}
+                </div>
                 <div className="input-group sb-2">
                   <label className="col-mb-3 col-form-label col-form-label pt-0 chpass">
                     Enter New Password

@@ -167,9 +167,9 @@ class FileUploadLogs extends Component {
                     columns={columnsTickFileUpload}
                     // resizable={false}
                     defaultPageSize={5}
-                    showPagination={false}
+                    showPagination={true}
                   />
-                   <div className="position-relative">
+                   {/* <div className="position-relative">
                     <div className="pagi">
                       <ul>
                         <li>
@@ -206,7 +206,7 @@ class FileUploadLogs extends Component {
                       </select>
                       <p>Items per page</p>
                     </div>
-                  </div>
+                  </div> */}
         </div>
       </div>
     );

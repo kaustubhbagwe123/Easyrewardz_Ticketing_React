@@ -55,7 +55,7 @@ class Templates extends Component {
   }
 
   componentDidMount() {
-    this.handleGetTemplate();
+   this.handleGetTemplate();
     this.handleGetSLAIssueType();
   }
 
@@ -149,10 +149,14 @@ class Templates extends Component {
   handleGetSLAIssueType() {
     debugger;
     let self = this;
+    var data='';
     axios({
       method: "post",
       url: config.apiUrl + "/SLA/GetIssueType",
-      headers: authHeader()
+      headers: authHeader(),
+      params: {
+        SearchText:data
+      }
     }).then(function (res) {
       debugger;
       let slaIssueType = res.data.responseData;
@@ -195,7 +199,7 @@ class Templates extends Component {
     ){
     let self = this;
     this.setState({ ConfigTabsModal: false })
-    let TemplateIsActive;
+    var TemplateIsActive;
     if (this.state.TemplateIsActive === 'true') {
       TemplateIsActive = true
     } else if (this.state.TemplateIsActive === 'false') {
@@ -219,6 +223,12 @@ class Templates extends Component {
       if (status === "Success") {
         NotificationManager.success("Template added successfully.");
         self.handleGetTemplate();
+        self.setState({
+          TemplateSubject:"",
+          editorContent:"",
+          TemplateName:"",
+          selectedSlaIssueType:[]
+        });
       } else {
         NotificationManager.error("Template not added.");
       }
@@ -431,7 +441,7 @@ class Templates extends Component {
                   </div>
                   <br />
                   <div>
-                    <a className="pop-over-cancle" onClick={this.hide}>CANCEL</a>
+                    <a href="#!" className="pop-over-cancle" onClick={this.hide}>CANCEL</a>
                     <button className="pop-over-button">
                       <label className="pop-over-btnsave-text">SAVE</label>
                     </button>
@@ -476,10 +486,10 @@ class Templates extends Component {
                     data={this.state.template}
                     columns={columns}
                     // resizable={false}
-                    defaultPageSize={10}
-                    showPagination={false}
+                    defaultPageSize={5}
+                    showPagination={true}
                   />
-                  <div className="position-relative1">
+                  {/* <div className="position-relative1">
                     <div className="pagi">
                       <ul>
                         <li>
@@ -516,7 +526,7 @@ class Templates extends Component {
                       </select>
                       <p>Items per page</p>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="col-md-4">

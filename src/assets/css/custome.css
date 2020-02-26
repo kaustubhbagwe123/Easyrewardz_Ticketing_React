@@ -1227,8 +1227,13 @@ table tr th:last-child {
   font-weight: 700;
   line-height: 16px;
   text-align: right;
-  float: right;
+  /* float: right; */
+  display: block;
   cursor: pointer;
+}
+.inlineGridTicket{
+  display: inline-grid;
+  float: right;
 }
 .btn-primary1 {
   background-color: #2561a8;
@@ -3556,7 +3561,21 @@ table tr th:last-child {
 .dropdown-menu-sla {
   z-index: 1001;
 }
+.sla-cancel-search {
+  position: relative;
+}
+.sla-cancel-search img {
+  position: absolute;
+  top: 15px;
+    right: 10px;
+    width: 12px;
+}
 /* sla ends */
+
+.kb-search-cntr {
+  display: inline-block;
+  cursor: pointer;
+}
 
 /* chetan css end */
 /******************************************************/
@@ -5547,6 +5566,7 @@ font-weight: normal;
   line-height: 19px;
   text-align: left;
   padding-left: 0;
+  cursor: pointer;
 }
 
 .table-id-data {
@@ -9576,6 +9596,9 @@ table tr th:last-child {
 .MyTicketListReact .ReactTable .rt-thead.-header .pinkmargin {
   margin-left: 5px;
 }
+.MyTicketListReact .rt-th {
+  text-align: left;
+}
 .newReact .rt-tbody .pinkmargin {
   margin-left: 5px;
 }
@@ -10614,6 +10637,7 @@ table tr th:last-child {
   border: 1px solid #E1E1E1;
   padding: 10px;
   margin-bottom: 10px;
+  padding-right: 30px;
 }
 .issuetype-cusdrp .searchf::placeholder {
   color: #000;
