@@ -1200,12 +1200,12 @@ if(datar==="add"){
     }).then(function (res) {
       debugger;
       let Msg = res.data.message;
-      if (Msg === "Success") {
-        NotificationManager.success("Record Deleted successfully.");
+      if (Msg === "Record In use") {
+        NotificationManager.error("Record in use.");
+        
+      }else if(Msg==="Record deleted Successfully") {
+        NotificationManager.success("Record deleted Successfully.");
         self.handleUserList();
-      }
-      else {
-        NotificationManager.error("Record Not Deleted.");
       }
     });
   }
