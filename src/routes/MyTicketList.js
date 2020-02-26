@@ -565,7 +565,54 @@ class MyTicketList extends Component {
       });
     }
     // var data = ticketStatus;
-    this.setState({ loading: true });
+    this.setState({ loading: true, resultCount: 0, collapseSearch: false,
+      ByDateCreatDate: "",
+      ByDateSelectDate: "",
+      selectedSlaDueByDate: 0,
+      selectedTicketStatusByDate: 0,
+      MobileNoByCustType: "",
+          EmailIdByCustType: "",
+          TicketIdByCustType: "",
+          selectedTicketStatusByCustomer: 0,
+          selectedPriority: 0,
+          selectedTicketStatusByTicket: 0,
+          selectedChannelOfPurchase: [],
+          selectedTicketActionType: [],
+          selectedCategory: 0,
+          selectedSubCategory: 0,
+          selectedIssueType: 0,
+          selectedTicketStatusByCategory: 0,
+          ByAllCreateDate: "",
+          selectedTicketSource: 0,
+          ClaimIdByAll: "",
+          EmailByAll: "",
+          ByAllLastDate: "",
+          TicketIdTitleByAll: "",
+          InvoiceSubOrderByAll: "",
+          MobileByAll: "",
+          selectedCategoryAll: 0,
+          selectedPriorityAll: 0,
+          ItemIdByAll: "",
+          selectedAssignedToAll: "",
+          selectedSubCategoryAll: 0,
+          selectedTicketStatusAll: 0,
+          selectedAssignedTo: 0,
+          selectedVisitStoreAll: "all",
+          selectedPurchaseStoreCodeAddressAll: "",
+          selectedIssueTypeAll: 0,
+          selectedSlaStatus: 0,
+          selectedWantToVisitStoreAll: "all",
+          selectedVisitStoreCodeAddressAll: "",
+          selectedWithClaimAll: "no",
+          selectedClaimStatus: 0,
+          selectedClaimCategory: 0,
+          selectedClaimSubCategory: 0,
+          selectedClaimIssueType: 0,
+          selectedWithTaskAll: "no",
+          selectedTaskStatus: 0,
+          selectedDepartment: 0,
+          selectedFunction: 0
+    });
     debugger;
     let self = this;
     axios({
@@ -2457,12 +2504,16 @@ class MyTicketList extends Component {
           });
         } else {
           debugger;
-          let createdDate = dataSearch.searchDataByDate.Ticket_CreatedOn;
-          let createdDateArray = createdDate.split('-');
-          let createdDateFinal = new Date(createdDateArray[0], createdDateArray[1] - 1, createdDateArray[2]);
-          let modifiedDate = dataSearch.searchDataByDate.Ticket_ModifiedOn;
-          let modifiedDateArray = modifiedDate.split('-');
-          let modifiedDateFinal = new Date(modifiedDateArray[0], modifiedDateArray[1] - 1, modifiedDateArray[2]);
+          if (dataSearch.searchDataByDate.Ticket_CreatedOn !== "") {
+            let createdDate = dataSearch.searchDataByDate.Ticket_CreatedOn;
+            let createdDateArray = createdDate.split('-');
+            var createdDateFinal = new Date(createdDateArray[0], createdDateArray[1] - 1, createdDateArray[2]);
+          }
+          if (dataSearch.searchDataByDate.Ticket_ModifiedOn !== "") {
+            let modifiedDate = dataSearch.searchDataByDate.Ticket_ModifiedOn;
+            let modifiedDateArray = modifiedDate.split('-');
+            var modifiedDateFinal = new Date(modifiedDateArray[0], modifiedDateArray[1] - 1, modifiedDateArray[2]);
+          }
           self.setState({
             ByDateCreatDate: createdDateFinal,
             ByDateSelectDate: modifiedDateFinal,
@@ -5389,7 +5440,7 @@ class MyTicketList extends Component {
                                   Cell: row => {
                                     return (
                                       <div>
-                                        {row.original.message.split("-")[0]}/
+                                        {row.original.message.split("-")[0]}/&nbsp;
                                       <span style={{ color: "#666" }}>
                                           {row.original.message.split("-")[1]}
                                         </span>
