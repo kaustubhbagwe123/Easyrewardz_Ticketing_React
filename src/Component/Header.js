@@ -63,6 +63,9 @@ class Header extends Component {
       notifiMsg1: "",
       notifiMsg2: "",
       notifiMsg3: "",
+      notifiTktIds1: "",
+      notifiTktIds2: "",
+      notifiTktIds3: "",
       percentLog: 0,
       cont: [
         {
@@ -96,6 +99,7 @@ class Header extends Component {
     };
     this.handleLoggedInUserDetails = this.handleLoggedInUserDetails.bind(this);
     this.handleGetNotificationList = this.handleGetNotificationList.bind(this);
+    this.handleEditProfilePage=this.handleEditProfilePage.bind(this);
   }
 
   componentDidMount() {
@@ -166,6 +170,35 @@ class Header extends Component {
   closeModal = () => {
     this.setState({ modalIsOpen: false });
   };
+  
+  onViewTicket = (notiIds) => {
+    debugger;
+    this.setState({ modalIsOpen: false });
+    if (notiIds !== "") {
+      let self = this;
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Notification/ReadNotification",
+        headers: authHeader(),
+        params: {
+          TicketIDS: notiIds
+        }
+      }).then(function(res) {
+        debugger;
+        let status = res.data.message;
+        if (status === "Success") {
+          self.handleGetNotificationList();
+        }
+      });
+    }
+  };
+  handleEditProfilePage(){
+    debugger;
+    let self = this;
+    setTimeout(function() {
+      self.props.history.push("/admin/userprofile");
+    }, 400);
+  }
   handleLogoutMethod() {
     // let self = this;
     axios({
@@ -253,6 +286,10 @@ class Header extends Component {
         let Msg1 = res.data.responseData.ticketNotification[0].notificationMessage;
         let Msg2 = res.data.responseData.ticketNotification[1].notificationMessage;
         let Msg3 = res.data.responseData.ticketNotification[2].notificationMessage;
+        let TktIds1 = res.data.responseData.ticketNotification[0].ticketIDs;
+        let TktIds2 = res.data.responseData.ticketNotification[1].ticketIDs;
+        let TktIds3 = res.data.responseData.ticketNotification[2].ticketIDs;
+        let notiCount = res.data.responseData.notiCount;
 
         self.setState({
           notifiCount1: Count1,
@@ -260,7 +297,11 @@ class Header extends Component {
           notifiCount3: Count3,
           notifiMsg1: Msg1,
           notifiMsg2: Msg2,
-          notifiMsg3: Msg3
+          notifiMsg3: Msg3,
+          notifiTktIds1: TktIds1,
+          notifiTktIds2: TktIds2,
+          notifiTktIds3: TktIds3,
+          notiCount
         });
       } else {
         self.setState({
@@ -269,7 +310,10 @@ class Header extends Component {
           notifiCount3: "",
           notifiMsg1: "",
           notifiMsg2: "",
-          notifiMsg3: ""
+          notifiMsg3: "",
+          notifiTktIds1: "",
+          notifiTktIds2: "",
+          notifiTktIds3: ""
         });
       }
     });
@@ -802,7 +846,7 @@ class Header extends Component {
                   className="notifi"
 
                 />
-                <span className="upper-noti-count">3</span>
+                {this.state.notiCount > 0 && <span className="upper-noti-count">{this.state.notiCount}</span>}
               </div>
               <span style={{ display: "none" }} className="icon-fullname">
                 Notifications
@@ -847,9 +891,11 @@ class Header extends Component {
               <Link to={{
                 pathname: 'myTicketlist',
                 state: {
-                  isHeaderNew: true
+                  isType: 'New'
                 }
-              }} onClick={this.closeModal}>
+              }} 
+              onClick={() => this.onViewTicket(this.state.notifiTktIds1)}
+              >
                 <label className="md-4 view-tickets">VIEW TICKETS</label>
               </Link>
             </div>
@@ -869,9 +915,9 @@ class Header extends Component {
               <Link to={{
                 pathname: 'myTicketlist',
                 state: {
-                  isHeaderOpen: true
+                  isType: 'Open'
                 }
-              }} onClick={this.closeModal}>
+              }} onClick={() => this.onViewTicket(this.state.notifiTktIds2)}>
                 <label className="md-4 view-tickets">VIEW TICKETS</label>
               </Link>
             </div>
@@ -888,7 +934,14 @@ class Header extends Component {
               </label>
             </div>
             <div className="viewticketspeadding">
-              <Link to="myTicketlist" onClick={this.closeModal}>
+              <Link
+              to={{
+                pathname: 'myTicketlist',
+                state: {
+                  isType: 'Escalation'
+                }
+              }}
+              onClick={() => this.onViewTicket(this.state.notifiTktIds3)}>
                 <label className="md-4 view-tickets">VIEW TICKETS</label>
               </Link>
             </div>
@@ -913,6 +966,8 @@ class Header extends Component {
                     }
                     alt="User"
                     style={{ width: '61px' }}
+                    title="Edit Profile"
+                   // onClick={this.handleEditProfilePage.bind(this)}
                   />
                 </div>
                 <div className="logout-flex">
@@ -995,14 +1050,15 @@ class Header extends Component {
                   <p className="logout-label">SLA SCORE</p>
                   <p className="font-weight-bold">{this.state.SLAScore}</p>
                 </div>
+                {/* <div>
+                  <p className="logout-label">CSAT SCORE</p>
+                  <p className="font-weight-bold">{this.state.CSatScore}</p>
+                </div> */}
                 <div>
                   <p className="logout-label">Avg Response time</p>
                   <p className="font-weight-bold">{this.state.AvgResponse}</p>
                 </div>
-                <div>
-                  <p className="logout-label">CSAT SCORE</p>
-                  <p className="font-weight-bold">{this.state.CSatScore}</p>
-                </div>
+               
               </div>
             </div>
           </Modal>
