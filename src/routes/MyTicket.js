@@ -59,7 +59,7 @@ import TicketStatus from "./TicketStatus";
 import TicketActionType from "./TicketActionType";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import CircleCancel from "./../assets/Images/Circle-cancel.png";
-// import DatePicker from "react-datepicker";
+import DatePicker from "react-datepicker";
 import ThumbTick from "./../assets/Images/thumbticket.png"; // Don't comment this line
 import PDF from "./../assets/Images/pdf.png"; // Don't comment this line
 import CSVi from "./../assets/Images/csvicon.png"; // Don't comment this line
@@ -67,7 +67,7 @@ import Excel from "./../assets/Images/excel.png"; // Don't comment this line
 import Word from "./../assets/Images/word.png"; // Don't comment this line
 import TxtLogo from "./../assets/Images/TxtIcon.png"; // Don't comment this line
 
-import DatePicker from "react-date-picker";
+// import DatePicker from "react-date-picker";
 
 class MyTicket extends Component {
   constructor(props) {
@@ -142,8 +142,10 @@ class MyTicket extends Component {
       Plus: false,
       selectedStoreData: [],
       selectedDataRow: [],
+      selectedSUBDataRow: [],
       CheckStoreID: {},
       CheckOrderID: {},
+      CheckOrderITEMID: {},
       notesCommentCompulsion: "",
       userCC: "",
       userBCC: "",
@@ -164,7 +166,7 @@ class MyTicket extends Component {
       ticketcommentMSG: "",
       CustStoreStatusDrop: 1,
       OrderSubItem: [],
-      mailSubject: "",
+      // mailSubject: "",
       expanded: {},
       mailId: 0,
       selectProductOrd: true
@@ -896,8 +898,17 @@ class MyTicket extends Component {
   HandleEmailCollapseOpen() {
     this.setState(state => ({ EmailCollapse: !state.EmailCollapse }));
   }
-  handleCommentCollapseOpen() {
-    this.setState(state => ({ CommentCollapse: !state.CommentCollapse }));
+  handleCommentCollapseOpen(cmdData) {
+    debugger
+    var id=cmdData.latestMessageDetails.mailID;
+    var CmdId = document.getElementById("cmd" + id).id;
+    if (CmdId.style.display === "none") {
+      CmdId.style.display = "block";
+    } else {
+      CmdId.style.display = "none";
+    }
+    // this.setState(state => ({ CommentCollapse: !state.CommentCollapse }));
+
   }
   handleCommentCollapseClose() {
     this.setState(state => ({ CommentCollapse: false }));
@@ -1117,32 +1128,56 @@ class MyTicket extends Component {
   handleAttachProductData() {
     debugger;
     // let self = this;
-    // var selectedProduct = "";
-    // for (let j = 0; j < this.state.selectedDataRow.length; j++) {
-    //   selectedProduct += this.state.selectedDataRow[j]["orderMasterID"] + ",";
-    // }
-    var selectedRow = "";
 
-    for (let i = 0; i < this.state.selectedDataRow.length; i++) {
-      var data = this.state.selectedDataRow.filter(
-        x => x.orderMasterID == this.state.selectedDataRow[i].orderMasterID
-      );
-      if (data.length === 1) {
-        selectedRow += this.state.selectedDataRow[i]["orderMasterID"] + "|0|1,";
-      } else if (data === 0) {
-      } else {
-        if (
-          "orderMasterID" in this.state.selectedDataRow[i] &&
-          "orderItemID" in this.state.selectedDataRow[i]
-        ) {
-          selectedRow +=
-            this.state.selectedDataRow[i]["orderItemID"] +
-            "|" +
-            this.state.selectedDataRow[i]["requireSize"] +
-            "|0,";
-        }
+    var selectedRow = "";
+    if (
+      this.state.selectedDataRow.length > 0 &&
+      this.state.selectedSUBDataRow.length > 0
+    ) {
+      // For loop for only Selected Master Data
+      for (let j = 0; j < this.state.selectedDataRow.length; j++) {
+        selectedRow += this.state.selectedDataRow[j]["orderMasterID"] + "|0|1,";
+      }
+      // For loop for ItemId data
+      for (let i = 0; i < this.state.selectedSUBDataRow.length; i++) {
+        selectedRow +=
+          this.state.selectedSUBDataRow[i]["orderItemID"] +
+          "|" +
+          this.state.selectedSUBDataRow[i]["requireSize"] +
+          "|0,";
       }
     }
+
+    // if (this.state.selectedSUBDataRow.length > 0) {
+    //   for (let i = 0; i < this.state.selectedSUBDataRow.length; i++) {
+    //     selectedRow +=
+    //       this.state.selectedSUBDataRow[i]["orderItemID"] +
+    //       "|" +
+    //       this.state.selectedSUBDataRow[i]["requireSize"] +
+    //       "|0,";
+    //   }
+    // }
+
+    // for (let i = 0; i < this.state.selectedDataRow.length; i++) {
+    //   var data = this.state.selectedDataRow.filter(
+    //     x => x.orderMasterID == this.state.selectedDataRow[i].orderMasterID
+    //   );
+    //   if (data.length === 1) {
+    //     selectedRow += this.state.selectedDataRow[i]["orderMasterID"] + "|0|1,";
+    //   } else if (data === 0) {
+    //   } else {
+    //     if (
+    //       "orderMasterID" in this.state.selectedDataRow[i] &&
+    //       "orderItemID" in this.state.selectedDataRow[i]
+    //     ) {
+    //       selectedRow +=
+    //         this.state.selectedDataRow[i]["orderItemID"] +
+    //         "|" +
+    //         this.state.selectedDataRow[i]["requireSize"] +
+    //         "|0,";
+    //     }
+    //   }
+    // }
     axios({
       method: "post",
       url: config.apiUrl + "/Order/attachorder",
@@ -1202,6 +1237,47 @@ class MyTicket extends Component {
   setTicketActionTypeValue = e => {
     this.setState({ selectedTicketActionType: e });
   };
+  handleCheckOrderITEMID(orderITEMId, rowData) {
+    debugger;
+    const newSelected = Object.assign({}, this.state.CheckOrderITEMID);
+    newSelected[orderITEMId] = !this.state.CheckOrderITEMID[orderITEMId];
+    this.setState({
+      CheckOrderITEMID: orderITEMId ? newSelected : false
+    });
+    var selectedRow = [];
+    if (this.state.selectedSUBDataRow.length === 0) {
+      selectedRow.push(rowData);
+      this.setState({
+        selectedSUBDataRow: rowData
+      });
+    } else {
+      if (newSelected[orderITEMId] === true) {
+        for (var i = 0; i < this.state.selectedSUBDataRow.length; i++) {
+          if (this.state.selectedSUBDataRow[i] === rowData) {
+            selectedRow.splice(i, 1);
+
+            break;
+          } else {
+            selectedRow = this.state.selectedSUBDataRow;
+            selectedRow.push(rowData);
+            break;
+          }
+        }
+      } else {
+        for (var j = 0; j < this.state.selectedSUBDataRow.length; j++) {
+          if (this.state.selectedSUBDataRow[j] === rowData) {
+            selectedRow = this.state.selectedSUBDataRow;
+            selectedRow.splice(j, 1);
+            break;
+          }
+        }
+      }
+    }
+    this.setState({
+      selectedSUBDataRow: selectedRow
+    });
+  }
+
   handleCheckOrderID(orderMasterID, rowData) {
     debugger;
     const newSelected = Object.assign({}, this.state.CheckOrderID);
@@ -1405,7 +1481,7 @@ class MyTicket extends Component {
           ToEmail: this.state.ticketDetailsData.customerEmailId,
           UserCC: this.state.mailFiled.userCC,
           UserBCC: this.state.mailFiled.userBCC,
-          TikcketMailSubject: this.state.mailSubject,
+          // TikcketMailSubject: this.state.mailSubject,
           TicketMailBody: stringBody,
           informStore: this.state.InformStore,
           IsSent: isSend,
@@ -1420,7 +1496,7 @@ class MyTicket extends Component {
           self.hanldeCommentClose2();
           self.setState({
             mailFiled: {},
-            mailSubject: "",
+            // mailSubject: "",
             mailBodyData: ""
           });
         } else {
@@ -1451,7 +1527,7 @@ class MyTicket extends Component {
           self.handleGetMessageDetails(self.state.ticket_Id);
           self.setState({
             mailFiled: {},
-            mailSubject: "",
+            // mailSubject: "",
             mailBodyData: ""
           });
         } else {
@@ -1482,7 +1558,7 @@ class MyTicket extends Component {
           self.handleGetMessageDetails(self.state.ticket_Id);
           self.setState({
             mailFiled: {},
-            mailSubject: "",
+            // mailSubject: "",
             mailBodyData: ""
           });
         } else {
@@ -2835,21 +2911,20 @@ class MyTicket extends Component {
                                           return (
                                             <div className="col-sm-12 p-0">
                                               <DatePicker
-                                                // selected={
-                                                //   row.original.storeVisitDate || new Date()
-                                                // }
-                                                // placeholderText="Visited Date"
-                                                // showMonthDropdown
-                                                // showYearDropdown
+                                                selected={
+                                                  row.original.storeVisitDate
+                                                }
+                                                placeholderText="Visited Date"
+                                                showMonthDropdown
+                                                showYearDropdown
                                                 // dateFormat="dd/MM/yyyy"
                                                 id={
                                                   "visitDate" +
                                                   row.original.storeID
                                                 }
-                                                value={
-                                                  row.original.storeVisitDate ||
-                                                  new Date()
-                                                }
+                                                value={moment(
+                                                  row.original.storeVisitDate
+                                                ).format("DD/MM/YYYY")}
                                                 // name="visitDate"
                                                 onChange={this.handleByvisitDate.bind(
                                                   this,
@@ -3145,6 +3220,27 @@ class MyTicket extends Component {
                                 >
                                   <ReactTable
                                     data={this.state.orderDetailsData}
+                                    expanded={this.state.expanded}
+                                    onExpandedChange={(
+                                      newExpanded,
+                                      index,
+                                      event
+                                    ) => {
+                                      if (newExpanded[index[0]] === false) {
+                                        newExpanded = {};
+                                      } else {
+                                        Object.keys(newExpanded).map(k => {
+                                          newExpanded[k] =
+                                            parseInt(k) === index[0]
+                                              ? {}
+                                              : false;
+                                        });
+                                      }
+                                      this.setState({
+                                        ...this.state,
+                                        expanded: newExpanded
+                                      });
+                                    }}
                                     columns={[
                                       {
                                         Header: <span></span>,
@@ -3250,7 +3346,20 @@ class MyTicket extends Component {
                                                           row.original
                                                             .orderItemID
                                                         }
-                                                        // name="dashboardcheckbox[]"
+                                                        checked={
+                                                          this.state
+                                                            .CheckOrderITEMID[
+                                                            row.original
+                                                              .orderItemID
+                                                          ] === true
+                                                        }
+                                                        defaultChecked={true}
+                                                        onChange={this.handleCheckOrderITEMID.bind(
+                                                          this,
+                                                          row.original
+                                                            .orderItemID,
+                                                          row.original
+                                                        )}
                                                       />
                                                       <label
                                                         htmlFor={
@@ -3288,7 +3397,33 @@ class MyTicket extends Component {
                                                 Header: (
                                                   <span>Required Size</span>
                                                 ),
-                                                accessor: "requireSize"
+                                                accessor: "requireSize",
+                                                Cell: row => {
+                                                  // debugger;
+                                                  return (
+                                                    <div>
+                                                      <input
+                                                        type="text"
+                                                        id={
+                                                          "requireSizeTxt" +
+                                                          row.original
+                                                            .orderItemID
+                                                        }
+                                                        value={
+                                                          row.original
+                                                            .requireSize || ""
+                                                        }
+                                                        name="requiredSize"
+                                                        onChange={() => {
+                                                          this.handleRequireSize(
+                                                            this,
+                                                            row
+                                                          );
+                                                        }}
+                                                      />
+                                                    </div>
+                                                  );
+                                                }
                                               }
                                             ]}
                                             defaultPageSize={5}
@@ -3313,8 +3448,8 @@ class MyTicket extends Component {
                                   style={{ display: "block" }}
                                 >
                                   <ReactTable
-                                    // data={selectedProduct}
-                                    data={this.state.selectedDataRow}
+                                    data={selectedProduct}
+                                    // data={this.state.selectedDataRow}
                                     expanded={this.state.expanded}
                                     onExpandedChange={(
                                       newExpanded,
@@ -3419,8 +3554,8 @@ class MyTicket extends Component {
                                   style={{ display: "none" }}
                                 >
                                   <ReactTable
-                                    // data={selectedProduct}
-                                    data={this.state.selectedDataRow}
+                                    data={selectedProduct}
+                                    // data={this.state.selectedDataRow}
                                     expanded={this.state.expanded}
                                     onExpandedChange={(
                                       newExpanded,
@@ -4314,7 +4449,8 @@ class MyTicket extends Component {
                             </div>
                             <div className="col-md-2">
                               <label className="today-02">
-                                {item.updatedDate} &nbsp; (
+                                {item.messageDate}
+                                &nbsp; (
                                 {item.messageCount < 9
                                   ? "0" + item.messageCount
                                   : item.messageCount}
@@ -4325,7 +4461,7 @@ class MyTicket extends Component {
                               <div className="v4"></div>
                             </div>
                           </div>
-                          {item.customTicketMessages.map((details, j) => {
+                          {item.msgDetails.map((details, j) => {
                             debugger;
                             return (
                               <div key={j}>
@@ -4336,7 +4472,8 @@ class MyTicket extends Component {
                                         className="row"
                                         style={{ marginTop: "0" }}
                                       >
-                                        {details.isCustomerComment === 1 ? (
+                                        {details.latestMessageDetails
+                                          .isCustomerComment === 1 ? (
                                           <img
                                             src={BlackUserIcon}
                                             alt="Avatar"
@@ -4353,7 +4490,10 @@ class MyTicket extends Component {
                                           className="solved-by-naman-r"
                                           style={{ marginLeft: "7px" }}
                                         >
-                                          {details.commentBy}
+                                          {
+                                            details.latestMessageDetails
+                                              .commentBy
+                                          }
                                         </label>
 
                                         <img
@@ -4364,25 +4504,26 @@ class MyTicket extends Component {
                                       </div>
                                     </div>
                                     <div className="col-12 col-xs-12 col-sm-6 col-md-7">
-                                      <label className="i-have-solved-this-i">
-                                        {details.ticketMailSubject}
-                                      </label>
                                       <label
                                         className="label-5"
                                         style={{ display: "block" }}
                                       >
-                                        {details.ticketMailBody}
+                                        {
+                                          details.latestMessageDetails
+                                            .ticketMailBody
+                                        }
                                       </label>
                                     </div>
                                     <div className="col-12 col-xs-12 col-sm-2 col-md-2 mob-flex">
                                       {HidecollapsUp}
                                       <div className="inlineGridTicket">
-                                        {details.isCustomerComment === 1 ? (
+                                        {details.latestMessageDetails
+                                          .isCustomerComment === 1 ? (
                                           <label
                                             className="reply-comment"
                                             onClick={this.hanldeCommentOpen2.bind(
                                               this,
-                                              details.mailID
+                                              details.trailMessageDetails.mailID
                                             )}
                                           >
                                             Reply
@@ -4391,12 +4532,87 @@ class MyTicket extends Component {
 
                                         <label
                                           className="comment-text"
+                                          id={"cmd" + details.latestMessageDetails.mailID}
                                           onClick={this.handleCommentCollapseOpen.bind(
-                                            this
+                                            this,details
                                           )}
                                         >
                                           Comment
                                         </label>
+                                      </div>
+                                      <div
+                                        className="row"
+                                        style={{ width: "100%" }}
+                                      >
+                                        <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
+                                        <div className="col-12 col-xs-12 col-sm-8 col-md-9">
+                                          <div className="commentcollapseTicket" id={"cmd" + details.latestMessageDetails.mailID}>
+                                            {/* <Collapse
+                                              isOpen={
+                                                this.state.CommentCollapse
+                                              }
+                                            > 
+                                              <Card>
+                                                <CardBody> */}
+                                                  <div className="commenttextborder">
+                                                    <div className="Commentlabel">
+                                                      <label className="Commentlabel1">
+                                                        Comment
+                                                      </label>
+                                                    </div>
+                                                    <div>
+                                                      <span className="comment-line"></span>
+                                                      <div
+                                                        style={{
+                                                          float: "right",
+                                                          cursor: "pointer",
+                                                          height: "30px",
+                                                          marginTop: "-33px"
+                                                        }}
+                                                      >
+                                                        <img
+                                                          src={MinusImg}
+                                                          alt="Minus"
+                                                          className="CommentMinus-img"
+                                                          onClick={this.handleCommentCollapseOpen.bind(
+                                                            this
+                                                          )}
+                                                        />
+                                                      </div>
+                                                    </div>
+                                                    <div className="commenttextmessage">
+                                                      <textarea
+                                                        cols="31"
+                                                        rows="3"
+                                                        className="ticketMSGCmt-textarea"
+                                                        name="ticketcommentMSG"
+                                                        maxLength={300}
+                                                        value={
+                                                          this.state
+                                                            .ticketcommentMSG
+                                                        }
+                                                        onChange={
+                                                          this
+                                                            .handleNoteOnChange
+                                                        }
+                                                      ></textarea>
+                                                    </div>
+                                                    <div className="SendCommentBtn">
+                                                      <button
+                                                        className="SendCommentBtn1"
+                                                        onClick={this.handleSendMessagaData.bind(
+                                                          this
+                                                        )}
+                                                      >
+                                                        SEND
+                                                      </button>
+                                                    </div>
+                                                  </div>
+                                                {/* </CardBody>
+                                              </Card>
+                                            </Collapse> */}
+                                          </div>
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
@@ -4406,16 +4622,43 @@ class MyTicket extends Component {
                                       <Collapse isOpen={this.state.collapseUp}>
                                         <Card>
                                           <CardBody>
+                                            {details.trailMessageDetails.map(
+                                              (MsgData, s) => {
+                                                return (
+                                                  <div
+                                                    className="card-details"
+                                                    key={s}
+                                                  >
+                                                    <div className="card-details-1">
+                                                      <label
+                                                        className="label-5"
+                                                        style={{
+                                                          display: "block"
+                                                        }}
+                                                      >
+                                                        {MsgData.ticketMailBody}
+                                                      </label>
+                                                    </div>
+                                                  </div>
+                                                );
+                                              }
+                                            )}
                                             <div className="card-details">
                                               <div className="card-details-1">
                                                 <label className="i-have-solved-this-i">
-                                                  {details.ticketMailSubject}
+                                                  {
+                                                    details.trailMessageDetails
+                                                      .ticketMailSubject
+                                                  }
                                                 </label>
                                                 <label
                                                   className="label-5"
                                                   style={{ display: "block" }}
                                                 >
-                                                  {details.ticketMailBody}
+                                                  {
+                                                    details.trailMessageDetails
+                                                      .ticketMailBody
+                                                  }
                                                 </label>
                                               </div>
                                             </div>
@@ -4432,7 +4675,7 @@ class MyTicket extends Component {
                         </div>
                       );
                     })}
-                    <div className="row" style={{ width: "100%" }}>
+                    {/* <div className="row" style={{ width: "100%" }}>
                       <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
                       <div className="col-12 col-xs-12 col-sm-8 col-md-9">
                         <div className="commentcollapseTicket">
@@ -4492,20 +4735,7 @@ class MyTicket extends Component {
                           </Collapse>
                         </div>
                       </div>
-                    </div>
-                    {/* <div className="row">
-                                <div className="col-md-5">
-                                  <div className="v3"></div>
-                                </div>
-                                <div className="col-md-2">
-                                  <label className="yesterday-02">
-                                    {messageDetails.updatedAt}
-                                  </label>
-                                </div>
-                                <div className="col-md-5">
-                                  <div className="v6"></div>
-                                </div>
-                              </div> */}
+                    </div> */}
 
                     {/* <div className="row new-top-bottom-margin">
                       <div className="col-12 col-xs-12 col-sm-4 col-md-3">
@@ -4714,7 +4944,7 @@ class MyTicket extends Component {
                                 </ul>
                               </div>
 
-                              <h3 className="textbhead">
+                              {/* <h3 className="textbhead">
                                 <span
                                   className="input-group-addon inputcc"
                                   style={{
@@ -4733,7 +4963,7 @@ class MyTicket extends Component {
                                   value={this.state.mailSubject}
                                   onChange={this.handleNoteOnChange}
                                 />
-                              </h3>
+                              </h3> */}
                               <div
                                 className="mob-float"
                                 style={{ display: "flex", float: "right" }}
