@@ -25,7 +25,7 @@ import ClipImg from "./../assets/Images/clip.png";
 import PencilImg from "./../assets/Images/pencil.png";
 import CancelImg from "./../assets/Images/cancel.png";
 import { Collapse, CardBody, Card } from "reactstrap";
-// import { Drawer } from "antd";
+import { Checkbox } from "antd";
 import CustomerIcon from "./../assets/Images/customer-icon.png";
 import UserIcon from "./../assets/Images/UserIcon.png";
 import CrossIcon from "./../assets/Images/cancel.png";
@@ -69,6 +69,7 @@ import TxtLogo from "./../assets/Images/TxtIcon.png"; // Don't comment this line
 
 // import DatePicker from "react-date-picker";
 
+const CheckboxGroup = Checkbox.Group;
 class MyTicket extends Component {
   constructor(props) {
     super(props);
@@ -167,7 +168,10 @@ class MyTicket extends Component {
       // mailSubject: "",
       expanded: {},
       mailId: 0,
-      selectProductOrd: true
+      selectProductOrd: true,
+      ChckOrdMasterId:true,
+      ChckOrderMasterSelectedAll:true,
+      checkedSelectList:''
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -1635,6 +1639,23 @@ class MyTicket extends Component {
       selectProductOrd: !this.state.selectProductOrd
     });
   };
+
+  // -------------------------------Check box selected all code start-------------------------------
+  onCheckMasterAllChange = e=>{
+    this.setState({
+      checkedSelectList: e.target.checked ? this.state.OrderSubItem : [],
+      ChckOrdMasterId: false,
+      ChckOrderMasterSelectedAll: e.target.checked,
+    });
+  }
+  handleSubComOnChange =checkedList => {
+    this.setState({
+      checkedList,
+      ChckOrdMasterId:
+        !!checkedList.length && checkedList.length < this.state.OrderSubItem.length,
+      checkAll: checkedList.length === this.state.OrderSubItem.length
+    });
+  }
 
   render() {
     const {
@@ -3174,36 +3195,49 @@ class MyTicket extends Component {
                                             className="filter-checkbox"
                                             style={{ marginLeft: "15px" }}
                                           >
-                                            <input
-                                              type="checkbox"
-                                              id={
-                                                "MID" +
-                                                row.original.orderMasterID
-                                              }
-                                              style={{ display: "none" }}
-                                              name="ticket-order"
-                                              checked={
-                                                this.state.CheckOrderID[
-                                                  row.original.orderMasterID
-                                                ] === true
-                                              }
-                                              defaultChecked={true}
-                                              onChange={this.handleCheckOrderID.bind(
-                                                this,
-                                                row.original.orderMasterID,
-                                                row.original
-                                              )}
-                                            />
-                                            <label
-                                              htmlFor={
-                                                "MID" +
-                                                row.original.orderMasterID
-                                              }
+                                            <Checkbox
+                                              indeterminate={this.state.ChckOrdMasterId}
+                                              onChange={this.onCheckMasterAllChange}
+                                              checked={this.state.ChckOrderMasterSelectedAll}
                                             >
-                                              {/* {row.original.invoiceNumber} */}
-                                            </label>
+                                              
+                                            </Checkbox>
                                           </div>
                                         )
+                                        // Cell: row => (
+                                        //   <div
+                                        //     className="filter-checkbox"
+                                        //     style={{ marginLeft: "15px" }}
+                                        //   >
+                                        //     <input
+                                        //       type="checkbox"
+                                        //       id={
+                                        //         "MID" +
+                                        //         row.original.orderMasterID
+                                        //       }
+                                        //       style={{ display: "none" }}
+                                        //       name="ticket-order"
+                                        //       checked={
+                                        //         this.state.CheckOrderID[
+                                        //           row.original.orderMasterID
+                                        //         ] === true
+                                        //       }
+                                        //       defaultChecked={true}
+                                        //       onChange={this.handleCheckOrderID.bind(
+                                        //         this,
+                                        //         row.original.orderMasterID,
+                                        //         row.original
+                                        //       )}
+                                        //     />
+                                        //     <label
+                                        //       htmlFor={
+                                        //         "MID" +
+                                        //         row.original.orderMasterID
+                                        //       }
+                                        //     >
+                                        //     </label>
+                                        //   </div>
+                                        // )
                                       },
                                       {
                                         Header: <span>Invoice Number</span>,
@@ -3246,7 +3280,8 @@ class MyTicket extends Component {
                                       return (
                                         <div style={{ padding: "20px" }}>
                                           <ReactTable
-                                            data={row.original.orderItems}
+                                            // data={row.original.orderItems}
+                                            data={this.state.OrderSubItem}
                                             columns={[
                                               {
                                                 Header: <span> </span>,
@@ -3259,27 +3294,43 @@ class MyTicket extends Component {
                                                         marginLeft: "15px"
                                                       }}
                                                     >
-                                                      <input
-                                                        type="checkbox"
-                                                        style={{
-                                                          display: "none"
-                                                        }}
-                                                        id={
-                                                          row.original
-                                                            .orderItemID
-                                                        }
+                                                      <CheckboxGroup
+                                                        options={this.state.OrderSubItem}
+                                                        value={this.state.checkedSelectList}
+                                                        onChange={this.handleSubComOnChange}
                                                       />
-                                                      <label
-                                                        htmlFor={
-                                                          row.original
-                                                            .orderItemID
-                                                        }
-                                                      >
-                                                        {row.original.invoiceNo}
-                                                      </label>
                                                     </div>
                                                   );
                                                 }
+                                                // Cell: row => {
+                                                //   return (
+                                                //     <div
+                                                //       className="filter-checkbox"
+                                                //       style={{
+                                                //         marginLeft: "15px"
+                                                //       }}
+                                                //     >
+                                                //       <input
+                                                //         type="checkbox"
+                                                //         style={{
+                                                //           display: "none"
+                                                //         }}
+                                                //         id={
+                                                //           row.original
+                                                //             .orderItemID
+                                                //         }
+                                                //       />
+                                                //       <label
+                                                //         htmlFor={
+                                                //           row.original
+                                                //             .orderItemID
+                                                //         }
+                                                //       >
+                                                //         {row.original.invoiceNo}
+                                                //       </label>
+                                                //     </div>
+                                                //   );
+                                                // }
                                               },
                                               {
                                                 Header: (
@@ -4379,7 +4430,7 @@ class MyTicket extends Component {
                             </div>
                           </div>
                           {item.msgDetails.map((details, j) => {
-                            debugger;
+                            // debugger;
                             return (
                               <div key={j}>
                                 <div>
@@ -4413,13 +4464,19 @@ class MyTicket extends Component {
                                           }
                                         </label>
                                         <img
-                                          src={details.latestMessageDetails.ticketSourceName === "Calls"
-                                          ? require("./../assets/Images/call.png")
-                                          : details.latestMessageDetails.ticketSourceName === "Facebook"
-                                          ? require("./../assets/Images/facebook.png")
-                                          : details.latestMessageDetails.ticketSourceName === "Mails" 
-                                          ? require("./../assets/Images/SecuredLetter2.png")
-                                          : require("./../assets/Images/twitter.png")}
+                                          src={
+                                            details.latestMessageDetails
+                                              .ticketSourceName === "Calls"
+                                              ? require("./../assets/Images/call.png")
+                                              : details.latestMessageDetails
+                                                  .ticketSourceName ===
+                                                "Facebook"
+                                              ? require("./../assets/Images/facebook.png")
+                                              : details.latestMessageDetails
+                                                  .ticketSourceName === "Mails"
+                                              ? require("./../assets/Images/SecuredLetter2.png")
+                                              : require("./../assets/Images/twitter.png")
+                                          }
                                           alt="sourceIMG"
                                           className="smg-Img1 headPhone3 black-twitter"
                                         />
