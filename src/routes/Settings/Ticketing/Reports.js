@@ -342,6 +342,16 @@ class Reports extends Component {
     this.state.selectedTaskStatus=allTab["TaskStatusId"];
     this.state.selectedDepartment=allTab["TaskDepartment_Id"];
     this.state.selectedFunction=allTab["TaskFunction_Id"];
+
+    //////////////////Scheduler/////////////////////////
+    this.state.IsDaily=rowData.isDaily;
+    this.state.selectScheduleDate=rowData.scheduleType;
+    this.state.selectedTeamMemberCommaSeperated=rowData.scheduleFor;
+   // this.state.selectedScheduleTime=rowData.scheduleTime; 
+   this.state.selectedNoOfWeek=rowData.noOfWeek;
+   this.state.selectedWeeklyDays=rowData.selectedWeeklyDays
+
+    ///////////////////////////////////////////////////
     this.handleAddReportOpen();
   }
   handleAddReportClose() {
@@ -819,7 +829,7 @@ class Reports extends Component {
       this.setState({
         IsWeekly: true,
         IsDaily: false,
-        selectedNoOfDay: false,
+        selectedNoOfDay: 0,
         IsDailyForMonth: false,
         IsDailyForYear: false,
         IsWeeklyForMonth: false,
