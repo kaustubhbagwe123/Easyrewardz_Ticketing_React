@@ -67,6 +67,7 @@ class Header extends Component {
       notifiTktIds2: "",
       notifiTktIds3: "",
       percentLog: 0,
+      selectedUserProfilePicture:"",
       cont: [
         {
           data: "Dashboards",
@@ -99,11 +100,13 @@ class Header extends Component {
     };
     this.handleLoggedInUserDetails = this.handleLoggedInUserDetails.bind(this);
     this.handleGetNotificationList = this.handleGetNotificationList.bind(this);
-    this.handleEditProfilePage=this.handleEditProfilePage.bind(this);
+    this.handleGetUserProfileData=this.handleGetUserProfileData.bind(this);
+   
   }
 
   componentDidMount() {
     this.handleLoggedInUserDetails();
+    this.handleGetUserProfileData();
     let pageName, lastOne, lastValue, arr;
     arr = [...this.state.cont];
     setTimeout(
@@ -192,13 +195,34 @@ class Header extends Component {
       });
     }
   };
-  handleEditProfilePage(){
+ 
+  handleGetUserProfileData() {
     debugger;
+
     let self = this;
-    setTimeout(function() {
-      self.props.history.push("/admin/userprofile");
-    }, 400);
+    axios({
+      method: "post",
+      url: config.apiUrl + "/User/GetUserProfileDetail",
+      headers: authHeader()
+     
+    }).then(function (res) {
+      debugger;
+      var status = res.data.message;
+      var userdata = res.data.responseData[0].profilePicture;
+      if (status === "Success") {
+        self.setState({
+          selectedUserProfilePicture: userdata
+        });
+      
+      } else {
+        self.setState({
+          selectedUserProfilePicture: ""
+        });
+      }
+
+    });
   }
+  
   handleLogoutMethod() {
     // let self = this;
     axios({
@@ -215,7 +239,7 @@ class Header extends Component {
         window.location.href = "/";
       }
     });
-  }
+  };
 
   handleLoggedInUserDetails = () => {
     //debugger;
@@ -869,6 +893,7 @@ class Header extends Component {
             <a href="#!" className="bitmap5" onClick={this.onOpenModal}>
               {this.state.NameTag}
             </a>
+            
           </div>
         </div>
 
@@ -960,17 +985,19 @@ class Header extends Component {
             <div className="logout-block">
               <div>
                 <div className="user-img">
+                <Link to="userprofile">
                   <img
-                    src={
-                      this.state.userProfile === "user-img.jpg"
-                        ? require("./../assets/Images/user-img.jpg")
-                        : require("./../assets/Images/defaultUser.png")
-                    }
+                    src={this.state.selectedUserProfilePicture}
+                      //this.state.userProfile === "user-img.jpg"
+                       // ? require("./../assets/Images/user-img.jpg")
+                       // : require("./../assets/Images/defaultUser.png")
+                    //}
                     alt="User"
-                    style={{ width: '61px' }}
+                    style={{ width: '90px' }}
                     title="Edit Profile"
-                   // onClick={this.handleEditProfilePage.bind(this)}
+                    onClick={this.onCloseModal.bind(this)}
                   />
+                  </Link>
                 </div>
                 <div className="logout-flex">
                   <div>

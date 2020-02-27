@@ -18,20 +18,33 @@ class UserProfile extends Component {
 
     this.state = {
       open: false,
-      fileName: "",
+      fileName: [],
+      selectedUserID:0,
+      selectedProfilePicture:"",
       selectedFirstName:"",
       selectedLastName:"",
       selectedMobile:"",
       selectedEmailID:"",
-      selectedDesignation:0,
-      DesignationData: []
+      selectedDesignation:"",
+      DesignationData: [],
+      ProfileData:[],
+
+      fileNameCompulsion:"",
+      FirstNameCompulsion:"",
+      LastNameCompulsion:"",
+      MobileCompulsion:"",
+      EmailIDCompulsion:"",
+      DesignationCompulsion:""
     };
     this.handleGetDesignationList=this.handleGetDesignationList.bind(this);
     this.handleEditUserProfile=this.handleEditUserProfile.bind(this);
+    this.handleGetUserProfileData=this.handleGetUserProfileData.bind(this);
   }
   componentDidMount(){
     debugger;
     this.handleGetDesignationList();
+    this.handleGetUserProfileData();
+   
   }
   onOpenModal = () => {
     this.setState({ open: true });
@@ -39,8 +52,15 @@ class UserProfile extends Component {
   onCloseModal() {
     this.setState({ open: false });
   }
-  fileUpload = e => {
-    this.setState({ fileName: e.target.files[0].name });
+  fileUpload (e) {
+    debugger;
+    var allFiles = [];
+    var selectedFiles = e.target.files;
+    allFiles.push(selectedFiles[0])
+    this.setState({
+       //fileName: e.target.files[0].name
+       fileName:allFiles
+       });
   };
   fileDrop = e => {
     this.setState({ fileName: e.dataTransfer.files[0].name });
@@ -59,6 +79,7 @@ class UserProfile extends Component {
   
     });
   };
+
   handleGetDesignationList() {
     debugger;
 
@@ -83,26 +104,81 @@ class UserProfile extends Component {
     });
   }
 
+  setGetProfileData =(data)=>{
+    debugger;
+    let self =this
+var userData=data[0];
+ 
+this.state.selectedUserID=userData.userId;
+this.state.selectedFirstName=userData.firstName;
+this.state.selectedLastName=userData.lastName;
+this.state.selectedMobile=userData.mobileNo;
+this.state.selectedEmailID=userData.emailId;
+this.state.selectedDesignation=userData.designationID;
+this.state.selectedProfilePicture=userData.profilePicture;
+
+self.setState({
+  selectedUserID:userData.userId,
+  selectedFirstName:userData.firstName,
+  selectedLastName:userData.lastName,
+  selectedMobile:userData.mobileNo,
+  selectedEmailID:userData.emailId,
+  selectedDesignation:userData.designationID
+});
+
+
+  }
+
+  handleGetUserProfileData() {
+    debugger;
+
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/User/GetUserProfileDetail",
+      headers: authHeader()
+     
+    }).then(function (res) {
+      debugger;
+      var status = res.data.message;
+      var userdata = res.data.responseData;
+      if (status === "Success") {
+        self.setState({
+          ProfileData: userdata
+        });
+       self.setGetProfileData(userdata)
+      } else {
+        self.setState({
+          ProfileData: []
+        });
+      }
+
+    });
+  }
+
   handleEditUserProfile() {
     debugger;
+    if(
+      this.state.fileName.length > 0 &&
+      this.state.selectedFirstName.length > 0 &&
+      this.state.selectedLastName.length > 0 &&
+      this.state.selectedMobile.length > 0 &&
+      this.state.selectedEmailID.length > 0 &&
+      this.state.selectedDesignation > 0 
+    ){
     let self=this;
     var json={
-      UserId:15,
+      UserId:this.state.selectedUserID,
       FirstName:this.state.selectedFirstName,
       LastName:this.state.selectedLastName,
       MobileNo:this.state.selectedMobile,
       EmailId:this.state.selectedEmailID,
       DesignationID:this.state.selectedDesignation
     }
-    var formData=new FormData();
-    // formData.append("UserId",15);
-    // formData.append("FirstName",this.state.selectedFirstName);
-    // formData.append("LastName",this.state.selectedLastName);
-    // formData.append("MobileNo",this.state.selectedMobile);
-    // formData.append("EmailId",this.state.selectedEmailID);
-    // formData.append("DesignationID",this.state.selectedDesignation);
-    formData.append("UpdateUserProfiledetailsModel",json);
-    formData.append("Imagefile",this.state.fileName);
+    const formData=new FormData();
+   
+    formData.append("UpdateUserProfiledetailsModel",JSON.stringify(json));
+    formData.append("file",this.state.fileName[0]);
 
     axios({
       method: "post",
@@ -118,6 +194,17 @@ class UserProfile extends Component {
        }
      
     });
+  }else{
+    this.setState({
+      fileNameCompulsion:"Please select profile picture.",
+      FirstNameCompulsion:"Please enter first name.",
+      LastNameCompulsion:"Please enter last name.",
+      MobileCompulsion:"Please enter mobile number.",
+      EmailIDCompulsion:"Please enter emailID.",
+      DesignationCompulsion:"Please select designation."
+
+    });
+  }
   }
 
   render() {
@@ -132,7 +219,7 @@ class UserProfile extends Component {
                   <div className="half-circle">
                     <div className="imguserupload">
                       <img
-                        src={ProfileImg}
+                        src={this.state.selectedProfilePicture}
                         alt="store-settings"
                         className="profimg"
                       />
@@ -141,22 +228,23 @@ class UserProfile extends Component {
                           id="file-upload"
                           //className="d-none file-uploadprofile"
                           type="file"
-                          onChange={this.fileUpload}
+                          onChange={this.fileUpload.bind(this)}
                         />
                         <label
                           htmlFor="file-upload"
                           onDrop={this.fileDrop}
                           onDragOver={this.fileDragOver}
                           onDragEnter={this.fileDragEnter}
+                          
                         >
-                          <span className="uploadtextprofile1">Upload</span>
+                          <span className="uploadtextprofile1" >Upload</span>
                         </label>
-                        {this.state.fileName && (
+                        {this.state.fileName[0] && (
                           <div className="file-info">
                             <div className="file-cntr">
                               <div className="file-dtls">
                                 <p className="file-name">
-                                  {this.state.fileName}
+                                  {this.state.fileName[0].name}
                                 </p>
                                 <div className="del-file" id="del-file-1"></div>
                               </div>
@@ -164,6 +252,11 @@ class UserProfile extends Component {
                           </div>
                         )}
                       </div>
+                      {this.state.fileName.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.fileNameCompulsion}
+                    </p>
+                  )}
                     </div>
                   </div>
 
@@ -179,6 +272,11 @@ class UserProfile extends Component {
                           value={this.state.selectedFirstName}
                           onChange={this.setUserData.bind(this)}
                         />
+                        {this.state.selectedFirstName.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.fileNameCompulsion}
+                    </p>
+                  )}
                       </div>
                     </div>
                     <div className="divSpace">
@@ -192,6 +290,11 @@ class UserProfile extends Component {
                           value={this.state.selectedLastName}
                           onChange={this.setUserData.bind(this)}
                         />
+                        {this.state.selectedLastName.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.LastNameCompulsion}
+                    </p>
+                  )}
                       </div>
                     </div>
                     <div className="divSpace">
@@ -205,6 +308,11 @@ class UserProfile extends Component {
                           value={this.state.selectedMobile}
                           onChange={this.setUserData.bind(this)}
                         />
+                        {this.state.selectedMobile.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.MobileCompulsion}
+                    </p>
+                  )}
                       </div>
                     </div>
 
@@ -219,6 +327,11 @@ class UserProfile extends Component {
                           value={this.state.selectedEmailID}
                           onChange={this.setUserData.bind(this)}
                         />
+                         {this.state.selectedEmailID.length === 0 && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.EmailIDCompulsion}
+                    </p>
+                  )}
                       </div>
                     </div>
 
@@ -231,7 +344,7 @@ class UserProfile extends Component {
                           value={this.state.selectedDesignation}
                           onChange={this.setUserData.bind(this)}
                         >
-                          <option>Select Designation</option>
+                          <option value="">Select Designation</option>
                           {this.state.DesignationData !== null &&
                             this.state.DesignationData.map((item, i) => (
                               <option key={i} value={item.designationID}>
@@ -239,6 +352,11 @@ class UserProfile extends Component {
                               </option>
                             ))}
                         </select>
+                        {this.state.selectedDesignation === "" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.DesignationCompulsion}
+                    </p>
+                  )}
                       </div>
                     </div>
 
@@ -250,7 +368,7 @@ class UserProfile extends Component {
                     </div>
                   </div>
 
-                  <div className="row">
+                  {/* <div className="row">
                     <div className="col-md-12" style={{ textAlign: "center" }}>
                       <label
                         className="forwardpasstext"
@@ -259,7 +377,7 @@ class UserProfile extends Component {
                         Change Password
                       </label>
                     </div>
-                  </div>
+                  </div> */}
                   <Modal
                     open={this.state.open}
                     onClose={this.onCloseModal.bind(this)}

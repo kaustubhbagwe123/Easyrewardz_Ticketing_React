@@ -516,6 +516,12 @@ class MyTicketList extends Component {
 
   handleSearchTicket(TabId) {
     debugger;
+    this.state.sortTicketData= [];
+    this.state.sortCategoryData= [];
+    this.state.sortPriorityData= [];
+    this.state.sortcreatedOnData= [];
+    this.state.sortAssigneeData= [];
+    this.state.sortAllData =[];
     var ticketStatus = 0;
 
     if (TabId === "Escalation" || TabId === undefined) {
@@ -565,7 +571,54 @@ class MyTicketList extends Component {
       });
     }
     // var data = ticketStatus;
-    this.setState({ loading: true });
+    this.setState({ loading: true, resultCount: 0, collapseSearch: false,
+      ByDateCreatDate: "",
+      ByDateSelectDate: "",
+      selectedSlaDueByDate: 0,
+      selectedTicketStatusByDate: 0,
+      MobileNoByCustType: "",
+          EmailIdByCustType: "",
+          TicketIdByCustType: "",
+          selectedTicketStatusByCustomer: 0,
+          selectedPriority: 0,
+          selectedTicketStatusByTicket: 0,
+          selectedChannelOfPurchase: [],
+          selectedTicketActionType: [],
+          selectedCategory: 0,
+          selectedSubCategory: 0,
+          selectedIssueType: 0,
+          selectedTicketStatusByCategory: 0,
+          ByAllCreateDate: "",
+          selectedTicketSource: 0,
+          ClaimIdByAll: "",
+          EmailByAll: "",
+          ByAllLastDate: "",
+          TicketIdTitleByAll: "",
+          InvoiceSubOrderByAll: "",
+          MobileByAll: "",
+          selectedCategoryAll: 0,
+          selectedPriorityAll: 0,
+          ItemIdByAll: "",
+          selectedAssignedToAll: "",
+          selectedSubCategoryAll: 0,
+          selectedTicketStatusAll: 0,
+          selectedAssignedTo: 0,
+          selectedVisitStoreAll: "all",
+          selectedPurchaseStoreCodeAddressAll: "",
+          selectedIssueTypeAll: 0,
+          selectedSlaStatus: 0,
+          selectedWantToVisitStoreAll: "all",
+          selectedVisitStoreCodeAddressAll: "",
+          selectedWithClaimAll: "no",
+          selectedClaimStatus: 0,
+          selectedClaimCategory: 0,
+          selectedClaimSubCategory: 0,
+          selectedClaimIssueType: 0,
+          selectedWithTaskAll: "no",
+          selectedTaskStatus: 0,
+          selectedDepartment: 0,
+          selectedFunction: 0
+    });
     debugger;
     let self = this;
     axios({
@@ -580,6 +633,71 @@ class MyTicketList extends Component {
       let data = res.data.responseData;
       let CSVData = data;
       let Status = res.data.message;
+      
+
+      self.state.sortAllData = data;
+      var unique = [];
+      var distinct = [];
+      for (let i = 0; i < data.length; i++) {
+        if (!unique[data[i].ticketStatus]) {
+          distinct.push(data[i].ticketStatus);
+          unique[data[i].ticketStatus] = 1;
+        }
+      }
+      for (let i = 0; i < distinct.length; i++) {
+        self.state.sortTicketData.push({ ticketStatus: distinct[i] });
+      }
+
+      var unique = [];
+      var distinct = [];
+      for (let i = 0; i < data.length; i++) {
+        if (!unique[data[i].category]) {
+          distinct.push(data[i].category);
+          unique[data[i].category] = 1;
+        }
+      }
+      for (let i = 0; i < distinct.length; i++) {
+        self.state.sortCategoryData.push({ category: distinct[i] });
+      }
+
+      var unique = [];
+      var distinct = [];
+      for (let i = 0; i < data.length; i++) {
+        if (!unique[data[i].priority]) {
+          distinct.push(data[i].priority);
+          unique[data[i].priority] = 1;
+        }
+      }
+      for (let i = 0; i < distinct.length; i++) {
+        self.state.sortPriorityData.push({ priority: distinct[i] });
+      }
+
+      var unique = [];
+      var distinct = [];
+      for (let i = 0; i < data.length; i++) {
+        if (!unique[data[i].createdOn]) {
+          distinct.push(data[i].createdOn);
+          unique[data[i].createdOn] = 1;
+        }
+      }
+      for (let i = 0; i < distinct.length; i++) {
+        self.state.sortcreatedOnData.push({ createdOn: distinct[i] });
+      }
+
+      var unique = [];
+      var distinct = [];
+      for (let i = 0; i < data.length; i++) {
+        if (!unique[data[i].assignedTo]) {
+          distinct.push(data[i].assignedTo);
+          unique[data[i].assignedTo] = 1;
+        }
+      }
+      for (let i = 0; i < distinct.length; i++) {
+        self.state.sortAssigneeData.push({ assignedTo: distinct[i] });
+      }
+      
+
+
       if (Status === "Success") {
         self.setState({ SearchTicketData: data, loading: false, cSelectedRow: {} });
         for (let i = 0; i < CSVData.length; i++) {
@@ -1460,6 +1578,12 @@ class MyTicketList extends Component {
   }
   ViewSearchData(clrSrch) {
     debugger;
+    this.state.sortTicketData= [];
+    this.state.sortCategoryData= [];
+    this.state.sortPriorityData= [];
+    this.state.sortcreatedOnData= [];
+    this.state.sortAssigneeData= [];
+    this.state.sortAllData =[];
     let self = this;
     this.setState({ loading: true });
 
@@ -1657,7 +1781,7 @@ class MyTicketList extends Component {
       if (res.data.responseData != null) {
         count = res.data.responseData.length;
       }
-
+        
       self.state.sortAllData = data;
       var unique = [];
       var distinct = [];
@@ -1718,7 +1842,9 @@ class MyTicketList extends Component {
       for (let i = 0; i < distinct.length; i++) {
         self.state.sortAssigneeData.push({ assignedTo: distinct[i] });
       }
+      
 
+     
 
       if (status === "Success") {
         if (data !== null) {
@@ -2457,12 +2583,16 @@ class MyTicketList extends Component {
           });
         } else {
           debugger;
-          let createdDate = dataSearch.searchDataByDate.Ticket_CreatedOn;
-          let createdDateArray = createdDate.split('-');
-          let createdDateFinal = new Date(createdDateArray[0], createdDateArray[1] - 1, createdDateArray[2]);
-          let modifiedDate = dataSearch.searchDataByDate.Ticket_ModifiedOn;
-          let modifiedDateArray = modifiedDate.split('-');
-          let modifiedDateFinal = new Date(modifiedDateArray[0], modifiedDateArray[1] - 1, modifiedDateArray[2]);
+          if (dataSearch.searchDataByDate.Ticket_CreatedOn !== "") {
+            let createdDate = dataSearch.searchDataByDate.Ticket_CreatedOn;
+            let createdDateArray = createdDate.split('-');
+            var createdDateFinal = new Date(createdDateArray[0], createdDateArray[1] - 1, createdDateArray[2]);
+          }
+          if (dataSearch.searchDataByDate.Ticket_ModifiedOn !== "") {
+            let modifiedDate = dataSearch.searchDataByDate.Ticket_ModifiedOn;
+            let modifiedDateArray = modifiedDate.split('-');
+            var modifiedDateFinal = new Date(modifiedDateArray[0], modifiedDateArray[1] - 1, modifiedDateArray[2]);
+          }
           self.setState({
             ByDateCreatDate: createdDateFinal,
             ByDateSelectDate: modifiedDateFinal,
@@ -2507,7 +2637,7 @@ class MyTicketList extends Component {
             const element = purchaseId[i];
             for (let j = 0; j < self.state.ChannelOfPurchaseData.length; j++) {
               if (
-                element ===
+                element ==
                 self.state.ChannelOfPurchaseData[j].channelOfPurchaseID
               ) {
                 purchaseArr.push(self.state.ChannelOfPurchaseData[j]);
@@ -2523,7 +2653,7 @@ class MyTicketList extends Component {
             const element = actionId[i];
             for (let j = 0; j < self.state.TicketActionTypeData.length; j++) {
               if (
-                element ===
+                element ==
                 self.state.TicketActionTypeData[j].ticketActionTypeID
               ) {
                 actionArr.push(self.state.TicketActionTypeData[j]);
@@ -2591,12 +2721,16 @@ class MyTicketList extends Component {
             selectedFunction: 0
           });
         } else {
-          let createdDate = dataSearch.SearchDataByAll.CreatedDate;
-          let createdDateArray = createdDate.split('-');
-          let createdDateFinal = new Date(createdDateArray[0], createdDateArray[1] - 1, createdDateArray[2]);
-          let modifiedDate = dataSearch.SearchDataByAll.ModifiedDate;
-          let modifiedDateArray = modifiedDate.split('-');
-          let modifiedDateFinal = new Date(modifiedDateArray[0], modifiedDateArray[1] - 1, modifiedDateArray[2]);
+          if (dataSearch.SearchDataByAll.CreatedDate !== "") {
+            let createdDate = dataSearch.SearchDataByAll.CreatedDate;
+            let createdDateArray = createdDate.split('-');
+            let createdDateFinal = new Date(createdDateArray[0], createdDateArray[1] - 1, createdDateArray[2]);
+          }
+          if (dataSearch.SearchDataByAll.ModifiedDate !== "") {
+            let modifiedDate = dataSearch.SearchDataByAll.ModifiedDate;
+            let modifiedDateArray = modifiedDate.split('-');
+            let modifiedDateFinal = new Date(modifiedDateArray[0], modifiedDateArray[1] - 1, modifiedDateArray[2]);
+          }
           self.setState({
             ByAllCreateDate: createdDateFinal,
             selectedTicketSource: dataSearch.SearchDataByAll.TicketSourceTypeID,
@@ -2822,7 +2956,9 @@ class MyTicketList extends Component {
 
               <div className="filter-type filter-color">
                 <p>FILTER BY COLOR</p>
-                <div className="filter-checkbox">
+               
+                    
+                    <div className="filter-checkbox">
                   <input type="checkbox"
                     id="fil-red"
                     name="filter-color"
@@ -2833,6 +2969,9 @@ class MyTicketList extends Component {
                     <span className="fil-color-red fil-color-bg"></span>
                   </label>
                 </div>
+
+              
+               
                 <div className="filter-checkbox">
                   <input type="checkbox" id="fil-orange" name="filter-color"
                     value="isSLANearBreach"
@@ -4322,7 +4461,7 @@ class MyTicketList extends Component {
                                       />
                                       CSV
                                     </CSVLink>
-                                    <button
+                                    {/* <button
                                       type="button"
                                       onClick={this.ScheduleOpenModel}
                                     >
@@ -4332,7 +4471,7 @@ class MyTicketList extends Component {
                                         alt="schedule-icon"
                                       />
                                       Schedule
-                                    </button>
+                                    </button> */}
                                     <Modal
                                       onClose={this.ScheduleCloseModel}
                                       open={this.state.Schedule}
@@ -4813,7 +4952,7 @@ class MyTicketList extends Component {
                                         </div>
                                       </div>
                                     </Modal>
-                                    <button
+                                    {/* <button
                                       className={
                                         this.state.ticketIds.length > 0
                                           ? "btn-inv"
@@ -4833,7 +4972,7 @@ class MyTicketList extends Component {
                                         alt="assign-icon"
                                       />
                                       Assign
-                                    </button>
+                                    </button> */}
                                     <Modal
                                       onClose={this.handleAssignModalClose.bind(
                                         this
@@ -5389,7 +5528,7 @@ class MyTicketList extends Component {
                                   Cell: row => {
                                     return (
                                       <div>
-                                        {row.original.message.split("-")[0]}/
+                                        {row.original.message.split("-")[0]}/&nbsp;
                                       <span style={{ color: "#666" }}>
                                           {row.original.message.split("-")[1]}
                                         </span>
