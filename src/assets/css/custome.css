@@ -1170,12 +1170,12 @@ table tr th:last-child {
 .card-details {
   background-color: #fafafa;
   width: auto;
-  height: 253px;
+  /* height: 253px; */
 }
 .card-details-1 {
   background-color: #ffffff;
   width: auto;
-  height: 195px;
+  /* height: 195px; */
   margin: 29px;
   margin-left: 58px;
   padding: 23px;
@@ -3536,6 +3536,25 @@ table tr th:last-child {
 .cancel-assign img {
   width: 100%;
 }
+.my-ticket-temp .kblink {
+  top: 90px;
+  left: 145px;
+  right: initial;
+  border: none;
+}
+.my-ticket-temp .collapbtn {
+  top: 90px;
+  left: 0px;
+  right: initial;
+  border: none;
+}
+.my-tic-ckeditor iframe {
+  padding-top: 35px;
+  height: calc(100% - 70px) !important;
+}
+.my-tic-ckeditor .cke_inner {
+  min-height: 300px;
+}
 /* my ticket ends */
 
 /* .cke_editable {
@@ -4234,7 +4253,14 @@ progress::-webkit-progress-bar {
   min-height: 350px;
   height: auto;
 }
-
+.my-tic-mob-float {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+}
+.my-tic-mob-float img {
+  width: 12px;
+}
 .claim-status-table-header {
   background-color: #ecf2f4;
   width: 876px;
@@ -4477,8 +4503,8 @@ progress::-webkit-progress-bar {
 }
 #Status-popup {
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
-  left: -31%;
-  margin-top: -24px;
+  left: 80px;
+  margin: 0 auto;
   padding: 0px;
 }
 #ScheduleModel {
@@ -9021,9 +9047,10 @@ table tr th:last-child {
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
 }
-.commenttextborder {
-  border-radius: 5px;
-  border: 1px solid #ebebeb;
+.comment-disp {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 .commentcollapseTicket .commenttextmessage {
   padding: 25px;
@@ -9044,7 +9071,7 @@ table tr th:last-child {
 }
 .SendCommentBtn {
   text-align: end;
-  margin-right: 25px;
+  /* margin-right: 25px; */
   margin-bottom: 20px;
 }
 .SendCommentBtn1 {
@@ -9491,7 +9518,7 @@ table tr th:last-child {
   margin-right: 7px;
   cursor: pointer;
 }
-.colladrow .send{
+.colladrow .send, .my-tic-send {
   background: #2561a8;
   color: #fff;
   font-size: 14px;
@@ -9501,6 +9528,17 @@ table tr th:last-child {
   border-radius: 5px;
   border: 1px solid #2561a8;
   cursor: pointer;
+}
+.my-tic-send {
+  float: right;
+  margin-top: 20px;
+  margin-right: 15px;
+}
+/* .my-tic-ckeditor {
+  margin-top: 20px;
+} */
+.my-tic-ckeditor .cke_bottom {
+  display: none;
 }
 .colladrow .sav{
   background: #fff;

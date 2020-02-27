@@ -286,10 +286,15 @@
 }
 .ticketMSGCmt-textarea {
   background-color: #FFFF;
-  border-radius: 2px;
+  /* border-radius: 2px; */
   border: none;
   width: 100%;
   resize: none;
+  border-radius: 5px;
+  border: 1px solid #ebebeb;
+  margin: 20px 0;
+  padding: 10px;
+  height: 150px;
 }
 
 .store-create-button {
