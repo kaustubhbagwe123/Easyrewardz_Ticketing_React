@@ -3249,9 +3249,7 @@ class MyTicket extends Component {
                                             data={row.original.orderItems}
                                             columns={[
                                               {
-                                                Header: (
-                                                  <span>Article Number</span>
-                                                ),
+                                                Header: <span> </span>,
                                                 accessor: "invoiceNo",
                                                 Cell: row => {
                                                   return (
@@ -3282,6 +3280,12 @@ class MyTicket extends Component {
                                                     </div>
                                                   );
                                                 }
+                                              },
+                                              {
+                                                Header: (
+                                                  <span>Article Number</span>
+                                                ),
+                                                accessor: "invoiceNo"
                                               },
                                               {
                                                 Header: (
@@ -3571,10 +3575,8 @@ class MyTicket extends Component {
                                             )}
                                             columns={[
                                               {
-                                                Header: (
-                                                  <span>Article Number</span>
-                                                ),
-                                                accessor: "orderItemID",
+                                                Header: <span></span>,
+                                                accessor: "size",
                                                 Cell: row => (
                                                   <div
                                                     className="filter-checkbox"
@@ -3615,6 +3617,12 @@ class MyTicket extends Component {
                                                     </label>
                                                   </div>
                                                 )
+                                              },
+                                              {
+                                                Header: (
+                                                  <span>Article Number</span>
+                                                ),
+                                                accessor: "orderItemID"
                                               },
                                               {
                                                 Header: (
@@ -4311,7 +4319,6 @@ class MyTicket extends Component {
                     </div>
                   </div>
                 </div>
-                {/* <div className="tab-content p-0 tabpadtick"> */}
                 <div className="tab-content p-0">
                   <div
                     className="tab-pane fade"
@@ -4359,7 +4366,7 @@ class MyTicket extends Component {
                             </div>
                             <div className="col-md-2">
                               <label className="today-02">
-                                {item.messageDate}
+                                {item.dayOfCreation}
                                 &nbsp; (
                                 {item.messageCount < 9
                                   ? "0" + item.messageCount
@@ -4405,11 +4412,16 @@ class MyTicket extends Component {
                                               .commentBy
                                           }
                                         </label>
-
                                         <img
-                                          src={MsgImg}
-                                          alt="right"
-                                          className="smg-Img1"
+                                          src={details.latestMessageDetails.ticketSourceName === "Calls"
+                                          ? require("./../assets/Images/call.png")
+                                          : details.latestMessageDetails.ticketSourceName === "Facebook"
+                                          ? require("./../assets/Images/facebook.png")
+                                          : details.latestMessageDetails.ticketSourceName === "Mails" 
+                                          ? require("./../assets/Images/SecuredLetter2.png")
+                                          : require("./../assets/Images/twitter.png")}
+                                          alt="sourceIMG"
+                                          className="smg-Img1 headPhone3 black-twitter"
                                         />
                                       </div>
                                     </div>
@@ -5086,7 +5098,6 @@ class MyTicket extends Component {
                         </div>
                       </div>
                     </div> */}
-                  
 
                     {/* <div>
                       <div className="row row-spacing new-top-bottom-margin">
