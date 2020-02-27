@@ -4595,27 +4595,19 @@ class MyTicket extends Component {
                       }}
                     >
                       <div className="commenttextborder">
-                        <div className="Commentlabel">
-                          <label className="Commentlabel1">Comment</label>
-                        </div>
-                        <div>
-                          <span className="comment-line"></span>
-                          <div
-                            style={{
-                              float: "right",
-                              cursor: "pointer",
-                              height: "30px",
-                              marginTop: "-33px"
-                            }}
-                          >
-                            <img
-                              src={MinusImg}
-                              alt="Minus"
-                              className="CommentMinus-img"
-                              onClick={this.handleCommentCollapseOpen.bind(
-                                this
-                              )}
-                            />
+                        <div className="comment-disp">
+                          <div className="Commentlabel">
+                            <label className="Commentlabel1">Comment</label>
+                          </div>
+                          <div>
+                              <img
+                                src={CrossIcon}
+                                alt="Minus"
+                                className="pro-cross-icn m-0"
+                                onClick={this.handleCommentCollapseOpen.bind(
+                                  this
+                                )}
+                              />
                           </div>
                         </div>
                         <div className="commenttextmessage">
@@ -4709,7 +4701,7 @@ class MyTicket extends Component {
                                 </li>
                               </ul>
                             </div>
-
+<div className="my-ticket-temp">
                             <a
                               href="#!"
                               className="kblink"
@@ -4749,27 +4741,26 @@ class MyTicket extends Component {
                                 </li>
                               </ul>
                             </div>
-
+                            </div>
                             <div
-                              className="mob-float"
-                              style={{ display: "flex", float: "right" }}
+                              className="mob-float my-tic-mob-float"
                             >
-                              <div className="line-1"></div>
+                              {/* <div className="line-1"></div> */}
                               <div
-                                style={{ height: "31", cursor: "pointer" }}
+                                style={{ cursor: "pointer" }}
                                 onClick={this.hanldeCommentClose2.bind(this)}
                               >
                                 <img
-                                  src={MinusImg}
+                                  src={CrossIcon}
                                   alt="Minus"
-                                  className="minus-img"
+                                  className="pro-cross-img"
                                 />
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                      <div className="col-md-12">
+                      <div className="col-md-12 my-tic-ckeditor">
                         <CKEditor
                           data={this.state.mailBodyData}
                           onChange={this.onAddCKEditorChange}
@@ -4806,7 +4797,6 @@ class MyTicket extends Component {
                             ]
                           }}
                         />
-                      </div>
                       <div className="row colladrowa">
                         <div className="col-md-12 colladrow">
                           <ul style={{ padding: "0 15px" }}>
@@ -4816,7 +4806,51 @@ class MyTicket extends Component {
                                 {ticketDetailsData.customerEmailId}
                               </label>
                             </li>
-
+                            <li>
+                              <div className="filter-checkbox">
+                                <input
+                                  type="checkbox"
+                                  id="custRply"
+                                  name="filter-type"
+                                  style={{ display: "none" }}
+                                  onChange={() =>
+                                    this.showInformStoreFuncation()
+                                  }
+                                />
+                                <label
+                                  htmlFor="custRply"
+                                  style={{ paddingLeft: "25px" }}
+                                >
+                                  <span>Inform Store</span>
+                                </label>
+                              </div>
+                            </li>
+                            <li>
+                              <span>
+                                <input
+                                  id="file-upload"
+                                  className="file-upload1 d-none"
+                                  type="file"
+                                  onChange={this.fileUpload}
+                                />
+                                <label
+                                  htmlFor="file-upload"
+                                  onDrop={this.fileDrop}
+                                  onDragOver={this.fileDragOver}
+                                  onDragEnter={this.fileDragEnter}
+                                >
+                                  <img
+                                    src={FileUpload}
+                                    alt="file-upload"
+                                    className="fileup"
+                                  />
+                                </label>
+                              </span>
+                              <label style={{ color: "#2561a8" }}>
+                                3 files
+                              </label>
+                            </li>
+                            <li className="w-100"></li>
                             <li>
                               <label className="">
                                 <div className="input-group">
@@ -4867,51 +4901,8 @@ class MyTicket extends Component {
                               </label>
                             </li>
 
-                            <li>
-                              <div className="filter-checkbox">
-                                <input
-                                  type="checkbox"
-                                  id="custRply"
-                                  name="filter-type"
-                                  style={{ display: "none" }}
-                                  onChange={() =>
-                                    this.showInformStoreFuncation()
-                                  }
-                                />
-                                <label
-                                  htmlFor="custRply"
-                                  style={{ paddingLeft: "25px" }}
-                                >
-                                  <span>Inform Store</span>
-                                </label>
-                              </div>
-                            </li>
-                            <li>
-                              <span>
-                                <input
-                                  id="file-upload"
-                                  className="file-upload1 d-none"
-                                  type="file"
-                                  onChange={this.fileUpload}
-                                />
-                                <label
-                                  htmlFor="file-upload"
-                                  onDrop={this.fileDrop}
-                                  onDragOver={this.fileDragOver}
-                                  onDragEnter={this.fileDragEnter}
-                                >
-                                  <img
-                                    src={FileUpload}
-                                    alt="file-upload"
-                                    className="fileup"
-                                  />
-                                </label>
-                              </span>
-                              <label style={{ color: "#2561a8" }}>
-                                3 files
-                              </label>
-                            </li>
-                            <li style={{ float: "right" }}>
+
+                            {/* <li style={{ float: "right" }}>
                               <button
                                 className="send"
                                 type="button"
@@ -4919,10 +4910,18 @@ class MyTicket extends Component {
                               >
                                 Send
                               </button>
-                            </li>
+                            </li> */}
                           </ul>
                         </div>
                       </div>
+                      </div>
+                        <button
+                          className="send my-tic-send"
+                          type="button"
+                          onClick={this.handleSendMailData.bind(this, 1)}
+                        >
+                          Send
+                        </button>
                     </Modal>
                     {/* <div className="row" style={{ width: "100%" }}>
                       <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
