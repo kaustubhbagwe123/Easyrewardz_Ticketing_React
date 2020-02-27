@@ -25,7 +25,7 @@ import ClipImg from "./../assets/Images/clip.png";
 import PencilImg from "./../assets/Images/pencil.png";
 import CancelImg from "./../assets/Images/cancel.png";
 import { Collapse, CardBody, Card } from "reactstrap";
-// import { Drawer } from "antd";
+import { Checkbox } from "antd";
 import CustomerIcon from "./../assets/Images/customer-icon.png";
 import UserIcon from "./../assets/Images/UserIcon.png";
 import CrossIcon from "./../assets/Images/cancel.png";
@@ -69,6 +69,7 @@ import TxtLogo from "./../assets/Images/TxtIcon.png"; // Don't comment this line
 
 // import DatePicker from "react-date-picker";
 
+const CheckboxGroup = Checkbox.Group;
 class MyTicket extends Component {
   constructor(props) {
     super(props);
@@ -167,7 +168,10 @@ class MyTicket extends Component {
       // mailSubject: "",
       expanded: {},
       mailId: 0,
-      selectProductOrd: true
+      selectProductOrd: true,
+      ChckOrdMasterId:true,
+      ChckOrderMasterSelectedAll:true,
+      checkedSelectList:''
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -896,17 +900,9 @@ class MyTicket extends Component {
   HandleEmailCollapseOpen() {
     this.setState(state => ({ EmailCollapse: !state.EmailCollapse }));
   }
-  handleCommentCollapseOpen(cmdData) {
-    debugger
-    var id=cmdData.latestMessageDetails.mailID;
-    var CmdId = document.getElementById("cmd" + id).id;
-    if (CmdId.style.display === "none") {
-      CmdId.style.display = "block";
-    } else {
-      CmdId.style.display = "none";
-    }
-    // this.setState(state => ({ CommentCollapse: !state.CommentCollapse }));
-
+  handleCommentCollapseOpen() {
+    debugger;
+    this.setState(state => ({ CommentCollapse: !state.CommentCollapse }));
   }
   handleCommentCollapseClose() {
     this.setState(state => ({ CommentCollapse: false }));
@@ -1128,8 +1124,6 @@ class MyTicket extends Component {
     // let self = this;
 
     var selectedRow = "";
-   
-
 
     for (let i = 0; i < this.state.selectedDataRow.length; i++) {
       var data = this.state.selectedDataRow.filter(
@@ -1210,7 +1204,7 @@ class MyTicket extends Component {
   setTicketActionTypeValue = e => {
     this.setState({ selectedTicketActionType: e });
   };
-   
+
   handleCheckOrderID(orderMasterID, rowData) {
     debugger;
     const newSelected = Object.assign({}, this.state.CheckOrderID);
@@ -1458,6 +1452,7 @@ class MyTicket extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetMessageDetails(self.state.ticket_Id);
+          NotificationManager.success("Mail send successfully.", "", 1500);
           self.setState({
             mailFiled: {},
             // mailSubject: "",
@@ -1644,6 +1639,23 @@ class MyTicket extends Component {
       selectProductOrd: !this.state.selectProductOrd
     });
   };
+
+  // -------------------------------Check box selected all code start-------------------------------
+  onCheckMasterAllChange = e=>{
+    this.setState({
+      checkedSelectList: e.target.checked ? this.state.OrderSubItem : [],
+      ChckOrdMasterId: false,
+      ChckOrderMasterSelectedAll: e.target.checked,
+    });
+  }
+  handleSubComOnChange =checkedList => {
+    this.setState({
+      checkedList,
+      ChckOrdMasterId:
+        !!checkedList.length && checkedList.length < this.state.OrderSubItem.length,
+      checkAll: checkedList.length === this.state.OrderSubItem.length
+    });
+  }
 
   render() {
     const {
@@ -3183,36 +3195,49 @@ class MyTicket extends Component {
                                             className="filter-checkbox"
                                             style={{ marginLeft: "15px" }}
                                           >
-                                            <input
-                                              type="checkbox"
-                                              id={
-                                                "MID" +
-                                                row.original.orderMasterID
-                                              }
-                                              style={{ display: "none" }}
-                                              name="ticket-order"
-                                              checked={
-                                                this.state.CheckOrderID[
-                                                  row.original.orderMasterID
-                                                ] === true
-                                              }
-                                              defaultChecked={true}
-                                              onChange={this.handleCheckOrderID.bind(
-                                                this,
-                                                row.original.orderMasterID,
-                                                row.original
-                                              )}
-                                            />
-                                            <label
-                                              htmlFor={
-                                                "MID" +
-                                                row.original.orderMasterID
-                                              }
+                                            <Checkbox
+                                              indeterminate={this.state.ChckOrdMasterId}
+                                              onChange={this.onCheckMasterAllChange}
+                                              checked={this.state.ChckOrderMasterSelectedAll}
                                             >
-                                              {/* {row.original.invoiceNumber} */}
-                                            </label>
+                                              
+                                            </Checkbox>
                                           </div>
                                         )
+                                        // Cell: row => (
+                                        //   <div
+                                        //     className="filter-checkbox"
+                                        //     style={{ marginLeft: "15px" }}
+                                        //   >
+                                        //     <input
+                                        //       type="checkbox"
+                                        //       id={
+                                        //         "MID" +
+                                        //         row.original.orderMasterID
+                                        //       }
+                                        //       style={{ display: "none" }}
+                                        //       name="ticket-order"
+                                        //       checked={
+                                        //         this.state.CheckOrderID[
+                                        //           row.original.orderMasterID
+                                        //         ] === true
+                                        //       }
+                                        //       defaultChecked={true}
+                                        //       onChange={this.handleCheckOrderID.bind(
+                                        //         this,
+                                        //         row.original.orderMasterID,
+                                        //         row.original
+                                        //       )}
+                                        //     />
+                                        //     <label
+                                        //       htmlFor={
+                                        //         "MID" +
+                                        //         row.original.orderMasterID
+                                        //       }
+                                        //     >
+                                        //     </label>
+                                        //   </div>
+                                        // )
                                       },
                                       {
                                         Header: <span>Invoice Number</span>,
@@ -3255,12 +3280,11 @@ class MyTicket extends Component {
                                       return (
                                         <div style={{ padding: "20px" }}>
                                           <ReactTable
-                                            data={row.original.orderItems}
+                                            // data={row.original.orderItems}
+                                            data={this.state.OrderSubItem}
                                             columns={[
                                               {
-                                                Header: (
-                                                  <span>Article Number</span>
-                                                ),
+                                                Header: <span> </span>,
                                                 accessor: "invoiceNo",
                                                 Cell: row => {
                                                   return (
@@ -3270,28 +3294,49 @@ class MyTicket extends Component {
                                                         marginLeft: "15px"
                                                       }}
                                                     >
-                                                      <input
-                                                        type="checkbox"
-                                                        style={{
-                                                          display: "none"
-                                                        }}
-                                                        id={
-                                                          row.original
-                                                            .orderItemID
-                                                        }
-                                                      
+                                                      <CheckboxGroup
+                                                        options={this.state.OrderSubItem}
+                                                        value={this.state.checkedSelectList}
+                                                        onChange={this.handleSubComOnChange}
                                                       />
-                                                      <label
-                                                        htmlFor={
-                                                          row.original
-                                                            .orderItemID
-                                                        }
-                                                      >
-                                                        {row.original.invoiceNo}
-                                                      </label>
                                                     </div>
                                                   );
                                                 }
+                                                // Cell: row => {
+                                                //   return (
+                                                //     <div
+                                                //       className="filter-checkbox"
+                                                //       style={{
+                                                //         marginLeft: "15px"
+                                                //       }}
+                                                //     >
+                                                //       <input
+                                                //         type="checkbox"
+                                                //         style={{
+                                                //           display: "none"
+                                                //         }}
+                                                //         id={
+                                                //           row.original
+                                                //             .orderItemID
+                                                //         }
+                                                //       />
+                                                //       <label
+                                                //         htmlFor={
+                                                //           row.original
+                                                //             .orderItemID
+                                                //         }
+                                                //       >
+                                                //         {row.original.invoiceNo}
+                                                //       </label>
+                                                //     </div>
+                                                //   );
+                                                // }
+                                              },
+                                              {
+                                                Header: (
+                                                  <span>Article Number</span>
+                                                ),
+                                                accessor: "invoiceNo"
                                               },
                                               {
                                                 Header: (
@@ -3581,10 +3626,8 @@ class MyTicket extends Component {
                                             )}
                                             columns={[
                                               {
-                                                Header: (
-                                                  <span>Article Number</span>
-                                                ),
-                                                accessor: "orderItemID",
+                                                Header: <span></span>,
+                                                accessor: "size",
                                                 Cell: row => (
                                                   <div
                                                     className="filter-checkbox"
@@ -3625,6 +3668,12 @@ class MyTicket extends Component {
                                                     </label>
                                                   </div>
                                                 )
+                                              },
+                                              {
+                                                Header: (
+                                                  <span>Article Number</span>
+                                                ),
+                                                accessor: "orderItemID"
                                               },
                                               {
                                                 Header: (
@@ -4321,7 +4370,6 @@ class MyTicket extends Component {
                     </div>
                   </div>
                 </div>
-                {/* <div className="tab-content p-0 tabpadtick"> */}
                 <div className="tab-content p-0">
                   <div
                     className="tab-pane fade"
@@ -4369,7 +4417,7 @@ class MyTicket extends Component {
                             </div>
                             <div className="col-md-2">
                               <label className="today-02">
-                                {item.messageDate}
+                                {item.dayOfCreation}
                                 &nbsp; (
                                 {item.messageCount < 9
                                   ? "0" + item.messageCount
@@ -4382,7 +4430,7 @@ class MyTicket extends Component {
                             </div>
                           </div>
                           {item.msgDetails.map((details, j) => {
-                            debugger;
+                            // debugger;
                             return (
                               <div key={j}>
                                 <div>
@@ -4415,11 +4463,22 @@ class MyTicket extends Component {
                                               .commentBy
                                           }
                                         </label>
-
                                         <img
-                                          src={MsgImg}
-                                          alt="right"
-                                          className="smg-Img1"
+                                          src={
+                                            details.latestMessageDetails
+                                              .ticketSourceName === "Calls"
+                                              ? require("./../assets/Images/call.png")
+                                              : details.latestMessageDetails
+                                                  .ticketSourceName ===
+                                                "Facebook"
+                                              ? require("./../assets/Images/facebook.png")
+                                              : details.latestMessageDetails
+                                                  .ticketSourceName === "Mails"
+                                              ? require("./../assets/Images/SecuredLetter2.png")
+                                              : require("./../assets/Images/twitter.png")
+                                          }
+                                          alt="sourceIMG"
+                                          className="smg-Img1 headPhone3 black-twitter"
                                         />
                                       </div>
                                     </div>
@@ -4452,9 +4511,8 @@ class MyTicket extends Component {
 
                                         <label
                                           className="comment-text"
-                                          id={"cmd" + details.latestMessageDetails.mailID}
                                           onClick={this.handleCommentCollapseOpen.bind(
-                                            this,details
+                                            this
                                           )}
                                         >
                                           Comment
@@ -4466,14 +4524,14 @@ class MyTicket extends Component {
                                       >
                                         <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
                                         <div className="col-12 col-xs-12 col-sm-8 col-md-9">
-                                          <div className="commentcollapseTicket" id={"cmd" + details.latestMessageDetails.mailID}>
+                                          <div className="commentcollapseTicket">
                                             {/* <Collapse
                                               isOpen={
                                                 this.state.CommentCollapse
                                               }
                                             > 
                                               <Card>
-                                                <CardBody> */}
+                                                <CardBody>
                                                   <div className="commenttextborder">
                                                     <div className="Commentlabel">
                                                       <label className="Commentlabel1">
@@ -4528,7 +4586,7 @@ class MyTicket extends Component {
                                                       </button>
                                                     </div>
                                                   </div>
-                                                {/* </CardBody>
+                                                </CardBody>
                                               </Card>
                                             </Collapse> */}
                                           </div>
@@ -4595,6 +4653,345 @@ class MyTicket extends Component {
                         </div>
                       );
                     })}
+                    <Modal
+                      open={this.state.CommentCollapse}
+                      onClose={this.handleCommentCollapseOpen.bind(this)}
+                      closeIconId="sdsg"
+                      modalId="Historical-popup"
+                      overlayId="logout-ovrly"
+                      classNames={{
+                        modal: "historical-popup"
+                      }}
+                    >
+                      <div className="commenttextborder">
+                        <div className="comment-disp">
+                          <div className="Commentlabel">
+                            <label className="Commentlabel1">Comment</label>
+                          </div>
+                          <div>
+                              <img
+                                src={CrossIcon}
+                                alt="Minus"
+                                className="pro-cross-icn m-0"
+                                onClick={this.handleCommentCollapseOpen.bind(
+                                  this
+                                )}
+                              />
+                          </div>
+                        </div>
+                        <div className="commenttextmessage">
+                          <textarea
+                            cols="31"
+                            rows="3"
+                            className="ticketMSGCmt-textarea"
+                            name="ticketcommentMSG"
+                            maxLength={300}
+                            value={this.state.ticketcommentMSG}
+                            onChange={this.handleNoteOnChange}
+                          ></textarea>
+                        </div>
+                        <div className="SendCommentBtn">
+                          <button
+                            className="SendCommentBtn1"
+                            onClick={this.handleSendMessagaData.bind(this)}
+                          >
+                            SEND
+                          </button>
+                        </div>
+                      </div>
+                    </Modal>
+                    <Modal
+                      open={this.state.CommentCollapse2}
+                      onClose={this.hanldeCommentClose2.bind(this)}
+                      closeIconId="sdsg"
+                      modalId="Historical-popup"
+                      overlayId="logout-ovrly"
+                      classNames={{ modal: "historical-popup" }}
+                    >
+                      <div className="col-12" style={{ marginTop: "5px" }}>
+                        <div className="mask1">
+                          <div className="mail-mask">
+                            <div
+                              className="dropdown"
+                              style={{ display: "inherit" }}
+                            >
+                              <button
+                                className="dropdown-toggle my-tic-email"
+                                type="button"
+                                data-toggle="dropdown"
+                              >
+                                <img
+                                  src={Email1}
+                                  alt="email"
+                                  className="EMFCImg"
+                                />
+                                <span className="EMFCText">Email</span>
+                              </button>
+                              <ul className="dropdown-menu">
+                                <li>
+                                  <a href="#!">
+                                    <img
+                                      src={Email1}
+                                      alt="email"
+                                      className="EMFCImg"
+                                    />
+                                    <span className="EMFCText">Email</span>
+                                  </a>
+                                </li>
+                                <li>
+                                  <a href="#!">
+                                    <img
+                                      src={Sms1}
+                                      alt="sms"
+                                      className="EMFCImg"
+                                    />
+                                    <span className="EMFCText">SMS</span>
+                                  </a>
+                                </li>
+                                <li>
+                                  <a href="#!">
+                                    <img
+                                      src={Facebook1}
+                                      alt="facebook"
+                                      className="EMFCImg"
+                                    />
+                                    <span className="EMFCText">Facebook</span>
+                                  </a>
+                                </li>
+                                <li>
+                                  <a href="#!">
+                                    <img
+                                      src={Call1}
+                                      alt="call"
+                                      className="EMFCImg"
+                                    />
+                                    <span className="EMFCText">Call</span>
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+<div className="my-ticket-temp">
+                            <a
+                              href="#!"
+                              className="kblink"
+                              onClick={this.HandleKbLinkModalOpen.bind(this)}
+                            >
+                              <img
+                                src={KnowledgeLogo}
+                                alt="KnowledgeLogo"
+                                className="knoim"
+                              />
+                              Kb Link
+                            </a>
+
+                            <div
+                              className="dropdown collapbtn"
+                              style={{ display: "inherit" }}
+                            >
+                              <button
+                                className="dropdown-toggle my-tic-email"
+                                type="button"
+                                data-toggle="dropdown"
+                              >
+                                <FontAwesomeIcon icon={faCalculator} /> Template
+                              </button>
+                              <ul className="dropdown-menu">
+                                <li>
+                                  <a href="#!">Template 1</a>
+                                </li>
+                                <li>
+                                  <a href="#!">Template 2</a>
+                                </li>
+                                <li>
+                                  <a href="#!">Template 3</a>
+                                </li>
+                                <li>
+                                  <a href="#!">Template 4</a>
+                                </li>
+                              </ul>
+                            </div>
+                            </div>
+                            <div
+                              className="mob-float my-tic-mob-float"
+                            >
+                              {/* <div className="line-1"></div> */}
+                              <div
+                                style={{ cursor: "pointer" }}
+                                onClick={this.hanldeCommentClose2.bind(this)}
+                              >
+                                <img
+                                  src={CrossIcon}
+                                  alt="Minus"
+                                  className="pro-cross-img"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-md-12 my-tic-ckeditor">
+                        <CKEditor
+                          data={this.state.mailBodyData}
+                          onChange={this.onAddCKEditorChange}
+                          config={{
+                            toolbar: [
+                              {
+                                name: "basicstyles",
+                                items: ["Bold", "Italic", "Strike"]
+                              },
+                              {
+                                name: "styles",
+                                items: ["Styles", "Format"]
+                              },
+                              {
+                                name: "paragraph",
+                                items: ["NumberedList", "BulletedList"]
+                              },
+                              {
+                                name: "links",
+                                items: ["Link", "Unlink"]
+                              },
+                              {
+                                name: "insert",
+                                items: ["Image", "Table"]
+                              },
+                              {
+                                name: "tools",
+                                items: ["Maximize"]
+                              },
+                              {
+                                name: "editing",
+                                items: ["Scayt"]
+                              }
+                            ]
+                          }}
+                        />
+                      <div className="row colladrowa">
+                        <div className="col-md-12 colladrow">
+                          <ul style={{ padding: "0 15px" }}>
+                            <li>
+                              <label>
+                                To: &nbsp;
+                                {ticketDetailsData.customerEmailId}
+                              </label>
+                            </li>
+                            <li>
+                              <div className="filter-checkbox">
+                                <input
+                                  type="checkbox"
+                                  id="custRply"
+                                  name="filter-type"
+                                  style={{ display: "none" }}
+                                  onChange={() =>
+                                    this.showInformStoreFuncation()
+                                  }
+                                />
+                                <label
+                                  htmlFor="custRply"
+                                  style={{ paddingLeft: "25px" }}
+                                >
+                                  <span>Inform Store</span>
+                                </label>
+                              </div>
+                            </li>
+                            <li>
+                              <span>
+                                <input
+                                  id="file-upload"
+                                  className="file-upload1 d-none"
+                                  type="file"
+                                  onChange={this.fileUpload}
+                                />
+                                <label
+                                  htmlFor="file-upload"
+                                  onDrop={this.fileDrop}
+                                  onDragOver={this.fileDragOver}
+                                  onDragEnter={this.fileDragEnter}
+                                >
+                                  <img
+                                    src={FileUpload}
+                                    alt="file-upload"
+                                    className="fileup"
+                                  />
+                                </label>
+                              </span>
+                              <label style={{ color: "#2561a8" }}>
+                                3 files
+                              </label>
+                            </li>
+                            <li className="w-100"></li>
+                            <li>
+                              <label className="">
+                                <div className="input-group">
+                                  <span className="input-group-addon inputcc">
+                                    CC:
+                                  </span>
+                                  <input
+                                    type="text"
+                                    className="CCdi1"
+                                    name="userCC"
+                                    autoComplete="off"
+                                    value={this.state.mailFiled.userCC}
+                                    onChange={this.handleMailOnChange.bind(
+                                      this,
+                                      "userCC"
+                                    )}
+                                  />
+                                  <span className="input-group-addon inputcc-one">
+                                    {this.state.userCcCount < 1
+                                      ? "+" + this.state.userCcCount
+                                      : "+" + this.state.userCcCount}
+                                  </span>
+                                </div>
+                              </label>
+                            </li>
+                            <li>
+                              <label className="">
+                                <div className="input-group">
+                                  <span className="input-group-addon inputcc">
+                                    BCC:
+                                  </span>
+                                  <input
+                                    type="text"
+                                    className="CCdi"
+                                    name="userBCC"
+                                    value={this.state.mailFiled.userBCC}
+                                    onChange={this.handleMailOnChange.bind(
+                                      this,
+                                      "userBCC"
+                                    )}
+                                  />
+                                  <span className="input-group-addon inputcc-one">
+                                    {this.state.userBccCount < 1
+                                      ? "+" + this.state.userBccCount
+                                      : "+" + this.state.userBccCount}
+                                  </span>
+                                </div>
+                              </label>
+                            </li>
+
+
+                            {/* <li style={{ float: "right" }}>
+                              <button
+                                className="send"
+                                type="button"
+                                onClick={this.handleSendMailData.bind(this, 1)}
+                              >
+                                Send
+                              </button>
+                            </li> */}
+                          </ul>
+                        </div>
+                      </div>
+                      </div>
+                        <button
+                          className="send my-tic-send"
+                          type="button"
+                          onClick={this.handleSendMailData.bind(this, 1)}
+                        >
+                          Send
+                        </button>
+                    </Modal>
                     {/* <div className="row" style={{ width: "100%" }}>
                       <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
                       <div className="col-12 col-xs-12 col-sm-8 col-md-9">
@@ -4758,328 +5155,6 @@ class MyTicket extends Component {
                       </div>
                     </div> */}
 
-                    <div className="myTicketCommentCollapse myTicketEmail">
-                      <Collapse isOpen={this.state.CommentCollapse2}>
-                        <div className="col-12" style={{ marginTop: "5px" }}>
-                          <div className="mask1">
-                            <div className="mail-mask">
-                              <div
-                                className="dropdown"
-                                style={{ display: "inherit" }}
-                              >
-                                <button
-                                  className="dropdown-toggle my-tic-email"
-                                  type="button"
-                                  data-toggle="dropdown"
-                                >
-                                  <img
-                                    src={Email1}
-                                    alt="email"
-                                    className="EMFCImg"
-                                  />
-                                  <span className="EMFCText">Email</span>
-                                </button>
-                                <ul className="dropdown-menu">
-                                  <li>
-                                    <a href="#!">
-                                      <img
-                                        src={Email1}
-                                        alt="email"
-                                        className="EMFCImg"
-                                      />
-                                      <span className="EMFCText">Email</span>
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a href="#!">
-                                      <img
-                                        src={Sms1}
-                                        alt="sms"
-                                        className="EMFCImg"
-                                      />
-                                      <span className="EMFCText">SMS</span>
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a href="#!">
-                                      <img
-                                        src={Facebook1}
-                                        alt="facebook"
-                                        className="EMFCImg"
-                                      />
-                                      <span className="EMFCText">Facebook</span>
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a href="#!">
-                                      <img
-                                        src={Call1}
-                                        alt="call"
-                                        className="EMFCImg"
-                                      />
-                                      <span className="EMFCText">Call</span>
-                                    </a>
-                                  </li>
-                                </ul>
-                              </div>
-
-                              <a
-                                href="#!"
-                                className="kblink"
-                                onClick={this.HandleKbLinkModalOpen.bind(this)}
-                              >
-                                <img
-                                  src={KnowledgeLogo}
-                                  alt="KnowledgeLogo"
-                                  className="knoim"
-                                />
-                                Kb Link
-                              </a>
-
-                              <div
-                                className="dropdown collapbtn"
-                                style={{ display: "inherit" }}
-                              >
-                                <button
-                                  className="dropdown-toggle my-tic-email"
-                                  type="button"
-                                  data-toggle="dropdown"
-                                >
-                                  <FontAwesomeIcon icon={faCalculator} />{" "}
-                                  Template
-                                </button>
-                                <ul className="dropdown-menu">
-                                  <li>
-                                    <a href="#!">Template 1</a>
-                                  </li>
-                                  <li>
-                                    <a href="#!">Template 2</a>
-                                  </li>
-                                  <li>
-                                    <a href="#!">Template 3</a>
-                                  </li>
-                                  <li>
-                                    <a href="#!">Template 4</a>
-                                  </li>
-                                </ul>
-                              </div>
-
-                              {/* <h3 className="textbhead">
-                                <span
-                                  className="input-group-addon inputcc"
-                                  style={{
-                                    padding: "5px 5px 6px",
-                                    background: "transparent",
-                                    border: "none",
-                                    color: "#555"
-                                  }}
-                                >
-                                  Subject: &nbsp;
-                                </span>
-                                <input
-                                  type="text"
-                                  className="CCdi"
-                                  name="mailSubject"
-                                  value={this.state.mailSubject}
-                                  onChange={this.handleNoteOnChange}
-                                />
-                              </h3> */}
-                              <div
-                                className="mob-float"
-                                style={{ display: "flex", float: "right" }}
-                              >
-                                <div className="line-1"></div>
-                                <div
-                                  style={{ height: "31", cursor: "pointer" }}
-                                  onClick={this.hanldeCommentClose2.bind(this)}
-                                >
-                                  <img
-                                    src={MinusImg}
-                                    alt="Minus"
-                                    className="minus-img"
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <Card>
-                          <CardBody>
-                            <div className="col-md-12">
-                              <CKEditor
-                                // data={this.state.messageDetails.ticketMailBody}
-                                data={this.state.mailBodyData}
-                                onChange={this.onAddCKEditorChange}
-                                config={{
-                                  toolbar: [
-                                    {
-                                      name: "basicstyles",
-                                      items: ["Bold", "Italic", "Strike"]
-                                    },
-                                    {
-                                      name: "styles",
-                                      items: ["Styles", "Format"]
-                                    },
-                                    {
-                                      name: "paragraph",
-                                      items: ["NumberedList", "BulletedList"]
-                                    },
-                                    {
-                                      name: "links",
-                                      items: ["Link", "Unlink"]
-                                    },
-                                    {
-                                      name: "insert",
-                                      items: ["Image", "Table"]
-                                    },
-                                    {
-                                      name: "tools",
-                                      items: ["Maximize"]
-                                    },
-                                    {
-                                      name: "editing",
-                                      items: ["Scayt"]
-                                    }
-                                  ]
-                                }}
-                              />
-                            </div>
-                          </CardBody>
-                          <div className="row colladrowa">
-                            <div className="col-md-12 colladrow">
-                              <ul style={{ padding: "0 15px" }}>
-                                {/* <li>
-                                  <label className="">
-                                    <div className="input-group">
-                                      <span className="input-group-addon inputcc">
-                                        To: &nbsp;
-                                      </span>
-                                       <input type="text" className="CCdi" value={this.state.ticketDetailsData.customerEmailId}/> 
-                                       
-                                    </div>
-                                  </label>
-                                </li> */}
-                                <li>
-                                  <label>
-                                    To: &nbsp;
-                                    {ticketDetailsData.customerEmailId}
-                                  </label>
-                                </li>
-
-                                <li>
-                                  <label className="">
-                                    <div className="input-group">
-                                      <span className="input-group-addon inputcc">
-                                        CC:
-                                      </span>
-                                      <input
-                                        type="text"
-                                        className="CCdi1"
-                                        name="userCC"
-                                        autoComplete="off"
-                                        value={this.state.mailFiled.userCC}
-                                        onChange={this.handleMailOnChange.bind(
-                                          this,
-                                          "userCC"
-                                        )}
-                                      />
-                                      <span className="input-group-addon inputcc-one">
-                                        {this.state.userCcCount < 1
-                                          ? "+" + this.state.userCcCount
-                                          : "+" + this.state.userCcCount}
-                                      </span>
-                                    </div>
-                                  </label>
-                                </li>
-                                <li>
-                                  <label className="">
-                                    <div className="input-group">
-                                      <span className="input-group-addon inputcc">
-                                        BCC:
-                                      </span>
-                                      <input
-                                        type="text"
-                                        className="CCdi"
-                                        name="userBCC"
-                                        value={this.state.mailFiled.userBCC}
-                                        onChange={this.handleMailOnChange.bind(
-                                          this,
-                                          "userBCC"
-                                        )}
-                                      />
-                                      <span className="input-group-addon inputcc-one">
-                                        {this.state.userBccCount < 1
-                                          ? "+" + this.state.userBccCount
-                                          : "+" + this.state.userBccCount}
-                                      </span>
-                                    </div>
-                                  </label>
-                                </li>
-
-                                <li>
-                                  <div className="filter-checkbox">
-                                    <input
-                                      type="checkbox"
-                                      id="custRply"
-                                      name="filter-type"
-                                      style={{ display: "none" }}
-                                      onChange={() =>
-                                        this.showInformStoreFuncation()
-                                      }
-
-                                      // disabled={this.state.selectedStoreIDs.length === 0}
-                                    />
-                                    <label
-                                      htmlFor="custRply"
-                                      style={{ paddingLeft: "25px" }}
-                                    >
-                                      <span>Inform Store</span>
-                                    </label>
-                                  </div>
-                                </li>
-                                <li>
-                                  <span>
-                                    <input
-                                      id="file-upload"
-                                      className="file-upload1 d-none"
-                                      type="file"
-                                      onChange={this.fileUpload}
-                                    />
-                                    <label
-                                      htmlFor="file-upload"
-                                      onDrop={this.fileDrop}
-                                      onDragOver={this.fileDragOver}
-                                      onDragEnter={this.fileDragEnter}
-                                    >
-                                      <img
-                                        src={FileUpload}
-                                        alt="file-upload"
-                                        className="fileup"
-                                      />
-                                    </label>
-                                  </span>
-                                  <label style={{ color: "#2561a8" }}>
-                                    3 files
-                                  </label>
-                                </li>
-                                <li style={{ float: "right" }}>
-                                  <button
-                                    className="send"
-                                    type="button"
-                                    onClick={this.handleSendMailData.bind(
-                                      this,
-                                      1
-                                    )}
-                                  >
-                                    Send
-                                  </button>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                        </Card>
-                      </Collapse>
-                    </div>
                     {/* <div>
                       <div className="row row-spacing new-top-bottom-margin">
                         <div className="col-12 col-xs-12 col-sm-4 col-md-3">
