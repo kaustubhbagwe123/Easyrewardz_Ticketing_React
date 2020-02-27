@@ -4477,8 +4477,8 @@ progress::-webkit-progress-bar {
 }
 #Status-popup {
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
-  left: -31%;
-  margin-top: -24px;
+  left: 80px;
+  margin: 0 auto;
   padding: 0px;
 }
 #ScheduleModel {

@@ -89,7 +89,18 @@ class KnowledgeBase extends Component {
       kbClearNew: false,
       kbClearList: false,
       tabCount: 1,
-      StatusModel: false
+      StatusModel: false,
+      sortColumnName:"",
+      sortAllData:[],
+      sortIssueType:[],
+      sortCategory:[],
+      sortSubCategory:[],
+      sortAllDataApprove:[],
+      sortIssueTypeApprove:[],
+      sortCategoryApprove:[],
+      sortSubCategoryApprove:[],
+      columnTitle:"",
+      sortTable:""
     };
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
@@ -110,14 +121,81 @@ class KnowledgeBase extends Component {
     this.handleRejectKB = this.handleRejectKB.bind(this);
     this.handleSeaechKB = this.handleSeaechKB.bind(this);
   }
-  StatusOpenModel() {
+  StatusOpenModel(data,table) {
     debugger;
   
-    this.setState({ StatusModel: true });
+    this.setState({ StatusModel: true,sortColumnName:data,sortTable:table });
+    //StatusModel: true,
+    if(data==="issueTypeName"){
+      this.setState({
+        columnTitle:"IssueType"
+      });
+    }
   }
   StatusCloseModel() {
     this.setState({ StatusModel: false });
   }
+
+  setSortCheckStatus =(column,e) =>{
+    debugger;
+    var itemsArray = [];
+    var itemsArrayApprove = [];
+    var data = e.currentTarget.value;
+    if(this.state.sortTable==="notapprove"){
+      if(column==="all"){
+        itemsArray=this.state.sortAllData;
+       
+      }else if(column==="issueTypeName"){
+        this.state.KBListnotApproveData=this.state.sortAllData;
+        itemsArray = this.state.KBListnotApproveData.filter(
+          a => a.issueTypeName === data
+        );
+      }else if(column==="categoryName"){
+        this.state.KBListnotApproveData=this.state.sortAllData;
+        itemsArray = this.state.KBListnotApproveData.filter(
+          a => a.categoryName === data
+        );
+      }else if(column==="subCategoryName"){
+        this.state.KBListnotApproveData=this.state.sortAllData;
+        itemsArray = this.state.KBListnotApproveData.filter(
+          a => a.subCategoryName === data
+        );
+      }
+    }else if(this.state.sortTable==="approve"){
+      if(column==="all"){
+        itemsArrayApprove=this.state.sortAllDataApprove;
+       
+      }else if(column==="issueTypeName"){
+        this.state.KBListData=this.state.sortAllDataApprove;
+        itemsArrayApprove = this.state.KBListData.filter(
+          a => a.issueTypeName === data
+        );
+      }else if(column==="categoryName"){
+        this.state.KBListData=this.state.sortAllDataApprove;
+        itemsArrayApprove = this.state.KBListData.filter(
+          a => a.categoryName === data
+        );
+      }else if(column==="subCategoryName"){
+        this.state.KBListData=this.state.sortAllDataApprove;
+        itemsArrayApprove = this.state.KBListData.filter(
+          a => a.subCategoryName === data
+        );
+      }
+    }
+    
+
+   
+   
+  
+    this.setState({
+      KBListnotApproveData:itemsArray,
+      KBListData:itemsArrayApprove
+    });
+   
+    this.StatusCloseModel();
+  }
+
+ 
   
   opneSearchModal() {
     this.setState({ searchmodal: true });
@@ -491,12 +569,95 @@ class KnowledgeBase extends Component {
       var notapprove = res.data.responseData.notApproved;
       var approveconut = res.data.responseData.approved.length;
       var notapproveconut = res.data.responseData.notApproved.length;
+
+      
+
+
       self.setState({
         KBListData: approve,
         KBListnotApproveData: notapprove,
         countApprove: approveconut,
         countNotApprove: notapproveconut
       });
+      
+      self.state.sortAllData=notapprove;
+      var unique=[];
+    var distinct = [];
+    for( let i = 0; i < notapprove.length; i++ ){
+      if( !unique[notapprove[i].issueTypeName]){
+        distinct.push(notapprove[i].issueTypeName);
+        unique[notapprove[i].issueTypeName]=1;
+      }
+    }
+    for (let i = 0; i < distinct.length; i++) {
+      self.state.sortIssueType.push({ issueTypeName: distinct[i] });
+    }
+
+    var unique=[];
+    var distinct = [];
+    for( let i = 0; i < notapprove.length; i++ ){
+      if( !unique[notapprove[i].categoryName]){
+        distinct.push(notapprove[i].categoryName);
+        unique[notapprove[i].categoryName]=1;
+      }
+    }
+    for (let i = 0; i < distinct.length; i++) {
+      self.state.sortCategory.push({ categoryName: distinct[i] });
+    }
+
+    var unique=[];
+    var distinct = [];
+    for( let i = 0; i < notapprove.length; i++ ){
+      if( !unique[notapprove[i].subCategoryName]){
+        distinct.push(notapprove[i].subCategoryName);
+        unique[notapprove[i].subCategoryName]=1;
+      }
+    }
+    for (let i = 0; i < distinct.length; i++) {
+      self.state.sortSubCategory.push({ subCategoryName: distinct[i] });
+    }
+
+    self.state.sortAllDataApprove=approve;
+    var unique=[];
+    var distinct = [];
+    for( let i = 0; i < approve.length; i++ ){
+      if( !unique[approve[i].issueTypeName]){
+        distinct.push(approve[i].issueTypeName);
+        unique[approve[i].issueTypeName]=1;
+      }
+    }
+    for (let i = 0; i < distinct.length; i++) {
+      self.state.sortIssueTypeApprove.push({ issueTypeName: distinct[i] });
+    }
+
+
+    var unique=[];
+    var distinct = [];
+    for( let i = 0; i < approve.length; i++ ){
+      if( !unique[approve[i].categoryName]){
+        distinct.push(approve[i].categoryName);
+        unique[approve[i].categoryName]=1;
+      }
+    }
+    for (let i = 0; i < distinct.length; i++) {
+      self.state.sortCategoryApprove.push({ categoryName: distinct[i] });
+    }
+
+
+    var unique=[];
+    var distinct = [];
+    for( let i = 0; i < approve.length; i++ ){
+      if( !unique[approve[i].subCategoryName]){
+        distinct.push(approve[i].subCategoryName);
+        unique[approve[i].subCategoryName]=1;
+      }
+    }
+    for (let i = 0; i < distinct.length; i++) {
+      self.state.sortSubCategoryApprove.push({ subCategoryName: distinct[i] });
+    }
+
+
+
       if (self.state.tabCount === 1) {
         self.setState({
           kbClearNew: false
@@ -670,6 +831,9 @@ class KnowledgeBase extends Component {
     this.setState({ detailscollapse: !this.state.detailscollapse });
   }
   render() {
+
+    
+
     return (
       <Fragment>
         <NotificationContainer />
@@ -704,8 +868,91 @@ class KnowledgeBase extends Component {
               <div className="filter-type">
         
                 <p>FILTER BY TYPE</p>
+                 
+                 
+                <div className="filter-checkbox">
+                <input
+                    type="checkbox"
+                    
+                    name="filter-type"
+                    id={"fil-open" }
+                  
+                    value="all"
+                    onChange={this.setSortCheckStatus.bind(this,"all")}
+                  />
+                  <label htmlFor={"fil-open"}>
+                    <span className="table-btn table-blue-btn">ALL</span>
+                  </label>
+                  </div>
                 
-              
+                {this.state.sortColumnName==="issueTypeName" ? 
+                
+                this.state.sortIssueType !== null && 
+                  this.state.sortIssueType.map((item, i) => ( 
+                    <div className="filter-checkbox">
+                      
+                  <input
+                    type="checkbox"
+                    
+                    name="filter-type"
+                    id={"fil-open" + item.issueTypeName}
+                  
+                    value={item.issueTypeName}
+                    onChange={this.setSortCheckStatus.bind(this,"issueTypeName")}
+                  />
+                  <label htmlFor={"fil-open" + item.issueTypeName}>
+                    <span className="table-btn table-blue-btn">{item.issueTypeName}</span>
+                  </label>
+                </div>
+                  ))
+
+                :null}
+
+                  {this.state.sortColumnName==="categoryName" ? 
+                
+                this.state.sortCategory !== null && 
+                  this.state.sortCategory.map((item, i) => ( 
+                    <div className="filter-checkbox">
+                      
+                  <input
+                    type="checkbox"
+                    
+                    name="filter-type"
+                    id={"fil-open" + item.categoryName}
+                  
+                    value={item.categoryName}
+                    onChange={this.setSortCheckStatus.bind(this,"categoryName")}
+                  />
+                  <label htmlFor={"fil-open" + item.categoryName}>
+                    <span className="table-btn table-blue-btn">{item.categoryName}</span>
+                  </label>
+                </div>
+                  ))
+
+                :null}
+
+               {this.state.sortColumnName==="subCategoryName" ? 
+                
+                this.state.sortSubCategory !== null && 
+                  this.state.sortSubCategory.map((item, i) => ( 
+                    <div className="filter-checkbox">
+                      
+                  <input
+                    type="checkbox"
+                    
+                    name="filter-type"
+                    id={"fil-open" + item.subCategoryName}
+                  
+                    value={item.subCategoryName}
+                    onChange={this.setSortCheckStatus.bind(this,"subCategoryName")}
+                  />
+                  <label htmlFor={"fil-open" + item.subCategoryName}>
+                    <span className="table-btn table-blue-btn">{item.subCategoryName}</span>
+                  </label>
+                </div>
+                  ))
+
+                :null}
                 
 
               </div>
@@ -833,15 +1080,16 @@ class KnowledgeBase extends Component {
                   },
                   {
                     Header: (
-                      
+
+                       
                       <span 
-                      //onClick={this.StatusOpenModel.bind(this)}
+                      onClick={this.StatusOpenModel.bind(this,"issueTypeName","notapprove")}
                       >
                         <label>
                           Type <FontAwesomeIcon icon={faCaretDown} />
                         </label>
                       </span>
-                     
+                      
                     ),
                     accessor: "issueTypeName",
 
@@ -860,7 +1108,9 @@ class KnowledgeBase extends Component {
 
                   {
                     Header: (
-                      <span>
+                      <span
+                      onClick={this.StatusOpenModel.bind(this,"categoryName","notapprove")}
+                      >
                         <label>
                           Category <FontAwesomeIcon icon={faCaretDown} />
                         </label>
@@ -879,7 +1129,9 @@ class KnowledgeBase extends Component {
                   },
                   {
                     Header: (
-                      <span>
+                      <span
+                      onClick={this.StatusOpenModel.bind(this,"subCategoryName","notapprove")}
+                      >
                         <label>
                           Sub catogory <FontAwesomeIcon icon={faCaretDown} />
                         </label>
