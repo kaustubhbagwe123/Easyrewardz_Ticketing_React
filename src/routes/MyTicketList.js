@@ -4388,7 +4388,7 @@ class MyTicketList extends Component {
                                       />
                                       CSV
                                     </CSVLink>
-                                    <button
+                                    {/* <button
                                       type="button"
                                       onClick={this.ScheduleOpenModel}
                                     >
@@ -4398,7 +4398,7 @@ class MyTicketList extends Component {
                                         alt="schedule-icon"
                                       />
                                       Schedule
-                                    </button>
+                                    </button> */}
                                     <Modal
                                       onClose={this.ScheduleCloseModel}
                                       open={this.state.Schedule}
@@ -4879,7 +4879,7 @@ class MyTicketList extends Component {
                                         </div>
                                       </div>
                                     </Modal>
-                                    <button
+                                    {/* <button
                                       className={
                                         this.state.ticketIds.length > 0
                                           ? "btn-inv"
@@ -4899,7 +4899,7 @@ class MyTicketList extends Component {
                                         alt="assign-icon"
                                       />
                                       Assign
-                                    </button>
+                                    </button> */}
                                     <Modal
                                       onClose={this.handleAssignModalClose.bind(
                                         this
