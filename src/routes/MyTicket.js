@@ -26,7 +26,7 @@ import FacebookImg from "./../assets/Images/facebook.png";
 import ClipImg from "./../assets/Images/clip.png";
 import PencilImg from "./../assets/Images/pencil.png";
 import CancelImg from "./../assets/Images/cancel.png";
-import { Collapse, CardBody, Card } from "reactstrap";
+import { Collapse, CardBody, Card,Progress  } from "reactstrap";
 import { Checkbox } from "antd";
 import CustomerIcon from "./../assets/Images/customer-icon.png";
 import UserIcon from "./../assets/Images/UserIcon.png";
@@ -175,7 +175,8 @@ class MyTicket extends Component {
       CheckBoxAllItem: {},
       SelectedAllOrder: [],
       SelectedAllItem: [],
-     
+      progressBarData: [],
+      progressDataWithcColor: []
       // ChckOrdMasterId: true,
       // ChckOrderMasterSelectedAll: true,
       // checkedSelectList: ""
@@ -200,6 +201,7 @@ class MyTicket extends Component {
     this.handleGetOrderDetails = this.handleGetOrderDetails.bind(this);
     this.handleGetProductData = this.handleGetProductData.bind(this);
     this.handleGetMessageDetails = this.handleGetMessageDetails.bind(this);
+    this.handleProgressBarDetails = this.handleProgressBarDetails.bind(this);
     this.hanldeGetSelectedStoreData = this.hanldeGetSelectedStoreData.bind(
       this
     );
@@ -218,6 +220,7 @@ class MyTicket extends Component {
       // this.handleGetTaskTableCount(ticketId);
       this.handleGetCountOfTabs(ticketId);
       this.handleGetMessageDetails(ticketId);
+      this.handleProgressBarDetails(ticketId);
     } else {
       this.props.history.push("myTicketlist");
     }
@@ -1547,6 +1550,41 @@ class MyTicket extends Component {
       this.setState({ mailFiled, userBccCount: finalCount.length });
     }
   }
+  handleProgressBarDetails(id) {
+    debugger;
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Ticketing/getprogressbardetail",
+      headers: authHeader(),
+      params: {
+        Ticket_ID: id
+      }
+    }).then(function(res) {
+      debugger;
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        var progressColor = [];
+        if (data.length > 0) {
+          progressColor.push({
+            value: data[0].progressFirstPercentage,
+            color: data[0].progressFirstColorCode
+          });
+          progressColor.push({
+            value: data[0].progressSecondPercentage,
+            color: data[0].progressSecondColorCode
+          });
+        }
+        self.setState({
+          progressBarData: data,
+          progressDataWithcColor: progressColor
+        });
+      } else {
+        self.setState({ progressBarData: [] });
+      }
+    });
+  }
 
   handleFileUpload(e) {
     debugger;
@@ -1657,17 +1695,79 @@ class MyTicket extends Component {
       CheckBoxAllOrder: orderMasterID ? newSelected : false
     });
     var selectedRow = [];
-    if (this.state.SelectedAllItem.length === 0) {
+    var CselectedRow = [];
+    if (this.state.SelectedAllOrder.length === 0) {
       selectedRow.push(rowData);
+      var Order_Master = this.state.OrderSubItem.filter(
+        x => x.orderMasterID === orderMasterID
+      );
+      if (Order_Master.length > 0) {
+        var objCheckBoxAllItem = new Object();
+        for (let j = 0; j < Order_Master.length; j++) {
+          objCheckBoxAllItem[Order_Master[j].orderItemID] = true;
+
+          CselectedRow.push(Order_Master[j]);
+        }
+        this.setState({
+          CheckBoxAllItem: objCheckBoxAllItem
+        });
+      }
       this.setState({
-        SelectedAllItem: selectedRow
+        SelectedAllOrder: selectedRow,
+        SelectedAllItem: CselectedRow
       });
     } else {
       if (newSelected[orderMasterID] === true) {
-        for (var i = 0; i < this.state.SelectedAllItem.length; i++) {
-          if (this.state.SelectedAllItem[i] === rowData) {
-            selectedRow = this.state.SelectedAllItem;
+        for (var i = 0; i < this.state.SelectedAllOrder.length; i++) {
+          if (this.state.SelectedAllOrder[i] === rowData) {
+            selectedRow = this.state.SelectedAllOrder;
             selectedRow.push(rowData);
+            var Order_Master = this.state.OrderSubItem.filter(
+              x => x.orderMasterID === orderMasterID
+            );
+            if (Order_Master.length > 0) {
+              var objCheckBoxAllItem = new Object();
+              for (let j = 0; j < Order_Master.length; j++) {
+                objCheckBoxAllItem[Order_Master[j].orderItemID] = true;
+
+                CselectedRow.push(Order_Master[j]);
+              }
+              this.setState({
+                CheckBoxAllItem: objCheckBoxAllItem
+              });
+            }
+
+            this.setState({
+              SelectedAllOrder: selectedRow,
+              SelectedAllItem: CselectedRow
+            });
+
+            break;
+          }
+        }
+      } else {
+        for (var i = 0; i < this.state.SelectedAllOrder.length; i++) {
+          if (this.state.SelectedAllOrder[i] === rowData) {
+            selectedRow = this.state.SelectedAllOrder;
+            selectedRow.splice(i, 1);
+            var Order_Master = this.state.OrderSubItem.filter(
+              x => x.orderMasterID === orderMasterID
+            );
+            if (Order_Master.length > 0) {
+              var objCheckBoxAllItem = new Object();
+              for (let j = 0; j < Order_Master.length; j++) {
+                objCheckBoxAllItem[Order_Master[j].orderItemID] = false;
+              }
+              this.setState({
+                CheckBoxAllItem: objCheckBoxAllItem
+              });
+            }
+
+            this.setState({
+              SelectedAllOrder: selectedRow,
+              SelectedAllItem: []
+            });
+
             break;
           }
         }
@@ -1675,7 +1775,8 @@ class MyTicket extends Component {
     }
 
     this.setState({
-      SelectedAllItem: selectedRow
+      SelectedAllOrder: selectedRow,
+      SelectedAllItem: CselectedRow
     });
   }
 
@@ -1695,20 +1796,49 @@ class MyTicket extends Component {
     } else {
       if (newSelected[orderItemID] === true) {
         for (var i = 0; i < this.state.SelectedAllItem.length; i++) {
-         
-            selectedRow = this.state.SelectedAllItem;
-            selectedRow.push(rowData);
-            var Order_Master = this.state.OrderSubItem.filter(
-              x =>
-                x.orderMasterID === this.state.SelectedAllItem[i].orderMasterID
+          selectedRow = this.state.SelectedAllItem;
+          selectedRow.push(rowData);
+          var Order_Master = this.state.OrderSubItem.filter(
+            x => x.orderMasterID === this.state.SelectedAllItem[i].orderMasterID
+          );
+          if (Order_Master.length === selectedRow.length) {
+            const newSelected = Object.assign({}, this.state.CheckBoxAllOrder);
+            newSelected[Order_Master[0].orderMasterID] = !this.state
+              .CheckBoxAllOrder[Order_Master[0].orderMasterID];
+            this.setState({
+              CheckBoxAllOrder: Order_Master[0].orderMasterID
+                ? newSelected
+                : false
+            });
+            var data_master = this.state.orderDetailsData.filter(
+              y => y.orderMasterID === Order_Master[0].orderMasterID
             );
-            if (Order_Master.length === selectedRow.length) {
+            if (data_master.length > 0) {
+              var MastOrd = this.state.SelectedAllOrder;
+              MastOrd.push(data_master[0]);
+              this.setState({
+                SelectedAllOrder: MastOrd
+              });
+            }
+          }
+          break;
+        }
+      } else {
+        for (var j = 0; j < this.state.SelectedAllItem.length; j++) {
+          if (this.state.SelectedAllItem[j] === rowData) {
+            selectedRow = this.state.SelectedAllItem;
+            selectedRow.splice(j, 1);
+
+            var Order_Master = this.state.OrderSubItem.filter(
+              x => x.orderMasterID === rowData.orderMasterID
+            );
+
+            if (Order_Master.length !== selectedRow.length) {
               const newSelected = Object.assign(
                 {},
                 this.state.CheckBoxAllOrder
               );
-              newSelected[Order_Master[0].orderMasterID] = !this.state
-                .CheckBoxAllOrder[Order_Master[0].orderMasterID];
+              newSelected[Order_Master[0].orderMasterID] = false;
               this.setState({
                 CheckBoxAllOrder: Order_Master[0].orderMasterID
                   ? newSelected
@@ -1717,21 +1847,18 @@ class MyTicket extends Component {
               var data_master = this.state.orderDetailsData.filter(
                 y => y.orderMasterID === Order_Master[0].orderMasterID
               );
+              var GetIndex = this.state.orderDetailsData.findIndex(
+                y => y.orderMasterID === Order_Master[0].orderMasterID
+              );
               if (data_master.length > 0) {
                 var MastOrd = this.state.SelectedAllOrder;
-                MastOrd.push(data_master[0]);
+                MastOrd.splice(GetIndex, 1);
                 this.setState({
                   SelectedAllOrder: MastOrd
                 });
               }
-              break;
             }
-        }
-      } else {
-        for (var j = 0; j < this.state.SelectedAllItem.length; j++) {
-          if (this.state.SelectedAllItem[j] === rowData) {
-            selectedRow = this.state.SelectedAllItem;
-            selectedRow.splice(j, 1);
+
             break;
           }
         }
@@ -2400,12 +2527,48 @@ class MyTicket extends Component {
                           Resolution
                         </label>
                       </div>
-                      <progress
+                      {/* <progress
                         className="ticket-progress"
                         style={{ width: "100%" }}
                         value="50"
                         max="100"
-                      ></progress>
+                      ></progress> */}
+                      <Progress multi>
+                        {this.state.progressDataWithcColor.map(function(item) {
+                          if (item.color === "No Color") {
+                            return <Progress bar value={item.value}></Progress>;
+                          }
+                          if (item.color === "Orange") {
+                            return (
+                              <Progress
+                                bar
+                                color="warning"
+                                value={item.value}
+                              ></Progress>
+                            );
+                          }
+
+                          if (item.color === "Red") {
+                            return (
+                              <Progress
+                                bar
+                                color="danger"
+                                value={item.value}
+                              ></Progress>
+                            );
+                          }
+
+                          if (item.color === "Green") {
+                            return (
+                              <Progress
+                                bar
+                                color="success"
+                                value={item.value}
+                              ></Progress>
+                            );
+                          }
+                        })}
+                      </Progress>
                       <p className="logout-label font-weight-bold prog-indi-1">
                         2 day
                       </p>
@@ -3343,7 +3506,11 @@ class MyTicket extends Component {
                                         <div style={{ padding: "20px" }}>
                                           <ReactTable
                                             // data={row.original.orderItems}
-                                            data={this.state.OrderSubItem.filter(x=>x.orderMasterID === row.original.orderMasterID)}
+                                            data={this.state.OrderSubItem.filter(
+                                              x =>
+                                                x.orderMasterID ===
+                                                row.original.orderMasterID
+                                            )}
                                             columns={[
                                               {
                                                 Header: <span> </span>,
