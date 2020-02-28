@@ -2687,6 +2687,7 @@ class Dashboard extends Component {
       
       let CSVData = data;
       let count = 0;
+      if(data !== null) {
       if (res.data.responseData != null) {
         count = res.data.responseData.length;
       }
@@ -2751,8 +2752,7 @@ class Dashboard extends Component {
     for (let i = 0; i < distinct.length; i++) {
       self.state.sortAssigneeData.push({ assignedTo: distinct[i] });
     }
-
-
+  }
       if (status === "Success") {
         if(Shwcheck === 1){
           self.setState({
@@ -3040,7 +3040,9 @@ class Dashboard extends Component {
             ByDateSelectDate: modifiedDateFinal,
             selectedSlaDueByDate: dataSearch.searchDataByDate.SLA_DueON,
             selectedTicketStatusByDate:
-              dataSearch.searchDataByDate.Ticket_StatusID
+              dataSearch.searchDataByDate.Ticket_StatusID,
+              byCategoryFlag: 0,
+            allFlag: 0
           });
         }
 
@@ -3059,7 +3061,9 @@ class Dashboard extends Component {
               dataSearch.searchDataByCustomerType.CustomerEmailID,
             TicketIdByCustType: dataSearch.searchDataByCustomerType.TicketID,
             selectedTicketStatusByCustomer:
-              dataSearch.searchDataByCustomerType.TicketStatusID
+              dataSearch.searchDataByCustomerType.TicketStatusID,
+              byCategoryFlag: 0,
+            allFlag: 0
           });
         }
 
@@ -3109,7 +3113,9 @@ class Dashboard extends Component {
             selectedTicketStatusByTicket:
               dataSearch.searchDataByTicketType.TicketStatusID,
             selectedChannelOfPurchase: purchaseArr,
-            selectedTicketActionType: actionArr
+            selectedTicketActionType: actionArr,
+            byCategoryFlag: 0,
+            allFlag: 0
           });
         }
 
@@ -3121,11 +3127,27 @@ class Dashboard extends Component {
             selectedTicketStatusByCategory: 0
           });
         } else {
+          // self.setState({
+          //   selectedCategory: dataSearch.searchDataByCategoryType.CategoryId,
+          //   selectedSubCategory: dataSearch.searchDataByCategoryType.SubCategoryId,
+          //   selectedIssueType: dataSearch.searchDataByCategoryType.IssueTypeId,
+          //   selectedTicketStatusByCategory: dataSearch.searchDataByCategoryType.TicketStatusID
+          // });
           self.setState({
             selectedCategory: dataSearch.searchDataByCategoryType.CategoryId,
-            selectedSubCategory: dataSearch.searchDataByCategoryType.SubCategoryId,
-            selectedIssueType: dataSearch.searchDataByCategoryType.IssueTypeId,
+            byCategoryFlag: 4,
+            allFlag: 0,
             selectedTicketStatusByCategory: dataSearch.searchDataByCategoryType.TicketStatusID
+          }, () => {
+            self.handleGetSubCategoryList()
+          });
+          self.setState({
+            selectedSubCategory: dataSearch.searchDataByCategoryType.SubCategoryId
+          }, () => {
+            self.handleGetIssueTypeList()
+          });
+          self.setState({
+            selectedIssueType: dataSearch.searchDataByCategoryType.IssueTypeId
           });
         }
 
@@ -3183,17 +3205,16 @@ class Dashboard extends Component {
             InvoiceSubOrderByAll:
               dataSearch.searchDataByAll.InvoiceNumberORSubOrderNo,
             MobileByAll: dataSearch.searchDataByAll.CustomerMobileNo,
-            selectedCategoryAll: dataSearch.searchDataByAll.CategoryId,
+            // selectedCategoryAll: dataSearch.searchDataByAll.CategoryId,
             selectedPriorityAll: dataSearch.searchDataByAll.PriorityId,
             ItemIdByAll: dataSearch.searchDataByAll.OrderItemId,
             selectedAssignedTo: dataSearch.searchDataByAll.AssignTo,
-            // selectedAssignedToAll: "",
-            selectedSubCategoryAll: dataSearch.searchDataByAll.SubCategoryId,
+            // selectedSubCategoryAll: dataSearch.searchDataByAll.SubCategoryId,
             selectedTicketStatusAll: dataSearch.searchDataByAll.TicketSatutsID,
             selectedVisitStoreAll: dataSearch.searchDataByAll.IsVisitStore,
             selectedPurchaseStoreCodeAddressAll:
               dataSearch.searchDataByAll.StoreCodeORAddress,
-            selectedIssueTypeAll: dataSearch.searchDataByAll.IssueTypeId,
+            // selectedIssueTypeAll: dataSearch.searchDataByAll.IssueTypeId,
             selectedSlaStatus: dataSearch.searchDataByAll.SLAStatus,
             selectedWantToVisitStoreAll:
               dataSearch.searchDataByAll.IsWantVistingStore,
@@ -3202,15 +3223,52 @@ class Dashboard extends Component {
             selectedWithClaimAll:
               dataSearch.searchDataByAll.HaveClaim === 0 ? "no" : "yes",
             selectedClaimStatus: dataSearch.searchDataByAll.ClaimStatusId,
-            selectedClaimCategory: dataSearch.searchDataByAll.ClaimCategoryId,
-            selectedClaimSubCategory:
-              dataSearch.searchDataByAll.ClaimSubCategoryId,
-            selectedClaimIssueType: dataSearch.searchDataByAll.ClaimIssueTypeId,
+            // selectedClaimCategory: dataSearch.searchDataByAll.ClaimCategoryId,
+            // selectedClaimSubCategory:
+            //   dataSearch.searchDataByAll.ClaimSubCategoryId,
+            // selectedClaimIssueType: dataSearch.searchDataByAll.ClaimIssueTypeId,
             selectedWithTaskAll:
               dataSearch.searchDataByAll.HaveTask === 0 ? "no" : "yes",
             selectedTaskStatus: dataSearch.searchDataByAll.TaskStatusId,
+            // selectedDepartment: dataSearch.searchDataByAll.TaskDepartment_Id,
+            // selectedFunction: dataSearch.searchDataByAll.TaskFunction_Id
+          });
+          self.setState({
+            selectedCategoryAll: dataSearch.searchDataByAll.CategoryId,
+            byCategoryFlag: 0,
+            allFlag: 5
+          }, () => {
+            self.handleGetSubCategoryList()
+          });
+          self.setState({
+            selectedSubCategoryAll: dataSearch.searchDataByAll.SubCategoryId
+          }, () => {
+            self.handleGetIssueTypeList()
+          });
+          self.setState({
+            selectedIssueTypeAll: dataSearch.searchDataByAll.IssueTypeId
+          });
+          self.setState({
             selectedDepartment: dataSearch.searchDataByAll.TaskDepartment_Id,
+          }, () => {
+            self.handleGetFunctionList()
+          });
+          self.setState({
             selectedFunction: dataSearch.searchDataByAll.TaskFunction_Id
+          });
+          self.setState({
+            selectedClaimCategory: dataSearch.searchDataByAll.ClaimCategoryId
+          }, () => {
+            self.handleGetClaimSubCategoryList()
+          });
+          self.setState({
+            selectedClaimSubCategory:
+              dataSearch.searchDataByAll.ClaimSubCategoryId,
+          }, () => {
+            self.handleGetClaimIssueTypeList()
+          });
+          self.setState({
+            selectedClaimIssueType: dataSearch.searchDataByAll.ClaimIssueTypeId
           });
         }
 
