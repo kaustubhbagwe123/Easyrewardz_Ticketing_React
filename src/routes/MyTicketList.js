@@ -516,6 +516,12 @@ class MyTicketList extends Component {
 
   handleSearchTicket(TabId) {
     debugger;
+    this.state.sortTicketData= [];
+    this.state.sortCategoryData= [];
+    this.state.sortPriorityData= [];
+    this.state.sortcreatedOnData= [];
+    this.state.sortAssigneeData= [];
+    this.state.sortAllData =[];
     var ticketStatus = 0;
 
     if (TabId === "Escalation" || TabId === undefined) {
@@ -627,6 +633,71 @@ class MyTicketList extends Component {
       let data = res.data.responseData;
       let CSVData = data;
       let Status = res.data.message;
+      
+
+      self.state.sortAllData = data;
+      var unique = [];
+      var distinct = [];
+      for (let i = 0; i < data.length; i++) {
+        if (!unique[data[i].ticketStatus]) {
+          distinct.push(data[i].ticketStatus);
+          unique[data[i].ticketStatus] = 1;
+        }
+      }
+      for (let i = 0; i < distinct.length; i++) {
+        self.state.sortTicketData.push({ ticketStatus: distinct[i] });
+      }
+
+      var unique = [];
+      var distinct = [];
+      for (let i = 0; i < data.length; i++) {
+        if (!unique[data[i].category]) {
+          distinct.push(data[i].category);
+          unique[data[i].category] = 1;
+        }
+      }
+      for (let i = 0; i < distinct.length; i++) {
+        self.state.sortCategoryData.push({ category: distinct[i] });
+      }
+
+      var unique = [];
+      var distinct = [];
+      for (let i = 0; i < data.length; i++) {
+        if (!unique[data[i].priority]) {
+          distinct.push(data[i].priority);
+          unique[data[i].priority] = 1;
+        }
+      }
+      for (let i = 0; i < distinct.length; i++) {
+        self.state.sortPriorityData.push({ priority: distinct[i] });
+      }
+
+      var unique = [];
+      var distinct = [];
+      for (let i = 0; i < data.length; i++) {
+        if (!unique[data[i].createdOn]) {
+          distinct.push(data[i].createdOn);
+          unique[data[i].createdOn] = 1;
+        }
+      }
+      for (let i = 0; i < distinct.length; i++) {
+        self.state.sortcreatedOnData.push({ createdOn: distinct[i] });
+      }
+
+      var unique = [];
+      var distinct = [];
+      for (let i = 0; i < data.length; i++) {
+        if (!unique[data[i].assignedTo]) {
+          distinct.push(data[i].assignedTo);
+          unique[data[i].assignedTo] = 1;
+        }
+      }
+      for (let i = 0; i < distinct.length; i++) {
+        self.state.sortAssigneeData.push({ assignedTo: distinct[i] });
+      }
+      
+
+
       if (Status === "Success") {
         self.setState({ SearchTicketData: data, loading: false, cSelectedRow: {} });
         for (let i = 0; i < CSVData.length; i++) {
@@ -1507,6 +1578,12 @@ class MyTicketList extends Component {
   }
   ViewSearchData(clrSrch) {
     debugger;
+    this.state.sortTicketData= [];
+    this.state.sortCategoryData= [];
+    this.state.sortPriorityData= [];
+    this.state.sortcreatedOnData= [];
+    this.state.sortAssigneeData= [];
+    this.state.sortAllData =[];
     let self = this;
     this.setState({ loading: true });
 
@@ -1704,7 +1781,7 @@ class MyTicketList extends Component {
       if (res.data.responseData != null) {
         count = res.data.responseData.length;
       }
-
+        
       self.state.sortAllData = data;
       var unique = [];
       var distinct = [];
@@ -1765,7 +1842,9 @@ class MyTicketList extends Component {
       for (let i = 0; i < distinct.length; i++) {
         self.state.sortAssigneeData.push({ assignedTo: distinct[i] });
       }
+      
 
+     
 
       if (status === "Success") {
         if (data !== null) {
@@ -2877,7 +2956,9 @@ class MyTicketList extends Component {
 
               <div className="filter-type filter-color">
                 <p>FILTER BY COLOR</p>
-                <div className="filter-checkbox">
+               
+                    
+                    <div className="filter-checkbox">
                   <input type="checkbox"
                     id="fil-red"
                     name="filter-color"
@@ -2888,6 +2969,9 @@ class MyTicketList extends Component {
                     <span className="fil-color-red fil-color-bg"></span>
                   </label>
                 </div>
+
+              
+               
                 <div className="filter-checkbox">
                   <input type="checkbox" id="fil-orange" name="filter-color"
                     value="isSLANearBreach"
@@ -4377,7 +4461,7 @@ class MyTicketList extends Component {
                                       />
                                       CSV
                                     </CSVLink>
-                                    <button
+                                    {/* <button
                                       type="button"
                                       onClick={this.ScheduleOpenModel}
                                     >
@@ -4387,7 +4471,7 @@ class MyTicketList extends Component {
                                         alt="schedule-icon"
                                       />
                                       Schedule
-                                    </button>
+                                    </button> */}
                                     <Modal
                                       onClose={this.ScheduleCloseModel}
                                       open={this.state.Schedule}
@@ -4868,7 +4952,7 @@ class MyTicketList extends Component {
                                         </div>
                                       </div>
                                     </Modal>
-                                    <button
+                                    {/* <button
                                       className={
                                         this.state.ticketIds.length > 0
                                           ? "btn-inv"
@@ -4888,7 +4972,7 @@ class MyTicketList extends Component {
                                         alt="assign-icon"
                                       />
                                       Assign
-                                    </button>
+                                    </button> */}
                                     <Modal
                                       onClose={this.handleAssignModalClose.bind(
                                         this

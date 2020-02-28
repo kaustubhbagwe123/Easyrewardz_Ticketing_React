@@ -56,6 +56,7 @@ class TicketCRMRole extends Component {
     this.handleUpdateRoleName = this.handleUpdateRoleName.bind(this);
     this.handleModulesDefault = this.handleModulesDefault.bind(this);
     this.handleGetCRMRoles = this.handleGetCRMRoles.bind(this);
+    // this.updateCrmRole = this.updateCrmRole.bind(this);
     
     this.validator = new SimpleReactValidator();
   }
@@ -253,7 +254,7 @@ class TicketCRMRole extends Component {
   }
   
   updateCrmRole(individualData) {
-    debugger;
+    // debugger;
     let updateRoleName = individualData.roleName, roleisActive =  individualData.isRoleActive, updateRoleisActive, updateModulesList = individualData.modules;
     if (roleisActive === 'Inactive') {
       updateRoleisActive = 'false'
@@ -514,7 +515,7 @@ class TicketCRMRole extends Component {
                   placement="bottom"
                   trigger="click"
                 >
-                  <button className="react-tabel-button" id="p-edit-pop-2" onClick={this.updateCrmRole.bind(this, row.original)}>
+                  <button className="react-tabel-button" id="p-edit-pop-2" onClick={() => this.updateCrmRole.bind(this, row.original)}>
                     <label className="Table-action-edit-button-text">
                       EDIT
                     </label>

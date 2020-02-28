@@ -67,6 +67,7 @@ class Header extends Component {
       notifiTktIds2: "",
       notifiTktIds3: "",
       percentLog: 0,
+      selectedUserProfilePicture:"",
       cont: [
         {
           data: "Dashboards",
@@ -99,11 +100,13 @@ class Header extends Component {
     };
     this.handleLoggedInUserDetails = this.handleLoggedInUserDetails.bind(this);
     this.handleGetNotificationList = this.handleGetNotificationList.bind(this);
+    this.handleGetUserProfileData=this.handleGetUserProfileData.bind(this);
    
   }
 
   componentDidMount() {
     this.handleLoggedInUserDetails();
+    this.handleGetUserProfileData();
     let pageName, lastOne, lastValue, arr;
     arr = [...this.state.cont];
     setTimeout(
@@ -193,7 +196,32 @@ class Header extends Component {
     }
   };
  
+  handleGetUserProfileData() {
+    debugger;
 
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/User/GetUserProfileDetail",
+      headers: authHeader()
+     
+    }).then(function (res) {
+      debugger;
+      var status = res.data.message;
+      var userdata = res.data.responseData[0].profilePicture;
+      if (status === "Success") {
+        self.setState({
+          selectedUserProfilePicture: userdata
+        });
+      
+      } else {
+        self.setState({
+          selectedUserProfilePicture: ""
+        });
+      }
+
+    });
+  }
   
   handleLogoutMethod() {
     // let self = this;
@@ -276,6 +304,7 @@ class Header extends Component {
       debugger;
       let status = res.data.message;
       if (status === "Success") {
+        debugger;
         let Count1 = res.data.responseData.ticketNotification[0].ticketCount;
         let Count2 = res.data.responseData.ticketNotification[1].ticketCount;
         let Count3 = res.data.responseData.ticketNotification[2].ticketCount;
@@ -300,6 +329,7 @@ class Header extends Component {
           notiCount
         });
       } else {
+        debugger
         self.setState({
           notifiCount1: "",
           notifiCount2: "",
@@ -863,6 +893,7 @@ class Header extends Component {
             <a href="#!" className="bitmap5" onClick={this.onOpenModal}>
               {this.state.NameTag}
             </a>
+            
           </div>
         </div>
 
@@ -956,13 +987,13 @@ class Header extends Component {
                 <div className="user-img">
                 <Link to="userprofile">
                   <img
-                    src={
-                      this.state.userProfile === "user-img.jpg"
-                        ? require("./../assets/Images/user-img.jpg")
-                        : require("./../assets/Images/defaultUser.png")
-                    }
+                    src={this.state.selectedUserProfilePicture}
+                      //this.state.userProfile === "user-img.jpg"
+                       // ? require("./../assets/Images/user-img.jpg")
+                       // : require("./../assets/Images/defaultUser.png")
+                    //}
                     alt="User"
-                    style={{ width: '61px' }}
+                    style={{ width: '90px' }}
                     title="Edit Profile"
                     onClick={this.onCloseModal.bind(this)}
                   />

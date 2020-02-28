@@ -237,7 +237,7 @@ self.setState({
                           onDragEnter={this.fileDragEnter}
                           
                         >
-                          <span className="uploadtextprofile1">Upload</span>
+                          <span className="uploadtextprofile1" >Upload</span>
                         </label>
                         {this.state.fileName[0] && (
                           <div className="file-info">
@@ -368,7 +368,7 @@ self.setState({
                     </div>
                   </div>
 
-                  <div className="row">
+                  {/* <div className="row">
                     <div className="col-md-12" style={{ textAlign: "center" }}>
                       <label
                         className="forwardpasstext"
@@ -377,7 +377,7 @@ self.setState({
                         Change Password
                       </label>
                     </div>
-                  </div>
+                  </div> */}
                   <Modal
                     open={this.state.open}
                     onClose={this.onCloseModal.bind(this)}

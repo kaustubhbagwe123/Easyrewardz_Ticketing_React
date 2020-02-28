@@ -244,7 +244,15 @@ class Reports extends Component {
         "block";
   }
   ScheduleOpenModel = () => {
-    this.setState({ Schedule: true });
+debugger;
+    if(this.state.selectedReportName=="")
+    {
+      NotificationManager.error("Please enter report name");
+    }
+    else{
+      this.setState({ Schedule: true });
+    }
+   
   };
   ScheduleCloseModel = () => {
     this.setState({ Schedule: false });
@@ -1042,6 +1050,33 @@ class Reports extends Component {
       });
     });
   }
+  handleDownload=(id,name)=> {
+    debugger;
+    let self = this;
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Report/DownloadReportSearch",
+      headers: authHeader(),
+      params: {
+        SchedulerID: id
+      }
+    }).then(function(res) {
+     debugger;
+     window.open(res.data.responseData, '_blank');
+    // self.downloadURI(res.data.responseData,name+".csv");
+    });
+  }
+
+  downloadURI=(uri, name)=> {
+    var link = document.createElement("a");
+    link.download = name;
+    link.href = uri;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    //delete link;
+  }
   handleDeleteReport(id) {
     debugger;
     let self = this;
@@ -1242,6 +1277,11 @@ class Reports extends Component {
             IsDailyForYear: false,
             IsWeeklyForYear: false
           });
+        }
+        else if(status=="duplicate")
+        {
+          self.setState({Schedule_ID:0});
+          NotificationManager.error("Report name already exist.");
         }
       });
     }
@@ -2089,7 +2129,7 @@ class Reports extends Component {
                     <input
                       className="no-bg"
                       type="text"
-                      placeholder="Open Tickets"
+                      placeholder="Report Name"
                       maxLength={25}
                       name="selectedReportName"
                       value={this.state.selectedReportName}
@@ -2574,6 +2614,10 @@ class Reports extends Component {
                           src={DownExcel}
                           alt="download icon"
                           className="downloadaction"
+                          onClick={this.handleDownload.bind(
+                            this,
+                            row.original.scheduleID,row.original.reportName
+                          )}
                         /> : <img style={{display:"none"}}
                         src={DownExcel}
                         alt="download icon"

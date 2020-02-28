@@ -554,7 +554,7 @@ class TicketHierarchy extends Component {
                                   <button
                                     className="react-tabel-button"
                                     type="button"
-                                    onClick={this.handleGetEditData.bind(
+                                    onClick={() => this.handleGetEditData.bind(
                                       this,
                                       row.original
                                     )}
