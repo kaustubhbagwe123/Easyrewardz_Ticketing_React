@@ -350,7 +350,7 @@ class MyTicketList extends Component {
 
   componentDidUpdate() {
     debugger;
-    console.log(this.state.notiType);
+    // console.log(this.state.notiType);
     if (this.props.location.state) {
 
       if (this.state.notiType !== this.props.location.state.isType) {
@@ -1778,6 +1778,7 @@ class MyTicketList extends Component {
       console.log(data);
       let CSVData = data;
       let count = 0;
+      if(data !== null) {
       if (res.data.responseData != null) {
         count = res.data.responseData.length;
       }
@@ -1842,6 +1843,7 @@ class MyTicketList extends Component {
       for (let i = 0; i < distinct.length; i++) {
         self.state.sortAssigneeData.push({ assignedTo: distinct[i] });
       }
+    }
       
 
      
@@ -2598,7 +2600,9 @@ class MyTicketList extends Component {
             ByDateSelectDate: modifiedDateFinal,
             selectedSlaDueByDate: dataSearch.searchDataByDate.SLA_DueON,
             selectedTicketStatusByDate:
-              dataSearch.searchDataByDate.Ticket_StatusID
+              dataSearch.searchDataByDate.Ticket_StatusID,
+              byCategoryFlag: 0,
+              allFlag: 0
           });
         }
 
@@ -2617,7 +2621,9 @@ class MyTicketList extends Component {
               dataSearch.searchDataByCustomerType.CustomerEmailID,
             TicketIdByCustType: dataSearch.searchDataByCustomerType.TicketID,
             selectedTicketStatusByCustomer:
-              dataSearch.searchDataByCustomerType.TicketStatusID
+              dataSearch.searchDataByCustomerType.TicketStatusID,
+              byCategoryFlag: 0,
+              allFlag: 0
           });
         }
 
@@ -2667,7 +2673,9 @@ class MyTicketList extends Component {
             selectedTicketStatusByTicket:
               dataSearch.searchDataByTicketType.TicketStatusID,
             selectedChannelOfPurchase: purchaseArr,
-            selectedTicketActionType: actionArr
+            selectedTicketActionType: actionArr,
+            byCategoryFlag: 0,
+            allFlag: 0
           });
         }
 
@@ -2679,11 +2687,27 @@ class MyTicketList extends Component {
             selectedTicketStatusByCategory: 0
           });
         } else {
+          // self.setState({
+          //   selectedCategory: dataSearch.searchDataByCategoryType.CategoryId,
+          //   selectedSubCategory: dataSearch.searchDataByCategoryType.SubCategoryId,
+          //   selectedIssueType: dataSearch.searchDataByCategoryType.IssueTypeId,
+          //   selectedTicketStatusByCategory: dataSearch.searchDataByCategoryType.TicketStatusID
+          // });
           self.setState({
             selectedCategory: dataSearch.searchDataByCategoryType.CategoryId,
-            selectedSubCategory: dataSearch.searchDataByCategoryType.SubCategoryId,
-            selectedIssueType: dataSearch.searchDataByCategoryType.IssueTypeId,
+            byCategoryFlag: 4,
+            allFlag: 0,
             selectedTicketStatusByCategory: dataSearch.searchDataByCategoryType.TicketStatusID
+          }, () => {
+            self.handleGetSubCategoryList()
+          });
+          self.setState({
+            selectedSubCategory: dataSearch.searchDataByCategoryType.SubCategoryId
+          }, () => {
+            self.handleGetIssueTypeList()
+          });
+          self.setState({
+            selectedIssueType: dataSearch.searchDataByCategoryType.IssueTypeId
           });
         }
 
@@ -2741,17 +2765,16 @@ class MyTicketList extends Component {
             InvoiceSubOrderByAll:
               dataSearch.SearchDataByAll.InvoiceNumberORSubOrderNo,
             MobileByAll: dataSearch.SearchDataByAll.CustomerMobileNo,
-            selectedCategoryAll: dataSearch.SearchDataByAll.CategoryId,
+            // selectedCategoryAll: dataSearch.SearchDataByAll.CategoryId,
             selectedPriorityAll: dataSearch.SearchDataByAll.PriorityId,
             ItemIdByAll: dataSearch.SearchDataByAll.OrderItemId,
             selectedAssignedTo: dataSearch.SearchDataByAll.AssignTo,
-            // selectedAssignedToAll: "",
-            selectedSubCategoryAll: dataSearch.SearchDataByAll.SubCategoryId,
+            // selectedSubCategoryAll: dataSearch.SearchDataByAll.SubCategoryId,
             selectedTicketStatusAll: dataSearch.SearchDataByAll.TicketSatutsID,
             selectedVisitStoreAll: dataSearch.SearchDataByAll.IsVisitStore,
             selectedPurchaseStoreCodeAddressAll:
               dataSearch.SearchDataByAll.StoreCodeORAddress,
-            selectedIssueTypeAll: dataSearch.SearchDataByAll.IssueTypeId,
+            // selectedIssueTypeAll: dataSearch.SearchDataByAll.IssueTypeId,
             selectedSlaStatus: dataSearch.SearchDataByAll.SLAStatus,
             selectedWantToVisitStoreAll:
               dataSearch.SearchDataByAll.IsWantVistingStore,
@@ -2760,15 +2783,52 @@ class MyTicketList extends Component {
             selectedWithClaimAll:
               dataSearch.SearchDataByAll.HaveClaim === 0 ? "no" : "yes",
             selectedClaimStatus: dataSearch.SearchDataByAll.ClaimStatusId,
-            selectedClaimCategory: dataSearch.SearchDataByAll.ClaimCategoryId,
-            selectedClaimSubCategory:
-              dataSearch.SearchDataByAll.ClaimSubCategoryId,
-            selectedClaimIssueType: dataSearch.SearchDataByAll.ClaimIssueTypeId,
+            // selectedClaimCategory: dataSearch.SearchDataByAll.ClaimCategoryId,
+            // selectedClaimSubCategory:
+            //   dataSearch.SearchDataByAll.ClaimSubCategoryId,
+            // selectedClaimIssueType: dataSearch.SearchDataByAll.ClaimIssueTypeId,
             selectedWithTaskAll:
               dataSearch.SearchDataByAll.HaveTask === 0 ? "no" : "yes",
             selectedTaskStatus: dataSearch.SearchDataByAll.TaskStatusId,
+            // selectedDepartment: dataSearch.SearchDataByAll.TaskDepartment_Id,
+            // selectedFunction: dataSearch.SearchDataByAll.TaskFunction_Id
+          });
+          self.setState({
+            selectedCategoryAll: dataSearch.SearchDataByAll.CategoryId,
+            byCategoryFlag: 0,
+            allFlag: 5
+          }, () => {
+            self.handleGetSubCategoryList()
+          });
+          self.setState({
+            selectedSubCategoryAll: dataSearch.SearchDataByAll.SubCategoryId
+          }, () => {
+            self.handleGetIssueTypeList()
+          });
+          self.setState({
+            selectedIssueTypeAll: dataSearch.SearchDataByAll.IssueTypeId
+          });
+          self.setState({
             selectedDepartment: dataSearch.SearchDataByAll.TaskDepartment_Id,
+          }, () => {
+            self.handleGetFunctionList()
+          });
+          self.setState({
             selectedFunction: dataSearch.SearchDataByAll.TaskFunction_Id
+          });
+          self.setState({
+            selectedClaimCategory: dataSearch.SearchDataByAll.ClaimCategoryId
+          }, () => {
+            self.handleGetClaimSubCategoryList()
+          });
+          self.setState({
+            selectedClaimSubCategory:
+              dataSearch.SearchDataByAll.ClaimSubCategoryId,
+          }, () => {
+            self.handleGetClaimIssueTypeList()
+          });
+          self.setState({
+            selectedClaimIssueType: dataSearch.SearchDataByAll.ClaimIssueTypeId
           });
         }
       } else {

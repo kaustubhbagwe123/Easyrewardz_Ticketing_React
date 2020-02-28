@@ -62,7 +62,9 @@ class CreateSLA extends Component {
       searchedSla: [],
       slaShow: false,
       slaOvrlayShow: false,
-      SearchText: ''
+      SearchText: '',
+      issueTypeCompulsion:"",
+      slaTargetCompulsion:""
     };
 
     this.handleGetSLA = this.handleGetSLA.bind(this);
@@ -371,6 +373,22 @@ class CreateSLA extends Component {
   }
   createSla() {
     debugger;
+    var array=this.state.finalData;
+    var valid=false;
+    if(array.length > 0){
+      for(var i=0; i<array.length; i++){
+        if(array[i].SlaBreach !== "" || array[i].Rerspondtime !== "" || array[i].ResolveTime !== "" ){
+          valid=true;
+        }else{
+          valid=false;
+        }
+      }
+    }
+    
+    if(
+      this.state.indiSla !== '' &&
+      valid === true
+    ){
     let self = this;
     let SlaIsActive;
     let indiSla = this.state.indiSla;
@@ -422,6 +440,12 @@ class CreateSLA extends Component {
         NotificationManager.error("SLA not added.", '', 2000);
       }
     });
+  }else{
+    this.setState({
+       issueTypeCompulsion:"Please select issuetype.",
+       slaTargetCompulsion:"Required."
+    });
+  }
   }
 
   deleteSLA(deleteId) {
@@ -957,6 +981,11 @@ class CreateSLA extends Component {
                             Select
                             <span className="caret"></span>
                           </button>
+                          {this.state.indiSla === '' && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.issueTypeCompulsion}
+                    </p>
+                  )}
                           <div className={this.state.slaShow ? "dropdown-menu dropdown-menu-sla show" : "dropdown-menu dropdown-menu-sla"}>
                             <div className="cat-mainbox">
                               <div className="sla-cancel-search">
@@ -969,6 +998,7 @@ class CreateSLA extends Component {
                                   onChange={this.handleSearchSla}
                                   id="SlaInput"
                                 />
+
                                 <img src={Cancel} alt="cancelimg" onClick={this.handleClearSearchSla} />
                               </div>
                               {/* <div className="filter-checkbox category-scroll">
@@ -1074,7 +1104,10 @@ class CreateSLA extends Component {
                       <label className="createhead-text">Resolve</label>
                     </div>
                     {this.state.finalData !== null &&
-                      this.state.finalData.map((item, i) => (
+                      this.state.finalData.map((item, i) =>(
+                     
+                        
+                       
                         <div className="slatargetRow-1" key={i}>
                           <div className="sla-div">
                             <label className="createhead-text-1">
@@ -1082,6 +1115,7 @@ class CreateSLA extends Component {
                             </label>
                           </div>
                           <div className="sla-div-1">
+                            <div>
                             <div className="inner-div">
                               <input
                                 type="text"
@@ -1092,12 +1126,21 @@ class CreateSLA extends Component {
                                 autoComplete="off"
                                 onChange={this.handleSlaTargets.bind(this, i)}
                               />
+                              
                             </div>
                             <div className="inner-div-2-1">
                               <label className="pers-lable">%</label>
                             </div>
+                            </div>
+                            {item.SlaBreach === "" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.slaTargetCompulsion}
+                    </p>
+                  )}
                           </div>
+                          
                           <div className="sla-div-1">
+                            <div>
                             <div className="inner-div">
                               <input
                                 type="text"
@@ -1108,6 +1151,7 @@ class CreateSLA extends Component {
                                 autoComplete="off"
                                 onChange={this.handleSlaTargets.bind(this, i)}
                               />
+                              
                             </div>
                             <div className="inner-div-2">
                               <select
@@ -1121,8 +1165,16 @@ class CreateSLA extends Component {
                                 <option value="D">D</option>
                               </select>
                             </div>
+                            </div>
+                            {item.Rerspondtime === "" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.slaTargetCompulsion}
+                    </p>
+                  )}
+
                           </div>
                           <div className="sla-div-1">
+                            <div>
                             <div className="inner-div">
                               <input
                                 type="text"
@@ -1133,6 +1185,7 @@ class CreateSLA extends Component {
                                 value={item.ResolveTime || ""}
                                 onChange={this.handleSlaTargets.bind(this, i)}
                               />
+                             
                             </div>
                             <div className="inner-div-2">
                               <select
@@ -1146,10 +1199,19 @@ class CreateSLA extends Component {
                                 <option value="D">D</option>
                               </select>
                             </div>
+                            </div>
+                            {item.ResolveTime === "" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {this.state.slaTargetCompulsion}
+                    </p>
+                  )}
                           </div>
                         </div>
-                      ))}
 
+                       
+    ))}
+                      
+                      
 
                     <div className="divSpace-3">
                       <div className="dropDrownSpace">

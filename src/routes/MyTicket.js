@@ -24,7 +24,7 @@ import FacebookImg from "./../assets/Images/facebook.png";
 import ClipImg from "./../assets/Images/clip.png";
 import PencilImg from "./../assets/Images/pencil.png";
 import CancelImg from "./../assets/Images/cancel.png";
-import { Collapse, CardBody, Card } from "reactstrap";
+import { Collapse, CardBody, Card, Progress } from "reactstrap";
 import { Checkbox } from "antd";
 import CustomerIcon from "./../assets/Images/customer-icon.png";
 import UserIcon from "./../assets/Images/UserIcon.png";
@@ -150,7 +150,9 @@ class MyTicket extends Component {
       userBCC: "",
       messageDetails: [],
       fileText: 0,
+      ReplyfileText: 0,
       file: [],
+      Rplyfile: [],
       fileDummy: [],
       userCcCount: 0,
       userBccCount: 0,
@@ -172,7 +174,9 @@ class MyTicket extends Component {
       CheckBoxAllOrder: {},
       CheckBoxAllItem: {},
       SelectedAllOrder: [],
-      SelectedAllItem: []
+      SelectedAllItem: [],
+      progressBarData: [],
+      progressDataWithcColor: []
       // ChckOrdMasterId: true,
       // ChckOrderMasterSelectedAll: true,
       // checkedSelectList: ""
@@ -197,6 +201,7 @@ class MyTicket extends Component {
     this.handleGetOrderDetails = this.handleGetOrderDetails.bind(this);
     this.handleGetProductData = this.handleGetProductData.bind(this);
     this.handleGetMessageDetails = this.handleGetMessageDetails.bind(this);
+    this.handleProgressBarDetails = this.handleProgressBarDetails.bind(this);
     this.hanldeGetSelectedStoreData = this.hanldeGetSelectedStoreData.bind(
       this
     );
@@ -215,6 +220,7 @@ class MyTicket extends Component {
       // this.handleGetTaskTableCount(ticketId);
       this.handleGetCountOfTabs(ticketId);
       this.handleGetMessageDetails(ticketId);
+      this.handleProgressBarDetails(ticketId);
     } else {
       this.props.history.push("myTicketlist");
     }
@@ -912,6 +918,7 @@ class MyTicket extends Component {
     this.setState(state => ({ CommentCollapse: false }));
   }
   hanldeCommentOpen2(Mail_Id) {
+    debugger;
     this.setState({ CommentCollapse2: true, mailId: Mail_Id });
   }
   hanldeCommentClose2() {
@@ -1466,6 +1473,32 @@ class MyTicket extends Component {
           NotificationManager.error(status, "", 1500);
         }
       });
+    } else if (isSend === 3) {
+      let self = this;
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Ticketing/MessageComment",
+        headers: authHeader(),
+        data: {
+          TicketID: this.state.ticket_Id,
+          TicketMailBody: this.state.ticketcommentMSG,
+          IsSent: 1,
+          IsCustomerComment: 1
+        }
+      }).then(function(res) {
+        debugger;
+        let status = res.data.message;
+        if (status === "Success") {
+          NotificationManager.success("Comment Added successfully.", "", 2000);
+          self.handleGetMessageDetails(self.state.ticket_Id);
+          self.handleCommentCollapseOpen();
+          self.setState({
+            ticketcommentMSG: ""
+          });
+        } else {
+          NotificationManager.error(status, "", 2000);
+        }
+      });
     } else {
       axios({
         method: "post",
@@ -1500,35 +1533,6 @@ class MyTicket extends Component {
     }
   }
 
-  handleSendMessagaData() {
-    debugger;
-    let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Ticketing/MessageComment",
-      headers: authHeader(),
-      data: {
-        TicketID: this.state.ticket_Id,
-        TicketMailBody: this.state.ticketcommentMSG,
-        IsSent: 1,
-        IsCustomerComment: 1
-      }
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      if (status === "Success") {
-        NotificationManager.success("Comment Added successfully.", "", 2000);
-        self.handleGetMessageDetails(self.state.ticket_Id);
-        self.handleCommentCollapseOpen();
-        self.setState({
-          ticketcommentMSG: ""
-        });
-      } else {
-        NotificationManager.error(status, "", 2000);
-      }
-    });
-  }
-
   handleMailOnChange(filed, e) {
     debugger;
     var mailFiled = this.state.mailFiled;
@@ -1544,7 +1548,70 @@ class MyTicket extends Component {
       this.setState({ mailFiled, userBccCount: finalCount.length });
     }
   }
+  handleProgressBarDetails(id) {
+    let self = this;
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Ticketing/getprogressbardetail",
+      headers: authHeader(),
+      params: {
+        TicketID: id
+      }
+    }).then(function(res) {
+      let status = res.data.message;
+      let data = res.data.responseData;
+      if (status === "Success") {
+        var progressColor = [];
+        if (data) {
+          var objColor = {};
+          objColor.value = data.progressFirstPercentage;
+          objColor.color = data.progressFirstColorCode;
+          progressColor.push(objColor);
+          var objColor1 = {};
+          objColor1.value = data.progressSecondPercentage;
+          objColor1.color = data.progressSecondColorCode;
+          progressColor.push(objColor1);
+        }
+        self.setState({
+          progressBarData: data,
+          progressDataWithcColor: progressColor
+        });
+      } else {
+        self.setState({ progressBarData: [] });
+      }
+    });
+  }
+  handleReplyFileUpload(e) {
+    debugger;
+    // -------------------------Image View code start-----------------------
+    // if (e.target.files && e.target.files[0]) {
+    //   const filesAmount = e.target.files.length;
+    //   for (let i = 0; i < filesAmount; i++) {
+    //     const reader = new FileReader();
+    //     reader.onload = file => {
+    //       this.setState({
+    //         imageView: file.target.result
+    //       });
+    //     };
+    //     reader.readAsDataURL(e.target.files[i]);
+    //   }
+    // }
+    for (let i = 0; i < e.target.files.length; i++) {
+      debugger;
 
+      var objFile = new Object();
+      var name = e.target.files[i].name;
+      var type = name.substring(name.lastIndexOf(".") + 1, name.length);
+      objFile.Type = type;
+      objFile.name = name;
+
+      objFile.File = e.target.files[i];
+
+      this.state.Rplyfile.push(objFile);
+    }
+
+    this.setState({ ReplyfileText: this.state.Rplyfile.length });
+  }
   handleFileUpload(e) {
     debugger;
     // -------------------------Image View code start-----------------------
@@ -1654,17 +1721,79 @@ class MyTicket extends Component {
       CheckBoxAllOrder: orderMasterID ? newSelected : false
     });
     var selectedRow = [];
-    if (this.state.SelectedAllItem.length === 0) {
+    var CselectedRow = [];
+    if (this.state.SelectedAllOrder.length === 0) {
       selectedRow.push(rowData);
+      var Order_Master = this.state.OrderSubItem.filter(
+        x => x.orderMasterID === orderMasterID
+      );
+      if (Order_Master.length > 0) {
+        var objCheckBoxAllItem = new Object();
+        for (let j = 0; j < Order_Master.length; j++) {
+          objCheckBoxAllItem[Order_Master[j].orderItemID] = true;
+
+          CselectedRow.push(Order_Master[j]);
+        }
+        this.setState({
+          CheckBoxAllItem: objCheckBoxAllItem
+        });
+      }
       this.setState({
-        SelectedAllItem: selectedRow
+        SelectedAllOrder: selectedRow,
+        SelectedAllItem: CselectedRow
       });
     } else {
       if (newSelected[orderMasterID] === true) {
-        for (var i = 0; i < this.state.SelectedAllItem.length; i++) {
-          if (this.state.SelectedAllItem[i] === rowData) {
-            selectedRow = this.state.SelectedAllItem;
+        for (var i = 0; i < this.state.SelectedAllOrder.length; i++) {
+          if (this.state.SelectedAllOrder[i] === rowData) {
+            selectedRow = this.state.SelectedAllOrder;
             selectedRow.push(rowData);
+            var Order_Master = this.state.OrderSubItem.filter(
+              x => x.orderMasterID === orderMasterID
+            );
+            if (Order_Master.length > 0) {
+              var objCheckBoxAllItem = new Object();
+              for (let j = 0; j < Order_Master.length; j++) {
+                objCheckBoxAllItem[Order_Master[j].orderItemID] = true;
+
+                CselectedRow.push(Order_Master[j]);
+              }
+              this.setState({
+                CheckBoxAllItem: objCheckBoxAllItem
+              });
+            }
+
+            this.setState({
+              SelectedAllOrder: selectedRow,
+              SelectedAllItem: CselectedRow
+            });
+
+            break;
+          }
+        }
+      } else {
+        for (var i = 0; i < this.state.SelectedAllOrder.length; i++) {
+          if (this.state.SelectedAllOrder[i] === rowData) {
+            selectedRow = this.state.SelectedAllOrder;
+            selectedRow.splice(i, 1);
+            var Order_Master = this.state.OrderSubItem.filter(
+              x => x.orderMasterID === orderMasterID
+            );
+            if (Order_Master.length > 0) {
+              var objCheckBoxAllItem = new Object();
+              for (let j = 0; j < Order_Master.length; j++) {
+                objCheckBoxAllItem[Order_Master[j].orderItemID] = false;
+              }
+              this.setState({
+                CheckBoxAllItem: objCheckBoxAllItem
+              });
+            }
+
+            this.setState({
+              SelectedAllOrder: selectedRow,
+              SelectedAllItem: []
+            });
+
             break;
           }
         }
@@ -1672,7 +1801,8 @@ class MyTicket extends Component {
     }
 
     this.setState({
-      SelectedAllItem: selectedRow
+      SelectedAllOrder: selectedRow,
+      SelectedAllItem: CselectedRow
     });
   }
 
@@ -1692,20 +1822,49 @@ class MyTicket extends Component {
     } else {
       if (newSelected[orderItemID] === true) {
         for (var i = 0; i < this.state.SelectedAllItem.length; i++) {
-         
-            selectedRow = this.state.SelectedAllItem;
-            selectedRow.push(rowData);
-            var Order_Master = this.state.OrderSubItem.filter(
-              x =>
-                x.orderMasterID === this.state.SelectedAllItem[i].orderMasterID
+          selectedRow = this.state.SelectedAllItem;
+          selectedRow.push(rowData);
+          var Order_Master = this.state.OrderSubItem.filter(
+            x => x.orderMasterID === this.state.SelectedAllItem[i].orderMasterID
+          );
+          if (Order_Master.length === selectedRow.length) {
+            const newSelected = Object.assign({}, this.state.CheckBoxAllOrder);
+            newSelected[Order_Master[0].orderMasterID] = !this.state
+              .CheckBoxAllOrder[Order_Master[0].orderMasterID];
+            this.setState({
+              CheckBoxAllOrder: Order_Master[0].orderMasterID
+                ? newSelected
+                : false
+            });
+            var data_master = this.state.orderDetailsData.filter(
+              y => y.orderMasterID === Order_Master[0].orderMasterID
             );
-            if (Order_Master.length === selectedRow.length) {
+            if (data_master.length > 0) {
+              var MastOrd = this.state.SelectedAllOrder;
+              MastOrd.push(data_master[0]);
+              this.setState({
+                SelectedAllOrder: MastOrd
+              });
+            }
+          }
+          break;
+        }
+      } else {
+        for (var j = 0; j < this.state.SelectedAllItem.length; j++) {
+          if (this.state.SelectedAllItem[j] === rowData) {
+            selectedRow = this.state.SelectedAllItem;
+            selectedRow.splice(j, 1);
+
+            var Order_Master = this.state.OrderSubItem.filter(
+              x => x.orderMasterID === rowData.orderMasterID
+            );
+
+            if (Order_Master.length !== selectedRow.length) {
               const newSelected = Object.assign(
                 {},
                 this.state.CheckBoxAllOrder
               );
-              newSelected[Order_Master[0].orderMasterID] = !this.state
-                .CheckBoxAllOrder[Order_Master[0].orderMasterID];
+              newSelected[Order_Master[0].orderMasterID] = false;
               this.setState({
                 CheckBoxAllOrder: Order_Master[0].orderMasterID
                   ? newSelected
@@ -1714,21 +1873,18 @@ class MyTicket extends Component {
               var data_master = this.state.orderDetailsData.filter(
                 y => y.orderMasterID === Order_Master[0].orderMasterID
               );
+              var GetIndex = this.state.orderDetailsData.findIndex(
+                y => y.orderMasterID === Order_Master[0].orderMasterID
+              );
               if (data_master.length > 0) {
                 var MastOrd = this.state.SelectedAllOrder;
-                MastOrd.push(data_master[0]);
+                MastOrd.splice(GetIndex, 1);
                 this.setState({
                   SelectedAllOrder: MastOrd
                 });
               }
-              break;
             }
-        }
-      } else {
-        for (var j = 0; j < this.state.SelectedAllItem.length; j++) {
-          if (this.state.SelectedAllItem[j] === rowData) {
-            selectedRow = this.state.SelectedAllItem;
-            selectedRow.splice(j, 1);
+
             break;
           }
         }
@@ -1739,6 +1895,11 @@ class MyTicket extends Component {
       SelectedAllItem: selectedRow
     });
   }
+
+  callbackToParent = () => {
+    debugger;
+    this.handleGetCountOfTabs(this.state.ticket_Id);
+  };
 
   render() {
     const {
@@ -2397,12 +2558,48 @@ class MyTicket extends Component {
                           Resolution
                         </label>
                       </div>
-                      <progress
+                      {/* <progress
                         className="ticket-progress"
                         style={{ width: "100%" }}
                         value="50"
                         max="100"
-                      ></progress>
+                      ></progress> */}
+                      <Progress multi>
+                        {this.state.progressDataWithcColor.map(function(item) {
+                          if (item.color === "No Color") {
+                            return <Progress bar value={item.value}></Progress>;
+                          }
+                          if (item.color === "Orange") {
+                            return (
+                              <Progress
+                                bar
+                                color="warning"
+                                value={item.value}
+                              ></Progress>
+                            );
+                          }
+
+                          if (item.color === "Red") {
+                            return (
+                              <Progress
+                                bar
+                                color="danger"
+                                value={item.value}
+                              ></Progress>
+                            );
+                          }
+
+                          if (item.color === "Green") {
+                            return (
+                              <Progress
+                                bar
+                                color="success"
+                                value={item.value}
+                              ></Progress>
+                            );
+                          }
+                        })}
+                      </Progress>
                       <p className="logout-label font-weight-bold prog-indi-1">
                         2 day
                       </p>
@@ -3340,7 +3537,11 @@ class MyTicket extends Component {
                                         <div style={{ padding: "20px" }}>
                                           <ReactTable
                                             // data={row.original.orderItems}
-                                            data={this.state.OrderSubItem.filter(x=>x.orderMasterID === row.original.orderMasterID)}
+                                            data={this.state.OrderSubItem.filter(
+                                              x =>
+                                                x.orderMasterID ===
+                                                row.original.orderMasterID
+                                            )}
                                             columns={[
                                               {
                                                 Header: <span> </span>,
@@ -4361,7 +4562,10 @@ class MyTicket extends Component {
                             aria-controls="Message-tab"
                             aria-selected="true"
                           >
-                            Message: 04
+                            Message:{" "}
+                            {this.state.tabCounts.messages < 9
+                              ? "0" + this.state.tabCounts.messages
+                              : this.state.tabCounts.messages}
                           </a>
                         </li>
                         <li className="nav-item fo">
@@ -4457,251 +4661,200 @@ class MyTicket extends Component {
                         <label className="action-label">Action</label>
                       </div>
                     </div>
-                    {this.state.messageDetails.map((item, i) => {
-                      return (
-                        <div key={i}>
-                          <div className="row top-margin">
-                            <div className="col-md-5">
-                              <div className="v3"></div>
+                    {this.state.messageDetails !== null &&
+                      this.state.messageDetails.map((item, i) => {
+                        return (
+                          <div key={i}>
+                            <div className="row top-margin">
+                              <div className="col-md-5">
+                                <div className="v3"></div>
+                              </div>
+                              <div className="col-md-2">
+                                <label className="today-02">
+                                  {item.dayOfCreation}
+                                  &nbsp; (
+                                  {item.messageCount < 9
+                                    ? "0" + item.messageCount
+                                    : item.messageCount}
+                                  )
+                                </label>
+                              </div>
+                              <div className="col-md-5">
+                                <div className="v4"></div>
+                              </div>
                             </div>
-                            <div className="col-md-2">
-                              <label className="today-02">
-                                {item.dayOfCreation}
-                                &nbsp; (
-                                {item.messageCount < 9
-                                  ? "0" + item.messageCount
-                                  : item.messageCount}
-                                )
-                              </label>
-                            </div>
-                            <div className="col-md-5">
-                              <div className="v4"></div>
-                            </div>
-                          </div>
-                          {item.msgDetails.map((details, j) => {
-                            // debugger;
-                            return (
-                              <div key={j}>
-                                <div>
-                                  <div className="row top-margin">
-                                    <div className="col-12 col-xs-12 col-sm-4 col-md-3">
-                                      <div
-                                        className="row"
-                                        style={{ marginTop: "0" }}
-                                      >
-                                        {details.latestMessageDetails
-                                          .isCustomerComment === 1 ? (
-                                          <img
-                                            src={BlackUserIcon}
-                                            alt="Avatar"
-                                            className="oval-6"
-                                          />
-                                        ) : (
-                                          <img
-                                            src={Headphone2Img}
-                                            alt="headphone"
-                                            className="oval-55"
-                                          />
-                                        )}
-                                        <label
-                                          className="solved-by-naman-r"
-                                          style={{ marginLeft: "7px" }}
-                                        >
-                                          {
-                                            details.latestMessageDetails
-                                              .commentBy
-                                          }
-                                        </label>
-                                        <img
-                                          src={
-                                            details.latestMessageDetails
-                                              .ticketSourceName === "Calls"
-                                              ? require("./../assets/Images/call.png")
-                                              : details.latestMessageDetails
-                                                  .ticketSourceName ===
-                                                "Facebook"
-                                              ? require("./../assets/Images/facebook.png")
-                                              : details.latestMessageDetails
-                                                  .ticketSourceName === "Mails"
-                                              ? require("./../assets/Images/SecuredLetter2.png")
-                                              : require("./../assets/Images/twitter.png")
-                                          }
-                                          alt="sourceIMG"
-                                          className="smg-Img1 headPhone3 black-twitter"
-                                        />
-                                      </div>
-                                    </div>
-                                    <div className="col-12 col-xs-12 col-sm-6 col-md-7">
-                                      <label
-                                        className="label-5"
-                                        style={{ display: "block" }}
-                                      >
-                                        {
-                                          details.latestMessageDetails
-                                            .ticketMailBody
-                                        }
-                                      </label>
-                                    </div>
-                                    <div className="col-12 col-xs-12 col-sm-2 col-md-2 mob-flex">
-                                      {HidecollapsUp}
-                                      <div className="inlineGridTicket">
-                                        {details.latestMessageDetails
-                                          .isCustomerComment === 1 ? (
-                                          <label
-                                            className="reply-comment"
-                                            onClick={this.hanldeCommentOpen2.bind(
-                                              this,
-                                              details.trailMessageDetails.mailID
-                                            )}
+                            {item.msgDetails !== null &&
+                              item.msgDetails.map((details, j) => {
+                                debugger;
+                                return (
+                                  <div key={j}>
+                                    <div>
+                                      <div className="row top-margin">
+                                        <div className="col-12 col-xs-12 col-sm-4 col-md-3">
+                                          <div
+                                            className="row"
+                                            style={{ marginTop: "0" }}
                                           >
-                                            Reply
-                                          </label>
-                                        ) : null}
-
-                                        <label
-                                          className="comment-text"
-                                          onClick={this.handleCommentCollapseOpen.bind(
-                                            this
-                                          )}
-                                        >
-                                          Comment
-                                        </label>
-                                      </div>
-                                      <div
-                                        className="row"
-                                        style={{ width: "100%" }}
-                                      >
-                                        <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
-                                        <div className="col-12 col-xs-12 col-sm-8 col-md-9">
-                                          <div className="commentcollapseTicket">
-                                            {/* <Collapse
-                                              isOpen={
-                                                this.state.CommentCollapse
+                                            {details.latestMessageDetails
+                                              .isCustomerComment === 1 ? (
+                                              <img
+                                                src={BlackUserIcon}
+                                                alt="Avatar"
+                                                className="oval-6"
+                                              />
+                                            ) : (
+                                              <img
+                                                src={Headphone2Img}
+                                                alt="headphone"
+                                                className="oval-55"
+                                              />
+                                            )}
+                                            <label
+                                              className="solved-by-naman-r"
+                                              style={{ marginLeft: "7px" }}
+                                            >
+                                              {
+                                                details.latestMessageDetails
+                                                  .commentBy
                                               }
-                                            > 
-                                              <Card>
-                                                <CardBody>
-                                                  <div className="commenttextborder">
-                                                    <div className="Commentlabel">
-                                                      <label className="Commentlabel1">
-                                                        Comment
-                                                      </label>
-                                                    </div>
-                                                    <div>
-                                                      <span className="comment-line"></span>
-                                                      <div
-                                                        style={{
-                                                          float: "right",
-                                                          cursor: "pointer",
-                                                          height: "30px",
-                                                          marginTop: "-33px"
-                                                        }}
-                                                      >
-                                                        <img
-                                                          src={MinusImg}
-                                                          alt="Minus"
-                                                          className="CommentMinus-img"
-                                                          onClick={this.handleCommentCollapseOpen.bind(
-                                                            this
-                                                          )}
-                                                        />
-                                                      </div>
-                                                    </div>
-                                                    <div className="commenttextmessage">
-                                                      <textarea
-                                                        cols="31"
-                                                        rows="3"
-                                                        className="ticketMSGCmt-textarea"
-                                                        name="ticketcommentMSG"
-                                                        maxLength={300}
-                                                        value={
-                                                          this.state
-                                                            .ticketcommentMSG
-                                                        }
-                                                        onChange={
-                                                          this
-                                                            .handleNoteOnChange
-                                                        }
-                                                      ></textarea>
-                                                    </div>
-                                                    <div className="SendCommentBtn">
-                                                      <button
-                                                        className="SendCommentBtn1"
-                                                        onClick={this.handleSendMessagaData.bind(
-                                                          this
-                                                        )}
-                                                      >
-                                                        SEND
-                                                      </button>
-                                                    </div>
-                                                  </div>
-                                                </CardBody>
-                                              </Card>
-                                            </Collapse> */}
+                                            </label>
+                                            <img
+                                              src={
+                                                details.latestMessageDetails
+                                                  .ticketSourceName === "Calls"
+                                                  ? require("./../assets/Images/headphone3.png")
+                                                  : details.latestMessageDetails
+                                                      .ticketSourceName ===
+                                                    "Facebook"
+                                                  ? require("./../assets/Images/facebook.png")
+                                                  : details.latestMessageDetails
+                                                      .ticketSourceName ===
+                                                    "Mails"
+                                                  ? require("./../assets/Images/SecuredLetter2.png")
+                                                  : require("./../assets/Images/twitter.png")
+                                              }
+                                              alt="sourceIMG"
+                                              className="smg-Img1 headPhone3 black-twitter"
+                                            />
+                                          </div>
+                                        </div>
+                                        <div className="col-12 col-xs-12 col-sm-6 col-md-7">
+                                          <label
+                                            className="label-5"
+                                            style={{ display: "block" }}
+                                          >
+                                            {
+                                              details.latestMessageDetails
+                                                .ticketMailBody
+                                            }
+                                          </label>
+                                        </div>
+                                        <div className="col-12 col-xs-12 col-sm-2 col-md-2 mob-flex">
+                                          {HidecollapsUp}
+                                          <div className="inlineGridTicket">
+                                            {details.latestMessageDetails
+                                              .isCustomerComment === 1 ? (
+                                              <label
+                                                className="reply-comment"
+                                                onClick={this.hanldeCommentOpen2.bind(
+                                                  this,
+                                                  details.latestMessageDetails
+                                                    .mailID
+                                                )}
+                                              >
+                                                Reply
+                                              </label>
+                                            ) : null}
+
+                                            <label
+                                              className="comment-text"
+                                              onClick={this.handleCommentCollapseOpen.bind(
+                                                this
+                                              )}
+                                            >
+                                              Comment
+                                            </label>
+                                          </div>
+                                          <div
+                                            className="row"
+                                            style={{ width: "100%" }}
+                                          >
+                                            <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
+                                            <div className="col-12 col-xs-12 col-sm-8 col-md-9">
+                                              <div className="commentcollapseTicket"></div>
+                                            </div>
                                           </div>
                                         </div>
                                       </div>
-                                    </div>
-                                  </div>
-                                  <div className="row card-op-out">
-                                    <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
-                                    <div className="col-12 col-xs-12 col-sm-6 col-md-7">
-                                      <Collapse isOpen={this.state.collapseUp}>
-                                        <Card>
-                                          <CardBody>
-                                            {details.trailMessageDetails.map(
-                                              (MsgData, s) => {
-                                                return (
-                                                  <div
-                                                    className="card-details"
-                                                    key={s}
-                                                  >
-                                                    <div className="card-details-1">
-                                                      <label
-                                                        className="label-5"
-                                                        style={{
-                                                          display: "block"
-                                                        }}
-                                                      >
-                                                        {MsgData.ticketMailBody}
-                                                      </label>
-                                                    </div>
+                                      <div className="row card-op-out">
+                                        <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
+                                        <div className="col-12 col-xs-12 col-sm-6 col-md-7">
+                                          <Collapse
+                                            isOpen={this.state.collapseUp}
+                                          >
+                                            <Card>
+                                              <CardBody>
+                                                {details.trailMessageDetails !==
+                                                  null &&
+                                                  details.trailMessageDetails.map(
+                                                    function(MsgData, s) {
+                                                      return (
+                                                        <div
+                                                          className="card-details"
+                                                          key={s}
+                                                        >
+                                                          <div className="card-details-1">
+                                                            <label
+                                                              className="label-5"
+                                                              style={{
+                                                                display: "block"
+                                                              }}
+                                                            >
+                                                              {
+                                                                MsgData.ticketMailBody
+                                                              }
+                                                            </label>
+                                                          </div>
+                                                        </div>
+                                                      );
+                                                    }
+                                                  )}
+                                               {details.trailMessageDetails.length === 0 && <div className="card-details">
+                                                  <div className="card-details-1">
+                                                    <label className="i-have-solved-this-i">
+                                                      {
+                                                        details
+                                                          .trailMessageDetails
+                                                          .ticketMailSubject
+                                                      }
+                                                    </label>
+                                                    <label
+                                                      className="label-5"
+                                                      style={{
+                                                        display: "block"
+                                                      }}
+                                                    >
+                                                      {
+                                                        details
+                                                          .trailMessageDetails
+                                                          .ticketMailBody
+                                                      }
+                                                    </label>
                                                   </div>
-                                                );
-                                              }
-                                            )}
-                                            <div className="card-details">
-                                              <div className="card-details-1">
-                                                <label className="i-have-solved-this-i">
-                                                  {
-                                                    details.trailMessageDetails
-                                                      .ticketMailSubject
-                                                  }
-                                                </label>
-                                                <label
-                                                  className="label-5"
-                                                  style={{ display: "block" }}
-                                                >
-                                                  {
-                                                    details.trailMessageDetails
-                                                      .ticketMailBody
-                                                  }
-                                                </label>
-                                              </div>
-                                            </div>
-                                          </CardBody>
-                                        </Card>
-                                      </Collapse>
+                                                </div>}
+                                              </CardBody>
+                                            </Card>
+                                          </Collapse>
+                                        </div>
+                                        <div className="col-12 col-xs-12 col-sm-2"></div>
+                                      </div>
                                     </div>
-                                    <div className="col-12 col-xs-12 col-sm-2"></div>
                                   </div>
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      );
-                    })}
+                                );
+                              })}
+                          </div>
+                        );
+                      })}
                     <Modal
                       open={this.state.CommentCollapse}
                       onClose={this.handleCommentCollapseOpen.bind(this)}
@@ -4742,7 +4895,7 @@ class MyTicket extends Component {
                         <div className="SendCommentBtn">
                           <button
                             className="SendCommentBtn1"
-                            onClick={this.handleSendMessagaData.bind(this)}
+                            onClick={this.handleSendMailData.bind(this, 3)}
                           >
                             SEND
                           </button>
@@ -4938,20 +5091,24 @@ class MyTicket extends Component {
                                     htmlFor="custRply"
                                     style={{ paddingLeft: "25px" }}
                                   >
-                                    <span>Inform Store</span>
+                                    <span>Inform Storee</span>
                                   </label>
                                 </div>
                               </li>
                               <li>
                                 <span>
                                   <input
-                                    id="file-upload"
+                                    id="Rplyfile"
                                     className="file-upload1 d-none"
                                     type="file"
-                                    onChange={this.fileUpload}
+                                    name="Rplyfile"
+                                    onChange={this.handleReplyFileUpload.bind(
+                                      this
+                                    )}
+                                    multiple
                                   />
                                   <label
-                                    htmlFor="file-upload"
+                                    htmlFor="Rplyfile"
                                     onDrop={this.fileDrop}
                                     onDragOver={this.fileDragOver}
                                     onDragEnter={this.fileDragEnter}
@@ -4964,7 +5121,7 @@ class MyTicket extends Component {
                                   </label>
                                 </span>
                                 <label style={{ color: "#2561a8" }}>
-                                  3 files
+                                  {this.state.ReplyfileText} files
                                 </label>
                               </li>
                               <li className="w-100"></li>
@@ -5233,7 +5390,6 @@ class MyTicket extends Component {
                               Reply
                             </label>
                           ) : null}
-
                           <br />
                           <label className="reply-comment">Comment</label>
                         </div>
@@ -5249,6 +5405,7 @@ class MyTicket extends Component {
                   >
                     {this.state.ticket_Id > 0 ? (
                       <MyTicketTask
+                        callbackToParent={this.callbackToParent}
                         taskData={{
                           TicketData: {
                             TicketId: this.state.ticket_Id,
