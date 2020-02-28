@@ -1,3 +1,5 @@
+
+  
 import React, { Component, Fragment } from "react";
 import Modal from "react-responsive-modal";
 import { faCalculator } from "@fortawesome/free-solid-svg-icons";
@@ -5399,7 +5401,6 @@ class MyTicket extends Component {
                               Reply
                             </label>
                           ) : null}
-
                           <br />
                           <label className="reply-comment">Comment</label>
                         </div>
@@ -5651,3 +5652,4 @@ class MyTicket extends Component {
   }
 }
 export default MyTicket;
+
