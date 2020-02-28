@@ -169,9 +169,13 @@ class MyTicket extends Component {
       expanded: {},
       mailId: 0,
       selectProductOrd: true,
-      ChckOrdMasterId:true,
-      ChckOrderMasterSelectedAll:true,
-      checkedSelectList:''
+      CheckBoxAllOrder: {},
+      CheckBoxAllItem: {},
+      SelectedAllOrder: [],
+      SelectedAllItem: []
+      // ChckOrdMasterId: true,
+      // ChckOrderMasterSelectedAll: true,
+      // checkedSelectList: ""
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -1641,19 +1645,98 @@ class MyTicket extends Component {
   };
 
   // -------------------------------Check box selected all code start-------------------------------
-  onCheckMasterAllChange = e=>{
+
+  onCheckMasterAllChange(orderMasterID, rowData) {
+    debugger;
+    const newSelected = Object.assign({}, this.state.CheckBoxAllOrder);
+    newSelected[orderMasterID] = !this.state.CheckBoxAllOrder[orderMasterID];
     this.setState({
-      checkedSelectList: e.target.checked ? this.state.OrderSubItem : [],
-      ChckOrdMasterId: false,
-      ChckOrderMasterSelectedAll: e.target.checked,
+      CheckBoxAllOrder: orderMasterID ? newSelected : false
+    });
+    var selectedRow = [];
+    if (this.state.SelectedAllItem.length === 0) {
+      selectedRow.push(rowData);
+      this.setState({
+        SelectedAllItem: selectedRow
+      });
+    } else {
+      if (newSelected[orderMasterID] === true) {
+        for (var i = 0; i < this.state.SelectedAllItem.length; i++) {
+          if (this.state.SelectedAllItem[i] === rowData) {
+            selectedRow = this.state.SelectedAllItem;
+            selectedRow.push(rowData);
+            break;
+          }
+        }
+      }
+    }
+
+    this.setState({
+      SelectedAllItem: selectedRow
     });
   }
-  handleSubComOnChange =checkedList => {
+
+  checkIndividualItem(orderItemID, rowData) {
+    debugger;
+    const newSelected = Object.assign({}, this.state.CheckBoxAllItem);
+    newSelected[orderItemID] = !this.state.CheckBoxAllItem[orderItemID];
     this.setState({
-      checkedList,
-      ChckOrdMasterId:
-        !!checkedList.length && checkedList.length < this.state.OrderSubItem.length,
-      checkAll: checkedList.length === this.state.OrderSubItem.length
+      CheckBoxAllItem: orderItemID ? newSelected : false
+    });
+    var selectedRow = [];
+    if (this.state.SelectedAllItem.length === 0) {
+      selectedRow.push(rowData);
+      this.setState({
+        SelectedAllItem: selectedRow
+      });
+    } else {
+      if (newSelected[orderItemID] === true) {
+        for (var i = 0; i < this.state.SelectedAllItem.length; i++) {
+         
+            selectedRow = this.state.SelectedAllItem;
+            selectedRow.push(rowData);
+            var Order_Master = this.state.OrderSubItem.filter(
+              x =>
+                x.orderMasterID === this.state.SelectedAllItem[i].orderMasterID
+            );
+            if (Order_Master.length === selectedRow.length) {
+              const newSelected = Object.assign(
+                {},
+                this.state.CheckBoxAllOrder
+              );
+              newSelected[Order_Master[0].orderMasterID] = !this.state
+                .CheckBoxAllOrder[Order_Master[0].orderMasterID];
+              this.setState({
+                CheckBoxAllOrder: Order_Master[0].orderMasterID
+                  ? newSelected
+                  : false
+              });
+              var data_master = this.state.orderDetailsData.filter(
+                y => y.orderMasterID === Order_Master[0].orderMasterID
+              );
+              if (data_master.length > 0) {
+                var MastOrd = this.state.SelectedAllOrder;
+                MastOrd.push(data_master[0]);
+                this.setState({
+                  SelectedAllOrder: MastOrd
+                });
+              }
+              break;
+            }
+        }
+      } else {
+        for (var j = 0; j < this.state.SelectedAllItem.length; j++) {
+          if (this.state.SelectedAllItem[j] === rowData) {
+            selectedRow = this.state.SelectedAllItem;
+            selectedRow.splice(j, 1);
+            break;
+          }
+        }
+      }
+    }
+
+    this.setState({
+      SelectedAllItem: selectedRow
     });
   }
 
@@ -3113,9 +3196,7 @@ class MyTicket extends Component {
                                               htmlFor={
                                                 "i" + row.original.orderMasterID
                                               }
-                                            >
-                                              {/* {row.original.invoiceNumber} */}
-                                            </label>
+                                            ></label>
                                           </div>
                                         )
                                       },
@@ -3195,49 +3276,27 @@ class MyTicket extends Component {
                                             className="filter-checkbox"
                                             style={{ marginLeft: "15px" }}
                                           >
-                                            <Checkbox
-                                              indeterminate={this.state.ChckOrdMasterId}
-                                              onChange={this.onCheckMasterAllChange}
-                                              checked={this.state.ChckOrderMasterSelectedAll}
-                                            >
-                                              
-                                            </Checkbox>
+                                            <input
+                                              type="checkbox"
+                                              id={
+                                                "all" +
+                                                row.original.orderMasterID
+                                              }
+                                              className="ch1"
+                                              name="AllOrder"
+                                              checked={
+                                                this.state.CheckBoxAllOrder[
+                                                  row.original.orderMasterID
+                                                ] === true
+                                              }
+                                              onChange={this.onCheckMasterAllChange.bind(
+                                                this,
+                                                row.original.orderMasterID,
+                                                row.original
+                                              )}
+                                            />
                                           </div>
                                         )
-                                        // Cell: row => (
-                                        //   <div
-                                        //     className="filter-checkbox"
-                                        //     style={{ marginLeft: "15px" }}
-                                        //   >
-                                        //     <input
-                                        //       type="checkbox"
-                                        //       id={
-                                        //         "MID" +
-                                        //         row.original.orderMasterID
-                                        //       }
-                                        //       style={{ display: "none" }}
-                                        //       name="ticket-order"
-                                        //       checked={
-                                        //         this.state.CheckOrderID[
-                                        //           row.original.orderMasterID
-                                        //         ] === true
-                                        //       }
-                                        //       defaultChecked={true}
-                                        //       onChange={this.handleCheckOrderID.bind(
-                                        //         this,
-                                        //         row.original.orderMasterID,
-                                        //         row.original
-                                        //       )}
-                                        //     />
-                                        //     <label
-                                        //       htmlFor={
-                                        //         "MID" +
-                                        //         row.original.orderMasterID
-                                        //       }
-                                        //     >
-                                        //     </label>
-                                        //   </div>
-                                        // )
                                       },
                                       {
                                         Header: <span>Invoice Number</span>,
@@ -3281,12 +3340,13 @@ class MyTicket extends Component {
                                         <div style={{ padding: "20px" }}>
                                           <ReactTable
                                             // data={row.original.orderItems}
-                                            data={this.state.OrderSubItem}
+                                            data={this.state.OrderSubItem.filter(x=>x.orderMasterID === row.original.orderMasterID)}
                                             columns={[
                                               {
                                                 Header: <span> </span>,
                                                 accessor: "invoiceNo",
                                                 Cell: row => {
+                                                  // debugger
                                                   return (
                                                     <div
                                                       className="filter-checkbox"
@@ -3294,43 +3354,32 @@ class MyTicket extends Component {
                                                         marginLeft: "15px"
                                                       }}
                                                     >
-                                                      <CheckboxGroup
-                                                        options={this.state.OrderSubItem}
-                                                        value={this.state.checkedSelectList}
-                                                        onChange={this.handleSubComOnChange}
+                                                      <input
+                                                        type="checkbox"
+                                                        id={
+                                                          "item" +
+                                                          row.original
+                                                            .orderItemID
+                                                        }
+                                                        className="ch1"
+                                                        name="AllItem"
+                                                        checked={
+                                                          this.state
+                                                            .CheckBoxAllItem[
+                                                            row.original
+                                                              .orderItemID
+                                                          ] === true
+                                                        }
+                                                        onChange={this.checkIndividualItem.bind(
+                                                          this,
+                                                          row.original
+                                                            .orderItemID,
+                                                          row.original
+                                                        )}
                                                       />
                                                     </div>
                                                   );
                                                 }
-                                                // Cell: row => {
-                                                //   return (
-                                                //     <div
-                                                //       className="filter-checkbox"
-                                                //       style={{
-                                                //         marginLeft: "15px"
-                                                //       }}
-                                                //     >
-                                                //       <input
-                                                //         type="checkbox"
-                                                //         style={{
-                                                //           display: "none"
-                                                //         }}
-                                                //         id={
-                                                //           row.original
-                                                //             .orderItemID
-                                                //         }
-                                                //       />
-                                                //       <label
-                                                //         htmlFor={
-                                                //           row.original
-                                                //             .orderItemID
-                                                //         }
-                                                //       >
-                                                //         {row.original.invoiceNo}
-                                                //       </label>
-                                                //     </div>
-                                                //   );
-                                                // }
                                               },
                                               {
                                                 Header: (
@@ -4669,14 +4718,14 @@ class MyTicket extends Component {
                             <label className="Commentlabel1">Comment</label>
                           </div>
                           <div>
-                              <img
-                                src={CrossIcon}
-                                alt="Minus"
-                                className="pro-cross-icn m-0"
-                                onClick={this.handleCommentCollapseOpen.bind(
-                                  this
-                                )}
-                              />
+                            <img
+                              src={CrossIcon}
+                              alt="Minus"
+                              className="pro-cross-icn m-0"
+                              onClick={this.handleCommentCollapseOpen.bind(
+                                this
+                              )}
+                            />
                           </div>
                         </div>
                         <div className="commenttextmessage">
@@ -4770,50 +4819,49 @@ class MyTicket extends Component {
                                 </li>
                               </ul>
                             </div>
-<div className="my-ticket-temp">
-                            <a
-                              href="#!"
-                              className="kblink"
-                              onClick={this.HandleKbLinkModalOpen.bind(this)}
-                            >
-                              <img
-                                src={KnowledgeLogo}
-                                alt="KnowledgeLogo"
-                                className="knoim"
-                              />
-                              Kb Link
-                            </a>
-
-                            <div
-                              className="dropdown collapbtn"
-                              style={{ display: "inherit" }}
-                            >
-                              <button
-                                className="dropdown-toggle my-tic-email"
-                                type="button"
-                                data-toggle="dropdown"
+                            <div className="my-ticket-temp">
+                              <a
+                                href="#!"
+                                className="kblink"
+                                onClick={this.HandleKbLinkModalOpen.bind(this)}
                               >
-                                <FontAwesomeIcon icon={faCalculator} /> Template
-                              </button>
-                              <ul className="dropdown-menu">
-                                <li>
-                                  <a href="#!">Template 1</a>
-                                </li>
-                                <li>
-                                  <a href="#!">Template 2</a>
-                                </li>
-                                <li>
-                                  <a href="#!">Template 3</a>
-                                </li>
-                                <li>
-                                  <a href="#!">Template 4</a>
-                                </li>
-                              </ul>
+                                <img
+                                  src={KnowledgeLogo}
+                                  alt="KnowledgeLogo"
+                                  className="knoim"
+                                />
+                                Kb Link
+                              </a>
+
+                              <div
+                                className="dropdown collapbtn"
+                                style={{ display: "inherit" }}
+                              >
+                                <button
+                                  className="dropdown-toggle my-tic-email"
+                                  type="button"
+                                  data-toggle="dropdown"
+                                >
+                                  <FontAwesomeIcon icon={faCalculator} />{" "}
+                                  Template
+                                </button>
+                                <ul className="dropdown-menu">
+                                  <li>
+                                    <a href="#!">Template 1</a>
+                                  </li>
+                                  <li>
+                                    <a href="#!">Template 2</a>
+                                  </li>
+                                  <li>
+                                    <a href="#!">Template 3</a>
+                                  </li>
+                                  <li>
+                                    <a href="#!">Template 4</a>
+                                  </li>
+                                </ul>
+                              </div>
                             </div>
-                            </div>
-                            <div
-                              className="mob-float my-tic-mob-float"
-                            >
+                            <div className="mob-float my-tic-mob-float">
                               {/* <div className="line-1"></div> */}
                               <div
                                 style={{ cursor: "pointer" }}
@@ -4866,112 +4914,111 @@ class MyTicket extends Component {
                             ]
                           }}
                         />
-                      <div className="row colladrowa">
-                        <div className="col-md-12 colladrow">
-                          <ul style={{ padding: "0 15px" }}>
-                            <li>
-                              <label>
-                                To: &nbsp;
-                                {ticketDetailsData.customerEmailId}
-                              </label>
-                            </li>
-                            <li>
-                              <div className="filter-checkbox">
-                                <input
-                                  type="checkbox"
-                                  id="custRply"
-                                  name="filter-type"
-                                  style={{ display: "none" }}
-                                  onChange={() =>
-                                    this.showInformStoreFuncation()
-                                  }
-                                />
-                                <label
-                                  htmlFor="custRply"
-                                  style={{ paddingLeft: "25px" }}
-                                >
-                                  <span>Inform Store</span>
+                        <div className="row colladrowa">
+                          <div className="col-md-12 colladrow">
+                            <ul style={{ padding: "0 15px" }}>
+                              <li>
+                                <label>
+                                  To: &nbsp;
+                                  {ticketDetailsData.customerEmailId}
                                 </label>
-                              </div>
-                            </li>
-                            <li>
-                              <span>
-                                <input
-                                  id="file-upload"
-                                  className="file-upload1 d-none"
-                                  type="file"
-                                  onChange={this.fileUpload}
-                                />
-                                <label
-                                  htmlFor="file-upload"
-                                  onDrop={this.fileDrop}
-                                  onDragOver={this.fileDragOver}
-                                  onDragEnter={this.fileDragEnter}
-                                >
-                                  <img
-                                    src={FileUpload}
-                                    alt="file-upload"
-                                    className="fileup"
+                              </li>
+                              <li>
+                                <div className="filter-checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id="custRply"
+                                    name="filter-type"
+                                    style={{ display: "none" }}
+                                    onChange={() =>
+                                      this.showInformStoreFuncation()
+                                    }
                                   />
+                                  <label
+                                    htmlFor="custRply"
+                                    style={{ paddingLeft: "25px" }}
+                                  >
+                                    <span>Inform Store</span>
+                                  </label>
+                                </div>
+                              </li>
+                              <li>
+                                <span>
+                                  <input
+                                    id="file-upload"
+                                    className="file-upload1 d-none"
+                                    type="file"
+                                    onChange={this.fileUpload}
+                                  />
+                                  <label
+                                    htmlFor="file-upload"
+                                    onDrop={this.fileDrop}
+                                    onDragOver={this.fileDragOver}
+                                    onDragEnter={this.fileDragEnter}
+                                  >
+                                    <img
+                                      src={FileUpload}
+                                      alt="file-upload"
+                                      className="fileup"
+                                    />
+                                  </label>
+                                </span>
+                                <label style={{ color: "#2561a8" }}>
+                                  3 files
                                 </label>
-                              </span>
-                              <label style={{ color: "#2561a8" }}>
-                                3 files
-                              </label>
-                            </li>
-                            <li className="w-100"></li>
-                            <li>
-                              <label className="">
-                                <div className="input-group">
-                                  <span className="input-group-addon inputcc">
-                                    CC:
-                                  </span>
-                                  <input
-                                    type="text"
-                                    className="CCdi1"
-                                    name="userCC"
-                                    autoComplete="off"
-                                    value={this.state.mailFiled.userCC}
-                                    onChange={this.handleMailOnChange.bind(
-                                      this,
-                                      "userCC"
-                                    )}
-                                  />
-                                  <span className="input-group-addon inputcc-one">
-                                    {this.state.userCcCount < 1
-                                      ? "+" + this.state.userCcCount
-                                      : "+" + this.state.userCcCount}
-                                  </span>
-                                </div>
-                              </label>
-                            </li>
-                            <li>
-                              <label className="">
-                                <div className="input-group">
-                                  <span className="input-group-addon inputcc">
-                                    BCC:
-                                  </span>
-                                  <input
-                                    type="text"
-                                    className="CCdi"
-                                    name="userBCC"
-                                    value={this.state.mailFiled.userBCC}
-                                    onChange={this.handleMailOnChange.bind(
-                                      this,
-                                      "userBCC"
-                                    )}
-                                  />
-                                  <span className="input-group-addon inputcc-one">
-                                    {this.state.userBccCount < 1
-                                      ? "+" + this.state.userBccCount
-                                      : "+" + this.state.userBccCount}
-                                  </span>
-                                </div>
-                              </label>
-                            </li>
+                              </li>
+                              <li className="w-100"></li>
+                              <li>
+                                <label className="">
+                                  <div className="input-group">
+                                    <span className="input-group-addon inputcc">
+                                      CC:
+                                    </span>
+                                    <input
+                                      type="text"
+                                      className="CCdi1"
+                                      name="userCC"
+                                      autoComplete="off"
+                                      value={this.state.mailFiled.userCC}
+                                      onChange={this.handleMailOnChange.bind(
+                                        this,
+                                        "userCC"
+                                      )}
+                                    />
+                                    <span className="input-group-addon inputcc-one">
+                                      {this.state.userCcCount < 1
+                                        ? "+" + this.state.userCcCount
+                                        : "+" + this.state.userCcCount}
+                                    </span>
+                                  </div>
+                                </label>
+                              </li>
+                              <li>
+                                <label className="">
+                                  <div className="input-group">
+                                    <span className="input-group-addon inputcc">
+                                      BCC:
+                                    </span>
+                                    <input
+                                      type="text"
+                                      className="CCdi"
+                                      name="userBCC"
+                                      value={this.state.mailFiled.userBCC}
+                                      onChange={this.handleMailOnChange.bind(
+                                        this,
+                                        "userBCC"
+                                      )}
+                                    />
+                                    <span className="input-group-addon inputcc-one">
+                                      {this.state.userBccCount < 1
+                                        ? "+" + this.state.userBccCount
+                                        : "+" + this.state.userBccCount}
+                                    </span>
+                                  </div>
+                                </label>
+                              </li>
 
-
-                            {/* <li style={{ float: "right" }}>
+                              {/* <li style={{ float: "right" }}>
                               <button
                                 className="send"
                                 type="button"
@@ -4980,17 +5027,17 @@ class MyTicket extends Component {
                                 Send
                               </button>
                             </li> */}
-                          </ul>
+                            </ul>
+                          </div>
                         </div>
                       </div>
-                      </div>
-                        <button
-                          className="send my-tic-send"
-                          type="button"
-                          onClick={this.handleSendMailData.bind(this, 1)}
-                        >
-                          Send
-                        </button>
+                      <button
+                        className="send my-tic-send"
+                        type="button"
+                        onClick={this.handleSendMailData.bind(this, 1)}
+                      >
+                        Send
+                      </button>
                     </Modal>
                     {/* <div className="row" style={{ width: "100%" }}>
                       <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
