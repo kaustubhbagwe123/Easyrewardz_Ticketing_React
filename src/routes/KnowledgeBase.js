@@ -126,11 +126,11 @@ class KnowledgeBase extends Component {
   
     this.setState({ StatusModel: true,sortColumnName:data,sortTable:table });
     //StatusModel: true,
-    if(data==="issueTypeName"){
-      this.setState({
-        columnTitle:"IssueType"
-      });
-    }
+    // if(data==="issueTypeName"){
+    //   this.setState({
+    //     columnTitle:"IssueType"
+    //   });
+    // }
   }
   StatusCloseModel() {
     this.setState({ StatusModel: false });
@@ -361,6 +361,10 @@ class KnowledgeBase extends Component {
     this.setState({ selectedCategory: categoryValue });
     setTimeout(() => {
       if (this.state.selectedCategory) {
+        // this.setState({
+        // selectedSubCategory:0
+        // });
+       
         this.handleGetSubCategoryList();
       }
     }, 1);
@@ -885,7 +889,7 @@ class KnowledgeBase extends Component {
                   </label>
                   </div>
                 
-                {this.state.sortColumnName==="issueTypeName" ? 
+                {this.state.sortColumnName==="issueTypeName" && this.state.sortTable==="notapprove" ? 
                 
                 this.state.sortIssueType !== null && 
                   this.state.sortIssueType.map((item, i) => ( 
@@ -908,7 +912,7 @@ class KnowledgeBase extends Component {
 
                 :null}
 
-                  {this.state.sortColumnName==="categoryName" ? 
+                  {this.state.sortColumnName==="categoryName" && this.state.sortTable==="notapprove" ? 
                 
                 this.state.sortCategory !== null && 
                   this.state.sortCategory.map((item, i) => ( 
@@ -931,10 +935,79 @@ class KnowledgeBase extends Component {
 
                 :null}
 
-               {this.state.sortColumnName==="subCategoryName" ? 
+               {this.state.sortColumnName==="subCategoryName" && this.state.sortTable==="notapprove" ? 
                 
                 this.state.sortSubCategory !== null && 
                   this.state.sortSubCategory.map((item, i) => ( 
+                    <div className="filter-checkbox">
+                      
+                  <input
+                    type="checkbox"
+                    
+                    name="filter-type"
+                    id={"fil-open" + item.subCategoryName}
+                  
+                    value={item.subCategoryName}
+                    onChange={this.setSortCheckStatus.bind(this,"subCategoryName")}
+                  />
+                  <label htmlFor={"fil-open" + item.subCategoryName}>
+                    <span className="table-btn table-blue-btn">{item.subCategoryName}</span>
+                  </label>
+                </div>
+                  ))
+
+                :null}
+
+                {this.state.sortColumnName==="issueTypeName" && this.state.sortTable==="approve" ? 
+                
+                this.state.sortIssueTypeApprove !== null && 
+                  this.state.sortIssueTypeApprove.map((item, i) => ( 
+                    <div className="filter-checkbox">
+                      
+                  <input
+                    type="checkbox"
+                    
+                    name="filter-type"
+                    id={"fil-open" + item.issueTypeName}
+                  
+                    value={item.issueTypeName}
+                    onChange={this.setSortCheckStatus.bind(this,"issueTypeName")}
+                  />
+                  <label htmlFor={"fil-open" + item.issueTypeName}>
+                    <span className="table-btn table-blue-btn">{item.issueTypeName}</span>
+                  </label>
+                </div>
+                  ))
+
+                :null}
+
+                  {this.state.sortColumnName==="categoryName" && this.state.sortTable==="approve" ? 
+                
+                this.state.sortCategoryApprove !== null && 
+                  this.state.sortCategoryApprove.map((item, i) => ( 
+                    <div className="filter-checkbox">
+                      
+                  <input
+                    type="checkbox"
+                    
+                    name="filter-type"
+                    id={"fil-open" + item.categoryName}
+                  
+                    value={item.categoryName}
+                    onChange={this.setSortCheckStatus.bind(this,"categoryName")}
+                  />
+                  <label htmlFor={"fil-open" + item.categoryName}>
+                    <span className="table-btn table-blue-btn">{item.categoryName}</span>
+                  </label>
+                </div>
+                  ))
+
+                :null}
+
+               {this.state.sortColumnName==="subCategoryName" && this.state.sortTable==="approve" ? 
+                
+                this.state.sortSubCategoryApprove !== null && 
+                  this.state.sortSubCategoryApprove.map((item, i) => ( 
                     <div className="filter-checkbox">
                       
                   <input
@@ -1319,7 +1392,9 @@ class KnowledgeBase extends Component {
                   },
                   {
                     Header: (
-                      <span>
+                      <span
+                      onClick={this.StatusOpenModel.bind(this,"issueTypeName","approve")}
+                      >
                         <label>
                           Type <FontAwesomeIcon icon={faCaretDown} />
                         </label>
@@ -1342,7 +1417,9 @@ class KnowledgeBase extends Component {
 
                   {
                     Header: (
-                      <span>
+                      <span
+                      onClick={this.StatusOpenModel.bind(this,"categoryName","approve")}
+                      >
                         <label>
                           Category <FontAwesomeIcon icon={faCaretDown} />
                         </label>
@@ -1361,7 +1438,9 @@ class KnowledgeBase extends Component {
                   },
                   {
                     Header: (
-                      <span>
+                      <span
+                      onClick={this.StatusOpenModel.bind(this,"subCategoryName","approve")}
+                      >
                         <label>
                           Sub catogory <FontAwesomeIcon icon={faCaretDown} />
                         </label>
