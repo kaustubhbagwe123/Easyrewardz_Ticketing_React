@@ -1033,7 +1033,8 @@ class Alerts extends Component {
                                   Compose your Email
                                 </label>
                                 <div className="div-padding-alert">
-                                  <div className="form-group row">
+
+                                  {/* <div className="form-group row">
                                     <label className="label-color-alert">
                                       To
                                     </label>
@@ -1086,6 +1087,7 @@ class Alerts extends Component {
                                       />
                                     </div>
                                   </div>
+                                   */}
                                   <div className="form-group row">
                                     <label className="label-color-alert">
                                       Subject
@@ -1161,6 +1163,7 @@ class Alerts extends Component {
                                   Compose your Email
                                 </label>
                                 <div className="div-padding-alert">
+{/*                                   
                                   <div className="form-group row">
                                     <label className="label-color-alert">
                                       To
@@ -1214,6 +1217,7 @@ class Alerts extends Component {
                                       />
                                     </div>
                                   </div>
+                                   */}
                                   <div className="form-group row">
                                     <label className="label-color-alert">
                                       Subject
@@ -1286,6 +1290,7 @@ class Alerts extends Component {
                                   Compose your Email
                                 </label>
                                 <div className="div-padding-alert">
+{/*                                   
                                   <div className="form-group row">
                                     <label className="label-color-alert">
                                       To
@@ -1339,6 +1344,7 @@ class Alerts extends Component {
                                       />
                                     </div>
                                   </div>
+                                   */}
                                   <div className="form-group row">
                                     <label className="label-color-alert">
                                       Subject
