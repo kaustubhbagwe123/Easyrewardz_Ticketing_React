@@ -1,5 +1,3 @@
-
-  
 import React, { Component, Fragment } from "react";
 import Modal from "react-responsive-modal";
 import { faCalculator } from "@fortawesome/free-solid-svg-icons";
@@ -918,6 +916,7 @@ class MyTicket extends Component {
     this.setState(state => ({ CommentCollapse: false }));
   }
   hanldeCommentOpen2(Mail_Id) {
+    debugger;
     this.setState({ CommentCollapse2: true, mailId: Mail_Id });
   }
   hanldeCommentClose2() {
@@ -1532,7 +1531,6 @@ class MyTicket extends Component {
     }
   }
 
-
   handleMailOnChange(filed, e) {
     debugger;
     var mailFiled = this.state.mailFiled;
@@ -1549,30 +1547,28 @@ class MyTicket extends Component {
     }
   }
   handleProgressBarDetails(id) {
-    debugger;
     let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Ticketing/getprogressbardetail",
       headers: authHeader(),
       params: {
-        Ticket_ID: id
+        TicketID: id
       }
     }).then(function(res) {
-      debugger;
       let status = res.data.message;
       let data = res.data.responseData;
       if (status === "Success") {
         var progressColor = [];
-        if (data.length > 0) {
-          progressColor.push({
-            value: data[0].progressFirstPercentage,
-            color: data[0].progressFirstColorCode
-          });
-          progressColor.push({
-            value: data[0].progressSecondPercentage,
-            color: data[0].progressSecondColorCode
-          });
+        if (data) {
+          var objColor = {};
+          objColor.value = data.progressFirstPercentage;
+          objColor.color = data.progressFirstColorCode;
+          progressColor.push(objColor);
+          var objColor1 = {};
+          objColor1.value = data.progressSecondPercentage;
+          objColor1.color = data.progressSecondColorCode;
+          progressColor.push(objColor1);
         }
         self.setState({
           progressBarData: data,
@@ -2531,42 +2527,43 @@ class MyTicket extends Component {
                         value="50"
                         max="100"
                       ></progress> */}
-                      <Progress multi>
-                        {this.state.progressDataWithcColor.map(function(item) {
-                          if (item.color === "No Color") {
-                            return <Progress bar value={item.value}></Progress>;
-                          }
-                          if (item.color === "Orange") {
-                            return (
-                              <Progress
-                                bar
-                                color="warning"
-                                value={item.value}
-                              ></Progress>
-                            );
-                          }
+                     <Progress multi>
+{this.state.progressDataWithcColor.map(function (item) {
 
-                          if (item.color === "Red") {
-                            return (
-                              <Progress
-                                bar
-                                color="danger"
-                                value={item.value}
-                              ></Progress>
-                            );
-                          }
+if (item.color === "No Color") {
+return <Progress bar value={item.value}></Progress>;
+}
+if (item.color === "Orange") {
+return (
+<Progress
+bar
+color="warning"
+value={item.value}
+></Progress>
+);
+}
 
-                          if (item.color === "Green") {
-                            return (
-                              <Progress
-                                bar
-                                color="success"
-                                value={item.value}
-                              ></Progress>
-                            );
-                          }
-                        })}
-                      </Progress>
+if (item.color === "Red") {
+return (
+<Progress
+bar
+color="danger"
+value={item.value}
+></Progress>
+);
+}
+
+if (item.color === "Green") {
+return (
+<Progress
+bar
+color="success"
+value={item.value}
+></Progress>
+);
+}
+})}
+</Progress>
                       <p className="logout-label font-weight-bold prog-indi-1">
                         2 day
                       </p>
@@ -4529,7 +4526,10 @@ class MyTicket extends Component {
                             aria-controls="Message-tab"
                             aria-selected="true"
                           >
-                            Message: 04
+                            Message:{" "}
+                            {this.state.tabCounts.messages < 9
+                              ? "0" + this.state.tabCounts.messages
+                              : this.state.tabCounts.messages}
                           </a>
                         </li>
                         <li className="nav-item fo">
@@ -4719,7 +4719,8 @@ class MyTicket extends Component {
                                             className="reply-comment"
                                             onClick={this.hanldeCommentOpen2.bind(
                                               this,
-                                              details.trailMessageDetails.mailID
+                                              details.latestMessageDetails
+                                                .mailID
                                             )}
                                           >
                                             Reply
@@ -4819,6 +4820,7 @@ class MyTicket extends Component {
                                           <CardBody>
                                             {details.trailMessageDetails.map(
                                               (MsgData, s) => {
+                                                debugger;
                                                 return (
                                                   <div
                                                     className="card-details"
@@ -5652,4 +5654,3 @@ class MyTicket extends Component {
   }
 }
 export default MyTicket;
-
