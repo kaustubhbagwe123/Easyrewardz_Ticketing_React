@@ -150,7 +150,9 @@ class MyTicket extends Component {
       userBCC: "",
       messageDetails: [],
       fileText: 0,
+      ReplyfileText: 0,
       file: [],
+      Rplyfile: [],
       fileDummy: [],
       userCcCount: 0,
       userBccCount: 0,
@@ -1579,7 +1581,37 @@ class MyTicket extends Component {
       }
     });
   }
+  handleReplyFileUpload(e) {
+    debugger;
+    // -------------------------Image View code start-----------------------
+    // if (e.target.files && e.target.files[0]) {
+    //   const filesAmount = e.target.files.length;
+    //   for (let i = 0; i < filesAmount; i++) {
+    //     const reader = new FileReader();
+    //     reader.onload = file => {
+    //       this.setState({
+    //         imageView: file.target.result
+    //       });
+    //     };
+    //     reader.readAsDataURL(e.target.files[i]);
+    //   }
+    // }
+    for (let i = 0; i < e.target.files.length; i++) {
+      debugger;
 
+      var objFile = new Object();
+      var name = e.target.files[i].name;
+      var type = name.substring(name.lastIndexOf(".") + 1, name.length);
+      objFile.Type = type;
+      objFile.name = name;
+
+      objFile.File = e.target.files[i];
+
+      this.state.Rplyfile.push(objFile);
+    }
+
+    this.setState({ ReplyfileText: this.state.Rplyfile.length });
+  }
   handleFileUpload(e) {
     debugger;
     // -------------------------Image View code start-----------------------
@@ -1863,6 +1895,11 @@ class MyTicket extends Component {
       SelectedAllItem: selectedRow
     });
   }
+
+  callbackToParent = () => {
+    debugger;
+    this.handleGetCountOfTabs(this.state.ticket_Id);
+  };
 
   render() {
     const {
@@ -2527,43 +2564,42 @@ class MyTicket extends Component {
                         value="50"
                         max="100"
                       ></progress> */}
-                     <Progress multi>
-{this.state.progressDataWithcColor.map(function (item) {
+                      <Progress multi>
+                        {this.state.progressDataWithcColor.map(function(item) {
+                          if (item.color === "No Color") {
+                            return <Progress bar value={item.value}></Progress>;
+                          }
+                          if (item.color === "Orange") {
+                            return (
+                              <Progress
+                                bar
+                                color="warning"
+                                value={item.value}
+                              ></Progress>
+                            );
+                          }
 
-if (item.color === "No Color") {
-return <Progress bar value={item.value}></Progress>;
-}
-if (item.color === "Orange") {
-return (
-<Progress
-bar
-color="warning"
-value={item.value}
-></Progress>
-);
-}
+                          if (item.color === "Red") {
+                            return (
+                              <Progress
+                                bar
+                                color="danger"
+                                value={item.value}
+                              ></Progress>
+                            );
+                          }
 
-if (item.color === "Red") {
-return (
-<Progress
-bar
-color="danger"
-value={item.value}
-></Progress>
-);
-}
-
-if (item.color === "Green") {
-return (
-<Progress
-bar
-color="success"
-value={item.value}
-></Progress>
-);
-}
-})}
-</Progress>
+                          if (item.color === "Green") {
+                            return (
+                              <Progress
+                                bar
+                                color="success"
+                                value={item.value}
+                              ></Progress>
+                            );
+                          }
+                        })}
+                      </Progress>
                       <p className="logout-label font-weight-bold prog-indi-1">
                         2 day
                       </p>
@@ -4625,253 +4661,200 @@ value={item.value}
                         <label className="action-label">Action</label>
                       </div>
                     </div>
-                    {this.state.messageDetails.map((item, i) => {
-                      return (
-                        <div key={i}>
-                          <div className="row top-margin">
-                            <div className="col-md-5">
-                              <div className="v3"></div>
+                    {this.state.messageDetails !== null &&
+                      this.state.messageDetails.map((item, i) => {
+                        return (
+                          <div key={i}>
+                            <div className="row top-margin">
+                              <div className="col-md-5">
+                                <div className="v3"></div>
+                              </div>
+                              <div className="col-md-2">
+                                <label className="today-02">
+                                  {item.dayOfCreation}
+                                  &nbsp; (
+                                  {item.messageCount < 9
+                                    ? "0" + item.messageCount
+                                    : item.messageCount}
+                                  )
+                                </label>
+                              </div>
+                              <div className="col-md-5">
+                                <div className="v4"></div>
+                              </div>
                             </div>
-                            <div className="col-md-2">
-                              <label className="today-02">
-                                {item.dayOfCreation}
-                                &nbsp; (
-                                {item.messageCount < 9
-                                  ? "0" + item.messageCount
-                                  : item.messageCount}
-                                )
-                              </label>
-                            </div>
-                            <div className="col-md-5">
-                              <div className="v4"></div>
-                            </div>
-                          </div>
-                          {item.msgDetails.map((details, j) => {
-                            // debugger;
-                            return (
-                              <div key={j}>
-                                <div>
-                                  <div className="row top-margin">
-                                    <div className="col-12 col-xs-12 col-sm-4 col-md-3">
-                                      <div
-                                        className="row"
-                                        style={{ marginTop: "0" }}
-                                      >
-                                        {details.latestMessageDetails
-                                          .isCustomerComment === 1 ? (
-                                          <img
-                                            src={BlackUserIcon}
-                                            alt="Avatar"
-                                            className="oval-6"
-                                          />
-                                        ) : (
-                                          <img
-                                            src={Headphone2Img}
-                                            alt="headphone"
-                                            className="oval-55"
-                                          />
-                                        )}
-                                        <label
-                                          className="solved-by-naman-r"
-                                          style={{ marginLeft: "7px" }}
-                                        >
-                                          {
-                                            details.latestMessageDetails
-                                              .commentBy
-                                          }
-                                        </label>
-                                        <img
-                                          src={
-                                            details.latestMessageDetails
-                                              .ticketSourceName === "Calls"
-                                              ? require("./../assets/Images/call.png")
-                                              : details.latestMessageDetails
-                                                  .ticketSourceName ===
-                                                "Facebook"
-                                              ? require("./../assets/Images/facebook.png")
-                                              : details.latestMessageDetails
-                                                  .ticketSourceName === "Mails"
-                                              ? require("./../assets/Images/SecuredLetter2.png")
-                                              : require("./../assets/Images/twitter.png")
-                                          }
-                                          alt="sourceIMG"
-                                          className="smg-Img1 headPhone3 black-twitter"
-                                        />
-                                      </div>
-                                    </div>
-                                    <div className="col-12 col-xs-12 col-sm-6 col-md-7">
-                                      <label
-                                        className="label-5"
-                                        style={{ display: "block" }}
-                                      >
-                                        {
-                                          details.latestMessageDetails
-                                            .ticketMailBody
-                                        }
-                                      </label>
-                                    </div>
-                                    <div className="col-12 col-xs-12 col-sm-2 col-md-2 mob-flex">
-                                      {HidecollapsUp}
-                                      <div className="inlineGridTicket">
-                                        {details.latestMessageDetails
-                                          .isCustomerComment === 1 ? (
-                                          <label
-                                            className="reply-comment"
-                                            onClick={this.hanldeCommentOpen2.bind(
-                                              this,
-                                              details.latestMessageDetails
-                                                .mailID
-                                            )}
+                            {item.msgDetails !== null &&
+                              item.msgDetails.map((details, j) => {
+                                debugger;
+                                return (
+                                  <div key={j}>
+                                    <div>
+                                      <div className="row top-margin">
+                                        <div className="col-12 col-xs-12 col-sm-4 col-md-3">
+                                          <div
+                                            className="row"
+                                            style={{ marginTop: "0" }}
                                           >
-                                            Reply
-                                          </label>
-                                        ) : null}
-
-                                        <label
-                                          className="comment-text"
-                                          onClick={this.handleCommentCollapseOpen.bind(
-                                            this
-                                          )}
-                                        >
-                                          Comment
-                                        </label>
-                                      </div>
-                                      <div
-                                        className="row"
-                                        style={{ width: "100%" }}
-                                      >
-                                        <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
-                                        <div className="col-12 col-xs-12 col-sm-8 col-md-9">
-                                          <div className="commentcollapseTicket">
-                                            {/* <Collapse
-                                              isOpen={
-                                                this.state.CommentCollapse
+                                            {details.latestMessageDetails
+                                              .isCustomerComment === 1 ? (
+                                              <img
+                                                src={BlackUserIcon}
+                                                alt="Avatar"
+                                                className="oval-6"
+                                              />
+                                            ) : (
+                                              <img
+                                                src={Headphone2Img}
+                                                alt="headphone"
+                                                className="oval-55"
+                                              />
+                                            )}
+                                            <label
+                                              className="solved-by-naman-r"
+                                              style={{ marginLeft: "7px" }}
+                                            >
+                                              {
+                                                details.latestMessageDetails
+                                                  .commentBy
                                               }
-                                            > 
-                                              <Card>
-                                                <CardBody>
-                                                  <div className="commenttextborder">
-                                                    <div className="Commentlabel">
-                                                      <label className="Commentlabel1">
-                                                        Comment
-                                                      </label>
-                                                    </div>
-                                                    <div>
-                                                      <span className="comment-line"></span>
-                                                      <div
-                                                        style={{
-                                                          float: "right",
-                                                          cursor: "pointer",
-                                                          height: "30px",
-                                                          marginTop: "-33px"
-                                                        }}
-                                                      >
-                                                        <img
-                                                          src={MinusImg}
-                                                          alt="Minus"
-                                                          className="CommentMinus-img"
-                                                          onClick={this.handleCommentCollapseOpen.bind(
-                                                            this
-                                                          )}
-                                                        />
-                                                      </div>
-                                                    </div>
-                                                    <div className="commenttextmessage">
-                                                      <textarea
-                                                        cols="31"
-                                                        rows="3"
-                                                        className="ticketMSGCmt-textarea"
-                                                        name="ticketcommentMSG"
-                                                        maxLength={300}
-                                                        value={
-                                                          this.state
-                                                            .ticketcommentMSG
-                                                        }
-                                                        onChange={
-                                                          this
-                                                            .handleNoteOnChange
-                                                        }
-                                                      ></textarea>
-                                                    </div>
-                                                    <div className="SendCommentBtn">
-                                                      <button
-                                                        className="SendCommentBtn1"
-                                                        onClick={this.handleSendMessagaData.bind(
-                                                          this
-                                                        )}
-                                                      >
-                                                        SEND
-                                                      </button>
-                                                    </div>
-                                                  </div>
-                                                </CardBody>
-                                              </Card>
-                                            </Collapse> */}
+                                            </label>
+                                            <img
+                                              src={
+                                                details.latestMessageDetails
+                                                  .ticketSourceName === "Calls"
+                                                  ? require("./../assets/Images/headphone3.png")
+                                                  : details.latestMessageDetails
+                                                      .ticketSourceName ===
+                                                    "Facebook"
+                                                  ? require("./../assets/Images/facebook.png")
+                                                  : details.latestMessageDetails
+                                                      .ticketSourceName ===
+                                                    "Mails"
+                                                  ? require("./../assets/Images/SecuredLetter2.png")
+                                                  : require("./../assets/Images/twitter.png")
+                                              }
+                                              alt="sourceIMG"
+                                              className="smg-Img1 headPhone3 black-twitter"
+                                            />
+                                          </div>
+                                        </div>
+                                        <div className="col-12 col-xs-12 col-sm-6 col-md-7">
+                                          <label
+                                            className="label-5"
+                                            style={{ display: "block" }}
+                                          >
+                                            {
+                                              details.latestMessageDetails
+                                                .ticketMailBody
+                                            }
+                                          </label>
+                                        </div>
+                                        <div className="col-12 col-xs-12 col-sm-2 col-md-2 mob-flex">
+                                          {HidecollapsUp}
+                                          <div className="inlineGridTicket">
+                                            {details.latestMessageDetails
+                                              .isCustomerComment === 1 ? (
+                                              <label
+                                                className="reply-comment"
+                                                onClick={this.hanldeCommentOpen2.bind(
+                                                  this,
+                                                  details.latestMessageDetails
+                                                    .mailID
+                                                )}
+                                              >
+                                                Reply
+                                              </label>
+                                            ) : null}
+
+                                            <label
+                                              className="comment-text"
+                                              onClick={this.handleCommentCollapseOpen.bind(
+                                                this
+                                              )}
+                                            >
+                                              Comment
+                                            </label>
+                                          </div>
+                                          <div
+                                            className="row"
+                                            style={{ width: "100%" }}
+                                          >
+                                            <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
+                                            <div className="col-12 col-xs-12 col-sm-8 col-md-9">
+                                              <div className="commentcollapseTicket"></div>
+                                            </div>
                                           </div>
                                         </div>
                                       </div>
-                                    </div>
-                                  </div>
-                                  <div className="row card-op-out">
-                                    <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
-                                    <div className="col-12 col-xs-12 col-sm-6 col-md-7">
-                                      <Collapse isOpen={this.state.collapseUp}>
-                                        <Card>
-                                          <CardBody>
-                                            {details.trailMessageDetails.map(
-                                              (MsgData, s) => {
-                                                debugger;
-                                                return (
-                                                  <div
-                                                    className="card-details"
-                                                    key={s}
-                                                  >
-                                                    <div className="card-details-1">
-                                                      <label
-                                                        className="label-5"
-                                                        style={{
-                                                          display: "block"
-                                                        }}
-                                                      >
-                                                        {MsgData.ticketMailBody}
-                                                      </label>
-                                                    </div>
+                                      <div className="row card-op-out">
+                                        <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
+                                        <div className="col-12 col-xs-12 col-sm-6 col-md-7">
+                                          <Collapse
+                                            isOpen={this.state.collapseUp}
+                                          >
+                                            <Card>
+                                              <CardBody>
+                                                {details.trailMessageDetails !==
+                                                  null &&
+                                                  details.trailMessageDetails.map(
+                                                    function(MsgData, s) {
+                                                      return (
+                                                        <div
+                                                          className="card-details"
+                                                          key={s}
+                                                        >
+                                                          <div className="card-details-1">
+                                                            <label
+                                                              className="label-5"
+                                                              style={{
+                                                                display: "block"
+                                                              }}
+                                                            >
+                                                              {
+                                                                MsgData.ticketMailBody
+                                                              }
+                                                            </label>
+                                                          </div>
+                                                        </div>
+                                                      );
+                                                    }
+                                                  )}
+                                               {details.trailMessageDetails.length === 0 && <div className="card-details">
+                                                  <div className="card-details-1">
+                                                    <label className="i-have-solved-this-i">
+                                                      {
+                                                        details
+                                                          .trailMessageDetails
+                                                          .ticketMailSubject
+                                                      }
+                                                    </label>
+                                                    <label
+                                                      className="label-5"
+                                                      style={{
+                                                        display: "block"
+                                                      }}
+                                                    >
+                                                      {
+                                                        details
+                                                          .trailMessageDetails
+                                                          .ticketMailBody
+                                                      }
+                                                    </label>
                                                   </div>
-                                                );
-                                              }
-                                            )}
-                                            <div className="card-details">
-                                              <div className="card-details-1">
-                                                <label className="i-have-solved-this-i">
-                                                  {
-                                                    details.trailMessageDetails
-                                                      .ticketMailSubject
-                                                  }
-                                                </label>
-                                                <label
-                                                  className="label-5"
-                                                  style={{ display: "block" }}
-                                                >
-                                                  {
-                                                    details.trailMessageDetails
-                                                      .ticketMailBody
-                                                  }
-                                                </label>
-                                              </div>
-                                            </div>
-                                          </CardBody>
-                                        </Card>
-                                      </Collapse>
+                                                </div>}
+                                              </CardBody>
+                                            </Card>
+                                          </Collapse>
+                                        </div>
+                                        <div className="col-12 col-xs-12 col-sm-2"></div>
+                                      </div>
                                     </div>
-                                    <div className="col-12 col-xs-12 col-sm-2"></div>
                                   </div>
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      );
-                    })}
+                                );
+                              })}
+                          </div>
+                        );
+                      })}
                     <Modal
                       open={this.state.CommentCollapse}
                       onClose={this.handleCommentCollapseOpen.bind(this)}
@@ -5108,20 +5091,24 @@ value={item.value}
                                     htmlFor="custRply"
                                     style={{ paddingLeft: "25px" }}
                                   >
-                                    <span>Inform Store</span>
+                                    <span>Inform Storee</span>
                                   </label>
                                 </div>
                               </li>
                               <li>
                                 <span>
                                   <input
-                                    id="file-upload"
+                                    id="Rplyfile"
                                     className="file-upload1 d-none"
                                     type="file"
-                                    onChange={this.fileUpload}
+                                    name="Rplyfile"
+                                    onChange={this.handleReplyFileUpload.bind(
+                                      this
+                                    )}
+                                    multiple
                                   />
                                   <label
-                                    htmlFor="file-upload"
+                                    htmlFor="Rplyfile"
                                     onDrop={this.fileDrop}
                                     onDragOver={this.fileDragOver}
                                     onDragEnter={this.fileDragEnter}
@@ -5134,7 +5121,7 @@ value={item.value}
                                   </label>
                                 </span>
                                 <label style={{ color: "#2561a8" }}>
-                                  3 files
+                                  {this.state.ReplyfileText} files
                                 </label>
                               </li>
                               <li className="w-100"></li>
@@ -5418,6 +5405,7 @@ value={item.value}
                   >
                     {this.state.ticket_Id > 0 ? (
                       <MyTicketTask
+                        callbackToParent={this.callbackToParent}
                         taskData={{
                           TicketData: {
                             TicketId: this.state.ticket_Id,

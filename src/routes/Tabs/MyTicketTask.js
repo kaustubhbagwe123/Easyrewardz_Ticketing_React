@@ -307,6 +307,7 @@ class MyTicketTask extends Component {
               selectedAssignTo: 0,
               selectedPriority: 0
             });
+            self.props.callbackToParent();
             // {
             //   self.props.callBackTaskLenght(self.state.tikcet_ID);
             // }

@@ -350,7 +350,7 @@ class MyTicketList extends Component {
 
   componentDidUpdate() {
     debugger;
-    console.log(this.state.notiType);
+    // console.log(this.state.notiType);
     if (this.props.location.state) {
 
       if (this.state.notiType !== this.props.location.state.isType) {
