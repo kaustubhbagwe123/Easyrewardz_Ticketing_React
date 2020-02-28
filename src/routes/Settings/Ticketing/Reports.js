@@ -1186,6 +1186,18 @@ debugger;
   handleSave(){
     debugger;
     let self=this;
+    var SearchParams = {}; 
+    SearchParams=JSON.stringify(this.state.ReportParams);
+    if(self.state.reportName=="")
+    {
+      NotificationManager.error("Please select report name.");
+      return;
+    }
+    self=this;  
+    if(this.state.selectScheduleDate=="")
+    {
+      self.setState({selectScheduleDate:0});
+    }
     if(this.state.Schedule_ID>0)
     {
       axios({
@@ -1203,10 +1215,86 @@ debugger;
       });
     }    
     else{
-      NotificationManager.error("Please create scheduler");      
-    }
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Ticketing/Schedule",
+        headers: authHeader(),
+        data: {          
+          PrimaryScheduleID:this.state.Schedule_ID,
+          ReportName:this.state.selectedReportName,
+          SearchInputParams:SearchParams,
+          ScheduleFor: this.state.selectedTeamMemberCommaSeperated,
+          ScheduleType: this.state.selectScheduleDate,
+          NoOfDay: this.state.selectedNoOfDay,
+          ScheduleTime: this.state.selectedScheduleTime,
+          IsDaily: this.state.IsDaily,
+          IsWeekly: this.state.IsWeekly,
+          NoOfWeek: this.state.selectedNoOfWeek,
+          DayIds: this.state.selectedWeeklyDays,
+          IsDailyForMonth: this.state.IsDailyForMonth,
+          NoOfDaysForMonth: this.state.selectedNoOfDaysForMonth,
+          NoOfMonthForMonth: this.state.selectedNoOfMonthForMonth,
+          IsWeeklyForMonth: this.state.IsWeeklyForMonth,
+          NoOfMonthForWeek: this.state.selectedNoOfMonthForWeek,
+          NoOfWeekForWeek: this.state.selectedNoOfWeekForWeek,
+          ScheduleFrom:3,
+          NameOfDayForWeek: this.state.selectedNameOfDayForWeekCommaSeperated,
+          IsDailyForYear: this.state.IsDailyForYear,
+          NoOfDayForDailyYear: this.state.selectedNoOfDayForDailyYear,
+          NameOfMonthForDailyYear: this.state
+            .selectedNameOfMonthForYearCommaSeperated,
+          IsWeeklyForYear: this.state.IsWeeklyForYear,
+          NoOfWeekForYear: this.state.selectedNoOfWeekForYear,
+          NameOfDayForYear: this.state.selectedNameOfDayForYearCommaSeperated,
+          NameOfMonthForYear: this.state
+            .selectedNameOfMonthForDailyYearCommaSeperated       
+        }
+      }).then(function(res) {
+        debugger;
+       
+        let status = res.data.message;
+        let scheduleId=res.data.responseData;
+        if (status === "Success") {
+          self.state.selectedTeamMember="";
+          self.state.selectedTeamMemberCommaSeperated=undefined;
+          self.state.selectScheduleDate="";
+          self.state.selectedScheduleTime="";  
   
-  }
+          self.ScheduleCloseModel();
+         // this.handleReportList(); 
+          self.setState({Schedule_ID:scheduleId});
+          self.setState({ AddReportPopup: false });
+          NotificationManager.success("Report saved successfully.");
+          self.setState({         
+            ReportParams: {},
+            selectedScheduleTime:"",
+            // selectedTeamMemberCommaSeperated="",
+            // selectScheduleDate="",
+            // selectedScheduleTime="",
+            IsDaily: false,
+            IsDailyForMonth: false,
+            IsWeekly: false,
+            IsWeeklyForMonth: false,
+            IsDailyForYear: false,
+            IsWeeklyForYear: false
+          });
+        }
+        else if(status=="duplicate")
+        {
+          self.setState({Schedule_ID:0});
+          NotificationManager.error("Report name already exist.");
+        }
+      });
+    }
+    
+   
+    // else{
+    //   NotificationManager.error("Please create scheduler");      
+    // }
+  
+  
+}
+  
 
   handleInsertReport() {
     
