@@ -3188,12 +3188,12 @@ class Dashboard extends Component {
           if (dataSearch.searchDataByAll.CreatedDate !== "") {
             let createdDate = dataSearch.searchDataByAll.CreatedDate;
             let createdDateArray = createdDate.split('-');
-            let createdDateFinal = new Date(createdDateArray[0], createdDateArray[1] - 1, createdDateArray[2]);
+            var createdDateFinal = new Date(createdDateArray[0], createdDateArray[1] - 1, createdDateArray[2]);
           }
           if (dataSearch.searchDataByAll.ModifiedDate !== "") {
             let modifiedDate = dataSearch.searchDataByAll.ModifiedDate;
             let modifiedDateArray = modifiedDate.split('-');
-            let modifiedDateFinal = new Date(modifiedDateArray[0], modifiedDateArray[1] - 1, modifiedDateArray[2]);
+            var modifiedDateFinal = new Date(modifiedDateArray[0], modifiedDateArray[1] - 1, modifiedDateArray[2]);
           }
           self.setState({
             ByAllCreateDate: createdDateFinal,
@@ -3271,7 +3271,6 @@ class Dashboard extends Component {
             selectedClaimIssueType: dataSearch.searchDataByAll.ClaimIssueTypeId
           });
         }
-
       } else {
         self.setState({ SearchTicketData: [], loading: false });
       }
@@ -3654,7 +3653,7 @@ class Dashboard extends Component {
                         placeholder="Enter text"
                         style={{ cursor: "pointer" }}
                         disabled={disabled}
-                        defaultValue={value}
+                        value={value}
                       />
                     </DateTimeRangeContainer>
                   </Col>
@@ -4886,7 +4885,7 @@ class Dashboard extends Component {
                                   />
                                 </div>
                                 <div
-                                  className="col-md-3 col-sm-6"
+                                  className="col-md-3 col-sm-6 allspc"
                                   style={{ display: this.state.IssueType }}
                                 >
                                   {/* <select>
