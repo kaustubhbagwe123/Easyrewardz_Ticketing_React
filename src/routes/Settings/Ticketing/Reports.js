@@ -1219,6 +1219,22 @@ debugger;
       NotificationManager.error("Please add report name.");
       return;
     }
+    debugger;
+    if(this.state.selectedTeamMemberCommaSeperated==undefined)
+    {
+      NotificationManager.error("Please add team name for schedule.");
+      return;
+    }
+    if(this.state.selectScheduleDate=="")
+    {
+      NotificationManager.error("Please select schedule type.");
+      return;
+    }
+    if(this.state.selectedScheduleTime=="")
+    {
+      NotificationManager.error("Please select schedule time.");
+      return;
+    }
     if(SearchParams!="")
     { 
       debugger;   
@@ -1263,6 +1279,11 @@ debugger;
         let status = res.data.message;
         let scheduleId=res.data.responseData;
         if (status === "Success") {
+          self.state.selectedTeamMember="";
+          self.state.selectedTeamMemberCommaSeperated=undefined;
+          self.state.selectScheduleDate="";
+          self.state.selectedScheduleTime="";  
+
           self.ScheduleCloseModel();
          // this.handleReportList(); 
           self.setState({Schedule_ID:scheduleId});
@@ -1270,6 +1291,10 @@ debugger;
           NotificationManager.success("Scheduler created successfully.");
           self.setState({         
             ReportParams: {},
+            selectedScheduleTime:"",
+            // selectedTeamMemberCommaSeperated="",
+            // selectScheduleDate="",
+            // selectedScheduleTime="",
             IsDaily: false,
             IsDailyForMonth: false,
             IsWeekly: false,
