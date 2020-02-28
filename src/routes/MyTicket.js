@@ -24,7 +24,7 @@ import FacebookImg from "./../assets/Images/facebook.png";
 import ClipImg from "./../assets/Images/clip.png";
 import PencilImg from "./../assets/Images/pencil.png";
 import CancelImg from "./../assets/Images/cancel.png";
-import { Collapse, CardBody, Card,Progress  } from "reactstrap";
+import { Collapse, CardBody, Card, Progress } from "reactstrap";
 import { Checkbox } from "antd";
 import CustomerIcon from "./../assets/Images/customer-icon.png";
 import UserIcon from "./../assets/Images/UserIcon.png";
@@ -1470,6 +1470,32 @@ class MyTicket extends Component {
           NotificationManager.error(status, "", 1500);
         }
       });
+    } else if (isSend === 3) {
+      let self = this;
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Ticketing/MessageComment",
+        headers: authHeader(),
+        data: {
+          TicketID: this.state.ticket_Id,
+          TicketMailBody: this.state.ticketcommentMSG,
+          IsSent: 1,
+          IsCustomerComment: 1
+        }
+      }).then(function(res) {
+        debugger;
+        let status = res.data.message;
+        if (status === "Success") {
+          NotificationManager.success("Comment Added successfully.", "", 2000);
+          self.handleGetMessageDetails(self.state.ticket_Id);
+          self.handleCommentCollapseOpen();
+          self.setState({
+            ticketcommentMSG: ""
+          });
+        } else {
+          NotificationManager.error(status, "", 2000);
+        }
+      });
     } else {
       axios({
         method: "post",
@@ -1504,34 +1530,6 @@ class MyTicket extends Component {
     }
   }
 
-  handleSendMessagaData() {
-    debugger;
-    let self = this;
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Ticketing/MessageComment",
-      headers: authHeader(),
-      data: {
-        TicketID: this.state.ticket_Id,
-        TicketMailBody: this.state.ticketcommentMSG,
-        IsSent: 1,
-        IsCustomerComment: 1
-      }
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      if (status === "Success") {
-        NotificationManager.success("Comment Added successfully.", "", 2000);
-        self.handleGetMessageDetails(self.state.ticket_Id);
-        self.handleCommentCollapseOpen();
-        self.setState({
-          ticketcommentMSG: ""
-        });
-      } else {
-        NotificationManager.error(status, "", 2000);
-      }
-    });
-  }
 
   handleMailOnChange(filed, e) {
     debugger;
@@ -4910,7 +4908,7 @@ class MyTicket extends Component {
                         <div className="SendCommentBtn">
                           <button
                             className="SendCommentBtn1"
-                            onClick={this.handleSendMessagaData.bind(this)}
+                            onClick={this.handleSendMailData.bind(this, 3)}
                           >
                             SEND
                           </button>
