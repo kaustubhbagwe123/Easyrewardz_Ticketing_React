@@ -304,6 +304,7 @@ class Header extends Component {
       debugger;
       let status = res.data.message;
       if (status === "Success") {
+        debugger;
         let Count1 = res.data.responseData.ticketNotification[0].ticketCount;
         let Count2 = res.data.responseData.ticketNotification[1].ticketCount;
         let Count3 = res.data.responseData.ticketNotification[2].ticketCount;
@@ -328,6 +329,7 @@ class Header extends Component {
           notiCount
         });
       } else {
+        debugger
         self.setState({
           notifiCount1: "",
           notifiCount2: "",

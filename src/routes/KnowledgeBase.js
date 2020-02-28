@@ -355,6 +355,7 @@ class KnowledgeBase extends Component {
       tabCount: 2
     });
   }
+  
 
   setCategoryValue = e => {
     let categoryValue = e.currentTarget.value;
