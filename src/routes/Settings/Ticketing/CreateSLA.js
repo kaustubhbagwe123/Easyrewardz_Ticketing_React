@@ -62,7 +62,9 @@ class CreateSLA extends Component {
       searchedSla: [],
       slaShow: false,
       slaOvrlayShow: false,
-      SearchText: ''
+      SearchText: '',
+      issueTypeCompulsion:"",
+      slaTargetCompulsion:""
     };
 
     this.handleGetSLA = this.handleGetSLA.bind(this);
@@ -371,6 +373,7 @@ class CreateSLA extends Component {
   }
   createSla() {
     debugger;
+    
     let self = this;
     let SlaIsActive;
     let indiSla = this.state.indiSla;
