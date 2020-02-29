@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import ProfileImg from "./../assets/Images/UserIcon.png";
 import { Link } from "react-router-dom";
 import { ProgressBar } from "react-bootstrap";
 import Modal from "react-responsive-modal";
@@ -105,6 +106,7 @@ class Header extends Component {
   }
 
   componentDidMount() {
+    debugger;
     this.handleLoggedInUserDetails();
     this.handleGetUserProfileData();
     let pageName, lastOne, lastValue, arr;
@@ -987,7 +989,7 @@ class Header extends Component {
                 <div className="user-img">
                 <Link to="userprofile">
                   <img
-                    src={this.state.selectedUserProfilePicture}
+                    src={this.state.selectedUserProfilePicture==="https://localhost:44357/Resources/Images/"&&"https://erbelltkt.dcdev.brainvire.net/Resources/Images/"?ProfileImg:this.state.selectedUserProfilePicture}
                       //this.state.userProfile === "user-img.jpg"
                        // ? require("./../assets/Images/user-img.jpg")
                        // : require("./../assets/Images/defaultUser.png")

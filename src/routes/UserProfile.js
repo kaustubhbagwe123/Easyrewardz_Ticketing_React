@@ -42,7 +42,7 @@ class UserProfile extends Component {
   }
   componentDidMount(){
     debugger;
-    this.handleGetDesignationList();
+    //this.handleGetDesignationList();
     this.handleGetUserProfileData();
    
   }
@@ -219,7 +219,7 @@ self.setState({
                   <div className="half-circle">
                     <div className="imguserupload">
                       <img
-                        src={this.state.selectedProfilePicture}
+                        src={this.state.selectedProfilePicture==="https://localhost:44357/Resources/Images/"&&"https://erbelltkt.dcdev.brainvire.net/Resources/Images/"?ProfileImg:this.state.selectedProfilePicture}
                         alt="store-settings"
                         className="profimg"
                       />
