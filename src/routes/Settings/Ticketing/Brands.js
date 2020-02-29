@@ -16,6 +16,8 @@ import {
   NotificationManager
 } from "react-notifications";
 import ActiveStatus from "../../activeStatus";
+import Modal from "react-responsive-modal";
+import Sorting from "./../../../assets/Images/sorting.png";
 class Brands extends Component {
   constructor(props) {
     super(props);
@@ -30,9 +32,17 @@ class Brands extends Component {
       activeData: ActiveStatus(),
       brandcodeCompulsion:"",
       brandnameCompulsion:"",
-      statusCompulsion:""
+      statusCompulsion:"",
+      StatusModel: false,
+      sortColumn:"",
+      sortAllData:[],
+      sortBrandCode:[],
+      sortBrandName:[]
+
     };
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
+    this.StatusOpenModel = this.StatusOpenModel.bind(this);
+    this.StatusCloseModel = this.StatusCloseModel.bind(this);
   }
   hide(e, id) {
     debugger;
@@ -48,6 +58,76 @@ class Brands extends Component {
   componentDidMount() {
     this.handleGetBrandList();
   }
+
+  sortStatusAtoZ() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.brandData;
+
+    itemsArray.sort(function(a, b)  {
+      return    a.ticketStatus > b.ticketStatus ? 1:-1;
+        });
+
+    
+
+    this.setState({
+      brandData: itemsArray
+    });
+    this.StatusCloseModel();
+  }
+  sortStatusZtoA() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.brandData;
+    itemsArray.sort((a, b)=> {
+      return a.ticketStatus < b.ticketStatus
+         
+      
+    });
+    this.setState({
+      brandData: itemsArray
+    });
+    this.StatusCloseModel();
+  }
+
+  StatusOpenModel(data) {
+    debugger;
+  
+    this.setState({ StatusModel: true,sortColumn:data });
+  }
+  StatusCloseModel() {
+    this.setState({ StatusModel: false });
+  }
+
+  setSortCheckStatus = (column,e) => {
+    debugger;
+    
+    var itemsArray = [];
+    var data = e.currentTarget.value;
+    if(column==="all"){
+      itemsArray=this.state.sortAllData;
+      
+     
+    }else if(column==="brandCode"){
+        this.state.brandData=this.state.sortAllData;
+        itemsArray = this.state.brandData.filter(
+          a => a.brandCode === data
+        );
+        
+      }else if(column==="brandName"){
+        this.state.brandData=this.state.sortAllData;
+        itemsArray = this.state.brandData.filter(
+          a => a.brandName === data
+        );
+       
+      }
+     
+    
+    this.setState({
+      brandData: itemsArray
+    });
+    this.StatusCloseModel();
+  };
   handleBrandOnchange = e => {
     this.setState({
       [e.target.name]: e.target.value
@@ -82,6 +162,38 @@ class Brands extends Component {
       debugger;
       let status = res.data.message;
       let data = res.data.responseData;
+
+      if(data !== null){
+       
+        self.state.sortAllData=data;
+        var unique=[];
+      var distinct = [];
+      for( let i = 0; i < data.length; i++ ){
+        if( !unique[data[i].brandCode] && data[i].brandCode !=="" ){
+          distinct.push(data[i].brandCode);
+          unique[data[i].brandCode]=1;
+        }
+      }
+      for (let i = 0; i < distinct.length; i++) {
+        self.state.sortBrandCode.push({ brandCode: distinct[i] });
+      }
+
+
+      var unique=[];
+      var distinct = [];
+      for( let i = 0; i < data.length; i++ ){
+        if( !unique[data[i].brandName] && data[i].brandName!=="" ){
+          distinct.push(data[i].brandName);
+          unique[data[i].brandName]=1;
+        }
+      }
+      for (let i = 0; i < distinct.length; i++) {
+        self.state.sortBrandName.push({ brandName: distinct[i] });
+      }
+
+
+      }
+
       if (status === "Success") {
         self.setState({
           brandData: data, loading: false
@@ -209,6 +321,108 @@ class Brands extends Component {
     return (
       <React.Fragment>
         <NotificationContainer />
+        <div className="position-relative d-inline-block">
+          <Modal
+            onClose={this.StatusCloseModel}
+            open={this.state.StatusModel}
+            modalId="Status-popup"
+            overlayId="logout-ovrly"
+          >
+            <div className="status-drop-down">
+              <div className="sort-sctn">
+                <div className="d-flex">
+                  <a href="#!"
+                    onClick={this.sortStatusAtoZ.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY A TO Z</p>
+                </div>
+                <div className="d-flex">
+                  <a href="#!"
+                    onClick={this.sortStatusZtoA.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY Z TO A</p>
+                </div>
+              </div>
+              <div className="filter-type">
+        
+                <p>FILTER BY TYPE</p>
+                 <div className="filter-checkbox">
+                <input
+                    type="checkbox"
+                    
+                    name="filter-type"
+                    id={"fil-open" }
+                  
+                    value="all"
+                    onChange={this.setSortCheckStatus.bind(this,"all")}
+                  />
+                  <label htmlFor={"fil-open"}>
+                    <span className="table-btn table-blue-btn">ALL</span>
+                  </label>
+                  </div>
+                {this.state.sortColumn==="brandCode" ? 
+                
+                this.state.sortBrandCode !== null && 
+                  this.state.sortBrandCode.map((item, i) => ( 
+                    <div className="filter-checkbox">
+                      
+                  <input
+                    type="checkbox"
+                    
+                    name="filter-type"
+                    id={"fil-open" + item.brandCode}
+                  
+                    value={item.brandCode}
+                    onChange={this.setSortCheckStatus.bind(this,"brandCode")}
+                  />
+                  <label htmlFor={"fil-open" + item.brandCode}>
+                    <span className="table-btn table-blue-btn">{item.brandCode}</span>
+                  </label>
+                </div>
+                  ))
+
+                :null}
+
+                { this.state.sortColumn==="brandName" ? 
+                
+                this.state.sortBrandName !== null && 
+                  this.state.sortBrandName.map((item, i) => ( 
+                    <div className="filter-checkbox">
+                      
+                  <input
+                    type="checkbox"
+                    
+                    name="filter-type"
+                    id={"fil-open" + item.brandName}
+                  
+                    value={item.brandName}
+                    onChange={this.setSortCheckStatus.bind(this,"brandName")}
+                  />
+                  <label htmlFor={"fil-open" + item.brandName}>
+                    <span className="table-btn table-blue-btn">{item.brandName}</span>
+                  </label>
+                </div>
+                  ))
+
+                :null}
+
+              
+                
+
+              </div>
+             
+
+             
+              
+            </div>
+          </Modal>
+        </div>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="settings" className="header-path">
             Settings
@@ -235,7 +449,7 @@ class Brands extends Component {
                     columns={[
                       {
                         Header: (
-                          <span>
+                          <span onClick={this.StatusOpenModel.bind(this,"brandCode")}>
                             Brand Code
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
@@ -244,7 +458,7 @@ class Brands extends Component {
                       },
                       {
                         Header: (
-                          <span>
+                          <span onClick={this.StatusOpenModel.bind(this,"brandName")}>
                             Brand Name
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
