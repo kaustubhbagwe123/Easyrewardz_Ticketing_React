@@ -193,7 +193,8 @@ class Reports extends Component {
       TaskStatusCompulsion: "",
       TaskPriorityCompulsion: "",
       DepartmentCompulsion: "",
-      FunctionCompulsion: ""
+      FunctionCompulsion: "",
+      FunctionData: []
     };
 
     this.handleAddReportOpen = this.handleAddReportOpen.bind(this);
@@ -215,6 +216,7 @@ class Reports extends Component {
     this.handleSave = this.handleSave.bind(this);
     this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
     this.handleInsertReport = this.handleInsertReport.bind(this);
+    this.handleGetFunctionList = this.handleGetFunctionList.bind(this);
   }
   componentDidMount() {
     debugger;
@@ -322,9 +324,19 @@ debugger;
     this.state.selectBrand=allTab["BrandID"];
     this.state.selectedIssueType=allTab["IssueType"];
     this.state.selectedTaskPriority=allTab["TaskPriority"];
-    this.state.selectedCategory=allTab["CategoryId"];
+    // this.state.selectedCategory=allTab["CategoryId"];
+    this.setState({
+      selectedCategory: allTab["CategoryId"]
+    }, () => {
+      this.handleGetSubCategoryList()
+    });
     //this.handleGetSubCategoryList();
-    this.state.selectedSubCategory=allTab["SubCategoryId"];
+    // this.state.selectedSubCategory=allTab["SubCategoryId"];
+    this.setState({
+      selectedSubCategory: allTab["SubCategoryId"]
+    }, () => {
+      this.handleGetIssueTypeList()
+    });
     this.state.selectedIssueType=allTab["IssueTypeId"];
     this.state.selectedTicketSource=allTab["TicketSourceTypeID"];
     this.state.selectedTicketID=allTab["TicketIdORTitle"];
@@ -343,12 +355,27 @@ debugger;
     this.state.selectedVisitStoreAddress=allTab["WantToStoreCodeORAddress"];
    
     this.state.selectedClaimStatus=allTab["ClaimStatusId"];
-    this.state.selectedClaimCategory=allTab["ClaimCategoryId"];
-    this.state.selectedClaimSubCategory=allTab["ClaimSubCategoryId"];
+    // this.state.selectedClaimCategory=allTab["ClaimCategoryId"];
+    this.setState({
+      selectedClaimCategory: allTab["ClaimCategoryId"]
+    }, () => {
+      this.handleGetSubCategoryList()
+    });
+    // this.state.selectedClaimSubCategory=allTab["ClaimSubCategoryId"];
+    this.setState({
+      selectedClaimSubCategory: allTab["ClaimSubCategoryId"]
+    }, () => {
+      this.handleGetIssueTypeList()
+    });
     this.state.selectedClaimIssueType=allTab["ClaimIssueTypeId"];
   
     this.state.selectedTaskStatus=allTab["TaskStatusId"];
-    this.state.selectedDepartment=allTab["TaskDepartment_Id"];
+    // this.state.selectedDepartment=allTab["TaskDepartment_Id"];
+    this.setState({
+      selectedDepartment: allTab["TaskDepartment_Id"],
+    }, () => {
+      this.handleGetFunctionList()
+    });
     this.state.selectedFunction=allTab["TaskFunction_Id"];
 
     //////////////////Scheduler/////////////////////////
@@ -400,6 +427,23 @@ debugger;
     this.state.selectedTaskStatus=0;
     this.state.selectedDepartment=0;
     this.state.selectedFunction=0;
+  }
+  handleGetFunctionList() {
+    debugger;
+    let self = this;
+
+    axios({
+      method: "post",
+      url: config.apiUrl + "/Master/getFunctionNameByDepartmentId",
+      headers: authHeader(),
+      params: {
+        DepartmentId: this.state.selectedDepartment
+      }
+    }).then(function (res) {
+      debugger;
+      let FunctionData = res.data.responseData;
+      self.setState({ FunctionData: FunctionData });
+    });
   }
   handleNextPopupOpen() {
     this.handleAddReportClose();
@@ -966,6 +1010,11 @@ debugger;
     setTimeout(() => {
       if (this.state.selectedClaimSubCategory) {
         this.handleGetIssueTypeList();
+      }
+    }, 1);
+    setTimeout(() => {
+      if (this.state.selectedDepartment) {
+        this.handleGetFunctionList();
       }
     }, 1);
   };
@@ -2104,8 +2153,19 @@ debugger;
                             value={this.state.selectedFunction}
                             onChange={this.setOnChangeReportData}
                           >
-                            <option value="1">Attandance</option>
-                            <option value="2">Attandance1</option>
+                            <option>Task Function</option>
+                            {this.state.FunctionData !==
+                              null &&
+                              this.state.FunctionData.map(
+                                (item, i) => (
+                                  <option
+                                    key={i}
+                                    value={item.functionID}
+                                  >
+                                    {item.funcationName}
+                                  </option>
+                                )
+                              )}
                           </select>
                         </>
                       ) : null}
@@ -2721,7 +2781,8 @@ debugger;
                     Header: <span>Actions</span>,
                     accessor: "actionReport",
                     Cell: row => (
-                      <span>
+                      <div className="report-action">
+                        <div className="text-right">
                         {row.original.isDownloaded==1?
                         <img
                           src={DownExcel}
@@ -2782,7 +2843,8 @@ debugger;
                           EDIT
                           {/* <label className="Table-action-edit-button-text">EDIT</label> */}
                         </button>
-                      </span>
+                        </div>
+                      </div>
                     )
                   }
                 ]}

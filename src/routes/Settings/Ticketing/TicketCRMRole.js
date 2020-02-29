@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import RedDeleteIcon from "./../../../assets/Images/red-delete-icon.png";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -24,6 +24,69 @@ import DownExcel from "../../../assets/Images/csv.png";
 import SimpleReactValidator from "simple-react-validator";
 import { CSVLink } from "react-csv";
 
+
+
+
+const MyButton = props => {
+
+  const { children } = props;
+  return (
+    <div style={{ cursor: "pointer" }} {...props}>
+      <button className="react-tabel-button" id="p-edit-pop-2">
+        <label className="Table-action-edit-button-text">
+          {children}
+        </label>
+      </button>
+    </div>
+  );
+};
+
+const Content = props => {
+  debugger
+  const { rowData } = props
+  const [roleName, setRoleNameValue] = useState(rowData.roleName);
+  const [status, setStatusValue] = useState(rowData.isRoleActive);
+  const [crmRoleID] = useState(rowData.crmRoleID);
+
+  props.callBackEdit(roleName, status, rowData);
+  return (
+    <div>
+      <div className="edtpadding">
+        <div className="">
+          <label className="popover-header-text">EDIT CRM ROLE</label>
+        </div>
+        <div className="pop-over-div">
+          <label className="edit-label-1">Role Name</label>
+          <input
+            type="text"
+            className="txt-edit-popover"
+            placeholder="Enter Role Name"
+            maxLength={25}
+            value={roleName}
+            onChange={e => setRoleNameValue(e.target.value)}
+          />
+        </div>
+        <div className="pop-over-div">
+          <label className="edit-label-1">Status</label>
+          <select id="inputStatus" className="edit-dropDwon dropdown-setting"
+            value={status}
+            onChange={e => setStatusValue(e.target.value)}
+          >
+            <option value="Active">Active</option>
+            <option value="Inactive">Deactive</option>
+          </select>
+        </div>
+        <br />
+        <div>
+          <a className="pop-over-cancle" href={Demo.BLANK_LINK}>CANCEL</a>
+          <button className="pop-over-button">
+            <label className="pop-over-btnsave-text" onClick={(e) => { props.createUpdateCrmRole(e, "update", crmRoleID) }}>SAVE</label>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
 class TicketCRMRole extends Component {
   constructor(props) {
     super(props);
@@ -35,36 +98,38 @@ class TicketCRMRole extends Component {
       ModulesDisabled: '',
       crmRoles: [],
       modulesList: [
-        {moduleId: 1, moduleName: 'Dashboard', isActive: true},
-        {moduleId: 2, moduleName: 'Tickets', isActive: false},
-        {moduleId: 3, moduleName: 'Knowledge Base', isActive: true},
-        {moduleId: 4, moduleName: 'Settings', isActive: true},
-        {moduleId: 5, moduleName: 'Chat', isActive: true},
-        {moduleId: 6, moduleName: 'Notification', isActive: false},
-        {moduleId: 7, moduleName: 'Reports', isActive: true}
+        { moduleId: 1, moduleName: 'Dashboard', isActive: true },
+        { moduleId: 2, moduleName: 'Tickets', isActive: false },
+        { moduleId: 3, moduleName: 'Knowledge Base', isActive: true },
+        { moduleId: 4, moduleName: 'Settings', isActive: true },
+        { moduleId: 5, moduleName: 'Chat', isActive: true },
+        { moduleId: 6, moduleName: 'Notification', isActive: false },
+        { moduleId: 7, moduleName: 'Reports', isActive: true }
       ],
       updateRoleName: '',
       updateRoleisActive: '',
       updateModulesEnabled: '',
       updateModulesDisabled: '',
       updateModulesList: [],
-      crmrolesCompulsion:""
-      
+      crmrolesCompulsion: "",
+      visible: false,
+      activePopOver: 0,
+      rowData: {}
+
     };
 
     this.handleRoleName = this.handleRoleName.bind(this);
     this.handleUpdateRoleName = this.handleUpdateRoleName.bind(this);
     this.handleModulesDefault = this.handleModulesDefault.bind(this);
     this.handleGetCRMRoles = this.handleGetCRMRoles.bind(this);
-    // this.updateCrmRole = this.updateCrmRole.bind(this);
-    
+
     this.validator = new SimpleReactValidator();
   }
 
   componentDidMount() {
     this.handleModulesDefault();
     this.handleGetCRMRoles();
-    
+
   }
 
   handleGetCRMRoles() {
@@ -74,7 +139,7 @@ class TicketCRMRole extends Component {
       method: "post",
       url: config.apiUrl + "/CRMRole/GetCRMRoles",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let crmRoles = res.data.responseData;
       if (crmRoles !== null && crmRoles !== undefined) {
@@ -82,7 +147,7 @@ class TicketCRMRole extends Component {
       }
     });
   }
-  
+
   handleModulesDefault = async () => {
     debugger;
     let modulesList = [... this.state.modulesList], isActive, ModulesEnabled = '', ModulesDisabled = '';
@@ -160,34 +225,43 @@ class TicketCRMRole extends Component {
     this.setState({ updateRoleisActive });
   };
 
-  createUpdateCrmRole(addUpdate, crmRoleId) {
+  createUpdateCrmRole(e, addUpdate, crmRoleId) {
     debugger;
-     if (this.validator.allValid()) {
-      let self=this;
-      let RoleisActive, CRMRoleID, RoleName, ModulesEnabled, ModulesDisabled;
-      if (addUpdate === 'add') {
-        if (this.state.RoleisActive === 'true') {
+    let self = this;
+    if (self.validator.allValid()) {
+
+      let RoleisActive, CRMRoleID, RoleName, ModulesEnabled="", ModulesDisabled="";
+      if (e === 'add') {
+        if (self.state.RoleisActive === 'true') {
           RoleisActive = true
-        } else if (this.state.RoleisActive === 'false') {
+        } else if (self.state.RoleisActive === 'false') {
           RoleisActive = false
         }
       } else if (addUpdate === 'update') {
-        if (this.state.updateRoleisActive === 'true') {
+        if (self.state.updateRoleisActive === 'Active') {
           RoleisActive = true
-        } else if (this.state.updateRoleisActive === 'false') {
+        } else if (self.state.updateRoleisActive === 'Inactive') {
           RoleisActive = false
         }
       }
-      if (addUpdate === 'add') {
+      if (e === 'add') {
         CRMRoleID = 0
-        RoleName = this.state.RoleName
-        ModulesEnabled = this.state.ModulesEnabled
-        ModulesDisabled = this.state.ModulesDisabled
+        RoleName = self.state.RoleName
+        ModulesEnabled = self.state.ModulesEnabled
+        ModulesDisabled = self.state.ModulesDisabled
       } else if (addUpdate === 'update') {
         CRMRoleID = crmRoleId
-        RoleName = this.state.updateRoleName
-        ModulesEnabled = this.state.updateModulesEnabled
-        ModulesDisabled = this.state.updateModulesDisabled
+        RoleName = self.state.RoleName
+        for (let j = 0; j < self.state.rowData.modules.length; j++) {
+          if (self.state.rowData.modules[j].modulestatus) {
+            ModulesEnabled += self.state.rowData.modules[j].moduleID + ","
+          }
+          else {
+            ModulesDisabled += self.state.rowData.modules[j].moduleID + ","
+          }
+        }
+        ModulesEnabled = ModulesEnabled;
+        ModulesDisabled = ModulesDisabled;
       }
       axios({
         method: "post",
@@ -204,31 +278,31 @@ class TicketCRMRole extends Component {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
-          if (addUpdate === 'add') {
+          if (e === 'add') {
             NotificationManager.success("CRM Role added successfully.");
             self.setState({
-              RoleName:'',
-              RoleisActive:'true',
-              ModulesEnabled:'',
-              updateModulesEnabled:'',
-              updateModulesDisabled:''
+              RoleName: '',
+              RoleisActive: 'true',
+              ModulesEnabled: '',
+              updateModulesEnabled: '',
+              updateModulesDisabled: ''
             })
             self.handleGetCRMRoles();
           } else if (addUpdate === 'update') {
             NotificationManager.success("CRM Role updated successfully.");
           }
         } else {
-          if (addUpdate === 'add') {
+          if (e === 'add') {
             NotificationManager.error("CRM Role not added.");
           } else if (addUpdate === 'update') {
             NotificationManager.error("CRM Role not updated.");
           }
         }
       });
-     } else {
-       this.validator.showMessages();
-       this.forceUpdate();
-     }
+    } else {
+      this.validator.showMessages();
+      this.forceUpdate();
+    }
   }
 
   deleteCrmRole(deleteId) {
@@ -241,7 +315,7 @@ class TicketCRMRole extends Component {
       params: {
         CRMRoleID: deleteId
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let status = res.data.message;
       if (status === "Success") {
@@ -252,10 +326,10 @@ class TicketCRMRole extends Component {
       }
     });
   }
-  
+
   updateCrmRole(individualData) {
-    // debugger;
-    let updateRoleName = individualData.roleName, roleisActive =  individualData.isRoleActive, updateRoleisActive, updateModulesList = individualData.modules;
+    debugger;
+    let updateRoleName = individualData.roleName, roleisActive = individualData.isRoleActive, updateRoleisActive, updateModulesList = individualData.modules;
     if (roleisActive === 'Inactive') {
       updateRoleisActive = 'false'
     } else {
@@ -264,14 +338,30 @@ class TicketCRMRole extends Component {
     this.setState({
       updateRoleName, updateRoleisActive, updateModulesList
     })
+
   }
 
   fileUpload = e => {
     this.setState({ fileName: e.target.files[0].name });
   };
+  showPopOver = (id) => {
+    debugger;
+    this.setState({
+      activePopOver: id,
+      popOverVisible: true
+    })
+  }
+
+  callBackEdit = (RoleName, Status, rowData) => {
+    debugger;
+    // this.setState({RoleName,updateRoleisActive:Status})
+    this.state.RoleName = RoleName;
+    this.state.updateRoleisActive = Status;
+    this.state.rowData = rowData;
+  }
 
   render() {
-   
+
     const columnsTickCrmRole = [
       {
         Header: (
@@ -285,27 +375,27 @@ class TicketCRMRole extends Component {
           // var ids = row.original["id"];
           return (
             <div>
-            <span>
-            {row.original.roleName}
-              <Popover content={
-                      <div>
-                        {row.original.modules !== null &&
-                        row.original.modules.map((item, i) => (
-                          <div className="rvmmargin" key={i}>
-                            <p className="rolle-name-text-popover">{item.moduleName}</p>
-                            <label className="pop-over-lbl-text-pop">{item.modulestatus === true ? 'Enabled' : 'Disabled'}</label>
-                          </div>
-                        ))}
-                    </div>
-              } placement="bottom">
-                <img
-                  className="info-icon-cp"
-                  src={BlackInfoIcon}
-                  alt="info-icon"
-                />
-              </Popover>
-            </span>
-          </div>
+              <span>
+                {row.original.roleName}
+                <Popover content={
+                  <div>
+                    {row.original.modules !== null &&
+                      row.original.modules.map((item, i) => (
+                        <div className="rvmmargin" key={i}>
+                          <p className="rolle-name-text-popover">{item.moduleName}</p>
+                          <label className="pop-over-lbl-text-pop">{item.modulestatus === true ? 'Enabled' : 'Disabled'}</label>
+                        </div>
+                      ))}
+                  </div>
+                } placement="bottom">
+                  <img
+                    className="info-icon-cp"
+                    src={BlackInfoIcon}
+                    alt="info-icon"
+                  />
+                </Popover>
+              </span>
+            </div>
           );
         }
       },
@@ -325,19 +415,19 @@ class TicketCRMRole extends Component {
                 {row.original.createdBy}
                 <Popover content={
                   <>
-                  <div>
-                    <b>
-                <p className="title">Created By: {row.original.createdBy}</p>
-                    </b>
-                <p className="sub-title">Created Date: {row.original.createdDate}</p>
-                  </div>
-                  <div>
-                    <b>
-                      <p className="title">Updated By: {row.original.modifiedBy}</p>
-                    </b>
-                    <p className="sub-title">Updated Date: {row.original.modifiedDate}</p>
-                  </div>
-                </>
+                    <div>
+                      <b>
+                        <p className="title">Created By: {row.original.createdBy}</p>
+                      </b>
+                      <p className="sub-title">Created Date: {row.original.createdDate}</p>
+                    </div>
+                    <div>
+                      <b>
+                        <p className="title">Updated By: {row.original.modifiedBy}</p>
+                      </b>
+                      <p className="sub-title">Updated Date: {row.original.modifiedDate}</p>
+                    </div>
+                  </>
                 } placement="bottom">
                   <img
                     className="info-icon-cp"
@@ -364,6 +454,7 @@ class TicketCRMRole extends Component {
         Header: <span>Actions</span>,
         accessor: "actiondept",
         Cell: row => {
+
           var ids = row.original["id"];
           return (
             <>
@@ -397,129 +488,22 @@ class TicketCRMRole extends Component {
                   />
                 </Popover>
                 <Popover
-                  content={
-                    <div className="edtpadding">
-                      <div className="">
-                        <label className="popover-header-text">EDIT CRM ROLE</label>
-                      </div>
-                      <div className="pop-over-div">
-                        <label className="edit-label-1">Role Name</label>
-                        <input
-                          type="text"
-                          className="txt-edit-popover"
-                          placeholder="Enter Role Name"
-                          maxLength={25}
-                          value={this.state.updateRoleName}
-                          onChange={this.handleUpdateRoleName}
-                        />
-                      </div>
 
-                      {this.state.updateModulesList !== null &&
-                      this.state.updateModulesList.map((item, i) => (
-                        <div className="module-switch crm-margin-div" key={i}>
-                          <div className="switch switch-primary d-inline m-r-10">
-                            <label className="storeRole-name-text">{item.moduleName}</label>
-                            <input type="checkbox" id={'ii' + item.moduleID}
-                              name="updateAllModules"
-                              attrIds={item.moduleID}
-                              checked={item.modulestatus}
-                              onChange={this.updateCheckModule.bind(this, item.moduleID)}
-                            />
-                            <label
-                              htmlFor={'ii' + item.moduleID}
-                              className="cr cr-float-auto"
-                            ></label>
-                          </div>
-                        </div>
-                      ))}
-
-                      {/* <div className="crm-margin-div">
-                        <div className="switch switch-primary d-inline m-r-10">
-                          <label className="storeRole-name-text">Dashboard</label>
-                          <input type="checkbox" id="Dashboard-po-1" />
-                          <label
-                            htmlFor="Dashboard-po-1"
-                            className="cr cr-float-auto"
-                          ></label>
-                        </div>
-                      </div>
-                      <div className="crm-margin-div">
-                        <div className="switch switch-primary d-inline m-r-10">
-                          <label className="storeRole-name-text">Tickets</label>
-                          <input type="checkbox" id="Tickets-po-2" />
-                          <label htmlFor="Tickets-po-2" className="cr cr-float-auto"></label>
-                        </div>
-                      </div>
-                      <div className="crm-margin-div">
-                        <div className="switch switch-primary d-inline m-r-10">
-                          <label className="storeRole-name-text">Knowledge Base</label>
-                          <input type="checkbox" id="Knowledge-po-3" />
-                          <label
-                            htmlFor="Knowledge-po-3"
-                            className="cr cr-float-auto"
-                          ></label>
-                        </div>
-                      </div>
-                      <div className="crm-margin-div">
-                        <div className="switch switch-primary d-inline m-r-10">
-                          <label className="storeRole-name-text">Settings</label>
-                          <input type="checkbox" id="Claim-po-3" />
-                          <label htmlFor="Claim-po-3" className="cr cr-float-auto"></label>
-                        </div>
-                      </div>
-                      <div className="crm-margin-div">
-                        <div className="switch switch-primary d-inline m-r-10">
-                          <label className="storeRole-name-text">Chat</label>
-                          <input type="checkbox" id="Chat-po-5" />
-                          <label htmlFor="Chat-po-5" className="cr cr-float-auto"></label>
-                        </div>
-                      </div>
-                      <div className="crm-margin-div">
-                        <div className="switch switch-primary d-inline m-r-10">
-                          <label className="storeRole-name-text">Notification</label>
-                          <input type="checkbox" id="Notification-po-4" />
-                          <label
-                            htmlFor="Notification-po-4"
-                            className="cr cr-float-auto"
-                          ></label>
-                        </div>
-                      </div>
-
-                      <div className="crm-margin-div">
-                        <div className="switch switch-primary d-inline m-r-10">
-                          <label className="storeRole-name-text">Reports</label>
-                          <input type="checkbox" id="Reports-po-6" />
-                          <label htmlFor="Reports-po-6" className="cr cr-float-auto"></label>
-                        </div>
-                      </div> */}
-
-                      <div className="pop-over-div">
-                        <label className="edit-label-1">Status</label>
-                        <select id="inputStatus" className="edit-dropDwon dropdown-setting"
-                        value={this.state.updateRoleisActive}
-                        onChange={this.handleUpdateRoleisActive}
-                        >
-                          <option value="true">Active</option>
-                          <option value="false">Deactive</option>
-                        </select>
-                      </div>
-                      <br />
-                      <div>
-                      <a className="pop-over-cancle" href={Demo.BLANK_LINK}>CANCEL</a>
-                        <button className="pop-over-button">
-                          <label className="pop-over-btnsave-text" onClick={this.createUpdateCrmRole.bind(this, 'update', row.original.crmRoleID)}>SAVE</label>
-                        </button>
-                      </div>
-                    </div>
-                  }
+                  content={<Content rowData={row.original} callBackEdit={this.callBackEdit} createUpdateCrmRole={this.createUpdateCrmRole.bind(this)} />}
                   placement="bottom"
                   trigger="click"
                 >
-                  <button className="react-tabel-button" id="p-edit-pop-2" onClick={() => this.updateCrmRole.bind(this, row.original)}>
+                  {/* <button className="react-tabel-button" id="p-edit-pop-2" onClick={() => this.updateCrmRole.bind(this, row.original)}> */}
+                  {/* <button className="react-tabel-button" id="p-edit-pop-2" onClick={() => this.showPopOver(row.index)}>
                     <label className="Table-action-edit-button-text">
                       EDIT
                     </label>
-                  </button>
+                  </button> */}
+                  <label className="Table-action-edit-button-text">
+                    <MyButton>
+                      EDIT
+                    </MyButton>
+                  </label>
                 </Popover>
               </span>
             </>
@@ -555,7 +539,7 @@ class TicketCRMRole extends Component {
                     defaultPageSize={10}
                     showPagination={true}
                   />
-                   {/* <div className="position-relative">
+                  {/* <div className="position-relative">
                     <div className="pagi">
                       <ul>
                         <li>
@@ -731,7 +715,7 @@ class TicketCRMRole extends Component {
                     </div>
                     <div className="btnSpace">
                       <button className="addBtn-ticket-hierarchy" onClick={this.createUpdateCrmRole.bind(this, 'add')}>
-                       ADD
+                        ADD
                         </button>
                     </div>
                   </div>
@@ -742,8 +726,8 @@ class TicketCRMRole extends Component {
                     <br />
                     <h3>Bulk Upload</h3>
                     Template
-                    <CSVLink filename={"CRM.csv"}  data={config.crmRoleTemplate}>
-                       <img src={DownExcel} alt="download icon" />
+                    <CSVLink filename={"CRM.csv"} data={config.crmRoleTemplate}>
+                      <img src={DownExcel} alt="download icon" />
                     </CSVLink>
                     <input
                       id="file-upload"
