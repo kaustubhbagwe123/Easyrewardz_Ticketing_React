@@ -430,7 +430,9 @@ class CreateSLA extends Component {
         self.setState({
           // selectedSlaIssueType: 0,
           SlaIsActive: "true",
-          SearchText: ''
+          SearchText: '',
+          issueTypeCompulsion:"",
+       slaTargetCompulsion:""
         });
         self.handleGetSLA();
         self.handleGetPriorityList();

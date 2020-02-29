@@ -1286,7 +1286,7 @@ debugger;
           IsWeeklyForMonth: this.state.IsWeeklyForMonth,
           NoOfMonthForWeek: this.state.selectedNoOfMonthForWeek,
           NoOfWeekForWeek: this.state.selectedNoOfWeekForWeek,
-          ScheduleFrom:3,
+          ScheduleFrom:4,
           NameOfDayForWeek: this.state.selectedNameOfDayForWeekCommaSeperated,
           IsDailyForYear: this.state.IsDailyForYear,
           NoOfDayForDailyYear: this.state.selectedNoOfDayForDailyYear,

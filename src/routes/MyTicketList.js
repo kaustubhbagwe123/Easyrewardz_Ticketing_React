@@ -634,8 +634,9 @@ class MyTicketList extends Component {
       let CSVData = data;
       let Status = res.data.message;
       
+       if(data !== null){
 
-      self.state.sortAllData = data;
+        self.state.sortAllData = data;
       var unique = [];
       var distinct = [];
       for (let i = 0; i < data.length; i++) {
@@ -697,6 +698,9 @@ class MyTicketList extends Component {
       }
       
 
+
+       }
+      
 
       if (Status === "Success") {
         self.setState({ SearchTicketData: data, loading: false, cSelectedRow: {} });
@@ -1782,8 +1786,10 @@ class MyTicketList extends Component {
       if (res.data.responseData != null) {
         count = res.data.responseData.length;
       }
-        
-      self.state.sortAllData = data;
+
+      if(data !== null){
+
+        self.state.sortAllData = data;
       var unique = [];
       var distinct = [];
       for (let i = 0; i < data.length; i++) {
@@ -1844,6 +1850,10 @@ class MyTicketList extends Component {
         self.state.sortAssigneeData.push({ assignedTo: distinct[i] });
       }
     }
+      
+
+      }
+        
       
 
      

@@ -2691,8 +2691,9 @@ class Dashboard extends Component {
       if (res.data.responseData != null) {
         count = res.data.responseData.length;
       }
-   
-     self.state.sortAllData=data;
+   if(data !==null){
+
+    self.state.sortAllData=data;
       var unique=[];
     var distinct = [];
     for( let i = 0; i < data.length; i++ ){
@@ -2753,6 +2754,9 @@ class Dashboard extends Component {
       self.state.sortAssigneeData.push({ assignedTo: distinct[i] });
     }
   }
+
+   }
+     
       if (status === "Success") {
         if(Shwcheck === 1){
           self.setState({

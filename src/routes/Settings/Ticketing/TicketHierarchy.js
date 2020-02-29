@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import Demo from "../../../store/Hashtag";
+import Modal from "react-responsive-modal";
+import Sorting from "./../../../assets/Images/sorting.png";
 import ReactTable from "react-table";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
 import UploadCancel from "./../../../assets/Images/upload-cancel.png";
@@ -30,6 +32,7 @@ class TicketHierarchy extends Component {
     this.state = {
       fileName: "",
       isOpen: false,
+      StatusModel: false,
       designation_name: "",
       selectReportTo: 0,
       selectStatus: 0,
@@ -42,13 +45,21 @@ class TicketHierarchy extends Component {
       statusCompulsion:"",
       editdesignationNameCompulsion:"",
       editreportToCompulsion:"",
-      editstatusCompulsion:""
+      editstatusCompulsion:"",
+      sortAllData:[],
+      sortDesignation:[],
+      sortReportTo:[],
+      sortColumn:"",
+      designationColor:"",
+      reportToColor:""
     };
     this.togglePopover = this.togglePopover.bind(this);
     this.handleGetHierarchyData = this.handleGetHierarchyData.bind(this);
     this.hanldeGetReportListDropDown = this.hanldeGetReportListDropDown.bind(
       this
     );
+    this.StatusOpenModel = this.StatusOpenModel.bind(this);
+    this.StatusCloseModel = this.StatusCloseModel.bind(this);
   }
   togglePopover() {
     this.setState({ isOpen: !this.state.isOpen });
@@ -69,6 +80,84 @@ class TicketHierarchy extends Component {
     this.handleGetHierarchyData();
     this.hanldeGetReportListDropDown();
   }
+  sortStatusAtoZ() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.hierarchyData;
+
+    itemsArray.sort(function(a, b)  {
+      return    a.ticketStatus > b.ticketStatus ? 1:-1;
+        });
+
+    
+
+    this.setState({
+      hierarchyData: itemsArray
+    });
+    this.StatusCloseModel();
+  }
+  sortStatusZtoA() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.hierarchyData;
+    itemsArray.sort((a, b)=> {
+      return a.ticketStatus < b.ticketStatus
+         
+      
+    });
+    this.setState({
+      hierarchyData: itemsArray
+    });
+    this.StatusCloseModel();
+  }
+
+  StatusOpenModel(data) {
+    debugger;
+  
+    this.setState({ StatusModel: true,sortColumn:data });
+  }
+  StatusCloseModel() {
+    this.setState({ StatusModel: false });
+  }
+
+  setSortCheckStatus = (column,e) => {
+    debugger;
+    
+    var itemsArray = [];
+    var data = e.currentTarget.value;
+    if(column==="all"){
+      itemsArray=this.state.sortAllData;
+      this.setState({
+        designationColor:"",
+        reportToColor:""
+   });
+     
+    }else if(column==="designationName"){
+        this.state.hierarchyData=this.state.sortAllData;
+        itemsArray = this.state.hierarchyData.filter(
+          a => a.designationName === data
+        );
+        this.setState({
+             designationColor:"blue",
+             reportToColor:""
+        });
+      }else if(column==="reportTo"){
+        this.state.hierarchyData=this.state.sortAllData;
+        itemsArray = this.state.hierarchyData.filter(
+          a => a.reportTo === data
+        );
+        this.setState({
+          designationColor:"",
+          reportToColor:"blue"
+     });
+      }
+     
+    
+    this.setState({
+      hierarchyData: itemsArray
+    });
+    this.StatusCloseModel();
+  };
   hanldeGetReportListDropDown() {
     let self = this;
     axios({
@@ -100,6 +189,37 @@ class TicketHierarchy extends Component {
       debugger;
       let status = res.data.message;
       let data = res.data.responseData;
+
+      if(data !==null){
+        self.state.sortAllData=data;
+        var unique=[];
+      var distinct = [];
+      for( let i = 0; i < data.length; i++ ){
+        if( !unique[data[i].designationName]){
+          distinct.push(data[i].designationName);
+          unique[data[i].designationName]=1;
+        }
+      }
+      for (let i = 0; i < distinct.length; i++) {
+        self.state.sortDesignation.push({ designationName: distinct[i] });
+      }
+  
+  
+      var unique=[];
+      var distinct = [];
+      for( let i = 0; i < data.length; i++ ){
+        if( !unique[data[i].reportTo]){
+          distinct.push(data[i].reportTo);
+          unique[data[i].reportTo]=1;
+        }
+      }
+      for (let i = 0; i < distinct.length; i++) {
+        self.state.sortReportTo.push({ reportTo: distinct[i] });
+      }
+      }
+
+     
+
       if (status === "Success") {
         self.setState({
           hierarchyData: data
@@ -287,6 +407,108 @@ class TicketHierarchy extends Component {
     return (
       <React.Fragment>
         <NotificationContainer />
+        <div className="position-relative d-inline-block">
+          <Modal
+            onClose={this.StatusCloseModel}
+            open={this.state.StatusModel}
+            modalId="Status-popup"
+            overlayId="logout-ovrly"
+          >
+            <div className="status-drop-down">
+              <div className="sort-sctn">
+                <div className="d-flex">
+                  <a href="#!"
+                    onClick={this.sortStatusAtoZ.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY A TO Z</p>
+                </div>
+                <div className="d-flex">
+                  <a href="#!"
+                    onClick={this.sortStatusZtoA.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY Z TO A</p>
+                </div>
+              </div>
+              <div className="filter-type">
+        
+                <p>FILTER BY TYPE</p>
+                 <div className="filter-checkbox">
+                <input
+                    type="checkbox"
+                    
+                    name="filter-type"
+                    id={"fil-open" }
+                  
+                    value="all"
+                    onChange={this.setSortCheckStatus.bind(this,"all")}
+                  />
+                  <label htmlFor={"fil-open"}>
+                    <span className="table-btn table-blue-btn">ALL</span>
+                  </label>
+                  </div>
+                {this.state.sortColumn==="designationName" ? 
+                
+                this.state.sortDesignation !== null && 
+                  this.state.sortDesignation.map((item, i) => ( 
+                    <div className="filter-checkbox">
+                      
+                  <input
+                    type="checkbox"
+                    
+                    name="filter-type"
+                    id={"fil-open" + item.designationName}
+                  
+                    value={item.designationName}
+                    onChange={this.setSortCheckStatus.bind(this,"designationName")}
+                  />
+                  <label htmlFor={"fil-open" + item.designationName}>
+                    <span className="table-btn table-blue-btn">{item.designationName}</span>
+                  </label>
+                </div>
+                  ))
+
+                :null}
+
+                { this.state.sortColumn==="reportTo" ? 
+                
+                this.state.sortReportTo !== null && 
+                  this.state.sortReportTo.map((item, i) => ( 
+                    <div className="filter-checkbox">
+                      
+                  <input
+                    type="checkbox"
+                    
+                    name="filter-type"
+                    id={"fil-open" + item.reportTo}
+                  
+                    value={item.reportTo}
+                    onChange={this.setSortCheckStatus.bind(this,"reportTo")}
+                  />
+                  <label htmlFor={"fil-open" + item.reportTo}>
+                    <span className="table-btn table-blue-btn">{item.reportTo}</span>
+                  </label>
+                </div>
+                  ))
+
+                :null}
+
+              
+                
+
+              </div>
+             
+
+             
+              
+            </div>
+          </Modal>
+        </div>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="settings" className="header-path">
             Settings
@@ -310,7 +532,7 @@ class TicketHierarchy extends Component {
                     columns={[
                       {
                         Header: (
-                          <span>
+                          <span style={{color:this.state.designationColor}} onClick={this.StatusOpenModel.bind(this,"designationName")} >
                             Designation
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
@@ -319,7 +541,7 @@ class TicketHierarchy extends Component {
                       },
                       {
                         Header: (
-                          <span>
+                          <span style={{color:this.state.reportToColor}} onClick={this.StatusOpenModel.bind(this,"reportTo")}>
                             Report To
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>

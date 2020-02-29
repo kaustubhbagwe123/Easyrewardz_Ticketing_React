@@ -25,6 +25,8 @@ import { authHeader } from "../../../helpers/authHeader";
 import ActiveStatus from "../../activeStatus";
 import ZoneType from "./ZoneType";
 import { CSVLink } from "react-csv";
+import Modal from "react-responsive-modal";
+import Sorting from "./../../../assets/Images/sorting.png";
 
 class StoreMaster extends Component {
   constructor(props) {
@@ -68,7 +70,15 @@ class StoreMaster extends Component {
       StateCompulsion: "",
       CityCompulsion: "",
       brandCompulsion:"",
-      statusCompulsion:""
+      statusCompulsion:"",
+      StatusModel:false,
+      sortAllData:[],
+      sortStoreName:[],
+      sortStoreCode:[],
+      sortCity:[],
+      sortState:[],
+      sortPincode:[],
+      sortColumn:""
     };
     this.handleGetStoreMasterData = this.handleGetStoreMasterData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -77,6 +87,8 @@ class StoreMaster extends Component {
     this.handleGetRegionList = this.handleGetRegionList.bind(this);
     this.handleGetStoreTypeList = this.handleGetStoreTypeList.bind(this);
     this.handleUpdateData = this.handleUpdateData.bind(this);
+    this.StatusOpenModel = this.StatusOpenModel.bind(this);
+    this.StatusCloseModel = this.StatusCloseModel.bind(this);
   }
   componentDidMount() {
     this.handleGetStoreMasterData();
@@ -85,6 +97,95 @@ class StoreMaster extends Component {
     this.handleGetRegionList();
     this.handleGetStoreTypeList();
   }
+
+  sortStatusAtoZ() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.hierarchyData;
+
+    itemsArray.sort(function(a, b)  {
+      return    a.ticketStatus > b.ticketStatus ? 1:-1;
+        });
+
+    
+
+    this.setState({
+      hierarchyData: itemsArray
+    });
+    this.StatusCloseModel();
+  }
+  sortStatusZtoA() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.hierarchyData;
+    itemsArray.sort((a, b)=> {
+      return a.ticketStatus < b.ticketStatus
+         
+      
+    });
+    this.setState({
+      hierarchyData: itemsArray
+    });
+    this.StatusCloseModel();
+  }
+
+  StatusOpenModel(data) {
+    debugger;
+  
+    this.setState({ StatusModel: true,sortColumn:data });
+  }
+  StatusCloseModel() {
+    this.setState({ StatusModel: false });
+  }
+
+  setSortCheckStatus = (column,e) => {
+    debugger;
+    
+    var itemsArray = [];
+    var data = e.currentTarget.value;
+    if(column==="all"){
+      itemsArray=this.state.sortAllData;
+     
+     
+    }else if(column==="storeName"){
+        this.state.storeData=this.state.sortAllData;
+        itemsArray = this.state.storeData.filter(
+          a => a.storeName === data
+        );
+        
+      }else if(column==="storeCode"){
+        this.state.storeData=this.state.sortAllData;
+        itemsArray = this.state.storeData.filter(
+          a => a.storeCode === data
+        );
+       
+      }else if(column==="cityName"){
+        this.state.storeData=this.state.sortAllData;
+        itemsArray = this.state.storeData.filter(
+          a => a.cityName === data
+        );
+       
+      }else if(column==="stateName"){
+        this.state.storeData=this.state.sortAllData;
+        itemsArray = this.state.storeData.filter(
+          a => a.stateName === data
+        );
+       
+      }else if(column==="pinCode"){
+        this.state.storeData=this.state.sortAllData;
+        itemsArray = this.state.storeData.filter(
+          a => a.pinCode === data
+        );
+       
+      }
+     
+    
+    this.setState({
+      storeData: itemsArray
+    });
+    this.StatusCloseModel();
+  };
+
   handleGetStoreMasterData() {
     debugger;
     let self = this;
@@ -97,6 +198,73 @@ class StoreMaster extends Component {
       debugger;
       let status = res.data.message;
       let data = res.data.responseData;
+       
+      if(data !== null){
+
+        self.state.sortAllData=data;
+        var unique=[];
+      var distinct = [];
+      for( let i = 0; i < data.length; i++ ){
+        if( !unique[data[i].storeName]){
+          distinct.push(data[i].storeName);
+          unique[data[i].storeName]=1;
+        }
+      }
+      for (let i = 0; i < distinct.length; i++) {
+        self.state.sortStoreName.push({ storeName: distinct[i] });
+      }
+  
+      var unique=[];
+      var distinct = [];
+      for( let i = 0; i < data.length; i++ ){
+        if( !unique[data[i].storeCode]){
+          distinct.push(data[i].storeCode);
+          unique[data[i].storeCode]=1;
+        }
+      }
+      for (let i = 0; i < distinct.length; i++) {
+        self.state.sortStoreCode.push({ storeCode: distinct[i] });
+      }
+  
+      var unique=[];
+      var distinct = [];
+      for( let i = 0; i < data.length; i++ ){
+        if( !unique[data[i].cityName]){
+          distinct.push(data[i].cityName);
+          unique[data[i].cityName]=1;
+        }
+      }
+      for (let i = 0; i < distinct.length; i++) {
+        self.state.sortCity.push({ cityName: distinct[i] });
+      }
+  
+      var unique=[];
+      var distinct = [];
+      for( let i = 0; i < data.length; i++ ){
+        if( !unique[data[i].stateName]){
+          distinct.push(data[i].stateName);
+          unique[data[i].stateName]=1;
+        }
+      }
+      for (let i = 0; i < distinct.length; i++) {
+        self.state.sortState.push({ stateName: distinct[i] });
+      }
+  
+      var unique=[];
+      var distinct = [];
+      for( let i = 0; i < data.length; i++ ){
+        if( !unique[data[i].pinCode]){
+          distinct.push(data[i].pinCode);
+          unique[data[i].pinCode]=1;
+        }
+      }
+      for (let i = 0; i < distinct.length; i++) {
+        self.state.sortPincode.push({ pinCode: distinct[i] });
+      }
+
+      }
+     
+
       if (status === "Success") {
         debugger;
         if(data!==null)
@@ -501,6 +669,177 @@ class StoreMaster extends Component {
     return (
       <React.Fragment>
         <NotificationContainer />
+        <div className="position-relative d-inline-block">
+          <Modal
+            onClose={this.StatusCloseModel}
+            open={this.state.StatusModel}
+            modalId="Status-popup"
+            overlayId="logout-ovrly"
+          >
+            <div className="status-drop-down">
+              <div className="sort-sctn">
+                <div className="d-flex">
+                  <a href="#!"
+                    onClick={this.sortStatusAtoZ.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY A TO Z</p>
+                </div>
+                <div className="d-flex">
+                  <a href="#!"
+                    onClick={this.sortStatusZtoA.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY Z TO A</p>
+                </div>
+              </div>
+              <div className="filter-type">
+        
+                <p>FILTER BY TYPE</p>
+                 <div className="filter-checkbox">
+                <input
+                    type="checkbox"
+                    
+                    name="filter-type"
+                    id={"fil-open" }
+                  
+                    value="all"
+                    onChange={this.setSortCheckStatus.bind(this,"all")}
+                  />
+                  <label htmlFor={"fil-open"}>
+                    <span className="table-btn table-blue-btn">ALL</span>
+                  </label>
+                  </div>
+                {this.state.sortColumn==="storeName" ? 
+                
+                this.state.sortStoreName !== null && 
+                  this.state.sortStoreName.map((item, i) => ( 
+                    <div className="filter-checkbox">
+                      
+                  <input
+                    type="checkbox"
+                    
+                    name="filter-type"
+                    id={"fil-open" + item.storeName}
+                  
+                    value={item.storeName}
+                    onChange={this.setSortCheckStatus.bind(this,"storeName")}
+                  />
+                  <label htmlFor={"fil-open" + item.storeName}>
+                    <span className="table-btn table-blue-btn">{item.storeName}</span>
+                  </label>
+                </div>
+                  ))
+
+                :null}
+
+                { this.state.sortColumn==="storeCode" ? 
+                
+                this.state.sortStoreCode !== null && 
+                  this.state.sortStoreCode.map((item, i) => ( 
+                    <div className="filter-checkbox">
+                      
+                  <input
+                    type="checkbox"
+                    
+                    name="filter-type"
+                    id={"fil-open" + item.storeCode}
+                  
+                    value={item.storeCode}
+                    onChange={this.setSortCheckStatus.bind(this,"storeCode")}
+                  />
+                  <label htmlFor={"fil-open" + item.storeCode}>
+                    <span className="table-btn table-blue-btn">{item.storeCode}</span>
+                  </label>
+                </div>
+                  ))
+
+                :null}
+
+               { this.state.sortColumn==="cityName" ? 
+                
+                this.state.sortCity !== null && 
+                  this.state.sortCity.map((item, i) => ( 
+                    <div className="filter-checkbox">
+                      
+                  <input
+                    type="checkbox"
+                    
+                    name="filter-type"
+                    id={"fil-open" + item.cityName}
+                  
+                    value={item.cityName}
+                    onChange={this.setSortCheckStatus.bind(this,"cityName")}
+                  />
+                  <label htmlFor={"fil-open" + item.cityName}>
+                    <span className="table-btn table-blue-btn">{item.cityName}</span>
+                  </label>
+                </div>
+                  ))
+
+                :null}
+
+               { this.state.sortColumn==="stateName" ? 
+                
+                this.state.sortState !== null && 
+                  this.state.sortState.map((item, i) => ( 
+                    <div className="filter-checkbox">
+                      
+                  <input
+                    type="checkbox"
+                    
+                    name="filter-type"
+                    id={"fil-open" + item.stateName}
+                  
+                    value={item.stateName}
+                    onChange={this.setSortCheckStatus.bind(this,"stateName")}
+                  />
+                  <label htmlFor={"fil-open" + item.stateName}>
+                    <span className="table-btn table-blue-btn">{item.stateName}</span>
+                  </label>
+                </div>
+                  ))
+
+                :null}
+
+                  { this.state.sortColumn==="pinCode" ? 
+                
+                this.state.sortPincode !== null && 
+                  this.state.sortPincode.map((item, i) => ( 
+                    <div className="filter-checkbox">
+                      
+                  <input
+                    type="checkbox"
+                    
+                    name="filter-type"
+                    id={"fil-open" + item.pinCode}
+                  
+                    value={item.pinCode}
+                    onChange={this.setSortCheckStatus.bind(this,"pinCode")}
+                  />
+                  <label htmlFor={"fil-open" + item.pinCode}>
+                    <span className="table-btn table-blue-btn">{item.pinCode}</span>
+                  </label>
+                </div>
+                  ))
+
+                :null}
+
+              
+                
+
+              </div>
+             
+
+             
+              
+            </div>
+          </Modal>
+        </div>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="settings" className="header-path">
             Settings
@@ -527,7 +866,7 @@ class StoreMaster extends Component {
                       columns={[
                         {
                           Header: (
-                            <span>
+                            <span onClick={this.StatusOpenModel.bind(this,"storeName")}>
                               Store Name
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
@@ -536,7 +875,7 @@ class StoreMaster extends Component {
                         },
                         {
                           Header: (
-                            <span>
+                            <span onClick={this.StatusOpenModel.bind(this,"storeCode")}>
                               Store Code
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
@@ -589,7 +928,7 @@ class StoreMaster extends Component {
                         },
                         {
                           Header: (
-                            <span>
+                            <span onClick={this.StatusOpenModel.bind(this,"cityName")}>
                               City
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
@@ -598,7 +937,7 @@ class StoreMaster extends Component {
                         },
                         {
                           Header: (
-                            <span>
+                            <span onClick={this.StatusOpenModel.bind(this,"stateName")}>
                               State
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
@@ -607,7 +946,9 @@ class StoreMaster extends Component {
                         },
                         {
                           Header: (
-                            <span>
+                            <span 
+                            //onClick={this.StatusOpenModel.bind(this,"pinCode")}
+                            >
                               Pincode
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
@@ -773,7 +1114,7 @@ class StoreMaster extends Component {
                                           </select>
                                         </div>
                                         <div className="pop-over-div">
-                                          <label className="edit-label-1">
+                                          <label   className="edit-label-1">
                                             City
                                           </label>
                                           <select
