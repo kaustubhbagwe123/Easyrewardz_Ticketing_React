@@ -58,6 +58,8 @@ class TicketHierarchy extends Component {
     this.hanldeGetReportListDropDown = this.hanldeGetReportListDropDown.bind(
       this
     );
+    this.StatusOpenModel = this.StatusOpenModel.bind(this);
+    this.StatusCloseModel = this.StatusCloseModel.bind(this);
   }
   togglePopover() {
     this.setState({ isOpen: !this.state.isOpen });
@@ -188,31 +190,35 @@ class TicketHierarchy extends Component {
       let status = res.data.message;
       let data = res.data.responseData;
 
-      self.state.sortAllData=data;
+      if(data !==null){
+        self.state.sortAllData=data;
+        var unique=[];
+      var distinct = [];
+      for( let i = 0; i < data.length; i++ ){
+        if( !unique[data[i].designationName]){
+          distinct.push(data[i].designationName);
+          unique[data[i].designationName]=1;
+        }
+      }
+      for (let i = 0; i < distinct.length; i++) {
+        self.state.sortDesignation.push({ designationName: distinct[i] });
+      }
+  
+  
       var unique=[];
-    var distinct = [];
-    for( let i = 0; i < data.length; i++ ){
-      if( !unique[data[i].designationName]){
-        distinct.push(data[i].designationName);
-        unique[data[i].designationName]=1;
+      var distinct = [];
+      for( let i = 0; i < data.length; i++ ){
+        if( !unique[data[i].reportTo]){
+          distinct.push(data[i].reportTo);
+          unique[data[i].reportTo]=1;
+        }
       }
-    }
-    for (let i = 0; i < distinct.length; i++) {
-      self.state.sortDesignation.push({ designationName: distinct[i] });
-    }
-
-
-    var unique=[];
-    var distinct = [];
-    for( let i = 0; i < data.length; i++ ){
-      if( !unique[data[i].reportTo]){
-        distinct.push(data[i].reportTo);
-        unique[data[i].reportTo]=1;
+      for (let i = 0; i < distinct.length; i++) {
+        self.state.sortReportTo.push({ reportTo: distinct[i] });
       }
-    }
-    for (let i = 0; i < distinct.length; i++) {
-      self.state.sortReportTo.push({ reportTo: distinct[i] });
-    }
+      }
+
+     
 
       if (status === "Success") {
         self.setState({

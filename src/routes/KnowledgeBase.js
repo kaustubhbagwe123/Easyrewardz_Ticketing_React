@@ -638,7 +638,9 @@ class KnowledgeBase extends Component {
         countNotApprove: notapproveconut
       });
       
-      self.state.sortAllData=notapprove;
+      if(notapprove !== null){
+
+        self.state.sortAllData=notapprove;
       var unique=[];
     var distinct = [];
     for( let i = 0; i < notapprove.length; i++ ){
@@ -675,7 +677,11 @@ class KnowledgeBase extends Component {
       self.state.sortSubCategory.push({ subCategoryName: distinct[i] });
     }
 
-    self.state.sortAllDataApprove=approve;
+      }
+      
+      if(approve !==null){
+
+        self.state.sortAllDataApprove=approve;
     var unique=[];
     var distinct = [];
     for( let i = 0; i < approve.length; i++ ){
@@ -715,6 +721,10 @@ class KnowledgeBase extends Component {
     }
 
 
+
+      }
+
+    
 
       if (self.state.tabCount === 1) {
         self.setState({
