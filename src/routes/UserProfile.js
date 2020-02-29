@@ -224,21 +224,35 @@ self.setState({
                         className="profimg"
                       />
                       <div className="uploadtextprofile">
+                        <br></br>
                         <input
                           id="file-upload"
-                          //className="d-none file-uploadprofile"
+                          
+                          className="d-none file-uploadprofile"
                           type="file"
                           onChange={this.fileUpload.bind(this)}
                         />
-                        <label
+                         <label htmlFor="file-upload"
+                         onDrop={this.fileDrop}
+                         onDragOver={this.fileDragOver}
+                         onDragEnter={this.fileDragEnter}
+                         onChange={this.fileUpload.bind(this)}
+                         >
+                      {/* <div className="file-icon">
+                        <img src="{FileUpload}" alt="file-upload" />
+                      </div> */}
+                      <span className="uploadtextprofile1">Upload </span>   choose  photo                 
+                    </label>
+                        {/* <label
                           htmlFor="file-upload"
                           onDrop={this.fileDrop}
                           onDragOver={this.fileDragOver}
                           onDragEnter={this.fileDragEnter}
                           
                         >
-                          <span className="uploadtextprofile1" >Upload</span>
-                        </label>
+                         
+                          <span className="uploadtextprofile1"  >Upload</span>
+                        </label> */}
                         {this.state.fileName[0] && (
                           <div className="file-info">
                             <div className="file-cntr">
