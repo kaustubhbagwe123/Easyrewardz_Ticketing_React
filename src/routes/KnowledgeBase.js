@@ -100,7 +100,10 @@ class KnowledgeBase extends Component {
       sortCategoryApprove:[],
       sortSubCategoryApprove:[],
       columnTitle:"",
-      sortTable:""
+      sortTable:"",
+      issueColor:"",
+      categoryColor:"",
+      subCategoryColor:""
     };
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
@@ -144,42 +147,86 @@ class KnowledgeBase extends Component {
     if(this.state.sortTable==="notapprove"){
       if(column==="all"){
         itemsArray=this.state.sortAllData;
+        this.setState({
+          issueColor:"",
+          categoryColor:"",
+          subCategoryColor:""
+        });
        
       }else if(column==="issueTypeName"){
         this.state.KBListnotApproveData=this.state.sortAllData;
         itemsArray = this.state.KBListnotApproveData.filter(
           a => a.issueTypeName === data
         );
+        this.setState({
+          issueColor:"blue",
+          categoryColor:"",
+          subCategoryColor:""
+        });
       }else if(column==="categoryName"){
         this.state.KBListnotApproveData=this.state.sortAllData;
         itemsArray = this.state.KBListnotApproveData.filter(
           a => a.categoryName === data
         );
+        this.setState({
+          issueColor:"",
+          categoryColor:"blue",
+          subCategoryColor:""
+        });
       }else if(column==="subCategoryName"){
         this.state.KBListnotApproveData=this.state.sortAllData;
         itemsArray = this.state.KBListnotApproveData.filter(
           a => a.subCategoryName === data
         );
+        this.setState({
+          issueColor:"",
+          categoryColor:"",
+          subCategoryColor:"blue"
+        });
       }
     }else if(this.state.sortTable==="approve"){
       if(column==="all"){
         itemsArrayApprove=this.state.sortAllDataApprove;
+        this.setState({
+          issueColor:"",
+          categoryColor:"",
+          subCategoryColor:""
+        });
+       
        
       }else if(column==="issueTypeName"){
         this.state.KBListData=this.state.sortAllDataApprove;
         itemsArrayApprove = this.state.KBListData.filter(
           a => a.issueTypeName === data
         );
+        this.setState({
+          issueColor:"blue",
+          categoryColor:"",
+          subCategoryColor:""
+        });
+       
       }else if(column==="categoryName"){
         this.state.KBListData=this.state.sortAllDataApprove;
         itemsArrayApprove = this.state.KBListData.filter(
           a => a.categoryName === data
         );
+        this.setState({
+          issueColor:"",
+          categoryColor:"blue",
+          subCategoryColor:""
+        });
+       
       }else if(column==="subCategoryName"){
         this.state.KBListData=this.state.sortAllDataApprove;
         itemsArrayApprove = this.state.KBListData.filter(
           a => a.subCategoryName === data
         );
+        this.setState({
+          issueColor:"",
+          categoryColor:"",
+          subCategoryColor:"blue"
+        });
+       
       }
     }
     
@@ -252,7 +299,10 @@ class KnowledgeBase extends Component {
       detailscollapse: false,
       tabcolor: "#2561A8",
       tabcolor1: "#4A4A4A",
-      tabCount: 1
+      tabCount: 1,
+      issueColor:"",
+      categoryColor:"",
+      subCategoryColor:""
     });
   }
   setUpdateData(individualData) {
@@ -352,7 +402,10 @@ class KnowledgeBase extends Component {
       detailscollapse: false,
       tabcolor: "#4A4A4A",
       tabcolor1: "#2561A8",
-      tabCount: 2
+      tabCount: 2,
+      issueColor:"",
+      categoryColor:"",
+      subCategoryColor:""
     });
   }
   
@@ -1159,7 +1212,7 @@ class KnowledgeBase extends Component {
                       <span 
                       onClick={this.StatusOpenModel.bind(this,"issueTypeName","notapprove")}
                       >
-                        <label>
+                        <label style={{color:this.state.issueColor}}>
                           Type <FontAwesomeIcon icon={faCaretDown} />
                         </label>
                       </span>
@@ -1185,7 +1238,7 @@ class KnowledgeBase extends Component {
                       <span
                       onClick={this.StatusOpenModel.bind(this,"categoryName","notapprove")}
                       >
-                        <label>
+                        <label style={{color:this.state.categoryColor}}>
                           Category <FontAwesomeIcon icon={faCaretDown} />
                         </label>
                       </span>
@@ -1206,7 +1259,7 @@ class KnowledgeBase extends Component {
                       <span
                       onClick={this.StatusOpenModel.bind(this,"subCategoryName","notapprove")}
                       >
-                        <label>
+                        <label style={{color:this.state.subCategoryColor}}>
                           Sub catogory <FontAwesomeIcon icon={faCaretDown} />
                         </label>
                       </span>
@@ -1396,7 +1449,7 @@ class KnowledgeBase extends Component {
                       <span
                       onClick={this.StatusOpenModel.bind(this,"issueTypeName","approve")}
                       >
-                        <label>
+                        <label style={{color:this.state.issueColor}}>
                           Type <FontAwesomeIcon icon={faCaretDown} />
                         </label>
                       </span>
@@ -1421,7 +1474,7 @@ class KnowledgeBase extends Component {
                       <span
                       onClick={this.StatusOpenModel.bind(this,"categoryName","approve")}
                       >
-                        <label>
+                        <label style={{color:this.state.categoryColor}}>
                           Category <FontAwesomeIcon icon={faCaretDown} />
                         </label>
                       </span>
@@ -1442,7 +1495,7 @@ class KnowledgeBase extends Component {
                       <span
                       onClick={this.StatusOpenModel.bind(this,"subCategoryName","approve")}
                       >
-                        <label>
+                        <label style={{color:this.state.subCategoryColor}}>
                           Sub catogory <FontAwesomeIcon icon={faCaretDown} />
                         </label>
                       </span>
