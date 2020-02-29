@@ -27,6 +27,8 @@ import { CSVLink, CSVDownload } from "react-csv";
 import { string } from "prop-types";
 import { Tabs, Tab } from "react-bootstrap-tabs/dist";
 
+import Sorting from "./../../../assets/Images/sorting.png";
+
 class Users extends Component {
   constructor(props) {
     super(props);
@@ -119,7 +121,8 @@ class Users extends Component {
       emailValidation:"",
       mobileValidation:"",
       personalReadOnly:false,
-      profileReadOnly:false
+      profileReadOnly:false,
+      sortAllData:""
 
 
     };

@@ -191,6 +191,9 @@ self.setState({
       let msg = res.data.message;
        if(msg==="Success"){
         NotificationManager.success("Profile updated successfully.");
+        setTimeout(function() {
+          self.props.history.push("/admin/dashboard");
+        }, 400);
        }
      
     });
