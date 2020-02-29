@@ -8027,6 +8027,9 @@ table tr th:last-child {
 .reactreport .ReactTable .rt-tbody {
   background: #fff;
 }
+.report-action {
+  width: 115px;
+}
 /* Reports Css end Kalpesh */
 /* storeReports css start by Shlok */
 #addStorereport-modal {

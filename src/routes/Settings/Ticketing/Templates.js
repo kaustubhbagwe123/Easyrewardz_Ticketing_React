@@ -23,6 +23,8 @@ import {
 } from "react-notifications";
 import Select from "react-select";
 
+import Sorting from "./../../../assets/Images/sorting.png";
+
 class Templates extends Component {
   constructor(props) {
     super(props)
@@ -45,19 +47,92 @@ class Templates extends Component {
       issurtupeCompulsion:"",
       statusCompulsion:"",
       templatesubjectCompulsion:"",
-      templatebodyCompulsion:""
+      templatebodyCompulsion:"",
+      StatusModel: false,
+      sortColumn:"",
+      sortAllData:[],
+     sortIssueType:[]
+
     }
 
     this.handleGetTemplate = this.handleGetTemplate.bind(this);
     this.handleTemplateName = this.handleTemplateName.bind(this);
     this.handleTemplateSubject = this.handleTemplateSubject.bind(this);
     this.handleGetSLAIssueType = this.handleGetSLAIssueType.bind(this);
+    this.StatusOpenModel = this.StatusOpenModel.bind(this);
+    this.StatusCloseModel = this.StatusCloseModel.bind(this);
   }
 
   componentDidMount() {
    this.handleGetTemplate();
     this.handleGetSLAIssueType();
   }
+
+
+  
+  sortStatusAtoZ() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.template;
+
+    itemsArray.sort(function(a, b)  {
+      return    a.ticketStatus > b.ticketStatus ? 1:-1;
+        });
+
+    
+
+    this.setState({
+      brantemplatedData: itemsArray
+    });
+    this.StatusCloseModel();
+  }
+  sortStatusZtoA() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.template;
+    itemsArray.sort((a, b)=> {
+      return a.ticketStatus < b.ticketStatus
+         
+      
+    });
+    this.setState({
+      template: itemsArray
+    });
+    this.StatusCloseModel();
+  }
+
+  StatusOpenModel(data) {
+    debugger;
+  
+    this.setState({ StatusModel: true,sortColumn:data });
+  }
+  StatusCloseModel() {
+    this.setState({ StatusModel: false });
+  }
+
+  setSortCheckStatus = (column,e) => {
+    debugger;
+    
+    var itemsArray = [];
+    var data = e.currentTarget.value;
+    if(column==="all"){
+      itemsArray=this.state.sortAllData;
+      
+     
+    }else if(column==="issueType"){
+        this.state.template=this.state.sortAllData;
+        itemsArray = this.state.template.filter(
+          a => a.issueType === data
+        );
+        
+      }
+     
+    
+    this.setState({
+      template: itemsArray
+    });
+    this.StatusCloseModel();
+  };
 
 
   setTemplateEditData(editdata) {
@@ -252,6 +327,22 @@ class Templates extends Component {
     }).then(function (res) {
       debugger;
       let template = res.data.responseData;
+
+      if(template !== null){
+
+        self.state.sortAllData=template;
+        var unique=[];
+      var distinct = [];
+      for( let i = 0; i < template.length; i++ ){
+        if( !unique[template[i].issueType]){
+          distinct.push(template[i].issueType);
+          unique[template[i].issueType]=1;
+        }
+      }
+      for (let i = 0; i < distinct.length; i++) {
+        self.state.sortIssueType.push({ issueType: distinct[i] });
+      }
+      }
       if (template !== null && template !== undefined) {
         self.setState({ template });
       }
@@ -280,7 +371,7 @@ class Templates extends Component {
     const columns = [
       {
         Header: (
-          <span>
+          <span >
             Name
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
@@ -289,7 +380,7 @@ class Templates extends Component {
       },
       {
         Header: (
-          <span>
+          <span  onClick={this.StatusOpenModel.bind(this,"issueType")}>
             Issue Type
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
@@ -468,6 +559,87 @@ class Templates extends Component {
 
     return (
       <React.Fragment>
+           <div className="position-relative d-inline-block">
+          <Modal
+           show={this.state.StatusModel}
+           onHide={this.StatusCloseModel.bind(this)}
+            //onClose={this.StatusCloseModel}
+            //open={this.state.StatusModel}
+            modalId="Status-popup"
+            overlayId="logout-ovrly"
+          >
+            <div className="status-drop-down">
+              <div className="sort-sctn">
+                <div className="d-flex">
+                  <a href="#!"
+                    onClick={this.sortStatusAtoZ.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY A TO Z</p>
+                </div>
+                <div className="d-flex">
+                  <a href="#!"
+                    onClick={this.sortStatusZtoA.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY Z TO A</p>
+                </div>
+              </div>
+              <div className="filter-type">
+        
+                <p>FILTER BY TYPE</p>
+                 <div className="filter-checkbox">
+                <input
+                    type="checkbox"
+                    
+                    name="filter-type"
+                    id={"fil-open" }
+                  
+                    value="all"
+                    onChange={this.setSortCheckStatus.bind(this,"all")}
+                  />
+                  <label htmlFor={"fil-open"}>
+                    <span className="table-btn table-blue-btn">ALL</span>
+                  </label>
+                  </div>
+                {this.state.sortColumn==="issueType" ? 
+                
+                this.state.sortIssueType !== null && 
+                  this.state.sortIssueType.map((item, i) => ( 
+                    <div className="filter-checkbox">
+                      
+                  <input
+                    type="checkbox"
+                    
+                    name="filter-type"
+                    id={"fil-open" + item.issueType}
+                  
+                    value={item.issueType}
+                    onChange={this.setSortCheckStatus.bind(this,"issueType")}
+                  />
+                  <label htmlFor={"fil-open" + item.issueType}>
+                    <span className="table-btn table-blue-btn">{item.issueType}</span>
+                  </label>
+                </div>
+                  ))
+
+                :null}
+
+                
+
+              </div>
+             
+
+             
+              
+            </div>
+          </Modal>
+        </div>
+
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="settings" className="header-path">Settings</Link>
           <span>&gt;</span>
@@ -532,7 +704,7 @@ class Templates extends Component {
               <div className="col-md-4">
                 <div className="createHierarchyMask">
                   <div className="createSpace">
-                    <label className="create-department">
+                    <label className="create-department" >
                       CREATE TEMPLATES
                     </label>
                     <div className="div-padding-1">
@@ -553,7 +725,7 @@ class Templates extends Component {
                     </div>
                     <div className="divSpace">
                       <div className="dropDrownSpace">
-                        <label className="reports-to">Issue Type</label>
+                        <label className="reports-to" >Issue Type</label>
                         {/* <select
                           id="inputState"
                           className="form-control dropdown-setting"

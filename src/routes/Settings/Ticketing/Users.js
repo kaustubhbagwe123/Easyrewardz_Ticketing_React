@@ -27,6 +27,8 @@ import { CSVLink, CSVDownload } from "react-csv";
 import { string } from "prop-types";
 import { Tabs, Tab } from "react-bootstrap-tabs/dist";
 
+import Sorting from "./../../../assets/Images/sorting.png";
+
 class Users extends Component {
   constructor(props) {
     super(props);
@@ -119,7 +121,10 @@ class Users extends Component {
       emailValidation:"",
       mobileValidation:"",
       personalReadOnly:false,
-      profileReadOnly:false
+      profileReadOnly:false,
+      StatusModel:false,
+      sortAllData:"",
+      sortDesignation:[]
 
 
     };
@@ -143,6 +148,8 @@ class Users extends Component {
     this.closeEditModal = this.closeEditModal.bind(this);
     this.handleSendMail=this.handleSendMail.bind(this);
     this.handleValidationEmailIdMob=this.handleValidationEmailIdMob.bind(this);
+    this.StatusOpenModel = this.StatusOpenModel.bind(this);
+    this.StatusCloseModel = this.StatusCloseModel.bind(this);
   }
   componentDidMount() {
     debugger;
@@ -155,6 +162,66 @@ class Users extends Component {
     this.handleGetReportTOList();
 
   }
+  sortStatusAtoZ() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.userData;
+
+    itemsArray.sort(function(a, b)  {
+      return    a.ticketStatus > b.ticketStatus ? 1:-1;
+        });
+
+    
+
+    this.setState({
+      userData: itemsArray
+    });
+    this.StatusCloseModel();
+  }
+  sortStatusZtoA() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.userData;
+    itemsArray.sort((a, b)=> {
+      return a.ticketStatus < b.ticketStatus
+         
+      
+    });
+    this.setState({
+      userData: itemsArray
+    });
+    this.StatusCloseModel();
+  }
+
+  StatusOpenModel(data) {
+    debugger;
+  
+    this.setState({ StatusModel: true,sortColumn:data });
+  }
+  StatusCloseModel() {
+    this.setState({ StatusModel: false });
+  }
+
+  setSortCheckStatus = (column,e) => {
+    debugger;
+    
+    var itemsArray = [];
+    var data = e.currentTarget.value;
+    if(column==="all"){
+      itemsArray=this.state.sortAllData;
+      
+    }else if(column==="designation"){
+        this.state.userData=this.state.sortAllData;
+        itemsArray = this.state.userData.filter(
+          a => a.designation === data
+        );
+        
+      }
+    this.setState({
+      userData: itemsArray
+    });
+    this.StatusCloseModel();
+  };
 
   opneEditModal=()=> {
     this.setState({ editmodel: true });
@@ -782,6 +849,23 @@ if(datar==="add"){
       debugger;
       var userdata = res.data.responseData;
       var status = res.data.message;
+
+      if(userdata !== null){
+        
+        self.state.sortAllData=userdata;
+        var unique=[];
+      var distinct = [];
+      for( let i = 0; i < userdata.length; i++ ){
+        if( !unique[userdata[i].designation]&& userdata[i].designation !==""){
+          distinct.push(userdata[i].designation);
+          unique[userdata[i].designation]=1;
+        }
+      }
+      for (let i = 0; i < distinct.length; i++) {
+        self.state.sortDesignation.push({ designation: distinct[i] });
+      }
+
+      }
       if(status === "Success"){
         self.setState({
           userData:userdata
@@ -1414,6 +1498,84 @@ if(datar==="add"){
     return (
       <React.Fragment>
         <NotificationContainer />
+        <div className="position-relative d-inline-block">
+          <Modal
+            onClose={this.StatusCloseModel}
+            open={this.state.StatusModel}
+            modalId="Status-popup"
+            overlayId="logout-ovrly"
+          >
+            <div className="status-drop-down">
+              <div className="sort-sctn">
+                <div className="d-flex">
+                  <a href="#!"
+                    onClick={this.sortStatusAtoZ.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY A TO Z</p>
+                </div>
+                <div className="d-flex">
+                  <a href="#!"
+                    onClick={this.sortStatusZtoA.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY Z TO A</p>
+                </div>
+              </div>
+              <div className="filter-type">
+        
+                <p>FILTER BY TYPE</p>
+                 <div className="filter-checkbox">
+                <input
+                    type="checkbox"
+                    
+                    name="filter-type"
+                    id={"fil-open" }
+                  
+                    value="all"
+                    onChange={this.setSortCheckStatus.bind(this,"all")}
+                  />
+                  <label htmlFor={"fil-open"}>
+                    <span className="table-btn table-blue-btn">ALL</span>
+                  </label>
+                  </div>
+                {this.state.sortColumn==="designation" ? 
+                
+                this.state.sortDesignation !== null && 
+                  this.state.sortDesignation.map((item, i) => ( 
+                    <div className="filter-checkbox">
+                      
+                  <input
+                    type="checkbox"
+                    
+                    name="filter-type"
+                    id={"fil-open" + item.designation}
+                  
+                    value={item.designation}
+                    onChange={this.setSortCheckStatus.bind(this,"designation")}
+                  />
+                  <label htmlFor={"fil-open" + item.designation}>
+                    <span className="table-btn table-blue-btn">{item.designation}</span>
+                  </label>
+                </div>
+                  ))
+
+                :null}
+
+               
+
+              </div>
+             
+
+             
+              
+            </div>
+          </Modal>
+        </div>
         {/* ----------------------------------edit Modal------------------------------------ */}
         <Modal
           open={this.state.editmodel}
@@ -2186,7 +2348,7 @@ if(datar==="add"){
                       },
                       {
                         Header: (
-                          <span>
+                          <span onClick={this.StatusOpenModel.bind(this,"designation")}>
                             Designation
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>

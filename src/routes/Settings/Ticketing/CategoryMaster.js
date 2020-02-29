@@ -24,8 +24,11 @@ import config from "../../../helpers/config";
 import axios from "axios";
 import ActiveStatus from "../../activeStatus";
 import { CSVLink, CSVDownload } from "react-csv";
+import Modal from "react-responsive-modal";
+import Sorting from "./../../../assets/Images/sorting.png";
 const { Option } = Select;
 const NEW_ITEM = "NEW_ITEM";
+
 
 // const Option = Select.Option;
 
@@ -59,7 +62,14 @@ class CategoryMaster extends Component {
       categoryCompulsion:"",
       subcategoryCompulsion:"",
       issueCompulsion:"",
-      statusCompulsion:""
+      statusCompulsion:"",
+      StatusModel: false,
+      sortColumn:"",
+      sortAllData:[],
+      sortBrandName:[],
+      sortCategory:[],
+      sortSubCategory:[],
+      sortIssueType:[]
     };
     this.handleGetCategoryGridData = this.handleGetCategoryGridData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -68,13 +78,97 @@ class CategoryMaster extends Component {
     this.handleAddCategory = this.handleAddCategory.bind(this);
     this.handleAddSubCategory = this.handleAddSubCategory.bind(this);
     this.handleAddIssueType = this.handleAddIssueType.bind(this);
-    this.handleGetIssueTypeList=this.handleGetIssueTypeList.bind(this)
+    this.handleGetIssueTypeList=this.handleGetIssueTypeList.bind(this);
+    this.StatusOpenModel = this.StatusOpenModel.bind(this);
+    this.StatusCloseModel = this.StatusCloseModel.bind(this);
   }
   componentDidMount() {
     this.handleGetCategoryGridData();
     this.handleGetBrandList();
   }
+  sortStatusAtoZ() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.categoryGridData;
+
+    itemsArray.sort(function(a, b)  {
+      return    a.ticketStatus > b.ticketStatus ? 1:-1;
+        });
+
+    
+
+    this.setState({
+      categoryGridData: itemsArray
+    });
+    this.StatusCloseModel();
+  }
+  sortStatusZtoA() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.categoryGridData;
+    itemsArray.sort((a, b)=> {
+      return a.ticketStatus < b.ticketStatus
+         
+      
+    });
+    this.setState({
+      categoryGridData: itemsArray
+    });
+    this.StatusCloseModel();
+  }
+
+  StatusOpenModel(data) {
+    debugger;
+  
+    this.setState({ StatusModel: true,sortColumn:data });
+  }
+  StatusCloseModel() {
+    this.setState({ StatusModel: false });
+  }
+
+  setSortCheckStatus = (column,e) => {
+    debugger;
+    
+    var itemsArray = [];
+    var data = e.currentTarget.value;
+    if(column==="all"){
+      itemsArray=this.state.sortAllData;
+      
+     
+    }else if(column==="brandName"){
+        this.state.categoryGridData=this.state.sortAllData;
+        itemsArray = this.state.categoryGridData.filter(
+          a => a.brandName === data
+        );
+        
+      }else if(column==="categoryName"){
+        this.state.categoryGridData=this.state.sortAllData;
+        itemsArray = this.state.categoryGridData.filter(
+          a => a.categoryName === data
+        );
+        
+      }else if(column==="subCategoryName"){
+        this.state.categoryGridData=this.state.sortAllData;
+        itemsArray = this.state.categoryGridData.filter(
+          a => a.subCategoryName === data
+        );
+        
+      }else if(column==="issueTypeName"){
+        this.state.categoryGridData=this.state.sortAllData;
+        itemsArray = this.state.categoryGridData.filter(
+          a => a.issueTypeName === data
+        );
+        
+      }
+     
+    
+    this.setState({
+      categoryGridData: itemsArray
+    });
+    this.StatusCloseModel();
+  };
   handleGetCategoryGridData() {
+    debugger;
     let self = this;
     this.setState({ loading: true });
     axios({
@@ -85,6 +179,60 @@ class CategoryMaster extends Component {
       debugger;
       var status = res.data.message;
       var data = res.data.responseData;
+       
+      if(data !==null){
+
+        self.state.sortAllData=data;
+        var unique=[];
+      var distinct = [];
+      for( let i = 0; i < data.length; i++ ){
+        if( !unique[data[i].brandName] ){
+          distinct.push(data[i].brandName);
+          unique[data[i].brandName]=1;
+        }
+      }
+      for (let i = 0; i < distinct.length; i++) {
+        self.state.sortBrandName.push({ brandName: distinct[i] });
+      }
+
+      var unique=[];
+      var distinct = [];
+      for( let i = 0; i < data.length; i++ ){
+        if( !unique[data[i].categoryName] ){
+          distinct.push(data[i].categoryName);
+          unique[data[i].categoryName]=1;
+        }
+      }
+      for (let i = 0; i < distinct.length; i++) {
+        self.state.sortCategory.push({ categoryName: distinct[i] });
+      }
+
+      var unique=[];
+      var distinct = [];
+      for( let i = 0; i < data.length; i++ ){
+        if( !unique[data[i].subCategoryName] ){
+          distinct.push(data[i].subCategoryName);
+          unique[data[i].subCategoryName]=1;
+        }
+      }
+      for (let i = 0; i < distinct.length; i++) {
+        self.state.sortSubCategory.push({ subCategoryName: distinct[i] });
+      }
+
+      var unique=[];
+      var distinct = [];
+      for( let i = 0; i < data.length; i++ ){
+        if( !unique[data[i].issueTypeName] ){
+          distinct.push(data[i].issueTypeName);
+          unique[data[i].issueTypeName]=1;
+        }
+      }
+      for (let i = 0; i < distinct.length; i++) {
+        self.state.sortIssueType.push({ issueTypeName: distinct[i] });
+      }
+
+      }
+
       if (status === "Success") {
         self.setState({
           categoryGridData: data,
@@ -447,6 +595,156 @@ class CategoryMaster extends Component {
     return (
       <React.Fragment>
         <NotificationContainer />
+        <div className="position-relative d-inline-block">
+          <Modal
+            onClose={this.StatusCloseModel}
+            open={this.state.StatusModel}
+            modalId="Status-popup"
+            overlayId="logout-ovrly"
+          >
+            <div className="status-drop-down">
+              <div className="sort-sctn">
+                <div className="d-flex">
+                  <a href="#!"
+                    onClick={this.sortStatusAtoZ.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY A TO Z</p>
+                </div>
+                <div className="d-flex">
+                  <a href="#!"
+                    onClick={this.sortStatusZtoA.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY Z TO A</p>
+                </div>
+              </div>
+              <div className="filter-type">
+        
+                <p>FILTER BY TYPE</p>
+                 <div className="filter-checkbox">
+                <input
+                    type="checkbox"
+                    
+                    name="filter-type"
+                    id={"fil-open" }
+                  
+                    value="all"
+                    onChange={this.setSortCheckStatus.bind(this,"all")}
+                  />
+                  <label htmlFor={"fil-open"}>
+                    <span className="table-btn table-blue-btn">ALL</span>
+                  </label>
+                  </div>
+                {this.state.sortColumn==="brandName" ? 
+                
+                this.state.sortBrandName !== null && 
+                  this.state.sortBrandName.map((item, i) => ( 
+                    <div className="filter-checkbox">
+                      
+                  <input
+                    type="checkbox"
+                    
+                    name="filter-type"
+                    id={"fil-open" + item.brandName}
+                  
+                    value={item.brandName}
+                    onChange={this.setSortCheckStatus.bind(this,"brandName")}
+                  />
+                  <label htmlFor={"fil-open" + item.brandName}>
+                    <span className="table-btn table-blue-btn">{item.brandName}</span>
+                  </label>
+                </div>
+                  ))
+
+                :null}
+
+                { this.state.sortColumn==="categoryName" ? 
+                
+                this.state.sortCategory !== null && 
+                  this.state.sortCategory.map((item, i) => ( 
+                    <div className="filter-checkbox">
+                      
+                  <input
+                    type="checkbox"
+                    
+                    name="filter-type"
+                    id={"fil-open" + item.categoryName}
+                  
+                    value={item.categoryName}
+                    onChange={this.setSortCheckStatus.bind(this,"categoryName")}
+                  />
+                  <label htmlFor={"fil-open" + item.categoryName}>
+                    <span className="table-btn table-blue-btn">{item.categoryName}</span>
+                  </label>
+                </div>
+                  ))
+
+                :null}
+
+
+              { this.state.sortColumn==="subCategoryName" ? 
+                
+                this.state.sortSubCategory !== null && 
+                  this.state.sortSubCategory.map((item, i) => ( 
+                    <div className="filter-checkbox">
+                      
+                  <input
+                    type="checkbox"
+                    
+                    name="filter-type"
+                    id={"fil-open" + item.subCategoryName}
+                  
+                    value={item.subCategoryName}
+                    onChange={this.setSortCheckStatus.bind(this,"subCategoryName")}
+                  />
+                  <label htmlFor={"fil-open" + item.subCategoryName}>
+                    <span className="table-btn table-blue-btn">{item.subCategoryName}</span>
+                  </label>
+                </div>
+                  ))
+
+                :null}
+
+
+                { this.state.sortColumn==="issueTypeName" ? 
+                
+                this.state.sortIssueType !== null && 
+                  this.state.sortIssueType.map((item, i) => ( 
+                    <div className="filter-checkbox">
+                      
+                  <input
+                    type="checkbox"
+                    
+                    name="filter-type"
+                    id={"fil-open" + item.issueTypeName}
+                  
+                    value={item.issueTypeName}
+                    onChange={this.setSortCheckStatus.bind(this,"issueTypeName")}
+                  />
+                  <label htmlFor={"fil-open" + item.issueTypeName}>
+                    <span className="table-btn table-blue-btn">{item.issueTypeName}</span>
+                  </label>
+                </div>
+                  ))
+
+                :null}
+
+              
+                
+
+              </div>
+             
+
+             
+              
+            </div>
+          </Modal>
+        </div>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="settings" className="header-path">
             Settings
@@ -473,7 +771,7 @@ class CategoryMaster extends Component {
                       columns={[
                         {
                           Header: (
-                            <span>
+                            <span onClick={this.StatusOpenModel.bind(this,"brandName")}>
                               Brand Name
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
@@ -482,7 +780,7 @@ class CategoryMaster extends Component {
                         },
                         {
                           Header: (
-                            <span>
+                            <span onClick={this.StatusOpenModel.bind(this,"categoryName")}>
                               Category
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
@@ -491,7 +789,7 @@ class CategoryMaster extends Component {
                         },
                         {
                           Header: (
-                            <span>
+                            <span onClick={this.StatusOpenModel.bind(this,"subCategoryName")}>
                               Sub Cat
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
@@ -500,7 +798,7 @@ class CategoryMaster extends Component {
                         },
                         {
                           Header: (
-                            <span>
+                            <span onClick={this.StatusOpenModel.bind(this,"issueTypeName")}>
                               Issue Type
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
