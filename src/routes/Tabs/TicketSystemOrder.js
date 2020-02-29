@@ -114,13 +114,13 @@ class TicketSystemOrder extends Component {
       headers: authHeader()
     }).then(function(res) {
       debugger;
-      let ChannelOfPurchaseData = res.data.responseData;
-      self.setState({ ChannelOfPurchaseData: ChannelOfPurchaseData });
+      let data = res.data.responseData;
+      self.setState({ ChannelOfPurchaseData: data });
     });
   }
 
   handleOrderTableOpen() {
-    debugger
+    debugger;
     this.setState({ OrderTable: true });
   }
   handleOrderTableClose() {
@@ -261,45 +261,78 @@ class TicketSystemOrder extends Component {
     });
   }
 
-  handleOrderSearchData() {
+  handleOrderSearchData(OrdData) {
     debugger;
-    if (this.state.custAttachOrder === 0) {
-      let self = this;
-      if (this.state.orderNumber.length > 0) {
-        var CustID = this.props.custDetails;
-        axios({
-          method: "post",
-          url: config.apiUrl + "/Order/getOrderListWithItemDetails",
-          headers: authHeader(),
-          params: {
-            OrderNumber: this.state.orderNumber,
-            CustomerID: CustID
-          }
-        }).then(function(res) {
-          debugger
-          let Msg = res.data.message;
-          let mainData = res.data.responseData;
+    let self = this;
+    var CustID = this.props.custDetails;
+    if (OrdData === 1) {
+      if (this.state.custAttachOrder === 0) {
+        if (this.state.orderNumber.length > 0) {
+          axios({
+            method: "post",
+            url: config.apiUrl + "/Order/getOrderListWithItemDetails",
+            headers: authHeader(),
+            params: {
+              OrderNumber: this.state.orderNumber,
+              CustomerID: CustID
+            }
+          }).then(function(res) {
+            debugger;
+            let Msg = res.data.message;
+            let mainData = res.data.responseData;
 
-          var OrderSubItem = [];
+            var OrderSubItem = [];
 
-          for (let i = 0; i < mainData.length; i++) {
-            if (mainData[i].orderItems.length > 0) {
-              for (let j = 0; j < mainData[i].orderItems.length; j++) {
-                OrderSubItem.push(mainData[i].orderItems[j]);
+            for (let i = 0; i < mainData.length; i++) {
+              if (mainData[i].orderItems.length > 0) {
+                for (let j = 0; j < mainData[i].orderItems.length; j++) {
+                  OrderSubItem.push(mainData[i].orderItems[j]);
+                }
               }
             }
-          }
-          self.setState({
-            message: Msg,
-            orderDetailsData: mainData,
-            OrderSubItem
+            self.setState({
+              message: Msg,
+              orderDetailsData: mainData,
+              OrderSubItem
+            });
           });
-        });
-      } else {
-        self.setState({
-          validOrdernumber: "Please Enter Order Number"
-        });
+        } else {
+          self.setState({
+            validOrdernumber: "Please Enter Order Number"
+          });
+        }
       }
+    } else {
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Order/getOrderListWithItemDetails",
+        headers: authHeader(),
+        params: {
+          OrderNumber: OrdData,
+          CustomerID: CustID
+        }
+      }).then(function(res) {
+        debugger;
+        let Msg = res.data.message;
+        let mainData = res.data.responseData;
+
+        self.handleChangeToggle()
+        var OrderSubItem = [];
+
+        for (let i = 0; i < mainData.length; i++) {
+          if (mainData[i].orderItems.length > 0) {
+            for (let j = 0; j < mainData[i].orderItems.length; j++) {
+              OrderSubItem.push(mainData[i].orderItems[j]);
+            }
+          }
+        }
+        self.setState({
+          message: Msg,
+          orderDetailsData: mainData,
+          OrderSubItem,
+          orderNumber: ""
+        });
+      });
     }
   }
   hadleAddManuallyOrderData() {
@@ -335,7 +368,9 @@ class TicketSystemOrder extends Component {
           let status = res.data.message;
 
           if (status === "Success") {
-            NotificationManager.success("New Order added successfully.");
+            let data = res.data.responseData;
+            NotificationManager.success("New Order added successfully.", "", 2000);
+            self.handleOrderSearchData(data);
             self.handleChangeSaveManualTbl();
             self.setState({
               productBarCode: "",
@@ -585,17 +620,16 @@ class TicketSystemOrder extends Component {
             <div className="col-12 col-lg-2 col-xl-1">
               <div
                 // className="storeplusline"
-                className={this.state.custAttachOrder === 1 ? "storeplusline-12" : "storeplusline"}
+                className={
+                  this.state.custAttachOrder === 1
+                    ? "storeplusline-12"
+                    : "storeplusline"
+                }
                 onClick={this.handleOrderTableOpen.bind(this)}
                 disabled={this.state.custAttachOrder === 1 ? true : false}
               >
                 <span className="plusline1"></span>
-                <img
-                  src={ArrowImg}
-                  alt="Arrow"
-                  className="arrow-imgtask-1"
-                  
-                />
+                <img src={ArrowImg} alt="Arrow" className="arrow-imgtask-1" />
               </div>
             </div>
           </div>
@@ -989,16 +1023,13 @@ class TicketSystemOrder extends Component {
                                 />
                                 <label
                                   htmlFor={"order" + row.original.orderItemID}
-                                >
-                                  
-                                </label>
+                                ></label>
                               </div>
                             )
                           },
                           {
                             Header: <span>Article Number</span>,
                             accessor: "orderMasterID"
-                           
                           },
                           {
                             Header: <span>Article Size</span>,
@@ -1064,6 +1095,7 @@ class TicketSystemOrder extends Component {
                     placeholder="Search Order By Order Number"
                     name="orderNumber"
                     value={this.state.orderNumber}
+                    autoComplete="off"
                     onChange={this.handleOrderChange.bind(this)}
                     disabled={this.state.custAttachOrder === 1 ? true : false}
                   />
@@ -1072,7 +1104,7 @@ class TicketSystemOrder extends Component {
                     src={SearchBlackImg}
                     alt="Search"
                     className="systemorder-imgsearch"
-                    onClick={this.handleOrderSearchData.bind(this)}
+                    onClick={this.handleOrderSearchData.bind(this, 1)}
                     // disabled={this.state.custAttachOrder === 1 ? true : false}
                   />
                   {this.state.orderNumber.length === 0 && (
@@ -1169,11 +1201,11 @@ class TicketSystemOrder extends Component {
                     onChange={this.handleManuallyOnchange}
                     autoComplete="off"
                   />
-                  {this.validator.message(
+                  {/* {this.validator.message(
                     "ProductBarCode",
                     this.state.productBarCode,
                     "required"
-                  )}
+                  )} */}
                 </div>
                 <div className="col-md-6">
                   {/* <select
@@ -1203,8 +1235,8 @@ class TicketSystemOrder extends Component {
                       ))}
                   </select>
                   {this.validator.message(
-                    "Source",
-                    this.state.selectedTicketSource,
+                    "ChannelOfPurchaseData",
+                    this.state.ChannelOfPurchaseData,
                     "required"
                   )}
                 </div>
@@ -1261,11 +1293,11 @@ class TicketSystemOrder extends Component {
                     onChange={this.handleNumberOnchange}
                     autoComplete="off"
                   />
-                  {this.validator.message(
+                  {/* {this.validator.message(
                     "mrp",
                     this.state.orderMRP,
                     "required"
-                  )}
+                  )} */}
                 </div>
                 <div className="col-md-6">
                   <input
@@ -1277,11 +1309,11 @@ class TicketSystemOrder extends Component {
                     onChange={this.handleNumberOnchange}
                     autoComplete="off"
                   />
-                  {this.validator.message(
+                  {/* {this.validator.message(
                     "PricePaid",
                     this.state.pricePaid,
                     "required"
-                  )}
+                  )} */}
                 </div>
               </div>
 
@@ -1296,11 +1328,11 @@ class TicketSystemOrder extends Component {
                     onChange={this.handleNumberOnchange}
                     autoComplete="off"
                   />
-                  {this.validator.message(
+                  {/* {this.validator.message(
                     "Discount",
                     this.state.discount,
                     "required"
-                  )}
+                  )} */}
                 </div>
                 <div className="col-md-6">
                   <input
@@ -1326,11 +1358,11 @@ class TicketSystemOrder extends Component {
                     onChange={this.handleNumberOnchange}
                     autoComplete="off"
                   />
-                  {this.validator.message(
+                  {/* {this.validator.message(
                     "RequiredSize",
                     this.state.requiredSize,
                     "required"
-                  )}
+                  )} */}
                 </div>
                 <div className="col-md-6">
                   {/* <input
@@ -1440,7 +1472,7 @@ class TicketSystemOrder extends Component {
                 <div className="col-md-3">
                   <div style={{ float: "right", display: "flex" }}>
                     <label
-                      className="orderdetailpopup "
+                      className="orderdetailpopup"
                       style={{ marginTop: "3px" }}
                     >
                       Order
@@ -1523,7 +1555,7 @@ class TicketSystemOrder extends Component {
                     },
                     {
                       Header: <span>Price Paid</span>,
-                      accessor: "pricePaid"
+                      accessor: "orderPricePaid"
                     },
                     {
                       Header: <span>Store Code</span>,
@@ -1664,16 +1696,13 @@ class TicketSystemOrder extends Component {
                                   />
                                   <label
                                     htmlFor={"order" + row.original.orderItemID}
-                                  >
-                                    
-                                  </label>
+                                  ></label>
                                 </div>
                               )
                             },
                             {
                               Header: <span>Article Number</span>,
                               accessor: "orderMasterID"
-                             
                             },
                             {
                               Header: <span>Article Name</span>,

@@ -167,7 +167,7 @@ class MyTicket extends Component {
       ticketcommentMSG: "",
       CustStoreStatusDrop: 1,
       OrderSubItem: [],
-      // mailSubject: "",
+      FileData: [],
       expanded: {},
       mailId: 0,
       selectProductOrd: true,
@@ -1088,7 +1088,7 @@ class MyTicket extends Component {
 
   handleAttachStoreData() {
     debugger;
-    // let self = this;
+    let self = this;
     var selectedStore = "";
     for (let j = 0; j < this.state.selectedStoreData.length; j++) {
       var PurposeID = this.state.selectedStoreData[j]["Purpose_Id"];
@@ -1124,6 +1124,8 @@ class MyTicket extends Component {
       // let details = res.data.responseData;
       if (status === "Success") {
         NotificationManager.success("Store attached successfully.", "", 2000);
+        self.HandleStoreModalClose();
+        self.handleGetTicketDetails(self.state.ticket_Id);
       } else {
         NotificationManager.error("Store not attached", "", 2000);
       }
@@ -1136,24 +1138,38 @@ class MyTicket extends Component {
 
     var selectedRow = "";
 
-    for (let i = 0; i < this.state.selectedDataRow.length; i++) {
-      var data = this.state.selectedDataRow.filter(
-        x => x.orderMasterID == this.state.selectedDataRow[i].orderMasterID
-      );
-      if (data.length === 1) {
-        selectedRow += this.state.selectedDataRow[i]["orderMasterID"] + "|0|1,";
-      } else if (data === 0) {
-      } else {
-        if (
-          "orderMasterID" in this.state.selectedDataRow[i] &&
-          "orderItemID" in this.state.selectedDataRow[i]
-        ) {
-          selectedRow +=
-            this.state.selectedDataRow[i]["orderItemID"] +
-            "|" +
-            this.state.selectedDataRow[i]["requireSize"] +
-            "|0,";
-        }
+    // for (let i = 0; i < this.state.selectedDataRow.length; i++) {
+    //   var data = this.state.selectedDataRow.filter(
+    //     x => x.orderMasterID == this.state.selectedDataRow[i].orderMasterID
+    //   );
+    //   if (data.length === 1) {
+    //     selectedRow += this.state.selectedDataRow[i]["orderMasterID"] + "|0|1,";
+    //   } else if (data === 0) {
+    //   } else {
+    //     if (
+    //       "orderMasterID" in this.state.selectedDataRow[i] &&
+    //       "orderItemID" in this.state.selectedDataRow[i]
+    //     ) {
+    //       selectedRow +=
+    //         this.state.selectedDataRow[i]["orderItemID"] +
+    //         "|" +
+    //         this.state.selectedDataRow[i]["requireSize"] +
+    //         "|0,";
+    //     }
+    //   }
+    // }
+    if (this.state.SelectedAllItem.length === 0) {
+      for (let j = 0; j < this.state.SelectedAllOrder.length; j++) {
+        selectedRow += this.state.SelectedAllOrder[j]["orderMasterID"] + "|0|1,";
+      }
+     
+    } else {
+      for (let i = 0; i < this.state.SelectedAllItem.length; i++) {
+        selectedRow +=
+          this.state.SelectedAllItem[i]["orderItemID"] +
+          "|" +
+          this.state.SelectedAllItem[i]["requireSize"] +
+          "|0,";
       }
     }
     axios({
@@ -1419,11 +1435,12 @@ class MyTicket extends Component {
           ToEmail: this.state.ticketDetailsData.customerEmailId,
           UserCC: this.state.mailFiled.userCC,
           UserBCC: this.state.mailFiled.userBCC,
-          // TikcketMailSubject: this.state.mailSubject,
           TicketMailBody: stringBody,
           informStore: this.state.InformStore,
-          IsSent: isSend,
+          TicketSource: 2, // Send ticket source id
+          IsSent: 0,
           IsCustomerComment: 0,
+          IsResponseToCustomer: 1,
           MailID: this.state.mailId
         }
       }).then(function(res) {
@@ -1442,27 +1459,37 @@ class MyTicket extends Component {
         }
       });
     } else if (isSend === 2) {
+      // -------------Plush Icen Editor Call api--------------------
+      const formData = new FormData();
+      var paramData = {
+        TicketID: this.state.ticket_Id,
+        ToEmail: this.state.ticketDetailsData.customerEmailId,
+        UserCC: this.state.mailFiled.userCC,
+        UserBCC: this.state.mailFiled.userBCC,
+        TikcketMailSubject: this.state.ticketDetailsData.ticketTitle,
+        TicketMailBody: stringBody,
+        informStore: this.state.InformStore,
+        TicketSource: 2, // Send ticket source id
+        IsSent: 1,
+        IsCustomerComment: 1,
+        MailID: 0
+      };
+      formData.append("KeyPending", JSON.stringify(paramData));
+      for (let j = 0; j < this.state.FileData.length; j++) {
+        formData.append("Filedata", this.state.FileData[j]);
+      }
+
       axios({
         method: "post",
         url: config.apiUrl + "/Ticketing/MessageComment",
         headers: authHeader(),
-        data: {
-          TicketID: this.state.ticket_Id,
-          ToEmail: this.state.ticketDetailsData.customerEmailId,
-          UserCC: this.state.mailFiled.userCC,
-          UserBCC: this.state.mailFiled.userBCC,
-          TikcketMailSubject: this.state.ticketDetailsData.ticketTitle,
-          TicketMailBody: stringBody,
-          informStore: this.state.InformStore,
-          IsSent: 1,
-          IsCustomerComment: 1,
-          MailID: 0
-        }
+        data: paramData
       }).then(function(res) {
         debugger;
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetMessageDetails(self.state.ticket_Id);
+          self.HandleEmailCollapseOpen();
           NotificationManager.success("Mail send successfully.", "", 1500);
           self.setState({
             mailFiled: {},
@@ -1474,7 +1501,7 @@ class MyTicket extends Component {
         }
       });
     } else if (isSend === 3) {
-      let self = this;
+      // ----------------IsCustomerCommet Comment modal Call api ------------------
       axios({
         method: "post",
         url: config.apiUrl + "/Ticketing/MessageComment",
@@ -1483,7 +1510,7 @@ class MyTicket extends Component {
           TicketID: this.state.ticket_Id,
           TicketMailBody: this.state.ticketcommentMSG,
           IsSent: 1,
-          IsCustomerComment: 1
+          IsCustomerComment: 0
         }
       }).then(function(res) {
         debugger;
@@ -1497,6 +1524,9 @@ class MyTicket extends Component {
           });
         } else {
           NotificationManager.error(status, "", 2000);
+          self.setState({
+            ticketcommentMSG: ""
+          });
         }
       });
     } else {
@@ -1614,6 +1644,11 @@ class MyTicket extends Component {
   }
   handleFileUpload(e) {
     debugger;
+    var allFiles = [];
+    var selectedFiles = e.target.files;
+    for (let i = 0; i < selectedFiles.length; i++) {
+      allFiles.push(selectedFiles[i]);
+    }
     // -------------------------Image View code start-----------------------
     if (e.target.files && e.target.files[0]) {
       const filesAmount = e.target.files.length;
@@ -1637,12 +1672,14 @@ class MyTicket extends Component {
       objFile.name = name;
 
       objFile.File = e.target.files[i];
+      const file = e.target.files[i];
 
       this.state.file.push(objFile);
+      this.state.FileData.push(file);
     }
 
     // -------------------------Image View code end-----------------------
-    this.setState({ fileText: this.state.file.length });
+    this.setState({ fileText: this.state.file.length, FileData: allFiles });
   }
 
   handleByvisitDate(e, rowData) {
@@ -3139,7 +3176,7 @@ class MyTicket extends Component {
                                                 selected={
                                                   row.original.storeVisitDate
                                                 }
-                                                placeholderText="Visited Date"
+                                                placeholderText="Date"
                                                 showMonthDropdown
                                                 showYearDropdown
                                                 // dateFormat="dd/MM/yyyy"
@@ -3147,9 +3184,9 @@ class MyTicket extends Component {
                                                   "visitDate" +
                                                   row.original.storeID
                                                 }
-                                                value={moment(
+                                                value={
                                                   row.original.storeVisitDate
-                                                ).format("DD/MM/YYYY")}
+                                                }
                                                 // name="visitDate"
                                                 onChange={this.handleByvisitDate.bind(
                                                   this,
@@ -3370,7 +3407,7 @@ class MyTicket extends Component {
                                             className="filter-checkbox"
                                             style={{ marginLeft: "15px" }}
                                           >
-                                            <input
+                                            {/* <input
                                               type="checkbox"
                                               id={
                                                 "i" + row.original.orderMasterID
@@ -3388,12 +3425,26 @@ class MyTicket extends Component {
                                                 row.original.orderMasterID,
                                                 row.original
                                               )}
-                                            />
-                                            <label
-                                              htmlFor={
-                                                "i" + row.original.orderMasterID
+                                            /> */}
+                                            <input
+                                              type="checkbox"
+                                              id={
+                                                "all" +
+                                                row.original.orderMasterID
                                               }
-                                            ></label>
+                                              className="ch1"
+                                              name="AllOrder"
+                                              checked={
+                                                this.state.CheckBoxAllOrder[
+                                                  row.original.orderMasterID
+                                                ] === true
+                                              }
+                                              onChange={this.onCheckMasterAllChange.bind(
+                                                this,
+                                                row.original.orderMasterID,
+                                                row.original
+                                              )}
+                                            />
                                           </div>
                                         )
                                       },
@@ -3708,7 +3759,7 @@ class MyTicket extends Component {
                                                   row.original.orderMasterID
                                                 ] === true
                                               }
-                                              defaultChecked={true}
+                                              // defaultChecked={true}
                                               onChange={this.handleCheckOrderID.bind(
                                                 this,
                                                 row.original.orderMasterID,
@@ -4135,7 +4186,7 @@ class MyTicket extends Component {
                         style={{ display: "inherit" }}
                       ></div>
 
-                      {/* <div className="dropdown" style={{ display: "inherit" }}>
+                      <div className="dropdown" style={{ display: "inherit" }}>
                         <button
                           className="dropdown-toggle my-tic-email"
                           type="button"
@@ -4178,7 +4229,7 @@ class MyTicket extends Component {
                             </a>
                           </li>
                         </ul>
-                      </div> */}
+                      </div>
 
                       <div
                         className="mob-float"
@@ -4685,7 +4736,7 @@ class MyTicket extends Component {
                             </div>
                             {item.msgDetails !== null &&
                               item.msgDetails.map((details, j) => {
-                                debugger;
+                                // debugger;
                                 return (
                                   <div key={j}>
                                     <div>
@@ -4819,29 +4870,32 @@ class MyTicket extends Component {
                                                       );
                                                     }
                                                   )}
-                                               {details.trailMessageDetails.length === 0 && <div className="card-details">
-                                                  <div className="card-details-1">
-                                                    <label className="i-have-solved-this-i">
-                                                      {
-                                                        details
-                                                          .trailMessageDetails
-                                                          .ticketMailSubject
-                                                      }
-                                                    </label>
-                                                    <label
-                                                      className="label-5"
-                                                      style={{
-                                                        display: "block"
-                                                      }}
-                                                    >
-                                                      {
-                                                        details
-                                                          .trailMessageDetails
-                                                          .ticketMailBody
-                                                      }
-                                                    </label>
+                                                {details.trailMessageDetails
+                                                  .length === 0 && (
+                                                  <div className="card-details">
+                                                    <div className="card-details-1">
+                                                      <label className="i-have-solved-this-i">
+                                                        {
+                                                          details
+                                                            .trailMessageDetails
+                                                            .ticketMailSubject
+                                                        }
+                                                      </label>
+                                                      <label
+                                                        className="label-5"
+                                                        style={{
+                                                          display: "block"
+                                                        }}
+                                                      >
+                                                        {
+                                                          details
+                                                            .trailMessageDetails
+                                                            .ticketMailBody
+                                                        }
+                                                      </label>
+                                                    </div>
                                                   </div>
-                                                </div>}
+                                                )}
                                               </CardBody>
                                             </Card>
                                           </Collapse>
@@ -5091,7 +5145,7 @@ class MyTicket extends Component {
                                     htmlFor="custRply"
                                     style={{ paddingLeft: "25px" }}
                                   >
-                                    <span>Inform Storee</span>
+                                    <span>Inform Store</span>
                                   </label>
                                 </div>
                               </li>
