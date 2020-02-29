@@ -25,6 +25,8 @@ import {
   NotificationManager
 } from "react-notifications";
 import { CSVLink } from "react-csv";
+import Modal from "react-responsive-modal";
+import Sorting from "./../../../assets/Images/sorting.png";
 
 class CreateSLA extends Component {
   constructor(props) {
@@ -64,13 +66,19 @@ class CreateSLA extends Component {
       slaOvrlayShow: false,
       SearchText: '',
       issueTypeCompulsion:"",
-      slaTargetCompulsion:""
+      slaTargetCompulsion:"",
+      StatusModel: false,
+      sortColumn:"",
+      sortAllData:[],
+      sortIssueType:[]
     };
 
     this.handleGetSLA = this.handleGetSLA.bind(this);
     this.handleGetSLAIssueType = this.handleGetSLAIssueType.bind(this);
     this.handleSlaButton = this.handleSlaButton.bind(this);
     this.handleGetPriorityList = this.handleGetPriorityList.bind(this);
+    this.StatusOpenModel = this.StatusOpenModel.bind(this);
+    this.StatusCloseModel = this.StatusCloseModel.bind(this);
   }
 
   componentDidMount() {
@@ -78,6 +86,70 @@ class CreateSLA extends Component {
     this.handleGetSLAIssueType();
     this.handleGetPriorityList();
   }
+
+  sortStatusAtoZ() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.sla;
+
+    itemsArray.sort(function(a, b)  {
+      return    a.ticketStatus > b.ticketStatus ? 1:-1;
+        });
+
+    
+
+    this.setState({
+      sla: itemsArray
+    });
+    this.StatusCloseModel();
+  }
+  sortStatusZtoA() {
+    debugger;
+    var itemsArray = [];
+    itemsArray = this.state.sla;
+    itemsArray.sort((a, b)=> {
+      return a.ticketStatus < b.ticketStatus
+         
+      
+    });
+    this.setState({
+      sla: itemsArray
+    });
+    this.StatusCloseModel();
+  }
+
+  StatusOpenModel(data) {
+    debugger;
+  
+    this.setState({ StatusModel: true,sortColumn:data });
+  }
+  StatusCloseModel() {
+    this.setState({ StatusModel: false });
+  }
+
+  setSortCheckStatus = (column,e) => {
+    debugger;
+    
+    var itemsArray = [];
+    var data = e.currentTarget.value;
+    if(column==="all"){
+      itemsArray=this.state.sortAllData;
+      
+     
+    }else if(column==="issueTpeName"){
+        this.state.sla=this.state.sortAllData;
+        itemsArray = this.state.sla.filter(
+          a => a.issueTpeName === data
+        );
+        
+      }
+     
+    
+    this.setState({
+      sla: itemsArray
+    });
+    this.StatusCloseModel();
+  };
 
   selectIndividualSLA = async (issueId, event) => {
     debugger;
@@ -269,6 +341,22 @@ class CreateSLA extends Component {
       debugger;
       let status = res.data.message;
       let data = res.data.responseData;
+       
+      if(data !== null){
+        self.state.sortAllData=data;
+        var unique=[];
+      var distinct = [];
+      for( let i = 0; i < data.length; i++ ){
+        if( !unique[data[i].issueTpeName]){
+          distinct.push(data[i].issueTpeName);
+          unique[data[i].issueTpeName]=1;
+        }
+      }
+      for (let i = 0; i < distinct.length; i++) {
+        self.state.sortIssueType.push({ issueTpeName: distinct[i] });
+      }
+      }
+
       if (status === "Success") {
         self.setState({ sla: data });
       } else {
@@ -557,6 +645,84 @@ class CreateSLA extends Component {
     // const { slaIssueType, value } = this.state;
     return (
       <React.Fragment>
+         <div className="position-relative d-inline-block">
+          <Modal
+            onClose={this.StatusCloseModel}
+            open={this.state.StatusModel}
+            modalId="Status-popup"
+            overlayId="logout-ovrly"
+          >
+            <div className="status-drop-down">
+              <div className="sort-sctn">
+                <div className="d-flex">
+                  <a href="#!"
+                    onClick={this.sortStatusAtoZ.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY A TO Z</p>
+                </div>
+                <div className="d-flex">
+                  <a href="#!"
+                    onClick={this.sortStatusZtoA.bind(this)}
+                    className="sorting-icon"
+                  >
+                    <img src={Sorting} alt="sorting-icon" />
+                  </a>
+                  <p>SORT BY Z TO A</p>
+                </div>
+              </div>
+              <div className="filter-type">
+        
+                <p>FILTER BY TYPE</p>
+                 <div className="filter-checkbox">
+                <input
+                    type="checkbox"
+                    
+                    name="filter-type"
+                    id={"fil-open" }
+                  
+                    value="all"
+                    onChange={this.setSortCheckStatus.bind(this,"all")}
+                  />
+                  <label htmlFor={"fil-open"}>
+                    <span className="table-btn table-blue-btn">ALL</span>
+                  </label>
+                  </div>
+                {this.state.sortColumn==="issueTpeName" ? 
+                
+                this.state.sortIssueType !== null && 
+                  this.state.sortIssueType.map((item, i) => ( 
+                    <div className="filter-checkbox">
+                      
+                  <input
+                    type="checkbox"
+                    
+                    name="filter-type"
+                    id={"fil-open" + item.issueTpeName}
+                  
+                    value={item.issueTpeName}
+                    onChange={this.setSortCheckStatus.bind(this,"issueTpeName")}
+                  />
+                  <label htmlFor={"fil-open" + item.issueTpeName}>
+                    <span className="table-btn table-blue-btn">{item.issueTpeName}</span>
+                  </label>
+                </div>
+                  ))
+
+                :null}
+
+                
+
+              </div>
+             
+
+             
+              
+            </div>
+          </Modal>
+        </div>
         <div className="container-fluid setting-title setting-breadcrumb">
           <Link to="settings" className="header-path">
             Settings
@@ -580,7 +746,7 @@ class CreateSLA extends Component {
                     columns={[
                       {
                         Header: (
-                          <span>
+                          <span onClick={this.StatusOpenModel.bind(this,"issueTpeName")}>
                             Issue Type
                             <FontAwesomeIcon icon={faCaretDown} />
                           </span>
