@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component,useState } from "react";
 import Demo from "../../../store/Hashtag";
 import Modal from "react-responsive-modal";
 import Sorting from "./../../../assets/Images/sorting.png";
@@ -26,6 +26,154 @@ import { authHeader } from "../../../helpers/authHeader";
 import ActiveStatus from "../../activeStatus";
 import { CSVLink } from "react-csv";
 
+
+
+const MyButton = props => {
+
+  const { children } = props;
+  return (
+    <div style={{ cursor: "pointer" }} {...props}>
+      <button className="react-tabel-button" id="p-edit-pop-2">
+        <label className="Table-action-edit-button-text">
+          {children}
+        </label>
+      </button>
+    </div>
+  );
+};
+
+const Content = props => {
+  debugger
+  const { rowData } = props
+  const [designationName, setDesignationvalue] = useState(rowData.designationName);
+  const [reportTo, setreportToValue] = useState(rowData.reportToDesignation);
+  const [status, setStatusValue] = useState(rowData.status);
+  const [designationID] = useState(rowData.designationID);
+
+  props.callBackEdit(designationName, reportTo, status,designationID);
+  return (
+
+    <div className="edtpadding">
+                                      <label className="popover-header-text">
+                                        EDIT HIERARCHY
+                                      </label>
+                                      <div className="pop-over-div">
+                                        <label className="edit-label-1">
+                                          Designation Name
+                                        </label>
+                                        <input
+                                          type="text"
+                                          className="txt-edit-popover"
+                                          placeholder="Enter Designation Name"
+                                          maxLength={25}
+                                          name="designation_Name"
+                                          value={
+                                            designationName
+                                          }
+                                          onChange={e => setDesignationvalue(e.target.value)}
+                                        />
+                                        {designationName === "select" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {props.editdesignationNameCompulsion}
+                    </p>
+                  )}
+                                        
+                                      </div>
+                                      <div className="pop-over-div">
+                                        <label className="edit-label-1">
+                                          Report To
+                                        </label>
+                                        <select
+                                          className="edit-dropDwon dropdown-setting"
+                                          name="report_To"
+                                          value={
+                                            reportTo
+                                          }
+                                          //onChange={this.handleOnChangeData}
+                                          onChange={e => setreportToValue(e.target.value)}
+                                        >
+                                          <option>select</option>
+                                          <option value={0}>Root</option>
+                                          {props.reportToData !== null &&
+                                            props.reportToData.map(
+                                              (item, i) => (
+                                                <option
+                                                  key={i}
+                                                  value={item.designationID}
+                                                >
+                                                  {item.designationName}
+                                                </option>
+                                              )
+                                            )}
+                                        </select>
+                                        {reportTo === "select" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {props.editreportToCompulsion}
+                    </p>
+                  )}
+                                        
+                                      </div>
+                                      <div className="pop-over-div">
+                                        <label className="edit-label-1">
+                                          Status
+                                        </label>
+                                        <select
+                                          className="edit-dropDwon dropdown-setting"
+                                          name="designation_status"
+                                          value={
+                                            status
+                                          }
+                                          onChange={e => setStatusValue(e.target.value)}
+                                        >
+                                          <option>select</option>
+                                          {props.activeData !== null &&
+                                            props.activeData.map(
+                                              (item, j) => (
+                                                <option
+                                                  key={j}
+                                                  value={item.ActiveID}
+                                                >
+                                                  {item.ActiveName}
+                                                </option>
+                                              )
+                                            )}
+                                        </select>
+                                        {status === "select" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {props.editstatusCompulsion}
+                    </p>
+                  )}
+                                        
+                                      </div>
+                                      <br />
+                                      <div>
+                                        <a
+                                          className="pop-over-cancle canblue"
+                                          href={Demo.BLANK_LINK}
+                                        >
+                                          CANCEL
+                                        </a>
+                                        <button
+                                          className="pop-over-button"
+                                          // type="button"
+                                          // onClick={this.handleUpdateHierarchyData.bind(
+                                          //   this,
+                                          //   ids
+                                          // )}
+                                        >
+
+                                          <label className="pop-over-btnsave-text" onClick={(e) => { props.handleUpdateHierarchyData(e, designationID) }}>SAVE</label>
+                                        </button>
+                                      </div>
+                                    </div>
+   
+  );
+}
+
+
+
+
+
 class TicketHierarchy extends Component {
   constructor(props) {
     super(props);
@@ -51,7 +199,11 @@ class TicketHierarchy extends Component {
       sortReportTo:[],
       sortColumn:"",
       designationColor:"",
-      reportToColor:""
+      reportToColor:"",
+      updateDesignation:"",
+      updateReprtTo:"",
+      updateStatus:"",
+      rowData: {}
     };
     this.togglePopover = this.togglePopover.bind(this);
     this.handleGetHierarchyData = this.handleGetHierarchyData.bind(this);
@@ -61,6 +213,15 @@ class TicketHierarchy extends Component {
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
   }
+  callBackEdit = (designationName, reportTo, status, rowData) => {
+    debugger;
+    // this.setState({RoleName,updateRoleisActive:Status})
+    this.state.updateDesignation = designationName;
+    this.state.updateReprtTo = reportTo;
+    this.state.updateStatus = status;
+    this.state.rowData = rowData;
+  }
+
   togglePopover() {
     this.setState({ isOpen: !this.state.isOpen });
   }
@@ -304,17 +465,17 @@ class TicketHierarchy extends Component {
       }
     });
   }
-  handleUpdateHierarchyData(hierarchy_Id){
+  handleUpdateHierarchyData(e,designationID){
     debugger;
     if(
-      this.state.hierarchyEditData.designation_Name.length > 0 &&
-      this.state.hierarchyEditData.report_To > 0 &&
-      this.state.hierarchyEditData.designation_status > 0
+      this.state.updateDesignation.length > 0 &&
+      this.state.updateReprtTo !== "select" &&
+      this.state.updateStatus !== "select"
     ){
     let self = this;
     var activeStatus = 0;
-    var status = this.state.hierarchyEditData.designation_status;
-    if (status === "Active") {
+    
+    if (self.state.updateStatus === "Active") {
       activeStatus = 1;
     } else {
       activeStatus = 0;
@@ -324,9 +485,9 @@ class TicketHierarchy extends Component {
       url: config.apiUrl + "/Hierarchy/CreateHierarchy",
       headers: authHeader(),
       data: {
-        DesignationID:hierarchy_Id,
-        DesignationName: this.state.hierarchyEditData.designation_Name.trim(),
-        ReportToDesignation: this.state.hierarchyEditData.report_To,
+        DesignationID:designationID,
+        DesignationName:self.state.updateDesignation.trim(),
+        ReportToDesignation: self.state.updateReprtTo,
         IsActive: activeStatus
       }
     }).then(function(res) {
@@ -335,11 +496,9 @@ class TicketHierarchy extends Component {
       if (status === "Success") {
         self.handleGetHierarchyData();
         NotificationManager.success("Hierarchy update successfully.");
-        self.setState({
-          designation_Name: "",
-          report_To: 0,
-          designation_status: 1
-        });
+       
+      }else{
+        NotificationManager.error("Hierarchy not update.");
       }
     });
   }else{
@@ -663,126 +822,32 @@ class TicketHierarchy extends Component {
                                 </Popover>
                                 <Popover
                                   content={
-                                    <div className="edtpadding">
-                                      <label className="popover-header-text">
-                                        EDIT HIERARCHY
-                                      </label>
-                                      <div className="pop-over-div">
-                                        <label className="edit-label-1">
-                                          Designation Name
-                                        </label>
-                                        <input
-                                          type="text"
-                                          className="txt-edit-popover"
-                                          placeholder="Enter Designation Name"
-                                          maxLength={25}
-                                          name="designation_Name"
-                                          value={
-                                            this.state.hierarchyEditData
-                                              .designation_Name
-                                          }
-                                          onChange={this.handleOnChangeData}
-                                        />
-                                        
-                                      </div>
-                                      <div className="pop-over-div">
-                                        <label className="edit-label-1">
-                                          Report To
-                                        </label>
-                                        <select
-                                          className="edit-dropDwon dropdown-setting"
-                                          name="report_To"
-                                          value={
-                                            this.state.hierarchyEditData
-                                              .report_To
-                                          }
-                                          onChange={this.handleOnChangeData}
-                                        >
-                                          <option>select</option>
-                                          <option value={0}>Root</option>
-                                          {this.state.reportToData !== null &&
-                                            this.state.reportToData.map(
-                                              (item, i) => (
-                                                <option
-                                                  key={i}
-                                                  value={item.designationID}
-                                                >
-                                                  {item.designationName}
-                                                </option>
-                                              )
-                                            )}
-                                        </select>
-                                        {this.state.hierarchyEditData.report_To === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.editreportToCompulsion}
-                    </p>
-                  )}
-                                      </div>
-                                      <div className="pop-over-div">
-                                        <label className="edit-label-1">
-                                          Status
-                                        </label>
-                                        <select
-                                          className="edit-dropDwon dropdown-setting"
-                                          name="designation_status"
-                                          value={
-                                            this.state.hierarchyEditData
-                                              .designation_status
-                                          }
-                                          onChange={this.handleOnChangeData}
-                                        >
-                                          <option>select</option>
-                                          {this.state.activeData !== null &&
-                                            this.state.activeData.map(
-                                              (item, j) => (
-                                                <option
-                                                  key={j}
-                                                  value={item.ActiveID}
-                                                >
-                                                  {item.ActiveName}
-                                                </option>
-                                              )
-                                            )}
-                                        </select>
-                                        {this.state.hierarchyEditData.designation_status === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.editstatusCompulsion}
-                    </p>
-                  )}
-                                      </div>
-                                      <br />
-                                      <div>
-                                        <a
-                                          className="pop-over-cancle canblue"
-                                        >
-                                          CANCEL
-                                        </a>
-                                        <button
-                                          className="pop-over-button"
-                                          type="button"
-                                          onClick={this.handleUpdateHierarchyData.bind(
-                                            this,
-                                            ids
-                                          )}
-                                        >
-                                          SAVE
-                                        </button>
-                                      </div>
-                                    </div>
+                                    <Content rowData={row.original}
+                                     reportToData={this.state.reportToData} 
+                                     activeData={this.state.activeData}
+                                     editdesignationNameCompulsion={this.state.editdesignationNameCompulsion}
+                                     editreportToCompulsion={this.state.editreportToCompulsion}
+                                     editstatusCompulsion={this.state.editstatusCompulsion}
+                                     callBackEdit={this.callBackEdit} handleUpdateHierarchyData={this.handleUpdateHierarchyData.bind(this)} />
                                   }
                                   placement="bottom"
                                   trigger="click"
                                 >
-                                  <button
+                                  {/* <button
                                     className="react-tabel-button"
                                     type="button"
-                                    onClick={() => this.handleGetEditData.bind(
-                                      this,
-                                      row.original
-                                    )}
+                                    // onClick={() => this.handleGetEditData.bind(
+                                    //   this,
+                                    //   row.original
+                                    // )}
                                   >
                                     EDIT
-                                  </button>
+                                  </button> */}
+                                   <label className="Table-action-edit-button-text">
+                    <MyButton>
+                      EDIT
+                    </MyButton>
+                  </label>
                                 </Popover>
                               </span>
                             </>
