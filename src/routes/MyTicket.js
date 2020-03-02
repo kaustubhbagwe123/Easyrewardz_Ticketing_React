@@ -3673,13 +3673,13 @@ class MyTicket extends Component {
                                                 Header: (
                                                   <span>Article Number</span>
                                                 ),
-                                                accessor: "invoiceNo"
+                                                accessor: "articleNumber"
                                               },
                                               {
                                                 Header: (
                                                   <span>Article Size</span>
                                                 ),
-                                                accessor: "size"
+                                                accessor: "articleSize"
                                               },
                                               {
                                                 Header: (
