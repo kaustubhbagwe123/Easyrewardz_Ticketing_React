@@ -83,6 +83,7 @@ class Reports extends Component {
       selectedTaskPriority: 0,
       selectedDepartment: 0,
       selectedFunction: 0,
+      dayIdsArray: [],
       TeamMemberData: [
         {
           department: "Team Member 1"
@@ -259,6 +260,11 @@ class Reports extends Component {
           selectedTeamMember.push(data[0]);
         }
         this.setState({ Schedule: true, selectedTeamMember });
+        setTimeout(() => {
+          for (let j = 0; j < this.state.dayIdsArray.length - 1; j++) {
+            document.getElementById(this.state.dayIdsArray[j]).click();
+          }
+        }, 100);
       }
       else {
         this.setState({ Schedule: true, selectedTeamMember: [] });
@@ -408,13 +414,15 @@ class Reports extends Component {
     this.state.selectedWeeklyDays = rowData.selectedWeeklyDays
     var dayIds = rowData.dayIds;
     var splittedDayIds = dayIds.split(',');
+    this.setState({
+      dayIdsArray: splittedDayIds
+    });
     for (let i = 0; i < splittedDayIds.length; i++) {
       var ele = splittedDayIds[i];
       if (ele === "Mon") {
         this.setState({
           Mon: ele
         });
-        // document.getElementById('Mon').checked = true;
       } else if (ele === "Tue") {
         this.setState({
           Tue: ele
@@ -466,22 +474,23 @@ class Reports extends Component {
       selectedNameOfMonthForYear: selectedNameOfMonthForYear,
       selectedNoOfDayForDailyYear: rowData.noOfDayForDailyYear
     });
-    // var dayForYear = rowData.nameOfMonthForDailyYear.split(",");
-    // var selectedNameOfDayForYear = [];
-    // for (let j = 0; j < dayForYear.length; j++) {
-    //   var data = this.state.NameOfDayForYear.filter(x => x.days == dayForYear[j]);
-    //   selectedNameOfDayForYear.push(data[0]);
-    // }
-    // var monthForDailyYear = rowData.nameOfMonthForYear.split(",");
-    // var selectedNameOfMonthForDailyYear = [];
-    // for (let j = 0; j < monthForDailyYear.length; j++) {
-    //   var data = this.state.NameOfMonthForDailyYear.filter(x => x.month == monthForDailyYear[j]);
-    //   selectedNameOfMonthForDailyYear.push(data[0]);
-    // }
-    // this.setState({
-    //   selectedNameOfDayForYear: selectedNameOfDayForYear,
-    //   selectedNameOfMonthForDailyYear: selectedNameOfMonthForDailyYear
-    // });
+    var dayForYear = rowData.nameOfDayForYear.split(",");
+    var selectedNameOfDayForYear = [];
+    for (let j = 0; j < dayForYear.length; j++) {
+      var data = this.state.NameOfDayForYear.filter(x => x.days == dayForYear[j]);
+      selectedNameOfDayForYear.push(data[0]);
+    }
+    var monthForDailyYear = rowData.nameOfMonthForYear.split(",");
+    var selectedNameOfMonthForDailyYear = [];
+    for (let j = 0; j < monthForDailyYear.length; j++) {
+      var data = this.state.NameOfMonthForDailyYear.filter(x => x.month == monthForDailyYear[j]);
+      selectedNameOfMonthForDailyYear.push(data[0]);
+    }
+    this.setState({
+      selectedNameOfDayForYear: selectedNameOfDayForYear,
+      selectedNameOfMonthForDailyYear: selectedNameOfMonthForDailyYear,
+      selectedNoOfWeekForYear: rowData.noOfWeekForYear
+    });
 
     ///////////////////////////////////////////////////
     this.handleAddReportOpen();
@@ -523,6 +532,16 @@ class Reports extends Component {
     this.state.selectedTaskStatus = 0;
     this.state.selectedDepartment = 0;
     this.state.selectedFunction = 0;
+    this.setState({
+      ReportCreateDate: '',
+      ReportLastDate: '',
+      selectedPurchaseStore: '',
+      selectedWithClaim: "no",
+      selectedWithTaskAll: "no",
+      SubCategoryData: [],
+      IssueTypeData: [],
+      FunctionData: []
+    });
   }
   handleGetFunctionList() {
     debugger;
@@ -1622,7 +1641,7 @@ class Reports extends Component {
                     <div className="col-md-3 ticketreport">
                       <label>Selected Brand</label>
                       <select
-                        className="store-create-select"
+                        className="store-create-select mt-0"
                         value={this.state.selectBrand}
                         onChange={this.setOnChangeReportData}
                         name="selectBrand"
@@ -2499,6 +2518,7 @@ class Reports extends Component {
                               <Checkbox
                                 onChange={this.handleWeeklyDays}
                                 value="Tue"
+                                id="Tue"
                               >
                                 Tue
                               </Checkbox>
