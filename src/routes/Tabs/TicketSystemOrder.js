@@ -11,7 +11,7 @@ import moment from "moment";
 import config from "./../../helpers/config";
 import ReactAutocomplete from "react-autocomplete";
 import {
-  NotificationContainer,
+  NotificationContainer, 
   NotificationManager
 } from "react-notifications";
 import matchSorter from "match-sorter";
@@ -728,7 +728,7 @@ class TicketSystemOrder extends Component {
       SelectedAllItem: CselectedRow
     });
     {
-      this.props.getParentOrderData(this.state.SelectedAllOrder, this.state.SelectedAllItem);
+      this.props.getParentOrderData(selectedRow, CselectedRow);
     }
   }
 
@@ -820,7 +820,7 @@ class TicketSystemOrder extends Component {
       SelectedAllItem: selectedRow
     });
     {
-      this.props.getItemOrderData(this.state.SelectedAllItem);
+      this.props.getItemOrderData(selectedRow);
     }
   }
   // -------------------------------Check box selected all code end-------------------------------
@@ -1959,7 +1959,7 @@ class TicketSystemOrder extends Component {
                           <input
                             type="checkbox"
                             id={"all" + row.original.orderMasterID}
-                            className="ch1"
+                            style={{ display: "none" }}
                             name="AllOrder"
                             checked={
                               this.state.CheckBoxAllOrder[
@@ -1972,6 +1972,9 @@ class TicketSystemOrder extends Component {
                               row.original
                             )}
                           />
+                          <label
+                            htmlFor={"all" + row.original.orderMasterID}
+                          ></label>
                         </div>
                       )
                     },
@@ -2047,7 +2050,7 @@ class TicketSystemOrder extends Component {
                                   <input
                                     type="checkbox"
                                     id={"item" + row.original.orderItemID}
-                                    className="ch1"
+                                    style={{ display: "none" }}
                                     name="AllItem"
                                     checked={
                                       this.state.CheckBoxAllItem[
@@ -2060,6 +2063,9 @@ class TicketSystemOrder extends Component {
                                       row.original
                                     )}
                                   />
+                                  <label
+                                    htmlFor={"item" + row.original.orderItemID}
+                                  ></label>
                                 </div>
                               )
                             },
