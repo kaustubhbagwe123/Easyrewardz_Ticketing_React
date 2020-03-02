@@ -1155,20 +1155,38 @@ class MyTicket extends Component {
     //     }
     //   }
     // }
-    if (this.state.SelectedAllItem.length === 0) {
-      for (let j = 0; j < this.state.SelectedAllOrder.length; j++) {
-        selectedRow +=
-          this.state.SelectedAllOrder[j]["orderMasterID"] + "|0|1,";
+    if (this.state.SelectedAllOrder.length > 1) {
+      if (this.state.SelectedAllItem.length === 0) {
+        for (let j = 0; j < this.state.SelectedAllOrder.length; j++) {
+          selectedRow +=
+            this.state.SelectedAllOrder[j]["orderMasterID"] + "|0|1,";
+        }
+      } else {
+        for (let i = 0; i < this.state.SelectedAllItem.length; i++) {
+          selectedRow +=
+            this.state.SelectedAllItem[i]["orderItemID"] +
+            "|" +
+            this.state.SelectedAllItem[i]["requireSize"] +
+            "|0,";
+        }
       }
     } else {
-      for (let i = 0; i < this.state.SelectedAllItem.length; i++) {
-        selectedRow +=
-          this.state.SelectedAllItem[i]["orderItemID"] +
-          "|" +
-          this.state.SelectedAllItem[i]["requireSize"] +
-          "|0,";
+      if (this.state.SelectedAllItem.length === 0) {
+        for (let j = 0; j < this.state.SelectedAllOrder.length; j++) {
+          selectedRow +=
+            this.state.SelectedAllOrder[j]["orderMasterID"] + "|0|1,";
+        }
+      } else {
+        for (let i = 0; i < this.state.SelectedAllItem.length; i++) {
+          selectedRow +=
+            this.state.SelectedAllItem[i]["orderItemID"] +
+            "|" +
+            this.state.SelectedAllItem[i]["requireSize"] +
+            "|0,";
+        }
       }
     }
+
     axios({
       method: "post",
       url: config.apiUrl + "/Order/attachorder",
