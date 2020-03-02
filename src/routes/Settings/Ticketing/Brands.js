@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component,useState } from "react";
 import Demo from "../../../store/Hashtag";
 import DelBigIcon from "./../../../assets/Images/del-big.png";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
@@ -18,6 +18,174 @@ import {
 import ActiveStatus from "../../activeStatus";
 import Modal from "react-responsive-modal";
 import Sorting from "./../../../assets/Images/sorting.png";
+//import useForm from "./useForm";
+
+// const stateSchema = {
+//   brandCode: { value: '', error: '' },
+//   brandName: { value: '', error: '' },
+//   status: { value: '', error: '' },
+// };
+
+// const validationStateSchema = {
+//   brandCode: {
+//     required: true,
+//     validator: {
+//       regEx: /^[a-zA-Z]+$/,
+//       error: 'Invalid first name format.',
+//     },
+//   },
+//   brandName: {
+//     required: true,
+//     validator: {
+//       regEx: /^[a-zA-Z]+$/,
+//       error: 'Invalid last name format.',
+//     },
+//   },
+//   status: {
+//     required: true,
+//     validator: {
+//       regEx: /^(,?\w{3,})+$/,
+//       error: 'Invalid tag format.',
+//     },
+//   },
+// };
+// function onSubmitForm(state) {
+//   alert(JSON.stringify(state, null, 2));
+// }
+// const { state, handleOnChange, handleOnSubmit, disable } = useForm(
+//   stateSchema,
+//   validationStateSchema,
+//   onSubmitForm
+// );
+
+const MyButton = props => {
+
+  const { children } = props;
+  return (
+    <div style={{ cursor: "pointer" }} {...props}>
+      <button className="react-tabel-button" id="p-edit-pop-2">
+        <label className="Table-action-edit-button-text">
+          {children}
+        </label>
+      </button>
+    </div>
+  );
+};
+
+const Content = props => {
+  debugger
+  const { rowData } = props
+  const [brandCode, setbrandCodeValue] = useState(rowData.brandCode);
+  const [brandName, setbrandNameValue] = useState(rowData.brandName);
+  const [status, setStatusValue] = useState(rowData.status);
+  const [brandID] = useState(rowData.brandID);
+
+  props.callBackEdit(brandCode, brandName, status,rowData);
+  return (
+    <div className="edtpadding">
+    <label className="popover-header-text">
+      EDIT BRAND
+    </label>
+    <div className="pop-over-div">
+      <label className="edit-label-1">
+        Brand Code
+      </label>
+      <input
+        type="text"
+        className="txt-edit-popover"
+        placeholder="Enter Brand Code"
+        maxLength={10}
+        name="brand_Code"
+        value={
+          brandCode
+        }
+        onChange={e => setbrandCodeValue(e.target.value)}
+      />
+      {brandCode === "" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {props.editbrandcodeCompulsion}
+                    </p>
+                  )}
+                  {/* {state.brandCode.error && <p style={{ color: "red", marginBottom: "0px" }}>{state.brandCode.error}</p>} */}
+ 
+    </div>
+    <div className="pop-over-div">
+      <label className="edit-label-1">
+        Brand Name
+      </label>
+      <input
+        type="text"
+        className="txt-edit-popover"
+        placeholder="Enter Brand Name"
+        maxLength={25}
+        name="brand_name"
+        value={
+          brandName
+        }
+        onChange={e => setbrandNameValue(e.target.value)}
+      />
+       {brandName === "" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {props.editbrandnameCompulsion}
+                    </p>
+                  )}
+    </div>
+    <div className="pop-over-div">
+      <label className="edit-label-1">
+        Status
+      </label>
+      <select
+        className="edit-dropDwon dropdown-setting"
+        name="brand_status"
+        value={
+          status
+        }
+        onChange={e => setStatusValue(e.target.value)}
+      >
+        <option>select</option>
+        {props.activeData !== null &&
+          props.activeData.map(
+            (item, j) => (
+              <option
+                key={j}
+                value={item.ActiveID}
+              >
+                {item.ActiveName}
+              </option>
+            )
+          )}
+      </select>
+      {status === "select" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {props.editstatusCompulsion}
+                    </p>
+                  )}
+    </div>
+    <br />
+    <div >
+      <a
+        className="pop-over-cancle"
+        href={Demo.BLANK_LINK}
+      >
+        CANCEL
+      </a>
+      <button
+        className="pop-over-button"
+        //type="button"
+        // onClick={this.handleUpdateData.bind(
+        //   this
+          
+        // )}
+        onClick={(e) => { props.handleUpdateData(e, brandID) }}
+      >
+        SAVE
+        {/* <label className="pop-over-btnsave-text" onClick={(e) => { props.handleUpdateData(e, brandID) }}>SAVE</label> */}
+      </button>
+    </div>
+  </div>
+   
+  );
+}
 class Brands extends Component {
   constructor(props) {
     super(props);
@@ -37,7 +205,15 @@ class Brands extends Component {
       sortColumn:"",
       sortAllData:[],
       sortBrandCode:[],
-      sortBrandName:[]
+      sortBrandName:[],
+      updateBrandCode:"",
+      updateBrandName:"",
+      updateStatus:"",
+      rowData:{},
+      editbrandcodeCompulsion:"Please enter brand code.",
+      editbrandnameCompulsion:"Please enter brand name.",
+      editstatusCompulsion:"Please select status."
+
 
     };
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -59,6 +235,15 @@ class Brands extends Component {
     this.handleGetBrandList();
   }
 
+
+  callBackEdit = (brandCode, brandName, status,rowData) => {
+    debugger;
+    // this.setState({RoleName,updateRoleisActive:Status})
+    this.state.updateBrandCode = brandCode;
+    this.state.updateBrandName = brandName;
+    this.state.updateStatus = status;
+    this.state.rowData = rowData;
+  }
   sortStatusAtoZ() {
     debugger;
     var itemsArray = [];
@@ -270,12 +455,17 @@ class Brands extends Component {
       }
     });
   }
-  handleUpdateData(brand_Id) {
+  handleUpdateData(e,brandID) {
     debugger;
+    if(
+         this.state.updateBrandCode.length > 0 &&
+         this.state.updateBrandCode.length > 0 &&
+         this.state.updateStatus !== "select"
+    ){
     let self = this;
     var activeStatus = 0;
-    var status = this.state.brandEditData.brand_status;
-    if (status === "Active") {
+   
+    if (self.state.updateStatus === "Active") {
       activeStatus = 1;
     } else {
       activeStatus = 0;
@@ -285,9 +475,9 @@ class Brands extends Component {
       url: config.apiUrl + "/Brand/UpdateBrand",
       headers: authHeader(),
       data: {
-        BrandID: brand_Id,
-        BrandCode: this.state.brandEditData.brand_Code.trim(),
-        BrandName: this.state.brandEditData.brand_name.trim(),
+        BrandID: brandID,
+        BrandCode: this.state.updateBrandCode.trim(),
+        BrandName: this.state.updateBrandName.trim(),
         IsActive: activeStatus
       }
     }).then(function(res) {
@@ -296,13 +486,17 @@ class Brands extends Component {
       if (status === "Success") {
         self.handleGetBrandList();
         NotificationManager.success("Brand updated successfully.");
-        self.setState({
-          brand_Code: "",
-          brand_name: "",
-          selectedStatus: 1
-        });
+       
       }
     });
+  }else{
+    NotificationManager.error("Brand not updated .");
+    this.setState({
+      editbrandcodeCompulsion:"Please enter brand code.",
+      editbrandnameCompulsion:"Please enter brand name.",
+      editstatusCompulsion:"Please select status."
+    });
+  }
   }
   handleGetDataForEdit(e) {
     debugger;
@@ -581,93 +775,17 @@ class Brands extends Component {
                                 </Popover>
                                 <Popover
                                   content={
-                                    <div className="edtpadding">
-                                      <label className="popover-header-text">
-                                        EDIT BRAND
-                                      </label>
-                                      <div className="pop-over-div">
-                                        <label className="edit-label-1">
-                                          Brand Code
-                                        </label>
-                                        <input
-                                          type="text"
-                                          className="txt-edit-popover"
-                                          placeholder="Enter Brand Code"
-                                          maxLength={10}
-                                          name="brand_Code"
-                                          value={
-                                            this.state.brandEditData.brand_Code
-                                          }
-                                          onChange={this.handleOnChangeData}
-                                        />
-                                      </div>
-                                      <div className="pop-over-div">
-                                        <label className="edit-label-1">
-                                          Brand Name
-                                        </label>
-                                        <input
-                                          type="text"
-                                          className="txt-edit-popover"
-                                          placeholder="Enter Brand Name"
-                                          maxLength={25}
-                                          name="brand_name"
-                                          value={
-                                            this.state.brandEditData.brand_name
-                                          }
-                                          onChange={this.handleOnChangeData}
-                                        />
-                                      </div>
-                                      <div className="pop-over-div">
-                                        <label className="edit-label-1">
-                                          Status
-                                        </label>
-                                        <select
-                                          className="edit-dropDwon dropdown-setting"
-                                          name="brand_status"
-                                          value={
-                                            this.state.brandEditData.brand_status
-                                          }
-                                          onChange={this.handleOnChangeData}
-                                        >
-                                          <option>select</option>
-                                          {this.state.activeData !== null &&
-                                            this.state.activeData.map(
-                                              (item, j) => (
-                                                <option
-                                                  key={j}
-                                                  value={item.ActiveID}
-                                                >
-                                                  {item.ActiveName}
-                                                </option>
-                                              )
-                                            )}
-                                        </select>
-                                      </div>
-                                      <br />
-                                      <div>
-                                        <a
-                                          className="pop-over-cancle"
-                                          href={Demo.BLANK_LINK}
-                                        >
-                                          CANCEL
-                                        </a>
-                                        <button
-                                          className="pop-over-button"
-                                          type="button"
-                                          onClick={this.handleUpdateData.bind(
-                                            this,
-                                            brand_ID
-                                          )}
-                                        >
-                                          SAVE
-                                        </button>
-                                      </div>
-                                    </div>
+                                    <Content rowData={row.original} callBackEdit={this.callBackEdit}
+                                    editbrandcodeCompulsion={this.state.editbrandcodeCompulsion}
+                                    editbrandnameCompulsion={this.state.editbrandnameCompulsion}
+                                    editstatusCompulsion={this.state.editstatusCompulsion}
+                                    activeData={this.state.activeData} handleUpdateData={this.handleUpdateData.bind(this)} />
                                   }
                                   placement="bottom"
                                   trigger="click"
-                                >
-                                  <button
+                                  
+                                  >
+                                  {/* <button
                                     className="react-tabel-button"
                                     // type="button"
                                     onClick={this.handleGetDataForEdit.bind(
@@ -676,7 +794,12 @@ class Brands extends Component {
                                     )}
                                   >
                                     EDIT
-                                  </button>
+                                  </button> */}
+                                  <label className="Table-action-edit-button-text">
+                    <MyButton>
+                      EDIT
+                    </MyButton>
+                  </label>
                                 </Popover>
                               </span>
                             </>

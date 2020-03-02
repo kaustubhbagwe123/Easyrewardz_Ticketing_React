@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component ,useState} from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Popover } from "antd";
@@ -30,6 +30,109 @@ import {
   NotificationContainer,
   NotificationManager
 } from "react-notifications";
+
+
+const MyButton = props => {
+
+  const { children } = props;
+  return (
+    <div style={{ cursor: "pointer" }} {...props}>
+      <button className="react-tabel-button" id="p-edit-pop-2">
+        <label className="Table-action-edit-button-text">
+          {children}
+        </label>
+      </button>
+    </div>
+  );
+};
+
+const Content = props => {
+  debugger
+  const { rowData } = props
+  const [alertTypeName, setalertTypeNameValue] = useState(rowData.alertTypeName);
+  const [isAlertActive, setisAlertActiveValue] = useState(rowData.isAlertActive);
+  const [alertID] = useState(rowData.alertID);
+
+  props.callBackEdit(alertTypeName, isAlertActive, rowData);
+  return (
+    <div className="edtpadding">
+                                      <div className="">
+                                        <label className="popover-header-text">
+                                          EDIT ALERTS
+                                        </label>
+                                      </div>
+                                      <div className="pop-over-div">
+                                        <label className="edit-label-1">Alert Type</label>
+                                        <input
+                                          type="text"
+                                          className="txt-edit-popover"
+                                          placeholder="Enter Alert Type"
+                                          maxLength={25}
+                                          value={alertTypeName}
+                                          onChange={e => setalertTypeNameValue(e.target.value)}
+                                        />
+                                        {alertTypeName === "" && (
+                    <p style={{ color: "red", marginBottom: "0px" }}>
+                      {props.editAlertNameCopulsion}
+                    </p>
+                  )}
+                                         {/* <select
+                                          className="add-select-category"
+                                          name="selectedAlertType"
+                                          value={alertTypeName}
+                                          onChange={e => setalertTypeNameValue(e.target.value)}
+                                        >
+                                          <option >Select Alert</option>
+                    {props.alertData !== null &&
+                      props.alertData.map((item, i) => (
+                        <option key={i} value={item.alertID}>
+                          {item.alertTypeName}
+                        </option>
+                      ))}
+                                        </select> */}
+                                      </div>
+                                      {/* <div className="pop-over-div">
+                                    <label className="edit-label-1">Issue Type</label>
+                                    <select id="inputStatus" className="edit-dropDwon dropdown-setting">
+                                      <option>Select</option>
+                                      <option>Admin</option>
+                                    </select>
+                                  </div> */}
+                                      <div className="pop-over-div">
+                                        <label className="edit-label-1">Status</label>
+                                        <select
+                                          id="inputStatus"
+                                          className="edit-dropDwon dropdown-setting"
+                                          value={isAlertActive}
+                                          onChange={e => setisAlertActiveValue(e.target.value)}
+                                        >
+                                          <option value="Active">Active</option>
+                                          <option value="Inactive">Inactive</option>
+                                        </select>
+                                      </div>
+                                      <br />
+                                      <div>
+                                        <a className="pop-over-cancle" href={Demo.BLANK_LINK}>
+                                          CANCEL
+                                        </a>
+                                        <button className="pop-over-button">
+                                          <label
+                                            className="pop-over-btnsave-text"
+                                            // onClick={this.handleUpdateAlert.bind(
+                                            //   this,
+                                            //   row.original.alertID
+                                            // )}
+                                          >
+                                          <label className="pop-over-btnsave-text" onClick={(e) => { props.handleUpdateAlert(e,alertID) }}>SAVE</label>
+                                          </label>
+                                        </button>
+                                      </div>
+                                    </div>
+    
+  );
+}
+
+
 
 class Alerts extends Component {
   constructor(props) {
@@ -85,7 +188,9 @@ class Alerts extends Component {
       ckStoreCompulsion: "",
       SMSContentCompulsion: "",
       NotifContentCompulsion: "",
-      alertData:[]
+      alertData:[],
+      rowData:{},
+      editAlertNameCopulsion:"Please enter alerttype name."
     };
     this.updateContent = this.updateContent.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -95,6 +200,7 @@ class Alerts extends Component {
     this.handleUpdateAlertTypeName = this.handleUpdateAlertTypeName.bind(this);
     this.handleInsertAlert = this.handleInsertAlert.bind(this);
     this.handleAlertData=this.handleAlertData.bind(this);
+    this.handleUpdateAlert=this.handleUpdateAlert.bind(this);
   }
 
   componentDidMount() {
@@ -102,7 +208,13 @@ class Alerts extends Component {
     this.handleAlertData();
     this.handleAlertTabs = this.handleAlertTabs.bind(this);
   }
-
+  callBackEdit = (alertTypeName, isAlertActive, rowData) => {
+    debugger;
+ 
+    this.state.updateAlertTypeName = alertTypeName;
+    this.state.updateAlertisActive = isAlertActive;
+    this.state.rowData = rowData;
+  }
   setDataOnChangeAlert = e => {
     debugger;
 
@@ -243,12 +355,15 @@ class Alerts extends Component {
       }
     });
   }
-  handleUpdateAlert(alertId) {
+  handleUpdateAlert(e,alertID) {
     debugger;
+    if(
+      this.state.updateAlertTypeName.length > 0
+    ){
     let AlertisActive;
-    if (this.state.updateAlertisActive === "true") {
+    if (this.state.updateAlertisActive === "Active") {
       AlertisActive = true;
-    } else if (this.state.updateAlertisActive === "false") {
+    } else if (this.state.updateAlertisActive === "Inactive") {
       AlertisActive = false;
     }
     axios({
@@ -256,7 +371,7 @@ class Alerts extends Component {
       url: config.apiUrl + "/Alert/ModifyAlert",
       headers: authHeader(),
       params: {
-        AlertID: alertId,
+        AlertID: alertID,
         AlertTypeName: this.state.updateAlertTypeName,
         isAlertActive: AlertisActive
       }
@@ -270,6 +385,12 @@ class Alerts extends Component {
         NotificationManager.error("Alert not updated.");
       }
     });
+  }else{
+    NotificationManager.error("Alert not updated.");
+    this.setState({
+      editAlertNameCopulsion:"Please enter alerttype name."
+    });
+  }
   }
 
   updateAlert(individualData) {
@@ -683,72 +804,24 @@ class Alerts extends Component {
                                 </Popover>
                                 <Popover
                                   content={
-                                    <div className="edtpadding">
-                                      <div className="">
-                                        <label className="popover-header-text">
-                                          EDIT ALERTS
-                                        </label>
-                                      </div>
-                                      <div className="pop-over-div">
-                                        <label className="edit-label-1">Alert Type</label>
-                                        <input
-                                          type="text"
-                                          className="txt-edit-popover"
-                                          placeholder="Enter Alert Type"
-                                          maxLength={25}
-                                          value={this.state.updateAlertTypeName}
-                                          onChange={this.handleUpdateAlertTypeName}
-                                        />
-                                      </div>
-                                      {/* <div className="pop-over-div">
-                                    <label className="edit-label-1">Issue Type</label>
-                                    <select id="inputStatus" className="edit-dropDwon dropdown-setting">
-                                      <option>Select</option>
-                                      <option>Admin</option>
-                                    </select>
-                                  </div> */}
-                                      <div className="pop-over-div">
-                                        <label className="edit-label-1">Status</label>
-                                        <select
-                                          id="inputStatus"
-                                          className="edit-dropDwon dropdown-setting"
-                                          value={this.state.updateAlertisActive}
-                                          onChange={this.handleUpdateAlertisActive}
-                                        >
-                                          <option value="true">Active</option>
-                                          <option value="false">Inactive</option>
-                                        </select>
-                                      </div>
-                                      <br />
-                                      <div>
-                                        <a className="pop-over-cancle" href={Demo.BLANK_LINK}>
-                                          CANCEL
-                                        </a>
-                                        <button className="pop-over-button">
-                                          <label
-                                            className="pop-over-btnsave-text"
-                                            onClick={this.handleUpdateAlert.bind(
-                                              this,
-                                              row.original.alertID
-                                            )}
-                                          >
-                                            SAVE
-                                          </label>
-                                        </button>
-                                      </div>
-                                    </div>
+                                    <Content rowData={row.original} callBackEdit={this.callBackEdit} editAlertNameCopulsion={this.state.editAlertNameCopulsion} alertData={this.state.alertData} handleUpdateAlert={this.handleUpdateAlert.bind(this)} />
                                   }
                                   placement="bottom"
                                   trigger="click"
                                 >
-                                  <button className="react-tabel-button" id="p-edit-pop-2">
+                                  {/* <button className="react-tabel-button" id="p-edit-pop-2">
                                     <label
                                       className="Table-action-edit-button-text"
                                       onClick={this.updateAlert.bind(this, row.original)}
                                     >
                                       EDIT
                                     </label>
-                                  </button>
+                                  </button> */}
+                                   <label className="Table-action-edit-button-text">
+                    <MyButton>
+                      EDIT
+                    </MyButton>
+                  </label>
                                 </Popover>
                               </span>
                             </>
