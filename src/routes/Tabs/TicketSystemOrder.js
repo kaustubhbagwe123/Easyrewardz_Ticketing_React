@@ -62,12 +62,18 @@ class TicketSystemOrder extends Component {
       orderItem: false,
       purchaseFrmStorID: 0,
       validOrdernumber: "",
+      validMdlOrdernumber:'',
       expanded: {},
       expandedOrderPopup: {},
       validPurchaseStoreName: "",
+      ModalorderNumber: "",
       // requiredSize: "",
       ChannelOfPurchaseData: [],
-      idSizeArray: []
+      idSizeArray: [],
+      CheckBoxAllOrder: {},
+      CheckBoxAllItem: {},
+      SelectedAllOrder: [],
+      SelectedAllItem: []
     };
     this.validator = new SimpleReactValidator();
     this.onFilteredChange = this.onFilteredChange.bind(this);
@@ -166,50 +172,50 @@ class TicketSystemOrder extends Component {
     let ticketSourceValue = e.currentTarget.value;
     this.setState({ selectedTicketSource: ticketSourceValue });
   };
-  handleCheckOrderID(orderMasterID, rowData) {
-    debugger;
-    const newSelected = Object.assign({}, this.state.CheckOrderID);
-    newSelected[orderMasterID] = !this.state.CheckOrderID[orderMasterID];
-    this.setState({
-      CheckOrderID: orderMasterID ? newSelected : false
-    });
-    var selectedRow = [];
-    if (this.state.selectedDataRow.length === 0) {
-      selectedRow.push(rowData);
-      this.setState({
-        selectedDataRow: selectedRow
-      });
-    } else {
-      if (newSelected[orderMasterID] === true) {
-        for (var i = 0; i < this.state.selectedDataRow.length; i++) {
-          if (this.state.selectedDataRow[i] === rowData) {
-            selectedRow.splice(i, 1);
+  // handleCheckOrderID(orderMasterID, rowData) {
+  //   debugger;
+  //   const newSelected = Object.assign({}, this.state.CheckOrderID);
+  //   newSelected[orderMasterID] = !this.state.CheckOrderID[orderMasterID];
+  //   this.setState({
+  //     CheckOrderID: orderMasterID ? newSelected : false
+  //   });
+  //   var selectedRow = [];
+  //   if (this.state.selectedDataRow.length === 0) {
+  //     selectedRow.push(rowData);
+  //     this.setState({
+  //       selectedDataRow: selectedRow
+  //     });
+  //   } else {
+  //     if (newSelected[orderMasterID] === true) {
+  //       for (var i = 0; i < this.state.selectedDataRow.length; i++) {
+  //         if (this.state.selectedDataRow[i] === rowData) {
+  //           selectedRow.splice(i, 1);
 
-            break;
-          } else {
-            selectedRow = this.state.selectedDataRow;
-            selectedRow.push(rowData);
-            break;
-          }
-        }
-      } else {
-        for (var j = 0; j < this.state.selectedDataRow.length; j++) {
-          if (this.state.selectedDataRow[j] === rowData) {
-            selectedRow = this.state.selectedDataRow;
-            selectedRow.splice(j, 1);
-            break;
-          }
-        }
-      }
-    }
+  //           break;
+  //         } else {
+  //           selectedRow = this.state.selectedDataRow;
+  //           selectedRow.push(rowData);
+  //           break;
+  //         }
+  //       }
+  //     } else {
+  //       for (var j = 0; j < this.state.selectedDataRow.length; j++) {
+  //         if (this.state.selectedDataRow[j] === rowData) {
+  //           selectedRow = this.state.selectedDataRow;
+  //           selectedRow.splice(j, 1);
+  //           break;
+  //         }
+  //       }
+  //     }
+  //   }
 
-    this.setState({
-      selectedDataRow: selectedRow
-    });
-    {
-      this.props.getOrderId(selectedRow, this.state.idSizeArray);
-    }
-  }
+  //   this.setState({
+  //     selectedDataRow: selectedRow
+  //   });
+  //   {
+  //     this.props.getOrderId(selectedRow, this.state.idSizeArray);
+  //   }
+  // }
 
   handleCheckOrder = e => {
     debugger;
@@ -302,6 +308,43 @@ class TicketSystemOrder extends Component {
           });
         }
       }
+    } else if (OrdData === 2) {
+      if (this.state.custAttachOrder === 0) {
+        if (this.state.ModalorderNumber.length > 0) {
+          axios({
+            method: "post",
+            url: config.apiUrl + "/Order/getOrderListWithItemDetails",
+            headers: authHeader(),
+            params: {
+              OrderNumber: this.state.ModalorderNumber,
+              CustomerID: CustID
+            }
+          }).then(function(res) {
+            debugger;
+            let Msg = res.data.message;
+            let mainData = res.data.responseData;
+
+            var OrderSubItem = [];
+
+            for (let i = 0; i < mainData.length; i++) {
+              if (mainData[i].orderItems.length > 0) {
+                for (let j = 0; j < mainData[i].orderItems.length; j++) {
+                  OrderSubItem.push(mainData[i].orderItems[j]);
+                }
+              }
+            }
+            self.setState({
+              message: Msg,
+              orderDetailsData: mainData,
+              OrderSubItem
+            });
+          });
+        } else {
+          self.setState({
+            validMdlOrdernumber: "Please Enter Order Number"
+          });
+        }
+      }
     } else {
       axios({
         method: "post",
@@ -316,7 +359,7 @@ class TicketSystemOrder extends Component {
         let Msg = res.data.message;
         let mainData = res.data.responseData;
 
-        self.handleChangeToggle()
+        self.handleChangeToggle();
         var OrderSubItem = [];
 
         for (let i = 0; i < mainData.length; i++) {
@@ -369,7 +412,11 @@ class TicketSystemOrder extends Component {
 
           if (status === "Success") {
             let data = res.data.responseData;
-            NotificationManager.success("New Order added successfully.", "", 2000);
+            NotificationManager.success(
+              "New Order added successfully.",
+              "",
+              2000
+            );
             self.handleOrderSearchData(data);
             self.handleChangeSaveManualTbl();
             self.setState({
@@ -587,6 +634,197 @@ class TicketSystemOrder extends Component {
     });
   };
 
+  // -------------------------------Check box selected all code start-------------------------------
+
+  onCheckMasterAllChange(orderMasterID, rowData) {
+    debugger;
+    const newSelected = Object.assign({}, this.state.CheckBoxAllOrder);
+    newSelected[orderMasterID] = !this.state.CheckBoxAllOrder[orderMasterID];
+    this.setState({
+      CheckBoxAllOrder: orderMasterID ? newSelected : false
+    });
+    var selectedRow = [];
+    var CselectedRow = [];
+    if (this.state.SelectedAllOrder.length === 0) {
+      selectedRow.push(rowData);
+      var Order_Master = this.state.OrderSubItem.filter(
+        x => x.orderMasterID === orderMasterID
+      );
+      if (Order_Master.length > 0) {
+        var objCheckBoxAllItem = new Object();
+        for (let j = 0; j < Order_Master.length; j++) {
+          objCheckBoxAllItem[Order_Master[j].orderItemID] = true;
+
+          CselectedRow.push(Order_Master[j]);
+        }
+        this.setState({
+          CheckBoxAllItem: objCheckBoxAllItem
+        });
+      }
+      this.setState({
+        SelectedAllOrder: selectedRow,
+        SelectedAllItem: CselectedRow
+      });
+    } else {
+      if (newSelected[orderMasterID] === true) {
+        for (var i = 0; i < this.state.SelectedAllOrder.length; i++) {
+          if (this.state.SelectedAllOrder[i] === rowData) {
+            selectedRow = this.state.SelectedAllOrder;
+            selectedRow.push(rowData);
+            var Order_Master = this.state.OrderSubItem.filter(
+              x => x.orderMasterID === orderMasterID
+            );
+            if (Order_Master.length > 0) {
+              var objCheckBoxAllItem = new Object();
+              for (let j = 0; j < Order_Master.length; j++) {
+                objCheckBoxAllItem[Order_Master[j].orderItemID] = true;
+
+                CselectedRow.push(Order_Master[j]);
+              }
+              this.setState({
+                CheckBoxAllItem: objCheckBoxAllItem
+              });
+            }
+
+            this.setState({
+              SelectedAllOrder: selectedRow,
+              SelectedAllItem: CselectedRow
+            });
+
+            break;
+          }
+        }
+      } else {
+        for (var i = 0; i < this.state.SelectedAllOrder.length; i++) {
+          if (this.state.SelectedAllOrder[i] === rowData) {
+            selectedRow = this.state.SelectedAllOrder;
+            selectedRow.splice(i, 1);
+            var Order_Master = this.state.OrderSubItem.filter(
+              x => x.orderMasterID === orderMasterID
+            );
+            if (Order_Master.length > 0) {
+              var objCheckBoxAllItem = new Object();
+              for (let j = 0; j < Order_Master.length; j++) {
+                objCheckBoxAllItem[Order_Master[j].orderItemID] = false;
+              }
+              this.setState({
+                CheckBoxAllItem: objCheckBoxAllItem
+              });
+            }
+
+            this.setState({
+              SelectedAllOrder: selectedRow,
+              SelectedAllItem: []
+            });
+
+            break;
+          }
+        }
+      }
+    }
+
+    this.setState({
+      SelectedAllOrder: selectedRow,
+      SelectedAllItem: CselectedRow
+    });
+    {
+      this.props.getParentOrderData(this.state.SelectedAllOrder, this.state.SelectedAllItem);
+    }
+  }
+
+  checkIndividualItem(orderItemID, rowData) {
+    debugger;
+    const newSelected = Object.assign({}, this.state.CheckBoxAllItem);
+    newSelected[orderItemID] = !this.state.CheckBoxAllItem[orderItemID];
+    this.setState({
+      CheckBoxAllItem: orderItemID ? newSelected : false
+    });
+    var selectedRow = [];
+    if (this.state.SelectedAllItem.length === 0) {
+      selectedRow.push(rowData);
+      this.setState({
+        SelectedAllItem: selectedRow
+      });
+    } else {
+      if (newSelected[orderItemID] === true) {
+        for (var i = 0; i < this.state.SelectedAllItem.length; i++) {
+          selectedRow = this.state.SelectedAllItem;
+          selectedRow.push(rowData);
+          var Order_Master = this.state.OrderSubItem.filter(
+            x => x.orderMasterID === this.state.SelectedAllItem[i].orderMasterID
+          );
+          if (Order_Master.length === selectedRow.length) {
+            const newSelected = Object.assign({}, this.state.CheckBoxAllOrder);
+            newSelected[Order_Master[0].orderMasterID] = !this.state
+              .CheckBoxAllOrder[Order_Master[0].orderMasterID];
+            this.setState({
+              CheckBoxAllOrder: Order_Master[0].orderMasterID
+                ? newSelected
+                : false
+            });
+            var data_master = this.state.orderDetailsData.filter(
+              y => y.orderMasterID === Order_Master[0].orderMasterID
+            );
+            if (data_master.length > 0) {
+              var MastOrd = this.state.SelectedAllOrder;
+              MastOrd.push(data_master[0]);
+              this.setState({
+                SelectedAllOrder: MastOrd
+              });
+            }
+          }
+          break;
+        }
+      } else {
+        for (var j = 0; j < this.state.SelectedAllItem.length; j++) {
+          if (this.state.SelectedAllItem[j] === rowData) {
+            selectedRow = this.state.SelectedAllItem;
+            selectedRow.splice(j, 1);
+
+            var Order_Master = this.state.OrderSubItem.filter(
+              x => x.orderMasterID === rowData.orderMasterID
+            );
+
+            if (Order_Master.length !== selectedRow.length) {
+              const newSelected = Object.assign(
+                {},
+                this.state.CheckBoxAllOrder
+              );
+              newSelected[Order_Master[0].orderMasterID] = false;
+              this.setState({
+                CheckBoxAllOrder: Order_Master[0].orderMasterID
+                  ? newSelected
+                  : false
+              });
+              var data_master = this.state.orderDetailsData.filter(
+                y => y.orderMasterID === Order_Master[0].orderMasterID
+              );
+              var GetIndex = this.state.orderDetailsData.findIndex(
+                y => y.orderMasterID === Order_Master[0].orderMasterID
+              );
+              if (data_master.length > 0) {
+                var MastOrd = this.state.SelectedAllOrder;
+                MastOrd.splice(GetIndex, 1);
+                this.setState({
+                  SelectedAllOrder: MastOrd
+                });
+              }
+            }
+
+            break;
+          }
+        }
+      }
+    }
+    this.setState({
+      SelectedAllItem: selectedRow
+    });
+    {
+      this.props.getItemOrderData(this.state.SelectedAllItem);
+    }
+  }
+  // -------------------------------Check box selected all code end-------------------------------
+
   render() {
     const { orderDetailsData } = this.state;
 
@@ -722,14 +960,30 @@ class TicketSystemOrder extends Component {
                   type="text"
                   className="searchtextpopup"
                   placeholder="Search Order"
-                  value={this.state.filterAll}
-                  onChange={this.filterAll}
+                  name="ModalorderNumber"
+                  value={this.state.ModalorderNumber}
+                  autoComplete="off"
+                  onChange={this.handleOrderChange.bind(this)}
+                  disabled={this.state.custAttachOrder === 1 ? true : false}
+                  // value={this.state.filterAll}
+                  // onChange={this.filterAll}
                 />
                 <img
                   src={SearchBlackImg}
                   alt="Search"
                   className="searchtextimgpopup"
+                  onClick={this.handleOrderSearchData.bind(this, 2)}
                 />
+                 {this.state.ModalorderNumber.length === 0 && (
+                    <p
+                      style={{
+                        color: "red",
+                        marginBottom: "0px"
+                      }}
+                    >
+                      {this.state.validMdlOrdernumber}
+                    </p>
+                  )}
               </div>
             </div>
             {/* <div className="reacttableordermodal ordermainrow tableSrolling headers-menu"> */}
@@ -752,7 +1006,7 @@ class TicketSystemOrder extends Component {
                             className="filter-checkbox"
                             style={{ marginLeft: "15px" }}
                           >
-                            <input
+                            {/* <input
                               type="checkbox"
                               id={"i" + row.original.orderMasterID}
                               style={{ display: "none" }}
@@ -770,6 +1024,25 @@ class TicketSystemOrder extends Component {
                             />
                             <label
                               htmlFor={"i" + row.original.orderMasterID}
+                            ></label> */}
+                            <input
+                              type="checkbox"
+                              id={"all" + row.original.orderMasterID}
+                              name="AllOrder"
+                              style={{ display: "none" }}
+                              checked={
+                                this.state.CheckBoxAllOrder[
+                                  row.original.orderMasterID
+                                ] === true
+                              }
+                              onChange={this.onCheckMasterAllChange.bind(
+                                this,
+                                row.original.orderMasterID,
+                                row.original
+                              )}
+                            />
+                             <label
+                              htmlFor={"all" + row.original.orderMasterID}
                             ></label>
                           </div>
                         )
@@ -890,7 +1163,7 @@ class TicketSystemOrder extends Component {
                             className="filter-checkbox"
                             style={{ marginLeft: "15px" }}
                           >
-                            <input
+                            {/* <input
                               type="checkbox"
                               id={"i" + row.original.orderMasterID}
                               style={{ display: "none" }}
@@ -908,6 +1181,25 @@ class TicketSystemOrder extends Component {
                             />
                             <label
                               htmlFor={"i" + row.original.orderMasterID}
+                            ></label> */}
+                            <input
+                              type="checkbox"
+                              id={"all" + row.original.orderMasterID}
+                              name="AllOrder"
+                              style={{ display: "none" }}
+                              checked={
+                                this.state.CheckBoxAllOrder[
+                                  row.original.orderMasterID
+                                ] === true
+                              }
+                              onChange={this.onCheckMasterAllChange.bind(
+                                this,
+                                row.original.orderMasterID,
+                                row.original
+                              )}
+                            />
+                             <label
+                              htmlFor={"all" + row.original.orderMasterID}
                             ></label>
                           </div>
                         )
@@ -1005,7 +1297,7 @@ class TicketSystemOrder extends Component {
                                 className="filter-checkbox"
                                 style={{ marginLeft: "15px" }}
                               >
-                                <input
+                                {/* <input
                                   type="checkbox"
                                   id={"order" + row.original.orderItemID}
                                   style={{ display: "none" }}
@@ -1023,7 +1315,27 @@ class TicketSystemOrder extends Component {
                                 />
                                 <label
                                   htmlFor={"order" + row.original.orderItemID}
-                                ></label>
+                                ></label> */}
+                                <input
+                                  type="checkbox"
+                                  id={"item" + row.original.orderItemID}
+                                  name="AllItem"
+                                  style={{ display: "none" }}
+                                  checked={
+                                    this.state.CheckBoxAllItem[
+                                      row.original.orderItemID
+                                    ] === true
+                                  }
+                                  onChange={this.checkIndividualItem.bind(
+                                    this,
+                                    row.original.orderItemID,
+                                    row.original
+                                  )}
+                                />
+                              <label
+                              htmlFor={"item" + row.original.orderItemID}
+                            ></label>
+
                               </div>
                             )
                           },
@@ -1515,7 +1827,7 @@ class TicketSystemOrder extends Component {
                           className="filter-checkbox"
                           style={{ marginLeft: "15px" }}
                         >
-                          <input
+                          {/* <input
                             type="checkbox"
                             id={"i" + row.original.orderMasterID}
                             style={{ display: "none" }}
@@ -1533,6 +1845,25 @@ class TicketSystemOrder extends Component {
                           />
                           <label
                             htmlFor={"i" + row.original.orderMasterID}
+                          ></label> */}
+                          <input
+                            type="checkbox"
+                            id={"all" + row.original.orderMasterID}
+                            style={{ display: "none" }}
+                            name="AllOrder"
+                            checked={
+                              this.state.CheckBoxAllOrder[
+                                row.original.orderMasterID
+                              ] === true
+                            }
+                            onChange={this.onCheckMasterAllChange.bind(
+                              this,
+                              row.original.orderMasterID,
+                              row.original
+                            )}
+                          />
+                            <label
+                            htmlFor={"all" + row.original.orderMasterID}
                           ></label>
                         </div>
                       )
@@ -1606,7 +1937,7 @@ class TicketSystemOrder extends Component {
                           className="filter-checkbox"
                           style={{ marginLeft: "15px" }}
                         >
-                          <input
+                          {/* <input
                             type="checkbox"
                             id={"i" + row.original.orderMasterID}
                             style={{ display: "none" }}
@@ -1624,7 +1955,23 @@ class TicketSystemOrder extends Component {
                           />
                           <label
                             htmlFor={"i" + row.original.orderMasterID}
-                          ></label>
+                          ></label> */}
+                          <input
+                            type="checkbox"
+                            id={"all" + row.original.orderMasterID}
+                            className="ch1"
+                            name="AllOrder"
+                            checked={
+                              this.state.CheckBoxAllOrder[
+                                row.original.orderMasterID
+                              ] === true
+                            }
+                            onChange={this.onCheckMasterAllChange.bind(
+                              this,
+                              row.original.orderMasterID,
+                              row.original
+                            )}
+                          />
                         </div>
                       )
                     },
@@ -1678,7 +2025,7 @@ class TicketSystemOrder extends Component {
                                   className="filter-checkbox"
                                   style={{ marginLeft: "15px" }}
                                 >
-                                  <input
+                                  {/* <input
                                     type="checkbox"
                                     id={"order" + row.original.orderItemID}
                                     style={{ display: "none" }}
@@ -1696,7 +2043,23 @@ class TicketSystemOrder extends Component {
                                   />
                                   <label
                                     htmlFor={"order" + row.original.orderItemID}
-                                  ></label>
+                                  ></label> */}
+                                  <input
+                                    type="checkbox"
+                                    id={"item" + row.original.orderItemID}
+                                    className="ch1"
+                                    name="AllItem"
+                                    checked={
+                                      this.state.CheckBoxAllItem[
+                                        row.original.orderItemID
+                                      ] === true
+                                    }
+                                    onChange={this.checkIndividualItem.bind(
+                                      this,
+                                      row.original.orderItemID,
+                                      row.original
+                                    )}
+                                  />
                                 </div>
                               )
                             },

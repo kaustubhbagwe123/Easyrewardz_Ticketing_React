@@ -177,9 +177,6 @@ class MyTicket extends Component {
       SelectedAllItem: [],
       progressBarData: [],
       progressDataWithcColor: []
-      // ChckOrdMasterId: true,
-      // ChckOrderMasterSelectedAll: true,
-      // checkedSelectList: ""
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -1160,9 +1157,9 @@ class MyTicket extends Component {
     // }
     if (this.state.SelectedAllItem.length === 0) {
       for (let j = 0; j < this.state.SelectedAllOrder.length; j++) {
-        selectedRow += this.state.SelectedAllOrder[j]["orderMasterID"] + "|0|1,";
+        selectedRow +=
+          this.state.SelectedAllOrder[j]["orderMasterID"] + "|0|1,";
       }
-     
     } else {
       for (let i = 0; i < this.state.SelectedAllItem.length; i++) {
         selectedRow +=
@@ -1232,47 +1229,47 @@ class MyTicket extends Component {
     this.setState({ selectedTicketActionType: e });
   };
 
-  handleCheckOrderID(orderMasterID, rowData) {
-    debugger;
-    const newSelected = Object.assign({}, this.state.CheckOrderID);
-    newSelected[orderMasterID] = !this.state.CheckOrderID[orderMasterID];
-    this.setState({
-      CheckOrderID: orderMasterID ? newSelected : false
-    });
-    var selectedRow = [];
-    if (this.state.selectedDataRow.length === 0) {
-      selectedRow.push(rowData);
-      this.setState({
-        selectedDataRow: rowData
-      });
-    } else {
-      if (newSelected[orderMasterID] === true) {
-        for (var i = 0; i < this.state.selectedDataRow.length; i++) {
-          if (this.state.selectedDataRow[i] === rowData) {
-            selectedRow.splice(i, 1);
+  // handleCheckOrderID(orderMasterID, rowData) {
+  //   debugger;
+  //   const newSelected = Object.assign({}, this.state.CheckOrderID);
+  //   newSelected[orderMasterID] = !this.state.CheckOrderID[orderMasterID];
+  //   this.setState({
+  //     CheckOrderID: orderMasterID ? newSelected : false
+  //   });
+  //   var selectedRow = [];
+  //   if (this.state.selectedDataRow.length === 0) {
+  //     selectedRow.push(rowData);
+  //     this.setState({
+  //       selectedDataRow: rowData
+  //     });
+  //   } else {
+  //     if (newSelected[orderMasterID] === true) {
+  //       for (var i = 0; i < this.state.selectedDataRow.length; i++) {
+  //         if (this.state.selectedDataRow[i] === rowData) {
+  //           selectedRow.splice(i, 1);
 
-            break;
-          } else {
-            selectedRow = this.state.selectedDataRow;
-            selectedRow.push(rowData);
-            break;
-          }
-        }
-      } else {
-        for (var j = 0; j < this.state.selectedDataRow.length; j++) {
-          if (this.state.selectedDataRow[j] === rowData) {
-            selectedRow = this.state.selectedDataRow;
-            selectedRow.splice(j, 1);
-            break;
-          }
-        }
-      }
-    }
+  //           break;
+  //         } else {
+  //           selectedRow = this.state.selectedDataRow;
+  //           selectedRow.push(rowData);
+  //           break;
+  //         }
+  //       }
+  //     } else {
+  //       for (var j = 0; j < this.state.selectedDataRow.length; j++) {
+  //         if (this.state.selectedDataRow[j] === rowData) {
+  //           selectedRow = this.state.selectedDataRow;
+  //           selectedRow.splice(j, 1);
+  //           break;
+  //         }
+  //       }
+  //     }
+  //   }
 
-    this.setState({
-      selectedDataRow: selectedRow
-    });
-  }
+  //   this.setState({
+  //     selectedDataRow: selectedRow
+  //   });
+  // }
 
   handleCheckStoreID(storeMasterID, rowData) {
     debugger;
@@ -1927,11 +1924,11 @@ class MyTicket extends Component {
         }
       }
     }
-
     this.setState({
       SelectedAllItem: selectedRow
     });
   }
+  // -------------------------------Check box selected all code end-------------------------------
 
   callbackToParent = () => {
     debugger;
@@ -3432,7 +3429,7 @@ class MyTicket extends Component {
                                                 "all" +
                                                 row.original.orderMasterID
                                               }
-                                              className="ch1"
+                                              style={{ display: "none" }}
                                               name="AllOrder"
                                               checked={
                                                 this.state.CheckBoxAllOrder[
@@ -3445,6 +3442,12 @@ class MyTicket extends Component {
                                                 row.original
                                               )}
                                             />
+                                            <label
+                                              htmlFor={
+                                                "all" +
+                                                row.original.orderMasterID
+                                              }
+                                            ></label>
                                           </div>
                                         )
                                       },
@@ -3530,7 +3533,7 @@ class MyTicket extends Component {
                                                 "all" +
                                                 row.original.orderMasterID
                                               }
-                                              className="ch1"
+                                              style={{ display: "none" }}
                                               name="AllOrder"
                                               checked={
                                                 this.state.CheckBoxAllOrder[
@@ -3543,6 +3546,12 @@ class MyTicket extends Component {
                                                 row.original
                                               )}
                                             />
+                                            <label
+                                              htmlFor={
+                                                "all" +
+                                                row.original.orderMasterID
+                                              }
+                                            ></label>
                                           </div>
                                         )
                                       },
@@ -3613,7 +3622,9 @@ class MyTicket extends Component {
                                                           row.original
                                                             .orderItemID
                                                         }
-                                                        className="ch1"
+                                                        style={{
+                                                          display: "none"
+                                                        }}
                                                         name="AllItem"
                                                         checked={
                                                           this.state
@@ -3629,6 +3640,13 @@ class MyTicket extends Component {
                                                           row.original
                                                         )}
                                                       />
+                                                      <label
+                                                        htmlFor={
+                                                          "item" +
+                                                          row.original
+                                                            .orderItemID
+                                                        }
+                                                      ></label>
                                                     </div>
                                                   );
                                                 }
@@ -3746,7 +3764,7 @@ class MyTicket extends Component {
                                             className="filter-checkbox"
                                             style={{ marginLeft: "15px" }}
                                           >
-                                            <input
+                                            {/* <input
                                               type="checkbox"
                                               id={
                                                 "id" +
@@ -3769,6 +3787,31 @@ class MyTicket extends Component {
                                             <label
                                               htmlFor={
                                                 "id" +
+                                                row.original.orderMasterID
+                                              }
+                                            ></label> */}
+                                            <input
+                                              type="checkbox"
+                                              id={
+                                                "all" +
+                                                row.original.orderMasterID
+                                              }
+                                              style={{ display: "none" }}
+                                              name="AllOrder"
+                                              checked={
+                                                this.state.CheckBoxAllOrder[
+                                                  row.original.orderMasterID
+                                                ] === true
+                                              }
+                                              onChange={this.onCheckMasterAllChange.bind(
+                                                this,
+                                                row.original.orderMasterID,
+                                                row.original
+                                              )}
+                                            />
+                                            <label
+                                              htmlFor={
+                                                "all" +
                                                 row.original.orderMasterID
                                               }
                                             ></label>
@@ -3852,7 +3895,7 @@ class MyTicket extends Component {
                                             className="filter-checkbox"
                                             style={{ marginLeft: "15px" }}
                                           >
-                                            <input
+                                            {/* <input
                                               type="checkbox"
                                               id={
                                                 "i" + row.original.orderMasterID
@@ -3874,6 +3917,31 @@ class MyTicket extends Component {
                                             <label
                                               htmlFor={
                                                 "i" + row.original.orderMasterID
+                                              }
+                                            ></label> */}
+                                            <input
+                                              type="checkbox"
+                                              id={
+                                                "all" +
+                                                row.original.orderMasterID
+                                              }
+                                              style={{ display: "none" }}
+                                              name="AllOrder"
+                                              checked={
+                                                this.state.CheckBoxAllOrder[
+                                                  row.original.orderMasterID
+                                                ] === true
+                                              }
+                                              onChange={this.onCheckMasterAllChange.bind(
+                                                this,
+                                                row.original.orderMasterID,
+                                                row.original
+                                              )}
+                                            />
+                                            <label
+                                              htmlFor={
+                                                "all" +
+                                                row.original.orderMasterID
                                               }
                                             ></label>
                                           </div>
@@ -3936,7 +4004,7 @@ class MyTicket extends Component {
                                                       marginLeft: "15px"
                                                     }}
                                                   >
-                                                    <input
+                                                    {/* <input
                                                       type="checkbox"
                                                       id={
                                                         "order" +
@@ -3958,10 +4026,34 @@ class MyTicket extends Component {
                                                           .orderItemID,
                                                         row.original
                                                       )}
+                                                    /> */}
+                                                    <input
+                                                      type="checkbox"
+                                                      id={
+                                                        "item" +
+                                                        row.original.orderItemID
+                                                      }
+                                                      style={{
+                                                        display: "none"
+                                                      }}
+                                                      name="AllItem"
+                                                      checked={
+                                                        this.state
+                                                          .CheckBoxAllItem[
+                                                          row.original
+                                                            .orderItemID
+                                                        ] === true
+                                                      }
+                                                      onChange={this.checkIndividualItem.bind(
+                                                        this,
+                                                        row.original
+                                                          .orderItemID,
+                                                        row.original
+                                                      )}
                                                     />
                                                     <label
                                                       htmlFor={
-                                                        "order" +
+                                                        "item" +
                                                         row.original.orderItemID
                                                       }
                                                     >
