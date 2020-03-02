@@ -12,6 +12,7 @@ import SearchBlackImg from "./../assets/Images/searchBlack.png";
 import LoadingImg from "./../assets/Images/loading.png";
 import EyeImg from "./../assets/Images/eye.png";
 import BillInvoiceImg from "./../assets/Images/bill-Invoice.png";
+import commentImg from "./../assets/Images/page-icon.png";
 import MsgImg from "./../assets/Images/msg.png";
 import Down1Img from "./../assets/Images/down-1.png";
 import PlusImg from "./../assets/Images/plus.png";
@@ -177,7 +178,8 @@ class MyTicket extends Component {
       SelectedAllItem: [],
       progressBarData: [],
       progressDataWithcColor: [],
-      collapseId: ""
+      collapseId: "",
+      tckcmtMSGCompulsory:''
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -1465,6 +1467,7 @@ class MyTicket extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetMessageDetails(self.state.ticket_Id);
+          self.handleGetCountOfTabs(self.state.ticket_Id)
           self.hanldeCommentClose2();
           self.setState({
             mailFiled: {},
@@ -1506,6 +1509,7 @@ class MyTicket extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetMessageDetails(self.state.ticket_Id);
+          self.handleGetCountOfTabs(self.state.ticket_Id)
           self.HandleEmailCollapseOpen();
           NotificationManager.success("Mail send successfully.", "", 1500);
           self.setState({
@@ -1519,35 +1523,43 @@ class MyTicket extends Component {
       });
     } else if (isSend === 3) {
       // ----------------IsCustomerCommet Comment modal Call api ------------------
-      axios({
-        method: "post",
-        url: config.apiUrl + "/Ticketing/MessageComment",
-        headers: authHeader(),
-        data: {
-          TicketID: this.state.ticket_Id,
-          TicketMailBody: this.state.ticketcommentMSG,
-          IsSent: 1,
-          IsCustomerComment: 0,
-          IsInternalComment: 1,
-          MailID:this.state.mailId
-        }
-      }).then(function(res) {
-        debugger;
-        let status = res.data.message;
-        if (status === "Success") {
-          NotificationManager.success("Comment Added successfully.", "", 2000);
-          self.handleGetMessageDetails(self.state.ticket_Id);
-          self.handleCommentCollapseOpen();
-          self.setState({
-            ticketcommentMSG: ""
-          });
-        } else {
-          NotificationManager.error(status, "", 2000);
-          self.setState({
-            ticketcommentMSG: ""
-          });
-        }
-      });
+      if(this.state.ticketcommentMSG.length > 0){
+        axios({
+          method: "post",
+          url: config.apiUrl + "/Ticketing/MessageComment",
+          headers: authHeader(),
+          data: {
+            TicketID: this.state.ticket_Id,
+            TicketMailBody: this.state.ticketcommentMSG,
+            IsSent: 1,
+            IsCustomerComment: 0,
+            IsInternalComment: 1,
+            MailID:this.state.mailId
+          }
+        }).then(function(res) {
+          debugger;
+          let status = res.data.message;
+          if (status === "Success") {
+            NotificationManager.success("Comment Added successfully.", "", 2000);
+            self.handleGetMessageDetails(self.state.ticket_Id);
+            self.handleGetCountOfTabs(self.state.ticket_Id)
+            self.handleCommentCollapseOpen();
+            self.setState({
+              ticketcommentMSG: ""
+            });
+          } else {
+            NotificationManager.error(status, "", 2000);
+            self.setState({
+              ticketcommentMSG: ""
+            });
+          }
+        });
+      }else{
+        this.setState({
+          tckcmtMSGCompulsory:'Comment field is compulsory.'
+        })
+      }
+      
     } else {
       axios({
         method: "post",
@@ -1570,6 +1582,7 @@ class MyTicket extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetMessageDetails(self.state.ticket_Id);
+          self.handleGetCountOfTabs(self.state.ticket_Id)
           self.setState({
             mailFiled: {},
             // mailSubject: "",
@@ -4914,9 +4927,13 @@ class MyTicket extends Component {
                                           </div>
                                         </div>
                                         <div className="col-12 col-xs-12 col-sm-6 col-md-7">
+                                          {details.latestMessageDetails.isInternalComment === true ? ( <img
+                                                src={commentImg}
+                                                alt="comment"
+                                                className="commentImg"
+                                              />):(null)}
                                           <label
                                             className="label-5"
-                                            style={{ display: "block" }}
                                           >
                                             {
                                               details.latestMessageDetails
@@ -5087,6 +5104,11 @@ class MyTicket extends Component {
                             onChange={this.handleNoteOnChange}
                           ></textarea>
                         </div>
+                        {this.state.ticketcommentMSG.length === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.tckcmtMSGCompulsory}
+                          </p>
+                        )}
                         <div className="SendCommentBtn">
                           <button
                             className="SendCommentBtn1"
