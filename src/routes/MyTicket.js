@@ -907,9 +907,9 @@ class MyTicket extends Component {
   HandleEmailCollapseOpen() {
     this.setState(state => ({ EmailCollapse: !state.EmailCollapse }));
   }
-  handleCommentCollapseOpen() {
+  handleCommentCollapseOpen(Mail_Id) {
     debugger;
-    this.setState(state => ({ CommentCollapse: !state.CommentCollapse }));
+    this.setState(state => ({ CommentCollapse: !state.CommentCollapse, mailId:Mail_Id}));
   }
   handleCommentCollapseClose() {
     this.setState(state => ({ CommentCollapse: false }));
@@ -1456,6 +1456,7 @@ class MyTicket extends Component {
           IsSent: 0,
           IsCustomerComment: 0,
           IsResponseToCustomer: 1,
+          IsInternalComment: 0,
           MailID: this.state.mailId
         }
       }).then(function(res) {
@@ -1525,7 +1526,9 @@ class MyTicket extends Component {
           TicketID: this.state.ticket_Id,
           TicketMailBody: this.state.ticketcommentMSG,
           IsSent: 1,
-          IsCustomerComment: 0
+          IsCustomerComment: 0,
+          IsInternalComment: 1,
+          MailID:this.state.mailId
         }
       }).then(function(res) {
         debugger;
@@ -4822,6 +4825,16 @@ class MyTicket extends Component {
                         <label className="action-label">Action</label>
                       </div>
                     </div>
+                    <div className="col-12 col-xs-12 col-sm-2 col-md-12 mob-flex">
+                      <div className="inlineGridTicket">
+                        <label
+                          className="comment-text"
+                          onClick={this.handleCommentCollapseOpen.bind(this)}
+                        >
+                          Comment
+                        </label>
+                      </div>
+                    </div>
                     {this.state.messageDetails !== null &&
                       this.state.messageDetails.map((item, i) => {
                         return (
@@ -4846,7 +4859,7 @@ class MyTicket extends Component {
                             </div>
                             {item.msgDetails !== null &&
                               item.msgDetails.map((details, j) => {
-                                // debugger;
+                                debugger;
                                 return (
                                   <div key={j}>
                                     <div>
@@ -4930,7 +4943,8 @@ class MyTicket extends Component {
                                             <label
                                               className="comment-text"
                                               onClick={this.handleCommentCollapseOpen.bind(
-                                                this
+                                                this,details.latestMessageDetails
+                                                .mailID
                                               )}
                                             >
                                               Comment
