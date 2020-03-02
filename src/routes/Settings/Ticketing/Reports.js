@@ -406,6 +406,82 @@ class Reports extends Component {
     // this.state.selectedScheduleTime=rowData.scheduleTime; 
     this.state.selectedNoOfWeek = rowData.noOfWeek;
     this.state.selectedWeeklyDays = rowData.selectedWeeklyDays
+    var dayIds = rowData.dayIds;
+    var splittedDayIds = dayIds.split(',');
+    for (let i = 0; i < splittedDayIds.length; i++) {
+      var ele = splittedDayIds[i];
+      if (ele === "Mon") {
+        this.setState({
+          Mon: ele
+        });
+        // document.getElementById('Mon').checked = true;
+      } else if (ele === "Tue") {
+        this.setState({
+          Tue: ele
+        });
+      } else if (ele === "Wed") {
+        this.setState({
+          Wed: ele
+        });
+      } else if (ele === "Thu") {
+        this.setState({
+          Thu: ele
+        });
+      } else if (ele === "Fri") {
+        this.setState({
+          Fri: ele
+        });
+      } else if (ele === "Sat") {
+        this.setState({
+          Sat: ele
+        });
+      } else if (ele === "Sun") {
+        this.setState({
+          Sun: ele
+        });
+      }
+    }
+    this.setState({
+      selectedNoOfDaysForMonth: rowData.noOfDaysForMonth,
+      selectedNoOfMonthForMonth: rowData.noOfMonthForMonth,
+      selectedNoOfMonthForWeek: rowData.noOfMonthForWeek,
+      selectedNoOfWeekForWeek: rowData.noOfWeekForWeek
+    });
+    var dayForWeek = rowData.nameOfDayForWeek.split(",");
+    var selectedNameOfDayForWeek = [];
+    for (let j = 0; j < dayForWeek.length; j++) {
+      var data = this.state.NameOfDayForWeek.filter(x => x.days == dayForWeek[j]);
+      selectedNameOfDayForWeek.push(data[0]);
+    }
+    this.setState({
+      selectedNameOfDayForWeek: selectedNameOfDayForWeek
+    });
+    var dayForYear = rowData.nameOfMonthForDailyYear.split(",");
+    var selectedNameOfMonthForYear = [];
+    for (let j = 0; j < dayForYear.length; j++) {
+      var data = this.state.NameOfMonthForYear.filter(x => x.month == dayForYear[j]);
+      selectedNameOfMonthForYear.push(data[0]);
+    }
+    this.setState({
+      selectedNameOfMonthForYear: selectedNameOfMonthForYear,
+      selectedNoOfDayForDailyYear: rowData.noOfDayForDailyYear
+    });
+    // var dayForYear = rowData.nameOfMonthForDailyYear.split(",");
+    // var selectedNameOfDayForYear = [];
+    // for (let j = 0; j < dayForYear.length; j++) {
+    //   var data = this.state.NameOfDayForYear.filter(x => x.days == dayForYear[j]);
+    //   selectedNameOfDayForYear.push(data[0]);
+    // }
+    // var monthForDailyYear = rowData.nameOfMonthForYear.split(",");
+    // var selectedNameOfMonthForDailyYear = [];
+    // for (let j = 0; j < monthForDailyYear.length; j++) {
+    //   var data = this.state.NameOfMonthForDailyYear.filter(x => x.month == monthForDailyYear[j]);
+    //   selectedNameOfMonthForDailyYear.push(data[0]);
+    // }
+    // this.setState({
+    //   selectedNameOfDayForYear: selectedNameOfDayForYear,
+    //   selectedNameOfMonthForDailyYear: selectedNameOfMonthForDailyYear
+    // });
 
     ///////////////////////////////////////////////////
     this.handleAddReportOpen();
@@ -421,7 +497,6 @@ class Reports extends Component {
     this.state.selectedIssueType = 0;
     this.state.selectedTaskPriority = 0;
     this.state.selectedCategory = 0;
-    //this.handleGetSubCategoryList();
     this.state.selectedSubCategory = 0;
     this.state.selectedIssueType = 0;
     this.state.selectedTicketSource = 0;
@@ -2396,7 +2471,7 @@ class Reports extends Component {
                             </span>
                           </div>
                         ) : null}
-                        {this.state.selectScheduleDate === "231" ? (
+                        {(this.state.selectScheduleDate === "231" || this.state.selectScheduleDate === 231) ? (
                           <div className="ScheduleDate-to">
                             <span>
                               <label className="every1">Every</label>
@@ -2417,6 +2492,7 @@ class Reports extends Component {
                               <Checkbox
                                 onChange={this.handleWeeklyDays}
                                 value="Mon"
+                                id="Mon"
                               >
                                 Mon
                               </Checkbox>
@@ -2459,7 +2535,7 @@ class Reports extends Component {
                             </div>
                           </div>
                         ) : null}
-                        {this.state.selectScheduleDate === "232" ? (
+                        {(this.state.selectScheduleDate === "232" || this.state.selectScheduleDate === 232) ? (
                           <div className="ScheduleDate-to">
                             <span>
                               <label className="every1">Day</label>
@@ -2467,6 +2543,7 @@ class Reports extends Component {
                                 type="text"
                                 className="Every"
                                 placeholder="9"
+                                value={this.state.selectedNoOfDaysForMonth}
                                 onChange={this.handleDaysForMonth}
                               />
                               <label className="every1">of every</label>
@@ -2474,13 +2551,14 @@ class Reports extends Component {
                                 type="text"
                                 className="Every"
                                 placeholder="1"
+                                value={this.state.selectedNoOfMonthForMonth}
                                 onChange={this.handleMonthForMonth}
                               />
                               <label className="every1">months</label>
                             </span>
                           </div>
                         ) : null}
-                        {this.state.selectScheduleDate === "233" ? (
+                        {(this.state.selectScheduleDate === "233" || this.state.selectScheduleDate === 233) ? (
                           <div className="ScheduleDate-to">
                             <span>
                               <label className="every1">Every</label>
@@ -2489,6 +2567,7 @@ class Reports extends Component {
                                 className="Every"
                                 placeholder="1"
                                 onChange={this.handleMonthForWeek}
+                                value={this.state.selectedNoOfMonthForWeek}
                               />
                               <label className="every1">month on the</label>
                             </span>
@@ -2528,7 +2607,7 @@ class Reports extends Component {
                             </div>
                           </div>
                         ) : null}
-                        {this.state.selectScheduleDate === "234" ? (
+                        {(this.state.selectScheduleDate === "234" || this.state.selectScheduleDate === 234) ? (
                           <div className="ScheduleDate-to">
                             <div className="row m-0">
                               <label
@@ -2565,12 +2644,13 @@ class Reports extends Component {
                                 type="text"
                                 className="Every"
                                 placeholder="1"
+                                value={this.state.selectedNoOfDayForDailyYear}
                                 onChange={this.handleDayForYear}
                               />
                             </div>
                           </div>
                         ) : null}
-                        {this.state.selectScheduleDate === "235" ? (
+                        {(this.state.selectScheduleDate === "235" || this.state.selectScheduleDate === 235) ? (
                           <div className="ScheduleDate-to">
                             <span>
                               <div className="row m-0">
