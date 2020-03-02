@@ -655,6 +655,7 @@ class Templates extends Component {
               <div className="col-md-8">
                 <div className="table-cntr table-height template-table">
                   <ReactTable
+                  minRows={2}
                     data={this.state.template}
                     columns={columns}
                     // resizable={false}

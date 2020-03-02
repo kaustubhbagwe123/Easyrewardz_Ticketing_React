@@ -640,6 +640,7 @@ class Brands extends Component {
                 <div className="table-cntr table-height TicketBrandReact">
                   <ReactTable
                     data={brandData}
+                    minRows={2}
                     columns={[
                       {
                         Header: (
