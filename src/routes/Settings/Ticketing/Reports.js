@@ -36,9 +36,9 @@ class Reports extends Component {
       ChatDate: "",
       tabIndex: 0,
       ReportData: [],
-      ReportParams:"",
+      ReportParams: "",
       brandData: [],
-      Schedule_ID:0,
+      Schedule_ID: 0,
       CategoryData: [],
       SubCategoryData: [],
       IssueTypeData: [],
@@ -46,7 +46,7 @@ class Reports extends Component {
       TicketPriorityData: [],
       AssignToData: [],
       DepartmentData: [],
-      totalResultCount:0,
+      totalResultCount: 0,
       ClaimStatusData: ClaimStatus(),
       TaskStatusData: TaskStatus(),
       TicketStatusData: TicketStatus(),
@@ -70,7 +70,7 @@ class Reports extends Component {
       selectedTicketStatus: 0,
       selectedVisitStoreAddress: "",
       selectedPurchaseStore: "",
-      selectedTeamMember: "",
+      selectedTeamMember: [],
       selectedReportName: "",
       selectedSLAStatus: "0",
       selectedWithClaim: "no",
@@ -211,7 +211,7 @@ class Reports extends Component {
     this.handleGetTicketPriorityList = this.handleGetTicketPriorityList.bind(
       this
     );
-    
+
     this.handleAssignTo = this.handleAssignTo.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleGetDepartmentList = this.handleGetDepartmentList.bind(this);
@@ -246,55 +246,62 @@ class Reports extends Component {
         "block";
   }
   ScheduleOpenModel = () => {
-debugger;
-    if(this.state.selectedReportName=="")
-    {
+    debugger;
+    if (this.state.selectedReportName == "") {
       NotificationManager.error("Please enter report name");
     }
-    else{
-      this.setState({ Schedule: true });
+    else {
+      if (this.state.selectedTeamMemberCommaSeperated) {
+        var tData = this.state.selectedTeamMemberCommaSeperated.split(",");
+        var selectedTeamMember = this.state.selectedTeamMember;
+        for (let j = 0; j < tData.length; j++) {
+          var data = this.state.AssignToData.filter(x => x.userID == tData[j]);
+          selectedTeamMember.push(data[0]);
+        }
+        this.setState({ Schedule: true, selectedTeamMember });
+      }
+      else {
+        this.setState({ Schedule: true, selectedTeamMember: [] });
+      }
     }
-   
   };
   ScheduleCloseModel = () => {
-    this.setState({ Schedule: false });
+    this.setState({ Schedule: false ,selectedTeamMember:[]});
   };
 
   handleAddReportOpen() {
     this.setState({ AddReportPopup: true, tabIndex: 0 });
   }
-  AddScheduler=()=>
-  {
+  AddScheduler = () => {
     debugger;
     this.ClearParams();
     this.setState({ AddReportPopup: true, tabIndex: 0 });
   }
-  handleEditReport=(rowData)=>
-  {
-    debugger;    
-    let allTab=JSON.parse(rowData.reportSearchParams);     
-    this.setState({Schedule_ID:rowData.scheduleID}) 
+  handleEditReport = (rowData) => {
+    debugger;
+    let allTab = JSON.parse(rowData.reportSearchParams);
+    this.setState({ Schedule_ID: rowData.scheduleID })
     let withClaim = 0;
     let withTask = 0;
-   // allTab=objEdit;
-    withClaim=allTab["HaveClaim"];
-    withTask=allTab["HaveTask"];
-    this.state.selectBrand= allTab["BrandID"];
-    this.state.selectedIssueType=allTab["IssueType"];
-    this.state.selectedTaskPriority=allTab["TaskPriority"];
-    this.state.selectedWithClaim=allTab["HaveClaim"];
-    this.state.selectedWithTaskAll=allTab["HaveTask"];
+    // allTab=objEdit;
+    withClaim = allTab["HaveClaim"];
+    withTask = allTab["HaveTask"];
+    this.state.selectBrand = allTab["BrandID"];
+    this.state.selectedIssueType = allTab["IssueType"];
+    this.state.selectedTaskPriority = allTab["TaskPriority"];
+    this.state.selectedWithClaim = allTab["HaveClaim"] === 0 ? "no" : "yes";
+    this.state.selectedWithTaskAll = allTab["HaveTask"] === 0 ? "no" : "yes";
     if (this.state.selectedWithClaim === "yes") {
       withClaim = 1;
     }
     if (this.state.selectedWithTaskAll === "yes") {
       withTask = 1;
     }
-   // this.state.ReportCreateDate="04/02/2020";
+    // this.state.ReportCreateDate="04/02/2020";
     //this.state.ReportCreateDate=moment(allTab["CreatedDate"]).format("DD/MM/YYYY");
-                                                               
-       
-   // this.state.ReportLastDate=allTab["ModifiedDate"];
+
+
+    // this.state.ReportLastDate=allTab["ModifiedDate"];
     // // --------------------Check null date----------------------------------
     // if (
     //   this.state.ReportCreateDate === null ||
@@ -319,11 +326,15 @@ debugger;
     //     "YYYY-MM-DD"
     //   );
     // }
-    this.state.selectedReportName=rowData.reportName;
-    this.state.selectedTeamMemberCommaSeperated=rowData.scheduleFor;
-    this.state.selectBrand=allTab["BrandID"];
-    this.state.selectedIssueType=allTab["IssueType"];
-    this.state.selectedTaskPriority=allTab["TaskPriority"];
+    this.state.selectedReportName = rowData.reportName;
+    var scheduledIds = rowData.scheduleFor;
+    var scheduledIdsArray = scheduledIds.split(',');
+    // this.state.AssignToData.filter(x => x.userID == )
+
+    // this.state.selectedTeamMemberCommaSeperated=rowData.scheduleFor;
+    this.state.selectBrand = allTab["BrandID"];
+    this.state.selectedIssueType = allTab["IssueType"];
+    this.state.selectedTaskPriority = allTab["TaskPriority"];
     // this.state.selectedCategory=allTab["CategoryId"];
     this.setState({
       selectedCategory: allTab["CategoryId"]
@@ -337,24 +348,24 @@ debugger;
     }, () => {
       this.handleGetIssueTypeList()
     });
-    this.state.selectedIssueType=allTab["IssueTypeId"];
-    this.state.selectedTicketSource=allTab["TicketSourceTypeID"];
-    this.state.selectedTicketID=allTab["TicketIdORTitle"];
-    this.state.selectedPriority=allTab["PriorityId"];
-    this.state.selectedTicketStatus=allTab["TicketSatutsID"];
-    this.state.selectedSLAStatus=allTab["SLAStatus"];
-    this.state.selectedClaimID= allTab["ClaimId"];
-    this.state.selectedInvoiceNo=allTab["InvoiceNumberORSubOrderNo"];    
-    this.state.selectedItemID=allTab["OrderItemId"];
-    this.state.selectedVisitStore=allTab["IsVisitStore"];
-    this.state.selectedWantVisitStore=allTab["IsWantVistingStore"];
-    this.state.selectedEmailID=allTab["CustomerEmailID"];
-    this.state.selectedMobileNo=allTab["CustomerMobileNo"];
-    this.state.selectedAssignedTo=allTab["AssignTo"];   
-    this.state.selectedWantVisitStore=allTab["StoreCodeORAddress"];
-    this.state.selectedVisitStoreAddress=allTab["WantToStoreCodeORAddress"];
-   
-    this.state.selectedClaimStatus=allTab["ClaimStatusId"];
+    this.state.selectedIssueType = allTab["IssueTypeId"];
+    this.state.selectedTicketSource = allTab["TicketSourceTypeID"];
+    this.state.selectedTicketID = allTab["TicketIdORTitle"];
+    this.state.selectedPriority = allTab["PriorityId"];
+    this.state.selectedTicketStatus = allTab["TicketSatutsID"];
+    this.state.selectedSLAStatus = allTab["SLAStatus"];
+    this.state.selectedClaimID = allTab["ClaimId"];
+    this.state.selectedInvoiceNo = allTab["InvoiceNumberORSubOrderNo"];
+    this.state.selectedItemID = allTab["OrderItemId"];
+    this.state.selectedVisitStore = allTab["IsVisitStore"];
+    this.state.selectedWantVisitStore = allTab["IsWantVistingStore"];
+    this.state.selectedEmailID = allTab["CustomerEmailID"];
+    this.state.selectedMobileNo = allTab["CustomerMobileNo"];
+    this.state.selectedAssignedTo = allTab["AssignTo"];
+    this.state.selectedWantVisitStore = allTab["StoreCodeORAddress"];
+    this.state.selectedVisitStoreAddress = allTab["WantToStoreCodeORAddress"];
+
+    this.state.selectedClaimStatus = allTab["ClaimStatusId"];
     // this.state.selectedClaimCategory=allTab["ClaimCategoryId"];
     this.setState({
       selectedClaimCategory: allTab["ClaimCategoryId"]
@@ -367,24 +378,34 @@ debugger;
     }, () => {
       this.handleGetIssueTypeList()
     });
-    this.state.selectedClaimIssueType=allTab["ClaimIssueTypeId"];
-  
-    this.state.selectedTaskStatus=allTab["TaskStatusId"];
+    this.state.selectedClaimIssueType = allTab["ClaimIssueTypeId"];
+
+    this.state.selectedTaskStatus = allTab["TaskStatusId"];
     // this.state.selectedDepartment=allTab["TaskDepartment_Id"];
     this.setState({
       selectedDepartment: allTab["TaskDepartment_Id"],
     }, () => {
       this.handleGetFunctionList()
     });
-    this.state.selectedFunction=allTab["TaskFunction_Id"];
+    this.state.selectedFunction = allTab["TaskFunction_Id"];
 
     //////////////////Scheduler/////////////////////////
-    this.state.IsDaily=rowData.isDaily;
-    this.state.selectScheduleDate=rowData.scheduleType;
-    this.state.selectedTeamMemberCommaSeperated=rowData.scheduleFor;
-   // this.state.selectedScheduleTime=rowData.scheduleTime; 
-   this.state.selectedNoOfWeek=rowData.noOfWeek;
-   this.state.selectedWeeklyDays=rowData.selectedWeeklyDays
+    this.state.IsDaily = rowData.isDaily;
+    this.state.selectScheduleDate = rowData.scheduleType;
+    this.state.selectedTeamMemberCommaSeperated = rowData.scheduleFor;
+    this.state.selectedNoOfDay = rowData.noOfDay;
+    var responseTime = rowData.scheduleTime;
+    var splittedResponseTime = responseTime.split('T');
+    var date = splittedResponseTime[0];
+    var splittedDate = date.split('-');
+    var time = splittedResponseTime[1];
+    var splittedTime = time.split(':');
+    var finalTime = new Date(splittedDate[0], splittedDate[1] - 1, splittedDate[2], splittedTime[0], splittedTime[1], splittedTime[2])
+
+    this.state.selectedScheduleTime = finalTime;
+    // this.state.selectedScheduleTime=rowData.scheduleTime; 
+    this.state.selectedNoOfWeek = rowData.noOfWeek;
+    this.state.selectedWeeklyDays = rowData.selectedWeeklyDays
 
     ///////////////////////////////////////////////////
     this.handleAddReportOpen();
@@ -393,40 +414,40 @@ debugger;
     this.setState({ AddReportPopup: false });
   }
 
-  ClearParams(){
-    this.state.selectedReportName="";
-    this.state.Schedule_ID=0;
-    this.state.selectBrand=0;
-    this.state.selectedIssueType=0;
-    this.state.selectedTaskPriority=0;
-    this.state.selectedCategory=0;
+  ClearParams() {
+    this.state.selectedReportName = "";
+    this.state.Schedule_ID = 0;
+    this.state.selectBrand = 0;
+    this.state.selectedIssueType = 0;
+    this.state.selectedTaskPriority = 0;
+    this.state.selectedCategory = 0;
     //this.handleGetSubCategoryList();
-    this.state.selectedSubCategory=0;
-    this.state.selectedIssueType=0;
-    this.state.selectedTicketSource=0;
-    this.state.selectedTicketID="";
-    this.state.selectedPriority=0;
-    this.state.selectedTicketStatus=0;
-    this.state.selectedSLAStatus=0;
-    this.state.selectedClaimID="";
-    this.state.selectedInvoiceNo="";    
-    this.state.selectedItemID="";
-    this.state.selectedVisitStore="";
-    this.state.selectedWantVisitStore=0;
-    this.state.selectedEmailID="";
-    this.state.selectedMobileNo="";
-    this.state.selectedAssignedTo=0;   
-    this.state.selectedWantVisitStore="";
-    this.state.selectedVisitStoreAddress="";
-   
-    this.state.selectedClaimStatus=0;
-    this.state.selectedClaimCategory=0;
-    this.state.selectedClaimSubCategory=0;
-    this.state.selectedClaimIssueType=0;
-  
-    this.state.selectedTaskStatus=0;
-    this.state.selectedDepartment=0;
-    this.state.selectedFunction=0;
+    this.state.selectedSubCategory = 0;
+    this.state.selectedIssueType = 0;
+    this.state.selectedTicketSource = 0;
+    this.state.selectedTicketID = "";
+    this.state.selectedPriority = 0;
+    this.state.selectedTicketStatus = 0;
+    this.state.selectedSLAStatus = 0;
+    this.state.selectedClaimID = "";
+    this.state.selectedInvoiceNo = "";
+    this.state.selectedItemID = "";
+    this.state.selectedVisitStore = "";
+    this.state.selectedWantVisitStore = 0;
+    this.state.selectedEmailID = "";
+    this.state.selectedMobileNo = "";
+    this.state.selectedAssignedTo = 0;
+    this.state.selectedWantVisitStore = "";
+    this.state.selectedVisitStoreAddress = "";
+
+    this.state.selectedClaimStatus = 0;
+    this.state.selectedClaimCategory = 0;
+    this.state.selectedClaimSubCategory = 0;
+    this.state.selectedClaimIssueType = 0;
+
+    this.state.selectedTaskStatus = 0;
+    this.state.selectedDepartment = 0;
+    this.state.selectedFunction = 0;
   }
   handleGetFunctionList() {
     debugger;
@@ -486,13 +507,13 @@ debugger;
       selectedNameOfDayForYearCommaSeperated
     });
   };
-  handleWeekForYear=(e)=> {
+  handleWeekForYear = (e) => {
     debugger;
     this.setState({
       selectedNoOfWeekForYear: e.currentTarget.value
     });
   }
-  handleDayForYear=(e)=> {
+  handleDayForYear = (e) => {
     debugger;
     this.setState({
       selectedNoOfDayForDailyYear: e.currentTarget.value
@@ -522,31 +543,31 @@ debugger;
       selectedNameOfDayForWeekCommaSeperated
     });
   };
-  handleWeekForWeek=(e)=> {
+  handleWeekForWeek = (e) => {
     debugger;
     this.setState({
       selectedNoOfWeekForWeek: e.currentTarget.value
     });
   }
-  handleMonthForWeek=(e)=> {
+  handleMonthForWeek = (e) => {
     debugger;
     this.setState({
       selectedNoOfMonthForWeek: e.currentTarget.value
     });
   }
-  handleMonthForMonth=(e)=> {
+  handleMonthForMonth = (e) => {
     debugger;
     this.setState({
       selectedNoOfMonthForMonth: e.currentTarget.value
     });
   }
-  handleDaysForMonth=(e)=> {
+  handleDaysForMonth = (e) => {
     debugger;
     this.setState({
       selectedNoOfDaysForMonth: e.currentTarget.value
     });
   }
-  handleWeekly=(e)=> {
+  handleWeekly = (e) => {
     debugger;
     this.setState({
       selectedNoOfWeek: e.target.value
@@ -555,13 +576,13 @@ debugger;
     //   selectedNoOfWeek: e.currentTarget.value
     // });
   }
-  handleDailyDay=(e)=> {
+  handleDailyDay = (e) => {
     debugger;
     this.setState({
       selectedNoOfDay: e.currentTarget.value
     });
   }
-  handleScheduleTime=(e)=> {
+  handleScheduleTime = (e) => {
     debugger;
     this.setState({
       selectedScheduleTime: e
@@ -574,39 +595,38 @@ debugger;
     //     tabIndex: index
     //   });   
 
-      var allTab = {};
-      allTab=this.SetSearchParametr();
-      this.setState({ReportParams:allTab});
-    let self=this;
+    var allTab = {};
+    allTab = this.SetSearchParametr();
+    this.setState({ ReportParams: allTab });
+    let self = this;
     axios({
       method: "post",
       url: config.apiUrl + "/Report/ReportSearch",
       headers: authHeader(),
       data: {
         AssigntoId: this.state.AgentIds,
-        BrandId: this.state.BrandIds,      
+        BrandId: this.state.BrandIds,
         reportSearch: allTab
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let status = res.data.message;
       let data = res.data.responseData;
-      self.setState({totalResultCount:data});
+      self.setState({ totalResultCount: data });
       self.handleNextPopupOpen();
       //self.handleAddReportClose();     
     });
 
 
   }
-  EditSearchParameter(objEdit)
-  {
+  EditSearchParameter(objEdit) {
     var allTab = {};
     let withClaim = 0;
     let withTask = 0;
-    allTab=objEdit;
-    this.state.selectBrand= allTab["BrandID"];
-    this.state.selectedIssueType=allTab["IssueType"];
-    this.state.selectedTaskPriority=allTab["TaskPriority"];
+    allTab = objEdit;
+    this.state.selectBrand = allTab["BrandID"];
+    this.state.selectedIssueType = allTab["IssueType"];
+    this.state.selectedTaskPriority = allTab["TaskPriority"];
     // if (this.state.selectedWithClaim === "yes") {
     //   withClaim = 1;
     // }
@@ -677,7 +697,7 @@ debugger;
     allTab["TaskFunction_Id"] = this.state.selectedFunction;
 
   }
-  SetSearchParametr(){
+  SetSearchParametr() {
     var allTab = {};
     let withClaim = 0;
     let withTask = 0;
@@ -1025,7 +1045,7 @@ debugger;
       method: "post",
       url: config.apiUrl + "/Master/getDepartmentList",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let DepartmentData = res.data.responseData;
       self.setState({ DepartmentData: DepartmentData });
@@ -1039,7 +1059,7 @@ debugger;
       method: "post",
       url: config.apiUrl + "/User/GetUserList",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let AssignData = res.data.responseData;
 
@@ -1056,7 +1076,7 @@ debugger;
       method: "get",
       url: config.apiUrl + "/Priority/GetPriorityList",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let TicketPriorityData = res.data.responseData;
       self.setState({ TicketPriorityData: TicketPriorityData });
@@ -1070,7 +1090,7 @@ debugger;
       method: "post",
       url: config.apiUrl + "/Master/getTicketSources",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let TicketSourceData = res.data.responseData;
       self.setState({
@@ -1086,7 +1106,7 @@ debugger;
       method: "post",
       url: config.apiUrl + "/Report/GetReports",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       var reportdata = res.data.responseData;
 
@@ -1099,7 +1119,7 @@ debugger;
       });
     });
   }
-  handleDownload=(id,name)=> {
+  handleDownload = (id, name) => {
     debugger;
     let self = this;
 
@@ -1110,14 +1130,14 @@ debugger;
       params: {
         SchedulerID: id
       }
-    }).then(function(res) {
-     debugger;
-     window.open(res.data.responseData, '_blank');
-    // self.downloadURI(res.data.responseData,name+".csv");
+    }).then(function (res) {
+      debugger;
+      window.open(res.data.responseData, '_blank');
+      // self.downloadURI(res.data.responseData,name+".csv");
     });
   }
 
-  downloadURI=(uri, name)=> {
+  downloadURI = (uri, name) => {
     var link = document.createElement("a");
     link.download = name;
     link.href = uri;
@@ -1137,7 +1157,7 @@ debugger;
       params: {
         ReportID: id
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let Msg = res.data.message;
       if (Msg === "Success") {
@@ -1153,7 +1173,7 @@ debugger;
       method: "post",
       url: config.apiUrl + "/Brand/GetBrandList",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let status = res.data.message;
       let data = res.data.responseData;
@@ -1172,7 +1192,7 @@ debugger;
       method: "post",
       url: config.apiUrl + "/Category/GetCategoryList",
       headers: authHeader()
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let CategoryData = res.data;
 
@@ -1201,7 +1221,7 @@ debugger;
       params: {
         CategoryID: cateId
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       var SubCategoryData = res.data.responseData;
       self.setState({
@@ -1225,53 +1245,50 @@ debugger;
       params: {
         SubCategoryID: subCateId
       }
-    }).then(function(res) {
+    }).then(function (res) {
       debugger;
       let IssueTypeData = res.data.responseData;
       self.setState({ IssueTypeData: IssueTypeData });
     });
   }
 
-  handleSave(){
+  handleSave() {
     debugger;
-    let self=this;
-    var SearchParams = {}; 
-    SearchParams=JSON.stringify(this.state.ReportParams);
-    if(self.state.reportName=="")
-    {
+    let self = this;
+    var SearchParams = {};
+    SearchParams = JSON.stringify(this.state.ReportParams);
+    if (self.state.reportName == "") {
       NotificationManager.error("Please select report name.");
       return;
     }
-    self=this;  
-    if(this.state.selectScheduleDate=="")
-    {
-      self.setState({selectScheduleDate:0});
+    self = this;
+    if (this.state.selectScheduleDate == "") {
+      self.setState({ selectScheduleDate: 0 });
     }
-    if(this.state.Schedule_ID>0)
-    {
+    if (this.state.Schedule_ID > 0) {
       axios({
         method: "post",
         url: config.apiUrl + "/Report/SaveReportForDownload",
         headers: authHeader(),
         params: {
-          ScheduleID:this.state.Schedule_ID
+          ScheduleID: this.state.Schedule_ID
         }
-      }).then(function(res) {     
-       // this.handleReportList(); 
+      }).then(function (res) {
+        // this.handleReportList(); 
         self.handleReportList();
         self.handleNextPopupClose();
         NotificationManager.success("Report saved successfully for download.");
       });
-    }    
-    else{
+    }
+    else {
       axios({
         method: "post",
         url: config.apiUrl + "/Ticketing/Schedule",
         headers: authHeader(),
-        data: {          
-          PrimaryScheduleID:this.state.Schedule_ID,
-          ReportName:this.state.selectedReportName,
-          SearchInputParams:SearchParams,
+        data: {
+          PrimaryScheduleID: this.state.Schedule_ID,
+          ReportName: this.state.selectedReportName,
+          SearchInputParams: SearchParams,
           ScheduleFor: this.state.selectedTeamMemberCommaSeperated,
           ScheduleType: this.state.selectScheduleDate,
           NoOfDay: this.state.selectedNoOfDay,
@@ -1286,7 +1303,7 @@ debugger;
           IsWeeklyForMonth: this.state.IsWeeklyForMonth,
           NoOfMonthForWeek: this.state.selectedNoOfMonthForWeek,
           NoOfWeekForWeek: this.state.selectedNoOfWeekForWeek,
-          ScheduleFrom:4,
+          ScheduleFrom: 4,
           NameOfDayForWeek: this.state.selectedNameOfDayForWeekCommaSeperated,
           IsDailyForYear: this.state.IsDailyForYear,
           NoOfDayForDailyYear: this.state.selectedNoOfDayForDailyYear,
@@ -1296,27 +1313,27 @@ debugger;
           NoOfWeekForYear: this.state.selectedNoOfWeekForYear,
           NameOfDayForYear: this.state.selectedNameOfDayForYearCommaSeperated,
           NameOfMonthForYear: this.state
-            .selectedNameOfMonthForDailyYearCommaSeperated       
+            .selectedNameOfMonthForDailyYearCommaSeperated
         }
-      }).then(function(res) {
+      }).then(function (res) {
         debugger;
-       
+
         let status = res.data.message;
-        let scheduleId=res.data.responseData;
+        let scheduleId = res.data.responseData;
         if (status === "Success") {
-          self.state.selectedTeamMember="";
-          self.state.selectedTeamMemberCommaSeperated=undefined;
-          self.state.selectScheduleDate="";
-          self.state.selectedScheduleTime="";  
-  
+          self.state.selectedTeamMember = "";
+          self.state.selectedTeamMemberCommaSeperated = undefined;
+          self.state.selectScheduleDate = "";
+          self.state.selectedScheduleTime = "";
+
           self.ScheduleCloseModel();
-         // this.handleReportList(); 
-          self.setState({Schedule_ID:scheduleId});
+          // this.handleReportList(); 
+          self.setState({ Schedule_ID: scheduleId });
           self.setState({ AddReportPopup: false });
           NotificationManager.success("Report saved successfully.");
-          self.setState({         
+          self.setState({
             ReportParams: {},
-            selectedScheduleTime:"",
+            selectedScheduleTime: "",
             // selectedTeamMemberCommaSeperated="",
             // selectScheduleDate="",
             // selectedScheduleTime="",
@@ -1328,62 +1345,56 @@ debugger;
             IsWeeklyForYear: false
           });
         }
-        else if(status=="duplicate")
-        {
-          self.setState({Schedule_ID:0});
+        else if (status == "duplicate") {
+          self.setState({ Schedule_ID: 0 });
           NotificationManager.error("Report name already exist.");
         }
       });
     }
-    
-   
+
+
     // else{
     //   NotificationManager.error("Please create scheduler");      
     // }
-  
-  
-}
-  
+
+
+  }
+
 
   handleInsertReport() {
-    
-    let self = this;
-    var SearchParams = {};   
 
-    SearchParams=JSON.stringify(this.state.ReportParams);
-    if(this.state.selectedReportName=="")
-    {
+    let self = this;
+    var SearchParams = {};
+
+    SearchParams = JSON.stringify(this.state.ReportParams);
+    if (this.state.selectedReportName == "") {
       NotificationManager.error("Please add report name.");
       return;
     }
     debugger;
-    if(this.state.selectedTeamMemberCommaSeperated==undefined)
-    {
+    if (this.state.selectedTeamMemberCommaSeperated == undefined) {
       NotificationManager.error("Please add team name for schedule.");
       return;
     }
-    if(this.state.selectScheduleDate=="")
-    {
+    if (this.state.selectScheduleDate == "") {
       NotificationManager.error("Please select schedule type.");
       return;
     }
-    if(this.state.selectedScheduleTime=="")
-    {
+    if (this.state.selectedScheduleTime == "") {
       NotificationManager.error("Please select schedule time.");
       return;
     }
-    if(SearchParams!="")
-    { 
-      debugger;   
-      self=this;  
+    if (SearchParams != "") {
+      debugger;
+      self = this;
       axios({
         method: "post",
         url: config.apiUrl + "/Ticketing/Schedule",
         headers: authHeader(),
-        data: {          
-          PrimaryScheduleID:this.state.Schedule_ID,
-          ReportName:this.state.selectedReportName,
-          SearchInputParams:SearchParams,
+        data: {
+          PrimaryScheduleID: this.state.Schedule_ID,
+          ReportName: this.state.selectedReportName,
+          SearchInputParams: SearchParams,
           ScheduleFor: this.state.selectedTeamMemberCommaSeperated,
           ScheduleType: this.state.selectScheduleDate,
           NoOfDay: this.state.selectedNoOfDay,
@@ -1398,7 +1409,7 @@ debugger;
           IsWeeklyForMonth: this.state.IsWeeklyForMonth,
           NoOfMonthForWeek: this.state.selectedNoOfMonthForWeek,
           NoOfWeekForWeek: this.state.selectedNoOfWeekForWeek,
-          ScheduleFrom:3,
+          ScheduleFrom: 3,
           NameOfDayForWeek: this.state.selectedNameOfDayForWeekCommaSeperated,
           IsDailyForYear: this.state.IsDailyForYear,
           NoOfDayForDailyYear: this.state.selectedNoOfDayForDailyYear,
@@ -1408,27 +1419,27 @@ debugger;
           NoOfWeekForYear: this.state.selectedNoOfWeekForYear,
           NameOfDayForYear: this.state.selectedNameOfDayForYearCommaSeperated,
           NameOfMonthForYear: this.state
-            .selectedNameOfMonthForDailyYearCommaSeperated       
+            .selectedNameOfMonthForDailyYearCommaSeperated
         }
-      }).then(function(res) {
+      }).then(function (res) {
         debugger;
-       
+
         let status = res.data.message;
-        let scheduleId=res.data.responseData;
+        let scheduleId = res.data.responseData;
         if (status === "Success") {
-          self.state.selectedTeamMember="";
-          self.state.selectedTeamMemberCommaSeperated=undefined;
-          self.state.selectScheduleDate="";
-          self.state.selectedScheduleTime="";  
+          self.state.selectedTeamMember = "";
+          self.state.selectedTeamMemberCommaSeperated = undefined;
+          self.state.selectScheduleDate = "";
+          self.state.selectedScheduleTime = "";
 
           self.ScheduleCloseModel();
-         // this.handleReportList(); 
-          self.setState({Schedule_ID:scheduleId});
+          // this.handleReportList(); 
+          self.setState({ Schedule_ID: scheduleId });
           self.setState({ AddReportPopup: false });
           NotificationManager.success("Scheduler created successfully.");
-          self.setState({         
+          self.setState({
             ReportParams: {},
-            selectedScheduleTime:"",
+            selectedScheduleTime: "",
             // selectedTeamMemberCommaSeperated="",
             // selectScheduleDate="",
             // selectedScheduleTime="",
@@ -1440,17 +1451,16 @@ debugger;
             IsWeeklyForYear: false
           });
         }
-        else if(status=="duplicate")
-        {
-          self.setState({Schedule_ID:0});
+        else if (status == "duplicate") {
+          self.setState({ Schedule_ID: 0 });
           NotificationManager.error("Report name already exist.");
         }
       });
     }
-    else{
+    else {
       NotificationManager.error("Please add report for create scheduler.");
     }
-    
+
   }
 
   render() {
@@ -1486,7 +1496,7 @@ debugger;
             onClose={this.handleAddReportClose}
             closeIconId="sdsg"
             modalId="addreport-popup"
-            // overlayId="logout-ovrly"
+          // overlayId="logout-ovrly"
           >
             <div className="setting-tabs alert-tabs">
               <ul className="nav nav-tabs margin-report" role="tablist">
@@ -1625,7 +1635,7 @@ debugger;
                           dateFormat="dd/MM/yyyy"
                           value={this.state.ReportCreateDate}
 
-                          // className="form-control"
+                        // className="form-control"
                         />
                         {this.state.ReportCreateDate.length === 0 && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
@@ -1693,7 +1703,7 @@ debugger;
                           showYearDropdown
                           dateFormat="dd/MM/yyyy"
                           value={this.state.ReportLastDate}
-                          // className="form-control"
+                        // className="form-control"
                         />
                         {this.state.ReportLastDate.length === 0 && (
                           <p style={{ color: "red", marginBottom: "0px" }}>
@@ -2222,7 +2232,7 @@ debugger;
                           placeholderText="Chat Date"
                           showMonthDropdown
                           showYearDropdown
-                          // className="form-control"
+                        // className="form-control"
                         />
                         {/* <input className="no-bg" type="text" /> */}
                       </div>
@@ -2277,7 +2287,7 @@ debugger;
             onClose={this.handleNextPopupClose}
             closeIconId="sdsg"
             modalId="nextbuttonpopup"
-            // overlayId="logout-ovrly"
+          // overlayId="logout-ovrly"
           >
             <div className="container contpaddre">
               <div className="setting-tabs entercenter">
@@ -2348,29 +2358,29 @@ debugger;
                           />
                         </div>
                         <select
-                        id="inputState"
-                        className="form-control dropdown-setting1 ScheduleDate-to"
-                        value={
-                          this.state.selectScheduleDate
-                        }
-                        onChange={
-                          this.handleScheduleDateChange
-                        }
-                      >
-                        {this.state.ScheduleOption !==
-                          null &&
-                          this.state.ScheduleOption.map(
-                            (item, i) => (
-                              <option
-                                key={i}
-                                value={item.scheduleID}
-                              >
-                                {item.scheduleName}
-                              </option>
-                            )
-                          )}
-                      </select>
-                        {this.state.selectScheduleDate === "230" ? (
+                          id="inputState"
+                          className="form-control dropdown-setting1 ScheduleDate-to"
+                          value={
+                            this.state.selectScheduleDate
+                          }
+                          onChange={
+                            this.handleScheduleDateChange
+                          }
+                        >
+                          {this.state.ScheduleOption !==
+                            null &&
+                            this.state.ScheduleOption.map(
+                              (item, i) => (
+                                <option
+                                  key={i}
+                                  value={item.scheduleID}
+                                >
+                                  {item.scheduleName}
+                                </option>
+                              )
+                            )}
+                        </select>
+                        {(this.state.selectScheduleDate === "230" || this.state.selectScheduleDate === 230) ? (
                           <div className="ScheduleDate-to">
                             <span>
                               <label className="every1">Every</label>
@@ -2691,168 +2701,168 @@ debugger;
         <div className="container-fluid">
           <div className="store-settings-cntr reactreport">
             <div style={{ backgroundColor: "#fff" }}>
-            {this.state.loading === true ? (
-                  <div className="loader-icon"></div>
-                ) : (
-              <ReactTable
-                data={datareport}
-                columns={[
-                  {
-                    Header: (
-                      <span>
-                        Name
-                        <FontAwesomeIcon icon={faCaretDown} />
-                      </span>
-                    ),
-                    accessor: "reportName"
-                  },
-                  {
-                    Header: (
-                      <span>
-                        Schedule Status
-                        <FontAwesomeIcon icon={faCaretDown} />
-                      </span>
-                    ),
-                    accessor: "scheduleStatus"
-                  },
-                  {
-                    Header: (
-                      <span>
-                        Created by
-                        <FontAwesomeIcon icon={faCaretDown} />
-                      </span>
-                    ),
-                    accessor: "createdBy",
-                    Cell: row => {
-                      var ids = row.original["reportID"];
-                      return (
-                        <div>
+              {this.state.loading === true ? (
+                <div className="loader-icon"></div>
+              ) : (
+                  <ReactTable
+                    data={datareport}
+                    columns={[
+                      {
+                        Header: (
                           <span>
-                            Admin
-                            <Popover
-                              content={
-                                <>
-                                  <div>
-                                    <b>
-                                      <p className="title">
-                                        Created By: {row.original.createdBy}
-                                      </p>
-                                    </b>
-                                    <p className="sub-title">
-                                      Created Date: {row.original.createdDate}
-                                    </p>
-                                  </div>
-                                  <div>
-                                    <b>
-                                      <p className="title">
-                                        Updated By: {row.original.modifiedBy}
-                                      </p>
-                                    </b>
-                                    <p className="sub-title">
-                                      Updated Date: {row.original.modifiedDate}
-                                    </p>
-                                  </div>
-                                </>
-                              }
-                              placement="bottom"
-                            >
-                              <img
-                                className="info-icon-cp"
-                                src={BlackInfoIcon}
-                                alt="info-icon"
-                                id={ids}
-                              />
-                            </Popover>
-                          </span>
-                        </div>
-                      );
-                    }
-                  },
-                  {
-                    Header: (
-                      <span>
-                        Status
+                            Name
                         <FontAwesomeIcon icon={faCaretDown} />
-                      </span>
-                    ),
-                    accessor: "reportStatus"
-                  },
-                  {
-                    Header: <span>Actions</span>,
-                    accessor: "actionReport",
-                    Cell: row => (
-                      <div className="report-action">
-                        <div className="text-right">
-                        {row.original.isDownloaded==1?
-                        <img
-                          src={DownExcel}
-                          alt="download icon"
-                          className="downloadaction"
-                          onClick={this.handleDownload.bind(
-                            this,
-                            row.original.scheduleID,row.original.reportName
-                          )}
-                        /> : <img style={{display:"none"}}
-                        src={DownExcel}
-                        alt="download icon"
-                        className="downloadaction"
-                      />
-                        }
-                        <Popover
-                          content={
-                            <div className="samdel d-flex general-popover popover-body">
-                              <div className="del-big-icon">
-                                <img src={DelBigIcon} alt="del-icon" />
-                              </div>
-                              <div>
-                                <p className="font-weight-bold blak-clr">Delete file?</p>
-                                <p className="mt-1 fs-12">
-                                  Are you sure you want to delete this file?
-                                </p>
-                                <div className="del-can">
-                                  <a>CANCEL</a>
-                                  <button
-                                    className="butn"
-                                    onClick={this.handleDeleteReport.bind(
-                                      this,
-                                      row.original.reportID
-                                    )}
-                                  >
-                                    Delete
-                                  </button>
-                                </div>
-                              </div>
+                          </span>
+                        ),
+                        accessor: "reportName"
+                      },
+                      {
+                        Header: (
+                          <span>
+                            Schedule Status
+                        <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "scheduleStatus"
+                      },
+                      {
+                        Header: (
+                          <span>
+                            Created by
+                        <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "createdBy",
+                        Cell: row => {
+                          var ids = row.original["reportID"];
+                          return (
+                            <div>
+                              <span>
+                                Admin
+                            <Popover
+                                  content={
+                                    <>
+                                      <div>
+                                        <b>
+                                          <p className="title">
+                                            Created By: {row.original.createdBy}
+                                          </p>
+                                        </b>
+                                        <p className="sub-title">
+                                          Created Date: {row.original.createdDate}
+                                        </p>
+                                      </div>
+                                      <div>
+                                        <b>
+                                          <p className="title">
+                                            Updated By: {row.original.modifiedBy}
+                                          </p>
+                                        </b>
+                                        <p className="sub-title">
+                                          Updated Date: {row.original.modifiedDate}
+                                        </p>
+                                      </div>
+                                    </>
+                                  }
+                                  placement="bottom"
+                                >
+                                  <img
+                                    className="info-icon-cp"
+                                    src={BlackInfoIcon}
+                                    alt="info-icon"
+                                    id={ids}
+                                  />
+                                </Popover>
+                              </span>
                             </div>
-                          }
-                          placement="bottom"
-                          trigger="click"
-                        >
-                          <img
-                            src={RedDeleteIcon}
-                            alt="del-icon"
-                            className="del-btn"
-                            // onClick={() => this.show(this, "samdel" + ids)}
-                          />
-                        </Popover>
-            
-                        <button
-                          className="react-tabel-button editre"
-                          id="p-edit-pop-2"
-                          onClick={this.handleEditReport.bind(this,row.original)}
-                        >
-                          EDIT
+                          );
+                        }
+                      },
+                      {
+                        Header: (
+                          <span>
+                            Status
+                        <FontAwesomeIcon icon={faCaretDown} />
+                          </span>
+                        ),
+                        accessor: "reportStatus"
+                      },
+                      {
+                        Header: <span>Actions</span>,
+                        accessor: "actionReport",
+                        Cell: row => (
+                          <div className="report-action">
+                            <div className="text-right">
+                              {row.original.isDownloaded == 1 ?
+                                <img
+                                  src={DownExcel}
+                                  alt="download icon"
+                                  className="downloadaction"
+                                  onClick={this.handleDownload.bind(
+                                    this,
+                                    row.original.scheduleID, row.original.reportName
+                                  )}
+                                /> : <img style={{ display: "none" }}
+                                  src={DownExcel}
+                                  alt="download icon"
+                                  className="downloadaction"
+                                />
+                              }
+                              <Popover
+                                content={
+                                  <div className="samdel d-flex general-popover popover-body">
+                                    <div className="del-big-icon">
+                                      <img src={DelBigIcon} alt="del-icon" />
+                                    </div>
+                                    <div>
+                                      <p className="font-weight-bold blak-clr">Delete file?</p>
+                                      <p className="mt-1 fs-12">
+                                        Are you sure you want to delete this file?
+                                </p>
+                                      <div className="del-can">
+                                        <a>CANCEL</a>
+                                        <button
+                                          className="butn"
+                                          onClick={this.handleDeleteReport.bind(
+                                            this,
+                                            row.original.reportID
+                                          )}
+                                        >
+                                          Delete
+                                  </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                }
+                                placement="bottom"
+                                trigger="click"
+                              >
+                                <img
+                                  src={RedDeleteIcon}
+                                  alt="del-icon"
+                                  className="del-btn"
+                                // onClick={() => this.show(this, "samdel" + ids)}
+                                />
+                              </Popover>
+
+                              <button
+                                className="react-tabel-button editre"
+                                id="p-edit-pop-2"
+                                onClick={this.handleEditReport.bind(this, row.original)}
+                              >
+                                EDIT
                           {/* <label className="Table-action-edit-button-text">EDIT</label> */}
-                        </button>
-                        </div>
-                      </div>
-                    )
-                  }
-                ]}
-                // resizable={false}
-                defaultPageSize={10}
-                showPagination={true}
-                minRows={1}
-              />)}
+                              </button>
+                            </div>
+                          </div>
+                        )
+                      }
+                    ]}
+                    // resizable={false}
+                    defaultPageSize={10}
+                    showPagination={true}
+                    minRows={1}
+                  />)}
               {/* <div className="position-relative">
                 <div className="pagi">
                   <ul>
