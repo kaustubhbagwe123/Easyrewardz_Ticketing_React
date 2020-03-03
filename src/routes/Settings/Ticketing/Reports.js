@@ -2476,7 +2476,7 @@ class Reports extends Component {
             overlayId="logout-ovrly"
           // overlayId="logout-ovrly"
           >
-          <div id="TotalTicketCreated">
+    <div id="TotalTicketCreated">
           <div className="total-tic-title">
           <label>
           <b>Total Ticket Created</b>
@@ -2486,16 +2486,14 @@ class Reports extends Component {
            Ticket From Date 
            <div className="ticketreportdat mt-2">
            <DatePicker
-                          selected={this.state.TicketCreatedFromDate}
-                          onChange={this.handleTicketCreateDate.bind(this)}
-                          placeholderText="Creation Date"
-                          showMonthDropdown
-                          showYearDropdown
-                          dateFormat="dd/MM/yyyy"
-                          value={this.state.TicketCreatedDate}
-
-                        // className="form-control"
-                       />
+              selected={this.state.TicketCreatedFromDate}
+              onChange={this.handleTicketCreateDate.bind(this)}
+              placeholderText="Creation Date"
+              showMonthDropdown
+              showYearDropdown
+              dateFormat="dd/MM/yyyy"
+              value={this.state.TicketCreatedFromDate}
+            />
                      
            </div>
           
@@ -3068,7 +3066,7 @@ class Reports extends Component {
                         accessor: "actionReport",
                         Cell: row => (
                           <div className="report-action">
-                            <div className="text-right">
+                            <div>
                               {row.original.isDownloaded == 1 ?
                                 <img
                                   src={DownExcel}
@@ -3084,6 +3082,8 @@ class Reports extends Component {
                                   className="downloadaction"
                                 />
                               }
+                              </div>
+                              <div>
                               {row.original.scheduleID==0?"":
                               <Popover
                                 content={
@@ -3122,6 +3122,8 @@ class Reports extends Component {
                                 />
                               </Popover>
                               }
+                              </div>
+                              <div>
                               {row.original.scheduleID==0?"":
                               <button
                                 className="react-tabel-button editre"
@@ -3132,7 +3134,7 @@ class Reports extends Component {
                         
                               </button>
                               }
-                            </div>
+                              </div>
                           </div>
                         )
                       }
