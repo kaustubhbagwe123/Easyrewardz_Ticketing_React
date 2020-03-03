@@ -114,7 +114,8 @@ class TicketCRMRole extends Component {
       crmrolesCompulsion: "",
       visible: false,
       activePopOver: 0,
-      rowData: {}
+      rowData: {},
+      updateRoleNameCompulsion:""
 
     };
 
@@ -228,7 +229,7 @@ class TicketCRMRole extends Component {
   createUpdateCrmRole(e, addUpdate, crmRoleId) {
     debugger;
     let self = this;
-    if (self.validator.allValid()) {
+     if (self.validator.allValid()) {
 
       let RoleisActive, CRMRoleID, RoleName, ModulesEnabled="", ModulesDisabled="";
       if (e === 'add') {
@@ -260,8 +261,8 @@ class TicketCRMRole extends Component {
             ModulesDisabled += self.state.rowData.modules[j].moduleID + ","
           }
         }
-        ModulesEnabled = ModulesEnabled;
-        ModulesDisabled = ModulesDisabled;
+        ModulesEnabled = ModulesEnabled.substring(0, ModulesEnabled.length - 1);
+        ModulesDisabled = ModulesDisabled.substring(0, ModulesDisabled.length - 1);
       }
       axios({
         method: "post",
@@ -290,6 +291,7 @@ class TicketCRMRole extends Component {
             self.handleGetCRMRoles();
           } else if (addUpdate === 'update') {
             NotificationManager.success("CRM Role updated successfully.");
+            self.handleGetCRMRoles();
           }
         } else {
           if (e === 'add') {
@@ -318,11 +320,12 @@ class TicketCRMRole extends Component {
     }).then(function (res) {
       debugger;
       let status = res.data.message;
-      if (status === "Success") {
-        NotificationManager.success("CRM Role deleted successfully.");
+      if (status === "Record In use") {
+        NotificationManager.error("Record in use.");
+        
+      } else if(status==="Record deleted Successfully") {
+        NotificationManager.success("Record deleted Successfully.");
         self.handleGetCRMRoles();
-      } else {
-        NotificationManager.error("CRM Role not deleted.");
       }
     });
   }
