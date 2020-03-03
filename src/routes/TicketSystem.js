@@ -91,7 +91,7 @@ class TicketSystem extends Component {
       customerAttachOrder: 1,
       customerStoreStatus: 0,
       selectTicketTemplateId: 0,
-      selectedTicketActionType: "200",
+      selectedTicketActionType: "201",
       selectedChannelOfPurchase: "",
       selectedTemplateID: 0,
       priorityId: 0,
@@ -1071,10 +1071,12 @@ class TicketSystem extends Component {
                       this.state.selectedTicketActionType
                     )}
                   >
-                    {/* CREATE TICKET */}
-                    {this.state.selectedTicketActionType === "200"
+                    {/* {this.state.selectedTicketActionType === "200"
                       ? "SUBMIT AS SOLVED"
-                      : "CREATE TICKET"}
+                      : "CREATE TICKET"} */}
+                      {this.state.selectedTicketActionType === "201"
+                      ? "CREATE TICKET"
+                      : "SUBMIT AS SOLVED"}
                   </button>
                 </td>
               </tr>

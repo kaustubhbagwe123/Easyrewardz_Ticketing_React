@@ -172,7 +172,7 @@ class CreateSLA extends Component {
       // var separator = ",";
       // var values = indiSla.split(separator);
       for (var i = 0; i < values.length; i++) {
-        if (values[i] === issueId) {
+        if (values[i] == issueId) {
           values.splice(i, 1);
           indiSla = values.join(separator);
         }
@@ -551,7 +551,7 @@ class CreateSLA extends Component {
     }).then(function (res) {
       debugger;
       let status = res.data.message;
-      if (status === "Success") {
+      if (status === "Record deleted Successfully") {
         NotificationManager.success("SLA deleted successfully.", '', 2000);
         self.handleGetSLA();
       } else {
@@ -1209,7 +1209,7 @@ class CreateSLA extends Component {
                                     this.state.slaIssueType.map((item, i) => (
                                       <li key={i}>
                                         <input type="checkbox" id={"i" + item.issueTypeID} name="allSla" onChange={this.selectIndividualSLA.bind(this, item.issueTypeID)} />
-                                        <label htmlFor={"i" + item.issueTypeID}>{item.issueTypeName} <img src={Correct} alt="Checked" /></label>
+                                        <label htmlFor={"i" + item.issueTypeID}>{item.issueTypeName} <div><img src={Correct} alt="Checked" /></div></label>
                                         <span>{item.categoryName}</span>
                                         <span>{item.subCategoryName}</span>
                                       </li>

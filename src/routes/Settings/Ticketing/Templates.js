@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component,useState } from "react";
 import ReactTable from "react-table";
 import Demo from "../../../store/Hashtag";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -24,6 +24,9 @@ import {
 import Select from "react-select";
 
 import Sorting from "./../../../assets/Images/sorting.png";
+
+
+
 
 class Templates extends Component {
   constructor(props) {

@@ -15,6 +15,7 @@ import DelBigIcon from "./../../../assets/Images/del-big.png";
 import { authHeader } from "./../../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../../helpers/config";
+import SlaDue from "./../../SlaDue";
 import {
   NotificationContainer,
   NotificationManager
@@ -39,6 +40,11 @@ class Reports extends Component {
       ReportParams: "",
       brandData: [],
       Schedule_ID: 0,
+      TicketCreatedFromDate:"",
+      TicketCreatedEndDate:"",
+      TicketCreatedSource:"",
+      SelectedSourceIds:"",
+      OpenDefaultModal:false,
       CategoryData: [],
       SubCategoryData: [],
       IssueTypeData: [],
@@ -58,6 +64,7 @@ class Reports extends Component {
       selectedIssueType: 0,
       selectedClaimID: "0",
       selectedTicketSource: 0,
+      SlaDueData: SlaDue(),
       selectedInvoiceNo: "",
       selectedEmailID: "",
       selectedTicketID: "",
@@ -568,8 +575,20 @@ class Reports extends Component {
     this.setState({ NextPopup: false });
     this.handleReportList();
   }
+  handleDefaultPopupClose=()=> {
+    this.setState({ OpenDefaultModal: false });
+   // this.handleReportList();
+  }
   handleReportCreateDate(date) {
     this.setState({ ReportCreateDate: date });
+  }
+  handleTicketCreateDate(date) {
+    debugger;
+    this.setState({ TicketCreatedFromDate: date });
+  }
+  handleTicketCreateToDate(date) {
+    debugger;
+    this.setState({ TicketCreatedEndDate: date });
   }
   handleReportLastDate(date) {
     this.setState({ ReportLastDate: date });
@@ -1100,6 +1119,17 @@ class Reports extends Component {
     }
     this.setState({ selectedTeamMember: e, selectedTeamMemberCommaSeperated });
   };
+
+  setCreatedTicketSource = e => {
+    debugger;
+    if (e !== null) {
+      var selectedCreatedTicketSource = Array.prototype.map
+        .call(e, s => s.ticketSourceId)
+        .toString();
+    }
+    this.setState({ SelectedSourceIds: e, selectedCreatedTicketSource });
+  };
+
   setOnChangeReportData = e => {
     debugger;
 
@@ -1216,19 +1246,68 @@ class Reports extends Component {
   handleDownload = (id, name) => {
     debugger;
     let self = this;
+    if(id==0)
+    {
+        self.setState({OpenDefaultModal:true});
+    }
+    else{
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Report/DownloadReportSearch",
+        headers: authHeader(),
+        params: {
+          SchedulerID: id
+        }
+      }).then(function (res) {
+        debugger;
+        window.open(res.data.responseData, '_blank');
+        // self.downloadURI(res.data.responseData,name+".csv");
+      });
+    }
+   
+  }
 
+  downloadDefaultReport = (id, name) => {
+    debugger;
+    let self = this;
+    let sourceIds="";
+    if(this.state.TicketCreatedFromDate=="")
+    {
+      NotificationManager.error("Please enter from date");
+      return;
+    }
+    if(this.state.TicketCreatedEndDate=="")
+    {
+      NotificationManager.error("Please enter end date");
+      return;
+    }
+    if(this.state.SelectedSourceIds=="")
+    {
+      NotificationManager.error("Please select ticket source");
+      return;
+    }
+    else{
+      for (var i = 0; i < this.state.SelectedSourceIds.length; i++) {
+        sourceIds+=this.state.SelectedSourceIds[i].ticketSourceId+",";
+    } 
+    }
     axios({
       method: "post",
-      url: config.apiUrl + "/Report/DownloadReportSearch",
+      url: config.apiUrl + "/Report/DownloadDefaultReport",
       headers: authHeader(),
-      params: {
-        SchedulerID: id
+      data: {
+       
+        Ticket_CreatedFrom:moment(this.state.TicketCreatedFromDate).format("YYYY-MM-DD"),
+        Ticket_CreatedTo:moment(this.state.TicketCreatedEndDate).format("YYYY-MM-DD"),
+        Ticket_SourceIDs:sourceIds,
+        ReportTypeID:1
       }
     }).then(function (res) {
       debugger;
       window.open(res.data.responseData, '_blank');
       // self.downloadURI(res.data.responseData,name+".csv");
     });
+   
   }
 
   downloadURI = (uri, name) => {
@@ -1359,22 +1438,22 @@ class Reports extends Component {
     if (this.state.selectScheduleDate == "") {
       self.setState({ selectScheduleDate: 0 });
     }
-    if (this.state.Schedule_ID > 0) {
-      axios({
-        method: "post",
-        url: config.apiUrl + "/Report/SaveReportForDownload",
-        headers: authHeader(),
-        params: {
-          ScheduleID: this.state.Schedule_ID
-        }
-      }).then(function (res) {
-        // this.handleReportList(); 
-        self.handleReportList();
-        self.handleNextPopupClose();
-        NotificationManager.success("Report saved successfully for download.");
-      });
-    }
-    else {
+    // if (this.state.Schedule_ID > 0) {
+    //   axios({
+    //     method: "post",
+    //     url: config.apiUrl + "/Report/SaveReportForDownload",
+    //     headers: authHeader(),
+    //     params: {
+    //       ScheduleID: this.state.Schedule_ID
+    //     }
+    //   }).then(function (res) {
+    //     // this.handleReportList(); 
+    //     self.handleReportList();
+    //     self.handleNextPopupClose();
+    //     NotificationManager.success("Report saved successfully for download.");
+    //   });
+    // }
+    // else {
       axios({
         method: "post",
         url: config.apiUrl + "/Ticketing/Schedule",
@@ -1444,7 +1523,7 @@ class Reports extends Component {
           NotificationManager.error("Report name already exist.");
         }
       });
-    }
+  //  }
 
 
     // else{
@@ -1585,6 +1664,9 @@ class Reports extends Component {
               </button>
             </div>
           </div>
+
+          
+          
           <Modal
             open={this.state.AddReportPopup}
             onClose={this.handleAddReportClose}
@@ -1957,8 +2039,14 @@ class Reports extends Component {
                         value={this.state.selectedSLAStatus}
                         onChange={this.setOnChangeReportData}
                       >
-                        <option>2 Days</option>
-                        <option>3 Days</option>
+                        <option value="0">SLA Status</option>
+                        {this.state.SlaDueData !== null &&
+                          this.state.SlaDueData.map((item, i) => (
+                            <option key={i} value={item.slaDueID}>
+                              {item.slaDueName}
+                            </option>
+                            )
+                          )}
                       </select>
                     </div>
                     <div className="col-md-3 ticketreport">
@@ -2376,6 +2464,94 @@ class Reports extends Component {
               </div>
             </div>
           </Modal>
+         
+          <Modal
+            open={this.state.OpenDefaultModal}
+            onClose={this.handleDefaultPopupClose}
+            closeIconId="sdsg"
+            modalId="nextdefaultpopup"
+            classNames={{
+              modal: "schedule-width"
+            }}
+            overlayId="logout-ovrly"
+          // overlayId="logout-ovrly"
+          >
+          <div id="TotalTicketCreated">
+          <div className="total-tic-title">
+          <label>
+          <b>Total Ticket Created</b>
+          </label>
+          </div>
+          <div className="ticketreport down-tic-rep">
+           Ticket From Date 
+           <div className="ticketreportdat mt-2">
+           <DatePicker
+                          selected={this.state.TicketCreatedFromDate}
+                          onChange={this.handleTicketCreateDate.bind(this)}
+                          placeholderText="Creation Date"
+                          showMonthDropdown
+                          showYearDropdown
+                          dateFormat="dd/MM/yyyy"
+                          value={this.state.TicketCreatedDate}
+
+                        // className="form-control"
+                       />
+                     
+           </div>
+          
+          </div>
+          <div className="ticketreport down-tic-rep">
+           Ticket To Date 
+           <div className="ticketreportdat mt-2">
+           <DatePicker
+                          selected={this.state.TicketCreatedEndDate}
+                          onChange={this.handleTicketCreateToDate.bind(this)}
+                          placeholderText="To Date"
+                          showMonthDropdown
+                          showYearDropdown
+                          dateFormat="dd/MM/yyyy"
+                          value={this.state.TicketCreatedEndDate}
+
+                        // className="form-control"
+                       />
+           </div>
+          
+          </div>
+          <div>
+           Ticket Source
+           <div className="mt-2 normal-dropdown dropdown-setting1 schedule-multi">
+                          <Select
+                            getOptionLabel={option => option.ticketSourceName}
+                            getOptionValue={
+                              option => option.ticketSourceId //id
+                            }
+                            options={this.state.TicketSourceData}
+                            placeholder="Ticket Source"
+                            // menuIsOpen={true}
+                            closeMenuOnSelect={false}
+                            onChange={this.setCreatedTicketSource.bind(this)}
+                            value={this.state.SelectedSourceIds}
+                            // showNewOptionAtTop={false}
+                            isMulti
+                          />
+                        </div>
+          </div>
+          </div>
+          <div>
+                          <button
+                            className="scheduleBtn"
+                            onClick={this.downloadDefaultReport.bind(this)}
+                          >
+                            <label className="addLable">Download</label>
+                          </button>
+                        </div>
+                        <div onClick={this.handleDefaultPopupClose}>
+                          <button type="button" className="scheduleBtncancel mt-3 w-100">
+                            CANCEL
+                          </button>
+                        </div>
+        </Modal>
+
           <Modal
             open={this.state.NextPopup}
             onClose={this.handleNextPopupClose}
@@ -2908,6 +3084,7 @@ class Reports extends Component {
                                   className="downloadaction"
                                 />
                               }
+                              {row.original.scheduleID==0?"":
                               <Popover
                                 content={
                                   <div className="samdel d-flex general-popover popover-body">
@@ -2944,15 +3121,17 @@ class Reports extends Component {
                                 // onClick={() => this.show(this, "samdel" + ids)}
                                 />
                               </Popover>
-
+                              }
+                              {row.original.scheduleID==0?"":
                               <button
                                 className="react-tabel-button editre"
                                 id="p-edit-pop-2"
                                 onClick={this.handleEditReport.bind(this, row.original)}
                               >
                                 EDIT
-                          {/* <label className="Table-action-edit-button-text">EDIT</label> */}
+                        
                               </button>
+                              }
                             </div>
                           </div>
                         )

@@ -3587,6 +3587,13 @@ table tr th:last-child {
 .category-box input + label img {
   display: none;
 }
+.category-box input + label div {
+  float: right;
+  border: 2px solid #2561a8;
+  width: 16px;
+  height: 16px;
+  margin-top: 5px;
+}
 .category-box input {
   display: none;
 }
@@ -8030,6 +8037,14 @@ table tr th:last-child {
 .report-action {
   width: 115px;
 }
+.down-tic-rep input {
+  height: 43px;
+}
+.total-tic-title {
+  text-align: center;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
 /* Reports Css end Kalpesh */
 /* storeReports css start by Shlok */
 #addStorereport-modal {
@@ -10816,9 +10831,20 @@ table tr th:last-child {
 }
 .issuetype-cusdrp .category-box label img {
   height: auto;
-  width: 15px;
-  float: right;
-  margin: 5px 10px 0;
+  /* width: 15px; */
+  width: 10px;
+  /* float: right; */
+  /* margin: 5px 10px 0; */
+  margin: 2px 1px 0;
+}
+#storeEditModal {
+  border-radius: 8px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+  padding: 10px;
+  margin: 100px auto;
+  display: inline-block;
+  max-width: 50%;
+  min-width: 50%;
 }
 .commentImg{
   width: 25px;
