@@ -3555,6 +3555,10 @@ table tr th:last-child {
 .my-tic-ckeditor .cke_inner {
   min-height: 300px;
 }
+.tic-det-progress .progress {
+  height: 8px;
+  margin-top: 8px;
+}
 /* my ticket ends */
 
 /* .cke_editable {
