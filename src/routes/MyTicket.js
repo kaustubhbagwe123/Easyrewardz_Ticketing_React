@@ -1644,6 +1644,7 @@ class MyTicket extends Component {
         TicketID: id
       }
     }).then(function(res) {
+      debugger;
       let status = res.data.message;
       let data = res.data.responseData;
       if (status === "Success") {
@@ -2637,7 +2638,7 @@ class MyTicket extends Component {
                       </div>
                       <div className="card-space-1">
                         <label className="target-closure-date">
-                          Target Closure Date &nbsp;
+                          Target Closure Date &nbsp; 
                         </label>
                         <label className="Date-target">
                           {ticketDetailsData.targetClouredate}
@@ -2661,7 +2662,7 @@ class MyTicket extends Component {
                         <Progress multi>
                           {this.state.progressDataWithcColor.map(function(item) {
                             if (item.color === "No Color") {
-                              return <Progress bar value={item.value}></Progress>;
+                              return <Progress bar></Progress>;
                             }
                             if (item.color === "Orange") {
                               return (
@@ -2696,7 +2697,8 @@ class MyTicket extends Component {
                         </Progress>
                         </div>
                       <p className="logout-label font-weight-bold prog-indi-1">
-                        2 day
+                        {/* 2 day */}
+                        {ticketDetailsData.durationRemaining}
                       </p>
                     </div>
                   </div>
