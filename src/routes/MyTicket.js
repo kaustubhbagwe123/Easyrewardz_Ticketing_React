@@ -2641,7 +2641,7 @@ class MyTicket extends Component {
                           Target Closure Date &nbsp; 
                         </label>
                         <label className="Date-target">
-                          {ticketDetailsData.targetClouredate}
+                          {ticketDetailsData.targetClosuredate}
                         </label>
                       </div>
                       <div className="mobilenumber-resp">
