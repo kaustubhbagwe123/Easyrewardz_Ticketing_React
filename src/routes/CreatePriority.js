@@ -65,6 +65,7 @@ class CreatePriority extends Component {
   componentDidMount() {
     this.handleGetPriorityList();
   }
+  
   handleGetPriorityList() {
     debugger;
     let self = this;
@@ -195,8 +196,8 @@ class CreatePriority extends Component {
       });
     } else {
       this.setState({
-        editpriorityNameCompulsion: "Please Enter Priority Name",
-        editstatusCompulsion: "Please Select Status"
+        editpriorityNameCompulsion: "Please enter priority name",
+        editstatusCompulsion: "Please select status"
       });
     }
   }
@@ -561,7 +562,8 @@ class CreatePriority extends Component {
                                       </div>
                                       <br />
                                       <div>
-                                        <label className="pop-over-cancle">
+                                        <label className="pop-over-cancle" href={Demo.BLANK_LINK}
+                                         >
                                           CANCEL
                                         </label>
                                         <button
