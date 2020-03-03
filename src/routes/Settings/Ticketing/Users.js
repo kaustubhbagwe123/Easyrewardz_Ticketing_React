@@ -2315,6 +2315,7 @@ if(datar==="add"){
                 <div className="table-cntr table-height TicketUserReact">
                   <ReactTable
                     data={userData}
+                    minRows={1}
                     columns={[
                       {
                         Header: (

@@ -12,6 +12,7 @@ import SearchBlackImg from "./../assets/Images/searchBlack.png";
 import LoadingImg from "./../assets/Images/loading.png";
 import EyeImg from "./../assets/Images/eye.png";
 import BillInvoiceImg from "./../assets/Images/bill-Invoice.png";
+import commentImg from "./../assets/Images/page-icon.png";
 import MsgImg from "./../assets/Images/msg.png";
 import Down1Img from "./../assets/Images/down-1.png";
 import PlusImg from "./../assets/Images/plus.png";
@@ -24,7 +25,7 @@ import FacebookImg from "./../assets/Images/facebook.png";
 import ClipImg from "./../assets/Images/clip.png";
 import PencilImg from "./../assets/Images/pencil.png";
 import CancelImg from "./../assets/Images/cancel.png";
-import { Collapse, CardBody, Card, Progress } from "reactstrap";
+import { UncontrolledCollapse, Collapse, CardBody, Card, Progress } from "reactstrap";
 import { Checkbox } from "antd";
 import CustomerIcon from "./../assets/Images/customer-icon.png";
 import UserIcon from "./../assets/Images/UserIcon.png";
@@ -176,7 +177,9 @@ class MyTicket extends Component {
       SelectedAllOrder: [],
       SelectedAllItem: [],
       progressBarData: [],
-      progressDataWithcColor: []
+      progressDataWithcColor: [],
+      collapseId: "",
+      tckcmtMSGCompulsory:''
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -879,11 +882,11 @@ class MyTicket extends Component {
   HandleStoreModalClose() {
     this.setState({ storemodal: false, SearchStore: "" });
   }
-  handleUpOpen() {
-    this.setState({ collapseUp: true });
+  handleUpOpen(id) {
+    this.setState({ collapseUp: true, collapseId: id });
   }
-  handleUpClose() {
-    this.setState({ collapseUp: false });
+  handleUpClose(id) {
+    this.setState({ collapseUp: false, collapseId: id });
   }
   onOpenModal = () => {
     this.setState({ open: true });
@@ -907,9 +910,9 @@ class MyTicket extends Component {
   HandleEmailCollapseOpen() {
     this.setState(state => ({ EmailCollapse: !state.EmailCollapse }));
   }
-  handleCommentCollapseOpen() {
+  handleCommentCollapseOpen(Mail_Id) {
     debugger;
-    this.setState(state => ({ CommentCollapse: !state.CommentCollapse }));
+    this.setState(state => ({ CommentCollapse: !state.CommentCollapse, mailId:Mail_Id}));
   }
   handleCommentCollapseClose() {
     this.setState(state => ({ CommentCollapse: false }));
@@ -1456,6 +1459,7 @@ class MyTicket extends Component {
           IsSent: 0,
           IsCustomerComment: 0,
           IsResponseToCustomer: 1,
+          IsInternalComment: 0,
           MailID: this.state.mailId
         }
       }).then(function(res) {
@@ -1463,6 +1467,7 @@ class MyTicket extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetMessageDetails(self.state.ticket_Id);
+          self.handleGetCountOfTabs(self.state.ticket_Id)
           self.hanldeCommentClose2();
           self.setState({
             mailFiled: {},
@@ -1504,6 +1509,7 @@ class MyTicket extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetMessageDetails(self.state.ticket_Id);
+          self.handleGetCountOfTabs(self.state.ticket_Id)
           self.HandleEmailCollapseOpen();
           NotificationManager.success("Mail send successfully.", "", 1500);
           self.setState({
@@ -1517,33 +1523,43 @@ class MyTicket extends Component {
       });
     } else if (isSend === 3) {
       // ----------------IsCustomerCommet Comment modal Call api ------------------
-      axios({
-        method: "post",
-        url: config.apiUrl + "/Ticketing/MessageComment",
-        headers: authHeader(),
-        data: {
-          TicketID: this.state.ticket_Id,
-          TicketMailBody: this.state.ticketcommentMSG,
-          IsSent: 1,
-          IsCustomerComment: 0
-        }
-      }).then(function(res) {
-        debugger;
-        let status = res.data.message;
-        if (status === "Success") {
-          NotificationManager.success("Comment Added successfully.", "", 2000);
-          self.handleGetMessageDetails(self.state.ticket_Id);
-          self.handleCommentCollapseOpen();
-          self.setState({
-            ticketcommentMSG: ""
-          });
-        } else {
-          NotificationManager.error(status, "", 2000);
-          self.setState({
-            ticketcommentMSG: ""
-          });
-        }
-      });
+      if(this.state.ticketcommentMSG.length > 0){
+        axios({
+          method: "post",
+          url: config.apiUrl + "/Ticketing/MessageComment",
+          headers: authHeader(),
+          data: {
+            TicketID: this.state.ticket_Id,
+            TicketMailBody: this.state.ticketcommentMSG,
+            IsSent: 1,
+            IsCustomerComment: 0,
+            IsInternalComment: 1,
+            MailID:this.state.mailId
+          }
+        }).then(function(res) {
+          debugger;
+          let status = res.data.message;
+          if (status === "Success") {
+            NotificationManager.success("Comment Added successfully.", "", 2000);
+            self.handleGetMessageDetails(self.state.ticket_Id);
+            self.handleGetCountOfTabs(self.state.ticket_Id)
+            self.handleCommentCollapseOpen();
+            self.setState({
+              ticketcommentMSG: ""
+            });
+          } else {
+            NotificationManager.error(status, "", 2000);
+            self.setState({
+              ticketcommentMSG: ""
+            });
+          }
+        });
+      }else{
+        this.setState({
+          tckcmtMSGCompulsory:'Comment field is compulsory.'
+        })
+      }
+      
     } else {
       axios({
         method: "post",
@@ -1566,6 +1582,7 @@ class MyTicket extends Component {
         let status = res.data.message;
         if (status === "Success") {
           self.handleGetMessageDetails(self.state.ticket_Id);
+          self.handleGetCountOfTabs(self.state.ticket_Id)
           self.setState({
             mailFiled: {},
             // mailSubject: "",
@@ -4822,6 +4839,16 @@ class MyTicket extends Component {
                         <label className="action-label">Action</label>
                       </div>
                     </div>
+                    <div className="col-12 col-xs-12 col-sm-2 col-md-12 mob-flex">
+                      <div className="inlineGridTicket">
+                        <label
+                          className="comment-text"
+                          onClick={this.handleCommentCollapseOpen.bind(this)}
+                        >
+                          Comment
+                        </label>
+                      </div>
+                    </div>
                     {this.state.messageDetails !== null &&
                       this.state.messageDetails.map((item, i) => {
                         return (
@@ -4846,7 +4873,7 @@ class MyTicket extends Component {
                             </div>
                             {item.msgDetails !== null &&
                               item.msgDetails.map((details, j) => {
-                                // debugger;
+                                debugger;
                                 return (
                                   <div key={j}>
                                     <div>
@@ -4900,9 +4927,13 @@ class MyTicket extends Component {
                                           </div>
                                         </div>
                                         <div className="col-12 col-xs-12 col-sm-6 col-md-7">
+                                          {details.latestMessageDetails.isInternalComment === true ? ( <img
+                                                src={commentImg}
+                                                alt="comment"
+                                                className="commentImg"
+                                              />):(null)}
                                           <label
                                             className="label-5"
-                                            style={{ display: "block" }}
                                           >
                                             {
                                               details.latestMessageDetails
@@ -4911,7 +4942,23 @@ class MyTicket extends Component {
                                           </label>
                                         </div>
                                         <div className="col-12 col-xs-12 col-sm-2 col-md-2 mob-flex">
-                                          {HidecollapsUp}
+                                          {this.state.collapseUp && ('i' + details.latestMessageDetails.mailID === this.state.collapseId) ? (
+                                            <img
+                                              src={Up1Img}
+                                              alt="up"
+                                              className="up-1"
+                                              onClick={this.handleUpClose.bind(this, 'i' + details.latestMessageDetails.mailID)}
+                                              id={'i' + details.latestMessageDetails.mailID}
+                                            />
+                                          ) : (
+                                            <img
+                                              src={Down1Img}
+                                              alt="up"
+                                              className="up-1"
+                                              onClick={this.handleUpOpen.bind(this, 'i' + details.latestMessageDetails.mailID)}
+                                              id={'i' + details.latestMessageDetails.mailID}
+                                            />
+                                          )}
                                           <div className="inlineGridTicket">
                                             {details.latestMessageDetails
                                               .isCustomerComment === 1 ? (
@@ -4930,7 +4977,8 @@ class MyTicket extends Component {
                                             <label
                                               className="comment-text"
                                               onClick={this.handleCommentCollapseOpen.bind(
-                                                this
+                                                this,details.latestMessageDetails
+                                                .mailID
                                               )}
                                             >
                                               Comment
@@ -4950,8 +4998,8 @@ class MyTicket extends Component {
                                       <div className="row card-op-out">
                                         <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
                                         <div className="col-12 col-xs-12 col-sm-6 col-md-7">
-                                          <Collapse
-                                            isOpen={this.state.collapseUp}
+                                          <UncontrolledCollapse toggler={'#i' + details.latestMessageDetails.mailID}
+                                            // isOpen={this.state.collapseUp}
                                           >
                                             <Card>
                                               <CardBody>
@@ -5008,7 +5056,7 @@ class MyTicket extends Component {
                                                 )}
                                               </CardBody>
                                             </Card>
-                                          </Collapse>
+                                          </UncontrolledCollapse>
                                         </div>
                                         <div className="col-12 col-xs-12 col-sm-2"></div>
                                       </div>
@@ -5056,6 +5104,11 @@ class MyTicket extends Component {
                             onChange={this.handleNoteOnChange}
                           ></textarea>
                         </div>
+                        {this.state.ticketcommentMSG.length === 0 && (
+                          <p style={{ color: "red", marginBottom: "0px" }}>
+                            {this.state.tckcmtMSGCompulsory}
+                          </p>
+                        )}
                         <div className="SendCommentBtn">
                           <button
                             className="SendCommentBtn1"

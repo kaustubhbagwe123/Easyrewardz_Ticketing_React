@@ -10828,3 +10828,8 @@ table tr th:last-child {
   float: right;
   margin: 5px 10px 0;
 }
+.commentImg{
+  width: 25px;
+    height: 25px;
+    padding: 5px;
+}
