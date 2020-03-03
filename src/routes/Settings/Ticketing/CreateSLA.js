@@ -172,7 +172,7 @@ class CreateSLA extends Component {
       // var separator = ",";
       // var values = indiSla.split(separator);
       for (var i = 0; i < values.length; i++) {
-        if (values[i] === issueId) {
+        if (values[i] == issueId) {
           values.splice(i, 1);
           indiSla = values.join(separator);
         }
