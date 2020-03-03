@@ -3628,6 +3628,11 @@ table tr th:last-child {
   cursor: pointer;
 }
 
+.alert-proper {
+  margin-top: 0 !important;
+  margin-right: 35px;
+}
+
 /* chetan css end */
 /******************************************************/
 
