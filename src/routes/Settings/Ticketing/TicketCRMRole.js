@@ -496,12 +496,7 @@ class TicketCRMRole extends Component {
                   placement="bottom"
                   trigger="click"
                 >
-                  {/* <button className="react-tabel-button" id="p-edit-pop-2" onClick={() => this.updateCrmRole.bind(this, row.original)}> */}
-                  {/* <button className="react-tabel-button" id="p-edit-pop-2" onClick={() => this.showPopOver(row.index)}>
-                    <label className="Table-action-edit-button-text">
-                      EDIT
-                    </label>
-                  </button> */}
+                 
                   <label className="Table-action-edit-button-text">
                     <MyButton>
                       EDIT

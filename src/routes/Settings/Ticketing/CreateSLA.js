@@ -1209,7 +1209,7 @@ class CreateSLA extends Component {
                                     this.state.slaIssueType.map((item, i) => (
                                       <li key={i}>
                                         <input type="checkbox" id={"i" + item.issueTypeID} name="allSla" onChange={this.selectIndividualSLA.bind(this, item.issueTypeID)} />
-                                        <label htmlFor={"i" + item.issueTypeID}>{item.issueTypeName} <img src={Correct} alt="Checked" /></label>
+                                        <label htmlFor={"i" + item.issueTypeID}>{item.issueTypeName} <div><img src={Correct} alt="Checked" /></div></label>
                                         <span>{item.categoryName}</span>
                                         <span>{item.subCategoryName}</span>
                                       </li>
