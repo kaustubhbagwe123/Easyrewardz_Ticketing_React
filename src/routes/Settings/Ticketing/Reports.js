@@ -15,6 +15,7 @@ import DelBigIcon from "./../../../assets/Images/del-big.png";
 import { authHeader } from "./../../../helpers/authHeader";
 import axios from "axios";
 import config from "./../../../helpers/config";
+import SlaDue from "./../../SlaDue";
 import {
   NotificationContainer,
   NotificationManager
@@ -63,6 +64,7 @@ class Reports extends Component {
       selectedIssueType: 0,
       selectedClaimID: "0",
       selectedTicketSource: 0,
+      SlaDueData: SlaDue(),
       selectedInvoiceNo: "",
       selectedEmailID: "",
       selectedTicketID: "",
@@ -2036,8 +2038,13 @@ class Reports extends Component {
                         value={this.state.selectedSLAStatus}
                         onChange={this.setOnChangeReportData}
                       >
-                        <option>2 Days</option>
-                        <option>3 Days</option>
+                        {this.state.SlaDueData !== null &&
+                          this.state.SlaDueData.map((item, i) => (
+                            <option key={i} value={item.slaDueID}>
+                              {item.slaDueName}
+                            </option>
+                            )
+                          )}
                       </select>
                     </div>
                     <div className="col-md-3 ticketreport">
