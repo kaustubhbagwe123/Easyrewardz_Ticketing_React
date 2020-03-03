@@ -14,6 +14,7 @@ class OpenByPriorityPie extends Component {
         values: []
       },
       sort: null
+     
     };
 
     this.handleGetDashboardGraphData = this.handleGetDashboardGraphData.bind(
@@ -68,6 +69,7 @@ class OpenByPriorityPie extends Component {
           height={260}
           margin={{ top: 10, bottom: 10, left: 100, right: 100 }}
           sort={this.state.sort}
+          
         />
       </div>
     )

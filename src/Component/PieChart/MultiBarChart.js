@@ -43,7 +43,10 @@ class MultiBarChart extends Component {
           }
         },
         tooltip: {
-          enabled: false
+          //enabled: false
+          marker: {
+            fillColors: [ '#2561A8','#75A5DE']
+          }
         }
       },
       seriesMixedChart: [ {

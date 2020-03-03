@@ -36,7 +36,10 @@ class TicketGenerationSourceBar extends Component {
           }
         },
         tooltip: {
-          enabled: false
+          //enabled: false
+          marker: {
+            fillColors: [ '#2561A8']
+          }
         }
       },
       series: [
