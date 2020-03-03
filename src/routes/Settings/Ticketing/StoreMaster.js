@@ -69,16 +69,17 @@ class StoreMaster extends Component {
       contact_PhoneCompulsion: "",
       StateCompulsion: "",
       CityCompulsion: "",
-      brandCompulsion:"",
-      statusCompulsion:"",
-      StatusModel:false,
-      sortAllData:[],
-      sortStoreName:[],
-      sortStoreCode:[],
-      sortCity:[],
-      sortState:[],
-      sortPincode:[],
-      sortColumn:""
+      brandCompulsion: "",
+      statusCompulsion: "",
+      StatusModel: false,
+      sortAllData: [],
+      sortStoreName: [],
+      sortStoreCode: [],
+      sortCity: [],
+      sortState: [],
+      sortPincode: [],
+      sortColumn: "",
+      editmodel: false
     };
     this.handleGetStoreMasterData = this.handleGetStoreMasterData.bind(this);
     this.handleGetBrandList = this.handleGetBrandList.bind(this);
@@ -89,25 +90,24 @@ class StoreMaster extends Component {
     this.handleUpdateData = this.handleUpdateData.bind(this);
     this.StatusOpenModel = this.StatusOpenModel.bind(this);
     this.StatusCloseModel = this.StatusCloseModel.bind(this);
+    this.toggleEditModal = this.toggleEditModal.bind(this);
   }
   componentDidMount() {
     this.handleGetStoreMasterData();
-     this.handleGetBrandList();
+    this.handleGetBrandList();
     this.handleGetStateList();
     this.handleGetRegionList();
     this.handleGetStoreTypeList();
   }
 
   sortStatusAtoZ() {
-    debugger;
+    
     var itemsArray = [];
     itemsArray = this.state.hierarchyData;
 
-    itemsArray.sort(function(a, b)  {
-      return    a.ticketStatus > b.ticketStatus ? 1:-1;
-        });
-
-    
+    itemsArray.sort(function(a, b) {
+      return a.ticketStatus > b.ticketStatus ? 1 : -1;
+    });
 
     this.setState({
       hierarchyData: itemsArray
@@ -115,13 +115,11 @@ class StoreMaster extends Component {
     this.StatusCloseModel();
   }
   sortStatusZtoA() {
-    debugger;
+    
     var itemsArray = [];
     itemsArray = this.state.hierarchyData;
-    itemsArray.sort((a, b)=> {
-      return a.ticketStatus < b.ticketStatus
-         
-      
+    itemsArray.sort((a, b) => {
+      return a.ticketStatus < b.ticketStatus;
     });
     this.setState({
       hierarchyData: itemsArray
@@ -130,56 +128,38 @@ class StoreMaster extends Component {
   }
 
   StatusOpenModel(data) {
-    debugger;
-  
-    this.setState({ StatusModel: true,sortColumn:data });
+    
+
+    this.setState({ StatusModel: true, sortColumn: data });
   }
   StatusCloseModel() {
     this.setState({ StatusModel: false });
   }
 
-  setSortCheckStatus = (column,e) => {
-    debugger;
+  setSortCheckStatus = (column, e) => {
     
+
     var itemsArray = [];
     var data = e.currentTarget.value;
-    if(column==="all"){
-      itemsArray=this.state.sortAllData;
-     
-     
-    }else if(column==="storeName"){
-        this.state.storeData=this.state.sortAllData;
-        itemsArray = this.state.storeData.filter(
-          a => a.storeName === data
-        );
-        
-      }else if(column==="storeCode"){
-        this.state.storeData=this.state.sortAllData;
-        itemsArray = this.state.storeData.filter(
-          a => a.storeCode === data
-        );
-       
-      }else if(column==="cityName"){
-        this.state.storeData=this.state.sortAllData;
-        itemsArray = this.state.storeData.filter(
-          a => a.cityName === data
-        );
-       
-      }else if(column==="stateName"){
-        this.state.storeData=this.state.sortAllData;
-        itemsArray = this.state.storeData.filter(
-          a => a.stateName === data
-        );
-       
-      }else if(column==="pinCode"){
-        this.state.storeData=this.state.sortAllData;
-        itemsArray = this.state.storeData.filter(
-          a => a.pinCode === data
-        );
-       
-      }
-     
-    
+    if (column === "all") {
+      itemsArray = this.state.sortAllData;
+    } else if (column === "storeName") {
+      this.state.storeData = this.state.sortAllData;
+      itemsArray = this.state.storeData.filter(a => a.storeName === data);
+    } else if (column === "storeCode") {
+      this.state.storeData = this.state.sortAllData;
+      itemsArray = this.state.storeData.filter(a => a.storeCode === data);
+    } else if (column === "cityName") {
+      this.state.storeData = this.state.sortAllData;
+      itemsArray = this.state.storeData.filter(a => a.cityName === data);
+    } else if (column === "stateName") {
+      this.state.storeData = this.state.sortAllData;
+      itemsArray = this.state.storeData.filter(a => a.stateName === data);
+    } else if (column === "pinCode") {
+      this.state.storeData = this.state.sortAllData;
+      itemsArray = this.state.storeData.filter(a => a.pinCode === data);
+    }
+
     this.setState({
       storeData: itemsArray
     });
@@ -187,7 +167,7 @@ class StoreMaster extends Component {
   };
 
   handleGetStoreMasterData() {
-    debugger;
+    
     let self = this;
     this.setState({ loading: true });
     axios({
@@ -195,91 +175,85 @@ class StoreMaster extends Component {
       url: config.apiUrl + "/Store/StoreList",
       headers: authHeader()
     }).then(function(res) {
-      debugger;
+      
       let status = res.data.message;
       let data = res.data.responseData;
-       
-      if(data !== null){
 
-        self.state.sortAllData=data;
-        var unique=[];
-      var distinct = [];
-      for( let i = 0; i < data.length; i++ ){
-        if( !unique[data[i].storeName]){
-          distinct.push(data[i].storeName);
-          unique[data[i].storeName]=1;
+      if (data !== null) {
+        self.state.sortAllData = data;
+        var unique = [];
+        var distinct = [];
+        for (let i = 0; i < data.length; i++) {
+          if (!unique[data[i].storeName]) {
+            distinct.push(data[i].storeName);
+            unique[data[i].storeName] = 1;
+          }
         }
-      }
-      for (let i = 0; i < distinct.length; i++) {
-        self.state.sortStoreName.push({ storeName: distinct[i] });
-      }
-  
-      var unique=[];
-      var distinct = [];
-      for( let i = 0; i < data.length; i++ ){
-        if( !unique[data[i].storeCode]){
-          distinct.push(data[i].storeCode);
-          unique[data[i].storeCode]=1;
+        for (let i = 0; i < distinct.length; i++) {
+          self.state.sortStoreName.push({ storeName: distinct[i] });
         }
-      }
-      for (let i = 0; i < distinct.length; i++) {
-        self.state.sortStoreCode.push({ storeCode: distinct[i] });
-      }
-  
-      var unique=[];
-      var distinct = [];
-      for( let i = 0; i < data.length; i++ ){
-        if( !unique[data[i].cityName]){
-          distinct.push(data[i].cityName);
-          unique[data[i].cityName]=1;
-        }
-      }
-      for (let i = 0; i < distinct.length; i++) {
-        self.state.sortCity.push({ cityName: distinct[i] });
-      }
-  
-      var unique=[];
-      var distinct = [];
-      for( let i = 0; i < data.length; i++ ){
-        if( !unique[data[i].stateName]){
-          distinct.push(data[i].stateName);
-          unique[data[i].stateName]=1;
-        }
-      }
-      for (let i = 0; i < distinct.length; i++) {
-        self.state.sortState.push({ stateName: distinct[i] });
-      }
-  
-      var unique=[];
-      var distinct = [];
-      for( let i = 0; i < data.length; i++ ){
-        if( !unique[data[i].pinCode]){
-          distinct.push(data[i].pinCode);
-          unique[data[i].pinCode]=1;
-        }
-      }
-      for (let i = 0; i < distinct.length; i++) {
-        self.state.sortPincode.push({ pinCode: distinct[i] });
-      }
 
+        var unique = [];
+        var distinct = [];
+        for (let i = 0; i < data.length; i++) {
+          if (!unique[data[i].storeCode]) {
+            distinct.push(data[i].storeCode);
+            unique[data[i].storeCode] = 1;
+          }
+        }
+        for (let i = 0; i < distinct.length; i++) {
+          self.state.sortStoreCode.push({ storeCode: distinct[i] });
+        }
+
+        var unique = [];
+        var distinct = [];
+        for (let i = 0; i < data.length; i++) {
+          if (!unique[data[i].cityName]) {
+            distinct.push(data[i].cityName);
+            unique[data[i].cityName] = 1;
+          }
+        }
+        for (let i = 0; i < distinct.length; i++) {
+          self.state.sortCity.push({ cityName: distinct[i] });
+        }
+
+        var unique = [];
+        var distinct = [];
+        for (let i = 0; i < data.length; i++) {
+          if (!unique[data[i].stateName]) {
+            distinct.push(data[i].stateName);
+            unique[data[i].stateName] = 1;
+          }
+        }
+        for (let i = 0; i < distinct.length; i++) {
+          self.state.sortState.push({ stateName: distinct[i] });
+        }
+
+        var unique = [];
+        var distinct = [];
+        for (let i = 0; i < data.length; i++) {
+          if (!unique[data[i].pinCode]) {
+            distinct.push(data[i].pinCode);
+            unique[data[i].pinCode] = 1;
+          }
+        }
+        for (let i = 0; i < distinct.length; i++) {
+          self.state.sortPincode.push({ pinCode: distinct[i] });
+        }
       }
-     
 
       if (status === "Success") {
-        debugger;
-        if(data!==null)
-        {
+        
+        if (data !== null) {
           self.setState({
             storeData: data,
             loading: false
           });
-        }else{
+        } else {
           self.setState({
             storeData: []
           });
         }
-       
-      
       } else {
         self.setState({
           storeData: []
@@ -294,7 +268,7 @@ class StoreMaster extends Component {
       url: config.apiUrl + "/Brand/GetBrandList",
       headers: authHeader()
     }).then(function(res) {
-      debugger;
+      
       let status = res.data.message;
       let data = res.data.responseData;
       if (status === "Success") {
@@ -311,7 +285,7 @@ class StoreMaster extends Component {
       url: config.apiUrl + "/Master/getstatelist",
       headers: authHeader()
     }).then(function(res) {
-      debugger;
+      
       let status = res.data.message;
       let data = res.data.responseData;
       if (status === "Success") {
@@ -322,7 +296,7 @@ class StoreMaster extends Component {
     });
   }
   handleGetCityList() {
-    debugger;
+    
 
     let self = this;
     axios({
@@ -333,7 +307,7 @@ class StoreMaster extends Component {
         StateId: this.state.selectState
       }
     }).then(function(res) {
-      debugger;
+      
       let status = res.data.message;
       let data = res.data.responseData;
       if (status === "Success") {
@@ -350,7 +324,7 @@ class StoreMaster extends Component {
       url: config.apiUrl + "/Master/getregionlist",
       headers: authHeader()
     }).then(function(res) {
-      debugger;
+      
       let status = res.data.message;
       let data = res.data.responseData;
       if (status === "Success") {
@@ -367,7 +341,7 @@ class StoreMaster extends Component {
       url: config.apiUrl + "/Master/getstoretypelist",
       headers: authHeader()
     }).then(function(res) {
-      debugger;
+      
       let status = res.data.message;
       let data = res.data.responseData;
       if (status === "Success") {
@@ -378,7 +352,7 @@ class StoreMaster extends Component {
     });
   }
   handleDeleteStore(store_Id) {
-    debugger;
+    
     let self = this;
     axios({
       method: "post",
@@ -388,7 +362,7 @@ class StoreMaster extends Component {
         StoreID: store_Id
       }
     }).then(function(res) {
-      debugger;
+      
       let status = res.data.message;
       if (status === "Success") {
         self.handleGetStoreMasterData();
@@ -397,8 +371,8 @@ class StoreMaster extends Component {
     });
   }
   handleSubmitData() {
-    debugger;
-    if(
+    
+    if (
       this.state.selectedBrand !== null &&
       this.state.store_code.length > 0 &&
       this.state.store_name.length > 0 &&
@@ -412,86 +386,84 @@ class StoreMaster extends Component {
       this.state.selectState > 0 &&
       this.state.selectCity > 0 &&
       this.state.selectStatus !== ""
-
-    ){
-    let self = this;
-    var activeStatus = 0;
-    var finalBrandId = "";
-    var status = this.state.selectStatus;
-    if (status === "Active") {
-      activeStatus = 1;
+    ) {
+      let self = this;
+      var activeStatus = 0;
+      var finalBrandId = "";
+      var status = this.state.selectStatus;
+      if (status === "Active") {
+        activeStatus = 1;
+      } else {
+        activeStatus = 0;
+      }
+      if (this.state.selectedBrand !== null) {
+        for (let i = 0; i < this.state.selectedBrand.length; i++) {
+          finalBrandId += this.state.selectedBrand[i].brandID + ",";
+        }
+      }
+      axios({
+        method: "post",
+        url: config.apiUrl + "/Store/createstore",
+        headers: authHeader(),
+        data: {
+          BrandIDs: finalBrandId,
+          StoreCode: this.state.store_code.trim(),
+          StoreName: this.state.store_name.trim(),
+          StateID: this.state.selectState,
+          CityID: this.state.selectCity,
+          Pincode: this.state.pin_code,
+          Address: this.state.store_Address,
+          RegionID: this.state.selectRegion,
+          ZoneID: this.state.selectZone,
+          StoreTypeID: this.state.store_type,
+          StoreEmailID: this.state.contact_email,
+          StorePhoneNo: this.state.contact_Phone,
+          IsActive: activeStatus
+        }
+      }).then(function(res) {
+        
+        let status = res.data.message;
+        if (status === "Success") {
+          self.handleGetStoreMasterData();
+          NotificationManager.success("Store added successfully.");
+          self.setState({
+            store_code: "",
+            store_name: "",
+            selectedBrand: [],
+            pin_code: "",
+            store_Address: "",
+            selectCity: 0,
+            selectRegion: 0,
+            selectZone: 0,
+            store_type: 0,
+            contact_email: "",
+            contact_Phone: ""
+          });
+        } else {
+          NotificationManager.error("Store Not added.");
+        }
+      });
     } else {
-      activeStatus = 0;
+      this.setState({
+        store_codeCompulsion: "Please Enter Store Code.",
+        store_nameCompulsion: "Please Enter Store Name.",
+        pin_codeCompulsion: "Please Enter PinCode.",
+        store_AddressCompulsion: "Please Enter Address.",
+        RegionCompulsion: "Please Select Region.",
+        ZoneCompulsion: "Please Select Zone.",
+        store_typeCompulsion: "Please Select Store Type.",
+        contact_emailCompulsion: "Please Enter EmailID.",
+        contact_PhoneCompulsion: "Please Enter Phone Number.",
+        StateCompulsion: "Please Select State.",
+        CityCompulsion: "Please Select City.",
+        brandCompulsion: "Please Select Brand.",
+        statusCompulsion: "Please Select Status."
+      });
     }
-    if (this.state.selectedBrand !== null) {
-      for (let i = 0; i < this.state.selectedBrand.length; i++) {
-        finalBrandId += this.state.selectedBrand[i].brandID + ",";
-      }
-    }
-    axios({
-      method: "post",
-      url: config.apiUrl + "/Store/createstore",
-      headers: authHeader(),
-      data: {
-        BrandIDs: finalBrandId,
-        StoreCode: this.state.store_code.trim(),
-        StoreName: this.state.store_name.trim(),
-        StateID: this.state.selectState,
-        CityID: this.state.selectCity,
-        Pincode: this.state.pin_code,
-        Address: this.state.store_Address,
-        RegionID: this.state.selectRegion,
-        ZoneID: this.state.selectZone,
-        StoreTypeID: this.state.store_type,
-        StoreEmailID: this.state.contact_email,
-        StorePhoneNo: this.state.contact_Phone,
-        IsActive: activeStatus
-      }
-    }).then(function(res) {
-      debugger;
-      let status = res.data.message;
-      if (status === "Success") {
-        self.handleGetStoreMasterData();
-        NotificationManager.success("Store added successfully.");
-        self.setState({
-          store_code: "",
-          store_name: "",
-          selectedBrand: [],
-          pin_code: "",
-          store_Address: "",
-          selectCity: 0,
-          selectRegion: 0,
-          selectZone: 0,
-          store_type: 0,
-          contact_email: "",
-          contact_Phone: ""
-        });
-      }else{
-        NotificationManager.error("Store Not added.");
-      }
-    });
-  }else{
-    this.setState({
-      store_codeCompulsion: "Please Enter Store Code.",
-      store_nameCompulsion: "Please Enter Store Name.",
-      pin_codeCompulsion: "Please Enter PinCode.",
-      store_AddressCompulsion: "Please Enter Address.",
-      RegionCompulsion: "Please Select Region.",
-      ZoneCompulsion: "Please Select Zone.",
-      store_typeCompulsion: "Please Select Store Type.",
-      contact_emailCompulsion: "Please Enter EmailID.",
-      contact_PhoneCompulsion: "Please Enter Phone Number.",
-      StateCompulsion: "Please Select State.",
-      CityCompulsion: "Please Select City.",
-      brandCompulsion:"Please Select Brand.",
-      statusCompulsion:"Please Select Status."
-
-    });
-  }
   }
 
   handleUpdateData(id) {
-    debugger;
+    
     let self = this;
     var activeStatus = 0;
     var finalBrandId = "";
@@ -527,7 +499,7 @@ class StoreMaster extends Component {
         IsActive: activeStatus
       }
     }).then(function(res) {
-      debugger;
+      
       let status = res.data.message;
       if (status === "Success") {
         self.handleGetStoreMasterData();
@@ -562,11 +534,11 @@ class StoreMaster extends Component {
     e.preventDefault();
   };
   handleBrandChange = e => {
-    debugger;
+    
     this.setState({ selectedBrand: e });
   };
   handleEditBrandChange = e => {
-    debugger;
+    
     let value = e.target.value;
     this.setState({ EditBrand: value });
   };
@@ -582,13 +554,14 @@ class StoreMaster extends Component {
   };
 
   handleEditStoreMasterData(data) {
-    debugger;
+    
     var storeEditData = data;
+    this.setState({ editmodel: true });
 
     this.setStoreUpdateData(data);
   }
   setStoreUpdateData(individualData) {
-    debugger;
+    
     var userEditData = individualData;
     userEditData.store_ID = userEditData.storeID;
     userEditData.store_Name = userEditData.storeName;
@@ -617,7 +590,7 @@ class StoreMaster extends Component {
     });
   }
   handleOnChangeEditData = e => {
-    debugger;
+    
     var name = e.target.name;
     var value = e.target.value;
 
@@ -663,6 +636,10 @@ class StoreMaster extends Component {
       [e.target.name]: e.target.value
     });
   };
+  toggleEditModal() {
+    
+    this.setState({ editmodel: !this.state.editmodel });
+  }
 
   render() {
     const { storeData } = this.state;
@@ -679,7 +656,8 @@ class StoreMaster extends Component {
             <div className="status-drop-down">
               <div className="sort-sctn">
                 <div className="d-flex">
-                  <a href="#!"
+                  <a
+                    href="#!"
                     onClick={this.sortStatusAtoZ.bind(this)}
                     className="sorting-icon"
                   >
@@ -688,7 +666,8 @@ class StoreMaster extends Component {
                   <p>SORT BY A TO Z</p>
                 </div>
                 <div className="d-flex">
-                  <a href="#!"
+                  <a
+                    href="#!"
                     onClick={this.sortStatusZtoA.bind(this)}
                     className="sorting-icon"
                   >
@@ -698,145 +677,134 @@ class StoreMaster extends Component {
                 </div>
               </div>
               <div className="filter-type">
-        
                 <p>FILTER BY TYPE</p>
-                 <div className="filter-checkbox">
-                <input
+                <div className="filter-checkbox">
+                  <input
                     type="checkbox"
-                    
                     name="filter-type"
-                    id={"fil-open" }
-                  
+                    id={"fil-open"}
                     value="all"
-                    onChange={this.setSortCheckStatus.bind(this,"all")}
+                    onChange={this.setSortCheckStatus.bind(this, "all")}
                   />
                   <label htmlFor={"fil-open"}>
                     <span className="table-btn table-blue-btn">ALL</span>
                   </label>
-                  </div>
-                {this.state.sortColumn==="storeName" ? 
-                
-                this.state.sortStoreName !== null && 
-                  this.state.sortStoreName.map((item, i) => ( 
-                    <div className="filter-checkbox">
-                      
-                  <input
-                    type="checkbox"
-                    
-                    name="filter-type"
-                    id={"fil-open" + item.storeName}
-                  
-                    value={item.storeName}
-                    onChange={this.setSortCheckStatus.bind(this,"storeName")}
-                  />
-                  <label htmlFor={"fil-open" + item.storeName}>
-                    <span className="table-btn table-blue-btn">{item.storeName}</span>
-                  </label>
                 </div>
-                  ))
+                {this.state.sortColumn === "storeName"
+                  ? this.state.sortStoreName !== null &&
+                    this.state.sortStoreName.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.storeName}
+                          value={item.storeName}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "storeName"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.storeName}>
+                          <span className="table-btn table-blue-btn">
+                            {item.storeName}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
 
-                :null}
+                {this.state.sortColumn === "storeCode"
+                  ? this.state.sortStoreCode !== null &&
+                    this.state.sortStoreCode.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.storeCode}
+                          value={item.storeCode}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "storeCode"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.storeCode}>
+                          <span className="table-btn table-blue-btn">
+                            {item.storeCode}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
 
-                { this.state.sortColumn==="storeCode" ? 
-                
-                this.state.sortStoreCode !== null && 
-                  this.state.sortStoreCode.map((item, i) => ( 
-                    <div className="filter-checkbox">
-                      
-                  <input
-                    type="checkbox"
-                    
-                    name="filter-type"
-                    id={"fil-open" + item.storeCode}
-                  
-                    value={item.storeCode}
-                    onChange={this.setSortCheckStatus.bind(this,"storeCode")}
-                  />
-                  <label htmlFor={"fil-open" + item.storeCode}>
-                    <span className="table-btn table-blue-btn">{item.storeCode}</span>
-                  </label>
-                </div>
-                  ))
+                {this.state.sortColumn === "cityName"
+                  ? this.state.sortCity !== null &&
+                    this.state.sortCity.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.cityName}
+                          value={item.cityName}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "cityName"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.cityName}>
+                          <span className="table-btn table-blue-btn">
+                            {item.cityName}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
 
-                :null}
+                {this.state.sortColumn === "stateName"
+                  ? this.state.sortState !== null &&
+                    this.state.sortState.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.stateName}
+                          value={item.stateName}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "stateName"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.stateName}>
+                          <span className="table-btn table-blue-btn">
+                            {item.stateName}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
 
-               { this.state.sortColumn==="cityName" ? 
-                
-                this.state.sortCity !== null && 
-                  this.state.sortCity.map((item, i) => ( 
-                    <div className="filter-checkbox">
-                      
-                  <input
-                    type="checkbox"
-                    
-                    name="filter-type"
-                    id={"fil-open" + item.cityName}
-                  
-                    value={item.cityName}
-                    onChange={this.setSortCheckStatus.bind(this,"cityName")}
-                  />
-                  <label htmlFor={"fil-open" + item.cityName}>
-                    <span className="table-btn table-blue-btn">{item.cityName}</span>
-                  </label>
-                </div>
-                  ))
-
-                :null}
-
-               { this.state.sortColumn==="stateName" ? 
-                
-                this.state.sortState !== null && 
-                  this.state.sortState.map((item, i) => ( 
-                    <div className="filter-checkbox">
-                      
-                  <input
-                    type="checkbox"
-                    
-                    name="filter-type"
-                    id={"fil-open" + item.stateName}
-                  
-                    value={item.stateName}
-                    onChange={this.setSortCheckStatus.bind(this,"stateName")}
-                  />
-                  <label htmlFor={"fil-open" + item.stateName}>
-                    <span className="table-btn table-blue-btn">{item.stateName}</span>
-                  </label>
-                </div>
-                  ))
-
-                :null}
-
-                  { this.state.sortColumn==="pinCode" ? 
-                
-                this.state.sortPincode !== null && 
-                  this.state.sortPincode.map((item, i) => ( 
-                    <div className="filter-checkbox">
-                      
-                  <input
-                    type="checkbox"
-                    
-                    name="filter-type"
-                    id={"fil-open" + item.pinCode}
-                  
-                    value={item.pinCode}
-                    onChange={this.setSortCheckStatus.bind(this,"pinCode")}
-                  />
-                  <label htmlFor={"fil-open" + item.pinCode}>
-                    <span className="table-btn table-blue-btn">{item.pinCode}</span>
-                  </label>
-                </div>
-                  ))
-
-                :null}
-
-              
-                
-
+                {this.state.sortColumn === "pinCode"
+                  ? this.state.sortPincode !== null &&
+                    this.state.sortPincode.map((item, i) => (
+                      <div className="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          name="filter-type"
+                          id={"fil-open" + item.pinCode}
+                          value={item.pinCode}
+                          onChange={this.setSortCheckStatus.bind(
+                            this,
+                            "pinCode"
+                          )}
+                        />
+                        <label htmlFor={"fil-open" + item.pinCode}>
+                          <span className="table-btn table-blue-btn">
+                            {item.pinCode}
+                          </span>
+                        </label>
+                      </div>
+                    ))
+                  : null}
               </div>
-             
-
-             
-              
             </div>
           </Modal>
         </div>
@@ -845,7 +813,7 @@ class StoreMaster extends Component {
             Settings
           </Link>
           <span>&gt;</span>
-          <Link to="settings"  className="header-path">
+          <Link to="settings" className="header-path">
             Ticketing
           </Link>
           <span>&gt;</span>
@@ -866,7 +834,12 @@ class StoreMaster extends Component {
                       columns={[
                         {
                           Header: (
-                            <span onClick={this.StatusOpenModel.bind(this,"storeName")}>
+                            <span
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "storeName"
+                              )}
+                            >
                               Store Name
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
@@ -875,7 +848,12 @@ class StoreMaster extends Component {
                         },
                         {
                           Header: (
-                            <span onClick={this.StatusOpenModel.bind(this,"storeCode")}>
+                            <span
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "storeCode"
+                              )}
+                            >
                               Store Code
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
@@ -921,14 +899,19 @@ class StoreMaster extends Component {
                                   </span>
                                 </div>
                               );
-                            }else{
+                            } else {
                               return null;
                             }
                           }
                         },
                         {
                           Header: (
-                            <span onClick={this.StatusOpenModel.bind(this,"cityName")}>
+                            <span
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "cityName"
+                              )}
+                            >
                               City
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
@@ -937,7 +920,12 @@ class StoreMaster extends Component {
                         },
                         {
                           Header: (
-                            <span onClick={this.StatusOpenModel.bind(this,"stateName")}>
+                            <span
+                              onClick={this.StatusOpenModel.bind(
+                                this,
+                                "stateName"
+                              )}
+                            >
                               State
                               <FontAwesomeIcon icon={faCaretDown} />
                             </span>
@@ -946,7 +934,7 @@ class StoreMaster extends Component {
                         },
                         {
                           Header: (
-                            <span 
+                            <span
                             //onClick={this.StatusOpenModel.bind(this,"pinCode")}
                             >
                               Pincode
@@ -968,7 +956,7 @@ class StoreMaster extends Component {
                           Header: <span>Actions</span>,
                           accessor: "actiondept",
                           Cell: row => {
-                            debugger;
+                            
                             var ids = row.original["storeID"];
                             return (
                               <>
@@ -1016,348 +1004,17 @@ class StoreMaster extends Component {
                                       id={ids}
                                     />
                                   </Popover>
-                                  <Popover
-                                    content={
-                                      <div className="edtpadding">
-                                        <label className="popover-header-text">
-                                          EDIT STORE
-                                        </label>
-                                        <div className="div-padding-1">
-                                          <label className="designation-name">
-                                            Brand
-                                          </label>
-                                          <Select
-                                            getOptionLabel={option =>
-                                              option.brandName
-                                            }
-                                            getOptionValue={option =>
-                                              option.brandID
-                                            }
-                                            options={this.state.brandData}
-                                            placeholder="Select"
-                                            // menuIsOpen={true}
-                                            name="brand_IDs"
-                                            closeMenuOnSelect={false}
-                                            onChange={
-                                              this.handleOnChangeEditData
-                                            }
-                                            value={
-                                              this.state.userEditData.brand_IDs
-                                            }
-                                            // showNewOptionAtTop={false}
-                                            isMulti
-                                          />
-                                        </div>
-                                        <div className="pop-over-div">
-                                          <label className="edit-label-1">
-                                            Store Code
-                                          </label>
-                                          <input
-                                            type="text"
-                                            className="txt-1"
-                                            placeholder="Enter Store Code"
-                                            name="store_Code"
-                                            maxLength={10}
-                                            value={
-                                              this.state.userEditData.store_Code
-                                            }
-                                            onChange={
-                                              this.handleOnChangeEditData
-                                            }
-                                          />
-                                        </div>
-                                        <div className="pop-over-div">
-                                          <label className="edit-label-1">
-                                            Store Name
-                                          </label>
-                                          <input
-                                            type="text"
-                                            className="txt-1"
-                                            placeholder="Enter Store Name"
-                                            name="store_Name"
-                                            maxLength={100}
-                                            value={
-                                              this.state.userEditData.store_Name
-                                            }
-                                            onChange={
-                                              this.handleOnChangeEditData
-                                            }
-                                          />
-                                        </div>
-                                        <div className="pop-over-div">
-                                          <label className="edit-label-1">
-                                            State
-                                          </label>
-                                          <select
-                                            className="store-create-select"
-                                            name="state_ID"
-                                            value={
-                                              this.state.userEditData.state_ID
-                                            }
-                                            onChange={
-                                              this.handleOnChangeEditData
-                                            }
-                                          >
-                                            <option>select</option>
-                                            {this.state.stateData !== null &&
-                                              this.state.stateData.map(
-                                                (item, i) => (
-                                                  <option
-                                                    key={i}
-                                                    value={item.stateID}
-                                                    className="select-category-placeholder"
-                                                  >
-                                                    {item.stateName}
-                                                  </option>
-                                                )
-                                              )}
-                                          </select>
-                                        </div>
-                                        <div className="pop-over-div">
-                                          <label   className="edit-label-1">
-                                            City
-                                          </label>
-                                          <select
-                                            className="edit-dropDwon dropdown-setting"
-                                            name="city_ID"
-                                            value={
-                                              this.state.userEditData.city_ID
-                                            }
-                                            onChange={
-                                              this.handleOnChangeEditData
-                                            }
-                                          >
-                                            <option>select</option>
-                                            {this.state.cityData !== null &&
-                                              this.state.cityData.map(
-                                                (item, i) => (
-                                                  <option
-                                                    key={i}
-                                                    value={item.cityID}
-                                                    className="select-category-placeholder"
-                                                  >
-                                                    {item.cityName}
-                                                  </option>
-                                                )
-                                              )}
-                                          </select>
-                                        </div>
-                                        <div className="pop-over-div">
-                                          <label className="edit-label-1">
-                                            Pin Code
-                                          </label>
-                                          <input
-                                            type="text"
-                                            className="txt-1"
-                                            placeholder="Enter Pin Code"
-                                            name="pin_Code"
-                                            maxLength={11}
-                                            value={
-                                              this.state.userEditData.pin_Code
-                                            }
-                                            onChange={
-                                              this.handleOnChangeEditData
-                                            }
-                                          />
-                                        </div>
-                                        <div className="pop-over-div">
-                                          <label className="edit-label-1">
-                                            Address
-                                          </label>
-                                          <textarea
-                                            cols="31"
-                                            rows="3"
-                                            className="store-create-textarea"
-                                            placeholder="Enter address"
-                                            name="address_"
-                                            maxLength={250}
-                                            value={
-                                              this.state.userEditData.address_
-                                            }
-                                            onChange={
-                                              this.handleOnChangeEditData
-                                            }
-                                          ></textarea>
-                                        </div>
-                                        <div className="pop-over-div">
-                                          <label className="edit-label-1">
-                                            Region
-                                          </label>
-                                          <select
-                                            className="store-create-select"
-                                            name="region_ID"
-                                            value={
-                                              this.state.userEditData.region_ID
-                                            }
-                                            onChange={
-                                              this.handleOnChangeEditData
-                                            }
-                                          >
-                                            <option>Select</option>
-                                            {this.state.regionData !== null &&
-                                              this.state.regionData.map(
-                                                (item, s) => (
-                                                  <option
-                                                    key={s}
-                                                    value={item.regionID}
-                                                  >
-                                                    {item.regionName}
-                                                  </option>
-                                                )
-                                              )}
-                                          </select>
-                                        </div>
-                                        <div className="pop-over-div">
-                                          <label className="edit-label-1">
-                                            Zone
-                                          </label>
-                                          <select
-                                            className="store-create-select"
-                                            name="zone_ID"
-                                            value={
-                                              this.state.userEditData.zone_ID
-                                            }
-                                            onChange={
-                                              this.handleOnChangeEditData
-                                            }
-                                          >
-                                            <option>Select</option>
-                                            {this.state.zoneData !== null &&
-                                              this.state.zoneData.map(
-                                                (item, s) => (
-                                                  <option
-                                                    key={s}
-                                                    value={item.zoneID}
-                                                  >
-                                                    {item.zoneName}
-                                                  </option>
-                                                )
-                                              )}
-                                          </select>
-                                        </div>
-                                        <div className="pop-over-div">
-                                          <label className="edit-label-1">
-                                            Store Type
-                                          </label>
-                                          <select
-                                            className="store-create-select"
-                                            name="storeType_ID"
-                                            value={
-                                              this.state.userEditData
-                                                .storeType_ID
-                                            }
-                                            onChange={
-                                              this.handleOnChangeEditData
-                                            }
-                                          >
-                                            <option>Select</option>
-                                            {this.state.storeTypeData !==
-                                              null &&
-                                              this.state.storeTypeData.map(
-                                                (item, t) => (
-                                                  <option
-                                                    key={t}
-                                                    value={item.storeTypeID}
-                                                  >
-                                                    {item.storeTypeName}
-                                                  </option>
-                                                )
-                                              )}
-                                          </select>
-                                        </div>
-                                        <div className="pop-over-div">
-                                          <label className="edit-label-1">
-                                            Contact Details:Email
-                                          </label>
-                                          <input
-                                            type="text"
-                                            className="txt-1"
-                                            placeholder="Enter email id"
-                                            name="email_"
-                                            maxLength={100}
-                                            value={
-                                              this.state.userEditData.email_
-                                            }
-                                            onChange={
-                                              this.handleOnChangeEditData
-                                            }
-                                          />
-                                        </div>
-                                        <div className="pop-over-div">
-                                          <label className="edit-label-1">
-                                            Contact Details:Phone
-                                          </label>
-                                          <input
-                                            type="text"
-                                            className="txt-1"
-                                            placeholder="Enter phone no"
-                                            name="phoneNumber_"
-                                            maxLength={10}
-                                            value={
-                                              this.state.userEditData
-                                                .phoneNumber_
-                                            }
-                                            onChange={
-                                              this.handleOnChangeEditData
-                                            }
-                                          />
-                                        </div>
-                                        <div className="pop-over-div">
-                                          <label className="edit-label-1">
-                                            Status
-                                          </label>
-                                          <select
-                                            className="form-control dropdown-setting"
-                                            name="status_ID"
-                                            value={
-                                              this.state.userEditData.status_ID
-                                            }
-                                            onChange={
-                                              this.handleOnChangeEditData
-                                            }
-                                          >
-                                            <option value="true">Active</option>
-                                            <option value="false">
-                                              Inactive
-                                            </option>
-                                          </select>
-                                        </div>
-                                        <br />
-                                        <div>
-                                          <a
-                                            className="pop-over-cancle"
-                                            href={Demo.BLANK_LINK}
-                                          >
-                                            CANCEL
-                                          </a>
-                                          <button
-                                            className="pop-over-button"
-                                            onClick={this.handleUpdateData.bind(
-                                              this,
-                                              row.original.storeID
-                                            )}
-                                          >
-                                            <label className="pop-over-btnsave-text">
-                                              SAVE
-                                            </label>
-                                          </button>
-                                        </div>
-                                      </div>
-                                    }
-                                    placement="bottom"
-                                    trigger="click"
+
+                                  <button
+                                    className="react-tabel-button"
+                                    type="button"
+                                    onClick={this.handleEditStoreMasterData.bind(
+                                      this,
+                                      row.original
+                                    )}
                                   >
-                                    <button
-                                      className="react-tabel-button"
-                                      type="button"
-                                      onClick={this.handleEditStoreMasterData.bind(
-                                        this,
-                                        row.original
-                                      )}
-                                    >
-                                      EDIT
-                                    </button>
-                                  </Popover>
+                                    EDIT
+                                  </button>
                                 </span>
                               </>
                             );
@@ -1430,10 +1087,10 @@ class StoreMaster extends Component {
                         isMulti
                       />
                       {this.state.selectedBrand.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.brandCompulsion}
-                    </p>
-                  )}
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.brandCompulsion}
+                        </p>
+                      )}
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">Store Code</label>
@@ -1447,10 +1104,10 @@ class StoreMaster extends Component {
                         onChange={this.hanldeOnChangeData}
                       />
                       {this.state.store_code.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.store_codeCompulsion}
-                    </p>
-                  )}
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.store_codeCompulsion}
+                        </p>
+                      )}
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">Store Name</label>
@@ -1463,11 +1120,11 @@ class StoreMaster extends Component {
                         value={this.state.store_name}
                         onChange={this.hanldeOnChangeData}
                       />
-                       {this.state.store_name.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.store_nameCompulsion}
-                    </p>
-                  )}
+                      {this.state.store_name.length === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.store_nameCompulsion}
+                        </p>
+                      )}
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">State</label>
@@ -1489,10 +1146,10 @@ class StoreMaster extends Component {
                           ))}
                       </select>
                       {this.state.selectState === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.StateCompulsion}
-                    </p>
-                  )}
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.StateCompulsion}
+                        </p>
+                      )}
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">City</label>
@@ -1514,10 +1171,10 @@ class StoreMaster extends Component {
                           ))}
                       </select>
                       {this.state.selectCity === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.CityCompulsion}
-                    </p>
-                  )}
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.CityCompulsion}
+                        </p>
+                      )}
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">Pin Code</label>
@@ -1530,11 +1187,11 @@ class StoreMaster extends Component {
                         value={this.state.pin_code}
                         onChange={this.hanldeOnChangeData}
                       />
-                      {this.state.pin_code.length ===  0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.pin_codeCompulsion}
-                    </p>
-                  )}
+                      {this.state.pin_code.length === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.pin_codeCompulsion}
+                        </p>
+                      )}
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">Address</label>
@@ -1548,11 +1205,11 @@ class StoreMaster extends Component {
                         value={this.state.store_Address}
                         onChange={this.hanldeOnChangeData}
                       ></textarea>
-                      {this.state.store_Address.length ===  0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.store_AddressCompulsion}
-                    </p>
-                  )}
+                      {this.state.store_Address.length === 0 && (
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.store_AddressCompulsion}
+                        </p>
+                      )}
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">Region</label>
@@ -1570,10 +1227,10 @@ class StoreMaster extends Component {
                           ))}
                       </select>
                       {this.state.selectRegion === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.RegionCompulsion}
-                    </p>
-                  )}
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.RegionCompulsion}
+                        </p>
+                      )}
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">Zone</label>
@@ -1591,10 +1248,10 @@ class StoreMaster extends Component {
                           ))}
                       </select>
                       {this.state.selectZone === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.ZoneCompulsion}
-                    </p>
-                  )}
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.ZoneCompulsion}
+                        </p>
+                      )}
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">Store Type</label>
@@ -1612,10 +1269,10 @@ class StoreMaster extends Component {
                           ))}
                       </select>
                       {this.state.store_type === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.store_typeCompulsion}
-                    </p>
-                  )}
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.store_typeCompulsion}
+                        </p>
+                      )}
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">
@@ -1631,10 +1288,10 @@ class StoreMaster extends Component {
                         onChange={this.hanldeOnChangeData}
                       />
                       {this.state.contact_email.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.contact_emailCompulsion}
-                    </p>
-                  )}
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.contact_emailCompulsion}
+                        </p>
+                      )}
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">
@@ -1650,10 +1307,10 @@ class StoreMaster extends Component {
                         onChange={this.hanldeOnChangeData}
                       />
                       {this.state.contact_Phone.length === 0 && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.contact_PhoneCompulsion}
-                    </p>
-                  )}
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.contact_PhoneCompulsion}
+                        </p>
+                      )}
                     </div>
                     <div className="div-padding-1">
                       <label className="designation-name">Status</label>
@@ -1670,12 +1327,12 @@ class StoreMaster extends Component {
                             </option>
                           ))}
                       </select>
-                      
+
                       {this.state.selectStatus === "" && (
-                    <p style={{ color: "red", marginBottom: "0px" }}>
-                      {this.state.statusCompulsion}
-                    </p>
-                  )}
+                        <p style={{ color: "red", marginBottom: "0px" }}>
+                          {this.state.statusCompulsion}
+                        </p>
+                      )}
                     </div>
                     <div className="btnSpace">
                       <button
@@ -1694,9 +1351,12 @@ class StoreMaster extends Component {
                     <h3 className="pb-0">Bulk Upload</h3>
                     <div className="down-excel">
                       <p>Template</p>
-                      <CSVLink filename={"Store.csv"}  data={config.storeTemplate}>
-                       <img src={DownExcel} alt="download icon" />
-                    </CSVLink>
+                      <CSVLink
+                        filename={"Store.csv"}
+                        data={config.storeTemplate}
+                      >
+                        <img src={DownExcel} alt="download icon" />
+                      </CSVLink>
                     </div>
                   </div>
                   <input
@@ -1788,6 +1448,284 @@ class StoreMaster extends Component {
               </div>
             </div>
           </div>
+          <Modal
+            open={this.state.editmodel}
+            onClose={this.toggleEditModal}
+            modalId="storeEditModal"
+          >
+            <div className="edtpadding">
+              <label className="popover-header-text">EDIT STORE</label>
+              <div className="row">
+                <div className="col-md-6">
+                  <div className="div-padding-1">
+                    <label className="designation-name">Brand</label>
+                    <Select
+                      getOptionLabel={option => option.brandName}
+                      getOptionValue={option => option.brandID}
+                      options={this.state.brandData}
+                      placeholder="Select"
+                      // menuIsOpen={true}
+                      name="brand_IDs"
+                      closeMenuOnSelect={false}
+                      onChange={this.handleOnChangeEditData}
+                      value={this.state.userEditData.brand_IDs}
+                      // showNewOptionAtTop={false}
+                      isMulti
+                    />
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">Store Code</label>
+                    <input
+                      type="text"
+                      className="txt-1"
+                      placeholder="Enter Store Code"
+                      name="store_Code"
+                      maxLength={10}
+                      value={this.state.userEditData.store_Code}
+                      onChange={this.handleOnChangeEditData}
+                    />
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">Store Name</label>
+                    <input
+                      type="text"
+                      className="txt-1"
+                      placeholder="Enter Store Name"
+                      name="store_Name"
+                      maxLength={100}
+                      value={this.state.userEditData.store_Name}
+                      onChange={this.handleOnChangeEditData}
+                    />
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">State</label>
+                    <select
+                      className="store-create-select"
+                      name="state_ID"
+                      value={this.state.userEditData.state_ID}
+                      onChange={this.handleOnChangeEditData}
+                    >
+                      <option>select</option>
+                      {this.state.stateData !== null &&
+                        this.state.stateData.map((item, i) => (
+                          <option
+                            key={i}
+                            value={item.stateID}
+                            className="select-category-placeholder"
+                          >
+                            {item.stateName}
+                          </option>
+                        ))}
+                    </select>
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">State</label>
+                    <select
+                      className="store-create-select"
+                      name="state_ID"
+                      value={this.state.userEditData.state_ID}
+                      onChange={this.handleOnChangeEditData}
+                    >
+                      <option>select</option>
+                      {this.state.stateData !== null &&
+                        this.state.stateData.map((item, i) => (
+                          <option
+                            key={i}
+                            value={item.stateID}
+                            className="select-category-placeholder"
+                          >
+                            {item.stateName}
+                          </option>
+                        ))}
+                    </select>
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  {" "}
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">City</label>
+                    <select
+                      className="edit-dropDwon dropdown-setting"
+                      name="city_ID"
+                      value={this.state.userEditData.city_ID}
+                      onChange={this.handleOnChangeEditData}
+                    >
+                      <option>select</option>
+                      {this.state.cityData !== null &&
+                        this.state.cityData.map((item, i) => (
+                          <option
+                            key={i}
+                            value={item.cityID}
+                            className="select-category-placeholder"
+                          >
+                            {item.cityName}
+                          </option>
+                        ))}
+                    </select>
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  {" "}
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">Pin Code</label>
+                    <input
+                      type="text"
+                      className="txt-1"
+                      placeholder="Enter Pin Code"
+                      name="pin_Code"
+                      maxLength={11}
+                      value={this.state.userEditData.pin_Code}
+                      onChange={this.handleOnChangeEditData}
+                    />
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">Address</label>
+                    <textarea
+                      cols="31"
+                      rows="3"
+                      className="store-create-textarea"
+                      placeholder="Enter address"
+                      name="address_"
+                      maxLength={250}
+                      value={this.state.userEditData.address_}
+                      onChange={this.handleOnChangeEditData}
+                    ></textarea>
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">Region</label>
+                    <select
+                      className="store-create-select"
+                      name="region_ID"
+                      value={this.state.userEditData.region_ID}
+                      onChange={this.handleOnChangeEditData}
+                    >
+                      <option>Select</option>
+                      {this.state.regionData !== null &&
+                        this.state.regionData.map((item, s) => (
+                          <option key={s} value={item.regionID}>
+                            {item.regionName}
+                          </option>
+                        ))}
+                    </select>
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  {" "}
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">Zone</label>
+                    <select
+                      className="store-create-select"
+                      name="zone_ID"
+                      value={this.state.userEditData.zone_ID}
+                      onChange={this.handleOnChangeEditData}
+                    >
+                      <option>Select</option>
+                      {this.state.zoneData !== null &&
+                        this.state.zoneData.map((item, s) => (
+                          <option key={s} value={item.zoneID}>
+                            {item.zoneName}
+                          </option>
+                        ))}
+                    </select>
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">Store Type</label>
+                    <select
+                      className="store-create-select"
+                      name="storeType_ID"
+                      value={this.state.userEditData.storeType_ID}
+                      onChange={this.handleOnChangeEditData}
+                    >
+                      <option>Select</option>
+                      {this.state.storeTypeData !== null &&
+                        this.state.storeTypeData.map((item, t) => (
+                          <option key={t} value={item.storeTypeID}>
+                            {item.storeTypeName}
+                          </option>
+                        ))}
+                    </select>
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  {" "}
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">
+                      Contact Details:Email
+                    </label>
+                    <input
+                      type="text"
+                      className="txt-1"
+                      placeholder="Enter email id"
+                      name="email_"
+                      maxLength={100}
+                      value={this.state.userEditData.email_}
+                      onChange={this.handleOnChangeEditData}
+                    />
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  {" "}
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">
+                      Contact Details:Phone
+                    </label>
+                    <input
+                      type="text"
+                      className="txt-1"
+                      placeholder="Enter phone no"
+                      name="phoneNumber_"
+                      maxLength={10}
+                      value={this.state.userEditData.phoneNumber_}
+                      onChange={this.handleOnChangeEditData}
+                    />
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  {" "}
+                  <div className="pop-over-div">
+                    <label className="edit-label-1">Status</label>
+                    <select
+                      className="form-control dropdown-setting"
+                      name="status_ID"
+                      value={this.state.userEditData.status_ID}
+                      onChange={this.handleOnChangeEditData}
+                    >
+                      <option value="true">Active</option>
+                      <option value="false">Inactive</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <br />
+              <div className="row">
+                <div>
+                  <span
+                    className="pop-over-cancle"
+                    onClick={this.toggleEditModal}
+                  >
+                    CANCEL
+                  </span>
+                  <button className="pop-over-button">
+                    <label className="pop-over-btnsave-text">SAVE</label>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </Modal>
         </div>
       </React.Fragment>
     );
