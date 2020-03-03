@@ -55,7 +55,7 @@ class TicketSystem extends Component {
       mailData: [],
       TicketTitleData: [],
       CkEditorTemplateData: [],
-      CkEditorTemplateDetails: [],
+      editorTemplateDetails: "",
       KbPopupData: [],
       BrandData: [],
       CategoryData: [],
@@ -172,6 +172,25 @@ class TicketSystem extends Component {
     this.handleCopyToaster = this.handleCopyToaster.bind(this);
   }
 
+  componentDidMount() {
+    debugger;
+    var customerDetails = this.props.location.state;
+
+    if (customerDetails) {
+      var custId = customerDetails.customerId;
+      this.setState({ customerDetails, customer_Id: custId });
+      this.handleGetCustomerData(custId);
+      this.handleGetBrandList();
+      this.handleGetChannelOfPurchaseList();
+      this.handleGetTicketPriorityList();
+    } else {
+      this.props.history.push("addSearchMyTicket");
+    }
+    document.addEventListener("mousedown", this.handleClickOutside);
+  }
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this.handleClickOutside);
+  }
   handleCopyToaster() {
     debugger;
     setTimeout(() => {
@@ -222,7 +241,7 @@ class TicketSystem extends Component {
       // idSizeArray: idSizeArray
     });
   };
-  handleGetItemData = (selectChildData) => {
+  handleGetItemData = selectChildData => {
     debugger;
     this.setState({
       SelectedItemData: selectChildData
@@ -412,10 +431,10 @@ class TicketSystem extends Component {
       }
     }).then(function(res) {
       debugger;
-      let CkEditorTemplateDetails = res.data.responseData;
+      let data = res.data.responseData.templateBody;
       let bodyData = res.data.responseData.templateBody;
       self.setState({
-        CkEditorTemplateDetails: CkEditorTemplateDetails,
+        editorTemplateDetails: data,
         tempName: tempName,
         selectTicketTemplateId: tempId,
         mailBodyData: bodyData
@@ -603,25 +622,6 @@ class TicketSystem extends Component {
     });
   }
 
-  componentDidMount() {
-    debugger;
-    var customerDetails = this.props.location.state;
-
-    if (customerDetails) {
-      var custId = customerDetails.customerId;
-      this.setState({ customerDetails, customer_Id: custId });
-      this.handleGetCustomerData(custId);
-      this.handleGetBrandList();
-      this.handleGetChannelOfPurchaseList();
-      this.handleGetTicketPriorityList();
-    } else {
-      this.props.history.push("addSearchMyTicket");
-    }
-    document.addEventListener("mousedown", this.handleClickOutside);
-  }
-  componentWillUnmount() {
-    document.removeEventListener("mousedown", this.handleClickOutside);
-  }
   setWrapperRef(node) {
     this.wrapperRef = node;
   }
@@ -633,6 +633,12 @@ class TicketSystem extends Component {
   }
   handleTicketSuggestion = ticketSuggestion => {
     this.setState({ ticketSuggestion });
+  };
+  onAddCKEditorChange = evt => {
+    var newContent = evt.editor.getData();
+    this.setState({
+      editorTemplateDetails: newContent
+    });
   };
 
   handleAppendTicketSuggestion = e => {
@@ -737,9 +743,9 @@ class TicketSystem extends Component {
       // --------------New Code start---------------
       if (this.state.SelectedItemData.length === 0) {
         for (let j = 0; j < this.state.selectedOrderData.length; j++) {
-          selectedRow += this.state.selectedOrderData[j]["orderMasterID"] + "|0|1,";
+          selectedRow +=
+            this.state.selectedOrderData[j]["orderMasterID"] + "|0|1,";
         }
-       
       } else {
         for (let i = 0; i < this.state.SelectedItemData.length; i++) {
           selectedRow +=
@@ -750,7 +756,6 @@ class TicketSystem extends Component {
         }
       }
       // --------------New Code end-----------------
-
 
       // --------Old Code start---------
       // for (let i = 0; i < this.state.selectedDataIds.length; i++) {
@@ -775,7 +780,6 @@ class TicketSystem extends Component {
       //   }
       // }
       // --------Old Code start---------
-
 
       var selectedStore = "";
       for (let j = 0; j < this.state.selectedStoreIDs.length; j++) {
@@ -806,11 +810,13 @@ class TicketSystem extends Component {
       } else {
         actionStatusId = 100;
       }
+      var editoreData = this.state.editorTemplateDetails;
+      var stringBody = editoreData.replace(/<\/?p[^>]*>/g, "");
       var mailData = [];
       mailData = this.state.mailData;
       this.state.mailFiled["ToEmail"] = this.state.customerData.customerEmailId;
       this.state.mailFiled["TikcketMailSubject"] = this.state.titleSuggValue;
-      this.state.mailFiled["TicketMailBody"] = this.state.tempName;
+      this.state.mailFiled["TicketMailBody"] = stringBody;
       this.state.mailFiled["PriorityID"] = this.state.selectedTicketPriority;
       this.state.mailFiled["IsInforToStore"] = this.state.InformStore;
       mailData.push(this.state.mailFiled);
@@ -837,6 +843,7 @@ class TicketSystem extends Component {
         IsInstantEscalateToHighLevel: this.state.escalationLevel,
         IsWantToAttachOrder: this.state.customerAttachOrder,
         TicketTemplateID: this.state.selectTicketTemplateId,
+        TicketMailBody:stringBody,
         IsWantToVisitedStore: this.state.custVisit,
         IsAlreadyVisitedStore: this.state.AlreadycustVisit,
         TicketSourceID: 1,
@@ -1537,7 +1544,8 @@ class TicketSystem extends Component {
                   <div className="row">
                     <div className="col-md-12 ck-det-cntr">
                       <CKEditor
-                        data={this.state.CkEditorTemplateDetails.templateBody}
+                        data={this.state.editorTemplateDetails}
+                        onChange={this.onAddCKEditorChange}
                         // style={{ height: "400px" }}
                         config={{
                           toolbar: [

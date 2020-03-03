@@ -72,7 +72,7 @@ const Content = props => {
                                           }
                                           onChange={e => setDesignationvalue(e.target.value)}
                                         />
-                                        {designationName === "select" && (
+                                        {designationName === "" && (
                     <p style={{ color: "red", marginBottom: "0px" }}>
                       {props.editdesignationNameCompulsion}
                     </p>
@@ -191,9 +191,9 @@ class TicketHierarchy extends Component {
       designationNameCompulsion:"",
       reportToCompulsion:"",
       statusCompulsion:"",
-      editdesignationNameCompulsion:"",
-      editreportToCompulsion:"",
-      editstatusCompulsion:"",
+      editdesignationNameCompulsion: "Designation Name field is compulsory.",
+      editreportToCompulsion:"ReportTo field is compulsory.",
+      editstatusCompulsion: "Status field is compulsory.",
       sortAllData:[],
       sortDesignation:[],
       sortReportTo:[],
@@ -502,6 +502,7 @@ class TicketHierarchy extends Component {
       }
     });
   }else{
+    NotificationManager.error("Hierarchy not update.");
     this.setState({
       editdesignationNameCompulsion: "Designation Name field is compulsory.",
       editreportToCompulsion:"ReportTo field is compulsory.",

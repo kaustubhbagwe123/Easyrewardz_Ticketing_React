@@ -172,7 +172,7 @@ class CreateSLA extends Component {
       // var separator = ",";
       // var values = indiSla.split(separator);
       for (var i = 0; i < values.length; i++) {
-        if (values[i] === issueId) {
+        if (values[i] == issueId) {
           values.splice(i, 1);
           indiSla = values.join(separator);
         }
@@ -551,7 +551,7 @@ class CreateSLA extends Component {
     }).then(function (res) {
       debugger;
       let status = res.data.message;
-      if (status === "Success") {
+      if (status === "Record deleted Successfully") {
         NotificationManager.success("SLA deleted successfully.", '', 2000);
         self.handleGetSLA();
       } else {
@@ -743,6 +743,7 @@ class CreateSLA extends Component {
                 <div className="table-cntr table-height TicketSlaReact">
                   <ReactTable
                     data={this.state.sla}
+                    minRows={2}
                     columns={[
                       {
                         Header: (

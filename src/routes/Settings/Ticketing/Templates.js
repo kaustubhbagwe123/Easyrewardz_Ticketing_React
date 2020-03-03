@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component,useState } from "react";
 import ReactTable from "react-table";
 import Demo from "../../../store/Hashtag";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -24,6 +24,9 @@ import {
 import Select from "react-select";
 
 import Sorting from "./../../../assets/Images/sorting.png";
+
+
+
 
 class Templates extends Component {
   constructor(props) {
@@ -655,6 +658,7 @@ class Templates extends Component {
               <div className="col-md-8">
                 <div className="table-cntr table-height template-table">
                   <ReactTable
+                  minRows={2}
                     data={this.state.template}
                     columns={columns}
                     // resizable={false}

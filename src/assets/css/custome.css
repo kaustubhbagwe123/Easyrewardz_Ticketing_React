@@ -8030,6 +8030,14 @@ table tr th:last-child {
 .report-action {
   width: 115px;
 }
+.down-tic-rep input {
+  height: 43px;
+}
+.total-tic-title {
+  text-align: center;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
 /* Reports Css end Kalpesh */
 /* storeReports css start by Shlok */
 #addStorereport-modal {
@@ -10828,4 +10836,9 @@ table tr th:last-child {
   display: inline-block;
   max-width: 50%;
   min-width: 50%;
+}
+.commentImg{
+  width: 25px;
+    height: 25px;
+    padding: 5px;
 }

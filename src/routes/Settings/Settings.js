@@ -43,7 +43,7 @@ class Settings extends Component {
                   Ticketing
                 </a>
               </li>
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <a
                   className="nav-link"
                   data-toggle="tab"
@@ -78,7 +78,7 @@ class Settings extends Component {
                 >
                   Chat
                 </a>
-              </li>
+              </li> */}
             </ul>
             <div className="tab-content">
               <div
