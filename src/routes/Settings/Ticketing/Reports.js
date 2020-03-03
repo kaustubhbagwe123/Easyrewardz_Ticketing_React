@@ -1437,22 +1437,22 @@ class Reports extends Component {
     if (this.state.selectScheduleDate == "") {
       self.setState({ selectScheduleDate: 0 });
     }
-    if (this.state.Schedule_ID > 0) {
-      axios({
-        method: "post",
-        url: config.apiUrl + "/Report/SaveReportForDownload",
-        headers: authHeader(),
-        params: {
-          ScheduleID: this.state.Schedule_ID
-        }
-      }).then(function (res) {
-        // this.handleReportList(); 
-        self.handleReportList();
-        self.handleNextPopupClose();
-        NotificationManager.success("Report saved successfully for download.");
-      });
-    }
-    else {
+    // if (this.state.Schedule_ID > 0) {
+    //   axios({
+    //     method: "post",
+    //     url: config.apiUrl + "/Report/SaveReportForDownload",
+    //     headers: authHeader(),
+    //     params: {
+    //       ScheduleID: this.state.Schedule_ID
+    //     }
+    //   }).then(function (res) {
+    //     // this.handleReportList(); 
+    //     self.handleReportList();
+    //     self.handleNextPopupClose();
+    //     NotificationManager.success("Report saved successfully for download.");
+    //   });
+    // }
+    // else {
       axios({
         method: "post",
         url: config.apiUrl + "/Ticketing/Schedule",
@@ -1522,7 +1522,7 @@ class Reports extends Component {
           NotificationManager.error("Report name already exist.");
         }
       });
-    }
+  //  }
 
 
     // else{
