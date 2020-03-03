@@ -551,7 +551,7 @@ class CreateSLA extends Component {
     }).then(function (res) {
       debugger;
       let status = res.data.message;
-      if (status === "Success") {
+      if (status === "Record deleted Successfully") {
         NotificationManager.success("SLA deleted successfully.", '', 2000);
         self.handleGetSLA();
       } else {
