@@ -1294,10 +1294,11 @@ class Reports extends Component {
       url: config.apiUrl + "/Report/DownloadDefaultReport",
       headers: authHeader(),
       data: {
-        FromDate:this.state.TicketCreatedFromDate,
-        EndDate:this.state.TicketCreatedEndDate,
-        TicketSourceIds:sourceIds,
-        ReportType:"1"
+       
+        Ticket_CreatedFrom:moment(this.state.TicketCreatedFromDate).format("YYYY-MM-DD"),
+        Ticket_CreatedTo:moment(this.state.TicketCreatedEndDate).format("YYYY-MM-DD"),
+        Ticket_SourceIDs:sourceIds,
+        ReportTypeID:1
       }
     }).then(function (res) {
       debugger;
