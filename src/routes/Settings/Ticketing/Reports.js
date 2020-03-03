@@ -2038,6 +2038,7 @@ class Reports extends Component {
                         value={this.state.selectedSLAStatus}
                         onChange={this.setOnChangeReportData}
                       >
+                        <option value="0">SLA Status</option>
                         {this.state.SlaDueData !== null &&
                           this.state.SlaDueData.map((item, i) => (
                             <option key={i} value={item.slaDueID}>
