@@ -862,6 +862,7 @@ class TicketSystemStore extends Component {
                   >
                     <div className="reactstoreselect ordermainrow">
                       <Table
+                      className="custom-antd-table"
                         columns={[
                           {
                             title: "",
@@ -1142,6 +1143,7 @@ class TicketSystemStore extends Component {
                         showPagination={false}
                       /> */}
                        <Table
+                       className="custom-antd-table"
                         columns={[
                           {
                             title: "",
