@@ -1250,7 +1250,7 @@ class TicketSystemOrder extends Component {
                           title: "",
                           dataIndex: "orderMasterID",
                           render: (row, item) => {
-                            debugger;
+                            // debugger;
                             return (
                               <div>
                                 <input
@@ -1275,7 +1275,7 @@ class TicketSystemOrder extends Component {
                         },
                         {
                           title: "Article Number",
-                          dataIndex: "orderItemID" 
+                          dataIndex: "articleNumber" 
                         },
                         {
                           title: "Article Name",
@@ -2145,7 +2145,7 @@ class TicketSystemOrder extends Component {
                           },
                           {
                             title: "Article Number",
-                            dataIndex: "orderItemID",
+                            dataIndex: "articleNumber",
                           },
                           {
                             title: "Article Name",
