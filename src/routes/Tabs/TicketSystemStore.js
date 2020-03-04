@@ -10,6 +10,7 @@ import { authHeader } from "../../helpers/authHeader";
 import MinusImg from "./../../assets/Images/minus.png";
 import matchSorter from "match-sorter";
 import DatePicker from "react-datepicker";
+import { Table } from "antd";
 
 class TicketSystemStore extends Component {
   constructor(props) {
@@ -35,6 +36,7 @@ class TicketSystemStore extends Component {
       CustStoreStatusDrop: "0"
     };
     this.handleOrderStoreTableOpen = this.handleOrderStoreTableOpen.bind(this);
+    this.handleCheckStoreID = this.handleCheckStoreID.bind(this);
     this.handleOrderStoreTableClose = this.handleOrderStoreTableClose.bind(
       this
     );
@@ -101,6 +103,7 @@ class TicketSystemStore extends Component {
           let Msg = res.data.message;
           if (Msg === "Success") {
             self.setState({ SearchData: data, message: Msg });
+            self.handleCheckStoreID = self.handleCheckStoreID.bind(self);
           } else {
             self.setState({
               message: res.data.message,
@@ -142,7 +145,7 @@ class TicketSystemStore extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  handleCheckStoreID(storeMasterID, rowData) {
+  handleCheckStoreID = (storeMasterID, rowData) => {
     debugger;
 
     const newSelected = Object.assign({}, this.state.CheckStoreID);
@@ -188,7 +191,7 @@ class TicketSystemStore extends Component {
     {
       this.props.getStoreID(selectedRow);
     }
-  }
+  };
   onFilteredChange(filtered) {
     debugger;
     if (filtered.length > 1 && this.state.filterAll.length) {
@@ -215,6 +218,10 @@ class TicketSystemStore extends Component {
       CustStoreStatusDrop: e.target.value
     });
   };
+
+  TableonChange(pagination, filters, sorter, extra) {
+    console.log("params", pagination, filters, sorter, extra);
+  }
   render() {
     const { SearchData, selectedStoreData } = this.state;
     return (
@@ -461,7 +468,7 @@ class TicketSystemStore extends Component {
                             {
                               Header: <span>Store Addres</span>,
                               accessor: "address"
-                            } 
+                            }
                           ]
                         },
                         {
@@ -709,7 +716,50 @@ class TicketSystemStore extends Component {
                     aria-labelledby="storeSubdetail-tab"
                   >
                     <div className="reactstoreselect ordermainrow">
-                      <ReactTable
+                      <Table
+                        columns={[
+                          {
+                            title: "Store Code",
+                            dataIndex: "storeCode"
+                          },
+                          {
+                            title: "Store Name",
+                            dataIndex: "storeName",
+                            sorter: {
+                              compare: (a, b) => a.storeName - b.storeName,
+                              multiple: 4
+                            }
+                          },
+                          {
+                            title: "Store Pin Code",
+                            dataIndex: "pincode",
+                            sorter: {
+                              compare: (a, b) => a.pincode - b.pincode,
+                              multiple: 3
+                            }
+                          },
+                          {
+                            title: "Store Email ID",
+                            dataIndex: "storeEmailID",
+                            sorter: {
+                              compare: (a, b) =>
+                                a.storeEmailID - b.storeEmailID,
+                              multiple: 2
+                            }
+                          },
+                          {
+                            title: "Store Addres",
+                            dataIndex: "address",
+                            sorter: {
+                              compare: (a, b) => a.address - b.address,
+                              multiple: 1
+                            }
+                          }
+                        ]}
+                        dataSource={SearchData}
+                        onChange={this.TableonChange.bind(this)}
+                      />
+                      {/* <ReactTable
                         data={SearchData}
                         onFilteredChange={this.onFilteredChange.bind(this)}
                         filtered={this.state.filtered}
@@ -813,7 +863,7 @@ class TicketSystemStore extends Component {
                         // resizable={false}
                         defaultPageSize={5}
                         showPagination={false}
-                      />
+                      /> */}
                     </div>
                     {this.state.selectedStoreData.length !== 0 ? (
                       <div className="storedetailtabsbutton">

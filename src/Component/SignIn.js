@@ -63,9 +63,6 @@ class SingIn extends Component {
 
       let X_Authorized_password = encryption(password, "enc");
 
-      
-
-    //  let X_Authorized_Domainname = encryption(window.location.origin, "enc");
      //let X_Authorized_Domainname = encryption(window.location.origin, "enc");
      let X_Authorized_Domainname = encryption('https://erbelltkt.dcdev.brainvire.net', "enc");
       // let X_Authorized_Domainname = encryption(
