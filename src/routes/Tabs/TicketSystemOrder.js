@@ -1973,7 +1973,7 @@ class TicketSystemOrder extends Component {
                 style={{ display: "none" }}
               >
                  <Table
-                  className="components-table-demo-nested"
+                  className="components-table-demo-nested custom-antd-table"
                   columns={[
                     {
                       title: "",
@@ -2046,9 +2046,10 @@ class TicketSystemOrder extends Component {
                       key: "discount"
                     }
                   ]}
-                  expandedRowRender={record => {
+                  expandedRowRender={row => {
                     return (
                       <Table
+                      dataSource={this.state.OrderSubItem.filter(x => x.orderMasterID === row.orderMasterID)}
                         columns={[
                           {
                             title: "",
@@ -2083,14 +2084,14 @@ class TicketSystemOrder extends Component {
                           },
                           {
                             title: "Article Number",
-                            dataIndex: "orderMasterID",
-                            key: "orderMasterID"
+                            dataIndex: "orderItemID",
+                            key: "orderItemID"
                           },
                           {
                             title: "Article Name",
-                            dataIndex: "articleNumber",
-                            key: "articleNumber"
-                          },
+                            dataIndex: "articleName",
+                            key: "articleName"
+                            },
                           {
                             title: "Article MRP",
                             dataIndex: "itemPrice",
@@ -2118,6 +2119,7 @@ class TicketSystemOrder extends Component {
                                     id={"requireSizeTxt" + record.orderItemID}
                                     value={record.requireSize || ""}
                                     name="requiredSize"
+                                    className="order-input"
                                     autoComplete="off"
                                     onChange={() => {
                                       this.handleRequireSize(this, record);
@@ -2130,10 +2132,10 @@ class TicketSystemOrder extends Component {
                         ]}
                         // rowSelection={rowSelection}
                         pagination={false}
-                        dataSource={this.state.OrderSubItem}
                       />
                     );
                   }}
+                  pagination={false}
                   dataSource={orderDetailsData}
                 />
                 {/* <ReactTable
