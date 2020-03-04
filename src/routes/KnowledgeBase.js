@@ -1245,7 +1245,7 @@ class KnowledgeBase extends Component {
 
                   {
                     Header: (
-                      <span
+                      <span 
                       onClick={this.StatusOpenModel.bind(this,"categoryName","notapprove")}
                       >
                         <label style={{color:this.state.categoryColor}}>

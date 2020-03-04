@@ -3461,6 +3461,10 @@ table tr th:last-child {
 .custom-ticket-title-suggestions::-webkit-scrollbar-thumb:hover {
   background: #a5a3a3;
 }
+
+.custom-antd-table .ant-table-content {
+  overflow: auto;
+}
 /* ticket system ends */
 
 /* add search my ticket starts */
