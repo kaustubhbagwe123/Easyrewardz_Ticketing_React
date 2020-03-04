@@ -1477,6 +1477,7 @@ class MyTicket extends Component {
     let self = this;
     var str = this.state.mailBodyData;
     var stringBody = str.replace(/<\/?p[^>]*>/g, "");
+    var finalText = stringBody.replace(/[&]nbsp[;]/g," ");
     if (isSend === 1) {
       const formData = new FormData();
       var paramData = {
@@ -1484,7 +1485,7 @@ class MyTicket extends Component {
         ToEmail: this.state.ticketDetailsData.customerEmailId,
         UserCC: this.state.mailFiled.userCC,
         UserBCC: this.state.mailFiled.userBCC,
-        TicketMailBody: stringBody,
+        TicketMailBody: finalText,
         informStore: this.state.InformStore,
         TicketSource: 2, // Send ticket source id
         IsSent: 0,
@@ -1528,7 +1529,7 @@ class MyTicket extends Component {
         UserCC: this.state.mailFiled.userCC,
         UserBCC: this.state.mailFiled.userBCC,
         TikcketMailSubject: this.state.ticketDetailsData.ticketTitle,
-        TicketMailBody: stringBody,
+        TicketMailBody: finalText,
         informStore: this.state.InformStore,
         TicketSource: 2, // Send ticket source id
         IsSent: 0,
@@ -1612,13 +1613,13 @@ class MyTicket extends Component {
       const formData = new FormData();
       var paramData = {
         TicketID: this.state.ticket_Id,
-          TicketMailBody: this.state.ticketcommentMSG,
-          IsSent: 1,
-          IsCustomerComment: 0,
-          IsInternalComment: 1
+        TicketMailBody: this.state.ticketcommentMSG,
+        IsSent: 1,
+        IsCustomerComment: 0,
+        IsInternalComment: 1
       };
       formData.append("ticketingMailerQue", JSON.stringify(paramData));
-      
+
       axios({
         method: "post",
         url: config.apiUrl + "/Ticketing/MessageComment",
@@ -1727,7 +1728,10 @@ class MyTicket extends Component {
       this.state.ReplyFileData.push(file);
     }
 
-    this.setState({ ReplyfileText: this.state.Rplyfile.length ,ReplyFileData:allFiles});
+    this.setState({
+      ReplyfileText: this.state.Rplyfile.length,
+      ReplyFileData: allFiles
+    });
   }
   handleFileUpload(e) {
     debugger;
@@ -2668,7 +2672,7 @@ class MyTicket extends Component {
                       </div>
                       <div className="card-space-1">
                         <label className="target-closure-date">
-                          Target Closure Date &nbsp; 
+                          Target Closure Date &nbsp;
                         </label>
                         <label className="Date-target">
                           {ticketDetailsData.targetClosuredate}
@@ -2690,7 +2694,9 @@ class MyTicket extends Component {
                       ></progress> */}
                       <div className="tic-det-progress">
                         <Progress multi>
-                          {this.state.progressDataWithcColor.map(function(item) {
+                          {this.state.progressDataWithcColor.map(function(
+                            item
+                          ) {
                             if (item.color === "No Color") {
                               return <Progress bar></Progress>;
                             }
@@ -2725,7 +2731,7 @@ class MyTicket extends Component {
                             }
                           })}
                         </Progress>
-                        </div>
+                      </div>
                       <p className="logout-label font-weight-bold prog-indi-1">
                         {/* 2 day */}
                         {ticketDetailsData.durationRemaining}
@@ -3181,7 +3187,7 @@ class MyTicket extends Component {
                                     ]}
                                     // resizable={false}
                                     defaultPageSize={5}
-                                    showPagination={true}
+                                    showPagination={false}
                                     minRows={1}
                                   />
                                 </div>
@@ -3290,7 +3296,7 @@ class MyTicket extends Component {
                                     ]}
                                     // resizable={false}
                                     defaultPageSize={5}
-                                    showPagination={true}
+                                    showPagination={false}
                                     minRows={1}
                                   />
                                 </div>
@@ -3752,9 +3758,9 @@ class MyTicket extends Component {
                                               },
                                               {
                                                 Header: (
-                                                  <span>Article Size</span>
+                                                  <span>Article Name</span>
                                                 ),
-                                                accessor: "articleSize"
+                                                accessor: "articleName"
                                               },
                                               {
                                                 Header: (
@@ -5023,6 +5029,7 @@ class MyTicket extends Component {
                                               }}
                                             />
                                           ) : null}
+
                                           <p
                                             className="label-5"
                                             style={{ display: "inline-block" }}
@@ -5035,45 +5042,53 @@ class MyTicket extends Component {
                                         </div>
 
                                         <div className="col-12 col-xs-12 col-sm-2 col-md-2 mob-flex">
-                                          {this.state.collapseUp &&
-                                          "i" +
-                                            details.latestMessageDetails
-                                              .mailID ===
-                                            this.state.collapseId ? (
-                                            <img
-                                              src={Up1Img}
-                                              alt="up"
-                                              className="up-1"
-                                              onClick={this.handleUpClose.bind(
-                                                this,
-                                                "i" +
-                                                  details.latestMessageDetails
-                                                    .mailID
-                                              )}
-                                              id={
-                                                "i" +
+                                          {details.trailMessageDetails
+                                            .length === 0 ? null : (
+                                            <div>
+                                              {this.state.collapseUp &&
+                                              "i" +
                                                 details.latestMessageDetails
-                                                  .mailID
-                                              }
-                                            />
-                                          ) : (
-                                            <img
-                                              src={Down1Img}
-                                              alt="up"
-                                              className="up-1"
-                                              onClick={this.handleUpOpen.bind(
-                                                this,
-                                                "i" +
-                                                  details.latestMessageDetails
-                                                    .mailID
+                                                  .mailID ===
+                                                this.state.collapseId ? (
+                                                <img
+                                                  src={Up1Img}
+                                                  alt="up"
+                                                  className="up-1"
+                                                  onClick={this.handleUpClose.bind(
+                                                    this,
+                                                    "i" +
+                                                      details
+                                                        .latestMessageDetails
+                                                        .mailID
+                                                  )}
+                                                  id={
+                                                    "i" +
+                                                    details.latestMessageDetails
+                                                      .mailID
+                                                  }
+                                                />
+                                              ) : (
+                                                <img
+                                                  src={Down1Img}
+                                                  alt="up"
+                                                  className="up-1"
+                                                  onClick={this.handleUpOpen.bind(
+                                                    this,
+                                                    "i" +
+                                                      details
+                                                        .latestMessageDetails
+                                                        .mailID
+                                                  )}
+                                                  id={
+                                                    "i" +
+                                                    details.latestMessageDetails
+                                                      .mailID
+                                                  }
+                                                />
                                               )}
-                                              id={
-                                                "i" +
-                                                details.latestMessageDetails
-                                                  .mailID
-                                              }
-                                            />
+                                            </div>
                                           )}
+
                                           <div className="inlineGridTicket">
                                             {details.latestMessageDetails
                                               .isCustomerComment === 1 ? (
@@ -5111,76 +5126,80 @@ class MyTicket extends Component {
                                           </div>
                                         </div>
                                       </div>
-                                      <div className="row card-op-out">
-                                        <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
-                                        <div className="col-12 col-xs-12 col-sm-6 col-md-7">
-                                          <UncontrolledCollapse
-                                            toggler={
-                                              "#i" +
-                                              details.latestMessageDetails
-                                                .mailID
-                                            }
-                                            // isOpen={this.state.collapseUp}
-                                          >
-                                            <Card>
-                                              <CardBody>
-                                                {details.trailMessageDetails !==
-                                                  null &&
-                                                  details.trailMessageDetails.map(
-                                                    function(MsgData, s) {
-                                                      return (
-                                                        <div
-                                                          className="card-details"
-                                                          key={s}
-                                                        >
-                                                          <div className="card-details-1">
-                                                            <label
-                                                              className="label-5"
-                                                              style={{
-                                                                display: "block"
-                                                              }}
-                                                            >
-                                                              {
-                                                                MsgData.ticketMailBody
-                                                              }
-                                                            </label>
+                                      {details.trailMessageDetails.length ===
+                                      0 ? null : (
+                                        <div className="row card-op-out">
+                                          <div className="col-12 col-xs-12 col-sm-4 col-md-3"></div>
+                                          <div className="col-12 col-xs-12 col-sm-6 col-md-7">
+                                            <UncontrolledCollapse
+                                              toggler={
+                                                "#i" +
+                                                details.latestMessageDetails
+                                                  .mailID
+                                              }
+                                              // isOpen={this.state.collapseUp}
+                                            >
+                                              <Card>
+                                                <CardBody>
+                                                  {details.trailMessageDetails !==
+                                                    null &&
+                                                    details.trailMessageDetails.map(
+                                                      function(MsgData, s) {
+                                                        return (
+                                                          <div
+                                                            className="card-details"
+                                                            key={s}
+                                                          >
+                                                            <div className="card-details-1">
+                                                              <label
+                                                                className="label-5"
+                                                                style={{
+                                                                  display:
+                                                                    "block"
+                                                                }}
+                                                              >
+                                                                {
+                                                                  MsgData.ticketMailBody
+                                                                }
+                                                              </label>
+                                                            </div>
                                                           </div>
-                                                        </div>
-                                                      );
-                                                    }
-                                                  )}
-                                                {details.trailMessageDetails
-                                                  .length === 0 && (
-                                                  <div className="card-details">
-                                                    <div className="card-details-1">
-                                                      <label className="i-have-solved-this-i">
-                                                        {
-                                                          details
-                                                            .trailMessageDetails
-                                                            .ticketMailSubject
-                                                        }
-                                                      </label>
-                                                      <label
-                                                        className="label-5"
-                                                        style={{
-                                                          display: "block"
-                                                        }}
-                                                      >
-                                                        {
-                                                          details
-                                                            .trailMessageDetails
-                                                            .ticketMailBody
-                                                        }
-                                                      </label>
+                                                        );
+                                                      }
+                                                    )}
+                                                  {details.trailMessageDetails
+                                                    .length === 0 && (
+                                                    <div className="card-details">
+                                                      <div className="card-details-1">
+                                                        <label className="i-have-solved-this-i">
+                                                          {
+                                                            details
+                                                              .trailMessageDetails
+                                                              .ticketMailSubject
+                                                          }
+                                                        </label>
+                                                        <label
+                                                          className="label-5"
+                                                          style={{
+                                                            display: "block"
+                                                          }}
+                                                        >
+                                                          {
+                                                            details
+                                                              .trailMessageDetails
+                                                              .ticketMailBody
+                                                          }
+                                                        </label>
+                                                      </div>
                                                     </div>
-                                                  </div>
-                                                )}
-                                              </CardBody>
-                                            </Card>
-                                          </UncontrolledCollapse>
+                                                  )}
+                                                </CardBody>
+                                              </Card>
+                                            </UncontrolledCollapse>
+                                          </div>
+                                          <div className="col-12 col-xs-12 col-sm-2"></div>
                                         </div>
-                                        <div className="col-12 col-xs-12 col-sm-2"></div>
-                                      </div>
+                                      )}
                                     </div>
                                   </div>
                                 );
