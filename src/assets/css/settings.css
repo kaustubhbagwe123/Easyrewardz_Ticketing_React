@@ -241,8 +241,9 @@
   border-radius: 4px;
   width: 100%;
   height: 43px;
-  margin-top: 5px;
   padding-left: 10px;
+  color: #999;
+  font-weight: 600;
   border-color: #ecf2f4;
   background: #ecf2f4 url("../Images/dropDown.png") no-repeat right 12px center;
   /* margin-left: -10px; */
@@ -279,7 +280,6 @@
 .store-create-textarea {
   background-color: #ecf2f4;
   border-radius: 4px;
-  margin-top: 5px;
   padding-left: 10px;
   border: none;
   width: 100%;
@@ -1825,7 +1825,8 @@
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   display: block;
   width: 100%;
-  height: 35px;
+  font-size:14px;
+  height: 43px;
   padding: 10px;
   padding-left: 15px;
 }
@@ -3197,4 +3198,14 @@
 .dragging-container .ant-table-tbody > tr > td
 .dragging-container .ant-table-tbody > tr:hover > td {
 background: transparent;
+}
+
+.store-pop-over-div {
+  display: block;
+  margin-top: 42px;
+}
+.storecancel{
+  float: right;
+  margin: 0;
+  
 }

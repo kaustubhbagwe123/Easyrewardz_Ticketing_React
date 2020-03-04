@@ -11,7 +11,7 @@ import moment from "moment";
 import config from "./../../helpers/config";
 import ReactAutocomplete from "react-autocomplete";
 import {
-  NotificationContainer, 
+  NotificationContainer,
   NotificationManager
 } from "react-notifications";
 import matchSorter from "match-sorter";
@@ -62,7 +62,7 @@ class TicketSystemOrder extends Component {
       orderItem: false,
       purchaseFrmStorID: 0,
       validOrdernumber: "",
-      validMdlOrdernumber:'',
+      validMdlOrdernumber: "",
       expanded: {},
       expandedOrderPopup: {},
       validPurchaseStoreName: "",
@@ -974,16 +974,16 @@ class TicketSystemOrder extends Component {
                   className="searchtextimgpopup"
                   onClick={this.handleOrderSearchData.bind(this, 2)}
                 />
-                 {this.state.ModalorderNumber.length === 0 && (
-                    <p
-                      style={{
-                        color: "red",
-                        marginBottom: "0px"
-                      }}
-                    >
-                      {this.state.validMdlOrdernumber}
-                    </p>
-                  )}
+                {this.state.ModalorderNumber.length === 0 && (
+                  <p
+                    style={{
+                      color: "red",
+                      marginBottom: "0px"
+                    }}
+                  >
+                    {this.state.validMdlOrdernumber}
+                  </p>
+                )}
               </div>
             </div>
             {/* <div className="reacttableordermodal ordermainrow tableSrolling headers-menu"> */}
@@ -1041,7 +1041,7 @@ class TicketSystemOrder extends Component {
                                 row.original
                               )}
                             />
-                             <label
+                            <label
                               htmlFor={"all" + row.original.orderMasterID}
                             ></label>
                           </div>
@@ -1198,7 +1198,7 @@ class TicketSystemOrder extends Component {
                                 row.original
                               )}
                             />
-                             <label
+                            <label
                               htmlFor={"all" + row.original.orderMasterID}
                             ></label>
                           </div>
@@ -1332,10 +1332,9 @@ class TicketSystemOrder extends Component {
                                     row.original
                                   )}
                                 />
-                              <label
-                              htmlFor={"item" + row.original.orderItemID}
-                            ></label>
-
+                                <label
+                                  htmlFor={"item" + row.original.orderItemID}
+                                ></label>
                               </div>
                             )
                           },
@@ -1386,6 +1385,16 @@ class TicketSystemOrder extends Component {
                         ]}
                         defaultPageSize={2}
                         showPagination={false}
+                        getTrProps={(state, rowInfo, column, instance) => {
+                          debugger;
+                          return {
+                            onClick: (e, t) => {
+                              // t.srcElement.classList.add('active')
+                              alert(1);
+                            },
+                            style: {}
+                          };
+                        }}
                       />
                     </div>
                   );
@@ -1828,24 +1837,24 @@ class TicketSystemOrder extends Component {
                           style={{ marginLeft: "15px" }}
                         >
                           {/* <input
-                            type="checkbox"
-                            id={"i" + row.original.orderMasterID}
-                            style={{ display: "none" }}
-                            name="ticket-order"
-                            checked={
-                              this.state.CheckOrderID[
-                                row.original.orderMasterID
-                              ] === true
-                            }
-                            onChange={this.handleCheckOrderID.bind(
-                              this,
-                              row.original.orderMasterID,
-                              row.original
-                            )}
-                          />
-                          <label
-                            htmlFor={"i" + row.original.orderMasterID}
-                          ></label> */}
+                          type="checkbox"
+                          id={"i" + row.original.orderMasterID}
+                          style={{ display: "none" }}
+                          name="ticket-order"
+                          checked={
+                            this.state.CheckOrderID[
+                              row.original.orderMasterID
+                            ] === true
+                          }
+                          onChange={this.handleCheckOrderID.bind(
+                            this,
+                            row.original.orderMasterID,
+                            row.original
+                          )}
+                        />
+                        <label
+                          htmlFor={"i" + row.original.orderMasterID}
+                        ></label> */}
                           <input
                             type="checkbox"
                             id={"all" + row.original.orderMasterID}
@@ -1862,7 +1871,7 @@ class TicketSystemOrder extends Component {
                               row.original
                             )}
                           />
-                            <label
+                          <label
                             htmlFor={"all" + row.original.orderMasterID}
                           ></label>
                         </div>
