@@ -73,8 +73,25 @@ import CSVi from "./../assets/Images/csvicon.png"; // Don't comment this line
 import Excel from "./../assets/Images/excel.png"; // Don't comment this line
 import Word from "./../assets/Images/word.png"; // Don't comment this line
 import TxtLogo from "./../assets/Images/TxtIcon.png"; // Don't comment this line
+import { Dropdown } from 'semantic-ui-react'
 
 // import DatePicker from "react-date-picker";
+
+
+const social=[
+  {
+   key: 'Email',
+      text: 'Email',
+      value: 'Email',
+      image: { avatar: false, src: Email1 },
+  },
+  {
+   key: 'SMS',
+      text: 'SMS',
+      value: 'SMS',
+      image: { avatar: false, src: Sms1 },
+  },
+  ]
 
 const CheckboxGroup = Checkbox.Group;
 class MyTicket extends Component {
@@ -4353,8 +4370,23 @@ class MyTicket extends Component {
                         className="dropdown"
                         style={{ display: "inherit" }}
                       ></div>
+                     
+                     {/* <select>
+                       <option className="emshl">Email</option>
+                          <option>Facebook</option>
+                          <option>SMS</option>
+                          <option>Twitter</option>
+                     </select> */}
+                      {/* <div className="dropdown" style={{ display: "inherit" }}>
+                      <Dropdown
+    placeholder='Select Friend'
+   
+   
+    options={social}
+  />
+  </div>  */}
 
-                      <div className="dropdown" style={{ display: "inherit" }}>
+                       <div className="dropdown" style={{ display: "inherit" }}>
                         <button
                           className="dropdown-toggle my-tic-email"
                           type="button"

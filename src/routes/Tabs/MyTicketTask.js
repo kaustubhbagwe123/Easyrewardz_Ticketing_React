@@ -69,10 +69,11 @@ class MyTicketTask extends Component {
     if (this.props.taskData.TicketData.TicketId !== 0) {
       var Id = this.props.taskData.TicketData.TicketId;
       /// var GridData=this.props.taskData.TicketData.GridData;
+     
       this.handleGetTaskTableGrid(Id);
       this.handleGetDepartmentList();
       this.handleGetTicketPriorityList();
-      this.handleGetTaskTabDetails(Id);
+     
       this.setState({
         tikcet_ID: Id
         /// taskTableGrid:GridData
@@ -95,12 +96,14 @@ class MyTicketTask extends Component {
     this.setState({ TaskDetailDrawer: false });
   }
   HandleRowClickDraw = (rowInfo, column) => {
+    debugger
     return {
       onClick: e => {
         var taskId = column.original["ticketingTaskID"];
         this.setState({
           ticketTask_Id: taskId
         });
+        this.handleGetTaskTabDetails(taskId);
         this.handleTaskDetailsDrawerOpn();
         this.handleGetTaskCommentsdetails(taskId);
       }
@@ -154,6 +157,7 @@ class MyTicketTask extends Component {
     });
   }
   handleGetTaskCommentsdetails(ticketTaskId) {
+    debugger;
     let self = this;
     axios({
       method: "post",
@@ -636,7 +640,7 @@ class MyTicketTask extends Component {
             // resizable={false}
             defaultPageSize={10}
             showPagination={false}
-            getTrProps={this.HandleRowClickDraw}
+            getTrProps={this.HandleRowClickDraw.bind(this)}
           />
 
           <Drawer
