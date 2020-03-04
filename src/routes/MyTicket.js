@@ -73,25 +73,24 @@ import CSVi from "./../assets/Images/csvicon.png"; // Don't comment this line
 import Excel from "./../assets/Images/excel.png"; // Don't comment this line
 import Word from "./../assets/Images/word.png"; // Don't comment this line
 import TxtLogo from "./../assets/Images/TxtIcon.png"; // Don't comment this line
-import { Dropdown } from 'semantic-ui-react'
+import { Dropdown } from "semantic-ui-react";
 
 // import DatePicker from "react-date-picker";
 
-
-const social=[
+const social = [
   {
-   key: 'Email',
-      text: 'Email',
-      value: 'Email',
-      image: { avatar: false, src: Email1 },
+    key: "Email",
+    text: "Email",
+    value: "Email",
+    image: { avatar: false, src: Email1 }
   },
   {
-   key: 'SMS',
-      text: 'SMS',
-      value: 'SMS',
-      image: { avatar: false, src: Sms1 },
-  },
-  ]
+    key: "SMS",
+    text: "SMS",
+    value: "SMS",
+    image: { avatar: false, src: Sms1 }
+  }
+];
 
 const CheckboxGroup = Checkbox.Group;
 class MyTicket extends Component {
@@ -204,7 +203,8 @@ class MyTicket extends Component {
       progressBarData: [],
       progressDataWithcColor: [],
       collapseId: "",
-      tckcmtMSGCompulsory: ""
+      tckcmtMSGCompulsory: "",
+      hasAttachmentModal: false
     };
     this.toggleView = this.toggleView.bind(this);
     this.handleGetTabsName = this.handleGetTabsName.bind(this);
@@ -984,6 +984,12 @@ class MyTicket extends Component {
   handleThumbModalClose() {
     this.setState({ Plus: false });
   }
+  handleHasAttachmetModalOpen() {
+    this.setState({ hasAttachmentModal: true });
+  }
+  handleHasAttachmetModalClose() {
+    this.setState({ hasAttachmentModal: false });
+  }
   handleSubmitForm(e) {
     e.preventDefault();
   }
@@ -1477,7 +1483,7 @@ class MyTicket extends Component {
     let self = this;
     var str = this.state.mailBodyData;
     var stringBody = str.replace(/<\/?p[^>]*>/g, "");
-    var finalText = stringBody.replace(/[&]nbsp[;]/g," ");
+    var finalText = stringBody.replace(/[&]nbsp[;]/g, " ");
     if (isSend === 1) {
       const formData = new FormData();
       var paramData = {
@@ -4376,23 +4382,8 @@ class MyTicket extends Component {
                         className="dropdown"
                         style={{ display: "inherit" }}
                       ></div>
-                     
-                     {/* <select>
-                       <option className="emshl">Email</option>
-                          <option>Facebook</option>
-                          <option>SMS</option>
-                          <option>Twitter</option>
-                     </select> */}
-                      {/* <div className="dropdown" style={{ display: "inherit" }}>
-                      <Dropdown
-    placeholder='Select Friend'
-   
-   
-    options={social}
-  />
-  </div>  */}
 
-                       <div className="dropdown" style={{ display: "inherit" }}>
+                      <div className="dropdown" style={{ display: "inherit" }}>
                         <button
                           className="dropdown-toggle my-tic-email"
                           type="button"
@@ -4806,6 +4797,57 @@ class MyTicket extends Component {
                     </div>
                   </Modal>
                 </div>
+                <Modal
+                  open={this.state.hasAttachmentModal}
+                  onClose={this.handleHasAttachmetModalClose.bind(this)}
+                  modalId="thumb-modal-popup"
+                  overlayId="logout-ovrlykb"
+                >
+                  <div>
+                    <div className="close">
+                      <img
+                        src={CrossIcon}
+                        alt="cross-icon"
+                        onClick={this.handleHasAttachmetModalClose.bind(this)}
+                      />
+                    </div>
+                    <div className="row my-3 mx-1">
+                      {this.state.file.map((item, i) => (
+                        <div style={{ position: "relative" }} key={i}>
+                          <div>
+                            <img
+                              src={CircleCancel}
+                              alt="thumb"
+                              className="circleCancle"
+                              onClick={() => {
+                                this.handleRemoveImage(i);
+                              }}
+                            />
+                          </div>
+
+                          <div>
+                            <img
+                              src={
+                                item.Type === "docx"
+                                  ? require("./../assets/Images/word.png")
+                                  : item.Type === "xlsx"
+                                  ? require("./../assets/Images/excel.png")
+                                  : item.Type === "pdf"
+                                  ? require("./../assets/Images/pdf.png")
+                                  : item.Type === "txt"
+                                  ? require("./../assets/Images/TxtIcon.png")
+                                  : require("./../assets/Images/thumbticket.png")
+                              }
+                              title={item.name}
+                              alt="thumb"
+                              className="thumbtick"
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </Modal>
                 <div className="edit-storeTask-header newtab">
                   <div className="tab-content">
                     <div className="store-header-task">
@@ -5029,6 +5071,19 @@ class MyTicket extends Component {
                                               }}
                                             />
                                           ) : null}
+                                          {/* --------------Show Attchement Icone on condition--------------- */}
+                                          {details.latestMessageDetails
+                                            .hasAttachment === 1 ? (
+                                            <img
+                                              src={ClipImg}
+                                              alt="attechment"
+                                              className="commentImg"
+                                              style={{
+                                                display: "inline-block"
+                                              }}
+                                            />
+                                          ) : null}
+                                          {/* ----------------------------- */}
 
                                           <p
                                             className="label-5"

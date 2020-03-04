@@ -708,7 +708,7 @@ className="custom-antd-table"
                               </div>
                               )
                             }
-                          },
+                          }, 
                           {
                             title: "Store Code",
                             dataIndex: "storeCode"
